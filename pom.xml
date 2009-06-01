@@ -19,9 +19,9 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:https://svn.ebi.ac.uk/psiModel/psimi/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.ebi.ac.uk/psiModel/psimi/trunk/</developerConnection>
-        <url>https://svn.ebi.ac.uk/psiModel/psimi/trunk/</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk</url>
     </scm>
 
     <properties>
@@ -73,28 +73,10 @@
         </license>
     </licenses>
 
-    <organization>
-        <name>European Bioinformatics Institute, EBI</name>
-        <url>http://www.ebi.ac.uk/</url>
-    </organization>
-
     <build>
         <defaultGoal>clean install</defaultGoal>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <artifactId>maven-idea-plugin</artifactId>
-                    <version>2.2-EBI-alpha</version>
-                    <configuration>
-                        <jdkLevel>1.5</jdkLevel>
-                        <downloadSources>true</downloadSources>
-                        <downloadJavadocs>false</downloadJavadocs>
-                        <useClassifiers>true</useClassifiers>
-                        <linkModules>true</linkModules>
-                        <exclude>target</exclude>
-                    </configuration>
-                </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -138,35 +120,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>attach-javadocs</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <source>1.5</source>
-                            <aggregate>true</aggregate>
-                            <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet>
-                            <docletArtifact>
-                                <groupId>gr.spinellis</groupId>
-                                <artifactId>UmlGraph</artifactId>
-                                <version>4.6</version>
-                            </docletArtifact>
-                            <additionalparam>
-                                -inferrel -inferdep -quiet -hide java.*
-                                -collpackages java.util.* -qualify
-                                -postfixpackage -nodefontsize 9
-                                -nodefontpackagesize 7
-                            </additionalparam>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
     <repositories>
         <repository>
