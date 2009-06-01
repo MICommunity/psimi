@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cvSourceList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/CvSourceList.xsd">
+
+    <cvSource source="OLS" uri="" format="OBO" name="PSI-MI"  identifier="MI"  version="2.5"/>
+    <!--<cvSource source="FILE" uri="classpath:obo-samples/psi-mi25.obo" format="OBO" name="PSI-MI"  identifier="MI"  version="2.5"/>-->
+    <cvSource source="FILE" uri="classpath:obo-samples/psi-mod.obo"  format="OBO" name="PSI-MOD" identifier="MOD" version="1.x"/>
+    <cvSource source="OLS" uri=""  format="OBO" name="Gene Ontology" identifier="GO" version="latest in OLS"/>
+    <cvSource source="OLS" uri=""  format="OBO" name="Newt Taxonomy" identifier="NEWT" version="latest in OLS"/>
+    <!--<CVSource loader="FILE"-->
+    <!--uri="classpath:obo-samples/go.obo"-->
+    <!--cvFormat="OBO" name="Gene Ontology" cvIdentifier="GO" version="1.x"/>-->
+</cvSourceList>
