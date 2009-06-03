@@ -4,7 +4,7 @@
 = PSI-MI TAB Format =
 
 The MITAB25 format is part of the PSI-MI 2.5 standard.
-It has been derived from the tabular format provided by BioGrid. 
+It has been derived from the tabular format provided by !BioGrid. 
 MITAB25 only describes binary interactions, one pair of interactors per row. 
 Columns are separated by tabulations.
 
