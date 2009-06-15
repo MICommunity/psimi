@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl253;
 
+import psidev.psi.mi.xml.PsimiXmlForm;
+import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
@@ -255,12 +257,18 @@ public class ParticipantConverter {
         jParticipant.setId( mParticipant.getId() );
 
         // 2. set sub elements
-
         // interactor / interaction
-        // TODO are we exporting reference of interactor ?
         if ( mParticipant.hasInteractor() ) {
-//            jParticipant.setInteractorRef(mParticipant.getInteractor().getId());
-            jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
+        	// compact form: export ref
+        	if (ConverterContext.getInstance().getConverterConfig() != null && PsimiXmlForm.FORM_COMPACT
+				.equals(ConverterContext.getInstance().getConverterConfig().getXmlForm())
+				) {
+        		       jParticipant.setInteractorRef(mParticipant.getInteractor().getId());
+        	}
+            // not compact form : export the full interactor
+        	else {
+        		jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
+        	}        	
         } else if ( mParticipant.hasInteraction() ) {
             jParticipant.setInteractionRef( mParticipant.getInteraction().getId() );
         } else {

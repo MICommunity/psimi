@@ -7,6 +7,9 @@ package psidev.psi.mi.xml.converter.impl254;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import psidev.psi.mi.xml.PsimiXmlForm;
+import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
@@ -293,31 +296,29 @@ public class InteractionConverter {
         }
 
         // experiments
-        if ( mInteraction.hasExperiments() ) {
-            if ( jInteraction.getExperimentList() == null ) {
-                jInteraction.setExperimentList( new ExperimentList() );
-            }
-
-            for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
-                // TODO do we export an experiment or a reference.
-                // TODO introduce a conpact/expanded configurations
-//                jInteraction.getExperimentList().getExperimentRefOrExperimentDescription().add(
-//                        mExperiment.getId());
-                final psidev.psi.mi.xml254.jaxb.ExperimentDescription exp = experimentDescriptionConverter.toJaxb( mExperiment );
-                jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( exp );
-            }
-
-        } else if ( mInteraction.hasExperimentRefs() ) {
+        // compact form: export the ref 
+        if ( ConverterContext.getInstance().getConverterConfig() != null && 
+        		PsimiXmlForm.FORM_COMPACT.equals(ConverterContext.getInstance().getConverterConfig().getXmlForm())  &&
+				mInteraction.hasExperimentRefs() ) {
             if ( jInteraction.getExperimentList() == null ) {
                 jInteraction.setExperimentList( new ExperimentList() );
             }
 
             for ( ExperimentRef mExperiment : mInteraction.getExperimentRefs() ) {
-                jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add(
-                        // TODO do we export an experiment or a reference.
-                        // TODO introduce a conpact/expanded configurations
-                        mExperiment.getRef() );
+                jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( mExperiment.getRef() );
             }
+        } 
+        // not compact form: expand the full experiment
+        else  {
+            if ( jInteraction.getExperimentList() == null ) {
+                jInteraction.setExperimentList( new ExperimentList() );
+            }
+
+            for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
+                final psidev.psi.mi.xml254.jaxb.ExperimentDescription exp = experimentDescriptionConverter.toJaxb( mExperiment );
+                jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( exp );
+            }
+
         }
 
         // participants
