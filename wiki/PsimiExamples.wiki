@@ -1,0 +1,14 @@
+#summary Examples with code on how to work with PSI-MI XML.
+#labels Featured,Phase-Implementation
+
+= Examples =
+
+The examples below can be found in the [http://code.google.com/p/psimi/source/browse/trunk/psimi-examples/ psimi-examples project].
+
+== PSI-MI XML ==
+
+This section contains examples on how to work with PSI-MI XML.
+
+ * [http://code.google.com/p/psimi/source/browse/trunk/psimi-examples/src/main/java/org/hupo/psi/mi/example/xml/CreateXml.java Create PSI-MI XML]: Shows how to create a PSI-MI XML programmatically.
+ * [http://code.google.com/p/psimi/source/browse/trunk/psimi-examples/src/main/java/org/hupo/psi/mi/example/xml/CreateXmlWithFeatures.java Create PSI-MI XML with features]: Very similar to the previous example, but this one includes how to create features for the participants.
+ * [http://code.google.com/p/psimi/source/browse/trunk/psimi-examples/src/main/java/org/hupo/psi/mi/example/xml/CreateEntryPerPublication.java Group interactions in entries]: if you have a file that contains interactions from multiple experiments in one unique entry, you may want to use code like the one of this example to create one entry per experiment. 
