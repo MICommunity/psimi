@@ -16,7 +16,8 @@
         <module>psimitab-search</module>
         <module>psimitab-organism</module>
         <!--<module>validator</module>-->
-    </modules>
+    <module>psimi-examples</module>
+  </modules>
 
     <scm>
         <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
