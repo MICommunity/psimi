@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<faqs id="General FAQ">
+  <part id="General">
+
+    <faq id="format">
+      <question>Where can I find a description of the PSIMITAB format ?</question>
+      <answer>
+        <p>
+          Well, right {psimitab_format.html|here}
+        </p>
+      </answer>
+    </faq>
+    <faq id="useAPI">
+      <question>Where can I find code sample illustrating how to use the API ?</question>
+      <answer>
+        <p>
+          Well, right {psimitab_format.html|here}
+        </p>
+      </answer>
+    </faq>
+  </part>
+</faqs>

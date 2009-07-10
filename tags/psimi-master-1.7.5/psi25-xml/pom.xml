@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>psidev.psi.mi</groupId>
+        <artifactId>psimi-master</artifactId>
+        <version>1.7.5</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>psi25-xml</artifactId>
+    <packaging>jar</packaging>
+    <version>1.7.5</version>
+    
+    <name>PSI :: PSI-MI XML 2.5 Library</name>
+    <description>
+	    The library intends to allow users to read and write PSI-MI XML 2.5 data. 
+	    It provides a user friendly object model and tools to read data from various sources.
+    </description>
+    <url>http://psidev.sf.net</url>
+
+    <build>
+        <plugins>
+            <!-- Conversion of XML Schema into Java source code using JAXB-XJC -->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+	            <artifactId>maven-jaxb2-plugin</artifactId>
+                <configuration>
+                    <schemaDirectory>${project.basedir}/src/main/resources/META-INF</schemaDirectory>
+                    <bindingDirectory>${project.basedir}/src/main/resources/META-INF</bindingDirectory>
+                    <extension>true</extension>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Assembly -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptor>${descriptor}</descriptor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>xxindex</artifactId>
+            <version>0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.3.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 3rd party -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.15</version>
+            <optional>true</optional>
+            <exclusions>
+	                <exclusion>
+	                    <groupId>javax.jms</groupId>
+	                    <artifactId>jms</artifactId>
+	                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- JAXB related deps -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>stax</groupId>
+            <artifactId>stax</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>ebi-repo</id>
+            <name>The EBI internal repository</name>
+            <url>http://www.ebi.ac.uk/~maven/m2repo</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>ebi-repo-snapshots</id>
+            <name>The EBI internal repository</name>
+            <url>http://www.ebi.ac.uk/~maven/m2repo_snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+       </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

@@ -1,0 +1,1030 @@
+   <entrySet level="2" minorVersion="3" version="5" xmlns="net:sf:psidev:mi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/rel25/src/MIF253.xsd">
+     <entry>
+       <source releaseDate="2006-09-22">
+         <names>
+           <shortLabel>European Bioinformatics Institute</shortLabel>
+         </names>
+         <bibref>
+           <xref>
+             <primaryRef db="pubmed" dbAc="MI:0446" id="14681455" refType="primary-reference" refTypeAc="MI:0358"/>
+           </xref>
+         </bibref>
+         <xref>
+           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0469" refType="primary-reference" refTypeAc="MI:0358"/>
+         </xref>
+         <attributeList>
+           <attribute name="postalAddress">Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SD, United Kingdom</attribute>
+           <attribute name="url">http://www.ebi.ac.uk</attribute>
+         </attributeList>
+       </source>
+       <experimentList>
+         <experimentDescription id="2">
+           <names>
+             <shortLabel>mansour-2001-1</shortLabel>
+             <fullName>Characterization of functional interactions among the Escherichia coli mismatch repair proteins using a bacterial two-hybrid assay.</fullName>
+           </names>
+           <bibref>
+             <xref>
+               <primaryRef db="pubmed" dbAc="MI:0446" id="11585365" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </bibref>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765031" secondary="mansour-2001-1"/>
+             <secondaryRef db="newt" dbAc="MI:0247" id="562" refType="target-species" secondary="ecoli"/>
+           </xref>
+           <hostOrganismList>
+             <hostOrganism ncbiTaxId="4932">
+               <names>
+                 <shortLabel>yeast</shortLabel>
+                 <fullName>Saccharomyces cerevisiae</fullName>
+               </names>
+             </hostOrganism>
+           </hostOrganismList>
+           <interactionDetectionMethod>
+             <names>
+               <shortLabel>two hybrid</shortLabel>
+               <fullName>two hybrid</fullName>
+               <alias>2H</alias>
+               <alias>two-hybrid</alias>
+               <alias>2h</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0018" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="10967325" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="12634794" refType="method reference" refTypeAc="MI:0357"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="1946372" refType="method reference" refTypeAc="MI:0357"/>
+             </xref>
+           </interactionDetectionMethod>
+           <participantIdentificationMethod>
+             <names>
+               <shortLabel>predetermined</shortLabel>
+               <fullName>predetermined participant</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0396" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="7940758" refType="go-definition-ref" refTypeAc="MI:0242"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </participantIdentificationMethod>
+           <attributeList>
+             <attribute name="author-list">Mansour CA., Doiron KM., Cupples CG.</attribute>
+             <attribute name="contact-email">claire@vax2.concordia.ca</attribute>
+             <attribute name="exp-modification">Interaction was checked by assaying for beta-galactosidase.</attribute>
+             <attribute name="figure legend">fig 1a</attribute>
+             <attribute name="publication-year">2001</attribute>
+             <attribute name="journal">Mutat. Res. (0027-5107)</attribute>
+           </attributeList>
+         </experimentDescription>
+         <experimentDescription id="12">
+           <names>
+             <shortLabel>mansour-2001-2</shortLabel>
+             <fullName>Characterization of functional interactions among the Escherichia coli mismatch repair proteins using a bacterial two-hybrid assay.</fullName>
+           </names>
+           <bibref>
+             <xref>
+               <primaryRef db="pubmed" dbAc="MI:0446" id="11585365" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </bibref>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765057" secondary="mansour-2001-2"/>
+             <secondaryRef db="newt" dbAc="MI:0247" id="562" refType="target-species" secondary="ecoli"/>
+           </xref>
+           <hostOrganismList>
+             <hostOrganism ncbiTaxId="562">
+               <names>
+                 <shortLabel>ecoli</shortLabel>
+                 <fullName>Escherichia coli</fullName>
+               </names>
+             </hostOrganism>
+           </hostOrganismList>
+           <interactionDetectionMethod>
+             <names>
+               <shortLabel>adenylate cyclase</shortLabel>
+               <fullName>adenylate cyclase complementation</fullName>
+               <alias>bacterial two-hybrid</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0014" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="9576956" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionDetectionMethod>
+           <participantIdentificationMethod>
+             <names>
+               <shortLabel>predetermined</shortLabel>
+               <fullName>predetermined participant</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0396" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="7940758" refType="go-definition-ref" refTypeAc="MI:0242"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </participantIdentificationMethod>
+           <attributeList>
+             <attribute name="author-list">Mansour CA., Doiron KM., Cupples CG.</attribute>
+             <attribute name="contact-email">claire@vax2.concordia.ca</attribute>
+             <attribute name="figure legend">fig 1b, 2, 4</attribute>
+             <attribute name="exp-modification">The protein which is fused to adenylate cyclase fragment T18 is considered as the bait and the protein which is fused to T25 is considered as the prey. The level of reconstructed adenylate cyclase is estimated by monitoring the expression of a cAMP dependent beta-galactosidase reporter gene.</attribute>
+             <attribute name="exp-modification">To test if Vsr interferes with the ability of MutL to interact with  other Mut proteins, Vsr was cloned into the mut-T18 fusion plasmid, so it is overexpressed at the same time as the bait.</attribute>
+             <attribute name="publication-year">2001</attribute>
+             <attribute name="journal">Mutat. Res. (0027-5107)</attribute>
+           </attributeList>
+         </experimentDescription>
+       </experimentList>
+       <interactorList>
+         <interactor id="4">
+           <names>
+             <shortLabel>mutl_ecoli</shortLabel>
+             <fullName>DNA mismatch repair protein mutL</fullName>
+             <alias type="gene name" typeAc="MI:0301">mutL</alias>
+             <alias type="locus name" typeAc="MI:0305">b4170</alias>
+           </names>
+           <xref>
+             <primaryRef db="uniprotkb" dbAc="MI:0486" id="P23367" refType="identity" refTypeAc="MI:0356" secondary="mutl_ecoli" version="SP_49"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR003594" secondary="ATPbind_ATPase"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR002099" secondary="DNA_mis_repair"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0005515" secondary="F:protein binding"/>
+             <secondaryRef db="intact" dbAc="MI:0469" id="EBI-554913" secondary="mutl_ecoli"/>
+           </xref>
+           <interactorType>
+             <names>
+               <shortLabel>protein</shortLabel>
+               <fullName>protein</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+             </xref>
+           </interactorType>
+           <organism ncbiTaxId="562">
+             <names>
+               <shortLabel>ecoli</shortLabel>
+               <fullName>Escherichia coli</fullName>
+             </names>
+           </organism>
+           <sequence>MPIQVLPPQLANQIAAGEVVERPASVVKELVENSLDAGATRIDIDIERGGAKLIRIRDNGCGIKKDELALALARHATSKIASLDDLEAIISLGFRGEALASISSVSRLTLTSRTAEQQEAWQAYAEGRDMNVTVKPAAHPVGTTLEVLDLFYNTPARRKFLRTEKTEFNHIDEIIRRIALARFDVTINLSHNGKIVRQYRAVPEGGQKERRLGAICGTAFLEQALAIEWQHGDLTLRGWVADPNHTTPALAEIQYCYVNGRMMRDRLINHAIRQACEDKLGADQQPAFVLYLEIDPHQVDVNVHPAKHEVRFHQSRLVHDFIYQGVLSVLQQQLETPLPLDDEPQPAPRSIPENRVAAGRNHFAEPAAREPVAPRYTPAPASGSRPAAPWPNAQPGYQKQQGEVYRQLLQTPAPMQKLKAPEPQEPALAANSQSFGRVLTIVHSDCALLERDGNISLLSLPVAERWLRQAQLTPGEAPVCAQPLLIPLRLKVSAEEKSALEKAQSALAELGIDFQSDAQHVTIRAVPLPLRQQNLQILIPELIGYLAKQSVFEPGNIAQWIARNLMSEHAQWSMAQAITLLADVERLCPQLVKTPPGGLLQSVDLHPAIKALKDE</sequence>
+         </interactor>
+         <interactor id="6">
+           <names>
+             <shortLabel>vsr_ecoli</shortLabel>
+             <fullName>Very short patch repair protein</fullName>
+             <alias type="gene name" typeAc="MI:0301">vsr</alias>
+             <alias type="locus name" typeAc="MI:0305">b1960</alias>
+           </names>
+           <xref>
+             <primaryRef db="uniprotkb" dbAc="MI:0486" id="P09184" refType="identity" refTypeAc="MI:0356" secondary="vsr_ecoli" version="SP_49"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR004603" secondary="Vsr"/>
+             <secondaryRef db="intact" dbAc="MI:0469" id="EBI-765033" secondary="vsr_ecoli"/>
+           </xref>
+           <interactorType>
+             <names>
+               <shortLabel>protein</shortLabel>
+               <fullName>protein</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+             </xref>
+           </interactorType>
+           <organism ncbiTaxId="562">
+             <names>
+               <shortLabel>ecoli</shortLabel>
+               <fullName>Escherichia coli</fullName>
+             </names>
+           </organism>
+           <sequence>ADVHDKATRSKNMRAIATRDTAIEKRLASLLTGQGLAFRVQDASLPGRPDFVVDEYRCVIFTHGCFWHHHHCYLFKVPATRTEFWLEKIGKNVERDRRDISRLQELGWRVLIVWECALRGREKLTDEALTERLEEWICGEGASAQIDTQGIHLLA</sequence>
+         </interactor>
+         <interactor id="9">
+           <names>
+             <shortLabel>muth_ecoli</shortLabel>
+             <fullName>DNA mismatch repair protein mutH</fullName>
+             <alias type="gene name" typeAc="MI:0301">mutH</alias>
+             <alias type="gene name synonym" typeAc="MI:0302">mutR</alias>
+             <alias type="gene name synonym" typeAc="MI:0302">prv</alias>
+             <alias type="locus name" typeAc="MI:0305">b2831</alias>
+           </names>
+           <xref>
+             <primaryRef db="uniprotkb" dbAc="MI:0486" id="P06722" refType="identity" refTypeAc="MI:0356" secondary="muth_ecoli" version="SP_49"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR004230" secondary="MutH"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9R2X2" refType="secondary-ac" refTypeAc="MI:0360" secondary="muth_ecoli" version="SP_49"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9R3A8" refType="secondary-ac" refTypeAc="MI:0360" secondary="muth_ecoli" version="SP_49"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9R411" refType="secondary-ac" refTypeAc="MI:0360" secondary="muth_ecoli" version="SP_49"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9S6P5" refType="secondary-ac" refTypeAc="MI:0360" secondary="muth_ecoli" version="SP_49"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9S6P6" refType="secondary-ac" refTypeAc="MI:0360" secondary="muth_ecoli" version="SP_49"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9S6P7" refType="secondary-ac" refTypeAc="MI:0360" secondary="muth_ecoli" version="SP_49"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0005515" secondary="F:protein binding"/>
+             <secondaryRef db="intact" dbAc="MI:0469" id="EBI-545170" secondary="muth_ecoli"/>
+           </xref>
+           <interactorType>
+             <names>
+               <shortLabel>protein</shortLabel>
+               <fullName>protein</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+             </xref>
+           </interactorType>
+           <organism ncbiTaxId="562">
+             <names>
+               <shortLabel>ecoli</shortLabel>
+               <fullName>Escherichia coli</fullName>
+             </names>
+           </organism>
+           <sequence>SQPRPLLSPPETEEQLLAQAQQLSGYTLGELAALVGLVTPENLKRDKGWIGVLLEIWLGASAGSKPEQDFAALGVELKTIPVDSLGRPLETTFVCVAPLTGNSGVTWETSHVRHKLKRVLWIPVEGERSIPLAQRRVGSPLLWSPNEEEDRQLREDWEELMDMIVLGQVERITARHGEYLQIRPKAANAKALTEAIGARGERILTLPRGFYLKKNFTSALLARHFLIQ</sequence>
+         </interactor>
+         <interactor id="26">
+           <names>
+             <shortLabel>muts_ecoli</shortLabel>
+             <fullName>DNA mismatch repair protein mutS</fullName>
+             <alias type="gene name" typeAc="MI:0301">mutS</alias>
+             <alias type="gene name synonym" typeAc="MI:0302">fdv</alias>
+             <alias type="locus name" typeAc="MI:0305">b2733</alias>
+           </names>
+           <xref>
+             <primaryRef db="uniprotkb" dbAc="MI:0486" id="P23909" refType="identity" refTypeAc="MI:0356" secondary="muts_ecoli" version="SP_49"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005748" secondary="MutS1"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR000432" secondary="MutS_C"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR007860" secondary="MutS_II"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR007696" secondary="MutS_III"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR007861" secondary="MutS_IV"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR007695" secondary="MutS_N"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P71279" refType="secondary-ac" refTypeAc="MI:0360" secondary="muts_ecoli" version="SP_49"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0005515" secondary="F:protein binding"/>
+             <secondaryRef db="intact" dbAc="MI:0469" id="EBI-554920" secondary="muts_ecoli"/>
+           </xref>
+           <interactorType>
+             <names>
+               <shortLabel>protein</shortLabel>
+               <fullName>protein</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+             </xref>
+           </interactorType>
+           <organism ncbiTaxId="562">
+             <names>
+               <shortLabel>ecoli</shortLabel>
+               <fullName>Escherichia coli</fullName>
+             </names>
+           </organism>
+           <sequence>MSAIENFDAHTPMMQQYLRLKAQHPEILLFYRMGDFYELFYDDAKRASQLLDISLTKRGASAGEPIPMAGIPYHAVENYLAKLVNQGESVAICEQIGDPATSKGPVERKVVRIVTPGTISDEALLQERQDNLLAAIWQDSKGFGYATLDISSGRFRLSEPADRETMAAELQRTNPAELLYAEDFAEMSLIEGRRGLRRRPLWEFEIDTARQQLNLQFGTRDLVGFGVENAPRGLCAAGCLLQYAKDTQRTTLPHIRSITMEREQDSIIMDAATRRNLEITQNLAGGAENTLASVLDCTVTPMGSRMLKRWLHMPVRDTRVLLERQQTIGALQDFTAGLQPVLRQVGDLERILARLALRTARPRDLARMRHAFQQLPELRAQLETVDSAPVQALREKMGEFAELRDLLERAIIDTPPVLVRDGGVIASGYNEELDEWRALADGATDYLERLEVRERERTGLDTLKVGFNAVHGYYIQISRGQSHLAPINYMRRQTLKNAERYIIPELKEYEDKVLTSKGKALALEKQLYEELFDLLLPHLEALQQSASALAELDVLVNLAERAYTLNYTCPTFIDKPGIRITEGRHPVVEQVLNEPFIANPLNLSPQRRMLIITGPNMGGKSTYMRQTALIALMAYIGSYVPAQKVEIGPIDRIFTRVGAADDLASGRSTFMVEMTETANILHNATEYSLVLMDEIGRGTSTYDGLSLAWACAENLANKIKALTLFATHYFELTQLPEKMEGVANVHLDALEHGDTIAFMHSVQDGAASKSYGLAVAALAGVPKEVIKRARQKLRELESISPNAAATQVDGTQMSLLSVPEETSPAVEALENLDPDSLTPRQALEWIYRLKSLV</sequence>
+         </interactor>
+       </interactorList>
+       <interactionList>
+         <interaction id="1">
+           <names>
+             <shortLabel>vsr-mutl-1</shortLabel>
+             <fullName>Y2H: bait = Vsr, prey= MutL</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765039" secondary="vsr-mutl-1"/>
+           </xref>
+           <experimentList>
+             <experimentRef>2</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="3">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+             <participant id="5">
+               <interactorRef>6</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+         <interaction id="7">
+           <names>
+             <shortLabel>muth-mutl-1</shortLabel>
+             <fullName>Y2H: bait = MutH, prey= MutL</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765042" secondary="muth-mutl-1"/>
+           </xref>
+           <experimentList>
+             <experimentRef>2</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="8">
+               <interactorRef>9</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+             <participant id="10">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+         <interaction id="11">
+           <names>
+             <shortLabel>vsr-mutl-2</shortLabel>
+             <fullName>B2H: bait = Vsr, prey= MutL</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765062" secondary="vsr-mutl-2"/>
+           </xref>
+           <experimentList>
+             <experimentRef>12</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="13">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+             <participant id="14">
+               <interactorRef>6</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+               <featureList>
+                 <feature id="15">
+                   <names>
+                     <shortLabel>c-terminus</shortLabel>
+                   </names>
+                   <featureType>
+                     <names>
+                       <shortLabel>sufficient to bind</shortLabel>
+                       <fullName>sufficient binding site</fullName>
+                     </names>
+                     <xref>
+                       <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0442" refType="identity" refTypeAc="MI:0356"/>
+                       <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                     </xref>
+                   </featureType>
+                   <featureRangeList>
+                     <featureRange>
+                       <startStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </startStatus>
+                       <begin position="20"/>
+                       <endStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </endStatus>
+                       <end position="155"/>
+                     </featureRange>
+                   </featureRangeList>
+                 </feature>
+                 <feature id="16">
+                   <names>
+                     <shortLabel>c-terminus</shortLabel>
+                   </names>
+                   <featureType>
+                     <names>
+                       <shortLabel>required to bind</shortLabel>
+                       <fullName>necessary binding site</fullName>
+                     </names>
+                     <xref>
+                       <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0429" refType="identity" refTypeAc="MI:0356"/>
+                       <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                     </xref>
+                   </featureType>
+                   <featureRangeList>
+                     <featureRange>
+                       <startStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </startStatus>
+                       <begin position="130"/>
+                       <endStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </endStatus>
+                       <end position="156"/>
+                     </featureRange>
+                   </featureRangeList>
+                 </feature>
+               </featureList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="inhibition">Interaction is greatly diminished in mutS strain</attribute>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+         <interaction id="17">
+           <names>
+             <shortLabel>muth-mutl-5</shortLabel>
+             <fullName>B2H: bait = MutH, prey= MutL</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765065" secondary="muth-mutl-5"/>
+           </xref>
+           <experimentList>
+             <experimentRef>12</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="18">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+             <participant id="19">
+               <interactorRef>9</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="inhibition">overexpression of Vsr</attribute>
+             <attribute name="inhibition">Interaction is greatly diminished in mutS strain</attribute>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+         <interaction id="20">
+           <names>
+             <shortLabel>mutl-mutl-1</shortLabel>
+             <fullName>B2H: bait = MutL, prey= MutL</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765068" secondary="mutl-mutl-1"/>
+           </xref>
+           <experimentList>
+             <experimentRef>12</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="21">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+               <featureList>
+                 <feature id="22">
+                   <names>
+                     <shortLabel>c-terminus</shortLabel>
+                   </names>
+                   <featureType>
+                     <names>
+                       <shortLabel>sufficient to bind</shortLabel>
+                       <fullName>sufficient binding site</fullName>
+                     </names>
+                     <xref>
+                       <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0442" refType="identity" refTypeAc="MI:0356"/>
+                       <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                     </xref>
+                   </featureType>
+                   <featureRangeList>
+                     <featureRange>
+                       <startStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </startStatus>
+                       <begin position="351"/>
+                       <endStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </endStatus>
+                       <end position="615"/>
+                     </featureRange>
+                   </featureRangeList>
+                 </feature>
+               </featureList>
+             </participant>
+             <participant id="23">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="inhibition">overexpression of Vsr</attribute>
+             <attribute name="inhibition">interaction inhibited in mutH strain</attribute>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+         <interaction id="24">
+           <names>
+             <shortLabel>muts-muts-1</shortLabel>
+             <fullName>B2H: bait = MutS, prey= MutS</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765077" secondary="muts-muts-1"/>
+           </xref>
+           <experimentList>
+             <experimentRef>12</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="25">
+               <interactorRef>26</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+             <participant id="27">
+               <interactorRef>26</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="inhibition">interaction inhibited in mutH strain</attribute>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+         <interaction id="28">
+           <names>
+             <shortLabel>muth-mutl-6</shortLabel>
+             <fullName>B2H: bait = MutL, prey= MutH</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765153" secondary="muth-mutl-6"/>
+           </xref>
+           <experimentList>
+             <experimentRef>12</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="29">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+             <participant id="30">
+               <interactorRef>9</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="inhibition">overexpression of Vsr</attribute>
+             <attribute name="inhibition">Interaction is greatly diminished in mutS strain</attribute>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+         <interaction id="31">
+           <names>
+             <shortLabel>muts-mutl-1</shortLabel>
+             <fullName>B2H: bait = MutS, prey= MutL</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-765171" secondary="muts-mutl-1"/>
+           </xref>
+           <experimentList>
+             <experimentRef>12</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="32">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>prey</shortLabel>
+                     <fullName>prey</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+             <participant id="33">
+               <interactorRef>9</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>bait</shortLabel>
+                     <fullName>bait</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>physical interaction</shortLabel>
+               <fullName>physical interaction</fullName>
+               <alias>aggregation</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0218" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="inhibition">overexpression of Vsr</attribute>
+             <attribute name="inhibition">interaction inhibited in mutH strain</attribute>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+       </interactionList>
+     </entry>
+   </entrySet>

@@ -1,0 +1,177 @@
+   <entrySet level="2" minorVersion="3" version="5" xmlns="net:sf:psidev:mi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/rel25/src/MIF253.xsd">
+     <entry>
+       <source releaseDate="2006-09-22">
+         <names>
+           <shortLabel>European Bioinformatics Institute</shortLabel>
+         </names>
+         <bibref>
+           <xref>
+             <primaryRef db="pubmed" dbAc="MI:0446" id="14681455" refType="primary-reference" refTypeAc="MI:0358"/>
+           </xref>
+         </bibref>
+         <xref>
+           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0469" refType="primary-reference" refTypeAc="MI:0358"/>
+         </xref>
+         <attributeList>
+           <attribute name="postalAddress">Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SD, United Kingdom</attribute>
+           <attribute name="url">http://www.ebi.ac.uk</attribute>
+         </attributeList>
+       </source>
+       <experimentList>
+         <experimentDescription id="2">
+           <names>
+             <shortLabel>hasemann-1996-1</shortLabel>
+             <fullName>The crystal structure of the bifunctional enzyme 6-phosphofructo-2-kinase/fructose-2,6-bisphosphatase reveals distinct domain homologies.</fullName>
+           </names>
+           <bibref>
+             <xref>
+               <primaryRef db="pubmed" dbAc="MI:0446" id="8805587" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </bibref>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-728130" secondary="hasemann-1996-1"/>
+             <secondaryRef db="newt" dbAc="MI:0247" id="10116" refType="target-species" secondary="rat"/>
+           </xref>
+           <hostOrganismList>
+             <hostOrganism ncbiTaxId="-1">
+               <names>
+                 <shortLabel>in vitro</shortLabel>
+               </names>
+             </hostOrganism>
+           </hostOrganismList>
+           <interactionDetectionMethod>
+             <names>
+               <shortLabel>x-ray</shortLabel>
+               <fullName>x-ray crystallography</fullName>
+               <alias>X-ray</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0114" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionDetectionMethod>
+           <participantIdentificationMethod>
+             <names>
+               <shortLabel>predetermined</shortLabel>
+               <fullName>predetermined participant</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0396" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="7940758" refType="go-definition-ref" refTypeAc="MI:0242"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </participantIdentificationMethod>
+           <attributeList>
+             <attribute name="author-list">Hasemann CA., Istvan ES., Uyeda K., Deisenhofer J.</attribute>
+             <attribute name="contact-email">hasemann@howie.swmed.edu</attribute>
+             <attribute name="publication-year">1996</attribute>
+             <attribute name="journal">Structure (0969-2126)</attribute>
+           </attributeList>
+         </experimentDescription>
+       </experimentList>
+       <interactorList>
+         <interactor id="4">
+           <names>
+             <shortLabel>f264_rat</shortLabel>
+             <fullName>6-phosphofructo-2-kinase/fructose-2,6-biphosphatase 4</fullName>
+             <alias type="gene name" typeAc="MI:0301">Pfkfb4</alias>
+           </names>
+           <xref>
+             <primaryRef db="uniprotkb" dbAc="MI:0486" id="P25114" refType="identity" refTypeAc="MI:0356" secondary="f264_rat" version="SP_49"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0003873" secondary="F:6-phosphofructo-2-kinase act"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0004331" secondary="F:fructose-2,6-bisphosphate 2-"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR003094" secondary="6Pfruct_kin"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR001345" secondary="PG/BPGM_mutase"/>
+             <secondaryRef db="intact" dbAc="MI:0469" id="EBI-728132" secondary="f264_rat"/>
+           </xref>
+           <interactorType>
+             <names>
+               <shortLabel>protein</shortLabel>
+               <fullName>protein</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+             </xref>
+           </interactorType>
+           <organism ncbiTaxId="10116">
+             <names>
+               <shortLabel>rat</shortLabel>
+               <fullName>Rattus norvegicus</fullName>
+             </names>
+           </organism>
+           <sequence>ASPRELTQNPLKKIWMPYSNGRPALHASQRGVCMTNCPTLIVMVGLPARGKTYISKKLTRYLNWIGVPTREFNVGQYRRDMVKTYKSFEFFLPDNEEGLKIRKQCALAALNDVRKFLSEEGGHVAVFDATNTTRERRAMIFNFGEQNGYKTFFVESICVDPEVIAANIVQVKLGSPDYVNRDSDEATEDFMRRIECYENSYESLDEEQDRDLSYIKIMDVGQSYVVNRVADHIQSRIVYYLMNIHVTPRSIYLCRHGESELNLKGRIGGDPGLSPRGREFSKHLAQFISDQNIKDLKVWTSQMKRTIQTAEALSVPYEQWKVLNEIDAGVCEEMTYEEIQDHYPLEFALRDQDKYRYRYPKGESYEDLVQRLEPVIMELERQENVLVICHQAVMRCLLAYFLDKAAEELPYLKCPLHTVLKLTPVAYGCKVESIFLNVAAVNTHRDRPQNVDISRPSEEALVTVPAHQ</sequence>
+         </interactor>
+       </interactorList>
+       <interactionList>
+         <interaction id="1">
+           <names>
+             <shortLabel>pfkfb4-1</shortLabel>
+             <fullName>Homodimerization of 6-phosphofructo-2-kinase/fructose-2,6-biphosphatase 4 demonstrated by x-ray crystallography</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-728143" secondary="pfkfb4-1"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0042803" refType="function" refTypeAc="MI:0355" secondary="protein homodimerization activ"/>
+             <secondaryRef db="pdb" dbAc="MI:0460" id="1BIF" refType="identity" refTypeAc="MI:0356"/>
+           </xref>
+           <experimentList>
+             <experimentRef>2</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="3">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>neutral component</shortLabel>
+                     <fullName>neutral component</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0497" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+               <hostOrganismList>
+                 <hostOrganism ncbiTaxId="10116">
+                   <names>
+                     <shortLabel>rat</shortLabel>
+                     <fullName>Rattus norvegicus</fullName>
+                   </names>
+                 </hostOrganism>
+               </hostOrganismList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>direct interaction</shortLabel>
+               <fullName>direct interaction</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="3d-resolution">working 18.3%, free 25.0%</attribute>
+             <attribute name="3d-resolution">2.00&#197;</attribute>
+             <attribute name="3d-structure">Monomers associate in a head-to-head fashion with the 6-phosphofructo-2-kinase domain making contact.</attribute>
+             <attribute name="comment">Sequence has all trytophans mutated to phenylalanine. Also His256Ala results in enzyme being catalytically inactive.</attribute>
+             <attribute name="comment">Structure also shows position of ATPgammaS and inorganic phosphate in the molecule</attribute>
+             <attribute name="kd">0.0</attribute>
+           </attributeList>
+         </interaction>
+       </interactionList>
+     </entry>
+   </entrySet>
