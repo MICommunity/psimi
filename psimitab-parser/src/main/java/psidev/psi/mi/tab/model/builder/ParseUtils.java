@@ -258,6 +258,8 @@ public final class ParseUtils {
         List<Author> authors = new ArrayList<Author>();
 
         for (Field field : column.getFields()) {
+            if (field == null) continue;
+            
             authors.add(createAuthor(field));
         }
 
