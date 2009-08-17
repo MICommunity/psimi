@@ -14,6 +14,7 @@ import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.inMemory.InMemoryDAOFactory;
 import psidev.psi.mi.xml.io.PsimiXmlReader;
 import psidev.psi.mi.xml253.jaxb.EntrySet;
+import psidev.psi.mi.xml253.jaxb.ObjectFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -95,7 +96,8 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
 
         try {
             // create a JAXBContext capable of handling classes generated into the jaxb package
-            JAXBContext jc = JAXBContext.newInstance( EntrySet.class.getPackage().getName() );
+            ClassLoader cl = ObjectFactory.class.getClassLoader();
+            JAXBContext jc = JAXBContext.newInstance( EntrySet.class.getPackage().getName(), cl );
 
             // create and return Unmarshaller
             return jc.createUnmarshaller();
