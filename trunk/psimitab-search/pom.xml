@@ -9,12 +9,43 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimitab-search</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
 
     <version>1.7.6-SNAPSHOT</version>
 
     <name>PSI :: PSI-MI TABular Search</name>
     <url>http://psidev.sf.net</url>
+
+    <properties>
+        <bundle.namespace>psidev.psi.mi.search</bundle.namespace>
+        <bundle.symbolicName>psidev.psi.mi.search</bundle.symbolicName>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.ops4j</groupId>
+                <artifactId>maven-pax-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
+                        <Bundle-Version>${pom.version}</Bundle-Version>
+                        <Export-Package>
+                            !${bundle.namespace}.internal.*,${bundle.namespace}.*;version="${pom.version}"
+                        </Export-Package>
+                        <Private-Package>${bundle.namespace}.internal.*</Private-Package>
+                        <_include>-osgi.bnd</_include>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+     </build>
+
 
     <dependencies>
         <dependency>
@@ -23,11 +54,41 @@
             <version>${pom.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>2.3.2</version>
+        <dependency>  
+            <groupId>org.apache.lucene</groupId>  
+            <artifactId>com.springsource.org.apache.lucene</artifactId>  
+            <version>2.3.2</version> 
         </dependency>
+
+         <!-- OSGi -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi_R4_core</artifactId>
+            <version>1.0</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi_R4_compendium</artifactId>
+            <version>1.0</version>
+            <optional>true</optional>
+        </dependency>
+
+         <!-- Logging -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>com.springsource.org.apache.commons.logging</artifactId>
+            <version>1.1.1</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.log4j</groupId>
+            <artifactId>com.springsource.org.apache.log4j</artifactId>
+            <version>1.2.15</version>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
     <repositories>
