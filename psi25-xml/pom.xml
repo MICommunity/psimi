@@ -22,7 +22,7 @@
 
     <properties>
         <bundle.namespace>psidev.psi.mi.xml</bundle.namespace>
-        <bundle.symbolicName>psi25-xml</bundle.symbolicName>
+        <bundle.symbolicName>psidev.psi.mi.xml</bundle.symbolicName>
     </properties>
 
     <build>
