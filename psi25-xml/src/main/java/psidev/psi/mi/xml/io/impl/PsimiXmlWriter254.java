@@ -15,6 +15,7 @@ import psidev.psi.mi.xml.dao.inMemory.InMemoryDAOFactory;
 import psidev.psi.mi.xml.io.PsimiXmlWriter;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.util.PsiJaxbConverter;
+import psidev.psi.mi.xml254.jaxb.ObjectFactory;
 
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBContext;
@@ -43,7 +44,8 @@ public class PsimiXmlWriter254 implements PsimiXmlWriter {
 
         try {
             // create a JAXBContext capable of handling classes generated into the jaxb package
-            JAXBContext jc = JAXBContext.newInstance( psidev.psi.mi.xml254.jaxb.EntrySet.class.getPackage().getName() );
+            ClassLoader cl = ObjectFactory.class.getClassLoader();
+            JAXBContext jc = JAXBContext.newInstance( psidev.psi.mi.xml254.jaxb.EntrySet.class.getPackage().getName(), cl );
 
             // setup customized converter
             DatatypeConverter.setDatatypeConverter( new PsiJaxbConverter() );
