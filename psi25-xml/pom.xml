@@ -98,8 +98,8 @@
             <version>0.6-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
-<groupId>org.apache.xerces</groupId>
-<artifactId>com.springsource.org.apache.xerces</artifactId>
+                    <groupId>org.apache.xerces</groupId>
+                    <artifactId>com.springsource.org.apache.xerces</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

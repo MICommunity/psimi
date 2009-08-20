@@ -260,9 +260,7 @@ public class ParticipantConverter {
         // interactor / interaction
         if ( mParticipant.hasInteractor() || mParticipant.hasInteractorRef() ) {
         	// compact form: export ref
-        	if (ConverterContext.getInstance().getConverterConfig() != null && PsimiXmlForm.FORM_COMPACT
-				.equals(ConverterContext.getInstance().getConverterConfig().getXmlForm())
-				) {
+        	if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
         			if ( mParticipant.hasInteractorRef() )
         				jParticipant.setInteractorRef( mParticipant.getInteractorRef().getRef() );
         			else

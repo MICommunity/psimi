@@ -5,9 +5,10 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import psidev.psi.mi.xml.PsimiXmlForm;
+import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
-import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml254.jaxb.*;
 
 /**
@@ -130,6 +131,19 @@ public class EntryConverter {
             }
         }
 
+        if (mEntry.getExperiments().isEmpty()) {
+            for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
+                mEntry.getExperiments().addAll(mInteraction.getExperiments());
+            }
+        }
+        if (mEntry.getInteractors().isEmpty()) {
+            for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
+                for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
+                    mEntry.getInteractors().add(mParticipant.getInteractor());
+                }
+            }
+        }
+
         // flush the caches
         factory.reset();
 
@@ -167,7 +181,7 @@ public class EntryConverter {
         }
 
         // experiments
-        if ( mEntry.hasExperiments() ) {
+        if ( mEntry.hasExperiments() && PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
             if ( jEntry.getExperimentList() == null ) {
                 jEntry.setExperimentList( new ExperimentDescriptionList()); 
             }
@@ -178,7 +192,7 @@ public class EntryConverter {
         }
 
         // interactors
-        if ( mEntry.hasInteractors() ) {
+        if ( mEntry.hasInteractors() && PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
             if ( jEntry.getInteractorList() == null ) {
                 jEntry.setInteractorList( new InteractorList() );
             }
@@ -202,10 +216,36 @@ public class EntryConverter {
                 jEntry.setAttributeList( new AttributeList() );
             }
 
-            for ( Attribute mAttribute : mEntry.getAttributes() ) {
+            for ( psidev.psi.mi.xml.model.Attribute mAttribute : mEntry.getAttributes() ) {
                 jEntry.getAttributeList().getAttributes().add( attributeConverter.toJaxb( mAttribute ) );
             }
         }
+
+        if (PsimiXmlForm.FORM_EXPANDED == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
+            jEntry.setExperimentList(null);
+            jEntry.setInteractorList(null);
+        } else {
+            if (jEntry.getExperimentList() == null) {
+                jEntry.setExperimentList(new ExperimentDescriptionList());
+
+                for (psidev.psi.mi.xml.model.Interaction jInteraction : mEntry.getInteractions()) {
+                    for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : jInteraction.getExperiments()) {
+                        jEntry.getExperimentList().getExperimentDescriptions().add( experimentDescriptionConverter.toJaxb(jExperiment));
+                    }
+                }
+            }
+            if (jEntry.getInteractorList() == null) {
+                jEntry.setInteractorList(new InteractorList());
+
+                for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
+                    for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
+                        jEntry.getInteractorList().getInteractors().add( interactorConverter.toJaxb(mParticipant.getInteractor()));
+                    }
+                }
+            }
+        }
+
+
 
         return jEntry;
     }

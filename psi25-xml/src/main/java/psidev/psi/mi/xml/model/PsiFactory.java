@@ -29,7 +29,7 @@ import java.util.Collections;
  */
 public final class PsiFactory {
 
-    private static int id = 0;
+    private static int id = 1;
 
     private PsiFactory() {
     }

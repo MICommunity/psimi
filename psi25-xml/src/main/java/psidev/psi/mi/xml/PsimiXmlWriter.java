@@ -5,6 +5,7 @@
  */
 package psidev.psi.mi.xml;
 
+import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.io.impl.PsimiXmlWriter253;
 import psidev.psi.mi.xml.io.impl.PsimiXmlWriter254;
@@ -23,14 +24,19 @@ import java.io.*;
 public class PsimiXmlWriter implements psidev.psi.mi.xml.io.PsimiXmlWriter {
 
     private static final PsimiXmlVersion DEFAULT_VERSION = PsimiXmlVersion.VERSION_254;
+    private static final PsimiXmlForm DEFAULT_FORM = PsimiXmlForm.FORM_COMPACT;
 
     private psidev.psi.mi.xml.io.PsimiXmlWriter psiWriter;
 
     public PsimiXmlWriter() {
-        this(DEFAULT_VERSION);
+        this(DEFAULT_VERSION, DEFAULT_FORM);
     }
 
     public PsimiXmlWriter(PsimiXmlVersion version) {
+        this(version, DEFAULT_FORM);
+    }
+
+    public PsimiXmlWriter(PsimiXmlVersion version, PsimiXmlForm xmlForm) {
         switch (version) {
             case VERSION_254:
                 this.psiWriter = new PsimiXmlWriter254();
@@ -42,6 +48,8 @@ public class PsimiXmlWriter implements psidev.psi.mi.xml.io.PsimiXmlWriter {
                 this.psiWriter = new PsimiXmlWriter253();
                 break;
         }
+
+        ConverterContext.getInstance().getConverterConfig().setXmlForm(xmlForm);
     }
 
     public void write(EntrySet mEntrySet, File file) throws PsimiXmlWriterException {
