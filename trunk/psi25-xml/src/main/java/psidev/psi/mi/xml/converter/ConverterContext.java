@@ -17,7 +17,7 @@ import psidev.psi.mi.xml.converter.config.PsimiXmlConverterConfig;
 public class ConverterContext extends Exception {
 
 
-	private PsimiXmlConverterConfig converterConfig;
+	private PsimiXmlConverterConfig converterConfig ;
 
 
 	public static ConverterContext getInstance() {
@@ -27,7 +27,10 @@ public class ConverterContext extends Exception {
     private static ThreadLocal<ConverterContext> instance = new ThreadLocal<ConverterContext>() {
         @Override
         protected ConverterContext initialValue() {
-            return new ConverterContext();
+            final ConverterContext context = new ConverterContext();
+            final PsimiXmlConverterConfig config = new PsimiXmlConverterConfig();
+            context.setConverterConfig(config);
+            return context;
         }
     };
    

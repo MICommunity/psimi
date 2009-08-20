@@ -22,8 +22,6 @@ package psidev.psi.mi.xml;
  * @version $Id$
  */
 public enum PsimiXmlForm {
-	FORM_UNDEFINED,
-
 	FORM_COMPACT,
 
 	FORM_EXPANDED

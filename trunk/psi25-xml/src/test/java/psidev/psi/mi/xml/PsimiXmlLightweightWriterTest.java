@@ -50,7 +50,7 @@ public class PsimiXmlLightweightWriterTest {
         if( separator.length() == 2 ) {
             Assert.assertEquals( 43957, outputFile.length() );
         } else if( separator.length() == 1 ){
-            Assert.assertEquals( 43948, outputFile.length() );
+            Assert.assertEquals( 21068, outputFile.length() );
         } else  {
             Assert.fail( "System.getProperty( \"line.separator\" ) returned a unsupported separator of length: " + separator.length() );
         }

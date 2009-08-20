@@ -7,7 +7,6 @@ package psidev.psi.mi.xml.converter.impl254;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -297,8 +296,7 @@ public class InteractionConverter {
 
         // experiments
         // compact form: export the ref 
-        if ( ConverterContext.getInstance().getConverterConfig() != null && 
-        		PsimiXmlForm.FORM_COMPACT.equals(ConverterContext.getInstance().getConverterConfig().getXmlForm())  &&
+        if ( PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()  &&
 				mInteraction.hasExperimentRefs() ) {
             if ( jInteraction.getExperimentList() == null ) {
                 jInteraction.setExperimentList( new ExperimentList() );
@@ -316,7 +314,12 @@ public class InteractionConverter {
 
             for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
                 final psidev.psi.mi.xml254.jaxb.ExperimentDescription exp = experimentDescriptionConverter.toJaxb( mExperiment );
-                jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( exp );
+
+                if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
+                    jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add(mExperiment.getId());
+                } else {
+                    jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( exp );
+                }
             }
 
         }
