@@ -23,6 +23,9 @@ import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml254.jaxb.*;
 import psidev.psi.mi.xml254.jaxb.CvType;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Converter to and from JAXB of the class Interaction.
  *
@@ -295,15 +298,17 @@ public class InteractionConverter {
         }
 
         // experiments
-        // compact form: export the ref 
-        if ( PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()  &&
+        // compact form: export the ref
+        if ( PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm() &&
 				mInteraction.hasExperimentRefs() ) {
             if ( jInteraction.getExperimentList() == null ) {
                 jInteraction.setExperimentList( new ExperimentList() );
             }
-
+            final List<Serializable> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
             for ( ExperimentRef mExperiment : mInteraction.getExperimentRefs() ) {
-                jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( mExperiment.getRef() );
+                if( ! ids.contains( mExperiment.getRef() ) ) {
+                    ids.add( mExperiment.getRef() );
+                }
             }
         } 
         // not compact form: expand the full experiment
@@ -311,17 +316,20 @@ public class InteractionConverter {
             if ( jInteraction.getExperimentList() == null ) {
                 jInteraction.setExperimentList( new ExperimentList() );
             }
-
+            final List<Serializable> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
             for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
                 final psidev.psi.mi.xml254.jaxb.ExperimentDescription exp = experimentDescriptionConverter.toJaxb( mExperiment );
 
                 if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
-                    jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add(mExperiment.getId());
+                    if( ! ids.contains( mExperiment.getId() ) ) {
+                        ids.add(mExperiment.getId());
+                    }
                 } else {
-                    jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( exp );
+                    if( ! ids.contains( exp ) ) {
+                        ids.add( exp );
+                    }
                 }
             }
-
         }
 
         // participants
