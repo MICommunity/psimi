@@ -134,64 +134,45 @@ public class Tab2Xml {
         interactorConverter.setInteractorNameBuilder( getInteractorNameBuilder() );
 
         for ( BinaryInteraction<?> binaryInteraction : miTabInteractions ) {
-            int index = 0;
-            final List<CrossReference> crossReferences = binaryInteraction.getInteractionAcs();
-            List<CrossReference> filteredCrossReferences = filterCrossReferences(crossReferences);
+            final List<CrossReference> crossReference = binaryInteraction.getInteractionAcs();
 
-            if ( filteredCrossReferences.isEmpty() ) {
-                filteredCrossReferences.add( new NullCrossReference( binaryInteraction ) );
+            if ( crossReference.isEmpty() ) {
+                crossReference.add( new NullCrossReference( binaryInteraction ) );
             }
 
-            for ( CrossReference ref : filteredCrossReferences ) {
-                String interactionId = ref.getIdentifier();
+            // Arbitrarily pick the first one
+            String interactionId = crossReference.get( 0 ).getIdentifier();
+            interactionId = interactionId + "_" + binaryInteraction.getInteractorA().getIdentifiers().iterator().next().getIdentifier()
+                            + "_" + binaryInteraction.getInteractorB().getIdentifiers().iterator().next().getIdentifier();
 
-                if ( interactionId == null ) {
-                    interactionId = binaryInteraction.getInteractorA().getIdentifiers().iterator().next()
-                                    + "_" + binaryInteraction.getInteractorB().getIdentifiers().iterator().next();
-                }
+            Interactor iA = interactorConverter.fromMitab( binaryInteraction.getInteractorA() );
+            Interactor iB = interactorConverter.fromMitab( binaryInteraction.getInteractorB() );
 
-                Interactor iA = interactorConverter.fromMitab( binaryInteraction.getInteractorA() );
-                Interactor iB = interactorConverter.fromMitab( binaryInteraction.getInteractorB() );
+            // reusing the interactor in the participants
+            iA = checkInteractor(iA);
+            iB = checkInteractor(iB);
 
-                // reusing the interactor in the participants
-                iA = checkInteractor(iA);
-                iB = checkInteractor(iB);
+            // Note: the index is not used by these methods, just left here not to break the API.
+            Participant pA = interactorConverter.buildParticipantA(iA, binaryInteraction, 0);
+            Participant pB = interactorConverter.buildParticipantB(iB, binaryInteraction, 0);
 
-                Participant pA = interactorConverter.buildParticipantA(iA, binaryInteraction, index);
-                Participant pB = interactorConverter.buildParticipantB(iB, binaryInteraction, index);
-
-                index++;
-
-                Collection<Participant> participants = null;
-                if ( !interactionMap.containsKey( interactionId ) ) {
-                    participants = new ArrayList<Participant>();
-                } else {
-                    participants = interactionMap.get( interactionId );
-                }
-
-                if ( !participants.contains( pA ) ) {
-                    participants.add( pA );
-                }
-                if ( !participants.contains( pB ) ) {
-                    participants.add( pB );
-                }
-
-                interactionMap.put( interactionId, participants );
+            Collection<Participant> participants = null;
+            if ( !interactionMap.containsKey( interactionId ) ) {
+                participants = new ArrayList<Participant>();
+            } else {
+                participants = interactionMap.get( interactionId );
             }
+
+            if ( !participants.contains( pA ) ) {
+                participants.add( pA );
+            }
+            if ( !participants.contains( pB ) ) {
+                participants.add( pB );
+            }
+
+            interactionMap.put( interactionId, participants );
         }
         return interactionMap;
-    }
-
-     //quick fix for tomorrows presentation...remove later
-     private List<CrossReference> filterCrossReferences( List<CrossReference> crossReferences ) {
-
-        List<CrossReference> filteredXrefs = new ArrayList<CrossReference>();
-        for ( CrossReference crossReference : crossReferences ) {
-            if (! IREFINDEX.equals( crossReference.getDatabase() ) ) {
-                filteredXrefs.add( crossReference );
-            }
-        }
-        return filteredXrefs;
     }
 
     private psidev.psi.mi.xml.model.Interactor checkInteractor( psidev.psi.mi.xml.model.Interactor interactor1 ) {

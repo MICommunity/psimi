@@ -438,26 +438,25 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
         Set<String> interactionAcs = new HashSet<String>();
 
         int numberOfInteraction = 1;
-        int index = 0;
+//        int index = 0;
 
         final List<CrossReference> acs = binaryInteraction.getInteractionAcs();
-        List<CrossReference> filteredAcs = filterCrossReferences(acs);
 
-        if ( filteredAcs.isEmpty() ) {
-            filteredAcs.add( new NullCrossReference( binaryInteraction ) );
+        if ( acs.isEmpty() ) {
+            acs.add( new NullCrossReference( binaryInteraction ) );
         }
 
-        for ( int i = 0; i < filteredAcs.size(); i++ ) {
-            CrossReference interactionAc = filteredAcs.get( i );
+//        for ( int i = 0; i < acs.size(); i++ ) {
+            CrossReference interactionAc = acs.get( 0 );
             String interactionId = interactionAc.getIdentifier();
+            interactionId = interactionId + "_" + binaryInteraction.getInteractorA().getIdentifiers().iterator().next().getIdentifier()
+                    + "_" + binaryInteraction.getInteractorB().getIdentifiers().iterator().next().getIdentifier();
 
             if ( !interactionAcs.contains( interactionId ) ) {
                 interactionAcs.add( interactionId );
 
-                CrossReference source = null;
-                if ( i < binaryInteraction.getSourceDatabases().size() ) {
-                    source = binaryInteraction.getSourceDatabases().get( i );
-                }
+                CrossReference source = binaryInteraction.getSourceDatabases().get( 0 );
+
                 DbReference primaryReference = getPrimaryRef( interactionAc, source );
                 Interaction interaction = new psidev.psi.mi.xml.model.Interaction();
                 interaction.setId( IdentifierGenerator.getInstance().nextId() );
@@ -485,32 +484,20 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                 }
 
                 // set experiment List
-                Collection<ExperimentDescription> experiments = getExperimentDescriptions( (T) binaryInteraction, index );
+                Collection<ExperimentDescription> experiments = getExperimentDescriptions( (T) binaryInteraction, 0 );
                 for ( ExperimentDescription experimentDescription : experiments ) {
                     interaction.getExperiments().add( experimentDescription );
                 }
 
-                populateInteractionFromMitab(interaction, binaryInteraction, index);
+                populateInteractionFromMitab(interaction, binaryInteraction, 0);
 
                 interactions.add( interaction );
             }
 
-            index++;
-        }
+//            index++;
+//        }
 
         return interactions;
-    }
-
-     //quick fix for tomorrows presentation...remove later
-     private List<CrossReference> filterCrossReferences( List<CrossReference> crossReferences ) {
-
-        List<CrossReference> filteredXrefs = new ArrayList<CrossReference>();
-        for ( CrossReference crossReference : crossReferences ) {
-            if (! IREFINDEX.equalsIgnoreCase( crossReference.getDatabase() ) ) {
-                filteredXrefs.add( crossReference );
-            }
-        }
-        return filteredXrefs;
     }
 
     protected abstract void populateInteractionFromMitab(Interaction interaction, BinaryInteraction<?> binaryInteraction, int index);

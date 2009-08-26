@@ -93,25 +93,26 @@ public class Tab2XmlTest {
         PsimiXmlReader reader = new PsimiXmlReader();
         EntrySet originalEntrySet = reader.read( originalXMLFile );
         assertNotNull( originalEntrySet );
+        Assert.assertEquals( 2, originalEntrySet.getEntries().iterator().next().getInteractions().size());
 
         // convert the originalEntrySet to BinaryInteractions (and save result into MITAB2.5)
         PsimiTabReader tabReader = new PsimiTabReader( true );
         File originalTabFile = TestHelper.getFileByResources( "/mitab-testset/9560268.txt", Tab2XmlTest.class );
         Collection<BinaryInteraction> binaryInteractions = tabReader.read( originalTabFile );
-        Assert.assertEquals( 1, binaryInteractions.size() );
+        Assert.assertEquals( 2, binaryInteractions.size() );
         // single interaction with 2 evidences
         final BinaryInteraction bi = binaryInteractions.iterator().next();
-        Assert.assertEquals(2, bi.getInteractionTypes().size());
+        Assert.assertEquals(1, bi.getInteractionTypes().size());
 
         Xml2Tab x2t = new Xml2Tab();
         x2t.addOverrideSourceDatabase( new CrossReferenceImpl( "MI", "0469", "intact" ) );
-        x2t.setPostProcessor( new ClusterInteractorPairProcessor() );
+//        x2t.setPostProcessor( new ClusterInteractorPairProcessor() );
         Collection<BinaryInteraction> convertedBinaryInteractions = x2t.convert( originalEntrySet );
         assertNotNull( convertedBinaryInteractions );
 
-        Assert.assertEquals( 1, convertedBinaryInteractions.size() );
+        Assert.assertEquals( 2, convertedBinaryInteractions.size() );
         final BinaryInteraction cbi = convertedBinaryInteractions.iterator().next();
-        Assert.assertEquals(2, cbi.getInteractionTypes().size());
+        Assert.assertEquals(1, cbi.getInteractionTypes().size());
 
         Tab2Xml t2x = new Tab2Xml();
         t2x.setInteractorNameBuilder( new InteractorUniprotIdBuilder() );
