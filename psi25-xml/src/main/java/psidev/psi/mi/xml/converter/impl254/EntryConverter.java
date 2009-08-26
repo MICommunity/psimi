@@ -11,6 +11,9 @@ import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml254.jaxb.*;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Converts an entry between Jaxb and the model.
  *
@@ -186,8 +189,13 @@ public class EntryConverter {
                 jEntry.setExperimentList( new ExperimentDescriptionList()); 
             }
 
+            List<Integer> experimentIds = new ArrayList<Integer>();
+
             for ( psidev.psi.mi.xml.model.ExperimentDescription mExperiment : mEntry.getExperiments() ) {
-                jEntry.getExperimentList().getExperimentDescriptions().add( experimentDescriptionConverter.toJaxb( mExperiment ) );
+                if (!experimentIds.contains(mExperiment.getId())) {
+                    jEntry.getExperimentList().getExperimentDescriptions().add( experimentDescriptionConverter.toJaxb( mExperiment ) );
+                    experimentIds.add(mExperiment.getId());
+                }
             }
         }
 
@@ -197,8 +205,13 @@ public class EntryConverter {
                 jEntry.setInteractorList( new InteractorList() );
             }
 
+            List<Integer> interactorIds = new ArrayList<Integer>();
+
             for ( psidev.psi.mi.xml.model.Interactor mInteractor : mEntry.getInteractors() ) {
-                jEntry.getInteractorList().getInteractors().add( interactorConverter.toJaxb( mInteractor ) );
+                if (!interactorIds.contains(mInteractor.getId())) {
+                    jEntry.getInteractorList().getInteractors().add( interactorConverter.toJaxb( mInteractor ) );
+                    interactorIds.add(mInteractor.getId());
+                }
             }
         }
 
@@ -229,17 +242,29 @@ public class EntryConverter {
                 jEntry.setExperimentList(new ExperimentDescriptionList());
 
                 for (psidev.psi.mi.xml.model.Interaction jInteraction : mEntry.getInteractions()) {
+
+                    List<Integer> experimentIds = new ArrayList<Integer>();
+
                     for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : jInteraction.getExperiments()) {
-                        jEntry.getExperimentList().getExperimentDescriptions().add( experimentDescriptionConverter.toJaxb(jExperiment));
+
+                        if (!experimentIds.contains(jExperiment.getId())) {
+                            jEntry.getExperimentList().getExperimentDescriptions().add( experimentDescriptionConverter.toJaxb(jExperiment));
+                            experimentIds.add(jExperiment.getId());
+                        }
                     }
                 }
             }
             if (jEntry.getInteractorList() == null) {
                 jEntry.setInteractorList(new InteractorList());
 
+                List<Integer> participantIds = new ArrayList<Integer>();
+
                 for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
                     for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
-                        jEntry.getInteractorList().getInteractors().add( interactorConverter.toJaxb(mParticipant.getInteractor()));
+                        if (!participantIds.contains(mParticipant.getId())) {
+                            jEntry.getInteractorList().getInteractors().add( interactorConverter.toJaxb(mParticipant.getInteractor()));
+                            participantIds.add(mParticipant.getId());
+                        }
                     }
                 }
             }
