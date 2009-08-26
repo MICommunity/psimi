@@ -16,6 +16,8 @@ import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.*;
 import psidev.psi.mi.xml253.jaxb.CvType;
 
+import java.util.List;
+
 /**
  * Converter to and from JAXB of the class Interaction.
  *
@@ -295,9 +297,11 @@ public class InteractionConverter {
                 jInteraction.setExperimentList( new InteractionElementType.ExperimentList() );
             }
 
+            final List<Object> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
             for ( ExperimentRef mExperiment : mInteraction.getExperimentRefs() ) {
-                jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add(
-                          mExperiment.getRef() );
+                if( ! ids.contains( mExperiment.getRef() ) ) {
+                    ids.add(mExperiment.getRef());
+                }
             }
         }
         // not compact form: expand the full experiment
@@ -309,13 +313,17 @@ public class InteractionConverter {
            for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
                final ExperimentType exp = experimentDescriptionConverter.toJaxb( mExperiment );
 
+               final List<Object> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
                if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
-                    jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add(mExperiment.getId());
+                   if( !ids.contains( mExperiment.getId() ) ) {
+                       ids.add(mExperiment.getId());
+                   }
                } else {
-                    jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().add( exp );
+                    if( !ids.contains( exp ) ) {
+                        ids.add( exp );
+                    }
                }
            }
-
         }
 
         // participants
