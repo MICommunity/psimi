@@ -49,7 +49,7 @@ Notes:
 <xsl:param name="goUrl"
            select="'http://www.ebi.ac.uk/ego/DisplayGoTerm?id='"/>
 <xsl:param name="intactUrl"
-           select="'http://www.ebi.ac.uk/intact/search/do/search?searchString='"/>
+           select="'http://www.ebi.ac.uk/intact/pages/interactions/interactions.xhtml?query='"/>
 <xsl:param name="pubmedUrl"
            select="'http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=PubMed&amp;&amp;dopt=Citation&amp;list_uids='"/>
 <xsl:param name="newtUrl"
