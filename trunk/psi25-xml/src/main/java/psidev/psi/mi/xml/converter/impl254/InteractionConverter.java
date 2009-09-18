@@ -304,7 +304,7 @@ public class InteractionConverter {
             if ( jInteraction.getExperimentList() == null ) {
                 jInteraction.setExperimentList( new ExperimentList() );
             }
-            final List<Object> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
+            final List<Serializable> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
             for ( ExperimentRef mExperiment : mInteraction.getExperimentRefs() ) {
                 if( ! ids.contains( mExperiment.getRef() ) ) {
                     ids.add( mExperiment.getRef() );
@@ -316,7 +316,7 @@ public class InteractionConverter {
             if ( jInteraction.getExperimentList() == null ) {
                 jInteraction.setExperimentList( new ExperimentList() );
             }
-            final List<Object> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
+            final List<Serializable> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
             for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
                 final psidev.psi.mi.xml254.jaxb.ExperimentDescription exp = experimentDescriptionConverter.toJaxb( mExperiment );
 
