@@ -17,6 +17,7 @@ import psidev.psi.mi.xml253.jaxb.*;
 import psidev.psi.mi.xml253.jaxb.CvType;
 
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Converter to and from JAXB of the class Interaction.
