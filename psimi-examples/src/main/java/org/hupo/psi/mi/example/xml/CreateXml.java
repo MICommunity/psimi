@@ -22,6 +22,7 @@ import psidev.psi.mi.xml.PsimiXmlWriter;
 import java.io.File;
 import java.io.Writer;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.util.Collection;
 import java.util.ArrayList;
 
