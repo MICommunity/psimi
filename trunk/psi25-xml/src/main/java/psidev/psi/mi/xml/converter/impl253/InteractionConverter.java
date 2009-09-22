@@ -298,7 +298,7 @@ public class InteractionConverter {
                 jInteraction.setExperimentList( new InteractionElementType.ExperimentList() );
             }
 
-            final List<Object> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
+            final List ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
             for ( ExperimentRef mExperiment : mInteraction.getExperimentRefs() ) {
                 if( ! ids.contains( mExperiment.getRef() ) ) {
                     ids.add(mExperiment.getRef());
@@ -314,7 +314,7 @@ public class InteractionConverter {
            for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
                final ExperimentType exp = experimentDescriptionConverter.toJaxb( mExperiment );
 
-               final List<Object> ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
+               final List ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
                if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
                    if( !ids.contains( mExperiment.getId() ) ) {
                        ids.add(mExperiment.getId());
