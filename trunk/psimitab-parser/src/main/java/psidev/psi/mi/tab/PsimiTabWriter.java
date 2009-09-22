@@ -154,7 +154,9 @@ public class PsimiTabWriter {
     }
 
     public void write( Collection<BinaryInteraction> interactions, OutputStream os ) throws IOException, ConverterException {
-        write( interactions, new OutputStreamWriter( os ) );
+        final OutputStreamWriter writer = new OutputStreamWriter(os);
+        write( interactions, writer);
+        writer.flush();
     }
 
     public void write( Collection<BinaryInteraction> interactions, Writer writer ) throws IOException, ConverterException {
@@ -171,11 +173,15 @@ public class PsimiTabWriter {
     }
 
     public void write( Collection<BinaryInteraction> interactions, PrintStream ps ) throws IOException, ConverterException {
-        write( interactions, new OutputStreamWriter( ps ) );
+        final OutputStreamWriter writer = new OutputStreamWriter(ps);
+        write( interactions, writer);
+        writer.close();
     }
 
     public void write( BinaryInteraction interaction, OutputStream os ) throws IOException {
-        write( interaction, new OutputStreamWriter( os ) );
+        final OutputStreamWriter writer = new OutputStreamWriter(os);
+        write( interaction, writer);
+        writer.close();
     }
 
     public void write( BinaryInteraction interaction, Writer writer ) throws IOException {
