@@ -1,0 +1,15 @@
+<document>
+    <properties>
+        <title>Changes in PSI-MI XML lib</title>
+        <author email="skerrien@ebi.ac.uk">Samuel Kerrien</author>
+    </properties>
+    <body>
+
+        <!-- Usage documentation: http://maven.apache.org/plugins/maven-changes-plugin/usage.html -->
+
+        <release version="1.0-beta4" date="2007-07-06" description="Introduces Pull Parsing of PSI-MI XML25 data">
+            <!-- No action taken yet -->
+        </release>
+
+    </body>
+</document>
