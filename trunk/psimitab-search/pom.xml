@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimitab-search</artifactId>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <version>1.7.6-SNAPSHOT</version>
 
@@ -24,6 +24,14 @@
     <build>
         <plugins>
             <plugin>
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <configuration>
+                     <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                     </archive>
+                 </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.ops4j</groupId>
                 <artifactId>maven-pax-plugin</artifactId>
                 <extensions>true</extensions>
@@ -31,6 +39,15 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
+                <executions>
+                     <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>

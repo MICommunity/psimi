@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psi25-xml</artifactId>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
     <version>1.7.6-SNAPSHOT</version>
 
     <name>PSI :: PSI-MI XML 2.5 Library</name>
@@ -29,6 +29,14 @@
     <build>
         <plugins>
             <plugin>
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <configuration>
+                    <archive>  
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                     </archive> 
+                 </configuration>
+            </plugin> 
+            <plugin>
                 <groupId>org.ops4j</groupId>
                 <artifactId>maven-pax-plugin</artifactId>
                 <!--
@@ -45,6 +53,15 @@
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
+                <executions>
+                     <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>    
+                            <goal>manifest</goal>
+                        </goals>   
+                     </execution>
+                </executions>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
