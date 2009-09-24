@@ -18,9 +18,7 @@ import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -67,7 +65,7 @@ public class Xml2Tab {
      * Collection of source database to export in the MITAB format.
      * If not empty, it will override the data found in the XML file.
      */
-    private Collection<CrossReference> overrideSourceDatabases;
+    private Set<CrossReference> overrideSourceDatabases;
 
     /**
      * if defined, replaces any database reference in AliasImpl (column 3/4 & 5/6 of MITAB25).
@@ -163,7 +161,7 @@ public class Xml2Tab {
      */
     public Collection<CrossReference> getOverrideSourceDatabase() {
         if ( overrideSourceDatabases == null ) {
-            overrideSourceDatabases = new ArrayList<CrossReference>();
+            overrideSourceDatabases = new HashSet<CrossReference>();
         }
         return overrideSourceDatabases;
     }
