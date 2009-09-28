@@ -168,7 +168,7 @@ public class Xml2Tab {
 
     public void addOverrideSourceDatabase( CrossReference overrideSourceDatabase ) {
         if ( overrideSourceDatabases == null ) {
-            overrideSourceDatabases = new ArrayList<CrossReference>();
+            overrideSourceDatabases = new HashSet<CrossReference>();
         }
 
         this.overrideSourceDatabases.add( overrideSourceDatabase );
@@ -207,7 +207,7 @@ public class Xml2Tab {
      * @param overrideSourceDatabases Value to set for property 'overrideSourceDatabases'.
      */
     public void setOverrideSourceDatabases( Collection<CrossReference> overrideSourceDatabases ) {
-        this.overrideSourceDatabases = overrideSourceDatabases;
+        this.overrideSourceDatabases = new HashSet<CrossReference>(overrideSourceDatabases);
     }
 
     ////////////////////////
