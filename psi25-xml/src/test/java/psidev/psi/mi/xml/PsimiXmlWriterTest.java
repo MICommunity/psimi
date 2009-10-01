@@ -1,6 +1,7 @@
 package psidev.psi.mi.xml;
 
 import org.junit.Test;
+import org.junit.Assert;
 import psidev.psi.mi.xml.model.*;
 
 import java.util.Collection;
@@ -50,7 +51,12 @@ public class PsimiXmlWriterTest {
         final EntrySet es = PsiFactory.createEntrySet( PsimiXmlVersion.VERSION_253, entry );
 
         PsimiXmlWriter writer = new PsimiXmlWriter( PsimiXmlVersion.VERSION_253, PsimiXmlForm.FORM_COMPACT );
-        writer.write( es, System.out );
 
+        String xml = writer.getAsString( es );
+        PsimiXmlReader reader= new PsimiXmlReader( PsimiXmlVersion.VERSION_253 );
+        final EntrySet es2 = reader.read( xml );
+        Assert.assertEquals( 3, es2.getEntries().iterator().next().getInteractors().size() );
+        Assert.assertEquals( 2, es2.getEntries().iterator().next().getInteractions().size() );
+        Assert.assertEquals( 1, es2.getEntries().iterator().next().getExperiments().size() );
     }
 }
