@@ -166,6 +166,10 @@ public class PsimiTabReader {
         return read( url.openStream() );
     }
 
+    public BinaryInteraction readLine( String str) {
+        return documentDefinition.interactionFromString(str);
+    }
+
     protected void processInteraction( BinaryInteraction interaction ) throws MitabLineException {
         interactions.add( interaction );
     }
