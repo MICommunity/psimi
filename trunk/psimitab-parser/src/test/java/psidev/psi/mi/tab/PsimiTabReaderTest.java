@@ -1,8 +1,8 @@
 package psidev.psi.mi.tab;
 
+import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.xml.converter.ConverterException;
 
@@ -125,5 +125,21 @@ public class PsimiTabReaderTest {
         }
 
         assertEquals( 2, count );
+    }
+
+    @Test
+    public void emptyInteractionAc() {
+        String line = "entrez gene/locuslink:3069\tentrez gene/locuslink:11260\tentrez " +
+                "gene/locuslink:HDLBP\tentrez gene/locuslink:XPOT\tentrez " +
+                "gene/locuslink:FLJ16432|entrez gene/locuslink:HBP|entrez " +
+                "gene/locuslink:PRO2900|entrez gene/locuslink:VGL\tentrez " +
+                "gene/locuslink:XPO3\tpsi-mi:\"MI:0401\"(biochemical)\tKruse C (2000)\t" +
+                "pubmed:10657246\ttaxid:9606\ttaxid:9606\tpsi-mi:\"MI:0914\"(association)\t" +
+                "psi-mi:\"MI:0463\"(GRID)\t-\t-";
+
+        PsimiTabReader mitabReader = new PsimiTabReader( false );
+        final BinaryInteraction binaryInteraction = mitabReader.readLine(line);
+
+        Assert.assertTrue(binaryInteraction.getInteractionAcs().isEmpty());
     }
 }

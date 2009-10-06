@@ -48,7 +48,7 @@ public class NullCrossReference implements CrossReference {
     }
 
     public String getText() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     public void setText(String text) {
@@ -56,6 +56,6 @@ public class NullCrossReference implements CrossReference {
     }
 
     public boolean hasText() {
-        throw new UnsupportedOperationException();
+        return false;
     }
 }
