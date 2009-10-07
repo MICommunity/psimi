@@ -90,7 +90,6 @@ public class FilesProcessor {
             Xml2Tab x2t = new Xml2Tab();
 
             // configure it
-            x2t.setExpansionStrategy( expansionStrategy );
             x2t.setPostProcessor( postProcessorStrategy );
 
             PsimiTabWriter fileWriter = new PsimiTabWriter();

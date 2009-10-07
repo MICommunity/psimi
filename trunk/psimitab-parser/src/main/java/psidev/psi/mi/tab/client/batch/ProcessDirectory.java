@@ -10,7 +10,6 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.PsimiTabWriter;
 import psidev.psi.mi.tab.converter.xml2tab.TabConversionException;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
-import psidev.psi.mi.tab.expansion.SpokeExpansion;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -58,7 +57,6 @@ public class ProcessDirectory {
         // set strategies
         x2t.setPostProcessor( new ClusterInteractorPairProcessor() );
         System.out.println( "Applying Spoke model expansion wherever appropriate." );
-        x2t.setExpansionStrategy( new SpokeExpansion() );
 
         Collection<BinaryInteraction> interactions = x2t.convert( dir );
 

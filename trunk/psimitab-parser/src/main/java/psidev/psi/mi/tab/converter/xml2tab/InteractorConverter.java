@@ -38,12 +38,14 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
 
     public static final String INTACT = "intact";
     private static final String INTACT_MI = "MI:0469";
-
     public static final String CHEBI = "chebi";
-    private static final String CHEBI_MI = "MI:0474";
 
+    private static final String CHEBI_MI = "MI:0474";
     private static final String PSIMI = "psi-mi";
+
     private static final String PSIMI_MI = "MI:0488";
+
+    private static final String UNKNWON = "unknown";
 
     private static final List<String> uniprotKeys = new ArrayList<String>( Arrays.asList( new String[]
             {"gene name", "gene name synonym", "isoform synonym", "ordered locus name", "open reading frame name"} ));
@@ -152,7 +154,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
                 if ( uniprotKeys.contains( alias.getType()) ){
                     db = UNIPROT;
                 } else {
-                    db = INTACT;
+                    db = UNKNWON;
                 }
                 psidev.psi.mi.tab.model.Alias a = new psidev.psi.mi.tab.model.AliasImpl( db, aliasValue );
                 a.setAliasType( alias.getType() );
@@ -164,7 +166,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
         //include shortlabel also
         if ( interactor.getNames() != null && interactor.getNames().getShortLabel() != null ) {
             String shortLabel = interactor.getNames().getShortLabel();
-            String db = INTACT;
+            String db = UNKNWON;
             psidev.psi.mi.tab.model.Alias a = new psidev.psi.mi.tab.model.AliasImpl( db, shortLabel );
             a.setAliasType( SHORT_LABEL );
             tabAliases.add( a );
@@ -277,6 +279,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
         Collection<CrossReference> tabIdentifiers = tabInteractor.getIdentifiers();
         String primaryDatabase = null;
         String primaryId = null;
+
         if (!tabIdentifiers.isEmpty()){
 
         	Iterator<CrossReference> identifierIterator = tabIdentifiers.iterator();
@@ -287,7 +290,8 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
         	primaryId = primaryIdentifier.getIdentifier();
 
         	primaryReferece = new DbReference(primaryId, primaryDatabase);
-        	if (primaryDatabase.equals(UNIPROT)) {
+
+            if (primaryDatabase.equals(UNIPROT)) {
         		primaryReferece.setDbAc( UNIPROT_MI );
             	primaryReferece.setRefType(IDENTITY);
             	primaryReferece.setRefTypeAc(IDENTITY_REF);
@@ -306,13 +310,11 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
         	while (identifierIterator.hasNext()){
         		CrossReference secondaryIdentifier = identifierIterator.next();
 
-               	String database = secondaryIdentifier.getDatabase();
-            	String id = secondaryIdentifier.getIdentifier();
-
-        		DbReference secondaryRef = new DbReference(id,database);
+                DbReference secondaryRef = createSecondaryRef(secondaryIdentifier);
         		secondaryRefs.add(secondaryRef);
         	}
         }
+
         if (primaryReferece != null){
         	if (!secondaryRefs.isEmpty()){
         		Xref interactorXref = new Xref(primaryReferece,secondaryRefs);
@@ -389,6 +391,13 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
 
         // note: interactionType are not stored in MITAB25, but XMLWriter need one -> default (=empty) InteractorType were set.
     	return xmlInteractor;
+    }
+
+    private DbReference createSecondaryRef(CrossReference secondaryIdentifier) {
+        String database = secondaryIdentifier.getDatabase();
+        String id = secondaryIdentifier.getIdentifier();
+
+        return new DbReference(id,database);
     }
 
     public abstract Participant buildParticipantA(Interactor xmlInteractor, BinaryInteraction binaryInteraction, int index)

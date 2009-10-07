@@ -47,7 +47,7 @@ public class InteractionDetectionMethodConverter {
         }
 
         String name = null;
-        String db = null;
+        String db = "unknown";
         String id = null;
 
         if ( cv.hasNames() ) {
@@ -63,6 +63,8 @@ public class InteractionDetectionMethodConverter {
 
 
         if ( !refs.isEmpty() ) {
+            db = PSI_MI;
+
             Iterator<DbReference> iterator = refs.iterator();
             id = iterator.next().getId();
             if ( iterator.hasNext() ) {
@@ -78,16 +80,7 @@ public class InteractionDetectionMethodConverter {
 
         if ( id == null ) {
             throw new NullPointerException( "Invalid interaction detection method without identifier: " + name );
-        } else {
-            int idx = id.indexOf( ":" );
-            if ( idx != -1 ) {
-                // split db from id
-                db = id.substring( 0, idx );
-                id = id.substring( idx + 1, id.length() );
-            } else {
-                throw new IllegalStateException( "We are expecting PSI-MI identifier to be formatted as MI:xxxx." );
-            }
-        }
+        } 
 
         return InteractionDetectionMethodFactory.getInstance().build( db, id, name );
     }

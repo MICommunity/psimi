@@ -3,20 +3,14 @@
  */
 package psidev.psi.mi.tab.converter.tab2xml;
 
+import org.junit.Assert;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.junit.Assert;
 import psidev.psi.mi.tab.PsimiTabReader;
-import psidev.psi.mi.tab.PsimiTabWriter;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
-import psidev.psi.mi.tab.expansion.SpokeWithoutBaitExpansion;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.CrossReferenceFactory;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
-import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlWriter;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -27,10 +21,7 @@ import psidev.psi.mi.xml.model.Participant;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Iterator;
 
 /**
@@ -127,7 +118,7 @@ public class Tab2XmlTest {
 
         assertEquals( originalEntrySet.getLevel(), convertedEntrySet.getLevel() );
         assertEquals( originalEntrySet.getVersion(), convertedEntrySet.getVersion() );
-        assertEquals( originalEntrySet.getMinorVersion(), convertedEntrySet.getMinorVersion() );
+        assertEquals( 0, convertedEntrySet.getMinorVersion() );
         assertEquals( originalEntrySet.getEntries().size(), convertedEntrySet.getEntries().size() );
 
         Collection<Entry> oEntries = originalEntrySet.getEntries();

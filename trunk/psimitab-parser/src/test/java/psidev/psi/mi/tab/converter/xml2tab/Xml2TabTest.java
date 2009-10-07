@@ -2,6 +2,7 @@ package psidev.psi.mi.tab.converter.xml2tab;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import psidev.psi.mi.tab.TestHelper;
@@ -81,6 +82,8 @@ public class Xml2TabTest {
         EntrySet chen1999EntrySet = reader.read( chen1999 );
         assertNotNull( chen1999EntrySet );
 
+        Assert.assertEquals(2, chen1999EntrySet.getEntries().iterator().next().getInteractions().size());
+
         binaryInteractions.addAll( x2t.convert( chen1999EntrySet ) );
 
         File pellegrini2002 = TestHelper.getFileByResources( "/psi25-testset/12442171.xml", Xml2TabTest.class);
@@ -88,6 +91,8 @@ public class Xml2TabTest {
 
         EntrySet pellegrini2002EntrySet = reader.read( pellegrini2002 );
         assertNotNull( pellegrini2002EntrySet );
+
+        Assert.assertEquals(3, pellegrini2002EntrySet.getEntries().iterator().next().getInteractions().size());
 
         binaryInteractions.addAll( x2t.convert( pellegrini2002EntrySet ) );
 
@@ -97,6 +102,8 @@ public class Xml2TabTest {
         EntrySet esashi2005EntrySet = reader.read( esashi2005 );
         assertNotNull( esashi2005EntrySet );
 
+        Assert.assertEquals(5, esashi2005EntrySet.getEntries().iterator().next().getInteractions().size());
+
         binaryInteractions.addAll( x2t.convert( esashi2005EntrySet ) );
 
         File chen1998 = TestHelper.getFileByResources(  "/psi25-testset/9560268.xml", Xml2TabTest.class);
@@ -104,6 +111,8 @@ public class Xml2TabTest {
 
         EntrySet chen1998EntrySet = reader.read( chen1998 );
         assertNotNull( chen1998EntrySet );
+
+        Assert.assertEquals(2, chen1998EntrySet.getEntries().iterator().next().getInteractions().size());
 
         binaryInteractions.addAll( x2t.convert( chen1998EntrySet ) );
 
@@ -128,6 +137,7 @@ public class Xml2TabTest {
                 if ( pubid.equals( "9560268" ) ) {
                     assertEquals( 2, binaryInteraction.getInteractionAcs().size() );
                 }
+
                 interactions.add( binaryInteraction );
             }
         }
