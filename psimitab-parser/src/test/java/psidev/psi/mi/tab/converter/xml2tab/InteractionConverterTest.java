@@ -1,18 +1,16 @@
 package psidev.psi.mi.tab.converter.xml2tab;
 
+import org.junit.Assert;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.junit.Assert;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.xml.PsimiXmlReader;
-import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -105,11 +103,11 @@ public class InteractionConverterTest {
 
         // interaction detection method
         assertEquals( 1, bi.getDetectionMethods().size() );
-        assertEquals( InteractionDetectionMethodFactory.getInstance().build( "MI", "0018", "two hybrid" ), bi.getDetectionMethods().iterator().next() );
+        assertEquals( InteractionDetectionMethodFactory.getInstance().build( "psi-mi", "MI:0018", "two hybrid" ), bi.getDetectionMethods().iterator().next() );
 
         // interaction type
         assertEquals( 1, bi.getInteractionTypes().size() );
-        assertEquals( InteractionTypeFactory.getInstance().build( "MI", "0218", "physical interaction" ), bi.getInteractionTypes().iterator().next() );
+        assertEquals( InteractionTypeFactory.getInstance().build( "psi-mi", "MI:0218", "physical interaction" ), bi.getInteractionTypes().iterator().next() );
 
         // author
         //assertTrue( bi.getAuthors().isEmpty() );

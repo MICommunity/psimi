@@ -16,7 +16,6 @@ import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Xref;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -49,7 +48,7 @@ public class InteractionTypeConverter {
         }
 
         String name = null;
-        String db = null;
+        String db = "unknown";
         String id = null;
 
         if ( cv.hasNames() ) {
@@ -64,26 +63,18 @@ public class InteractionTypeConverter {
         }
         
         if ( !refs.isEmpty() ) {
+            db = PSI_MI;
+
             Iterator<DbReference> iterator = refs.iterator();
             id = iterator.next().getId();
             if ( iterator.hasNext() ) {
                 log.warn( cv + " has " + refs.size() + " references to PSI-MI to choose from, picked the first one." );
-                log.warn( "1: " + id );
                 int i = 1;
                 while ( iterator.hasNext() ) {
                     DbReference dbReference = iterator.next();
                     log.warn( ( ++i ) + ": " + dbReference.getId() );
                 }
             }
-        }
-
-        int idx = id.indexOf( ":" );
-        if( idx != -1 ) {
-            // split db from id
-            db = id.substring( 0, idx );
-            id = id.substring( idx + 1, id.length() );
-        } else {
-            throw new IllegalStateException( "We are expecting PSI-MI identifier to be formatted as MI:xxxx." );
         }
 
 //        if ( name != null ) {

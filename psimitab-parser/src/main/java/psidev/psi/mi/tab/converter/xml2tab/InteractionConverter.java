@@ -7,15 +7,14 @@ package psidev.psi.mi.tab.converter.xml2tab;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.converter.IdentifierGenerator;
-import psidev.psi.mi.tab.expansion.ExpansionStrategy;
+import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.model.InteractionDetectionMethod;
 import psidev.psi.mi.tab.model.InteractionType;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.xml.model.*;
-import psidev.psi.mi.xml.model.Organism;
+import psidev.psi.mi.xml.model.Confidence;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -57,7 +56,8 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
      */
     private Collection<CrossReference> sourceDatabases;
 
-    private Pattern FIRST_AUTHOR_REGEX = Pattern.compile("(\\w+)(?:\\s.+\\((\\d{4})\\))?");
+    // identifies patterns like "AuthorName B (2002)", capturing the authorName and the year
+    private Pattern FIRST_AUTHOR_REGEX = Pattern.compile("(\\w+(?:\\P{Ps}+)?)(?:\\((\\d{4})\\))?");
 
     protected static final String IREFINDEX = "irefindex";
 
@@ -96,13 +96,6 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
     // Convertion
 
     public BinaryInteraction toMitab( Interaction interaction ) throws TabConversionException {
-        return toMitab( interaction, null, false );
-    }
-
-    public BinaryInteraction toMitab( Interaction interaction,
-                                      final ExpansionStrategy expansionStrategy,
-                                      final boolean isExpanded ) throws TabConversionException {
-
         if ( interaction.getParticipants().size() != 2 ) {
             log.warn( "interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it does not have exactly 2 participants." );
             return null;
@@ -115,10 +108,34 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
         final Interactor interactorA = getInteractorConverter().toMitab(pA.getInteractor());
         final Interactor interactorB = getInteractorConverter().toMitab(pB.getInteractor());
 
-        BinaryInteraction bi = newBinaryInteraction( interactorA, interactorB );
+        BinaryInteraction<?> bi = newBinaryInteraction( interactorA, interactorB );
 
-        // first thing off, set the source
-        if ( sourceDatabases != null ) {
+        // first thing off, set the source. It can come from two places: the source-reference cross ref, and if not present, from the entry source
+        if (interaction.hasXref()) {
+            Collection<DbReference> sourceRefs = XrefUtils.searchByType( interaction.getXref(), "source reference", "MI:0685" );
+
+            String text = null;
+
+            for (Attribute attr : interaction.getAttributes()) {
+                if ("source reference:label".equals(attr.getName())) {
+                    text = attr.getValue();
+                    break;
+                }
+            }
+
+            for (DbReference sourceRef : sourceRefs) {
+                String db = "unknown";
+
+                if (sourceRef.getId() != null && sourceRef.getId().startsWith("MI:")) {
+                    db = "psi-mi";
+                }
+
+                CrossReference xref = new CrossReferenceImpl(db, sourceRef.getId(), text);
+                bi.getSourceDatabases().add(xref);
+            }
+        }
+
+        if ( bi.getSourceDatabases().isEmpty() && sourceDatabases != null ) {
             bi.getSourceDatabases().addAll( sourceDatabases );    
         }
 
@@ -129,23 +146,25 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             // If nothing is found: navigate through the source databases and,
             // if the refType or refTypeAc not available using searchByDatabase
             // but in some cases you will get more than one interactionAcs
-            Collection<DbReference> interactionAcs = XrefUtils.searchByType( interaction.getXref(), "source reference", "MI:0685" );
+            Collection<DbReference> interactionAcs = XrefUtils.searchByType( interaction.getXref(), "identity", "MI:0356" );
 
-            if ( interactionAcs.isEmpty() && sourceDatabases != null ) {
-                String typeName;
-                String typeMiRef;
-                for ( CrossReference sourceDatabase : sourceDatabases ) {
-                    String id = sourceDatabase.getDatabase() + ":" + sourceDatabase.getIdentifier();
-                    typeName = interaction.getXref().getPrimaryRef().getRefType();
-                    typeMiRef = interaction.getXref().getPrimaryRef().getRefTypeAc();
+            // filter the identities by the source databases
+            Iterator<DbReference> interactionAcsIter = interactionAcs.iterator();
 
-                    if ( typeName == null || typeMiRef == null ) {
-                        interactionAcs = XrefUtils.searchByDatabase( interaction.getXref(), sourceDatabase.getText(), id );
-                    } else {
-                        interactionAcs = XrefUtils.searchByTypeAndDatabase
-                                ( interaction.getXref(), typeName, typeMiRef, sourceDatabase.getText(), id );
+            while (interactionAcsIter.hasNext()) {
+                DbReference identityRef = interactionAcsIter.next();
+
+                for ( CrossReference sourceDatabase : bi.getSourceDatabases() ) {
+                    if (!sourceDatabase.getIdentifier().equals(identityRef.getDb()) &&
+                            !sourceDatabase.getIdentifier().equals(identityRef.getDbAc())) {
+                        interactionAcsIter.remove();
+                        break;
                     }
                 }
+            }
+
+            if (interactionAcs.isEmpty() && interaction.hasXref()) {
+                interactionAcs.add(interaction.getXref().getPrimaryRef());
             }
 
             List<CrossReference> refs = new ArrayList<CrossReference>();
@@ -208,42 +227,50 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
                 // Note: authors are not stored in PSI-MI. skip this.
                 if ( experiment.getAttributes() != null ) {
+                    String authorName = "-";
+                    String pubYear = "";
+
                     for ( Attribute attribute : experiment.getAttributes() ) {
-                        if ( attribute.getName().equalsIgnoreCase( "author-list" ) ) {
-                            String firstAuthorName = attribute.getValue().split( " " )[0];
-                            firstAuthorName += " et al";
-                            Author author = new AuthorImpl( firstAuthorName );
-                            bi.getAuthors().add( author );
-                            break;
+                        if ( "author-list".equals(attribute.getName())) {
+                            authorName = attribute.getValue();
+
+                            if (authorName.contains(",")) {
+                                authorName = authorName.split( " " )[0].concat(" et al");
+                            }
+                        } else if ("publication year".equals(attribute.getName())) {
+                            pubYear = "("+attribute.getValue()+")";
                         }
                     }
+
+                    String authorNameYear = authorName+" "+pubYear;
+
+                    Author author = new AuthorImpl( authorNameYear.trim() );
+                    bi.getAuthors().add( author );
                 }
             }
         }
 
-        // process extra columns
-        /*
-        if ( columnHandler != null ) {
-            if ( log.isDebugEnabled() ) {
-                log.debug( "Starting to extra process: " + columnHandler.getClass().getSimpleName() );
-            }
+        // confidence scores
+        for (Confidence confidence : interaction.getConfidences()) {
+            final Unit unit = confidence.getUnit();
 
-            if ( columnHandler instanceof IsExpansionStrategyAware ) {
-                if ( isExpanded ) {
-                    if ( log.isDebugEnabled() ) {
-                        log.debug( "Using an expansion stategy aware builder handler" );
-                    }
+            String type = null;
+            String value = confidence.getValue();
+            String text = null;
 
-                    ( ( IsExpansionStrategyAware ) columnHandler ).process( ( BinaryInteractionImpl ) bi,
-                                                                            interaction,
-                                                                            expansionStrategy );
-                } else {
-                    columnHandler.process( ( BinaryInteractionImpl ) bi, interaction );
+            if (unit != null) {
+                if (unit.getNames() != null) {
+                    type = unit.getNames().getShortLabel();
+                    text = unit.getNames().getFullName();
                 }
             } else {
-                columnHandler.process( ( BinaryInteractionImpl ) bi, interaction );
+                type = "unknown";
             }
-        } */
+
+            //confidence.
+            psidev.psi.mi.tab.model.Confidence tabConfidence = new ConfidenceImpl(type, value, text);
+            bi.getConfidenceValues().add(tabConfidence);
+        }
 
         return bi;
     }
@@ -365,13 +392,20 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                 Matcher matcher = FIRST_AUTHOR_REGEX.matcher(firstAuthor);
 
                 if (matcher.matches()) {
-                    shortLabel = matcher.group(1);
+                    firstAuthor = matcher.group(1).trim();
+
+                    shortLabel = firstAuthor.split(" ")[0];
 
                     if (matcher.groupCount() > 1) {
-                        shortLabel = shortLabel+"-"+matcher.group(2);
+                        String year = matcher.group(2);
+                        shortLabel = shortLabel+"-"+year;
+
+                        Attribute pubYear = new Attribute("publication year", year);
+                        experimentDescription.getAttributes().add(pubYear);
+
                     }
                 } else {
-                    shortLabel = firstAuthor;
+                    shortLabel = firstAuthor.split(" ")[0];
                 }
 
                 shortLabel = shortLabel.toLowerCase();
@@ -462,6 +496,27 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                 interaction.setId( IdentifierGenerator.getInstance().nextId() );
                 interaction.setXref( new Xref( primaryReference ) );
 
+                // database source
+                for (CrossReference sourceXref : binaryInteraction.getSourceDatabases()) {
+                    String id = sourceXref.getIdentifier();
+
+                    String refDbMi = null;
+                    String refDb = null;
+
+                    if (id.startsWith("MI:")) {
+                        refDbMi = "MI:0488";
+                        refDb = "psi-mi";
+                    }
+
+                    DbReference sourceReference = new DbReference(refDb, refDbMi, id, "source reference", "MI:0685");
+                    interaction.getXref().getSecondaryRef().add(sourceReference);
+
+                    if (sourceXref.hasText()) {
+                        interaction.getAttributes().add(new Attribute("source reference:label", sourceXref.getText()));
+                    }
+
+                }
+
                 // set participants
                 if ( interactionMap.get( interactionId ).size() > 1 ) {
                     for ( Participant participant : interactionMap.get( interactionId ) ) {
@@ -487,6 +542,17 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                 Collection<ExperimentDescription> experiments = getExperimentDescriptions( (T) binaryInteraction, 0 );
                 for ( ExperimentDescription experimentDescription : experiments ) {
                     interaction.getExperiments().add( experimentDescription );
+                }
+
+                // set confidences
+                for (psidev.psi.mi.tab.model.Confidence tabConfidence : binaryInteraction.getConfidenceValues()) {
+                    Unit unit = new Unit();
+                    unit.setNames(new Names());
+                    unit.getNames().setShortLabel(tabConfidence.getType());
+                    if (tabConfidence.getText() != null) unit.getNames().setFullName(tabConfidence.getText());
+
+                    Confidence confidence = new Confidence(unit, tabConfidence.getValue());
+                    interaction.getConfidences().add(confidence);
                 }
 
                 populateInteractionFromMitab(interaction, binaryInteraction, 0);

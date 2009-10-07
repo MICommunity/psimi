@@ -421,12 +421,10 @@ public class Xml2Tab {
 
                     // run expansion on interaction prior to MITAB25 conversion
                     Collection<Interaction> expandedInteractions = expansionStrategy.expand( interaction );
-                    final boolean isExpanded = expandedInteractions.size() > 1;
+                    
                     for ( Interaction exi : expandedInteractions ) {
                         // convert the interaction into a MITAB25 line
-                        BinaryInteraction binaryInteraction = interactionConverter.toMitab( exi, 
-                                                                                            expansionStrategy,
-                                                                                            isExpanded );
+                        BinaryInteraction binaryInteraction = interactionConverter.toMitab( exi );
                         if ( binaryInteraction != null ) {
                             interactions.add( binaryInteraction );
                         }
@@ -444,7 +442,7 @@ public class Xml2Tab {
             }
         } 
 
-        if ( false == skipPostProcessing ) {
+        if (!skipPostProcessing) {
             interactions = doPostProcessing( interactions );
         }
 

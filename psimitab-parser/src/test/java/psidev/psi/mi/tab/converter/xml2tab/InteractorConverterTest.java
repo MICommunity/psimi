@@ -17,9 +17,9 @@ package psidev.psi.mi.tab.converter.xml2tab;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;
-import org.junit.Assert;
 import psidev.psi.mi.tab.model.Alias;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
@@ -27,10 +27,10 @@ import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.EntrySet;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * InteractorConverterTest
@@ -82,7 +82,7 @@ public class InteractorConverterTest {
                         if ( uniprotKeys.contains( alias.getAliasType() ) ) {
                             Assert.assertEquals( InteractorConverter.UNIPROT, alias.getDbSource() );
                         } else {
-                            Assert.assertEquals( InteractorConverter.INTACT, alias.getDbSource() );
+                            Assert.assertEquals( "unknown", alias.getDbSource() );
 
                         }
 
