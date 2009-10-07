@@ -16,6 +16,7 @@
 package psidev.psi.mi.tab.converter;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.PsimiTabWriter;
@@ -37,6 +38,7 @@ import java.util.Collection;
 public class RoundtripConversionsTest {
 
     @Test
+    @Ignore
     public void rountrip1() throws Exception {
         String line = "entrez gene/locuslink:3069\tentrez gene/locuslink:11260\tentrez gene/locuslink:HDLBP\tentrez gene/locuslink:XPOT\t" +
                 "entrez gene/locuslink:FLJ16432|entrez gene/locuslink:HBP|entrez gene/locuslink:PRO2900|entrez gene/locuslink:VGL\tentrez gene/locuslink:XPO3\t" +
