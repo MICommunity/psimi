@@ -48,7 +48,7 @@ public class PsimiTabIndexWriterTest
 	@Test
     public void testIndex() throws Exception
     {
-        Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.xls");
+        Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.tsv");
 
         String matchedLine = "uniprotkb:P47077\tuniprotkb:P40069\t-\tgene name:KAP123\tlocus name:YJL010C|orf name:J1357\tgene name synonym:YRB4|locus name:YER110C\tpsi-mi:\"MI:0096\"(pull down)\t-\tpubmed:14690591\ttaxid:4932(yeast)\ttaxid:4932(yeast)\tpsi-mi:\"MI:0218\"(physical interaction)\tpsi-mi:\"MI:0469\"(intact)\tintact:EBI-854045\t-";
         String[] valuesExpectedForLine = matchedLine.split("\t");

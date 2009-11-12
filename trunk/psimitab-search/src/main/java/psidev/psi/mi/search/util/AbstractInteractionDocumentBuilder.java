@@ -132,6 +132,18 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
                             isolateValue( column ),
                             Field.Store.NO,
                             Field.Index.UN_TOKENIZED ) );
+
+        if (columnDefinition.getShortName().endsWith("_exact")) {
+            String fieldName = columnDefinition.getShortName().replaceAll("_exact", "");
+            doc.add( new Field(fieldName,
+                                column.toString(),
+                                Field.Store.NO,
+                                Field.Index.TOKENIZED ) );
+            doc.add( new Field(fieldName,
+                                isolateValue( column ),
+                                Field.Store.NO,
+                                Field.Index.UN_TOKENIZED ) );
+        }
     }
 
     protected void addAdvancedSearchFields( Document doc, Row row ) {
