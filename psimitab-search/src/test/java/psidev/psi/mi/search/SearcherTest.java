@@ -34,7 +34,7 @@ public class SearcherTest
 	@Test
     public void testBuildIndex() throws Exception
     {
-        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.xls");
+        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.tsv");
         Directory indexDir = Searcher.buildIndexInMemory(is, true, true);
 
         SearchResult results = Searcher.search("*", indexDir);
@@ -44,7 +44,7 @@ public class SearcherTest
 	@Test
     public void testBuildIndex2() throws Exception
     {
-        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.xls");
+        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.tsv");
         Directory indexDir = Searcher.buildIndexInMemory(is, true, true, new BinaryInteractionIndexWriter());
 
         SearchResult results = Searcher.search("*", indexDir);
@@ -54,14 +54,28 @@ public class SearcherTest
 	@Test
     public void testSearch() throws Exception
     {
-        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.xls");
+        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.tsv");
 
-        Assert.assertNotNull("Ensure that the above file is in the classpath and the compiler accepts *.xls", is);
+        Assert.assertNotNull("Ensure that the above file is in the classpath and the compiler accepts *.tsv", is);
 
         Directory indexDir = Searcher.buildIndexInMemory(is, true, true);
 
         SearchResult results = Searcher.search("P1*", indexDir);
 
         assertEquals(19, results.getInteractions().size());
+    }
+
+    @Test
+    public void testSearch_type() throws Exception
+    {
+        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.tsv");
+
+        Assert.assertNotNull("Ensure that the above file is in the classpath and the compiler accepts *.tsv", is);
+
+        Directory indexDir = Searcher.buildIndexInMemory(is, true, true);
+
+        SearchResult results = Searcher.search("detmethod:\"two hybrid\"", indexDir);
+
+        assertEquals(89, results.getData().size());
     }
 }

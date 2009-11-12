@@ -35,7 +35,7 @@ public class BinaryInteractionSearchEngineTest {
 
 	@Test
     public void testSearch() throws Exception {
-        Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.xls");
+        Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.tsv");
 
         BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory);
 
@@ -49,7 +49,7 @@ public class BinaryInteractionSearchEngineTest {
 
 	@Test
     public void testSearchSort() throws Exception {
-        Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.xls");
+        Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.tsv");
 
         BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory);
 
