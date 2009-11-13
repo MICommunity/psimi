@@ -40,7 +40,7 @@ public class DocumentBuilderTest {
         DocumentBuilder builder = new DefaultDocumentBuilder();
         Document doc = builder.createDocumentFromPsimiTabLine(psiMiTabLine);
 
-		Assert.assertEquals(35, doc.getFields().size());
+		Assert.assertEquals(39, doc.getFields().size());
 	}
 
 	@Test
