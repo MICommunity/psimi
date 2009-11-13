@@ -1,0 +1,90 @@
+ -----
+ The PSI-MI tabular format: MITAB25
+ -----
+ Samuel Kerrien
+ -----
+ 24 January 2007
+ -----
+
+MITAB25 Format
+
+
+  The MIF25 XML format allows a detailed representation of fully annotated
+  interaction records both for inter-database and database-end user data
+  transmission. However, many use cases only require a simple, tabular
+  format of interaction records for initial data analysis. Thus, version
+  2.5 of the PSI MI standard also defines such a simple tabular format,
+  which aims at supporting “lightweight” use cases. The MITAB25 format has
+  been derived from the tabular format provided by BioGrid[*]. MITAB25
+  only describes binary interactions, each (undirected) pair of
+  interactors is only listed once, on one line.
+  
+  Columns are separated by tabulators and have the following contents:
+
+  [[1]] Unique identifier for interactor A, represented as databaseName:ac, where
+        databaseName is the name of the corresponding database as defined in the
+        PSI-MI controlled vocabulary, and ac is the unique primary identifier of
+        the molecule in the database. Identifiers from multiple databases can be
+        separated by "|". It is recommended that proteins be identified by stable 
+        identifiers such as their UniProtKB or RefSeq accession number.
+
+  [[2]] Unique identifier for interactor B.
+
+  [[3]] Alternative identifier for interactor A, for example the official gene
+        symbol as defined by a recognised nomenclature committee. Representation
+        as databaseName:identifier. Multiple identifiers separated by "|". 
+
+  [[4]] Alternative identifier for interactor B.
+
+  [[5]] Aliases for A, separated by "|". Representation as databaseName:identifier.
+        Multiple identifiers separated by "|".
+
+  [[6]] Aliases for B.
+
+  [[7]] Interaction detection methods, taken from the corresponding PSI-MI controlled
+        vocabulary, and represented as darabaseName:identifier(methodName),
+        separated by "|".
+
+  [[8]] First author surname(s) of the publication(s) in which this interaction has
+        been shown, optionally followed by additional indicators, e.g. "Doe-2005-a".
+        Separated by "|".
+
+  [[9]] Identifier of the publication in which this interaction has been shown.
+        Database name taken from the PSI-MI controlled vocabulary, represented as
+        databaseName:identifier. Multiple identifiers separated by "|".
+
+  [[10]] NCBI Taxonomy identifier for interactor A. Database name for NCBI taxid taken
+         from the PSI-MI controlled vocabulary, represented as databaseName:identifier.
+         Multiple identifiers separated by "|".
+         Note: In this column, the databaseName:identifier(speciesName) notation is only
+         there for consistency. Currently no taxonomy identifiers other than NCBI taxid are
+         anticipated, apart from the use of -1 to indicate "in vitro" and -2 to indicate
+         "chemical synthesis".
+
+  [[11]] NCBI Taxonomy identifier for molecule B.
+
+  [[12]] Interaction types, taken from the corresponding PSI-MI controlled vocabulary, and
+         represented as dataBaseName:identifier(interactionType), separated by "|".
+
+  [[13]] Source databases and identifiers, taken from the corresponding PSI-MI controlled
+         vocabulary, and represented as databaseName:identifier(sourceName). Multiple source
+         databases can be separated by "|".
+
+  [[14]] Interaction identifier(s) in the corresponding source database, represented by
+         databaseName:identifier
+
+  [[15]] Confidence score. Denoted as scoreType:value. There are many different types of
+         confidence score, but so far no controlled vocabulary. Thus the only current
+         recommendation is to use score types consistently within one source.
+         Multiple scores separated by "|".
+
+  All further columns are currently undefined.
+  All columns are mandatory. Where values are missing, an empty cell is marked by ‘-‘.
+
+Example
+
+*------------------*------------------*-----------*-----------*-----------*-----------*-------------*-----------*-----------*-----------*------------*------------------*--------------------*-----------*-----------*
+| Field #1         | Field #2         | Field #3  | Field #4  | Field #5  | Field #6  | Field #7    | Field #8  | Field #9  | Field #10 | Field #11  | Field #12        | Field #13          | Field #14 | Field #15 |
+*------------------*------------------*-----------*-----------*-----------*-----------*-------------*-----------*-----------*-----------*------------*------------------*--------------------*-----------*-----------*
+| uniprotkb:P12345 | uniprotkb:Q98765 |     -     |     -     |      -    |     -     | y2h:MI:xxxx | author    | 123456789 | taxid9606 | taxid:9606 | physical:MI:yyyy |  intact:EBI-123456 |    -      |    -      |
+*------------------*------------------*-----------*-----------*-----------*-----------*-------------*-----------*-----------*-----------*------------*------------------*--------------------*-----------*-----------*
