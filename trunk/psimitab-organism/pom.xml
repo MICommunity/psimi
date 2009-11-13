@@ -5,12 +5,12 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.7.7-SNAPSHOT</version>
+        <version>1.7.8-SNAPSHOT</version>
     </parent>
 
     <artifactId>psimitab-organism</artifactId>
     <packaging>jar</packaging>
-    <version>1.7.7-SNAPSHOT</version>
+    <version>1.7.8-SNAPSHOT</version>
 
     <name>PSI :: Computation of organism tree from MITAB25</name>
 
