@@ -5,6 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
+import psidev.psi.mi.xml.model.Entry;
+import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.ExperimentDescription;
@@ -199,6 +201,41 @@ public class Mi25Validator extends Validator {
         } catch ( Exception e ) {
             throw new ValidatorException( "Unable to process input stream", e );
         }
+    }
+
+    /**
+     * Validates a PSI-MI 2.5 EntrySet.
+     *
+     * @param es the entrySet to validate.
+     * @return a collection of messages
+     * @throws ValidatorException
+     */
+    public ValidatorReport validate( EntrySet es ) throws ValidatorException {
+
+        final ValidatorReport report = new ValidatorReport();
+
+        for ( Entry entry : es.getEntries() ) {
+            for ( Interaction interaction : entry.getInteractions() ) {
+
+                // cv mapping
+                Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
+                if( ! messages.isEmpty() )
+                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
+
+                // object rule
+                messages = validate( interaction );
+                if( ! messages.isEmpty() )
+                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
+
+                for ( ExperimentDescription experiment : interaction.getExperiments() ) {
+                    messages = validate( experiment );
+                    if( ! messages.isEmpty() )
+                        report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
+                }
+            }
+        }
+
+        return report;
     }
 
     //////////////////////////////
