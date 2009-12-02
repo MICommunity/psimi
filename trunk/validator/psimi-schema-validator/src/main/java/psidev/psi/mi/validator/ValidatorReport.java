@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 /**
- * Stores syntaxctic and semantic messages for a run of validation.
+ * Stores syntactic and semantic messages for a run of validation.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
