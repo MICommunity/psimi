@@ -24,10 +24,10 @@ import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
 
-import java.util.Collection;
-import java.util.Set;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Utilities for the MI25 Rules.
@@ -99,6 +99,7 @@ public final class RuleUtils {
     public static final String BAIT_MI_REF = "MI:0496";
     public static final String PREY_MI_REF = "MI:0498";
     public static final String ANCILARY_MI_REF = "MI:0684";
+    public static final String NEUTRAL_MI_REF = "MI:0497";
 
     /////////////////////////////////
     // interaction detection method
@@ -106,6 +107,8 @@ public final class RuleUtils {
     public static final String TWO_HYBRID_MI_REF = "MI:0018";
     public static final String TWO_HYBRID_ARRAY_MI_REF = "MI:0397";
     public static final String IMAGING_TECHNIQUE_MI_REF = "MI:0428";
+    public static final String CROSS_LINKING_MI_REF = "MI:0030";
+    public static final String PROTEIN_COMPLEMENTATION_MI_REF = "MI:0090";
 
     ///////////////////////////
     // Utility methods
@@ -136,21 +139,21 @@ public final class RuleUtils {
             case 1:
                 // this is the root of newt, which users are not suppose to use to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
-                                                    " for which the taxid was: '" + taxId +
-                                                    "'. Please choose a child term of the NEWT root.",
-                                                    MessageLevel.WARN,
-                                                    context,
-                                                    rule ) );
+                        " for which the taxid was: '" + taxId +
+                        "'. Please choose a child term of the NEWT root.",
+                        MessageLevel.ERROR,
+                        context,
+                        rule ) );
                 break;
 
             case 0:
                 // this is the root of newt, which users are not suppose to use to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
-                                                    " for which the taxid was: '" + taxId +
-                                                    "'. Please choose a valid NEWT term.",
-                                                    MessageLevel.WARN,
-                                                    context,
-                                                    rule ) );
+                        " for which the taxid was: '" + taxId +
+                        "'. Please choose a valid NEWT term.",
+                        MessageLevel.ERROR,
+                        context,
+                        rule ) );
                 break;
 
             default:
@@ -158,10 +161,10 @@ public final class RuleUtils {
                 if ( taxId < 0 ) {
                     // break here
                     messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
-                                                        " for which the taxid was: '" + taxId + "'.",
-                                                        MessageLevel.WARN,
-                                                        context,
-                                                        rule ) );
+                            " for which the taxid was: '" + taxId + "'.",
+                            MessageLevel.ERROR,
+                            context,
+                            rule ) );
                 } else {
                     // TODO optimize via caching of valid taxid for a period of time (in a same file it is very likely that we will see only a handful of taxids.)
                     final OntologyAccess newt = ontologyManager.getOntologyAccess( "NEWT" );
@@ -169,11 +172,11 @@ public final class RuleUtils {
                     if ( newtTerm == null ) {
                         // could not find it
                         final String msg = objectType + " with an invalid " + organismType + ", the taxid given was '" +
-                                           taxId + "' which cannot be found in NEWT.";
+                                taxId + "' which cannot be found in NEWT.";
                         messages.add( new ValidatorMessage( msg,
-                                                            MessageLevel.WARN,
-                                                            context,
-                                                            rule ) );
+                                MessageLevel.ERROR,
+                                context,
+                                rule ) );
                     }
                 }
         }
@@ -190,7 +193,7 @@ public final class RuleUtils {
         }
 
         String typeId = null;
-        
+
         if( type.getXref() != null ) {
             typeId = type.getXref().getPrimaryRef().getId();
         }
@@ -341,18 +344,75 @@ public final class RuleUtils {
 
         Collection<Attribute> foundAttributes = new ArrayList<Attribute>( attributes.size() );
 
-        if ( attributes != null ) {
-            for ( Attribute attribute : attributes ) {
-                if( nameAc != null && !nameAc.equals( attribute.getNameAc() ) ) {
+        for ( Attribute attribute : attributes ) {
+            if( nameAc != null){
+                if (!nameAc.equals( attribute.getNameAc() )) {
                     continue;
+
                 }
-                if( name != null && !name.equals( attribute.getName() ) ) {
-                    continue;
-                }
-                foundAttributes.add( attribute );
             }
+            if( name != null) {
+                if (!name.equals( attribute.getName() )){
+                    continue;
+                }
+            }
+            foundAttributes.add( attribute );
         }
 
         return foundAttributes;
+    }
+
+    public static Collection<DbReference> findByReferenceType( Collection<DbReference> dbReferences, String mi, String name ) {
+        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
+        for ( DbReference reference : dbReferences ) {
+            if (mi != null){
+                if (reference.hasRefTypeAc()){
+                    if (mi.equals( reference.getRefTypeAc() )){
+                        selectedReferences.add( reference );
+                    }
+                }
+            }
+            else if (name != null && reference.hasRefType()){
+                if (name.equals( reference.getRefType() )){
+                    selectedReferences.add( reference );
+                }
+            }
+        }
+        return selectedReferences;
+    }
+
+    public static Collection<DbReference> findByDatabase( Collection<DbReference> dbReferences, String mi, String name ) {
+        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
+        for ( DbReference reference : dbReferences ) {
+
+            if (mi != null && reference.hasDbAc()){
+                if (mi.equals( reference.getDbAc() )){
+                    selectedReferences.add( reference );
+                }
+            }
+            else if(name != null && reference.getDb() != null){
+                if (name.equals( reference.getDb() )){
+                    selectedReferences.add( reference );
+                }
+            }
+        }
+        return selectedReferences;
+    }
+
+    public static Collection<Attribute> findByAttributeName( Collection<Attribute> attributes, String mi, String name ) {
+        Collection<Attribute> selectedAttribute = new ArrayList<Attribute>( attributes.size() );
+        for ( Attribute attribute : attributes ) {
+            if (mi != null && attribute.hasNameAc()){
+                if (mi.equals( attribute.getNameAc() )){
+                    selectedAttribute.add( attribute );
+                }
+            }
+            else if(name != null && attribute.getName() != null){
+                if (name.equals( attribute.getName() )){
+                    selectedAttribute.add( attribute );
+                }
+            }
+        }
+        return selectedAttribute;
     }
 }
