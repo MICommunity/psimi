@@ -2,17 +2,16 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.tools.ontology_manager.OntologyManager;
+import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <b> Checks that participants have a single experimental role.</b>
@@ -28,7 +27,7 @@ public class SingleExperimentRoleRule extends Mi25InteractionRule {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Single Experimental Role Check" );
+        setName( "Single Experimental BiologicalRole Check" );
 
         setDescription( "Check that each interaction's participant has a single experimental role." );
 

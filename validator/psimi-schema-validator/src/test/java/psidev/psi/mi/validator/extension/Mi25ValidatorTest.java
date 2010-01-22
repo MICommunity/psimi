@@ -1,24 +1,27 @@
 package psidev.psi.mi.validator.extension;
 
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.Ignore;
-import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.xpath.XPathHelper;
-import psidev.psi.tools.validator.xpath.XPathResult;
-import psidev.psi.tools.validator.preferences.UserPreferences;
+import org.junit.Test;
+import psidev.psi.mi.validator.ValidatorReport;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
 import psidev.psi.mi.xml.PsimiXmlReader;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.EntrySet;
+import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
-import psidev.psi.mi.validator.ValidatorReport;
+import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.preferences.UserPreferences;
+import psidev.psi.tools.validator.xpath.XPathHelper;
+import psidev.psi.tools.validator.xpath.XPathResult;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Mi25Validator Tester.
@@ -112,6 +115,41 @@ public class Mi25ValidatorTest {
         Collection<ValidatorMessage> messages = getValidationMessage("10409737-wrongInteractorType.xml" );
         printMessages( messages );
         Assert.assertEquals( 1, messages.size() );
+    }
+
+    @Test
+    public void validate_Experiment() throws Exception {
+        // Test a valid file
+        Collection<ValidatorMessage> messages = getValidationMessage("Alzheimer.xml" );
+        printMessages( messages );
+        Assert.assertEquals( 0, messages.size() );
+    }
+
+    @Test
+    public void validate_MissingInteractionDetectionMethod() throws Exception {
+        // Test that all experiments have a InteractionDetectionMethod
+        Collection<ValidatorMessage> messages = getValidationMessage("Alzheimer-NoInteractionDetectionMethod.xml" );
+        printMessages( messages );
+        // missing Interaction Detection Method not detected
+        Assert.assertEquals( 0, messages.size() );
+    }
+
+    @Test
+    public void validate_MissingParticipantDetectionMethod() throws Exception {
+        // Test that all experiments have a InteractionDetectionMethod
+        Collection<ValidatorMessage> messages = getValidationMessage("Alzheimer-MissingParticipantDetectionMethod.xml" );
+        printMessages( messages );
+        // missing Participant Detection Method not detected
+        Assert.assertEquals( 0, messages.size() );
+    }
+
+    @Test
+    public void validate_MissingHostOrganism() throws Exception {
+        // Test that all experiments have an host organism
+        Collection<ValidatorMessage> messages = getValidationMessage("Alzheimer-MissingHostOrganism.xml" );
+        printMessages( messages );
+        // missing Host Organism not detected
+        Assert.assertEquals( 0, messages.size() );
     }
 
     @Test

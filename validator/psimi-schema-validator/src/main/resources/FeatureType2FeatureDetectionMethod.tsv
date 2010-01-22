@@ -1,0 +1,7 @@
+"#FEATURE TYPE MI"	"FEATURE TYPE NAME"	"INCLUDE CHILDREN"	"FEATURE DET ID MI"	"FEATURE DET NAME"	"INCLUDE CHILDREN"	"MESSAGE LEVEL"
+"MI:0117"	"binding site"	"TRUE"	"MI:0056"	"full identification by DNA sequencing"	"FALSE"	"SHOULD"
+"MI:0117"	"binding site"	"TRUE"	"MI:0074"	"mutation analysis"	"TRUE"	"SHOULD"
+"MI:0117"	"binding site"	"TRUE"	"MI:0114"	"X-ray cristallography"	"TRUE"	"SHOULD"
+"MI:0117"	"binding site"	"TRUE"	"MI:0113"	"western blot"	"TRUE"	"SHOULD"
+"MI:0117"	"binding site"	"TRUE"	"MI:0436"	"protein footprinting"	"FALSE"	"SHOULD"
+"MI:0118"	"mutation"	"FALSE"	"MI:0074"	"mutation analysis"	"FALSE"	"SHOULD"

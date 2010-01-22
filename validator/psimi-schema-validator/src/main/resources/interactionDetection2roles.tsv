@@ -1,119 +1,120 @@
-#DETECTION MI	DETECTION NAME	INCLUDE CHILDREN	EXP ROLE MI	EXP ROLE NAME	BIOL ROLE MI	BIOL ROLE NAME	ERROR LEVEL
-MI:0004	affinity chromatography technology	TRUE	MI:0496	bait	MI:0499	unspecified role	
-MI:0004	affinity chromatography technology		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0004	affinity chromatography technology		MI:0498	prey	MI:0499	unspecified role	
-MI:0006	anti bait coimmunoprecipitation		MI:0496	bait	MI:0499	unspecified role	
-MI:0006	anti bait coimmunoprecipitation		MI:0498	prey	MI:0499	unspecified role	
-MI:0007	anti tag coimmunoprecipitation		MI:0496	bait	MI:0499	unspecified role	
-MI:0007	anti tag coimmunoprecipitation		MI:0498	prey	MI:0499	unspecified role	
-MI:0008	array technology	TRUE	MI:0496	bait	MI:0499	unspecified role	
-MI:0008	array technology		MI:0498	prey	MI:0499	unspecified role	
-MI:0010	beta galactosidase complementation		MI:0496	bait	MI:0499	unspecified role	
-MI:0010	beta galactosidase complementation		MI:0498	prey	MI:0499	unspecified role	
-MI:0018	two hybrid	TRUE	MI:0496	bait	MI:0499	unspecified role	
-MI:0018	two hybrid		MI:0498	prey	MI:0499	unspecified role	
-MI:0018	two hybrid		MI:0684	ancillary	MI:0499	unspecified role	
-MI:0019	coimmunoprecipitation	TRUE	MI:0496	bait	MI:0499	unspecified role	
-MI:0019	coimmunoprecipitation		MI:0498	prey	MI:0499	unspecified role	
-MI:0027	cosedimentation	TRUE	MI:0497	neutral component	MI:0499	unspecified role	
-MI:0027	cosedimentation		MI:0499	unspecified role	MI:0501	enzyme	Warn
-MI:0027	cosedimentation		MI:0499	unspecified role	MI:0502	enzyme target	Warn
-#MI:0027	cosedimentation		MI:0684	ancillary	MI:0682	cofactor	Check
-MI:0040	electron microscopy	TRUE	MI:0496	bait	MI:0499	unspecified role	Warn
-MI:0040	electron microscopy		MI:0498	prey	MI:0499	unspecified role	Warn
-MI:0040	electron microscopy		MI:0499	unspecified role	MI:0501	enzyme	
-MI:0047	far western blotting		MI:0496	bait	MI:0499	unspecified role	
-MI:0047	far western blotting		MI:0498	prey	MI:0499	unspecified role	
-MI:0049	filter binding		MI:0496	bait	MI:0499	unspecified role	
-MI:0049	filter binding		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0049	filter binding		MI:0498	prey	MI:0499	unspecified role	
-MI:0053	fluorescence polarization spectroscopy		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0054	fluorescence-activated cell sorting	TRUE	MI:0496	bait	MI:0499	unspecified role	
-MI:0054	fluorescence-activated cell sorting		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0054	fluorescence-activated cell sorting		MI:0498	prey	MI:0499	unspecified role	
-MI:0055	fluorescent resonance energy transfer		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0055	fluorescent resonance energy transfer		MI:0499	unspecified role	MI:0503	self	Warn
-MI:0055	fluorescent resonance energy transfer		MI:0583	fluorescence donor	MI:0499	unspecified role	
-MI:0055	fluorescent resonance energy transfer		MI:0584	fluorescence acceptor	MI:0499	unspecified role	
-MI:0055	fluorescent resonance energy transfer		MI:0684	ancillary	MI:0499	unspecified role	Warn
-MI:0065	isothermal titration calorimetry		MI:0496	bait	MI:0499	unspecified role	Warn
-MI:0065	isothermal titration calorimetry		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0065	isothermal titration calorimetry		MI:0498	prey	MI:0499	unspecified role	Warn
-MI:0067	light scattering	TRUE	MI:0497	neutral component	MI:0499	unspecified role	
-MI:0069	mass spectrometry studies of complexes		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0071	molecular sieving		MI:0496	bait	MI:0499	unspecified role	Warn
-MI:0071	molecular sieving		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0071	molecular sieving		MI:0498	prey	MI:0499	unspecified role	Warn
-MI:0077	nuclear magnetic resonance		MI:0497	neutral component	MI:0499	unspecified role	
-MI:0081	peptide array		MI:0496	bait	MI:0499	unspecified role	
-MI:0081	peptide array		MI:0498	prey	MI:0499	unspecified role
-MI:0084	phage display		MI:0496	bait	MI:0499	unspecified role
-MI:0084	phage display		MI:0498	prey	MI:0499	unspecified role
-MI:0089	protein array		MI:0496	bait	MI:0499	unspecified role
-MI:0089	protein array		MI:0498	prey	MI:0499	unspecified role
-MI:0090	protein complementation assay		MI:0496	bait	MI:0499	unspecified role
-MI:0090	protein complementation assay		MI:0497	neutral component	MI:0499	unspecified role
-MI:0090	protein complementation assay		MI:0498	prey	MI:0499	unspecified role
-MI:0096	pull down		MI:0496	bait	MI:0499	unspecified role
-MI:0096	pull down		MI:0498	prey	MI:0499	unspecified role
-MI:0096	pull down		MI:0498	prey	MI:0586	inhibitor
-MI:0096	pull down		MI:0498	prey	MI:0682	cofactor
-MI:0096	pull down		MI:0498	prey	MI:0840	stimulator
-MI:0096	pull down		MI:0499	unspecified role	MI:0499	unspecified role
-MI:0096	pull down		MI:0499	unspecified role	MI:0501	enzyme
-MI:0096	pull down		MI:0499	unspecified role	MI:0502	enzyme target
-MI:0096	pull down		MI:0684	ancillary	MI:0499	unspecified role
-MI:0099	scintillation proximity assay	TRUE	MI:0496	bait	MI:0499	unspecified role
-MI:0099	scintillation proximity assay		MI:0498	prey	MI:0499	unspecified role
-MI:0107	surface plasmon resonance		MI:0496	bait	MI:0499	unspecified role
-MI:0107	surface plasmon resonance		MI:0497	neutral component	MI:0499	unspecified role
-MI:0107	surface plasmon resonance		MI:0499	unspecified role	MI:0501	enzyme
-MI:0107	surface plasmon resonance		MI:0498	prey	MI:0499	unspecified role
-MI:0107	surface plasmon resonance		MI:0499	unspecified role	MI:0502	enzyme target
-MI:0108	t7 phage display		MI:0496	bait	MI:0499	unspecified role
-MI:0108	t7 phage display		MI:0498	prey	MI:0499	unspecified role
-MI:0111	dihydrofolate reductase reconstruction		MI:0496	bait	MI:0499	unspecified role
-MI:0111	dihydrofolate reductase reconstruction		MI:0497	neutral component	MI:0499	unspecified role
-MI:0111	dihydrofolate reductase reconstruction		MI:0498	prey	MI:0499	unspecified role
-MI:0112	ubiquitin reconstruction		MI:0496	bait	MI:0499	unspecified role
-MI:0112	ubiquitin reconstruction		MI:0498	prey	MI:0499	unspecified role
-MI:0114	x-ray crystallography		MI:0497	neutral component	MI:0499	unspecified role
-MI:0226	ion exchange chromatography		MI:0497	neutral component	MI:0499	unspecified role
-MI:0231	mammalian protein protein interaction trap		MI:0496	bait	MI:0499	unspecified role
-MI:0231	mammalian protein protein interaction trap		MI:0498	prey	MI:0499	unspecified role
-MI:0276	blue native page		MI:0497	neutral component	MI:0499	unspecified role
-MI:0397	two hybrid array		MI:0496	bait	MI:0499	unspecified role
-MI:0397	two hybrid array		MI:0498	prey	MI:0499	unspecified role
-MI:0402	chromatin immunoprecipitation assays		MI:0496	bait	MI:0499	unspecified role
-MI:0402	chromatin immunoprecipitation assays		MI:0498	prey	MI:0499	unspecified role
-MI:0404	comigration in non denaturing gel electrophoresis		MI:0497	neutral component	MI:0499	unspecified role
-MI:0405	competition binding		MI:0496	bait	MI:0499	unspecified role
-MI:0405	competition binding		MI:0497	neutral component	MI:0499	unspecified role
-MI:0405	competition binding		MI:0498	prey	MI:0499	unspecified role
-MI:0411	enzyme linked immunosorbent assay		MI:0496	bait	MI:0499	unspecified role
-MI:0411	enzyme linked immunosorbent assay		MI:0498	prey	MI:0499	unspecified role
-MI:0415	enzymatic study	TRUE	MI:0497	neutral component	MI:0499	unspecified role
-MI:0415	enzymatic study		MI:0684	ancillary	MI:0501	enzyme
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0502	enzyme target
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0840	stimulator
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0501	enzyme
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0502	enzyme target
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0503	self
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0579	electron donor
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0580	electron acceptor
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0586	inhibitor
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0682	cofactor
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0840	stimulator
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0499	unspecified role
-MI:0415	enzymatic study		MI:0499	unspecified role	MI:0840	stimulator
-MI:0416	fluorescence microscopy	TRUE	MI:0496	neutral component	MI:0499	unspecified role
-MI:0428	imaging techniques	TRUE	MI:0497	neutral component	MI:0499	unspecified role
-MI:0432	one hybrid		MI:0496	bait	MI:0499	unspecified role
-MI:0432	one hybrid		MI:0498	prey	MI:0499	unspecified role
-MI:0588	3 hybrid method	TRUE	MI:0496	bait	MI:0499	unspecified role
-MI:0588	3 hybrid method		MI:0498	prey	MI:0499	unspecified role
-MI:0588	3 hybrid method		MI:0684	ancillary	MI:0499	unspecified role
-MI:0676	tandem affinity purification	TRUE	MI:0496	bait	MI:0499	unspecified role
-MI:0676	tandem affinity purification		MI:0498	prey	MI:0499	unspecified role
-MI:0678	antibody array		MI:0496	bait	MI:0499	unspecified role
-MI:0678	antibody array		MI:0498	prey	MI:0499	unspecified role
+"#DETECTION MI"	"DETECTION NAME"	"INCLUDE CHILDREN"	"EXP ROLE MI"	"EXP ROLE NAME"	"BIOL ROLE MI"	"BIOL ROLE NAME"	"ERROR LEVEL"
+"MI:0004"	"affinity chromatography technology"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0004"	"affinity chromatography technology"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0004"	"affinity chromatography technology"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0006"	"anti bait coimmunoprecipitation"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0006"	"anti bait coimmunoprecipitation"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0007"	"anti tag coimmunoprecipitation"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0007"	"anti tag coimmunoprecipitation"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0008"	"array technology"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0008"	"array technology"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0010"	"beta galactosidase complementation"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0010"	"beta galactosidase complementation"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+							
+"MI:0018"	"two hybrid"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0018"	"two hybrid"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0018"	"two hybrid"		"MI:0684"	"ancillary"	"MI:0499"	"unspecified role"	
+"MI:0019"	"coimmunoprecipitation"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0019"	"coimmunoprecipitation"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0027"	"cosedimentation"	"TRUE"	"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0027"	"cosedimentation"		"MI:0499"	"unspecified role"	"MI:0501"	"enzyme"	"Warn"
+"MI:0027"	"cosedimentation"		"MI:0499"	"unspecified role"	"MI:0502"	"enzyme target"	"Warn"
+"#MI:0027"	"cosedimentation"		"MI:0684"	"ancillary"	"MI:0682"	"cofactor"	"Check"
+"MI:0040"	"electron microscopy"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	"Warn"
+"MI:0040"	"electron microscopy"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	"Warn"
+"MI:0040"	"electron microscopy"		"MI:0499"	"unspecified role"	"MI:0501"	"enzyme"	
+"MI:0047"	"far western blotting"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0047"	"far western blotting"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0049"	"filter binding"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0049"	"filter binding"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0049"	"filter binding"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0053"	"fluorescence polarization spectroscopy"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0054"	"fluorescence-activated cell sorting"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0054"	"fluorescence-activated cell sorting"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0054"	"fluorescence-activated cell sorting"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0055"	"fluorescent resonance energy transfer"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0055"	"fluorescent resonance energy transfer"		"MI:0499"	"unspecified role"	"MI:0503"	"self"	"Warn"
+"MI:0055"	"fluorescent resonance energy transfer"		"MI:0583"	"fluorescence donor"	"MI:0499"	"unspecified role"	
+"MI:0055"	"fluorescent resonance energy transfer"		"MI:0584"	"fluorescence acceptor"	"MI:0499"	"unspecified role"	
+"MI:0055"	"fluorescent resonance energy transfer"		"MI:0684"	"ancillary"	"MI:0499"	"unspecified role"	"Warn"
+"MI:0065"	"isothermal titration calorimetry"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	"Warn"
+"MI:0065"	"isothermal titration calorimetry"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0065"	"isothermal titration calorimetry"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	"Warn"
+"MI:0067"	"light scattering"	"TRUE"	"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0069"	"mass spectrometry studies of complexes"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0071"	"molecular sieving"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	"Warn"
+"MI:0071"	"molecular sieving"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0071"	"molecular sieving"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	"Warn"
+"MI:0077"	"nuclear magnetic resonance"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0081"	"peptide array"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0081"	"peptide array"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0084"	"phage display"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0084"	"phage display"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0089"	"protein array"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0089"	"protein array"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0090"	"protein complementation assay"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0090"	"protein complementation assay"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0090"	"protein complementation assay"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0096"	"pull down"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0096"	"pull down"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0096"	"pull down"		"MI:0498"	"prey"	"MI:0586"	"inhibitor"	
+"MI:0096"	"pull down"		"MI:0498"	"prey"	"MI:0682"	"cofactor"	
+"MI:0096"	"pull down"		"MI:0498"	"prey"	"MI:0840"	"stimulator"	
+"MI:0096"	"pull down"		"MI:0499"	"unspecified role"	"MI:0499"	"unspecified role"	
+"MI:0096"	"pull down"		"MI:0499"	"unspecified role"	"MI:0501"	"enzyme"	
+"MI:0096"	"pull down"		"MI:0499"	"unspecified role"	"MI:0502"	"enzyme target"	
+"MI:0096"	"pull down"		"MI:0684"	"ancillary"	"MI:0499"	"unspecified role"	
+"MI:0099"	"scintillation proximity assay"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0099"	"scintillation proximity assay"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0107"	"surface plasmon resonance"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0107"	"surface plasmon resonance"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0107"	"surface plasmon resonance"		"MI:0499"	"unspecified role"	"MI:0501"	"enzyme"	
+"MI:0107"	"surface plasmon resonance"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0107"	"surface plasmon resonance"		"MI:0499"	"unspecified role"	"MI:0502"	"enzyme target"	
+"MI:0108"	"t7 phage display"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0108"	"t7 phage display"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0111"	"dihydrofolate reductase reconstruction"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0111"	"dihydrofolate reductase reconstruction"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0111"	"dihydrofolate reductase reconstruction"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0112"	"ubiquitin reconstruction"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0112"	"ubiquitin reconstruction"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0114"	"x-ray crystallography"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0226"	"ion exchange chromatography"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0231"	"mammalian protein protein interaction trap"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0231"	"mammalian protein protein interaction trap"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0276"	"blue native page"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0397"	"two hybrid array"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0397"	"two hybrid array"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0402"	"chromatin immunoprecipitation assays"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0402"	"chromatin immunoprecipitation assays"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0404"	"comigration in non denaturing gel electrophoresis"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0405"	"competition binding"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0405"	"competition binding"		"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0405"	"competition binding"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0411"	"enzyme linked immunosorbent assay"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0411"	"enzyme linked immunosorbent assay"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0415"	"enzymatic study"	"TRUE"	"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0415"	"enzymatic study"		"MI:0684"	"ancillary"	"MI:0501"	"enzyme"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0502"	"enzyme target"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0840"	"stimulator"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0501"	"enzyme"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0502"	"enzyme target"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0503"	"self"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0579"	"electron donor"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0580"	"electron acceptor"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0586"	"inhibitor"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0682"	"cofactor"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0840"	"stimulator"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0499"	"unspecified role"	
+"MI:0415"	"enzymatic study"		"MI:0499"	"unspecified role"	"MI:0840"	"stimulator"	
+"MI:0416"	"fluorescence microscopy"	"TRUE"	"MI:0496"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0428"	"imaging techniques"	"TRUE"	"MI:0497"	"neutral component"	"MI:0499"	"unspecified role"	
+"MI:0432"	"one hybrid"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0432"	"one hybrid"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0588"	"3 hybrid method"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0588"	"3 hybrid method"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0588"	"3 hybrid method"		"MI:0684"	"ancillary"	"MI:0499"	"unspecified role"	
+"MI:0676"	"tandem affinity purification"	"TRUE"	"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0676"	"tandem affinity purification"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	
+"MI:0678"	"antibody array"		"MI:0496"	"bait"	"MI:0499"	"unspecified role"	
+"MI:0678"	"antibody array"		"MI:0498"	"prey"	"MI:0499"	"unspecified role"	

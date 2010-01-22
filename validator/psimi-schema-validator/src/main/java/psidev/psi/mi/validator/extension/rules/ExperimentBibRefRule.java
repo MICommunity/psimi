@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * <b> check that each experiment has a valid bibref to pubmed or DOI.</b>
+ * <b> check that each experiment has a valid bibref to pubmed or DOI. Check if the IMEx ID is valid when a cross reference type 'imex-primary' appears. </b>
  * <p/>
  *
  * @author Samuel Kerrien, Luisa Montecchi
@@ -25,7 +24,8 @@ import java.util.regex.Pattern;
 public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
     Pattern EMAIL_VALIDATOR = Pattern.compile( "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}" );
-
+    Pattern IMEx_ID = Pattern.compile( "IM-[0-9]+" );
+    
     public ExperimentBibRefRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
 
@@ -35,16 +35,19 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                         "details (contact email, author list and publication title)." );
         addTip( "You can search for pubmed identifier at http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed" );
         addTip( "Your pubmed or DOI bibliographical reference should have a type: primary-reference" );
+        addTip( "All records must have an IMEx ID (IM-xxx) when there is a cross reference type: imex-primary" );
         addTip( "The PSI-MI identifier for PubMed is: MI:0446" );
         addTip( "The PSI-MI identifier for DOI is: MI:0574" );
         addTip( "The PSI-MI identifier for primary-reference is: MI:0358" );
         addTip( "The PSI-MI identifier for contact-email is: MI:0634" );
         addTip( "The PSI-MI identifier for author-list is: MI:0636" );
+        addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
     }
 
     /**
      * Make sure that an experiment either has a pubmed id in its bibRef or that is has a publication title,
-     * author name and contact email.
+     * author name and contact email. Check also that at least one pubMed Id or DOI has a reference type set to 'primary-reference'.
+     * Check if the id of references with a 'imex-primary' cross reference type is a valid IMEx ID (IM-xxx).
      *
      * @param experiment an experiment to check on.
      * @return a collection of validator messages.
@@ -68,29 +71,64 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
             if ( xref != null ) {
 
                 final Collection<DbReference> dbReferences = xref.getAllDbReferences();
+                final Collection<DbReference> allDbReferences = dbReferences;                
+
+                // Check xRef (for Imex ID)
+                if (experiment.hasXref()){
+                    allDbReferences.addAll(experiment.getXref().getAllDbReferences());
+                }
 
                 // search for reference type: primary-reference
-                Collection<DbReference> primaryReferences = findByReferenceType( dbReferences, "MI:0358", "primary-reference" );
+                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference" );
+                // search for reference type: imex-primary
+                Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( allDbReferences, "MI:0662", "imex-primary" );
+
+                // If there is a reference type set to 'imex-primary'
+                if (!imexReferences.isEmpty()){
+                    for ( DbReference imex  : imexReferences ) {
+                        final String imexId = imex.getId();
+                        if( imexId != null) {
+                            if (imexId.trim().length() > 0 ){
+                                if (!IMEx_ID.matcher(imexId).matches()){
+                                    messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not valid.",
+                                            MessageLevel.ERROR,
+                                            context,
+                                            this ) );
+                                }
+                            }
+
+                        }
+                        else {
+                            messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not valid.",
+                                                                    MessageLevel.ERROR,
+                                                                    context,
+                                                                    this ) );
+                        }
+                    }
+                }
                 if ( !primaryReferences.isEmpty() ) {
                     // check if we have a pubmed or doi identifier available
 
-                    final Collection<DbReference> pubmeds = findByDatabase( primaryReferences, "MI:0446", "pubmed" );
-                    final Collection<DbReference> dois = findByDatabase( primaryReferences, "MI:0574", "doi" );
+                    final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
+                    final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );
 
                     int emptyPmids = 0;
                     for ( DbReference pubmed : pubmeds ) {
                         final String pmid = pubmed.getId();
-                        if( pmid != null && pmid.trim().length() > 0 ) {
-                            try {
-                                Integer.parseInt( pmid );
-                            } catch ( NumberFormatException e ) {
-                                messages.add( new ValidatorMessage( "You have specified an invalid pubmed id: '" + pmid + "'",
-                                                                    MessageLevel.WARN,
-                                                                    context,
-                                                                    this ) );
+                        if( pmid != null) {
+                            if (pmid.trim().length() > 0){
+                                try {
+                                    Integer.parseInt( pmid );
+                                } catch ( NumberFormatException e ) {
+                                    messages.add( new ValidatorMessage( "You have specified an invalid pubmed id: '" + pmid + "'",
+                                            MessageLevel.WARN,
+                                            context,
+                                            this ) );
+                                }
                             }
+
                         } else {
-                             emptyPmids++;
+                            emptyPmids++;
                         }
                     }
 
@@ -103,6 +141,13 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
                     if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
                         hasPublicationIdentifier = true;
+
+                        if (pubmeds.size() > 1){
+                            messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference'.",
+                                                            MessageLevel.WARN,
+                                                            context,
+                                                            this ) );
+                        }
                     }
                 }
             }
@@ -111,7 +156,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
         if ( !hasPublicationIdentifier ) {
             // check that we have author email, publication title and author list
-            Collection<Attribute> emails = findByAttributeName( experiment.getAttributes(), "MI:0634", "contact-email" );
+            Collection<Attribute> emails = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0634", "contact-email" );
             int countValidEmail = 0;
             if ( emails.isEmpty() ) {
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, a contact email is " +
@@ -155,7 +200,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 }
             }
 
-            Collection<Attribute> authorList = findByAttributeName( experiment.getAttributes(), "MI:0636", "author-list" );
+            Collection<Attribute> authorList = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0636", "author-list" );
             if ( authorList.isEmpty() ) {
                 // in the absence of a publication identifier, a author list is required.
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, an author list is " +
@@ -204,38 +249,5 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
         } // if hasPublicationIdentifier
 
         return messages;
-    }
-
-    ////////////////////////
-    // Utilities
-
-    private Collection<Attribute> findByAttributeName( Collection<Attribute> attributes, String mi, String name ) {
-        Collection<Attribute> selectedAttribute = new ArrayList<Attribute>( attributes.size() );
-        for ( Attribute attribute : attributes ) {
-            if ( mi.equals( attribute.getNameAc() ) || name.equals( attribute.getName() ) ) {
-                selectedAttribute.add( attribute );
-            }
-        }
-        return selectedAttribute;
-    }
-
-    private Collection<DbReference> findByReferenceType( Collection<DbReference> dbReferences, String mi, String name ) {
-        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
-        for ( DbReference reference : dbReferences ) {
-            if ( mi.equals( reference.getRefTypeAc() ) || name.equals( reference.getRefType() ) ) {
-                selectedReferences.add( reference );
-            }
-        }
-        return selectedReferences;
-    }
-
-    private Collection<DbReference> findByDatabase( Collection<DbReference> dbReferences, String mi, String name ) {
-        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
-        for ( DbReference reference : dbReferences ) {
-            if ( mi.equals( reference.getDbAc() ) || name.equals( reference.getDb() ) ) {
-                selectedReferences.add( reference );
-            }
-        }
-        return selectedReferences;
     }
 }
