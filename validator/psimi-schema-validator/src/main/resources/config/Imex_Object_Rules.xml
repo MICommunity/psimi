@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objectRuleList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/object-rule.xsd">
+
+    <rule class="psidev.psi.mi.validator.extension.rules.ExperimentBibRefRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentHostOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.ExperimentInteractionDetectionMethodRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.ExperimentParticipantIdentificationMethodRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentAttributesRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentXRefImexRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.CrossReference2CrossReferenceTypeDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.FeatureType2FeatureDetectionMethodDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.FeatureType2FeatureRangeDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2BiologicalRoleDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2ExperimentRoleDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2InteractionTypeDependencyRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule"/>
+
+</objectRuleList>
