@@ -182,6 +182,73 @@ public final class RuleUtils {
         }
     }
 
+     public static void checkImexOrganism( OntologyManager ontologyManager,
+                                      Organism organism,
+                                      Mi25Context context,
+                                      Collection<ValidatorMessage> messages,
+                                      Rule rule,
+                                      String objectType,
+                                      String organismType ) {
+
+        int taxId = organism.getNcbiTaxId();
+        switch ( taxId ) {
+
+            // special cases for Imex
+            case -4:
+                break;
+            case -3:
+                break;
+            case -2:
+                break;
+            case -1:
+                break;
+
+            case 1:
+                // this is the root of newt, which users are not suppose to use to define their host organism
+                messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
+                        " for which the taxid was: '" + taxId +
+                        "'. Please choose a child term of the NEWT root.",
+                        MessageLevel.ERROR,
+                        context,
+                        rule ) );
+                break;
+
+            case 0:
+                // this is the root of newt, which users are not suppose to use to define their host organism
+                messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
+                        " for which the taxid was: '" + taxId +
+                        "'. Please choose a valid NEWT term.",
+                        MessageLevel.ERROR,
+                        context,
+                        rule ) );
+                break;
+
+            default:
+                // check in NEWT if the taxid exists
+                if ( taxId < 0 ) {
+                    // break here
+                    messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
+                            " for which the taxid was: '" + taxId + "'.",
+                            MessageLevel.ERROR,
+                            context,
+                            rule ) );
+                } else {
+                    // TODO optimize via caching of valid taxid for a period of time (in a same file it is very likely that we will see only a handful of taxids.)
+                    final OntologyAccess newt = ontologyManager.getOntologyAccess( "NEWT" );
+                    final OntologyTermI newtTerm = newt.getTermForAccession( String.valueOf( taxId ) );
+                    if ( newtTerm == null ) {
+                        // could not find it
+                        final String msg = objectType + " with an invalid " + organismType + ", the taxid given was '" +
+                                taxId + "' which cannot be found in NEWT.";
+                        messages.add( new ValidatorMessage( msg,
+                                MessageLevel.ERROR,
+                                context,
+                                rule ) );
+                    }
+                }
+        }
+    }
+
     public static boolean isOfType( OntologyManager ontologyManager, final InteractorType type, final String miRef, final boolean includeChildren ) {
 
         if ( type == null ) {
