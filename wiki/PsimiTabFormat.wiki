@@ -65,5 +65,5 @@ psi-mi:"MI:0000"("I can now use braces ()()() or pipes ||| here and ::colons::")
 If you want to use a quote within a quote, escape it:
 
 {{{
-uniprotkb:P12345("a \"nice\" protein)
+uniprotkb:P12345("a \"nice\" protein")
 }}}
