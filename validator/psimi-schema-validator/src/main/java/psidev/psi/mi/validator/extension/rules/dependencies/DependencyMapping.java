@@ -19,7 +19,9 @@ import java.util.*;
 
 /**
  * Represents the dependencies between one term and a set of associated terms.
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: DependencyMapping.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class DependencyMapping {
 

@@ -18,8 +18,9 @@ import java.util.List;
 
 /**
  * Checks if an experiment have a at least one Interaction Detection Method and that all the interaction detection methods are valid.
- *
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: ExperimentInteractionDetectionMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class ExperimentInteractionDetectionMethodRule extends ExperimentRule {
 

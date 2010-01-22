@@ -16,7 +16,9 @@ import java.util.Collection;
 
 /**
  * Rule that allows to check whether the interaction detection method specified matches the biological rule.
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: InteractionDetectionMethod2BiologicalRoleDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi25InteractionRule {
 

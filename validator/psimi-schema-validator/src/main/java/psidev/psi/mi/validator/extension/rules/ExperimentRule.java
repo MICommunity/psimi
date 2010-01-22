@@ -13,8 +13,9 @@ import java.util.Collection;
 
 /**
  * Abstract base class for an Interaction Detection Method check and a Participant Detection Method check.
- *
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: ExperimentRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public abstract class ExperimentRule extends Mi25ExperimentRule {
 

@@ -20,8 +20,9 @@ import java.util.regex.Pattern;
 /**
  * <b> Imex Rule : check that each experiment has a valid bibref to pubmed or DOI. Check if the IMEx ID is valid when a cross reference type 'imex-primary' appears. </b>
  * <p/>
- *
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: ExperimentXRefImexRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class ExperimentXRefImexRule extends Mi25ExperimentRule {
 

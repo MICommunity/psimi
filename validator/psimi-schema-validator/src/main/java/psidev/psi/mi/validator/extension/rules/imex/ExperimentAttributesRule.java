@@ -17,7 +17,9 @@ import java.util.List;
 /**
  * Checks if an experiment have an attribute name set to 'imex-curation' and an attribute name set to 'full coverage'.
  *
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: ExperimentAttributesRule.java 52 2010-01-22 11:24:24Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class ExperimentAttributesRule extends Mi25ExperimentRule {
 

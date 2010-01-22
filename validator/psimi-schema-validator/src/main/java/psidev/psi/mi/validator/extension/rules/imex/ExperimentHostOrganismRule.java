@@ -18,9 +18,10 @@ import java.util.List;
  * <b> check every experiment host organism has an attribute taxid and that is is defined in NEWT. </b>.
  * <p/>
  *
- * @author Samuel Kerrien (skerrien@ebi.ac.uk)
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since 1.0
+ * @since 2.0
+ *
  */
 public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
 
