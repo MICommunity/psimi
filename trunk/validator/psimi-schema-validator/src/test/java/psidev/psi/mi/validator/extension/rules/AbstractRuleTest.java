@@ -15,11 +15,11 @@
  */
 package psidev.psi.mi.validator.extension.rules;
 
+import org.junit.AfterClass;
+import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.mi.xml.model.*;
-import org.junit.AfterClass;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -156,6 +156,7 @@ public abstract class AbstractRuleTest {
 
     protected void setDetectionMethod( Interaction interaction, String detectionMi, String detectionName ) {
         final ExperimentDescription exp = interaction.getExperiments().iterator().next();
+
         exp.setInteractionDetectionMethod( buildDetectionMethod( detectionMi, detectionName ) );
     }
 

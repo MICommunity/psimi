@@ -5,8 +5,6 @@ import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -60,7 +58,7 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
         if ( hostOrganisms.isEmpty() ) {
 
             messages.add( new ValidatorMessage( "Experiment without host organism",
-                                                MessageLevel.WARN,
+                                                MessageLevel.ERROR,
                                                 context,
                                                 this ) );
         } else {

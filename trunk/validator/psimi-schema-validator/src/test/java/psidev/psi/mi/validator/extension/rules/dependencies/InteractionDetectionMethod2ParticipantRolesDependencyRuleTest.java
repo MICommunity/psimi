@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package psidev.psi.mi.validator.extension.rules;
-
-import org.junit.Test;
-import psidev.psi.mi.xml.model.*;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
-import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-
-import java.util.Collection;
-import java.io.InputStream;
+package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
+import org.junit.Test;
+import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
+import psidev.psi.tools.validator.ValidatorMessage;
+
+import java.util.Collection;
+
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
  * InteractionDetectionMethod2ParticipantRolesDependencyRule Tester.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
- * @version $Id$
+ * @version $Id: InteractionDetectionMethod2ParticipantRolesDependencyRuleTest.java 2 2009-06-01 15:46:10Z brunoaranda $
  * @since 2.0
  */
 public class InteractionDetectionMethod2ParticipantRolesDependencyRuleTest extends AbstractRuleTest {
