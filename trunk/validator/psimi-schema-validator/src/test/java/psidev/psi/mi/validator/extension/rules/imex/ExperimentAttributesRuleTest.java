@@ -11,7 +11,8 @@ import java.util.Collection;
 /**
  * ExperimentAttributesRule Tester.
  *
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: ExperimentAttributesRuleTest.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
 public class ExperimentAttributesRuleTest extends AbstractRuleTest {

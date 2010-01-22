@@ -16,7 +16,9 @@ import java.util.Collection;
 
 /**
  * Rule that allows to check whether the feature type specified matches the feature detection method.
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: FeatureType2FeatureDetectionMethodDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25InteractionRule {
 

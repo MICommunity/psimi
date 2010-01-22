@@ -11,8 +11,9 @@ import java.util.Collection;
 
 /**
  * InteractionDetectionMethod2BiologicalRuleRule Tester.
- *
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: InteractionDetectionMethod2BiologicalRoleDependencyRuleTest.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends AbstractRuleTest {
 

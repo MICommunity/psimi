@@ -18,7 +18,9 @@ import java.util.Set;
 
 /**
  * Rule that allows to check whether the cross reference specified matches the cross-reference type.
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: CrossReference2CrossReferenceTypeDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<XrefContainer> {
 

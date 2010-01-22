@@ -2,7 +2,9 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 /**
  * Represents the second term in a dependency.
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: AssociatedTerm.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class AssociatedTerm {
 

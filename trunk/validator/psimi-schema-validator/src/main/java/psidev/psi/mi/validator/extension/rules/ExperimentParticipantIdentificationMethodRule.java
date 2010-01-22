@@ -18,8 +18,9 @@ import java.util.List;
 
 /**
  * Checks if an experiment have a Participant identification Method and that all the participant identification methods are valid.
- *
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: ExperimentParticipantIdentificationMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class ExperimentParticipantIdentificationMethodRule extends ExperimentRule {
 

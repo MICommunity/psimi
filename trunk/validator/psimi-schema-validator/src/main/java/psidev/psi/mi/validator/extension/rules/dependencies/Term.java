@@ -10,7 +10,9 @@ import java.util.Iterator;
 /**
  * Represents a CV term with an id and a full name. The boolean value includeChildren allows to know if when we find this term
  * in a dependency, the children of this CV Term are also included in the dependency.
- * @author Marine Dumousseau
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id: Term.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @since 2.0
  */
 public class Term {
 
