@@ -549,28 +549,42 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             if (this.requirements.hasHostRequirements()){
                 Collection<String> validHosts = this.requirements.getApplicableHostOrganisms();
-                if (validHosts.contains(Integer.toString(host.getNcbiTaxId()))){
-                    return true;
-                }
-                else if (host.hasNames()){
-                    if (host.getNames().hasFullName()){
-                        if (validHosts.contains(host.getNames().getFullName())){
+
+                for (String h : validHosts){
+                    String math = getMathematicalOperator(h);
+
+                    if (math == null){
+                        if (h.equals(Integer.toString(host.getNcbiTaxId()))){
+                            return true;
+                        }
+                        else if (host.hasNames()){
+                            if (host.getNames().hasFullName()){
+                                if (h.equals(host.getNames().getFullName())){
+                                    return true;
+                                }
+                            }
+                        }
+                        else if (host.hasCellType()){
+                            CellType cell = host.getCellType();
+                            if (cell.hasNames()){
+                                Names cellName = cell.getNames();
+
+                                if (cellName.hasFullName()){
+                                    if (h.equals(cellName.getFullName())){
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        String hostNotAllowed = h.substring(math.length());
+                        if (math.equals("!=") && h != hostNotAllowed){
                             return true;
                         }
                     }
                 }
-                else if (host.hasCellType()){
-                    CellType cell = host.getCellType();
-                    if (cell.hasNames()){
-                        Names cellName = cell.getNames();
 
-                        if (cellName.hasFullName()){
-                            if (validHosts.contains(cellName.getFullName())){
-                                return true;
-                            }
-                        }
-                    }
-                }
                 return false;
             }
             return true;
@@ -583,7 +597,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          */
         private boolean hasMathematicalOperator(String number){
 
-            if (number.startsWith(">") || number.startsWith("<")){
+            if (number.startsWith(">") || number.startsWith("<") || number.startsWith("!=")){
                 return true;
             }
             return false;
@@ -598,10 +612,10 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
             String math = null;
 
             if (hasMathematicalOperator(number)){
-                if (number.startsWith("<=") || number.startsWith(">=") ){
+                if (number.startsWith("<=") || number.startsWith(">=") || number.startsWith("!=")){
                     return number.substring(0,2);
                 }
-                if (number.startsWith(">") || number.startsWith("<")){
+                else if (number.startsWith(">") || number.startsWith("<")){
                     return number.substring(0,1);
                 }
             }
@@ -646,6 +660,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                     return true;
                                 }
                                 else if (math.equals(">=") && number >= numParticipants){
+                                    return true;
+                                }
+                                else if (math.equals("!=") && number != numParticipants){
                                     return true;
                                 }
                             }catch (NumberFormatException e){
@@ -699,6 +716,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                 else if (math.equals(">=") && number >= numBaits){
                                     return true;
                                 }
+                                else if (math.equals("!=") && number != numBaits){
+                                    return true;
+                                }
                             }catch (NumberFormatException e){
                                 //TODO message
                             }
@@ -748,6 +768,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                     return true;
                                 }
                                 else if (math.equals(">=") && number >= numPreys){
+                                    return true;
+                                }
+                                else if (math.equals("!=") && number != numPreys){
                                     return true;
                                 }
                             }catch (NumberFormatException e){

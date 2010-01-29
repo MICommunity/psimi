@@ -1,5 +1,6 @@
 "#DETECTION MI"	"DETECTION NAME"	"INCLUDE CHILDREN"	"INTERACTION TYPE MI"	"INTERACTION TYPE NAME"	"INCLUDE CHILDREN"	"HOST REQUIREMENTS"	"NUM OF PARTICIPANTS"	"NUM OF BAITS"	"NUM OF PREYS"	"MESSAGE LEVEL"
-"MI:0001"	"interaction detection method"	"TRUE"	"MI:0407"	"direct interaction"	"FALSE"	-1	"1;2"	"NONE"	"NONE"	"REQUIRED"
+"MI:0001"	"interaction detection method"	"TRUE"	"MI:0407"	"direct interaction"	"FALSE"	"!= -1"	"1;2"	"NONE"	"NONE"	"ERROR"
+				"direct interaction"	"FALSE"	-1	">2"	"NONE"	"NONE"	"ERROR"
 										
 "MI:0016"	"circular dichroism"	"FALSE"	"MI:0407"	"direct interaction"	"FALSE"	-1	"1;2"	"NONE"	"NONE"	"REQUIRED"
 "MI:0016"	"circular dichroism"	"FALSE"	"MI:0915"	"physical association"	"FALSE"	-1	"1;2"	"NONE"	"NONE"	"REQUIRED"
