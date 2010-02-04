@@ -16,13 +16,14 @@ import java.util.Collection;
 
 /**
  * Rule that allows to check whether the interaction detection method specified matches the participant detection methods.
+ *
+ * Rule Id = 9. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id: InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
 public class InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule extends Mi25InteractionRule {
-
-    private static final Log log = LogFactory.getLog( InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule.class );
 
     //private static DependencyMappingInteractionDetectionMethod2InteractionType mapping;
     private DependencyMapping mapping = new DependencyMapping();
@@ -47,7 +48,10 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
             }
             // describe the rule.
         setName( "Dependency between interaction detection method and participant identification method" );
-//        addTip( "" );
+        setDescription( "Checks that each interaction respects the dependencies interaction detection method - participant identification method " +
+                "stored in InteractionDetectionMethod2ParticipantIdentificationMethod.tsv." );
+        addTip( "Search the possible terms for interaction detection method and participant identification method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
+
     }
 
     /**

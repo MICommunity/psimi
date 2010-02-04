@@ -15,7 +15,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Rule that allows to check whether the interaction detection method specified matches the interaction type.
+ * Rule that allows to check whether the interaction detection method specified matches the participant experimental roles
+ *
+ * Rule Id = 11. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
+ * .
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id: InteractionDetectionMethod2ExperimentRoleDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
@@ -47,7 +50,9 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
             }
             // describe the rule.
         setName( "Dependency between interaction detection method and experimental role" );
-//        addTip( "" );
+        setDescription( "Checks that each interaction respects the dependencies interaction detection method - participant experimental role " +
+                "stored in InteractionDetectionMethod2ExperimentRole.tsv." );
+        addTip( "Search the possible terms for interaction detection method and experimental role on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
     }
 
     /**

@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
@@ -14,12 +14,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <b> check every experiment host organism has an attribute taxid and that is is defined in NEWT. </b>.
+ * <b> check every experiment has a host organism. </b>.
  * <p/>
- *
- * @author Samuel Kerrien (skerrien@ebi.ac.uk)
+ * Rule Id = 7. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since 1.0
+ * @since 2.0
+ *
  */
 public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
 
@@ -28,18 +29,16 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
 
         // describe the rule.
         setName( "Experiment Host Organism Check" );
-        setDescription( "Checks that each experiment has a host organism with a valid NCBI taxid" );
+        setDescription( "Checks that each experiment has a host organism." );
         addTip( "Search http://www.ebi.ac.uk/newt/display with an organism name to retrieve its taxid" );
         addTip( "By convention, the taxid for 'in vitro' is -1" );
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );
         addTip( "By convention, the taxid for 'unknown' is -3" );
         addTip( "By convention, the taxid for 'in vivo' is -4" );
-        addTip( "By convention, the taxid for 'in silico' is -5" );
     }
 
     /**
-     * Checks that each experiment has an host organisms element with a valid tax id as attribute.
-     * Tax id must be a positive integer or -1
+     * Checks that each experiment has an host organisms element.
      *
      * @param experiment an interaction to check on.
      * @return a collection of validator messages.
@@ -57,19 +56,11 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
         Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
         if ( hostOrganisms.isEmpty() ) {
 
-            messages.add( new ValidatorMessage( "Experiment without host organism",
-                                                MessageLevel.WARN,
+            messages.add( new ValidatorMessage( "The experiment "+ experimentId + " doesn't have a host organism and it is required for IMEX.",
+                                                MessageLevel.ERROR,
                                                 context,
                                                 this ) );
-        } else {
-
-            for ( Organism hostOrganism : hostOrganisms ) {
-
-                 RuleUtils.checkOrganism( ontologyManager, hostOrganism, context, messages, this,
-                                          "Experiment", "host organism" );
-
-            } //for
-        } // else
+        }
 
         return messages;
     }

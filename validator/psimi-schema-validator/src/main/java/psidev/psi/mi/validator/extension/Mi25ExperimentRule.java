@@ -47,7 +47,7 @@ public abstract class Mi25ExperimentRule extends ObjectRule<ExperimentDescriptio
      * @return the ontology
      * @throws psidev.psi.tools.validator.ValidatorException
      */
-    public OntologyAccess getMiOntology() throws ValidatorException {
-        return ontologyManager.getOntologyAccess( "MI" );
+    public Mi25Ontology getMiOntology() throws ValidatorException {
+        return new Mi25Ontology( ontologyManager.getOntologyAccess( "MI" ) );
     }
 }

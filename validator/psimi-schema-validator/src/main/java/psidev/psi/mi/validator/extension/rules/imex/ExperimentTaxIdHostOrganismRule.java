@@ -15,22 +15,22 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <b> check every experiment host organism has an attribute taxid and that is is defined in NEWT. </b>.
+ * <b> check every experiment host organism has a valid attribute taxid. </b>.
  * <p/>
- *
+ * Rule Id = 8. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since 2.0
  *
  */
-public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
+public class ExperimentTaxIdHostOrganismRule extends Mi25ExperimentRule {
 
-    public ExperimentHostOrganismRule( OntologyManager ontologyMaganer ) {
+    public ExperimentTaxIdHostOrganismRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Experiment Host Organism Check" );
-        setDescription( "Checks that each experiment has a host organism with a valid NCBI taxid" );
+        setName( "Experiment TaxId Host Organism Check" );
+        setDescription( "Checks that each host organism of an experiment has a valid NCBI taxid" );
         addTip( "Search http://www.ebi.ac.uk/newt/display with an organism name to retrieve its taxid" );
         addTip( "By convention, the taxid for 'in vitro' is -1" );
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );
@@ -56,13 +56,7 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
 
         // check on host organism
         Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
-        if ( hostOrganisms.isEmpty() ) {
-
-            messages.add( new ValidatorMessage( "Experiment without host organism",
-                                                MessageLevel.ERROR,
-                                                context,
-                                                this ) );
-        } else {
+        if ( !hostOrganisms.isEmpty() ) {
 
             for ( Organism hostOrganism : hostOrganisms ) {
 

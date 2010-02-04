@@ -16,18 +16,18 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
+import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Utilities for the MI25 Rules.
@@ -182,70 +182,29 @@ public final class RuleUtils {
         }
     }
 
-     public static void checkImexOrganism( OntologyManager ontologyManager,
-                                      Organism organism,
-                                      Mi25Context context,
-                                      Collection<ValidatorMessage> messages,
-                                      Rule rule,
-                                      String objectType,
-                                      String organismType ) {
+    public static void checkImexOrganism( OntologyManager ontologyManager,
+                                          Organism organism,
+                                          Mi25Context context,
+                                          Collection<ValidatorMessage> messages,
+                                          Rule rule,
+                                          String objectType,
+                                          String organismType ) {
 
         int taxId = organism.getNcbiTaxId();
         switch ( taxId ) {
 
             // special cases for Imex
-            case -4:
-                break;
-            case -3:
-                break;
-            case -2:
-                break;
-            case -1:
-                break;
-
-            case 1:
-                // this is the root of newt, which users are not suppose to use to define their host organism
-                messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
+            case -5:
+               // IMEX doesn't allow to use this term to define their host organism
+                messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
-                        "'. Please choose a child term of the NEWT root.",
+                        "' is not valid. IMEX doesn't allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1, -2, -3 or -4.",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
-                break;
-
-            case 0:
-                // this is the root of newt, which users are not suppose to use to define their host organism
-                messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
-                        " for which the taxid was: '" + taxId +
-                        "'. Please choose a valid NEWT term.",
-                        MessageLevel.ERROR,
-                        context,
-                        rule ) );
-                break;
-
+                break; 
             default:
-                // check in NEWT if the taxid exists
-                if ( taxId < 0 ) {
-                    // break here
-                    messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
-                            " for which the taxid was: '" + taxId + "'.",
-                            MessageLevel.ERROR,
-                            context,
-                            rule ) );
-                } else {
-                    // TODO optimize via caching of valid taxid for a period of time (in a same file it is very likely that we will see only a handful of taxids.)
-                    final OntologyAccess newt = ontologyManager.getOntologyAccess( "NEWT" );
-                    final OntologyTermI newtTerm = newt.getTermForAccession( String.valueOf( taxId ) );
-                    if ( newtTerm == null ) {
-                        // could not find it
-                        final String msg = objectType + " with an invalid " + organismType + ", the taxid given was '" +
-                                taxId + "' which cannot be found in NEWT.";
-                        messages.add( new ValidatorMessage( msg,
-                                MessageLevel.ERROR,
-                                context,
-                                rule ) );
-                    }
-                }
+              checkOrganism(ontologyManager, organism, context, messages, rule, objectType, organismType);
         }
     }
 
@@ -448,6 +407,13 @@ public final class RuleUtils {
         return selectedReferences;
     }
 
+    public static  Collection<DbReference> findByDatabaseAndReferenceType( Collection<DbReference> dbReferences, String dbmi, String dbname, String qmi, String qname ) {
+        Collection<DbReference> selectedDatabases = findByDatabase(dbReferences, dbmi, dbname);
+        Collection<DbReference> selectedReferenceTypes = findByReferenceType(selectedDatabases, qmi, qname);
+
+        return selectedReferenceTypes;
+    }
+
     public static Collection<DbReference> findByDatabase( Collection<DbReference> dbReferences, String mi, String name ) {
         Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
         for ( DbReference reference : dbReferences ) {
@@ -481,5 +447,108 @@ public final class RuleUtils {
             }
         }
         return selectedAttribute;
+    }
+
+    public static void checkPsiMIXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, Mi25Ontology ontology, String mi){
+        Xref xref = container.getXref();
+        String containerName = container.getClass().getSimpleName();
+
+        if (xref != null){
+            Collection<DbReference> allDbRef = xref.getAllDbReferences();
+
+            if (!allDbRef.isEmpty()){
+                // search for database : db="psi-mi" dbAc="MI:0488"
+                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object" );
+
+                if (!psiMiReferences.isEmpty()){
+                    // There is only one psi-mi database reference for an InteractionDetectionMethod
+                    if (psiMiReferences.size() == 1){
+
+                        for ( DbReference reference : psiMiReferences ) {
+                            String psiMiId = reference.getId();
+
+                            OntologyTermI term1 = ontology.search( mi );
+
+                            if (term1 != null){
+                                String name = term1.getPreferredName();
+
+                                OntologyTermI child = ontology.search( psiMiId );
+
+                                if (child != null){
+                                    if ( !ontology.isChildOf(term1, child) ) {
+                                        messages.add( new ValidatorMessage( "The " + containerName + " " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " isn't a valid " + containerName + " ( must be any child of "+ mi +").",
+                                                MessageLevel.ERROR,
+                                                context,
+                                                experimentRule ) );
+                                    }
+                                }
+                                else{
+                                    messages.add( new ValidatorMessage( "The PSI MI id of " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " doesn't exist in the PSI MI ontology. ( must be any child of "+ mi +").",
+                                            MessageLevel.ERROR,
+                                            context,
+                                            experimentRule ) );
+                                }
+                            }
+                            else{
+                                messages.add( new ValidatorMessage( "This is an unexpected error. The PSI MI id of " + containerName + "("+mi+") doesn't exist in the PSI MI ontology.",
+                                        MessageLevel.ERROR,
+                                        context,
+                                        experimentRule ) );
+                            }
+                        }
+                    }
+                    else {
+                        messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' while there should be only one.",
+                                MessageLevel.ERROR,
+                                context,
+                                experimentRule ) );
+                    }
+                }
+                else {
+                    messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " doesn't have any psi-mi cross references with type 'identity' while there should be one.",
+                            MessageLevel.ERROR,
+                            context,
+                            experimentRule ) );
+                }
+            }
+            else {
+                messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " doesn't have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+                        MessageLevel.ERROR,
+                        context,
+                        experimentRule ) );
+
+            }
+        }
+        else {
+            messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " doesn't have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+                    MessageLevel.ERROR,
+                    context,
+                    experimentRule ) );
+
+        }
+    }
+
+    public static void checkPresenceOfAttributeInExperiment(ExperimentDescription experiment, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, String attMi, String attname){
+    // An experiment must have at least one attribute 'imex-curation' and one attribute 'full coverage'
+        if (experiment.hasAttributes()){
+            // The attributes of the experiment
+            Collection<Attribute> attributes = experiment.getAttributes();
+            // The attributes with a name/MI attName/attMI
+            Collection<Attribute> attributeName = RuleUtils.findByAttributeName(attributes, attMi, attname);
+
+            if (attributeName.isEmpty()){
+                messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have an attribute name set to 'imex curation' (MI:0959) and it is required for IMEX. ",
+                        MessageLevel.ERROR,
+                        context,
+                        experimentRule ) );
+            }
+        }
+        else {
+            messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have any attributes. At least one attribute with a name set to 'imex curation' (MI:0959) is required for IMEX. ",
+                    MessageLevel.ERROR,
+                    context,
+                    experimentRule ) );
+        }
+
     }
 }
