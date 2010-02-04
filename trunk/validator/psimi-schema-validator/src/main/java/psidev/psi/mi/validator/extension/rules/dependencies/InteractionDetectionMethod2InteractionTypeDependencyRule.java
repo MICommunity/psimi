@@ -17,6 +17,9 @@ import java.util.*;
 
 /**
  * Rule that allows to check whether the interaction detection method specified matches the interaction type.
+ *
+ * Rule Id = 10. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id: InteractionDetectionMethod2InteractionTypeDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
@@ -47,7 +50,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
         // describe the rule.
         setName( "Dependency between interaction detection method and interaction type" );
-//        addTip( "" );
+        setDescription( "Checks that each interaction respects the dependencies interaction detection method - interaction type " +
+                "stored in InteractionDetection2InteractionTypes.tsv." );
+        addTip( "Search the possible terms for interaction detection method and interaction type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
     }
 
 
@@ -74,15 +79,14 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         // number of participants
         final int numberParticipants = participants.size();
         final Collection<InteractionType> interactionType = interaction.getInteractionTypes();
-
+        final int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, "MI:0496", "bait");
+        final int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, "MI:0498", "prey");
 
         for ( ExperimentDescription experiment : experiments ) {
 
             context.setExperimentId( experiment.getId());
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
             final Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
-            final int numberOfBaits = getNumberOfBaits(participants);
-            final int numberOfPreys = getNumberOfPreys(participants);
 
             for ( Organism host : hostOrganisms ) {
                 for (InteractionType type : interactionType){
@@ -98,9 +102,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
     /**
      *
      * @param role
-     * @return  true if the role is a bait role
+     * @return  true if the role is a role with a psi MI identifier mi or a psi Mi short label shortLabel
      */
-    private boolean isABaitRole(ExperimentalRole role){
+    private boolean checkParticipantRole(ExperimentalRole role, String mi, String shortLabel){
 
         boolean checkName = false;
 
@@ -113,7 +117,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
                 for (DbReference psi : psiMiRef){
 
-                    if (psi.getId().equals("MI:0496")){
+                    if (psi.getId().equals(mi)){
                         return true;
                     }
                 }
@@ -128,49 +132,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
         if (checkName && role.hasNames()){
             if (role.getNames().hasShortLabel()){
-                if (role.getNames().getShortLabel().equals("bait")){
-                    return true;
-                }
-            }
-
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param role
-     * @return true if the role is a prey role
-     */
-    private boolean isAPreyRole(ExperimentalRole role){
-
-        boolean checkName = false;
-
-        Xref ref = role.getXref();
-        if (ref != null){
-            Collection<DbReference> references = ref.getAllDbReferences();
-
-            Collection<DbReference> psiMiRef = RuleUtils.findByDatabase(references, "psi-mi", "MI:0488");
-            if (!psiMiRef.isEmpty()){
-
-                for (DbReference psi : psiMiRef){
-
-                    if (psi.getId().equals("MI:0498")){
-                        return true;
-                    }
-                }
-            }
-            else {
-                checkName = true;
-            }
-        }
-        else {
-            checkName = true;
-        }
-
-        if (checkName && role.hasNames()){
-            if (role.getNames().hasShortLabel()){
-                if (role.getNames().getShortLabel().equals("prey")){
+                if (role.getNames().getShortLabel().equals(shortLabel)){
                     return true;
                 }
             }
@@ -182,42 +144,24 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
     /**
      *
      * @param participants
-     * @return the number of baits within the participants
+     * @param roleMi
+     * @param roleName
+     * @return the number of participants with a specific experimental role
      */
-    private int getNumberOfBaits(Collection<Participant> participants){
+    private int getNumberOfParticipantWithExperimentalRole(Collection<Participant> participants, String roleMi, String roleName){
 
-        int numBaits = 0;
+        int num = 0;
         for (Participant p : participants){
             Collection<ExperimentalRole> experimentRoles = p.getExperimentalRoles();
             for (ExperimentalRole role : experimentRoles){
-                if (isABaitRole(role)){
-                    numBaits++;
+                if (checkParticipantRole(role, roleMi, roleName)){
+                    num++;
                     break;
                 }
 
             } // experimental roles
         }
-        return numBaits;
-    }
-
-    /**
-     *
-     * @param participants
-     * @return the number of preys within the participants
-     */
-    private int getNumberOfPreys(Collection<Participant> participants){
-
-        int numPreys = 0;
-        for (Participant p : participants){
-            Collection<ExperimentalRole> experimentRoles = p.getExperimentalRoles();
-            for (ExperimentalRole role : experimentRoles){
-                if (isAPreyRole(role)){
-                    numPreys++;
-                    break;
-                }
-            } // experimental roles
-        }
-        return numPreys;
+        return num;
     }
 
     //////////////////////
@@ -383,7 +327,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          *
          * @return the host organism requirements
          */
-        public Collection<String> getApplicableHostOrganisms() {
+        public Set<String> getApplicableHostOrganisms() {
             return applicableHostOrganisms;
         }
 
@@ -431,7 +375,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          *
          * @return the requirements about the number of preys
          */
-        public Collection<String> getApplicableNumPrey() {
+        public Set<String> getApplicableNumPrey() {
             return applicableNumPrey;
         }
 
@@ -519,28 +463,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
 
         /**
-         * To know if the dependency respects the requirements.
-         * @param host
-         * @param numParticipants
-         * @param numBaits
-         * @param numPreys
-         * @return
-         */
-        public boolean isInteractionTypeDepencyApplicableTo(Organism host, int numParticipants, int numBaits, int numPreys){
-
-            if (isApplicableHostOrganism(host)){
-                if (isApplicablewithTheNumberOfParticipants(numParticipants)){
-                    if (isApplicablewithTheNumberOfBaits(numBaits)){
-                        if(isApplicablewithTheNumberOfPreys(numPreys)){
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        /**
          * To know if the host organism respects the host requirements
          * @param host
          * @return
@@ -548,36 +470,35 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         private boolean isApplicableHostOrganism(Organism host){
 
             if (this.requirements.hasHostRequirements()){
-                Collection<String> validHosts = this.requirements.getApplicableHostOrganisms();
+                Set<String> validHosts = this.requirements.getApplicableHostOrganisms();
+
+                if (validHosts.contains(Integer.toString(host.getNcbiTaxId()))){
+                    return true;
+                }
+                else if (host.hasNames()){
+                    if (host.getNames().hasFullName()){
+                        if (validHosts.contains(host.getNames().getFullName())){
+                            return true;
+                        }
+                    }
+                }
+                else if (host.hasCellType()){
+                    CellType cell = host.getCellType();
+                    if (cell.hasNames()){
+                        Names cellName = cell.getNames();
+
+                        if (cellName.hasFullName()){
+                            if (validHosts.contains(cellName.getFullName())){
+                                return true;
+                            }
+                        }
+                    }
+                }
 
                 for (String h : validHosts){
                     String math = getMathematicalOperator(h);
 
-                    if (math == null){
-                        if (h.equals(Integer.toString(host.getNcbiTaxId()))){
-                            return true;
-                        }
-                        else if (host.hasNames()){
-                            if (host.getNames().hasFullName()){
-                                if (h.equals(host.getNames().getFullName())){
-                                    return true;
-                                }
-                            }
-                        }
-                        else if (host.hasCellType()){
-                            CellType cell = host.getCellType();
-                            if (cell.hasNames()){
-                                Names cellName = cell.getNames();
-
-                                if (cellName.hasFullName()){
-                                    if (h.equals(cellName.getFullName())){
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else {
+                    if (math != null){
                         String hostNotAllowed = h.substring(math.length());
                         if (math.equals("!=") && h != hostNotAllowed){
                             return true;
@@ -623,6 +544,55 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
 
         /**
+         * To know if the number of participants, baits or preys respects the requirements
+         * @param number
+         * @param numberRequirements
+         * @return
+         */
+        private boolean isTheNumberRespectingTheRequirements(int number, Set<String> numberRequirements){
+
+            for (String num : numberRequirements){
+                if (num != null){
+                    String math = getMathematicalOperator(num);
+
+                    if (math == null){
+                        try{
+                            int n = Integer.parseInt(num);
+                            if (n == number){
+                                return true;
+                            }
+                        }catch (NumberFormatException e){
+                            //TODO message
+                        }
+                    }
+                    else{
+                        try{
+                            int n = Integer.parseInt(num.substring(math.length()));
+                            if (math.equals(">") && number > n){
+                                return true;
+                            }
+                            else if (math.equals("<") && number < n){
+                                return true;
+                            }
+                            else if (math.equals("<=") && number <= n){
+                                return true;
+                            }
+                            else if (math.equals(">=") && number >= n){
+                                return true;
+                            }
+                            else if (math.equals("!=") && number != n){
+                                return true;
+                            }
+                        }catch (NumberFormatException e){
+                            //TODO message
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        /**
          * To know if the number of participants respects the requirements
          * @param numParticipants
          * @return
@@ -631,47 +601,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             if (this.requirements.hasNumParticipantsRequirements()){
 
-                Collection<String> validNumParticipants = this.requirements.getApplicableNumParticipants();
+                Set<String> validNumParticipants = this.requirements.getApplicableNumParticipants();
 
-                for (String num : validNumParticipants){
-                    if (num != null){
-                        String math = getMathematicalOperator(num);
-
-                        if (math == null){
-                            try{
-                                int number = Integer.parseInt(num);
-                                if (number == numParticipants){
-                                    return true;
-                                }
-                            }catch (NumberFormatException e){
-                                //TODO message
-                            }
-                        }
-                        else{
-                            try{
-                                int number = Integer.parseInt(num.substring(math.length()));
-                                if (math.equals(">") && number > numParticipants){
-                                    return true;
-                                }
-                                else if (math.equals("<") && number < numParticipants){
-                                    return true;
-                                }
-                                else if (math.equals("<=") && number <= numParticipants){
-                                    return true;
-                                }
-                                else if (math.equals(">=") && number >= numParticipants){
-                                    return true;
-                                }
-                                else if (math.equals("!=") && number != numParticipants){
-                                    return true;
-                                }
-                            }catch (NumberFormatException e){
-                                //TODO message
-                            }
-                        }
-                    }
-                }
-                return false;
+                return isTheNumberRespectingTheRequirements(numParticipants, validNumParticipants);
             }
             return true;
         }
@@ -685,47 +617,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             if (this.requirements.hasNumBaitsRequirements()){
 
-                Collection<String> validNumBaits = this.requirements.getApplicableNumBaits();
+                Set<String> validNumBaits = this.requirements.getApplicableNumBaits();
 
-                for (String num : validNumBaits){
-                    if (num != null){
-                        String math = getMathematicalOperator(num);
-
-                        if (math == null){
-                            try{
-                                int number = Integer.parseInt(num);
-                                if (number == numBaits){
-                                    return true;
-                                }
-                            }catch (NumberFormatException e){
-                                //TODO message
-                            }
-                        }
-                        else{
-                            try{
-                                int number = Integer.parseInt(num.substring(math.length()));
-                                if (math.equals(">") && number > numBaits){
-                                    return true;
-                                }
-                                else if (math.equals("<") && number < numBaits){
-                                    return true;
-                                }
-                                else if (math.equals("<=") && number <= numBaits){
-                                    return true;
-                                }
-                                else if (math.equals(">=") && number >= numBaits){
-                                    return true;
-                                }
-                                else if (math.equals("!=") && number != numBaits){
-                                    return true;
-                                }
-                            }catch (NumberFormatException e){
-                                //TODO message
-                            }
-                        }
-                    }
-                }
-                return false;
+                return isTheNumberRespectingTheRequirements(numBaits, validNumBaits);
             }
             return true;
         }
@@ -739,47 +633,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             if (this.requirements.hasNumPreysRequirements()){
 
-                Collection<String> validNumPreys = this.requirements.getApplicableNumPrey();
+                Set<String> validNumPreys = this.requirements.getApplicableNumPrey();
 
-                for (String num : validNumPreys){
-                    if (num != null){
-                        String math = getMathematicalOperator(num);
-
-                        if (math == null){
-                            try{
-                                int number = Integer.parseInt(num);
-                                if (number == numPreys){
-                                    return true;
-                                }
-                            }catch (NumberFormatException e){
-                                //TODO message
-                            }
-                        }
-                        else{
-                            try{
-                                int number = Integer.parseInt(num.substring(math.length()));
-                                if (math.equals(">") && number > numPreys){
-                                    return true;
-                                }
-                                else if (math.equals("<") && number < numPreys){
-                                    return true;
-                                }
-                                else if (math.equals("<=") && number <= numPreys){
-                                    return true;
-                                }
-                                else if (math.equals(">=") && number >= numPreys){
-                                    return true;
-                                }
-                                else if (math.equals("!=") && number != numPreys){
-                                    return true;
-                                }
-                            }catch (NumberFormatException e){
-                                //TODO message
-                            }
-                        }
-                    }
-                }
-                return false;
+                return isTheNumberRespectingTheRequirements(numPreys, validNumPreys);
             }
             return true;
         }
@@ -875,18 +731,55 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                 if (pair instanceof InteractionTypeConditions){
                                     InteractionTypeConditions cond = (InteractionTypeConditions) pair;
 
-                                    if (cond.isInteractionTypeDepencyApplicableTo(host, numParticipants, numBaits, numPreys)){
-                                        if (level != null){
-                                            if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
-                                                hasFoundDependency = true;
+                                    if (cond.isApplicableHostOrganism(host)){
+                                        if (cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
+                                            if (cond.isApplicablewithTheNumberOfBaits(numBaits)){
+                                                if (cond.isApplicablewithTheNumberOfPreys(numPreys)){
+                                                    if (level != null){
+                                                        if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
+                                                            hasFoundDependency = true;
+                                                        }
+                                                        else {
+                                                            final String msg = "Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                                                    "and the interaction type ["+Term.printTerm(brTerm)+"] ?";
+                                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
+                                                        }
+                                                    }
+                                                }
+                                                else{
+                                                    final StringBuffer msg = new StringBuffer("Unusual number of preys "+ numPreys +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                            "the interaction type is " + Term.printTerm(brTerm) + " the number of preys should be : \n") ;
+                                                    for (String validNum : cond.getRequirements().getApplicableNumPrey()){
+                                                        msg.append(validNum + "\n");
+                                                    }
+                                                    messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+                                                }
                                             }
-                                            else {
-                                                final String msg = "Are you sure of the combination of " + method.getClass().getSimpleName() + " ["+Term.printTerm(methodTerm)+"] " +
-                                                        "and " + interactionType.getClass().getSimpleName() + " ["+Term.printTerm(brTerm)+"] with the following conditions : "+
-                                                        " host organism = " + host + ", number of participants = " + numParticipants + ", number of baits = " + numBaits + ", number of preys = " + numPreys + "?";
-                                                messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
+                                            else{
+                                                final StringBuffer msg = new StringBuffer("Unusual number of baits "+ numBaits +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                        "the interaction type is " + Term.printTerm(brTerm) + " the number of baits should be : \n") ;
+                                                for (String validNum : cond.getRequirements().getApplicableNumBaits()){
+                                                    msg.append(validNum + "\n");
+                                                }
+                                                messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                             }
                                         }
+                                        else{
+                                            final StringBuffer msg = new StringBuffer("Unusual number of participants "+ numParticipants +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                    "the interaction type is " + Term.printTerm(brTerm) + " the number of participants should be : \n") ;
+                                            for (String validNum : cond.getRequirements().getApplicableNumParticipants()){
+                                                msg.append(validNum + "\n");
+                                            }
+                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+                                        }
+                                    }
+                                    else{
+                                        final StringBuffer msg = new StringBuffer("Unusual host organism. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                "the interaction type is " + Term.printTerm(brTerm) + " the host organism should be : \n") ;
+                                        for (String validHost : cond.getRequirements().getApplicableHostOrganisms()){
+                                            msg.append(validHost + "\n");
+                                        }
+                                        messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                     }
                                 }
                                 else {
@@ -897,8 +790,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
                         if (!hasFoundDependency && isAValueRequired){
                             Set<AssociatedTerm> req = getRequiredDependenciesFor(methodTerm);
-                            final StringBuffer msg = new StringBuffer("There is an unusual combination of " + method.getClass().getSimpleName() + " ["+Term.printTerm(methodTerm)+"] " +
-                                    "and " + interactionType.getClass().getSimpleName() + " ["+Term.printTerm(brTerm)+"] ?" +
+                            final StringBuffer msg = new StringBuffer("There is an unusual combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                    "and the interaction type ["+Term.printTerm(brTerm)+"]." +
                                     " The possible dependencies are : \n");
 
                             for (AssociatedTerm r : req){
@@ -911,8 +804,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                         }
                         else if (!hasFoundDependency && isARecommendedValue){
                             Set<AssociatedTerm> req = getRecommendedDependenciesFor(methodTerm);
-                            final StringBuffer msg = new StringBuffer("Are you sure of the combination of " + method.getClass().getSimpleName() + " ["+Term.printTerm(methodTerm)+"] " +
-                                    "and " + interactionType.getClass().getSimpleName() + " ["+Term.printTerm(brTerm)+"] ?" +
+                            final StringBuffer msg = new StringBuffer("Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                    "and the interaction type ["+Term.printTerm(brTerm)+"] ?" +
                                     " The recommended dependencies are : \n");
 
                             for (AssociatedTerm r : req){

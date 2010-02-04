@@ -16,6 +16,9 @@ import java.util.Collection;
 
 /**
  * Rule that allows to check whether the feature type specified matches the feature range status.
+ *
+ * Rule Id = 14. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id: FeatureType2FeatureRangeDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
@@ -45,7 +48,10 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
             }
             // describe the rule.
         setName( "Dependency between feature type and feature range status" );
-//        addTip( "" );
+        setDescription( "Checks that each interaction respects the dependencies feature type - feature range status " +
+                "stored in FeatureType2FeatureRangeStatus.tsv." );
+        addTip( "Search the possible terms for feature type and feature range status on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
+
     }
 
     /**

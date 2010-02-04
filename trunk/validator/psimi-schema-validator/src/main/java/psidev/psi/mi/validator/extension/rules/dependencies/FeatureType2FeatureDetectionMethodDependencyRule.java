@@ -16,6 +16,9 @@ import java.util.Collection;
 
 /**
  * Rule that allows to check whether the feature type specified matches the feature detection method.
+ *
+ * Rule Id = 13. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id: FeatureType2FeatureDetectionMethodDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
@@ -50,7 +53,10 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
             }
             // describe the rule.
         setName( "Dependency between feature type and feature detection method" );
-//        addTip( "" );
+        setDescription( "Checks that each interaction respects the dependencies feature type - feature detection method " +
+                "stored in FeatureType2FeatureDetectionMethod.tsv." );
+        addTip( "Search the possible terms for feature type and feature detection method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
+
     }
 
     /**

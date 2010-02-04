@@ -2,6 +2,7 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.rules.PublicationRuleUtils;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.Bibref;
 import psidev.psi.mi.xml.model.DbReference;
@@ -19,34 +20,33 @@ import java.util.regex.Pattern;
 
 /**
  * <b> Imex Rule : check that each experiment has a valid bibref to pubmed or DOI. Check if the IMEx ID is valid when a cross reference type 'imex-primary' appears. </b>
+ *
+ * Rule Id = 1. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
  * <p/>
  * @author Marine Dumousseau (marine@ebi.ac.uk)
- * @version $Id: ExperimentXRefImexRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @version $Id: ExperimentBibRefRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class ExperimentXRefImexRule extends Mi25ExperimentRule {
+public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
     // The good syntax of an Imex ID.
     Pattern IMEx_ID = Pattern.compile( "IM-[0-9]+" );
 
-    public ExperimentXRefImexRule( OntologyManager ontologyMaganer ) {
+    public ExperimentBibRefRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Experiment bibliographic reference IMEX check" );
-        setDescription( "Checks that each experiment has a at least one publication reference (pubmed or doi)." );
+        setName( "Experiment bibliographic reference check" );
+        setDescription( "Checks that each experiment has a at least one publication reference pubmed or doi." );
         addTip( "You can search for pubmed identifier at http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed" );
         addTip( "Your pubmed or DOI bibliographical reference should have a type: primary-reference" );
-        addTip( "All records must have an IMEx ID (IM-xxx) when there is a cross reference type: imex-primary" );
         addTip( "The PSI-MI identifier for PubMed is: MI:0446" );
         addTip( "The PSI-MI identifier for DOI is: MI:0574" );
         addTip( "The PSI-MI identifier for primary-reference is: MI:0358" );
-        addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
     }
 
     /**
      * Make sure that an experiment either has a pubmed/DOI id in its bibRef. Check also that at least one pubMed Id or DOI has a reference type set to 'primary-reference'.
-     * Check if there is at least one references with a 'imex-primary' cross reference type and a valid IMEx ID (IM-xxx).
      *
      * @param experiment an experiment to check on.
      * @return a collection of validator messages.
@@ -69,29 +69,12 @@ public class ExperimentXRefImexRule extends Mi25ExperimentRule {
             if ( xref != null ) {
 
                 final Collection<DbReference> dbReferences = xref.getAllDbReferences();
-                final Collection<DbReference> allDbReferences = new ArrayList<DbReference>();
-                allDbReferences.addAll(dbReferences);
-
-                // Check xRef
-                if (experiment.hasXref()){
-                    allDbReferences.addAll(experiment.getXref().getAllDbReferences());
-                }
 
                 // search for reference type: primary-reference
                 Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference" );
-                // search for reference type: imex-primary (should not be empty)
-                Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( allDbReferences, "MI:0662", "imex-primary" );
                 // search for database pubmed or DOI.
                 Collection<DbReference> allPubmeds = RuleUtils.findByDatabase( dbReferences, "MI:0446", "pubmed" );
                 Collection<DbReference> allDois = RuleUtils.findByDatabase( dbReferences, "MI:0574", "doi" );
-
-                // At least one cross reference type 'imex-primary' is required. Doesn't need to test if the ID is valid as ExperimentBibRefRule is checking that.
-                if (imexReferences.isEmpty()){
-                    messages.add( new ValidatorMessage( "At least one reference with a reference type 'imex-primary' is required.",
-                            MessageLevel.ERROR,
-                            context,
-                            this ) );
-                }
 
                 // At least one pubmed/DOI reference is required
                 if ( !allPubmeds.isEmpty() || !allDois.isEmpty()){
@@ -103,29 +86,39 @@ public class ExperimentXRefImexRule extends Mi25ExperimentRule {
                         final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
                         final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );
 
+                        PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
+
+                        // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
+                        if (pubmeds.size() > 1){
+                            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + pubmeds.size() + " pubmed references but no one has a reference-type set to 'primary-reference'.",
+                                    MessageLevel.WARN,
+                                    context,
+                                    this ) );
+                        }
+
                         if ( pubmeds.isEmpty() && dois.isEmpty() ) {
-                            messages.add( new ValidatorMessage( "At least one Database Pubmed Identifier or Digital Object Identifier with a reference type set to 'primary-reference' (MI:0358) is required.",
+                            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + primaryReferences.size() + " bibliographical references with a reference-type set to 'primary-reference' but no one is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
                                     MessageLevel.ERROR,
                                     context,
                                     this ) );
                         }
                     }
                     else {
-                        messages.add( new ValidatorMessage( "At least one of the references must have a reference type set to 'primary-reference' (MI:0358).",
+                        messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + dbReferences.size() + " bibliographical references but no one has a reference type set to 'primary-reference'. At least one Pubmed of DOI bibliographical primary reference is required.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
                     }
                 }
                 else {
-                    messages.add( new ValidatorMessage( "At least one of the references has to be a Pubmed/DOI reference.",
+                    messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + dbReferences.size() + " bibliographical references but no one is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "At least one of the references has to be a Pubmed/DOI reference.",
+                messages.add( new ValidatorMessage( "The experiment "+ experimentId +" doesn't have any bibliographical references. At least one Pubmed of DOI bibliographical primary reference is required.",
                         MessageLevel.ERROR,
                         context,
                         this ) );

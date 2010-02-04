@@ -18,6 +18,9 @@ import java.util.Set;
 
 /**
  * Rule that allows to check whether the cross reference specified matches the cross-reference type.
+ *
+ * Rule Id = 15. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id: CrossReference2CrossReferenceTypeDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
@@ -59,7 +62,10 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         }
         // describe the rule.
         setName( "Cross reference and cross reference type" );
-//        addTip( "" );
+        setDescription( "Checks that each element respects the dependencies database cross reference - cross reference type " +
+                "stored in CrossReference2Location2CrossRefType.tsv." );
+        addTip( "Search the possible terms for database cross reference and reference type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
+
     }
 
     ///////////////////////

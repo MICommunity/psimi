@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * ExperimentAttributesRule Tester.
+ * ExperimentFullCoverageRule Tester.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @since 2.0
@@ -92,7 +92,8 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 4, messages.size() );
+        System.out.println(messages);
+        Assert.assertEquals( 3, messages.size() );
     }
 
     @Test
@@ -118,18 +119,19 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
     }
 
     @Test
-    public void validate_Fail_ImexId() throws Exception {
+    public void validate_Wrong_ImexId() throws Exception {
 
         final Bibref bibref = new Bibref();
         DbReference primary = new DbReference( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        DbReference secondary1 =  new DbReference( "intact", "MI:0469", "IM-1A1", "imex-primary", "MI:0662" );
+        DbReference imex =  new DbReference( "intact", "MI:0469", "IM-1A1", "imex-primary", "MI:0662" );
         DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
         Collection<DbReference> secondary = new ArrayList<DbReference>();
-        secondary.add(secondary1);
         secondary.add(secondary2);
         final Xref xref = new Xref(primary, secondary);
         bibref.setXref( xref );
+        final Xref crossRef = new Xref(imex);
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
+        exp.setXref(crossRef);
 
         ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
 
@@ -161,13 +163,14 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
         exp.setNames( new Names() );
         exp.getNames().setFullName( "publication title" );
-        exp.getAttributes().add( new Attribute( "", "contact-email", "author@institute.co.uk" ) );
-        exp.getAttributes().add( new Attribute( "", "author-list", "author1, author2, author3..." ) );
+        exp.getAttributes().add( new Attribute( null, "contact-email", "author@institute.co.uk" ) );
+        exp.getAttributes().add( new Attribute( null, "author-list", "author1, author2, author3..." ) );
 
         ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
+        System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
     }
 

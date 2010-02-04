@@ -25,14 +25,14 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
     Pattern EMAIL_VALIDATOR = Pattern.compile( "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}" );
     Pattern IMEx_ID = Pattern.compile( "IM-[0-9]+" );
-    
+
     public ExperimentBibRefRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
 
         // describe the rule.
         setName( "Experiment bibliographic reference check" );
         setDescription( "Checks that each experiment has a publication reference (pubmed or doi) or valid publication " +
-                        "details (contact email, author list and publication title)." );
+                "details (contact email, author list and publication title)." );
         addTip( "You can search for pubmed identifier at http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed" );
         addTip( "Your pubmed or DOI bibliographical reference should have a type: primary-reference" );
         addTip( "All records must have an IMEx ID (IM-xxx) when there is a cross reference type: imex-primary" );
@@ -71,82 +71,40 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
             if ( xref != null ) {
 
                 final Collection<DbReference> dbReferences = xref.getAllDbReferences();
-                final Collection<DbReference> allDbReferences = dbReferences;                
 
                 // Check xRef (for Imex ID)
                 if (experiment.hasXref()){
-                    allDbReferences.addAll(experiment.getXref().getAllDbReferences());
+                    final Collection<DbReference> crossReferences = experiment.getXref().getAllDbReferences();
+
+                    // search for reference type: imex-primary
+                    Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( crossReferences, "MI:0662", "imex-primary" );
+
+                    // If there is a reference type set to 'imex-primary'
+                    if (!imexReferences.isEmpty()){
+                        PublicationRuleUtils.checkImexId(imexReferences, messages, context, this);
+                    }
                 }
 
                 // search for reference type: primary-reference
                 Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference" );
-                // search for reference type: imex-primary
-                Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( allDbReferences, "MI:0662", "imex-primary" );
 
-                // If there is a reference type set to 'imex-primary'
-                if (!imexReferences.isEmpty()){
-                    for ( DbReference imex  : imexReferences ) {
-                        final String imexId = imex.getId();
-                        if( imexId != null) {
-                            if (imexId.trim().length() > 0 ){
-                                if (!IMEx_ID.matcher(imexId).matches()){
-                                    messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not valid.",
-                                            MessageLevel.ERROR,
-                                            context,
-                                            this ) );
-                                }
-                            }
-
-                        }
-                        else {
-                            messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not valid.",
-                                                                    MessageLevel.ERROR,
-                                                                    context,
-                                                                    this ) );
-                        }
-                    }
-                }
                 if ( !primaryReferences.isEmpty() ) {
                     // check if we have a pubmed or doi identifier available
 
                     final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
                     final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );
 
-                    int emptyPmids = 0;
-                    for ( DbReference pubmed : pubmeds ) {
-                        final String pmid = pubmed.getId();
-                        if( pmid != null) {
-                            if (pmid.trim().length() > 0){
-                                try {
-                                    Integer.parseInt( pmid );
-                                } catch ( NumberFormatException e ) {
-                                    messages.add( new ValidatorMessage( "You have specified an invalid pubmed id: '" + pmid + "'",
-                                            MessageLevel.WARN,
-                                            context,
-                                            this ) );
-                                }
-                            }
-
-                        } else {
-                            emptyPmids++;
-                        }
-                    }
-
-                    if( emptyPmids > 0 ) {
-                        messages.add( new ValidatorMessage( "You have specified "+ emptyPmids +" pubmed identifier with an empty value.",
-                                                            MessageLevel.WARN,
-                                                            context,
-                                                            this ) );
-                    }
+                    PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
 
                     if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
                         hasPublicationIdentifier = true;
 
+                        // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
                         if (pubmeds.size() > 1){
                             messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference'.",
-                                                            MessageLevel.WARN,
-                                                            context,
-                                                            this ) );
+                                    MessageLevel.WARN,
+                                    context,
+                                    this ) );
                         }
                     }
                 }
@@ -160,10 +118,10 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
             int countValidEmail = 0;
             if ( emails.isEmpty() ) {
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, a contact email is " +
-                                                    "required in the experimentDescription's attributes.",
-                                                    MessageLevel.ERROR,
-                                                    context,
-                                                    this ) );
+                        "required in the experimentDescription's attributes.",
+                        MessageLevel.ERROR,
+                        context,
+                        this ) );
             } else {
                 int emptyEmailCount = 0;
                 for ( Attribute email : emails ) {
@@ -173,9 +131,9 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                     } else {
                         if ( !EMAIL_VALIDATOR.matcher( address ).matches() ) {
                             messages.add( new ValidatorMessage( "An contact email seems to be invalid: " + address,
-                                                                MessageLevel.WARN,
-                                                                context,
-                                                                this ) );
+                                    MessageLevel.WARN,
+                                    context,
+                                    this ) );
                         } else {
                             countValidEmail++;
                         }
@@ -184,19 +142,19 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
                 if ( emptyEmailCount > 0 ) {
                     messages.add( new ValidatorMessage( "While looking for experimentDescription's contact email, we found "
-                                                        + emptyEmailCount + " empty value(s).",
-                                                        MessageLevel.INFO,
-                                                        context,
-                                                        this ) );
+                            + emptyEmailCount + " empty value(s).",
+                            MessageLevel.INFO,
+                            context,
+                            this ) );
                 }
 
                 if ( countValidEmail == 0 ) {
                     // in the absence of a publication identifier, a contact email is expected.
                     messages.add( new ValidatorMessage( "In the absence of a publication identifier, a valid contact " +
-                                                        "email is required in the experimentDescription's attributes.",
-                                                        MessageLevel.ERROR,
-                                                        context,
-                                                        this ) );
+                            "email is required in the experimentDescription's attributes.",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
                 }
             }
 
@@ -204,10 +162,10 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
             if ( authorList.isEmpty() ) {
                 // in the absence of a publication identifier, a author list is required.
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, an author list is " +
-                                                    "required in the experimentDescription's attributes.",
-                                                    MessageLevel.ERROR,
-                                                    context,
-                                                    this ) );
+                        "required in the experimentDescription's attributes.",
+                        MessageLevel.ERROR,
+                        context,
+                        this ) );
             } else {
                 for ( Attribute author : authorList ) {
                     final String value = author.getValue();
@@ -218,11 +176,11 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                     if ( nonEmptyCount == 0 ) {
                         // in the absence of a publication identifier, an author list is expected.
                         messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non empty " +
-                                                            "author list is required in the experimentDescription's " +
-                                                            "attributes.",
-                                                            MessageLevel.ERROR,
-                                                            context,
-                                                            this ) );
+                                "author list is required in the experimentDescription's " +
+                                "attributes.",
+                                MessageLevel.ERROR,
+                                context,
+                                this ) );
                     }
                 }
             }
@@ -232,19 +190,19 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 if ( publicationTitle == null || publicationTitle.trim().length() == 0 ) {
                     // in the absence of a publication identifier, an publication title is expected (i.e. experimentDescritpion.names.fullname)
                     messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non " +
-                                                        "publication title is required, usualy stored under " +
-                                                        "experimentDescription->names->fullname ",
-                                                        MessageLevel.ERROR,
-                                                        context,
-                                                        this ) );
+                            "publication title is required, usualy stored under " +
+                            "experimentDescription->names->fullname ",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
                 }
             } else {
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non " +
-                                                    "publication title is required, usualy stored under " +
-                                                    "experimentDescription->names->fullname ",
-                                                    MessageLevel.ERROR,
-                                                    context,
-                                                    this ) );
+                        "publication title is required, usualy stored under " +
+                        "experimentDescription->names->fullname ",
+                        MessageLevel.ERROR,
+                        context,
+                        this ) );
             }
         } // if hasPublicationIdentifier
 

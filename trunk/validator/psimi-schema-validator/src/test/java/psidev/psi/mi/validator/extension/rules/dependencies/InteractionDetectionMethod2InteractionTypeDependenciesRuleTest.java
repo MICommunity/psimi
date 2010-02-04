@@ -69,6 +69,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
                 new InteractionDetectionMethod2InteractionTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
+        System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
     }
 
@@ -112,7 +113,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
                 new InteractionDetectionMethod2InteractionTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     /**
@@ -197,7 +198,8 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
                 new InteractionDetectionMethod2InteractionTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
+        System.out.println(messages);
+        Assert.assertEquals( 2, messages.size() );
     }
 
     /**
@@ -285,6 +287,52 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
     }
+
+    /**
+     * Checks that a warning message appears when physical association is associated with an appropriate interaction detection method (for instance affinity chromatography)
+     * but with an unexpected number of preys (>1)
+     * @throws Exception
+     */
+    @Test
+    public void check_chromatography_numberPrey_warning() throws Exception {
+        Interaction interaction = new Interaction();
+        interaction.setId( 1 );
+        InteractionType type = new InteractionType();
+        Xref ref = new Xref();
+        ref.setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, "MI:0915", IDENTITY, IDENTITY_MI_REF ) );
+        Names name = new Names();
+        name.setFullName("physical association");
+        type.setNames(name);
+        type.setXref(ref);
+        interaction.getInteractionTypes().add(type);
+        final ExperimentDescription exp = new ExperimentDescription();
+        exp.setId( 2 );
+        Organism host = new Organism();
+
+        // set the host organism
+        host.setNcbiTaxId(-1);
+        exp.getHostOrganisms().add(host);
+
+        exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0004", "affinity chromatography" ) );
+        interaction.getExperiments().add( exp );
+
+        // Set the interaction detection method
+        setDetectionMethod( interaction, "MI:0004", "affinity chromatography" );
+
+        // set the role of the participants
+        interaction.getParticipants().clear();
+        addParticipant( interaction, BAIT_MI_REF, "bait" );
+        addParticipant( interaction, PREY_MI_REF, "prey" );
+        addParticipant( interaction, PREY_MI_REF, "prey" );
+
+        InteractionDetectionMethod2InteractionTypeDependencyRule rule =
+                new InteractionDetectionMethod2InteractionTypeDependencyRule( ontologyMaganer );
+        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Assert.assertNotNull( messages );
+        System.out.println(messages);
+        Assert.assertEquals( 2, messages.size() );
+    }
+
 
     private void addParticipant( Interaction interaction,
                                  String expRoleMi, String expRoleName ) {
