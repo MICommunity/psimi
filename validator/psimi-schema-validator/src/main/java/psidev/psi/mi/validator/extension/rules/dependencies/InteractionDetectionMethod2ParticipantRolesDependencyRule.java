@@ -32,21 +32,19 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
 
     private static InteractionDetectionMethod2ParticipantRolesDependencyRule.DependencyMapping mapping;
 
-    static {
+    public InteractionDetectionMethod2ParticipantRolesDependencyRule( OntologyManager ontologyMaganer ) {
+        super( ontologyMaganer );
+        // HACK the mapping is loaded every single time the rule is created :(
 
+        // TODO : the resource should be a final private static or should be put as argument of the constructor
         try {
-            // HACK the mapping is loaded every single time the rule is created :(
-            final InputStream is = InteractionDetectionMethod2ParticipantRolesDependencyRule.class.getResourceAsStream( "/config/ontologies.xml" );
-            OntologyManager manager = new OntologyManager( is );
-            OntologyAccess mi = manager.getOntologyAccess( "MI" );
+
+            OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+
             mapping = buildMappingFromFile( mi );
         } catch ( Exception e ) {
             throw new RuntimeException( "An error occured while loading the rule set.", e );
         }
-    }
-
-    public InteractionDetectionMethod2ParticipantRolesDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
 
         // describe the rule.
         setName( "Dependency between interaction detection method and participant's experimental role" );
@@ -87,9 +85,9 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
                                 // ok - even though the parser should have resolved that !!
                             } else {
                                 throw new IllegalStateException( "Validator error - interaction "+ interaction.getId() +
-                                                                 " has a participant "+ participant.getId() +" with " +
-                                                                 "an ExperimentRef, this should have been resolved by " +
-                                                                 "the PSI-MI XML parser" );
+                                        " has a participant "+ participant.getId() +" with " +
+                                        "an ExperimentRef, this should have been resolved by " +
+                                        "the PSI-MI XML parser" );
                             }
                         }
                     } else if ( experimentalRole.hasExperiments() ) {
@@ -161,9 +159,9 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
                             if( level != null ) {
                                 // the mapping indicates that we should build a message at the spefified level
                                 final String msg = "Unusual combination of interaction detection method ["+printTerm(methodTerm)+"] " +
-                                                   "and experimental role ["+printTerm(erTerm)+"] / " +
-                                                   "biological role ["+printTerm(brTerm)+"]. Roles combination allowed are: " +
-                                                   printTermPairs( pairs );
+                                        "and experimental role ["+printTerm(erTerm)+"] / " +
+                                        "biological role ["+printTerm(brTerm)+"]. Roles combination allowed are: " +
+                                        printTermPairs( pairs );
 
                                 messages.add( new ValidatorMessage( msg, MessageLevel.WARN, context.copy(), this ) );
                             }
@@ -171,9 +169,9 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
                         } else {
                             // the pair is not allowed, generate an error.
                             final String msg = "Invalid combination of interaction detection method ["+printTerm(methodTerm)+"] " +
-                                               "and experimental role ["+printTerm(erTerm)+"] / " +
-                                               "biological role ["+printTerm(brTerm)+"]. Roles combination allowed are: " +
-                                               printTermPairs( pairs );
+                                    "and experimental role ["+printTerm(erTerm)+"] / " +
+                                    "biological role ["+printTerm(brTerm)+"]. Roles combination allowed are: " +
+                                    printTermPairs( pairs );
 
                             messages.add( new ValidatorMessage( msg, MessageLevel.ERROR, context.copy(), this ) );
                         }
@@ -225,7 +223,7 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
     }
 
     private String printTerm( Term term ) {
-       StringBuilder sb = new StringBuilder( 32 );
+        StringBuilder sb = new StringBuilder( 32 );
         sb.append(term.getName()).append(" (").append(term.getId()).append(")");
         return sb.toString();
     }
@@ -259,6 +257,13 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
                 log.debug( "L" + lineCount + ":\t" + str );
             }
 
+            if (str.startsWith( "\"" )){
+                str = str.substring(1);
+            }
+            if (str.endsWith("\"")){
+                str = str.substring(0, str.length() - 1);
+            }
+
             if( str.startsWith( "#" ) || str.trim().length() == 0) {
                 continue; // skip
             }
@@ -272,27 +277,41 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
             // 6. BIOL ROLE NAME
             // 7. ERROR LEVEL
 
-            final String[] columns = str.split( "\t" );
+            if (str.contains("\t")){
+                final String[] columns = str.split( "\t" );
 
-            Term detection = new Term( columns[0], columns[1] );
-            if( columns[2].length() > 0 ) {
-                detection.setIncludeChildren( Boolean.valueOf( columns[2] ) );
+                // Remove the possible " characters we can find after editing a tab file using excel.
+                for (int i = 0; i < columns.length; i++){
+                    String col = columns[i];
+                    if (col != null){
+                        if (col.startsWith( "\"" )){
+                            columns[i] = columns[i].substring(1);
+                        }
+                        if (col.endsWith("\"")){
+                            columns[i] = columns[i].substring(0, columns[i].length() - 1);
+                        }
+                    }
+                }
+                Term detection = new Term( columns[0], columns[1] );
+                if( columns[2].length() > 0 ) {
+                    detection.setIncludeChildren( Boolean.valueOf( columns[2] ) );
+                }
+                Set<RolePair> pairs = null;
+                if( ! mapping.getDependencies().containsKey( detection ) ) {
+                    pairs = new HashSet<RolePair>();
+                    mapping.getDependencies().put( detection, pairs );
+                } else {
+                    pairs = mapping.getDependencies().get( detection );
+                }
+
+                RolePair roles = new RolePair(
+                        new Term( columns[5], columns[6] ),
+                        new Term( columns[3], columns[4] ),
+                        ( columns.length > 7 && columns[7] != null && columns[7].length()> 0 ? MessageLevel.forName( columns[7] ) : null )
+                );
+
+                pairs.add( roles ); // will only add if not already in. (cf. RolePair equals/hashcode)
             }
-            Set<RolePair> pairs = null;
-            if( ! mapping.getDependencies().containsKey( detection ) ) {
-                pairs = new HashSet<RolePair>();
-                mapping.getDependencies().put( detection, pairs );
-            } else {
-                pairs = mapping.getDependencies().get( detection );
-            }
-
-            RolePair roles = new RolePair(
-               new Term( columns[5], columns[6] ),
-               new Term( columns[3], columns[4] ),
-               ( columns.length > 7 && columns[7] != null && columns[7].length()> 0 ? MessageLevel.forName( columns[7] ) : null )
-            );
-
-            pairs.add( roles ); // will only add if not already in. (cf. RolePair equals/hashcode)
         }
         in.close();
 
@@ -382,10 +401,10 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
         @Override
         public String toString() {
             return "Term{" +
-                   "name='" + name + '\'' +
-                   ", id='" + id + '\'' +
-                   ", includeChildren=" + includeChildren +
-                   '}';
+                    "name='" + name + '\'' +
+                    ", id='" + id + '\'' +
+                    ", includeChildren=" + includeChildren +
+                    '}';
         }
     }
 
@@ -427,10 +446,10 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
         @Override
         public String toString() {
             return "RolePair{" +
-                   "biologicalRole=" + biologicalRole +
-                   ", experimentalRole=" + experimentalRole +
-                   ", level=" + level +
-                   '}';
+                    "biologicalRole=" + biologicalRole +
+                    ", experimentalRole=" + experimentalRole +
+                    ", level=" + level +
+                    '}';
         }
 
         @Override

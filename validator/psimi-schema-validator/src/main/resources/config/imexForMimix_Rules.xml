@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objectRuleList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/object-rule.xsd">
+
+    <importRuleList>
+        <import rules="/config/Dependencies_Rules.xml"/>
+    </importRuleList>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentFullCoverageRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexCurationRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexPrimaryRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.ExperimentHostOrganismRule"/>
+
+</objectRuleList>

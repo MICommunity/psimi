@@ -9,6 +9,7 @@ import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
+import psidev.psi.tools.objectRuleReader.ObjectRuleReader;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.xpath.XPathHelper;
@@ -44,7 +45,7 @@ public class Mi25ValidatorTest {
             Assert.assertNotNull(cvMappingConfig);
 
             InputStream objectRuleConfig = null;
-//            Mi25ValidatorTest.class.getResource( "/config/object-rules.xml" ).openStream();
+           // InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
 //            Assert.assertNotNull(objectRuleConfig);
 
             aValidator = new Mi25Validator( ontologyConfig, cvMappingConfig, objectRuleConfig );
@@ -83,6 +84,25 @@ public class Mi25ValidatorTest {
     private Collection<ValidatorMessage> getValidationMessage( String filename ) throws Exception {
         final ValidatorReport report = buildValidator().validate(buildInputStream( filename ));
         return report.getSemanticMessages();
+    }
+
+    @Test
+    public void validate_ObjectRules() throws Exception {
+
+        InputStream ontologyConfig = Mi25ValidatorTest.class.getResource( "/config/ontologies.xml" ).openStream();
+        Assert.assertNotNull(ontologyConfig);
+
+        InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
+        Assert.assertNotNull(objectRuleConfig);
+
+        aValidator = new Mi25Validator( ontologyConfig, null, objectRuleConfig );
+
+        // set user preferences
+        UserPreferences preferences = new UserPreferences();
+        preferences.setKeepDownloadedOntologiesOnDisk( true );
+        aValidator.setUserPreferences( preferences );
+
+        Assert.assertEquals( 12, aValidator.getObjectRules().size() );
     }
 
     @Test
