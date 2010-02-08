@@ -3,7 +3,9 @@ package psidev.psi.mi.validator.extension.rules;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2ExperimentRoleDependencyRule;
+import psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2ExperimentalRoleDependencyRule;
 import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -19,8 +21,8 @@ import java.util.Iterator;
  */
 public class Mi25DependencyRuleTest extends AbstractRuleTest {
 
-    public Mi25DependencyRuleTest() {
-        super();
+    public Mi25DependencyRuleTest() throws OntologyLoaderException {
+        super( Mi25DependencyRuleTest.class.getResourceAsStream( "/config/ontologies.xml" ) );
     }
 
     @Test
@@ -29,8 +31,8 @@ public class Mi25DependencyRuleTest extends AbstractRuleTest {
         // This interaction only contains experimental role that are int he inclusion list.
         Interaction interaction = buildInteractionDeterministic();
 
-        final InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
-                new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
+        final InteractionDetectionMethod2ExperimentalRoleDependencyRule rule =
+                new InteractionDetectionMethod2ExperimentalRoleDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
@@ -45,8 +47,8 @@ public class Mi25DependencyRuleTest extends AbstractRuleTest {
                                                     buildExperimentalRole( "MI:0503", "self" )
         );
 
-        final InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
-                new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
+        final InteractionDetectionMethod2ExperimentalRoleDependencyRule rule =
+                new InteractionDetectionMethod2ExperimentalRoleDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         // self is not supposed to be there
@@ -66,8 +68,8 @@ public class Mi25DependencyRuleTest extends AbstractRuleTest {
                                                     buildExperimentalRole( "MI:0583", "fluorescent donor" )
         );
 
-        final InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
-                new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
+        final InteractionDetectionMethod2ExperimentalRoleDependencyRule rule =
+                new InteractionDetectionMethod2ExperimentalRoleDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         // self is not supposed to be there
@@ -88,8 +90,8 @@ public class Mi25DependencyRuleTest extends AbstractRuleTest {
                                                     buildExperimentalRole( "MI:0584", "fluorescent acceptor" )
         );
 
-        final InteractionDetectionMethod2ExperimentRoleDependencyRule rule =
-                new InteractionDetectionMethod2ExperimentRoleDependencyRule( ontologyMaganer );
+        final InteractionDetectionMethod2ExperimentalRoleDependencyRule rule =
+                new InteractionDetectionMethod2ExperimentalRoleDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         // self is not supposed to be there
