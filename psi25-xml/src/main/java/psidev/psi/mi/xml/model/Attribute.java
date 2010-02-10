@@ -175,7 +175,7 @@ public class Attribute implements Serializable {
         final Attribute attribute = ( Attribute ) o;
 
         // TODO name is not null
-        if ( !name.equals( attribute.name ) ) {
+        if ( name != null && !name.equals( attribute.name ) ) {
             return false;
         }
         if ( nameAc != null ? !nameAc.equals( attribute.nameAc ) : attribute.nameAc != null ) {
