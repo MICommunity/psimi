@@ -115,7 +115,7 @@ public class IndexedEntry {
                 IndexElement range = ranges.iterator().next();
                 return psimiXmlPullParser.parseAvailabilityList( getXmlSnippet( range ) );
             default:
-                throw new IllegalStateException( "We were expecting none or a single IndexElement, found " + ranges.size() );
+                throw new IllegalStateException( "We were expecting none or a single <availibility> element, found " + ranges.size() );
         }
     }
 
@@ -133,7 +133,7 @@ public class IndexedEntry {
                 IndexElement range = ranges.iterator().next();
                 return psimiXmlPullParser.parseSource( getXmlSnippet( range ) );
             default:
-                throw new IllegalStateException( "We were expecting a single IndexElement, found " + ranges.size() );
+                throw new IllegalStateException( "We were expecting a single <source> element, found " + ranges.size() );
         }
     }
 
