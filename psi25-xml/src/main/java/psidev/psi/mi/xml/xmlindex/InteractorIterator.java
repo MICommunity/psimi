@@ -4,7 +4,6 @@ import psidev.psi.mi.xml.PsimiXmlReaderRuntimeException;
 import psidev.psi.mi.xml.model.Interactor;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -61,8 +60,8 @@ public class InteractorIterator implements Iterator<Interactor> {
     private Interactor getInteractorByRange( InputStreamRange range ) {
         Interactor interactor;
         try {
-            FileInputStream fis = new FileInputStream( file );
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, range );
+//            FileInputStream fis = new FileInputStream( file );
+            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, range );
             interactor = psimiXmlPullParser.parseInteractor( snippetStream );
         } catch ( Exception e ) {
             throw new PsimiXmlReaderRuntimeException( "An error occured while parsing interactor", e );

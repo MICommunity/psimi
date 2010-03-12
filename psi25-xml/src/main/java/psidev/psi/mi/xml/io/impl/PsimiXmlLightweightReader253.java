@@ -171,7 +171,12 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
         for ( IndexElement range : experimentRanges ) {
             final InputStreamRange isr = new InputStreamRangeAdapter( range );
 
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, isr );
+            final InputStream snippetStream;
+            try {
+                snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, isr );
+            } catch (IOException e) {
+                throw new PsimiXmlReaderException("Error while extracting XML snippet for experiment", e);
+            }
             final ExperimentDescription ed = parser.parseExperiment( snippetStream );
             psiIndex.addExperiment( ed.getId(), isr );
         }
@@ -185,7 +190,13 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
         for ( IndexElement range : interactorRanges ) {
             final InputStreamRange isr = new InputStreamRangeAdapter( range );
 
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, isr );
+            final InputStream snippetStream;
+            try {
+                snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, isr );
+            } catch (IOException e) {
+                throw new PsimiXmlReaderException("Error while extracting XML snippet for interactor", e);
+
+            }
             final Interactor interactor = parser.parseInteractor( snippetStream );
             psiIndex.addInteractor( interactor.getId(), isr );
         }
@@ -199,7 +210,12 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
         for ( IndexElement range : interactionRanges ) {
             final InputStreamRange isr = new InputStreamRangeAdapter( range );
 
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, isr );
+            final InputStream snippetStream;
+            try {
+                snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, isr );
+            } catch (IOException e) {
+                throw new PsimiXmlReaderException("Error while extracting XML snippet for interaction", e);
+            }
             final Interaction interaction = parser.parseInteraction( snippetStream );
             psiIndex.addInteraction( interaction.getId(), isr );
         }
@@ -213,7 +229,12 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
         for ( IndexElement range : participantRanges ) {
             final InputStreamRange isr = new InputStreamRangeAdapter( range );
 
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, isr );
+            final InputStream snippetStream;
+            try {
+                snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, isr );
+            } catch (IOException e) {
+                throw new PsimiXmlReaderException("Error while extracting XML snippet for participant", e);
+            }
             final Participant participant = parser.parseParticipant( snippetStream );
             psiIndex.addParticipant( participant.getId(), isr );
         }
@@ -227,7 +248,12 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
         for ( IndexElement range : featureRanges ) {
             final InputStreamRange isr = new InputStreamRangeAdapter( range );
 
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, isr );
+            final InputStream snippetStream;
+            try {
+                snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, isr );
+            } catch (IOException e) {
+                throw new PsimiXmlReaderException("Error while extracting XML snippet for feature", e);
+            }
             final Feature feature = parser.parseFeature( snippetStream );
             psiIndex.addFeature( feature.getId(), isr );
         }

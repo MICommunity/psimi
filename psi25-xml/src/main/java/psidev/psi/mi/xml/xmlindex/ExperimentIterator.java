@@ -62,7 +62,7 @@ public class ExperimentIterator implements Iterator<ExperimentDescription> {
         ExperimentDescription interactor;
         try {
             FileInputStream fis = new FileInputStream( file );
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, range );
+            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, range );
             interactor = parser.parseExperiment( snippetStream );
         } catch ( Exception e ) {
             throw new PsimiXmlReaderRuntimeException( "An error occured while parsing experiment", e );
