@@ -70,11 +70,11 @@ public class InteractionIterator implements Iterator<Interaction> {
         Interaction interaction;
         try {
             FileInputStream fis = new FileInputStream( file );
-            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( fis, range );
+            final InputStream snippetStream = PsimiXmlExtractor.extractXmlSnippet( file, range );
             interaction = psimiXmlPullParser.parseInteraction( snippetStream );
 
             // Resolve various references
-            psimiXmlExtractor.resolveReferences( fis, interaction );
+            psimiXmlExtractor.resolveReferences( file, interaction );
 
         } catch ( Exception e ) {
             throw new PsimiXmlReaderRuntimeException( "An error occured while parsing interaction", e );

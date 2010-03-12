@@ -20,10 +20,7 @@ import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.xxindex.index.IndexElement;
 import psidev.psi.tools.xxindex.index.StandardXpathIndex;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -353,7 +350,11 @@ public class IndexedEntry {
         final InputStreamRange isr = new InputStreamRange();
         isr.setFromPosition( indexElement.getStart() );
         isr.setToPosition( indexElement.getStop() );
-        return PsimiXmlExtractor.extractXmlSnippet( getFileInputStream(), isr );
+        try {
+            return PsimiXmlExtractor.extractXmlSnippet( xmlDataFile, isr );
+        } catch (IOException e) {
+            throw new PsimiXmlReaderException("Error while extract XML snippet: " + indexElement, e);
+        }
     }
 
     private List<InputStreamRange> buildInputStreamRanges( List<IndexElement> ranges ) {
