@@ -75,7 +75,7 @@ public class PsimiXmlIndexerTest {
         InputStreamRange position = index.getExperimentPosition( 2 );
         Assert.assertTrue( 1016L == position.getFromPosition() || 1042L == position.getFromPosition()); // windows / linux
 
-        InputStream is = PsimiXmlExtractor.extractXmlSnippet( fis, position );
+        InputStream is = PsimiXmlExtractor.extractXmlSnippet( file, position );
 
         // Create a filter to intercept events -- and patch the missing namespace
         PsimiXmlNamespaceFilter253 xmlFilter = new PsimiXmlNamespaceFilter253( xmlReader );
