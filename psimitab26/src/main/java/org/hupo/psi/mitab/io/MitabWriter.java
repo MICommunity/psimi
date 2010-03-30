@@ -31,10 +31,19 @@ import java.util.Iterator;
  */
 public class MitabWriter {
 
+    private static final String NEW_LINE = System.getProperty("line.separator");
+
     private DocumentDefinition documentDefinition;
 
     public MitabWriter(DocumentDefinition documentDefinition) {
         this.documentDefinition = documentDefinition;
+    }
+
+    public void write(Writer writer, Collection<Row> rows) throws IOException {
+        for (Row row : rows) {
+            write(writer, row);
+            writer.write(NEW_LINE);
+        }
     }
 
     public void write(Writer writer, Row row) throws IOException {

@@ -18,6 +18,9 @@ package org.hupo.psi.mitab.definition;
 import org.apache.commons.lang.ArrayUtils;
 import org.hupo.psi.mitab.model.ColumnMetadata;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
@@ -57,6 +60,14 @@ public class Mitab26DocumentDefinition implements DocumentDefinition {
         ColumnMetadata negativeColumn = new ColumnMetadata(KEY_NEGATIVE, "Negative");
         negativeColumn.setDefaultValue("false");
 
+        String dateNow = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+
+        ColumnMetadata creationDateColumn = new ColumnMetadata(KEY_CREATION_DATE, "Creation Date");
+        creationDateColumn.setDefaultValue(dateNow);
+
+        ColumnMetadata updateDateColumn = new ColumnMetadata(KEY_UPDATE_DATE, "Update Date");
+        updateDateColumn.setDefaultValue(dateNow);
+
         ColumnMetadata[] additionalCols = new ColumnMetadata[] {
             new ColumnMetadata(KEY_EXPANSION, "Expansion"),
             new ColumnMetadata(KEY_BIOROLE_A, "Biological Role A"),
@@ -75,8 +86,8 @@ public class Mitab26DocumentDefinition implements DocumentDefinition {
             new ColumnMetadata(KEY_PARAMETERS_A, "Parameters A"),
             new ColumnMetadata(KEY_PARAMETERS_B, "Parameters B"),
             new ColumnMetadata(KEY_PARAMETERS_I, "Parameters Interaction"),
-            new ColumnMetadata(KEY_CREATION_DATE, "Creation Date"),
-            new ColumnMetadata(KEY_UPDATE_DATE, "Update Date"),
+                creationDateColumn,
+                updateDateColumn,
             new ColumnMetadata(KEY_CHECKSUM_A, "Checksum A"),
             new ColumnMetadata(KEY_CHECKSUM_B, "Checksum B"),
             new ColumnMetadata(KEY_CHECKSUM_I, "Checksum Interaction"),
