@@ -32,7 +32,7 @@ public class MitabConverterTest {
         InputStream is = MitabReaderTest.class.getResourceAsStream("/META-INF/mitab25/P51578-oneline.intact_extended.txt");
         
         MitabConverter converter = new MitabConverter(new IntactDocumentDefinition(), new Mitab26DocumentDefinition());
-        converter.convert(is, System.out);
+        //converter.convert(is, System.out);
 
     }
 }

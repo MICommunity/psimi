@@ -46,10 +46,10 @@ public class MitabReaderTest {
                 "uniprotkb:TIM9|uniprotkb:TIM9A|uniprotkb:TIMM9A\tuniprotkb:TEX4|uniprotkb:TIM22\t" +
                 "MI:0006(anti bait coip)\t-\tpubmed:14726512\ttaxid:9606(human)\ttaxid:9606(human)\t" +
                 "MI:0218(physical interaction)\tMI:0469(intact)\tintact:EBI-1200556|intact:EBI-1200624\t-\t" +
-                "\"psi-mi:\"\"MI:xxxx\"\"(spoke)\"\t\"psi-mi:\"\"MI:0499\"\"(unspecified role)\"\t\"psi-mi:\"\"MI:0499\"\"(unspecified role)\"\t" +
-                "\t\"psi-mi:\"\"MI:0498\"\"(prey)\"\t\"psi-mi:\"\"MI:0326\"\"(protein)\"\t\"psi-mi:\"\"MI:0326\"\"(protein)\"\t" +
+                "psi-mi:\"MI:xxxx\"(spoke)\tpsi-mi:\"MI:0499\"(unspecified role\tpsi-mi:\"MI:0499\"(unspecified role\t" +
+                "\tpsi-mi:\"MI:0498\"(prey)\tpsi-mi:\"MI:0326\"(protein\tpsi-mi:\"MI:0326\"(protein\t" +
                 "interpro:IPR004046(GST_C)|interpro:IPR003081(GST_mu)|interpro:IPR004045(GST_N)|interpro:IPR012335(Thioredoxin_fold)\t" +
-                "\"go:\"\"GO:0004709\"\"(\"\"F:MAP kinase kinase kinase act\"\")|go:\"\"GO:0007257\"\"(\"\"P:activation of JUNK\"\")\"\t\"go:\"\"GO:xxxxx\"\"\"\t" +
+                "go:\"GO:0004709\"(\"F:MAP kinase kinase kinase act\")|go:\"GO:0007257\"(\"P:activation of JUNK\")\tgo:\"GO:xxxxx\"\t" +
                 "caution:AnnotA\tcaution:AnnotB\tdataset:Test\ttaxid:9606(human-293t)\t\tkd:2\t2009/03/09\t2010/03/30\t" +
                 "seguid:checksumA\tseguid:checksumB\tseguid:checksumI";
 
@@ -69,17 +69,17 @@ public class MitabReaderTest {
                 "uniprotkb:TIM9|uniprotkb:TIM9A|uniprotkb:TIMM9A\tuniprotkb:TEX4|uniprotkb:TIM22\t" +
                 "MI:0006(anti bait coip)\t-\tpubmed:14726512\ttaxid:9606(human)\ttaxid:9606(human)\t" +
                 "MI:0218(physical interaction)\tMI:0469(intact)\tintact:EBI-1200556|intact:EBI-1200624\t-\t" +
-                "\"psi-mi:\"\"MI:xxxx\"\"(spoke)\"\t\"psi-mi:\"\"MI:0499\"\"(unspecified role)\"\t\"psi-mi:\"\"MI:0499\"\"(unspecified role)\"\t" +
-                "\t\"psi-mi:\"\"MI:0498\"\"(prey)\"\t\"psi-mi:\"\"MI:0326\"\"(protein)\"\t\"psi-mi:\"\"MI:0326\"\"(protein)\"\t" +
+                "psi-mi:\"MI:xxxx\"(spoke)\tpsi-mi:\"MI:0499\"(unspecified role)\tpsi-mi:\"MI:0499\"(unspecified role)\t" +
+                "\tpsi-mi:\"MI:0497\"(bait)\tpsi-mi:\"MI:0498\"(prey)\tpsi-mi:\"MI:0326\"(protein\tpsi-mi:\"MI:0326\"(protein)\t" +
                 "interpro:IPR004046(GST_C)|interpro:IPR003081(GST_mu)|interpro:IPR004045(GST_N)|interpro:IPR012335(Thioredoxin_fold)\t" +
-                "\"go:\"\"GO:0004709\"\"(\"\"F:MAP kinase kinase kinase act\"\")|go:\"\"GO:0007257\"\"(\"\"P:activation of JUNK\"\")\"\t\"go:\"\"GO:xxxxx\"\"\"\t" +
-                "caution:AnnotA\tcaution:AnnotB\tdataset:Test\ttaxid:9606(human-293t)\t\tkd:2\t2009/03/09\t2010/03/30\t" +
+                "go:\"GO:0004709\"(\"F:MAP kinase kinase kinase act\")|go:\"GO:0007257\"(\"P:activation of JUNK\")\tgo:\"GO:xxxxx\"\t" +
+                "caution:AnnotA\tcaution:AnnotB\tdataset:Test\ttaxid:9606(human-293t)\t\t\tkd:2\t2009/03/09\t2010/03/30\t" +
                 "seguid:checksumA\tseguid:checksumB\tseguid:checksumI";
 
         MitabReader mitabReader = new MitabReader(new Mitab26DocumentDefinition());
         Row row = mitabReader.readLine(mitab26Line);
 
-        Assert.assertEquals("38 columns in MITAB 2.5 - 6 columns without data", 32, row.getColumnKeys().size());
+        Assert.assertEquals("38 columns in MITAB 2.5 - 5 columns without data", 33, row.getColumnKeys().size());
 
         FieldConverter fieldConverter = new FieldConverter(new Mitab26DocumentDefinition());
 
