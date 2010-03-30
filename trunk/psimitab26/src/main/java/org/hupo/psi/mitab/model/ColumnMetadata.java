@@ -15,6 +15,9 @@
  */
 package org.hupo.psi.mitab.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
@@ -27,6 +30,10 @@ public class ColumnMetadata {
     private String subKey;
     private boolean onlyValues;
     private String defaultValue;
+    private String readDefaultType;
+    private String writeDefaultType;
+
+    private List<ColumnMetadata> synonymColumns;
 
     public ColumnMetadata(String key, String name) {
         this.key = key;
@@ -84,6 +91,33 @@ public class ColumnMetadata {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public String getReadDefaultType() {
+        return readDefaultType;
+    }
+
+    public void setReadDefaultType(String readDefaultType) {
+        this.readDefaultType = readDefaultType;
+    }
+
+    public String getWriteDefaultType() {
+        return writeDefaultType;
+    }
+
+    public void setWriteDefaultType(String writeDefaultType) {
+        this.writeDefaultType = writeDefaultType;
+    }
+
+    public List<ColumnMetadata> getSynonymColumns() {
+        if (synonymColumns == null) {
+            synonymColumns = new ArrayList<ColumnMetadata>();
+        }
+        return synonymColumns;
+    }
+
+    public void setSynonymColumns(List<ColumnMetadata> synonymColumns) {
+        this.synonymColumns = synonymColumns;
     }
 
     @Override

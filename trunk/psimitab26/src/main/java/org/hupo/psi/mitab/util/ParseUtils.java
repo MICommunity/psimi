@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.mitab.model.ColumnMetadata;
 import org.hupo.psi.mitab.model.Field;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,20 +30,19 @@ import java.util.List;
  */
 public class ParseUtils {
 
-     /**
+    /**
      * <p>Processes an String and splits using a set of delimiters.
      * If the delimiter is in a group surrounded by quotes, don't split that group.
      * Quotes in the String must be escaped using a backlash if that quote does not delimit a group.</p>
-     *
+     * <p/>
      * <pre>
      *       aaaaa|bbbb  (delimiter '|')          = ["aaaaaa", "bbbbbb"]
      *       "aaa|aaa"|bbbbb  (delimiter '|)      = ["aaa|aaa", "bbbbb"]
      *       "aa\"a|a\"aa"|bbbbb  (delimiter '|)  = ["aa"a|a"aa", "bbbbb"]
      * </pre>
      *
-     *
-     * @param str The string to split
-     * @param delimiters The delimiters to use
+     * @param str                   The string to split
+     * @param delimiters            The delimiters to use
      * @param removeUnescapedQuotes remove unsecaped quotes.
      * @return An array containing the groups after splitting
      */
@@ -71,7 +72,7 @@ public class ParseUtils {
         boolean withinQuotes = false;
         boolean previousCharIsEscape = false;
 
-        for (int i=0; i<chars.length; i++) {
+        for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
 
             boolean markedAsEscape = false;
@@ -99,7 +100,7 @@ public class ParseUtils {
                     if (!withinQuotes) {
                         groups.add(currGroup.toString());
                         // Note: the length of the stringbuilder can only be smaller, let's reuse the existing one.
-                        currGroup.setLength( 0 );
+                        currGroup.setLength(0);
                     } else {
                         currGroup.append(c);
                     }
@@ -156,62 +157,78 @@ public class ParseUtils {
         return quoteAwareSplit(columnString, new String[]{separator}, false);
     }
 
-    public static Field createField(ColumnMetadata columnMetadata, String str) {
-
+    public static Field[] createFields(ColumnMetadata columnMetadata, String str) {
         str = removeLineReturn(str);
+
+        List<Field> fields = new ArrayList<Field>();
 
         Field field = new Field(columnMetadata.getKey());
 
         str = str.trim();
 
-        if (str.isEmpty()) {
-            return field;
+        if (!str.isEmpty()) {
+
+            String[] groups = ParseUtils.quoteAwareSplit(str, new String[]{":", "(", ")"}, true);
+
+            // some exception handling
+            if (groups.length == 0 || groups.length > 3) {
+                throw new IllegalArgumentException("String cannot be parsed to create a Field (check the syntax): " + str);
+            }
+
+            // create the Field object, using the groups.
+            // we have -> A:B(C)
+            //    if we only have one group, we consider it to be B;
+            //    if we have two groups, we have A and B
+            //    and three groups is A, B and C
+
+            switch (groups.length) {
+                case 1:
+                    if (columnMetadata.isOnlyValues() && columnMetadata.getSubKey() != null) {
+                        field.setType(columnMetadata.getSubKey());
+                    }
+                    field.setValue(groups[0]);
+                    break;
+                case 2:
+                    field.setType(groups[0]);
+                    field.setValue(groups[1]);
+                    break;
+                case 3:
+                    field.setType(groups[0]);
+                    field.setValue(groups[1]);
+                    field.setText(groups[2]);
+                    break;
+            }
+
+            if (isFieldEmpty(field)) {
+                // this is an empty field,
+                return null;
+            }
+
+            // correct MI:0012(blah) to psi-mi:"MI:0012"(blah)
+            field = fixPsimiFieldfNecessary(field);
+
+            if (field.getType() == null && columnMetadata.getReadDefaultType() != null) {
+                field.setType(columnMetadata.getReadDefaultType());
+            }
         }
 
-        String[] groups = ParseUtils.quoteAwareSplit(str, new String[] {":", "(", ")"}, true);
-
-        // some exception handling
-        if (groups.length == 0 || groups.length > 3) {
-            throw new IllegalArgumentException("String cannot be parsed to create a Field (check the syntax): "+str);
+        if (columnMetadata.getSubKey() != null) {
+            if (field.getType() != null && field.getType().equals(columnMetadata.getSubKey())) {
+                fields.add(field);
+            }
+        } else {
+            fields.add(field);
         }
 
-        // create the Field object, using the groups.
-        // we have -> A:B(C)
-        //    if we only have one group, we consider it to be B;
-        //    if we have two groups, we have A and B
-        //    and three groups is A, B and C
-
-        switch (groups.length) {
-            case 1:
-                if (columnMetadata.isOnlyValues() && columnMetadata.getSubKey() != null) {
-                    field.setType(columnMetadata.getSubKey());
-                }
-                field.setValue(groups[0]);
-                break;
-            case 2:
-                field.setType(groups[0]);
-                field.setValue(groups[1]);
-                break;
-            case 3:
-                field.setType(groups[0]);
-                field.setValue(groups[1]);
-                field.setText(groups[2]);
-                break;
+        for (ColumnMetadata synonymColumn : columnMetadata.getSynonymColumns()) {
+            fields.addAll(Arrays.asList(createFields(synonymColumn, str)));
         }
 
-        if( isFieldEmpty(field)) {
-            // this is an empty field,
-            return null;
-        }
-
-        // correct MI:0012(blah) to psi-mi:"MI:0012"(blah)
-        field = fixPsimiFieldfNecessary(field);
-
-        return field;
+        return fields.toArray(new Field[fields.size()]);
     }
 
     private static Field fixPsimiFieldfNecessary(Field field) {
-        if ( "MI".equals(field.getType())) {
+        if ("MI".equals(field.getType())) {
             String identifier = field.getValue();
 
             return new Field(field.getColumnKey(), "psi-mi", "MI" + ":" + identifier, field.getText());
@@ -220,10 +237,10 @@ public class ParseUtils {
         return field;
     }
 
-    private static String removeLineReturn( String str ) {
+    private static String removeLineReturn(String str) {
         // check that the given string doesn't have any line return, and if so, remove them.
-        if( str != null && (str.indexOf( "\n" ) != -1 )) {
-            str = str.replaceAll( "\\n", " " );
+        if (str != null && (str.indexOf("\n") != -1)) {
+            str = str.replaceAll("\\n", " ");
         }
         return str;
     }
