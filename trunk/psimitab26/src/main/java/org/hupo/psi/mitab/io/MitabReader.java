@@ -21,10 +21,7 @@ import org.hupo.psi.mitab.model.Field;
 import org.hupo.psi.mitab.model.Row;
 import org.hupo.psi.mitab.util.ParseUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,17 +33,33 @@ import java.util.List;
 public class MitabReader {
 
     private DocumentDefinition documentDefinition;
+    private boolean ignoreFirstLine;
 
     public MitabReader(DocumentDefinition documentDefinition) {
         this.documentDefinition = documentDefinition;
     }
 
+    public MitabReader(DocumentDefinition documentDefinition, boolean ignoreFirstLine) {
+        this(documentDefinition);
+        this.ignoreFirstLine = ignoreFirstLine;
+    }
+
     public Collection<Row> readRows(InputStream is) throws IOException {
+        return readRows(new InputStreamReader(is));
+    }
+    public Collection<Row> readRows(Reader reader) throws IOException {
         List<Row> rows = new ArrayList<Row>();
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+        BufferedReader in = new BufferedReader(reader);
         String str;
+        int i=0;
+
         while ((str = in.readLine()) != null) {
+            if (i == 0 && ignoreFirstLine) {
+                i++;
+                continue;
+            }
+
             if (!str.trim().startsWith(documentDefinition.getCommentedLineStart())) {
                 rows.add(readLine(str));
             }
@@ -88,5 +101,13 @@ public class MitabReader {
         }
 
         return new Row(fields);
+    }
+
+    public boolean isIgnoreFirstLine() {
+        return ignoreFirstLine;
+    }
+
+    public void setIgnoreFirstLine(boolean ignoreFirstLine) {
+        this.ignoreFirstLine = ignoreFirstLine;
     }
 }
