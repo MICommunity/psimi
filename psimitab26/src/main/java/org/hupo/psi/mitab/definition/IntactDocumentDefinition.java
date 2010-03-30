@@ -32,6 +32,25 @@ public class IntactDocumentDefinition implements DocumentDefinition {
         Mitab25DocumentDefinition mitab25DocumentDefinition = new Mitab25DocumentDefinition();
         ColumnMetadata[] mitab25Columns = mitab25DocumentDefinition.getColumns();
 
+        ColumnMetadata checksumAColumn = new ColumnMetadata(Mitab26DocumentDefinition.KEY_CHECKSUM_A, "Checksum A", "irefindex");
+        ColumnMetadata checksumBColumn = new ColumnMetadata(Mitab26DocumentDefinition.KEY_CHECKSUM_B, "Checksum B", "irefindex");
+        ColumnMetadata checksumIColumn = new ColumnMetadata(Mitab26DocumentDefinition.KEY_CHECKSUM_I, "Checksum Interaction", "irefindex");
+
+        for (ColumnMetadata mitab25Col : mitab25Columns) {
+            if (Mitab25DocumentDefinition.KEY_INTERACTION_ID.equals(mitab25Col.getKey())) {
+                mitab25Col.getSynonymColumns().add(checksumIColumn);
+            } else if (Mitab25DocumentDefinition.KEY_ALTID_A.equals(mitab25Col.getKey())) {
+                mitab25Col.getSynonymColumns().add(checksumAColumn);
+            } else if (Mitab25DocumentDefinition.KEY_ALTID_B.equals(mitab25Col.getKey())) {
+                mitab25Col.getSynonymColumns().add(checksumBColumn);
+            }
+        }
+
+        ColumnMetadata datasetColumn = new ColumnMetadata(KEY_DATASET, "Dataset");
+        ColumnMetadata annotationsCol = new ColumnMetadata(Mitab26DocumentDefinition.KEY_ANNOTATIONS_I, "Annotations Interaction");
+        annotationsCol.setReadDefaultType("dataset");
+        datasetColumn.getSynonymColumns().add(annotationsCol);
+
         ColumnMetadata[] additionalCols = new ColumnMetadata[]{
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_EXPROLE_A, "Experimental Role A"),
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_EXPROLE_B, "Experimental Role B"),
@@ -43,7 +62,7 @@ public class IntactDocumentDefinition implements DocumentDefinition {
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_INTERACTOR_TYPE_B, "Interactor type B"),
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_HOST_ORGANISM, "Host Organism"),
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_EXPANSION, "Expansion"),
-                new ColumnMetadata(KEY_DATASET, "Dataset"),
+                datasetColumn,
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_ANNOTATIONS_A, "Annotations A"),
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_ANNOTATIONS_B, "Annotations B"),
                 new ColumnMetadata(Mitab26DocumentDefinition.KEY_PARAMETERS_A, "Parameters A"),

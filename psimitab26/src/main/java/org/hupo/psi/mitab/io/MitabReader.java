@@ -23,6 +23,7 @@ import org.hupo.psi.mitab.util.ParseUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -76,9 +77,10 @@ public class MitabReader {
 
         ColumnMetadata[] columns = documentDefinition.getColumns();
 
-        for (int i=0; i<cols.length && i<columns.length; i++) {
-            String col = cols[i];
+        for (int i=0; i<columns.length; i++) {
             ColumnMetadata columnMetadata = columns[i];
+
+            String col = cols[i];
 
             // strip column delimiters
             String colDelimiter = documentDefinition.getColumnDelimiter();
@@ -92,13 +94,14 @@ public class MitabReader {
             String[] strFields = ParseUtils.columnSplit(col, documentDefinition.getFieldSeparator());
 
             for (String strField : strFields) {
-                Field field = ParseUtils.createField(columnMetadata, strField);
+                Field[] fieldArray = ParseUtils.createFields(columnMetadata, strField);
 
-                if (field != null) {
-                    fields.add(field);
+                if (fieldArray != null) {
+                    fields.addAll(Arrays.asList(fieldArray));
                 }
             }
         }
+
 
         return new Row(fields);
     }

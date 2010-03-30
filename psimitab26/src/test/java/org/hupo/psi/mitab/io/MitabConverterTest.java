@@ -29,9 +29,9 @@ public class MitabConverterTest {
 
     @Test
     public void testConvert_intactExtended_to_mitab26() throws Exception {
-        InputStream is = MitabReaderTest.class.getResourceAsStream("/META-INF/mitab25/P51578.intact_extended.txt");
+        InputStream is = MitabReaderTest.class.getResourceAsStream("/META-INF/mitab25/P51578-oneline.intact_extended.txt");
         
-        MitabConverter converter = new MitabConverter(new IntactDocumentDefinition(), new Mitab26DocumentDefinition(), true);
+        MitabConverter converter = new MitabConverter(new IntactDocumentDefinition(), new Mitab26DocumentDefinition());
         converter.convert(is, System.out);
 
     }

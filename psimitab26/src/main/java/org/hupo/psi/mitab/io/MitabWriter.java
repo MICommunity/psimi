@@ -52,9 +52,9 @@ public class MitabWriter {
         FieldConverter fieldConverter = new FieldConverter(documentDefinition);
 
         for (int i=0; i<columns.length; i++) {
-            writer.write(documentDefinition.getColumnDelimiter());
-
             ColumnMetadata columnMetadata = columns[i];
+
+            writer.write(documentDefinition.getColumnDelimiter());
 
             Collection<Field> fields = row.getFieldsByColumnKey(columnMetadata.getKey());
 
@@ -69,6 +69,11 @@ public class MitabWriter {
 
                 while (fieldIterator.hasNext()) {
                     Field field = fieldIterator.next();
+
+                    if (field.getType() == null && columnMetadata.getWriteDefaultType() != null) {
+                        field.setType(columnMetadata.getWriteDefaultType());
+                    }
+
                     writer.write(fieldConverter.fieldToString(field));
 
                     if (fieldIterator.hasNext()) {
