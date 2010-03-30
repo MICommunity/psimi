@@ -72,6 +72,8 @@ public class ParseUtils {
         boolean withinQuotes = false;
         boolean previousCharIsEscape = false;
 
+        Character previousChar = null;
+
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
 
@@ -106,6 +108,8 @@ public class ParseUtils {
                     }
                 } else if (withinQuotes) {
                     currGroup.append(c);
+                } else {
+                    groups.add(currGroup.toString());
                 }
             } else if (c == '\\') {
                 if (withinQuotes) {
@@ -151,7 +155,7 @@ public class ParseUtils {
     }
 
     public static String[] columnSplit(String columnString, String separator) {
-        if (columnString == null) {
+        if (columnString == null || columnString.length() == 0) {
             return new String[0];
         }
         return quoteAwareSplit(columnString, new String[]{separator}, false);
@@ -172,7 +176,8 @@ public class ParseUtils {
 
             // some exception handling
             if (groups.length == 0 || groups.length > 3) {
-                throw new IllegalArgumentException("String cannot be parsed to create a Field (check the syntax): " + str);
+                Exception cause = new Exception("Incorrect number of groups found ("+groups.length+"): "+Arrays.asList(groups));
+                throw new IllegalArgumentException("String cannot be parsed to create a Field (check the syntax): " + str, cause);
             }
 
             // create the Field object, using the groups.

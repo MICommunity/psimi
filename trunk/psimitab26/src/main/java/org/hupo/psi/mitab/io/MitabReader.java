@@ -80,7 +80,12 @@ public class MitabReader {
         for (int i=0; i<columns.length; i++) {
             ColumnMetadata columnMetadata = columns[i];
 
-            String col = cols[i];
+            String col = null;
+            try {
+                col = cols[i];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new ArrayIndexOutOfBoundsException("Column out of bounds: "+columnMetadata.getKey());
+            }
 
             // strip column delimiters
             String colDelimiter = documentDefinition.getColumnDelimiter();
