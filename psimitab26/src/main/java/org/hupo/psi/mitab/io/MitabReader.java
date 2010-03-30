@@ -16,9 +16,7 @@
 package org.hupo.psi.mitab.io;
 
 import org.hupo.psi.mitab.definition.DocumentDefinition;
-import org.hupo.psi.mitab.model.ColumnMetadata;
-import org.hupo.psi.mitab.model.Field;
-import org.hupo.psi.mitab.model.Row;
+import org.hupo.psi.mitab.model.*;
 import org.hupo.psi.mitab.util.ParseUtils;
 
 import java.io.*;
@@ -48,6 +46,7 @@ public class MitabReader {
     public Collection<Row> readRows(InputStream is) throws IOException {
         return readRows(new InputStreamReader(is));
     }
+
     public Collection<Row> readRows(Reader reader) throws IOException {
         List<Row> rows = new ArrayList<Row>();
 
@@ -87,6 +86,8 @@ public class MitabReader {
                 throw new ArrayIndexOutOfBoundsException("Column out of bounds: "+columnMetadata.getKey());
             }
 
+            //System.out.println("COL: "+columnMetadata.getKey()+" "+col);
+
             // strip column delimiters
             String colDelimiter = documentDefinition.getColumnDelimiter();
             if (colDelimiter != null && colDelimiter.length() > 0) {
@@ -109,6 +110,27 @@ public class MitabReader {
 
 
         return new Row(fields);
+    }
+
+    public Collection<BinaryInteraction> readBinaryInteractions(InputStream is) throws IOException {
+        return readBinaryInteractions(new InputStreamReader(is));
+    }
+
+    public Collection<BinaryInteraction> readBinaryInteractions(Reader reader) throws IOException {
+        Collection<Row> rows = readRows(reader);
+
+        Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(rows.size());
+
+        for (Row row : rows) {
+            binaryInteractions.add(BinaryInteractionFactory.createBinaryInteraction(row));
+        }
+
+        return binaryInteractions;
+    }
+
+    public BinaryInteraction readBinaryInteractionLine(String line) throws Exception {
+        Row row = readLine(line);
+        return BinaryInteractionFactory.createBinaryInteraction(row);
     }
 
     public boolean isIgnoreFirstLine() {

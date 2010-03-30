@@ -16,9 +16,7 @@
 package org.hupo.psi.mitab.io;
 
 import org.hupo.psi.mitab.definition.DocumentDefinition;
-import org.hupo.psi.mitab.model.ColumnMetadata;
-import org.hupo.psi.mitab.model.Field;
-import org.hupo.psi.mitab.model.Row;
+import org.hupo.psi.mitab.model.*;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -37,6 +35,17 @@ public class MitabWriter {
 
     public MitabWriter(DocumentDefinition documentDefinition) {
         this.documentDefinition = documentDefinition;
+    }
+
+    public void writeBinaryInteractions(Writer writer, Collection<BinaryInteraction> binaryInteractions) throws IOException {
+        for (BinaryInteraction binaryInteraction : binaryInteractions) {
+            writeBinaryInteraction(writer, binaryInteraction);
+            writer.write(NEW_LINE);
+        }
+    }
+
+    public void writeBinaryInteraction(Writer writer, BinaryInteraction binaryInteraction) throws IOException {
+        write(writer, RowFactory.createRow(binaryInteraction));
     }
 
     public void write(Writer writer, Collection<Row> rows) throws IOException {
