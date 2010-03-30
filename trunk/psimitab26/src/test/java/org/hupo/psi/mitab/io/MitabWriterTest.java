@@ -38,14 +38,14 @@ public class MitabWriterTest {
     public void testWrite_mitab26_to_mitab25() throws Exception {
          String mitab26Line = "uniprotkb:Q9Y5J7\tuniprotkb:Q9Y584\tuniprotkb:TIMM9(gene name)\tuniprotkb:TIMM22(gene name)\t" +
                 "uniprotkb:TIM9\tuniprotkb:TEX4\t" +
-                "MI:0006(anti bait coip)\t-\tpubmed:14726512\ttaxid:9606(human)\ttaxid:9606(human)\t" +
-                "MI:0218(physical interaction)\tMI:0469(intact)\tintact:EBI-1200556\t-\t" +
+                "psi-mi:\"MI:0006\"(anti bait coip)\t-\tpubmed:14726512\ttaxid:9606(human)\ttaxid:9606(human)\t" +
+                "psi-mi:\"MI:0218\"(physical interaction)\tpsi-mi:\"MI:0469\"(intact)\tintact:EBI-1200556\t-\t" +
                 "psi-mi:\"MI:xxxx\"(spoke)\tpsi-mi:\"MI:0499\"(unspecified role)\tpsi-mi:\"MI:0499\"(unspecified role)\t" +
-                "\tpsi-mi:\"MI:0497\"(bait)\tpsi-mi:\"MI:0498\"(prey)\tpsi-mi:\"MI:0326\"(protein\tpsi-mi:\"MI:0326\"(protein)\t" +
-                "interpro:IPR004046(GST_C)|interpro:IPR003081(GST_mu)|interpro:IPR004045(GST_N)|interpro:IPR012335(Thioredoxin_fold)\t" +
-                "go:\"GO:0004709\"(\"F:MAP kinase kinase kinase act\")|go:\"GO:0007257\"(\"P:activation of JUNK\")\tgo:\"GO:xxxxx\"\t" +
-                "caution:AnnotA\tcaution:AnnotB\tdataset:Test\ttaxid:9606(human-293t)\t\t\tkd:2\t2009/03/09\t2010/03/30\t" +
-                "seguid:checksumA\tseguid:checksumB\tseguid:checksumI";
+                "psi-mi:\"MI:0497\"(bait)\tpsi-mi:\"MI:0498\"(prey)\tpsi-mi:\"MI:0326\"(protein)\tpsi-mi:\"MI:0326\"(protein)\t" +
+                "interpro:IPR004046(GST_C)\t" +
+                "go:\"GO:0004709\"(\"F:MAP kinase kinase kinase act\")\tgo:\"GO:xxxxx\"\t" +
+                "caution:AnnotA\tcaution:AnnotB\tdataset:Test\ttaxid:9606(human-293t)\t-\t-\tkd:2\t2009/03/09\t2010/03/30\t" +
+                "seguid:checksumA\tseguid:checksumB\tseguid:checksumI\tfalse";
 
         MitabReader mitabReader = new MitabReader(new Mitab25DocumentDefinition());
         Row row = mitabReader.readLine(mitab26Line);

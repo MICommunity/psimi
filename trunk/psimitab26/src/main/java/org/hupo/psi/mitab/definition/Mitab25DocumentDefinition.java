@@ -29,12 +29,12 @@ public class Mitab25DocumentDefinition implements DocumentDefinition {
     public static final String KEY_ALTID_B = "altidB";
     public static final String KEY_ALIAS_A = "aliasA";
     public static final String KEY_ALIAS_B = "aliasB";
-    public static final String KEY_DETMETHOD_EXACT = "detmethod_exact";
+    public static final String KEY_DETMETHOD = "detmethod_exact";
     public static final String KEY_PUBAUTH = "pubauth";
     public static final String KEY_PUBID = "pubid";
     public static final String KEY_TAXID_A = "taxidA";
     public static final String KEY_TAXID_B = "taxidB";
-    public static final String KEY_TYPE_EXACT = "type_exact";
+    public static final String KEY_INTERACTION_TYPE = "type_exact";
     public static final String KEY_SOURCE = "source";
     public static final String KEY_INTERACTION_ID = "interaction_id";
     public static final String KEY_CONFIDENCE = "confidence";
@@ -49,12 +49,12 @@ public class Mitab25DocumentDefinition implements DocumentDefinition {
             new ColumnMetadata(KEY_ALTID_B, "Alt. ID(s) interactor B"),
             new ColumnMetadata(KEY_ALIAS_A, "Alias(es) interactor A"),
             new ColumnMetadata(KEY_ALIAS_B, "Alias(es) interactor B"),
-            new ColumnMetadata(KEY_DETMETHOD_EXACT, "Interaction detection method(s)"),
+            new ColumnMetadata(KEY_DETMETHOD, "Interaction detection method(s)"),
             new ColumnMetadata(KEY_PUBAUTH, "Publication 1st author(s)"),
             new ColumnMetadata(KEY_PUBID, "Publication Identifier(s)"),
             new ColumnMetadata(KEY_TAXID_A, "Taxid interactor A"),
             new ColumnMetadata(KEY_TAXID_B, "Taxid interactor B"),
-            new ColumnMetadata(KEY_TYPE_EXACT, "Interaction type(s)"),
+            new ColumnMetadata(KEY_INTERACTION_TYPE, "Interaction type(s)"),
             new ColumnMetadata(KEY_SOURCE, "Source database(s)"),
             new ColumnMetadata(KEY_INTERACTION_ID, "Interaction identifier(s)"),
             new ColumnMetadata(KEY_CONFIDENCE, "Confidence value(s)")
