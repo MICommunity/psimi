@@ -40,6 +40,8 @@ public class MitabWriter {
     public void write(Writer writer, Row row) throws IOException {
         ColumnMetadata[] columns = documentDefinition.getColumns();
 
+        FieldConverter fieldConverter = new FieldConverter(documentDefinition);
+
         for (int i=0; i<columns.length; i++) {
             writer.write(documentDefinition.getColumnDelimiter());
 
@@ -54,7 +56,7 @@ public class MitabWriter {
 
                 while (fieldIterator.hasNext()) {
                     Field field = fieldIterator.next();
-                    writer.write(field.toString());
+                    writer.write(fieldConverter.fieldToString(field));
 
                     if (fieldIterator.hasNext()) {
                         writer.write(documentDefinition.getFieldSeparator());

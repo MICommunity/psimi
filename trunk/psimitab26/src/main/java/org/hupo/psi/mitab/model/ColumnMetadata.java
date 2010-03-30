@@ -24,9 +24,25 @@ public class ColumnMetadata {
     private String key;
     private String name;
 
+    private String subKey;
+    private boolean onlyValues;
+
     public ColumnMetadata(String key, String name) {
         this.key = key;
         this.name = name;
+    }
+
+    public ColumnMetadata(String key, String name, String subKey) {
+        this.key = key;
+        this.name = name;
+        this.subKey = subKey;
+    }
+
+    public ColumnMetadata(String key, String name, String subKey, boolean onlyValues) {
+        this.key = key;
+        this.name = name;
+        this.subKey = subKey;
+        this.onlyValues = onlyValues;
     }
 
     public String getKey() {
@@ -45,6 +61,22 @@ public class ColumnMetadata {
         this.name = name;
     }
 
+    public String getSubKey() {
+        return subKey;
+    }
+
+    public void setSubKey(String subKey) {
+        this.subKey = subKey;
+    }
+
+    public boolean isOnlyValues() {
+        return onlyValues;
+    }
+
+    public void setOnlyValues(boolean onlyValues) {
+        this.onlyValues = onlyValues;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,12 +85,15 @@ public class ColumnMetadata {
         ColumnMetadata that = (ColumnMetadata) o;
 
         if (key != null ? !key.equals(that.key) : that.key != null) return false;
+        if (subKey != null ? !subKey.equals(that.subKey) : that.subKey != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return key != null ? key.hashCode() : 0;
+        int result = key != null ? key.hashCode() : 0;
+        result = 31 * result + (subKey != null ? subKey.hashCode() : 0);
+        return result;
     }
 }

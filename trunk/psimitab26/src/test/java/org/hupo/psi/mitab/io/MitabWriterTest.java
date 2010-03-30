@@ -16,6 +16,7 @@
 package org.hupo.psi.mitab.io;
 
 import org.hupo.psi.mitab.definition.Mitab25DocumentDefinition;
+import org.hupo.psi.mitab.definition.UniprotPairDocumentDefinition;
 import org.hupo.psi.mitab.model.Row;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class MitabWriterTest {
          String mitab26Line = "uniprotkb:Q9Y5J7\tuniprotkb:Q9Y584\tuniprotkb:TIMM9(gene name)\tuniprotkb:TIMM22(gene name)\t" +
                 "uniprotkb:TIM9|uniprotkb:TIM9A|uniprotkb:TIMM9A\tuniprotkb:TEX4|uniprotkb:TIM22\t" +
                 "MI:0006(anti bait coip)\t-\tpubmed:14726512\ttaxid:9606(human)\ttaxid:9606(human)\t" +
-                "MI:0218(physical interaction)\tMI:0469(intact)\tintact:EBI-1200556|intact:EBI-1200624\t-\t" +
+                "MI:0218(physical interaction)\tMI:0469(intact)\tintact:EBI-1200556\t-\t" +
                 "\"psi-mi:\"\"MI:xxxx\"\"(spoke)\"\t\"psi-mi:\"\"MI:0499\"\"(unspecified role)\"\t\"psi-mi:\"\"MI:0499\"\"(unspecified role)\"\t" +
                 "\t\"psi-mi:\"\"MI:0498\"\"(prey)\"\t\"psi-mi:\"\"MI:0326\"\"(protein)\"\t\"psi-mi:\"\"MI:0326\"\"(protein)\"\t" +
                 "interpro:IPR004046(GST_C)|interpro:IPR003081(GST_mu)|interpro:IPR004045(GST_N)|interpro:IPR012335(Thioredoxin_fold)\t" +
@@ -44,7 +45,7 @@ public class MitabWriterTest {
         Row row = mitabReader.readLine(mitab26Line);
 
         Writer writer = new StringWriter();
-        MitabWriter mitabWriter = new MitabWriter(new Mitab25DocumentDefinition());
+        MitabWriter mitabWriter = new MitabWriter(new UniprotPairDocumentDefinition());
         mitabWriter.write(writer, row);
 
         System.out.println(writer);

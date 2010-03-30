@@ -55,7 +55,7 @@ public class MitabReaderTest {
         MitabReader mitabReader = new MitabReader(new Mitab25DocumentDefinition());
         Row row = mitabReader.readLine(mitab26Line);
 
-        Assert.assertEquals("15 columns in MITAB 2.5 - 2 columns without data", 13, row.getColumns().size());
+        Assert.assertEquals("15 columns in MITAB 2.5 - 2 columns without data", 13, row.getColumnKeys().size());
         Assert.assertEquals("uniprotkb:Q9Y5J7", row.getFieldsByColumnKey(Mitab25DocumentDefinition.KEY_ID_A).iterator().next().toString());
 
     }

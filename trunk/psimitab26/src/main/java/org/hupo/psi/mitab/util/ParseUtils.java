@@ -16,11 +16,9 @@
 package org.hupo.psi.mitab.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.hupo.psi.mitab.definition.DocumentDefinition;
 import org.hupo.psi.mitab.model.ColumnMetadata;
 import org.hupo.psi.mitab.model.Field;
 
-import java.util.IllegalFormatException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -162,7 +160,7 @@ public class ParseUtils {
 
         str = removeLineReturn(str);
 
-        Field field = new Field(columnMetadata);
+        Field field = new Field(columnMetadata.getKey());
 
         str = str.trim();
 
@@ -213,7 +211,7 @@ public class ParseUtils {
         if ( "MI".equals(field.getType())) {
             String identifier = field.getValue();
 
-            return new Field(field.getColumnMetadata(), "psi-mi", "MI" + ":" + identifier, field.getText());
+            return new Field(field.getColumnKey(), "psi-mi", "MI" + ":" + identifier, field.getText());
         }
 
         return field;

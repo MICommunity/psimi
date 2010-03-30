@@ -16,10 +16,12 @@
 package org.hupo.psi.mitab.model;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
@@ -27,11 +29,9 @@ import java.util.*;
  */
 public class Row {
 
-    private Multimap<ColumnMetadata,Field> fieldsByColumn;
     private Multimap<String,Field> fieldsByColumnKey;
 
     public Row(List<Field> fields) {
-        fieldsByColumn = HashMultimap.create();
         fieldsByColumnKey = HashMultimap.create();
 
         for (Field field : fields) {
@@ -44,8 +44,7 @@ public class Row {
             throw new NullPointerException("null field");
         }
 
-       fieldsByColumn.put(field.getColumnMetadata(), field);
-       fieldsByColumnKey.put(field.getColumnMetadata().getKey(), field);
+       fieldsByColumnKey.put(field.getColumnKey(), field);
     }
 
     public Collection<Field> getFieldsByColumnKey(String columnKey) {
@@ -56,7 +55,7 @@ public class Row {
         }
     }
 
-    public Set<ColumnMetadata> getColumns() {
-        return fieldsByColumn.keySet();
+    public Set<String> getColumnKeys() {
+        return fieldsByColumnKey.keySet();
     }
 }
