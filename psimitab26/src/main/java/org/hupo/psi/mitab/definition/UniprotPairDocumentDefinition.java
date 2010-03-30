@@ -23,12 +23,18 @@ import org.hupo.psi.mitab.model.ColumnMetadata;
  */
 public class UniprotPairDocumentDefinition implements DocumentDefinition {
 
-    public ColumnMetadata[] getColumns() {
-        return new ColumnMetadata[] {
+    private ColumnMetadata[] columns;
+
+    public UniprotPairDocumentDefinition() {
+        this.columns = new ColumnMetadata[] {
             new ColumnMetadata(Mitab25DocumentDefinition.KEY_INTERACTION_ID, "ID(s) interaction"),
             new ColumnMetadata(Mitab25DocumentDefinition.KEY_ID_A, "Uniprotkb A", "uniprotkb", true),
             new ColumnMetadata(Mitab25DocumentDefinition.KEY_ID_B, "Uniprotkb B", "uniprotkb", true)
         };
+    }
+
+    public ColumnMetadata[] getColumns() {
+        return columns;
     }
 
     public String getColumnSeparator() {
@@ -43,7 +49,7 @@ public class UniprotPairDocumentDefinition implements DocumentDefinition {
         return "\"";
     }
 
-    public String getEmptyColumnContent() {
+    public String getEmptyColumnValue() {
         return "-";
     }
 

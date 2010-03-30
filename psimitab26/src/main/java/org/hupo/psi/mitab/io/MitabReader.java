@@ -67,6 +67,15 @@ public class MitabReader {
             String col = cols[i];
             ColumnMetadata columnMetadata = columns[i];
 
+            // strip column delimiters
+            String colDelimiter = documentDefinition.getColumnDelimiter();
+            if (colDelimiter != null && colDelimiter.length() > 0) {
+                if (col.startsWith(colDelimiter) && col.endsWith(colDelimiter)) {
+                    String[] colTokens = col.split(colDelimiter);
+                    col = colTokens[1];
+                }
+            }
+
             String[] strFields = ParseUtils.columnSplit(col, documentDefinition.getFieldSeparator());
 
             for (String strField : strFields) {

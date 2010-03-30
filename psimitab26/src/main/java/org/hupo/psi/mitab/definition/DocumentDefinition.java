@@ -16,7 +16,7 @@ public interface DocumentDefinition {
 
     String getColumnDelimiter();
 
-    String getEmptyColumnContent();
+    String getEmptyColumnValue();
 
     String getCommentedLineStart();
 }

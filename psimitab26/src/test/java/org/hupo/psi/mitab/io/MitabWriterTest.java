@@ -18,6 +18,7 @@ package org.hupo.psi.mitab.io;
 import org.hupo.psi.mitab.definition.Mitab25DocumentDefinition;
 import org.hupo.psi.mitab.definition.UniprotPairDocumentDefinition;
 import org.hupo.psi.mitab.model.Row;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -45,10 +46,25 @@ public class MitabWriterTest {
         Row row = mitabReader.readLine(mitab26Line);
 
         Writer writer = new StringWriter();
-        MitabWriter mitabWriter = new MitabWriter(new UniprotPairDocumentDefinition());
+        MitabWriter mitabWriter = new MitabWriter(new Mitab25DocumentDefinition());
         mitabWriter.write(writer, row);
 
-        System.out.println(writer);
+        Assert.assertEquals("uniprotkb:Q9Y5J7\tuniprotkb:Q9Y584\tuniprotkb:TIMM9(gene name)\tuniprotkb:TIMM22(gene name)\tuniprotkb:TIM9|uniprotkb:TIMM9A|uniprotkb:TIM9A\tuniprotkb:TEX4|uniprotkb:TIM22\tpsi-mi:\"MI:0006\"(anti bait coip)\t-\tpubmed:14726512\ttaxid:9606(human)\ttaxid:9606(human)\tpsi-mi:\"MI:0218\"(physical interaction)\tpsi-mi:\"MI:0469\"(intact)\tintact:EBI-1200556\t-", writer.toString());
+
+    }
+
+    @Test
+    public void testWrite_UniprotPairDocumentDefinition() throws Exception {
+         String testLine = "\"intact:EBI-1200556\",\"Q9Y5J7\",\"Q9Y584\"";
+
+        MitabReader mitabReader = new MitabReader(new UniprotPairDocumentDefinition());
+        Row row = mitabReader.readLine(testLine);
+
+        Writer writer = new StringWriter();
+        MitabWriter mitabWriter = new MitabWriter(new Mitab25DocumentDefinition());
+        mitabWriter.write(writer, row);
+
+        Assert.assertEquals("uniprotkb:Q9Y5J7\tuniprotkb:Q9Y584\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\tintact:EBI-1200556\t-", writer.toString());
 
     }
 }

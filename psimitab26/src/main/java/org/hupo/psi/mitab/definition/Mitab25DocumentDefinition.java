@@ -39,8 +39,10 @@ public class Mitab25DocumentDefinition implements DocumentDefinition {
     public static final String KEY_INTERACTION_ID = "interaction_id";
     public static final String KEY_CONFIDENCE = "confidence";
 
-    public ColumnMetadata[] getColumns() {
-        return new ColumnMetadata[] {
+    private ColumnMetadata[] columns;
+
+    public Mitab25DocumentDefinition() {
+        this.columns = new ColumnMetadata[] {
             new ColumnMetadata(KEY_ID_A, "ID(s) interactor A"),
             new ColumnMetadata(KEY_ID_B, "ID(s) interactor B"),
             new ColumnMetadata(KEY_ALTID_A, "Alt. ID(s) interactor A"),
@@ -59,6 +61,10 @@ public class Mitab25DocumentDefinition implements DocumentDefinition {
         };
     }
 
+    public ColumnMetadata[] getColumns() {
+        return columns;
+    }
+
     public String getColumnSeparator() {
         return "\t";
     }
@@ -71,7 +77,7 @@ public class Mitab25DocumentDefinition implements DocumentDefinition {
         return "";
     }
 
-    public String getEmptyColumnContent() {
+    public String getEmptyColumnValue() {
         return "-";
     }
 

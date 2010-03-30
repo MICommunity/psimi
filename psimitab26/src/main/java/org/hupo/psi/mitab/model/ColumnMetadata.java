@@ -26,6 +26,7 @@ public class ColumnMetadata {
 
     private String subKey;
     private boolean onlyValues;
+    private String defaultValue;
 
     public ColumnMetadata(String key, String name) {
         this.key = key;
@@ -75,6 +76,14 @@ public class ColumnMetadata {
 
     public void setOnlyValues(boolean onlyValues) {
         this.onlyValues = onlyValues;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     @Override
