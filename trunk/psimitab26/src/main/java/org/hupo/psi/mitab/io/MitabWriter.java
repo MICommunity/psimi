@@ -50,7 +50,11 @@ public class MitabWriter {
             Collection<Field> fields = row.getFieldsByColumnKey(columnMetadata.getKey());
 
             if (fields.isEmpty()) {
-                writer.write(documentDefinition.getEmptyColumnContent());
+                if (columnMetadata.getDefaultValue() != null) {
+                    writer.write(columnMetadata.getDefaultValue());
+                } else {
+                    writer.write(documentDefinition.getEmptyColumnValue());
+                }
             } else {
                 Iterator<Field> fieldIterator = fields.iterator();
 

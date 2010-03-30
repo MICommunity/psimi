@@ -183,6 +183,9 @@ public class ParseUtils {
 
         switch (groups.length) {
             case 1:
+                if (columnMetadata.isOnlyValues() && columnMetadata.getSubKey() != null) {
+                    field.setType(columnMetadata.getSubKey());
+                }
                 field.setValue(groups[0]);
                 break;
             case 2:
