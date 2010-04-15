@@ -757,9 +757,16 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                     if (level != null && level.toLowerCase().equals("error")){
                                         if (cond.isApplicableHostOrganism(host) || cond.isApplicablewithTheNumberOfParticipants(numParticipants) || cond.isApplicablewithTheNumberOfBaits(numBaits) || cond.isApplicablewithTheNumberOfPreys(numPreys)){
 
-                                            final String msg = "Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "and the interaction type ["+Term.printTerm(brTerm)+"] ?";
-                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
+                                            final StringBuffer msg = new StringBuffer();
+                                            msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"].");
+
+                                            for (AssociatedTerm r : interactionTypeCondition){
+                                                InteractionTypeConditions it = (InteractionTypeConditions) r;
+                                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
+                                                        ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
+                                            }
+                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.forName( level ), context.copy(), rule ) );
 
                                         }
                                     }
@@ -826,10 +833,10 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                     "and the interaction type ["+Term.printTerm(brTerm)+"]." +
                                     " The possible dependencies are : \n");
 
-                            for (AssociatedTerm r : req){
+                            for (AssociatedTerm r : interactionTypeCondition){
                                 InteractionTypeConditions it = (InteractionTypeConditions) r;
-                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + it.getRequirements().applicableHostOrganisms + ", Number participants : " + it.getRequirements().applicableNumParticipants +
-                                        ", Number of baits : " + it.getRequirements().applicableNumBaits+ ", Number of preys : " + it.getRequirements().applicableNumPrey + " \n");
+                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
+                                        ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
                             }
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
@@ -839,11 +846,11 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             final StringBuffer msg = new StringBuffer("Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
                                     "and the interaction type ["+Term.printTerm(brTerm)+"] ?" +
                                     " The recommended dependencies are : \n");
-
-                            for (AssociatedTerm r : req){
+                            System.out.println("baits " + numBaits);
+                            for (AssociatedTerm r : interactionTypeCondition){
                                 InteractionTypeConditions it = (InteractionTypeConditions) r;
-                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + it.getRequirements().applicableHostOrganisms + ", Number participants : " + it.getRequirements().applicableNumParticipants +
-                                        ", Number of baits : " + it.getRequirements().applicableNumBaits+ ", Number of preys : " + it.getRequirements().applicableNumPrey + " \n");
+                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
+                                        ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
                             }
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
