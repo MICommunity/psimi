@@ -141,6 +141,7 @@ public class DependencyMapping {
 
                 // Creates the first term of the dependency
                 Term firstTerm = createFirstTermOfTheDependency(columns);
+
                 // creates the associated term
                 AssociatedTerm associatedTerm = createSecondaryTermOfTheDependency(columns);
 
@@ -241,28 +242,17 @@ public class DependencyMapping {
                         if (t != null && t2 != null){
                             // There is an associated term in the dependency map with the same id/name as 'secondTerm.getSecondTermOfTheDependency()'
                             if (t.equals(t2)){
-                                if (t.isDeducedFromItsParent()){
-                                    // If the new associated term is deduced from its parent, keep the associated term with the younger parent.
-                                    if (t2.isDeducedFromItsParent()){
-                                        final Collection<OntologyTermI> children = mi.getValidTerms( t.getParent().getId(), true, false );
-                                        if (!children.isEmpty()){
-                                            if (children.contains(t2.getParent())){
-                                                associatedTermToReplace.add(associatedTerm);
-                                            }
-                                        }
-                                    }
-                                    //If the new associated term isn't deduced from its parent, replace the old dependency.
-                                    else{
-                                        associatedTermToReplace.add(associatedTerm);
-                                    }
-                                }
+                                System.out.println("coucou" + term.getName());
+                                System.out.println(t.getName());
+                                System.out.println(t2.getName());
                                 // If the existing first term in the dependency map is deduced from a parent term.
-                                else if (oldTerm.isDeducedFromItsParent()){
+                                if (oldTerm.isDeducedFromItsParent()){
                                     // If the new first term is deduced from its parent, keep the term with the younger parent.
                                     if (term.isDeducedFromItsParent()){
                                         final Collection<OntologyTermI> children = mi.getValidTerms( oldTerm.getParent().getId(), true, false );
                                         if (!children.isEmpty()){
                                             if (children.contains(term.getParent())){
+                                                oldTerm = term;
                                                 associatedTermToReplace.add(associatedTerm);
                                             }
                                         }
@@ -460,7 +450,7 @@ public class DependencyMapping {
 
                         Set<AssociatedTerm> recommended = getRecommendedDependenciesFor(firstTermOfDependency);
                         if (!recommended.isEmpty()){
-                            
+
                             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
 
                             final StringBuffer msg = new StringBuffer("When the " + term1.getClass().getSimpleName() + " is ["+Term.printTerm(firstTermOfDependency)+"]." +
