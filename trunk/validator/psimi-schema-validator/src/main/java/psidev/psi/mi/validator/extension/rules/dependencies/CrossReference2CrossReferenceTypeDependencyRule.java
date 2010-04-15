@@ -295,18 +295,23 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             if (type.equals(t.getSecondTermOfTheDependency())){
                                 if (t instanceof CrossReferenceType){
                                     CrossReferenceType crossType = (CrossReferenceType) t;
-                                    if (crossType.isReferenceTypeRuleApplicableTo(container)){
-                                        if (level != null){
-                                            if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
-                                                hasFoundDependency = true;
-                                            }
-                                            else {
-                                                final String msg = "Are you sure of the combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
-                                                        "and " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] ?";
-                                                messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
+                                    if (level != null && level.toLowerCase().equals("error")){
+                                        if (crossType.isReferenceTypeRuleApplicableTo(container)){
+                                            final String msg = "Are you sure of the combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
+                                                    "and " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] ?";
+                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
+                                        }
+                                    }
+                                    else {
+                                        if (crossType.isReferenceTypeRuleApplicableTo(container)){
+                                            if (level != null){
+                                                if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
+                                                    hasFoundDependency = true;
+                                                }
                                             }
                                         }
                                     }
+
                                 }
                                 else{
                                     log.error("The dependencyMapping does not contains any CrossReferenceType instance and it is required.");
