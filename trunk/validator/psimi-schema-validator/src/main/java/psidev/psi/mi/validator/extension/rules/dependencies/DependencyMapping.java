@@ -242,9 +242,6 @@ public class DependencyMapping {
                         if (t != null && t2 != null){
                             // There is an associated term in the dependency map with the same id/name as 'secondTerm.getSecondTermOfTheDependency()'
                             if (t.equals(t2)){
-                                System.out.println("coucou" + term.getName());
-                                System.out.println(t.getName());
-                                System.out.println(t2.getName());
                                 // If the existing first term in the dependency map is deduced from a parent term.
                                 if (oldTerm.isDeducedFromItsParent()){
                                     // If the new first term is deduced from its parent, keep the term with the younger parent.
