@@ -23,10 +23,7 @@ import psidev.psi.tools.validator.schema.SaxReport;
 import psidev.psi.tools.validator.schema.SaxValidatorHandler;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * <b> PSI-MI 2.5.2 Specific Validator </b>.
@@ -282,7 +279,7 @@ public class Mi25Validator extends Validator {
 
 
         // then run the object rules (if any)
-        final List<ObjectRule> rules = getObjectRules();
+        final Set<ObjectRule> rules = getObjectRules();
         if ( rules != null && !rules.isEmpty() ) {
             // now that we know that we have at least one rule, it is worth parsing the data.
             if( entries == null ) {

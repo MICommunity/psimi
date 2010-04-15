@@ -12,6 +12,7 @@ import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.objectRuleReader.ObjectRuleReader;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 import psidev.psi.tools.validator.xpath.XPathHelper;
 import psidev.psi.tools.validator.xpath.XPathResult;
 
@@ -44,8 +45,8 @@ public class Mi25ValidatorTest {
             InputStream cvMappingConfig = Mi25ValidatorTest.class.getResource( "/config/cv-mapping.xml" ).openStream();
             Assert.assertNotNull(cvMappingConfig);
 
-            InputStream objectRuleConfig = null;
-           // InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
+            //InputStream objectRuleConfig = null;
+            InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
 //            Assert.assertNotNull(objectRuleConfig);
 
             aValidator = new Mi25Validator( ontologyConfig, cvMappingConfig, objectRuleConfig );
@@ -102,7 +103,11 @@ public class Mi25ValidatorTest {
         preferences.setKeepDownloadedOntologiesOnDisk( true );
         aValidator.setUserPreferences( preferences );
 
-        Assert.assertEquals( 12, aValidator.getObjectRules().size() );
+        for (ObjectRule name : aValidator.getObjectRules()){
+            System.out.println(name.getName());
+        }
+
+        Assert.assertEquals( 15, aValidator.getObjectRules().size() );
     }
 
     @Test
@@ -337,6 +342,18 @@ public class Mi25ValidatorTest {
         Assert.assertNotNull( report.getSyntaxMessages() );
         Assert.assertTrue( report.getSyntaxMessages().size() > 0 );
         printMessages( report.getSyntaxMessages() );
+    }
+
+    @Test
+    public void validateSyntax16141327() throws Exception {
+        Collection<ValidatorMessage> messages = getValidationMessage ("16141327.xml"  );
+        printMessages( messages );
+    }
+
+    @Test
+    public void validateSyntax19765186() throws Exception {
+        Collection<ValidatorMessage> messages = getValidationMessage ("19765186.xml"  );
+        printMessages( messages );
     }
 
     private void printMessages( Collection<ValidatorMessage> messages ) {

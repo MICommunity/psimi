@@ -39,7 +39,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             String resource = InteractionDetectionMethod2InteractionTypeDependencyRule.class
                     .getResource( "/InteractionDetection2InteractionTypes.tsv" ).getFile();
-
             mapping = new DependencyMappingInteractionDetectionMethod2InteractionType();
             mapping.buildMappingFromFile( mi, resource);
 
@@ -216,10 +215,34 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
             DependencyRequirements dependencyRequirements = ( DependencyRequirements ) o;
 
             if ( !applicableHostOrganisms.equals(dependencyRequirements.getApplicableHostOrganisms()) ) return false;
-            if ( !applicableNumParticipants.equals(dependencyRequirements.getApplicableNumParticipants()) ) return false;
-            if ( !applicableNumBaits.equals(dependencyRequirements.getApplicableNumBaits()) ) return false;
-            if ( !applicableNumPrey.equals(dependencyRequirements.getApplicableNumPrey()) ) return false;
 
+            if ( applicableNumParticipants.size() != dependencyRequirements.getApplicableNumParticipants().size() ) return false;
+            else {
+                Iterator<String> it = dependencyRequirements.getApplicableNumParticipants().iterator();
+                while (it.hasNext()){
+                    if (!applicableNumParticipants.contains(it.next())){
+                        return false;
+                    }
+                }
+            }
+            if ( applicableNumBaits.size() != dependencyRequirements.getApplicableNumBaits().size() ) return false;
+            else {
+                Iterator<String> it = dependencyRequirements.getApplicableNumBaits().iterator();
+                while (it.hasNext()){
+                    if (!applicableNumBaits.contains(it.next())){
+                        return false;
+                    }
+                }
+            }
+            if ( applicableNumPrey.size() != dependencyRequirements.getApplicableNumPrey().size() ) return false;
+            else {
+                Iterator<String> it = dependencyRequirements.getApplicableNumPrey().iterator();
+                while (it.hasNext()){
+                    if (!applicableNumPrey.contains(it.next())){
+                        return false;
+                    }
+                }
+            }
             return true;
         }
 
@@ -435,7 +458,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         @Override
         public boolean equals( Object o ) {
             boolean equals = super.equals(o);
-            if (!equals && o instanceof InteractionTypeConditions){
+            if (equals && o instanceof InteractionTypeConditions){
                 InteractionTypeConditions intTypeCond = (InteractionTypeConditions) o;
                 if ( !requirements.equals( intTypeCond.getRequirements()) ) return false;
                 return true;
@@ -731,55 +754,63 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                 if (pair instanceof InteractionTypeConditions){
                                     InteractionTypeConditions cond = (InteractionTypeConditions) pair;
 
-                                    if (cond.isApplicableHostOrganism(host)){
-                                        if (cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
-                                            if (cond.isApplicablewithTheNumberOfBaits(numBaits)){
-                                                if (cond.isApplicablewithTheNumberOfPreys(numPreys)){
-                                                    if (level != null){
-                                                        if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
-                                                            hasFoundDependency = true;
+                                    if (level != null && level.toLowerCase().equals("error")){
+                                        if (cond.isApplicableHostOrganism(host) || cond.isApplicablewithTheNumberOfParticipants(numParticipants) || cond.isApplicablewithTheNumberOfBaits(numBaits) || cond.isApplicablewithTheNumberOfPreys(numPreys)){
+
+                                            final String msg = "Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                                    "and the interaction type ["+Term.printTerm(brTerm)+"] ?";
+                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
+
+                                        }
+                                    }
+                                    else {
+                                        if (cond.isApplicableHostOrganism(host)){
+                                            if (cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
+                                                if (cond.isApplicablewithTheNumberOfBaits(numBaits)){
+                                                    if (cond.isApplicablewithTheNumberOfPreys(numPreys)){
+
+                                                        if (level != null){
+                                                            if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
+
+                                                                hasFoundDependency = true;
+                                                            }
                                                         }
-                                                        else {
-                                                            final String msg = "Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                                    "and the interaction type ["+Term.printTerm(brTerm)+"] ?";
-                                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
+                                                    }
+                                                    else{
+                                                        final StringBuffer msg = new StringBuffer("Unusual number of preys "+ numPreys +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                                "the interaction type is " + Term.printTerm(brTerm) + " the number of preys should be : \n") ;
+                                                        for (String validNum : cond.getRequirements().getApplicableNumPrey()){
+                                                            msg.append(validNum + "\n");
                                                         }
+                                                        messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                                     }
                                                 }
                                                 else{
-                                                    final StringBuffer msg = new StringBuffer("Unusual number of preys "+ numPreys +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
-                                                            "the interaction type is " + Term.printTerm(brTerm) + " the number of preys should be : \n") ;
-                                                    for (String validNum : cond.getRequirements().getApplicableNumPrey()){
+                                                    final StringBuffer msg = new StringBuffer("Unusual number of baits "+ numBaits +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                            "the interaction type is " + Term.printTerm(brTerm) + " the number of baits should be : \n") ;
+                                                    for (String validNum : cond.getRequirements().getApplicableNumBaits()){
                                                         msg.append(validNum + "\n");
                                                     }
                                                     messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                                 }
                                             }
                                             else{
-                                                final StringBuffer msg = new StringBuffer("Unusual number of baits "+ numBaits +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
-                                                        "the interaction type is " + Term.printTerm(brTerm) + " the number of baits should be : \n") ;
-                                                for (String validNum : cond.getRequirements().getApplicableNumBaits()){
+                                                final StringBuffer msg = new StringBuffer("Unusual number of participants "+ numParticipants +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                        "the interaction type is " + Term.printTerm(brTerm) + " the number of participants should be : \n") ;
+                                                for (String validNum : cond.getRequirements().getApplicableNumParticipants()){
                                                     msg.append(validNum + "\n");
                                                 }
                                                 messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                             }
                                         }
                                         else{
-                                            final StringBuffer msg = new StringBuffer("Unusual number of participants "+ numParticipants +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
-                                                    "the interaction type is " + Term.printTerm(brTerm) + " the number of participants should be : \n") ;
-                                            for (String validNum : cond.getRequirements().getApplicableNumParticipants()){
-                                                msg.append(validNum + "\n");
+                                            final StringBuffer msg = new StringBuffer("Unusual host organism. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                    "the interaction type is " + Term.printTerm(brTerm) + " the host organism should be : \n") ;
+                                            for (String validHost : cond.getRequirements().getApplicableHostOrganisms()){
+                                                msg.append(validHost + "\n");
                                             }
                                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                         }
-                                    }
-                                    else{
-                                        final StringBuffer msg = new StringBuffer("Unusual host organism. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
-                                                "the interaction type is " + Term.printTerm(brTerm) + " the host organism should be : \n") ;
-                                        for (String validHost : cond.getRequirements().getApplicableHostOrganisms()){
-                                            msg.append(validHost + "\n");
-                                        }
-                                        messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                     }
                                 }
                                 else {
@@ -789,6 +820,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                         }
 
                         if (!hasFoundDependency && isAValueRequired){
+
                             Set<AssociatedTerm> req = getRequiredDependenciesFor(methodTerm);
                             final StringBuffer msg = new StringBuffer("There is an unusual combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
                                     "and the interaction type ["+Term.printTerm(brTerm)+"]." +
