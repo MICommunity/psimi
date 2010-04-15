@@ -111,10 +111,6 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
                             }
                         }
                     }
-
-                    if (!hasFeatureDetectionMethod){                        
-                        messages.addAll( mapping.check( featureType, method, context, this ) );
-                    }
                 }
             }
 

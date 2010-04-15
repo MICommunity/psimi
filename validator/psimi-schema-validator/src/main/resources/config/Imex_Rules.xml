@@ -2,9 +2,13 @@
 <objectRuleList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/object-rule.xsd">
 
+    <name>ImeX</name>
+
     <importRuleList>
-        <import rules="/config/Dependency_Rules.xml"/>
+        <import type="resource" rules="/config/Dependency_Rules.xml"/>
+        <import type="resource" rules="/config/MimixForImex_Rules.xml" />
     </importRuleList>
+
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentFullCoverageRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexCurationRule"/>

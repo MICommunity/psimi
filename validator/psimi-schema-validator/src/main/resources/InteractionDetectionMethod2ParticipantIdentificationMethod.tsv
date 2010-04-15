@@ -14,7 +14,7 @@
 "MI:0905"	"amplified luminescent proximity homogeneous assay "	"FALSE"	"MI:0396"	"predetermined participant"	"FALSE"	"SHOULD"
 "MI:0938"	"rheology measurement "	"FALSE"	"MI:0396"	"predetermined participant"	"FALSE"	"SHOULD"
 "MI:0090"	"protein complementation assay "	"TRUE"	"MI:0396"	"predetermined participant"	"FALSE"	"SHOULD"
-"MI:0090"	"protein complementation assay "	"TRUE"	"MI:0056"	"full identification by DNA sequencing"	"FALSE"	"SHOULD"
+"MI:0090"	"protein complementation assay "	"TRUE"	"MI:0078"	"nucleotide sequence identification"	"FALSE"	"SHOULD"
 "MI:0040"	"electron microscopy"	"FALSE"	"MI:0396"	"predetermined participant"	"FALSE"	"SHOULD"
 "MI:0040"	"electron microscopy"	"FALSE"	"MI:0422"	"immunostaining"	"FALSE"	"SHOULD"
 "MI:0426"	"light microscopy "	"FALSE"	"MI:0396"	"predetermined participant"	"FALSE"	"SHOULD"
