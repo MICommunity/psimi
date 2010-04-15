@@ -34,10 +34,10 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
         Interaction interaction = new Interaction();
 
         DbReference database = new DbReference();
-        database.setDb("pubmed");
-        database.setDbAc("MI:0446");
-        database.setRefType("see-also");
-        database.setRefTypeAc("MI:0361");
+        database.setDb("go");
+        database.setDbAc("MI:0448");
+        database.setRefType("process");
+        database.setRefTypeAc("MI:0359");
         Xref xRef = new Xref();
         xRef.setPrimaryRef(database);
 

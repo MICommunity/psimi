@@ -2,6 +2,8 @@
 <objectRuleList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/object-rule.xsd">
 
+    <name>ImeX</name>
+
     <rule class="psidev.psi.mi.validator.extension.rules.dependencies.CrossReference2CrossReferenceTypeDependencyRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.dependencies.FeatureType2FeatureDetectionMethodDependencyRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.dependencies.FeatureType2FeatureRangeDependencyRule"/>

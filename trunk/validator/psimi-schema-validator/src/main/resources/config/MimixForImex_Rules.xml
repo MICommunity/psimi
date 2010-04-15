@@ -7,6 +7,5 @@
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentInteractionDetectionMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentParticipantIdentificationMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentHostOrganismRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.ExperimentHostOrganismRule"/>
 
 </objectRuleList>

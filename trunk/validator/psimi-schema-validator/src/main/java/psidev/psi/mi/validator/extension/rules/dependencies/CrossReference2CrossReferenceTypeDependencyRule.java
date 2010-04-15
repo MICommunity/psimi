@@ -185,7 +185,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         @Override
         public boolean equals( Object o ) {
             boolean equals = super.equals(o);
-            if (!equals && o instanceof CrossReferenceType){
+            if (equals && o instanceof CrossReferenceType){
                 CrossReferenceType c = (CrossReferenceType) o;
                 if ( !location.equals( c.getLocation()) ) return false;
                 return true;
@@ -253,6 +253,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
             if( database != null) {
 
+                //System.out.println(dependencies.get( database ));
                 if( dependencies.containsKey( database )) {
                     final Set<AssociatedTerm> types = dependencies.get( database );
 
@@ -292,10 +293,8 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             }
 
                             if (type.equals(t.getSecondTermOfTheDependency())){
-
                                 if (t instanceof CrossReferenceType){
                                     CrossReferenceType crossType = (CrossReferenceType) t;
-
                                     if (crossType.isReferenceTypeRuleApplicableTo(container)){
                                         if (level != null){
                                             if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
