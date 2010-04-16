@@ -3,6 +3,7 @@ package psidev.psi.mi.xml;
 import junit.framework.JUnit4TestAdapter;
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.mi.xml.xmlindex.PsimiXmlIndexerTest;
 
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -62,6 +64,22 @@ public class PsimiXmlLightweightReaderTest {
         final List<IndexedEntry> indexedEntries = reader.getIndexedEntries();
         Assert.assertNotNull( indexedEntries );
         Assert.assertEquals( 1, indexedEntries.size() );
+    }
+
+    @Test
+    public void getIndexedEntries_254_parameter_with_expRef() throws Exception {
+        File file = new File( PsimiXmlIndexerTest.class.getResource("/sample-xml/intact/16141327.254.xml").getFile() );
+        PsimiXmlLightweightReader reader = new PsimiXmlLightweightReader( file );
+        final List<IndexedEntry> indexedEntries = reader.getIndexedEntries();
+        Assert.assertNotNull( indexedEntries );
+        Assert.assertEquals( 1, indexedEntries.size() );
+
+        for ( IndexedEntry entry : indexedEntries ) {
+            final Iterator<Interaction> iteractor = entry.unmarshallInteractionIterator();
+            while ( iteractor.hasNext() ) {
+                iteractor.next();
+            }
+        }
     }
 
     @Test
