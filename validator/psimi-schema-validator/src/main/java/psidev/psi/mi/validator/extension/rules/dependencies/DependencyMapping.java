@@ -242,8 +242,18 @@ public class DependencyMapping {
                         if (t != null && t2 != null){
                             // There is an associated term in the dependency map with the same id/name as 'secondTerm.getSecondTermOfTheDependency()'
                             if (t.equals(t2)){
+                                if (t.isDeducedFromItsParent()){
+                                    if (t2.isDeducedFromItsParent()){
+                                        final Collection<OntologyTermI> children = mi.getValidTerms( t.getParent().getId(), true, false );
+                                        if (!children.isEmpty()){
+                                            if (children.contains(t2.getParent())){
+                                                associatedTermToReplace.add(associatedTerm);
+                                            }
+                                        }
+                                    }
+                                }
                                 // If the existing first term in the dependency map is deduced from a parent term.
-                                if (oldTerm.isDeducedFromItsParent()){
+                                else if (oldTerm.isDeducedFromItsParent()){
                                     // If the new first term is deduced from its parent, keep the term with the younger parent.
                                     if (term.isDeducedFromItsParent()){
                                         final Collection<OntologyTermI> children = mi.getValidTerms( oldTerm.getParent().getId(), true, false );

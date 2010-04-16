@@ -9,7 +9,6 @@ import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
-import psidev.psi.tools.objectRuleReader.ObjectRuleReader;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -36,7 +35,7 @@ public class Mi25ValidatorTest {
 
     private Mi25Validator aValidator;
 
-    private Mi25Validator buildValidator( boolean saxValidationEnabled ) throws Exception{
+    private Mi25Validator buildValidator( boolean saxValidationEnabled, boolean isIMEXRulesEnabled ) throws Exception{
         if ( aValidator == null ) {
 
             InputStream ontologyConfig = Mi25ValidatorTest.class.getResource( "/config/ontologies.xml" ).openStream();
@@ -45,9 +44,12 @@ public class Mi25ValidatorTest {
             InputStream cvMappingConfig = Mi25ValidatorTest.class.getResource( "/config/cv-mapping.xml" ).openStream();
             Assert.assertNotNull(cvMappingConfig);
 
-            //InputStream objectRuleConfig = null;
-            InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
-//            Assert.assertNotNull(objectRuleConfig);
+            InputStream objectRuleConfig = null;
+
+            if (isIMEXRulesEnabled){
+                objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
+                Assert.assertNotNull(objectRuleConfig);
+            }
 
             aValidator = new Mi25Validator( ontologyConfig, cvMappingConfig, objectRuleConfig );
 
@@ -69,7 +71,11 @@ public class Mi25ValidatorTest {
     }
 
     private Mi25Validator buildValidator() throws Exception {
-        return buildValidator( false );
+        return buildValidator( false, false );
+    }
+
+    private Mi25Validator buildValidatorWithIMEXRules() throws Exception {
+        return buildValidator( false, true );
     }
 
     private InputStream buildInputStream( String name ) throws FileNotFoundException {
@@ -84,6 +90,11 @@ public class Mi25ValidatorTest {
 
     private Collection<ValidatorMessage> getValidationMessage( String filename ) throws Exception {
         final ValidatorReport report = buildValidator().validate(buildInputStream( filename ));
+        return report.getSemanticMessages();
+    }
+
+    private Collection<ValidatorMessage> getIMEXValidationMessage( String filename ) throws Exception {
+        final ValidatorReport report = buildValidatorWithIMEXRules().validate(buildInputStream( filename ));
         return report.getSemanticMessages();
     }
 
@@ -330,7 +341,7 @@ public class Mi25ValidatorTest {
 
     @Test
     public void validateSyntax253() throws Exception {
-        final ValidatorReport report = buildValidator( true ).validate(buildInputStream( "17129785_syntaxError_253.xml" ));
+        final ValidatorReport report = buildValidator( true, false ).validate(buildInputStream( "17129785_syntaxError_253.xml" ));
         Assert.assertNotNull( report.getSyntaxMessages() );
         Assert.assertTrue( report.getSyntaxMessages().size() > 0 );
         printMessages( report.getSyntaxMessages() );
@@ -338,7 +349,7 @@ public class Mi25ValidatorTest {
 
     @Test
     public void validateSyntax254() throws Exception {
-        final ValidatorReport report = buildValidator( true ).validate(buildInputStream( "17129785_syntaxError_254.xml" ));
+        final ValidatorReport report = buildValidator( true, false ).validate(buildInputStream( "17129785_syntaxError_254.xml" ));
         Assert.assertNotNull( report.getSyntaxMessages() );
         Assert.assertTrue( report.getSyntaxMessages().size() > 0 );
         printMessages( report.getSyntaxMessages() );
@@ -346,13 +357,15 @@ public class Mi25ValidatorTest {
 
     @Test
     public void validateSyntax16141327() throws Exception {
-        Collection<ValidatorMessage> messages = getValidationMessage ("16141327.xml"  );
+        Collection<ValidatorMessage> messages = getIMEXValidationMessage("16141327.xml"  );
+        Assert.assertTrue( messages.size() > 0 );
         printMessages( messages );
     }
 
     @Test
     public void validateSyntax19765186() throws Exception {
-        Collection<ValidatorMessage> messages = getValidationMessage ("19765186.xml"  );
+        Collection<ValidatorMessage> messages = getIMEXValidationMessage ("19765186.xml"  );
+        Assert.assertTrue( messages.size() > 0 );
         printMessages( messages );
     }
 

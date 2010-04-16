@@ -131,7 +131,17 @@ public class Term {
 
     public static String printTerm( Term term ) {
         StringBuilder sb = new StringBuilder( 32 );
-        sb.append(term.getName()).append(" (").append(term.getId()).append(")");
+
+        if (term.getId() != null){
+            sb.append(term.getId());
+
+            if (term.getName() != null){
+                sb.append("(name : " + term.getName() + ")");
+            }
+        }
+        else {
+            sb.append(term.getName()).append(" (").append(term.getId()).append(")");            
+        }
         return sb.toString();
     }
 

@@ -96,7 +96,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
     }
 
     /**
-     * Checks that a warning message appears when a feature type (mutation) is not associated with a feature detection method.
+     * Checks that no warning message appears when a feature type (mutation) is not associated with a feature detection method.
      * @throws Exception
      */
     @Test
@@ -116,7 +116,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println(messages);
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 
     /**
