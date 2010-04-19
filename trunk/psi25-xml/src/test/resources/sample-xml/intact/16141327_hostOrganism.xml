@@ -108,7 +108,6 @@
                                 <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q8TE72" dbAc="MI:0486"
                                               db="uniprotkb"/>
                             </xref>
-
                             <interactorType>
                                 <names>
                                     <shortLabel>protein</shortLabel>
@@ -133,23 +132,6 @@
                                 MSAKSRTIGIIGAPFSKGQPRGGVEEGPTVLRKAGLLEKLKEQECDVKDYGDLPFADIPNDSPFQIVKNPRSVGKASEQLAGKVAEVKKNGRISLVLGGDHSLAIGSISGHARVHPDLGVIWVDAHTDINTPLTTTSGNLHGQPVSFLLKELKGKIPDVPGFSWVTPCISAKDIVYIGLRDVDPGEHYILKTLGIKYFSMTEVDRLGIGKVMEETLSYLLGRKKRPIHLSFDVDGLDPSFTPATGTPVVGGLTYREGLYITEEIYKTGLLSGLDIMEVNPSLGKTPEEVTRTVNTAVAITLACFGLAREGNHKPIDYLNPPK
                             </sequence>
                         </interactor>
-                        <participantIdentificationMethodList>
-                            <participantIdentificationMethod>
-                                <names>
-                                    <shortLabel>predetermined</shortLabel>
-                                    <fullName>predetermined participant</fullName>
-                                </names>
-                                <xref>
-                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0396" dbAc="MI:0488"
-                                                db="psi-mi"/>
-                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
-                                                  dbAc="MI:0446" db="pubmed"/>
-                                </xref>
-                                <experimentRefList>
-                                    <experimentRef>2</experimentRef>
-                                </experimentRefList>
-                            </participantIdentificationMethod>
-                        </participantIdentificationMethodList>
                         <biologicalRole>
                             <names>
                                 <shortLabel>unspecified role</shortLabel>
@@ -176,6 +158,13 @@
                                 </xref>
                             </experimentalRole>
                         </experimentalRoleList>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="-1">
+                                <experimentRefList>
+                                    <experimentRef>2</experimentRef>
+                                </experimentRefList>
+                            </hostOrganism>
+                        </hostOrganismList>
                     </participant>
                     <participant id="5">
                         <names>

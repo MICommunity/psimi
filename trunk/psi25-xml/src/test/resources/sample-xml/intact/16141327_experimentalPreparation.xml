@@ -160,15 +160,15 @@
                         </experimentalRoleList>
                         <experimentalPreparationList>
                             <experimentalPreparation>
-                                <experimentRefList>
-                                    <experimentRef>2</experimentRef>
-                                </experimentRefList>
                                 <names>
                                     <shortLabel>delivery method</shortLabel>
                                 </names>
                                 <xref>
                                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0307" refType="identity" refTypeAc="MI:0356"/>
                                 </xref>
+                                <experimentRefList>
+                                    <experimentRef>2</experimentRef>
+                                </experimentRefList>
                             </experimentalPreparation>
                         </experimentalPreparationList>
                     </participant>
