@@ -243,6 +243,22 @@ public class PsimiXmlLightweightReaderTest {
     }
 
     @Test
+    public void getIndexedEntries_254_experimentalInteractor_with_intRef() throws Exception {
+        File file = new File( PsimiXmlIndexerTest.class.getResource("/sample-xml/intact/16141327_experimentalInteractorRef.xml").getFile() );
+        PsimiXmlLightweightReader reader = new PsimiXmlLightweightReader( file );
+        final List<IndexedEntry> indexedEntries = reader.getIndexedEntries();
+        Assert.assertNotNull( indexedEntries );
+        Assert.assertEquals( 1, indexedEntries.size() );
+
+        for ( IndexedEntry entry : indexedEntries ) {
+            final Iterator<Interaction> iteractor = entry.unmarshallInteractionIterator();
+            while ( iteractor.hasNext() ) {
+                iteractor.next();
+            }
+        }
+    }
+
+    @Test
     public void getIndexedEntries_253_inputStream() throws Exception {
         File file = new File( PsimiXmlIndexerTest.class.getResource("/sample-xml/intact/10320477.253.xml").getFile() );
         PsimiXmlLightweightReader reader = new PsimiXmlLightweightReader( new FileInputStream( file ) );
