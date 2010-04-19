@@ -507,11 +507,29 @@ public class PsimiXmlExtractor {
         if ( participant.hasConfidences() ) {
             for ( Confidence c : participant.getConfidenceList() ) {
                 if ( c.hasExperimentRefs() ) {
-                    for ( Iterator<ExperimentRef> itex = c.getExperimentRefs().iterator(); itex.hasNext(); ) {
-                        ExperimentRef eref = itex.next();
-                        ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
-                        itex.remove();
-                        c.getExperiments().add( ed );
+                    if( hasInteractionExperimentDescription ) {
+                        for ( ExperimentRef eref : c.getExperimentRefs()) {
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+
+                            if( ed != null ) {
+                                c.getExperiments().add( ed );
+                            }
+                            else {
+                                throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
+                                        interaction.getId()+") has a confidence which refers to experiment ref "+ eref.getRef() +"," +
+                                        "however, this experiment isn't defined in this interaction." +
+                                        " This is not a supported use of the PSI-MI XML format." );
+                            }
+                        }
+                        c.getExperimentRefs().clear();
+                    }
+                    else {
+                        for ( ExperimentRef eref : c.getExperimentRefs()) {
+
+                            ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+                            c.getExperiments().add( ed );
+                        }
+                        c.getExperimentRefs().clear();
                     }
                 }
             }
