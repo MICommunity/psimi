@@ -283,6 +283,15 @@ public class PsimiXmlExtractor {
         }
     }
 
+    private ExperimentDescription findExperimentDescriptionInInteraction(ExperimentRef eref, Interaction i){
+        for ( ExperimentDescription ed : i.getExperiments() ) {
+            if( ed.getId() == eref.getRef() ) {
+                return ed;
+            }
+        }
+        return null;
+    }
+
     /**
      * Browse the given participant and replaces all reference by the respective object.
      *
@@ -300,6 +309,14 @@ public class PsimiXmlExtractor {
             participant.setInteraction( getInteractionById( fis, ref.getRef() ) ); // recursive call !!
         }
 
+        boolean hasInteractionExperimentDescription = false;
+
+        Interaction interaction = participant.getInteraction();
+
+        if( interaction != null && !interaction.getExperiments().isEmpty() ) {
+            hasInteractionExperimentDescription = true;
+        }
+
         if ( participant.hasInteractorRef() ) {
             InteractorRef ref = participant.getInteractorRef();
             InputStreamRange irange = index.getInteractorPosition( ref.getRef() );
@@ -315,23 +332,18 @@ public class PsimiXmlExtractor {
         }
 
         if ( participant.hasParticipantIdentificationMethods() ) {
+
             for ( ParticipantIdentificationMethod pim : participant.getParticipantIdentificationMethods() ) {
                 if ( pim.hasExperimentRefs() ) {
-                    Interaction interaction = participant.getInteraction();
 
-                    if( interaction != null && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription ) {
                         for ( ExperimentRef eref : pim.getExperimentRefs()) {
 
-                            boolean found = false;
-                            for ( ExperimentDescription ed : interaction.getExperiments() ) {
-                                if( ed.getId() == eref.getRef() ) {
-                                    found = true;
-                                    pim.getExperiments().add( ed );
-                                    break;
-                                }
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            if( ed != null) {
+                                pim.getExperiments().add( ed );
                             }
-
-                            if( ! found ) {
+                            else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
                                         interaction.getId()+") has a participant identification method which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
@@ -355,21 +367,14 @@ public class PsimiXmlExtractor {
         if ( participant.hasExperimentalRoles() ) {
             for ( ExperimentalRole er : participant.getExperimentalRoles() ) {
                 if ( er.hasExperimentRefs() ) {
-                    Interaction interaction = participant.getInteraction();
 
-                    if( interaction != null && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription ) {
                         for ( ExperimentRef eref : er.getExperimentRefs()) {
-
-                            boolean found = false;
-                            for ( ExperimentDescription ed : interaction.getExperiments() ) {
-                                if( ed.getId() == eref.getRef() ) {
-                                    found = true;
-                                    er.getExperiments().add( ed );
-                                    break;
-                                }
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            if( ed != null ) {
+                                er.getExperiments().add( ed );
                             }
-
-                            if( ! found ) {
+                            else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
                                         interaction.getId()+") has an experimental role which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
@@ -394,21 +399,14 @@ public class PsimiXmlExtractor {
             for ( ExperimentalPreparation ep : participant.getExperimentalPreparations() ) {
                 if ( ep.hasExperimentRefs() ) {
 
-                    Interaction interaction = participant.getInteraction();
-
-                    if( interaction != null && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription ) {
                         for ( ExperimentRef eref : ep.getExperimentRefs()) {
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
 
-                            boolean found = false;
-                            for ( ExperimentDescription ed : interaction.getExperiments() ) {
-                                if( ed.getId() == eref.getRef() ) {
-                                    found = true;
-                                    ep.getExperiments().add( ed );
-                                    break;
-                                }
+                            if( ed != null ) {
+                                ep.getExperiments().add( ed );
                             }
-
-                            if( ! found ) {
+                            else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
                                         interaction.getId()+") has an experimental preparation which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
@@ -432,11 +430,30 @@ public class PsimiXmlExtractor {
         if ( participant.hasExperimentalInteractors() ) {
             for ( ExperimentalInteractor ei : participant.getExperimentalInteractors() ) {
                 if ( ei.hasExperimentRefs() ) {
-                    for ( Iterator<ExperimentRef> itex = ei.getExperimentRefs().iterator(); itex.hasNext(); ) {
-                        ExperimentRef eref = itex.next();
-                        ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
-                        itex.remove();
-                        ei.getExperiments().add( ed );
+
+                    if( hasInteractionExperimentDescription ) {
+                        for ( ExperimentRef eref : ei.getExperimentRefs()) {
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+
+                            if( ed != null ) {
+                                ei.getExperiments().add( ed );
+                            }
+                            else {
+                                throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
+                                        interaction.getId()+") has an experimental interactor which refers to experiment ref "+ eref.getRef() +"," +
+                                        "however, this experiment isn't defined in this interaction." +
+                                        " This is not a supported use of the PSI-MI XML format." );
+                            }
+                        }
+                        ei.getExperimentRefs().clear();
+                    }
+                    else {
+                        for ( ExperimentRef eref : ei.getExperimentRefs()) {
+
+                            ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+                            ei.getExperiments().add( ed );
+                        }
+                        ei.getExperimentRefs().clear();
                     }
                 }
 
@@ -459,11 +476,29 @@ public class PsimiXmlExtractor {
         if ( participant.hasHostOrganisms() ) {
             for ( HostOrganism ho : participant.getHostOrganisms() ) {
                 if ( ho.hasExperimentRefs() ) {
-                    for ( Iterator<ExperimentRef> itex = ho.getExperimentRefs().iterator(); itex.hasNext(); ) {
-                        ExperimentRef eref = itex.next();
-                        ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
-                        itex.remove();
-                        ho.getExperiments().add( ed );
+                    if( hasInteractionExperimentDescription ) {
+                        for ( ExperimentRef eref : ho.getExperimentRefs()) {
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+
+                            if( ed != null ) {
+                                ho.getExperiments().add( ed );
+                            }
+                            else {
+                                throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
+                                        interaction.getId()+") has an organism which refers to experiment ref "+ eref.getRef() +"," +
+                                        "however, this experiment isn't defined in this interaction." +
+                                        " This is not a supported use of the PSI-MI XML format." );
+                            }
+                        }
+                        ho.getExperimentRefs().clear();
+                    }
+                    else {
+                        for ( ExperimentRef eref : ho.getExperimentRefs()) {
+
+                            ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+                            ho.getExperiments().add( ed );
+                        }
+                        ho.getExperimentRefs().clear();
                     }
                 }
             }
@@ -494,8 +529,8 @@ public class PsimiXmlExtractor {
         }
     }
 
-    /////////////////////
-    // Stream extractor
+/////////////////////
+// Stream extractor
 
     /**
      * Extract the range of chars describe by the given range on the stream and build an other one solely returning
