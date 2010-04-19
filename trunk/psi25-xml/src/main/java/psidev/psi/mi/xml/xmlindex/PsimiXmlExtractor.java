@@ -539,9 +539,25 @@ public class PsimiXmlExtractor {
             for ( Parameter pm : participant.getParameters() ) {
                 if ( pm.hasExperimentRef() ) {
                     ExperimentRef eref = pm.getExperimentRef();
-                    ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
-                    pm.setExperimentRef( null );
-                    pm.setExperiment( ed );
+                    if( hasInteractionExperimentDescription ) {
+                        ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+
+                        if( ed != null ) {
+                            pm.setExperiment(ed);
+                            pm.setExperimentRef(null);
+                        }
+                        else {
+                            throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
+                                    interaction.getId()+") has a parameter which refers to experiment ref "+ eref.getRef() +"," +
+                                    "however, this experiment isn't defined in this interaction." +
+                                    " This is not a supported use of the PSI-MI XML format." );
+                        }
+                    }
+                    else {
+                        ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+                        pm.setExperiment( ed );
+                        pm.setExperimentRef(null);
+                    }
                 }
             }
         }
