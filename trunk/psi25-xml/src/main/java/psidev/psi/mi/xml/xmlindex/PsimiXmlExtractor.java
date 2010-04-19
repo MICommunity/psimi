@@ -268,9 +268,9 @@ public class PsimiXmlExtractor {
 
                         if( ! found ) {
                             throw new PsimiXmlReaderException( "A parameter ("+ pm.getTerm() +") defined in interaction (id="+
-                                                               interaction.getId()+") refers to experiment ref "+ eref.getRef() +"," +
-                                                               "however, this experiment isn't defined in this interaction." +
-                                                               " This is not a supported use of the PSI-MI XML format." );
+                                    interaction.getId()+") refers to experiment ref "+ eref.getRef() +"," +
+                                    "however, this experiment isn't defined in this interaction." +
+                                    " This is not a supported use of the PSI-MI XML format." );
                         }
 
                     } else {
@@ -317,11 +317,36 @@ public class PsimiXmlExtractor {
         if ( participant.hasParticipantIdentificationMethods() ) {
             for ( ParticipantIdentificationMethod pim : participant.getParticipantIdentificationMethods() ) {
                 if ( pim.hasExperimentRefs() ) {
-                    for ( Iterator<ExperimentRef> itex = pim.getExperimentRefs().iterator(); itex.hasNext(); ) {
-                        ExperimentRef eref = itex.next();
-                        ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
-                        itex.remove();
-                        pim.getExperiments().add( ed );
+                    Interaction interaction = participant.getInteraction();
+
+                    if( interaction != null && !interaction.getExperiments().isEmpty() ) {
+                        for ( ExperimentRef eref : pim.getExperimentRefs()) {
+
+                            boolean found = false;
+                            for ( ExperimentDescription ed : interaction.getExperiments() ) {
+                                if( ed.getId() == eref.getRef() ) {
+                                    found = true;
+                                    pim.getExperiments().add( ed );
+                                    break;
+                                }
+                            }
+
+                            if( ! found ) {
+                                throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
+                                        interaction.getId()+") has a participant identification method which refers to experiment ref "+ eref.getRef() +"," +
+                                        "however, this experiment isn't defined in this interaction." +
+                                        " This is not a supported use of the PSI-MI XML format." );
+                            }
+                        }
+                        pim.getExperimentRefs().clear();
+                    }
+                    else {
+                        for ( ExperimentRef eref : pim.getExperimentRefs()) {
+
+                            ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+                            pim.getExperiments().add( ed );
+                        }
+                        pim.getExperimentRefs().clear();
                     }
                 }
             }
