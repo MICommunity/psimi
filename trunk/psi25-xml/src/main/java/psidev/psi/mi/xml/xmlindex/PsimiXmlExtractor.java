@@ -393,11 +393,37 @@ public class PsimiXmlExtractor {
         if ( participant.hasExperimentalPreparations() ) {
             for ( ExperimentalPreparation ep : participant.getExperimentalPreparations() ) {
                 if ( ep.hasExperimentRefs() ) {
-                    for ( Iterator<ExperimentRef> itex = ep.getExperimentRefs().iterator(); itex.hasNext(); ) {
-                        ExperimentRef eref = itex.next();
-                        ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
-                        itex.remove();
-                        ep.getExperiments().add( ed );
+
+                    Interaction interaction = participant.getInteraction();
+
+                    if( interaction != null && !interaction.getExperiments().isEmpty() ) {
+                        for ( ExperimentRef eref : ep.getExperimentRefs()) {
+
+                            boolean found = false;
+                            for ( ExperimentDescription ed : interaction.getExperiments() ) {
+                                if( ed.getId() == eref.getRef() ) {
+                                    found = true;
+                                    ep.getExperiments().add( ed );
+                                    break;
+                                }
+                            }
+
+                            if( ! found ) {
+                                throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
+                                        interaction.getId()+") has an experimental preparation which refers to experiment ref "+ eref.getRef() +"," +
+                                        "however, this experiment isn't defined in this interaction." +
+                                        " This is not a supported use of the PSI-MI XML format." );
+                            }
+                        }
+                        ep.getExperimentRefs().clear();
+                    }
+                    else {
+                        for ( ExperimentRef eref : ep.getExperimentRefs()) {
+
+                            ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+                            ep.getExperiments().add( ed );
+                        }
+                        ep.getExperimentRefs().clear();
                     }
                 }
             }
