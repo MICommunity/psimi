@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -13,6 +14,7 @@ import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -30,17 +32,25 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
     private static InteractionDetectionMethod2InteractionTypeDependencyRule.DependencyMappingInteractionDetectionMethod2InteractionType mapping;
 
+    private static final String superior = ">";
+    private static final String inferior = "<";
+    private static final String superiorOrEqual = ">=";
+    private static final String inferiorOrEqual = "<=";
+    private static final String different = "not ";
+    private static final String separatorOfConditions = ";";
+
     public InteractionDetectionMethod2InteractionTypeDependencyRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        Mi25Ontology ontology = new Mi25Ontology(mi);
         try {
             // TODO : the resource should be a final private static or should be put as argument of the constructor
 
-            String resource = InteractionDetectionMethod2InteractionTypeDependencyRule.class
-                    .getResource( "/InteractionDetection2InteractionTypes.tsv" ).getFile();
+            URL resource = InteractionDetectionMethod2InteractionTypeDependencyRule.class
+                    .getResource( "/InteractionDetection2InteractionTypes.tsv" );
             mapping = new DependencyMappingInteractionDetectionMethod2InteractionType();
-            mapping.buildMappingFromFile( mi, resource);
+            mapping.buildMappingFromFile( ontology, mi, resource);
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -263,24 +273,33 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
 
         /**
+         *
+         * @param requirements
+         * @param listOfRequirements
+         */
+        private void initialiseRequirements(String requirements, Set<String> listOfRequirements){
+            if (listOfRequirements != null){
+                if (requirements.trim().length() > 0){
+                    if (requirements.contains(separatorOfConditions)){
+                        String [] list = requirements.split(separatorOfConditions);
+
+                        for (int i = 0; i < list.length; i++){
+                            listOfRequirements.add(list[i]);
+                        }
+                    }
+                    else {
+                        listOfRequirements.add(requirements);
+                    }
+                }
+            }
+        }
+
+        /**
          * If there are some host organism requirements, stores them in the applicableHostOrganisms map.
          * @param hostRequirements
          */
         private void initialiseHostRequirements(String hostRequirements){
-            if (hostRequirements != null){
-                if (hostRequirements.trim().length() > 0 && !hostRequirements.equals("NONE")){
-                    if (hostRequirements.contains(";")){
-                        String [] listHosts = hostRequirements.split(";");
-
-                        for (int i = 0; i < listHosts.length; i++){
-                            this.applicableHostOrganisms.add(listHosts[i]);
-                        }
-                    }
-                    else {
-                        this.applicableHostOrganisms.add(hostRequirements);
-                    }
-                }
-            }
+            initialiseRequirements(hostRequirements, this.applicableHostOrganisms);
         }
 
         /**
@@ -288,20 +307,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          * @param numParticipantsRequirements
          */
         private void initialiseNumParticipantsRequirements(String numParticipantsRequirements){
-            if (numParticipantsRequirements != null){
-                if (numParticipantsRequirements.trim().length() > 0 && !numParticipantsRequirements.equals("NONE")){
-                    if (numParticipantsRequirements.contains(";")){
-                        String [] listNumParticipants = numParticipantsRequirements.split(";");
-
-                        for (int i = 0; i < listNumParticipants.length; i++){
-                            this.applicableNumParticipants.add(listNumParticipants[i]);
-                        }
-                    }
-                    else {
-                        this.applicableNumParticipants.add(numParticipantsRequirements);
-                    }
-                }
-            }
+            initialiseRequirements(numParticipantsRequirements, this.applicableNumParticipants);
         }
 
         /**
@@ -309,20 +315,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          * @param baitRequirements
          */
         private void initialiseNumBaitsRequirements(String baitRequirements){
-            if (baitRequirements != null){
-                if (baitRequirements.trim().length() > 0 && !baitRequirements.equals("NONE")){
-                    if (baitRequirements.contains(";")){
-                        String [] listBaits = baitRequirements.split(";");
-
-                        for (int i = 0; i < listBaits.length; i++){
-                            this.applicableNumBaits.add(listBaits[i]);
-                        }
-                    }
-                    else {
-                        this.applicableNumBaits.add(baitRequirements);
-                    }
-                }
-            }
+            initialiseRequirements(baitRequirements, this.applicableNumBaits);
         }
 
         /**
@@ -330,20 +323,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          * @param preyRequirements
          */
         private void initialiseNumPreyRequirements(String preyRequirements){
-            if (preyRequirements != null){
-                if (preyRequirements.trim().length() > 0 && !preyRequirements.equals("NONE")){
-                    if (preyRequirements.contains(";")){
-                        String [] listNumPreys = preyRequirements.split(";");
-
-                        for (int i = 0; i < listNumPreys.length; i++){
-                            this.applicableNumPrey.add(listNumPreys[i]);
-                        }
-                    }
-                    else {
-                        this.applicableNumPrey.add(preyRequirements);
-                    }
-                }
-            }
+            initialiseRequirements(preyRequirements, this.applicableNumPrey);
         }
 
         /**
@@ -411,35 +391,18 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
 
         public boolean hasHostRequirements(){
-
-            if (!this.applicableHostOrganisms.isEmpty()){
-                return true;
-            }
-            return false;
+            return !this.applicableHostOrganisms.isEmpty();
         }
 
         public boolean hasNumParticipantsRequirements(){
-
-            if (!this.applicableNumParticipants.isEmpty()){
-                return true;
-            }
-            return false;
+            return !this.applicableNumParticipants.isEmpty();
         }
 
         public boolean hasNumBaitsRequirements(){
-
-            if (!this.applicableNumBaits.isEmpty()){
-                return true;
-            }
-            return false;
+            return !this.applicableNumBaits.isEmpty();
         }
-
         public boolean hasNumPreysRequirements(){
-
-            if (!this.applicableNumPrey.isEmpty()){
-                return true;
-            }
-            return false;
+            return !this.applicableNumPrey.isEmpty();
         }
     }
 
@@ -498,32 +461,13 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                 if (validHosts.contains(Integer.toString(host.getNcbiTaxId()))){
                     return true;
                 }
-                else if (host.hasNames()){
-                    if (host.getNames().hasFullName()){
-                        if (validHosts.contains(host.getNames().getFullName())){
-                            return true;
-                        }
-                    }
-                }
-                else if (host.hasCellType()){
-                    CellType cell = host.getCellType();
-                    if (cell.hasNames()){
-                        Names cellName = cell.getNames();
-
-                        if (cellName.hasFullName()){
-                            if (validHosts.contains(cellName.getFullName())){
-                                return true;
-                            }
-                        }
-                    }
-                }
 
                 for (String h : validHosts){
                     String math = getMathematicalOperator(h);
 
                     if (math != null){
                         String hostNotAllowed = h.substring(math.length());
-                        if (math.equals("!=") && h != hostNotAllowed){
+                        if (math.toLowerCase().equals(different) && h != hostNotAllowed){
                             return true;
                         }
                     }
@@ -541,7 +485,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          */
         private boolean hasMathematicalOperator(String number){
 
-            if (number.startsWith(">") || number.startsWith("<") || number.startsWith("!=")){
+            if (number.startsWith(superior) || number.startsWith(inferior) || number.toLowerCase().startsWith("not ")){
                 return true;
             }
             return false;
@@ -556,10 +500,13 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
             String math = null;
 
             if (hasMathematicalOperator(number)){
-                if (number.startsWith("<=") || number.startsWith(">=") || number.startsWith("!=")){
+                if (number.startsWith(superiorOrEqual) || number.startsWith(inferiorOrEqual)){
                     return number.substring(0,2);
                 }
-                else if (number.startsWith(">") || number.startsWith("<")){
+                else if (number.startsWith(different)){
+                    return number.substring(0,4);
+                }
+                else if (number.startsWith(superior) || number.startsWith(inferior)){
                     return number.substring(0,1);
                 }
             }
@@ -579,35 +526,27 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                     String math = getMathematicalOperator(num);
 
                     if (math == null){
-                        try{
-                            int n = Integer.parseInt(num);
-                            if (n == number){
-                                return true;
-                            }
-                        }catch (NumberFormatException e){
-                            //TODO message
+                        int n = Integer.parseInt(num);
+                        if (n == number){
+                            return true;
                         }
                     }
                     else{
-                        try{
-                            int n = Integer.parseInt(num.substring(math.length()));
-                            if (math.equals(">") && number > n){
-                                return true;
-                            }
-                            else if (math.equals("<") && number < n){
-                                return true;
-                            }
-                            else if (math.equals("<=") && number <= n){
-                                return true;
-                            }
-                            else if (math.equals(">=") && number >= n){
-                                return true;
-                            }
-                            else if (math.equals("!=") && number != n){
-                                return true;
-                            }
-                        }catch (NumberFormatException e){
-                            //TODO message
+                        int n = Integer.parseInt(num.substring(math.length()));
+                        if (math.equals(superior) && number > n){
+                            return true;
+                        }
+                        else if (math.equals(inferior) && number < n){
+                            return true;
+                        }
+                        else if (math.equals(inferiorOrEqual) && number <= n){
+                            return true;
+                        }
+                        else if (math.equals(superiorOrEqual) && number >= n){
+                            return true;
+                        }
+                        else if (math.equals(different) && number != n){
+                            return true;
                         }
                     }
                 }
@@ -681,13 +620,20 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         protected AssociatedTerm createSecondaryTermOfTheDependency(String[] columns){
             Term secondTerm = new Term(columns[3], columns[4]);
             if( columns[5].length() > 0 ) {
-                secondTerm.setIncludeChildren(Boolean.valueOf( columns[5] ));
+                boolean isChildrenIncluded = Boolean.valueOf( columns[5] );
+
+                if (isChildrenIncluded || !isChildrenIncluded){
+                    secondTerm.setIncludeChildren(isChildrenIncluded);
+                }
+                else {
+                    throw new ValidatorRuleException("The boolean value for isIncludedChildren should be TRUE or FALSE but not " + isChildrenIncluded);
+                }
             }
 
             // Get the condition of application for the dependencies
             DependencyRequirements depReq = new DependencyRequirements(columns[6], columns[7], columns[8], columns[9]);
             // Get a couple interactionType and the requirements.
-            InteractionTypeConditions intConditions = new InteractionTypeConditions(secondTerm, depReq, columns[10].length()> 0 && !columns[10].equals("NONE") ? columns[10] : null);
+            InteractionTypeConditions intConditions = new InteractionTypeConditions(secondTerm, depReq, columns[10] != null && columns[10].length()> 0 ? columns[10] : null);
 
             return intConditions;
         }
@@ -727,9 +673,38 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                     final Set<AssociatedTerm> interactionTypeCondition = dependencies.get( methodTerm );
 
                     final Term brTerm = Term.buildTerm( interactionType );
-                    if( brTerm == null ) {
+                    if( interactionType == null ) {
 
-                        // TODO here we could report eror given that no MI accession number was given for that interaction type.
+                        Set<AssociatedTerm> required = getRequiredDependenciesFor(methodTerm);
+                        if (!required.isEmpty()){
+                            String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": An interaction type is required when the " + method.getClass().getSimpleName() + " is [" + Term.printTerm(methodTerm) + "]." +
+                                    " The possible dependencies are : \n";
+                            final StringBuffer sb = new StringBuffer( 1024 );
+                            sb.append( msg );
+
+                            for (AssociatedTerm r : required){
+                                sb.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
+                            }
+                            messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
+                            return messages;
+                        }
+                        else {
+
+                            Set<AssociatedTerm> recommended = getRecommendedDependenciesFor(methodTerm);
+                            if (!recommended.isEmpty()){
+                                final StringBuffer msg = new StringBuffer( 1024 );
+                                msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + method.getClass().getSimpleName() + " is ["+Term.printTerm(methodTerm)+"]," +
+                                        " the recommended dependencies are : \n");
+
+                                for (AssociatedTerm r : recommended){
+                                    msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
+                                }
+                                messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+
+                                return messages;
+                            }
+                        }
+
 
                     } else {
                         boolean hasFoundDependency = false;
@@ -739,25 +714,23 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                         boolean isARecommendedValue = false;
 
                         for (AssociatedTerm pair : interactionTypeCondition){
-                            String level = pair.getLevel();
+                            DependencyLevel level = pair.getLevel();
 
-                            if (level != null){
-                                if (level.toLowerCase().equals("required")){
-                                    isAValueRequired = true;
-                                }
-                                else if (level.toLowerCase().equals("should")){
-                                    isARecommendedValue = true;
-                                }
+                            if (level.equals(DependencyLevel.REQUIRED)){
+                                isAValueRequired = true;
+                            }
+                            else if (level.equals(DependencyLevel.SHOULD)){
+                                isARecommendedValue = true;
                             }
 
                             if (brTerm.equals(pair.getSecondTermOfTheDependency())){
                                 if (pair instanceof InteractionTypeConditions){
                                     InteractionTypeConditions cond = (InteractionTypeConditions) pair;
-
-                                    if (level != null && level.toLowerCase().equals("error")){
+                                    // TODO one test per conditions, more specific error messages
+                                    if (level.equals(DependencyLevel.ERROR)){
                                         if (cond.isApplicableHostOrganism(host) || cond.isApplicablewithTheNumberOfParticipants(numParticipants) || cond.isApplicablewithTheNumberOfBaits(numBaits) || cond.isApplicablewithTheNumberOfPreys(numPreys)){
 
-                                            final StringBuffer msg = new StringBuffer();
+                                            final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
                                                     "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"].");
 
@@ -766,7 +739,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                                 msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
                                                         ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
                                             }
-                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.forName( level ), context.copy(), rule ) );
+                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
 
                                         }
                                     }
@@ -776,15 +749,14 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                                 if (cond.isApplicablewithTheNumberOfBaits(numBaits)){
                                                     if (cond.isApplicablewithTheNumberOfPreys(numPreys)){
 
-                                                        if (level != null){
-                                                            if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
+                                                        if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
 
-                                                                hasFoundDependency = true;
-                                                            }
+                                                            hasFoundDependency = true;
                                                         }
                                                     }
                                                     else{
-                                                        final StringBuffer msg = new StringBuffer("Unusual number of preys "+ numPreys +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                        final StringBuffer msg = new StringBuffer( 1024 );
+                                                        msg.append("Unusual number of preys "+ numPreys +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                                 "the interaction type is " + Term.printTerm(brTerm) + " the number of preys should be : \n") ;
                                                         for (String validNum : cond.getRequirements().getApplicableNumPrey()){
                                                             msg.append(validNum + "\n");
@@ -793,7 +765,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                                     }
                                                 }
                                                 else{
-                                                    final StringBuffer msg = new StringBuffer("Unusual number of baits "+ numBaits +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                    final StringBuffer msg = new StringBuffer( 1024 );
+                                                    msg.append("Unusual number of baits "+ numBaits +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                             "the interaction type is " + Term.printTerm(brTerm) + " the number of baits should be : \n") ;
                                                     for (String validNum : cond.getRequirements().getApplicableNumBaits()){
                                                         msg.append(validNum + "\n");
@@ -802,7 +775,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                                 }
                                             }
                                             else{
-                                                final StringBuffer msg = new StringBuffer("Unusual number of participants "+ numParticipants +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                final StringBuffer msg = new StringBuffer( 1024 );
+                                                msg.append("Unusual number of participants "+ numParticipants +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                         "the interaction type is " + Term.printTerm(brTerm) + " the number of participants should be : \n") ;
                                                 for (String validNum : cond.getRequirements().getApplicableNumParticipants()){
                                                     msg.append(validNum + "\n");
@@ -811,7 +785,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                             }
                                         }
                                         else{
-                                            final StringBuffer msg = new StringBuffer("Unusual host organism. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                            final StringBuffer msg = new StringBuffer( 1024 );
+                                            msg.append("Unusual host organism. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                     "the interaction type is " + Term.printTerm(brTerm) + " the host organism should be : \n") ;
                                             for (String validHost : cond.getRequirements().getApplicableHostOrganisms()){
                                                 msg.append(validHost + "\n");
@@ -829,11 +804,12 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                         if (!hasFoundDependency && isAValueRequired){
 
                             Set<AssociatedTerm> req = getRequiredDependenciesFor(methodTerm);
-                            final StringBuffer msg = new StringBuffer("There is an unusual combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                            final StringBuffer msg = new StringBuffer( 1024 );
+                            msg.append("There is an unusual combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
                                     "and the interaction type ["+Term.printTerm(brTerm)+"]." +
                                     " The possible dependencies are : \n");
 
-                            for (AssociatedTerm r : interactionTypeCondition){
+                            for (AssociatedTerm r : req){
                                 InteractionTypeConditions it = (InteractionTypeConditions) r;
                                 msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
                                         ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
@@ -843,11 +819,12 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                         }
                         else if (!hasFoundDependency && isARecommendedValue){
                             Set<AssociatedTerm> req = getRecommendedDependenciesFor(methodTerm);
-                            final StringBuffer msg = new StringBuffer("Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                            final StringBuffer msg = new StringBuffer( 1024 );
+                            msg.append("Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
                                     "and the interaction type ["+Term.printTerm(brTerm)+"] ?" +
                                     " The recommended dependencies are : \n");
                             System.out.println("baits " + numBaits);
-                            for (AssociatedTerm r : interactionTypeCondition){
+                            for (AssociatedTerm r : req){
                                 InteractionTypeConditions it = (InteractionTypeConditions) r;
                                 msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
                                         ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
@@ -860,7 +837,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
                 }
             } else {
-                // TODO here we could report eror given that no MI accession number was given for that method.
+                messages.add(new ValidatorMessage( "The rule of type interaction detection method - interaction type can be applied as the interaction detection method is null.",  MessageLevel.ERROR, context.copy(), rule));
+                return messages;
             }
 
             // warning if CVs do not have MIs

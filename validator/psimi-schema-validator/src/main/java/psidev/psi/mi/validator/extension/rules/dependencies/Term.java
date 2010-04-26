@@ -99,6 +99,14 @@ public class Term {
         return true;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -132,16 +140,22 @@ public class Term {
     public static String printTerm( Term term ) {
         StringBuilder sb = new StringBuilder( 32 );
 
-        if (term.getId() != null){
-            sb.append(term.getId());
+        if (term != null){
+            if (term.getId() != null){
+                sb.append(term.getId());
 
-            if (term.getName() != null){
-                sb.append("(name : " + term.getName() + ")");
+                if (term.getName() != null){
+                    sb.append("(name : " + term.getName() + ")");
+                }
+            }
+            else {
+                sb.append(term.getName()).append(" (").append(term.getId()).append(")");
             }
         }
         else {
-            sb.append(term.getName()).append(" (").append(term.getId()).append(")");            
+            sb.append(term);
         }
+
         return sb.toString();
     }
 
