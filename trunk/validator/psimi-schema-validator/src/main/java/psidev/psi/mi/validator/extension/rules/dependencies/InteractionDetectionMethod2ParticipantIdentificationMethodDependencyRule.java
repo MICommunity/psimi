@@ -1,9 +1,8 @@
 package psidev.psi.mi.validator.extension.rules.dependencies;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -11,6 +10,7 @@ import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -32,16 +32,18 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         super( ontologyMaganer );
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        Mi25Ontology ontology = new Mi25Ontology(mi);
             try {
                 // TODO : the resource should be a final private static or should be put as argument of the constructor
 
-                String resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
-                .getResource( "/InteractionDetectionMethod2ParticipantIdentificationMethod.tsv" ).getFile();
+                URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
+                .getResource( "/InteractionDetectionMethod2ParticipantIdentificationMethod.tsv" );
 
                 mapping = new DependencyMapping();
-                mapping.buildMappingFromFile( mi, resource );
+                mapping.buildMappingFromFile( ontology, mi, resource );
 
             } catch (IOException e) {
+                // TODO new Mi25RuleException( "", e );
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (ValidatorException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -66,10 +68,6 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // build a context in case of error
-        Mi25Context context = new Mi25Context();
-
-        context.setInteractionId( interaction.getId() );
         // experiments for detecting the interaction
         final Collection<ExperimentDescription> experiments = interaction.getExperiments();
         // participants of the interaction
@@ -77,11 +75,15 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
 
         for ( ExperimentDescription experiment : experiments ) {
 
-            context.setExperimentId( experiment.getId());
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
             ParticipantIdentificationMethod participantMethod = experiment.getParticipantIdentificationMethod();
 
             for ( Participant p : participants ) {
+                // build a context in case of error
+                Mi25Context context = new Mi25Context();
+                context.setInteractionId( interaction.getId() );
+                context.setExperimentId( experiment.getId());
+                context.setParticipantId( p.getId());
 
                 if (p.hasParticipantIdentificationMethods()){
                     Collection<ParticipantIdentificationMethod> participantIdentification = p.getParticipantIdentificationMethods();
@@ -91,6 +93,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
                     }
                 }
                 else {
+                    // TODO check if participant method is null
                     messages.addAll( mapping.check( method, participantMethod, context, this ) );
                 }
             }

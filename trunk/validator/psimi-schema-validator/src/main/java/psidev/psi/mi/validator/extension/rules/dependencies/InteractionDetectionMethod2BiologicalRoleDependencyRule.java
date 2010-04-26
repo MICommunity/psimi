@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -11,6 +12,7 @@ import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,14 +35,15 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
         super( ontologyMaganer );
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        Mi25Ontology ontology = new Mi25Ontology(mi);
             try {
                 // TODO : the resource should be a final private static or should be put as argument of the constructor
 
-                String resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
-                .getResource( "/InteractionDetectionMethod2BiologicalRole.tsv" ).getFile();
+                URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
+                .getResource( "/InteractionDetectionMethod2BiologicalRole.tsv" );
                 mapping = new DependencyMapping();
 
-                mapping.buildMappingFromFile( mi, resource );
+                mapping.buildMappingFromFile( ontology, mi, resource );
 
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

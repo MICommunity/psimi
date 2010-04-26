@@ -1,6 +1,6 @@
 "#DETECTION MI"	"DETECTION NAME"	"INCLUDE CHILDREN"	"BIOL ROLE ID MI"	"BIOL ROLE NAME"	"INCLUDE CHILDREN"	"MESSAGE LEVEL"
-"NONE"	"oxidoreductase assay"	"FALSE"	"MI:0579"	"electron donor"	"FALSE"	"SHOULD"
-"NONE"	"oxidoreductase assay"	"FALSE"	"MI:0580"	"electron acceptor"	"FALSE"	"SHOULD"
+	"oxidoreductase assay"	"FALSE"	"MI:0579"	"electron donor"	"FALSE"	"SHOULD"
+	"oxidoreductase assay"	"FALSE"	"MI:0580"	"electron acceptor"	"FALSE"	"SHOULD"
 "MI:0841"	"phosphotransfer assay"	"FALSE"	"MI:0842"	"phosphate donor"	"FALSE"	"SHOULD"
 "MI:0841"	"phosphotransfer assay"	"FALSE"	"MI:0843"	"phosphate acceptor"	"FALSE"	"SHOULD"
 "MI:0415"	"enzymatic study"	"FALSE"	"MI:0501"	"enzyme"	"FALSE"	"SHOULD"

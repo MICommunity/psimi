@@ -16,7 +16,7 @@ public class AssociatedTerm {
     /**
      * level of the message when a dependency involving this second term is found.
      */
-    private String level;
+    private DependencyLevel level;
 
     //////////////////
     // Constructors
@@ -28,19 +28,26 @@ public class AssociatedTerm {
      */
     public AssociatedTerm( Term secondTermOfTheDependency, String level ) {
         this( secondTermOfTheDependency );
-        if (level != null){
 
-            if (!level.equals("NONE")){
-                this.level = level;
-            }
-            else {
-                this.level = null;
-            }
+        if ("required".equalsIgnoreCase(level)){
+            this.level = DependencyLevel.REQUIRED;
+        }
+        else if ("should".equalsIgnoreCase(level)) {
+            this.level = DependencyLevel.SHOULD;
+        }
+        else if ("error".equalsIgnoreCase(level)) {
+            this.level = DependencyLevel.ERROR;
+        }
+        else {
+            throw new ValidatorRuleException("The level " + level + " is not valid. The level of a dependency can be REQUIRED (at least one of the dependency with the level REQUIRED should be found otherwise an error is thrown)," +
+                    " SHOULD (at leats one of the dependency with the level SHOULD should be found otherwise a warning is thrown) or ERROR (if one of the dependency with the level ERROR has been found, an error is thrown).");
+        }
+    }
 
-        }
-        else{
-            this.level = null;
-        }
+    public AssociatedTerm( Term secondTermOfTheDependency, DependencyLevel level ) {
+        this( secondTermOfTheDependency );
+
+        this.level = level;
     }
 
     /**
@@ -67,7 +74,7 @@ public class AssociatedTerm {
      *
      * @return  the message level for this dependency
      */
-    public String getLevel() {
+    public DependencyLevel getLevel() {
         return level;
     }
 

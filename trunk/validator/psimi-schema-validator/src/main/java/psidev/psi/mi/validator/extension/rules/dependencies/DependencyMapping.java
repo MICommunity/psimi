@@ -1,8 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.dependencies;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -12,9 +14,10 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.AbstractRule;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -29,6 +32,18 @@ public class DependencyMapping {
      * contains all the dependencies.
      */
     protected Map<Term, Set<AssociatedTerm>> dependencies;
+    /**
+     * The file containing the dependencies should have the columns separated by a tab
+     */
+    private static final String separator = "\t";
+    /**
+     * The comments in the file
+     */
+    private static final String comment = "#";
+    /**
+     * The quote to remove in the file
+     */
+    private static final String quote = "\"";
 
     private static final Log log = LogFactory.getLog( DependencyMapping.class );
 
@@ -60,10 +75,16 @@ public class DependencyMapping {
      */
     protected Term createFirstTermOfTheDependency(String[] columns){
 
-        // TODO : it is better if we don't write the column number directly in the code but we deduce it from the column names
         Term term = new Term( columns[0], columns[1] );
-        if( columns[2].length() > 0 ) {
-            term.setIncludeChildren( Boolean.valueOf( columns[2] ) );
+        if( columns[2] != null && columns[2].length() > 0 ) {
+            boolean isChildrenIncluded = Boolean.valueOf( columns[2] );
+
+            if (isChildrenIncluded || !isChildrenIncluded){
+                term.setIncludeChildren(isChildrenIncluded);
+            }
+            else {
+                throw new ValidatorRuleException("The boolean value for isIncludedChildren should be TRUE or FALSE but not " + isChildrenIncluded);
+            }
         }
 
         return term;
@@ -76,130 +97,148 @@ public class DependencyMapping {
      */
     protected AssociatedTerm createSecondaryTermOfTheDependency(String[] columns){
 
-        // TODO : it is better if we don't write the column number directly in the code but we deduce it from the column names
         Term secondTerm = new Term(columns[3], columns[4]);
-        if( columns[5].length() > 0 ) {
-            secondTerm.setIncludeChildren(Boolean.valueOf( columns[5] ));
+        if( columns[5] != null && columns[5].length() > 0 ) {
+            boolean isChildrenIncluded = Boolean.valueOf( columns[5] );
+
+            if (isChildrenIncluded || !isChildrenIncluded){
+                secondTerm.setIncludeChildren(isChildrenIncluded);
+            }
+            else {
+                throw new ValidatorRuleException("The boolean value for isIncludedChildren should be TRUE or FALSE but not " + isChildrenIncluded);
+            }
         }
 
         // Get a couple secondTerm and message level.
-        AssociatedTerm associatedTerm = new AssociatedTerm(secondTerm, columns[6].length()> 0 && !columns[6].equals("NONE") ? columns[6] : null);
+        AssociatedTerm associatedTerm = new AssociatedTerm(secondTerm, columns[6] != null && columns[6].length()> 0 ? columns[6] : null);
 
         return associatedTerm;
     }
 
     /**
+     * Remove the quote at the beginning and/or the end of a column value
+     * @param columnWithQuote : value of a column
+     * @return the value of the column without any quotes
+     */
+    private String extractValueOf(String columnWithQuote){
+        String value = columnWithQuote;
+
+        if (columnWithQuote.startsWith( quote )){
+            value = value.substring(1);
+        }
+        if (columnWithQuote.endsWith(quote)){
+            value = value.substring(0, value.length() - 1);
+        }
+        return value;
+    }
+
+    /**
      * Builds the dependencies from a file (tab file).
+     * @param ontology
      * @param mi
-     * @param name
+     * @param url
      * @throws IOException
      * @throws ValidatorException
      */
-    public void buildMappingFromFile( OntologyAccess mi, String name) throws IOException, ValidatorException {
+    public void buildMappingFromFile( Mi25Ontology ontology, OntologyAccess mi, URL url) throws IOException, ValidatorException {
 
-        BufferedReader in = new BufferedReader( new FileReader( new File(name) ) );
+        InputStream is = url.openStream();
+        BufferedReader in = new BufferedReader( new InputStreamReader(is) );
+
         String str;
         int lineCount = 0;
         while ( ( str = in.readLine() ) != null ) {
-            // we skip empty lines and those starting with the symbol '#'. We remove the " if they it appears at the beginning or the end of the line
+            try {
+                lineCount++;
+                str = extractValueOf(str);
 
-            if (str.startsWith( "\"" )){
-                str = str.substring(1);
-            }
-            if (str.endsWith("\"")){
-                str = str.substring(0, str.length() - 1);
-            }
-
-            lineCount++;
-
-            if( str.startsWith( "#" ) || str.trim().length() == 0) {
-                continue; // skip the commentary
-            }
-
-            // 0. first term MI
-            // 1. first term NAME
-            // 2. INCLUDE CHILDREN
-            // 3. second term MI
-            // 4. second term NAME
-            // 5. message level
-
-            if (str.contains("\t")){
-                final String[] columns = str.split( "\t" );
-
-                // Remove the possible " characters we can find after editing a tab file using excel.
-                for (int i = 0; i < columns.length; i++){
-                    String col = columns[i];
-                    if (col != null){
-                        if (col.startsWith( "\"" )){
-                            columns[i] = columns[i].substring(1);
-                        }
-                        if (col.endsWith("\"")){
-                            columns[i] = columns[i].substring(0, columns[i].length() - 1);
-                        }
-                    }
+                if( str.startsWith( comment ) || str.trim().length() == 0) {
+                    continue; // skip the commentary
                 }
 
-                // Creates the first term of the dependency
-                Term firstTerm = createFirstTermOfTheDependency(columns);
+                // 0. first term MI
+                // 1. first term NAME
+                // 2. INCLUDE CHILDREN
+                // 3. second term MI
+                // 4. second term NAME
+                // 5. message level
 
-                // creates the associated term
-                AssociatedTerm associatedTerm = createSecondaryTermOfTheDependency(columns);
+                if (str.contains(separator)){
+                    final String[] columns = StringUtils.splitPreserveAllTokens(str,separator);
 
-                // Create a dependency for these terms
-                loadDependencies(firstTerm, associatedTerm, mi);
-
-                // contains all the possible children of the first term of the dependency.
-                Set<Term> firstTermChildren = new HashSet<Term>();
-
-                // If the first term is including its children, we duplicate the dependency for all the children
-                if(firstTerm.isIncludeChildren()) {
-                    // fetch all children and append them to the local map
-                    final Collection<OntologyTermI> children = mi.getValidTerms( firstTerm.getId(), true, false );
-                    if( ! children.isEmpty() ) {
-
-                        for ( OntologyTermI child : children ) {
-                            final Term termChild = new Term( child.getTermAccession(), child.getPreferredName() );
-                            termChild.setParent(firstTerm);
-
-                            // add the child in the set of the children of the first term.
-                            firstTermChildren.add(termChild);
-
-                            // Create a dependency with the children
-                            loadDependencies(termChild, associatedTerm, mi);
+                    // we skip empty lines and those starting with the symbol '#'. We remove the " if they it appears at the beginning or the end of the line
+                    for (int i = 0; i < columns.length; i++){
+                        String col = columns[i];
+                        if (col != null){
+                            columns[i] = extractValueOf(col);
                         }
                     }
-                }
-                // If the second term is including its children, we duplicate the dependency for all the children
-                if (associatedTerm.getSecondTermOfTheDependency().isIncludeChildren()){
-                    // fetch all children and append them to the local map
-                    final Collection<OntologyTermI> children2 = mi.getValidTerms( associatedTerm.getSecondTermOfTheDependency().getId(), true, false );
-                    if( ! children2.isEmpty() ) {
 
-                        for ( OntologyTermI child2 : children2 ) {
-                            final Term termChild2 = new Term( child2.getTermAccession(), child2.getPreferredName() );
-                            AssociatedTerm childTerm2 = new AssociatedTerm(termChild2, associatedTerm.getLevel());
-                            childTerm2.getSecondTermOfTheDependency().setParent(associatedTerm.getSecondTermOfTheDependency());
+                    // Creates the first term of the dependency
+                    Term firstTerm = createFirstTermOfTheDependency(columns);
 
-                            // Create a dependency with the children
-                            loadDependencies(firstTerm, childTerm2, mi);
+                    // creates the associated term
+                    AssociatedTerm associatedTerm = createSecondaryTermOfTheDependency(columns);
 
-                            if (!firstTermChildren.isEmpty()){
-                                // duplicate the dependencies for the children of the first term too
-                                for (Term first : firstTermChildren){
-                                    // Create a dependency with the children
-                                    loadDependencies(first, childTerm2, mi);
+                    // Create a dependency for these terms
+                    loadDependencies(firstTerm, associatedTerm, ontology, lineCount);
+
+                    // contains all the possible children of the first term of the dependency.
+                    Set<Term> firstTermChildren = new HashSet<Term>();
+
+                    // If the first term is including its children, we duplicate the dependency for all the children
+                    if(firstTerm.isIncludeChildren()) {
+                        // fetch all children and append them to the local map
+                        final Collection<OntologyTermI> children = mi.getValidTerms( firstTerm.getId(), true, false );
+                        if( ! children.isEmpty() ) {
+
+                            for ( OntologyTermI child : children ) {
+                                final Term termChild = new Term( child.getTermAccession(), child.getPreferredName() );
+                                termChild.setParent(firstTerm);
+
+                                // add the child in the set of the children of the first term.
+                                firstTermChildren.add(termChild);
+
+                                // Create a dependency with the children
+                                loadDependencies(termChild, associatedTerm, ontology, lineCount);
+                            }
+                        }
+                    }
+                    // If the second term is including its children, we duplicate the dependency for all the children
+                    if (associatedTerm.getSecondTermOfTheDependency().isIncludeChildren()){
+                        // fetch all children and append them to the local map
+                        final Collection<OntologyTermI> children2 = mi.getValidTerms( associatedTerm.getSecondTermOfTheDependency().getId(), true, false );
+                        if( ! children2.isEmpty() ) {
+
+                            for ( OntologyTermI child2 : children2 ) {
+                                final Term termChild2 = new Term( child2.getTermAccession(), child2.getPreferredName() );
+                                AssociatedTerm childTerm2 = new AssociatedTerm(termChild2, associatedTerm.getLevel());
+                                childTerm2.getSecondTermOfTheDependency().setParent(associatedTerm.getSecondTermOfTheDependency());
+
+                                // Create a dependency with the children
+                                loadDependencies(firstTerm, childTerm2, ontology, lineCount);
+
+                                if (!firstTermChildren.isEmpty()){
+                                    // duplicate the dependencies for the children of the first term too
+                                    for (Term first : firstTermChildren){
+                                        // Create a dependency with the children
+                                        loadDependencies(first, childTerm2, ontology, lineCount);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else{
-                log.error( "The dependency mapping file is not valid. It should be a tab file : first term MI  first term name  includeChildren  second term MI  second term name  includeChildren  message level" );
-            }
+                else{
+                    log.error( "The dependency mapping file is not valid. It should be a tab file : first term MI  first term name  includeChildren  second term MI  second term name  includeChildren  message level" );
+                }
 
-            if ( log.isInfoEnabled() ) {
-                log.info( "Completed reading " + this.dependencies.size() + " dependencies from mapping file" );
+                if ( log.isInfoEnabled() ) {
+                    log.info( "Completed reading " + this.dependencies.size() + " dependencies from mapping file" );
+                }
+            }
+            catch (ValidatorRuleException e) {
+                throw new ValidatorRuleException("Check the file " + url.getFile() + " at the line "+ lineCount +".", e);
             }
         }
         in.close();
@@ -216,11 +255,13 @@ public class DependencyMapping {
      *      then keep only in the dependency map the term with a 'younger' parent.
      * @param term
      * @param secondTerm
-     * @param mi
+     * @param ontology
      */
-    protected void loadDependencies(Term term, AssociatedTerm secondTerm, OntologyAccess mi){
+    protected void loadDependencies(Term term, AssociatedTerm secondTerm, Mi25Ontology ontology, int lineCount){
         Set<AssociatedTerm> associatedTermSet = new HashSet<AssociatedTerm> ();
-
+        if (term == null || secondTerm == null){
+            log.error("The first term and the second term of a dependency can't be null : first term = " + term + "and second term = " + secondTerm);
+        }
         // Add the new term in the dependency map.
         if( ! this.dependencies.containsKey( term ) ) {
             this.dependencies.put( term, associatedTermSet );
@@ -239,41 +280,69 @@ public class DependencyMapping {
                         Term t = associatedTerm.getSecondTermOfTheDependency();
                         Term t2 = secondTerm.getSecondTermOfTheDependency();
 
-                        if (t != null && t2 != null){
-                            // There is an associated term in the dependency map with the same id/name as 'secondTerm.getSecondTermOfTheDependency()'
-                            if (t.equals(t2)){
-                                if (t.isDeducedFromItsParent()){
-                                    if (t2.isDeducedFromItsParent()){
-                                        final Collection<OntologyTermI> children = mi.getValidTerms( t.getParent().getId(), true, false );
-                                        if (!children.isEmpty()){
-                                            if (children.contains(t2.getParent())){
-                                                associatedTermToReplace.add(associatedTerm);
-                                            }
-                                        }
-                                    }
+                        // There is an associated term in the dependency map with the same id/name as 'secondTerm.getSecondTermOfTheDependency()'
+                        if (t.equals(t2)){
+                            log.warn("The dependency " + oldTerm + " - " + t + " at the line "+ lineCount +" has already been loaded.");
+                            OntologyTermI termT = new TermBridge(t.getParent());
+                            OntologyTermI termT2 = new TermBridge(t2.getParent());
+                            OntologyTermI firstTerm = new TermBridge(term);
+                            OntologyTermI oldFirstTerm = new TermBridge(oldTerm);
+                            boolean conflictResolved = false;
+
+                            if (t.isDeducedFromItsParent() && t2.isDeducedFromItsParent()){
+                                if (ontology.isChildOf(termT, termT2)){
+                                    log.warn("The existing term " + t + " deduced from its parent "+ t.getParent() + " has been replaced by the new term " + t2 + " deduced from its parent "+ t2.getParent() + " (line "+lineCount+")");
+                                    associatedTermToReplace.add(associatedTerm);
+                                    conflictResolved = true;
                                 }
-                                // If the existing first term in the dependency map is deduced from a parent term.
-                                else if (oldTerm.isDeducedFromItsParent()){
-                                    // If the new first term is deduced from its parent, keep the term with the younger parent.
-                                    if (term.isDeducedFromItsParent()){
-                                        final Collection<OntologyTermI> children = mi.getValidTerms( oldTerm.getParent().getId(), true, false );
-                                        if (!children.isEmpty()){
-                                            if (children.contains(term.getParent())){
-                                                oldTerm = term;
-                                                associatedTermToReplace.add(associatedTerm);
-                                            }
-                                        }
-                                    }
-                                    //If the new first term isn't deduced from its parent, replace the old dependency.
-                                    else{
-                                        oldTerm = term;
-                                        associatedTermToReplace.add(associatedTerm);
-                                    }
+                                else if (ontology.isChildOf(termT2, termT)){
+                                    log.warn("The existing term " + t + " deduced from its parent "+ t.getParent() + " has not been replaced by the new term " + t2 + " deduced from its parent "+ t2.getParent() + " (line "+lineCount+")");
+                                    conflictResolved = true;
                                 }
                                 else {
-                                    log.warn( "The dependency term " + Term.printTerm(term) + " - secondTerm " + Term.printTerm(secondTerm.getSecondTermOfTheDependency()) +
-                                            "can't be added in the dependency map as it is already included. Check the file containing the dependencies.'" );
+                                    log.error("The new term " + t2 + "deduced from its parent "+ t2.getParent() + " has not been loaded. There is a conflict in the dependency file. (line "+lineCount+")");
                                 }
+                            }
+                            else if (t.isDeducedFromItsParent() && !t2.isDeducedFromItsParent()){
+                                log.warn("The existing term " + t + " deduced from its parent "+ t.getParent() + " has been replaced by the new term " + t2 + " (line "+lineCount+")");
+                                associatedTermToReplace.add(associatedTerm);
+                                conflictResolved = true;
+                            }
+                            else if (!t.isDeducedFromItsParent() && t2.isDeducedFromItsParent()){
+                                log.warn("The existing term " + t + " has not been replaced by the new term " + t2 + "deduced from its parent "+ t2.getParent() + " (line "+lineCount+")");
+                                conflictResolved = true;
+                            }
+
+                            // If the existing first term in the dependency map is deduced from a parent term.
+                            if (oldTerm.isDeducedFromItsParent() && term.isDeducedFromItsParent()){
+                                if (ontology.isChildOf(oldFirstTerm, firstTerm)){
+                                    log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
+                                    associatedTermToReplace.add(associatedTerm);
+                                    oldTerm = term;
+                                    conflictResolved = true;
+                                }
+                                else if (ontology.isChildOf(firstTerm, oldFirstTerm)){
+                                    log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has not been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
+                                    conflictResolved = true;
+                                }
+                                else {
+                                    log.error("The new term " + term + "deduced from its parent "+ term.getParent() + " has not been loaded. There is a conflict in the dependency file. (line "+lineCount+")");
+                                }
+                            }
+                            else if (oldTerm.isDeducedFromItsParent() && !term.isDeducedFromItsParent()) {
+                                log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has been replaced by the new term " + term + " (line "+lineCount+")");
+                                associatedTermToReplace.add(associatedTerm);
+                                oldTerm = term;
+                                conflictResolved = true;
+                            }
+                            else if (!oldTerm.isDeducedFromItsParent() && term.isDeducedFromItsParent()) {
+                                log.warn("The existing term " + oldTerm + " has not been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
+                                conflictResolved = true;
+                            }
+
+                            // If the conflict has not been resolved and the associated term are equal, an error is thrown
+                            if (!conflictResolved && associatedTerm.equals(secondTerm)){
+                                throw new ValidatorRuleException("A conflict exists in the file containing the dependencies at the line " + lineCount + " and can't be resolved. We can't take into account this dependency.");
                             }
                         }
                     }
@@ -301,10 +370,8 @@ public class DependencyMapping {
             Set<AssociatedTerm> associatedTerms = this.dependencies.get(term);
 
             for (AssociatedTerm at : associatedTerms){
-                if (at.getLevel() != null){
-                    if (at.getLevel().toLowerCase().equals("required")){
-                        requiredTerms.add(at);
-                    }
+                if (at.getLevel().equals(DependencyLevel.REQUIRED)){
+                    requiredTerms.add(at);
                 }
             }
         }
@@ -323,10 +390,8 @@ public class DependencyMapping {
             Set<AssociatedTerm> associatedTerms = this.dependencies.get(term);
 
             for (AssociatedTerm at : associatedTerms){
-                if (at.getLevel() != null){
-                    if (at.getLevel().toLowerCase().equals("should")){
-                        recommendedTerms.add(at);
-                    }
+                if (at.getLevel().equals(DependencyLevel.SHOULD)){
+                    recommendedTerms.add(at);
                 }
             }
         }
@@ -361,35 +426,32 @@ public class DependencyMapping {
 
         for (AssociatedTerm associatedTerm : associatedTermDependency){
             // Get the message level of the associated term
-            String level = associatedTerm.getLevel();
+            DependencyLevel level = associatedTerm.getLevel();
 
-            if (level != null){
-                if (level.toLowerCase().equals("required")){
-                    isAValueRequired = true;
-                }
-                else if (level.toLowerCase().equals("should")){
-                    isARecommendedValue = true;
-                }
+            if (level.equals(DependencyLevel.REQUIRED)){
+                isAValueRequired = true;
+            }
+            else if (level.equals(DependencyLevel.SHOULD)){
+                isARecommendedValue = true;
             }
 
             if (secondTermDependency.equals(associatedTerm.getSecondTermOfTheDependency())){
 
-                if (level != null){
-                    if (level.toLowerCase().equals("required") || level.toLowerCase().equals("should")){
-                        hasFoundADependency = true;
-                    }
-                    else {
-                        final String msg = "Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
-                                "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"] ?";
-                        messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level ), context.copy(), rule ) );
-                    }
+                if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
+                    hasFoundADependency = true;
+                }
+                else if (level.equals(DependencyLevel.ERROR)) {
+                    final String msg = "Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
+                            "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"] ?";
+                    messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                 }
             }
         }
 
         if (!hasFoundADependency && isAValueRequired){
             Set<AssociatedTerm> req = getRequiredDependenciesFor(firstTermOfDependency);
-            final StringBuffer msg = new StringBuffer("There is an unusual combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
+            final StringBuffer msg = new StringBuffer( 1024 );
+            msg.append("There is an unusual combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
                     "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
                     " The possible dependencies are : \n");
 
@@ -401,7 +463,8 @@ public class DependencyMapping {
         }
         else if (!hasFoundADependency && isARecommendedValue){
             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(firstTermOfDependency);
-            final StringBuffer msg = new StringBuffer("Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
+            final StringBuffer msg = new StringBuffer( 1024 );
+            msg.append("Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
                     "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
                     " The usual dependencies are : \n");
 
@@ -432,25 +495,27 @@ public class DependencyMapping {
 
         final Term firstTermOfDependency = Term.buildTerm(term1);
 
-        if( firstTermOfDependency != null) {
+        if( term1 != null) {
 
             if( dependencies.containsKey( firstTermOfDependency )) {
 
                 final Set<AssociatedTerm> associatedTermDependency = dependencies.get( firstTermOfDependency );
 
                 final Term secondTermDependency = Term.buildTerm(term2);
-                if( secondTermDependency == null ) {
+                if( term2 == null ) {
                     Set<AssociatedTerm> required = getRequiredDependenciesFor(firstTermOfDependency);
                     if (!required.isEmpty()){
                         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
 
-                        final StringBuffer msg = new StringBuffer("A second term is required when the " + term1.getClass().getSimpleName() + " is ["+Term.printTerm(firstTermOfDependency)+"]." +
-                                " The possible dependencies are : \n");
+                        String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A second term is required when the " + term1.getClass().getSimpleName() + " is [" + Term.printTerm(firstTermOfDependency) + "]." +
+                                " The possible dependencies are : \n";
+                        final StringBuffer sb = new StringBuffer( 1024 );
+                        sb.append( msg );
 
                         for (AssociatedTerm r : required){
-                            msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
+                            sb.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
                         }
-                        messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
+                        messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                         return messages;
                     }
                     else {
@@ -459,9 +524,9 @@ public class DependencyMapping {
                         if (!recommended.isEmpty()){
 
                             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
-
-                            final StringBuffer msg = new StringBuffer("When the " + term1.getClass().getSimpleName() + " is ["+Term.printTerm(firstTermOfDependency)+"]." +
-                                    " The recommended dependencies are : \n");
+                            final StringBuffer msg = new StringBuffer( 1024 );
+                            msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + term1.getClass().getSimpleName() + " is ["+Term.printTerm(firstTermOfDependency)+"]," +
+                                    " the recommended dependencies are : \n");
 
                             for (AssociatedTerm r : recommended){
                                 msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
@@ -479,13 +544,14 @@ public class DependencyMapping {
 
                 } // there are rule for the method
 
-            } else {
-                // TODO here we could report eror given that no MI accession number was given for that method.
             }
-
-            // warning if CVs do not have MIs
         }
+        else {
+            Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+            messages.add(new ValidatorMessage("We can't check the dependencies of type " + rule.getClass().getSimpleName() + " as the first term of the dependency is null.",  MessageLevel.WARN, context.copy(), rule));
 
+            return messages;
+        }
         return new ArrayList<ValidatorMessage>();
     }
 }

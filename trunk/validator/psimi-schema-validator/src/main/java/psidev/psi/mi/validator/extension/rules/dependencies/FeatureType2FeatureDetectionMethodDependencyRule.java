@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -11,6 +12,7 @@ import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -37,14 +39,15 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         super( ontologyMaganer );
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        Mi25Ontology ontology = new Mi25Ontology(mi);
             try {
                 // TODO : the resource should be a final private static or should be put as argument of the constructor
-                String resource = FeatureType2FeatureDetectionMethodDependencyRule.class
-                .getResource( "/FeatureType2FeatureDetectionMethod.tsv" ).getFile();
+                URL resource = FeatureType2FeatureDetectionMethodDependencyRule.class
+                .getResource( "/FeatureType2FeatureDetectionMethod.tsv" );
 
                 mapping = new DependencyMapping();
 
-                mapping.buildMappingFromFile( mi, resource );
+                mapping.buildMappingFromFile( ontology, mi, resource );
 
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -72,6 +75,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // build a context in case of error
+
+        // TODO MOVE IT
         Mi25Context context = new Mi25Context();
 
         context.setInteractionId( interaction.getId() );
@@ -79,6 +84,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         final Collection<Participant> participants = interaction.getParticipants();
         // The experiments for detecting the interaction
         final Collection<ExperimentDescription> experiments = interaction.getExperiments();
+
+//        experiments.iterator().next().getFeatureDetectionMethod();
 
         for ( Participant participant : participants) {
 
@@ -102,6 +109,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
                         messages.addAll( mapping.check( featureType, method, context, this ) );
                     }
                     else {
+                        // TODO look at feature.getExperimentRefs()
+                        //Collection<ExperimentDescription> experiments = collectExperiment( interaction, feature.getExperimentRefs() );
                         for (ExperimentDescription experiment : experiments){
                             if (experiment.hasFeatureDetectionMethod()){
                                 hasFeatureDetectionMethod = true;
@@ -117,5 +126,24 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         } // features
 
         return messages;
+    }
+
+    // TODO move somewhere you can use it statically
+    private Collection<ExperimentDescription> collectExperiment(Interaction interaction, Collection<ExperimentRef> experimentRefs) {
+        ArrayList<ExperimentDescription> collectedExps = new ArrayList<ExperimentDescription>();
+
+        if( experimentRefs != null ) {
+            for (ExperimentRef ref : experimentRefs) {
+                for (ExperimentDescription ed : interaction.getExperiments()) {
+                    if( ed.getId() == ref.getRef() ) {
+                        collectedExps.add( ed );
+                    }
+                }
+            }
+        } else {
+            collectedExps.addAll( interaction.getExperiments() );
+        }
+
+        return collectedExps;
     }
 }
