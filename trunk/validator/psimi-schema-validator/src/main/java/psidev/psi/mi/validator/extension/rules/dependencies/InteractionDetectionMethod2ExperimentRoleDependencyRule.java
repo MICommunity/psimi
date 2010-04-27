@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25Ontology;
+import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -38,10 +39,10 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
         try {
-            // TODO : the resource should be a final private static or should be put as argument of the constructor
+            String fileName = Mi25ValidatorConfig.getInteractionDetectionMethod2ExperimentalRole();
 
             URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
-                    .getResource( "/InteractionDetectionMethod2ExperimentRole.tsv" );
+                    .getResource( fileName );
 
             mapping = new DependencyMapping();
 
