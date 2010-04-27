@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25Ontology;
+import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -49,9 +50,10 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
         try {
-            // TODO : the resource should be a final private static or should be put as argument of the constructor
+            String fileName = Mi25ValidatorConfig.getCrossReference2CrossReferenceType();
+
             URL resource = CrossReference2CrossReferenceTypeDependencyRule.class
-                    .getResource( "/CrossReference2Location2CrossRefType.tsv" );
+                    .getResource( fileName );
 
             // Create a new instance of dependency mapping
             mapping = new DependencyMappingCrossReference2CrossReferenceType();

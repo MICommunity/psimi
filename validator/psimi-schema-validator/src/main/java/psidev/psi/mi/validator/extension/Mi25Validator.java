@@ -2,22 +2,21 @@ package psidev.psi.mi.validator.extension;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xml.sax.SAXException;
-import psidev.psi.mi.xml.PsimiXmlReaderException;
+import psidev.psi.mi.validator.ValidatorReport;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
+import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
-import psidev.psi.mi.xml.xmlindex.IndexedEntry;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.validator.ValidatorReport;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.Validator;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 import psidev.psi.tools.validator.preferences.UserPreferences;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 import psidev.psi.tools.validator.schema.SaxMessage;
 import psidev.psi.tools.validator.schema.SaxReport;
 import psidev.psi.tools.validator.schema.SaxValidatorHandler;
@@ -66,6 +65,7 @@ public class Mi25Validator extends Validator {
                           InputStream objectRuleConfig ) throws ValidatorException, OntologyLoaderException {
 
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
+        this.validatorContext = Mi25ValidatorContext.getCurrentInstance();
     }
 
     ///////////////////////////
@@ -79,6 +79,9 @@ public class Mi25Validator extends Validator {
         return userPreferences;
     }
 
+    public Mi25ValidatorContext getValidatorContext(){
+        return (Mi25ValidatorContext) this.validatorContext;
+    }
     //////////////////////////
     // Utility
 

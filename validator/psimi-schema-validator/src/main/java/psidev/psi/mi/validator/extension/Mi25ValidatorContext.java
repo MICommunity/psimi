@@ -1,5 +1,7 @@
 package psidev.psi.mi.validator.extension;
 
+import psidev.psi.tools.validator.ValidatorContext;
+
 /**
  * Validator context.
  *
@@ -8,7 +10,7 @@ package psidev.psi.mi.validator.extension;
  * @since <pre>26-Apr-2010</pre>
  */
 
-public class Mi25ValidatorContext {
+public class Mi25ValidatorContext extends ValidatorContext {
 
     private static ThreadLocal<Mi25ValidatorContext> instance = new
             ThreadLocal<Mi25ValidatorContext>() {
@@ -21,6 +23,7 @@ public class Mi25ValidatorContext {
     private Mi25ValidatorConfig validatorConfig;
 
     private Mi25ValidatorContext() {
+        super();
         this.validatorConfig = new Mi25ValidatorConfig();
     }
 
