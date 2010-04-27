@@ -46,7 +46,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
         String fileName = Mi25ValidatorConfig.getInteractionDetectionMethod2InteractionType();
-        
+
         try {
 
             URL resource = InteractionDetectionMethod2InteractionTypeDependencyRule.class
@@ -98,7 +98,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
             final Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
             int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.BAIT_MI_REF, "bait", experiment.getId());
             int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.PREY_MI_REF, "prey", experiment.getId());
-            
+
             for ( Organism host : hostOrganisms ) {
                 for (InteractionType type : interactionType){
                     messages.addAll( mapping.check( method, type, host, numberParticipants, numberOfBaits, numberOfPreys, context, this ) );
@@ -504,7 +504,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          * @param number
          * @return
          */
-        private boolean hasMathematicalOperator(String number){
+        public static boolean hasMathematicalOperator(String number){
 
             if (number.startsWith(superior) || number.startsWith(inferior) || number.toLowerCase().startsWith("not ")){
                 return true;
@@ -517,7 +517,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          * @param number
          * @return the mathematical operator of the number
          */
-        private String getMathematicalOperator(String number){
+        public static String getMathematicalOperator(String number){
             String math = null;
 
             if (hasMathematicalOperator(number)){
@@ -634,6 +634,60 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
 
         /**
+         * Check if the number is a valid integer
+         * @param requirements
+         * @return
+         */
+        private boolean checkPositiveInteger(String requirements){
+            if (requirements.length() > 0){
+                String number = requirements;
+                String math = InteractionTypeConditions.getMathematicalOperator(requirements);
+
+                if (math != null){
+                    number = number.substring(math.length());
+                }
+
+                try {
+                    int i = Integer.parseInt(number);
+
+                    if (i >= 0){
+                        return true;
+                    }
+                }
+                catch (NumberFormatException e){
+                    throw new ValidatorRuleException(number + " is not a valid integer.", e);
+                }
+            }
+            return true;            
+        }
+
+        /**
+         * Check if the list of numbers that contains the String requirements are valid integer
+         * @param requirements
+         * @return true if the numbers are a valid integer
+         */
+        private boolean checkIntegerForAll(String requirements){
+            if (requirements.trim().length() > 0){
+                if (requirements.contains(separatorOfConditions)){
+                    String [] list = requirements.split(separatorOfConditions);
+
+                    for (int i = 0; i < list.length; i++){
+                        if (!checkPositiveInteger(list[i])){
+                            return false;
+                        }
+                    }
+                }
+                else {
+                    if (!checkPositiveInteger(requirements)){
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return true;
+        }
+
+        /**
          *
          * @param columns
          * @return an InteractionTypeConditions instance
@@ -651,6 +705,21 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                 }
             }
 
+            if (columns[7] != null){
+                if (!checkIntegerForAll(columns[7])){
+                    throw new ValidatorRuleException("The column 7 doesn't contain valid positive numbers of participants.");
+                }
+            }
+            if (columns[8] != null){
+                if (!checkIntegerForAll(columns[8])){
+                    throw new ValidatorRuleException("The column 8 doesn't contain valid positive numbers of baits.");
+                }
+            }
+            if (columns[9] != null){
+                if (!checkIntegerForAll(columns[9])){
+                    throw new ValidatorRuleException("The column 9 doesn't contain valid positive numbers of preys.");
+                }
+            }
             // Get the condition of application for the dependencies
             DependencyRequirements depReq = new DependencyRequirements(columns[6], columns[7], columns[8], columns[9]);
             // Get a couple interactionType and the requirements.
