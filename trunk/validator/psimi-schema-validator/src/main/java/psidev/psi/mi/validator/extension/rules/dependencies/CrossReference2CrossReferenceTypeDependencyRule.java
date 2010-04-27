@@ -165,6 +165,9 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             else if ("feature".equalsIgnoreCase(location)){
                 this.location = Locations.feature;
             }
+            else {
+                throw new ValidatorRuleException("The location " + location + " is not valid. It can be either experiment, interaction, interactor, participant or feature.");
+            }
         }
 
         public CrossReferenceType( Term referenceType, Locations location, String message ) {
