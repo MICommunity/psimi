@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25Ontology;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -40,21 +41,21 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
-            try {
-                // TODO : the resource should be a final private static or should be put as argument of the constructor
-                URL resource = FeatureType2FeatureDetectionMethodDependencyRule.class
-                .getResource( "/FeatureType2FeatureDetectionMethod.tsv" );
+        try {
+            // TODO : the resource should be a final private static or should be put as argument of the constructor
+            URL resource = FeatureType2FeatureDetectionMethodDependencyRule.class
+                    .getResource( "/FeatureType2FeatureDetectionMethod.tsv" );
 
-                mapping = new DependencyMapping();
+            mapping = new DependencyMapping();
 
-                mapping.buildMappingFromFile( ontology, mi, resource );
+            mapping.buildMappingFromFile( ontology, mi, resource );
 
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ValidatorException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-            // describe the rule.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ValidatorException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        // describe the rule.
         setName( "Dependency between feature type and feature detection method" );
         setDescription( "Checks that each interaction respects the dependencies feature type - feature detection method " +
                 "stored in FeatureType2FeatureDetectionMethod.tsv." );
@@ -74,47 +75,49 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // build a context in case of error
-
-        // TODO MOVE IT
-        Mi25Context context = new Mi25Context();
-
-        context.setInteractionId( interaction.getId() );
         // The participants of the interaction
         final Collection<Participant> participants = interaction.getParticipants();
-        // The experiments for detecting the interaction
-        final Collection<ExperimentDescription> experiments = interaction.getExperiments();
 
 //        experiments.iterator().next().getFeatureDetectionMethod();
 
         for ( Participant participant : participants) {
 
-            context.setParticipantId( participant.getId());
-
             // Features of a participant
             Collection<Feature> features = participant.getFeatures();
 
             for (Feature feature : features){
-                context.setFeatureId( feature.getId());
+
                 FeatureDetectionMethod method = null;
-                boolean hasFeatureDetectionMethod = false;
 
                 if (feature.hasFeatureType()){
                     FeatureType featureType = feature.getFeatureType();
 
                     if (feature.hasFeatureDetectionMethod()){
-                        hasFeatureDetectionMethod = true;
+                        Mi25Context context = new Mi25Context();
+                        context.setInteractionId( interaction.getId() );
+                        context.setParticipantId( participant.getId());
+                        context.setFeatureId( feature.getId());
 
                         method = feature.getFeatureDetectionMethod();
                         messages.addAll( mapping.check( featureType, method, context, this ) );
                     }
                     else {
-                        // TODO look at feature.getExperimentRefs()
+                        // The experiment refs of the feature
+                        final Collection<ExperimentRef> experimentRefs = feature.getExperimentRefs();
+
+                        // The experiments for detecting the interaction
+                        Collection<ExperimentDescription> experiments = RuleUtils.collectExperiment(interaction, experimentRefs);
+
                         //Collection<ExperimentDescription> experiments = collectExperiment( interaction, feature.getExperimentRefs() );
                         for (ExperimentDescription experiment : experiments){
-                            if (experiment.hasFeatureDetectionMethod()){
-                                hasFeatureDetectionMethod = true;
 
+                            Mi25Context context = new Mi25Context();
+                            context.setInteractionId( interaction.getId() );
+                            context.setParticipantId( participant.getId());
+                            context.setFeatureId( feature.getId());
+                            context.setExperimentId(experiment.getId());
+
+                            if (experiment.hasFeatureDetectionMethod()){
                                 method = experiment.getFeatureDetectionMethod();
                                 messages.addAll( mapping.check( featureType, method, context, this ) );
                             }
@@ -128,22 +131,4 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         return messages;
     }
 
-    // TODO move somewhere you can use it statically
-    private Collection<ExperimentDescription> collectExperiment(Interaction interaction, Collection<ExperimentRef> experimentRefs) {
-        ArrayList<ExperimentDescription> collectedExps = new ArrayList<ExperimentDescription>();
-
-        if( experimentRefs != null ) {
-            for (ExperimentRef ref : experimentRefs) {
-                for (ExperimentDescription ed : interaction.getExperiments()) {
-                    if( ed.getId() == ref.getRef() ) {
-                        collectedExps.add( ed );
-                    }
-                }
-            }
-        } else {
-            collectedExps.addAll( interaction.getExperiments() );
-        }
-
-        return collectedExps;
-    }
 }

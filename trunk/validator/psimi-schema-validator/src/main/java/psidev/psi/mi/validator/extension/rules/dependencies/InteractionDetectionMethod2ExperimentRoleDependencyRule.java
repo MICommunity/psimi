@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25Ontology;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -36,22 +37,22 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
-            try {
-                // TODO : the resource should be a final private static or should be put as argument of the constructor
+        try {
+            // TODO : the resource should be a final private static or should be put as argument of the constructor
 
-                URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
-                .getResource( "/InteractionDetectionMethod2ExperimentRole.tsv" );
+            URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
+                    .getResource( "/InteractionDetectionMethod2ExperimentRole.tsv" );
 
-                mapping = new DependencyMapping();
-                
-                mapping.buildMappingFromFile( ontology, mi, resource );
+            mapping = new DependencyMapping();
 
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ValidatorException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-            // describe the rule.
+            mapping.buildMappingFromFile( ontology, mi, resource );
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ValidatorException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        // describe the rule.
         setName( "Dependency between interaction detection method and experimental role" );
         setDescription( "Checks that each interaction respects the dependencies interaction detection method - participant experimental role " +
                 "stored in InteractionDetectionMethod2ExperimentRole.tsv." );
@@ -70,30 +71,33 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // build a context in case of error
-        Mi25Context context = new Mi25Context();
-
-        context.setInteractionId( interaction.getId() );
-        // experiments for detecting the interaction
-        final Collection<ExperimentDescription> experiments = interaction.getExperiments();
         // participants of the interaction
         final Collection<Participant> participants = interaction.getParticipants();
 
-        // TODO is experimental role has expRef, then only process that specifric experiemnt, otherwise all of them
+        for ( Participant p : participants ) {
+            Collection<ExperimentalRole> roles = p.getExperimentalRoles();
 
-        for ( ExperimentDescription experiment : experiments ) {
+            for (ExperimentalRole role : roles){
 
-            context.setExperimentId( experiment.getId());
-            final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
+                // experiment refs of the experimental role
+                final Collection<ExperimentRef> experimentRefs = role.getExperimentRefs();
 
-            for ( Participant p : participants ) {
-                Collection<ExperimentalRole> roles = p.getExperimentalRoles();
-                for (ExperimentalRole role : roles){
-                    messages.addAll( mapping.check( method, role, context, this ) );
-                }
+                Collection<ExperimentDescription> experiments = RuleUtils.collectExperiment(interaction, experimentRefs);
+
+                for ( ExperimentDescription experiment : experiments ) {
+
+                    // build a context in case of error
+                    Mi25Context context = new Mi25Context();
+                    context.setInteractionId( interaction.getId() );
+                    context.setExperimentId( experiment.getId());
+                    context.setParticipantId( p.getId() );
+
+                    final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
+                    messages.addAll( mapping.check( method, role, context, this ) );                    
+
+                } // experiments
             }
-
-        } // experiments
+        }
 
         return messages;
     }

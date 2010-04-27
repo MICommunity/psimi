@@ -36,21 +36,21 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
-            try {
-                // TODO : the resource should be a final private static or should be put as argument of the constructor
+        try {
+            // TODO : the resource should be a final private static or should be put as argument of the constructor
 
-                URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
-                .getResource( "/InteractionDetectionMethod2BiologicalRole.tsv" );
-                mapping = new DependencyMapping();
+            URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
+                    .getResource( "/InteractionDetectionMethod2BiologicalRole.tsv" );
+            mapping = new DependencyMapping();
 
-                mapping.buildMappingFromFile( ontology, mi, resource );
+            mapping.buildMappingFromFile( ontology, mi, resource );
 
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ValidatorException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-            // describe the rule.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ValidatorException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        // describe the rule.
         setName( "Dependency between interaction detection method and Biological rule" );
         setDescription( "Checks that each interaction respects the dependencies interaction detection method - participant biological role " +
                 "stored in InteractionDetectionMethod2BiologicalRole.tsv." );
@@ -69,10 +69,6 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // build a context in case of error
-        Mi25Context context = new Mi25Context();
-
-        context.setInteractionId( interaction.getId() );
         // experiments for detecting the interaction
         final Collection<ExperimentDescription> experiments = interaction.getExperiments();
         // participants of the interaction
@@ -80,12 +76,18 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
 
         for ( ExperimentDescription experiment : experiments ) {
 
-            context.setExperimentId( experiment.getId());
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
 
             for ( Participant p : participants ) {
 
                 if (p.hasBiologicalRole()){
+
+                    // build a context in case of error
+                    Mi25Context context = new Mi25Context();
+                    context.setInteractionId( interaction.getId() );
+                    context.setExperimentId( experiment.getId());
+                    context.setParticipantId( p.getId() );
+
                     BiologicalRole biolRole = p.getBiologicalRole();
 
                     messages.addAll( mapping.check( method, biolRole, context, this ) );

@@ -27,7 +27,7 @@ import java.util.Collection;
  */
 public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule {
 
-        private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
+    private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
     private static DependencyMapping mapping;
 
@@ -36,20 +36,20 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
-            try {
-                // TODO : the resource should be a final private static or should be put as argument of the constructor
-                URL resource = FeatureType2FeatureRangeDependencyRule.class
-                .getResource( "/FeatureType2FeatureRangeStatus.tsv" );
+        try {
+            // TODO : the resource should be a final private static or should be put as argument of the constructor
+            URL resource = FeatureType2FeatureRangeDependencyRule.class
+                    .getResource( "/FeatureType2FeatureRangeStatus.tsv" );
 
-                mapping = new DependencyMapping();
-                mapping.buildMappingFromFile( ontology, mi, resource );
+            mapping = new DependencyMapping();
+            mapping.buildMappingFromFile( ontology, mi, resource );
 
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ValidatorException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-            // describe the rule.
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ValidatorException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        // describe the rule.
         setName( "Dependency between feature type and feature range status" );
         setDescription( "Checks that each interaction respects the dependencies feature type - feature range status " +
                 "stored in FeatureType2FeatureRangeStatus.tsv." );
@@ -69,24 +69,23 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // build a context in case of error
-        Mi25Context context = new Mi25Context();
-
-        context.setInteractionId( interaction.getId() );
         final Collection<Participant> participants = interaction.getParticipants();
 
         for ( Participant participant : participants) {
-
-            context.setParticipantId( participant.getId());
 
             // participants of the interaction
             Collection<Feature> features = participant.getFeatures();
 
             for (Feature feature : features){
+
+                // build a context in case of error
+                Mi25Context context = new Mi25Context();
+                context.setInteractionId( interaction.getId() );
+                context.setParticipantId( participant.getId());
                 context.setFeatureId( feature.getId());
-                Collection<Range> featureRange = feature.getRanges();
 
                 if (feature.hasFeatureType()){
+                    Collection<Range> featureRange = feature.getRanges();                    
                     FeatureType featureType = feature.getFeatureType();
 
                     for (Range r : featureRange){

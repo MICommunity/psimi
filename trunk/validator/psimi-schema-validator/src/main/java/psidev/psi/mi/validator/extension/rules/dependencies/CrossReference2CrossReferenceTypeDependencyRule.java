@@ -99,19 +99,18 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // build a context in case of error
-        Mi25Context context = new Mi25Context();
-
         // Get the xRef
         Xref xRef = container.getXref();
 
+        Mi25Context context = new Mi25Context();
+        context.setId(container);
+        
         if (xRef != null){
             // Collect the db references
             Collection<DbReference> databaseReferences = xRef.getAllDbReferences();
 
             for ( DbReference reference : databaseReferences) {
-
-                context.setId( reference.getId());
+                // build a context in case of error
                 messages.addAll( mapping.check( reference, container, context, this ) );
             }
 
