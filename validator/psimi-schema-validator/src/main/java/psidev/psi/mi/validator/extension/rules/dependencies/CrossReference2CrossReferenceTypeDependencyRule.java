@@ -49,8 +49,9 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
+        String fileName = Mi25ValidatorConfig.getCrossReference2CrossReferenceType();
+
         try {
-            String fileName = Mi25ValidatorConfig.getCrossReference2CrossReferenceType();
 
             URL resource = CrossReference2CrossReferenceTypeDependencyRule.class
                     .getResource( fileName );
@@ -61,9 +62,9 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             mapping.buildMappingFromFile( ontology, mi, resource );
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         } catch (ValidatorException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
         setName( "Cross reference and cross reference type" );
