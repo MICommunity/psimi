@@ -37,8 +37,9 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
+        String fileName = Mi25ValidatorConfig.getInteractionDetectionMethod2BiologicalRole();
+        
         try {
-            String fileName = Mi25ValidatorConfig.getInteractionDetectionMethod2BiologicalRole();
 
             URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
                     .getResource( fileName );
@@ -47,9 +48,9 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
             mapping.buildMappingFromFile( ontology, mi, resource );
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         } catch (ValidatorException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
         setName( "Dependency between interaction detection method and Biological rule" );

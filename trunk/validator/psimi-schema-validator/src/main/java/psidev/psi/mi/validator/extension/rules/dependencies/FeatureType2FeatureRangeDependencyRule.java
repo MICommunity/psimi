@@ -37,8 +37,9 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         Mi25Ontology ontology = new Mi25Ontology(mi);
+        String fileName = Mi25ValidatorConfig.getFeatureType2FeatureRange();
+        
         try {
-            String fileName = Mi25ValidatorConfig.getFeatureType2FeatureRange();
             URL resource = FeatureType2FeatureRangeDependencyRule.class
                     .getResource( fileName );
 
@@ -46,9 +47,9 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
             mapping.buildMappingFromFile( ontology, mi, resource );
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         } catch (ValidatorException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
         setName( "Dependency between feature type and feature range status" );
