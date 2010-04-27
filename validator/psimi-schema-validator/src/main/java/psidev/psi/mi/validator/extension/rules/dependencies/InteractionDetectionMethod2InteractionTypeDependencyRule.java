@@ -77,10 +77,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // build a context in case of error
-        Mi25Context context = new Mi25Context();
-
-        context.setInteractionId( interaction.getId() );
         // experiments for detecting the interaction
         final Collection<ExperimentDescription> experiments = interaction.getExperiments();
         // participants of the interaction
@@ -88,15 +84,19 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         // number of participants
         final int numberParticipants = participants.size();
         final Collection<InteractionType> interactionType = interaction.getInteractionTypes();
-        final int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, "MI:0496", "bait");
-        final int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, "MI:0498", "prey");
 
         for ( ExperimentDescription experiment : experiments ) {
 
+            // build a context in case of error
+            Mi25Context context = new Mi25Context();
+            context.setInteractionId( interaction.getId() );
             context.setExperimentId( experiment.getId());
+
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
             final Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
-
+            int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.BAIT_MI_REF, "bait", experiment.getId());
+            int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.PREY_MI_REF, "prey", experiment.getId());
+            
             for ( Organism host : hostOrganisms ) {
                 for (InteractionType type : interactionType){
                     messages.addAll( mapping.check( method, type, host, numberParticipants, numberOfBaits, numberOfPreys, context, this ) );
@@ -121,7 +121,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         if (ref != null){
             Collection<DbReference> references = ref.getAllDbReferences();
 
-            Collection<DbReference> psiMiRef = RuleUtils.findByDatabase(references, "psi-mi", "MI:0488");
+            Collection<DbReference> psiMiRef = RuleUtils.findByDatabase(references, RuleUtils.PSI_MI, RuleUtils.PSI_MI_REF);
             if (!psiMiRef.isEmpty()){
 
                 for (DbReference psi : psiMiRef){
@@ -157,15 +157,34 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
      * @param roleName
      * @return the number of participants with a specific experimental role
      */
-    private int getNumberOfParticipantWithExperimentalRole(Collection<Participant> participants, String roleMi, String roleName){
+    private int getNumberOfParticipantWithExperimentalRole(Collection<Participant> participants, String roleMi, String roleName, int experimentId){
 
         int num = 0;
         for (Participant p : participants){
             Collection<ExperimentalRole> experimentRoles = p.getExperimentalRoles();
             for (ExperimentalRole role : experimentRoles){
-                if (checkParticipantRole(role, roleMi, roleName)){
-                    num++;
-                    break;
+                Collection<ExperimentRef> experimentRefs = role.getExperimentRefs();
+
+                if (experimentRefs.isEmpty()){
+                    if (checkParticipantRole(role, roleMi, roleName)){
+                        num++;
+                        break;
+                    }
+                }
+                else {
+                    int previousNum = num;
+                    for (ExperimentRef ref : experimentRefs){
+                        if (ref.getRef() == experimentId){
+                            if (checkParticipantRole(role, roleMi, roleName)){
+                                num++;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (previousNum < num){
+                        break;
+                    }
                 }
 
             } // experimental roles

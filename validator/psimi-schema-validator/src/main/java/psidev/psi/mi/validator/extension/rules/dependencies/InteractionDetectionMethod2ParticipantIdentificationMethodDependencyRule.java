@@ -92,8 +92,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
                         messages.addAll( mapping.check( method, pm, context, this ) );
                     }
                 }
-                else {
-                    // TODO check if participant method is null
+                else if (participantMethod != null) {
                     messages.addAll( mapping.check( method, participantMethod, context, this ) );
                 }
             }

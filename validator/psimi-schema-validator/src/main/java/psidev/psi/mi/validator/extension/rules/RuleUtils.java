@@ -23,7 +23,6 @@ import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
 
@@ -550,5 +549,29 @@ public final class RuleUtils {
                     experimentRule ) );
         }
 
+    }
+
+    /**
+     * Find the experiments of the interaction that the experimentRef referred to
+     * @param interaction
+     * @param experimentRefs
+     * @return
+     */
+    public static Collection<ExperimentDescription> collectExperiment(Interaction interaction, Collection<ExperimentRef> experimentRefs) {
+        ArrayList<ExperimentDescription> collectedExps = new ArrayList<ExperimentDescription>();
+
+        if( experimentRefs != null && !experimentRefs.isEmpty() ) {            
+            for (ExperimentRef ref : experimentRefs) {
+                for (ExperimentDescription ed : interaction.getExperiments()) {
+                    if( ed.getId() == ref.getRef() ) {
+                        collectedExps.add( ed );
+                    }
+                }
+            }
+        } else {
+            collectedExps.addAll( interaction.getExperiments() );
+        }
+
+        return collectedExps;
     }
 }
