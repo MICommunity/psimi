@@ -107,7 +107,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
         Mi25Context context = new Mi25Context();
         context.setId(container);
-        
+
         if (xRef != null){
             // Collect the db references
             Collection<DbReference> databaseReferences = xRef.getAllDbReferences();
@@ -310,9 +310,8 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             final StringBuffer sb = new StringBuffer( 1024 );
                             sb.append( msg );
 
-                            for (AssociatedTerm r : required){
-                                sb.append(Term.printTerm(database) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
-                            }
+                            writePossibleDependencies(required, sb, database);
+
                             messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                             return messages;
                         }
@@ -324,9 +323,8 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                                 final StringBuffer msg = new StringBuffer( 1024 );
                                 msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + database.getClass().getSimpleName() + " is ["+Term.printTerm(database)+"]," +
                                         " the recommended dependencies are : \n");
-                                for (AssociatedTerm r : recommended){
-                                    msg.append(Term.printTerm(database) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
-                                }
+                                writePossibleDependencies(recommended, msg, database);
+
                                 messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 
                                 return messages;
@@ -352,19 +350,15 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             if (type.equals(t.getSecondTermOfTheDependency())){
                                 if (t instanceof CrossReferenceType){
                                     CrossReferenceType crossType = (CrossReferenceType) t;
-                                    if (level.equals(DependencyLevel.ERROR)){
-                                        if (crossType.isReferenceTypeRuleApplicableTo(container)){
-                                            final String msg = "Are you sure of the combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
-                                                    "and " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] ?";
-                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
-                                        }
-                                    }
-                                    else {
-                                        if (crossType.isReferenceTypeRuleApplicableTo(container)){
-                                            if (level != null){
-                                                if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
-                                                    hasFoundDependency = true;
-                                                }
+                                    if (crossType.isReferenceTypeRuleApplicableTo(container)){
+                                        if (level != null){
+                                            if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
+                                                hasFoundDependency = true;
+                                            }
+                                            else if (level.equals(DependencyLevel.ERROR)){
+                                                final String msg = "Are you sure of the combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
+                                                        "and " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] ?";
+                                                messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                                             }
                                         }
                                     }
@@ -382,11 +376,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             msg.append("There is an unusual combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
                                     "and " + container.getClass().getSimpleName() + " ["+Term.printTerm(type)+"] ?" +
                                     " The possible dependencies are : \n");
-
-                            for (AssociatedTerm r : req){
-                                CrossReferenceType ct = (CrossReferenceType) r;
-                                msg.append(Term.printTerm(database) + " : " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + " \n");
-                            }
+                            writePossibleDependencies(req, msg, database);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                         }
@@ -397,11 +387,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                                     "and " + container.getClass().getSimpleName() + " ["+Term.printTerm(type)+"]." +
                                     " The usual dependencies are : \n");
 
-                            for (AssociatedTerm r : rec){
-                                CrossReferenceType ct = (CrossReferenceType) r;
-
-                                msg.append(Term.printTerm(database) + " : " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + " \n");
-                            }
+                            writePossibleDependencies(rec, msg, database);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                         }
@@ -415,6 +401,14 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                 return messages;
             }
             return messages;
+        }
+
+        protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
+            for (AssociatedTerm r : associatedTerms){
+                CrossReferenceType ct = (CrossReferenceType) r;
+
+                msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + " \n");
+            }
         }
     }
 }

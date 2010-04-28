@@ -454,10 +454,7 @@ public class DependencyMapping {
             msg.append("There is an unusual combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
                     "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
                     " The possible dependencies are : \n");
-
-            for (AssociatedTerm r : req){
-                msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
-            }
+            writePossibleDependencies(req, msg, firstTermOfDependency);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
         }
@@ -467,16 +464,19 @@ public class DependencyMapping {
             msg.append("Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
                     "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
                     " The usual dependencies are : \n");
-
-            for (AssociatedTerm r : rec){
-                msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
-            }
+            writePossibleDependencies(rec, msg, firstTermOfDependency);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
         }
 
         return messages;
 
+    }
+
+    protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
+        for (AssociatedTerm r : associatedTerms){
+            msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
+        }
     }
 
     /**
@@ -512,9 +512,7 @@ public class DependencyMapping {
                         final StringBuffer sb = new StringBuffer( 1024 );
                         sb.append( msg );
 
-                        for (AssociatedTerm r : required){
-                            sb.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
-                        }
+                        writePossibleDependencies(required, sb, firstTermOfDependency);
                         messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                         return messages;
                     }
@@ -527,10 +525,7 @@ public class DependencyMapping {
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + term1.getClass().getSimpleName() + " is ["+Term.printTerm(firstTermOfDependency)+"]," +
                                     " the recommended dependencies are : \n");
-
-                            for (AssociatedTerm r : recommended){
-                                msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
-                            }
+                            writePossibleDependencies(recommended, msg, firstTermOfDependency);
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 
                             return messages;

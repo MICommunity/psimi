@@ -576,6 +576,38 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
 
         /**
+         * To know if there is requirements on the number of participants
+         * @return
+         */
+        private boolean hasRequirementsOnTheNumberOfParticipants(){
+            return this.requirements.hasNumParticipantsRequirements();
+        }
+
+        /**
+         * To know if there is requirements on the number of baits
+         * @return
+         */
+        private boolean hasRequirementsOnTheNumberOfBaits(){
+            return this.requirements.hasNumBaitsRequirements();
+        }
+
+        /**
+         * To know if there is requirements on the number of preys
+         * @return
+         */
+        private boolean hasRequirementsOnTheNumberOfPreys(){
+            return this.requirements.hasNumPreysRequirements();
+        }
+
+        /**
+         * To know if there is requirements on the number of preys
+         * @return
+         */
+        private boolean hasRequirementsOnTheOrganism(){
+            return this.requirements.hasHostRequirements();
+        }
+
+        /**
          * To know if the number of participants respects the requirements
          * @param numParticipants
          * @return
@@ -658,7 +690,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                     throw new ValidatorRuleException(number + " is not a valid integer.", e);
                 }
             }
-            return true;            
+            return true;
         }
 
         /**
@@ -784,7 +816,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             if (!recommended.isEmpty()){
                                 final StringBuffer msg = new StringBuffer( 1024 );
                                 msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + method.getClass().getSimpleName() + " is ["+Term.printTerm(methodTerm)+"]," +
-                                        " the recommended dependencies are : \n");
+                                        " the recommended interaction types are : \n");
 
                                 for (AssociatedTerm r : recommended){
                                     msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
@@ -816,24 +848,37 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             if (brTerm.equals(pair.getSecondTermOfTheDependency())){
                                 if (pair instanceof InteractionTypeConditions){
                                     InteractionTypeConditions cond = (InteractionTypeConditions) pair;
-                                    // TODO one test per conditions, more specific error messages
                                     if (level.equals(DependencyLevel.ERROR)){
-                                        if (cond.isApplicableHostOrganism(host) || cond.isApplicablewithTheNumberOfParticipants(numParticipants) || cond.isApplicablewithTheNumberOfBaits(numBaits) || cond.isApplicablewithTheNumberOfPreys(numPreys)){
+                                        final StringBuffer msg = new StringBuffer( 1024 );
 
-                                            final StringBuffer msg = new StringBuffer( 1024 );
+                                        if (cond.hasRequirementsOnTheOrganism() && cond.isApplicableHostOrganism(host)){
+
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"].");
-
-                                            for (AssociatedTerm r : interactionTypeCondition){
-                                                InteractionTypeConditions it = (InteractionTypeConditions) r;
-                                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
-                                                        ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
-                                            }
-                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
-
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the host organism is " + host);
                                         }
+                                        if (cond.hasRequirementsOnTheNumberOfParticipants() && cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
+
+                                            msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of participants is " + numParticipants);
+                                        }
+                                        if (cond.hasRequirementsOnTheNumberOfBaits() && cond.isApplicablewithTheNumberOfBaits(numBaits)){
+
+                                            msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of baits is " + numBaits);
+                                        }
+                                        if (cond.hasRequirementsOnTheNumberOfPreys() && cond.isApplicablewithTheNumberOfPreys(numPreys)){
+
+                                            msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of preys is " + numPreys);
+                                        }
+
+                                        writePossibleDependencies(interactionTypeCondition, msg, methodTerm);
+
+                                        messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                                     }
                                     else {
+                                        final StringBuffer msg = new StringBuffer( 1024 );
+
                                         if (cond.isApplicableHostOrganism(host)){
                                             if (cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
                                                 if (cond.isApplicablewithTheNumberOfBaits(numBaits)){
@@ -845,7 +890,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                                         }
                                                     }
                                                     else{
-                                                        final StringBuffer msg = new StringBuffer( 1024 );
                                                         msg.append("Unusual number of preys "+ numPreys +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                                 "the interaction type is " + Term.printTerm(brTerm) + " the number of preys should be : \n") ;
                                                         for (String validNum : cond.getRequirements().getApplicableNumPrey()){
@@ -855,7 +899,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                                     }
                                                 }
                                                 else{
-                                                    final StringBuffer msg = new StringBuffer( 1024 );
                                                     msg.append("Unusual number of baits "+ numBaits +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                             "the interaction type is " + Term.printTerm(brTerm) + " the number of baits should be : \n") ;
                                                     for (String validNum : cond.getRequirements().getApplicableNumBaits()){
@@ -865,7 +908,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                                 }
                                             }
                                             else{
-                                                final StringBuffer msg = new StringBuffer( 1024 );
                                                 msg.append("Unusual number of participants "+ numParticipants +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                         "the interaction type is " + Term.printTerm(brTerm) + " the number of participants should be : \n") ;
                                                 for (String validNum : cond.getRequirements().getApplicableNumParticipants()){
@@ -875,7 +917,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                             }
                                         }
                                         else{
-                                            final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("Unusual host organism. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                     "the interaction type is " + Term.printTerm(brTerm) + " the host organism should be : \n") ;
                                             for (String validHost : cond.getRequirements().getApplicableHostOrganisms()){
@@ -898,12 +939,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             msg.append("There is an unusual combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
                                     "and the interaction type ["+Term.printTerm(brTerm)+"]." +
                                     " The possible dependencies are : \n");
-
-                            for (AssociatedTerm r : req){
-                                InteractionTypeConditions it = (InteractionTypeConditions) r;
-                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
-                                        ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
-                            }
+                            writePossibleDependencies(req, msg, methodTerm);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                         }
@@ -914,11 +950,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                     "and the interaction type ["+Term.printTerm(brTerm)+"] ?" +
                                     " The recommended dependencies are : \n");
                             System.out.println("baits " + numBaits);
-                            for (AssociatedTerm r : req){
-                                InteractionTypeConditions it = (InteractionTypeConditions) r;
-                                msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
-                                        ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
-                            }
+                            writePossibleDependencies(req, msg, methodTerm);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                         }
@@ -935,5 +967,14 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             return messages;
         }
+
+        protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
+            for (AssociatedTerm r : associatedTerms){
+                InteractionTypeConditions it = (InteractionTypeConditions) r;
+                msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
+                        ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
+            }
+        }
+
     }
 }
