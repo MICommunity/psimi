@@ -369,6 +369,27 @@ public class Mi25ValidatorTest {
         printMessages( messages );
     }
 
+    @Test
+    public void validateSyntax15601820() throws Exception {
+        Collection<ValidatorMessage> messages = getIMEXValidationMessage ("15601820.xml"  );
+        Assert.assertTrue( messages.size() > 0 );
+        printMessages( messages );
+    }
+
+    @Test
+    public void validateSyntax16956364() throws Exception {
+        Collection<ValidatorMessage> messages = getIMEXValidationMessage ("16956364.xml"  );
+        Assert.assertTrue( messages.size() > 0 );
+        printMessages( messages );
+    }
+
+    @Test
+    public void validateSyntax18850735() throws Exception {
+        Collection<ValidatorMessage> messages = getIMEXValidationMessage ("18850735.xml"  );
+        Assert.assertTrue( messages.size() > 0 );
+        printMessages( messages );
+    }
+
     private void printMessages( Collection<ValidatorMessage> messages ) {
         for ( ValidatorMessage message : messages ) {
             System.out.println( message );

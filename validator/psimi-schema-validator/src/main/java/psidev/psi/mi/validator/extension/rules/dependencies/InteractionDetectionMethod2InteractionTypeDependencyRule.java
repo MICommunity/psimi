@@ -854,22 +854,22 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                         if (cond.hasRequirementsOnTheOrganism() && cond.isApplicableHostOrganism(host)){
 
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the host organism is " + host);
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the host organism is " + host + "\n");
                                         }
                                         if (cond.hasRequirementsOnTheNumberOfParticipants() && cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
 
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of participants is " + numParticipants);
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of participants is " + numParticipants + "\n");
                                         }
                                         if (cond.hasRequirementsOnTheNumberOfBaits() && cond.isApplicablewithTheNumberOfBaits(numBaits)){
 
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of baits is " + numBaits);
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of baits is " + numBaits + "\n");
                                         }
                                         if (cond.hasRequirementsOnTheNumberOfPreys() && cond.isApplicablewithTheNumberOfPreys(numPreys)){
 
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of preys is " + numPreys);
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the number of preys is " + numPreys + "\n");
                                         }
 
                                         writePossibleDependencies(interactionTypeCondition, msg, methodTerm);
@@ -949,7 +949,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             msg.append("Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
                                     "and the interaction type ["+Term.printTerm(brTerm)+"] ?" +
                                     " The recommended dependencies are : \n");
-                            System.out.println("baits " + numBaits);
                             writePossibleDependencies(req, msg, methodTerm);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
