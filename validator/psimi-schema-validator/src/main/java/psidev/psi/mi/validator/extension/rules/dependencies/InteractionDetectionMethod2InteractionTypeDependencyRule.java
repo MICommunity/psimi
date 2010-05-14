@@ -478,8 +478,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             if (this.requirements.hasHostRequirements()){
                 Set<String> validHosts = this.requirements.getApplicableHostOrganisms();
-
-                if (validHosts.contains(Integer.toString(host.getNcbiTaxId()))){
+                String taxId = Integer.toString(host.getNcbiTaxId());
+                if (validHosts.contains(taxId)){
                     return true;
                 }
 
@@ -488,7 +488,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
                     if (math != null){
                         String hostNotAllowed = h.substring(math.length());
-                        if (math.toLowerCase().equals(different) && h != hostNotAllowed){
+                        if (math.toLowerCase().equals(different) && taxId != hostNotAllowed){
                             return true;
                         }
                     }
@@ -506,7 +506,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          */
         public static boolean hasMathematicalOperator(String number){
 
-            if (number.startsWith(superior) || number.startsWith(inferior) || number.toLowerCase().startsWith("not ")){
+            if (number.startsWith(superior) || number.startsWith(inferior) || number.toLowerCase().startsWith(different)){
                 return true;
             }
             return false;
