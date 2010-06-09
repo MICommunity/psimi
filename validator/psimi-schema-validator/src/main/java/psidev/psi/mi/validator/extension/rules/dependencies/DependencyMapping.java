@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -134,13 +133,12 @@ public class DependencyMapping {
 
     /**
      * Builds the dependencies from a file (tab file).
-     * @param ontology
      * @param mi
      * @param url
      * @throws IOException
      * @throws ValidatorException
      */
-    public void buildMappingFromFile( Mi25Ontology ontology, OntologyAccess mi, URL url) throws IOException, ValidatorException {
+    public void buildMappingFromFile( OntologyAccess mi, URL url) throws IOException, ValidatorException {
 
         InputStream is = url.openStream();
         BufferedReader in = new BufferedReader( new InputStreamReader(is) );
@@ -181,7 +179,7 @@ public class DependencyMapping {
                     AssociatedTerm associatedTerm = createSecondaryTermOfTheDependency(columns);
 
                     // Create a dependency for these terms
-                    loadDependencies(firstTerm, associatedTerm, ontology, lineCount);
+                    loadDependencies(firstTerm, associatedTerm, mi, lineCount);
 
                     // contains all the possible children of the first term of the dependency.
                     Set<Term> firstTermChildren = new HashSet<Term>();
@@ -200,7 +198,7 @@ public class DependencyMapping {
                                 firstTermChildren.add(termChild);
 
                                 // Create a dependency with the children
-                                loadDependencies(termChild, associatedTerm, ontology, lineCount);
+                                loadDependencies(termChild, associatedTerm, mi, lineCount);
                             }
                         }
                     }
@@ -216,13 +214,13 @@ public class DependencyMapping {
                                 childTerm2.getSecondTermOfTheDependency().setParent(associatedTerm.getSecondTermOfTheDependency());
 
                                 // Create a dependency with the children
-                                loadDependencies(firstTerm, childTerm2, ontology, lineCount);
+                                loadDependencies(firstTerm, childTerm2, mi, lineCount);
 
                                 if (!firstTermChildren.isEmpty()){
                                     // duplicate the dependencies for the children of the first term too
                                     for (Term first : firstTermChildren){
                                         // Create a dependency with the children
-                                        loadDependencies(first, childTerm2, ontology, lineCount);
+                                        loadDependencies(first, childTerm2, mi, lineCount);
                                     }
                                 }
                             }
@@ -255,9 +253,9 @@ public class DependencyMapping {
      *      then keep only in the dependency map the term with a 'younger' parent.
      * @param term
      * @param secondTerm
-     * @param ontology
+     * @param mi
      */
-    protected void loadDependencies(Term term, AssociatedTerm secondTerm, Mi25Ontology ontology, int lineCount){
+    protected void loadDependencies(Term term, AssociatedTerm secondTerm, OntologyAccess mi, int lineCount){
         Set<AssociatedTerm> associatedTermSet = new HashSet<AssociatedTerm> ();
         if (term == null || secondTerm == null){
             log.error("The first term and the second term of a dependency can't be null : first term = " + term + "and second term = " + secondTerm);
@@ -282,61 +280,68 @@ public class DependencyMapping {
 
                         // There is an associated term in the dependency map with the same id/name as 'secondTerm.getSecondTermOfTheDependency()'
                         if (t.equals(t2)){
-                            log.warn("The dependency " + oldTerm + " - " + t + " at the line "+ lineCount +" has already been loaded.");
-                            OntologyTermI termT = new TermBridge(t.getParent());
-                            OntologyTermI termT2 = new TermBridge(t2.getParent());
-                            OntologyTermI firstTerm = new TermBridge(term);
-                            OntologyTermI oldFirstTerm = new TermBridge(oldTerm);
+                            log.warn("The dependency " + Term.printTerm(oldTerm) + " - " + t + " at the line "+ lineCount +" has already been loaded.");
+
                             boolean conflictResolved = false;
 
                             if (t.isDeducedFromItsParent() && t2.isDeducedFromItsParent()){
-                                if (ontology.isChildOf(termT, termT2)){
-                                    log.warn("The existing term " + t + " deduced from its parent "+ t.getParent() + " has been replaced by the new term " + t2 + " deduced from its parent "+ t2.getParent() + " (line "+lineCount+")");
+                                OntologyTermI termT = mi.getTermForAccession(t.getParent().getId());
+                                OntologyTermI termT2 = mi.getTermForAccession(t2.getParent().getId());
+
+                                Set<OntologyTermI> childrenOfTParent = mi.getValidTerms(t.getParent().getId(), true, false);
+                                Set<OntologyTermI> childrenOfT2Parent = mi.getValidTerms(t2.getParent().getId(), true, false);
+                                if (childrenOfTParent.contains(termT2)){
+                                    log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                     associatedTermToReplace.add(associatedTerm);
                                     conflictResolved = true;
                                 }
-                                else if (ontology.isChildOf(termT2, termT)){
-                                    log.warn("The existing term " + t + " deduced from its parent "+ t.getParent() + " has not been replaced by the new term " + t2 + " deduced from its parent "+ t2.getParent() + " (line "+lineCount+")");
+                                else if (childrenOfT2Parent.contains(termT)){
+                                    log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has not been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                     conflictResolved = true;
                                 }
                                 else {
-                                    log.error("The new term " + t2 + "deduced from its parent "+ t2.getParent() + " has not been loaded. There is a conflict in the dependency file. (line "+lineCount+")");
+                                    log.error("The new term " + Term.printTerm(t2) + "deduced from its parent "+ Term.printTerm(t2.getParent()) + " has not been loaded. There is a conflict in the dependency file. (line "+lineCount+")");
                                 }
                             }
                             else if (t.isDeducedFromItsParent() && !t2.isDeducedFromItsParent()){
-                                log.warn("The existing term " + t + " deduced from its parent "+ t.getParent() + " has been replaced by the new term " + t2 + " (line "+lineCount+")");
+                                log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has been replaced by the new term " + Term.printTerm(t2) + " (line "+lineCount+")");
                                 associatedTermToReplace.add(associatedTerm);
                                 conflictResolved = true;
                             }
                             else if (!t.isDeducedFromItsParent() && t2.isDeducedFromItsParent()){
-                                log.warn("The existing term " + t + " has not been replaced by the new term " + t2 + "deduced from its parent "+ t2.getParent() + " (line "+lineCount+")");
+                                log.warn("The existing term " + Term.printTerm(t) + " has not been replaced by the new term " + Term.printTerm(t2) + "deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                 conflictResolved = true;
                             }
 
                             // If the existing first term in the dependency map is deduced from a parent term.
                             if (oldTerm.isDeducedFromItsParent() && term.isDeducedFromItsParent()){
-                                if (ontology.isChildOf(oldFirstTerm, firstTerm)){
+                                OntologyTermI firstTerm = mi.getTermForAccession(term.getParent().getId());
+                                OntologyTermI oldFirstTerm = mi.getTermForAccession(oldTerm.getParent().getId());
+                                
+                                Set<OntologyTermI> childrenOfOldParent = mi.getValidTerms(oldTerm.getParent().getId(), true, false);
+                                Set<OntologyTermI> childrenOfTermParent = mi.getValidTerms(term.getParent().getId(), true, false);
+                                if (childrenOfOldParent.contains(firstTerm)){
                                     log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
                                     associatedTermToReplace.add(associatedTerm);
                                     oldTerm = term;
                                     conflictResolved = true;
                                 }
-                                else if (ontology.isChildOf(firstTerm, oldFirstTerm)){
-                                    log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has not been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
+                                else if (childrenOfTermParent.contains(oldFirstTerm)){
+                                    log.warn("The existing term " + Term.printTerm(oldTerm) + " deduced from its parent "+ Term.printTerm(oldTerm.getParent()) + " has not been replaced by the new term " + Term.printTerm(term) + " deduced from its parent "+ Term.printTerm(term.getParent()) + " (line "+lineCount+")");
                                     conflictResolved = true;
                                 }
                                 else {
-                                    log.error("The new term " + term + "deduced from its parent "+ term.getParent() + " has not been loaded. There is a conflict in the dependency file. (line "+lineCount+")");
+                                    log.error("The new term " + Term.printTerm(term) + "deduced from its parent "+ Term.printTerm(term.getParent()) + " has not been loaded. There is a conflict in the dependency file. (line "+lineCount+")");
                                 }
                             }
                             else if (oldTerm.isDeducedFromItsParent() && !term.isDeducedFromItsParent()) {
-                                log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has been replaced by the new term " + term + " (line "+lineCount+")");
+                                log.warn("The existing term " + Term.printTerm(oldTerm) + " deduced from its parent "+ Term.printTerm(oldTerm.getParent()) + " has been replaced by the new term " + Term.printTerm(term) + " (line "+lineCount+")");
                                 associatedTermToReplace.add(associatedTerm);
                                 oldTerm = term;
                                 conflictResolved = true;
                             }
                             else if (!oldTerm.isDeducedFromItsParent() && term.isDeducedFromItsParent()) {
-                                log.warn("The existing term " + oldTerm + " has not been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
+                                log.warn("The existing term " + Term.printTerm(oldTerm) + " has not been replaced by the new term " + Term.printTerm(term) + " deduced from its parent "+ Term.printTerm(term.getParent()) + " (line "+lineCount+")");
                                 conflictResolved = true;
                             }
 
