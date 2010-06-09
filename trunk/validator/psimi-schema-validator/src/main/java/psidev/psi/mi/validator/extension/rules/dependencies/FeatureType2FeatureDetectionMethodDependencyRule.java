@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
@@ -41,7 +40,6 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         super( ontologyMaganer );
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
-        Mi25Ontology ontology = new Mi25Ontology(mi);
         String fileName = Mi25ValidatorConfig.getFeatureType2FeatureDetectionMethod();
         
         try {
@@ -50,7 +48,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
 
             mapping = new DependencyMapping();
 
-            mapping.buildMappingFromFile( ontology, mi, resource );
+            mapping.buildMappingFromFile( mi, resource );
 
         } catch (IOException e) {
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);

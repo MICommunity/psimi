@@ -3,7 +3,6 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -48,7 +47,6 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         super( ontologyManager );
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
-        Mi25Ontology ontology = new Mi25Ontology(mi);
         String fileName = Mi25ValidatorConfig.getCrossReference2CrossReferenceType();
 
         try {
@@ -59,7 +57,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             // Create a new instance of dependency mapping
             mapping = new DependencyMappingCrossReference2CrossReferenceType();
             // Build the dependency mapping from the file
-            mapping.buildMappingFromFile( ontology, mi, resource );
+            mapping.buildMappingFromFile( mi, resource );
 
         } catch (IOException e) {
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
