@@ -242,6 +242,22 @@ public class DependencyMapping {
         in.close();
     }
 
+    private boolean isParentOf(OntologyTermI child, OntologyTermI parent, OntologyAccess mi){
+        if (mi == null){
+            throw new IllegalArgumentException("The ontology access can't be null.");
+        }
+        if (parent == null || child == null ){
+            return false;
+        }
+
+        Set<OntologyTermI> parents = mi.getAllParents(child);
+
+        if (parents.contains(parent)){
+             return true;
+        }
+        return false;
+    }
+
     /**
      * Add the new term 'term' and the associated term 'secondTerm' in the dependency map.
      * If a term with the same id/name as 'term' is already included in the dependency map with the
@@ -288,14 +304,14 @@ public class DependencyMapping {
                                 OntologyTermI termT = mi.getTermForAccession(t.getParent().getId());
                                 OntologyTermI termT2 = mi.getTermForAccession(t2.getParent().getId());
 
-                                Set<OntologyTermI> childrenOfTParent = mi.getValidTerms(t.getParent().getId(), true, false);
-                                Set<OntologyTermI> childrenOfT2Parent = mi.getValidTerms(t2.getParent().getId(), true, false);
-                                if (childrenOfTParent.contains(termT2)){
+                                //Set<OntologyTermI> childrenOfTParent = mi.getValidTerms(t.getParent().getId(), true, false);
+                                //Set<OntologyTermI> childrenOfT2Parent = mi.getValidTerms(t2.getParent().getId(), true, false);
+                                if (isParentOf(termT2, termT, mi)){
                                     log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                     associatedTermToReplace.add(associatedTerm);
                                     conflictResolved = true;
                                 }
-                                else if (childrenOfT2Parent.contains(termT)){
+                                else if (isParentOf(termT, termT2, mi)){
                                     log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has not been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                     conflictResolved = true;
                                 }
@@ -317,16 +333,16 @@ public class DependencyMapping {
                             if (oldTerm.isDeducedFromItsParent() && term.isDeducedFromItsParent()){
                                 OntologyTermI firstTerm = mi.getTermForAccession(term.getParent().getId());
                                 OntologyTermI oldFirstTerm = mi.getTermForAccession(oldTerm.getParent().getId());
-                                
-                                Set<OntologyTermI> childrenOfOldParent = mi.getValidTerms(oldTerm.getParent().getId(), true, false);
-                                Set<OntologyTermI> childrenOfTermParent = mi.getValidTerms(term.getParent().getId(), true, false);
-                                if (childrenOfOldParent.contains(firstTerm)){
+
+                                //Set<OntologyTermI> childrenOfOldParent = mi.getValidTerms(oldTerm.getParent().getId(), true, false);
+                                //Set<OntologyTermI> childrenOfTermParent = mi.getValidTerms(term.getParent().getId(), true, false);
+                                if (isParentOf(firstTerm, oldFirstTerm, mi)){
                                     log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
                                     associatedTermToReplace.add(associatedTerm);
                                     oldTerm = term;
                                     conflictResolved = true;
                                 }
-                                else if (childrenOfTermParent.contains(oldFirstTerm)){
+                                else if (isParentOf(oldFirstTerm, firstTerm, mi)){
                                     log.warn("The existing term " + Term.printTerm(oldTerm) + " deduced from its parent "+ Term.printTerm(oldTerm.getParent()) + " has not been replaced by the new term " + Term.printTerm(term) + " deduced from its parent "+ Term.printTerm(term.getParent()) + " (line "+lineCount+")");
                                     conflictResolved = true;
                                 }
