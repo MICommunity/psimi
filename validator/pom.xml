@@ -18,7 +18,8 @@
 
     <modules>
         <module>psimi-schema-validator</module>
-  </modules>
+        <module>psimi-schema-validator-cli</module>
+    </modules>
 
   <repositories>
         <repository>
