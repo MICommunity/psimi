@@ -5,7 +5,7 @@
     <name>MIMIx</name>
 
     <importRuleList>
-        <import type="resource" rules="/config/psi-mi/object-rules.xml"/>
+        <import type="resource" rules="/config/object-rules.xml"/>
         <import type="resource" rules="/config/mimix-for-imex-rules.xml"/>
     </importRuleList>
 
