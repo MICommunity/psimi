@@ -5,8 +5,8 @@
     <name>ImeX</name>
 
     <importRuleList>
-        <import type="resource" rules="/config/Dependency_Rules.xml"/>
-        <import type="resource" rules="/config/MimixForImex_Rules.xml" />
+        <import type="resource" rules="/config/dependency-rules.xml"/>
+        <import type="resource" rules="/config/mimix-for-imex-rules.xml" />
     </importRuleList>
 
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>
@@ -14,5 +14,8 @@
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexCurationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexPrimaryRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentTaxIdHostOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionSourceIdentityXrefRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ProteinIdentityRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.SingleExperimentRoleRule"/>
 
 </objectRuleList>
