@@ -65,11 +65,11 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Cross reference and cross reference type" );
-        setDescription( "Checks that each element respects the dependencies database cross reference - cross reference type " +
-                "stored in CrossReference2Location2CrossRefType.tsv." );
+        setName( "Cross reference database and cross reference qualifier check" );
+        setDescription( "Checks that each cross reference doesn't have any conflicts between the database and the qualifier. Ex : for each feature, all the interpro" +
+                " cross references should have a qualifier 'identity'.");
         addTip( "Search the possible terms for database cross reference and reference type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-
+        addTip( "Look at the file resources/crossReference2Location2CrossRefType.tsv for the possible dependencies cross reference database - qualifier" );
     }
 
     ///////////////////////

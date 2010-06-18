@@ -51,10 +51,10 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Dependency between interaction detection method and Biological rule" );
-        setDescription( "Checks that each interaction respects the dependencies interaction detection method - participant biological role " +
-                "stored in InteractionDetectionMethod2BiologicalRole.tsv." );
+        setName( "Interaction detection method and biological role check" );
+        setDescription( "Checks that each interaction doesn't have any conflicts between the interaction detection method and the biological role of the participants");
         addTip( "Search the possible terms for interaction detection method and biological role on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
+        addTip( "Look at the file resources/interactionDetectionMethod2BiologicalRole.tsv for the possible dependencies interaction detection method - biological role" );        
     }
 
     /**

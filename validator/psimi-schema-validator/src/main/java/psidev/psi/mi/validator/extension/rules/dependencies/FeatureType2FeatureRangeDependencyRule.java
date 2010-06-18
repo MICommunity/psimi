@@ -50,10 +50,10 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Dependency between feature type and feature range status" );
-        setDescription( "Checks that each interaction respects the dependencies feature type - feature range status " +
-                "stored in FeatureType2FeatureRangeStatus.tsv." );
+        setName( "Feature type and feature range status check" );
+        setDescription( "Checks that each interaction doesn't have any conflicts between the feature type of a participant and its feature range status.");
         addTip( "Search the possible terms for feature type and feature range status on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
+        addTip( "Look at the file resources/featureType2FeatureRangeStatus.tsv for the possible dependencies feature type - feature range status" );
 
     }
 

@@ -58,10 +58,10 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Dependency between interaction detection method and interaction type" );
-        setDescription( "Checks that each interaction respects the dependencies interaction detection method - interaction type " +
-                "stored in InteractionDetection2InteractionTypes.tsv." );
+        setName( "Interaction detection method and interaction type check" );
+        setDescription( "Checks that each interaction doesn't have any conflicts between the interaction detection method and the interaction type." );
         addTip( "Search the possible terms for interaction detection method and interaction type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
+        addTip( "Look at the file resources/interactionDetectionMethod2InteractionTypes.tsv for the possible dependencies interaction detection method - interaction type" );                        
     }
 
 

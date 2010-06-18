@@ -47,7 +47,7 @@ public class Mi25ValidatorTest {
             InputStream objectRuleConfig = null;
 
             if (isIMEXRulesEnabled){
-                objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
+                objectRuleConfig = Mi25Validator.class.getResource( "/config/imex-rules.xml" ).openStream();
                 Assert.assertNotNull(objectRuleConfig);
             }
 
