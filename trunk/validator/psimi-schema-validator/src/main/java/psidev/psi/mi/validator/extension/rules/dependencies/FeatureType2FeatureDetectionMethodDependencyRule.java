@@ -56,11 +56,10 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Dependency between feature type and feature detection method" );
-        setDescription( "Checks that each interaction respects the dependencies feature type - feature detection method " +
-                "stored in FeatureType2FeatureDetectionMethod.tsv." );
+        setName( "Feature type and feature detection method check" );
+        setDescription( "Checks that each interaction doesn't have any conflicts between the feature type of a participant and its feature detection method.");
         addTip( "Search the possible terms for feature type and feature detection method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-
+        addTip( "Look at the file resources/featureType2FeatureDetectionMethod.tsv for the possible dependencies feature type - feature detection method" );
     }
 
     /**

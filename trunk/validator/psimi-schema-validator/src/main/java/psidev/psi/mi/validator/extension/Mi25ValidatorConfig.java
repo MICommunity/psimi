@@ -12,9 +12,9 @@ import psidev.psi.tools.validator.ValidatorConfig;
 
 public class Mi25ValidatorConfig extends ValidatorConfig {
 
-    private static final String crossReference2CrossReferenceType = "/CrossReference2Location2CrossRefType.tsv";
-    private static final String featureType2FeatureDetectionMethod = "/FeatureType2FeatureDetectionMethod.tsv";
-    private static final String featureType2FeatureRange = "/FeatureType2FeatureRangeStatus.tsv";
+    private static final String crossReference2CrossReferenceType = "/crossReference2Location2CrossRefType.tsv";
+    private static final String featureType2FeatureDetectionMethod = "/featureType2FeatureDetectionMethod.tsv";
+    private static final String featureType2FeatureRange = "/featureType2FeatureRangeStatus.tsv";
     private static final String interactionDetectionMethod2BiologicalRole = "/InteractionDetectionMethod2BiologicalRole.tsv";
     private static final String interactionDetectionMethod2ExperimentalRole = "/InteractionDetectionMethod2ExperimentRole.tsv";
     private static final String interactionDetectionMethod2InteractionType = "/InteractionDetection2InteractionTypes.tsv";

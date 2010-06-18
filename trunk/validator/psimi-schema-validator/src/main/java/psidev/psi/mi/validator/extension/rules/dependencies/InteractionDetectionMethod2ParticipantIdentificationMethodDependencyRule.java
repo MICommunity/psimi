@@ -48,11 +48,10 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
             // describe the rule.
-        setName( "Dependency between interaction detection method and participant identification method" );
-        setDescription( "Checks that each interaction respects the dependencies interaction detection method - participant identification method " +
-                "stored in InteractionDetectionMethod2ParticipantIdentificationMethod.tsv." );
+        setName( "Interaction detection method and participant identification method check" );
+        setDescription( "Checks that each interaction doesn't have any conflicts between the interaction detection method and the participant identification methods." );
         addTip( "Search the possible terms for interaction detection method and participant identification method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-
+        addTip( "Look at the file resources/interactionDetectionMethod2ParticipantIdentificationMethod.tsv for the possible dependencies interaction detection method - participant identification method" );                                
     }
 
     /**
