@@ -50,9 +50,9 @@ public class ValidatorClient {
 
         Mi25Validator validator = null;
         // the ontology
-        InputStream ontologyConfig = Mi25Validator.class.getResource( "/config/ontologies.xml" ).openStream();
+        InputStream ontologyConfig = Mi25Validator.class.getResource( "/config/psi_mi/ontologies.xml" ).openStream();
         // the cv mapping file
-        InputStream cvMappingConfig = Mi25Validator.class.getResource( "/config/cv-mapping.xml" ).openStream();
+        InputStream cvMappingConfig = Mi25Validator.class.getResource( "/config/psi_mi/cv-mapping.xml" ).openStream();
         // the object rules
         InputStream objectRuleConfig = null;
 
@@ -67,13 +67,13 @@ public class ValidatorClient {
         }
         // mimix scope
         else if (validationScope.equalsIgnoreCase(mimix)) {
-            objectRuleConfig = Mi25Validator.class.getResource( "/config/mimix-rules.xml" ).openStream();
+            objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/mimix-rules.xml" ).openStream();
 
             validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
         }
         // imex scope
         else if (validationScope.equalsIgnoreCase(imex)) {
-            objectRuleConfig = Mi25Validator.class.getResource( "/config/imex-rules.xml" ).openStream();
+            objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
 
             validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
         }
