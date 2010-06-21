@@ -113,7 +113,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
                 new InteractionDetectionMethod2InteractionTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 2, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     /**
@@ -199,7 +199,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println(messages);
-        Assert.assertEquals( 2, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     /**
@@ -330,7 +330,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println(messages);
-        Assert.assertEquals( 2, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
 

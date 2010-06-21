@@ -296,7 +296,7 @@ public class DependencyMapping {
 
                         // There is an associated term in the dependency map with the same id/name as 'secondTerm.getSecondTermOfTheDependency()'
                         if (t.equals(t2)){
-                            log.warn("The dependency " + Term.printTerm(oldTerm) + " - " + t + " at the line "+ lineCount +" has already been loaded.");
+                            log.info("The dependency " + Term.printTerm(oldTerm) + " - " + t + " at the line "+ lineCount +" has already been loaded.");
 
                             boolean conflictResolved = false;
 
@@ -307,12 +307,12 @@ public class DependencyMapping {
                                 //Set<OntologyTermI> childrenOfTParent = mi.getValidTerms(t.getParent().getId(), true, false);
                                 //Set<OntologyTermI> childrenOfT2Parent = mi.getValidTerms(t2.getParent().getId(), true, false);
                                 if (isParentOf(termT2, termT, mi)){
-                                    log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
+                                    log.info("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                     associatedTermToReplace.add(associatedTerm);
                                     conflictResolved = true;
                                 }
                                 else if (isParentOf(termT, termT2, mi)){
-                                    log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has not been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
+                                    log.info("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has not been replaced by the new term " + Term.printTerm(t2) + " deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                     conflictResolved = true;
                                 }
                                 else {
@@ -320,12 +320,12 @@ public class DependencyMapping {
                                 }
                             }
                             else if (t.isDeducedFromItsParent() && !t2.isDeducedFromItsParent()){
-                                log.warn("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has been replaced by the new term " + Term.printTerm(t2) + " (line "+lineCount+")");
+                                log.info("The existing term " + Term.printTerm(t) + " deduced from its parent "+ Term.printTerm(t.getParent()) + " has been replaced by the new term " + Term.printTerm(t2) + " (line "+lineCount+")");
                                 associatedTermToReplace.add(associatedTerm);
                                 conflictResolved = true;
                             }
                             else if (!t.isDeducedFromItsParent() && t2.isDeducedFromItsParent()){
-                                log.warn("The existing term " + Term.printTerm(t) + " has not been replaced by the new term " + Term.printTerm(t2) + "deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
+                                log.info("The existing term " + Term.printTerm(t) + " has not been replaced by the new term " + Term.printTerm(t2) + "deduced from its parent "+ Term.printTerm(t2.getParent()) + " (line "+lineCount+")");
                                 conflictResolved = true;
                             }
 
@@ -337,13 +337,13 @@ public class DependencyMapping {
                                 //Set<OntologyTermI> childrenOfOldParent = mi.getValidTerms(oldTerm.getParent().getId(), true, false);
                                 //Set<OntologyTermI> childrenOfTermParent = mi.getValidTerms(term.getParent().getId(), true, false);
                                 if (isParentOf(firstTerm, oldFirstTerm, mi)){
-                                    log.warn("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
+                                    log.info("The existing term " + oldTerm + " deduced from its parent "+ oldTerm.getParent() + " has been replaced by the new term " + term + " deduced from its parent "+ term.getParent() + " (line "+lineCount+")");
                                     associatedTermToReplace.add(associatedTerm);
                                     oldTerm = term;
                                     conflictResolved = true;
                                 }
                                 else if (isParentOf(oldFirstTerm, firstTerm, mi)){
-                                    log.warn("The existing term " + Term.printTerm(oldTerm) + " deduced from its parent "+ Term.printTerm(oldTerm.getParent()) + " has not been replaced by the new term " + Term.printTerm(term) + " deduced from its parent "+ Term.printTerm(term.getParent()) + " (line "+lineCount+")");
+                                    log.info("The existing term " + Term.printTerm(oldTerm) + " deduced from its parent "+ Term.printTerm(oldTerm.getParent()) + " has not been replaced by the new term " + Term.printTerm(term) + " deduced from its parent "+ Term.printTerm(term.getParent()) + " (line "+lineCount+")");
                                     conflictResolved = true;
                                 }
                                 else {
@@ -351,13 +351,13 @@ public class DependencyMapping {
                                 }
                             }
                             else if (oldTerm.isDeducedFromItsParent() && !term.isDeducedFromItsParent()) {
-                                log.warn("The existing term " + Term.printTerm(oldTerm) + " deduced from its parent "+ Term.printTerm(oldTerm.getParent()) + " has been replaced by the new term " + Term.printTerm(term) + " (line "+lineCount+")");
+                                log.info("The existing term " + Term.printTerm(oldTerm) + " deduced from its parent "+ Term.printTerm(oldTerm.getParent()) + " has been replaced by the new term " + Term.printTerm(term) + " (line "+lineCount+")");
                                 associatedTermToReplace.add(associatedTerm);
                                 oldTerm = term;
                                 conflictResolved = true;
                             }
                             else if (!oldTerm.isDeducedFromItsParent() && term.isDeducedFromItsParent()) {
-                                log.warn("The existing term " + Term.printTerm(oldTerm) + " has not been replaced by the new term " + Term.printTerm(term) + " deduced from its parent "+ Term.printTerm(term.getParent()) + " (line "+lineCount+")");
+                                log.info("The existing term " + Term.printTerm(oldTerm) + " has not been replaced by the new term " + Term.printTerm(term) + " deduced from its parent "+ Term.printTerm(term.getParent()) + " (line "+lineCount+")");
                                 conflictResolved = true;
                             }
 
@@ -462,8 +462,8 @@ public class DependencyMapping {
                     hasFoundADependency = true;
                 }
                 else if (level.equals(DependencyLevel.ERROR)) {
-                    final String msg = "Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
-                            "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"] ?";
+                    final String msg = "The " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
+                            "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"] can't be associated together.";
                     messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                 }
             }
@@ -473,7 +473,7 @@ public class DependencyMapping {
             Set<AssociatedTerm> req = getRequiredDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
             msg.append("There is an unusual combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
-                    "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
+                    "with " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
                     " The possible dependencies are : \n");
             writePossibleDependencies(req, msg, firstTermOfDependency);
 
@@ -483,7 +483,7 @@ public class DependencyMapping {
             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
             msg.append("Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
-                    "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
+                    "with " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
                     " The usual dependencies are : \n");
             writePossibleDependencies(rec, msg, firstTermOfDependency);
 
@@ -496,7 +496,7 @@ public class DependencyMapping {
 
     protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
         for (AssociatedTerm r : associatedTerms){
-            msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
+            msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
         }
     }
 

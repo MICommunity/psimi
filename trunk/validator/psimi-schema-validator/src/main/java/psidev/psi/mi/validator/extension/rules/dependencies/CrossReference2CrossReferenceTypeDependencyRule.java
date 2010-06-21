@@ -346,18 +346,27 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                                 isARecommendedValue = true;
                             }
                             if (type.equals(t.getSecondTermOfTheDependency())){
+                                hasFoundDependency = true;
+
                                 if (t instanceof CrossReferenceType){
                                     CrossReferenceType crossType = (CrossReferenceType) t;
                                     if (crossType.isReferenceTypeRuleApplicableTo(container)){
                                         if (level != null){
-                                            if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
-                                                hasFoundDependency = true;
-                                            }
-                                            else if (level.equals(DependencyLevel.ERROR)){
-                                                final String msg = "Are you sure of the combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
-                                                        "and " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] ?";
+                                            if (level.equals(DependencyLevel.ERROR)){
+                                                final String msg = "The " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
+                                                        "can't be associated with the " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] at the "+crossType.getLocation().toString()+" level.";
                                                 messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                                             }
+                                        }
+                                    }
+                                    else {
+                                        if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
+                                            String levelOfError = level.equals(DependencyLevel.REQUIRED) ? "ERROR" : "WARN";
+                                            
+                                            final String msg = "The combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
+                                                    "with " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] is not possible at the " + crossType.getLocation().toString() + " level but is necessary at the "+crossType.getLocation().toString() + " level.";
+
+                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( levelOfError ), context.copy(), rule ) );
                                         }
                                     }
 
@@ -405,7 +414,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             for (AssociatedTerm r : associatedTerms){
                 CrossReferenceType ct = (CrossReferenceType) r;
 
-                msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + " \n");
+                msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + " \n");
             }
         }
     }
