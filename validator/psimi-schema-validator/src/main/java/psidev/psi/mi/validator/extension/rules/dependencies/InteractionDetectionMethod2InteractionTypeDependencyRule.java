@@ -61,7 +61,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         setName( "Interaction detection method and interaction type check" );
         setDescription( "Checks that each interaction doesn't have any conflicts between the interaction detection method and the interaction type." );
         addTip( "Search the possible terms for interaction detection method and interaction type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-        addTip( "Look at the file resources/interactionDetectionMethod2InteractionTypes.tsv for the possible dependencies interaction detection method - interaction type" );                        
+        addTip( "Look at the file resources/interactionDetectionMethod2InteractionTypes.tsv for the possible dependencies interaction detection method - interaction type" );
     }
 
 
@@ -844,6 +844,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             }
 
                             if (brTerm.equals(pair.getSecondTermOfTheDependency())){
+                                hasFoundDependency = true;
+
                                 if (pair instanceof InteractionTypeConditions){
                                     InteractionTypeConditions cond = (InteractionTypeConditions) pair;
                                     if (level.equals(DependencyLevel.ERROR)){
@@ -852,7 +854,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                         if (cond.hasRequirementsOnTheOrganism() && cond.isApplicableHostOrganism(host)){
 
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the host organism is " + host + "\n");
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the host organism is " + host.getNames().getShortLabel() + "\n");
                                         }
                                         if (cond.hasRequirementsOnTheNumberOfParticipants() && cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
 
@@ -877,48 +879,36 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                     else {
                                         final StringBuffer msg = new StringBuffer( 1024 );
 
-                                        if (cond.isApplicableHostOrganism(host)){
-                                            if (cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
-                                                if (cond.isApplicablewithTheNumberOfBaits(numBaits)){
-                                                    if (cond.isApplicablewithTheNumberOfPreys(numPreys)){
-
-                                                        if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
-
-                                                            hasFoundDependency = true;
-                                                        }
-                                                    }
-                                                    else{
-                                                        msg.append("Unusual number of preys "+ numPreys +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
-                                                                "the interaction type is " + Term.printTerm(brTerm) + " the number of preys should be : \n") ;
-                                                        for (String validNum : cond.getRequirements().getApplicableNumPrey()){
-                                                            msg.append(validNum + "\n");
-                                                        }
-                                                        messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
-                                                    }
-                                                }
-                                                else{
-                                                    msg.append("Unusual number of baits "+ numBaits +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
-                                                            "the interaction type is " + Term.printTerm(brTerm) + " the number of baits should be : \n") ;
-                                                    for (String validNum : cond.getRequirements().getApplicableNumBaits()){
-                                                        msg.append(validNum + "\n");
-                                                    }
-                                                    messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
-                                                }
-                                            }
-                                            else{
-                                                msg.append("Unusual number of participants "+ numParticipants +". When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
-                                                        "the interaction type is " + Term.printTerm(brTerm) + " the number of participants should be : \n") ;
-                                                for (String validNum : cond.getRequirements().getApplicableNumParticipants()){
-                                                    msg.append(validNum + "\n");
-                                                }
-                                                messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
-                                            }
-                                        }
-                                        else{
+                                        if (!cond.isApplicableHostOrganism(host)){
                                             msg.append("Unusual host organism. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                     "the interaction type is " + Term.printTerm(brTerm) + " the host organism should be : \n") ;
                                             for (String validHost : cond.getRequirements().getApplicableHostOrganisms()){
                                                 msg.append(validHost + "\n");
+                                            }
+                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+                                        }
+                                        if (!cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
+                                            msg.append(numParticipants +" is an unusual number of participants . When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                    "the interaction type is " + Term.printTerm(brTerm) + " the number of participants should be : \n") ;
+                                            for (String validNum : cond.getRequirements().getApplicableNumParticipants()){
+                                                msg.append(validNum + "\n");
+                                            }
+                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+                                        }
+                                        if (!cond.isApplicablewithTheNumberOfBaits(numBaits)){
+                                            msg.append(numBaits +" is an unusual number of baits . When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                    "the interaction type is " + Term.printTerm(brTerm) + " the number of baits should be : \n") ;
+                                            for (String validNum : cond.getRequirements().getApplicableNumBaits()){
+                                                msg.append(validNum + "\n");
+                                            }
+                                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+                                        }
+                                        if (!cond.isApplicablewithTheNumberOfPreys(numPreys)){
+
+                                            msg.append(numPreys +" is an unusual number of preys . When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                                    "the interaction type is " + Term.printTerm(brTerm) + " the number of preys should be : \n") ;
+                                            for (String validNum : cond.getRequirements().getApplicableNumPrey()){
+                                                msg.append(validNum + "\n");
                                             }
                                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                                         }
@@ -935,7 +925,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             Set<AssociatedTerm> req = getRequiredDependenciesFor(methodTerm);
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("There is an unusual combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                    "and the interaction type ["+Term.printTerm(brTerm)+"]." +
+                                    "with the interaction type ["+Term.printTerm(brTerm)+"]." +
                                     " The possible dependencies are : \n");
                             writePossibleDependencies(req, msg, methodTerm);
 
@@ -945,7 +935,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             Set<AssociatedTerm> req = getRecommendedDependenciesFor(methodTerm);
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("Are you sure of the combination of the interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                    "and the interaction type ["+Term.printTerm(brTerm)+"] ?" +
+                                    "with the interaction type ["+Term.printTerm(brTerm)+"] ?" +
                                     " The recommended dependencies are : \n");
                             writePossibleDependencies(req, msg, methodTerm);
 
@@ -968,7 +958,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
             for (AssociatedTerm r : associatedTerms){
                 InteractionTypeConditions it = (InteractionTypeConditions) r;
-                msg.append(Term.printTerm(firstTermOfDependency) + " : " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
+                msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(it.getSecondTermOfTheDependency()) + ", Hosts : " + (it.getRequirements().hasHostRequirements() ? it.getRequirements().applicableHostOrganisms : "any") + ", Number participants : " + (it.getRequirements().hasNumParticipantsRequirements() ? it.getRequirements().applicableNumParticipants : "any numbers") +
                         ", Number of baits : " + (it.getRequirements().hasNumBaitsRequirements() ? it.getRequirements().applicableNumBaits : "any numbers")+ ", Number of preys : " + (it.getRequirements().hasNumPreysRequirements() ? it.getRequirements().applicableNumPrey : "any numbers") + " \n");
             }
         }
