@@ -47,7 +47,7 @@ public class Mi25ValidatorTest {
             InputStream objectRuleConfig = null;
 
             if (isIMEXRulesEnabled){
-                objectRuleConfig = Mi25Validator.class.getResource( "/config/imex-rules.xml" ).openStream();
+                objectRuleConfig = Mi25Validator.class.getResource("/config/psi_mi/imex-rules.xml").openStream();
                 Assert.assertNotNull(objectRuleConfig);
             }
 
@@ -104,7 +104,7 @@ public class Mi25ValidatorTest {
         InputStream ontologyConfig = Mi25ValidatorTest.class.getResource( "/config/ontologies.xml" ).openStream();
         Assert.assertNotNull(ontologyConfig);
 
-        InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/Imex_Rules.xml" ).openStream();
+        InputStream objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
         Assert.assertNotNull(objectRuleConfig);
 
         aValidator = new Mi25Validator( ontologyConfig, null, objectRuleConfig );
@@ -114,11 +114,7 @@ public class Mi25ValidatorTest {
         preferences.setKeepDownloadedOntologiesOnDisk( true );
         aValidator.setUserPreferences( preferences );
 
-        for (ObjectRule name : aValidator.getObjectRules()){
-            System.out.println(name.getName());
-        }
-
-        Assert.assertEquals( 15, aValidator.getObjectRules().size() );
+        Assert.assertEquals( 24, aValidator.getObjectRules().size() );
     }
 
     @Test
