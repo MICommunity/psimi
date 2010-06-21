@@ -50,7 +50,7 @@ public class ValidatorClient {
 
         Mi25Validator validator = null;
         // the ontology
-        InputStream ontologyConfig = Mi25Validator.class.getResource( "/config/ontology.xml" ).openStream();
+        InputStream ontologyConfig = Mi25Validator.class.getResource( "/config/ontologies.xml" ).openStream();
         // the cv mapping file
         InputStream cvMappingConfig = Mi25Validator.class.getResource( "/config/cv-mapping.xml" ).openStream();
         // the object rules
