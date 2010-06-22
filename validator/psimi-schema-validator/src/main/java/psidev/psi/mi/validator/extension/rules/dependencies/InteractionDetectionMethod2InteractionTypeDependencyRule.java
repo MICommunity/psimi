@@ -854,7 +854,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                         if (cond.hasRequirementsOnTheOrganism() && cond.isApplicableHostOrganism(host)){
 
                                             msg.append("The interaction detection method ["+Term.printTerm(methodTerm)+"] " +
-                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the host organism is " + host.getNames().getShortLabel() + "\n");
+                                                    "can't be associated with the interaction type ["+Term.printTerm(brTerm)+"] when the host organism is " + host.getNcbiTaxId() + "\n");
                                         }
                                         if (cond.hasRequirementsOnTheNumberOfParticipants() && cond.isApplicablewithTheNumberOfParticipants(numParticipants)){
 
