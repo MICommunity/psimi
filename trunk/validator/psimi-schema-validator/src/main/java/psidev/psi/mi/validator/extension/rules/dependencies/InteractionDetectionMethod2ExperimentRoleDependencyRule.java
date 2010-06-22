@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
+import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -34,9 +35,10 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
     public InteractionDetectionMethod2ExperimentRoleDependencyRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
+        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
-        String fileName = Mi25ValidatorConfig.getInteractionDetectionMethod2ExperimentalRole();
+        String fileName = validatorContext.getValidatorConfig().getInteractionDetectionMethod2ExperimentalRole();
 
         try {
 

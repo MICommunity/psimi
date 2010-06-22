@@ -4,10 +4,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
+import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
+import psidev.psi.tools.validator.ValidatorContext;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -45,9 +47,10 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
      */
     public CrossReference2CrossReferenceTypeDependencyRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
+        Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
         OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
-        String fileName = Mi25ValidatorConfig.getCrossReference2CrossReferenceType();
+        String fileName = validatorContext.getValidatorConfig().getCrossReference2CrossReferenceType();
 
         try {
 
@@ -304,7 +307,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                         Set<AssociatedTerm> required = getRequiredDependenciesFor(database);
                         if (!required.isEmpty()){
                             String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A cross reference type is required when the " + database.getClass().getSimpleName() + " is [" + Term.printTerm(database) + "]." +
-                                    " The possible dependencies are : \n";
+                                    " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator();
                             final StringBuffer sb = new StringBuffer( 1024 );
                             sb.append( msg );
 
@@ -320,7 +323,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
                                 final StringBuffer msg = new StringBuffer( 1024 );
                                 msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + database.getClass().getSimpleName() + " is ["+Term.printTerm(database)+"]," +
-                                        " the recommended dependencies are : \n");
+                                        " the recommended dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
                                 writePossibleDependencies(recommended, msg, database);
 
                                 messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
@@ -382,7 +385,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("There is an unusual combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
                                     "and " + container.getClass().getSimpleName() + " ["+Term.printTerm(type)+"] ?" +
-                                    " The possible dependencies are : \n");
+                                    " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
                             writePossibleDependencies(req, msg, database);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
@@ -392,7 +395,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("Are you sure of the combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
                                     "and " + container.getClass().getSimpleName() + " ["+Term.printTerm(type)+"]." +
-                                    " The usual dependencies are : \n");
+                                    " The usual dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
 
                             writePossibleDependencies(rec, msg, database);
 
@@ -414,7 +417,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             for (AssociatedTerm r : associatedTerms){
                 CrossReferenceType ct = (CrossReferenceType) r;
 
-                msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + " \n");
+                msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
             }
         }
     }

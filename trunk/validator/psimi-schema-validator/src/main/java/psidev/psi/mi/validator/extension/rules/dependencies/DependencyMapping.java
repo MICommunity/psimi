@@ -8,6 +8,7 @@ import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
+import psidev.psi.tools.validator.ValidatorContext;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.AbstractRule;
@@ -474,7 +475,7 @@ public class DependencyMapping {
             final StringBuffer msg = new StringBuffer( 1024 );
             msg.append("There is an unusual combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
                     "with " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
-                    " The possible dependencies are : \n");
+                    " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
             writePossibleDependencies(req, msg, firstTermOfDependency);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
@@ -484,7 +485,7 @@ public class DependencyMapping {
             final StringBuffer msg = new StringBuffer( 1024 );
             msg.append("Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
                     "with " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
-                    " The usual dependencies are : \n");
+                    " The usual dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
             writePossibleDependencies(rec, msg, firstTermOfDependency);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
@@ -496,7 +497,7 @@ public class DependencyMapping {
 
     protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
         for (AssociatedTerm r : associatedTerms){
-            msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(r.getSecondTermOfTheDependency()) + " \n");
+            msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(r.getSecondTermOfTheDependency()) + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
         }
     }
 
@@ -529,7 +530,7 @@ public class DependencyMapping {
                         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
 
                         String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A second term is required when the " + term1.getClass().getSimpleName() + " is [" + Term.printTerm(firstTermOfDependency) + "]." +
-                                " The possible dependencies are : \n";
+                                " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator();
                         final StringBuffer sb = new StringBuffer( 1024 );
                         sb.append( msg );
 
@@ -545,7 +546,7 @@ public class DependencyMapping {
                             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + term1.getClass().getSimpleName() + " is ["+Term.printTerm(firstTermOfDependency)+"]," +
-                                    " the recommended dependencies are : \n");
+                                    " the recommended dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
                             writePossibleDependencies(recommended, msg, firstTermOfDependency);
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 
