@@ -10,6 +10,8 @@ import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
+import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
+import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.Validator;
@@ -65,7 +67,12 @@ public class Mi25Validator extends Validator {
                           InputStream objectRuleConfig ) throws ValidatorException, OntologyLoaderException {
 
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
-        this.validatorContext = Mi25ValidatorContext.getCurrentInstance();
+    }
+
+    public Mi25Validator( OntologyManager ontologyManager,
+                          CvMapping cvMappingRules,
+                          Collection<ObjectRule> objectRules) {
+        super( ontologyManager, cvMappingRules, objectRules);
     }
 
     ///////////////////////////
@@ -79,9 +86,6 @@ public class Mi25Validator extends Validator {
         return userPreferences;
     }
 
-    public Mi25ValidatorContext getValidatorContext(){
-        return (Mi25ValidatorContext) this.validatorContext;
-    }
     //////////////////////////
     // Utility
 
