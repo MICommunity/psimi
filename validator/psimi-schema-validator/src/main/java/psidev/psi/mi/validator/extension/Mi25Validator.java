@@ -19,6 +19,7 @@ import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
+import psidev.psi.tools.validator.rules.cvmapping.CvRuleManager;
 import psidev.psi.tools.validator.schema.SaxMessage;
 import psidev.psi.tools.validator.schema.SaxReport;
 import psidev.psi.tools.validator.schema.SaxValidatorHandler;
@@ -70,9 +71,9 @@ public class Mi25Validator extends Validator {
     }
 
     public Mi25Validator( OntologyManager ontologyManager,
-                          CvMapping cvMappingRules,
+                          CvRuleManager cvRuleManager,
                           Collection<ObjectRule> objectRules) {
-        super( ontologyManager, cvMappingRules, objectRules);
+        super( ontologyManager, cvRuleManager, objectRules);
     }
 
     ///////////////////////////
