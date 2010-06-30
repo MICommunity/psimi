@@ -30,7 +30,7 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
-    private static DependencyMapping mapping;
+    private DependencyMapping mapping;
 
     public FeatureType2FeatureRangeDependencyRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
