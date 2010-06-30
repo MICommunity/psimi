@@ -31,7 +31,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
-    private static DependencyMapping mapping;
+    private DependencyMapping mapping;
 
     /**
      *

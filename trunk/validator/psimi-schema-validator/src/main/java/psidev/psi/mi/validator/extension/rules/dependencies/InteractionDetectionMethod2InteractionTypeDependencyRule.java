@@ -32,7 +32,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2InteractionTypeDependencyRule.class );
 
-    private static InteractionDetectionMethod2InteractionTypeDependencyRule.DependencyMappingInteractionDetectionMethod2InteractionType mapping;
+    private InteractionDetectionMethod2InteractionTypeDependencyRule.DependencyMappingInteractionDetectionMethod2InteractionType mapping;
 
     private static final String superior = ">";
     private static final String inferior = "<";
@@ -660,7 +660,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
     /**
      * Specific dependency mapping for this rule
      */
-    private static class DependencyMappingInteractionDetectionMethod2InteractionType extends DependencyMapping {
+    private class DependencyMappingInteractionDetectionMethod2InteractionType extends DependencyMapping {
 
         public DependencyMappingInteractionDetectionMethod2InteractionType() {
             super();
@@ -785,7 +785,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-            final Map<Term, Set<AssociatedTerm>> dependencies = mapping.getDependencies();
+            final Map<Term, Set<AssociatedTerm>> dependencies = this.getDependencies();
 
             final Term methodTerm = Term.buildTerm( method );
 

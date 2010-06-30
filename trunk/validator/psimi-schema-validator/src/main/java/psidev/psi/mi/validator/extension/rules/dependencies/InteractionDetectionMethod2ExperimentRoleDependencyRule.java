@@ -31,7 +31,7 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2InteractionTypeDependencyRule.class );
 
-    private static DependencyMapping mapping;
+    private DependencyMapping mapping;
 
     public InteractionDetectionMethod2ExperimentRoleDependencyRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );

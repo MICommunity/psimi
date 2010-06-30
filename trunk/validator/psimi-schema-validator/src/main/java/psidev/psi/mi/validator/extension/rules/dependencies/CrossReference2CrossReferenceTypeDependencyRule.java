@@ -36,7 +36,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
     /**
      * The dependency mapping object for this rule
      */
-    private static DependencyMappingCrossReference2CrossReferenceType mapping;
+    private DependencyMappingCrossReference2CrossReferenceType mapping;
 
     //////////////////
     // Constructors
