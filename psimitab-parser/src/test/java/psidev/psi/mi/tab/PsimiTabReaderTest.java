@@ -1,16 +1,16 @@
 package psidev.psi.mi.tab;
 
-import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.xml.converter.ConverterException;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.xml.converter.ConverterException;
 
 /**
  * PsimiTabReader Tester.
@@ -24,10 +24,8 @@ public class PsimiTabReaderTest {
     @Test
     public void readFileNoHeader() throws ConverterException, IOException {
 
-        File file = TestHelper.getFileByResources( "/mitab-samples/11585365.tab", PsimiTabReaderTest.class );
-
         PsimiTabReader reader = new PsimiTabReader( false );
-        Collection<BinaryInteraction> interactions = reader.read( file );
+        Collection<BinaryInteraction> interactions = reader.read( TestHelper.TAB_11585365 );
 
         assertEquals( 4, interactions.size() );
     }
@@ -35,20 +33,16 @@ public class PsimiTabReaderTest {
     @Test
     public void readFileWithHeader() throws ConverterException, IOException {
 
-        File file = TestHelper.getFileByResources( "/mitab-samples/11585365.txt", PsimiTabReaderTest.class );
-
         PsimiTabReader reader = new PsimiTabReader( true );
-        Collection<BinaryInteraction> interactions = reader.read( file );
+        Collection<BinaryInteraction> interactions = reader.read( TestHelper.TXT_11585365);
 
         assertEquals( 4, interactions.size() );
     }
 
     @Test
     public void iterate_withHeader() throws Exception {
-        InputStream is = PsimiTabReaderTest.class.getResourceAsStream( "/mitab-samples/11585365.txt" );
-
         PsimiTabReader reader = new PsimiTabReader( true );
-        Iterator<BinaryInteraction> iterator = reader.iterate( is );
+        Iterator<BinaryInteraction> iterator = reader.iterate(TestHelper.TXT_11585365);
 
         int count = 0;
 
@@ -65,9 +59,8 @@ public class PsimiTabReaderTest {
 
     @Test
     public void read_file() throws ConverterException, IOException {
-        File file = TestHelper.getFileByResources( "/mitab-samples/11585365.txt", PsimiTabReaderTest.class );
         PsimiTabReader mitabReader = new PsimiTabReader( true );
-        Collection<BinaryInteraction> interactions = mitabReader.read( file );
+        Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.TXT_11585365);
         int count = 0;
         for ( BinaryInteraction interaction : interactions ) {
             count++;
@@ -77,9 +70,8 @@ public class PsimiTabReaderTest {
 
     @Test
     public void iterate_file() throws ConverterException, IOException {
-        File file = TestHelper.getFileByResources( "/mitab-samples/11585365.txt", PsimiTabReaderTest.class );
         PsimiTabReader mitabReader = new PsimiTabReader( true );
-        Iterator<BinaryInteraction> ii = mitabReader.iterate( file );
+        Iterator<BinaryInteraction> ii = mitabReader.iterate(TestHelper.TXT_11585365);
 
         int count = 0;
         while ( ii.hasNext() ) {

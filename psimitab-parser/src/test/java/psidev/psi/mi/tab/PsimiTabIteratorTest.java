@@ -2,11 +2,12 @@ package psidev.psi.mi.tab;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import org.junit.Test;
-import psidev.psi.mi.tab.model.BinaryInteraction;
 
-import java.io.File;
 import java.util.Iterator;
+
+import org.junit.Test;
+
+import psidev.psi.mi.tab.model.BinaryInteraction;
 
 /**
  * PsimiTabIterator Tester.
@@ -19,9 +20,8 @@ public class PsimiTabIteratorTest {
 
     @Test
     public void getInteractionsProcessedCount() throws Exception {
-        File file = TestHelper.getFileByResources( "/mitab-samples/11585365.header.tab", PsimiTabReaderTest.class );
         PsimiTabReader reader = new PsimiTabReader( true );
-        Iterator<BinaryInteraction> iterator = reader.iterate( file );
+        Iterator<BinaryInteraction> iterator = reader.iterate( TestHelper.HEADER_TAB_11585365);
         while ( iterator.hasNext() ) {
             iterator.next();
         }
@@ -30,9 +30,8 @@ public class PsimiTabIteratorTest {
 
     @Test
     public void next() throws Exception {
-        File file = TestHelper.getFileByResources( "/mitab-samples/11585365.header.tab", PsimiTabReaderTest.class );
         PsimiTabReader reader = new PsimiTabReader( true );
-        Iterator<BinaryInteraction> iterator = reader.iterate( file );
+        Iterator<BinaryInteraction> iterator = reader.iterate( TestHelper.HEADER_TAB_11585365);
 
         // next() should keep returning the next element even if hasNext() hasn't been called.
         BinaryInteraction previous = null;
@@ -51,9 +50,8 @@ public class PsimiTabIteratorTest {
 
     @Test
     public void hasNext() throws Exception {
-        File file = TestHelper.getFileByResources( "/mitab-samples/11585365.header.tab", PsimiTabReaderTest.class );
         PsimiTabReader reader = new PsimiTabReader( true );
-        Iterator<BinaryInteraction> iterator = reader.iterate( file );
+        Iterator<BinaryInteraction> iterator = reader.iterate(TestHelper.HEADER_TAB_11585365);
 
         // hasNext should not be gready.
         for ( int i = 0; i < 20; i++ ) {
