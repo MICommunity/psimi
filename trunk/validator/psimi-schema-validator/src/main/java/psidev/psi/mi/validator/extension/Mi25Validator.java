@@ -71,9 +71,9 @@ public class Mi25Validator extends Validator {
     }
 
     public Mi25Validator( OntologyManager ontologyManager,
-                          CvRuleManager cvRuleManager,
+                          CvMapping cvMapping,
                           Collection<ObjectRule> objectRules) {
-        super( ontologyManager, cvRuleManager, objectRules);
+        super( ontologyManager, cvMapping, objectRules);
     }
 
     ///////////////////////////
