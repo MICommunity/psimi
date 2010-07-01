@@ -6,7 +6,13 @@
 
     <importRuleList>
         <import type="resource" rules="/config/psi_mi/object-rules.xml"/>
-        <import type="resource" rules="/config/psi_mi/mimix-for-imex-rules.xml"/>
     </importRuleList>
+
+    <rule class="psidev.psi.mi.validator.extension.rules.ConfidenceScoreRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.InteractorNameRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.InteractorSequenceAlphabetRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentHostOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentInteractionDetectionMethodRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentParticipantIdentificationMethodRule"/>
 
 </objectRuleList>
