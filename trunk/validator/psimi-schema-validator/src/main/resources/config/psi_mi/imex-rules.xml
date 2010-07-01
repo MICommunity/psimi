@@ -6,7 +6,11 @@
 
     <importRuleList>
         <import type="resource" rules="/config/psi_mi/dependency-rules.xml"/>
-        <import type="resource" rules="/config/psi_mi/mimix-for-imex-rules.xml" />
+        <import type="resource" rules="/config/psi_mi/mimix-rules.xml">
+            <exclude>
+                <rule class="psidev.psi.mi.validator.extension.rules.ExperimentHostOrganismRule"/>
+            </exclude>
+        </import>
     </importRuleList>
 
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>
