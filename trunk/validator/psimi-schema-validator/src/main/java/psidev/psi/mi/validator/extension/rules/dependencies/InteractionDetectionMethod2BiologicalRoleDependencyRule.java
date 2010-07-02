@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -54,7 +53,7 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
         }
         // describe the rule.
         setName( "Interaction detection method and biological role check" );
-        setDescription( "Checks that each interaction doesn't have any conflicts between the interaction detection method and the biological role of the participants");
+        setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the biological role of the participants");
         addTip( "Search the possible terms for interaction detection method and biological role on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file resources/interactionDetectionMethod2BiologicalRole.tsv for the possible dependencies interaction detection method - biological role" );        
     }

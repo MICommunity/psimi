@@ -1,20 +1,19 @@
 package psidev.psi.mi.validator.extension.rules;
 
+import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.Names;
+import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.tools.ontology_manager.OntologyManager;
+import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.ontology_manager.OntologyManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * <b> Check that each interactor has at least fullname or shortlabel.</b>
@@ -31,7 +30,7 @@ public class InteractorNameRule extends Mi25InteractionRule {
 
         // describe the rule.
         setName( "Interactor Name check" );
-        setDescription( "Check that each interactor has at least name or a short label" );
+        setDescription( "Check that each interactor has at least a name or a short label" );
         addTip( "Provide a fullname or shortlabel using for instance the gene name or a systematic orf name or " +
                 "a acession number or any meaningfyl acronyme to name the interactor" );
     }
