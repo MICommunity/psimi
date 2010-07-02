@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.validator.extension.Mi25ValidatorConfig;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
@@ -62,7 +61,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
         // describe the rule.
         setName( "Interaction detection method and interaction type check" );
-        setDescription( "Checks that each interaction doesn't have any conflicts between the interaction detection method and the interaction type." );
+        setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the interaction type." );
         addTip( "Search the possible terms for interaction detection method and interaction type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file resources/interactionDetectionMethod2InteractionTypes.tsv for the possible dependencies interaction detection method - interaction type" );
     }
