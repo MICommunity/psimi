@@ -1,12 +1,12 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Interactor;
+import psidev.psi.mi.xml.model.Organism;
+import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -29,8 +29,8 @@ public class InteractorOrganismRule extends Mi25InteractionRule {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Experiment Host Organism Check" );
-        setDescription( "Checks that each experiment has an host organisms element with a valid tax id as attribute" );
+        setName( "Interactor Host Organism Check" );
+        setDescription( "Checks that each Interactor has an host organisms element with a valid tax id as attribute" );
         addTip( "Search http://www.ebi.ac.uk/newt/display with an organism name to retrieve its taxid." );
         addTip( "By convention, the taxid for 'in vitro' is -1" );
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );
