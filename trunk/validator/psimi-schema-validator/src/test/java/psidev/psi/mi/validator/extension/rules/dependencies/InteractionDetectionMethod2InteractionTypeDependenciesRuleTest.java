@@ -245,7 +245,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
     }
 
     /**
-     * Checks that a warning message appears when a children of rna cleavage is not associated with an appropriate interaction detection method (for instance cross linking study)
+     * Checks that no message appears when a children of rna cleavage is associated with an appropriate interaction detection method (for instance cross linking study)
      * @throws Exception
      */
     @Test
@@ -270,11 +270,11 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
         host.setNcbiTaxId(-1);
         exp.getHostOrganisms().add(host);
 
-        exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
+        exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0920", "ribonuclease assay" ) );
         interaction.getExperiments().add( exp );
 
         // Set the interaction detection method
-        setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
+        setDetectionMethod( interaction, "MI:0920", "ribonuclease assay" );
 
         // set the role of the participants
         interaction.getParticipants().clear();
@@ -285,7 +285,7 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println(messages);
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 
     /**

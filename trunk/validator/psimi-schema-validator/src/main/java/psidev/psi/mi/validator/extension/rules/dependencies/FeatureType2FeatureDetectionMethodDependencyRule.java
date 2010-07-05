@@ -60,7 +60,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         setName( "Feature type and feature detection method check" );
         setDescription( "Checks that each interaction does not have any conflicts between the feature type of a participant and its feature detection method.");
         addTip( "Search the possible terms for feature type and feature detection method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-        addTip( "Look at the file resources/featureType2FeatureDetectionMethod.tsv for the possible dependencies feature type - feature detection method" );
+        addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/featureType2FeatureDetectionMethod.tsv for the possible dependencies feature type - feature detection method" );
     }
 
     /**

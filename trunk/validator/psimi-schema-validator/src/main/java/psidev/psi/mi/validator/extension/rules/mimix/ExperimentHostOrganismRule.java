@@ -56,7 +56,7 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
         Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
         if ( hostOrganisms.isEmpty() ) {
 
-            messages.add( new ValidatorMessage( "The experiment "+ experimentId + " doesn't have a host organism and it is required for MIMIx.",
+            messages.add( new ValidatorMessage( "The experiment "+ experimentId + " does not have a host organism and it is required for MIMIx.",
                                                 MessageLevel.ERROR,
                                                 context,
                                                 this ) );
