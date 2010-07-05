@@ -197,7 +197,7 @@ public final class RuleUtils {
                // IMEX doesn't allow to use this term to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
-                        "' is not valid. IMEX doesn't allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1, -2, -3 or -4.",
+                        "' is not valid. IMEx doesn't allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1, -2, -3 or -4.",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
@@ -536,14 +536,14 @@ public final class RuleUtils {
             Collection<Attribute> attributeName = RuleUtils.findByAttributeName(attributes, attMi, attname);
 
             if (attributeName.isEmpty()){
-                messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have an attribute name set to '"+attname+"' ("+attMi+") and it is required for IMEX. ",
+                messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have an attribute name set to '"+attname+"' ("+attMi+") and it is required for IMEx. ",
                         MessageLevel.ERROR,
                         context,
                         experimentRule ) );
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have any attributes. At least one attribute with a name set to '"+attname+"' ("+attMi+") is required for IMEX. ",
+            messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have any attributes. At least one attribute with a name set to '"+attname+"' ("+attMi+") is required for IMEx. ",
                     MessageLevel.ERROR,
                     context,
                     experimentRule ) );
