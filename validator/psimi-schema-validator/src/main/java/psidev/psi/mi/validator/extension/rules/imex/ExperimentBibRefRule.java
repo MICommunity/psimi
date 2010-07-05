@@ -90,7 +90,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
                         // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
                         if (pubmeds.size() > 1){
-                            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + pubmeds.size() + " pubmed references but no one has a reference-type set to 'primary-reference'.",
+                            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + pubmeds.size() + " pubmed references as 'primary-reference' but only one is allowed.",
                                     MessageLevel.WARN,
                                     context,
                                     this ) );

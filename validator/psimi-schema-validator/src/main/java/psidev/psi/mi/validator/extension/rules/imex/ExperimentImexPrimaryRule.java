@@ -67,7 +67,7 @@ public class ExperimentImexPrimaryRule extends Mi25ExperimentRule {
 
             // At least one cross reference type 'imex-primary' is required and the Imex ID must be valid.
             if (imexReferences.isEmpty()){
-                messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + dbReferences.size() + " cross references but no one has a reference type set to 'imex-primary'. It is required for IMEX.",
+                messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + dbReferences.size() + " cross references but no one has a reference type set to 'imex-primary'. It is required for IMEx.",
                         MessageLevel.ERROR,
                         context,
                         this ) );
@@ -79,7 +79,7 @@ public class ExperimentImexPrimaryRule extends Mi25ExperimentRule {
         }
         else {
             messages.add( new ValidatorMessage( "The experiment "+ experimentId +" doesn't have any cross references. At least one cross reference with a reference type set" +
-                    " to 'imex-primary' (MI:0662) is required for IMEX.",
+                    " to 'imex-primary' (MI:0662) is required for IMEx.",
                     MessageLevel.ERROR,
                     context,
                     this ) );
