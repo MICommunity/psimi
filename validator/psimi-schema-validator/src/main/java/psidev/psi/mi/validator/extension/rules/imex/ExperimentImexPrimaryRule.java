@@ -78,7 +78,7 @@ public class ExperimentImexPrimaryRule extends Mi25ExperimentRule {
 
         }
         else {
-            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" doesn't have any cross references. At least one cross reference with a reference type set" +
+            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" does not have any cross references. At least one cross reference with a reference type set" +
                     " to 'imex-primary' (MI:0662) is required for IMEx.",
                     MessageLevel.ERROR,
                     context,

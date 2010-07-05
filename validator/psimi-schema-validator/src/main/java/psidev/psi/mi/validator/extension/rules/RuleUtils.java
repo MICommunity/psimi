@@ -197,7 +197,7 @@ public final class RuleUtils {
                // IMEX doesn't allow to use this term to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
-                        "' is not valid. IMEx doesn't allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1, -2, -3 or -4.",
+                        "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1, -2, -3 or -4.",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
@@ -482,14 +482,14 @@ public final class RuleUtils {
                                     }
                                 }
                                 else{
-                                    messages.add( new ValidatorMessage( "The PSI MI id of " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " doesn't exist in the PSI MI ontology. ( must be any child of "+ mi +").",
+                                    messages.add( new ValidatorMessage( "The PSI MI id of " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " does not exist in the PSI MI ontology. ( must be any child of "+ mi +").",
                                             MessageLevel.ERROR,
                                             context,
                                             experimentRule ) );
                                 }
                             }
                             else{
-                                messages.add( new ValidatorMessage( "This is an unexpected error. The PSI MI id of " + containerName + "("+mi+") doesn't exist in the PSI MI ontology.",
+                                messages.add( new ValidatorMessage( "This is an unexpected error. The PSI MI id of " + containerName + "("+mi+") does not exist in the PSI MI ontology.",
                                         MessageLevel.ERROR,
                                         context,
                                         experimentRule ) );
@@ -504,14 +504,14 @@ public final class RuleUtils {
                     }
                 }
                 else {
-                    messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " doesn't have any psi-mi cross references with type 'identity' while there should be one.",
+                    messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one.",
                             MessageLevel.ERROR,
                             context,
                             experimentRule ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " doesn't have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+                messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
                         MessageLevel.ERROR,
                         context,
                         experimentRule ) );
@@ -519,7 +519,7 @@ public final class RuleUtils {
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " doesn't have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+            messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
                     MessageLevel.ERROR,
                     context,
                     experimentRule ) );
@@ -536,14 +536,14 @@ public final class RuleUtils {
             Collection<Attribute> attributeName = RuleUtils.findByAttributeName(attributes, attMi, attname);
 
             if (attributeName.isEmpty()){
-                messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have an attribute name set to '"+attname+"' ("+attMi+") and it is required for IMEx. ",
+                messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" does not have an attribute name set to '"+attname+"' ("+attMi+") and it is required for IMEx. ",
                         MessageLevel.ERROR,
                         context,
                         experimentRule ) );
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" doesn't have any attributes. At least one attribute with a name set to '"+attname+"' ("+attMi+") is required for IMEx. ",
+            messages.add( new ValidatorMessage( "The experiment "+ experiment.getId() +" does not have any attributes. At least one attribute with a name set to '"+attname+"' ("+attMi+") is required for IMEx. ",
                     MessageLevel.ERROR,
                     context,
                     experimentRule ) );

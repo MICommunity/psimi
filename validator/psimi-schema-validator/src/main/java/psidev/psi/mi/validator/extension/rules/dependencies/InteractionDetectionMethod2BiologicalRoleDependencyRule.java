@@ -55,7 +55,7 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
         setName( "Interaction detection method and biological role check" );
         setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the biological role of the participants");
         addTip( "Search the possible terms for interaction detection method and biological role on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-        addTip( "Look at the file resources/interactionDetectionMethod2BiologicalRole.tsv for the possible dependencies interaction detection method - biological role" );        
+        addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2BiologicalRole.tsv for the possible dependencies interaction detection method - biological role" );        
     }
 
     /**

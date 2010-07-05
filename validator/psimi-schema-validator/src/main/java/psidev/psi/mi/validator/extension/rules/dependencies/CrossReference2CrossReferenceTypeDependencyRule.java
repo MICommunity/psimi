@@ -8,7 +8,6 @@ import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.validator.ValidatorContext;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -71,7 +70,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         setDescription( "Checks that each cross reference does not have any conflicts between the database and the qualifier. For example, for each feature, all the interpro" +
                 " cross references should have a qualifier 'identity'.");
         addTip( "Search the possible terms for database cross reference and reference type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-        addTip( "Look at the file resources/crossReference2Location2CrossRefType.tsv for the possible dependencies cross reference database - qualifier" );
+        addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/crossReference2Location2CrossRefType.tsv for the possible dependencies cross reference database - qualifier" );
     }
 
     ///////////////////////
@@ -176,6 +175,35 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             this.location = location;
         }
 
+        public CrossReferenceType( Term referenceType, String location, DependencyLevel message ) {
+            super( referenceType, message );
+
+            if ("experiment".equalsIgnoreCase(location)){
+                this.location = Locations.experiment;
+            }
+            else if ("interaction".equalsIgnoreCase(location)){
+                this.location = Locations.interaction;
+            }
+            else if ("interactor".equalsIgnoreCase(location)){
+                this.location = Locations.interactor;
+            }
+            else if ("participant".equalsIgnoreCase(location)){
+                this.location = Locations.participant;
+            }
+            else if ("feature".equalsIgnoreCase(location)){
+                this.location = Locations.feature;
+            }
+            else {
+                throw new ValidatorRuleException("The location " + location + " is not valid. It can be either experiment, interaction, interactor, participant or feature.");
+            }
+        }
+
+        public CrossReferenceType( Term referenceType, Locations location, DependencyLevel message ) {
+            super( referenceType, message );
+
+            this.location = location;
+        }
+
         public CrossReferenceType( Term referenceType) {
 
             super(referenceType);
@@ -254,6 +282,18 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             return crossRef;
         }
 
+        protected AssociatedTerm createSecondaryTermOfTheDependencyFrom(Term newTerm, AssociatedTerm firstTerm){
+
+            if (firstTerm instanceof CrossReferenceType){
+               CrossReferenceType parent = (CrossReferenceType) firstTerm;
+
+               return new CrossReferenceType(newTerm, parent.getLocation(), parent.getLevel());
+            }
+            else {
+               throw new ValidatorRuleException("The parent of " + Term.printTerm(newTerm) + " must be an instance of CrossReferenceType and not just an instance of AssociatedTerm.");
+            }
+        }
+
         /**
          * Check if the given cross reference and the list of corresponding cross reference type are in agreement with the defined dependency mapping.
          *
@@ -271,8 +311,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
             if (reference == null){
-                messages.add(new ValidatorMessage( "The rule of type cross reference - cross reference type can be applied as the cross reference is null.",  MessageLevel.ERROR, context.copy(), rule));
-                return messages;
+                throw new ValidatorRuleException("The rule of type cross reference - cross reference type cannot be executed as the cross reference is null.");
             }
 
             String dbAC = null;
@@ -305,12 +344,12 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
                         Set<AssociatedTerm> required = getRequiredDependenciesFor(database);
                         if (!required.isEmpty()){
-                            String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A cross reference type is required when the " + database.getClass().getSimpleName() + " is [" + Term.printTerm(database) + "]." +
-                                    " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator();
+                            String msg = "When the citation database of the "+container.getClass().getSimpleName()+" is " + Term.printTerm(database) + ", a reference type is required." +
+                                    " The possible reference types with this database and this " + container.getClass().getSimpleName() + " are " ;
                             final StringBuffer sb = new StringBuffer( 1024 );
                             sb.append( msg );
 
-                            writePossibleDependencies(required, sb, database);
+                            writePossibleDependenciesFor(required, sb, container);
 
                             messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                             return messages;
@@ -321,9 +360,9 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             if (!recommended.isEmpty()){
 
                                 final StringBuffer msg = new StringBuffer( 1024 );
-                                msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + database.getClass().getSimpleName() + " is ["+Term.printTerm(database)+"]," +
-                                        " the recommended dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
-                                writePossibleDependencies(recommended, msg, database);
+                                msg.append("When the citation database of the "+container.getClass().getSimpleName()+" is " + Term.printTerm(database) + ", a reference type is usually given." +
+                                        " The recommended reference types with this database and this " + container.getClass().getSimpleName() + " are ");
+                                writePossibleDependenciesFor(recommended, msg, container);
 
                                 messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 
@@ -340,41 +379,30 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
                         for (AssociatedTerm t : types){
                             DependencyLevel level = t.getLevel();
+                            if (t instanceof CrossReferenceType){
+                                CrossReferenceType crossType = (CrossReferenceType) t;
+                                boolean isRuleApplicable = crossType.isReferenceTypeRuleApplicableTo(container);
 
-                            if (level.equals(DependencyLevel.REQUIRED)){
-                                isAValueRequired = true;
-                            }
-                            else if (level.equals(DependencyLevel.SHOULD)){
-                                isARecommendedValue = true;
-                            }
-                            if (type.equals(t.getSecondTermOfTheDependency())){
-                                hasFoundDependency = true;
+                                if (level.equals(DependencyLevel.REQUIRED) && isRuleApplicable){
+                                    isAValueRequired = true;
+                                }
+                                else if (level.equals(DependencyLevel.SHOULD) && isRuleApplicable){
+                                    isARecommendedValue = true;
+                                }
 
-                                if (t instanceof CrossReferenceType){
-                                    CrossReferenceType crossType = (CrossReferenceType) t;
-                                    if (crossType.isReferenceTypeRuleApplicableTo(container)){
+                                if (type.equals(t.getSecondTermOfTheDependency())){
+
+                                    if (isRuleApplicable){
+                                        hasFoundDependency = true;
+
                                         if (level != null){
                                             if (level.equals(DependencyLevel.ERROR)){
-                                                final String msg = "The " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
-                                                        "can't be associated with the " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] at the "+crossType.getLocation().toString()+" level.";
+                                                final String msg = "The citation database "+Term.printTerm(database)+" " +
+                                                        "is not normally associated with the reference qualifier " + Term.printTerm(type)+" at the level of the "+container.getClass().getSimpleName()+".";
                                                 messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                                             }
                                         }
                                     }
-                                    else {
-                                        if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
-                                            String levelOfError = level.equals(DependencyLevel.REQUIRED) ? "ERROR" : "WARN";
-                                            
-                                            final String msg = "The combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
-                                                    "with " + container.getClass().getSimpleName() + "["+Term.printTerm(type)+"] is not possible at the " + crossType.getLocation().toString() + " level but is necessary at the "+crossType.getLocation().toString() + " level.";
-
-                                            messages.add( new ValidatorMessage( msg,  MessageLevel.forName( levelOfError ), context.copy(), rule ) );
-                                        }
-                                    }
-
-                                }
-                                else{
-                                    log.error("The dependencyMapping does not contains any CrossReferenceType instance and it is required.");
                                 }
                             }
                         }
@@ -382,41 +410,51 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                         if (!hasFoundDependency && isAValueRequired){
                             Set<AssociatedTerm> req = getRequiredDependenciesFor(database);
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("There is an unusual combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
-                                    "and " + container.getClass().getSimpleName() + " ["+Term.printTerm(type)+"] ?" +
-                                    " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
-                            writePossibleDependencies(req, msg, database);
+                            msg.append("There is an unusual combination of citation database "+Term.printTerm(database)+" " +
+                                    "and reference qualifier " +Term.printTerm(type)+" at the level of the " + container.getClass().getSimpleName() +
+                                    ". The possible reference qualifiers with this database are : ");
+                            writePossibleDependenciesFor(req, msg, container);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                         }
                         else if (!hasFoundDependency && isARecommendedValue){
                             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(database);
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("Are you sure of the combination of " + reference.getClass().getSimpleName() + " ["+Term.printTerm(database)+"] " +
-                                    "and " + container.getClass().getSimpleName() + " ["+Term.printTerm(type)+"]." +
-                                    " The usual dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
+                            msg.append("Are you sure of the combination of the citation database "+Term.printTerm(database)+" " +
+                                    "and the reference qualifier "+Term.printTerm(type)+" at the level of this "+container.getClass().getSimpleName()+"?" +
+                                    " The usual reference qualifiers with this database are : ");
 
-                            writePossibleDependencies(rec, msg, database);
+                            writePossibleDependenciesFor(rec, msg, container);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
                         }
-
+                        else{
+                            log.error("The dependencyMapping does not contains any CrossReferenceType instance and it is required.");
+                        }
                     }
+                }
 
-                } // there are rule for the reference
+            } // there are rule for the reference
 
-            } else {
-                messages.add(new ValidatorMessage( "The rule of type cross reference - cross reference type can be applied as the cross reference doesn't have a database name.",  MessageLevel.ERROR, context.copy(), rule));
-                return messages;
+            else {
+                throw new ValidatorRuleException( "The rule of type cross reference - cross reference type cannot be executed as the cross reference does not have a database name.");
             }
             return messages;
         }
 
-        protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
+        protected void writePossibleDependenciesFor(Set<AssociatedTerm> associatedTerms, StringBuffer msg, XrefContainer container){
             for (AssociatedTerm r : associatedTerms){
-                CrossReferenceType ct = (CrossReferenceType) r;
+                if (r instanceof CrossReferenceType){
+                    CrossReferenceType ct = (CrossReferenceType) r;
 
-                msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(ct.getSecondTermOfTheDependency()) + ", Location : " + ct.getLocation() + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
+                    if (ct.isReferenceTypeRuleApplicableTo(container)){
+                        msg.append(Term.printTerm(ct.getSecondTermOfTheDependency()) + ", ");
+                    }
+                }
+            }
+
+            if (msg.toString().endsWith(", ")){
+                msg.delete(msg.lastIndexOf(","), msg.length());
             }
         }
     }

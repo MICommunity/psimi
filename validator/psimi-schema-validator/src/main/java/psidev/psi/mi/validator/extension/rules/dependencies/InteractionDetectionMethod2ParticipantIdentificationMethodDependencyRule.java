@@ -52,7 +52,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         setName( "Interaction detection method and participant identification method check" );
         setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the participant identification methods." );
         addTip( "Search the possible terms for interaction detection method and participant identification method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-        addTip( "Look at the file resources/interactionDetectionMethod2ParticipantIdentificationMethod.tsv for the possible dependencies interaction detection method - participant identification method" );                                
+        addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2ParticipantIdentificationMethod.tsv for the possible dependencies interaction detection method - participant identification method" );                                
     }
 
     /**

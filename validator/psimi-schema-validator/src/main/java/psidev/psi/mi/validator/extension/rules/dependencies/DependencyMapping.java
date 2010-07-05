@@ -211,7 +211,7 @@ public class DependencyMapping {
 
                             for ( OntologyTermI child2 : children2 ) {
                                 final Term termChild2 = new Term( child2.getTermAccession(), child2.getPreferredName() );
-                                AssociatedTerm childTerm2 = new AssociatedTerm(termChild2, associatedTerm.getLevel());
+                                AssociatedTerm childTerm2 = createSecondaryTermOfTheDependencyFrom(termChild2, associatedTerm);
                                 childTerm2.getSecondTermOfTheDependency().setParent(associatedTerm.getSecondTermOfTheDependency());
 
                                 // Create a dependency with the children
@@ -254,7 +254,7 @@ public class DependencyMapping {
         Set<OntologyTermI> parents = mi.getAllParents(child);
 
         if (parents.contains(parent)){
-             return true;
+            return true;
         }
         return false;
     }
@@ -463,8 +463,8 @@ public class DependencyMapping {
                     hasFoundADependency = true;
                 }
                 else if (level.equals(DependencyLevel.ERROR)) {
-                    final String msg = "The " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
-                            "and " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"] can't be associated together.";
+                    final String msg = "This " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
+                            "and " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" are not normally associated together.";
                     messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                 }
             }
@@ -473,20 +473,21 @@ public class DependencyMapping {
         if (!hasFoundADependency && isAValueRequired){
             Set<AssociatedTerm> req = getRequiredDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
-            msg.append("There is an unusual combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
-                    "with " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
-                    " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
-            writePossibleDependencies(req, msg, firstTermOfDependency);
+
+            msg.append("There is an unusual combination of " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
+                    "with " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+"." +
+                    " The possible "+term2.getClass().getSimpleName()+" with this "+term1.getClass().getSimpleName()+" are : ");
+            writePossibleDependenciesFor(req, msg);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
         }
         else if (!hasFoundADependency && isARecommendedValue){
             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
-            msg.append("Are you sure of the combination of " + term1.getClass().getSimpleName() + " ["+Term.printTerm(firstTermOfDependency)+"] " +
-                    "with " + term2.getClass().getSimpleName() + " ["+Term.printTerm(secondTermDependency)+"]." +
-                    " The usual dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
-            writePossibleDependencies(rec, msg, firstTermOfDependency);
+            msg.append("Are you sure of the combination of " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
+                    "with " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+"." +
+                    " The usual "+term2.getClass().getSimpleName()+" with this "+term1.getClass().getSimpleName()+" are : ");
+            writePossibleDependenciesFor(rec, msg);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
         }
@@ -495,10 +496,18 @@ public class DependencyMapping {
 
     }
 
-    protected void writePossibleDependencies(Set<AssociatedTerm> associatedTerms, StringBuffer msg, Term firstTermOfDependency){
-        for (AssociatedTerm r : associatedTerms){
-            msg.append(Term.printTerm(firstTermOfDependency) + " and " + Term.printTerm(r.getSecondTermOfTheDependency()) + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
+    protected void writePossibleDependenciesFor(Set<AssociatedTerm> associatedTerms, StringBuffer msg){
+        for (AssociatedTerm r : associatedTerms){;
+            msg.append(Term.printTerm(r.getSecondTermOfTheDependency()) + ", ");
         }
+
+        if (msg.toString().endsWith(", ")){
+            msg.delete(msg.lastIndexOf(","), msg.length());
+        }
+    }
+
+    protected AssociatedTerm createSecondaryTermOfTheDependencyFrom(Term newTerm, AssociatedTerm firstTerm){
+        return new AssociatedTerm(newTerm, firstTerm.getLevel());
     }
 
     /**
@@ -529,12 +538,12 @@ public class DependencyMapping {
                     if (!required.isEmpty()){
                         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
 
-                        String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A second term is required when the " + term1.getClass().getSimpleName() + " is [" + Term.printTerm(firstTermOfDependency) + "]." +
-                                " The possible dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator();
+                        String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A second term is required when the " + term1.getClass().getSimpleName() + " is " + Term.printTerm(firstTermOfDependency) + "." +
+                                " The possible terms with this "+rule.getClass().getSimpleName()+" are : ";
                         final StringBuffer sb = new StringBuffer( 1024 );
                         sb.append( msg );
 
-                        writePossibleDependencies(required, sb, firstTermOfDependency);
+                        writePossibleDependenciesFor(required, sb);
                         messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
                         return messages;
                     }
@@ -545,9 +554,9 @@ public class DependencyMapping {
 
                             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + term1.getClass().getSimpleName() + " is ["+Term.printTerm(firstTermOfDependency)+"]," +
-                                    " the recommended dependencies are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
-                            writePossibleDependencies(recommended, msg, firstTermOfDependency);
+                            msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + term1.getClass().getSimpleName() + " is "+Term.printTerm(firstTermOfDependency)+"," +
+                                    " the recommended terms with this "+rule.getClass().getSimpleName()+" are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
+                            writePossibleDependenciesFor(recommended, msg);
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 
                             return messages;
@@ -564,10 +573,8 @@ public class DependencyMapping {
             }
         }
         else {
-            Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-            messages.add(new ValidatorMessage("We can't check the dependencies of type " + rule.getClass().getSimpleName() + " as the first term of the dependency is null.",  MessageLevel.WARN, context.copy(), rule));
+            throw new ValidatorRuleException("We can't check the dependencies of type " + rule.getClass().getSimpleName() + " as the first term of the dependency is null.");
 
-            return messages;
         }
         return new ArrayList<ValidatorMessage>();
     }

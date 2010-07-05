@@ -57,7 +57,7 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
         setName( "Interaction detection method and Experimental role check" );
         setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the experimental role of the participants" );
         addTip( "Search the possible terms for interaction detection method and experimental role on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
-        addTip( "Look at the file resources/interactionDetectionMethod2ExperimentRole.tsv for the possible dependencies interaction detection method - experimental role" );                
+        addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2ExperimentRole.tsv for the possible dependencies interaction detection method - experimental role" );                
     }
 
     /**
