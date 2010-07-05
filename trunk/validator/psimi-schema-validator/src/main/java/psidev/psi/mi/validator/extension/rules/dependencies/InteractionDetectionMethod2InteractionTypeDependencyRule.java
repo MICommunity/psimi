@@ -888,7 +888,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                             final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method "+Term.printTerm(methodTerm)+" " +
                                                     "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the number of participants is " + numParticipants + "." +
-                                                    "The possible interaction types with this interaction detection method are ");
+                                                    " The possible interaction types with this interaction detection method are ");
 
                                             writePossibleDependenciesFor(interactionTypeCondition, msg);
 
@@ -898,7 +898,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                             final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method "+Term.printTerm(methodTerm)+" " +
                                                     "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the number of baits is " + numBaits + "." +
-                                                    "The possible interaction types with this interaction detection method are ");
+                                                    " The possible interaction types with this interaction detection method are ");
 
                                             writePossibleDependenciesFor(interactionTypeCondition, msg);
 
