@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.validator.extension.rules.PublicationRuleUtils;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.Bibref;
 import psidev.psi.mi.xml.model.DbReference;
@@ -85,8 +84,6 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
                         final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
                         final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );
-
-                        PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
 
                         // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
                         if (pubmeds.size() > 1){
