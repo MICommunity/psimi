@@ -1,5 +1,7 @@
 package psidev.psi.mi.validator.extension;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 
@@ -18,6 +20,8 @@ import java.util.regex.Pattern;
  * @since 04.01.2006; 15:37:07
  */
 public class Mi25Ontology {
+
+    public static final Log log = LogFactory.getLog( Mi25Ontology.class );
 
     //////////////////////////////
     // Cosntants
@@ -211,30 +215,32 @@ public class Mi25Ontology {
             throw new IllegalArgumentException( "You must give a non null child" );
         }
 
-        System.out.println( "parent: " + parent.getTermAccession() + " (" + parent.getPreferredName() + ")" );
-        System.out.println( "child: " + child.getTermAccession() + " (" + child.getPreferredName() + ")" );
+        log.trace( "parent: " + parent.getTermAccession() + " (" + parent.getPreferredName() + ")" );
+        log.trace( "child: " + child.getTermAccession() + " (" + child.getPreferredName() + ")" );
 
         // traverse all parents terms of the given child until we either meet the given parent or a root term.
         final Set<OntologyTermI> parents = ontology.getDirectParents( child );
-        System.out.println( "Parents of " + child.getTermAccession() + " (" + child.getPreferredName() + ")" );
-        for ( OntologyTermI p : parents ) {
-            System.out.println( "\t - " + p.getTermAccession() + " (" + p.getPreferredName() + ")" );
+        if( log.isTraceEnabled() ) {
+            log.trace( "Parents of " + child.getTermAccession() + " (" + child.getPreferredName() + ")" );
+            for ( OntologyTermI p : parents ) {
+                log.trace( "\t - " + p.getTermAccession() + " (" + p.getPreferredName() + ")" );
+            }
         }
 
         // we go breadth first to limit the queries to the ontology
         for ( OntologyTermI aParent : parents ) {
-            System.out.println( "comparing " + aParent.getPreferredName() + " to " + parent.getPreferredName() );
+            if( log.isTraceEnabled() ) log.trace( "comparing " + aParent.getPreferredName() + " to " + parent.getPreferredName() );
             if ( aParent.equals( parent ) ) {
-                System.out.println( "SAME" );
+                log.trace( "SAME" );
                 return true;
             } else {
-                System.out.println( "NOT SAME" );
+                log.trace( "NOT SAME" );
             }
         }
 
         System.out.println( "Going to upper level" );
         for ( OntologyTermI aParent : parents ) {
-            System.out.println( "CHecking parents of " + aParent.getPreferredName() );
+            log.trace( "CHecking parents of " + aParent.getPreferredName() );
             if ( isChildOf( parent, aParent ) ) {
                 return true;
             }
