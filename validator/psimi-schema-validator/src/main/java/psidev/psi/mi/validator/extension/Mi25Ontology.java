@@ -238,7 +238,7 @@ public class Mi25Ontology {
             }
         }
 
-        System.out.println( "Going to upper level" );
+        log.trace( "Going to upper level" );
         for ( OntologyTermI aParent : parents ) {
             log.trace( "CHecking parents of " + aParent.getPreferredName() );
             if ( isChildOf( parent, aParent ) ) {
