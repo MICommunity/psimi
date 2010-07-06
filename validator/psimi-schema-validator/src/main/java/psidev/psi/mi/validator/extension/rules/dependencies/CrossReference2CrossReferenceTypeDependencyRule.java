@@ -285,12 +285,12 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         protected AssociatedTerm createSecondaryTermOfTheDependencyFrom(Term newTerm, AssociatedTerm firstTerm){
 
             if (firstTerm instanceof CrossReferenceType){
-               CrossReferenceType parent = (CrossReferenceType) firstTerm;
+                CrossReferenceType parent = (CrossReferenceType) firstTerm;
 
-               return new CrossReferenceType(newTerm, parent.getLocation(), parent.getLevel());
+                return new CrossReferenceType(newTerm, parent.getLocation(), parent.getLevel());
             }
             else {
-               throw new ValidatorRuleException("The parent of " + Term.printTerm(newTerm) + " must be an instance of CrossReferenceType and not just an instance of AssociatedTerm.");
+                throw new ValidatorRuleException("The parent of " + Term.printTerm(newTerm) + " must be an instance of CrossReferenceType and not just an instance of AssociatedTerm.");
             }
         }
 
@@ -405,6 +405,9 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                                     }
                                 }
                             }
+                            else{
+                                log.error("The dependencyMapping does not contains any CrossReferenceType instance and it is required.");
+                            }
                         }
 
                         if (!hasFoundDependency && isAValueRequired){
@@ -427,9 +430,6 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             writePossibleDependenciesFor(rec, msg, container);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
-                        }
-                        else{
-                            log.error("The dependencyMapping does not contains any CrossReferenceType instance and it is required.");
                         }
                     }
                 }
