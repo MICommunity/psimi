@@ -11,7 +11,6 @@ import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 import psidev.psi.tools.validator.xpath.XPathHelper;
 import psidev.psi.tools.validator.xpath.XPathResult;
 
@@ -382,6 +381,13 @@ public class Mi25ValidatorTest {
     @Test
     public void validateSyntax18850735() throws Exception {
         Collection<ValidatorMessage> messages = getIMEXValidationMessage ("18850735.xml"  );
+        Assert.assertTrue( messages.size() > 0 );
+        printMessages( messages );
+    }
+
+    @Test
+    public void validateSyntax17224084() throws Exception {
+        Collection<ValidatorMessage> messages = getIMEXValidationMessage ("17224084.xml"  );
         Assert.assertTrue( messages.size() > 0 );
         printMessages( messages );
     }
