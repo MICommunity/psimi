@@ -1,17 +1,16 @@
 package psidev.psi.mi.validator.extension;
 
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.mi.xml.model.DbReference;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.tools.ontology_manager.OntologyManager;
+import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
-import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 
-import java.util.Map;
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -54,6 +53,15 @@ public abstract class Mi25InteractionRule extends ObjectRule<Interaction> {
         return ontologyManager.getOntologyAccess( "MI" );
     }
 
+    /**
+     * Return the MI ontology
+     *
+     * @return the ontology
+     * @throws psidev.psi.tools.validator.ValidatorException
+     */
+    public Mi25Ontology getMi25Ontology() throws ValidatorException {
+        return new Mi25Ontology( ontologyManager.getOntologyAccess( "MI" ) );
+    }
 
     protected String getMiIdentifier( CvType cv ) {
 

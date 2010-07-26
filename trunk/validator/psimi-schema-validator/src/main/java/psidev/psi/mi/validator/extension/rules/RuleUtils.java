@@ -448,7 +448,7 @@ public final class RuleUtils {
         return selectedAttribute;
     }
 
-    public static void checkPsiMIXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, Mi25Ontology ontology, String mi){
+    public static void checkPsiMIXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, Mi25Ontology ontology, String mi){
         Xref xref = container.getXref();
         String containerName = container.getClass().getSimpleName();
 
@@ -478,21 +478,21 @@ public final class RuleUtils {
                                         messages.add( new ValidatorMessage( "The " + containerName + " " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " isn't a valid " + containerName + " ( must be any child of "+ mi +").",
                                                 MessageLevel.ERROR,
                                                 context,
-                                                experimentRule ) );
+                                                rule ) );
                                     }
                                 }
                                 else{
                                     messages.add( new ValidatorMessage( "The PSI MI id of " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " does not exist in the PSI MI ontology. ( must be any child of "+ mi +").",
                                             MessageLevel.ERROR,
                                             context,
-                                            experimentRule ) );
+                                            rule ) );
                                 }
                             }
                             else{
                                 messages.add( new ValidatorMessage( "This is an unexpected error. The PSI MI id of " + containerName + "("+mi+") does not exist in the PSI MI ontology.",
                                         MessageLevel.ERROR,
                                         context,
-                                        experimentRule ) );
+                                        rule ) );
                             }
                         }
                     }
@@ -500,21 +500,21 @@ public final class RuleUtils {
                         messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' while there should be only one.",
                                 MessageLevel.ERROR,
                                 context,
-                                experimentRule ) );
+                                rule ) );
                     }
                 }
                 else {
                     messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one.",
                             MessageLevel.ERROR,
                             context,
-                            experimentRule ) );
+                            rule ) );
                 }
             }
             else {
                 messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
                         MessageLevel.ERROR,
                         context,
-                        experimentRule ) );
+                        rule ) );
 
             }
         }
@@ -522,7 +522,7 @@ public final class RuleUtils {
             messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
                     MessageLevel.ERROR,
                     context,
-                    experimentRule ) );
+                    rule ) );
 
         }
     }
