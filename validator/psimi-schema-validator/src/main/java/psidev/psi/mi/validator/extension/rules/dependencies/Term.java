@@ -130,6 +130,9 @@ public class Term {
     }
 
     public static Term buildTerm( CvType cv ) {
+        if (cv == null){
+            return null;
+        }
         final String id = getMiIdentifier( cv );
         if( id == null ) {
             return null;

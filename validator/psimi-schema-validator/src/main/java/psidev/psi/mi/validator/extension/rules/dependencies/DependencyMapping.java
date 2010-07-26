@@ -457,6 +457,11 @@ public class DependencyMapping {
                 isARecommendedValue = true;
             }
 
+            if (secondTermDependency == null){
+                System.out.println("Error term 1: " + term1);
+                System.out.println("Error term 2: " + term2);
+                System.out.println("Error first term : " + firstTermOfDependency.getName());
+            }
             if (secondTermDependency.equals(associatedTerm.getSecondTermOfTheDependency())){
 
                 if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){
@@ -533,13 +538,13 @@ public class DependencyMapping {
                 final Set<AssociatedTerm> associatedTermDependency = dependencies.get( firstTermOfDependency );
 
                 final Term secondTermDependency = Term.buildTerm(term2);
-                if( term2 == null ) {
+                if( secondTermDependency == null ) {
                     Set<AssociatedTerm> required = getRequiredDependenciesFor(firstTermOfDependency);
                     if (!required.isEmpty()){
                         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
 
                         String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A second term is required when the " + term1.getClass().getSimpleName() + " is " + Term.printTerm(firstTermOfDependency) + "." +
-                                " The possible terms with this "+rule.getClass().getSimpleName()+" are : ";
+                                " The possible terms with this "+term1.getClass().getSimpleName()+" are : ";
                         final StringBuffer sb = new StringBuffer( 1024 );
                         sb.append( msg );
 
@@ -555,7 +560,7 @@ public class DependencyMapping {
                             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + term1.getClass().getSimpleName() + " is "+Term.printTerm(firstTermOfDependency)+"," +
-                                    " the recommended terms with this "+rule.getClass().getSimpleName()+" are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
+                                    " the recommended terms with this "+term1.getClass().getSimpleName()+" are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
                             writePossibleDependenciesFor(recommended, msg);
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 
