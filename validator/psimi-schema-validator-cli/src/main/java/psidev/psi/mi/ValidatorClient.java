@@ -181,14 +181,26 @@ public class ValidatorClient {
             throw new ValidatorException("We can't validate the file " + file.getName() + " if the validator is null.");
         }
 
+        // validate the file
+        ValidatorReport validatorReport = validator.validate( file );
+
+        // clean the messages with a level lower than the threshold value
+        cleanLowerLevelMessages(validatorReport, levelThreshold, scope);
+
         // the name of the file
         String exactFileName = file.getName();
-        int indexExtension = exactFileName.indexOf("xml");
+        int indexExtension = exactFileName.indexOf(".xml");
         String fileName = exactFileName;
 
         if (indexExtension != -1){
-            // the name of the file without its extension
-            fileName = exactFileName.substring(0, indexExtension) + "txt";
+            if (validatorReport.hasSyntaxMessages() || validatorReport.hasSemanticMessages()){
+                // the name of the file without its extension
+                fileName = exactFileName.substring(0, indexExtension) + "_invalid.txt";
+            }
+            else {
+               // the name of the file without its extension
+                fileName = exactFileName.substring(0, indexExtension) + "_valid.txt"; 
+            }
         }
 
         int indexName = file.getPath().indexOf(exactFileName);
@@ -198,12 +210,6 @@ public class ValidatorClient {
         // the outout file
         File output = new File(path+"report-"+fileName);
         FileWriter writer = new FileWriter(output);
-
-        // validate the file
-        ValidatorReport validatorReport = validator.validate( file );
-
-        // clean the messages with a level lower than the threshold value
-        cleanLowerLevelMessages(validatorReport, levelThreshold, scope);
 
         writer.write("Validator reported " + validatorReport.getSyntaxMessages().size() + " syntax messages \n" );
         writer.write("Validator reported " + validatorReport.getSemanticMessages().size() + " semantic messages \n" );
