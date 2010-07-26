@@ -457,11 +457,6 @@ public class DependencyMapping {
                 isARecommendedValue = true;
             }
 
-            if (secondTermDependency == null){
-                System.out.println("Error term 1: " + term1);
-                System.out.println("Error term 2: " + term2);
-                System.out.println("Error first term : " + firstTermOfDependency.getName());
-            }
             if (secondTermDependency.equals(associatedTerm.getSecondTermOfTheDependency())){
 
                 if (level.equals(DependencyLevel.REQUIRED) || level.equals(DependencyLevel.SHOULD)){

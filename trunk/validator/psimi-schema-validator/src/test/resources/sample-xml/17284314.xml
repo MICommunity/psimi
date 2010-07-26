@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrySet version="5" level="2" minorVersion="3"
+          xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/rel25/src/MIF253.xsd"
+          xmlns="net:sf:psidev:mi"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<entry>
+		<source releaseDate="2010-07-15">
+			<names>
+				<shortLabel>Molecular Connections Pvt. Ltd.</shortLabel>
+			</names>
+			<attributeList>
+				<attribute name="postal address">2/2, Kariappa Road, Basavanagudi, Bangalore -560 004</attribute>
+				<attribute name="url">www.molecularconnections.com</attribute>
+			</attributeList>
+		</source>
+		<experimentList>
+			<experimentDescription id="1">
+				<names>
+					<shortLabel>ang_2007-1</shortLabel>
+					<fullName>ArhGAP9, a novel MAP kinase docking protein, inhibits Erk and p38 activation through WW domain binding</fullName>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef id="17284314" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
+					</xref>
+				</bibref>
+				<hostOrganismList>
+					<hostOrganism ncbiTaxId="-1">
+						<names>
+							<shortLabel>in vitro</shortLabel>
+							<fullName>in vitro</fullName>
+						</names>
+					</hostOrganism>
+				</hostOrganismList>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>pull down</shortLabel>
+						<fullName>pull down</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0096" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<participantIdentificationMethod>
+					<names>
+						<shortLabel>ms participant</shortLabel>
+						<fullName>Identification by mass spectrometry</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0427" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</participantIdentificationMethod>
+				<attributeList>
+					<attribute name="author-list" nameAc="MI:0636">Boon K Ang, Chun Y Lim, Sharon S Koh, Neelamegam Sivakumar, Shahrizan Taib, Kim B Lim, Sohail Ahmed, Guna Rajagopal and Siew H Ong
+</attribute>
+					<attribute name="journal" nameAc="MI:0885">J Mol Signal.</attribute>
+					<attribute name="publication year" nameAc="MI:0886">2007</attribute>
+					<attribute name="contact-email" nameAc="MI:0634">shong@imcb.a-star.edu.sg</attribute>
+				</attributeList>
+			</experimentDescription>
+		</experimentList>
+		<interactorList>
+			<interactor id="6">
+				<names>
+					<shortLabel>RHG09_HUMAN</shortLabel>
+					<fullName>Rho GTPase-activating protein 9</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">ARHGAP9</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Rho-type GTPase-activating protein 9</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q9BRR9" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="64333" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="7">
+				<names>
+					<shortLabel>MK01_RAT</shortLabel>
+					<fullName>Mitogen-activated protein kinase 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">	Mapk1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Erk2</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Mapk</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Prkm1</alias>
+				</names>
+				<xref>
+					<primaryRef id="P63086" db="uniprotkb" dbAc="MI:0486" refTypeAc="MI:0356" refType="identity"/>
+					<secondaryRef id="116590" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10116">
+					<names>
+						<shortLabel>Rat</shortLabel>
+						<fullName>Rattus norvegicus</fullName>
+					</names>
+				</organism>
+			</interactor>
+		</interactorList>
+		<interactionList>
+			<interaction id="2">
+				<names>
+					<shortLabel>arhGAP9-erk2-1</shortLabel>
+					<fullName>GST fusion protein of the WW domain of human ArhGAP9 immobilized on glutathione Sepharose beads was used as a bait to isolate interacting proteins from rat brain lysate using proteomics</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="3">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="4">
+								<names>
+									<shortLabel>n-terminus</shortLabel>
+									<fullName>n-terminus</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>gst tag</shortLabel>
+										<fullName>glutathione s tranferase tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0519" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="5">
+								<names>
+									<shortLabel>WW domain</shortLabel>
+									<fullName>WW domain</fullName>
+								</names>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="8">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>association</shortLabel>
+						<fullName>association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0914" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">fig 1</attribute>
+				</attributeList>
+			</interaction>
+		</interactionList>
+	</entry>
+</entrySet>
+
