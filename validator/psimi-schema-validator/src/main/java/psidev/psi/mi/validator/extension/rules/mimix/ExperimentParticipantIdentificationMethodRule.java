@@ -58,42 +58,43 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
         for (ExperimentDescription experiment : experiments){
             int experimentId = experiment.getId();
 
-            if (experiment.getParticipantIdentificationMethod() == null){
+            boolean hasToCheckPartDetMetInExperiment = false;
 
-                for (Participant participant : participants){
-                    int participantId = participant.getId();
+            for (Participant participant : participants){
+                int participantId = participant.getId();
 
-                    Mi25Context context = new Mi25Context();
-                    context.setInteractionId( interactionId );
-                    context.setExperimentId(experimentId);
-                    context.setParticipantId(participantId);
+                Mi25Context context = new Mi25Context();
+                context.setInteractionId( interactionId );
+                context.setExperimentId(experimentId);
+                context.setParticipantId(participantId);
 
-                    if (participant.hasParticipantIdentificationMethods()){
-                        Collection<ParticipantIdentificationMethod> participantIdentifications = participant.getParticipantIdentificationMethods();
+                if (experiment.getParticipantIdentificationMethod() == null && !participant.hasParticipantIdentificationMethods()){
+                    messages.add( new ValidatorMessage( " In the experiment " + experimentId + ", the participant "+participantId+" of the interaction "+interactionId+" does not have a participant identification method and it is required for MIMIx",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+                }
+                else if (participant.hasParticipantIdentificationMethods()){
+                    Collection<ParticipantIdentificationMethod> participantIdentifications = participant.getParticipantIdentificationMethods();
 
-                        for (ParticipantIdentificationMethod method : participantIdentifications){
+                    for (ParticipantIdentificationMethod method : participantIdentifications){
 
-                            final Mi25Ontology ontology = getMi25Ontology();
-                            RuleUtils.checkPsiMIXRef(method, messages, context, this, ontology, "MI:0002");
-                        }
-                    }
-                    else {
-                        messages.add( new ValidatorMessage( " In the experiment " + experimentId + ", the participant "+participantId+" of the interaction "+interactionId+" does not have a participant identification method and it is required for MIMIx",
-                                MessageLevel.ERROR,
-                                context,
-                                this ) );
+                        final Mi25Ontology ontology = getMi25Ontology();
+                        RuleUtils.checkPsiMIXRef(method, messages, context, this, ontology, "MI:0002");
                     }
                 }
+                else {
+                    hasToCheckPartDetMetInExperiment = true;
+                }
             }
-            else {
+
+            if (hasToCheckPartDetMetInExperiment){
                 Mi25Context context = new Mi25Context();
                 context.setInteractionId( interactionId );
                 context.setExperimentId(experimentId);
 
-                ParticipantIdentificationMethod partMethod = experiment.getParticipantIdentificationMethod();
                 final Mi25Ontology ontology = getMi25Ontology();
-                RuleUtils.checkPsiMIXRef(partMethod, messages, context, this, ontology, "MI:0002");
-
+                RuleUtils.checkPsiMIXRef(experiment.getParticipantIdentificationMethod(), messages, context, this, ontology, "MI:0002");
             }
         }
 
