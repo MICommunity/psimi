@@ -74,6 +74,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
+        System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
     }
 
