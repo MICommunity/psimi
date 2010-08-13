@@ -68,6 +68,14 @@ public class PsimiXmlReaderTest {
     }
 
     @Test
+    public void read_bind_file() throws Exception {
+        File file = new File( PsimiXmlReaderTest.class.getResource("/sample-xml/bind.253.xml").getFile() );
+        PsimiXmlReader reader = new PsimiXmlReader();
+        EntrySet es = reader.read( file );
+        Assert.assertNotNull( es );
+    }
+
+    @Test
     public void read_url() throws Exception {
         URL url = PsimiXmlReaderTest.class.getResource("/sample-xml/intact/10320477.253.xml");
         PsimiXmlReader reader = new PsimiXmlReader();

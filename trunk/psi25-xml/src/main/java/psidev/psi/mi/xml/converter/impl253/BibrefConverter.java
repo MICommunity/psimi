@@ -45,14 +45,24 @@ public class BibrefConverter {
 
         // 2. set encapsulated objects
 
+        boolean foundAttributeList = false;
+        boolean foundXref = false;
         if ( jBibref.getAttributeList() != null ) {
+            foundAttributeList = true;
             for ( psidev.psi.mi.xml253.jaxb.AttributeListType.Attribute jAttribute :
                     jBibref.getAttributeList().getAttributes() ) {
                 mBibref.getAttributes().add( attributeConverter.fromJaxb( jAttribute ) );
             }
         }
 
-        mBibref.setXref( xrefConverter.fromJaxb( jBibref.getXref() ) );
+        if ( jBibref.getXref() != null ) {
+            foundXref = true;
+            mBibref.setXref( xrefConverter.fromJaxb( jBibref.getXref() ) );
+        }
+
+        if( foundAttributeList && foundXref ) {
+            throw new IllegalArgumentException( "When defining a <bibref>, you must give as a child tag either an <xref> or an <attributeList>." );
+        }
 
         return mBibref;
     }

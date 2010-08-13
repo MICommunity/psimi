@@ -3,6 +3,7 @@ package psidev.psi.mi.xml;
 import junit.framework.JUnit4TestAdapter;
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.xml.io.impl.PsimiXmlReader253;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.mi.xml.xmlindex.PsimiXmlIndexerTest;
