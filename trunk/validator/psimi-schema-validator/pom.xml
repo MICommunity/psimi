@@ -56,7 +56,7 @@
         <dependency>
             <artifactId>psi25-xml</artifactId>
             <groupId>psidev.psi.mi</groupId>
-            <version>1.7.4-SNAPSHOT</version>
+            <version>1.7.8-SNAPSHOT</version>
         </dependency>
 
         <!-- 3rd party -->
