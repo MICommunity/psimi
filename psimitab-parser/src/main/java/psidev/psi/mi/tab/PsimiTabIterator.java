@@ -104,6 +104,11 @@ public class PsimiTabIterator implements Iterator<BinaryInteraction> {
             if ( lineConsummed ) {
                 nextLine = readNextLine();
                 lineIndex++;
+
+                if (nextLine != null && nextLine.startsWith("#")) {
+                    return hasNext();
+                }
+
                 lineConsummed = false;
             }
         }
