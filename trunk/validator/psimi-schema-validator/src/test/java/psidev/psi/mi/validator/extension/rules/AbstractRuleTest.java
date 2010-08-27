@@ -102,6 +102,74 @@ public abstract class AbstractRuleTest {
         );
     }
 
+    protected Feature buildCertainFeature (long beginPosition, long endPosition){
+
+        Feature feature = new Feature();
+
+        Xref ref = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0117", "identity", "MI:0356"));
+        Names names = new Names();
+        names.setShortLabel("binding site");
+
+        FeatureType featureType = new FeatureType();
+        featureType.setXref(ref);
+        featureType.setNames(names);
+
+        feature.setFeatureType(featureType);
+
+        Xref refStart = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0335", "identity", "MI:0356"));
+        Names namesStart = new Names();
+        names.setShortLabel("certain");
+        RangeStatus start = new RangeStatus();
+        start.setNames(namesStart);
+        start.setXref(refStart);
+
+        Xref refEnd = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0335", "identity", "MI:0356"));
+        Names namesEnd = new Names();
+        names.setShortLabel("certain");
+        RangeStatus end = new RangeStatus();
+        end.setNames(namesEnd);
+        end.setXref(refEnd);
+
+        Range certain = new Range (start, new Position(beginPosition), end, new Position(endPosition));
+        feature.getRanges().add(certain);
+
+        return feature;
+    }
+
+    protected Feature buildUndeterminedFeature (){
+
+        Feature feature = new Feature();
+
+        Xref ref = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0507", "identity", "MI:0356"));
+        Names names = new Names();
+        names.setShortLabel("tag");
+
+        FeatureType featureType = new FeatureType();
+        featureType.setXref(ref);
+        featureType.setNames(names);
+
+        feature.setFeatureType(featureType);
+
+        Xref refStart = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0339", "identity", "MI:0356"));
+        Names namesStart = new Names();
+        names.setShortLabel("undetermined");
+        RangeStatus start = new RangeStatus();
+        start.setNames(namesStart);
+        start.setXref(refStart);
+
+        Xref refEnd = new Xref(new DbReference("psi-mi", "MI:0488", "MI:0339", "identity", "MI:0356"));
+        Names namesEnd = new Names();
+        names.setShortLabel("undetermined");
+        RangeStatus end = new RangeStatus();
+        end.setNames(namesEnd);
+        end.setXref(refEnd);
+
+        Range undetermined = new Range (start, new Position(0), end, new Position(0));
+        feature.getRanges().add(undetermined);
+
+        return feature;
+    }
+
     protected Interactor buildProtein( String uniprotAc ) {
         Interactor interactor = new Interactor();
         interactor.setXref( new Xref() );
