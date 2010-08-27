@@ -1,0 +1,149 @@
+package psidev.psi.mi.validator.extension.rules;
+
+import org.junit.Assert;
+import org.junit.Test;
+import psidev.psi.mi.xml.model.Feature;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.xml.model.Range;
+import psidev.psi.tools.validator.ValidatorException;
+import psidev.psi.tools.validator.ValidatorMessage;
+
+import java.util.Collection;
+
+/**
+ * TODO comment this
+ *
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id$
+ * @since <pre>27-Aug-2010</pre>
+ */
+
+public class FeatureRangeRuleTest extends AbstractRuleTest {
+
+    public FeatureRangeRuleTest() {
+        super();
+    }
+
+    @Test
+    public void validCertainRange() throws ValidatorException {
+
+        String sequence = "AACPCGGAM";
+
+        Interaction interaction = buildInteractionDeterministic();
+        Participant p1 = interaction.getParticipants().iterator().next();
+        p1.getInteractor().setSequence(sequence);
+
+        Feature feature = buildCertainFeature( 1, 4);
+        p1.getFeatures().add(feature);
+
+        FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
+
+        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Assert.assertNotNull( messages );
+        Assert.assertEquals( 0, messages.size() );
+    }
+
+    @Test
+    public void invalid_OutOfSequence_Range_1() throws ValidatorException {
+
+        String sequence = "AACPCGGAM";
+
+        Interaction interaction = buildInteractionDeterministic();
+        Participant p1 = interaction.getParticipants().iterator().next();
+        p1.getInteractor().setSequence(sequence);
+
+        Feature feature = buildCertainFeature( 11, 15);
+        p1.getFeatures().add(feature);
+
+        FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
+
+        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Assert.assertNotNull( messages );
+        System.out.println( messages );
+        Assert.assertEquals( 1, messages.size() );
+    }
+
+    @Test
+    public void invalid_OutOfSequence_Range_2() throws ValidatorException {
+
+        String sequence = "AACPCGGAM";
+
+        Interaction interaction = buildInteractionDeterministic();
+        Participant p1 = interaction.getParticipants().iterator().next();
+        p1.getInteractor().setSequence(sequence);
+
+        Feature feature = buildCertainFeature( 4, 15);
+        p1.getFeatures().add(feature);
+
+        FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
+
+        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Assert.assertNotNull( messages );
+        System.out.println( messages );
+        Assert.assertEquals( 1, messages.size() );
+    }
+
+    @Test
+    public void invalid_OutOfSequence_Range_3() throws ValidatorException {
+
+        String sequence = "AACPCGGAM";
+
+        Interaction interaction = buildInteractionDeterministic();
+        Participant p1 = interaction.getParticipants().iterator().next();
+        p1.getInteractor().setSequence(sequence);
+
+        Feature feature = buildCertainFeature( 0, 4);
+        p1.getFeatures().add(feature);
+
+        FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
+
+        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Assert.assertNotNull( messages );
+        System.out.println( messages );
+        Assert.assertEquals( 1, messages.size() );
+    }
+
+    @Test
+    public void valid_Undetermined_Range() throws ValidatorException {
+
+        String sequence = "AACPCGGAM";
+
+        Interaction interaction = buildInteractionDeterministic();
+        Participant p1 = interaction.getParticipants().iterator().next();
+        p1.getInteractor().setSequence(sequence);
+
+        Feature feature = buildUndeterminedFeature();
+        p1.getFeatures().add(feature);
+
+        FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
+
+        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Assert.assertNotNull( messages );
+        Assert.assertEquals( 0, messages.size() );
+    }
+
+    @Test
+    public void invvalid_Undetermined_Range() throws ValidatorException {
+
+        String sequence = "AACPCGGAM";
+
+        Interaction interaction = buildInteractionDeterministic();
+        Participant p1 = interaction.getParticipants().iterator().next();
+        p1.getInteractor().setSequence(sequence);
+
+        Feature feature = buildUndeterminedFeature();
+        p1.getFeatures().add(feature);
+
+        Range range = feature.getRanges().iterator().next();
+        range.setBegin(new psidev.psi.mi.xml.model.Position(1));
+        range.setEnd(new psidev.psi.mi.xml.model.Position(3));
+
+        FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
+
+        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Assert.assertNotNull( messages );
+        System.out.println( messages );
+        Assert.assertEquals( 1, messages.size() );
+    }
+}
