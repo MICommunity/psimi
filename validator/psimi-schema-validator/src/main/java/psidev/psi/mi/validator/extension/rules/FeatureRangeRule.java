@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO comment this
+ * This rule is checking that each feature range is valid
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

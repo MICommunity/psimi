@@ -119,30 +119,6 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
     }
 
     @Test
-    public void validate_Wrong_ImexId() throws Exception {
-
-        final Bibref bibref = new Bibref();
-        DbReference primary = new DbReference( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        DbReference imex =  new DbReference( "intact", "MI:0469", "IM-1A1", "imex-primary", "MI:0662" );
-        DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
-        Collection<DbReference> secondary = new ArrayList<DbReference>();
-        secondary.add(secondary2);
-        final Xref xref = new Xref(primary, secondary);
-        bibref.setXref( xref );
-        final Xref crossRef = new Xref(imex);
-        ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
-        exp.setXref(crossRef);
-
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
-
-        final Collection<ValidatorMessage> messages = rule.check( exp );
-        Assert.assertNotNull( messages );
-        System.out.println(messages);
-        Assert.assertEquals( 1, messages.size() );
-    }
-
-
-    @Test
     public void validate_fail() throws Exception {
 
         final Bibref bibref = new Bibref();

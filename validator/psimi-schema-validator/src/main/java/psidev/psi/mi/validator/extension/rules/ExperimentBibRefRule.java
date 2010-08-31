@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
     Pattern EMAIL_VALIDATOR = Pattern.compile( "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}" );
-    Pattern IMEx_ID = Pattern.compile( "IM-[0-9]+" );
 
     public ExperimentBibRefRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -72,19 +71,6 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
                 final Collection<DbReference> dbReferences = xref.getAllDbReferences();
 
-                // Check xRef (for Imex ID)
-                if (experiment.hasXref()){
-                    final Collection<DbReference> crossReferences = experiment.getXref().getAllDbReferences();
-
-                    // search for reference type: imex-primary
-                    Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( crossReferences, "MI:0662", "imex-primary" );
-
-                    // If there is a reference type set to 'imex-primary'
-                    if (!imexReferences.isEmpty()){
-                        PublicationRuleUtils.checkImexId(imexReferences, messages, context, this);
-                    }
-                }
-
                 // search for reference type: primary-reference
                 Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference" );
 
@@ -94,7 +80,8 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                     final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
                     final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );
 
-                    PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
+                    // the following line is commented because a new Rule has been implemented and is doing the same stuff
+                    //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
 
                     if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
                         hasPublicationIdentifier = true;
