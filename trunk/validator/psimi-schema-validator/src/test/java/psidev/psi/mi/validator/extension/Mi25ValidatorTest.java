@@ -113,7 +113,7 @@ public class Mi25ValidatorTest {
         preferences.setKeepDownloadedOntologiesOnDisk( true );
         aValidator.setUserPreferences( preferences );
 
-        Assert.assertEquals( 25, aValidator.getObjectRules().size() );
+        Assert.assertEquals( 26, aValidator.getObjectRules().size() );
     }
 
     @Test

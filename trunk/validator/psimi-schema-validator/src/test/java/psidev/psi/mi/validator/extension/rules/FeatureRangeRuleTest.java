@@ -12,7 +12,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * TODO comment this
+ * FeatureRangeRule Tester
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

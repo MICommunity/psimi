@@ -4,6 +4,7 @@
 
     <name>PSI-MI</name>
 
+    <rule class="psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.ExperimentBibRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.ExperimentHostOrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.FeatureRangeRule"/>
