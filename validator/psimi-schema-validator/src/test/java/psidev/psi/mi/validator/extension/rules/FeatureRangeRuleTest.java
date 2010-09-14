@@ -61,7 +61,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     @Test
@@ -136,7 +136,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
         p1.getFeatures().add(feature);
 
         Range range = feature.getRanges().iterator().next();
-        range.setBegin(new psidev.psi.mi.xml.model.Position(1));
+        range.setBegin(new psidev.psi.mi.xml.model.Position(0));
         range.setEnd(new psidev.psi.mi.xml.model.Position(3));
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
