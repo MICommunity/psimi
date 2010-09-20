@@ -82,6 +82,10 @@ public class ParticipantConverter {
         interactorConverter.setDAOFactory( factory );
         confidenceConverter.setDAOFactory( factory );
         parameterConverter.setDAOFactory( factory );
+        experimentalPreparationConverter.setDAOFactory(factory);
+        experimentalRoleConverter.setDAOFactory(factory);
+        experimentalInteractorConverter.setDAOFactory(factory);
+        participantIdentificationMethodConverter.setDAOFactory(factory);
     }
 
     /**
