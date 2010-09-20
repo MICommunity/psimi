@@ -77,13 +77,17 @@ public class ExperimentalInteractorConverter {
         // 1. set encapsulated objects
 
         // experiments
-        PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
-        for ( Integer jExperimentId : jExperimentalInteractor.getExperimentRefList().getExperimentReves() ) {
-            ExperimentDescription experiment = experimentDAO.retreive( jExperimentId );
-            if ( experiment == null ) {
-                mExperimentalInteractor.getExperimentRefs().add( new ExperimentRef( jExperimentId ) );
-            } else {
-                mExperimentalInteractor.getExperiments().add( experiment );
+
+        if (jExperimentalInteractor.getExperimentRefList() != null){
+            PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
+            
+            for ( Integer jExperimentId : jExperimentalInteractor.getExperimentRefList().getExperimentReves() ) {
+                ExperimentDescription experiment = experimentDAO.retreive( jExperimentId );
+                if ( experiment == null ) {
+                    mExperimentalInteractor.getExperimentRefs().add( new ExperimentRef( jExperimentId ) );
+                } else {
+                    mExperimentalInteractor.getExperiments().add( experiment );
+                }
             }
         }
 
