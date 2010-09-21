@@ -238,7 +238,7 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
                 if (indexOfRegularExpression < annotation.length()){
                     String regularExpression = annotation.substring(indexOfRegularExpression);
 
-                    regularExpression.replaceAll(regularExpressionEscape, "");
+                    regularExpression = regularExpression.replaceAll(regularExpressionEscape, "");
 
                     return regularExpression;
                 }
