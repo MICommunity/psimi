@@ -57,6 +57,8 @@ public class InteractionParameterConverter {
      */
     public void setDAOFactory( DAOFactory factory ) {
         this.factory = factory;
+
+        experimentDescriptionConverter.setDAOFactory(factory);
     }
 
     /**
