@@ -46,6 +46,9 @@ public class ExperimentalInteractorConverter {
      */
     public void setDAOFactory( DAOFactory factory ) {
         this.factory = factory;
+
+        interactorConverter.setDAOFactory(factory);
+        experimentDescriptionConverter.setDAOFactory(factory);
     }
 
     /**
