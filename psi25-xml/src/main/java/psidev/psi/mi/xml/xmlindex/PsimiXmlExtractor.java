@@ -198,6 +198,12 @@ public class PsimiXmlExtractor {
                 ExperimentRef eref = itex.next();
                 // retreive
                 ExperimentDescription ed = getExperimentById( file, eref.getRef() );
+
+                if (ed == null){
+                    throw new PsimiXmlReaderException("The interaction "+interaction.getId()+" refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                            " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                            " all the interactions then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                }
                 itex.remove();
                 interaction.getExperiments().add( ed );
             }
@@ -227,6 +233,12 @@ public class PsimiXmlExtractor {
 
                         } else {
                             ExperimentDescription ed = getExperimentById( file, eref.getRef() );
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The interaction "+interaction.getId()+" has an inferred interaction which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
+
                             ii.getExperiments().add(ed);
                         }
                     }
@@ -243,6 +255,12 @@ public class PsimiXmlExtractor {
                             throw new PsimiXmlReaderException("Error while extracting XML snippet for feature", e);
                         }
                         Feature ft = ppp.parseFeature( pfis );
+
+                        if (ft == null){
+                            throw new PsimiXmlReaderException("The interaction "+interaction.getId()+" has an inferred interaction participant which refers to the feature " + iip.getFeatureRef().getRef() + " but this feature cannot be found by the parser." +
+                                    " Please check that you have described this feature previously in this interaction.");
+                        }
+
                         iip.setFeatureRef( null );
                         iip.setFeature( ft );
                     }
@@ -256,6 +274,12 @@ public class PsimiXmlExtractor {
                             throw new PsimiXmlReaderException("Error while extracting XML snippet for participant", e);
                         }
                         Participant p = ppp.parseParticipant( pis );
+
+                        if (p == null){
+                            throw new PsimiXmlReaderException("The interaction "+interaction.getId()+" has an inferred interaction which refers to the participant " + iip.getParticipantRef().getRef() + " but this participant cannot be found by the parser." +
+                                    " Please check that you have described the participant in this interaction.");
+                        }
+
                         iip.setParticipantRef( null );
                         iip.setParticipant( p );
                     }
@@ -283,10 +307,16 @@ public class PsimiXmlExtractor {
                         }
                         else {
                             ExperimentDescription ed = getExperimentById( file, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The interaction "+interaction.getId()+" has a confidence which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
                             conf.getExperiments().add( ed );
                         }
                     }
-                    conf.getExperimentRefs().clear();                    
+                    conf.getExperimentRefs().clear();
                 }
             }
         }
@@ -312,6 +342,13 @@ public class PsimiXmlExtractor {
 
                     } else {
                         ExperimentDescription ed = getExperimentById( file, eref.getRef() );
+
+                        if (ed == null){
+                            throw new PsimiXmlReaderException("The interaction "+interaction.getId()+" has a parameter which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                    " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                    " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                        }
+
                         pm.setExperimentRef( null );
                         pm.setExperiment( ed );
                     }
@@ -348,8 +385,27 @@ public class PsimiXmlExtractor {
         if ( participant.hasInteractionRef() ) {
             InteractionRef ref = participant.getInteractionRef();
             participant.setInteractionRef( null );
-            // TODO block if the ref is the same as the current interaction's id
-            participant.setInteraction( getInteractionById( fis, ref.getRef() ) ); // recursive call !!
+            Interaction parentInteraction = participant.getInteraction();
+
+            if (parentInteraction != null){
+                if (ref.getRef() == parentInteraction.getId()){
+                    throw new PsimiXmlReaderException("The interaction " + ref.getRef() + " has a participant ("+participant.getId()+") which is an interaction and this interaction is referring to itself." +
+                            " It is not a valid participant.");
+                }
+
+                Interaction i = getInteractionById(fis, ref.getRef());
+
+                if (i == null){
+                    throw new PsimiXmlReaderException("The participant "+participant.getId()+" refers to the interaction " + ref.getRef() + " but this interaction cannot be found by the parser. Please check that this interaction is described somewhere in the list of interactions.");
+                }
+
+                resolveReferences(fis, i);
+
+                participant.setInteraction(i); // recursive call !!
+            }
+            else {
+                throw new PsimiXmlReaderException("The  participant ("+participant.getId()+") doesn't have any interactions attached to it.");
+            }
         }
 
         boolean hasInteractionExperimentDescription = false;
@@ -370,6 +426,13 @@ public class PsimiXmlExtractor {
                 throw new PsimiXmlReaderException("Error while extracting XML snippet for interactor", e);
             }
             Interactor interactor = ppp.parseInteractor( iis );
+
+            if (interactor == null){
+                throw new PsimiXmlReaderException("The participant "+participant.getId()+" refers to the interactor " + ref.getRef() + " but this interactior cannot be found by the parser. " +
+                        "Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the interactors are described at the beginning of the file and" +
+                        " all the participants then use references to pre-declared interactors or all the interactors are only described at the level of the participants and no interactor reference can be used.");
+            }
+
             participant.setInteractorRef( null );
             participant.setInteractor( interactor );
         }
@@ -399,6 +462,12 @@ public class PsimiXmlExtractor {
                         for ( ExperimentRef eref : pim.getExperimentRefs()) {
 
                             ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The participant "+participant.getId()+" has a participant identification method which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
                             pim.getExperiments().add( ed );
                         }
                         pim.getExperimentRefs().clear();
@@ -430,6 +499,13 @@ public class PsimiXmlExtractor {
                         for ( ExperimentRef eref : er.getExperimentRefs()) {
 
                             ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The participant "+participant.getId()+" has an experimental role which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
+
                             er.getExperiments().add( ed );
                         }
                         er.getExperimentRefs().clear();
@@ -462,6 +538,12 @@ public class PsimiXmlExtractor {
                         for ( ExperimentRef eref : ep.getExperimentRefs()) {
 
                             ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The participant "+participant.getId()+" has an experimental preparation which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
                             ep.getExperiments().add( ed );
                         }
                         ep.getExperimentRefs().clear();
@@ -494,6 +576,12 @@ public class PsimiXmlExtractor {
                         for ( ExperimentRef eref : ei.getExperimentRefs()) {
 
                             ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The participant "+participant.getId()+" has an experimental interactor which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
                             ei.getExperiments().add( ed );
                         }
                         ei.getExperimentRefs().clear();
@@ -510,6 +598,12 @@ public class PsimiXmlExtractor {
                         throw new PsimiXmlReaderException("Error while extracting XML snippet for interactor", e);
                     }
                     Interactor interactor = ppp.parseInteractor( iis );
+
+                    if (interactor == null){
+                        throw new PsimiXmlReaderException("The participant "+participant.getId()+" has an experimental interactor which refers to the interactor " + ref.getRef() + " but this interactor cannot be found by the parser." +
+                                " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the interactors are described at the beginning of the file and" +
+                                " all the interactions and participants then use references to pre-declared interactors or all the interactors are only described at the level of the participant and no interactor reference can be used.");
+                    }
                     ei.setInteractorRef( null );
                     ei.setInteractor( interactor );
                 }
@@ -539,6 +633,13 @@ public class PsimiXmlExtractor {
                         for ( ExperimentRef eref : ho.getExperimentRefs()) {
 
                             ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The participant "+participant.getId()+" has a host organism which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
+
                             ho.getExperiments().add( ed );
                         }
                         ho.getExperimentRefs().clear();
@@ -570,6 +671,12 @@ public class PsimiXmlExtractor {
                         for ( ExperimentRef eref : c.getExperimentRefs()) {
 
                             ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The participant "+participant.getId()+" has a confidence score which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
                             c.getExperiments().add( ed );
                         }
                         c.getExperimentRefs().clear();
@@ -599,6 +706,13 @@ public class PsimiXmlExtractor {
                     else {
                         ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
                         pm.setExperiment( ed );
+
+                        if (ed == null){
+                            throw new PsimiXmlReaderException("The participant "+participant.getId()+" has a parameter which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                    " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                    " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                        }
+
                         pm.setExperimentRef(null);
                     }
                 }
@@ -628,6 +742,13 @@ public class PsimiXmlExtractor {
                         for ( ExperimentRef eref : feature.getExperimentRefs()) {
 
                             ExperimentDescription ed = getExperimentById( fis, eref.getRef() );
+
+                            if (ed == null){
+                                throw new PsimiXmlReaderException("The participant "+participant.getId()+" has a feature which refers to the experiment " + eref.getRef() + " but this experiment cannot be found by the parser." +
+                                        " Please check that you are not mixing the expanded PSI xml schema and the compact PSI xml schema together. Either all the experiments are described at the beginning of the file and" +
+                                        " all the interactions and participants then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
+                            }
+
                             feature.getExperiments().add( ed );
                         }
                         feature.getExperimentRefs().clear();
