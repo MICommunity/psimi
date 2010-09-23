@@ -55,21 +55,24 @@ public class InteractorOrganismRule extends Mi25InteractionRule {
         for ( Participant participant : interaction.getParticipants() ) {
 
             final Interactor interactor = participant.getInteractor();
-            final Organism organism = interactor.getOrganism();
 
-            Mi25Context context = new Mi25Context();
-            context.setInteractionId( interactionId );
-            context.setParticipantId( participant.getId() );
-            context.setInteractorId( interactor.getId() );
+            if (interactor != null){
+                final Organism organism = interactor.getOrganism();
 
-            if( organism == null ) {
-                messages.add( new ValidatorMessage( "Interactor without an organism defined.",
-                                                    MessageLevel.WARN,
-                                                    context,
-                                                    this ) );
-            } else {
-                RuleUtils.checkOrganism( ontologyManager, organism, context, messages, this,
-                                         "Interactor", "organism");
+                Mi25Context context = new Mi25Context();
+                context.setInteractionId( interactionId );
+                context.setParticipantId( participant.getId() );
+                context.setInteractorId( interactor.getId() );
+
+                if( organism == null ) {
+                    messages.add( new ValidatorMessage( "Interactor without an organism defined.",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                } else {
+                    RuleUtils.checkOrganism( ontologyManager, organism, context, messages, this,
+                            "Interactor", "organism");
+                }
             }
         }
 

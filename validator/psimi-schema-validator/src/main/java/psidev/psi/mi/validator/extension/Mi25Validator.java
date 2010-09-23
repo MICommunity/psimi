@@ -3,6 +3,7 @@ package psidev.psi.mi.validator.extension;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.ValidatorReport;
+import psidev.psi.mi.validator.extension.rules.PsimiXmlSchemaRule;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.model.Entry;
@@ -19,7 +20,6 @@ import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
-import psidev.psi.tools.validator.rules.cvmapping.CvRuleManager;
 import psidev.psi.tools.validator.schema.SaxMessage;
 import psidev.psi.tools.validator.schema.SaxReport;
 import psidev.psi.tools.validator.schema.SaxValidatorHandler;
@@ -170,7 +170,7 @@ public class Mi25Validator extends Validator {
 
         } catch ( Exception e ) {
             throw new ValidatorException( "Unable to process input file:" + file.getAbsolutePath(), e );
-        } 
+        }
     }
 
     /**
@@ -261,74 +261,83 @@ public class Mi25Validator extends Validator {
 
         List<IndexedEntry> entries = null;
 
-        // Run CV mapping Rules first (if any)
-        if( getCvRuleManager() != null ) {
-            if( entries == null ) {
-                PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
-                entries = psiReader.getIndexedEntries();
-            }
+        try {
+            // Run CV mapping Rules first (if any)
+            if( getCvRuleManager() != null ) {
+                if( entries == null ) {
+                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
+                    entries = psiReader.getIndexedEntries();
+                }
 
-            for ( IndexedEntry entry : entries ) {
-                Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
-                while ( interactionIterator.hasNext() ) {
-                    Interaction interaction = interactionIterator.next();
+                for ( IndexedEntry entry : entries ) {
+                    Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
+                    while ( interactionIterator.hasNext() ) {
+                        Interaction interaction = interactionIterator.next();
 
-                    // check using cv mapping rules
-                    Collection<ValidatorMessage> interactionMessages =
-                            super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
+                        // check using cv mapping rules
+                        Collection<ValidatorMessage> interactionMessages =
+                                super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
 
-                    interactionMessages = convertToMi25Messages( interactionMessages, interaction );
+                        interactionMessages = convertToMi25Messages( interactionMessages, interaction );
 
-                    // append messages to the global collection
-                    messages.addAll( interactionMessages );
+                        // append messages to the global collection
+                        messages.addAll( interactionMessages );
+                    }
                 }
             }
-        }
 
 
-        // then run the object rules (if any)
-        final Set<ObjectRule> rules = getObjectRules();
-        if ( rules != null && !rules.isEmpty() ) {
-            // now that we know that we have at least one rule, it is worth parsing the data.
-            if( entries == null ) {
-                PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
-                entries = psiReader.getIndexedEntries();
-            }
-            
-            for ( IndexedEntry entry : entries ) {
+            // then run the object rules (if any)
+            final Set<ObjectRule> rules = getObjectRules();
+            if ( rules != null && !rules.isEmpty() ) {
+                // now that we know that we have at least one rule, it is worth parsing the data.
+                if( entries == null ) {
+                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
+                    entries = psiReader.getIndexedEntries();
+                }
 
-                final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
-                while ( experimentIterator.hasNext() ) {
-                    ExperimentDescription experiment = experimentIterator.next();
+                for ( IndexedEntry entry : entries ) {
 
-                    // run the experiment specialized rules
-                    final Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
-                    if( !validatorMessages.isEmpty() ) {
-                        long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
-                        updateLineNumber( validatorMessages, lineNumber );
+                    final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
+                    while ( experimentIterator.hasNext() ) {
+                        ExperimentDescription experiment = experimentIterator.next();
+
+                        // run the experiment specialized rules
+                        final Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
+                        if( !validatorMessages.isEmpty() ) {
+                            long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
+                            updateLineNumber( validatorMessages, lineNumber );
+                        }
+
+                        messages.addAll( validatorMessages );
                     }
 
-                    messages.addAll( validatorMessages );
-                }
+                    // now process interactions
+                    Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
+                    while ( interactionIterator.hasNext() ) {
+                        Interaction interaction = interactionIterator.next();
 
-                // now process interactions
-                Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
-                while ( interactionIterator.hasNext() ) {
-                    Interaction interaction = interactionIterator.next();
+                        // run the interaction specialized rules
+                        Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
 
-                    // run the interaction specialized rules
-                    Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
+                        // add line number
+                        if( !interactionMessages.isEmpty() ) {
+                            long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
+                            updateLineNumber( interactionMessages, lineNumber );
+                        }
 
-                    // add line number
-                    if( !interactionMessages.isEmpty() ) {
-                        long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
-                        updateLineNumber( interactionMessages, lineNumber );
+                        // append messages to the global collection
+                        messages.addAll( interactionMessages );
                     }
-
-                    // append messages to the global collection
-                    messages.addAll( interactionMessages );
                 }
             }
+        } catch(Exception e){
+            PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
+
+            // run the interaction specialized rules
+            Collection<ValidatorMessage> schemaMessages = schemaRule.createMessageFromException(e);
+
+            messages.addAll(schemaMessages);
         }
     }
 

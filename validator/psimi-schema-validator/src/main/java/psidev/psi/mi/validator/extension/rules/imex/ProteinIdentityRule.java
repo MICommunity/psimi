@@ -3,16 +3,22 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.DbReference;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Interactor;
+import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.tools.ontology_manager.OntologyManager;
+import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
+import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
  * <b> Checks that proteins have UNIPROT and/or REFSEQ identity.</b>
@@ -31,7 +37,7 @@ public class ProteinIdentityRule extends Mi25InteractionRule {
         setName( "Protein identity check" );
 
         setDescription( "Check that each protein has an identity cross reference to the sequence database: UniProtKB and/or RefSeq" );
-        
+
         addTip( "UniProtKb accession in the PSI-MI ontology is " + UNIPROTKB_MI_REF );
         addTip( "RefSeq accession in the PSI-MI ontology is " + REFSEQ_MI_REF );
         addTip( "Identity accession in the PSI-MI ontology is " + IDENTITY_MI_REF );
@@ -58,24 +64,28 @@ public class ProteinIdentityRule extends Mi25InteractionRule {
 
             int participantId = participant.getId();
             final Interactor interactor = participant.getInteractor();
-            int interactorId = interactor.getId();
 
-            if( RuleUtils.isProtein( ontologyManager, interactor )) {
+            if (interactor != null){
+                int interactorId = interactor.getId();
 
-                final Collection<DbReference> identities =
-                        RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                                                    Arrays.asList( IDENTITY_MI_REF ),
-                                                    Arrays.asList( UNIPROTKB_MI_REF, REFSEQ_MI_REF ),
-                                                    null);
+                if( RuleUtils.isProtein( ontologyManager, interactor )) {
 
-                if( identities.isEmpty() ) {
-                    Mi25Context context = buildContext( interactionId, participantId, interactorId );
-                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity' ",
-                                                        MessageLevel.WARN,
-                                                        context,
-                                                        this ) );
+                    final Collection<DbReference> identities =
+                            RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
+                                    Arrays.asList( IDENTITY_MI_REF ),
+                                    Arrays.asList( UNIPROTKB_MI_REF, REFSEQ_MI_REF ),
+                                    null);
+
+                    if( identities.isEmpty() ) {
+                        Mi25Context context = buildContext( interactionId, participantId, interactorId );
+                        messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity' ",
+                                MessageLevel.WARN,
+                                context,
+                                this ) );
+                    }
                 }
             }
+
         } // for participants
 
         return messages;
