@@ -334,10 +334,17 @@ public class Mi25Validator extends Validator {
         } catch(Exception e){
             PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
 
-            // run the interaction specialized rules
-            Collection<ValidatorMessage> schemaMessages = schemaRule.createMessageFromException(e);
+            StringBuffer messageBuffer = schemaRule.createMessageFromException(e);
+            messageBuffer.append("\n The validator reported at least " + messages.size() + " messages but the error in the xml file need " +
+                    "to be fixed before finishing the validation of the file.");
 
-            messages.addAll(schemaMessages);
+            Mi25Context context = new Mi25Context();
+
+            messages.clear();
+            messages.add( new ValidatorMessage( messageBuffer.toString(),
+                                MessageLevel.FATAL,
+                                context,
+                                schemaRule ) );
         }
     }
 
