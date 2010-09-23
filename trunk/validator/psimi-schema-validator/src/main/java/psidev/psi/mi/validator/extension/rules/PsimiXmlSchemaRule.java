@@ -19,6 +19,14 @@ import java.util.Collection;
 public class PsimiXmlSchemaRule extends ObjectRule<Object>{
     public PsimiXmlSchemaRule(OntologyManager ontologyManager) {
         super(ontologyManager);
+
+        setName( "PSI-XML file check" );
+
+        setDescription( "Check that the xml file doesn't contain FATAL errors." );
+
+        addTip( "check that you don't mix the expanded PSI MI xml with the compact one. Use only experimentRef and interactorRef when all the experiments and interactors " +
+                "are defined at the beginning of the file (not at the level of the interaction)" );
+        addTip( "If the error is too obscure, contact the intact team (intact-help@ebi.ac.uk) with your file attached to the e-mail." );
     }
 
     @Override
