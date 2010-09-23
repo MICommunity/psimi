@@ -53,25 +53,27 @@ public class InteractorNameRule extends Mi25InteractionRule {
         for ( Participant participant : interaction.getParticipants() ) {
 
             int participantId = participant.getId();
-            final Names names = participant.getInteractor().getNames();
 
-            String fullname = names.getFullName();
-            String shortlabel = names.getShortLabel();
-            int interactorId = participant.getInteractor().getId();
+            if (participant.getInteractor() != null){
+                final Names names = participant.getInteractor().getNames();
 
-            if ( StringUtils.isEmpty( fullname ) && StringUtils.isEmpty( shortlabel ) ) {
+                String fullname = names.getFullName();
+                String shortlabel = names.getShortLabel();
+                int interactorId = participant.getInteractor().getId();
 
-                Mi25Context context = new Mi25Context();
-                context.setInteractionId( interactionId );
-                context.setParticipantId( participantId );
-                context.setInteractorId( interactorId );
+                if ( StringUtils.isEmpty( fullname ) && StringUtils.isEmpty( shortlabel ) ) {
 
-                messages.add( new ValidatorMessage( "Interactor should have either a shortlabel and/or a fullname ",
-                                                    MessageLevel.WARN,
-                                                    context,
-                                                    this ) );
-            } 
+                    Mi25Context context = new Mi25Context();
+                    context.setInteractionId( interactionId );
+                    context.setParticipantId( participantId );
+                    context.setInteractorId( interactorId );
 
+                    messages.add( new ValidatorMessage( "Interactor should have either a shortlabel and/or a fullname ",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+            }
         } // for participants
 
         return messages;
