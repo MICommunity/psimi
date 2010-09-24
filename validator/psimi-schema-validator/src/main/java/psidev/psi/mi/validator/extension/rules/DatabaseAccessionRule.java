@@ -236,8 +236,7 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
                         String regularExpression = extractRegularExpressionFromOLS(value);
 
                         if (regularExpression != null){
-                            Pattern pattern = Pattern.compile(regularExpression);
-                            return pattern;
+                            return Pattern.compile(regularExpression);
                         }
                     }
                 }
