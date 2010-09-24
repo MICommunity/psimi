@@ -37,14 +37,38 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
     public static final Log log = LogFactory.getLog( DatabaseAccessionRule.class );
 
     /**
-     * The cache for OLS
-     */
-    protected GeneralCacheAdministrator admin;
-
-    /**
      * The cache configuration file
      */
-    private final String cacheConfig = "olsontology-oscache.properties";
+    private static final String cacheConfig = "olsontology-oscache.properties";
+
+    /**
+     * The cache for OLS
+     */
+    //protected GeneralCacheAdministrator admin;
+
+    private static ThreadLocal<GeneralCacheAdministrator> admin = new
+            ThreadLocal<GeneralCacheAdministrator>() {
+                @Override
+                protected GeneralCacheAdministrator initialValue() {
+                    // setting up the cache for OLS
+                    Properties cacheProps;
+                    InputStream is = this.getClass().getClassLoader().getResourceAsStream( cacheConfig );
+                    cacheProps = new Properties();
+                    try {
+                        cacheProps.load( is );
+                    } catch ( IOException e ) {
+                        log.error( "Failed to load cache configuration properties for database cross reference checking: " + cacheConfig, e );
+                    }
+                    if ( cacheProps.isEmpty() ) {
+                        log.warn( "Using default cache configuration for database cross reference checking!" );
+                        return new GeneralCacheAdministrator();
+                    } else {
+                        log.info( "Using custom cache configuration from file: " + cacheConfig );
+                        return new GeneralCacheAdministrator( cacheProps );
+                    }
+                }
+            };
+
 
     /**
      * The OLS query interface
@@ -79,7 +103,7 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
         addTip( "You can find all the regular expressions matching each database at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0444&termName=database%20citation" );
 
         // setting up the cache for OLS
-        Properties cacheProps;
+        /*Properties cacheProps;
         InputStream is = this.getClass().getClassLoader().getResourceAsStream( cacheConfig );
         cacheProps = new Properties();
         try {
@@ -93,7 +117,7 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
         } else {
             log.info( "Using custom cache configuration from file: " + cacheConfig );
             admin = new GeneralCacheAdministrator( cacheProps );
-        }
+        }*/
 
         // setting up OLS client
         try {
@@ -132,8 +156,8 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
      * @return the object associated with this key in the cache.
      * @throws com.opensymphony.oscache.base.NeedsRefreshException : the key doesn't exist in the cache or is outdated
      */
-    private synchronized Object getFromCache( String myKey ) throws NeedsRefreshException {
-        return admin.getFromCache( myKey );
+    private Object getFromCache( String myKey ) throws NeedsRefreshException {
+        return DatabaseAccessionRule.admin.get().getFromCache( myKey );
     }
 
     /**
@@ -142,8 +166,8 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
      * @param myKey : the key to put in the cache
      * @param result : the associated object to put in the cache
      */
-    private synchronized void putInCache( String myKey, Object result ) {
-        admin.putInCache( myKey, result );
+    private void putInCache( String myKey, Object result ) {
+        DatabaseAccessionRule.admin.get().putInCache( myKey, result );
     }
 
     /**
@@ -151,8 +175,8 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
      * The method is synchronized to avoid concurrent access/modification when accessing the cache
      * @param myKey : the key to find in the cache
      */
-    private synchronized void cancelUpdate(String myKey){
-        admin.cancelUpdate( myKey );
+    private void cancelUpdate(String myKey){
+        DatabaseAccessionRule.admin.get().cancelUpdate( myKey );
     }
 
     /**
