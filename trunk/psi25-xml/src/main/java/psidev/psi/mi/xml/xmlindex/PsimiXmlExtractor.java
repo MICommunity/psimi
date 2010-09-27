@@ -409,9 +409,7 @@ public class PsimiXmlExtractor {
 
         boolean hasInteractionExperimentDescription = false;
 
-        Interaction interaction = participant.getInteraction();
-
-        if( interaction != null && !interaction.getExperiments().isEmpty() ) {
+        if( parentInteraction != null && !parentInteraction.getExperiments().isEmpty() ) {
             hasInteractionExperimentDescription = true;
         }
 
@@ -441,16 +439,16 @@ public class PsimiXmlExtractor {
             for ( ParticipantIdentificationMethod pim : participant.getParticipantIdentificationMethods() ) {
                 if ( pim.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : pim.getExperimentRefs()) {
 
-                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
                             if( ed != null) {
                                 pim.getExperiments().add( ed );
                             }
                             else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
-                                        interaction.getId()+") has a participant identification method which refers to experiment ref "+ eref.getRef() +"," +
+                                        parentInteraction.getId()+") has a participant identification method which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
                                         " This is not a supported use of the PSI-MI XML format." );
                             }
@@ -479,15 +477,15 @@ public class PsimiXmlExtractor {
             for ( ExperimentalRole er : participant.getExperimentalRoles() ) {
                 if ( er.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription  && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : er.getExperimentRefs()) {
-                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
                             if( ed != null ) {
                                 er.getExperiments().add( ed );
                             }
                             else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
-                                        interaction.getId()+") has an experimental role which refers to experiment ref "+ eref.getRef() +"," +
+                                        parentInteraction.getId()+") has an experimental role which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
                                         " This is not a supported use of the PSI-MI XML format." );
                             }
@@ -517,16 +515,16 @@ public class PsimiXmlExtractor {
             for ( ExperimentalPreparation ep : participant.getExperimentalPreparations() ) {
                 if ( ep.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription  && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : ep.getExperimentRefs()) {
-                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
                             if( ed != null ) {
                                 ep.getExperiments().add( ed );
                             }
                             else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
-                                        interaction.getId()+") has an experimental preparation which refers to experiment ref "+ eref.getRef() +"," +
+                                        parentInteraction.getId()+") has an experimental preparation which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
                                         " This is not a supported use of the PSI-MI XML format." );
                             }
@@ -555,16 +553,16 @@ public class PsimiXmlExtractor {
             for ( ExperimentalInteractor ei : participant.getExperimentalInteractors() ) {
                 if ( ei.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription  && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : ei.getExperimentRefs()) {
-                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
                             if( ed != null ) {
                                 ei.getExperiments().add( ed );
                             }
                             else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
-                                        interaction.getId()+") has an experimental interactor which refers to experiment ref "+ eref.getRef() +"," +
+                                        parentInteraction.getId()+") has an experimental interactor which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
                                         " This is not a supported use of the PSI-MI XML format." );
                             }
@@ -612,16 +610,16 @@ public class PsimiXmlExtractor {
         if ( participant.hasHostOrganisms() ) {
             for ( HostOrganism ho : participant.getHostOrganisms() ) {
                 if ( ho.hasExperimentRefs() ) {
-                    if( hasInteractionExperimentDescription  && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : ho.getExperimentRefs()) {
-                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
                             if( ed != null ) {
                                 ho.getExperiments().add( ed );
                             }
                             else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
-                                        interaction.getId()+") has an organism which refers to experiment ref "+ eref.getRef() +"," +
+                                        parentInteraction.getId()+") has an organism which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
                                         " This is not a supported use of the PSI-MI XML format." );
                             }
@@ -650,16 +648,16 @@ public class PsimiXmlExtractor {
         if ( participant.hasConfidences() ) {
             for ( Confidence c : participant.getConfidenceList() ) {
                 if ( c.hasExperimentRefs() ) {
-                    if( hasInteractionExperimentDescription  && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : c.getExperimentRefs()) {
-                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
                             if( ed != null ) {
                                 c.getExperiments().add( ed );
                             }
                             else {
                                 throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
-                                        interaction.getId()+") has a confidence which refers to experiment ref "+ eref.getRef() +"," +
+                                        parentInteraction.getId()+") has a confidence which refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
                                         " This is not a supported use of the PSI-MI XML format." );
                             }
@@ -688,8 +686,8 @@ public class PsimiXmlExtractor {
             for ( Parameter pm : participant.getParameters() ) {
                 if ( pm.hasExperimentRef() ) {
                     ExperimentRef eref = pm.getExperimentRef();
-                    if( hasInteractionExperimentDescription  && !interaction.getExperiments().isEmpty() ) {
-                        ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                        ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
                         if( ed != null ) {
                             pm.setExperiment(ed);
@@ -697,7 +695,7 @@ public class PsimiXmlExtractor {
                         }
                         else {
                             throw new PsimiXmlReaderException( "The participant ("+ participant.getId() +") defined in interaction (id="+
-                                    interaction.getId()+") has a parameter which refers to experiment ref "+ eref.getRef() +"," +
+                                    parentInteraction.getId()+") has a parameter which refers to experiment ref "+ eref.getRef() +"," +
                                     "however, this experiment isn't defined in this interaction." +
                                     " This is not a supported use of the PSI-MI XML format." );
                         }
@@ -721,16 +719,16 @@ public class PsimiXmlExtractor {
         if ( participant.hasFeatures() ) {
             for ( Feature feature : participant.getFeatures() ) {
                 if ( feature.hasExperimentRefs() ) {
-                    if( hasInteractionExperimentDescription  && !interaction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : feature.getExperimentRefs()) {
-                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
+                            ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
                             if( ed != null ) {
                                 feature.getExperiments().add( ed );
                             }
                             else {
                                 throw new PsimiXmlReaderException( "The feature ("+ feature.getId() +") defined in the participant (id="+ participant.getId() +") of the interaction (id="+
-                                        interaction.getId()+") refers to experiment ref "+ eref.getRef() +"," +
+                                        parentInteraction.getId()+") refers to experiment ref "+ eref.getRef() +"," +
                                         "however, this experiment isn't defined in this interaction." +
                                         " This is not a supported use of the PSI-MI XML format." );
                             }
