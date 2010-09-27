@@ -210,7 +210,7 @@ public class PsimiXmlExtractor {
         }
 
         for ( Participant p : interaction.getParticipants() ) {
-            resolveReferences( file, p );
+            resolveReferences( file, p , interaction);
         }
 
         // inferred interaction's experiments
@@ -379,13 +379,12 @@ public class PsimiXmlExtractor {
      * @param participant the participant to update.
      * @throws PsimiXmlReaderException
      */
-    public void resolveReferences( File fis, Participant participant ) throws PsimiXmlReaderException {
+    public void resolveReferences( File fis, Participant participant, Interaction parentInteraction ) throws PsimiXmlReaderException {
 
         // interactors
         if ( participant.hasInteractionRef() ) {
             InteractionRef ref = participant.getInteractionRef();
             participant.setInteractionRef( null );
-            Interaction parentInteraction = participant.getInteraction();
 
             if (parentInteraction != null){
                 if (ref.getRef() == parentInteraction.getId()){

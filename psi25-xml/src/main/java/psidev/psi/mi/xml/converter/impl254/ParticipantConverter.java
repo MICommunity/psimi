@@ -11,6 +11,7 @@ import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
 import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml254.jaxb.AttributeList;
 import psidev.psi.mi.xml254.jaxb.ConfidenceList;
 import psidev.psi.mi.xml254.jaxb.HostOrganismList;
 import psidev.psi.mi.xml254.jaxb.ParameterList;
@@ -41,6 +42,7 @@ public class ParticipantConverter {
     private ExperimentalRoleConverter experimentalRoleConverter;
     private ExperimentalPreparationConverter experimentalPreparationConverter;
     private ParticipantIdentificationMethodConverter participantIdentificationMethodConverter;
+    private AttributeConverter attributeConverter;
 
     /**
      * Handles DAOs.
@@ -63,6 +65,7 @@ public class ParticipantConverter {
         experimentalRoleConverter = new ExperimentalRoleConverter();
         experimentalPreparationConverter = new ExperimentalPreparationConverter();
         participantIdentificationMethodConverter = new ParticipantIdentificationMethodConverter();
+        attributeConverter = new AttributeConverter();
     }
 
     ///////////////////////////////
@@ -147,7 +150,11 @@ public class ParticipantConverter {
             if ( mInteraction == null ) {
                 mParticipant.setInteractionRef( new InteractionRef( jParticipant.getInteractionRef() ) );
             }
+            else {
+                mParticipant.setInteraction( mInteraction);
+            }
         }
+
 
         if ( !foundInteractor ) {
             throw new ConverterException( "Could not find either an interactor or an interaction for participant (id=" + jParticipant.getId() + ")." );
@@ -237,6 +244,16 @@ public class ParticipantConverter {
             }
         }
 
+        // attributes
+        if ( jParticipant.getAttributeList() != null ) {
+            for (psidev.psi.mi.xml254.jaxb.Attribute attribute : jParticipant.getAttributeList().getAttributes()) {
+
+                mParticipant.getAttributes()
+                        .add( attributeConverter.fromJaxb( attribute ) );
+
+            }
+        }
+
         // store the participant via DAO
         PsiDAO<Participant> participantDAO = factory.getParticipantDAO();
         participantDAO.store( mParticipant );
@@ -264,17 +281,17 @@ public class ParticipantConverter {
 
         // interactor / interaction
         if ( mParticipant.hasInteractor() || mParticipant.hasInteractorRef()) {
-        	// compact form: export ref
-        	if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
-    				if ( mParticipant.hasInteractorRef() )
-    					jParticipant.setInteractorRef( mParticipant.getInteractorRef().getRef() );
-    				else
-    					jParticipant.setInteractorRef( mParticipant.getInteractor().getId() );
-        	} 
-        	// not compact form : export the full interactor
-        	else {
-        		jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
-        	}
+            // compact form: export ref
+            if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
+                if ( mParticipant.hasInteractorRef() )
+                    jParticipant.setInteractorRef( mParticipant.getInteractorRef().getRef() );
+                else
+                    jParticipant.setInteractorRef( mParticipant.getInteractor().getId() );
+            }
+            // not compact form : export the full interactor
+            else {
+                jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
+            }
         } else if ( mParticipant.hasInteraction() ) {
             jParticipant.setInteractionRef( mParticipant.getInteraction().getId() );
         } else {
@@ -386,6 +403,20 @@ public class ParticipantConverter {
 
                 jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods()
                         .add( participantIdentificationMethodConverter.toJaxb( mParticipantIdentificationMethod ) );
+            }
+        }
+
+        // Attributes
+        if ( mParticipant.hasAttributes() ) {
+            if ( jParticipant.getAttributeList() == null ) {
+                jParticipant.setAttributeList( new AttributeList() );
+            }
+
+            for ( Attribute mAttribute :
+                    mParticipant.getAttributes() ) {
+
+                jParticipant.getAttributeList().getAttributes()
+                        .add( attributeConverter.toJaxb( mAttribute ) );
             }
         }
 

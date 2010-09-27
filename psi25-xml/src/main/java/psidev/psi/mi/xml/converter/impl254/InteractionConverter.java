@@ -193,7 +193,6 @@ public class InteractionConverter {
             for ( psidev.psi.mi.xml254.jaxb.Participant jParticipant : jInteraction.getParticipantList().getParticipants() ) {
                 Participant participant = participantConverter.fromJaxb( jParticipant );
                 mInteraction.getParticipants().add( participant );
-                participant.setInteraction( mInteraction );
             }
         }
 
@@ -337,6 +336,7 @@ public class InteractionConverter {
             if ( jInteraction.getParticipantList() == null ) {
                 jInteraction.setParticipantList( new ParticipantList() );
             }
+
             for ( Participant mParticipant : mInteraction.getParticipants() ) {
                 jInteraction.getParticipantList().getParticipants().add( participantConverter.toJaxb( mParticipant ) );
             }
