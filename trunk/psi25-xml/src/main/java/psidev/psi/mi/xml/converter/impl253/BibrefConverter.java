@@ -75,16 +75,27 @@ public class BibrefConverter {
 
         psidev.psi.mi.xml253.jaxb.BibrefType jBibref = new psidev.psi.mi.xml253.jaxb.BibrefType();
 
-        // 1. set attributes
+        // 1. set cross reference
 
-        // 2. set encapsulated objects
-        for ( psidev.psi.mi.xml.model.Attribute mAttribute : mBibref.getAttributes() ) {
-            jBibref.getAttributeList().getAttributes().add( attributeConverter.toJaxb( mAttribute ) );
+        if (mBibref.getXref() != null){
+            jBibref.setXref( xrefConverter.toJaxb( mBibref.getXref() ) );
         }
 
-        jBibref.setXref( xrefConverter.toJaxb( mBibref.getXref() ) );
+        // 2. set encapsulated objects
 
+        if (!mBibref.getAttributes().isEmpty()){
+            psidev.psi.mi.xml253.jaxb.AttributeListType attributeList = jBibref.getAttributeList();
+            if ( attributeList == null ) {
+                attributeList =  new psidev.psi.mi.xml253.jaxb.AttributeListType();
+                jBibref.setAttributeList(attributeList);
+            }
+
+            for ( psidev.psi.mi.xml.model.Attribute mAttribute : mBibref.getAttributes() ) {
+                attributeList.getAttributes().add( attributeConverter.toJaxb( mAttribute ) );
+            }
+        }
 
         return jBibref;
+        
     }
 }

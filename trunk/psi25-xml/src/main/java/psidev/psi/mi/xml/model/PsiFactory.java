@@ -119,7 +119,6 @@ public final class PsiFactory {
 
         for (Participant participant : participants) {
             interaction.getParticipants().add(participant);
-            participant.setInteraction(interaction);
         }
 
         interaction.getInteractionTypes().add(interactionType);

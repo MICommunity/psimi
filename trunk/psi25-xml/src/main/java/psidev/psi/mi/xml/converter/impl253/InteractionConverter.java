@@ -186,7 +186,6 @@ public class InteractionConverter {
             for ( ParticipantType jParticipant : jInteraction.getParticipantList().getParticipants() ) {
                 Participant participant = participantConverter.fromJaxb( jParticipant );
                 mInteraction.getParticipants().add( participant );
-                participant.setInteraction( mInteraction );
             }
         }
 

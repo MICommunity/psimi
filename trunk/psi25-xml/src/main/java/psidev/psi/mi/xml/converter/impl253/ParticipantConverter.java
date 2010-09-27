@@ -11,6 +11,7 @@ import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
 import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml253.jaxb.AttributeListType;
 import psidev.psi.mi.xml253.jaxb.ConfidenceListType;
 import psidev.psi.mi.xml253.jaxb.FeatureElementType;
 import psidev.psi.mi.xml253.jaxb.ParticipantType;
@@ -41,6 +42,7 @@ public class ParticipantConverter {
     private ExperimentalRoleConverter experimentalRoleConverter;
     private ExperimentalPreparationConverter experimentalPreparationConverter;
     private ParticipantIdentificationMethodConverter participantIdentificationMethodConverter;
+    private AttributeConverter attributeConverter;
 
     /**
      * Handles DAOs.
@@ -63,6 +65,7 @@ public class ParticipantConverter {
         experimentalRoleConverter = new ExperimentalRoleConverter();
         experimentalPreparationConverter = new ExperimentalPreparationConverter();
         participantIdentificationMethodConverter = new ParticipantIdentificationMethodConverter();
+        this.attributeConverter = new AttributeConverter();
     }
 
     ///////////////////////////////
@@ -146,6 +149,9 @@ public class ParticipantConverter {
             mInteraction = factory.getInteractionDAO().retreive( jParticipant.getInteractionRef() );
             if ( mInteraction == null ) {
                 mParticipant.setInteractionRef( new InteractionRef( jParticipant.getInteractionRef() ) );
+            }
+            else {
+                mParticipant.setInteraction( mInteraction);
             }
         }
 
@@ -237,6 +243,15 @@ public class ParticipantConverter {
             }
         }
 
+        // attributes
+        if ( jParticipant.getAttributeList() != null ) {
+            for (AttributeListType.Attribute attribute : jParticipant.getAttributeList().getAttributes()) {
+
+                mParticipant.getAttributes()
+                        .add( attributeConverter.fromJaxb( attribute ) );
+            }
+        }
+
         // store the participant via DAO
         PsiDAO<Participant> participantDAO = factory.getParticipantDAO();
         participantDAO.store( mParticipant );
@@ -263,17 +278,17 @@ public class ParticipantConverter {
         // 2. set sub elements
         // interactor / interaction
         if ( mParticipant.hasInteractor() || mParticipant.hasInteractorRef() ) {
-        	// compact form: export ref
-        	if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
-        			if ( mParticipant.hasInteractorRef() )
-        				jParticipant.setInteractorRef( mParticipant.getInteractorRef().getRef() );
-        			else
-        				jParticipant.setInteractorRef( mParticipant.getInteractor().getId() );
-        	}
+            // compact form: export ref
+            if (PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
+                if ( mParticipant.hasInteractorRef() )
+                    jParticipant.setInteractorRef( mParticipant.getInteractorRef().getRef() );
+                else
+                    jParticipant.setInteractorRef( mParticipant.getInteractor().getId() );
+            }
             // not compact form : export the full interactor
-        	else {
-        		jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
-        	}        	
+            else {
+                jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
+            }
         } else if ( mParticipant.hasInteraction() ) {
             jParticipant.setInteractionRef( mParticipant.getInteraction().getId() );
         } else {
@@ -385,6 +400,20 @@ public class ParticipantConverter {
 
                 jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods()
                         .add( participantIdentificationMethodConverter.toJaxb( mParticipantIdentificationMethod ) );
+            }
+        }
+
+        // Attributes
+        if ( mParticipant.hasAttributes() ) {
+            if ( jParticipant.getAttributeList() == null ) {
+                jParticipant.setAttributeList( new AttributeListType() );
+            }
+
+            for ( Attribute mAttribute :
+                    mParticipant.getAttributes() ) {
+
+                jParticipant.getAttributeList().getAttributes()
+                        .add( attributeConverter.toJaxb( mAttribute ) );
             }
         }
 

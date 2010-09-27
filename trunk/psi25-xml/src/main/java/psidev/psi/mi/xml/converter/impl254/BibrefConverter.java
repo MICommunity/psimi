@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import psidev.psi.mi.xml254.jaxb.AttributeList;
+
 /**
  * Converter to and from JAXB of the class Bibref.
  *
@@ -74,14 +76,25 @@ public class BibrefConverter {
 
         psidev.psi.mi.xml254.jaxb.Bibref jBibref = new psidev.psi.mi.xml254.jaxb.Bibref();
 
-        // 1. set attributes
+        // 1. set cross reference
 
-        // 2. set encapsulated objects
-        for ( psidev.psi.mi.xml.model.Attribute mAttribute : mBibref.getAttributes() ) {
-            jBibref.getAttributeList().getAttributes().add( attributeConverter.toJaxb( mAttribute ) );
+        if (mBibref.getXref() != null){
+            jBibref.setXref( xrefConverter.toJaxb( mBibref.getXref() ) );
         }
 
-        jBibref.setXref( xrefConverter.toJaxb( mBibref.getXref() ) );
+        // 2. set encapsulated objects
+
+        if (!mBibref.getAttributes().isEmpty()){
+            psidev.psi.mi.xml254.jaxb.AttributeList attributeList = jBibref.getAttributeList();
+            if (attributeList == null){
+               attributeList =  new psidev.psi.mi.xml254.jaxb.AttributeList();
+                jBibref.setAttributeList(attributeList);
+            }
+            
+            for ( psidev.psi.mi.xml.model.Attribute mAttribute : mBibref.getAttributes() ) {
+                attributeList.getAttributes().add( attributeConverter.toJaxb( mAttribute ) );
+            }
+        }
 
 
         return jBibref;
