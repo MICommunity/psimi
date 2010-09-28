@@ -3,6 +3,7 @@ package psidev.psi.mi;
 import org.apache.commons.io.FileUtils;
 import psidev.psi.mi.validator.ValidatorReport;
 import psidev.psi.mi.validator.extension.Mi25Validator;
+import psidev.psi.mi.xml.converter.impl253.ParticipantConverter;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -163,6 +164,67 @@ public class ValidatorClient {
         return false;
     }
 
+    public static boolean isFATALMessage(ValidatorMessage message){
+
+        return MessageLevel.FATAL.equals(message.getLevel());
+    }
+
+    public static boolean isERRORMessage(ValidatorMessage message){
+
+        return MessageLevel.ERROR.equals(message.getLevel());
+    }
+
+    public static boolean isWARNINGMessage(ValidatorMessage validatorMessage){
+
+        return MessageLevel.WARN.equals(validatorMessage.getLevel());
+    }
+
+    public static boolean isINFOMessage(ValidatorMessage validatorMessage){
+
+        return MessageLevel.INFO.equals(validatorMessage.getLevel());
+    }
+
+    public static MessageLevel getHigherMessageLevelFrom(Collection<ValidatorMessage> validatorMessages){
+
+        boolean hasFatal = false;
+        boolean hasError = false;
+        boolean hasWarning = false;
+        boolean hasInfo = false;
+
+        for (ValidatorMessage message : validatorMessages){
+
+            if (isFATALMessage(message)){
+                hasFatal = true;
+            }
+            else if (isERRORMessage(message)){
+                hasError = true;
+            }
+            else if (isWARNINGMessage(message)){
+                hasWarning = true;
+            }
+            else if (isINFOMessage(message)){
+                hasInfo = true;
+            }
+        }
+
+
+        if (hasFatal){
+            return MessageLevel.FATAL;
+        }
+        else if (hasError){
+            return MessageLevel.ERROR;
+        }
+        else if (hasWarning){
+            return MessageLevel.WARN;
+        }
+        else if (hasInfo){
+            return MessageLevel.INFO;
+        }
+        
+        return null;
+    }
+
+
     /**
      * Validate the file and write the results in the same directory with a name report-filename.txt
      * @param file : the file to validate
@@ -194,12 +256,24 @@ public class ValidatorClient {
 
         if (indexExtension != -1){
             if (validatorReport.hasSyntaxMessages() || validatorReport.hasSemanticMessages()){
-                // the name of the file without its extension
-                fileName = exactFileName.substring(0, indexExtension) + "_invalid.txt";
+
+                Collection<ValidatorMessage> totalMessages = validatorReport.getSemanticMessages();
+                totalMessages.addAll(validatorReport.getSyntaxMessages());
+
+                MessageLevel extension = getHigherMessageLevelFrom(totalMessages);
+
+                if (extension != null){
+                    // the name of the file without its extension
+                    fileName = exactFileName.substring(0, indexExtension) + "_"+extension.toString()+".txt";
+                }
+                else {
+                    // the name of the file without its extension
+                    fileName = exactFileName.substring(0, indexExtension) + "_invalid.txt";
+                }
             }
             else {
-               // the name of the file without its extension
-                fileName = exactFileName.substring(0, indexExtension) + "_valid.txt"; 
+                // the name of the file without its extension
+                fileName = exactFileName.substring(0, indexExtension) + "_valid.txt";
             }
         }
 
@@ -279,7 +353,6 @@ public class ValidatorClient {
         System.out.println( "levelThreshold = " + levelThreshold );
 
         File dir = new File(filename);
-
         try {
             Mi25Validator validator = buildValidator(validationScope);
 
