@@ -417,7 +417,7 @@ public class Xml2Tab {
             for ( Interaction interaction : entry.getInteractions() ) {
 
                 // apply interaction expansion if required.
-                if ( expansionStrategy != null && interaction.getParticipants().size() > 2) {
+                if ( expansionStrategy != null && interaction.getParticipants().size() != 2) {
 
                     // run expansion on interaction prior to MITAB25 conversion
                     Collection<Interaction> expandedInteractions = expansionStrategy.expand( interaction );
