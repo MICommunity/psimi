@@ -435,7 +435,7 @@ public class Xml2Tab {
 
                     // convert the interaction into a MITAB25 line
                     BinaryInteraction binaryInteraction = interactionConverter.toMitab( interaction );
-                    processAfterConversion(binaryInteraction, true);
+                    processAfterConversion(binaryInteraction, false);
 
                     if ( binaryInteraction != null ) {
                         interactions.add( binaryInteraction );
