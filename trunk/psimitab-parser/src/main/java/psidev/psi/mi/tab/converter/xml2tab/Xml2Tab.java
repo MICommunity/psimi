@@ -425,6 +425,7 @@ public class Xml2Tab {
                     for ( Interaction exi : expandedInteractions ) {
                         // convert the interaction into a MITAB25 line
                         BinaryInteraction binaryInteraction = interactionConverter.toMitab( exi );
+                        processAfterConversion(binaryInteraction, true);
                         if ( binaryInteraction != null ) {
                             interactions.add( binaryInteraction );
                         }
@@ -434,6 +435,7 @@ public class Xml2Tab {
 
                     // convert the interaction into a MITAB25 line
                     BinaryInteraction binaryInteraction = interactionConverter.toMitab( interaction );
+                    processAfterConversion(binaryInteraction, true);
 
                     if ( binaryInteraction != null ) {
                         interactions.add( binaryInteraction );
@@ -447,6 +449,10 @@ public class Xml2Tab {
         }
 
         return interactions;
+    }
+
+    protected void processAfterConversion(BinaryInteraction binaryInteraction, boolean expanded) {
+        // nothing here. This methods is only here to keep the intact-psimitab dependecy happy. Not good design.
     }
 
     /**
