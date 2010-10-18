@@ -1,0 +1,11 @@
+MITAB25 format
+--------------
+
+    - Q: interactor's role is missing
+      A: cannot be added if the interactions are collapsed based on interactors.
+
+
+IDEA
+----
+
+Add CV support, in case MI ref is given, take the proper corresponding shortlabel for CV term.

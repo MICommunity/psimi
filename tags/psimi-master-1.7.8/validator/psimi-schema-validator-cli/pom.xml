@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>validator</artifactId>
+        <groupId>psidev.psi.mi</groupId>
+        <version>1</version>
+    </parent>
+
+    <groupId>psidev.psi.mi</groupId>
+    <artifactId>psimi-schema-validator-cli</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>psimi-schema-validator-cli</name>
+
+    <properties>
+        <scope>mimix</scope>
+        <level>INFO</level>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>validate</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-Xmx1024m</argument>
+                                <argument>-classpath</argument>
+                                <!-- automatically creates the classpath using all project dependencies,
+                                     also adding the project build directory -->
+                                <classpath/>
+                                <argument>psidev.psi.mi.ValidatorClient</argument>
+                                <!-- The file to validate, when a directory is given, process all files with an extension .xml recursively -->
+                                <argument>${file}</argument>
+                                <!-- Apply validation given scope (xml, cv, mimix, imex) -->
+                                <argument>${scope}</argument>
+                                <!-- If specified, only output messages that are of the same level or more severe -->
+                                <argument>${level}</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>psimi-schema-validator</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
