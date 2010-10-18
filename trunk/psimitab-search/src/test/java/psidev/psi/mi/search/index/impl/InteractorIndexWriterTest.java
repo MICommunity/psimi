@@ -118,6 +118,6 @@ public class InteractorIndexWriterTest {
     }
 
     private void assertSearchResultCount( final int expectedCount, String searchQuery ){
-        Assert.assertEquals( expectedCount, Searcher.search(searchQuery, directory).getTotalCount());
+        Assert.assertEquals( expectedCount, Searcher.search(searchQuery, directory).getTotalCount().intValue());
     }
 }
