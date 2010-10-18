@@ -3,14 +3,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.7.8-SNAPSHOT</version>
+        <version>1.7.8</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mitab26</artifactId>
     <packaging>jar</packaging>
-    <version>2.0-SNAPSHOT</version>
+    <version>2.0</version>
 
     <name>PSI :: PSI MITAB 2.6</name>
     <url>http://psimi.googlecode.com</url>
