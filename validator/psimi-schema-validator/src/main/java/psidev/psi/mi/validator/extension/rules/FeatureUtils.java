@@ -12,7 +12,7 @@ import psidev.psi.tools.validator.rules.Rule;
 import java.util.Collection;
 
 /**
- * TODO comment this
+ * Contains utility methods for checking valid ranges of features
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,6 +29,8 @@ public class FeatureUtils {
     public static final String CTERMINAL_MI_REF = "MI:0334";
     public static final String NTERMINAL_MI_REF = "MI:0340";
     public static final String RAGGED_NTERMINUS_MI_REF = "MI:0341";
+    public static final String CTERMINAL_REGION_MI_REF = "MI:1039";
+    public static final String NTERMINAL_REGION_MI_REF = "MI:1040";
 
     public static final String CERTAIN = "certain";
     public static final String MORE_THAN = "greater-than";
@@ -37,8 +39,8 @@ public class FeatureUtils {
     public static final String UNDETERMINED = "undetermined";
     public static final String CTERMINAL = "c-terminal";
     public static final String NTERMINAL = "n-terminal";
-    public static final String CTERMINAL_REGION = "c-terminal region";
-    public static final String NTERMINAL_REGION = "n-terminal region";
+    public static final String CTERMINAL_REGION = "c-terminal range";
+    public static final String NTERMINAL_REGION = "n-terminal range";
     public static final String RAGGED_NTERMINUS = "ragged n-terminus";
 
     /**
@@ -442,21 +444,21 @@ public class FeatureUtils {
     }
 
     private static boolean isCTerminalRegion( RangeStatus rangeStatus ) {
-        if ( isStatusOfType( rangeStatus, CTERMINAL_REGION, null ) ) {
+        if ( isStatusOfType( rangeStatus, CTERMINAL_REGION, CTERMINAL_REGION_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
     private static boolean isNTerminalRegion( RangeStatus rangeStatus ) {
-        if ( isStatusOfType( rangeStatus, NTERMINAL_REGION, null ) ) {
+        if ( isStatusOfType( rangeStatus, NTERMINAL_REGION, NTERMINAL_REGION_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
     private static boolean isRaggedNTerminal( RangeStatus rangeStatus ) {
-        if ( isStatusOfType( rangeStatus, RAGGED_NTERMINUS, RAGGED_NTERMINUS ) ) {
+        if ( isStatusOfType( rangeStatus, RAGGED_NTERMINUS, RAGGED_NTERMINUS_MI_REF ) ) {
             return true;
         }
         return false;
