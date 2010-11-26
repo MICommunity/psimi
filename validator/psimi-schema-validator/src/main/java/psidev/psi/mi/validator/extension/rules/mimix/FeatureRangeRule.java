@@ -1,7 +1,8 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.rules.FeatureUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
