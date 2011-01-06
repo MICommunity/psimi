@@ -34,8 +34,7 @@ MI:0030	cross-linking study	TRUE	MI:0407	direct interaction	FALSE	-1	2			SHOULD
 MI:0030	cross-linking study	TRUE	MI:0915	physical association	FALSE	-4				SHOULD
 MI:0071	molecular sieving	FALSE	MI:0407	direct interaction	FALSE	-1	2			SHOULD
 MI:0071	molecular sieving	FALSE	MI:0915	physical association	FALSE	-4				SHOULD
-MI:0004	affinity chromatography technology	TRUE	MI:0914	association	FALSE			1	>1	SHOULD
-MI:0004	affinity chromatography technology	TRUE	MI:0914	association	FALSE			>1		SHOULD
+MI:0004	affinity chromatography technology	TRUE	MI:0914	association	FALSE			>=1	>1	SHOULD
 MI:0004	affinity chromatography technology	TRUE	MI:0915	physical association	FALSE			1	1	SHOULD
 MI:0089	protein array	FALSE	MI:0407	direct interaction	FALSE	-1	2			SHOULD
 MI:0089	protein array	FALSE	MI:0915	physical association	FALSE					SHOULD

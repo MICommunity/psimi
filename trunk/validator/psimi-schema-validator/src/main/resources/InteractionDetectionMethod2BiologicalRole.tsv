@@ -1,16 +1,16 @@
-"#DETECTION MI"	"DETECTION NAME"	"INCLUDE CHILDREN"	"BIOL ROLE ID MI"	"BIOL ROLE NAME"	"INCLUDE CHILDREN"	"MESSAGE LEVEL"
-"MI:0979"	"oxidoreductase assay"	"FALSE"	"MI:0579"	"electron donor"	"FALSE"	"SHOULD"
-"MI:0979"	"oxidoreductase assay"	"FALSE"	"MI:0580"	"electron acceptor"	"FALSE"	"SHOULD"
-"MI:0841"	"phosphotransfer assay"	"FALSE"	"MI:0842"	"phosphate donor"	"FALSE"	"SHOULD"
-"MI:0841"	"phosphotransfer assay"	"FALSE"	"MI:0843"	"phosphate acceptor"	"FALSE"	"SHOULD"
-"MI:0415"	"enzymatic study"	"FALSE"	"MI:0501"	"enzyme"	"FALSE"	"SHOULD"
-"MI:0415"	"enzymatic study"	"FALSE"	"MI:0502"	"enzyme target"	"FALSE"	"SHOULD"
-"MI:0012"	"bioluminescence resonance energy transfer"	"FALSE"	"MI:0918"	"donor"	"FALSE"	"SHOULD"
-"MI:0012"	"bioluminescence resonance energy transfer"	"FALSE"	"MI:0919"	"acceptor"	"FALSE"	"SHOULD"
-"MI:0012"	"bioluminescence resonance energy transfer"	"FALSE"	"MI:0499"	"unspecified role"	"FALSE"	"SHOULD"
-"MI:0055"	"fluorescent resonance energy transfer"	"FALSE"	"MI:0918"	"donor"	"FALSE"	"SHOULD"
-"MI:0055"	"fluorescent resonance energy transfer"	"FALSE"	"MI:0919"	"acceptor"	"FALSE"	"SHOULD"
-"MI:0055"	"fluorescent resonance energy transfer"	"FALSE"	"MI:0499"	"unspecified role"	"FALSE"	"SHOULD"
-"MI:0510"	"homogeneous time resolved fluorescence"	"TRUE"	"MI:0918"	"donor"	"FALSE"	"SHOULD"
-"MI:0510"	"homogeneous time resolved fluorescence"	"TRUE"	"MI:0919"	"acceptor"	"FALSE"	"SHOULD"
-"MI:0510"	"homogeneous time resolved fluorescence"	"TRUE"	"MI:0499"	"unspecified role"	"FALSE"	"SHOULD"
+#DETECTION MI	DETECTION NAME	INCLUDE CHILDREN	BIOL ROLE ID MI	BIOL ROLE NAME	INCLUDE CHILDREN	MESSAGE LEVEL
+MI:0979	oxidoreductase assay	FALSE	MI:0579	electron donor	FALSE	SHOULD
+MI:0979	oxidoreductase assay	FALSE	MI:0580	electron acceptor	FALSE	SHOULD
+MI:0841	phosphotransfer assay	FALSE	MI:0842	phosphate donor	FALSE	SHOULD
+MI:0841	phosphotransfer assay	FALSE	MI:0843	phosphate acceptor	FALSE	SHOULD
+MI:0415	enzymatic study	FALSE	MI:0501	enzyme	FALSE	SHOULD
+MI:0415	enzymatic study	FALSE	MI:0502	enzyme target	FALSE	SHOULD
+MI:0012	bioluminescence resonance energy transfer	FALSE	MI:0918	donor	FALSE	SHOULD
+MI:0012	bioluminescence resonance energy transfer	FALSE	MI:0919	acceptor	FALSE	SHOULD
+MI:0012	bioluminescence resonance energy transfer	FALSE	MI:0499	unspecified role	FALSE	SHOULD
+MI:0055	fluorescent resonance energy transfer	FALSE	MI:0918	donor	FALSE	SHOULD
+MI:0055	fluorescent resonance energy transfer	FALSE	MI:0919	acceptor	FALSE	SHOULD
+MI:0055	fluorescent resonance energy transfer	FALSE	MI:0499	unspecified role	FALSE	SHOULD
+MI:0510	homogeneous time resolved fluorescence	TRUE	MI:0918	donor	FALSE	SHOULD
+MI:0510	homogeneous time resolved fluorescence	TRUE	MI:0919	acceptor	FALSE	SHOULD
+MI:0510	homogeneous time resolved fluorescence	TRUE	MI:0499	unspecified role	FALSE	SHOULD
