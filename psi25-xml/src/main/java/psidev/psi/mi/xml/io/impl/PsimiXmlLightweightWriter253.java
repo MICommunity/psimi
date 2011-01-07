@@ -126,6 +126,8 @@ public class PsimiXmlLightweightWriter253 implements PsimiXmlLightweightWriter {
         }
 
         writeln( INDENT + "</entry>" );
+
+        wasInteractionListWritten = false;
     }
 
     public void writeEndDocument() throws PsimiXmlWriterException {
