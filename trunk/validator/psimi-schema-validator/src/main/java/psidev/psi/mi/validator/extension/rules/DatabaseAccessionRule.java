@@ -302,13 +302,13 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
                             this ) );
                 }
             }
-            // If the regular expression is not known
-            else {
+            // If the regular expression is not known, do nothing
+            /*else {
                 messages.add( new ValidatorMessage( "There is no regular expression known for the database "+databaseAc+". Therefore we cannot check if this database cross reference is valid.",
                         MessageLevel.INFO,
                         context,
                         this ) );
-            }
+            }*/
         }
     }
 
