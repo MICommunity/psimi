@@ -40,6 +40,10 @@ public class SpokeWithoutBaitExpansion extends SpokeExpansion {
 
         log.debug("Could not find a bait participant. Pick a participant arbitrarily: 1st by alphabetical order.");
 
+        if (interaction.getParticipants().isEmpty()) {
+            return interactions;
+        }
+
         // Collect and sort participants by name
         List<Participant> sortedParticipants = sortParticipants(interaction.getParticipants());
 
