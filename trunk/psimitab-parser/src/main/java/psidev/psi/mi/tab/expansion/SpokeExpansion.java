@@ -50,6 +50,10 @@ public class SpokeExpansion extends BinaryExpansionStrategy {
 
         Collection<Interaction> interactions = new ArrayList<Interaction>();
 
+        if (interaction.getParticipants().isEmpty()) {
+            return interactions;
+        }
+
         if ( isBinary( interaction ) ) {
 
             log.debug( "interaction " + interaction.getId() + "/" + interaction.getImexId() + " was binary, no further processing involved." );
