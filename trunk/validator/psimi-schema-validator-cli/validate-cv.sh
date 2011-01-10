@@ -2,4 +2,4 @@
 
 FILE=$1
 
-mvn clean install -Pvalidate -Dfile=$FILE -Dscope=cv -Dlevel=WARN -Dmaven.test.skip
+mvn -U clean install -Pvalidate -Dfile=$FILE -Dscope=cv -Dlevel=WARN -Dmaven.test.skip
