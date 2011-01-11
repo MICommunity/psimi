@@ -57,6 +57,12 @@
             <groupId>psidev.psi.tools</groupId>
             <artifactId>xxindex</artifactId>
             <version>0.5</version>
+	   <exclusions>
+<exclusion>
+<groupId>cpdetector</groupId>
+            <artifactId>cpdetector</artifactId>
+</exclusion>
+</exclusions>
         </dependency>
         <dependency>
             <artifactId>psi25-xml</artifactId>
