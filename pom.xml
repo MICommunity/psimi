@@ -160,14 +160,10 @@
 
     <distributionManagement>
         <repository>
-            <id>ebi-repo</id>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo</url>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
         </repository>
-
-        <snapshotRepository>
-           <id>ebi-repo-snapshots</id>
-           <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots</url>
-        </snapshotRepository>
 <!--
         <site>
             <id>psimilib-site</id>
