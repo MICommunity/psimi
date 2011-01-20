@@ -56,18 +56,12 @@
         <dependency>
             <groupId>psidev.psi.tools</groupId>
             <artifactId>xxindex</artifactId>
-            <version>0.5</version>
-	   <exclusions>
-<exclusion>
-<groupId>cpdetector</groupId>
-            <artifactId>cpdetector</artifactId>
-</exclusion>
-</exclusions>
+            <version>0.6</version>	   
         </dependency>
         <dependency>
             <artifactId>psi25-xml</artifactId>
             <groupId>psidev.psi.mi</groupId>
-            <version>1.7.8-SNAPSHOT</version>
+            <version>1.7.9-SNAPSHOT</version>
         </dependency>
 
                <!-- OBO -->
