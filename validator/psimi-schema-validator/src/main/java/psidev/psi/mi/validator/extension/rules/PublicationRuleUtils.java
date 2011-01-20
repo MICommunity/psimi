@@ -5,6 +5,7 @@ import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.Collection;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PublicationRuleUtils {
      * @param context
      * @param experimentRule
      */
-    public static void checkImexId(Collection<DbReference> imexPrimaryReferences, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule){
+    public static void checkImexId(Collection<DbReference> imexPrimaryReferences, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
 
         // If there is a reference type set to 'imex-primary'
         if (!imexPrimaryReferences.isEmpty()){

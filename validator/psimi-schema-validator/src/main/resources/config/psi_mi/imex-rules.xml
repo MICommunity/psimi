@@ -18,6 +18,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexCurationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexPrimaryRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentTaxIdHostOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionImexPrimaryRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionSourceIdentityXrefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ProteinIdentityRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.SingleExperimentRoleRule"/>
