@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules;
 
 import org.junit.Assert;
 import org.junit.Test;
-import psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2ExperimentRoleDependencyRule;
 import psidev.psi.mi.validator.extension.rules.dependencies.InteractionDetectionMethod2ExperimentalRoleDependencyRule;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;

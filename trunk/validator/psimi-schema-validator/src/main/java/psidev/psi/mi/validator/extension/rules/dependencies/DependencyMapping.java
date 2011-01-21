@@ -8,7 +8,6 @@ import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.validator.ValidatorContext;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.AbstractRule;
@@ -463,8 +462,8 @@ public class DependencyMapping {
                     hasFoundADependency = true;
                 }
                 else if (level.equals(DependencyLevel.ERROR)) {
-                    final String msg = "This " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
-                            "and " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" are not normally associated together.";
+                    final String msg = "The " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
+                            "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" cannot be associated together.";
                     messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                 }
             }
@@ -474,9 +473,9 @@ public class DependencyMapping {
             Set<AssociatedTerm> req = getRequiredDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
 
-            msg.append("There is an unusual combination of " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
-                    "with " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+"." +
-                    " The possible "+term2.getClass().getSimpleName()+" with this "+term1.getClass().getSimpleName()+" are : ");
+            msg.append("The " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
+                    "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" cannot be associated together." +
+                    " It is possible to associate "+Term.printTerm(firstTermOfDependency)+" with : ");
             writePossibleDependenciesFor(req, msg);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
@@ -484,9 +483,9 @@ public class DependencyMapping {
         else if (!hasFoundADependency && isARecommendedValue){
             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
-            msg.append("Are you sure of the combination of " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
-                    "with " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+"." +
-                    " The usual "+term2.getClass().getSimpleName()+" with this "+term1.getClass().getSimpleName()+" are : ");
+            msg.append("The " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
+                    "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" should not be associated together." +
+                    Term.printTerm(firstTermOfDependency) +" is usually associated with : ");
             writePossibleDependenciesFor(rec, msg);
 
             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
@@ -498,11 +497,11 @@ public class DependencyMapping {
 
     protected void writePossibleDependenciesFor(Set<AssociatedTerm> associatedTerms, StringBuffer msg){
         for (AssociatedTerm r : associatedTerms){;
-            msg.append(Term.printTerm(r.getSecondTermOfTheDependency()) + ", ");
+            msg.append(Term.printTerm(r.getSecondTermOfTheDependency()) + " or ");
         }
 
-        if (msg.toString().endsWith(", ")){
-            msg.delete(msg.lastIndexOf(","), msg.length());
+        if (msg.toString().endsWith(" or ")){
+            msg.delete(msg.lastIndexOf(" or "), msg.length());
         }
     }
 
@@ -538,8 +537,7 @@ public class DependencyMapping {
                     if (!required.isEmpty()){
                         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
 
-                        String msg = "Dependencies of type "+ rule.getClass().getSimpleName() +": A second term is required when the " + term1.getClass().getSimpleName() + " is " + Term.printTerm(firstTermOfDependency) + "." +
-                                " The possible terms with this "+term1.getClass().getSimpleName()+" are : ";
+                        String msg = "When the " + term1.getClass().getSimpleName() + " is " + Term.printTerm(firstTermOfDependency) + ", it must be associated with : ";
                         final StringBuffer sb = new StringBuffer( 1024 );
                         sb.append( msg );
 
@@ -554,8 +552,7 @@ public class DependencyMapping {
 
                             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage> ();
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("Dependencies of type "+ rule.getClass().getSimpleName() +": When the " + term1.getClass().getSimpleName() + " is "+Term.printTerm(firstTermOfDependency)+"," +
-                                    " the recommended terms with this "+term1.getClass().getSimpleName()+" are : " + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
+                            msg.append("When the " + term1.getClass().getSimpleName() + " is "+Term.printTerm(firstTermOfDependency)+", it should be associated with : ");
                             writePossibleDependenciesFor(recommended, msg);
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 

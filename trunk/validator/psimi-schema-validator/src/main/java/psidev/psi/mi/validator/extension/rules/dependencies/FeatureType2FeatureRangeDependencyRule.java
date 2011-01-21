@@ -3,9 +3,11 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Feature;
+import psidev.psi.mi.xml.model.FeatureType;
+import psidev.psi.mi.xml.model.Range;
+import psidev.psi.mi.xml.model.RangeStatus;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
@@ -32,11 +34,11 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
 
     private DependencyMapping mapping;
 
-    public FeatureType2FeatureRangeDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public FeatureType2FeatureRangeDependencyRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
-        OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureRange();
 
         try {

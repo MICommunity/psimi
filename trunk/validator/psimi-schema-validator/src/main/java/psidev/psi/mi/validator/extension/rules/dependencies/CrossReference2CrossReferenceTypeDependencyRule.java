@@ -311,7 +311,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
             if (reference == null){
-                throw new ValidatorRuleException("The rule of type cross reference - cross reference type cannot be executed as the cross reference is null.");
+                throw new ValidatorRuleException("The database reference cannot be null.");
             }
 
             String dbAC = null;
@@ -344,8 +344,8 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
                         Set<AssociatedTerm> required = getRequiredDependenciesFor(database);
                         if (!required.isEmpty()){
-                            String msg = "When the citation database of the "+container.getClass().getSimpleName()+" is " + Term.printTerm(database) + ", a reference type is required." +
-                                    " The possible reference types with this database and this " + container.getClass().getSimpleName() + " are " ;
+                            String msg = "At the level of the "+container.getClass().getSimpleName()+", each " + Term.printTerm(database) + " cross reference must be associated with a reference type." +
+                                    " In this case, the possible reference types are " ;
                             final StringBuffer sb = new StringBuffer( 1024 );
                             sb.append( msg );
 
@@ -360,8 +360,8 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                             if (!recommended.isEmpty()){
 
                                 final StringBuffer msg = new StringBuffer( 1024 );
-                                msg.append("When the citation database of the "+container.getClass().getSimpleName()+" is " + Term.printTerm(database) + ", a reference type is usually given." +
-                                        " The recommended reference types with this database and this " + container.getClass().getSimpleName() + " are ");
+                                msg.append("At the level of the "+container.getClass().getSimpleName()+", each " + Term.printTerm(database) + " cross reference should be associated with a reference type." +
+                                        " In this case, the recommended reference types are ");
                                 writePossibleDependenciesFor(recommended, msg, container);
 
                                 messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
@@ -397,8 +397,8 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
                                         if (level != null){
                                             if (level.equals(DependencyLevel.ERROR)){
-                                                final String msg = "The citation database "+Term.printTerm(database)+" " +
-                                                        "is not normally associated with the reference qualifier " + Term.printTerm(type)+" at the level of the "+container.getClass().getSimpleName()+".";
+                                                final String msg = "At the level of the "+container.getClass().getSimpleName()+", one "+Term.printTerm(database)+" cross reference " +
+                                                        "cannot be associated with the reference qualifier " + Term.printTerm(type)+" .";
                                                 messages.add( new ValidatorMessage( msg,  MessageLevel.forName( level.toString() ), context.copy(), rule ) );
                                             }
                                         }
@@ -413,9 +413,9 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                         if (!hasFoundDependency && isAValueRequired){
                             Set<AssociatedTerm> req = getRequiredDependenciesFor(database);
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("There is an unusual combination of citation database "+Term.printTerm(database)+" " +
-                                    "and reference qualifier " +Term.printTerm(type)+" at the level of the " + container.getClass().getSimpleName() +
-                                    ". The possible reference qualifiers with this database are : ");
+                            msg.append("At the level of the " + container.getClass().getSimpleName() + " one "+Term.printTerm(database)+" cross reference" +
+                                    "cannot be associated with the reference qualifier " +Term.printTerm(type)+
+                                    ". In this case, the possible reference qualifiers are : ");
                             writePossibleDependenciesFor(req, msg, container);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
@@ -423,9 +423,9 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                         else if (!hasFoundDependency && isARecommendedValue){
                             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(database);
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("Are you sure of the combination of the citation database "+Term.printTerm(database)+" " +
-                                    "and the reference qualifier "+Term.printTerm(type)+" at the level of this "+container.getClass().getSimpleName()+"?" +
-                                    " The usual reference qualifiers with this database are : ");
+                            msg.append("At the level of the "+container.getClass().getSimpleName()+ ", one "+Term.printTerm(database)+" cross reference " +
+                                    "should not be associated with  "+Term.printTerm(type)+
+                                    " In this case, the usual reference qualifiers are : ");
 
                             writePossibleDependenciesFor(rec, msg, container);
 

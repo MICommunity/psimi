@@ -34,13 +34,13 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
 
     /**
      *
-     * @param ontologyMaganer
+     * @param ontologyManager
      */
-    public FeatureType2FeatureDetectionMethodDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public FeatureType2FeatureDetectionMethodDependencyRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
-        OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureDetectionMethod();
         
         try {

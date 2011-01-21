@@ -5,7 +5,6 @@ import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.PublicationRuleUtils;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -61,7 +60,7 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
 
             // At least one cross reference type 'imex-primary' is required and the Imex ID must be valid.
             if (imexReferences.isEmpty()){
-                messages.add( new ValidatorMessage( "The interaction "+ interactionId +" has " + dbReferences.size() + " cross references but no one has a reference type set to 'imex-primary'. It is required for IMEx.",
+                messages.add( new ValidatorMessage( "The interaction has " + dbReferences.size() + " cross references but no one has a reference type set to 'imex-primary'. It is required for IMEx.",
                         MessageLevel.ERROR,
                         context,
                         this ) );
@@ -72,7 +71,7 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
 
         }
         else {
-            messages.add( new ValidatorMessage( "The interaction "+ interactionId +" does not have any cross references. At least one cross reference with a reference type set" +
+            messages.add( new ValidatorMessage( "The interaction does not have any cross references. At least one cross reference with a reference type set" +
                     " to 'imex-primary' (MI:0662) is required for IMEx.",
                     MessageLevel.ERROR,
                     context,

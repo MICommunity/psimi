@@ -32,11 +32,11 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
     private DependencyMapping mapping;
 
-    public InteractionDetectionMethod2ExperimentRoleDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public InteractionDetectionMethod2ExperimentRoleDependencyRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
-        OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getInteractionDetectionMethod2ExperimentalRole();
 
         try {

@@ -20,8 +20,8 @@ import java.util.Iterator;
  */
 public class InteractionDetectionMethod2ExperimentalRoleDependencyRule extends Mi25InteractionRule {
 
-    public InteractionDetectionMethod2ExperimentalRoleDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public InteractionDetectionMethod2ExperimentalRoleDependencyRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
 
         // describe the rule.
         setName( "Dependency between interaction detection method and experimental role" );

@@ -87,35 +87,35 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
                         // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
                         if (pubmeds.size() > 1){
-                            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + pubmeds.size() + " pubmed references as 'primary-reference' but only one is allowed.",
+                            messages.add( new ValidatorMessage( "The experiment has " + pubmeds.size() + " pubmed references as 'primary-reference' but only one is allowed.",
                                     MessageLevel.WARN,
                                     context,
                                     this ) );
                         }
 
                         if ( pubmeds.isEmpty() && dois.isEmpty() ) {
-                            messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + primaryReferences.size() + " bibliographical references with a reference-type set to 'primary-reference' but none of them is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
+                            messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " bibliographical references with a reference-type set to 'primary-reference' but none of them is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
                                     MessageLevel.ERROR,
                                     context,
                                     this ) );
                         }
                     }
                     else {
-                        messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + dbReferences.size() + " bibliographical references but none of theme has a reference type set to 'primary-reference'. At least one Pubmed or DOI bibliographical primary reference is required.",
+                        messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of theme has a reference type set to 'primary-reference'. At least one Pubmed or DOI bibliographical primary reference is required.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
                     }
                 }
                 else {
-                    messages.add( new ValidatorMessage( "The experiment "+ experimentId +" has " + dbReferences.size() + " bibliographical references but none of them is a PubMed or Digital Object reference. At least one Pubmed or DOI bibliographical primary reference is required.",
+                    messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of them is a PubMed or Digital Object reference. At least one Pubmed or DOI bibliographical primary reference is required.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "The experiment "+ experimentId +" does not have any bibliographical references. At least one Pubmed or DOI bibliographical primary reference is required.",
+                messages.add( new ValidatorMessage( "The experiment does not have any bibliographical references. At least one Pubmed or DOI bibliographical primary reference is required.",
                         MessageLevel.ERROR,
                         context,
                         this ) );
