@@ -40,7 +40,7 @@ public class AssociatedTerm {
         }
         else {
             throw new ValidatorRuleException("The level " + level + " is not valid. The level of a dependency can be REQUIRED (at least one of the dependency with the level REQUIRED should be found otherwise an error is thrown)," +
-                    " SHOULD (at leats one of the dependency with the level SHOULD should be found otherwise a warning is thrown) or ERROR (if one of the dependency with the level ERROR has been found, an error is thrown).");
+                    " SHOULD (at least one of the dependency with the level SHOULD should be found otherwise a warning is thrown) or ERROR (if one of the dependency with the level ERROR has been found, an error is thrown).");
         }
     }
 
@@ -84,8 +84,7 @@ public class AssociatedTerm {
      */
     @Override
     public String toString() {
-        return "Associated term in the dependency{" +
-                ", second Term Of The Dependency=" + secondTermOfTheDependency +
+        return "Second term of the dependency={" + secondTermOfTheDependency +
                 ", level=" + level +
                 '}';
     }

@@ -40,11 +40,11 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
     private static final String different = "not ";
     private static final String separatorOfConditions = ";";
 
-    public InteractionDetectionMethod2InteractionTypeDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public InteractionDetectionMethod2InteractionTypeDependencyRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
-        OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getInteractionDetectionMethod2InteractionType();
 
         try {
@@ -817,7 +817,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                         Set<AssociatedTerm> required = getRequiredDependenciesFor(methodTerm);
                         if (!required.isEmpty()){
                             String msg = "An interaction type is required when the interaction detection method is " + Term.printTerm(methodTerm) + "." +
-                                    " The possible interaction types with this interaction detection method are : ";
+                                    " In this case, the possible interaction types are : ";
                             final StringBuffer sb = new StringBuffer( 1024 );
                             sb.append( msg );
 
@@ -833,10 +833,11 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             if (!recommended.isEmpty()){
                                 final StringBuffer msg = new StringBuffer( 1024 );
                                 msg.append("An interaction type is usually given when the interaction detection method is "+Term.printTerm(methodTerm)+"." +
-                                        " The recommended interaction types with this interaction detection method are : ");
+                                        " In this case, the recommended interaction types are : ");
 
                                 for (AssociatedTerm r : recommended){
-                                    msg.append(Term.printTerm(methodTerm) + " : " + Term.printTerm(r.getSecondTermOfTheDependency()) + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());
+
+                                    msg.append(Term.printTerm(r.getSecondTermOfTheDependency()) + " or ");
                                 }
                                 messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
 
@@ -878,7 +879,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                             final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method "+Term.printTerm(methodTerm)+" " +
                                                     "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the host organism is " + host.getNcbiTaxId() + "." +
-                                                    "The possible interaction types with this interaction detection method are ");
+                                                    " In this case, the possible interaction types are ");
 
                                             writePossibleDependenciesFor(interactionTypeCondition, msg);
 
@@ -888,7 +889,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                             final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method "+Term.printTerm(methodTerm)+" " +
                                                     "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the number of participants is " + numParticipants + "." +
-                                                    " The possible interaction types with this interaction detection method are ");
+                                                    " In this case, the possible interaction types are ");
 
                                             writePossibleDependenciesFor(interactionTypeCondition, msg);
 
@@ -898,7 +899,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                             final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method "+Term.printTerm(methodTerm)+" " +
                                                     "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the number of baits is " + numBaits + "." +
-                                                    " The possible interaction types with this interaction detection method are ");
+                                                    " In this case, the possible interaction types are ");
 
                                             writePossibleDependenciesFor(interactionTypeCondition, msg);
 
@@ -907,8 +908,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                         if (cond.hasRequirementsOnTheNumberOfPreys() && cond.isApplicablewithTheNumberOfPreys(numPreys)){
                                             final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method "+Term.printTerm(methodTerm)+" " +
-                                                    "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the number of preys is " + numPreys + "." +
-                                                    "The possible interaction types with this interaction detection method are ");
+                                                    "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the number of preys is " + numPreys + "." +                                                    "In this case, the possible interaction types are ");
 
                                             writePossibleDependenciesFor(interactionTypeCondition, msg);
 
@@ -969,7 +969,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("There is an unusual combination of interaction detection method "+Term.printTerm(methodTerm)+" " +
                                     "and interaction type "+Term.printTerm(brTerm)+"." +
-                                    " The possible interaction types with this interaction detection method are : ");
+                                    " In this case, the possible interaction types are  ");
                             writePossibleDependenciesFor(req, msg);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
@@ -979,7 +979,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("Are you sure of the combination of interaction detection method "+Term.printTerm(methodTerm)+" " +
                                     "and interaction type "+Term.printTerm(brTerm)+" ?" +
-                                    " The recommended interaction types with this interaction detection method are : ");
+                                    " In this case, the recommended interaction types are  ");
                             writePossibleDependenciesFor(req, msg);
 
                             messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );

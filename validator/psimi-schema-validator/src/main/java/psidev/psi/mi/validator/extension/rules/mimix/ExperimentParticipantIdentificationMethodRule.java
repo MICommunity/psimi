@@ -69,7 +69,7 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
                 context.setParticipantId(participantId);
 
                 if (experiment.getParticipantIdentificationMethod() == null && !participant.hasParticipantIdentificationMethods()){
-                    messages.add( new ValidatorMessage( " In the experiment " + experimentId + ", the participant "+participantId+" of the interaction "+interactionId+" does not have a participant identification method and it is required for MIMIx",
+                    messages.add( new ValidatorMessage( " The participant does not have a participant identification method and it is required for MIMIx",
                             MessageLevel.ERROR,
                             context,
                             this ) );

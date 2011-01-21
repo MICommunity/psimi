@@ -32,14 +32,14 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
 
     private static InteractionDetectionMethod2ParticipantRolesDependencyRule.DependencyMapping mapping;
 
-    public InteractionDetectionMethod2ParticipantRolesDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public InteractionDetectionMethod2ParticipantRolesDependencyRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
         // HACK the mapping is loaded every single time the rule is created :(
 
         // TODO : the resource should be a final private static or should be put as argument of the constructor
         try {
 
-            OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+            OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
 
             mapping = buildMappingFromFile( mi );
         } catch ( Exception e ) {

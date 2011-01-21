@@ -31,11 +31,11 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
 
     private DependencyMapping mapping;
 
-    public InteractionDetectionMethod2BiologicalRoleDependencyRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public InteractionDetectionMethod2BiologicalRoleDependencyRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
         Mi25ValidatorContext validatorContext = Mi25ValidatorContext.getCurrentInstance();
 
-        OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
+        OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getInteractionDetectionMethod2BiologicalRole();
         
         try {
