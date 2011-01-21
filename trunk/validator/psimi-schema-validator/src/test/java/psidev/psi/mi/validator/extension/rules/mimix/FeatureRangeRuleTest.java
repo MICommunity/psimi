@@ -32,8 +32,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         String sequence = "AACPCGGAM";
 
-        Interaction interaction = buildInteractionDeterministic();
-        Participant p1 = interaction.getParticipants().iterator().next();
+        Participant p1 = buildParticipantDeterministic();
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildCertainFeature( 1, 4);
@@ -41,7 +40,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p1 );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -51,8 +50,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         String sequence = "AACPCGGAM";
 
-        Interaction interaction = buildInteractionDeterministic();
-        Participant p1 = interaction.getParticipants().iterator().next();
+        Participant p1 = buildParticipantDeterministic();
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildCertainFeature( 11, 15);
@@ -60,7 +58,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p1 );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 2, messages.size() );
@@ -71,8 +69,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         String sequence = "AACPCGGAM";
 
-        Interaction interaction = buildInteractionDeterministic();
-        Participant p1 = interaction.getParticipants().iterator().next();
+        Participant p1 = buildParticipantDeterministic();
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildCertainFeature( 4, 15);
@@ -80,7 +77,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p1 );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 1, messages.size() );
@@ -91,8 +88,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         String sequence = "AACPCGGAM";
 
-        Interaction interaction = buildInteractionDeterministic();
-        Participant p1 = interaction.getParticipants().iterator().next();
+        Participant p1 = buildParticipantDeterministic();
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildCertainFeature( 0, 4);
@@ -100,7 +96,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p1 );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 1, messages.size() );
@@ -111,8 +107,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         String sequence = "AACPCGGAM";
 
-        Interaction interaction = buildInteractionDeterministic();
-        Participant p1 = interaction.getParticipants().iterator().next();
+        Participant p1 = buildParticipantDeterministic();
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildUndeterminedFeature();
@@ -120,7 +115,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p1 );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -130,8 +125,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         String sequence = "AACPCGGAM";
 
-        Interaction interaction = buildInteractionDeterministic();
-        Participant p1 = interaction.getParticipants().iterator().next();
+        Participant p1 = buildParticipantDeterministic();
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildUndeterminedFeature();
@@ -143,7 +137,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p1 );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 1, messages.size() );

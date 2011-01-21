@@ -42,10 +42,9 @@ public class InteractorNameRuleTest extends AbstractRuleTest {
     @Test
     public void testCheck() throws ValidatorException {
         InteractorNameRule rule = new InteractorNameRule( ontologyMaganer );
-        final Interaction interaction = buildInteractionDeterministic();
-        final Iterator<Participant> participantIterator = interaction.getParticipants().iterator();
-        final Interactor interactor1 = participantIterator.next().getInteractor();
-        final Interactor interactor2 = participantIterator.next().getInteractor();
+
+        final Interactor interactor1 = buildProtein( "P12345" );
+        final Interactor interactor2 = buildProtein("P12346");
 
         interactor1.getNames().setShortLabel( null );
         interactor1.getNames().setFullName( null );
@@ -53,7 +52,8 @@ public class InteractorNameRuleTest extends AbstractRuleTest {
         interactor2.getNames().setShortLabel( "" );
         interactor2.getNames().setFullName( "" );
         
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor1 );
+        messages.addAll(rule.check( interactor2 ));
         Assert.assertNotNull( messages );
         // should about 1 protein not having name
         Assert.assertEquals( 2, messages.size() );

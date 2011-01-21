@@ -10,6 +10,7 @@ import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +26,7 @@ import java.util.Collection;
  * @version $Id: FeatureType2FeatureRangeDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule {
+public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> {
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
@@ -37,7 +38,7 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
 
         OntologyAccess mi = ontologyMaganer.getOntologyAccess( "MI" );
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureRange();
-        
+
         try {
             URL resource = FeatureType2FeatureRangeDependencyRule.class
                     .getResource( fileName );
@@ -58,48 +59,42 @@ public class FeatureType2FeatureRangeDependencyRule extends Mi25InteractionRule 
 
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        if (t instanceof Feature){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * For each participants of the interaction, collect all respective feature types and feature range status and
      * check if the dependencies are correct.
      *
-     * @param interaction to check on.
+     * @param feature to check on.
      * @return a collection of validator messages.
      *         if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Feature feature) throws ValidatorException {
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        final Collection<Participant> participants = interaction.getParticipants();
+        // build a context in case of error
+        Mi25Context context = new Mi25Context();
+        context.setFeatureId( feature.getId());
 
-        for ( Participant participant : participants) {
+        if (feature.hasFeatureType()){
+            Collection<Range> featureRange = feature.getRanges();
+            FeatureType featureType = feature.getFeatureType();
 
-            // participants of the interaction
-            Collection<Feature> features = participant.getFeatures();
+            for (Range r : featureRange){
+                RangeStatus startStatus =  r.getStartStatus();
+                RangeStatus endStatus =  r.getEndStatus();
 
-            for (Feature feature : features){
-
-                // build a context in case of error
-                Mi25Context context = new Mi25Context();
-                context.setInteractionId( interaction.getId() );
-                context.setParticipantId( participant.getId());
-                context.setFeatureId( feature.getId());
-
-                if (feature.hasFeatureType()){
-                    Collection<Range> featureRange = feature.getRanges();                    
-                    FeatureType featureType = feature.getFeatureType();
-
-                    for (Range r : featureRange){
-                        RangeStatus startStatus =  r.getStartStatus();
-                        RangeStatus endStatus =  r.getEndStatus();
-
-                        messages.addAll( mapping.check( featureType, startStatus, context, this ) );
-                        messages.addAll( mapping.check( featureType, endStatus, context, this ) );
-                    }
-                }
+                messages.addAll( mapping.check( featureType, startStatus, context, this ) );
+                messages.addAll( mapping.check( featureType, endStatus, context, this ) );
             }
-
-        } // features
+        }
 
         return messages;
     }

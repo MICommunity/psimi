@@ -12,6 +12,7 @@ import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
  * @version $Id$
  * @since 1.0
  */
-public class InteractorIdentityRule extends Mi25InteractionRule {
+public class InteractorIdentityRule extends ObjectRule<Interactor> {
 
     public InteractorIdentityRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -38,16 +39,23 @@ public class InteractorIdentityRule extends Mi25InteractionRule {
         addTip( "The term " );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        if (t instanceof Interactor){
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * check that each interactor has at least name or a short label.
      *
-     * @param interaction an interaction to check on.
+     * @param interactor to check on.
      * @return a collection of validator messages.
      * @exception psidev.psi.tools.validator.ValidatorException if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
-
-        int interactionId = interaction.getId();
+    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
@@ -55,80 +63,73 @@ public class InteractorIdentityRule extends Mi25InteractionRule {
         final OntologyAccess mi = getMiOntology();
 
         // write the rule here ...
-        for ( Participant participant : interaction.getParticipants() ) {
+        int interactorId = interactor.getId();
 
-            int participantId = participant.getId();
-            final Interactor interactor = participant.getInteractor();
+        if( RuleUtils.isBiopolymer( ontologyManager, interactor )) {
 
-            if (interactor != null){
-                int interactorId = interactor.getId();
+            // TODO cache these MI refs
+            final Set<OntologyTermI> dbs = mi.getValidTerms( SEQUENCE_DATABASE_MI_REF, true, false );
 
-                if( RuleUtils.isBiopolymer( ontologyManager, interactor )) {
+            final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
 
-                    // TODO cache these MI refs
-                    final Set<OntologyTermI> dbs = mi.getValidTerms( SEQUENCE_DATABASE_MI_REF, true, false );
+            final Collection<DbReference> identities;
 
-                    final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
-
-                    final Collection<DbReference> identities;
-
-                    if( interactor.hasXref() ) {
-                        identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                                Arrays.asList( IDENTITY_MI_REF ),
-                                dbMiRefs,
-                                null );
-                    } else {
-                        identities = Collections.EMPTY_LIST;
-                    }
-
-                    if( identities.isEmpty() ) {
-                        Mi25Context context = buildContext( interactionId, participantId, interactorId );
-                        messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
-
-                } else if( RuleUtils.isSmallMolecule( ontologyManager, interactor )) {
-
-                    // TODO cache these MI refs
-                    final Set<OntologyTermI> dbs = mi.getValidTerms( BIOACTIVE_ENTITY_DATABASE_MI_REF, true, false );
-
-                    final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
-
-                    final Collection<DbReference> identities;
-                    if( interactor.hasXref() ) {
-                        identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                                Arrays.asList( IDENTITY_MI_REF ), dbMiRefs,
-                                null );
-                    } else {
-                        identities = Collections.EMPTY_LIST;
-                    }
-
-                    if( identities.isEmpty() ) {
-                        Mi25Context context = buildContext( interactionId, participantId, interactorId );
-                        messages.add( new ValidatorMessage( "Interactor should have an Xref to a bioactive entity database with a ref type 'identity' ",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
-
-                } else {
-                    // until now (2009-01), that's all we can check on.
-                }
+            if( interactor.hasXref() ) {
+                identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
+                        Arrays.asList( IDENTITY_MI_REF ),
+                        dbMiRefs,
+                        null );
+            } else {
+                identities = Collections.EMPTY_LIST;
             }
 
-        } // for participants
+            if( identities.isEmpty() ) {
+                Mi25Context context = buildContext( interactorId );
+                messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
+                        MessageLevel.WARN,
+                        context,
+                        this ) );
+            }
+
+        } else if( RuleUtils.isSmallMolecule( ontologyManager, interactor )) {
+
+            // TODO cache these MI refs
+            final Set<OntologyTermI> dbs = mi.getValidTerms( BIOACTIVE_ENTITY_DATABASE_MI_REF, true, false );
+
+            final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
+
+            final Collection<DbReference> identities;
+            if( interactor.hasXref() ) {
+                identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
+                        Arrays.asList( IDENTITY_MI_REF ), dbMiRefs,
+                        null );
+            } else {
+                identities = Collections.EMPTY_LIST;
+            }
+
+            if( identities.isEmpty() ) {
+                Mi25Context context = buildContext( interactorId );
+                messages.add( new ValidatorMessage( "Interactor should have an Xref to a bioactive entity database with a ref type 'identity' ",
+                        MessageLevel.WARN,
+                        context,
+                        this ) );
+            }
+
+        } else {
+            // until now (2009-01), that's all we can check on.
+        }
 
         return messages;
     }
 
-    private Mi25Context buildContext( int interactionId, int participantId, int interactorId ) {
+    private Mi25Context buildContext( int interactorId ) {
         Mi25Context context;
         context = new Mi25Context();
-        context.setInteractionId( interactionId );
-        context.setParticipantId( participantId );
         context.setInteractorId( interactorId );
         return context;
+    }
+
+    public OntologyAccess getMiOntology() throws ValidatorException {
+        return ontologyManager.getOntologyAccess( "MI" );
     }
 }

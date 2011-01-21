@@ -69,6 +69,13 @@ public abstract class AbstractRuleTest {
         return exp;
     }
 
+    protected Organism buildOrganism( int taxid ) {
+
+        final Organism organism = new Organism();
+        organism.setNcbiTaxId( taxid );
+        return organism;
+    }
+
     protected Interaction buildInteraction( InteractionDetectionMethod detection, ExperimentalRole... roles ) {
 
         Interaction interaction = new Interaction();
@@ -97,9 +104,18 @@ public abstract class AbstractRuleTest {
 
     protected Interaction buildInteractionDeterministic() {
         return buildInteraction( buildDetectionMethod( "MI:0018", "2hybrid" ),
-                                 buildExperimentalRole( "MI:0496", "bait" ),
-                                 buildExperimentalRole( "MI:0498", "prey" )
+                buildExperimentalRole( "MI:0496", "bait" ),
+                buildExperimentalRole( "MI:0498", "prey" )
         );
+    }
+
+    protected Participant buildParticipantDeterministic() {
+        final Participant p1 = new Participant();
+        p1.setId( ( 1 ) );
+        p1.setInteractor( buildProtein( "P12345" ) );
+        p1.getExperimentalRoles().add( buildExperimentalRole( "MI:0496", "bait" ) );
+
+        return p1;
     }
 
     protected Feature buildCertainFeature (long beginPosition, long endPosition){

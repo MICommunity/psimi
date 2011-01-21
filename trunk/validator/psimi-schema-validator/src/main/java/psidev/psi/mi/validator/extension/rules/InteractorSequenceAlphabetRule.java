@@ -24,6 +24,7 @@ import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +41,7 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 2.0
  */
-public class InteractorSequenceAlphabetRule extends Mi25InteractionRule {
+public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
 
     public static final String AMINO_ACID_1_LETTER_CODES = "ARNDCEQGHILKMFPSTWYV";
     // source: http://searchlauncher.bcm.tmc.edu/multi-align/Help/pima.html
@@ -74,72 +75,72 @@ public class InteractorSequenceAlphabetRule extends Mi25InteractionRule {
         addTip( "RNA interactors take nucleic acids from: " + RNA_1_LETTER_CODES );
     }
 
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
+    @Override
+    public boolean canCheck(Object t) {
+        if (t instanceof Interactor){
+            return true;
+        }
+
+        return false;
+    }
+
+    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        for ( Participant participant : interaction.getParticipants() ) {
+        if ( interactor.hasSequence() ) {
 
-            final Interactor interactor = participant.getInteractor();
+            final String seq = interactor.getSequence();
 
-            if (interactor != null){
-                if ( interactor.hasSequence() ) {
-
-                    final String seq = interactor.getSequence();
-
-                    if ( RuleUtils.isProtein( ontologyManager, interactor ) || RuleUtils.isPeptide( ontologyManager, interactor )) {
-                        final Matcher matcher = AMINO_ACID_SEQUENCE_PATTERN.matcher( seq );
-                        if ( !matcher.matches() ) {
-                            // error
-                            Mi25Context context = buildContext( interaction, participant, interactor );
-                            messages.add( new ValidatorMessage( "Protein interactor with incorrect sequence: " + seq,
-                                    MessageLevel.WARN,
-                                    context,
-                                    this ) );
-                        }
-                    } else if ( RuleUtils.isDNA( ontologyManager, interactor ) ) {
-                        final Matcher matcher = DNA_SEQUENCE_PATTERN.matcher( seq );
-                        if ( !matcher.matches() ) {
-                            // error
-                            Mi25Context context = buildContext( interaction, participant, interactor );
-                            messages.add( new ValidatorMessage( "DNA interactor with incorrect sequence: " + seq,
-                                    MessageLevel.WARN,
-                                    context,
-                                    this ) );
-                        }
-                    } else if ( RuleUtils.isRNA( ontologyManager, interactor ) ) {
-                        final Matcher matcher = RNA_SEQUENCE_PATTERN.matcher( seq );
-                        if ( !matcher.matches() ) {
-                            // error
-                            Mi25Context context = buildContext( interaction, participant, interactor );
-                            messages.add( new ValidatorMessage( "RNA interactor with incorrect sequence: " + seq,
-                                    MessageLevel.WARN,
-                                    context,
-                                    this ) );
-                        }
-                    } else {
-                        // unknown interactor type, keep quiet.
-                    }
-                } else {
-                    if( RuleUtils.isBiopolymer( ontologyManager, interactor ) ) {
-                        Mi25Context context = buildContext( interaction, participant, interactor );
-                        messages.add( new ValidatorMessage( "Biopolymer without a sequence",
-                                MessageLevel.INFO,
-                                context,
-                                this ) );
-                    }
+            if ( RuleUtils.isProtein( ontologyManager, interactor ) || RuleUtils.isPeptide( ontologyManager, interactor )) {
+                final Matcher matcher = AMINO_ACID_SEQUENCE_PATTERN.matcher( seq );
+                if ( !matcher.matches() ) {
+                    // error
+                    Mi25Context context = buildContext( interactor );
+                    messages.add( new ValidatorMessage( "Protein interactor with incorrect sequence: " + seq,
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
                 }
+            } else if ( RuleUtils.isDNA( ontologyManager, interactor ) ) {
+                final Matcher matcher = DNA_SEQUENCE_PATTERN.matcher( seq );
+                if ( !matcher.matches() ) {
+                    // error
+                    Mi25Context context = buildContext( interactor );
+                    messages.add( new ValidatorMessage( "DNA interactor with incorrect sequence: " + seq,
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+            } else if ( RuleUtils.isRNA( ontologyManager, interactor ) ) {
+                final Matcher matcher = RNA_SEQUENCE_PATTERN.matcher( seq );
+                if ( !matcher.matches() ) {
+                    // error
+                    Mi25Context context = buildContext( interactor );
+                    messages.add( new ValidatorMessage( "RNA interactor with incorrect sequence: " + seq,
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+            } else {
+                // unknown interactor type, keep quiet.
             }
-        } // participants
+        } else {
+            if( RuleUtils.isBiopolymer( ontologyManager, interactor ) ) {
+                Mi25Context context = buildContext( interactor );
+                messages.add( new ValidatorMessage( "Biopolymer without a sequence",
+                        MessageLevel.INFO,
+                        context,
+                        this ) );
+            }
+        }
 
         return messages;
     }
 
-    private Mi25Context buildContext( Interaction interaction, Participant participant, Interactor interactor ) {
+    private Mi25Context buildContext( Interactor interactor ) {
         Mi25Context context;
         context = new Mi25Context();
-        context.setInteractionId( interaction.getId() );
-        context.setParticipantId( participant.getId() );
         context.setInteractorId( interactor.getId() );
         return context;
     }

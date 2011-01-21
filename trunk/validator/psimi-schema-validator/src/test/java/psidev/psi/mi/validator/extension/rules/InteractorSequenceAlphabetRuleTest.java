@@ -41,36 +41,33 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_protein_error() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         interactor.setSequence( "ZZZ" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }
 
     @Test
     public void check_protein_ok() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         interactor.setSequence( "QDCEGHI" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
 
     @Test
     public void check_dna_error() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.DNA_MI_REF );
         interactor.setSequence( "TGCXabc" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
         printMessages( messages );
@@ -78,12 +75,11 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_dna_ok() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.DNA_MI_REF );
         interactor.setSequence( "AAAAAAAAAATTCGCGCGCG" );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         printMessages( messages );
         Assert.assertEquals( 0, messages.size() );
@@ -91,12 +87,11 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_smallmolecule_ok() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.SMALL_MOLECULE_MI_REF );
         interactor.setSequence( null );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         printMessages( messages );
         Assert.assertEquals( 0, messages.size() );
@@ -106,12 +101,11 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
     public void check_polysaccharide_ok() throws Exception {
         // polysaccharide is a polymer but here wasn't given a sequence, we expect one INFO message.
         // TODO find out why using the OBO flat file loader fails to load MI:0904 !!
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.POLYSACCHARIDE_MI_REF );
         interactor.setSequence( null );
         InteractorSequenceAlphabetRule rule = new InteractorSequenceAlphabetRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         printMessages( messages );
         Assert.assertEquals( 1, messages.size() );
