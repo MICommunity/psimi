@@ -1,12 +1,12 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.validator.extension.rules.FeatureUtils;
+import psidev.psi.mi.validator.extension.FeatureUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,14 +20,14 @@ import java.util.List;
  * @since <pre>25-Aug-2010</pre>
  */
 
-public class FeatureRangeRule extends Mi25InteractionRule {
+public class FeatureRangeRule extends ObjectRule<Participant> {
 
     public FeatureRangeRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
 
         // describe the rule.
         setName( "Feature range Check" );
-        setDescription( "Checks that the each interactor's feature range is valid : not out of bound (inferior to 1 or superior to the sequence length), not overlapping and compliant with the feature range status. " +
+        setDescription( "Checks that the each participant's feature range is valid : not out of bound (inferior to 1 or superior to the sequence length), not overlapping and compliant with the feature range status. " +
                 "WARNING : the status 'c-terminal' and 'n-terminal' cannot be used anymore for n-terminal/c-terminal features where the exact positions are not known. It is recommended to use " +
                 "the new terms 'c-terminal range' (MI:1039) and 'n-terminal range' (MI:1040) for such features" );
         addTip( "When the feature range status is 'undetermined', 'n-terminal range' or 'c-terminal range', the range position values should always be 0 or null." );
@@ -43,35 +43,39 @@ public class FeatureRangeRule extends Mi25InteractionRule {
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Interaction interaction) throws ValidatorException {
-        int interactionId = interaction.getId();
+    public boolean canCheck(Object t) {
+
+        if (t instanceof Participant){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Collection<ValidatorMessage> check(Participant participant) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<Participant> participants = interaction.getParticipants();
+        int participantId = participant.getId();
+        Collection<Feature> features = participant.getFeatures();
 
-        for (Participant participant : participants){
-            int participantId = participant.getId();
-            Collection<Feature> features = participant.getFeatures();
+        Interactor interactor = participant.getInteractor();
 
-            Interactor interactor = participant.getInteractor();
+        if (interactor != null){
+            String sequence = interactor.getSequence();
 
-            if (interactor != null){
-                String sequence = interactor.getSequence();
+            for (Feature feature : features){
+                int featureId = feature.getId();
+                Collection<Range> ranges = feature .getRanges();
 
-                for (Feature feature : features){
-                    int featureId = feature.getId();
-                    Collection<Range> ranges = feature .getRanges();
+                Mi25Context context = new Mi25Context();
+                context.setParticipantId( participantId );
+                context.setFeatureId( featureId );
 
-                    Mi25Context context = new Mi25Context();
-                    context.setInteractionId( interactionId );
-                    context.setParticipantId( participantId );
-                    context.setFeatureId( featureId );
-
-                    for (Range range : ranges){
-                        FeatureUtils.checkBadRange(range, sequence, context, messages, this);
-                    }
+                for (Range range : ranges){
+                    FeatureUtils.checkBadRange(range, sequence, context, messages, this);
                 }
             }
         }

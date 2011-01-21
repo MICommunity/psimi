@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * Rule Id = 1. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
  * <p/>
  * @author Marine Dumousseau (marine@ebi.ac.uk)
- * @version $Id: ExperimentBibRefRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @version $Id: BibRefRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
 public class ExperimentBibRefRule extends Mi25ExperimentRule {
@@ -80,7 +80,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
                     // At least one reference-type set to 'primary-reference' is required
                     if ( !primaryReferences.isEmpty() ) {
-                        // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as ExperimentBibRefRule is checking that.
+                        // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
 
                         final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
                         final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );

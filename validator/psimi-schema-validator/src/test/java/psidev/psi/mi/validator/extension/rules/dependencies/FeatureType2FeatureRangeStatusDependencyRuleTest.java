@@ -29,21 +29,12 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
      */
     @Test
     public void check_Tag_ok() throws Exception {
-        Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
 
-        interaction.getExperiments().add( exp );
-
-        // set the feature type of the participants
-        interaction.getParticipants().clear();
-        addParticipant( interaction, "MI:0507", "tag", "MI:0334", "c-terminal position", "MI:0334", "c-terminal position" );
+        Feature feature = buildFeature( "MI:0507", "tag", "MI:0334", "c-terminal position", "MI:0334", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -55,21 +46,12 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
      */
     @Test
     public void check_Tag_Warning() throws Exception {
-        Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
 
-        interaction.getExperiments().add( exp );
-
-        // set the feature type of the participants
-        interaction.getParticipants().clear();
-        addParticipant( interaction, "MI:0507", "tag", "MI:0338", "range", "MI:0334", "c-terminal position" );
+        Feature feature = buildFeature( "MI:0507", "tag", "MI:0338", "range", "MI:0334", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -81,32 +63,21 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
      */
     @Test
     public void check_Tag_Children_Warning() throws Exception {
-       Interaction interaction = new Interaction();
-        final ExperimentDescription exp = new ExperimentDescription();
-        exp.setId( 2 );
-        exp.setNames( new Names() );
-        exp.getNames().setShortLabel( "gavin-2006" );
-
-        interaction.getExperiments().add( exp );
-
-        // set the feature type of the participants
-        interaction.getParticipants().clear();
-        addParticipant( interaction, "MI:0239", "biotin tag", "MI:0338", "range", "MI:0334", "c-terminal position" );
+       
+        Feature feature = buildFeature( "MI:0239", "biotin tag", "MI:0338", "range", "MI:0334", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
     }
 
-    private void addParticipant( Interaction interaction,
-                                 String typeMi, String typeName,
+    private Feature buildFeature( String typeMi, String typeName,
                                  String startMi, String startName,
                                  String endMi, String endName) {
 
-        final Participant participant = new Participant();
 
         final FeatureType type = new FeatureType();
         type.setXref( new Xref() );
@@ -119,9 +90,7 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
 
         addFeatureRange(feature, startMi, startName, endMi, endName);
 
-        participant.getFeatures().add(feature);
-
-        interaction.getParticipants().add( participant );
+        return feature;
     }
 
     private void addFeatureRange( Feature feature,

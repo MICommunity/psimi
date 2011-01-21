@@ -42,48 +42,44 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_protein_ok_uniprot() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         updateInteractorIdentity( interactor, UNIPROTKB_MI_REF, "P12345" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
 
     @Test
     public void check_protein_ok_refseq() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         updateInteractorIdentity( interactor, REFSEQ_MI_REF, "P12345" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
 
     @Test
     public void check_smallmolecule_ok() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.SMALL_MOLECULE_MI_REF );
         updateInteractorIdentity( interactor, CHEBI_MI_REF, "CHEBI:00001" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
 
     @Test
     public void check_protein_fail() throws Exception {
-        final Interaction interaction = buildInteractionDeterministic();
-        final Interactor interactor = interaction.getParticipants().iterator().next().getInteractor();
+        final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         updateInteractorIdentity( interactor, CYGD_MI_REF, "XYZ" );
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }

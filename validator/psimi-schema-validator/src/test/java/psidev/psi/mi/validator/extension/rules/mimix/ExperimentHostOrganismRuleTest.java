@@ -3,7 +3,6 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.validator.extension.rules.mimix.ExperimentHostOrganismRule;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -11,7 +10,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * ExperimentTaxIdHostOrganismRule Tester.
+ * TaxIdHostOrganismRule Tester.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @since 2.0.0

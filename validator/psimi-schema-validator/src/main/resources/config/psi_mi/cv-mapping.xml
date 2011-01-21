@@ -53,7 +53,7 @@
            <CvTerm termAccession="MI:0003" allowChildren="true" termName="feature detection method" useTerm="false" cvIdentifierRef="MI"/>
        </CvMappingRule>
 
-       <!-- the rule R6 has been replaced by an object rule ExperimentBibRefRule
+       <!-- the rule R6 has been replaced by an object rule BibRefRule
        <CvMappingRule id="R6" name="Experiment's Bibliographical References"
                       cvElementPath="/entrySet/entry/interactionList/interaction/experiments/bibref/xref/primaryRef/@dbAc"
                       cvTermsCombinationLogic="OR"

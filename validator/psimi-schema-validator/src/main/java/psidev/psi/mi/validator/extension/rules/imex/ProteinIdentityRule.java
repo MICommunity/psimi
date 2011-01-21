@@ -12,6 +12,7 @@ import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
  * @version $Id$
  * @since 2.0
  */
-public class ProteinIdentityRule extends Mi25InteractionRule {
+public class ProteinIdentityRule extends ObjectRule<Interactor> {
 
     public ProteinIdentityRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -43,60 +44,57 @@ public class ProteinIdentityRule extends Mi25InteractionRule {
         addTip( "Identity accession in the PSI-MI ontology is " + IDENTITY_MI_REF );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        if (t instanceof Interactor){
+             return true;
+        }
+
+        return false;
+    }
+
     /**
      * check that each interactor has at least name or a short label.
      *
-     * @param interaction an interaction to check on.
+     * @param interactor to check on.
      * @return a collection of validator messages.
      * @exception psidev.psi.tools.validator.ValidatorException if we fail to retrieve the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
-
-        int interactionId = interaction.getId();
+    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        final OntologyAccess mi = getMiOntology();
+        int interactorId = interactor.getId();
 
-        // write the rule here ...
-        for ( Participant participant : interaction.getParticipants() ) {
+        if( RuleUtils.isProtein( ontologyManager, interactor )) {
 
-            int participantId = participant.getId();
-            final Interactor interactor = participant.getInteractor();
+            final Collection<DbReference> identities =
+                    RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
+                            Arrays.asList( IDENTITY_MI_REF ),
+                            Arrays.asList( UNIPROTKB_MI_REF, REFSEQ_MI_REF ),
+                            null);
 
-            if (interactor != null){
-                int interactorId = interactor.getId();
-
-                if( RuleUtils.isProtein( ontologyManager, interactor )) {
-
-                    final Collection<DbReference> identities =
-                            RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                                    Arrays.asList( IDENTITY_MI_REF ),
-                                    Arrays.asList( UNIPROTKB_MI_REF, REFSEQ_MI_REF ),
-                                    null);
-
-                    if( identities.isEmpty() ) {
-                        Mi25Context context = buildContext( interactionId, participantId, interactorId );
-                        messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity' ",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
-                }
+            if( identities.isEmpty() ) {
+                Mi25Context context = buildContext( interactorId );
+                messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity' ",
+                        MessageLevel.WARN,
+                        context,
+                        this ) );
             }
-
-        } // for participants
+        }
 
         return messages;
     }
 
-    private Mi25Context buildContext( int interactionId, int participantId, int interactorId ) {
+    private Mi25Context buildContext( int interactorId ) {
         Mi25Context context;
         context = new Mi25Context();
-        context.setInteractionId( interactionId );
-        context.setParticipantId( participantId );
         context.setInteractorId( interactorId );
         return context;
+    }
+
+    public OntologyAccess getMiOntology() throws ValidatorException {
+        return ontologyManager.getOntologyAccess( "MI" );
     }
 }

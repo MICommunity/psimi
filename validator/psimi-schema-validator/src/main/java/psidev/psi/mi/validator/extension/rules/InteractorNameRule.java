@@ -4,12 +4,14 @@ import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +25,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class InteractorNameRule extends Mi25InteractionRule {
+public class InteractorNameRule extends ObjectRule<Interactor> {
 
     public InteractorNameRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -35,46 +37,44 @@ public class InteractorNameRule extends Mi25InteractionRule {
                 "a acession number or any meaningfyl acronyme to name the interactor" );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        if (t instanceof Interactor){
+             return true;
+        }
+
+        return false;
+    }
+
     /**
      * check that each interactor has at least name or a short label.
      *
-     * @param interaction an interaction to check on.
+     * @param interactor to check on.
      * @return a collection of validator messages.
      * @exception ValidatorException if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
-
-        int interactionId = interaction.getId();
+    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // write the rule here ...
-        for ( Participant participant : interaction.getParticipants() ) {
+        final Names names = interactor.getNames();
 
-            int participantId = participant.getId();
+        String fullname = names.getFullName();
+        String shortlabel = names.getShortLabel();
+        int interactorId = interactor.getId();
 
-            if (participant.getInteractor() != null){
-                final Names names = participant.getInteractor().getNames();
+        if ( StringUtils.isEmpty( fullname ) && StringUtils.isEmpty( shortlabel ) ) {
 
-                String fullname = names.getFullName();
-                String shortlabel = names.getShortLabel();
-                int interactorId = participant.getInteractor().getId();
+            Mi25Context context = new Mi25Context();
+            context.setInteractorId( interactorId );
 
-                if ( StringUtils.isEmpty( fullname ) && StringUtils.isEmpty( shortlabel ) ) {
-
-                    Mi25Context context = new Mi25Context();
-                    context.setInteractionId( interactionId );
-                    context.setParticipantId( participantId );
-                    context.setInteractorId( interactorId );
-
-                    messages.add( new ValidatorMessage( "Interactor should have either a shortlabel and/or a fullname ",
-                            MessageLevel.WARN,
-                            context,
-                            this ) );
-                }
-            }
-        } // for participants
+            messages.add( new ValidatorMessage( "Interactor should have either a shortlabel and/or a fullname ",
+                    MessageLevel.WARN,
+                    context,
+                    this ) );
+        }
 
         return messages;
     }

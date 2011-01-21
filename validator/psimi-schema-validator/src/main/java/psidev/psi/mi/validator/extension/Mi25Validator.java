@@ -6,10 +6,7 @@ import psidev.psi.mi.validator.ValidatorReport;
 import psidev.psi.mi.validator.extension.rules.PsimiXmlSchemaRule;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
-import psidev.psi.mi.xml.model.Entry;
-import psidev.psi.mi.xml.model.EntrySet;
-import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -303,9 +300,55 @@ public class Mi25Validator extends Validator {
                         ExperimentDescription experiment = experimentIterator.next();
 
                         // run the experiment specialized rules
-                        final Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
+                        Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
+
+                        // run the bibref specialized rules
+                        validatorMessages.addAll(super.validate( experiment.getBibref() ));
+
+                        // run the feature detection method specialized rules
+                        validatorMessages.addAll(super.validate( experiment.getFeatureDetectionMethod() ));
+
+                        // run the interaction detection method specialized rules
+                        validatorMessages.addAll(super.validate( experiment.getInteractionDetectionMethod() ));
+
+                        // run the participant identification method specialized rules
+                        validatorMessages.addAll(super.validate( experiment.getParticipantIdentificationMethod() ));
+
+                        for (Confidence c : experiment.getConfidences()){
+                            checkConfidence(validatorMessages, c);
+                        }
+
+                        for (Organism o : experiment.getHostOrganisms()){
+                            checkOrganism(validatorMessages, o);
+                        }
+
                         if( !validatorMessages.isEmpty() ) {
                             long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
+                            updateLineNumber( validatorMessages, lineNumber );
+                        }
+
+                        messages.addAll( validatorMessages );
+                    }
+
+                    // now process interactors
+                    final Iterator<Interactor> interactorIterator = entry.unmarshallInteractorIterator();
+                    while ( interactorIterator.hasNext() ) {
+                        Interactor interactor = interactorIterator.next();
+
+                        // run the interactor specialized rules
+                        final Collection<ValidatorMessage> validatorMessages = super.validate( interactor );
+
+                        // run the interactor type specialized rules
+                        validatorMessages.addAll(super.validate( interactor.getInteractorType() ));
+
+                        if (interactor.getOrganism() != null){
+                            Organism o = interactor.getOrganism();
+
+                            checkOrganism(validatorMessages, o);
+                        }
+
+                        if( !validatorMessages.isEmpty() ) {
+                            long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
                             updateLineNumber( validatorMessages, lineNumber );
                         }
 
@@ -319,6 +362,31 @@ public class Mi25Validator extends Validator {
 
                         // run the interaction specialized rules
                         Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
+
+                        for (Confidence c : interaction.getConfidences()){
+                            checkConfidence(interactionMessages, c);
+                        }
+
+                        for (InteractionType it : interaction.getInteractionTypes()){
+                            // run the interaction type specialized rules
+                            interactionMessages.addAll(super.validate( it ));
+                        }
+
+                        for (InferredInteraction inf : interaction.getInferredInteractions()) {
+                            for (InferredInteractionParticipant par : inf.getParticipant()){
+                                checkParticipant(interactionMessages, par.getParticipant());
+                                checkFeature(interactionMessages, par.getFeature());
+                            }
+                        }
+
+
+                        for (Participant p : interaction.getParticipants()){
+                            checkParticipant(interactionMessages, p);
+
+                            for (Feature f : p.getFeatures()){
+                                checkFeature(interactionMessages, f);
+                            }
+                        }
 
                         // add line number
                         if( !interactionMessages.isEmpty() ) {
@@ -342,9 +410,86 @@ public class Mi25Validator extends Validator {
 
             messages.clear();
             messages.add( new ValidatorMessage( messageBuffer.toString(),
-                                MessageLevel.FATAL,
-                                context,
-                                schemaRule ) );
+                    MessageLevel.FATAL,
+                    context,
+                    schemaRule ) );
+        }
+    }
+
+    private void checkParticipant(Collection<ValidatorMessage> validatorMessages, Participant p) throws ValidatorException {
+        // run the participant specialized rules
+        validatorMessages.addAll(super.validate( p ));
+
+        // run the biological roles specialized rules
+        validatorMessages.addAll(super.validate( p.getBiologicalRole() ));
+
+        for (ParticipantIdentificationMethod m : p.getParticipantIdentificationMethods()){
+            // run the participant identification specialized rules
+            validatorMessages.addAll(super.validate( m ));
+        }
+        for (ExperimentalRole role : p.getExperimentalRoles()){
+            // run the experimental role specialized rules
+            validatorMessages.addAll(super.validate( role ));
+        }
+        for (Confidence c : p.getConfidenceList()){
+            // run the confidence specialized rules
+            validatorMessages.addAll(super.validate( c ));
+        }
+
+        for (ExperimentalPreparation ep : p.getExperimentalPreparations()){
+            // run the experimental preparation specialized rules
+            validatorMessages.addAll(super.validate( ep ));
+        }
+
+        for (HostOrganism o : p.getHostOrganisms()){
+            checkOrganism(validatorMessages, o.getOrganism());
+        }
+    }
+
+    private void checkFeature(Collection<ValidatorMessage> validatorMessages, Feature f ) throws ValidatorException {
+        // run the feature specialized rules
+        validatorMessages.addAll(super.validate( f ));
+
+        // run the feature detection method specialized rules
+        validatorMessages.addAll(super.validate( f.getFeatureDetectionMethod() ));
+
+        // run the feature type specialized rules
+        validatorMessages.addAll(super.validate( f.getFeatureType() ));
+
+        for (Range r : f.getRanges()){
+            // run the start status specialized rules
+            validatorMessages.addAll(super.validate( r.getStartStatus() ));
+
+            // run the end status specialized rules
+            validatorMessages.addAll(super.validate( r.getEndStatus() ));
+        }
+    }
+
+    private void checkConfidence(Collection<ValidatorMessage> validatorMessages, Confidence c ) throws ValidatorException {
+        if (c.getUnit() != null){
+            // run the unit specialized rules
+            validatorMessages.addAll(super.validate( c.getUnit() ));
+        }
+    }
+
+    private void checkOrganism(Collection<ValidatorMessage> validatorMessages, Organism o ) throws ValidatorException {
+
+        // run the organism specialized rules
+        validatorMessages.addAll(super.validate( o ));
+        
+        if (o.getCellType() != null){
+            // run the celltype specialized rules
+            validatorMessages.addAll(super.validate( o.getCellType() ));
+        }
+
+        if (o.getTissue() != null){
+            // run the tissue specialized rules
+            validatorMessages.addAll(super.validate( o.getTissue() ));
+        }
+
+        if (o.getCompartment() != null){
+            // run the compartment specialized rules
+            validatorMessages.addAll(super.validate( o.getCompartment() ));
         }
     }
 

@@ -143,7 +143,7 @@ public class Mi25Context extends Context {
         }
 
         if ( interactorId != -1 ) {
-            sb.append( " interactor[id='" ).append( participantId ).append( "']" );
+            sb.append( " interactor[id='" ).append( interactorId ).append( "']" );
         }
 
         if ( featureId != -1 ) {
