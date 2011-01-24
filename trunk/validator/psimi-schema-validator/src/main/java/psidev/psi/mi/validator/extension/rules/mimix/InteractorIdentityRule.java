@@ -1,11 +1,9 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -33,7 +31,7 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
 
         // describe the rule.
         setName( "Interactor database reference check" );
-        setDescription( "Check that each interactor has a cross reference to an appropriate reference database" );
+        setDescription( "Check that each interactor has a cross reference to an appropriate reference database. If not, a sequence should be provided." );
         addTip( "Sequence databases can be found in the PSI-MI ontology under term MI:0683" );
         addTip( "Bioactive entity databases can be found in the PSI-MI ontology under term MI:2054" );
         addTip( "The term " );
@@ -65,7 +63,7 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
         // write the rule here ...
         int interactorId = interactor.getId();
 
-        if( RuleUtils.isBiopolymer( ontologyManager, interactor )) {
+        if( RuleUtils.isBiopolymer(ontologyManager, interactor)) {
 
             // TODO cache these MI refs
             final Set<OntologyTermI> dbs = mi.getValidTerms( SEQUENCE_DATABASE_MI_REF, true, false );
@@ -85,10 +83,18 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
 
             if( identities.isEmpty() ) {
                 Mi25Context context = buildContext( interactorId );
-                messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
-                        MessageLevel.WARN,
-                        context,
-                        this ) );
+                    messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+
+                if (!interactor.hasSequence()){
+                    Mi25Context context2 = buildContext( interactorId );
+                    messages.add( new ValidatorMessage( "Biopolymer without a sequence and without any Xrefs to a sequence database with a ref type 'identity'.",
+                            MessageLevel.WARN,
+                            context2,
+                            this ) );
+                }
             }
 
         } else if( RuleUtils.isSmallMolecule( ontologyManager, interactor )) {

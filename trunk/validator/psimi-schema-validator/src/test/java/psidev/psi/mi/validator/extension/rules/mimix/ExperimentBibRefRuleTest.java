@@ -1,7 +1,9 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
+import psidev.psi.mi.validator.extension.rules.mimix.ExperimentBibRefRule;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.validator.ValidatorMessage;
 

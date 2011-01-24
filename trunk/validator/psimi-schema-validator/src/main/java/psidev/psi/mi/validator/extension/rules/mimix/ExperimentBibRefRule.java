@@ -1,7 +1,8 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -72,7 +73,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 final Collection<DbReference> dbReferences = xref.getAllDbReferences();
 
                 // search for reference type: primary-reference
-                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference" );
+                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType(dbReferences, "MI:0358", "primary-reference");
 
                 if ( !primaryReferences.isEmpty() ) {
                     // check if we have a pubmed or doi identifier available
@@ -87,8 +88,8 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                         hasPublicationIdentifier = true;
 
                         // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
-                        if (pubmeds.size() > 1){
-                            messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference'.",
+                        if (pubmeds.size() > 1 || dois.size() > 1){
+                            messages.add( new ValidatorMessage( "Only one pubmed/DOI identifier should have a reference-type set to 'primary-reference'.",
                                     MessageLevel.WARN,
                                     context,
                                     this ) );
@@ -100,12 +101,17 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
 
         if ( !hasPublicationIdentifier ) {
-            // check that we have author email, publication title and author list
-            Collection<Attribute> emails = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0634", "contact-email" );
+            // check that we have author email, publication title and author list : look first into bibRef and then into the experiment
+            Collection<Attribute> emails = RuleUtils.findByAttributeName( bibref.getAttributes(), "MI:0634", "contact-email" );
             int countValidEmail = 0;
             if ( emails.isEmpty() ) {
+                emails = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0634", "contact-email" );
+            }
+
+            if ( emails.isEmpty() ) {
+
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, a contact email is " +
-                        "required in the experimentDescription's attributes.",
+                        "required in the bibRef's or ExperimentDescription's attributes.",
                         MessageLevel.ERROR,
                         context,
                         this ) );
@@ -145,11 +151,15 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 }
             }
 
-            Collection<Attribute> authorList = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0636", "author-list" );
+            Collection<Attribute> authorList = RuleUtils.findByAttributeName( bibref.getAttributes(), "MI:0636", "author-list" );
+            if ( authorList.isEmpty() ) {
+                  authorList = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0636", "author-list" );
+            }
+
             if ( authorList.isEmpty() ) {
                 // in the absence of a publication identifier, a author list is required.
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, an author list is " +
-                        "required in the experimentDescription's attributes.",
+                        "required in the bibRef's attributes.",
                         MessageLevel.ERROR,
                         context,
                         this ) );
@@ -172,24 +182,38 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 }
             }
 
-            if ( experiment.hasNames() ) {
-                String publicationTitle = experiment.getNames().getFullName();
-                if ( publicationTitle == null || publicationTitle.trim().length() == 0 ) {
+            Collection<Attribute> publicationTitles = RuleUtils.findByAttributeName( bibref.getAttributes(), null, "publication title" );
+            String title = null;
+
+            if ( publicationTitles.isEmpty() ) {
+                  publicationTitles = RuleUtils.findByAttributeName( experiment.getAttributes(), null, "publication title" );
+            }
+
+            if ( publicationTitles.isEmpty() ) {
+                 if ( experiment.hasNames() ) {
+                     title = experiment.getNames().getFullName();
+                 }
+            }
+            else{
+                title = publicationTitles.iterator().next().getValue();
+            }
+
+            if (publicationTitles.size() > 1){
+                 messages.add( new ValidatorMessage( publicationTitles.size() + " publications titles have been found and only one is expected.",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+            }
+            else {
+
+                if ( title == null || title.trim().length() == 0 ) {
                     // in the absence of a publication identifier, an publication title is expected (i.e. experimentDescritpion.names.fullname)
                     messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non " +
-                            "publication title is required, usualy stored under " +
-                            "experimentDescription->names->fullname ",
+                            "publication title is required.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
                 }
-            } else {
-                messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non " +
-                        "publication title is required, usualy stored under " +
-                        "experimentDescription->names->fullname ",
-                        MessageLevel.ERROR,
-                        context,
-                        this ) );
             }
         } // if hasPublicationIdentifier
 

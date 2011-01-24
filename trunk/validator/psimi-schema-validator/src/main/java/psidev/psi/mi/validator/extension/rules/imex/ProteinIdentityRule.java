@@ -1,14 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -47,7 +43,7 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
     @Override
     public boolean canCheck(Object t) {
         if (t instanceof Interactor){
-             return true;
+            return true;
         }
 
         return false;
@@ -76,11 +72,22 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
                             null);
 
             if( identities.isEmpty() ) {
-                Mi25Context context = buildContext( interactorId );
-                messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity' ",
-                        MessageLevel.WARN,
-                        context,
-                        this ) );
+
+                if (interactor.hasSequence()){
+                    Mi25Context context = buildContext( interactorId );
+                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity' ",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+                else {
+                    Mi25Context context = buildContext( interactorId );
+                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity'. If no identity cross references " +
+                            "are given, the protein sequence is strongly recommended.",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
             }
         }
 
@@ -92,9 +99,5 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
         context = new Mi25Context();
         context.setInteractorId( interactorId );
         return context;
-    }
-
-    public OntologyAccess getMiOntology() throws ValidatorException {
-        return ontologyManager.getOntologyAccess( "MI" );
     }
 }

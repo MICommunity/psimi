@@ -15,17 +15,15 @@
  */
 package psidev.psi.mi.validator.extension.rules.imex;
 
-import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.UNIPROTKB_MI_REF;
-import psidev.psi.mi.xml.model.*;
-import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.ValidatorException;
+import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
+import psidev.psi.mi.validator.extension.rules.mimix.ExperimentalRoleRule;
+import psidev.psi.mi.xml.model.*;
+import psidev.psi.tools.validator.ValidatorException;
+import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.Collection;
-
-import junit.framework.Assert;
 
 /**
  * SingleExperimentRoleRule Tester.
@@ -42,47 +40,41 @@ public class SingleExperimentRoleRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_ok() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
-        for ( Participant p : interaction.getParticipants() ) {
-            Assert.assertTrue( p.getExperimentalRoles().size() == 1 );
-        }
+        final Participant p = buildParticipantDeterministic();
+        Assert.assertTrue( p.getExperimentalRoles().size() == 1 );
+
         SingleExperimentRoleRule rule = new SingleExperimentRoleRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
 
     @Test
     public void check_fail_0_role() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
-        for ( Participant p : interaction.getParticipants() ) {
-            Assert.assertTrue( p.getExperimentalRoles().size() == 1 );
-        }
-        interaction.getParticipants().iterator().next().getExperimentalRoles().clear();
-        SingleExperimentRoleRule rule = new SingleExperimentRoleRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Participant p = buildParticipantDeterministic();
+        Assert.assertTrue( p.getExperimentalRoles().size() == 1 );
+        p.getExperimentalRoles().clear();
+        ExperimentalRoleRule rule = new ExperimentalRoleRule( ontologyMaganer );
+        final Collection<ValidatorMessage> messages = rule.check( p );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }
 
     @Test
     public void check_fail_many_roles() throws ValidatorException {
-        final Interaction interaction = buildInteractionDeterministic();
-        for ( Participant p : interaction.getParticipants() ) {
-            Assert.assertTrue( p.getExperimentalRoles().size() == 1 );
-        }
+        final Participant p = buildParticipantDeterministic();
+        Assert.assertTrue( p.getExperimentalRoles().size() == 1 );
 
         // add an extra role
-        final Collection<ExperimentalRole> roles = interaction.getParticipants().iterator().next().getExperimentalRoles();
+        final Collection<ExperimentalRole> roles = p.getExperimentalRoles();
         final Names names = new Names();
         names.setShortLabel( "extra role" );
         final Xref xref = new Xref();
         xref.setPrimaryRef( new DbReference( "MI:xxxx", "database" ) );
         roles.add( new ExperimentalRole( names, xref ) );
 
-        interaction.getParticipants().iterator().next().getExperimentalRoles().clear();
         SingleExperimentRoleRule rule = new SingleExperimentRoleRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        final Collection<ValidatorMessage> messages = rule.check( p );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }
