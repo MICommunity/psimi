@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Test;
+import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
+import psidev.psi.mi.validator.extension.rules.mimix.ConfidenceScoreRule;
 import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.validator.extension.rules.imex.SingleExperimentRoleRule;
+
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.ValidatorException;

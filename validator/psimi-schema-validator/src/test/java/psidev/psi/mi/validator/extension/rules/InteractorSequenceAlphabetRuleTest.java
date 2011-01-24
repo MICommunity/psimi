@@ -15,16 +15,13 @@
  */
 package psidev.psi.mi.validator.extension.rules;
 
+import junit.framework.Assert;
 import org.junit.Test;
-
+import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Interactor;
 
 import java.util.Collection;
-
-import junit.framework.Assert;
 
 /**
  * InteractorSequenceAlphabetRule Tester.
@@ -99,7 +96,7 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
 
     @Test
     public void check_polysaccharide_ok() throws Exception {
-        // polysaccharide is a polymer but here wasn't given a sequence, we expect one INFO message.
+        // polysaccharide is a polymer but here wasn't given a sequence, we expect one INFO message. (not anymore as we have a uniprot identity!)
         // TODO find out why using the OBO flat file loader fails to load MI:0904 !!
         final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.POLYSACCHARIDE_MI_REF );
@@ -108,6 +105,6 @@ public class InteractorSequenceAlphabetRuleTest extends AbstractRuleTest {
         final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
         printMessages( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );
     }
 }

@@ -197,11 +197,29 @@ public final class RuleUtils {
                // IMEX doesn't allow to use this term to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
-                        "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1, -2, -3 or -4.",
+                        "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1 or -2",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
-                break; 
+                break;
+            case -4:
+                // IMEX doesn't allow to use this term to define their host organism
+                messages.add( new ValidatorMessage( objectType + " with a " + organismType +
+                        " for which the taxid was: '" + taxId +
+                        "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1 or -2.",
+                        MessageLevel.ERROR,
+                        context,
+                        rule ) );
+                break;
+            case -3:
+                // IMEX doesn't allow to use this term to define their host organism
+                messages.add( new ValidatorMessage( objectType + " with a " + organismType +
+                        " for which the taxid was: '" + taxId +
+                        "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1 or -2.",
+                        MessageLevel.ERROR,
+                        context,
+                        rule ) );
+                break;
             default:
               checkOrganism(ontologyManager, organism, context, messages, rule, objectType, organismType);
         }
@@ -440,7 +458,7 @@ public final class RuleUtils {
                 }
             }
             else if(name != null && attribute.getName() != null){
-                if (name.equals( attribute.getName() )){
+                if (name.equalsIgnoreCase( attribute.getName() )){
                     selectedAttribute.add( attribute );
                 }
             }

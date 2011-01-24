@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules.imex;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.xml.model.Participant;
@@ -13,24 +13,24 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <b> Checks that participants have a single experimental role.</b>
- * <p/>
+ * <b> Checks that participants have a single biological role.</b>
  *
- * @author Samuel Kerrien
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since 2.0
+ * @since <pre>24/01/11</pre>
  */
-public class SingleExperimentRoleRule extends ObjectRule<Participant> {
 
-    public SingleExperimentRoleRule( OntologyManager ontologyManager ) {
+public class BiologicalRoleRule extends ObjectRule<Participant> {
+
+    public BiologicalRoleRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
 
         // describe the rule.
-        setName( "Single Experimental Role Check" );
+        setName( "Single Biological Role Check" );
 
-        setDescription( "Check that each interaction's participant has a single experimental role." );
+        setDescription( "Check that each interaction's participant has a valid biological role." );
 
-        addTip( "Experimental role terms can be found in the PSI-MI ontology under term MI:0495" );
+        addTip( "Biological role terms can be found in the PSI-MI ontology under term MI:0500" );
     }
 
     @Override
@@ -57,16 +57,13 @@ public class SingleExperimentRoleRule extends ObjectRule<Participant> {
 
         // write the rule here ...
         int participantId = participant.getId();
-        if ( participant.hasExperimentalRoles() ) {
-            final int count = participant.getExperimentalRoles().size();
-            if ( count > 1 ) {
-                final Mi25Context context = buildContext( participantId );
-                messages.add( new ValidatorMessage( "Interaction's participants should have a single " +
-                        "experimental role; found " + count + ".",
-                        MessageLevel.ERROR,
-                        context,
-                        this ) );
-            }
+        if ( !participant.hasBiologicalRole() ) {
+            final Mi25Context context = buildContext( participantId );
+            messages.add( new ValidatorMessage( "Interaction's participants should have a " +
+                    "biological role; found 0.",
+                    MessageLevel.WARN,
+                    context,
+                    this ) );
         }
 
         return messages;

@@ -15,10 +15,10 @@ import java.util.Collection;
  * @since 2.0.0
  * @version $Id$
  */
-public class ExperimentHostOrganismRuleTest extends AbstractRuleTest {
+public class HostOrganismRuleTest extends AbstractRuleTest {
 
-    public ExperimentHostOrganismRuleTest() throws OntologyLoaderException {
-        super( ExperimentHostOrganismRuleTest.class.getResourceAsStream( "/config/ontologies.xml" ) );
+    public HostOrganismRuleTest() throws OntologyLoaderException {
+        super( HostOrganismRuleTest.class.getResourceAsStream( "/config/ontologies.xml" ) );
     }
 
     @Test

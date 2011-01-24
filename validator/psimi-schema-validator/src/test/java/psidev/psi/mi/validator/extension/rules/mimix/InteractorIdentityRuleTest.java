@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.validator.extension.rules.InteractorIdentityRule;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.Xref;
-import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 

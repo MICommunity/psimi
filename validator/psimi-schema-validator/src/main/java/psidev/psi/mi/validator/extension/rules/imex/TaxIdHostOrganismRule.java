@@ -1,9 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
@@ -34,8 +32,8 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
         addTip( "Search http://www.ebi.ac.uk/newt/display with an organism name to retrieve its taxid" );
         addTip( "By convention, the taxid for 'in vitro' is -1" );
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );
-        addTip( "By convention, the taxid for 'unknown' is -3" );
-        addTip( "By convention, the taxid for 'in vivo' is -4" );
+        //addTip( "By convention, the taxid for 'unknown' is -3" );
+        //addTip( "By convention, the taxid for 'in vivo' is -4" );
     }
 
     @Override
@@ -60,7 +58,7 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
         Mi25Context context = new Mi25Context();
 
         RuleUtils.checkImexOrganism( ontologyManager, organism, context, messages, this,
-                                          "Experiment, Interaction or Interactor", "host organism" );
+                                          "Experiment or Interactor", "host organism" );
 
         return messages;
     }

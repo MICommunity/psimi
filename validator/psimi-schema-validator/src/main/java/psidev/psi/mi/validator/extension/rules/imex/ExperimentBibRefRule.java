@@ -15,7 +15,6 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * <b> Imex Rule : check that each experiment has a valid bibref to pubmed or DOI. Check if the IMEx ID is valid when a cross reference type 'imex-primary' appears. </b>
@@ -27,9 +26,6 @@ import java.util.regex.Pattern;
  * @since 2.0
  */
 public class ExperimentBibRefRule extends Mi25ExperimentRule {
-
-    // The good syntax of an Imex ID.
-    Pattern IMEx_ID = Pattern.compile( "IM-[0-9]+" );
 
     public ExperimentBibRefRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );

@@ -31,12 +31,12 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
         setName( "Interaction Imex-primary cross reference check" );
         setDescription( "Checks that each interaction has a at least one cross reference type set to 'imex-primary' and that all the imex" +
                 "IDs are correct." );
-        addTip( "All records must have an IMEx ID (IM-xxx-xxx) when there is a cross reference type: imex-primary" );
+        addTip( "All interactions should have an IMEx ID (IM-xxx-xxx) when there is a cross reference type: imex-primary" );
         addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
     }
 
     /**
-     * Make sure that an experiment has a valid IMEX id in its xref.
+     * Make sure that an interaction has a valid IMEX id in its xref.
      *
      * @param interaction an interaction to check on.
      * @return a collection of validator messages.
@@ -60,8 +60,10 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
 
             // At least one cross reference type 'imex-primary' is required and the Imex ID must be valid.
             if (imexReferences.isEmpty()){
-                messages.add( new ValidatorMessage( "The interaction has " + dbReferences.size() + " cross references but no one has a reference type set to 'imex-primary'. It is required for IMEx.",
-                        MessageLevel.ERROR,
+                messages.add( new ValidatorMessage( "The interaction has " + dbReferences.size() + " cross references but no one has a reference type set to 'imex-primary'. Each interaction should have" +
+                        "a cross reference 'imex-primary' " +
+                        "which extends the cross reference 'imex-primary' of the experiment.",
+                        MessageLevel.WARN,
                         context,
                         this ) );
             }
@@ -72,8 +74,8 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
         }
         else {
             messages.add( new ValidatorMessage( "The interaction does not have any cross references. At least one cross reference with a reference type set" +
-                    " to 'imex-primary' (MI:0662) is required for IMEx.",
-                    MessageLevel.ERROR,
+                    " to 'imex-primary' (MI:0662) is recommended for IMEx.",
+                    MessageLevel.WARN,
                     context,
                     this ) );
         }

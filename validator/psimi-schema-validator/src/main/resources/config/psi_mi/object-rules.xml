@@ -5,11 +5,9 @@
     <name>PSI-MI</name>
 
     <rule class="psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.ExperimentBibRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.HostOrganismRule"/>
     <!--<rule class="psidev.psi.mi.validator.extension.rules.InteractorOrganismRule"/>-->
     <!--<rule class="psidev.psi.mi.validator.extension.rules.InteractorNameRule"/>-->
     <!--<rule class="psidev.psi.mi.validator.extension.rules.ParticipantSeqXrefRule"/>-->
-    <rule class="psidev.psi.mi.validator.extension.rules.InteractorIdentityRule"/>
     
 </objectRuleList>

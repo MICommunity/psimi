@@ -16,10 +16,7 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -125,7 +122,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
             } else {
                 // unknown interactor type, keep quiet.
             }
-        } else {
+        } /*else {
             if( RuleUtils.isBiopolymer( ontologyManager, interactor ) ) {
                 Mi25Context context = buildContext( interactor );
                 messages.add( new ValidatorMessage( "Biopolymer without a sequence",
@@ -133,7 +130,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
                         context,
                         this ) );
             }
-        }
+        }*/
 
         return messages;
     }
