@@ -226,14 +226,84 @@ public class Mi25Validator extends Validator {
 
                 // object rule
                 messages = validate( interaction );
-                if( ! messages.isEmpty() )
-                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
 
                 for ( ExperimentDescription experiment : interaction.getExperiments() ) {
                     messages = validate( experiment );
-                    if( ! messages.isEmpty() )
-                        report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
                 }
+
+                for (Confidence c : interaction.getConfidences()){
+                    checkConfidence(messages, c);
+                }
+
+                for (InteractionType it : interaction.getInteractionTypes()){
+                    // run the interaction type specialized rules
+                    messages.addAll(super.validate( it ));
+                }
+
+                for (InferredInteraction inf : interaction.getInferredInteractions()) {
+                    for (InferredInteractionParticipant par : inf.getParticipant()){
+                        checkParticipant(messages, par.getParticipant());
+                        checkFeature(messages, par.getFeature());
+                    }
+                }
+
+
+                for (Participant p : interaction.getParticipants()){
+                    checkParticipant(messages, p);
+
+                    for (Feature f : p.getFeatures()){
+                        checkFeature(messages, f);
+                    }
+                }
+
+                if( ! messages.isEmpty() )
+                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
+            }
+
+            for ( ExperimentDescription experiment : entry.getExperiments() ) {
+
+                // object rule
+                Collection<ValidatorMessage> messages = validate( experiment );
+
+                // run the bibref specialized rules
+                messages.addAll(super.validate( experiment.getBibref() ));
+
+                // run the feature detection method specialized rules
+                messages.addAll(super.validate( experiment.getFeatureDetectionMethod() ));
+
+                // run the interaction detection method specialized rules
+                messages.addAll(super.validate( experiment.getInteractionDetectionMethod() ));
+
+                // run the participant identification method specialized rules
+                messages.addAll(super.validate( experiment.getParticipantIdentificationMethod() ));
+
+                for (Confidence c : experiment.getConfidences()){
+                    checkConfidence(messages, c);
+                }
+
+                for (Organism o : experiment.getHostOrganisms()){
+                    checkOrganism(messages, o);
+                }
+                if( ! messages.isEmpty() )
+                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, experiment ) );
+            }
+
+            for ( Interactor interactor : entry.getInteractors() ) {
+
+                // object rule
+                Collection<ValidatorMessage> messages = validate( interactor );
+
+                // run the interactor type specialized rules
+                messages.addAll(super.validate( interactor.getInteractorType() ));
+
+                if (interactor.getOrganism() != null){
+                    Organism o = interactor.getOrganism();
+
+                    checkOrganism(messages, o);
+                }
+
+                if( ! messages.isEmpty() )
+                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interactor ) );
             }
         }
 
@@ -327,7 +397,8 @@ public class Mi25Validator extends Validator {
                             updateLineNumber( validatorMessages, lineNumber );
                         }
 
-                        messages.addAll( validatorMessages );
+                        if( ! validatorMessages.isEmpty() )
+                            messages.addAll( convertToMi25Messages( validatorMessages, experiment ) );
                     }
 
                     // now process interactors
@@ -352,7 +423,8 @@ public class Mi25Validator extends Validator {
                             updateLineNumber( validatorMessages, lineNumber );
                         }
 
-                        messages.addAll( validatorMessages );
+                        if( ! validatorMessages.isEmpty() )
+                            messages.addAll( convertToMi25Messages( validatorMessages, interactor ) );
                     }
 
                     // now process interactions
@@ -395,7 +467,8 @@ public class Mi25Validator extends Validator {
                         }
 
                         // append messages to the global collection
-                        messages.addAll( interactionMessages );
+                        if( ! interactionMessages.isEmpty() )
+                            messages.addAll( convertToMi25Messages( interactionMessages, interaction ) );
                     }
                 }
             }
@@ -476,7 +549,7 @@ public class Mi25Validator extends Validator {
 
         // run the organism specialized rules
         validatorMessages.addAll(super.validate( o ));
-        
+
         if (o.getCellType() != null){
             // run the celltype specialized rules
             validatorMessages.addAll(super.validate( o.getCellType() ));
@@ -551,6 +624,30 @@ public class Mi25Validator extends Validator {
         for ( ValidatorMessage message : messages ) {
             final Mi25Context context = new Mi25Context();
             context.setInteractionId( interaction.getId() );
+            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
+        }
+
+        return convertedMessages;
+    }
+
+    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, ExperimentDescription experiment ) {
+        Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
+
+        for ( ValidatorMessage message : messages ) {
+            final Mi25Context context = new Mi25Context();
+            context.setExperimentId( experiment.getId() );
+            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
+        }
+
+        return convertedMessages;
+    }
+
+    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, Interactor interactor ) {
+        Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
+
+        for ( ValidatorMessage message : messages ) {
+            final Mi25Context context = new Mi25Context();
+            context.setInteractorId( interactor.getId() );
             convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
 
