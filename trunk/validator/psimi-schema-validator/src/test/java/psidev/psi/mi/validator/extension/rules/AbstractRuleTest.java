@@ -114,6 +114,7 @@ public abstract class AbstractRuleTest {
         p1.setId( ( 1 ) );
         p1.setInteractor( buildProtein( "P12345" ) );
         p1.getExperimentalRoles().add( buildExperimentalRole( "MI:0496", "bait" ) );
+        p1.setBiologicalRole( buildBiologicalRole( "MI:0918", "donor"));
 
         return p1;
     }
@@ -196,6 +197,42 @@ public abstract class AbstractRuleTest {
         interactor.getInteractorType().setXref( new Xref( ) );
         interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.PROTEIN_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
         interactor.setSequence( "TEST" ); /// and yes ! TEST is a valid protein sequence ;) 
+        return interactor;
+    }
+
+    protected Interactor buildSmallMolecule( String chebiAc ) {
+        Interactor interactor = new Interactor();
+        interactor.setXref( new Xref() );
+        interactor.getXref().setPrimaryRef( new DbReference( CHEBI, CHEBI_MI_REF, chebiAc, IDENTITY, IDENTITY_MI_REF ) );
+        interactor.setNames( new Names() );
+        interactor.getNames().setShortLabel( chebiAc );
+        interactor.setInteractorType( new InteractorType() );
+        interactor.getInteractorType().setXref( new Xref( ) );
+        interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.SMALL_MOLECULE_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
+        return interactor;
+    }
+
+    protected Interactor buildNucleicAcid( String acid ) {
+        Interactor interactor = new Interactor();
+        interactor.setXref( new Xref() );
+        interactor.getXref().setPrimaryRef( new DbReference( EMBL, EMBL_MI_REF, acid, IDENTITY, IDENTITY_MI_REF ) );
+        interactor.setNames( new Names() );
+        interactor.getNames().setShortLabel( acid );
+        interactor.setInteractorType( new InteractorType() );
+        interactor.getInteractorType().setXref( new Xref( ) );
+        interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.NUCLEIC_ACID_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
+        return interactor;
+    }
+
+    protected Interactor buildRibonucleicAcid( String acid ) {
+        Interactor interactor = new Interactor();
+        interactor.setXref( new Xref() );
+        interactor.getXref().setPrimaryRef( new DbReference( EMBL, EMBL_MI_REF, acid, IDENTITY, IDENTITY_MI_REF ) );
+        interactor.setNames( new Names() );
+        interactor.getNames().setShortLabel( acid );
+        interactor.setInteractorType( new InteractorType() );
+        interactor.getInteractorType().setXref( new Xref( ) );
+        interactor.getInteractorType().getXref().setPrimaryRef( new DbReference( PSI_MI, PSI_MI_REF, RuleUtils.NUCLEIC_ACID_MI_REF, IDENTITY, IDENTITY_MI_REF ) );
         return interactor;
     }
 

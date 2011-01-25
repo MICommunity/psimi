@@ -26,7 +26,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * SingleExperimentRoleRule Tester.
+ * SingleExperimentRoleRule and ExperimentalRoleRule Tester.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$

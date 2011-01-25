@@ -8,11 +8,12 @@
         <import type="resource" rules="/config/psi_mi/dependency-rules.xml"/>
         <import type="resource" rules="/config/psi_mi/mimix-rules.xml">
             <exclude>
-                <rule class="psidev.psi.mi.validator.extension.rules.HostOrganismRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.mimix.HostOrganismRule"/>
             </exclude>
         </import>
     </importRuleList>
 
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentAttributeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentFullCoverageRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexCurationRule"/>
@@ -20,6 +21,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.imex.TaxIdHostOrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionImexPrimaryRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionSourceIdentityXrefRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractorTypeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ProteinIdentityRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.SingleExperimentRoleRule"/>
 

@@ -54,6 +54,9 @@ public final class RuleUtils {
     public static final String SMALL_MOLECULE_MI_REF = "MI:0328";
     public static final String BIOPOLYMER_MI_REF = "MI:0383";
     public static final String POLYSACCHARIDE_MI_REF = "MI:0904";
+    public static final String RIBONUCLEIC_MI_REF = "MI:0320";
+    public static final String RIBONUCLEIC = "ribonucleic acid";
+
 
     /////////////////////////
     // Databases
@@ -66,6 +69,7 @@ public final class RuleUtils {
     public static final String UNIPROTKB = "uniprotkb";
     public static final String UNIPROTKB_MI_REF = "MI:0486";
     public static final String REFSEQ_MI_REF = "MI:0481";
+    public static final String CHEBI = "chebi";
     public static final String CHEBI_MI_REF = "MI:0474";
     public static final String RESID = "resid";
     public static final String RESID_MI_REF = "MI:0248";
@@ -74,6 +78,9 @@ public final class RuleUtils {
     public static final String INTACT_MI_REF = "MI:0469";
     public static final String IMEX = "imex";
     public static final String IMEX_MI_REF = "MI:0670";
+    public static final String EMBL = "ddbj/embl/genbank";
+    public static final String EMBL_MI_REF = "MI:0475";
+
 
     /////////////////////////
     // attribute type
@@ -82,6 +89,10 @@ public final class RuleUtils {
     public static final String AUTHOR_CONFIDENCE_MI_REF = "MI:0621";
     public static final String CONFIDENCE_MAPPING = "confidence-mapping";
     public static final String CONFIDENCE_MAPPING_MI_REF = "MI:0622";
+    public static final String EXPERIMENT_ATTRIBUTE = "experiment attribute name";
+    public static final String EXPERIMENT_ATTRIBUTE_MI_REF = "MI:0665";
+    public static final String CONTACT_EMAIL = "contact-email";
+    public static final String CONTACT_EMAIL_MI_REF = "MI:0634";
 
     //////////////////////////
     // biological roles
