@@ -1,6 +1,5 @@
 package psidev.psi.mi.validator.extension;
 
-import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Names;
 import psidev.psi.mi.xml.model.Range;
@@ -390,7 +389,7 @@ public class FeatureUtils {
         return false;
     }
 
-    private static boolean isRange( RangeStatus rangeStatus ) {
+    public static boolean isRange( RangeStatus rangeStatus ) {
         if (rangeStatus != null){
             if ( isStatusOfType( rangeStatus, RANGE, RANGE_MI_REF ) ) {
                 return true;
@@ -400,7 +399,7 @@ public class FeatureUtils {
         return false;
     }
 
-    private static boolean isLessThan( RangeStatus rangeStatus ) {
+    public static boolean isLessThan( RangeStatus rangeStatus ) {
 
         if ( isStatusOfType( rangeStatus, LESS_THAN, LESS_THAN_MI_REF ) ) {
             return true;
@@ -408,56 +407,56 @@ public class FeatureUtils {
         return false;
     }
 
-    private static boolean isMoreThan( RangeStatus rangeStatus ) {
+    public static boolean isMoreThan( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, MORE_THAN, MORE_THAN_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
-    private static boolean isCertain( RangeStatus rangeStatus ) {
+    public static boolean isCertain( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, CERTAIN, CERTAIN_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
-    private static boolean isUndetermined( RangeStatus rangeStatus ) {
+    public static boolean isUndetermined( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, UNDETERMINED, UNDETERMINED_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
-    private static boolean isCTerminal( RangeStatus rangeStatus ) {
+    public static boolean isCTerminal( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, CTERMINAL, CTERMINAL_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
-    private static boolean isNTerminal( RangeStatus rangeStatus ) {
+    public static boolean isNTerminal( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, NTERMINAL, NTERMINAL_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
-    private static boolean isCTerminalRegion( RangeStatus rangeStatus ) {
+    public static boolean isCTerminalRegion( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, CTERMINAL_REGION, CTERMINAL_REGION_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
-    private static boolean isNTerminalRegion( RangeStatus rangeStatus ) {
+    public static boolean isNTerminalRegion( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, NTERMINAL_REGION, NTERMINAL_REGION_MI_REF ) ) {
             return true;
         }
         return false;
     }
 
-    private static boolean isRaggedNTerminal( RangeStatus rangeStatus ) {
+    public static boolean isRaggedNTerminal( RangeStatus rangeStatus ) {
         if ( isStatusOfType( rangeStatus, RAGGED_NTERMINUS, RAGGED_NTERMINUS_MI_REF ) ) {
             return true;
         }

@@ -57,10 +57,16 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         int interactorId = interactor.getId();
+        Mi25Context context = buildContext( interactorId );
 
-        if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
+        if (interactor.getInteractorType() == null){
+            messages.add( new ValidatorMessage( "Interactors must have an interactor type.",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+        }
+        else if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
 
-            Mi25Context context = buildContext( interactorId );
                     messages.add( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
                             "should be removed from the record.",
                             MessageLevel.WARN,

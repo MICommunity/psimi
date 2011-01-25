@@ -118,7 +118,7 @@ public class Mi25ValidatorTest {
             System.out.print(rule.getClass().getCanonicalName() + "\n");
         }
 
-        Assert.assertEquals( 32, aValidator.getObjectRules().size() );
+        Assert.assertEquals( 35, aValidator.getObjectRules().size() );
     }
 
     @Test

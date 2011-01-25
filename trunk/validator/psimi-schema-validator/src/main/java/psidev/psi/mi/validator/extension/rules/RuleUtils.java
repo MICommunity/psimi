@@ -44,6 +44,8 @@ public final class RuleUtils {
     public static final String IDENTITY = "identity";
 
     public static final String INTERACTION_TYPE = "MI:0190";
+    public static final String FEATURE_TYPE = "MI:0116";
+    public static final String BINDING_SITE = "MI:0117";
 
     /////////////////////////
     // Interactor types
@@ -297,6 +299,42 @@ public final class RuleUtils {
         return false;
     }
 
+    public static boolean isOfType( OntologyManager ontologyManager, final FeatureType type, final String miRef, final boolean includeChildren ) {
+
+        if ( type == null ) {
+            throw new IllegalArgumentException( "You must give a non null type" );
+        }
+
+        if ( miRef == null ) {
+            throw new IllegalArgumentException( "You must give a non null miRef" );
+        }
+
+        String typeId = null;
+
+        if( type.getXref() != null ) {
+            typeId = type.getXref().getPrimaryRef().getId();
+        }
+
+        if( typeId != null ) {
+            if ( includeChildren ) {
+                final OntologyAccess mi = ontologyManager.getOntologyAccess( "MI" );
+                final Set<OntologyTermI> terms = mi.getValidTerms( miRef, true, true );
+
+                for ( OntologyTermI term : terms ) {
+                    if ( typeId.equals( term.getTermAccession() ) ) {
+                        return true;
+                    }
+                }
+            } else {
+                if ( miRef.equals( typeId ) ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static boolean isBiopolymer( OntologyManager ontologyManager, Interactor interactor ) {
         return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.BIOPOLYMER_MI_REF, true );
     }
@@ -323,6 +361,10 @@ public final class RuleUtils {
 
     public static boolean isPeptide( OntologyManager ontologyManager, Interactor interactor ) {
         return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.PEPTIDE_MI_REF, false );
+    }
+
+    public static boolean isBindingSite( OntologyManager ontologyManager, Feature feature ) {
+        return isOfType( ontologyManager, feature.getFeatureType(), RuleUtils.BINDING_SITE, true );
     }
 
     /**
