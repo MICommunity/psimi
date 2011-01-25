@@ -4,6 +4,7 @@ import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.FeatureUtils;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
+import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -73,6 +74,13 @@ public class FeatureRangeRule extends ObjectRule<Participant> {
                 Mi25Context context = new Mi25Context();
                 context.setParticipantId( participantId );
                 context.setFeatureId( featureId );
+
+                if (ranges.isEmpty()){
+                    messages.add( new ValidatorMessage( "Feature must have at least one range.'",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+                }
 
                 for (Range range : ranges){
                     FeatureUtils.checkBadRange(range, sequence, context, messages, this);
