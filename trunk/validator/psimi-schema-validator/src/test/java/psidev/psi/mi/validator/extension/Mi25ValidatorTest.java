@@ -11,6 +11,7 @@ import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 import psidev.psi.tools.validator.xpath.XPathHelper;
 import psidev.psi.tools.validator.xpath.XPathResult;
 
@@ -113,7 +114,11 @@ public class Mi25ValidatorTest {
         preferences.setKeepDownloadedOntologiesOnDisk( true );
         aValidator.setUserPreferences( preferences );
 
-        Assert.assertEquals( 29, aValidator.getObjectRules().size() );
+        for (ObjectRule rule : aValidator.getObjectRules()){
+            System.out.print(rule.getClass().getCanonicalName() + "\n");
+        }
+
+        Assert.assertEquals( 32, aValidator.getObjectRules().size() );
     }
 
     @Test

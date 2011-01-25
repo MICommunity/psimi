@@ -43,6 +43,8 @@ public final class RuleUtils {
     public static final String IDENTITY_MI_REF = "MI:0356";
     public static final String IDENTITY = "identity";
 
+    public static final String INTERACTION_TYPE = "MI:0190";
+
     /////////////////////////
     // Interactor types
 
@@ -80,7 +82,14 @@ public final class RuleUtils {
     public static final String IMEX_MI_REF = "MI:0670";
     public static final String EMBL = "ddbj/embl/genbank";
     public static final String EMBL_MI_REF = "MI:0475";
-
+    public static final String BRENDA = "brenda";
+    public static final String BRENDA_MI_REF = "MI:0864";
+    public static final String CABRI = "cabri";
+    public static final String CABRI_MI_REF = "MI:0246";
+    public static final String CELL_ONTOLOGY = "cell ontology";
+    public static final String CELL_ONTOLOGY_MI_REF = "MI:0831";
+    public static final String TISSUE_LIST = "tissue list";
+    public static final String TISSUE_LIST_MI_REF = "MI:0830";
 
     /////////////////////////
     // attribute type
@@ -93,6 +102,22 @@ public final class RuleUtils {
     public static final String EXPERIMENT_ATTRIBUTE_MI_REF = "MI:0665";
     public static final String CONTACT_EMAIL = "contact-email";
     public static final String CONTACT_EMAIL_MI_REF = "MI:0634";
+    public static final String URL = "MI:0614";
+    public static final String EXP_MODIFICATION = "MI:0627";
+    public static final String DATASET = "MI:0875";
+    public static final String DATA_PROCESSING = "MI:0633";
+    public static final String COMMENT = "MI:0612";
+    public static final String CAUTION = "MI:0618";
+    public static final String ANTIBODIES = "MI:0671";
+    public static final String IMEX_CURATION = " MI:0959";
+    public static final String CURATION_REQUEST = "MI:0873";
+    public static final String AUTHOR_SUBMITTED = "MI:0878";
+    public static final String PUBLICATION_YEAR = "MI:0886";
+    public static final String JOURNAL = "MI:0885";
+    public static final String AUTHOR_LIST = "MI:0636";
+    public static final String LIBRARY_USED = "MI:0672";
+    public static final String FIGURE_LEGEND = "figure-legend";
+    public static final String FIGURE_LEGEND_MI_REF = "MI:0599";
 
     //////////////////////////
     // biological roles
