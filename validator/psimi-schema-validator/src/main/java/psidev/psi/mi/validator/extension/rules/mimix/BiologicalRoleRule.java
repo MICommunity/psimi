@@ -61,7 +61,7 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
             final Mi25Context context = buildContext( participantId );
             messages.add( new ValidatorMessage( "Interaction's participants should have a " +
                     "biological role; found 0.",
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }

@@ -24,8 +24,8 @@ import java.util.List;
  */
 public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
 
-    public ExperimentHostOrganismRule( OntologyManager ontologyMaganer ) {
-        super( ontologyMaganer );
+    public ExperimentHostOrganismRule( OntologyManager ontologyManager ) {
+        super( ontologyManager );
 
         // describe the rule.
         setName( "Experiment Host Organism Check" );
