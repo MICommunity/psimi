@@ -68,7 +68,11 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
                 context.setExperimentId(experimentId);
                 context.setParticipantId(participantId);
 
-                if (experiment.getParticipantIdentificationMethod() == null && !participant.hasParticipantIdentificationMethods()){
+                if (experiment.getParticipantIdentificationMethod() != null){
+                    hasToCheckPartDetMetInExperiment = true;
+                    break;
+                }
+                else if (experiment.getParticipantIdentificationMethod() == null && !participant.hasParticipantIdentificationMethods()){
                     messages.add( new ValidatorMessage( " The participant does not have a participant identification method and it is required for MIMIx",
                             MessageLevel.ERROR,
                             context,
@@ -82,9 +86,6 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
                         final Mi25Ontology ontology = getMi25Ontology();
                         RuleUtils.checkPsiMIXRef(method, messages, context, this, ontology, "MI:0002");
                     }
-                }
-                else {
-                    hasToCheckPartDetMetInExperiment = true;
                 }
             }
 

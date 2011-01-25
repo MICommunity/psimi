@@ -1,7 +1,8 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -61,8 +62,8 @@ public class HostOrganismRule extends ObjectRule<Organism> {
         Mi25Context context = new Mi25Context();
 
         // check on host organism
-        RuleUtils.checkOrganism( ontologyManager, organism, context, messages, this,
-                                          "Experiment or Interactor", "host organism" );
+        RuleUtils.checkOrganism(ontologyManager, organism, context, messages, this,
+                "Experiment or Interactor", "host organism");
 
         return messages;
     }
