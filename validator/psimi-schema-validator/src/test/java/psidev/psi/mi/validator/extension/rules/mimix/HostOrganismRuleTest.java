@@ -1,8 +1,8 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Assert;
 import org.junit.Test;
-import psidev.psi.mi.validator.extension.rules.mimix.HostOrganismRule;
+import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;

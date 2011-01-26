@@ -225,85 +225,19 @@ public class Mi25Validator extends Validator {
                     report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
 
                 // object rule
-                messages = validate( interaction );
-
-                for ( ExperimentDescription experiment : interaction.getExperiments() ) {
-                    messages = validate( experiment );
-                }
-
-                for (Confidence c : interaction.getConfidences()){
-                    checkConfidence(messages, c);
-                }
-
-                for (InteractionType it : interaction.getInteractionTypes()){
-                    // run the interaction type specialized rules
-                    messages.addAll(super.validate( it ));
-                }
-
-                for (InferredInteraction inf : interaction.getInferredInteractions()) {
-                    for (InferredInteractionParticipant par : inf.getParticipant()){
-                        checkParticipant(messages, par.getParticipant());
-                        checkFeature(messages, par.getFeature());
-                    }
-                }
-
-
-                for (Participant p : interaction.getParticipants()){
-                    checkParticipant(messages, p);
-
-                    for (Feature f : p.getFeatures()){
-                        checkFeature(messages, f);
-                    }
-                }
-
-                if( ! messages.isEmpty() )
-                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
+                messages = checkInteraction(report.getSemanticMessages(), interaction);
             }
 
             for ( ExperimentDescription experiment : entry.getExperiments() ) {
 
                 // object rule
-                Collection<ValidatorMessage> messages = validate( experiment );
-
-                // run the bibref specialized rules
-                messages.addAll(super.validate( experiment.getBibref() ));
-
-                // run the feature detection method specialized rules
-                messages.addAll(super.validate( experiment.getFeatureDetectionMethod() ));
-
-                // run the interaction detection method specialized rules
-                messages.addAll(super.validate( experiment.getInteractionDetectionMethod() ));
-
-                // run the participant identification method specialized rules
-                messages.addAll(super.validate( experiment.getParticipantIdentificationMethod() ));
-
-                for (Confidence c : experiment.getConfidences()){
-                    checkConfidence(messages, c);
-                }
-
-                for (Organism o : experiment.getHostOrganisms()){
-                    checkOrganism(messages, o);
-                }
-                if( ! messages.isEmpty() )
-                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, experiment ) );
+                Collection<ValidatorMessage> messages = checkExperiment(report.getSemanticMessages(), experiment);
             }
 
             for ( Interactor interactor : entry.getInteractors() ) {
 
                 // object rule
-                Collection<ValidatorMessage> messages = validate( interactor );
-
-                // run the interactor type specialized rules
-                messages.addAll(super.validate( interactor.getInteractorType() ));
-
-                if (interactor.getOrganism() != null){
-                    Organism o = interactor.getOrganism();
-
-                    checkOrganism(messages, o);
-                }
-
-                if( ! messages.isEmpty() )
-                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interactor ) );
+                Collection<ValidatorMessage> messages = checkInteractor(report.getSemanticMessages(), interactor);
             }
         }
 
@@ -368,107 +302,38 @@ public class Mi25Validator extends Validator {
                     final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
                     while ( experimentIterator.hasNext() ) {
                         ExperimentDescription experiment = experimentIterator.next();
-
-                        // run the experiment specialized rules
-                        Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
-
-                        // run the bibref specialized rules
-                        validatorMessages.addAll(super.validate( experiment.getBibref() ));
-
-                        // run the feature detection method specialized rules
-                        validatorMessages.addAll(super.validate( experiment.getFeatureDetectionMethod() ));
-
-                        // run the interaction detection method specialized rules
-                        validatorMessages.addAll(super.validate( experiment.getInteractionDetectionMethod() ));
-
-                        // run the participant identification method specialized rules
-                        validatorMessages.addAll(super.validate( experiment.getParticipantIdentificationMethod() ));
-
-                        for (Confidence c : experiment.getConfidences()){
-                            checkConfidence(validatorMessages, c);
-                        }
-
-                        for (Organism o : experiment.getHostOrganisms()){
-                            checkOrganism(validatorMessages, o);
-                        }
+                        Collection<ValidatorMessage> validatorMessages = checkExperiment(messages, experiment);
 
                         if( !validatorMessages.isEmpty() ) {
                             long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
                             updateLineNumber( validatorMessages, lineNumber );
                         }
-
-                        if( ! validatorMessages.isEmpty() )
-                            messages.addAll( convertToMi25Messages( validatorMessages, experiment ) );
                     }
 
                     // now process interactors
                     final Iterator<Interactor> interactorIterator = entry.unmarshallInteractorIterator();
                     while ( interactorIterator.hasNext() ) {
                         Interactor interactor = interactorIterator.next();
-
-                        // run the interactor specialized rules
-                        final Collection<ValidatorMessage> validatorMessages = super.validate( interactor );
-
-                        // run the interactor type specialized rules
-                        validatorMessages.addAll(super.validate( interactor.getInteractorType() ));
-
-                        if (interactor.getOrganism() != null){
-                            Organism o = interactor.getOrganism();
-
-                            checkOrganism(validatorMessages, o);
-                        }
+                        Collection<ValidatorMessage> validatorMessages = checkInteractor(messages, interactor);
 
                         if( !validatorMessages.isEmpty() ) {
                             long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
                             updateLineNumber( validatorMessages, lineNumber );
                         }
-
-                        if( ! validatorMessages.isEmpty() )
-                            messages.addAll( convertToMi25Messages( validatorMessages, interactor ) );
                     }
 
                     // now process interactions
                     Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
                     while ( interactionIterator.hasNext() ) {
                         Interaction interaction = interactionIterator.next();
+                        Collection<ValidatorMessage> interactionMessages = checkInteraction(messages, interaction);
 
-                        // run the interaction specialized rules
-                        Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
-
-                        for (Confidence c : interaction.getConfidences()){
-                            checkConfidence(interactionMessages, c);
-                        }
-
-                        for (InteractionType it : interaction.getInteractionTypes()){
-                            // run the interaction type specialized rules
-                            interactionMessages.addAll(super.validate( it ));
-                        }
-
-                        for (InferredInteraction inf : interaction.getInferredInteractions()) {
-                            for (InferredInteractionParticipant par : inf.getParticipant()){
-                                checkParticipant(interactionMessages, par.getParticipant());
-                                checkFeature(interactionMessages, par.getFeature());
-                            }
-                        }
-
-
-                        for (Participant p : interaction.getParticipants()){
-                            checkParticipant(interactionMessages, p);
-
-                            for (Feature f : p.getFeatures()){
-                                checkFeature(interactionMessages, f);
-                            }
-                        }
 
                         // add line number
                         if( !interactionMessages.isEmpty() ) {
                             long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
                             updateLineNumber( interactionMessages, lineNumber );
                         }
-
-                        // append messages to the global collection
-                        if( ! interactionMessages.isEmpty() )
-                            messages.addAll( convertToMi25Messages( interactionMessages, interaction ) );
                     }
                 }
             }
@@ -487,6 +352,89 @@ public class Mi25Validator extends Validator {
                     context,
                     schemaRule ) );
         }
+    }
+
+    private Collection<ValidatorMessage> checkInteraction(Collection<ValidatorMessage> messages, Interaction interaction) throws ValidatorException {
+        // run the interaction specialized rules
+        Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
+
+        for (Confidence c : interaction.getConfidences()){
+            checkConfidence(interactionMessages, c);
+        }
+
+        for (InteractionType it : interaction.getInteractionTypes()){
+            // run the interaction type specialized rules
+            interactionMessages.addAll(super.validate( it ));
+        }
+
+        for (InferredInteraction inf : interaction.getInferredInteractions()) {
+            for (InferredInteractionParticipant par : inf.getParticipant()){
+                checkParticipant(interactionMessages, par.getParticipant());
+                checkFeature(interactionMessages, par.getFeature());
+            }
+        }
+
+
+        for (Participant p : interaction.getParticipants()){
+            checkParticipant(interactionMessages, p);
+
+            for (Feature f : p.getFeatures()){
+                checkFeature(interactionMessages, f);
+            }
+        }
+
+        // append messages to the global collection
+        if( ! interactionMessages.isEmpty() )
+            messages.addAll( convertToMi25Messages( interactionMessages, interaction ) );
+        return interactionMessages;
+    }
+
+    private Collection<ValidatorMessage> checkExperiment(Collection<ValidatorMessage> messages, ExperimentDescription experiment) throws ValidatorException {
+        // run the experiment specialized rules
+        Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
+
+        // run the bibref specialized rules
+        validatorMessages.addAll(super.validate( experiment.getBibref() ));
+
+        // run the feature detection method specialized rules
+        validatorMessages.addAll(super.validate( experiment.getFeatureDetectionMethod() ));
+
+        // run the interaction detection method specialized rules
+        validatorMessages.addAll(super.validate( experiment.getInteractionDetectionMethod() ));
+
+        // run the participant identification method specialized rules
+        validatorMessages.addAll(super.validate( experiment.getParticipantIdentificationMethod() ));
+
+        for (Confidence c : experiment.getConfidences()){
+            checkConfidence(validatorMessages, c);
+        }
+
+        for (Organism o : experiment.getHostOrganisms()){
+            checkOrganism(validatorMessages, o);
+        }
+
+        if( ! validatorMessages.isEmpty() )
+            messages.addAll( convertToMi25Messages( validatorMessages, experiment ) );
+        return validatorMessages;
+    }
+
+    private Collection<ValidatorMessage> checkInteractor(Collection<ValidatorMessage> messages, Interactor interactor) throws ValidatorException {
+        // run the interactor specialized rules
+        final Collection<ValidatorMessage> validatorMessages = super.validate( interactor );
+
+        // run the interactor type specialized rules
+        validatorMessages.addAll(super.validate( interactor.getInteractorType() ));
+
+        if (interactor.getOrganism() != null){
+            Organism o = interactor.getOrganism();
+
+            checkOrganism(validatorMessages, o);
+        }
+
+        if( ! validatorMessages.isEmpty() )
+            messages.addAll( convertToMi25Messages( validatorMessages, interactor ) );
+
+        return validatorMessages;
     }
 
     private void checkParticipant(Collection<ValidatorMessage> validatorMessages, Participant p) throws ValidatorException {

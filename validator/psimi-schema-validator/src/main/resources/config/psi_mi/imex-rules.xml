@@ -13,7 +13,7 @@
         </import>
     </importRuleList>
 
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.BindingDomainSizeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.BindingDomainSizeRuleTest"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.CellLineXrefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentAttributeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>

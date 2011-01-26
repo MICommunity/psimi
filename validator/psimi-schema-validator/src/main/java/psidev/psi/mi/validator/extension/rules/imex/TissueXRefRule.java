@@ -64,14 +64,14 @@ public class TissueXRefRule extends ObjectRule<Tissue> {
             Collection<DbReference> tissueRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.TISSUE_LIST_MI_REF, RuleUtils.TISSUE_LIST, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
 
             if (brendaRef.isEmpty() && tissueRef.isEmpty()){
-                messages.add( new ValidatorMessage( "The tissue " + tissue.getNames().getShortLabel() + " has "+ref.getAllDbReferences().size()+" cross refrences but no one is a BRENDA or Tissue List cross reference with a qualifier 'identity' and it  is strongly recommended.'",
+                messages.add( new ValidatorMessage( "The tissue " + (tissue.getNames() != null ? tissue.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross refrences but no one is a BRENDA or Tissue List cross reference with a qualifier 'identity' and it  is strongly recommended.'",
                         MessageLevel.WARN,
                         context,
                         this ) );
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The tissue " + tissue.getNames().getShortLabel() + " doesn't have any cross references and at least one cross reference to BRENDA or Tissue List " +
+            messages.add( new ValidatorMessage( "The tissue " + (tissue.getNames() != null ? tissue.getNames().getShortLabel() : "") + " doesn't have any cross references and at least one cross reference to BRENDA or Tissue List " +
                     "qualifier 'identity' is strongly recommended.'",
                     MessageLevel.WARN,
                     context,
