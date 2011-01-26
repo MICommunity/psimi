@@ -358,6 +358,10 @@ public class Mi25Validator extends Validator {
         // run the interaction specialized rules
         Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
 
+        for (ExperimentDescription experiment : interaction.getExperiments()){
+            checkExperiment(interactionMessages, experiment);
+        }
+
         for (Confidence c : interaction.getConfidences()){
             checkConfidence(interactionMessages, c);
         }
@@ -441,6 +445,10 @@ public class Mi25Validator extends Validator {
         // run the participant specialized rules
         validatorMessages.addAll(super.validate( p ));
 
+        if (p.getInteractor() != null){
+            checkInteractor(validatorMessages, p.getInteractor());
+        }
+
         // run the biological roles specialized rules
         validatorMessages.addAll(super.validate( p.getBiologicalRole() ));
 
@@ -460,6 +468,13 @@ public class Mi25Validator extends Validator {
         for (ExperimentalPreparation ep : p.getExperimentalPreparations()){
             // run the experimental preparation specialized rules
             validatorMessages.addAll(super.validate( ep ));
+        }
+
+        for (ExperimentalInteractor ei : p.getExperimentalInteractors()){
+            // run the experimental interactor specialized rules
+            if (ei.getInteractor() != null){
+                checkInteractor(validatorMessages, ei.getInteractor());
+            }
         }
 
         for (HostOrganism o : p.getHostOrganisms()){
