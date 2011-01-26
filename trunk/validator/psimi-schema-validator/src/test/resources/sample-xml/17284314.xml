@@ -1,246 +1,2797 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entrySet version="5" level="2" minorVersion="3"
-          xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/rel25/src/MIF253.xsd"
-          xmlns="net:sf:psidev:mi"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<entry>
-		<source releaseDate="2010-07-15">
-			<names>
-				<shortLabel>Molecular Connections Pvt. Ltd.</shortLabel>
-			</names>
-			<attributeList>
-				<attribute name="postal address">2/2, Kariappa Road, Basavanagudi, Bangalore -560 004</attribute>
-				<attribute name="url">www.molecularconnections.com</attribute>
-			</attributeList>
-		</source>
-		<experimentList>
-			<experimentDescription id="1">
-				<names>
-					<shortLabel>ang_2007-1</shortLabel>
-					<fullName>ArhGAP9, a novel MAP kinase docking protein, inhibits Erk and p38 activation through WW domain binding</fullName>
-				</names>
-				<bibref>
-					<xref>
-						<primaryRef id="17284314" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
-					</xref>
-				</bibref>
-				<hostOrganismList>
-					<hostOrganism ncbiTaxId="-1">
-						<names>
-							<shortLabel>in vitro</shortLabel>
-							<fullName>in vitro</fullName>
-						</names>
-					</hostOrganism>
-				</hostOrganismList>
-				<interactionDetectionMethod>
-					<names>
-						<shortLabel>pull down</shortLabel>
-						<fullName>pull down</fullName>
-					</names>
-					<xref>
-						<primaryRef id="MI:0096" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-					</xref>
-				</interactionDetectionMethod>
-				<participantIdentificationMethod>
-					<names>
-						<shortLabel>ms participant</shortLabel>
-						<fullName>Identification by mass spectrometry</fullName>
-					</names>
-					<xref>
-						<primaryRef id="MI:0427" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-					</xref>
-				</participantIdentificationMethod>
-				<attributeList>
-					<attribute name="author-list" nameAc="MI:0636">Boon K Ang, Chun Y Lim, Sharon S Koh, Neelamegam Sivakumar, Shahrizan Taib, Kim B Lim, Sohail Ahmed, Guna Rajagopal and Siew H Ong
-</attribute>
-					<attribute name="journal" nameAc="MI:0885">J Mol Signal.</attribute>
-					<attribute name="publication year" nameAc="MI:0886">2007</attribute>
-					<attribute name="contact-email" nameAc="MI:0634">shong@imcb.a-star.edu.sg</attribute>
-				</attributeList>
-			</experimentDescription>
-		</experimentList>
-		<interactorList>
-			<interactor id="6">
-				<names>
-					<shortLabel>RHG09_HUMAN</shortLabel>
-					<fullName>Rho GTPase-activating protein 9</fullName>
-					<alias type="gene name synonym" typeAc="MI:0302">ARHGAP9</alias>
-					<alias type="gene name synonym" typeAc="MI:0302">Rho-type GTPase-activating protein 9</alias>
-				</names>
-				<xref>
-					<primaryRef id="Q9BRR9" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
-					<secondaryRef id="64333" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
-				</xref>
-				<interactorType>
-					<names>
-						<shortLabel>protein</shortLabel>
-						<fullName>protein</fullName>
-					</names>
-					<xref>
-						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-					</xref>
-				</interactorType>
-				<organism ncbiTaxId="9606">
-					<names>
-						<shortLabel>human</shortLabel>
-						<fullName>Homo sapiens</fullName>
-					</names>
-				</organism>
-			</interactor>
-			<interactor id="7">
-				<names>
-					<shortLabel>MK01_RAT</shortLabel>
-					<fullName>Mitogen-activated protein kinase 1</fullName>
-					<alias type="gene name synonym" typeAc="MI:0302">	Mapk1</alias>
-					<alias type="gene name synonym" typeAc="MI:0302">Erk2</alias>
-					<alias type="gene name synonym" typeAc="MI:0302">Mapk</alias>
-					<alias type="gene name synonym" typeAc="MI:0302">Prkm1</alias>
-				</names>
-				<xref>
-					<primaryRef id="P63086" db="uniprotkb" dbAc="MI:0486" refTypeAc="MI:0356" refType="identity"/>
-					<secondaryRef id="116590" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
-				</xref>
-				<interactorType>
-					<names>
-						<shortLabel>protein</shortLabel>
-						<fullName>protein</fullName>
-					</names>
-					<xref>
-						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-					</xref>
-				</interactorType>
-				<organism ncbiTaxId="10116">
-					<names>
-						<shortLabel>Rat</shortLabel>
-						<fullName>Rattus norvegicus</fullName>
-					</names>
-				</organism>
-			</interactor>
-		</interactorList>
-		<interactionList>
-			<interaction id="2">
-				<names>
-					<shortLabel>arhGAP9-erk2-1</shortLabel>
-					<fullName>GST fusion protein of the WW domain of human ArhGAP9 immobilized on glutathione Sepharose beads was used as a bait to isolate interacting proteins from rat brain lysate using proteomics</fullName>
-				</names>
-				<experimentList>
-					<experimentRef>1</experimentRef>
-				</experimentList>
-				<participantList>
-					<participant id="3">
-						<interactorRef>6</interactorRef>
-						<experimentalRoleList>
-							<experimentalRole>
-								<names>
-									<shortLabel>bait</shortLabel>
-									<fullName>bait</fullName>
-								</names>
-								<xref>
-									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-								</xref>
-							</experimentalRole>
-						</experimentalRoleList>
-						<featureList>
-							<feature id="4">
-								<names>
-									<shortLabel>n-terminus</shortLabel>
-									<fullName>n-terminus</fullName>
-								</names>
-								<featureType>
-									<names>
-										<shortLabel>gst tag</shortLabel>
-										<fullName>glutathione s tranferase tag</fullName>
-									</names>
-									<xref>
-										<primaryRef id="MI:0519" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-									</xref>
-								</featureType>
-								<featureRangeList>
-									<featureRange>
-										<startStatus>
-											<names>
-												<shortLabel>n-terminal</shortLabel>
-												<fullName>n-terminal position</fullName>
-											</names>
-											<xref>
-												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-											</xref>
-										</startStatus>
-										<begin position="0"/>
-										<endStatus>
-											<names>
-												<shortLabel>n-terminal</shortLabel>
-												<fullName>n-terminal position</fullName>
-											</names>
-											<xref>
-												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-											</xref>
-										</endStatus>
-										<end position="0"/>
-									</featureRange>
-								</featureRangeList>
-							</feature>
-							<feature id="5">
-								<names>
-									<shortLabel>WW domain</shortLabel>
-									<fullName>WW domain</fullName>
-								</names>
-								<featureRangeList>
-									<featureRange>
-										<startStatus>
-											<names>
-												<shortLabel>n-terminal</shortLabel>
-												<fullName>n-terminal position</fullName>
-											</names>
-											<xref>
-												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-											</xref>
-										</startStatus>
-										<begin position="0"/>
-										<endStatus>
-											<names>
-												<shortLabel>n-terminal</shortLabel>
-												<fullName>n-terminal position</fullName>
-											</names>
-											<xref>
-												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-											</xref>
-										</endStatus>
-										<end position="0"/>
-									</featureRange>
-								</featureRangeList>
-							</feature>
-						</featureList>
-					</participant>
-					<participant id="8">
-						<interactorRef>7</interactorRef>
-						<experimentalRoleList>
-							<experimentalRole>
-								<names>
-									<shortLabel>prey</shortLabel>
-									<fullName>prey</fullName>
-								</names>
-								<xref>
-									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-								</xref>
-							</experimentalRole>
-						</experimentalRoleList>
-					</participant>
-				</participantList>
-				<interactionType>
-					<names>
-						<shortLabel>association</shortLabel>
-						<fullName>association</fullName>
-					</names>
-					<xref>
-						<primaryRef id="MI:0914" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
-					</xref>
-				</interactionType>
-				<attributeList>
-					<attribute name="figure legend" nameAc="MI:0599">fig 1</attribute>
-				</attributeList>
-			</interaction>
-		</interactionList>
-	</entry>
+<entrySet xmlns="net:sf:psidev:mi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/rel25/src/MIF25.xsd" level="2" version="5">
+  <entry>
+    <source>
+      <names>
+        <shortLabel>bind</shortLabel>
+        <fullName>The Biomolecular Interaction Network Database</fullName>
+      </names>
+      <bibref>
+        <xref>
+          <primaryRef db="pubmed" dbAc="MI:0446" id="12519993" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+        </xref>
+      </bibref>
+    </source>
+    <interactionList>
+      <interaction id="19934">
+        <names>
+          <shortLabel>VirE2 interacts with VirD4.</shortLabel>
+          <fullName>VirE2 interacts with VirD4.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="153455" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19932">
+            <names>
+              <shortLabel>two-hybrid-test</shortLabel>
+              <fullName>An interaction between VirE2 and VirD4 was demonstrated by cytology-based two-hybrid assay (C2H). VirD4, bait, fused to the half of green fluorescent protein (N'GFP) and VirE2, prey, fused to the other half of green fluorescent protein (GFP'C) were co-transformed into bacteria. Interactions were detected by fluorescence microscopy. Fig. 2A and B. VirD4-deltaN87-N'GFP interacted detectably with GFP'C-virE2. Fig. 3B. GFP'C-virE2[438-556], GFP'C-virE2[332-556], and GFP'C-virE2[85-556] interacted detectably with VirD4-N'GFP. Fig. 4A. GFP'C-virE2[484-556], GFP'C-virE2[1-438,534-556], GFP'C-virE2[1-520,534-556] and GFP'C-virE2[1-30,530-556] did not interact detectably with VirD4-N'GFP. Fig. 4A.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="12950931" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>2 hybrid</shortLabel>
+                <fullName>two hybrid</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0018" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19933">
+            <names>
+              <shortLabel>immunoprecipitation</shortLabel>
+              <fullName>An interaction between VirE2 and VirD4 was demonstrated by co-immunoprecipitation. Endogenous VirE2 was immunoprecipitated from A348 (WT) cell extracts cross-linked with DSP using anti-E2 and precipitates were resolved by SDS-PAGE. Endogenous virD4 was detected by western blot using anti-D4. Fig. 3A. Anti-D4 co-immunoprecipitated VirE2 and VirD4 as detected by anti-E2. Fig. 3A.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="12950931" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>coip</shortLabel>
+                <fullName>coimmunoprecipitation</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0019" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19928">
+            <interactor id="19929">
+              <names>
+                <shortLabel>VirE2</shortLabel>
+                <fullName>Exported virulence protein.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939323" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137513" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P08062" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19930">
+            <interactor id="19931">
+              <names>
+                <shortLabel>VirD4</shortLabel>
+                <fullName>virA/G regulated protein.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939317" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137507" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P18594" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND Taxroot</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19940">
+        <names>
+          <shortLabel>Interaction between AGR_L_2275 (PDB ID: 1VKI_B) and AGR_L_2275 (PDB ID: 1VKI_A).</shortLabel>
+          <fullName>Interaction between AGR_L_2275 (PDB ID: 1VKI_B) and AGR_L_2275 (PDB ID: 1VKI_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="162035" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19939">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Atu3699) from Agrobacterium Tumefaciens at 1.60 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Atu3699, 20.025% PEG 8000, 0.08m HEPES, 0.02m HEPES_na ,  at 277K. X-ray data were collected using synchrotron radiation and were 95.4% complete to a resolution limit of 1.600 angstroms and with an overall Rsym of 5.1%. This crystal contained 2 chains per asymmetric unit and belonged to the space group P 1 21 1. The structure was determined using Molecular Replacement and the modeled structure was refined to an R-factor = 15.4% and had an R-free = 18.5%. PDB: 1VKI, MMDB: 28102.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">162035</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Atu3699) From Agrobacterium Tumefaciens At 1.60 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19935">
+            <interactor id="19936">
+              <names>
+                <shortLabel>AGR_L_2275</shortLabel>
+                <fullName>AGR_L_2275p [BLAST Evalue to experimental molecule = 2.20e-90]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15891247" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFJ8" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1141400" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19937">
+            <interactor id="19938">
+              <names>
+                <shortLabel>AGR_L_2275</shortLabel>
+                <fullName>AGR_L_2275p [BLAST Evalue to experimental molecule = 2.20e-90]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15891247" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFJ8" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1141400" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19947">
+        <names>
+          <shortLabel>Interaction between Hypothetical Protein Agr_l_1239 (PDB ID: 1VQS_B) and Hypothetical Protein Agr_l_1239 (PDB ID: 1VQS_A). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQS_D interacts with 1VQS_C.</shortLabel>
+          <fullName>Interaction between Hypothetical Protein Agr_l_1239 (PDB ID: 1VQS_B) and Hypothetical Protein Agr_l_1239 (PDB ID: 1VQS_A). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQS_D interacts with 1VQS_C.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307172" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19945">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_356412.1) from Agrobacterium Tumefaciens at 1.50 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_l_1239, 14% PEG Mme 2000, 0.175m Sulfate_ NH4, 0.05m Tris_base, 0.05m Tris Cl,  at 277K. X-ray data were collected using synchrotron radiation and were 100.0% complete to a resolution limit of 1.500 angstroms and with an overall Rsym of 9.0%. This crystal contained 5 chains per asymmetric unit and belonged to the space group I 4 2 2. The structure was determined using MAD and the modeled structure was refined to an R-factor = 15.2% and had an R-free = 17.7%. PDB: 1VQS, MMDB: 31331.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307172</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_356412.1) From Agrobacterium Tumefaciens At 1.50 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19946">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_356412.1) from Agrobacterium Tumefaciens at 1.50 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_l_1239, 14% PEG Mme 2000, 0.175m Sulfate_ NH4, 0.05m Tris_base, 0.05m Tris Cl,  at 277K. X-ray data were collected using synchrotron radiation and were 100.0% complete to a resolution limit of 1.500 angstroms and with an overall Rsym of 9.0%. This crystal contained 5 chains per asymmetric unit and belonged to the space group I 4 2 2. The structure was determined using MAD and the modeled structure was refined to an R-factor = 15.2% and had an R-free = 17.7%. PDB: 1VQS, MMDB: 31331.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307172</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_356412.1) From Agrobacterium Tumefaciens At 1.50 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19941">
+            <interactor id="19942">
+              <names>
+                <shortLabel>Hypothetical Protein Agr_l_1239</shortLabel>
+                <fullName>Chain B, Crystal Structure Of Hypothetical Protein (Np_356412.1) From Agrobacterium Tumefaciens At 1.50 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="60593726" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="1VQS_B" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19943">
+            <interactor id="19944">
+              <names>
+                <shortLabel>Hypothetical Protein Agr_l_1239</shortLabel>
+                <fullName>Chain A, Crystal Structure Of Hypothetical Protein (Np_356412.1) From Agrobacterium Tumefaciens At 1.50 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="60593725" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="1VQS_A" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19953">
+        <names>
+          <shortLabel>Interaction between Atu4242 (PDB ID: 1VQS_C) and Atu4242 (PDB ID: 1VQS_B).</shortLabel>
+          <fullName>Interaction between Atu4242 (PDB ID: 1VQS_C) and Atu4242 (PDB ID: 1VQS_B).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307173" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19952">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_356412.1) from Agrobacterium Tumefaciens at 1.50 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_l_1239, 14% PEG Mme 2000, 0.175m Sulfate_ NH4, 0.05m Tris_base, 0.05m Tris Cl,  at 277K. X-ray data were collected using synchrotron radiation and were 100.0% complete to a resolution limit of 1.500 angstroms and with an overall Rsym of 9.0%. This crystal contained 5 chains per asymmetric unit and belonged to the space group I 4 2 2. The structure was determined using MAD and the modeled structure was refined to an R-factor = 15.2% and had an R-free = 17.7%. PDB: 1VQS, MMDB: 31331.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307173</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_356412.1) From Agrobacterium Tumefaciens At 1.50 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19948">
+            <interactor id="19949">
+              <names>
+                <shortLabel>Atu4242</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 4.80e-42]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937931" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1136116" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CGA4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19950">
+            <interactor id="19951">
+              <names>
+                <shortLabel>Atu4242</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 4.80e-42]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937931" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1136116" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CGA4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19959">
+        <names>
+          <shortLabel>Interaction between Atu4242 (PDB ID: 1VQS_E) and Atu4242 (PDB ID: 1VQS_D).</shortLabel>
+          <fullName>Interaction between Atu4242 (PDB ID: 1VQS_E) and Atu4242 (PDB ID: 1VQS_D).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307174" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19958">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_356412.1) from Agrobacterium Tumefaciens at 1.50 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_l_1239, 14% PEG Mme 2000, 0.175m Sulfate_ NH4, 0.05m Tris_base, 0.05m Tris Cl,  at 277K. X-ray data were collected using synchrotron radiation and were 100.0% complete to a resolution limit of 1.500 angstroms and with an overall Rsym of 9.0%. This crystal contained 5 chains per asymmetric unit and belonged to the space group I 4 2 2. The structure was determined using MAD and the modeled structure was refined to an R-factor = 15.2% and had an R-free = 17.7%. PDB: 1VQS, MMDB: 31331.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307174</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_356412.1) From Agrobacterium Tumefaciens At 1.50 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19954">
+            <interactor id="19955">
+              <names>
+                <shortLabel>Atu4242</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 4.80e-42]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937931" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1136116" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CGA4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19956">
+            <interactor id="19957">
+              <names>
+                <shortLabel>Atu4242</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 4.80e-42]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937931" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1136116" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CGA4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19968">
+        <names>
+          <shortLabel>Interaction between AGR_pAT_315 (PDB ID: 1VQY_B) and AGR_pAT_315 (PDB ID: 1VQY_A). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_D interacts with 1VQY_C, 1VQY_F interacts with 1VQY_E, 1VQY_H interacts with 1VQY_G.</shortLabel>
+          <fullName>Interaction between AGR_pAT_315 (PDB ID: 1VQY_B) and AGR_pAT_315 (PDB ID: 1VQY_A). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_D interacts with 1VQY_C, 1VQY_F interacts with 1VQY_E, 1VQY_H interacts with 1VQY_G.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307179" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19964">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307179</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19965">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307179</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19966">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307179</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19967">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307179</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19960">
+            <interactor id="19961">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19962">
+            <interactor id="19963">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19976">
+        <names>
+          <shortLabel>Interaction between AGR_pAT_315 (PDB ID: 1VQY_E) and AGR_pAT_315 (PDB ID: 1VQY_B). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_F interacts with 1VQY_D, 1VQY_G interacts with 1VQY_A.</shortLabel>
+          <fullName>Interaction between AGR_pAT_315 (PDB ID: 1VQY_E) and AGR_pAT_315 (PDB ID: 1VQY_B). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_F interacts with 1VQY_D, 1VQY_G interacts with 1VQY_A.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307180" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19973">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307180</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19974">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307180</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19975">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307180</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19969">
+            <interactor id="19970">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19971">
+            <interactor id="19972">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19985">
+        <names>
+          <shortLabel>Interaction between AGR_pAT_315 (PDB ID: 1VQY_F) and AGR_pAT_315 (PDB ID: 1VQY_A). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_E interacts with 1VQY_C, 1VQY_G interacts with 1VQY_D, 1VQY_H interacts with 1VQY_B.</shortLabel>
+          <fullName>Interaction between AGR_pAT_315 (PDB ID: 1VQY_F) and AGR_pAT_315 (PDB ID: 1VQY_A). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_E interacts with 1VQY_C, 1VQY_G interacts with 1VQY_D, 1VQY_H interacts with 1VQY_B.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307181" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19981">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307181</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19982">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307181</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19983">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307181</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19984">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307181</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19977">
+            <interactor id="19978">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19979">
+            <interactor id="19980">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19993">
+        <names>
+          <shortLabel>Interaction between AGR_pAT_315 (PDB ID: 1VQY_G) and AGR_pAT_315 (PDB ID: 1VQY_B). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_F interacts with 1VQY_C, 1VQY_H interacts with 1VQY_D.</shortLabel>
+          <fullName>Interaction between AGR_pAT_315 (PDB ID: 1VQY_G) and AGR_pAT_315 (PDB ID: 1VQY_B). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: 1VQY_F interacts with 1VQY_C, 1VQY_H interacts with 1VQY_D.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307182" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19990">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307182</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19991">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307182</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="19992">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307182</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19986">
+            <interactor id="19987">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19988">
+            <interactor id="19989">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="19999">
+        <names>
+          <shortLabel>Interaction between AGR_pAT_315 (PDB ID: 1VQY_H) and AGR_pAT_315 (PDB ID: 1VQY_C).</shortLabel>
+          <fullName>Interaction between AGR_pAT_315 (PDB ID: 1VQY_H) and AGR_pAT_315 (PDB ID: 1VQY_C).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="307183" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19998">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Np_396154.1) from Agrobacterium Tumefaciens at 2.40 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Agr_pat_315, 15% PEG Mme 5000, 0.06m Tris Cl, 0.04m Tris_base,  at 277K. X-ray data were collected using synchrotron radiation and were 98.0% complete to a resolution limit of 2.400 angstroms and with an overall Rsym of 15.3%. This crystal contained 8 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using MAD and the modeled structure was refined to an R-factor = 18.9% and had an R-free = 24.4%. PDB: 1VQY, MMDB: 31337.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">307183</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Np_396154.1) From Agrobacterium Tumefaciens At 2.40 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19994">
+            <interactor id="19995">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19996">
+            <interactor id="19997">
+              <names>
+                <shortLabel>AGR_pAT_315</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.95e-51]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="16119448" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CLJ4" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1142432" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20008">
+        <names>
+          <shortLabel>VirB7 interacts with VirB9.</shortLabel>
+          <fullName>VirB7 interacts with VirB9.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="196353" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20004">
+            <names>
+              <shortLabel>two-hybrid-test</shortLabel>
+              <fullName>An interaction between VirB7 and VirB9 was demonstrated by yeast two hybrid assay. VirB9[22-293], bait, fused to the GAL4 DNA binding domain (DBD) and VirB7[15-55], prey, fused to the GAL4 activation domain (AD) were co-transformed into yeast strain Y153. Interactions were detected by beta-galactosidase activity. Table 2.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="9023204" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <hostOrganismList>
+              <hostOrganism ncbiTaxId="176299">
+                <compartment>
+                  <names>
+                    <shortLabel>cell wall</shortLabel>
+                    <fullName>cell wall</fullName>
+                  </names>
+                  <xref>
+                    <primaryRef db="gene ontology" dbAc="MI:0448" id="GO:0009276" refTypeAc="MI:0354" refType="gene ontology term for cellular component"></primaryRef>
+                    <secondaryRef db="gene ontology" dbAc="MI:0448" id=" GO:0005618 " refTypeAc="MI:0354" refType="gene ontology term for cellular component"></secondaryRef>
+                  </xref>
+                  <attributeList>
+                    <attribute name="BIND Curator compartment description">VirB7 interacts with VirB9 in the inner and outer membrane as demonstrated by isopycnic sucrose gradient centrifugation. Fig. 5.</attribute>
+                  </attributeList>
+                </compartment>
+              </hostOrganism>
+            </hostOrganismList>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>2 hybrid</shortLabel>
+                <fullName>two hybrid</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0018" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="20005">
+            <names>
+              <shortLabel>immunoprecipitation</shortLabel>
+              <fullName>An interaction between VirB7 and VirB9 was demonstrated by co-immunoprecipitation. Endogenous VirB9 was immunoprecipitated from Agrobacterium tumefaciens strain GV3850 (Tumorigenic T-DNA replaced with pBR322 amp gene) vir-induced with acetosyringone cell extracts using anti-VirB9 and precipitates were boiled in sample buffer with or without beta-mercaptoethanol and resolved by SDS-PAGE. Endogenous VirB7 from Agrobacterium tumefaciens strain GV3850 (Tumorigenic T-DNA replaced with pBR322 amp gene) was detected by western blot using anti-VirB7. Fig. 3.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="9023204" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <hostOrganismList>
+              <hostOrganism ncbiTaxId="176299">
+                <compartment>
+                  <names>
+                    <shortLabel>cell wall</shortLabel>
+                    <fullName>cell wall</fullName>
+                  </names>
+                  <xref>
+                    <primaryRef db="gene ontology" dbAc="MI:0448" id="GO:0009276" refTypeAc="MI:0354" refType="gene ontology term for cellular component"></primaryRef>
+                    <secondaryRef db="gene ontology" dbAc="MI:0448" id=" GO:0005618 " refTypeAc="MI:0354" refType="gene ontology term for cellular component"></secondaryRef>
+                  </xref>
+                  <attributeList>
+                    <attribute name="BIND Curator compartment description">VirB7 interacts with VirB9 in the inner and outer membrane as demonstrated by isopycnic sucrose gradient centrifugation. Fig. 5.</attribute>
+                  </attributeList>
+                </compartment>
+              </hostOrganism>
+            </hostOrganismList>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>coip</shortLabel>
+                <fullName>coimmunoprecipitation</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0019" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="20006">
+            <names>
+              <shortLabel>immunoprecipitation</shortLabel>
+              <fullName>An interaction between VirB7 and VirB9 was demonstrated by co-immunoprecipitation. Endogenous VirB9 was immunoprecipitated from [3H]-palmitic acid labelled Agrobacterium tumefaciens strain GV3850 (Tumorigenic T-DNA replaced with pBR322 amp gene) vir-induced with acetosyringone cell extracts using anti-VirB9 and precipitates were boiled in sample buffer with or without beta-mercaptoethanol and resolved by SDS-PAGE. Endogenous VirB7 from Agrobacterium tumefaciens strain GV3850 (Tumorigenic T-DNA replaced with pBR322 amp gene) was detected by autoradiography. Fig. 4.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="9023204" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <hostOrganismList>
+              <hostOrganism ncbiTaxId="176299">
+                <compartment>
+                  <names>
+                    <shortLabel>cell wall</shortLabel>
+                    <fullName>cell wall</fullName>
+                  </names>
+                  <xref>
+                    <primaryRef db="gene ontology" dbAc="MI:0448" id="GO:0009276" refTypeAc="MI:0354" refType="gene ontology term for cellular component"></primaryRef>
+                    <secondaryRef db="gene ontology" dbAc="MI:0448" id=" GO:0005618 " refTypeAc="MI:0354" refType="gene ontology term for cellular component"></secondaryRef>
+                  </xref>
+                  <attributeList>
+                    <attribute name="BIND Curator compartment description">VirB7 interacts with VirB9 in the inner and outer membrane as demonstrated by isopycnic sucrose gradient centrifugation. Fig. 5.</attribute>
+                  </attributeList>
+                </compartment>
+              </hostOrganism>
+            </hostOrganismList>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>coip</shortLabel>
+                <fullName>coimmunoprecipitation</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0019" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="20007">
+            <names>
+              <shortLabel>other</shortLabel>
+              <fullName>An interaction between VirB7 and VirB9 was demonstrated by two dimensional SDS-PAGE and Western Blotting. Endogenous VirB7 and VirB9 both from Agrobacterium tumefaciens strain GV3850 (Tumorigenic T-DNA replaced with pBR322 amp gene) vir-induced with acetosyringone cell extracts were analyzed by two-dimensional SDS-PAGE. Cell extracts were lysed under nonreducing conditions and resolved by SDS-PAGE in the first dimension. Proteins from induced extracts were excised after first-dimension SDS-PAGE, incubated in Laemmli sample buffer with DTT and resolved by SDS-PAGE in the second dimension. Endogenous VirB7 and VirB9 was detected by western blot with VirB7 and VirB9 anti-serum respectively. Fig. 2.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="9023204" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <hostOrganismList>
+              <hostOrganism ncbiTaxId="176299">
+                <compartment>
+                  <names>
+                    <shortLabel>cell wall</shortLabel>
+                    <fullName>cell wall</fullName>
+                  </names>
+                  <xref>
+                    <primaryRef db="gene ontology" dbAc="MI:0448" id="GO:0009276" refTypeAc="MI:0354" refType="gene ontology term for cellular component"></primaryRef>
+                    <secondaryRef db="gene ontology" dbAc="MI:0448" id=" GO:0005618 " refTypeAc="MI:0354" refType="gene ontology term for cellular component"></secondaryRef>
+                  </xref>
+                  <attributeList>
+                    <attribute name="BIND Curator compartment description">VirB7 interacts with VirB9 in the inner and outer membrane as demonstrated by isopycnic sucrose gradient centrifugation. Fig. 5.</attribute>
+                  </attributeList>
+                </compartment>
+              </hostOrganism>
+            </hostOrganismList>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>experimental interac</shortLabel>
+                <fullName>experimental interaction detection</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0045" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20000">
+            <interactor id="20001">
+              <names>
+                <shortLabel>VirB7</shortLabel>
+                <fullName>component of type IV secretion system.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939306" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137496" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P17797" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20002">
+            <interactor id="20003">
+              <names>
+                <shortLabel>VirB9</shortLabel>
+                <fullName>component of type IV secretion system.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939308" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137498" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P17799" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND Taxroot</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20014">
+        <names>
+          <shortLabel>Interaction between Atu3615 (PDB ID: 1ZNP_B) and Atu3615 (PDB ID: 1ZNP_A).</shortLabel>
+          <fullName>Interaction between Atu3615 (PDB ID: 1ZNP_B) and Atu3615 (PDB ID: 1ZNP_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="314737" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20013">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of the Hypothetical Protein Q8u9w0 from Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55 was determined by crystallography.  The crystal was grown by hanging-drop and vapour diffusion using Hypothetical Protein Atu3615, 0.1m Na Citrate, PEG 20K (20%),  at 293K. X-ray data were collected using synchrotron radiation and were 99.9% complete to a resolution limit of 2.500 angstroms. This crystal contained 7 chains per asymmetric unit and belonged to the space group C 2 2 21. The structure was determined using SAD and the modeled structure was refined to an R-factor = 20.9% and had an R-free = 26.7%. PDB: 1ZNP, MMDB: 33274.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">314737</attribute>
+                <attribute name="Publication title">X-Ray Structure Of The Hypothetical Protein Q8u9w0 From Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55.</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20009">
+            <interactor id="20010">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20011">
+            <interactor id="20012">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20020">
+        <names>
+          <shortLabel>Interaction between Atu3615 (PDB ID: 1ZNP_C) and Atu3615 (PDB ID: 1ZNP_B).</shortLabel>
+          <fullName>Interaction between Atu3615 (PDB ID: 1ZNP_C) and Atu3615 (PDB ID: 1ZNP_B).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="314738" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20019">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of the Hypothetical Protein Q8u9w0 from Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55 was determined by crystallography.  The crystal was grown by hanging-drop and vapour diffusion using Hypothetical Protein Atu3615, 0.1m Na Citrate, PEG 20K (20%),  at 293K. X-ray data were collected using synchrotron radiation and were 99.9% complete to a resolution limit of 2.500 angstroms. This crystal contained 7 chains per asymmetric unit and belonged to the space group C 2 2 21. The structure was determined using SAD and the modeled structure was refined to an R-factor = 20.9% and had an R-free = 26.7%. PDB: 1ZNP, MMDB: 33274.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">314738</attribute>
+                <attribute name="Publication title">X-Ray Structure Of The Hypothetical Protein Q8u9w0 From Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55.</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20015">
+            <interactor id="20016">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20017">
+            <interactor id="20018">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20026">
+        <names>
+          <shortLabel>Interaction between Atu3615 (PDB ID: 1ZNP_C) and Atu3615 (PDB ID: 1ZNP_A).</shortLabel>
+          <fullName>Interaction between Atu3615 (PDB ID: 1ZNP_C) and Atu3615 (PDB ID: 1ZNP_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="314739" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20025">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of the Hypothetical Protein Q8u9w0 from Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55 was determined by crystallography.  The crystal was grown by hanging-drop and vapour diffusion using Hypothetical Protein Atu3615, 0.1m Na Citrate, PEG 20K (20%),  at 293K. X-ray data were collected using synchrotron radiation and were 99.9% complete to a resolution limit of 2.500 angstroms. This crystal contained 7 chains per asymmetric unit and belonged to the space group C 2 2 21. The structure was determined using SAD and the modeled structure was refined to an R-factor = 20.9% and had an R-free = 26.7%. PDB: 1ZNP, MMDB: 33274.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">314739</attribute>
+                <attribute name="Publication title">X-Ray Structure Of The Hypothetical Protein Q8u9w0 From Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55.</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20021">
+            <interactor id="20022">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20023">
+            <interactor id="20024">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20032">
+        <names>
+          <shortLabel>Interaction between Atu3615 (PDB ID: 1ZNP_G) and Atu3615 (PDB ID: 1ZNP_D).</shortLabel>
+          <fullName>Interaction between Atu3615 (PDB ID: 1ZNP_G) and Atu3615 (PDB ID: 1ZNP_D).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="314740" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20031">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of the Hypothetical Protein Q8u9w0 from Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55 was determined by crystallography.  The crystal was grown by hanging-drop and vapour diffusion using Hypothetical Protein Atu3615, 0.1m Na Citrate, PEG 20K (20%),  at 293K. X-ray data were collected using synchrotron radiation and were 99.9% complete to a resolution limit of 2.500 angstroms. This crystal contained 7 chains per asymmetric unit and belonged to the space group C 2 2 21. The structure was determined using SAD and the modeled structure was refined to an R-factor = 20.9% and had an R-free = 26.7%. PDB: 1ZNP, MMDB: 33274.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">314740</attribute>
+                <attribute name="Publication title">X-Ray Structure Of The Hypothetical Protein Q8u9w0 From Agrobacterium Tumefaciens. Northeast Structural Genomics Consortium Target Atr55.</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20027">
+            <interactor id="20028">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20029">
+            <interactor id="20030">
+              <names>
+                <shortLabel>Atu3615</shortLabel>
+                <fullName>hypothetical protein [BLAST Evalue to experimental molecule = 1.00e-74]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17937322" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1135489" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFG3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20038">
+        <names>
+          <shortLabel>Interaction between cinA (PDB ID: 2A9S_B) and cinA (PDB ID: 2A9S_A).</shortLabel>
+          <fullName>Interaction between cinA (PDB ID: 2A9S_B) and cinA (PDB ID: 2A9S_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="330702" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20037">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of CompetenceDAMAGE INDUCIBLE Protein Ciha from Agrobacterium Tumefaciens was determined by crystallography.  The crystal was grown by hanging-drop and vapour diffusion using CompetenceDAMAGE-Inducible Protein Cina, 20% Isopropanol, 22% PEG 4K, 0.1m Tris-Na Citrate Dihydrate pH 5.0,  at 297K. X-ray data were collected using synchrotron radiation and were 96.4% complete to a resolution limit of 1.650 angstroms and with an overall Rsym of 8.7%. This crystal contained 2 chains per asymmetric unit and belonged to the space group P 21 21 21. The structure was determined using SAD and the modeled structure was refined to an R-factor = 17.1% and had an R-free = 21.9%. PDB: 2A9S, MMDB: 34423.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">330702</attribute>
+                <attribute name="Publication title">The Crystal Structure Of CompetenceDAMAGE Inducible Protein Ciha From Agrobacterium Tumefaciens</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20033">
+            <interactor id="20034">
+              <names>
+                <shortLabel>cinA</shortLabel>
+                <fullName>competence/damage-inducible protein CinA [BLAST Evalue to experimental molecule = 1.00e-77]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17935342" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1133480" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CJ26" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20035">
+            <interactor id="20036">
+              <names>
+                <shortLabel>cinA</shortLabel>
+                <fullName>competence/damage-inducible protein CinA [BLAST Evalue to experimental molecule = 1.00e-77]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17935342" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1133480" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CJ26" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20044">
+        <names>
+          <shortLabel>Interaction between Agr_l_2016p (PDB ID: 2GVH_C) and Agr_l_2016p (PDB ID: 2GVH_B).</shortLabel>
+          <fullName>Interaction between Agr_l_2016p (PDB ID: 2GVH_C) and Agr_l_2016p (PDB ID: 2GVH_B).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="346635" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20043">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Acyl-Coa Hydrolase (15159470) from Agrobacterium Tumefaciens at 2.65 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Agr_l_2016p, 10.0% Iso-Propanol, 0.1m Imidazol pH 8.0,  pH 8.0, Vapor Diffusion,Sitting Drop,Nanodrop, Temperature 2,  at 2. X-ray data were collected using synchrotron radiation and were 86.1% complete to a resolution limit of 2.500 angstroms with an overall Rsym of 9.6%. This crystal contained 3 chains per asymmetric unit and belonged to the space group P 43. The structure was determined using SAD and the modeled structure was refined to an R-factor = 22.7% and had an R-free = 24.4%. PDB: 2GVH, MMDB: 39470.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">346635</attribute>
+                <attribute name="Publication title">Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20039">
+            <interactor id="20040">
+              <names>
+                <shortLabel>Agr_l_2016p</shortLabel>
+                <fullName>Chain C; Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="109158101" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="2GVH_C" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20041">
+            <interactor id="20042">
+              <names>
+                <shortLabel>Agr_l_2016p</shortLabel>
+                <fullName>Chain B; Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="109158100" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="2GVH_B" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20050">
+        <names>
+          <shortLabel>Interaction between Agr_l_2016p (PDB ID: 2GVH_C) and Agr_l_2016p (PDB ID: 2GVH_A).</shortLabel>
+          <fullName>Interaction between Agr_l_2016p (PDB ID: 2GVH_C) and Agr_l_2016p (PDB ID: 2GVH_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="346634" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20049">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Acyl-Coa Hydrolase (15159470) from Agrobacterium Tumefaciens at 2.65 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Agr_l_2016p, 10.0% Iso-Propanol, 0.1m Imidazol pH 8.0,  pH 8.0, Vapor Diffusion,Sitting Drop,Nanodrop, Temperature 2,  at 2. X-ray data were collected using synchrotron radiation and were 86.1% complete to a resolution limit of 2.500 angstroms with an overall Rsym of 9.6%. This crystal contained 3 chains per asymmetric unit and belonged to the space group P 43. The structure was determined using SAD and the modeled structure was refined to an R-factor = 22.7% and had an R-free = 24.4%. PDB: 2GVH, MMDB: 39470.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">346634</attribute>
+                <attribute name="Publication title">Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20045">
+            <interactor id="20046">
+              <names>
+                <shortLabel>Agr_l_2016p</shortLabel>
+                <fullName>Chain C; Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="109158101" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="2GVH_C" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20047">
+            <interactor id="20048">
+              <names>
+                <shortLabel>Agr_l_2016p</shortLabel>
+                <fullName>Chain A; Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="109158099" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="2GVH_A" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20056">
+        <names>
+          <shortLabel>Interaction between Agr_l_2016p (PDB ID: 2GVH_B) and Agr_l_2016p (PDB ID: 2GVH_A).</shortLabel>
+          <fullName>Interaction between Agr_l_2016p (PDB ID: 2GVH_B) and Agr_l_2016p (PDB ID: 2GVH_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="346633" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20055">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Acyl-Coa Hydrolase (15159470) from Agrobacterium Tumefaciens at 2.65 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Agr_l_2016p, 10.0% Iso-Propanol, 0.1m Imidazol pH 8.0,  pH 8.0, Vapor Diffusion,Sitting Drop,Nanodrop, Temperature 2,  at 2. X-ray data were collected using synchrotron radiation and were 86.1% complete to a resolution limit of 2.500 angstroms with an overall Rsym of 9.6%. This crystal contained 3 chains per asymmetric unit and belonged to the space group P 43. The structure was determined using SAD and the modeled structure was refined to an R-factor = 22.7% and had an R-free = 24.4%. PDB: 2GVH, MMDB: 39470.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">346633</attribute>
+                <attribute name="Publication title">Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20051">
+            <interactor id="20052">
+              <names>
+                <shortLabel>Agr_l_2016p</shortLabel>
+                <fullName>Chain B; Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="109158100" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="2GVH_B" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20053">
+            <interactor id="20054">
+              <names>
+                <shortLabel>Agr_l_2016p</shortLabel>
+                <fullName>Chain A; Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="109158099" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="2GVH_A" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20062">
+        <names>
+          <shortLabel>Interaction between Mg2+ and PSPTO3247 (PDB ID: 1RVK_A).</shortLabel>
+          <fullName>Interaction between Mg2+ and PSPTO3247 (PDB ID: 1RVK_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="252357" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20061">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of the Hypothetical Protein Mr.Gi- 17937161 from Agrobacterium Tumefaciens was determined by crystallography.  The crystal was grown by vapour diffusion using IsomeraseLACTONIZING ENZYME, Sodium Chloride, HEPES pH 7.5,  at 293K. X-ray data were collected using synchrotron radiation and were 96.4% complete to a resolution limit of 1.700 angstroms with an overall Rsym of 8.5%. This crystal contained 1 chain per asymmetric unit and belonged to the space group I 4 2 2. The structure was determined using MAD and the modeled structure was refined to an R-factor = 19.3% and had an R-free = 21.2%. PDB: 1RVK, MMDB: 25830.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">252357</attribute>
+                <attribute name="Publication title">Evolution Of Enzymatic Activites In The Enolase Superfamily: 1.7 A Crystal Structure Of The Hypothetical Protein Mr.Gi-17937161 From Agrobacterium Tumefaciens</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20057">
+            <interactor id="20058">
+              <names>
+                <shortLabel>Mg2+</shortLabel>
+              </names>
+              <xref>
+                <primaryRef db="bind" dbAc="MI:0462" id="166" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="merck index" id="5687 (12)" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="het" dbAc="MI:2017" id="MG" refTypeAc="MI:0361" refType="see-also"></secondaryRef>
+                <secondaryRef db="amaze" id="742b381e-637e-4d31-9fff-e1917d9d939d" refTypeAc="MI:0361" refType="see-also"></secondaryRef>
+                <secondaryRef db="ecocyc" dbAc="MI:0466" id="MG+2" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="kegg" dbAc="MI:0470" id="C00305" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="chebi" dbAc="MI:0474" id="25107" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>small molecule</shortLabel>
+                  <fullName>small molecule</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0328" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="32644">
+                <names>
+                  <shortLabel>unidentified</shortLabel>
+                  <fullName>unidentified</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20059">
+            <interactor id="20060">
+              <names>
+                <shortLabel>PSPTO3247</shortLabel>
+                <fullName>mandelate racemase/muconate lactonizing enzyme family protein</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="40889722" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="1RVK_A" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DSM</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20069">
+        <names>
+          <shortLabel>Interaction between Na and Agr_l_2016p (PDB ID: 2GVH_B). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: Na interacts with 2GVH_C.</shortLabel>
+          <fullName>Interaction between Na and Agr_l_2016p (PDB ID: 2GVH_B). Additional redundant interaction information associated with this record can be viewed in the 3D structure viewer for the following PDB files: Na interacts with 2GVH_C.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="346636" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20067">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Acyl-Coa Hydrolase (15159470) from Agrobacterium Tumefaciens at 2.65 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Agr_l_2016p, 10.0% Iso-Propanol, 0.1m Imidazol pH 8.0,  pH 8.0, Vapor Diffusion,Sitting Drop,Nanodrop, Temperature 2,  at 2. X-ray data were collected using synchrotron radiation and were 86.1% complete to a resolution limit of 2.500 angstroms with an overall Rsym of 9.6%. This crystal contained 3 chains per asymmetric unit and belonged to the space group P 43. The structure was determined using SAD and the modeled structure was refined to an R-factor = 22.7% and had an R-free = 24.4%. PDB: 2GVH, MMDB: 39470.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">346636</attribute>
+                <attribute name="Publication title">Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="20068">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Acyl-Coa Hydrolase (15159470) from Agrobacterium Tumefaciens at 2.65 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Agr_l_2016p, 10.0% Iso-Propanol, 0.1m Imidazol pH 8.0,  pH 8.0, Vapor Diffusion,Sitting Drop,Nanodrop, Temperature 2,  at 2. X-ray data were collected using synchrotron radiation and were 86.1% complete to a resolution limit of 2.500 angstroms with an overall Rsym of 9.6%. This crystal contained 3 chains per asymmetric unit and belonged to the space group P 43. The structure was determined using SAD and the modeled structure was refined to an R-factor = 22.7% and had an R-free = 24.4%. PDB: 2GVH, MMDB: 39470.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">346636</attribute>
+                <attribute name="Publication title">Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20063">
+            <interactor id="20064">
+              <names>
+                <shortLabel>Na</shortLabel>
+              </names>
+              <xref>
+                <primaryRef db="bind" dbAc="MI:0462" id="129" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="het" dbAc="MI:2017" id="NA" refTypeAc="MI:0361" refType="see-also"></secondaryRef>
+                <secondaryRef db="amaze" id="81619380-079c-46fc-9dab-4dbbd6ee718d" refTypeAc="MI:0361" refType="see-also"></secondaryRef>
+                <secondaryRef db="ecocyc" dbAc="MI:0466" id="NA" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="kegg" dbAc="MI:0470" id="C01330" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="pubchem" dbAc="MI:0730" id="4541" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="pubchem" dbAc="MI:0730" id="9120" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="chebi" dbAc="MI:0474" id="29101" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>small molecule</shortLabel>
+                  <fullName>small molecule</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0328" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="32644">
+                <names>
+                  <shortLabel>unidentified</shortLabel>
+                  <fullName>unidentified</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20065">
+            <interactor id="20066">
+              <names>
+                <shortLabel>Agr_l_2016p</shortLabel>
+                <fullName>Chain B; Crystal Structure Of Acyl-Coa Hydrolase (15159470) From Agrobacterium Tumefaciens At 2.65 A Resolution</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="109158100" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="sequence database" dbAc="MI:0683" id="2GVH_B" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DSM</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20076">
+        <names>
+          <shortLabel>VirB2 interacts with BTI1.</shortLabel>
+          <fullName>VirB2 interacts with BTI1.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="217439" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20074">
+            <names>
+              <shortLabel>two-hybrid-test</shortLabel>
+              <fullName>An interaction between VirB2 and BTI1 was demonstrated by yeast two hybrid assay. VirB2[48-121], bait, fused to the LexA DNA binding domain (DBD) and BTI1, prey, fused to the GAL4 activation domain (AD) were sequentially-transformed into yeast strain CTY10-5d. Interactions were detected by beta-galactosidase activity. Fig. 1. The LexA-DBD-VirB2[48-121] interacted detectably with the truncation mutant GAL4-AD-BTI1[1-237, 261-275]. Fig. 4C. The LexA-DBD-VirB2[48-121] did not interact detectably with the truncation mutants GAL4-AD-BTI1[1-6, 108-275], GAL4-AD-BTI1[1-106, 141-275], GAL4-AD-BTI1[1-146, 181-275], GAL4-AD-BTI1[1-186, 232-275], GAL4-AD-BTI1[1-6], GAL4-AD-BTI1[1-106], GAL4-AD-BTI1[1-146] and GAL4-AD-BTI1[1-186]. Fig. 4C.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="15494553" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>2 hybrid</shortLabel>
+                <fullName>two hybrid</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0018" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="20075">
+            <names>
+              <shortLabel>affinity-chromatography</shortLabel>
+              <fullName>An interaction between VirB2 from an unspecified strain of Agrobacterium tumefaciens and BTI1 from Arabidopsis thaliana ecotype Columbia was demonstrated by GST pull-down assay. T7-BTI1 was isolated from E. coli BL21 (DE3) lysates using GST-VirB2 immobilized on glutathione-sepharose beads. Eluates were resolved by SDS-PAGE and analyzed by Western blot with anti-T7 tag antibodies. Fig. 2.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="15494553" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>affinity chromatography technology</shortLabel>
+                <fullName>affinity chromatography technology</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0004" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20070">
+            <interactor id="20071">
+              <names>
+                <shortLabel>VirB2</shortLabel>
+                <fullName>Component of type IV secretion system; pilin subunit.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939301" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137491" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P17792" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20072">
+            <interactor id="20073">
+              <names>
+                <shortLabel>BTI1</shortLabel>
+                <fullName>Reticulon family protein (RTNLB1).</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15236556" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9SUR3" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="828463" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="tair" id="At4g23630" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="3702">
+                <names>
+                  <shortLabel>Arabidopsis thaliana</shortLabel>
+                  <fullName>Arabidopsis thaliana</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND Taxroot</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20083">
+        <names>
+          <shortLabel>VirB2 interacts with BTI3.</shortLabel>
+          <fullName>VirB2 interacts with BTI3.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="217444" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20081">
+            <names>
+              <shortLabel>two-hybrid-test</shortLabel>
+              <fullName>An interaction between VirB2 and BTI3 was demonstrated by yeast two hybrid assay. VirB2[48-121], bait, fused to the LexA DNA binding domain (DBD) and BTI3, prey, fused to the GAL4 activation domain (AD) were sequentially-transformed into yeast strain CTY10-5d. Interactions were detected by beta-galactosidase activity. Fig. 1.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="15494553" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>2 hybrid</shortLabel>
+                <fullName>two hybrid</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0018" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="20082">
+            <names>
+              <shortLabel>affinity-chromatography</shortLabel>
+              <fullName>An interaction between VirB2 from an unspecified strain of Agrobacterium tumefaciens and BTI3 from Arabidopsis thaliana ecotype Columbia was demonstrated by GST pull-down assay. T7-BTI3 was isolated from E. coli BL21 (DE3) lysates using GST-VirB2 immobilized on glutathione-sepharose beads. Eluates were resolved by SDS-PAGE and analyzed by Western blot with anti-T7 tag antibodies. Fig. 2.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="15494553" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>affinity chromatography technology</shortLabel>
+                <fullName>affinity chromatography technology</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0004" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20077">
+            <interactor id="20078">
+              <names>
+                <shortLabel>VirB2</shortLabel>
+                <fullName>Component of type IV secretion system; pilin subunit.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939301" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137491" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P17792" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20079">
+            <interactor id="20080">
+              <names>
+                <shortLabel>BTI3</shortLabel>
+                <fullName>Reticulon family protein (RTNLB4).</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15238125" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9FFS0" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="834162" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="tair" id="At5g41600" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="3702">
+                <names>
+                  <shortLabel>Arabidopsis thaliana</shortLabel>
+                  <fullName>Arabidopsis thaliana</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND Taxroot</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20090">
+        <names>
+          <shortLabel>VirB2 interacts with BTI2.</shortLabel>
+          <fullName>VirB2 interacts with BTI2.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="217446" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20088">
+            <names>
+              <shortLabel>two-hybrid-test</shortLabel>
+              <fullName>An interaction between VirB2 and BTI2 was demonstrated by yeast two hybrid assay. VirB2[48-121], bait, fused to the LexA DNA binding domain (DBD) and BTI2, prey, fused to the GAL4 activation domain (AD) were sequentially-transformed into yeast strain CTY10-5d. Interactions were detected by beta-galactosidase activity. Fig. 1.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="15494553" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>2 hybrid</shortLabel>
+                <fullName>two hybrid</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0018" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+          <experimentDescription id="20089">
+            <names>
+              <shortLabel>affinity-chromatography</shortLabel>
+              <fullName>An interaction between VirB2 from an unspecified strain of Agrobacterium tumefaciens and BTI2 from Arabidopsis thaliana ecotype Columbia was demonstrated by GST pull-down assay. T7-BTI2 was isolated from E. coli BL21 (DE3) lysates using GST-VirB2 immobilized on glutathione-sepharose beads. Eluates were resolved by SDS-PAGE and analyzed by Western blot with anti-T7 tag antibodies. Fig. 2.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="15494553" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>affinity chromatography technology</shortLabel>
+                <fullName>affinity chromatography technology</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0004" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20084">
+            <interactor id="20085">
+              <names>
+                <shortLabel>VirB2</shortLabel>
+                <fullName>Component of type IV secretion system; pilin subunit.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939301" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137491" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P17792" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20086">
+            <interactor id="20087">
+              <names>
+                <shortLabel>BTI2</shortLabel>
+                <fullName>Reticulon family protein (RTNLB2).</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15237093" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9SUT9" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="826724" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="tair" id="At4g11220" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="3702">
+                <names>
+                  <shortLabel>Arabidopsis thaliana</shortLabel>
+                  <fullName>Arabidopsis thaliana</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND Taxroot</attribute>
+        </attributeList>
+      </interaction>
+      <interaction id="20096">
+        <names>
+          <shortLabel>VirB2 interacts with AtRAB8.</shortLabel>
+          <fullName>VirB2 interacts with AtRAB8.</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="217447" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="20095">
+            <names>
+              <shortLabel>two-hybrid-test</shortLabel>
+              <fullName>An interaction between VirB2 and AtRAB8 was demonstrated by yeast two hybrid assay. VirB2[48-121], bait, fused to the LexA DNA binding domain (DBD) and AtRAB8, prey, fused to the GAL4 activation domain (AD) were sequentially-transformed into yeast strain CTY10-5d. Interactions were detected by beta-galactosidase activity. Fig. 1.</fullName>
+            </names>
+            <bibref>
+              <xref>
+                <primaryRef db="pubmed" dbAc="MI:0446" id="15494553" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+              </xref>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>2 hybrid</shortLabel>
+                <fullName>two hybrid</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0018" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="20091">
+            <interactor id="20092">
+              <names>
+                <shortLabel>VirB2</shortLabel>
+                <fullName>Component of type IV secretion system; pilin subunit.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank indentifier" dbAc="MI:0860" id="17939301" refTypeAc="MI:0361" refType="see-also"></primaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1137491" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P17792" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="20093">
+            <interactor id="20094">
+              <names>
+                <shortLabel>AtRAB8</shortLabel>
+                <fullName>Ras-related GTP-binding protein; putative.</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15231847" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="O24466" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="824529" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+                <secondaryRef db="tair" id="At3g53610" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="3702">
+                <names>
+                  <shortLabel>Arabidopsis thaliana</shortLabel>
+                  <fullName>Arabidopsis thaliana</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND Taxroot</attribute>
+        </attributeList>
+      </interaction>
+    </interactionList>
+  </entry>
 </entrySet>
-
