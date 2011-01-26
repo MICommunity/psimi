@@ -140,54 +140,56 @@ public class BindingDomainSizeRule extends ObjectRule<Feature> {
         Mi25Context context = new Mi25Context();
         context.setFeatureId(feature.getId());
 
-        if (RuleUtils.isBindingSite(ontologyManager, feature)){
-            Collection<Range> ranges = feature.getRanges();
+        if (feature.hasFeatureType()){
+            if (RuleUtils.isBindingSite(ontologyManager, feature)){
+                Collection<Range> ranges = feature.getRanges();
 
-            int minSize = 0;
-            int maxSize = 0;
-            boolean isFeatureSiteDefined = false;
+                int minSize = 0;
+                int maxSize = 0;
+                boolean isFeatureSiteDefined = false;
 
-            for (Range range : ranges){
-                if (range.getStartStatus() == null || range.getEndStatus() == null){
-                    break;
-                }
-                else {
-                    long startPos = 0;
-                    long endPos = 0;
-
-                    boolean isStartDefined = true;
-                    boolean isEndDefined = true;
-
-                    if (FeatureUtils.isUndetermined(range.getStartStatus()) || FeatureUtils.isNTerminalRegion(range.getStartStatus()) || FeatureUtils.isCTerminalRegion(range.getStartStatus())){
-                        isStartDefined = false;
-                    }
-
-                    if (FeatureUtils.isUndetermined(range.getEndStatus()) || FeatureUtils.isNTerminalRegion(range.getEndStatus()) || FeatureUtils.isCTerminalRegion(range.getEndStatus())){
-                        isEndDefined = false;
-                    }
-
-                    isFeatureSiteDefined = isStartDefined && isEndDefined;
-
-                    if (!isFeatureSiteDefined){
+                for (Range range : ranges){
+                    if (range.getStartStatus() == null || range.getEndStatus() == null){
                         break;
                     }
+                    else {
+                        long startPos = 0;
+                        long endPos = 0;
 
-                    minSize += getMinRangeLength(range, isStartDefined, isEndDefined);
-                    maxSize += getMaxRangeLength(range, isStartDefined, isEndDefined);
+                        boolean isStartDefined = true;
+                        boolean isEndDefined = true;
+
+                        if (FeatureUtils.isUndetermined(range.getStartStatus()) || FeatureUtils.isNTerminalRegion(range.getStartStatus()) || FeatureUtils.isCTerminalRegion(range.getStartStatus())){
+                            isStartDefined = false;
+                        }
+
+                        if (FeatureUtils.isUndetermined(range.getEndStatus()) || FeatureUtils.isNTerminalRegion(range.getEndStatus()) || FeatureUtils.isCTerminalRegion(range.getEndStatus())){
+                            isEndDefined = false;
+                        }
+
+                        isFeatureSiteDefined = isStartDefined && isEndDefined;
+
+                        if (!isFeatureSiteDefined){
+                            break;
+                        }
+
+                        minSize += getMinRangeLength(range, isStartDefined, isEndDefined);
+                        maxSize += getMaxRangeLength(range, isStartDefined, isEndDefined);
+                    }
                 }
-            }
 
-            if (minSize < 3 && maxSize < 3 && isFeatureSiteDefined){
-                messages.add( new ValidatorMessage( "The binding site does not contain more than three amino acids. For one or two amino acids, the feature type should be any children of mutation instead of binding site.'",
-                        MessageLevel.WARN,
-                        context,
-                        this ) );
-            }
-            else if (minSize < 3 && maxSize > 3 && isFeatureSiteDefined){
-                messages.add( new ValidatorMessage( "The minimal size of this binding site does not contain more than three amino acids.'",
-                        MessageLevel.WARN,
-                        context,
-                        this ) );
+                if (minSize < 3 && maxSize < 3 && isFeatureSiteDefined){
+                    messages.add( new ValidatorMessage( "The binding site does not contain more than three amino acids. For one or two amino acids, the feature type should be any children of mutation instead of binding site.'",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+                else if (minSize < 3 && maxSize > 3 && isFeatureSiteDefined){
+                    messages.add( new ValidatorMessage( "The minimal size of this binding site does not contain more than three amino acids.'",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
             }
         }
 
