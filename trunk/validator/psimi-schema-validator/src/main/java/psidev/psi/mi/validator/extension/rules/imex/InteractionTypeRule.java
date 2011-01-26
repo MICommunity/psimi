@@ -68,13 +68,13 @@ public class InteractionTypeRule extends Mi25InteractionRule{
                         Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
 
                         if (psiRef.isEmpty()){
-                            messages.add( new ValidatorMessage( "The interaction type " + type.getNames().getShortLabel() + " has "+ref.getAllDbReferences().size()+" cross references but no one is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",
+                            messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but no one is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
                         }
                         else if (psiRef.size() > 1) {
-                            messages.add( new ValidatorMessage( "The interaction type " + type.getNames().getShortLabel() + " has "+psiRef.size()+" PSI-MI cross reference with a qualifier 'identity' and only one is accepted.",
+                            messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " has "+psiRef.size()+" PSI-MI cross reference with a qualifier 'identity' and only one is accepted.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
@@ -85,13 +85,13 @@ public class InteractionTypeRule extends Mi25InteractionRule{
                            OntologyTermI currentType = ontology.search(psimi.getId());
 
                            if (currentType == null){
-                               messages.add( new ValidatorMessage( "The interaction type " + type.getNames().getShortLabel() + "("+psimi.getId()+") is not recognized.",
+                               messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + "("+psimi.getId()+") is not recognized.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
                            }
                             else if(!ontology.isChildOf(interactionTypeMi, currentType)){
-                                messages.add( new ValidatorMessage( "The interaction type " + type.getNames().getShortLabel() + "("+psimi.getId()+") is not a valid interaction type.",
+                                messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + "("+psimi.getId()+") is not a valid interaction type.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
@@ -99,7 +99,7 @@ public class InteractionTypeRule extends Mi25InteractionRule{
                         }
                     }
                     else {
-                        messages.add( new ValidatorMessage( "The interaction type " + type.getNames().getShortLabel() + " doesn't have any cross references. A PSI-MI cross reference with qualifier 'identity' is required.",
+                        messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " doesn't have any cross references. A PSI-MI cross reference with qualifier 'identity' is required.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );

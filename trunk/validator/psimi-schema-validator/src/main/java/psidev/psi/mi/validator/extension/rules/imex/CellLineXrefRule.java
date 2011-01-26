@@ -66,7 +66,7 @@ public class CellLineXrefRule extends ObjectRule<CellType>{
             Collection<DbReference> allPubmeds = RuleUtils.findByDatabaseAndReferenceType( ref.getAllDbReferences(), "MI:0446", "pubmed", "MI:0358", "primary-reference" );
 
             if (cabriReferences.isEmpty() && cellReferences.isEmpty() && allPubmeds.isEmpty()){
-                messages.add( new ValidatorMessage( "The cellType " + cellType.getNames().getShortLabel() + " has "+ref.getAllDbReferences().size()+" cross references but no one is a CABRI or Cell Ontology cross reference with a qualifier 'identity' and it is strongly recommended. " +
+                messages.add( new ValidatorMessage( "The cellType " + (cellType.getNames() != null ? cellType.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but no one is a CABRI or Cell Ontology cross reference with a qualifier 'identity' and it is strongly recommended. " +
                         "If the cell line cannot be identified but one of these databases, at least one pubmed primary reference is necessary.'",
                         MessageLevel.WARN,
                         context,
@@ -74,7 +74,7 @@ public class CellLineXrefRule extends ObjectRule<CellType>{
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The cellType " + cellType.getNames().getShortLabel() + " doesn't have any cross references and at least one cross reference to CABRI or Cell Ontology with " +
+            messages.add( new ValidatorMessage( "The cellType " + (cellType.getNames() != null ? cellType.getNames().getShortLabel() : "") + " doesn't have any cross references and at least one cross reference to CABRI or Cell Ontology with " +
                     "qualifier 'identity' is strongly recommended. If the cell line cannot be identified but one of these databases, at least one pubmed primary reference is necessary.'",
                     MessageLevel.WARN,
                     context,
