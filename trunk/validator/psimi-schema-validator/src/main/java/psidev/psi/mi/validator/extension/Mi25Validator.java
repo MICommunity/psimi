@@ -217,6 +217,27 @@ public class Mi25Validator extends Validator {
         final ValidatorReport report = new ValidatorReport();
 
         for ( Entry entry : es.getEntries() ) {
+            boolean hasExperimentList = false;
+            boolean hasInteractorList = false;
+
+            if (entry.hasExperiments()){
+                hasExperimentList = true;
+                for ( ExperimentDescription experiment : entry.getExperiments() ) {
+
+                    // object rule
+                    Collection<ValidatorMessage> messages = checkExperiment(report.getSemanticMessages(), experiment);
+                }
+            }
+
+            if (entry.hasInteractors()){
+                hasInteractorList = true;
+                for ( Interactor interactor : entry.getInteractors() ) {
+
+                    // object rule
+                    Collection<ValidatorMessage> messages = checkInteractor(report.getSemanticMessages(), interactor);
+                }
+            }
+
             for ( Interaction interaction : entry.getInteractions() ) {
 
                 // cv mapping
@@ -225,7 +246,7 @@ public class Mi25Validator extends Validator {
                     report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
 
                 // object rule
-                messages = checkInteraction(report.getSemanticMessages(), interaction);
+                messages = checkInteraction(report.getSemanticMessages(), interaction, hasExperimentList, hasInteractorList);
             }
         }
 
@@ -286,35 +307,47 @@ public class Mi25Validator extends Validator {
                 }
 
                 for ( IndexedEntry entry : entries ) {
+                    boolean hasExperimentList = false;
+                    boolean hasInteractorList = false;
 
-                    /*final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
-                    while ( experimentIterator.hasNext() ) {
-                        ExperimentDescription experiment = experimentIterator.next();
-                        Collection<ValidatorMessage> validatorMessages = checkExperiment(messages, experiment);
+                    final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
 
-                        if( !validatorMessages.isEmpty() ) {
-                            long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
-                            updateLineNumber( validatorMessages, lineNumber );
+                    if (experimentIterator.hasNext()){
+                        hasExperimentList = true;
+
+                        while ( experimentIterator.hasNext() ) {
+                            ExperimentDescription experiment = experimentIterator.next();
+                            Collection<ValidatorMessage> validatorMessages = checkExperiment(messages, experiment);
+
+                            if( !validatorMessages.isEmpty() ) {
+                                long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
+                                updateLineNumber( validatorMessages, lineNumber );
+                            }
                         }
                     }
 
                     // now process interactors
                     final Iterator<Interactor> interactorIterator = entry.unmarshallInteractorIterator();
-                    while ( interactorIterator.hasNext() ) {
-                        Interactor interactor = interactorIterator.next();
-                        Collection<ValidatorMessage> validatorMessages = checkInteractor(messages, interactor);
 
-                        if( !validatorMessages.isEmpty() ) {
-                            long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
-                            updateLineNumber( validatorMessages, lineNumber );
+                    if (interactorIterator.hasNext()){
+                        hasInteractorList = true;
+
+                        while ( interactorIterator.hasNext() ) {
+                            Interactor interactor = interactorIterator.next();
+                            Collection<ValidatorMessage> validatorMessages = checkInteractor(messages, interactor);
+
+                            if( !validatorMessages.isEmpty() ) {
+                                long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
+                                updateLineNumber( validatorMessages, lineNumber );
+                            }
                         }
-                    }*/
+                    }
 
                     // now process interactions
                     Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
                     while ( interactionIterator.hasNext() ) {
                         Interaction interaction = interactionIterator.next();
-                        Collection<ValidatorMessage> interactionMessages = checkInteraction(messages, interaction);
+                        Collection<ValidatorMessage> interactionMessages = checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
 
 
                         // add line number
@@ -342,12 +375,14 @@ public class Mi25Validator extends Validator {
         }
     }
 
-    private Collection<ValidatorMessage> checkInteraction(Collection<ValidatorMessage> messages, Interaction interaction) throws ValidatorException {
+    private Collection<ValidatorMessage> checkInteraction(Collection<ValidatorMessage> messages, Interaction interaction, boolean hasExperimentList, boolean hasInteractorList) throws ValidatorException {
         // run the interaction specialized rules
         Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
 
-        for (ExperimentDescription experiment : interaction.getExperiments()){
-            checkExperiment(interactionMessages, experiment);
+        if (!hasExperimentList){
+            for (ExperimentDescription experiment : interaction.getExperiments()){
+                checkExperiment(interactionMessages, experiment);
+            }
         }
 
         for (Confidence c : interaction.getConfidences()){
@@ -359,16 +394,8 @@ public class Mi25Validator extends Validator {
             interactionMessages.addAll(super.validate( it ));
         }
 
-        for (InferredInteraction inf : interaction.getInferredInteractions()) {
-            for (InferredInteractionParticipant par : inf.getParticipant()){
-                checkParticipant(interactionMessages, par.getParticipant());
-                checkFeature(interactionMessages, par.getFeature());
-            }
-        }
-
-
         for (Participant p : interaction.getParticipants()){
-            checkParticipant(interactionMessages, p);
+            checkParticipant(interactionMessages, p, hasInteractorList);
 
             for (Feature f : p.getFeatures()){
                 checkFeature(interactionMessages, f);
@@ -429,11 +456,11 @@ public class Mi25Validator extends Validator {
         return validatorMessages;
     }
 
-    private void checkParticipant(Collection<ValidatorMessage> validatorMessages, Participant p) throws ValidatorException {
+    private void checkParticipant(Collection<ValidatorMessage> validatorMessages, Participant p, boolean hasInteractorList) throws ValidatorException {
         // run the participant specialized rules
         validatorMessages.addAll(super.validate( p ));
 
-        if (p.getInteractor() != null){
+        if (p.getInteractor() != null && !hasInteractorList){
             checkInteractor(validatorMessages, p.getInteractor());
         }
 
@@ -460,7 +487,7 @@ public class Mi25Validator extends Validator {
 
         for (ExperimentalInteractor ei : p.getExperimentalInteractors()){
             // run the experimental interactor specialized rules
-            if (ei.getInteractor() != null){
+            if (ei.getInteractor() != null && !hasInteractorList){
                 checkInteractor(validatorMessages, ei.getInteractor());
             }
         }
@@ -576,7 +603,7 @@ public class Mi25Validator extends Validator {
             Mi25Context context = null;
 
             if (message.getContext() instanceof Mi25Context){
-                 context = (Mi25Context) message.getContext();
+                context = (Mi25Context) message.getContext();
             }
             else {
                 context = new Mi25Context();
@@ -596,7 +623,7 @@ public class Mi25Validator extends Validator {
             Mi25Context context = null;
 
             if (message.getContext() instanceof Mi25Context){
-                 context = (Mi25Context) message.getContext();
+                context = (Mi25Context) message.getContext();
             }
             else {
                 context = new Mi25Context();
@@ -616,7 +643,7 @@ public class Mi25Validator extends Validator {
             Mi25Context context = null;
 
             if (message.getContext() instanceof Mi25Context){
-                 context = (Mi25Context) message.getContext();
+                context = (Mi25Context) message.getContext();
             }
             else {
                 context = new Mi25Context();
