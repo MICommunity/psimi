@@ -41,7 +41,7 @@ public class Mi25ValidatorTest {
             InputStream ontologyConfig = Mi25ValidatorTest.class.getResource( "/config/ontologies.xml" ).openStream();
             Assert.assertNotNull(ontologyConfig);
 
-            InputStream cvMappingConfig = Mi25ValidatorTest.class.getResource( "/config/cv-mapping.xml" ).openStream();
+            InputStream cvMappingConfig = Mi25ValidatorTest.class.getResource( "/config/psi_mi/cv-mapping.xml" ).openStream();
             Assert.assertNotNull(cvMappingConfig);
 
             InputStream objectRuleConfig = null;
@@ -193,7 +193,7 @@ public class Mi25ValidatorTest {
         // This one defines the term MI:xxxx that is prohibited by the rule
         Collection<ValidatorMessage> messages = getValidationMessage( "10409737-wrongExperimentBibrefDb.xml" );
         printMessages( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 0, messages.size() );    // now it is taken care by an object rule
     }
 
     @Test

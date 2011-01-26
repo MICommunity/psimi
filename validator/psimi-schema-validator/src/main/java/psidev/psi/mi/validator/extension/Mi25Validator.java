@@ -227,18 +227,6 @@ public class Mi25Validator extends Validator {
                 // object rule
                 messages = checkInteraction(report.getSemanticMessages(), interaction);
             }
-
-            for ( ExperimentDescription experiment : entry.getExperiments() ) {
-
-                // object rule
-                Collection<ValidatorMessage> messages = checkExperiment(report.getSemanticMessages(), experiment);
-            }
-
-            for ( Interactor interactor : entry.getInteractors() ) {
-
-                // object rule
-                Collection<ValidatorMessage> messages = checkInteractor(report.getSemanticMessages(), interactor);
-            }
         }
 
         return report;
@@ -299,7 +287,7 @@ public class Mi25Validator extends Validator {
 
                 for ( IndexedEntry entry : entries ) {
 
-                    final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
+                    /*final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
                     while ( experimentIterator.hasNext() ) {
                         ExperimentDescription experiment = experimentIterator.next();
                         Collection<ValidatorMessage> validatorMessages = checkExperiment(messages, experiment);
@@ -320,7 +308,7 @@ public class Mi25Validator extends Validator {
                             long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
                             updateLineNumber( validatorMessages, lineNumber );
                         }
-                    }
+                    }*/
 
                     // now process interactions
                     Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
