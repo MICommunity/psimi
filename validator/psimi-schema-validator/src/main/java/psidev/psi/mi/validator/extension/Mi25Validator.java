@@ -585,7 +585,15 @@ public class Mi25Validator extends Validator {
         Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
 
         for ( ValidatorMessage message : messages ) {
-            final Mi25Context context = new Mi25Context();
+            Mi25Context context = null;
+
+            if (message.getContext() instanceof Mi25Context){
+                 context = (Mi25Context) message.getContext();
+            }
+            else {
+                context = new Mi25Context();
+            }
+
             context.setInteractionId( interaction.getId() );
             convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
@@ -597,7 +605,15 @@ public class Mi25Validator extends Validator {
         Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
 
         for ( ValidatorMessage message : messages ) {
-            final Mi25Context context = new Mi25Context();
+            Mi25Context context = null;
+
+            if (message.getContext() instanceof Mi25Context){
+                 context = (Mi25Context) message.getContext();
+            }
+            else {
+                context = new Mi25Context();
+            }
+
             context.setExperimentId( experiment.getId() );
             convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
@@ -609,7 +625,15 @@ public class Mi25Validator extends Validator {
         Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
 
         for ( ValidatorMessage message : messages ) {
-            final Mi25Context context = new Mi25Context();
+            Mi25Context context = null;
+
+            if (message.getContext() instanceof Mi25Context){
+                 context = (Mi25Context) message.getContext();
+            }
+            else {
+                context = new Mi25Context();
+            }
+
             context.setInteractorId( interactor.getId() );
             convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
