@@ -28,12 +28,9 @@
 
     <properties>
         <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
-
         <psimi.version>${pom.version}</psimi.version>
-        
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <developers>
@@ -160,10 +157,15 @@
 
     <distributionManagement>
         <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
+            <id>ebi-repo</id>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo</url>
         </repository>
+
+        <snapshotRepository>
+            <id>ebi-repo-snapshots</id>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots</url>
+        </snapshotRepository>
+
 <!--
         <site>
             <id>psimilib-site</id>
