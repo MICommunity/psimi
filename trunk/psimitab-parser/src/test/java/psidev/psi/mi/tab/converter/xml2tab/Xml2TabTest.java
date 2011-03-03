@@ -144,4 +144,24 @@ public class Xml2TabTest {
 
         assertEquals( 4, interactions.size() );
     }
+
+    @Test
+    public void negative_interactions() throws Exception {
+
+        // negative interactions shouldn't be converted into MITAB 2.5
+        File file = TestHelper.getFileByResources( "/psi25-testset/simple-negative.xml", Xml2TabTest.class);
+        PsimiXmlReader reader = new PsimiXmlReader();
+
+        EntrySet entrySet = reader.read( file );
+        Xml2Tab x2t = new Xml2Tab();
+        try {
+            Collection<BinaryInteraction> binaryInteractions = x2t.convert( entrySet );
+            assertFalse( binaryInteractions.isEmpty() );
+            assertEquals( 1, binaryInteractions.size() );
+
+        } catch ( TabConversionException e ) {
+            fail();
+        }
+
+    }
 }

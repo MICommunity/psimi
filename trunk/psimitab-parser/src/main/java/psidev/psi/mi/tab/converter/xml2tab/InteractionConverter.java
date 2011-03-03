@@ -96,6 +96,12 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
     // Convertion
 
     public BinaryInteraction toMitab( Interaction interaction ) throws TabConversionException {
+
+        if( interaction.isNegative() ) {
+            log.warn( "interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it is negative." );
+            return null;
+        }
+
         if ( interaction.getParticipants().size() != 2 ) {
             log.warn( "interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it does not have exactly 2 participants." );
             return null;
