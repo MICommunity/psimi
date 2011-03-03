@@ -98,7 +98,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
         if ( interactor.getXref() != null ) {
 
             identityRefs = XrefUtils.searchByType( interactor.getXref(), IDENTITY, IDENTITY_REF );
-            identityRefs.addAll(XrefUtils.searchByType( interactor.getXref(), SOURCE_REFERENCE, SOURCE_REFERENCE_REF ));
+            // identityRefs.addAll(XrefUtils.searchByType( interactor.getXref(), SOURCE_REFERENCE, SOURCE_REFERENCE_REF ));
             for ( DbReference ref : identityRefs ) {
                 CrossReference cr = buildCrossReference( ref );
                 if ( !identifiers.contains( cr ) ) {
