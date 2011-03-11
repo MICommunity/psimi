@@ -16,6 +16,8 @@
 package psidev.psi.mi.tab.model.builder;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.*;
 
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ import java.util.List;
  * @version $Id$
  */
 public final class ParseUtils {
+
+    private static final Log log = LogFactory.getLog(ParseUtils.class);
 
     private ParseUtils() {}
 
@@ -289,7 +293,25 @@ public final class ParseUtils {
     }
 
     public static Confidence createConfidence(Field field) {
-        return new ConfidenceImpl(field.getType(), field.getValue(), field.getDescription());
+        String type = field.getType();
+        String value = field.getValue();
+        String description = field.getDescription();
+
+        if (type == null) {
+            if (log.isWarnEnabled()) log.warn("Expecting cross-reference format but found free text instead. Using db 'not-defined': "+value);
+
+            type = "not-defined";
+
+            if (description == null) {
+                description = "free-text";
+            }
+        }
+
+        if (description == null) {
+            description = "free-text";
+        }
+
+        return new ConfidenceImpl(type, value, description);
     }
 
     // object or fields -> column

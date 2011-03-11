@@ -1,16 +1,16 @@
 package psidev.psi.mi.tab;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
+import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.ConfidenceImpl;
+import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.xml.converter.ConverterException;
+import static org.junit.Assert.assertEquals;
 
 /**
  * PsimiTabReader Tester.
@@ -133,5 +133,20 @@ public class PsimiTabReaderTest {
         final BinaryInteraction binaryInteraction = mitabReader.readLine(line);
 
         Assert.assertTrue(binaryInteraction.getInteractionAcs().isEmpty());
+    }
+
+    @Test
+    public void unexpectedFreeTextInConfidences() {
+        String line = "uniprotkb:P23367\tuniprotkb:P06722\tinterpro:IPR003594|interpro:IPR002099|go:GO:0005515|intact:EBI-554913\tinterpro:IPR004230|uniprotkb:Q9R2X2|uniprotkb:Q9R3A8|uniprotkb:Q9R411|uniprotkb:Q9S6P5|uniprotkb:Q9S6P6|uniprotkb:Q9S6P7|go:GO:0005515|intact:EBI-545170\tgene name:mutL|locus name:b4170\tgene name:mutH|gene name synonym:mutR|gene name synonym:prv|locus name:b2831\tadenylate cyclase:MI:0014\t-\tpubmed:11585365\ttaxid:562\ttaxid:562\tphysical interaction:MI:0218\t-\t-\t" +
+                "lpr:640|hpr:640|np:1|PSICQUIC entries are truncated here.  Seeirefindex.uio.no";
+        PsimiTabReader mitabReader = new PsimiTabReader( false );
+        final BinaryInteraction binaryInteraction = mitabReader.readLine(line);
+
+        Assert.assertEquals(4, binaryInteraction.getConfidenceValues().size());
+
+        ConfidenceImpl confidence = (ConfidenceImpl) binaryInteraction.getConfidenceValues().get(3);
+        Assert.assertEquals("not-defined", confidence.getType());
+        Assert.assertEquals("PSICQUIC entries are truncated here.  Seeirefindex.uio.no", confidence.getValue());
+        Assert.assertEquals("free-text", confidence.getText());
     }
 }
