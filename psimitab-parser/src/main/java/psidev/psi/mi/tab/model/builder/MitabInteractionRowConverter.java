@@ -155,22 +155,7 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
     }
 
     protected List<Alias> createAliases(Column column) {
-        List<Alias> aliases = new ArrayList<Alias>();
-
-        for (Field field : column.getFields()) {
-            aliases.add(createAlias(field));
-        }
-
-        return aliases;
-    }
-
-    protected Alias createAlias(Field field) {
-        Alias alias = new AliasImpl();
-        alias.setDbSource(field.getType());
-        alias.setName(field.getValue());
-        alias.setAliasType(field.getDescription());
-
-        return alias;
+        return ParseUtils.createAliases(column);
     }
 
     protected List<Author> createAuthors(Column column) {
@@ -184,11 +169,11 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
     }
 
     protected Author createAuthor(Field field) {
-        return new AuthorImpl(field.getValue());
+        return ParseUtils.createAuthor(field);
     }
 
     protected Organism createOrganism(Column column) {
-        return new OrganismImpl(createCrossReferences(column));
+         return ParseUtils.createOrganism(column);
     }
 
     protected List<Confidence> createConfidenceValues(Column column) {
@@ -206,6 +191,6 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
     }
 
     protected Confidence createConfidence(Field field) {
-        return new ConfidenceImpl(field.getType(), field.getValue(), field.getDescription());
+        return ParseUtils.createConfidence(field);
     }
 }
