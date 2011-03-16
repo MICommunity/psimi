@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AntConfiguration">
+    <defaultAnt bundledAnt="true" />
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
@@ -34,6 +37,9 @@
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
       <facet-type id="Osmorc">
@@ -43,6 +49,7 @@
       </facet-type>
     </autodetection-disabled>
   </component>
+  <component name="IdProvider" IDEtalkID="E5A39F90CFDABDF4486D36E9F78C3838" />
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
   </component>
@@ -210,17 +217,50 @@
       <module fileurl="file://$PROJECT_DIR$/psimitab.iml" filepath="$PROJECT_DIR$/psimitab.iml" />
     </modules>
   </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
   </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-  </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://psimi.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://psimi.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://psimi.googlecode.com/svn/wiki">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://psimi.googlecode.com/svn/branches" />
+                  <option value="https://psimi.googlecode.com/svn/tags" />
+                  <option value="https://psimi.googlecode.com/svn/wiki" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://psimi.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
@@ -228,6 +268,28 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
+    <library name="Maven: com.google.guava:guava:r06">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/r06/guava-r06.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/r06/guava-r06-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/r06/guava-r06-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: junit:junit:4.8.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.8.1/junit-4.8.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.8.1/junit-4.8.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.8.1/junit-4.8.1-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.apache.commons:com.springsource.org.apache.commons.collections:3.2.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/com.springsource.org.apache.commons.collections/3.2.1/com.springsource.org.apache.commons.collections-3.2.1.jar!/" />
@@ -270,39 +332,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/log4j/com.springsource.org.apache.log4j/1.2.15/com.springsource.org.apache.log4j-1.2.15-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.osgi:osgi_R4_core:1.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/osgi/osgi_R4_core/1.0/osgi_R4_core-1.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/osgi/osgi_R4_core/1.0/osgi_R4_core-1.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/osgi/osgi_R4_core/1.0/osgi_R4_core-1.0-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.osgi:osgi_R4_compendium:1.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/osgi/osgi_R4_compendium/1.0/osgi_R4_compendium-1.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/osgi/osgi_R4_compendium/1.0/osgi_R4_compendium-1.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/osgi/osgi_R4_compendium/1.0/osgi_R4_compendium-1.0-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: junit:junit:4.3.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.3.1/junit-4.3.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.3.1/junit-4.3.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.3.1/junit-4.3.1-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
