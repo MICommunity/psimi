@@ -3,22 +3,26 @@
 
 = PSI-MI TAB Format =
 
-The MITAB25 format is part of the PSI-MI 2.5 standard.
-It has been derived from the tabular format provided by !BioGrid. 
-MITAB25 only describes binary interactions, one pair of interactors per row. 
-Columns are separated by tabulations.
+== Introduction ==
+
+The MITAB25 format is part of the PSI-MI 2.5 standard (1). It has been derived from the tabular format provided by BioGrid. MITAB25 only describes binary interactions, one pair of interactors per row. Columns are separated by tabulations. Tools allowing to manipulate this data format are available (2). 
+
+(1) http://www.pubmedcentral.nih.gov/articlerender.fcgi?tool=pubmed&pubmedid=17925023
+
+(2) http://www.psidev.info/index.php?q=node/60#tools
+
 
 == Column definitions ==
 
 The column contents should be as follows:
 
-  #  *Unique identifier for interactor A*, represented as databaseName:ac, where     databaseName is the name of the corresponding database as defined in the PSI-MI controlled vocabulary, and ac is the unique primary identifier of the molecule in the database. Identifiers from multiple databases can be separated by "|". It is recommended that proteins be identified by stable identifiers such as their UniProtKB or RefSeq accession number.
+  #  *Unique identifier for interactor A*, represented as databaseName:ac, where     databaseName is the name of the corresponding database as defined in the [http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI:0444&termName=database%20citation PSI-MI controlled vocabulary], and ac is the unique primary identifier of the molecule in the database. Identifiers from multiple databases can be separated by "|". It is recommended that proteins be identified by stable identifiers such as their UniProtKB or RefSeq accession number.
   #  *Unique identifier for interactor B*.
   #  *Alternative identifier for interactor A*, for example the official gene symbol as defined by a recognised nomenclature committee. Representation as databaseName:identifier. Multiple identifiers separated by "|". 
   # *Alternative identifier for interactor B*.
   #  *Aliases for A*, separated by "|". Representation as databaseName:identifier. Multiple identifiers separated by "|". 
   #  *Aliases for B*.
-  #  *Interaction detection methods*, taken from the corresponding PSI-MI controlled Vocabulary, and represented as darabaseName:identifier(methodName), separated by "|".
+  #  *Interaction detection methods*, taken from the corresponding [http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI:0001&termName=interaction%20detection%20method PSI-MI controlled Vocabulary], and represented as darabaseName:identifier(methodName), separated by "|".
   #  *First author* surname(s) of the publication(s) in which this interaction has been shown, optionally followed by additional indicators, e.g. "Doe-2005-a". Separated by "|".
   #  *Identifier of the publication* in which this interaction has been shown. Database name taken from the PSI-MI controlled vocabulary, represented as databaseName:identifier. Multiple identifiers separated by "|".
   # *NCBI Taxonomy identifier for interactor A*. Database name for NCBI taxid taken from the PSI-MI controlled vocabulary, represented as databaseName:identifier. Multiple identifiers separated by "|". Note: In this column, the databaseName:identifier(speciesName) notation is only there for consistency. Currently no taxonomy identifiers other than NCBI taxid are anticipated, apart from the use of -1 to indicate "in vitro" and -2 to indicate "chemical synthesis".
