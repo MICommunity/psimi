@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hupo.psi.mitab.util;
+package org.hupo.psi.calimocho.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.mitab.model.ColumnMetadata;

@@ -15,9 +15,9 @@
  */
 package org.hupo.psi.mitab.io;
 
+import org.hupo.psi.calimocho.util.ParseUtils;
 import org.hupo.psi.mitab.definition.DocumentDefinition;
 import org.hupo.psi.mitab.model.*;
-import org.hupo.psi.mitab.util.ParseUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class MitabReader {
                 }
             }
 
-            String[] strFields = ParseUtils.columnSplit(col, documentDefinition.getFieldSeparator());
+            String[] strFields = ParseUtils.columnSplit( col, documentDefinition.getFieldSeparator() );
 
             for (String strField : strFields) {
                 Field[] fieldArray = ParseUtils.createFields(columnMetadata, strField);

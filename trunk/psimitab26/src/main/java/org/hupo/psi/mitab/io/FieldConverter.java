@@ -18,7 +18,7 @@ package org.hupo.psi.mitab.io;
 import org.hupo.psi.mitab.definition.DocumentDefinition;
 import org.hupo.psi.mitab.model.ColumnMetadata;
 import org.hupo.psi.mitab.model.Field;
-import org.hupo.psi.mitab.util.MitabEscapeUtils;
+import org.hupo.psi.tab.util.MitabEscapeUtils;
 
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
@@ -45,7 +45,7 @@ public class FieldConverter {
             sb.append(MitabEscapeUtils.escapeFieldElement(type)).append(":");
         }
 
-        sb.append(MitabEscapeUtils.escapeFieldElement(value));
+        sb.append( MitabEscapeUtils.escapeFieldElement( value ));
 
         if (text != null && !columnMetadata.isOnlyValues()) {
             sb.append("(");

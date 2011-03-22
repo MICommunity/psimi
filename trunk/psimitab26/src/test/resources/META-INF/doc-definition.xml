@@ -1,0 +1,32 @@
+<documentDefinition>
+    <metadata>
+        <name>MITAB 2.6</name>
+        <description>This document explains MITAB 2.6</description>
+        <columnSeparator>\t</columnSeparator>
+        <columnDelimiter></columnDelimiter>
+    </metadata>
+    <columns count="30">
+        <column>
+            <position>1</position>
+            <key>idA</key>
+            <definition>The identifier for molecule A</definition>
+            <fieldType>xref</fieldType>
+            <fieldSeparator>|</fieldSeparator>
+            <allowsEmpty>false</allowsEmpty>
+            <emptyValue>-</emptyValue>
+            <parserClass>org.psimi.DefaultXrefFieldParser</parserClass>
+            <formatterClass>org.psimi.DefaultXrefFieldFormatter</formatterClass>
+        </column>
+        <column>
+            <position>2</position>
+            <key>idB</key>
+            <definition>The identifier for molecule B</definition>
+            <fieldSeparator>|</fieldSeparator>
+            <allowsEmpty>false</allowsEmpty>
+            <emptyValue>-</emptyValue>
+            <className>org.psimi.XrefField</className>
+            <parserClass>org.psimi.CvXrefFieldParser</parserClass>
+            <formatterClass>org.psimi.CvXrefFieldFormatter</formatterClass>
+        </column>
+    </columns>
+</documentDefinition>
