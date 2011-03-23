@@ -9,6 +9,7 @@ import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
 import org.hupo.psi.calimocho.model.*;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
@@ -167,5 +168,35 @@ public class DefaultRowReaderTest extends AbstractCalimochoTest {
         } catch ( IllegalFieldException e ) {
             Assert.fail();
         }
+    }
+
+    @Test
+    public void read_fieldKeyValue() throws Exception {
+
+        final String aLine = "LSM7|9606\n";
+
+        final DocumentDefinition documentDefinition = buildGeneListDefinition();
+
+        RowReader reader = new DefaultRowReader( documentDefinition );
+        final List<Row> rows = reader.read( new ByteArrayInputStream( aLine.getBytes() ) );
+        org.junit.Assert.assertNotNull( rows );
+        org.junit.Assert.assertEquals( 1, rows.size() );
+
+        Row row = rows.get( 0 );
+        final Collection<Field> geneFields = row.getFields( "gene" );
+        Assert.assertNotNull( geneFields );
+        Assert.assertEquals(1, geneFields.size());
+        final Field geneField = geneFields.iterator().next();
+        final String gene = geneField.get( CalimochoKeys.VALUE );
+        Assert.assertNotNull( gene );
+        Assert.assertEquals("LSM7", gene);
+
+        final Collection<Field> taxidFields = row.getFields( "taxid" );
+        Assert.assertNotNull( taxidFields );
+        Assert.assertEquals(1, taxidFields.size());
+        final Field taxidField = taxidFields.iterator().next();
+        final String taxid = taxidField.get( CalimochoKeys.VALUE );
+        Assert.assertNotNull( taxid );
+        Assert.assertEquals("9606", taxid);
     }
 }
