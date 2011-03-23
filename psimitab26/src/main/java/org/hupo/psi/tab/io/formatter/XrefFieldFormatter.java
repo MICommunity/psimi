@@ -1,4 +1,4 @@
-package org.hupo.psi.tab.parser;
+package org.hupo.psi.tab.io.formatter;
 
 import org.hupo.psi.calimocho.io.FieldFormatter;
 import org.hupo.psi.calimocho.io.IllegalFieldException;

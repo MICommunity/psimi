@@ -1,8 +1,9 @@
-package org.hupo.psi.calimocho.parser;
+package org.hupo.psi.calimocho.io.parser;
 
 import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.calimocho.io.FieldParser;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
@@ -40,4 +41,11 @@ public class KeyValueFieldParser implements FieldParser {
         return field;
     }
 
+    public String getSeparator() {
+        return separator;
+    }
+
+    public void setSeparator( String separator ) {
+        this.separator = separator;
+    }
 }

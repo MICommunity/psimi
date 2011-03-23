@@ -1,15 +1,13 @@
 package org.hupo.psi.tab.util;
 
+import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
+import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.ColumnDefinitionBuilder;
 import org.hupo.psi.calimocho.model.DocumentDefinition;
 import org.hupo.psi.calimocho.model.DocumentDefinitionBuilder;
-import org.hupo.psi.calimocho.parser.LiteralFieldFormatter;
-import org.hupo.psi.calimocho.parser.LiteralFieldParser;
-import org.hupo.psi.tab.parser.XrefFieldFormatter;
-import org.hupo.psi.tab.parser.XrefFieldParser;
-
-import java.text.Collator;
+import org.hupo.psi.tab.io.formatter.XrefFieldFormatter;
+import org.hupo.psi.tab.io.parser.XrefFieldParser;
 
 /**
  * TODO document this !
@@ -141,7 +139,7 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(taxidB)
                 .addColumnDefinition(type_exact)
                 .addColumnDefinition(source)
-                .addColumnDefinition(interaction_id)
+                .addColumnDefinition( interaction_id )
                 .addColumnDefinition(confidence)
                 .setColumnSeparator("\t")
                 .setCommentPrefix( "#" )

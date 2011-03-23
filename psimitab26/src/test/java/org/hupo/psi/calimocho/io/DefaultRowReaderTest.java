@@ -1,8 +1,11 @@
 package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
+import org.hupo.psi.calimocho.io.formatter.KeyValueFieldFormatter;
+import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
+import org.hupo.psi.calimocho.io.parser.KeyValueFieldParser;
+import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
 import org.hupo.psi.calimocho.model.*;
-import org.hupo.psi.calimocho.parser.*;
 import org.junit.Test;
 
 import java.io.InputStream;
