@@ -28,7 +28,7 @@ public class KeyValueFieldParser implements FieldParser {
     }
 
     public Field parse( String keyValue, ColumnDefinition columnDefinition ) throws IllegalFieldException {
-       String[] tokens = StringUtils.splitPreserveAllTokens( keyValue, separator );
+       String[] tokens = StringUtils.splitPreserveAllTokens( keyValue, separator, 2 );
 
         if (tokens.length != 2) {
             throw new IllegalFieldException( "Expecting a field formed by two tokens separated by: '"+separator+"', field: "+keyValue);

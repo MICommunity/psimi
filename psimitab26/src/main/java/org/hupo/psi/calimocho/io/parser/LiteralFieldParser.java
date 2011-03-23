@@ -19,8 +19,7 @@ public class LiteralFieldParser implements FieldParser {
     public Field parse( String value, ColumnDefinition columnDefinition ) throws IllegalFieldException {
        Field field = new DefaultField();
        field.set( CalimochoKeys.VALUE, value);
-
-        return field;
+       return field;
     }
 
 }
