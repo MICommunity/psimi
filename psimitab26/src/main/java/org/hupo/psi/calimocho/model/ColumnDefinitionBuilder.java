@@ -2,6 +2,8 @@ package org.hupo.psi.calimocho.model;
 
 import org.hupo.psi.calimocho.io.FieldFormatter;
 import org.hupo.psi.calimocho.io.FieldParser;
+import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
+import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,43 +39,43 @@ public class ColumnDefinitionBuilder {
     }
 
     public ColumnDefinitionBuilder setKey(String key){
-        this.columnDefinition.setKey(key);
+        this.columnDefinition.setKey( key );
 
         return this;
     }
 
     public ColumnDefinitionBuilder setFieldSeparator(String separator){
-        this.columnDefinition.setFieldSeparator(separator);
+        this.columnDefinition.setFieldSeparator( separator );
 
         return this;
     }
 
     public ColumnDefinitionBuilder setFieldDelimiter(String delimiter){
-        this.columnDefinition.setFieldDelimiter(delimiter);
+        this.columnDefinition.setFieldDelimiter( delimiter );
 
         return this;
     }
 
     public ColumnDefinitionBuilder setEmptyValue(String value){
-        this.columnDefinition.setEmptyValue(value);
+        this.columnDefinition.setEmptyValue( value );
 
         return this;
     }
 
     public ColumnDefinitionBuilder setIsAllowsEmpty(boolean isAllowsEmpty){
-       this.columnDefinition.setAllowsEmpty(isAllowsEmpty);
+       this.columnDefinition.setAllowsEmpty( isAllowsEmpty );
 
         return this;
     }
 
     public ColumnDefinitionBuilder setFieldParser(FieldParser parser){
-       this.columnDefinition.setFieldParser(parser);
+       this.columnDefinition.setFieldParser( parser );
 
         return this;
     }
 
     public ColumnDefinitionBuilder setFieldFormatter(FieldFormatter formatter){
-       this.columnDefinition.setFieldFormatter(formatter);
+       this.columnDefinition.setFieldFormatter( formatter );
 
         return this;
     }
@@ -115,6 +117,14 @@ public class ColumnDefinitionBuilder {
     }
 
     public ColumnDefinition build() {
+        if (columnDefinition.getFieldParser() == null) {
+            columnDefinition.setFieldParser( new LiteralFieldParser() );
+        }
+
+        if (columnDefinition.getFieldFormatter() == null) {
+            columnDefinition.setFieldFormatter( new LiteralFieldFormatter() );
+        }
+
         validate();
 
         return columnDefinition;
