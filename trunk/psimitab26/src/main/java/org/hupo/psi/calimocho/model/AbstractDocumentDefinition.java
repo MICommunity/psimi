@@ -95,6 +95,16 @@ public class AbstractDocumentDefinition extends AbstractDefined implements Docum
         return null;
     }
 
+    public ColumnDefinition getColumnByKey( String key ) {
+        for (ColumnDefinition columnDefinition : columns) {
+            if (columnDefinition.getKey().equals(key)) {
+                return columnDefinition;
+            }
+        }
+
+        return null;
+    }
+
     public void setCommentPrefix( String commentPrefix ) {
         this.commentPrefix = commentPrefix;
     }
