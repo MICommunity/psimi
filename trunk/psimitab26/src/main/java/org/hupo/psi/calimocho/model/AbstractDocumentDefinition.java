@@ -20,11 +20,10 @@ public class AbstractDocumentDefinition extends AbstractDefined implements Docum
     private String commentPrefix;
     private boolean partial;
 
-    public AbstractDocumentDefinition() {
-        columns = new ArrayList<ColumnDefinition>();
-    }
-
     public List<ColumnDefinition> getColumns() {
+        if (columns == null){
+            columns = new ArrayList<ColumnDefinition>();
+        }
         return columns;
     }
 
