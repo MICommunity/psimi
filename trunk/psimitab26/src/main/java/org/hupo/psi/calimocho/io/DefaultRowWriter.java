@@ -30,7 +30,7 @@ public class DefaultRowWriter implements RowWriter {
 
     }
 
-    public void write( Writer writer, List<Row> rows ) throws IOException, IllegalRowException {
+    public void write( Writer writer, Collection<Row> rows ) throws IOException, IllegalRowException {
         if ( rows == null ) {
             throw new IllegalArgumentException( "You must give a non null rows" );
         }
@@ -97,7 +97,7 @@ public class DefaultRowWriter implements RowWriter {
         return sb.toString();
     }
 
-    public void write( OutputStream os, List<Row> rows ) throws IOException, IllegalRowException {
+    public void write( OutputStream os, Collection<Row> rows ) throws IOException, IllegalRowException {
         write( new OutputStreamWriter( os ), rows );
     }
 }

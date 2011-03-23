@@ -15,45 +15,21 @@
  */
 package org.hupo.psi.mitab.definition;
 
-import org.hupo.psi.mitab.model.ColumnMetadata;
-
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
-public class UniprotPairDocumentDefinition implements DocumentDefinition {
-
+public class UniprotPairDocumentDefinition  {
+    /*
     private ColumnMetadata[] columns;
 
     public UniprotPairDocumentDefinition() {
         this.columns = new ColumnMetadata[] {
-            new ColumnMetadata(Mitab25DocumentDefinition.KEY_INTERACTION_ID, "ID(s) interaction"),
-            new ColumnMetadata(Mitab25DocumentDefinition.KEY_ID_A, "Uniprotkb A", "uniprotkb", true),
-            new ColumnMetadata(Mitab25DocumentDefinition.KEY_ID_B, "Uniprotkb B", "uniprotkb", true)
+            new ColumnMetadata( Mitab25ColumnKeys.KEY_INTERACTION_ID, "ID(s) interaction"),
+            new ColumnMetadata( Mitab25ColumnKeys.KEY_ID_A, "Uniprotkb A", "uniprotkb", true),
+            new ColumnMetadata( Mitab25ColumnKeys.KEY_ID_B, "Uniprotkb B", "uniprotkb", true)
         };
     }
 
-    public ColumnMetadata[] getColumns() {
-        return columns;
-    }
-
-    public String getColumnSeparator() {
-        return ",";
-    }
-
-    public String getFieldSeparator() {
-        return "|";
-    }
-
-    public String getColumnDelimiter() {
-        return "\"";
-    }
-
-    public String getEmptyColumnValue() {
-        return "-";
-    }
-
-    public String getCommentedLineStart() {
-        return "#";
-    }
+    */
 }

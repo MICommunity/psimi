@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hupo.psi.mitab.model;
+package org.hupo.psi.tab.model;
+
+import org.hupo.psi.calimocho.model.Field;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hupo.psi.mitab.io;
+package org.hupo.psi.calimocho.io;
 
-import org.hupo.psi.mitab.definition.DocumentDefinition;
-import org.hupo.psi.mitab.model.Row;
+
+import org.hupo.psi.calimocho.model.DocumentDefinition;
+import org.hupo.psi.calimocho.model.Row;
 
 import java.io.*;
 import java.util.Collection;
@@ -25,19 +26,19 @@ import java.util.Collection;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
-public class MitabConverter {
+public class FormatConverter {
 
     private DocumentDefinition sourceDocumentDefinition;
     private DocumentDefinition destinationDocumentDefinition;
 
     private boolean ignoreFirstLine;
 
-    public MitabConverter(DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition) {
+    public FormatConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition ) {
         this.sourceDocumentDefinition = sourceDocumentDefinition;
         this.destinationDocumentDefinition = destinationDocumentDefinition;
     }
 
-    public MitabConverter(DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition, boolean ignoreFirstLine) {
+    public FormatConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition, boolean ignoreFirstLine ) {
         this(sourceDocumentDefinition, destinationDocumentDefinition);
         this.ignoreFirstLine = ignoreFirstLine;
     }
@@ -49,13 +50,23 @@ public class MitabConverter {
     }
 
     public void convert(Reader reader, Writer writer) throws IOException {
-        MitabReader mitabReader = new MitabReader(sourceDocumentDefinition);
-        mitabReader.setIgnoreFirstLine(ignoreFirstLine);
-        
-        MitabWriter mitabWriter = new MitabWriter(destinationDocumentDefinition);
+        RowReader rowReader = new DefaultRowReader(sourceDocumentDefinition);
 
-        Collection<Row> rows = mitabReader.readRows(reader);
-        mitabWriter.write(writer, rows);
+        RowWriter rowWriter = new DefaultRowWriter(destinationDocumentDefinition);
+
+        Collection<Row> rows;
+
+        try {
+            rows = rowReader.read( reader );
+        } catch ( IllegalRowException e ) {
+            throw new IOException( "Problem while reading", e );
+        }
+
+        try {
+            rowWriter.write( writer, rows );
+        } catch ( IllegalRowException e ) {
+            throw new IOException( "Problem while writing", e );
+        }
     }
 
     public void setIgnoreFirstLine(boolean ignoreFirstLine) {
