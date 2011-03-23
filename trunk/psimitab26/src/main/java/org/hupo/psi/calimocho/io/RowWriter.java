@@ -13,9 +13,9 @@ import java.util.List;
  * @since TODO add POM version
  */
 public interface RowWriter {
-    void read( Writer writer, List<Row> rows ) throws IOException, IllegalRowException;
+    void write( Writer writer, List<Row> rows ) throws IOException, IllegalRowException;
 
     String writeLine( Row row ) throws IllegalRowException, IllegalColumnException, IllegalFieldException;
 
-    void read( OutputStream os, List<Row> rows ) throws IOException, IllegalRowException;
+    void write( OutputStream os, List<Row> rows ) throws IOException, IllegalRowException;
 }
