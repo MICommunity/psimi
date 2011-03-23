@@ -27,4 +27,6 @@ public interface DocumentDefinition extends Defined {
     List<ColumnDefinition> getColumnDefinitions();
 
     boolean hasColumnDelimiter();
+
+    int getHighestColumnPosition();
 }
