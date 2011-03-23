@@ -22,6 +22,10 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
     private String fieldSeparator;
     private String fieldDelimiter;
 
+    public AbstractColumnDefinition(){
+        this.position = 0;
+    }
+
     public int getPosition() {
         return position;
     }
