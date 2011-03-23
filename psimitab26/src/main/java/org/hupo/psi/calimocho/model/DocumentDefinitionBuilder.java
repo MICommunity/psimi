@@ -1,5 +1,7 @@
 package org.hupo.psi.calimocho.model;
 
+import org.apache.commons.collections.MapUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,6 +87,10 @@ public class DocumentDefinitionBuilder {
                 throw new DefinitionException( "Column " + col.getKey() + " and column " + processedColumnPositions.get(col.getPosition()) + " have the same position " + col.getPosition() );
             }
             else {
+                if (processedColumnPositions.containsValue(col.getKey())){
+                    throw new DefinitionException( "Column " + col.getPosition() + " has a key (" + col.getKey() + ") which already exists in previous column definitions." );
+                }
+
                 processedColumnPositions.put(col.getPosition(), col.getKey());
             }
         }
