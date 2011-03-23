@@ -52,10 +52,22 @@ public class KeyValueFieldParserTest {
     }
 
     @Test(expected = IllegalFieldException.class)
-    public void parse4_invalid() throws Exception {
-        String value = "key";
+    public void parse4_invalid_defaultKey() throws Exception {
+        String value = "value";
 
         KeyValueFieldParser parser = new KeyValueFieldParser();
         final Field field = parser.parse( value, null );
+    }
+
+    @Test
+    public void parse4_defaultKey() throws Exception {
+        String value = "value";
+
+        KeyValueFieldParser parser = new KeyValueFieldParser(":", "defaultKey");
+        final Field field = parser.parse( value, null );
+
+        Assert.assertEquals( 2, field.getEntries().size() );
+        Assert.assertEquals( "defaultKey", field.get( CalimochoKeys.KEY ) );
+        Assert.assertEquals( "value", field.get( CalimochoKeys.VALUE ));
     }
 }

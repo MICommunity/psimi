@@ -34,7 +34,9 @@ public class KeyValueFieldFormatterTest {
         field.set( CalimochoKeys.KEY, "key" );
         field.set( CalimochoKeys.VALUE, "value" );
 
-        final KeyValueFieldFormatter formatter = new KeyValueFieldFormatter(":");
+        final KeyValueFieldFormatter formatter = new KeyValueFieldFormatter();
+        formatter.setSeparator( ":" );
+
         final String str = formatter.format( field );
 
         Assert.assertEquals( ":", formatter.getSeparator() );
@@ -63,5 +65,27 @@ public class KeyValueFieldFormatterTest {
         Assert.assertEquals( "=", formatter.getSeparator() );
         Assert.assertEquals( "lalakey", formatter.getDefaultKey() );
         Assert.assertEquals( "lalakey=value", str );
+    }
+
+    @Test
+    public void format5_fullConstructor() throws Exception {
+        Field field = new DefaultField();
+        field.set( CalimochoKeys.VALUE, "value" );
+
+        final KeyValueFieldFormatter formatter = new KeyValueFieldFormatter(":", "lalakey");
+        final String str = formatter.format( field );
+
+        Assert.assertEquals( ":", formatter.getSeparator() );
+        Assert.assertEquals( "lalakey", formatter.getDefaultKey() );
+        Assert.assertEquals( "lalakey:value", str );
+    }
+
+    @Test(expected = IllegalFieldException.class)
+    public void format6_invalid_nullValue() throws Exception {
+        Field field = new DefaultField();
+        field.set( CalimochoKeys.KEY, "key" );
+
+        final KeyValueFieldFormatter formatter = new KeyValueFieldFormatter(":", "lalakey");
+        final String str = formatter.format( field );
     }
 }

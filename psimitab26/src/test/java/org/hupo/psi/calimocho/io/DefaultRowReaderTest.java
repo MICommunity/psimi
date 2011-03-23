@@ -64,13 +64,18 @@ public class DefaultRowReaderTest {
 
         Assert.assertEquals( 2, idFields.size() );
 
-        Field idField = idFields.iterator().next();
+        for (Field idField : idFields) {
+           final String db = idField.get( CalimochoKeys.KEY );
+            final String value = idField.get( CalimochoKeys.VALUE );
 
-        final String db = idField.get( CalimochoKeys.KEY );
-        final String value = idField.get( CalimochoKeys.VALUE );
-
-        Assert.assertEquals("intact", db);
-        Assert.assertEquals( "EBI-123456", value );
+            if ("intact".equals(db)) {
+                Assert.assertEquals("intact", db);
+                Assert.assertEquals( "EBI-123456", value );
+            } else {
+                Assert.assertEquals("uniprotkb", db);
+                Assert.assertEquals( "Q9Y5J7", value );
+            }
+        }
 
         Collection<Field> authorFields = row.getFields( authColDefinition.getKey() );
 
