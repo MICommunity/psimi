@@ -1,6 +1,7 @@
 package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
+import org.hupo.psi.calimocho.AbstractCalimochoTest;
 import org.hupo.psi.calimocho.io.formatter.KeyValueFieldFormatter;
 import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
 import org.hupo.psi.calimocho.io.parser.KeyValueFieldParser;
@@ -17,7 +18,7 @@ import java.util.List;
  * @version $Id$
  * @since TODO add POM version
  */
-public class DefaultRowReaderTest {
+public class DefaultRowReaderTest extends AbstractCalimochoTest {
 
     @Test
     public void readLine() throws Exception {
@@ -36,8 +37,8 @@ public class DefaultRowReaderTest {
                 .setKey( "idA" )
                 .setPosition( 0 )
                 .setFieldSeparator( "|" )
-                .setFieldParser( new KeyValueFieldParser(":") )
-                .setFieldFormatter( new KeyValueFieldFormatter(":") )
+                .setFieldParser( new KeyValueFieldParser( ":" ) )
+                .setFieldFormatter( new KeyValueFieldFormatter( ":" ) )
                 .build();
 
         ColumnDefinition authColDefinition = new ColumnDefinitionBuilder()
@@ -94,8 +95,8 @@ public class DefaultRowReaderTest {
                 .setKey( "id" )
                 .setPosition( 0 )
                 .setFieldSeparator( "|" )
-                .setFieldParser( new KeyValueFieldParser(":") )
-                .setFieldFormatter( new KeyValueFieldFormatter(":") )
+                .setFieldParser( new KeyValueFieldParser( ":" ) )
+                .setFieldFormatter( new KeyValueFieldFormatter( ":" ) )
                 .build();
 
         DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
@@ -125,5 +126,46 @@ public class DefaultRowReaderTest {
         Assert.assertEquals("uniprotkb", key);
         Assert.assertEquals("Q9Y5J7", value);
         Assert.assertNull( text );
+    }
+
+    @Test()
+    public void invalidInputFile_columnCount() throws Exception {
+        DocumentDefinition dd = new DocumentDefinitionBuilder().addColumnDefinition( new ColumnDefinitionBuilder()
+                                              .setKey( "gene" )
+                                              .setPosition( 1 )
+                                              .setEmptyValue( "" )
+                                              .setIsAllowsEmpty( false )
+                                              .setFieldSeparator( "," )
+                                              .setFieldDelimiter( "" )
+                                              .setFieldParser( new LiteralFieldParser() )
+                                              .setFieldFormatter( new LiteralFieldFormatter() )
+                                              .build() )
+                .addColumnDefinition( new ColumnDefinitionBuilder()
+                                              .setKey( "taxid" )
+                                              .setPosition( 2 )
+                                              .setEmptyValue( "" )
+                                              .setIsAllowsEmpty( false )
+                                              .setFieldSeparator( "," )
+                                              .setFieldDelimiter( "" )
+                                              .setFieldParser( new LiteralFieldParser() )
+                                              .setFieldFormatter( new LiteralFieldFormatter() )
+                                              .build() )
+                .setColumnSeparator( "|" )
+                .build();
+
+        String aLine = "LSM7|9606";
+
+        RowReader reader = new DefaultRowReader( dd );
+        try {
+            reader.readLine( aLine );
+            Assert.fail("Expected IllegalRowException to be thrown");
+        } catch ( IllegalRowException e ) {
+            // expected here !
+            Assert.assertEquals( aLine, e.getLine() );
+        } catch ( IllegalColumnException e ) {
+            Assert.fail();
+        } catch ( IllegalFieldException e ) {
+            Assert.fail();
+        }
     }
 }

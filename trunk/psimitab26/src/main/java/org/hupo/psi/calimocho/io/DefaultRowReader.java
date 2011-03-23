@@ -65,6 +65,14 @@ public class DefaultRowReader implements RowReader {
         // TODO we may use other characters than quotes - should be defined in columnDefinition
         String[] cols = ParseUtils.quoteAwareSplit( line, new String[]{documentDefinition.getColumnSeparator()}, false );
 
+        final int expectedColumnCount = documentDefinition.getHighestColumnPosition() + 1;
+        if( cols.length < expectedColumnCount ) {
+            final IllegalRowException ire = new IllegalRowException( "Row having less columns than defined. Expected:" +
+                                                                     expectedColumnCount + ", found:" + cols.length );
+            ire.setLine( line );
+            throw ire;
+        }
+
         // iterate through the columns to parse the fields
         for ( int i = 0; i < cols.length; i++ ) {
             ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition( i );

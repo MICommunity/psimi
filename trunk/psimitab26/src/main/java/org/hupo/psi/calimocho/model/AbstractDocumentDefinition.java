@@ -109,4 +109,15 @@ public class AbstractDocumentDefinition extends AbstractDefined implements Docum
     public void setCommentPrefix( String commentPrefix ) {
         this.commentPrefix = commentPrefix;
     }
+
+    /**
+     * precondition: the <code>columns</code> is not null and ordered by increasing position.
+     * @return the highest column's position.
+     */
+    public int getHighestColumnPosition() {
+        if( columns == null ) {
+            throw new RuntimeException( "No columns defined in this document definition" );
+        }
+        return columns.get( columns.size() - 1 ).getPosition();
+    }
 }
