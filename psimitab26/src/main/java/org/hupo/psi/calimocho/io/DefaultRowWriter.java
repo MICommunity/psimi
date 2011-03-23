@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class DefaultRowWriter implements RowWriter{
 
-    public void read( Writer writer, List<Row> rows ) throws IOException, IllegalRowException {
+    public void write( Writer writer, List<Row> rows ) throws IOException, IllegalRowException {
     }
 
     public String writeLine( Row row ) throws IllegalRowException, IllegalColumnException, IllegalFieldException {
         return null;
     }
 
-    public void read( OutputStream os, List<Row> rows ) throws IOException, IllegalRowException {
+    public void write( OutputStream os, List<Row> rows ) throws IOException, IllegalRowException {
     }
 }
