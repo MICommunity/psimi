@@ -103,16 +103,16 @@ public class ColumnDefinitionBuilder {
             throw new DefinitionException( "No columns key defined and it is mandatory" );
         }
 
-        if ( columnDefinition.getFieldSeparator() == null) {
-            throw new DefinitionException( "No columns field separator defined and it is mandatory" );
-        }
-
         if ( columnDefinition.getFieldFormatter() == null) {
             throw new DefinitionException( "No columns field formatter defined and it is mandatory" );
         }
 
         if ( columnDefinition.getFieldParser() == null) {
             throw new DefinitionException( "No columns field parser defined and it is mandatory" );
+        }
+
+        if( columnDefinition.getPosition() < 0 ) {
+            throw new DefinitionException( "Column position must be positive: " + columnDefinition.getPosition() );
         }
     }
 
