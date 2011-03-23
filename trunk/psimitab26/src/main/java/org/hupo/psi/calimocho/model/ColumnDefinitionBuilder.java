@@ -1,5 +1,8 @@
 package org.hupo.psi.calimocho.model;
 
+import org.hupo.psi.calimocho.io.FieldFormatter;
+import org.hupo.psi.calimocho.io.FieldParser;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Training
@@ -39,9 +42,43 @@ public class ColumnDefinitionBuilder {
         return this;
     }
 
+    public ColumnDefinitionBuilder setEmptyValue(String value){
+        this.columnDefinition.setEmptyValue(value);
+
+        return this;
+    }
+
     public ColumnDefinitionBuilder setIsAllowsEmpty(boolean isAllowsEmpty){
        this.columnDefinition.setAllowsEmpty(isAllowsEmpty);
 
         return this;
+    }
+
+    public ColumnDefinitionBuilder setFieldParser(FieldParser parser){
+       this.columnDefinition.setFieldParser(parser);
+
+        return this;
+    }
+
+    public ColumnDefinitionBuilder setFieldFormatter(FieldFormatter formatter){
+       this.columnDefinition.setFieldFormatter(formatter);
+
+        return this;
+    }
+
+    public void validate() throws DefinitionException {
+        /*if ( columnDefinition.getKey() == null)) {
+            throw new DefinitionException( "No columns defined, at least one is expected" );
+        }
+
+        if ( docDefinition.getColumnSeparator() == null) {
+            throw new DefinitionException( "Mandatory column separator is not defined" );
+        } */
+    }
+
+    public ColumnDefinition build() {
+        validate();
+
+        return columnDefinition;
     }
 }
