@@ -23,6 +23,8 @@ import java.io.*;
 import java.util.Collection;
 
 /**
+ * Converts documents from one format to another, by using DocumentDefinitions.
+ *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
@@ -31,24 +33,29 @@ public class DocumentConverter {
     private DocumentDefinition sourceDocumentDefinition;
     private DocumentDefinition destinationDocumentDefinition;
 
-    private boolean ignoreFirstLine;
-
     public DocumentConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition ) {
         this.sourceDocumentDefinition = sourceDocumentDefinition;
         this.destinationDocumentDefinition = destinationDocumentDefinition;
     }
 
-    public DocumentConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition, boolean ignoreFirstLine ) {
-        this( sourceDocumentDefinition, destinationDocumentDefinition );
-        this.ignoreFirstLine = ignoreFirstLine;
-    }
-
+    /**
+     * Converts the documents, using Streams
+     * @param is the input stream with the document definition that matches the first argument in the constructor.
+     * @param os the output stream where the document will be output using the second document definition
+     * @throws IOException
+     */
     public void convert(InputStream is, OutputStream os) throws IOException {
         OutputStreamWriter outputWriter = new OutputStreamWriter(os);
         convert(new InputStreamReader(is), outputWriter);
         outputWriter.close();
     }
 
+    /**
+     * Converts the documents, using a Reader and a Writer.
+     * @param reader the reader with the document definition that matches the first argument in the constructor.
+     * @param writer the writer where the document will be output using the second document definition
+     * @throws IOException
+     */
     public void convert(Reader reader, Writer writer) throws IOException {
         RowReader rowReader = new DefaultRowReader(sourceDocumentDefinition);
 

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * TODO document this !
+ * Writes the rows in the format defined by the DocumentDefinition.
  *
  * @author Christine Jandrasits (cjandras@ebi.ac.uk)
  * @version $Id$

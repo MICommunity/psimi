@@ -7,7 +7,10 @@ import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 
 /**
- * TODO document this !
+ * This formatter creates a String using the pairs with key 'key' and 'value'
+ * from the Field. The String will have the format {key}<separator>{value}.
+ * The separator can be set and a default key, which would be used
+ * if the Field does not have a key-value pair with key 'key'.
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$

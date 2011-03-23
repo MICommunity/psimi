@@ -7,7 +7,8 @@ import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 
 /**
- * TODO document this !
+ * This formatter gets the pair with key 'value' in the Field, returning it
+ * as the String.
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
