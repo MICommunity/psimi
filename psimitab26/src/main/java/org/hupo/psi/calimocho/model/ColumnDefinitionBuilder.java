@@ -18,6 +18,18 @@ public class ColumnDefinitionBuilder {
         this.columnDefinition = new AbstractColumnDefinition(){};
     }
 
+    public ColumnDefinitionBuilder setName(String name){
+        this.columnDefinition.setName(name);
+
+        return this;
+    }
+
+    public ColumnDefinitionBuilder setDefinition(String definition){
+        this.columnDefinition.setDefinition(definition);
+
+        return this;
+    }
+
     public ColumnDefinitionBuilder setPosition(int position){
         this.columnDefinition.setPosition(position);
 
