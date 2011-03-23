@@ -13,26 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hupo.psi.mitab.io;
-
-import org.hupo.psi.mitab.definition.IntactDocumentDefinition;
-import org.hupo.psi.mitab.definition.Mitab26DocumentDefinition;
-import org.junit.Test;
-
-import java.io.InputStream;
+package org.hupo.psi.tab.util;
 
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
-public class MitabConverterTest {
+public interface Mitab25ColumnKeys {
 
-    @Test
-    public void testConvert_intactExtended_to_mitab26() throws Exception {
-        InputStream is = MitabReaderTest.class.getResourceAsStream("/META-INF/mitab25/P51578-oneline.intact_extended.txt");
-        
-        MitabConverter converter = new MitabConverter(new IntactDocumentDefinition(), new Mitab26DocumentDefinition());
-        converter.convert(is, System.out);
+    String KEY_ID_A = "idA";
+    String KEY_ID_B = "idB";
+    String KEY_ALTID_A = "altidA";
+    String KEY_ALTID_B = "altidB";
+    String KEY_ALIAS_A = "aliasA";
+    String KEY_ALIAS_B = "aliasB";
+    String KEY_DETMETHOD = "detmethod_exact";
+    String KEY_PUBAUTH = "pubauth";
+    String KEY_PUBID = "pubid";
+    String KEY_TAXID_A = "taxidA";
+    String KEY_TAXID_B = "taxidB";
+    String KEY_INTERACTION_TYPE = "type_exact";
+    String KEY_SOURCE = "source";
+    String KEY_INTERACTION_ID = "interaction_id";
+    String KEY_CONFIDENCE = "confidence";
 
-    }
+
 }
