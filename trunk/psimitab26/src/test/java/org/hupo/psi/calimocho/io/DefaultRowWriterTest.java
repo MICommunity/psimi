@@ -2,7 +2,8 @@ package org.hupo.psi.calimocho.io;
 
 import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.calimocho.AbstractCalimochoTest;
-import org.hupo.psi.calimocho.model.*;
+import org.hupo.psi.calimocho.model.DocumentDefinition;
+import org.hupo.psi.calimocho.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Christine Jandrasits (cjandras@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public class DefaultRowWriterTest extends AbstractCalimochoTest {
 

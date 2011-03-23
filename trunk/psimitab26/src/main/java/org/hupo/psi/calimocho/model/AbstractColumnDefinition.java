@@ -8,7 +8,7 @@ import org.hupo.psi.calimocho.io.FieldParser;
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public abstract class AbstractColumnDefinition extends AbstractDefined implements ColumnDefinition {
 

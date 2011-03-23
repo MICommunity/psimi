@@ -9,11 +9,21 @@ import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
 
 /**
- * TODO document this !
+ * <p>Parses Strings with structures like {key}{separator}{value}. For instance:
+ *
+ * <ul>
+ *     <li>key:value</li>
+ *     <li>uniprotkb=P12345</li>
+ * </ul>
+ *
+ * <p>The separator between key and value can be specified. If there is no separator,
+ * a default key may specified. In this case, the content of the String will be
+ * used as the value, and the default key will be the key.</p>
+ * <p>The created Field will have two value pairs, with keys 'key' and 'value'.</p>
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public class KeyValueFieldParser implements FieldParser {
 
@@ -33,6 +43,9 @@ public class KeyValueFieldParser implements FieldParser {
         this.defaultKey = defaultKey;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Field parse( String keyValue, ColumnDefinition columnDefinition ) throws IllegalFieldException {
        String[] tokens = StringUtils.splitPreserveAllTokens( keyValue, separator, 2 );
 

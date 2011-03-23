@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author Christine Jandrasits (cjandras@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public class DefaultRowWriter implements RowWriter {
 
@@ -30,8 +30,10 @@ public class DefaultRowWriter implements RowWriter {
 
     }
 
-    // TODO check that there is a fieldSeparator when more than 1 field to be written.
-
+    /**
+     * {@inheritDoc}
+     *  // TODO check that there is a fieldSeparator when more than 1 field to be written.
+     */
     public void write( Writer writer, Collection<Row> rows ) throws IOException, IllegalRowException {
         if ( rows == null ) {
             throw new IllegalArgumentException( "You must give a non null rows" );
@@ -46,6 +48,9 @@ public class DefaultRowWriter implements RowWriter {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String writeLine( Row row ) throws IllegalRowException, IllegalColumnException, IllegalFieldException {
         final List<ColumnDefinition> columnDefinitions = documentDefinition.getColumnDefinitions();
         final boolean hasColumnDelimiter = documentDefinition.hasColumnDelimiter();
@@ -103,6 +108,9 @@ public class DefaultRowWriter implements RowWriter {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void write( OutputStream os, Collection<Row> rows ) throws IOException, IllegalRowException {
         write( new OutputStreamWriter( os ), rows );
     }
