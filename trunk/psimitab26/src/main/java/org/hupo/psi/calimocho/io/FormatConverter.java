@@ -68,8 +68,4 @@ public class FormatConverter {
             throw new IOException( "Problem while writing", e );
         }
     }
-
-    public void setIgnoreFirstLine(boolean ignoreFirstLine) {
-        this.ignoreFirstLine = ignoreFirstLine;
-    }
 }

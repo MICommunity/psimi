@@ -18,6 +18,7 @@ import org.hupo.psi.calimocho.model.Field;
 public class KeyValueFieldParser implements FieldParser {
 
     private String separator;
+    private String defaultKey;
 
     public KeyValueFieldParser() {
         separator = "=";
@@ -27,16 +28,32 @@ public class KeyValueFieldParser implements FieldParser {
         this.separator = separator;
     }
 
+    public KeyValueFieldParser( String separator, String defaultKey ) {
+        this.separator = separator;
+        this.defaultKey = defaultKey;
+    }
+
     public Field parse( String keyValue, ColumnDefinition columnDefinition ) throws IllegalFieldException {
        String[] tokens = StringUtils.splitPreserveAllTokens( keyValue, separator, 2 );
 
-        if (tokens.length != 2) {
-            throw new IllegalFieldException( "Expecting a field formed by two tokens separated by: '"+separator+"', field: "+keyValue);
+        String key;
+        String value;
+
+        if (tokens.length == 1) {
+            if (defaultKey == null) {
+                throw new IllegalFieldException( "Expecting a field formed by two tokens separated by: '"+separator+"', field: "+keyValue);
+            }
+
+            key = defaultKey;
+            value = tokens[0];
+        } else {
+            key = tokens[0];
+            value = tokens[1];
         }
 
        Field field = new DefaultField();
-       field.set( CalimochoKeys.KEY, tokens[0]);
-       field.set( CalimochoKeys.VALUE, tokens[1]);
+       field.set( CalimochoKeys.KEY, key);
+       field.set( CalimochoKeys.VALUE, value);
 
         return field;
     }
@@ -47,5 +64,13 @@ public class KeyValueFieldParser implements FieldParser {
 
     public void setSeparator( String separator ) {
         this.separator = separator;
+    }
+
+    public String getDefaultKey() {
+        return defaultKey;
+    }
+
+    public void setDefaultKey( String defaultKey ) {
+        this.defaultKey = defaultKey;
     }
 }
