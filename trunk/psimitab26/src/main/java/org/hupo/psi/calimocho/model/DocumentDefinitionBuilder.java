@@ -1,5 +1,8 @@
 package org.hupo.psi.calimocho.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * TODO document this !
  *
@@ -72,6 +75,18 @@ public class DocumentDefinitionBuilder {
 
         if ( docDefinition.getColumnSeparator() == null) {
             throw new DefinitionException( "Mandatory column separator is not defined" );
+        }
+
+        Map<Integer, String> processedColumnPositions = new HashMap<Integer, String>();
+
+        for (ColumnDefinition col : docDefinition.getColumns()){
+
+            if (processedColumnPositions.containsKey(col.getPosition())){
+                throw new DefinitionException( "Column " + col.getKey() + " and column " + processedColumnPositions.get(col.getPosition()) + " have the same position " + col.getPosition() );
+            }
+            else {
+                processedColumnPositions.put(col.getPosition(), col.getKey());
+            }
         }
     }
 }

@@ -9,6 +9,8 @@ import org.hupo.psi.calimocho.parser.LiteralFieldParser;
 import org.hupo.psi.tab.parser.XrefFieldFormatter;
 import org.hupo.psi.tab.parser.XrefFieldParser;
 
+import java.text.Collator;
+
 /**
  * TODO document this !
  *
@@ -141,7 +143,7 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(source)
                 .addColumnDefinition(interaction_id)
                 .addColumnDefinition(confidence)
-                .setColumnSeparator( "\t" )
+                .setColumnSeparator("\t")
                 .setCommentPrefix( "#" )
                 .build();
 
@@ -149,10 +151,207 @@ public class MitabDocumentDefinitionFactory {
     }
 
     public static DocumentDefinition mitab26() {
-        DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
-                .extendDocumentDefinition( mitab25() )
+        XrefFieldParser xrefParser = new XrefFieldParser();
+        XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
+
+        LiteralFieldParser literalParser = new LiteralFieldParser();
+        LiteralFieldFormatter literalFieldFormatter = new LiteralFieldFormatter();
+
+        ColumnDefinition expansion = new ColumnDefinitionBuilder()
+                .setKey("expansion")
+                .setFieldSeparator("|")
+                .setEmptyValue("-")
+                .setFieldDelimiter("")
+                .setIsAllowsEmpty(true)
+                .setPosition(15)
+                .setFieldFormatter(xrefFormatter)
+                .setFieldParser(xrefParser)
                 .build();
 
+        ColumnDefinition bioRoleA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("bioRoleA")
+                .setPosition(16)
+                .build();
+
+        ColumnDefinition bioRoleB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("bioRoleB")
+                .setPosition(17)
+                .build();
+
+        ColumnDefinition expRoleA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("expRoleA")
+                .setPosition(18)
+                .build();
+
+        ColumnDefinition expRoleB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("expRoleB")
+                .setPosition(19)
+                .build();
+
+        ColumnDefinition typeA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("typeA")
+                .setPosition(20)
+                .build();
+
+        ColumnDefinition typeB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("typeB")
+                .setPosition(21)
+                .build();
+
+        ColumnDefinition xrefsA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("xrefsA")
+                .setPosition(22)
+                .build();
+
+        ColumnDefinition xrefsB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("xrefsB")
+                .setPosition(23)
+                .build();
+
+
+        ColumnDefinition xrefsI = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("xrefsI")
+                .setPosition(24)
+                .build();
+
+        ColumnDefinition annotationsA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("annotationsA")
+                .setPosition(25)
+                .build();
+
+        ColumnDefinition annotationsB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("annotationsB")
+                .setPosition(26)
+                .build();
+
+        ColumnDefinition annotationsI = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("annotationsI")
+                .setPosition(27)
+                .build();
+
+        ColumnDefinition hostOrganism = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("hostOrganism")
+                .setPosition(28)
+                .build();
+
+        ColumnDefinition parametersA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("parametersA")
+                .setPosition(29)
+                .build();
+
+        ColumnDefinition parametersB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("parametersB")
+                .setPosition(30)
+                .build();
+
+        ColumnDefinition parametersI = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("parametersI")
+                .setPosition(31)
+                .build();
+
+        ColumnDefinition creationDate = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("creationDate")
+                .setPosition(32)
+                .build();
+
+        ColumnDefinition updateDate = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("updateDate")
+                .setPosition(33)
+                .build();
+
+        ColumnDefinition checksumA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("checksumA")
+                .setPosition(34)
+                .build();
+
+        ColumnDefinition checksumB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("checksumB")
+                .setPosition(35)
+                .build();
+
+        ColumnDefinition checksumI = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("checksumI")
+                .setPosition(36)
+                .build();
+
+        ColumnDefinition negative = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expansion)
+                .setKey("negative")
+                .setPosition(37)
+                .build();
+
+
+        DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
+                .extendDocumentDefinition( mitab25() )
+                .addColumnDefinition(expansion)
+                .addColumnDefinition(bioRoleA)
+                .addColumnDefinition(bioRoleB)
+                .addColumnDefinition(expRoleA)
+                .addColumnDefinition(expRoleB)
+                .addColumnDefinition(typeA)
+                .addColumnDefinition(typeB)
+                .addColumnDefinition(xrefsA)
+                .addColumnDefinition(xrefsB)
+                .addColumnDefinition(xrefsI)
+                .addColumnDefinition(annotationsA)
+                .addColumnDefinition(annotationsB)
+                .addColumnDefinition(annotationsI)
+                .addColumnDefinition(hostOrganism)
+                .addColumnDefinition(parametersA)
+                .addColumnDefinition(parametersB)
+                .addColumnDefinition(parametersB)
+                .addColumnDefinition(parametersI)
+                .addColumnDefinition(creationDate)
+                .addColumnDefinition(checksumA)
+                .addColumnDefinition(checksumB)
+                .addColumnDefinition(checksumI)
+                .addColumnDefinition(negative)
+                .build();
+
+            public static String KEY_EXPANSION = "expansion";
+    public static String KEY_BIOROLE_A = "bioRoleA";
+    public static String KEY_BIOROLE_B = "bioRoleB";
+    public static String KEY_EXPROLE_A = "expRoleA";
+    public static String KEY_EXPROLE_B = "expRoleB";
+    public static String KEY_INTERACTOR_TYPE_A = "typeA";
+    public static String KEY_INTERACTOR_TYPE_B = "typeB";
+    public static String KEY_XREFS_A = "xrefsA";
+    public static String KEY_XREFS_B = "xrefsB";
+    public static String KEY_XREFS_I = "xrefsI";
+    public static String KEY_ANNOTATIONS_A = "annotationsA";
+    public static String KEY_ANNOTATIONS_B = "annotationsB";
+    public static String KEY_ANNOTATIONS_I = "annotationsI";
+    public static String KEY_HOST_ORGANISM = "hostOrganism";
+    public static String KEY_PARAMETERS_A = "parametersA";
+    public static String KEY_PARAMETERS_B = "parametersB";
+    public static String KEY_PARAMETERS_I = "parametersI";
+    public static String KEY_CREATION_DATE = "creationDate";
+    public static String KEY_UPDATE_DATE = "updateDate";
+    public static String KEY_CHECKSUM_A = "checksumA";
+    public static String KEY_CHECKSUM_B = "checksumB";
+    public static String KEY_CHECKSUM_I = "checksumI";
+    public static String KEY_NEGATIVE = "negative";
         return docDefinition;
     }
 
