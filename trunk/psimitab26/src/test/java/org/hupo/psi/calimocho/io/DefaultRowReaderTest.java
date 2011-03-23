@@ -40,7 +40,7 @@ public class DefaultRowReaderTest {
         ColumnDefinition authColDefinition = new ColumnDefinitionBuilder()
                 .extendColumnDefinition( idColDefinition )
                 .setKey( "auth" )
-                .setPosition( 8 )
+                .setPosition( 7 )
                 .setFieldParser( new LiteralFieldParser() )
                 .setFieldFormatter( new LiteralFieldFormatter() )
                 .build();
@@ -63,19 +63,19 @@ public class DefaultRowReaderTest {
 
         Field idField = idFields.iterator().next();
 
-        final String db = idField.get( CalimochoKeys.DB );
+        final String db = idField.get( CalimochoKeys.KEY );
         final String value = idField.get( CalimochoKeys.VALUE );
 
-        Assert.assertEquals("uniprotkb", db);
-        Assert.assertEquals( "Q9Y5J7", value );
+        Assert.assertEquals("intact", db);
+        Assert.assertEquals( "EBI-123456", value );
 
-        Collection<Field> authorFields = row.getFields( idColDefinition.getKey() );
+        Collection<Field> authorFields = row.getFields( authColDefinition.getKey() );
 
-        Assert.assertEquals( 2, authorFields.size() );
+        Assert.assertEquals( 1, authorFields.size() );
 
-        Field field = authorFields.iterator().next();
+        Field authField = authorFields.iterator().next();
 
-        Assert.assertEquals( "Peter et al (2010)", field.get( CalimochoKeys.VALUE ) );
+        Assert.assertEquals( "Peter et al (2010)", authField.get( CalimochoKeys.VALUE ) );
     }
 
     @Test
@@ -86,7 +86,8 @@ public class DefaultRowReaderTest {
                 .setKey( "id" )
                 .setPosition( 0 )
                 .setFieldSeparator( "|" )
-                .setFieldParser( new LiteralFieldParser() )
+                .setFieldParser( new KeyValueFieldParser(":") )
+                .setFieldFormatter( new KeyValueFieldFormatter(":") )
                 .build();
 
         DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
@@ -109,11 +110,11 @@ public class DefaultRowReaderTest {
 
         Field field = fields.iterator().next();
 
-        final String db = field.get( CalimochoKeys.DB );
+        final String key = field.get( CalimochoKeys.KEY );
         final String value = field.get( CalimochoKeys.VALUE );
         final String text = field.get( CalimochoKeys.TEXT );
 
-        Assert.assertEquals("uniprotkb", db);
+        Assert.assertEquals("uniprotkb", key);
         Assert.assertEquals("Q9Y5J7", value);
         Assert.assertNull( text );
     }
