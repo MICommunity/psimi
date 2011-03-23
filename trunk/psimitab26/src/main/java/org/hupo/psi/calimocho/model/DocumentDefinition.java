@@ -1,6 +1,7 @@
 package org.hupo.psi.calimocho.model;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO document this !
@@ -22,4 +23,8 @@ public interface DocumentDefinition extends Defined {
     Collection<ColumnDefinition> getColumns();
 
     boolean isPartial();
+
+    List<ColumnDefinition> getColumnDefinitions();
+
+    boolean hasColumnDelimiter();
 }

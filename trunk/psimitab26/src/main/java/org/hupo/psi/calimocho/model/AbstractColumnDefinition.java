@@ -86,6 +86,10 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
         return fieldDelimiter;
     }
 
+    public boolean hasFieldDelimiter() {
+        return fieldDelimiter != null;
+    }
+
     public void setFieldDelimiter( String fieldDelimiter ) {
         this.fieldDelimiter = fieldDelimiter;
     }

@@ -1,6 +1,7 @@
 package org.hupo.psi.calimocho.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -69,6 +70,14 @@ public class AbstractDocumentDefinition extends AbstractDefined implements Docum
 
     public boolean isPartial() {
         return partial;
+    }
+
+    public List<ColumnDefinition> getColumnDefinitions() {
+        return Collections.unmodifiableList( columns );
+    }
+
+    public boolean hasColumnDelimiter() {
+        return columnDelimiter != null;
     }
 
     public void setPartial( boolean partial ) {
