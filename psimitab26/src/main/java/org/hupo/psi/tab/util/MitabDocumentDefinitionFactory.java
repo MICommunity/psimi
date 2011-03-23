@@ -128,6 +128,19 @@ public class MitabDocumentDefinitionFactory {
         DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .addColumnDefinition( idACol )
                 .addColumnDefinition( idBCol )
+                .addColumnDefinition(altidA)
+                .addColumnDefinition(altidB)
+                .addColumnDefinition(aliasA)
+                .addColumnDefinition(aliasB)
+                .addColumnDefinition(detmethod_exact)
+                .addColumnDefinition(pubauth)
+                .addColumnDefinition(pubid)
+                .addColumnDefinition(taxidA)
+                .addColumnDefinition(taxidB)
+                .addColumnDefinition(type_exact)
+                .addColumnDefinition(source)
+                .addColumnDefinition(interaction_id)
+                .addColumnDefinition(confidence)
                 .setColumnSeparator( "\t" )
                 .setCommentPrefix( "#" )
                 .build();
@@ -138,8 +151,6 @@ public class MitabDocumentDefinitionFactory {
     public static DocumentDefinition mitab26() {
         DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .extendDocumentDefinition( mitab25() )
-                .addColumnDefinition( mitab26Col1 )
-                .addColumnDefinition( mitab26Col2 )
                 .build();
 
         return docDefinition;
