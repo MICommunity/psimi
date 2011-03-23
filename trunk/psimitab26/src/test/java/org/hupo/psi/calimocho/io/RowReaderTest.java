@@ -2,7 +2,7 @@ package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
 import org.hupo.psi.calimocho.model.*;
-import org.hupo.psi.tab.XrefKeys;
+import org.hupo.psi.tab.MitabKeys;
 import org.hupo.psi.tab.parser.XrefFieldParser;
 import org.junit.Test;
 
@@ -52,9 +52,9 @@ public class RowReaderTest {
 
         Field field = fields.iterator().next();
 
-        final String db = field.get( XrefKeys.DB );
-        final String value = field.get( XrefKeys.VALUE );
-        final String text = field.get( XrefKeys.TEXT );
+        final String db = field.get( MitabKeys.DB );
+        final String value = field.get( MitabKeys.VALUE );
+        final String text = field.get( MitabKeys.TEXT );
 
         Assert.assertEquals("uniprotkb", db);
         Assert.assertEquals("Q9Y5J7", value);
