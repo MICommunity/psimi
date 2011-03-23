@@ -1,7 +1,8 @@
 package org.hupo.psi.calimocho.io;
 
 /**
- * TODO document this !
+ * Thrown when unexpected fields for Columns are found, or fields
+ * with missing key-value pairs.
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
