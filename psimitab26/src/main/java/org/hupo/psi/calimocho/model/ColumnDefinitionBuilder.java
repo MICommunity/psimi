@@ -67,13 +67,29 @@ public class ColumnDefinitionBuilder {
     }
 
     public void validate() throws DefinitionException {
-        /*if ( columnDefinition.getKey() == null)) {
-            throw new DefinitionException( "No columns defined, at least one is expected" );
+        if ( columnDefinition.getKey() == null) {
+            throw new DefinitionException( "No columns key defined and it is mandatory" );
         }
 
-        if ( docDefinition.getColumnSeparator() == null) {
-            throw new DefinitionException( "Mandatory column separator is not defined" );
-        } */
+        if ( columnDefinition.getEmptyValue() == null) {
+            throw new DefinitionException( "No empty value defined and it is mandatory" );
+        }
+
+        if ( columnDefinition.getFieldDelimiter() == null) {
+            throw new DefinitionException( "No columns field delimiter defined and it is mandatory" );
+        }
+
+        if ( columnDefinition.getFieldSeparator() == null) {
+            throw new DefinitionException( "No columns field separator defined and it is mandatory" );
+        }
+
+        if ( columnDefinition.getFieldFormatter() == null) {
+            throw new DefinitionException( "No columns field formatter defined and it is mandatory" );
+        }
+
+        if ( columnDefinition.getFieldParser() == null) {
+            throw new DefinitionException( "No columns field parser defined and it is mandatory" );
+        }
     }
 
     public ColumnDefinition build() {
