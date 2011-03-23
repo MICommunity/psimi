@@ -58,4 +58,25 @@ public class DocumentConverterTest extends AbstractCalimochoTest{
         Assert.assertEquals( "lalagene|3", lines[0].trim() );
         Assert.assertEquals( "lolo|5", lines[1].trim() );
     }
+
+    @Test
+    public void convert3() throws Exception {
+        String geneList = "taxid:3\t/gene:lalagene/\n" +
+                          "taxid:5\t/gene:lolo/,/gene:nunu/";
+
+        ByteArrayInputStream bais = new ByteArrayInputStream( geneList.getBytes() );
+
+        final DocumentDefinition docDefinition = super.buildGeneListDefinition();
+        final DocumentDefinition yetAnotherDocDefinition = super.buildYetAnotherGeneListDefinition();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(  );
+
+        DocumentConverter documentConverter = new DocumentConverter(yetAnotherDocDefinition, docDefinition);
+        documentConverter.convert( bais, baos );
+
+        String[] lines = baos.toString().split( "\n" );
+
+        Assert.assertEquals( "lalagene|3", lines[0].trim() );
+        Assert.assertEquals( "lolo,nunu|5", lines[1].trim() );
+    }
 }

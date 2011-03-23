@@ -106,6 +106,15 @@ public class DefaultRowReader implements RowReader {
                 String[] strFields = ParseUtils.columnSplit( col, columnDefinition.getFieldSeparator() );
 
                 for ( String strField : strFields ) {
+
+                    // strip field delimiters
+                    final String fieldDelimiter = columnDefinition.getFieldDelimiter();
+
+                    if ( fieldDelimiter != null && !fieldDelimiter.isEmpty()) {
+                        strField = StringUtils.removeStart( strField, fieldDelimiter );
+                        strField = StringUtils.removeEnd( strField, fieldDelimiter );
+                    }
+
                     FieldParser fieldParser = columnDefinition.getFieldParser();
                     Field field = fieldParser.parse( strField, columnDefinition );
                     row.addField( columnDefinition.getKey(), field );

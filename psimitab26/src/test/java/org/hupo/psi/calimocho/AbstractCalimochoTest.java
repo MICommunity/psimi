@@ -69,4 +69,29 @@ public abstract class AbstractCalimochoTest {
                 .setColumnDelimiter( "'" )
                 .build();
     }
+
+    public DocumentDefinition buildYetAnotherGeneListDefinition() {
+        return new DocumentDefinitionBuilder()
+                .addColumnDefinition( new ColumnDefinitionBuilder()
+                                              .setKey( "taxid" )
+                                              .setPosition( 0 )
+                                              .setEmptyValue( "" )
+                                              .setIsAllowsEmpty( false )
+                                              .setFieldSeparator( "," )
+                                              .setFieldParser( new KeyValueFieldParser(":", "taxid") )
+                                              .setFieldFormatter(new KeyValueFieldFormatter(":", "taxid") )
+                                              .build() )
+                .addColumnDefinition( new ColumnDefinitionBuilder()
+                                              .setKey( "gene" )
+                                              .setPosition( 1 )
+                                              .setEmptyValue( "" )
+                                              .setIsAllowsEmpty( false )
+                                              .setFieldSeparator( "," )
+                                              .setFieldDelimiter( "/" )
+                                              .setFieldParser( new KeyValueFieldParser(":", "gene") )
+                                              .setFieldFormatter( new KeyValueFieldFormatter(":", "gene") )
+                                              .build() )
+                .setColumnSeparator( "\t" )
+                .build();
+    }
 }
