@@ -1,6 +1,5 @@
 package org.hupo.psi.calimocho.io;
 
-import org.hupo.psi.calimocho.model.DocumentDefinitionFactory;
 import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.tab.util.MitabDocumentDefinitionFactory;
 import org.junit.Assert;
