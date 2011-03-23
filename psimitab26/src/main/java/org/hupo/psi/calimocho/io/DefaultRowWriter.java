@@ -48,6 +48,8 @@ public class DefaultRowWriter implements RowWriter {
         }
     }
 
+    // TODO write header as a commented line
+
     /**
      * {@inheritDoc}
      */
@@ -56,15 +58,17 @@ public class DefaultRowWriter implements RowWriter {
         final boolean hasColumnDelimiter = documentDefinition.hasColumnDelimiter();
         StringBuilder sb = new StringBuilder( 512 );
 
-        // TODO is the order an issue ?
         for ( Iterator<ColumnDefinition> iterator = columnDefinitions.iterator(); iterator.hasNext(); ) {
             final ColumnDefinition columnDefinition = iterator.next();
+
+            // TODO assume the first column is position ZERO, write empty columns when no definition
 
             if ( hasColumnDelimiter ) {
                 sb.append( documentDefinition.getColumnDelimiter() );
             }
 
             final Collection<Field> fields = row.getFields( columnDefinition );
+            // TODO if column definition says can be empty, do not throw exception
             if ( fields == null ) {
                 // TODO do we want to give more context about the row?
                 final IllegalRowException illegalRowException = new IllegalRowException( "Could not find column " + columnDefinition.getKey() );
