@@ -328,30 +328,6 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(checksumI)
                 .addColumnDefinition(negative)
                 .build();
-
-            public static String KEY_EXPANSION = "expansion";
-    public static String KEY_BIOROLE_A = "bioRoleA";
-    public static String KEY_BIOROLE_B = "bioRoleB";
-    public static String KEY_EXPROLE_A = "expRoleA";
-    public static String KEY_EXPROLE_B = "expRoleB";
-    public static String KEY_INTERACTOR_TYPE_A = "typeA";
-    public static String KEY_INTERACTOR_TYPE_B = "typeB";
-    public static String KEY_XREFS_A = "xrefsA";
-    public static String KEY_XREFS_B = "xrefsB";
-    public static String KEY_XREFS_I = "xrefsI";
-    public static String KEY_ANNOTATIONS_A = "annotationsA";
-    public static String KEY_ANNOTATIONS_B = "annotationsB";
-    public static String KEY_ANNOTATIONS_I = "annotationsI";
-    public static String KEY_HOST_ORGANISM = "hostOrganism";
-    public static String KEY_PARAMETERS_A = "parametersA";
-    public static String KEY_PARAMETERS_B = "parametersB";
-    public static String KEY_PARAMETERS_I = "parametersI";
-    public static String KEY_CREATION_DATE = "creationDate";
-    public static String KEY_UPDATE_DATE = "updateDate";
-    public static String KEY_CHECKSUM_A = "checksumA";
-    public static String KEY_CHECKSUM_B = "checksumB";
-    public static String KEY_CHECKSUM_I = "checksumI";
-    public static String KEY_NEGATIVE = "negative";
         return docDefinition;
     }
 
