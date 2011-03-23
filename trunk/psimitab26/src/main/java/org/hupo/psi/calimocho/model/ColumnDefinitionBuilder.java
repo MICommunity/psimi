@@ -66,6 +66,24 @@ public class ColumnDefinitionBuilder {
         return this;
     }
 
+    public ColumnDefinitionBuilder extendColumnDefinition(ColumnDefinition colDef){
+
+        if (colDef != null){
+            columnDefinition.setEmptyValue(colDef.getEmptyValue());
+            columnDefinition.setAllowsEmpty(colDef.isAllowsEmpty());
+            columnDefinition.setDefinition(colDef.getDefinition());
+            columnDefinition.setName(colDef.getName());
+            columnDefinition.setFieldDelimiter(colDef.getFieldDelimiter());
+            columnDefinition.setFieldFormatter(colDef.getFieldFormatter());
+            columnDefinition.setFieldParser(colDef.getFieldParser());
+            columnDefinition.setFieldSeparator(colDef.getFieldSeparator());
+            columnDefinition.setKey(colDef.getKey());
+            columnDefinition.setPosition(colDef.getPosition());
+        }
+
+        return this;
+    }
+
     public void validate() throws DefinitionException {
         if ( columnDefinition.getKey() == null) {
             throw new DefinitionException( "No columns key defined and it is mandatory" );

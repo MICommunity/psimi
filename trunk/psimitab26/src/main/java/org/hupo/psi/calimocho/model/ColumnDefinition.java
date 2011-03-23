@@ -10,7 +10,7 @@ import org.hupo.psi.calimocho.io.FieldParser;
  * @version $Id$
  * @since TODO add POM version
  */
-public interface ColumnDefinition {
+public interface ColumnDefinition extends Defined{
 
     int getPosition();
 
