@@ -1,6 +1,6 @@
 package org.hupo.psi.calimocho.model;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 import java.util.Collection;
@@ -17,7 +17,9 @@ public class DefaultRow implements Row {
     private Multimap<String,Field> fieldMultimap;
 
     public DefaultRow() {
-        this.fieldMultimap = HashMultimap.create();
+        // we would like the fields to be sorted in the order they
+        // are added to the map
+        this.fieldMultimap = LinkedHashMultimap.create();
     }
 
     public boolean addField(String columnKey, Field field) {

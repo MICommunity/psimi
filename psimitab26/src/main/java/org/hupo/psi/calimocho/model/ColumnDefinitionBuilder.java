@@ -32,7 +32,7 @@ public class ColumnDefinitionBuilder {
         return this;
     }
 
-    public ColumnDefinitionBuilder setPosition(int position){
+    public ColumnDefinitionBuilder setPosition(Integer position){
         this.columnDefinition.setPosition(position);
 
         return this;
@@ -100,19 +100,23 @@ public class ColumnDefinitionBuilder {
 
     public void validate() throws DefinitionException {
         if ( columnDefinition.getKey() == null) {
-            throw new DefinitionException( "No columns key defined and it is mandatory" );
+            throw new DefinitionException( "No column key defined and it is mandatory" );
+        }
+
+        if ( columnDefinition.getPosition() == null) {
+            throw new DefinitionException( "No column position defined and it is mandatory" );
         }
 
         if ( columnDefinition.getFieldFormatter() == null) {
-            throw new DefinitionException( "No columns field formatter defined and it is mandatory" );
+            throw new DefinitionException( "No column field formatter defined and it is mandatory" );
         }
 
         if ( columnDefinition.getFieldParser() == null) {
-            throw new DefinitionException( "No columns field parser defined and it is mandatory" );
+            throw new DefinitionException( "No column field parser defined and it is mandatory" );
         }
 
         if( columnDefinition.getPosition() < 0 ) {
-            throw new DefinitionException( "Column position must be positive: " + columnDefinition.getPosition() );
+            throw new DefinitionException( "Column position must be 0 or higher: " + columnDefinition.getPosition() );
         }
     }
 

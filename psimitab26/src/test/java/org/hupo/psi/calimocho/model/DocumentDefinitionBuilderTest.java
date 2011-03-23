@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * DocumentDefinitionBuilder Tester.
@@ -20,7 +19,7 @@ public class DocumentDefinitionBuilderTest extends AbstractCalimochoTest {
         final DocumentDefinition documentDefinition = buildGeneListDefinition();
         final ArrayList<ColumnDefinition> columnDefinitionList = new ArrayList<ColumnDefinition>( documentDefinition.getColumns() );
 
-        Assert.assertEquals( 1, columnDefinitionList.get( 0 ).getPosition() );
-        Assert.assertEquals( 2, columnDefinitionList.get( 1 ).getPosition() );
+        Assert.assertEquals( Integer.valueOf(0), columnDefinitionList.get( 0 ).getPosition() );
+        Assert.assertEquals( Integer.valueOf(1), columnDefinitionList.get( 1 ).getPosition() );
     }
 }

@@ -12,7 +12,7 @@ import org.hupo.psi.calimocho.io.FieldParser;
  */
 public abstract class AbstractColumnDefinition extends AbstractDefined implements ColumnDefinition {
 
-    private int position;
+    private Integer position;
     private String key;
     private boolean allowsEmpty;
     private String emptyValue;
@@ -25,11 +25,11 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
         this.allowsEmpty = true;
     }
 
-    public int getPosition() {
+    public Integer getPosition() {
         return position;
     }
 
-    public void setPosition( int position ) {
+    public void setPosition( Integer position ) {
         this.position = position;
     }
 
@@ -99,6 +99,10 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
     }
 
     public int compareTo( ColumnDefinition cd ) {
-        return position - cd.getPosition();
+        if (position != null) {
+            return position.compareTo( cd.getPosition());
+        }
+
+        return 0;
     }
 }

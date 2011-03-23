@@ -12,7 +12,7 @@ import org.hupo.psi.calimocho.io.FieldParser;
  */
 public interface ColumnDefinition extends Defined, Comparable<ColumnDefinition> {
 
-    int getPosition();
+    Integer getPosition();
 
     String getKey();
 
