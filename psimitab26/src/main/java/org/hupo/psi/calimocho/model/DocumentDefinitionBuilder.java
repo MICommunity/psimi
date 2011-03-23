@@ -24,17 +24,17 @@ public class DocumentDefinitionBuilder {
         docDefinition.setName( name );
         return this;
     }
-    
+
     public DocumentDefinitionBuilder setDefinition(String definition) {
         docDefinition.setDefinition( definition );
         return this;
     }
-    
+
     public DocumentDefinitionBuilder setColumnSeparator(String columnSeparator) {
         docDefinition.setColumnSeparator( columnSeparator );
         return this;
     }
-    
+
     public DocumentDefinitionBuilder setColumnDelimiter(String columnDelimiter) {
         docDefinition.setColumnDelimiter( columnDelimiter );
         return this;
@@ -45,6 +45,20 @@ public class DocumentDefinitionBuilder {
         return this;
     }
 
+    public DocumentDefinitionBuilder extendDocumentDefinition (DocumentDefinition docDef){
+
+        if (docDef != null){
+            docDefinition.setColumnDelimiter(docDef.getColumnDelimiter());
+            docDefinition.setDefinition(docDef.getDefinition());
+            docDefinition.setName(docDef.getName());
+            docDefinition.setColumnSeparator(docDef.getColumnSeparator());
+            docDefinition.setCommentPrefix(docDef.getCommentPrefix());
+            docDefinition.setPartial(docDef.isPartial());
+
+            docDefinition.getColumns().addAll(docDef.getColumns());
+        }
+        return this;
+    }
     public DocumentDefinition build() {
         validate();
 

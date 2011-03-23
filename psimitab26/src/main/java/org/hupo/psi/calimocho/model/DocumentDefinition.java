@@ -1,5 +1,7 @@
 package org.hupo.psi.calimocho.model;
 
+import java.util.Collection;
+
 /**
  * TODO document this !
  *
@@ -16,6 +18,8 @@ public interface DocumentDefinition extends Defined {
     String getCommentPrefix();
 
     ColumnDefinition getColumnByPosition( int position );
+
+    Collection<ColumnDefinition> getColumns();
 
     boolean isPartial();
 }
