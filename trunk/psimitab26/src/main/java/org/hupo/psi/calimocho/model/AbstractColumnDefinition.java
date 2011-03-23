@@ -23,7 +23,7 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
     private String fieldDelimiter;
 
     public AbstractColumnDefinition(){
-        this.position = 0;
+        this.allowsEmpty = true;
     }
 
     public int getPosition() {

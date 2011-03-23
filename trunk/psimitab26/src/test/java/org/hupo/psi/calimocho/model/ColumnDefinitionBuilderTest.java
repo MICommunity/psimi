@@ -31,8 +31,8 @@ public class ColumnDefinitionBuilderTest {
         Assert.assertTrue( cd.getFieldParser() instanceof KeyValueFieldParser );
         Assert.assertEquals( ":", ( ( KeyValueFieldParser ) cd.getFieldParser() ).getSeparator() );
         Assert.assertNotNull( cd.getFieldFormatter() );
-        Assert.assertTrue( cd.getFieldFormatter() instanceof KeyValueFieldParser );
-        Assert.assertEquals( ":", ( ( KeyValueFieldParser ) cd.getFieldFormatter() ).getSeparator() );
+        Assert.assertTrue( cd.getFieldFormatter() instanceof KeyValueFieldFormatter );
+        Assert.assertEquals( ":", ( ( KeyValueFieldFormatter ) cd.getFieldFormatter() ).getSeparator() );
         Assert.assertNull( cd.getFieldDelimiter() );
         Assert.assertNull( cd.getEmptyValue() );
         Assert.assertTrue( cd.isAllowsEmpty() );
