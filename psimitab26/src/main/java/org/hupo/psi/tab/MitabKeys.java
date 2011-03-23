@@ -7,7 +7,7 @@ package org.hupo.psi.tab;
  * @version $Id$
  * @since TODO add POM version
  */
-public interface XrefKeys {
+public interface MitabKeys {
 
     String DB = "db";
     String VALUE = "value";
