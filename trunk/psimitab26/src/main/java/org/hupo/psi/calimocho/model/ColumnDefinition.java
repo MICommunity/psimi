@@ -10,7 +10,7 @@ import org.hupo.psi.calimocho.io.FieldParser;
  * @version $Id$
  * @since TODO add POM version
  */
-public interface ColumnDefinition extends Defined{
+public interface ColumnDefinition extends Defined, Comparable<ColumnDefinition> {
 
     int getPosition();
 
@@ -29,4 +29,8 @@ public interface ColumnDefinition extends Defined{
     String getFieldDelimiter();
 
     boolean hasFieldDelimiter();
+
+    boolean hasFieldSeparator();
+
+    int compareTo( ColumnDefinition columnDefinition );
 }

@@ -12,7 +12,6 @@ import org.hupo.psi.calimocho.io.FieldParser;
  */
 public abstract class AbstractColumnDefinition extends AbstractDefined implements ColumnDefinition {
 
-
     private int position;
     private String key;
     private boolean allowsEmpty;
@@ -90,7 +89,16 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
         return fieldDelimiter != null;
     }
 
+    // TODO when the need arise, it would be useful to allow setting of field cardinality (min, max)
+    public boolean hasFieldSeparator() {
+        return fieldSeparator != null;
+    }
+
     public void setFieldDelimiter( String fieldDelimiter ) {
         this.fieldDelimiter = fieldDelimiter;
+    }
+
+    public int compareTo( ColumnDefinition cd ) {
+        return position - cd.getPosition();
     }
 }

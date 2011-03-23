@@ -29,7 +29,8 @@ public class AbstractDocumentDefinition extends AbstractDefined implements Docum
     }
 
     public void setColumns( List<ColumnDefinition> columns ) {
-        this.columns = columns;
+        this.columns = new ArrayList<ColumnDefinition>( columns );
+        Collections.sort( this.columns );
     }
 
     public String getName() {
