@@ -2,10 +2,7 @@ package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
 import org.hupo.psi.calimocho.model.*;
-import org.hupo.psi.calimocho.parser.CalimochoKeys;
-import org.hupo.psi.calimocho.parser.KeyValueFieldParser;
-import org.hupo.psi.calimocho.parser.LiteralFieldFormatter;
-import org.hupo.psi.calimocho.parser.LiteralFieldParser;
+import org.hupo.psi.calimocho.parser.*;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -36,7 +33,8 @@ public class DefaultRowReaderTest {
                 .setKey( "idA" )
                 .setPosition( 0 )
                 .setFieldSeparator( "|" )
-                .setFieldParser( new KeyValueFieldParser() )
+                .setFieldParser( new KeyValueFieldParser(":") )
+                .setFieldFormatter( new KeyValueFieldFormatter(":") )
                 .build();
 
         ColumnDefinition authColDefinition = new ColumnDefinitionBuilder()
