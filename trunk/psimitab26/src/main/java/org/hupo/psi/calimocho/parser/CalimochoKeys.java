@@ -1,4 +1,4 @@
-package org.hupo.psi.tab;
+package org.hupo.psi.calimocho.parser;
 
 /**
  * TODO document this !
@@ -7,8 +7,9 @@ package org.hupo.psi.tab;
  * @version $Id$
  * @since TODO add POM version
  */
-public interface MitabKeys {
+public interface CalimochoKeys {
 
+    String KEY = "key";
     String DB = "db";
     String VALUE = "value";
     String TEXT = "text";
