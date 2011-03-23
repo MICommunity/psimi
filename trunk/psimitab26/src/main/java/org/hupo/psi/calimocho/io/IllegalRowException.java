@@ -3,7 +3,7 @@ package org.hupo.psi.calimocho.io;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 
 /**
- * TODO document this !
+ * Thrown when unexpected formats for Rows are found.
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
