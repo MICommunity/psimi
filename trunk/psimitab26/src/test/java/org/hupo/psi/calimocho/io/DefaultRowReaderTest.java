@@ -67,7 +67,7 @@ public class DefaultRowReaderTest extends AbstractCalimochoTest {
         Assert.assertEquals( 2, idFields.size() );
 
         for (Field idField : idFields) {
-           final String db = idField.get( CalimochoKeys.KEY );
+            final String db = idField.get( CalimochoKeys.KEY );
             final String value = idField.get( CalimochoKeys.VALUE );
 
             if ("intact".equals(db)) {
