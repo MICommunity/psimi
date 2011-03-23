@@ -28,24 +28,24 @@ public class DefaultRowReader implements RowReader {
 
         List<Row> rows = new ArrayList<Row>();
 
-        BufferedReader in = new BufferedReader(reader);
+        BufferedReader in = new BufferedReader( reader );
         String str;
 
         int lineNumber = 0;
 
-        while ((str = in.readLine()) != null) {
-            lineNumber ++;
+        while ( ( str = in.readLine() ) != null ) {
+            lineNumber++;
 
             final String commentPrefix = documentDefinition.getCommentPrefix();
 
-            if (commentPrefix != null && str.trim().startsWith( commentPrefix )) {
+            if ( commentPrefix != null && str.trim().startsWith( commentPrefix ) ) {
                 continue;
             }
 
             try {
-                rows.add(readLine(str));
+                rows.add( readLine( str ) );
             } catch ( Throwable t ) {
-                throw new IllegalRowException( "Problem in line: "+lineNumber+"  /  LINE: "+str, str, lineNumber, t );
+                throw new IllegalRowException( "Problem in line: " + lineNumber + "  /  LINE: " + str, str, lineNumber, t );
             }
 
         }
@@ -54,22 +54,22 @@ public class DefaultRowReader implements RowReader {
         return rows;
     }
 
-     public Row readLine( String line ) throws IllegalRowException, IllegalColumnException, IllegalFieldException {
+    public Row readLine( String line ) throws IllegalRowException, IllegalColumnException, IllegalFieldException {
         Row row = new DefaultRow();
 
-         if (documentDefinition.getColumnSeparator() == null) {
-             throw new NullPointerException( "Document definition does not have column separator" );
-         }
+        if ( documentDefinition.getColumnSeparator() == null ) {
+            throw new NullPointerException( "Document definition does not have column separator" );
+        }
 
-         // split the lines using the column separator
-         // TODO we may use other characters than quotes - should be defined in columnDefinition
+        // split the lines using the column separator
+        // TODO we may use other characters than quotes - should be defined in columnDefinition
         String[] cols = ParseUtils.quoteAwareSplit( line, new String[]{documentDefinition.getColumnSeparator()}, false );
 
-         // iterate through the columns to parse the fields
-        for (int i=0; i<cols.length; i++) {
-            ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition(i);
+        // iterate through the columns to parse the fields
+        for ( int i = 0; i < cols.length; i++ ) {
+            ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition( i );
 
-            if (columnDefinition == null) {
+            if ( columnDefinition == null ) {
                 continue;
             }
 
@@ -77,46 +77,38 @@ public class DefaultRowReader implements RowReader {
 
             // strip column delimiters
             String colDelimiter = documentDefinition.getColumnDelimiter();
-            if (colDelimiter != null && colDelimiter.length() > 0) {
-                if (col.startsWith(colDelimiter) && col.endsWith(colDelimiter)) {
+            if ( colDelimiter != null && colDelimiter.length() > 0 ) {
+                if ( col.startsWith( colDelimiter ) && col.endsWith( colDelimiter ) ) {
                     col = StringUtils.removeStart( col, colDelimiter );
                     col = StringUtils.removeEnd( col, colDelimiter );
                 }
             }
 
             // check if the column is empty
-            boolean allowEmpty = columnDefinition.isAllowsEmpty();
-            String emptyValue = columnDefinition.getEmptyValue() == null? "" : columnDefinition.getEmptyValue();
+            final boolean allowEmpty = columnDefinition.isAllowsEmpty();
+            final String emptyValue = columnDefinition.getEmptyValue() == null ? "" : columnDefinition.getEmptyValue();
+            final boolean isColumnEmpty = col.equals( emptyValue );
 
-            if (!allowEmpty && col.equals(emptyValue)) {
-
-
+            if ( !allowEmpty && isColumnEmpty ) {
                 throw new IllegalColumnException( "Empty column not allowed: " + columnDefinition.getKey() + ", pos=" + columnDefinition.getPosition(), col, columnDefinition );
-//                throw new IllegalRowException( "Invalid row: "+line, line, null, columnException );
             }
 
-            String[] strFields = ParseUtils.columnSplit( col, columnDefinition.getFieldSeparator() );
+            if ( !isColumnEmpty ) {
 
-            for (String strField : strFields) {
-                FieldParser fieldParser = columnDefinition.getFieldParser();
+                String[] strFields = ParseUtils.columnSplit( col, columnDefinition.getFieldSeparator() );
 
-//                Field[] fieldArray = ParseUtils.createField(fieldParser, strField);
-//
-//                if (fieldArray != null) {
-//                    fields.addAll( Arrays.asList( fieldArray ));
-//                }
-
-                Field field = fieldParser.parse( strField, columnDefinition );
-
-                row.addField( columnDefinition.getKey(), field );
+                for ( String strField : strFields ) {
+                    FieldParser fieldParser = columnDefinition.getFieldParser();
+                    Field field = fieldParser.parse( strField, columnDefinition );
+                    row.addField( columnDefinition.getKey(), field );
+                }
             }
         }
-
 
         return row;
     }
 
     public List<Row> read( InputStream is ) throws IOException, IllegalRowException {
-        return read(new BufferedReader( new InputStreamReader( is ) ));
+        return read( new BufferedReader( new InputStreamReader( is ) ) );
     }
 }
