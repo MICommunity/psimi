@@ -80,7 +80,7 @@ public class DefaultRowReaderTest {
 
     @Test
     public void readStream() throws Exception {
-        InputStream is = RowReaderTest.class.getResourceAsStream( "/META-INF/mitab26/14726512.txt" );
+        InputStream is = DefaultRowReaderTest.class.getResourceAsStream( "/META-INF/mitab26/14726512.txt" );
 
         ColumnDefinition columnDefinition = new ColumnDefinitionBuilder()
                 .setKey( "id" )
