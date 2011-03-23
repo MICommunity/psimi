@@ -12,8 +12,8 @@ import org.hupo.psi.calimocho.model.Row;
  */
 public interface FieldFormatter {
 
-    String format(Field field);
+    String format(Field field) throws IllegalFieldException;
 
-    String format(Field field, Row row);
+    String format(Field field, Row row) throws IllegalFieldException;
 
 }

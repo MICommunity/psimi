@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hupo.psi.mitab.util;
+package org.hupo.psi.calimocho.util;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class ParseUtilsTest {
     @Test
     public void quoteAwareSplit1() throws Exception {
         String str = "a:b(c)";
-        final String[] splitted = ParseUtils.quoteAwareSplit(str, new String[]{":", "(", ")"}, true);
+        final String[] splitted = ParseUtils.quoteAwareSplit( str, new String[]{":", "(", ")"}, true );
         Assert.assertEquals("a", splitted[0]);
         Assert.assertEquals("b", splitted[1]);
         Assert.assertEquals("c", splitted[2]);

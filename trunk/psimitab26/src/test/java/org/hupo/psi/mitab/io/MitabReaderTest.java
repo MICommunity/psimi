@@ -15,10 +15,10 @@
  */
 package org.hupo.psi.mitab.io;
 
+import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.mitab.definition.Mitab25DocumentDefinition;
 import org.hupo.psi.mitab.definition.Mitab26DocumentDefinition;
 import org.hupo.psi.mitab.model.BinaryInteraction;
-import org.hupo.psi.mitab.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
 
