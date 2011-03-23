@@ -1,7 +1,6 @@
 package org.hupo.psi.calimocho.model;
 
-import org.apache.commons.collections.MapUtils;
-
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public class DocumentDefinitionBuilder {
     }
 
     public DocumentDefinitionBuilder addColumnDefinition(ColumnDefinition columnDefinition) {
-        docDefinition.getColumns().add(columnDefinition);
+        docDefinition.getColumns().add( columnDefinition );
         return this;
     }
 
@@ -66,6 +65,9 @@ public class DocumentDefinitionBuilder {
     }
     public DocumentDefinition build() {
         validate();
+
+        // sort the columns by position
+        Collections.sort( docDefinition.getColumns() );
 
         return docDefinition;
     }
