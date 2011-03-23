@@ -9,7 +9,7 @@ import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
 
 /**
- * <p>Parses Strings with structures like {key}{separator}{value}. For instance:
+ * <p>Parses Strings with structures like {key}<separator>{value}. For instance:
  *
  * <ul>
  *     <li>key:value</li>
