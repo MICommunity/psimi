@@ -42,6 +42,27 @@ public class ColumnDefinitionBuilderTest {
     @Test(expected = DefinitionException.class)
     public void validate_invalid1() throws Exception {
         new ColumnDefinitionBuilder().build();
+    }
 
+    @Test(expected = DefinitionException.class)
+    public void validate_invalid2() throws Exception {
+        new ColumnDefinitionBuilder()
+                .setPosition( 0 )
+                .build();
+    }
+
+    @Test(expected = DefinitionException.class)
+    public void validate_invalid3() throws Exception {
+        new ColumnDefinitionBuilder()
+                .setKey( "key" )
+                .build();
+    }
+
+    @Test(expected = DefinitionException.class)
+    public void validate_invalid4() throws Exception {
+        new ColumnDefinitionBuilder()
+                .setPosition( 0 )
+                .setKey( "key" )
+                .build();
     }
 }
