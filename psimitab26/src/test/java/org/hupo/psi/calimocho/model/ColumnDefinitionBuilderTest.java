@@ -6,11 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * TODO document this !
- *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
  */
 public class ColumnDefinitionBuilderTest {
 
