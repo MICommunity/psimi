@@ -30,6 +30,8 @@ public class DefaultRowWriter implements RowWriter {
 
     }
 
+    // TODO check that there is a fieldSeparator when more than 1 field to be written.
+
     public void write( Writer writer, Collection<Row> rows ) throws IOException, IllegalRowException {
         if ( rows == null ) {
             throw new IllegalArgumentException( "You must give a non null rows" );
@@ -42,16 +44,16 @@ public class DefaultRowWriter implements RowWriter {
                 throw new IllegalRowException( "Failed to write row.", e );
             }
         }
-
     }
 
     public String writeLine( Row row ) throws IllegalRowException, IllegalColumnException, IllegalFieldException {
-        List<ColumnDefinition> columnDefinitions = documentDefinition.getColumnDefinitions();
+        final List<ColumnDefinition> columnDefinitions = documentDefinition.getColumnDefinitions();
         final boolean hasColumnDelimiter = documentDefinition.hasColumnDelimiter();
         StringBuilder sb = new StringBuilder( 512 );
 
+        // TODO is the order an issue ?
         for ( Iterator<ColumnDefinition> iterator = columnDefinitions.iterator(); iterator.hasNext(); ) {
-            ColumnDefinition columnDefinition = iterator.next();
+            final ColumnDefinition columnDefinition = iterator.next();
 
             if ( hasColumnDelimiter ) {
                 sb.append( documentDefinition.getColumnDelimiter() );
@@ -65,6 +67,10 @@ public class DefaultRowWriter implements RowWriter {
                 throw illegalRowException;
             }
 
+            if( fields.size() > 1 && ! columnDefinition.hasFieldSeparator() ) {
+                throw new IllegalColumnException( "The column definition ("+ columnDefinition.getKey() +") doesn't " +
+                                                  "have a field separator, yet the column has "+ fields.size() +" fields" );
+            }
 
             final FieldFormatter fieldFormatter = columnDefinition.getFieldFormatter();
             for ( Iterator<Field> fieldIterator = fields.iterator(); fieldIterator.hasNext(); ) {

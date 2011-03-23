@@ -15,6 +15,8 @@ import org.hupo.psi.calimocho.model.DocumentDefinitionBuilder;
  */
 public abstract class AbstractCalimochoTest {
 
+    public static final String NEW_LINE = System.getProperty( "line.separator" );
+
     public DocumentDefinition buildGeneListDefinition() {
         return new DocumentDefinitionBuilder()
                 .addColumnDefinition( new ColumnDefinitionBuilder()
