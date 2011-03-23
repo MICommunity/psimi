@@ -38,7 +38,7 @@ public class RowReaderTest {
                 .setCommentPrefix( "#" )
                 .build();
 
-        RowReader reader = new RowReader(docDefinition);
+        RowReader reader = new DefaultRowReader(docDefinition);
 
         List<Row> rows = reader.read(is);
 
