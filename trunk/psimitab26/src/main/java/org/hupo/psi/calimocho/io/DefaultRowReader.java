@@ -1,6 +1,5 @@
 package org.hupo.psi.calimocho.io;
 
-import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.calimocho.model.*;
 import org.hupo.psi.calimocho.util.ParseUtils;
@@ -99,7 +98,7 @@ public class DefaultRowReader implements RowReader {
             String[] strFields = ParseUtils.columnSplit( col, columnDefinition.getFieldSeparator() );
 
             for (String strField : strFields) {
-                FieldParser fieldParser = (FieldParser) newInstance(columnDefinition.getFieldParserClassName());
+                FieldParser fieldParser = columnDefinition.getFieldParser();
 
 //                Field[] fieldArray = ParseUtils.createField(fieldParser, strField);
 //
@@ -115,20 +114,6 @@ public class DefaultRowReader implements RowReader {
 
 
         return row;
-    }
-
-    private Object newInstance( String className ) {
-        Object instance;
-
-        try {
-            Class<?> clazz = ClassUtils.getClass( className );
-
-            instance = clazz.newInstance();
-        } catch ( Throwable t ) {
-            throw new RuntimeException( "Problem instantiating class: "+className, t );
-        }
-
-        return instance;
     }
 
     public List<Row> read( InputStream is ) throws IOException, IllegalRowException {

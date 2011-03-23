@@ -16,11 +16,7 @@
 package org.hupo.psi.calimocho.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.hupo.psi.mitab.model.ColumnMetadata;
-import org.hupo.psi.mitab.model.Field;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -97,7 +93,7 @@ public class ParseUtils {
                     currGroup.append(c);
                 }
 
-            } else if (arrayContains(delimiters, c)) {
+            } else if (delimiters != null && arrayContains(delimiters, c)) {
                 if (currGroup.length() > 0) {
                     if (!withinQuotes) {
                         groups.add(currGroup.toString());
@@ -161,104 +157,34 @@ public class ParseUtils {
         return quoteAwareSplit(columnString, new String[]{separator}, false);
     }
 
-    public static Field[] createFields(ColumnMetadata columnMetadata, String str) {
-        str = removeLineReturn(str);
 
-        List<Field> fields = new ArrayList<Field>();
+//    private static Field fixPsimiFieldfNecessary(Field field) {
+//        if ("MI".equals(field.getType())) {
+//            String identifier = field.getValue();
+//
+//            return new Field(field.getColumnKey(), "psi-mi", "MI" + ":" + identifier, field.getText());
+//        }
+//
+//        return field;
+//    }
 
-        Field field = new Field(columnMetadata.getKey());
-
-        str = str.trim();
-
-        if (!str.isEmpty()) {
-
-            String[] groups = ParseUtils.quoteAwareSplit(str, new String[]{":", "(", ")"}, true);
-
-            // some exception handling
-            if (groups.length == 0 || groups.length > 3) {
-                Exception cause = new Exception("Incorrect number of groups found ("+groups.length+"): "+Arrays.asList(groups));
-                throw new IllegalArgumentException("String cannot be parsed to create a Field (check the syntax): " + str, cause);
-            }
-
-            // create the Field object, using the groups.
-            // we have -> A:B(C)
-            //    if we only have one group, we consider it to be B;
-            //    if we have two groups, we have A and B
-            //    and three groups is A, B and C
-
-            switch (groups.length) {
-                case 1:
-                    if (columnMetadata.isOnlyValues() && columnMetadata.getSubKey() != null) {
-                        field.setType(columnMetadata.getSubKey());
-                    }
-                    field.setValue(groups[0]);
-                    break;
-                case 2:
-                    field.setType(groups[0]);
-                    field.setValue(groups[1]);
-                    break;
-                case 3:
-                    field.setType(groups[0]);
-                    field.setValue(groups[1]);
-                    field.setText(groups[2]);
-                    break;
-            }
-
-            if (isFieldEmpty(field)) {
-                // this is an empty field,
-                return null;
-            }
-
-            // correct MI:0012(blah) to psi-mi:"MI:0012"(blah)
-            field = fixPsimiFieldfNecessary(field);
-
-            if (field.getType() == null && columnMetadata.getReadDefaultType() != null) {
-                field.setType(columnMetadata.getReadDefaultType());
-            }
-        }
-
-        if (columnMetadata.getSubKey() != null) {
-            if (field.getType() != null && field.getType().equals(columnMetadata.getSubKey())) {
-                fields.add(field);
-            }
-        } else {
-            fields.add(field);
-        }
-
-        for (ColumnMetadata synonymColumn : columnMetadata.getSynonymColumns()) {
-            fields.addAll(Arrays.asList(createFields(synonymColumn, str)));
-        }
-
-        return fields.toArray(new Field[fields.size()]);
-    }
-
-    private static Field fixPsimiFieldfNecessary(Field field) {
-        if ("MI".equals(field.getType())) {
-            String identifier = field.getValue();
-
-            return new Field(field.getColumnKey(), "psi-mi", "MI" + ":" + identifier, field.getText());
-        }
-
-        return field;
-    }
-
-    private static String removeLineReturn(String str) {
-        // check that the given string doesn't have any line return, and if so, remove them.
-        if (str != null && (str.indexOf("\n") != -1)) {
-            str = str.replaceAll("\\n", " ");
-        }
-        return str;
-    }
-
-    private static boolean isFieldEmpty(Field field) {
-        if (field == null || field.getValue() == null) {
-            return true;
-        }
-
-        if ("-".equals(field.getValue().trim())) {
-            return true;
-        }
-
-        return false;
-    }
+//    private static String removeLineReturn(String str) {
+//        // check that the given string doesn't have any line return, and if so, remove them.
+//        if (str != null && (str.indexOf("\n") != -1)) {
+//            str = str.replaceAll("\\n", " ");
+//        }
+//        return str;
+//    }
+//
+//    private static boolean isFieldEmpty(Field field) {
+//        if (field == null || field.getValue() == null) {
+//            return true;
+//        }
+//
+//        if ("-".equals(field.getValue().trim())) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
 }
