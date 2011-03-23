@@ -1,6 +1,7 @@
 package org.hupo.psi.calimocho.parser;
 
 import org.hupo.psi.calimocho.io.FieldFormatter;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 
@@ -13,12 +14,14 @@ import org.hupo.psi.calimocho.model.Row;
  */
 public class LiteralFieldFormatter implements FieldFormatter {
 
-
-    public String format( Field field ) {
-        return null;
+    public LiteralFieldFormatter() {
     }
 
-    public String format( Field field, Row row ) {
-        return null;
+    public String format( Field field ) throws IllegalFieldException {
+        return field.get( CalimochoKeys.VALUE );
+    }
+
+    public String format( Field field, Row row ) throws IllegalFieldException {
+       return format( field );
     }
 }

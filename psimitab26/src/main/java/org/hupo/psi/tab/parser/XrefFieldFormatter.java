@@ -1,6 +1,7 @@
 package org.hupo.psi.tab.parser;
 
 import org.hupo.psi.calimocho.io.FieldFormatter;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 
@@ -13,11 +14,11 @@ import org.hupo.psi.calimocho.model.Row;
  */
 public class XrefFieldFormatter implements FieldFormatter {
 
-    public String format( Field field ) {
+    public String format( Field field ) throws IllegalFieldException {
         throw new UnsupportedOperationException( "Not implemented" );
     }
 
-    public String format( Field field, Row row ) {
+    public String format( Field field, Row row ) throws IllegalFieldException {
         throw new UnsupportedOperationException( "Not implemented" );
     }
 }
