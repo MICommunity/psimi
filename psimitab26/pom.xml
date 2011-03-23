@@ -10,7 +10,7 @@
 
     <artifactId>mitab26</artifactId>
     <packaging>jar</packaging>
-    <version>2.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <name>PSI :: PSI MITAB 2.6</name>
     <url>http://psimi.googlecode.com</url>

@@ -5,7 +5,7 @@ package org.hupo.psi.calimocho.model;
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public class DefinitionException extends RuntimeException {
 

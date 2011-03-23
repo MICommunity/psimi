@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO document this !
+ * Default implementation for the Row reader, based on the
+ * document definition.
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public class DefaultRowReader implements RowReader {
 
@@ -23,6 +24,9 @@ public class DefaultRowReader implements RowReader {
         this.documentDefinition = documentDefinition;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<Row> read( Reader reader ) throws IOException, IllegalRowException {
 
 
@@ -54,6 +58,16 @@ public class DefaultRowReader implements RowReader {
         return rows;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public List<Row> read( InputStream is ) throws IOException, IllegalRowException {
+        return read( new BufferedReader( new InputStreamReader( is ) ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Row readLine( String line ) throws IllegalRowException, IllegalColumnException, IllegalFieldException {
         Row row = new DefaultRow();
 
@@ -123,9 +137,5 @@ public class DefaultRowReader implements RowReader {
         }
 
         return row;
-    }
-
-    public List<Row> read( InputStream is ) throws IOException, IllegalRowException {
-        return read( new BufferedReader( new InputStreamReader( is ) ) );
     }
 }

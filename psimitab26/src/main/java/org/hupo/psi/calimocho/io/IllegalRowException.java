@@ -7,7 +7,7 @@ import org.hupo.psi.calimocho.model.ColumnDefinition;
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public class IllegalRowException extends Exception {
 

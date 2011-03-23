@@ -4,11 +4,11 @@ import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 
 /**
- * TODO document this !
+ * Creates a formatted String for a Field object.
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since TODO add POM version
+ * @since 1.0
  */
 public interface FieldFormatter {
 
