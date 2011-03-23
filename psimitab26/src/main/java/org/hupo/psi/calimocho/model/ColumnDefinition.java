@@ -1,5 +1,8 @@
 package org.hupo.psi.calimocho.model;
 
+import org.hupo.psi.calimocho.io.FieldFormatter;
+import org.hupo.psi.calimocho.io.FieldParser;
+
 /**
  * TODO document this !
  *
@@ -17,11 +20,9 @@ public interface ColumnDefinition {
 
     String getEmptyValue();
 
-    String getFieldClassName();
+    FieldParser getFieldParser();
 
-    String getFieldParserClassName();
-
-    String getFieldFormatterClassName();
+    FieldFormatter getFieldFormatter();
 
     String getFieldSeparator();
 

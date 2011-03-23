@@ -27,10 +27,10 @@ public class RowReaderTest {
         //docDefinition.setCommentPrefix( "#" );
 
 
-        DefaultColumnDefinition columnDefinition = new DefaultColumnDefinition( "idA", 0 );
+        AbstractColumnDefinition columnDefinition = new AbstractColumnDefinition( "idA", 0 );
         columnDefinition.setFieldSeparator( "|" );
 //        columnDefinition.setFieldClassName( XrefField.class.getName() );
-        columnDefinition.setFieldParserClassName( XrefFieldParser.class.getName() );
+        columnDefinition.setFieldParser(XrefFieldParser.class.getName());
 
         DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .addColumnDefinition( columnDefinition )

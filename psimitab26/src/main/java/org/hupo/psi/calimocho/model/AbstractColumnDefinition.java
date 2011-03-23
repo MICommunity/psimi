@@ -1,5 +1,8 @@
 package org.hupo.psi.calimocho.model;
 
+import org.hupo.psi.calimocho.io.FieldFormatter;
+import org.hupo.psi.calimocho.io.FieldParser;
+
 /**
  * TODO document this !
  *
@@ -7,23 +10,17 @@ package org.hupo.psi.calimocho.model;
  * @version $Id$
  * @since TODO add POM version
  */
-public class DefaultColumnDefinition extends AbstractDefined implements ColumnDefinition {
+public abstract class AbstractColumnDefinition extends AbstractDefined implements ColumnDefinition {
 
 
     private int position;
     private String key;
     private boolean allowsEmpty;
     private String emptyValue;
-    private String fieldClassName;
-    private String fieldParserClassName;
-    private String fieldFormatterClassName;
+    private FieldParser fieldParser;
+    private FieldFormatter fieldFormatter;
     private String fieldSeparator;
     private String fieldDelimiter;
-
-    public DefaultColumnDefinition( String key, int position ) {
-        this.key = key;
-        this.position = position;
-    }
 
     public int getPosition() {
         return position;
@@ -57,28 +54,20 @@ public class DefaultColumnDefinition extends AbstractDefined implements ColumnDe
         this.emptyValue = emptyValue;
     }
 
-    public String getFieldClassName() {
-        return fieldClassName;
+    public FieldParser getFieldParser() {
+        return fieldParser;
     }
 
-    public void setFieldClassName( String fieldClassName ) {
-        this.fieldClassName = fieldClassName;
+    public void setFieldParser(FieldParser fieldParser) {
+        this.fieldParser = fieldParser;
     }
 
-    public String getFieldParserClassName() {
-        return fieldParserClassName;
+    public FieldFormatter getFieldFormatter() {
+        return fieldFormatter;
     }
 
-    public void setFieldParserClassName( String fieldParserClassName ) {
-        this.fieldParserClassName = fieldParserClassName;
-    }
-
-    public String getFieldFormatterClassName() {
-        return fieldFormatterClassName;
-    }
-
-    public void setFieldFormatterClassName( String fieldFormatterClassName ) {
-        this.fieldFormatterClassName = fieldFormatterClassName;
+    public void setFieldFormatter(FieldFormatter fieldFormatter) {
+        this.fieldFormatter = fieldFormatter;
     }
 
     public String getFieldSeparator() {
