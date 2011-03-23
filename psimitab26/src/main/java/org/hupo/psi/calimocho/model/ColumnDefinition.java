@@ -27,4 +27,6 @@ public interface ColumnDefinition extends Defined{
     String getFieldSeparator();
 
     String getFieldDelimiter();
+
+    boolean hasFieldDelimiter();
 }
