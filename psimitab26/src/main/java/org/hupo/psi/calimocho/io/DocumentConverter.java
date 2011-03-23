@@ -26,20 +26,20 @@ import java.util.Collection;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
-public class FormatConverter {
+public class DocumentConverter {
 
     private DocumentDefinition sourceDocumentDefinition;
     private DocumentDefinition destinationDocumentDefinition;
 
     private boolean ignoreFirstLine;
 
-    public FormatConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition ) {
+    public DocumentConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition ) {
         this.sourceDocumentDefinition = sourceDocumentDefinition;
         this.destinationDocumentDefinition = destinationDocumentDefinition;
     }
 
-    public FormatConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition, boolean ignoreFirstLine ) {
-        this(sourceDocumentDefinition, destinationDocumentDefinition);
+    public DocumentConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition, boolean ignoreFirstLine ) {
+        this( sourceDocumentDefinition, destinationDocumentDefinition );
         this.ignoreFirstLine = ignoreFirstLine;
     }
 
