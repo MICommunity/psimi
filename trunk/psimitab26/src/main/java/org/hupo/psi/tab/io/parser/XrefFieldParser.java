@@ -1,11 +1,11 @@
-package org.hupo.psi.tab.parser;
+package org.hupo.psi.tab.io.parser;
 
 import org.hupo.psi.calimocho.io.FieldParser;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
-import org.hupo.psi.calimocho.parser.CalimochoKeys;
 import org.hupo.psi.calimocho.util.ParseUtils;
 
 import java.util.Arrays;

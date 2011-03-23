@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho.parser;
+package org.hupo.psi.calimocho.model;
 
 /**
  * TODO document this !

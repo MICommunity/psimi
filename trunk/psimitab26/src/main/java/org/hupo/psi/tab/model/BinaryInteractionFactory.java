@@ -15,9 +15,9 @@
  */
 package org.hupo.psi.tab.model;
 
+import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
-import org.hupo.psi.calimocho.parser.CalimochoKeys;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

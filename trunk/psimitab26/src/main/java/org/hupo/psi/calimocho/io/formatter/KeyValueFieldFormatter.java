@@ -1,7 +1,8 @@
-package org.hupo.psi.calimocho.parser;
+package org.hupo.psi.calimocho.io.formatter;
 
 import org.hupo.psi.calimocho.io.FieldFormatter;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 
@@ -36,7 +37,7 @@ public class KeyValueFieldFormatter implements FieldFormatter {
 
         if (key == null) {
             if (defaultKey == null) {
-                throw new IllegalFieldException( "Expected key not found: "+CalimochoKeys.KEY );
+                throw new IllegalFieldException( "Expected key not found: "+ CalimochoKeys.KEY );
             } else {
                 key = defaultKey;
             }
