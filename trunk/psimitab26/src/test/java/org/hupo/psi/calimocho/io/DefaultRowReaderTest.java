@@ -13,8 +13,6 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO document this !
- *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  * @since TODO add POM version
@@ -61,18 +59,25 @@ public class DefaultRowReaderTest {
 
         Assert.assertNotNull( row );
 
-        Collection<Field> fields = row.getFields( columnDefinition.getKey() );
+        Collection<Field> idFields = row.getFields( idColDefinition.getKey() );
 
-        Assert.assertEquals( 2, fields.size() );
+        Assert.assertEquals( 2, idFields.size() );
 
-        Field field = fields.iterator().next();
+        Field idField = idFields.iterator().next();
 
-        final String db = field.get( CalimochoKeys.DB );
-        final String value = field.get( CalimochoKeys.VALUE );
-        final String text = field.get( CalimochoKeys.TEXT );
+        final String db = idField.get( CalimochoKeys.DB );
+        final String value = idField.get( CalimochoKeys.VALUE );
 
         Assert.assertEquals("uniprotkb", db);
         Assert.assertEquals( "Q9Y5J7", value );
+
+        Collection<Field> authorFields = row.getFields( idColDefinition.getKey() );
+
+        Assert.assertEquals( 2, authorFields.size() );
+
+        Field field = authorFields.iterator().next();
+
+        Assert.assertEquals( "Peter et al (2010)", field.get( CalimochoKeys.VALUE ) );
     }
 
     @Test
