@@ -1,10 +1,12 @@
 package org.hupo.psi.tab.io.formatter;
 
 import org.hupo.psi.calimocho.io.FieldFormatter;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -16,6 +18,12 @@ import org.junit.Test;
  */
 public class XrefFieldFormatterTest {
 
+    static FieldFormatter fieldFormatter;
+
+    @BeforeClass
+    public static void initFieldFormatter(){
+       fieldFormatter = new XrefFieldFormatter();
+    }
 
     public Field getField(){
         Field field = new DefaultField();
@@ -29,8 +37,6 @@ public class XrefFieldFormatterTest {
     public void format_withoutText() throws Exception {
         Field field = getField();
 
-        FieldFormatter fieldFormatter = new XrefFieldFormatter();
-
         String fieldText = fieldFormatter.format( field );
         String expected = "uniprot:P12345";
         Assert.assertEquals(expected, fieldText);
@@ -40,8 +46,6 @@ public class XrefFieldFormatterTest {
     public void format_withText() throws Exception {
         Field field = getField();
         field.set( CalimochoKeys.TEXT, "testText");
-
-        FieldFormatter fieldFormatter = new XrefFieldFormatter();
 
         String fieldText = fieldFormatter.format( field );
         String expected = "uniprot:P12345(testText)";
@@ -54,10 +58,27 @@ public class XrefFieldFormatterTest {
         field.set( CalimochoKeys.TEXT, "test)Text");
         field.set( CalimochoKeys.DB, "uni:prot" );
         field.set( CalimochoKeys.VALUE, "P|12345");
-        FieldFormatter fieldFormatter = new XrefFieldFormatter();
 
         String fieldText = fieldFormatter.format( field );
         String expected = "\"uni:prot\":\"P|12345\"(\"test)Text\")";
         Assert.assertEquals(expected, fieldText);
+    }
+
+    @Test(expected = IllegalFieldException.class)
+    public void format_noDB() throws Exception {
+        Field field = new DefaultField();
+        field.set(CalimochoKeys.VALUE, "P1");
+
+        fieldFormatter.format( field );
+
+    }
+
+    @Test(expected = IllegalFieldException.class)
+    public void format_noValue() throws Exception {
+        Field field = new DefaultField();
+        field.set(CalimochoKeys.DB, "uniprot");
+
+        fieldFormatter.format( field );
+
     }
 }
