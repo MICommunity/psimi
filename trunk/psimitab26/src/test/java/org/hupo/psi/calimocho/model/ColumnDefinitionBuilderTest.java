@@ -22,7 +22,7 @@ public class ColumnDefinitionBuilderTest {
                 .build();
 
         Assert.assertEquals( "idA", cd.getKey() );
-        Assert.assertEquals( 0, cd.getPosition() );
+        Assert.assertEquals( Integer.valueOf(0), cd.getPosition() );
         Assert.assertEquals( "|", cd.getFieldSeparator() );
         Assert.assertNotNull( cd.getFieldParser() );
         Assert.assertTrue( cd.getFieldParser() instanceof KeyValueFieldParser );
@@ -51,14 +51,6 @@ public class ColumnDefinitionBuilderTest {
     @Test(expected = DefinitionException.class)
     public void validate_invalid3() throws Exception {
         new ColumnDefinitionBuilder()
-                .setKey( "key" )
-                .build();
-    }
-
-    @Test(expected = DefinitionException.class)
-    public void validate_invalid4() throws Exception {
-        new ColumnDefinitionBuilder()
-                .setPosition( 0 )
                 .setKey( "key" )
                 .build();
     }
