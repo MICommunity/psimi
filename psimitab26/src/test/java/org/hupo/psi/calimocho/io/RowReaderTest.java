@@ -2,7 +2,7 @@ package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
 import org.hupo.psi.calimocho.model.*;
-import org.hupo.psi.tab.MitabKeys;
+import org.hupo.psi.calimocho.parser.CalimochoKeys;
 import org.hupo.psi.tab.parser.XrefFieldParser;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class RowReaderTest {
         AbstractColumnDefinition columnDefinition = new AbstractColumnDefinition( "idA", 0 );
         columnDefinition.setFieldSeparator( "|" );
 //        columnDefinition.setFieldClassName( XrefField.class.getName() );
-        columnDefinition.setFieldParser(XrefFieldParser.class.getName());
+        columnDefinition.setFieldParser( XrefFieldParser.class.getName() );
 
         DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .addColumnDefinition( columnDefinition )
@@ -52,9 +52,9 @@ public class RowReaderTest {
 
         Field field = fields.iterator().next();
 
-        final String db = field.get( MitabKeys.DB );
-        final String value = field.get( MitabKeys.VALUE );
-        final String text = field.get( MitabKeys.TEXT );
+        final String db = field.get( CalimochoKeys.DB );
+        final String value = field.get( CalimochoKeys.VALUE );
+        final String text = field.get( CalimochoKeys.TEXT );
 
         Assert.assertEquals("uniprotkb", db);
         Assert.assertEquals("Q9Y5J7", value);

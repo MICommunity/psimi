@@ -5,8 +5,8 @@ import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
+import org.hupo.psi.calimocho.parser.CalimochoKeys;
 import org.hupo.psi.calimocho.util.ParseUtils;
-import org.hupo.psi.tab.MitabKeys;
 
 import java.util.Arrays;
 
@@ -33,11 +33,12 @@ public class XrefFieldParser implements FieldParser {
                 throw new IllegalFieldException("Incorrect number of groups found ("+groups.length+"): "+ Arrays.asList( groups ) + ", in field '"+str+"'");
             }
 
-            field.set( MitabKeys.DB, groups[0]);
-            field.set( MitabKeys.VALUE, groups[1]);
+            field.set( CalimochoKeys.KEY, groups[0]);
+            field.set( CalimochoKeys.DB, groups[0]);
+            field.set( CalimochoKeys.VALUE, groups[1]);
 
             if (groups.length == 3) {
-                field.set( MitabKeys.TEXT, groups[2]);
+                field.set( CalimochoKeys.TEXT, groups[2]);
             }
 
             // TODO correct MI:0012(blah) to psi-mi:"MI:0012"(blah)

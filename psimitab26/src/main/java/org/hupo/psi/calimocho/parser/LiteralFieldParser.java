@@ -1,11 +1,10 @@
-package org.hupo.psi.tab.parser;
+package org.hupo.psi.calimocho.parser;
 
 import org.hupo.psi.calimocho.io.FieldParser;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
-import org.hupo.psi.tab.MitabKeys;
 
 /**
  * TODO document this !
@@ -18,7 +17,7 @@ public class LiteralFieldParser implements FieldParser {
 
     public Field parse( String value, ColumnDefinition columnDefinition ) throws IllegalFieldException {
        Field field = new DefaultField();
-       field.set( MitabKeys.VALUE, value);
+       field.set( CalimochoKeys.VALUE, value);
 
         return field;
     }
