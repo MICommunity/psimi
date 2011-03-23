@@ -36,4 +36,11 @@ public class DefaultField implements Field {
     public String get( String key ) {
         return entries.get( key );
     }
+
+    @Override
+    public String toString() {
+        return "DefaultField{" +
+               "entries=" + entries +
+               '}';
+    }
 }

@@ -19,7 +19,11 @@ public class LiteralFieldFormatter implements FieldFormatter {
     }
 
     public String format( Field field ) throws IllegalFieldException {
-        return field.get( CalimochoKeys.VALUE );
+        final String value = field.get( CalimochoKeys.VALUE );
+
+        if (value == null) throw new IllegalFieldException( "Field does not contain '"+CalimochoKeys.VALUE+"' key: "+field );
+
+        return value;
     }
 
     public String format( Field field, Row row ) throws IllegalFieldException {
