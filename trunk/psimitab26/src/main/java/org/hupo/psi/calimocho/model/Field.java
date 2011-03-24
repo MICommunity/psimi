@@ -11,8 +11,6 @@ import java.util.Map;
  */
 public interface Field {
 
-    String COLUMNKEY_KEY = "column_key";
-
     Map<String,String> getEntries();
 
     boolean set( String key, String value );

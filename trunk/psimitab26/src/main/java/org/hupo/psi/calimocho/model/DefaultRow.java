@@ -23,22 +23,22 @@ public class DefaultRow implements Row {
     }
 
     public boolean addField(String columnKey, Field field) {
-        setFieldColumnKey( columnKey, field );
+//        setFieldColumnKey( columnKey, field );
         return fieldMultimap.put( columnKey, field );
     }
 
     public boolean addFields( String columnKey, Collection<Field> fields ) {
-        for (Field field : fields) {
-            setFieldColumnKey( columnKey, field );
-        }
+//        for (Field field : fields) {
+//            setFieldColumnKey( columnKey, field );
+//        }
 
 
         return fieldMultimap.putAll( columnKey, fields );
     }
 
-    private void setFieldColumnKey( String columnKey, Field field ) {
-        field.getEntries().put(Field.COLUMNKEY_KEY, columnKey);
-    }
+//    private void setFieldColumnKey( String columnKey, Field field ) {
+//        field.getEntries().put(CalimochoKeys.COLUMN_KEY, columnKey);
+//    }
 
     public Collection<Field> getFields( String columnKey ) {
         return fieldMultimap.get( columnKey );
