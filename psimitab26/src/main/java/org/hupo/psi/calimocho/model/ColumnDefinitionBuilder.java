@@ -5,6 +5,8 @@ import org.hupo.psi.calimocho.io.FieldParser;
 import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
 import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
 
+import java.util.Map;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Training
@@ -76,6 +78,18 @@ public class ColumnDefinitionBuilder {
 
     public ColumnDefinitionBuilder setFieldFormatter(FieldFormatter formatter){
        this.columnDefinition.setFieldFormatter( formatter );
+
+        return this;
+    }
+
+    public ColumnDefinitionBuilder addDefaultValue(String key, String value){
+       this.columnDefinition.getDefaultValues().put( key, value );
+
+        return this;
+    }
+
+    public ColumnDefinitionBuilder addDefaultValues(Map<String,String> defaultsMap){
+       this.columnDefinition.getDefaultValues().putAll( defaultsMap );
 
         return this;
     }

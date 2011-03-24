@@ -131,6 +131,10 @@ public class DefaultRowReader implements RowReader {
 
                     FieldParser fieldParser = columnDefinition.getFieldParser();
                     Field field = fieldParser.parse( strField, columnDefinition );
+
+                    // default values
+                    field.setIfMissing(columnDefinition.getDefaultValues());
+
                     row.addField( columnDefinition.getKey(), field );
                 }
             }
