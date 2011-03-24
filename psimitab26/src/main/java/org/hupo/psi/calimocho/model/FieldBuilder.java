@@ -29,5 +29,8 @@ public class FieldBuilder {
     }
 
     private void validate( DefaultField field ) throws IllegalFieldException {
+//        if( field.get( CalimochoKeys.COLUMN_KEY ) == null ) {
+//            throw new IllegalFieldException( "A field must have a column key" );
+//        }
     }
 }

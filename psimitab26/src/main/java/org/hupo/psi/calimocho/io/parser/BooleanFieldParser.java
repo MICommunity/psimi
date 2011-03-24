@@ -24,7 +24,7 @@ public class BooleanFieldParser implements FieldParser {
         }
 
         return new FieldBuilder()
-                .addKeyValue( CalimochoKeys.KEY, fieldStr )
+                .addKeyValue( CalimochoKeys.VALUE, fieldStr )
                 .build();
     }
 }
