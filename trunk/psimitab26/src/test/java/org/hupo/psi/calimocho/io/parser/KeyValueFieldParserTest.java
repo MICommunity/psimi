@@ -2,6 +2,8 @@ package org.hupo.psi.calimocho.io.parser;
 
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.CalimochoKeys;
+import org.hupo.psi.calimocho.model.ColumnDefinition;
+import org.hupo.psi.calimocho.model.ColumnDefinitionBuilder;
 import org.hupo.psi.calimocho.model.Field;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,16 +57,27 @@ public class KeyValueFieldParserTest {
     public void parse4_invalid_defaultKey() throws Exception {
         String value = "value";
 
+        ColumnDefinition columnDefinition = new ColumnDefinitionBuilder()
+                .setKey( "key" )
+                .setPosition( 1 )
+                .build();
+
         KeyValueFieldParser parser = new KeyValueFieldParser();
-        final Field field = parser.parse( value, null );
+        final Field field = parser.parse( value, columnDefinition );
     }
 
     @Test
     public void parse4_defaultKey() throws Exception {
         String value = "value";
 
-        KeyValueFieldParser parser = new KeyValueFieldParser(":", "defaultKey");
-        final Field field = parser.parse( value, null );
+        ColumnDefinition columnDefinition = new ColumnDefinitionBuilder()
+                .setKey( "key" )
+                .setPosition( 1 )
+                .addDefaultValue( CalimochoKeys.KEY, "defaultKey" )
+                .build();
+
+        KeyValueFieldParser parser = new KeyValueFieldParser(":");
+        final Field field = parser.parse( value, columnDefinition );
 
         Assert.assertEquals( 2, field.getEntries().size() );
         Assert.assertEquals( "defaultKey", field.get( CalimochoKeys.KEY ) );

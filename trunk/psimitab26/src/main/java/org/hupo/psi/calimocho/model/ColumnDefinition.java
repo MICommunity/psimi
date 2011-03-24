@@ -3,6 +3,8 @@ package org.hupo.psi.calimocho.model;
 import org.hupo.psi.calimocho.io.FieldFormatter;
 import org.hupo.psi.calimocho.io.FieldParser;
 
+import java.util.Map;
+
 /**
  * TODO document this !
  *
@@ -31,6 +33,12 @@ public interface ColumnDefinition extends Defined, Comparable<ColumnDefinition> 
     boolean hasFieldDelimiter();
 
     boolean hasFieldSeparator();
+
+    Map<String, String> getDefaultValues();
+
+    void addDefaultValue(String key, String value);
+
+    String getDefaultValue(String key);
 
     int compareTo( ColumnDefinition columnDefinition );
 }

@@ -4,6 +4,7 @@ import org.hupo.psi.calimocho.io.formatter.KeyValueFieldFormatter;
 import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
 import org.hupo.psi.calimocho.io.parser.KeyValueFieldParser;
 import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
+import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.calimocho.model.ColumnDefinitionBuilder;
 import org.hupo.psi.calimocho.model.DocumentDefinition;
 import org.hupo.psi.calimocho.model.DocumentDefinitionBuilder;
@@ -53,8 +54,9 @@ public abstract class AbstractCalimochoTest {
                                               .setEmptyValue( "" )
                                               .setIsAllowsEmpty( false )
                                               .setFieldSeparator( "," )
-                                              .setFieldParser( new KeyValueFieldParser(":", "taxid") )
-                                              .setFieldFormatter(new KeyValueFieldFormatter(":", "taxid") )
+                                              .setFieldParser( new KeyValueFieldParser(":") )
+                                              .setFieldFormatter(new KeyValueFieldFormatter(":") )
+                                              .addDefaultValue( CalimochoKeys.KEY, "taxid" )
                                               .build() )
                 .addColumnDefinition( new ColumnDefinitionBuilder()
                                               .setKey( "gene" )
@@ -62,8 +64,9 @@ public abstract class AbstractCalimochoTest {
                                               .setEmptyValue( "" )
                                               .setIsAllowsEmpty( false )
                                               .setFieldSeparator( "," )
-                                              .setFieldParser( new KeyValueFieldParser(":", "gene") )
-                                              .setFieldFormatter( new KeyValueFieldFormatter(":", "gene") )
+                                              .setFieldParser( new KeyValueFieldParser(":") )
+                                              .setFieldFormatter( new KeyValueFieldFormatter(":") )
+                                              .addDefaultValue( CalimochoKeys.KEY, "gene" )
                                               .build() )
                 .setColumnSeparator( "," )
                 .setColumnDelimiter( "'" )
@@ -78,8 +81,9 @@ public abstract class AbstractCalimochoTest {
                                               .setEmptyValue( "" )
                                               .setIsAllowsEmpty( false )
                                               .setFieldSeparator( "," )
-                                              .setFieldParser( new KeyValueFieldParser(":", "taxid") )
-                                              .setFieldFormatter(new KeyValueFieldFormatter(":", "taxid") )
+                                              .setFieldParser( new KeyValueFieldParser(":") )
+                                              .setFieldFormatter(new KeyValueFieldFormatter(":") )
+                                              .addDefaultValue( CalimochoKeys.KEY, "taxid" )
                                               .build() )
                 .addColumnDefinition( new ColumnDefinitionBuilder()
                                               .setKey( "gene" )
@@ -88,8 +92,9 @@ public abstract class AbstractCalimochoTest {
                                               .setIsAllowsEmpty( false )
                                               .setFieldSeparator( "," )
                                               .setFieldDelimiter( "/" )
-                                              .setFieldParser( new KeyValueFieldParser(":", "gene") )
-                                              .setFieldFormatter( new KeyValueFieldFormatter(":", "gene") )
+                                              .setFieldParser( new KeyValueFieldParser(":") )
+                                              .setFieldFormatter( new KeyValueFieldFormatter(":") )
+                                              .addDefaultValue( CalimochoKeys.KEY, "gene" )
                                               .build() )
                 .setColumnSeparator( "\t" )
                 .build();

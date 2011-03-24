@@ -1,7 +1,10 @@
 package org.hupo.psi.calimocho.model;
 
+import com.google.common.collect.Maps;
 import org.hupo.psi.calimocho.io.FieldFormatter;
 import org.hupo.psi.calimocho.io.FieldParser;
+
+import java.util.Map;
 
 /**
  * TODO document this !
@@ -20,6 +23,8 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
     private FieldFormatter fieldFormatter;
     private String fieldSeparator;
     private String fieldDelimiter;
+
+    private Map<String,String> defaultValuesMap;
 
     public AbstractColumnDefinition(){
         this.allowsEmpty = true;
@@ -96,6 +101,25 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
 
     public void setFieldDelimiter( String fieldDelimiter ) {
         this.fieldDelimiter = fieldDelimiter;
+    }
+
+    public Map<String, String> getDefaultValues() {
+        if (defaultValuesMap == null) {
+            defaultValuesMap = Maps.newHashMap();
+        }
+        return defaultValuesMap;
+    }
+
+    public void setDefaultValuesMap( Map<String, String> defaultValuesMap ) {
+        this.defaultValuesMap = defaultValuesMap;
+    }
+
+    public void addDefaultValue(String key, String value) {
+        getDefaultValues().put( key, value );
+    }
+
+    public String getDefaultValue(String key) {
+        return getDefaultValues().get( key );
     }
 
     public int compareTo( ColumnDefinition cd ) {

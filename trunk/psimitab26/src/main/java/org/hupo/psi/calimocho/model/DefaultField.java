@@ -2,6 +2,7 @@ package org.hupo.psi.calimocho.model;
 
 import com.google.common.collect.Maps;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,6 +46,20 @@ public class DefaultField implements Field {
         }
 
         return Integer.parseInt( value );
+    }
+
+    public void set( Map<String,String> keyValuePairs ) {
+        entries.putAll( keyValuePairs );
+    }
+
+    public void setIfMissing( Map<String, String> keyValuePairs ) {
+        Map<String,String> missingPairs = new HashMap<String, String>(keyValuePairs);
+
+        for (String key : entries.keySet()) {
+            missingPairs.remove( key );
+        }
+
+        entries.putAll( missingPairs );
     }
 
     @Override

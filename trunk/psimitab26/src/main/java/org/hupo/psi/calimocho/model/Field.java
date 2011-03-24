@@ -21,4 +21,7 @@ public interface Field {
 
     Integer getInteger(String key);
 
+    void set( Map<String,String> keyValuePairs );
+
+    void setIfMissing( Map<String,String> keyValuePairs );
 }

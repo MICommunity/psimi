@@ -4,7 +4,6 @@ import org.hupo.psi.calimocho.io.DefaultRowReader;
 import org.hupo.psi.calimocho.io.RowReader;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.DocumentDefinition;
-import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.tab.util.MitabDocumentDefinitionFactory;
 
@@ -36,11 +35,11 @@ public class Playground
             for (ColumnDefinition col : columns) {
                 System.out.println(col.getKey());
 
-                Collection<Field> fields = row.getFields(col);
-
-                for (Field field : fields) {
-                    System.out.println("\t"+field);
-                }
+//                Collection<Field> fields = row.getFields(col);
+//
+//                for (Field field : fields) {
+//                    System.out.println("\t"+field);
+//                }
 
             }
         }

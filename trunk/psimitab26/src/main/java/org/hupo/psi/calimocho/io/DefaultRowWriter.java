@@ -84,6 +84,10 @@ public class DefaultRowWriter implements RowWriter {
             final FieldFormatter fieldFormatter = columnDefinition.getFieldFormatter();
             for ( Iterator<Field> fieldIterator = fields.iterator(); fieldIterator.hasNext(); ) {
                 Field field = fieldIterator.next();
+
+                // add missing default values before formatting
+                field.setIfMissing( columnDefinition.getDefaultValues() );
+
                 final String fieldStr = fieldFormatter.format( field );
 
                 if ( columnDefinition.hasFieldDelimiter() ) {
