@@ -30,7 +30,7 @@ public class XrefFieldParser implements FieldParser {
 
             // some exception handling
             if (groups.length < 2 || groups.length > 3) {
-                throw new IllegalFieldException("Incorrect number of groups found ("+groups.length+"): "+ Arrays.asList( groups ) + ", in field '"+str+"'");
+                throw new IllegalFieldException("Incorrect number of groups found ("+groups.length+"): "+ Arrays.asList( groups ) + ", in field '"+str+"' / Is this a xref field?");
             }
 
             field.set( CalimochoKeys.KEY, groups[0]);

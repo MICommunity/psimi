@@ -13,4 +13,9 @@ public interface CalimochoKeys {
     String DB = "db";
     String VALUE = "value";
     String TEXT = "text";
+
+    String DAY = "day";
+    String MONTH = "month";
+    String YEAR = "year";
+    String WEEK = "week";
 }
