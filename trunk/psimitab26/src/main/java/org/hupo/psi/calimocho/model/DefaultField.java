@@ -37,6 +37,16 @@ public class DefaultField implements Field {
         return entries.get( key );
     }
 
+    public Integer getInteger( String key ) {
+        String value = entries.get( key );
+
+        if (value == null) {
+            return null;
+        }
+
+        return Integer.parseInt( value );
+    }
+
     @Override
     public String toString() {
         return "DefaultField{" +

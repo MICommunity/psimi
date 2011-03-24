@@ -21,4 +21,6 @@ public interface Field {
 
     String get(String key);
 
+    Integer getInteger(String key);
+
 }

@@ -1,6 +1,10 @@
 package org.hupo.psi.tab.util;
 
+import org.hupo.psi.calimocho.io.formatter.BooleanFieldFormatter;
+import org.hupo.psi.calimocho.io.formatter.DateFieldFormatter;
 import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
+import org.hupo.psi.calimocho.io.parser.BooleanFieldParser;
+import org.hupo.psi.calimocho.io.parser.DateFieldParser;
 import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.ColumnDefinitionBuilder;
@@ -274,67 +278,57 @@ public class MitabDocumentDefinitionFactory {
                 .setPosition(28)
                 .build();
 
-        ColumnDefinition parametersA = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
-                .setName("Parameters A")
-                .setKey(Mitab26ColumnKeys.KEY_PARAMETERS_A)
-                .setPosition(29)
-                .build();
-
-        ColumnDefinition parametersB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
-                .setName("Parameters B")
-                .setKey(Mitab26ColumnKeys.KEY_ANNOTATIONS_B)
-                .setPosition(30)
-                .build();
-
         ColumnDefinition parametersI = new ColumnDefinitionBuilder()
                 .extendColumnDefinition(expansion)
                 .setName("Parameters Interaction")
                 .setKey(Mitab26ColumnKeys.KEY_PARAMETERS_I)
-                .setPosition(31)
+                .setPosition(29)
                 .build();
 
         ColumnDefinition creationDate = new ColumnDefinitionBuilder()
                 .extendColumnDefinition(expansion)
-                .setName("Creation Date")
-                .setKey(Mitab26ColumnKeys.KEY_CREATION_DATE)
-                .setPosition(32)
+                .setName( "Creation Date" )
+                .setKey( Mitab26ColumnKeys.KEY_CREATION_DATE )
+                .setPosition( 30 )
+                .setFieldParser( new DateFieldParser( "yyyy/MM/dd" ) )
+                .setFieldFormatter( new DateFieldFormatter( "yyyy/MM/dd" ) )
                 .build();
 
         ColumnDefinition updateDate = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(creationDate)
                 .setName("Update Date")
                 .setKey(Mitab26ColumnKeys.KEY_UPDATE_DATE)
-                .setPosition(33)
+                .setPosition(31)
                 .build();
 
         ColumnDefinition checksumA = new ColumnDefinitionBuilder()
                 .extendColumnDefinition(expansion)
                 .setName("Checksum A")
                 .setKey(Mitab26ColumnKeys.KEY_CHECKSUM_A)
-                .setPosition(34)
+                .setPosition(32)
                 .build();
 
         ColumnDefinition checksumB = new ColumnDefinitionBuilder()
                 .extendColumnDefinition(expansion)
                 .setName("Checksum B")
                 .setKey(Mitab26ColumnKeys.KEY_CHECKSUM_B)
-                .setPosition(35)
+                .setPosition(33)
                 .build();
 
         ColumnDefinition checksumI = new ColumnDefinitionBuilder()
                 .extendColumnDefinition(expansion)
                 .setName("Checksum Interaction")
                 .setKey(Mitab26ColumnKeys.KEY_CHECKSUM_I)
-                .setPosition(36)
+                .setPosition(34)
                 .build();
 
         ColumnDefinition negative = new ColumnDefinitionBuilder()
                 .extendColumnDefinition(expansion)
                 .setName("Negative")
                 .setKey(Mitab26ColumnKeys.KEY_NEGATIVE)
-                .setPosition(37)
+                .setPosition(35)
+                .setFieldParser( new BooleanFieldParser() )
+                .setFieldFormatter( new BooleanFieldFormatter() )
                 .build();
 
 
@@ -354,11 +348,9 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(annotationsB)
                 .addColumnDefinition(annotationsI)
                 .addColumnDefinition(hostOrganism)
-                .addColumnDefinition(parametersA)
-                .addColumnDefinition(parametersB)
-                .addColumnDefinition(parametersB)
                 .addColumnDefinition(parametersI)
                 .addColumnDefinition(creationDate)
+                .addColumnDefinition(updateDate)
                 .addColumnDefinition(checksumA)
                 .addColumnDefinition(checksumB)
                 .addColumnDefinition(checksumI)
