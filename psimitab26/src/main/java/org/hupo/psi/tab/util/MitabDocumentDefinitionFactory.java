@@ -6,9 +6,9 @@ import org.hupo.psi.calimocho.io.formatter.LiteralFieldFormatter;
 import org.hupo.psi.calimocho.io.parser.BooleanFieldParser;
 import org.hupo.psi.calimocho.io.parser.DateFieldParser;
 import org.hupo.psi.calimocho.io.parser.LiteralFieldParser;
+import org.hupo.psi.calimocho.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
 import org.hupo.psi.calimocho.model.ColumnDefinitionBuilder;
-import org.hupo.psi.calimocho.model.DocumentDefinition;
 import org.hupo.psi.calimocho.model.DocumentDefinitionBuilder;
 import org.hupo.psi.tab.io.formatter.XrefFieldFormatter;
 import org.hupo.psi.tab.io.parser.XrefFieldParser;
@@ -24,7 +24,7 @@ public class MitabDocumentDefinitionFactory {
 
     private MitabDocumentDefinitionFactory() {}
 
-    public static DocumentDefinition mitab25() {
+    public static ColumnBasedDocumentDefinition mitab25() {
         XrefFieldParser xrefParser = new XrefFieldParser();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
 
@@ -144,7 +144,7 @@ public class MitabDocumentDefinitionFactory {
                 .setPosition(14)
                 .build();
 
-        DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
+        ColumnBasedDocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .addColumnDefinition( idACol )
                 .addColumnDefinition( idBCol )
                 .addColumnDefinition(altidA)
@@ -167,7 +167,7 @@ public class MitabDocumentDefinitionFactory {
         return docDefinition;
     }
 
-    public static DocumentDefinition mitab26() {
+    public static ColumnBasedDocumentDefinition mitab26() {
         XrefFieldParser xrefParser = new XrefFieldParser();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
 
@@ -332,7 +332,7 @@ public class MitabDocumentDefinitionFactory {
                 .build();
 
 
-        DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
+        ColumnBasedDocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .extendDocumentDefinition( mitab25() )
                 .addColumnDefinition(expansion)
                 .addColumnDefinition(bioRoleA)

@@ -2,7 +2,7 @@ package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
 import org.hupo.psi.calimocho.AbstractCalimochoTest;
-import org.hupo.psi.calimocho.model.DocumentDefinition;
+import org.hupo.psi.calimocho.model.ColumnBasedDocumentDefinition;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -24,8 +24,8 @@ public class DocumentConverterTest extends AbstractCalimochoTest{
 
         ByteArrayInputStream bais = new ByteArrayInputStream( geneList.getBytes() );
 
-        final DocumentDefinition docDefinition = super.buildGeneListDefinition();
-        final DocumentDefinition anotherDocDefinition = super.buildAnotherGeneListDefinition();
+        final ColumnBasedDocumentDefinition docDefinition = super.buildGeneListDefinition();
+        final ColumnBasedDocumentDefinition anotherDocDefinition = super.buildAnotherGeneListDefinition();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(  );
 
@@ -45,8 +45,8 @@ public class DocumentConverterTest extends AbstractCalimochoTest{
 
         ByteArrayInputStream bais = new ByteArrayInputStream( geneList.getBytes() );
 
-        final DocumentDefinition docDefinition = super.buildGeneListDefinition();
-        final DocumentDefinition anotherDocDefinition = super.buildAnotherGeneListDefinition();
+        final ColumnBasedDocumentDefinition docDefinition = super.buildGeneListDefinition();
+        final ColumnBasedDocumentDefinition anotherDocDefinition = super.buildAnotherGeneListDefinition();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(  );
 
@@ -66,8 +66,8 @@ public class DocumentConverterTest extends AbstractCalimochoTest{
 
         ByteArrayInputStream bais = new ByteArrayInputStream( geneList.getBytes() );
 
-        final DocumentDefinition docDefinition = super.buildGeneListDefinition();
-        final DocumentDefinition yetAnotherDocDefinition = super.buildYetAnotherGeneListDefinition();
+        final ColumnBasedDocumentDefinition docDefinition = super.buildGeneListDefinition();
+        final ColumnBasedDocumentDefinition yetAnotherDocDefinition = super.buildYetAnotherGeneListDefinition();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(  );
 

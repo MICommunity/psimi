@@ -50,7 +50,7 @@ public class DefaultRowReaderTest extends AbstractCalimochoTest {
                 .setFieldFormatter( new LiteralFieldFormatter() )
                 .build();
 
-         DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
+         ColumnBasedDocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .addColumnDefinition( idColDefinition )
                 .addColumnDefinition( authColDefinition )
                 .setColumnSeparator( "\t" )
@@ -100,7 +100,7 @@ public class DefaultRowReaderTest extends AbstractCalimochoTest {
                 .setFieldFormatter( new KeyValueFieldFormatter( ":" ) )
                 .build();
 
-        DocumentDefinition docDefinition = new DocumentDefinitionBuilder()
+        ColumnBasedDocumentDefinition docDefinition = new DocumentDefinitionBuilder()
                 .addColumnDefinition( columnDefinition )
                 .setColumnSeparator( "\t" )
                 .setCommentPrefix( "#" )
@@ -131,7 +131,7 @@ public class DefaultRowReaderTest extends AbstractCalimochoTest {
 
     @Test()
     public void invalidInputFile_columnCount() throws Exception {
-        DocumentDefinition dd = new DocumentDefinitionBuilder().addColumnDefinition( new ColumnDefinitionBuilder()
+        ColumnBasedDocumentDefinition dd = new DocumentDefinitionBuilder().addColumnDefinition( new ColumnDefinitionBuilder()
                                               .setKey( "gene" )
                                               .setPosition( 1 )
                                               .setEmptyValue( "" )
@@ -175,7 +175,7 @@ public class DefaultRowReaderTest extends AbstractCalimochoTest {
 
         final String aLine = "LSM7|9606\n";
 
-        final DocumentDefinition documentDefinition = buildGeneListDefinition();
+        final ColumnBasedDocumentDefinition documentDefinition = buildGeneListDefinition();
 
         RowReader reader = new DefaultRowReader( documentDefinition );
         final List<Row> rows = reader.read( new ByteArrayInputStream( aLine.getBytes() ) );

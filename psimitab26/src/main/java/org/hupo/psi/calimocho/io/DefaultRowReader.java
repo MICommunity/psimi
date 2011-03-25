@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class DefaultRowReader implements RowReader {
 
-    private DocumentDefinition documentDefinition;
+    private ColumnBasedDocumentDefinition documentDefinition;
 
-    public DefaultRowReader( DocumentDefinition documentDefinition ) {
+    public DefaultRowReader( ColumnBasedDocumentDefinition documentDefinition ) {
         this.documentDefinition = documentDefinition;
     }
 

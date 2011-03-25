@@ -1,32 +1,22 @@
 package org.hupo.psi.calimocho.model;
 
-import java.util.Collection;
-import java.util.List;
+import org.hupo.psi.calimocho.io.IllegalRowException;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * TODO document this !
  *
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
- * @since 1.0
+ * @since TODO add POM version
  */
 public interface DocumentDefinition extends Defined {
 
-    String getColumnSeparator();
+    CalimochoDocument readDocument(Reader reader) throws IOException, IllegalRowException;
 
-    String getColumnDelimiter();
+    void writeDocument(Writer writer, CalimochoDocument calimochoDocument) throws IOException, IllegalRowException;
 
-    String getCommentPrefix();
-
-    ColumnDefinition getColumnByPosition( int position );
-
-    Collection<ColumnDefinition> getColumns();
-
-    boolean isPartial();
-
-    List<ColumnDefinition> getColumnDefinitions();
-
-    boolean hasColumnDelimiter();
-
-    int getHighestColumnPosition();
 }
