@@ -1,11 +1,10 @@
-package org.hupo.psi.calimocho.io;
+package org.hupo.psi.tab.io;
 
 import junit.framework.Assert;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.io.IllegalRowException;
 import org.hupo.psi.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.calimocho.model.*;
-import org.hupo.psi.tab.io.DefaultRowReader;
-import org.hupo.psi.tab.io.IllegalColumnException;
-import org.hupo.psi.tab.io.RowReader;
 import org.hupo.psi.tab.io.formatter.KeyValueFieldFormatter;
 import org.hupo.psi.tab.io.formatter.LiteralFieldFormatter;
 import org.hupo.psi.tab.io.parser.KeyValueFieldParser;

@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho.util;
+package org.hupo.psi.tab.util;
 
 import junit.framework.Assert;
 import org.hupo.psi.calimocho.model.CalimochoKeys;

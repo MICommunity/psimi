@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho.model;
+package org.hupo.psi.tab.model;
 
 import org.hupo.psi.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.tab.model.ColumnBasedDocumentDefinition;

@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho.io.parser;
+package org.hupo.psi.tab.io.parser;
 
 import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
