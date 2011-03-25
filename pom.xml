@@ -13,11 +13,12 @@
     <modules>
         <module>psi25-xml</module>
         <module>psimitab-parser</module>
-        <module>psimitab26</module>
         <module>psimitab-search</module>
         <module>psimitab-organism</module>
         <!--<module>validator</module>-->
-    <module>psimi-examples</module>
+        <module>psimi-examples</module>
+        <module>calimocho</module>
+        <module>calimocho-tab</module>
   </modules>
 
     <scm>
