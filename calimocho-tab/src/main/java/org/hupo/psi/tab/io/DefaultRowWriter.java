@@ -56,58 +56,71 @@ public class DefaultRowWriter implements RowWriter {
      * {@inheritDoc}
      */
     public String writeLine( Row row ) throws IllegalRowException, IllegalColumnException, IllegalFieldException {
-        final List<ColumnDefinition> columnDefinitions = documentDefinition.getColumnDefinitions();
         final boolean hasColumnDelimiter = documentDefinition.hasColumnDelimiter();
-        StringBuilder sb = new StringBuilder( 512 );
+        StringBuilder sb = new StringBuilder( 1024 );
 
-        for ( Iterator<ColumnDefinition> iterator = columnDefinitions.iterator(); iterator.hasNext(); ) {
-            final ColumnDefinition columnDefinition = iterator.next();
+        final int highestColumnPosition = documentDefinition.getHighestColumnPosition();
+        for ( int colNum = 0; colNum <= highestColumnPosition; colNum++ ) {
 
-            // TODO assume the first column is position ZERO, write empty columns when no definition
+            final ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition( colNum );
 
-            if ( hasColumnDelimiter ) {
-                sb.append( documentDefinition.getColumnDelimiter() );
-            }
+            if( columnDefinition == null ) {
 
-            final Collection<Field> fields = row.getFields( columnDefinition.getKey() );
-            // TODO if column definition says can be empty, do not throw exception
-            if ( fields == null ) {
-                // TODO do we want to give more context about the row?
-                final IllegalRowException illegalRowException = new IllegalRowException( "Could not find column " + columnDefinition.getKey() );
-                throw illegalRowException;
-            }
+                // This column isn't defined and we output an empty column
+                sb.append( columnDefinition.getEmptyValue() );
 
-            if( fields.size() > 1 && ! columnDefinition.hasFieldSeparator() ) {
-                throw new IllegalColumnException( "The column definition ("+ columnDefinition.getKey() +") doesn't " +
-                                                  "have a field separator, yet the column has "+ fields.size() +" fields" );
-            }
+            } else {
 
-            final FieldFormatter fieldFormatter = columnDefinition.getFieldFormatter();
-            for ( Iterator<Field> fieldIterator = fields.iterator(); fieldIterator.hasNext(); ) {
-                Field field = fieldIterator.next();
+                if ( hasColumnDelimiter ) {
+                    sb.append( documentDefinition.getColumnDelimiter() );
+                }
 
-                // add missing default values before formatting
-                field.setIfMissing( columnDefinition.getDefaultValues() );
-
-                final String fieldStr = fieldFormatter.format( field );
-
-                if ( columnDefinition.hasFieldDelimiter() ) {
-                    final String fieldDelimiter = columnDefinition.getFieldDelimiter();
-                    sb.append( fieldDelimiter ).append( fieldStr ).append( fieldDelimiter );
+                final Collection<Field> fields = row.getFields( columnDefinition.getKey() );
+                if ( fields == null ) {
+                    if( ! columnDefinition.isAllowsEmpty() ) {
+                        final IllegalRowException ire = new IllegalRowException( "Could not find column " + columnDefinition.getKey() );
+                        ire.setRow( row );
+                        throw ire;
+                    } else {
+                        // empty column
+                        sb.append( columnDefinition.getEmptyValue() );
+                    }
                 } else {
-                    sb.append( fieldStr );
-                }
 
-                if ( fieldIterator.hasNext() ) {
-                    sb.append( columnDefinition.getFieldSeparator() );
+                    if( fields.size() > 1 && ! columnDefinition.hasFieldSeparator() ) {
+                        throw new IllegalColumnException( "The column definition ("+ columnDefinition.getKey() +") doesn't " +
+                                                          "have a field separator, yet the column has "+ fields.size() +" fields" );
+                    }
+
+                    final FieldFormatter fieldFormatter = columnDefinition.getFieldFormatter();
+                    for ( Iterator<Field> fieldIterator = fields.iterator(); fieldIterator.hasNext(); ) {
+                        Field field = fieldIterator.next();
+
+                        // add missing default values before formatting
+                        field.setIfMissing( columnDefinition.getDefaultValues() );
+
+                        final String fieldStr = fieldFormatter.format( field );
+
+                        if ( columnDefinition.hasFieldDelimiter() ) {
+                            final String fieldDelimiter = columnDefinition.getFieldDelimiter();
+                            sb.append( fieldDelimiter ).append( fieldStr ).append( fieldDelimiter );
+                        } else {
+                            sb.append( fieldStr );
+                        }
+
+                        if ( fieldIterator.hasNext() ) {
+                            sb.append( columnDefinition.getFieldSeparator() );
+                        }
+                    }
+
+                    if ( hasColumnDelimiter ) {
+                        sb.append( documentDefinition.getColumnDelimiter() );
+                    }
                 }
             }
 
-            if ( hasColumnDelimiter ) {
-                sb.append( documentDefinition.getColumnDelimiter() );
-            }
-
-            if ( iterator.hasNext() ) {
+            final boolean hasNext = colNum < highestColumnPosition;
+            if ( hasNext ) {
                 sb.append( documentDefinition.getColumnSeparator() );
             }
         }
