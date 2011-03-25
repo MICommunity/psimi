@@ -1,5 +1,10 @@
 package org.hupo.psi.calimocho.model;
 
+import org.hupo.psi.calimocho.io.*;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +16,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class AbstractDocumentDefinition extends AbstractDefined implements DocumentDefinition {
+public class AbstractColumnBasedDocumentDefinition extends AbstractDefined implements ColumnBasedDocumentDefinition {
 
     private List<ColumnDefinition> columns;
     private String name;
@@ -20,6 +25,22 @@ public class AbstractDocumentDefinition extends AbstractDefined implements Docum
     private String columnDelimiter;
     private String commentPrefix;
     private boolean partial;
+
+    public CalimochoDocument readDocument( Reader reader ) throws IOException, IllegalRowException {
+        CalimochoDocument calimochoDocument = new DefaultCalimochoDocument();
+
+        RowReader rowReader = new DefaultRowReader( this );
+        final List<Row> rows = rowReader.read( reader );
+
+        calimochoDocument.setRows( rows );
+
+        return calimochoDocument;
+    }
+
+    public void writeDocument( Writer writer, CalimochoDocument calimochoDocument ) throws IOException, IllegalRowException {
+        RowWriter rowWriter = new DefaultRowWriter( this );
+        rowWriter.write( writer, calimochoDocument.getRows() );
+    }
 
     public List<ColumnDefinition> getColumns() {
         if (columns == null){
@@ -120,4 +141,5 @@ public class AbstractDocumentDefinition extends AbstractDefined implements Docum
         }
         return columns.get( columns.size() - 1 ).getPosition();
     }
+
 }

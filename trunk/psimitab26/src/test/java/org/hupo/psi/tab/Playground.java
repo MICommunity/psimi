@@ -2,8 +2,8 @@ package org.hupo.psi.tab;
 
 import org.hupo.psi.calimocho.io.DefaultRowReader;
 import org.hupo.psi.calimocho.io.RowReader;
+import org.hupo.psi.calimocho.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
-import org.hupo.psi.calimocho.model.DocumentDefinition;
 import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.tab.util.MitabDocumentDefinitionFactory;
 
@@ -24,7 +24,7 @@ public class Playground
         InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab26/14726512.txt");
 
 
-        DocumentDefinition mitabDocDefinition = MitabDocumentDefinitionFactory.mitab26();
+        ColumnBasedDocumentDefinition mitabDocDefinition = MitabDocumentDefinitionFactory.mitab26();
 
         RowReader reader = new DefaultRowReader(mitabDocDefinition);
 

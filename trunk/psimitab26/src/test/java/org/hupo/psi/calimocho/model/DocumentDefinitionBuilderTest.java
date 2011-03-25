@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class DocumentDefinitionBuilderTest extends AbstractCalimochoTest {
     @Test
     public void columnOrderingByPosition() throws Exception {
-        final DocumentDefinition documentDefinition = buildGeneListDefinition();
+        final ColumnBasedDocumentDefinition documentDefinition = buildGeneListDefinition();
         final ArrayList<ColumnDefinition> columnDefinitionList = new ArrayList<ColumnDefinition>( documentDefinition.getColumns() );
 
         Assert.assertEquals( Integer.valueOf(0), columnDefinitionList.get( 0 ).getPosition() );

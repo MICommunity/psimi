@@ -13,10 +13,10 @@ import java.util.Map;
  */
 public class DocumentDefinitionBuilder {
 
-    private AbstractDocumentDefinition docDefinition;
+    private AbstractColumnBasedDocumentDefinition docDefinition;
 
     public DocumentDefinitionBuilder() {
-        docDefinition = new AbstractDocumentDefinition() {};
+        docDefinition = new AbstractColumnBasedDocumentDefinition() {};
     }
 
     public DocumentDefinitionBuilder addColumnDefinition(ColumnDefinition columnDefinition) {
@@ -49,7 +49,7 @@ public class DocumentDefinitionBuilder {
         return this;
     }
 
-    public DocumentDefinitionBuilder extendDocumentDefinition (DocumentDefinition docDef){
+    public DocumentDefinitionBuilder extendDocumentDefinition (ColumnBasedDocumentDefinition docDef){
 
         if (docDef != null){
             docDefinition.setColumnDelimiter(docDef.getColumnDelimiter());
@@ -63,7 +63,7 @@ public class DocumentDefinitionBuilder {
         }
         return this;
     }
-    public DocumentDefinition build() {
+    public ColumnBasedDocumentDefinition build() {
         validate();
 
         // sort the columns by position

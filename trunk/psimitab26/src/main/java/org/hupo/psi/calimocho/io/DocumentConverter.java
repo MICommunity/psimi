@@ -16,7 +16,7 @@
 package org.hupo.psi.calimocho.io;
 
 
-import org.hupo.psi.calimocho.model.DocumentDefinition;
+import org.hupo.psi.calimocho.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.model.Row;
 
 import java.io.*;
@@ -30,10 +30,10 @@ import java.util.Collection;
  */
 public class DocumentConverter {
 
-    private DocumentDefinition sourceDocumentDefinition;
-    private DocumentDefinition destinationDocumentDefinition;
+    private ColumnBasedDocumentDefinition sourceDocumentDefinition;
+    private ColumnBasedDocumentDefinition destinationDocumentDefinition;
 
-    public DocumentConverter( DocumentDefinition sourceDocumentDefinition, DocumentDefinition destinationDocumentDefinition ) {
+    public DocumentConverter( ColumnBasedDocumentDefinition sourceDocumentDefinition, ColumnBasedDocumentDefinition destinationDocumentDefinition ) {
         this.sourceDocumentDefinition = sourceDocumentDefinition;
         this.destinationDocumentDefinition = destinationDocumentDefinition;
     }

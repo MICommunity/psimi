@@ -1,7 +1,7 @@
 package org.hupo.psi.calimocho.io;
 
+import org.hupo.psi.calimocho.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.model.ColumnDefinition;
-import org.hupo.psi.calimocho.model.DocumentDefinition;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 
@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Writes the rows in the format defined by the DocumentDefinition.
+ * Writes the rows in the format defined by the ColumnBasedDocumentDefinition.
  *
  * @author Christine Jandrasits (cjandras@ebi.ac.uk)
  * @version $Id$
@@ -23,9 +23,9 @@ import java.util.List;
 public class DefaultRowWriter implements RowWriter {
 
     private static final String NEW_LINE = System.getProperty( "line.separator" );
-    private DocumentDefinition documentDefinition;
+    private ColumnBasedDocumentDefinition documentDefinition;
 
-    public DefaultRowWriter( DocumentDefinition documentDefinition ) {
+    public DefaultRowWriter( ColumnBasedDocumentDefinition documentDefinition ) {
         this.documentDefinition = documentDefinition;
 
     }

@@ -2,7 +2,7 @@ package org.hupo.psi.calimocho.io;
 
 import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.calimocho.AbstractCalimochoTest;
-import org.hupo.psi.calimocho.model.DocumentDefinition;
+import org.hupo.psi.calimocho.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class DefaultRowWriterTest extends AbstractCalimochoTest {
 
         String aLine = "LSM7|9606" + NEW_LINE;
 
-        final DocumentDefinition documentDefinition = buildGeneListDefinition();
+        final ColumnBasedDocumentDefinition documentDefinition = buildGeneListDefinition();
 
         RowReader reader = new DefaultRowReader( documentDefinition );
         final List<Row> rows = reader.read( new ByteArrayInputStream( aLine.getBytes() ) );
@@ -45,7 +45,7 @@ public class DefaultRowWriterTest extends AbstractCalimochoTest {
 
         String aLine = "LSM7|9606" + NEW_LINE + "LSM2|9606" + NEW_LINE + "BRCA2|10032";
 
-        final DocumentDefinition documentDefinition = buildGeneListDefinition();
+        final ColumnBasedDocumentDefinition documentDefinition = buildGeneListDefinition();
 
         RowReader reader = new DefaultRowReader( documentDefinition );
         final List<Row> rows = reader.read( new ByteArrayInputStream( aLine.getBytes() ) );
