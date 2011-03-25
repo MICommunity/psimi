@@ -47,4 +47,8 @@ public class DefaultRow implements Row {
     public Collection<Field> getAllFields() {
         return fieldMultimap.values();
     }
+
+    public Collection<String> keySet() {
+        return fieldMultimap.keySet();
+    }
 }

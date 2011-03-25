@@ -19,4 +19,6 @@ public interface Row {
 
     Collection<Field> getAllFields();
 
+    Collection<String> keySet();
+
 }
