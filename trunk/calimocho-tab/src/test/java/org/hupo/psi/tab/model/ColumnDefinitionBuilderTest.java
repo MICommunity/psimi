@@ -1,5 +1,6 @@
-package org.hupo.psi.calimocho.model;
+package org.hupo.psi.tab.model;
 
+import org.hupo.psi.calimocho.model.DefinitionException;
 import org.hupo.psi.tab.io.formatter.KeyValueFieldFormatter;
 import org.hupo.psi.tab.io.parser.KeyValueFieldParser;
 import org.hupo.psi.tab.model.ColumnDefinition;

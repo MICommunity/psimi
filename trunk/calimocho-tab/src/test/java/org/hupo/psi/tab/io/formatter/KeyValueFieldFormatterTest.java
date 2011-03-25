@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho.io.formatter;
+package org.hupo.psi.tab.io.formatter;
 
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.CalimochoKeys;

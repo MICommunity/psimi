@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho.io;
+package org.hupo.psi.tab.io;
 
 import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.tab.AbstractCalimochoTabTest;

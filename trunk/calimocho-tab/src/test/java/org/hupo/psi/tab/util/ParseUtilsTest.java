@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.hupo.psi.calimocho.util;
+package org.hupo.psi.tab.util;
 
 import org.hupo.psi.tab.util.ParseUtils;
 import org.junit.Assert;

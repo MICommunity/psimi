@@ -1,6 +1,7 @@
-package org.hupo.psi.calimocho.io;
+package org.hupo.psi.tab.io;
 
 import junit.framework.Assert;
+import org.hupo.psi.calimocho.io.DocumentConverter;
 import org.hupo.psi.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.tab.model.ColumnBasedDocumentDefinition;
 import org.junit.Test;
