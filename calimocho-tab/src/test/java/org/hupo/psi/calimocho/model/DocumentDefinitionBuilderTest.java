@@ -1,6 +1,6 @@
 package org.hupo.psi.calimocho.model;
 
-import org.hupo.psi.calimocho.AbstractCalimochoTest;
+import org.hupo.psi.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.tab.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.tab.model.ColumnDefinition;
 import org.junit.Assert;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @version $Id$
  * @since 1.0
  */
-public class DocumentDefinitionBuilderTest extends AbstractCalimochoTest {
+public class DocumentDefinitionBuilderTest extends AbstractCalimochoTabTest {
     @Test
     public void columnOrderingByPosition() throws Exception {
         final ColumnBasedDocumentDefinition documentDefinition = buildGeneListDefinition();

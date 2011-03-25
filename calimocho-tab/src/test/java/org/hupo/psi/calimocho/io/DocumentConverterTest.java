@@ -1,7 +1,7 @@
 package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
-import org.hupo.psi.calimocho.AbstractCalimochoTest;
+import org.hupo.psi.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.tab.model.ColumnBasedDocumentDefinition;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream;
  * @version $Id$
  * @since 1.0
  */
-public class DocumentConverterTest extends AbstractCalimochoTest {
+public class DocumentConverterTest extends AbstractCalimochoTabTest {
 
     @Test
     public void convert() throws Exception {
