@@ -1,7 +1,7 @@
 package org.hupo.psi.calimocho.io;
 
 import junit.framework.Assert;
-import org.hupo.psi.calimocho.AbstractCalimochoTest;
+import org.hupo.psi.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.calimocho.model.*;
 import org.hupo.psi.tab.io.DefaultRowReader;
 import org.hupo.psi.tab.io.IllegalColumnException;
@@ -26,7 +26,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class DefaultRowReaderTest extends AbstractCalimochoTest {
+public class DefaultRowReaderTest extends AbstractCalimochoTabTest {
 
     @Test
     public void readLine() throws Exception {

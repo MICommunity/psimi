@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho;
+package org.hupo.psi.tab;
 
 import org.hupo.psi.calimocho.model.CalimochoKeys;
 import org.hupo.psi.tab.io.formatter.KeyValueFieldFormatter;
@@ -16,7 +16,7 @@ import org.hupo.psi.tab.model.ColumnDefinitionBuilder;
  * @version $Id$
  * @since 1.0
  */
-public abstract class AbstractCalimochoTest {
+public abstract class AbstractCalimochoTabTest {
 
     public static final String NEW_LINE = System.getProperty( "line.separator" );
 

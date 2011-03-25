@@ -1,7 +1,7 @@
 package org.hupo.psi.calimocho.io;
 
 import org.apache.commons.lang.StringUtils;
-import org.hupo.psi.calimocho.AbstractCalimochoTest;
+import org.hupo.psi.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.tab.io.DefaultRowReader;
 import org.hupo.psi.tab.io.DefaultRowWriter;
@@ -22,7 +22,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class DefaultRowWriterTest extends AbstractCalimochoTest {
+public class DefaultRowWriterTest extends AbstractCalimochoTabTest {
 
     @Test
     public void writeLine_singleLine() throws Exception {
