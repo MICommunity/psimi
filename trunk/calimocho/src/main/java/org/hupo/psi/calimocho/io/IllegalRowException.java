@@ -1,6 +1,8 @@
 package org.hupo.psi.calimocho.io;
 
 
+import org.hupo.psi.calimocho.model.Row;
+
 /**
  * Thrown when unexpected formats for Rows are found.
  *
@@ -12,6 +14,7 @@ public class IllegalRowException extends Exception {
 
     private Integer lineNumber;
     private String line;
+    private Row row;
 
     public IllegalRowException() {
     }
@@ -30,6 +33,11 @@ public class IllegalRowException extends Exception {
         this.lineNumber = lineNumber;
     }
 
+    public IllegalRowException( String message, Row row, Throwable cause ) {
+        super( message, cause );
+        this.row = row;
+    }
+
     public String getLine() {
         return line;
     }
@@ -44,5 +52,13 @@ public class IllegalRowException extends Exception {
 
     public void setLineNumber( Integer lineNumber ) {
         this.lineNumber = lineNumber;
+    }
+
+    public Row getRow() {
+        return row;
+    }
+
+    public void setRow( Row row ) {
+        this.row = row;
     }
 }
