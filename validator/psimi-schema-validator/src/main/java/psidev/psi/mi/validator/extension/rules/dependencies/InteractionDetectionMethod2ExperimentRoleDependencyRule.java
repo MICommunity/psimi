@@ -41,8 +41,7 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
         try {
 
-            URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
-                    .getResource( fileName );
+            URL resource = new URL( fileName );
 
             mapping = new DependencyMapping();
 
