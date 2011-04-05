@@ -53,7 +53,7 @@ The column contents should be as follows:
   #  *Checksum for interaction*, for instance the RIGID of the interaction. Representation as databaseName:checksum
   #  *negative* Boolean value to distinguish positive interactions (negative = false) from negative interactions (negative = true)
 
-The columns *Xrefs for interactor A*, *Xrefs for interactor B*, *Xrefs for interaction*, *Annotations for interactor A*, *Annotations for interactor B*, *Annotations for interaction*, *Parameters of the interactions*, *Checksum of interactor A*, *Checksum of interactor B*, *Checksum of the interactions* are optional. All the other columns are mandatory.
+All the columns are mandatory.
 
 == Syntax ==
 
