@@ -49,8 +49,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
         try {
 
-            URL resource = InteractionDetectionMethod2InteractionTypeDependencyRule.class
-                    .getResource( fileName );
+            URL resource = new URL( fileName );
             mapping = new DependencyMappingInteractionDetectionMethod2InteractionType();
             mapping.buildMappingFromFile( mi, resource);
 

@@ -44,8 +44,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureDetectionMethod();
         
         try {
-            URL resource = FeatureType2FeatureDetectionMethodDependencyRule.class
-                    .getResource( fileName );
+            URL resource = new URL( fileName );
 
             mapping = new DependencyMapping();
 

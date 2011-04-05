@@ -37,8 +37,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         
             try {
 
-                URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
-                .getResource( fileName );
+                URL resource = new URL( fileName );
 
                 mapping = new DependencyMapping();
                 mapping.buildMappingFromFile( mi, resource );

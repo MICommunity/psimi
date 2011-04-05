@@ -52,8 +52,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
         try {
 
-            URL resource = CrossReference2CrossReferenceTypeDependencyRule.class
-                    .getResource( fileName );
+            URL resource = new URL( fileName );
 
             // Create a new instance of dependency mapping
             mapping = new DependencyMappingCrossReference2CrossReferenceType();

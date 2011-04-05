@@ -1,7 +1,5 @@
 package psidev.psi.mi.validator.extension;
 
-import psidev.psi.tools.validator.ValidatorConfig;
-
 /**
  * Mi25ValidatorConfig
  *
@@ -12,13 +10,13 @@ import psidev.psi.tools.validator.ValidatorConfig;
 
 public class Mi25ValidatorConfig{
 
-    private final String crossReference2CrossReferenceType = "/crossReference2Location2CrossRefType.tsv";
-    private final String featureType2FeatureDetectionMethod = "/featureType2FeatureDetectionMethod.tsv";
-    private final String featureType2FeatureRange = "/featureType2FeatureRangeStatus.tsv";
-    private final String interactionDetectionMethod2BiologicalRole = "/InteractionDetectionMethod2BiologicalRole.tsv";
-    private final String interactionDetectionMethod2ExperimentalRole = "/InteractionDetectionMethod2ExperimentRole.tsv";
-    private final String interactionDetectionMethod2InteractionType = "/InteractionDetection2InteractionTypes.tsv";
-    private final String interactionDetectionMethod2ParticipantIdentificationMethod = "/InteractionDetectionMethod2ParticipantIdentificationMethod.tsv";
+    private final String crossReference2CrossReferenceType = "http://www.ebi.ac.uk/~intact/psi-validator/dependencies/crossReference2Location2CrossRefType.tsv";
+    private final String featureType2FeatureDetectionMethod = "http://www.ebi.ac.uk/~intact/psi-validator/dependencies/featureType2FeatureDetectionMethod.tsv";
+    private final String featureType2FeatureRange = "http://www.ebi.ac.uk/~intact/psi-validator/dependencies/featureType2FeatureRangeStatus.tsv";
+    private final String interactionDetectionMethod2BiologicalRole = "http://www.ebi.ac.uk/~intact/psi-validator/dependencies/interactionDetectionMethod2BiologicalRole.tsv";
+    private final String interactionDetectionMethod2ExperimentalRole = "http://www.ebi.ac.uk/~intact/psi-validator/dependencies/interactionDetectionMethod2ExperimentalRole.tsv";
+    private final String interactionDetectionMethod2InteractionType = "http://www.ebi.ac.uk/~intact/psi-validator/dependencies/interactionDetectionMethod2InteractionTypes.tsv";
+    private final String interactionDetectionMethod2ParticipantIdentificationMethod = "http://www.ebi.ac.uk/~intact/psi-validator/dependencies/interactionDetectionMethod2ParticipantIdentificationMethod.tsv";
 
     public Mi25ValidatorConfig() {
     }

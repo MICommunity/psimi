@@ -42,8 +42,7 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureRange();
 
         try {
-            URL resource = FeatureType2FeatureRangeDependencyRule.class
-                    .getResource( fileName );
+            URL resource = new URL( fileName );
 
             mapping = new DependencyMapping();
             mapping.buildMappingFromFile( mi, resource );
