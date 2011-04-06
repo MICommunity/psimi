@@ -632,14 +632,14 @@ public final class RuleUtils {
             Collection<Attribute> attributeName = RuleUtils.findByAttributeName(attributes, attMi, attname);
 
             if (attributeName.isEmpty()){
-                messages.add( new ValidatorMessage( "The experiment does not have an attribute name set to '"+attname+"' ("+attMi+") and it is required for IMEx. ",
+                messages.add( new ValidatorMessage( "The experiment does not have an attribute '"+attname+"' ("+attMi+") and it is required for IMEx. ",
                         MessageLevel.ERROR,
                         context,
                         experimentRule ) );
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The experiment does not have any attributes. At least one attribute with a name set to '"+attname+"' ("+attMi+") is required for IMEx. ",
+            messages.add( new ValidatorMessage( "The experiment does not have any attributes. At least one attribute '"+attname+"' ("+attMi+") is required for IMEx. ",
                     MessageLevel.ERROR,
                     context,
                     experimentRule ) );

@@ -60,7 +60,7 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
         Mi25Context context = buildContext( interactorId );
 
         if (interactor.getInteractorType() == null){
-            messages.add( new ValidatorMessage( "Interactors must have an interactor type.",
+            messages.add( new ValidatorMessage( "The interactor does not have an interactor type. It is required by IMEx.",
                             MessageLevel.ERROR,
                             context,
                             this ) );

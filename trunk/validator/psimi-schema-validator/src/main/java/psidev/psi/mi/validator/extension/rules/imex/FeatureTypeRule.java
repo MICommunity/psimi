@@ -35,8 +35,8 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
         super(ontologyManager);
 
         // describe the rule.
-        setName("Feature Type Check");
-        setDescription("Checks that each feature has a feature type with " +
+        setName("Participant's feature Type Check");
+        setDescription("Checks that each participant's feature has a feature type with " +
                 "a valid PSI MI cross reference.");
         addTip( "See http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type for the existing feature types" );
     }
@@ -73,7 +73,7 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
                     Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
 
                     if (psiRef.isEmpty()){
-                        messages.add( new ValidatorMessage( "The feature type " + (feature.getFeatureType().getNames() != null ? feature.getFeatureType().getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but no one is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",
+                        messages.add( new ValidatorMessage( "The feature type " + (feature.getFeatureType().getNames() != null ? feature.getFeatureType().getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but none of them is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
@@ -104,7 +104,7 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
                     }
                 }
                 else {
-                    messages.add( new ValidatorMessage( "The feature type " + (feature.getFeatureType().getNames() != null ? feature.getFeatureType().getNames().getShortLabel() : "") + " doesn't have any cross references. A PSI-MI cross reference with qualifier 'identity' is required.",
+                    messages.add( new ValidatorMessage( "The feature type " + (feature.getFeatureType().getNames() != null ? feature.getFeatureType().getNames().getShortLabel() : "") + " does not have any cross references. A PSI-MI cross reference with qualifier 'identity' is required.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
@@ -113,7 +113,7 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
 
         }
         else {
-            messages.add( new ValidatorMessage( "A feature type is required by IMEx.'",
+            messages.add( new ValidatorMessage( "The feature does not have a feature type. It is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,
                     this ) );

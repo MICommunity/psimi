@@ -44,7 +44,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureDetectionMethod();
         
         try {
-            URL resource = new URL( fileName );
+            URL resource = FeatureType2FeatureDetectionMethodDependencyRule.class
+                    .getResource( fileName );
 
             mapping = new DependencyMapping();
 
@@ -56,8 +57,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Feature type and feature detection method check" );
-        setDescription( "Checks that each interaction does not have any conflicts between the feature type of a participant and its feature detection method.");
+        setName( "Participant's feature type and feature detection method check" );
+        setDescription( "Checks that each association participant's feature type - feature detection method is valid and respects IMEx curation rules.");
         addTip( "Search the possible terms for feature type and feature detection method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/featureType2FeatureDetectionMethod.tsv for the possible dependencies feature type - feature detection method" );
     }

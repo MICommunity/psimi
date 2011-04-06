@@ -37,7 +37,8 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         
             try {
 
-                URL resource = new URL( fileName );
+                URL resource = InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule.class
+                    .getResource( fileName );
 
                 mapping = new DependencyMapping();
                 mapping.buildMappingFromFile( mi, resource );
@@ -49,7 +50,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         }
             // describe the rule.
         setName( "Interaction detection method and participant identification method check" );
-        setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the participant identification methods." );
+        setDescription( "Checks that each association interaction detection method - participant identification methods is valid and respects IMEx curation rules." );
         addTip( "Search the possible terms for interaction detection method and participant identification method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2ParticipantIdentificationMethod.tsv for the possible dependencies interaction detection method - participant identification method" );                                
     }

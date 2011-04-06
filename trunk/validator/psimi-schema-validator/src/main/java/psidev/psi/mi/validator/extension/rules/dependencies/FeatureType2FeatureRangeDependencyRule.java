@@ -42,7 +42,8 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
         String fileName = validatorContext.getValidatorConfig().getFeatureType2FeatureRange();
 
         try {
-            URL resource = new URL( fileName );
+            URL resource = FeatureType2FeatureRangeDependencyRule.class
+                    .getResource( fileName );
 
             mapping = new DependencyMapping();
             mapping.buildMappingFromFile( mi, resource );
@@ -53,8 +54,8 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Feature type and feature range status check" );
-        setDescription( "Checks that each interaction does not have any conflicts between the feature type of a participant and its feature range status.");
+        setName( "Participant's feature type and participant's feature range status check" );
+        setDescription( "Checks association participant's feature type - participant's feature range status is valid and respects IMEx curation rules.");
         addTip( "Search the possible terms for feature type and feature range status on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/featureType2FeatureRangeStatus.tsv for the possible dependencies feature type - feature range status" );
 

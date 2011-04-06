@@ -37,7 +37,7 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
 
         // describe the rule.
         setName( "Experiment Annotations Check" );
-        setDescription( "Checks that each annotation has a name associated with a valid PSI-MI term and/or is a valid annotation for an experiment." );
+        setDescription( "Checks that each annotation has a name associated with a valid PSI-MI term and/or is a valid annotation for an experiment according to the IMEx curation rules." );
         addTip( "Existing experiment's attribute terms can be found at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0590&termName=attribute%20name." );
     }
 
@@ -75,7 +75,7 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
             for (Attribute attribute : attributes){
                 if (!attribute.hasNameAc()){
                     if (attribute.getName() != null && !attribute.getName().equalsIgnoreCase(COPYRIGHT)){
-                        messages.add( new ValidatorMessage( "The attribute " + attribute.getName() + " does not have any MI number attached to it (using nameAc attribute). " +
+                        messages.add( new ValidatorMessage( "The attribute " + attribute.getName() + " does not have any nameAc. " +
                                 "All experiment's attributes should have a nameAc pointing to a valid PSI MI term (Excepted '"+COPYRIGHT+"' attribute)." +
                                 " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
                                 MessageLevel.WARN,

@@ -68,7 +68,7 @@ public class InteractionTypeRule extends Mi25InteractionRule{
                         Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
 
                         if (psiRef.isEmpty()){
-                            messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but no one is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",
+                            messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but none of them is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
@@ -99,7 +99,7 @@ public class InteractionTypeRule extends Mi25InteractionRule{
                         }
                     }
                     else {
-                        messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " doesn't have any cross references. A PSI-MI cross reference with qualifier 'identity' is required.",
+                        messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " does not have any cross references. A PSI-MI cross reference with qualifier 'identity' is required.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
@@ -109,7 +109,7 @@ public class InteractionTypeRule extends Mi25InteractionRule{
 
         }
         else {
-            messages.add( new ValidatorMessage( "At least one interaction type is required by IMEx.'",
+            messages.add( new ValidatorMessage( "The interaction does not have any interaction types. At least one interaction type is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,
                     this ) );

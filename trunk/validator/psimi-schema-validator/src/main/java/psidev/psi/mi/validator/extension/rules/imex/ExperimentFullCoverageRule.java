@@ -28,7 +28,7 @@ public class ExperimentFullCoverageRule extends Mi25ExperimentRule {
 
         // describe the rule.
         setName( "Experiment full coverage attribute check" );
-        setDescription( "Checks that each experiment has at least one attribute name set to 'full coverage' (MI:0957)." );
+        setDescription( "Checks that each experiment has at least one attribute 'full coverage' (MI:0957)." );
         addTip( "Your experiment must have an attribute with a name 'full coverage'" );
         addTip( "The PSI-MI identifier for full coverage is: MI:0957" );
     }
