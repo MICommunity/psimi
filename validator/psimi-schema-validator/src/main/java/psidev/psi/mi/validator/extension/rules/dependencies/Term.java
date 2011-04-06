@@ -148,7 +148,7 @@ public class Term {
                 sb.append(term.getId());
 
                 if (term.getName() != null){
-                    sb.append("(name : " + term.getName() + ")");
+                    sb.append("(" + term.getName() + ")");
                 }
             }
             else {

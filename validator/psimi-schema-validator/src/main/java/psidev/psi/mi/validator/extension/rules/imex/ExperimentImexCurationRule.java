@@ -3,10 +3,8 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -30,8 +28,8 @@ public class ExperimentImexCurationRule extends Mi25ExperimentRule {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Experiment imex curation attribute check" );
-        setDescription( "Checks that each experiment has at least one attribute name set to 'imex-curation' (MI:0959)." );
+        setName( "Experiment imex-curation attribute check" );
+        setDescription( "Checks that each experiment has at least one attribute 'imex-curation' (MI:0959)." );
         addTip( "Your experiment must have an attribute with a name 'imex-curation'" );
         addTip( "The PSI-MI identifier for imex-curation is: MI:0959" );
     }

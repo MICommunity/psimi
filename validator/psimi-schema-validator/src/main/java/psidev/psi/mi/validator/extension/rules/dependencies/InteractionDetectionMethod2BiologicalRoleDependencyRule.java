@@ -40,7 +40,8 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
         
         try {
 
-            URL resource = new URL( fileName );
+            URL resource = InteractionDetectionMethod2BiologicalRoleDependencyRule.class
+                    .getResource( fileName );
             mapping = new DependencyMapping();
 
             mapping.buildMappingFromFile( mi, resource );
@@ -51,8 +52,8 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Interaction detection method and biological role check" );
-        setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the biological role of the participants");
+        setName( "Interaction detection method and participant's biological role check" );
+        setDescription( "Checks that each association interaction detection method - participant's biological role is valid and respects IMEx curation rules");
         addTip( "Search the possible terms for interaction detection method and biological role on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2BiologicalRole.tsv for the possible dependencies interaction detection method - biological role" );        
     }

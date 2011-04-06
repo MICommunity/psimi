@@ -484,7 +484,7 @@ public class DependencyMapping {
             Set<AssociatedTerm> rec = getRecommendedDependenciesFor(firstTermOfDependency);
             final StringBuffer msg = new StringBuffer( 1024 );
             msg.append("The " + term1.getClass().getSimpleName() + " "+Term.printTerm(firstTermOfDependency)+" " +
-                    "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" should not be associated together." +
+                    "and the " + term2.getClass().getSimpleName() + " "+Term.printTerm(secondTermDependency)+" should not be associated together. " +
                     Term.printTerm(firstTermOfDependency) +" is usually associated with : ");
             writePossibleDependenciesFor(rec, msg);
 

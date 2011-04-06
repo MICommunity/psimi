@@ -41,7 +41,8 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
         try {
 
-            URL resource = new URL( fileName );
+            URL resource = InteractionDetectionMethod2ExperimentRoleDependencyRule.class
+                    .getResource( fileName );
 
             mapping = new DependencyMapping();
 
@@ -53,8 +54,8 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Interaction detection method and Experimental role check" );
-        setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the experimental role of the participants" );
+        setName( "Interaction detection method and participant's experimental role check" );
+        setDescription( "Checks that each association interaction detection method - participant's experimental role is valid and respects IMEx curation rules" );
         addTip( "Search the possible terms for interaction detection method and experimental role on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2ExperimentRole.tsv for the possible dependencies interaction detection method - experimental role" );                
     }

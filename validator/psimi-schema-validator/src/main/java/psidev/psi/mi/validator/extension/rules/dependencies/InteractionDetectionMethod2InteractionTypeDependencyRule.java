@@ -49,7 +49,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
         try {
 
-            URL resource = new URL( fileName );
+            URL resource = InteractionDetectionMethod2InteractionTypeDependencyRule.class
+                    .getResource( fileName );
             mapping = new DependencyMappingInteractionDetectionMethod2InteractionType();
             mapping.buildMappingFromFile( mi, resource);
 
@@ -60,7 +61,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         }
         // describe the rule.
         setName( "Interaction detection method and interaction type check" );
-        setDescription( "Checks that each interaction does not have any conflicts between the interaction detection method and the interaction type." );
+        setDescription( "Checks that each association interaction detection method - interaction type is valid and respects IMEx curation rules." );
         addTip( "Search the possible terms for interaction detection method and interaction type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2InteractionTypes.tsv for the possible dependencies interaction detection method - interaction type" );
     }

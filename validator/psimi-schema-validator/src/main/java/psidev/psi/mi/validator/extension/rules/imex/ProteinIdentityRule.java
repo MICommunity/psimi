@@ -75,14 +75,14 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
 
                 if (interactor.hasSequence()){
                     Mi25Context context = buildContext( interactorId );
-                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity' ",
+                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and RefSeq with a ref type 'identity' ",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 else {
                     Mi25Context context = buildContext( interactorId );
-                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and/or RefSeq with a ref type 'identity'. If no identity cross references " +
+                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and RefSeq with a ref type 'identity'. If no identity cross references " +
                             "are given, the protein sequence is strongly recommended.",
                             MessageLevel.WARN,
                             context,

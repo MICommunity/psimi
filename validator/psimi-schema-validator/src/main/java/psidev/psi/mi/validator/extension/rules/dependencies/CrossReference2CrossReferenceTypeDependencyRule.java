@@ -52,7 +52,8 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
         try {
 
-            URL resource = new URL( fileName );
+            URL resource = CrossReference2CrossReferenceTypeDependencyRule.class
+                    .getResource( fileName );
 
             // Create a new instance of dependency mapping
             mapping = new DependencyMappingCrossReference2CrossReferenceType();
@@ -66,7 +67,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         }
         // describe the rule.
         setName( "Cross reference database and cross reference qualifier check" );
-        setDescription( "Checks that each cross reference does not have any conflicts between the database and the qualifier. For example, for each feature, all the interpro" +
+        setDescription( "Checks that each association database - qualifier respects IMEx curetion rules. For example, for each feature, all the interpro" +
                 " cross references should have a qualifier 'identity'.");
         addTip( "Search the possible terms for database cross reference and reference type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/crossReference2Location2CrossRefType.tsv for the possible dependencies cross reference database - qualifier" );
