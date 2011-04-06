@@ -1,6 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -53,8 +54,8 @@ public class InteractorOrganismRule extends ObjectRule<Interactor> {
         Mi25Context context = new Mi25Context();
         context.setInteractorId(interactorId);
 
-        if (!interactor.hasOrganism()){
-            messages.add( new ValidatorMessage( "The interactor does not have an organism and it is required for MIMIx.",
+        if (RuleUtils.isProtein(ontologyManager, interactor) && !interactor.hasOrganism()){
+            messages.add( new ValidatorMessage( "The protein does not have an organism and it is required for MIMIx.",
                                                 MessageLevel.ERROR,
                                                 context,
                                                 this ) );

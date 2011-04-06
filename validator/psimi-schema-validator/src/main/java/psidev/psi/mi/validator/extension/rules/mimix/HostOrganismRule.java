@@ -1,12 +1,9 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -29,7 +26,7 @@ public class HostOrganismRule extends ObjectRule<Organism> {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Host Organism Check" );
+        setName( "Organism Check" );
         setDescription( "Checks that each organism has a valid NCBI taxid" );
         addTip( "Search http://www.ebi.ac.uk/newt/display with an organism name to retrieve its taxid" );
         addTip( "By convention, the taxid for 'in vitro' is -1" );
