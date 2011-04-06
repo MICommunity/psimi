@@ -26,7 +26,7 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
         super( ontologyManager );
 
         // describe the rule.
-        setName( "Single Biological Role Check" );
+        setName( "Participant's Biological Role Check" );
 
         setDescription( "Check that each interaction's participant has a valid biological role." );
 
@@ -59,8 +59,7 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
         int participantId = participant.getId();
         if ( !participant.hasBiologicalRole() ) {
             final Mi25Context context = buildContext( participantId );
-            messages.add( new ValidatorMessage( "Interaction's participants should have a " +
-                    "biological role; found 0.",
+            messages.add( new ValidatorMessage( "Participant without a biological role. It is required by IMEx. ",
                     MessageLevel.ERROR,
                     context,
                     this ) );

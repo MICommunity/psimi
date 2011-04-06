@@ -26,7 +26,7 @@ public class SingleExperimentRoleRule extends ObjectRule<Participant> {
         super( ontologyManager );
 
         // describe the rule.
-        setName( "Single Experimental Role Check" );
+        setName( "Single Participant's experimental Role Check" );
 
         setDescription( "Check that each interaction's participant has a single experimental role." );
 

@@ -31,7 +31,7 @@ public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule
 
         // describe the rule.
         setName( "Experiment Interaction Detection Method check" );
-        setDescription( "Checks that each experiment has at least one Interaction Detection Method (MI:0001) and that all Interaction Detection Methods are valid." );
+        setDescription( "Checks that each experiment has a valid Interaction Detection Method (any children of MI:0001)." );
         addTip( "Your experiment should have an interaction detection method" );
         addTip( "Each interaction detection method should have a PSI MI cross reference with a reference type set to identical object (MI:0356)" );
         addTip( "Any child of MI:0001 is an interaction detection method. You can look at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI." );
@@ -56,7 +56,7 @@ public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule
         context.setExperimentId( experimentId );
 
         if (experiment.getInteractionDetectionMethod() == null){
-             messages.add( new ValidatorMessage( " The experiment does not have an Interaction Detection Method ( can be any child of MI:0001) and it is required for MIMIx",
+             messages.add( new ValidatorMessage( " The experiment does not have an Interaction Detection Method ( can be any children of MI:0001) and it is required for MIMIx",
                                                     MessageLevel.ERROR,
                                                     context,
                                                     this ) );

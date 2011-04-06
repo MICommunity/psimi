@@ -15,17 +15,16 @@
  */
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import junit.framework.Assert;
+import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.validator.extension.rules.imex.ProteinIdentityRule;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.validator.ValidatorMessage;
-import org.junit.Test;
-import junit.framework.Assert;
 
 import java.util.Collection;
+
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
  * ProteinIdentityRule Tester.
@@ -48,7 +47,7 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 0, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     @Test
@@ -59,7 +58,7 @@ public class ProteinIdentityRuleTest extends AbstractRuleTest {
         ProteinIdentityRule rule = new ProteinIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 0, messages.size() );
+        Assert.assertEquals( 1, messages.size() );
     }
 
     @Test

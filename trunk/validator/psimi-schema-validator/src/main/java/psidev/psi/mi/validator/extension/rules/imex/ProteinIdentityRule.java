@@ -18,7 +18,7 @@ import java.util.List;
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
- * <b> Checks that proteins have UNIPROT and/or REFSEQ identity.</b>
+ * <b> Checks that proteins have UNIPROT and REFSEQ identity.</b>
  * <p/>
  *
  * @author Samuel Kerrien
@@ -33,7 +33,7 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
         // describe the rule.
         setName( "Protein identity check" );
 
-        setDescription( "Check that each protein has an identity cross reference to the sequence database: UniProtKB and/or RefSeq" );
+        setDescription( "Check that each protein has an identity cross reference to the sequence database: UniProtKB and RefSeq" );
 
         addTip( "UniProtKb accession in the PSI-MI ontology is " + UNIPROTKB_MI_REF );
         addTip( "RefSeq accession in the PSI-MI ontology is " + REFSEQ_MI_REF );
@@ -71,19 +71,47 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
                             Arrays.asList( UNIPROTKB_MI_REF, REFSEQ_MI_REF ),
                             null);
 
+            final Collection<DbReference> identitiesUniprot =
+                    RuleUtils.searchReferences( identities,
+                            Arrays.asList( IDENTITY_MI_REF ),
+                            Arrays.asList( UNIPROTKB_MI_REF ),
+                            null);
+
+            final Collection<DbReference> identitiesRefseq =
+                    RuleUtils.searchReferences( identities,
+                            Arrays.asList( IDENTITY_MI_REF ),
+                            Arrays.asList( REFSEQ_MI_REF ),
+                            null);
+
             if( identities.isEmpty() ) {
 
                 if (interactor.hasSequence()){
                     Mi25Context context = buildContext( interactorId );
-                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and RefSeq with a ref type 'identity' ",
+                    messages.add( new ValidatorMessage( "Proteins should have a Xref to UniProtKB and RefSeq with a ref type 'identity' ",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 else {
                     Mi25Context context = buildContext( interactorId );
-                    messages.add( new ValidatorMessage( "Proteins should have an Xref to UniProtKB and RefSeq with a ref type 'identity'. If no identity cross references " +
+                    messages.add( new ValidatorMessage( "Proteins should have a Xref to UniProtKB and RefSeq with a ref type 'identity'. If no identity cross references " +
                             "are given, the protein sequence is strongly recommended.",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+            }
+            else{
+                if (identitiesUniprot.isEmpty()){
+                    Mi25Context context = buildContext( interactorId );
+                    messages.add( new ValidatorMessage( "Proteins should have a Xref to UniProtKB with a ref type 'identity' ",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+                if (identitiesRefseq.isEmpty()){
+                    Mi25Context context = buildContext( interactorId );
+                    messages.add( new ValidatorMessage( "Proteins should have a Xref to RefSeq with a ref type 'identity' ",
                             MessageLevel.WARN,
                             context,
                             this ) );

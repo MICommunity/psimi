@@ -27,8 +27,8 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "TaxId Host Organism Check" );
-        setDescription( "Checks that each host organism has a valid NCBI taxid" );
+        setName( "TaxId Organism Check" );
+        setDescription( "Checks that each organism has a valid NCBI taxid" );
         addTip( "Search http://www.ebi.ac.uk/newt/display with an organism name to retrieve its taxid" );
         addTip( "By convention, the taxid for 'in vitro' is -1" );
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );
@@ -58,7 +58,7 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
         Mi25Context context = new Mi25Context();
 
         RuleUtils.checkImexOrganism( ontologyManager, organism, context, messages, this,
-                                          "Experiment or Interactor", "host organism" );
+                                          "Experiment or Interactor", "organism" );
 
         return messages;
     }
