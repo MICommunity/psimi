@@ -24,6 +24,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.imex.TaxIdHostOrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionFigureLegendRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionImexPrimaryRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionParticipantRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionSourceIdentityXrefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractorTypeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ProteinIdentityRule"/>
