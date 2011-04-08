@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>psidev.psi.mi</groupId>
+    <artifactId>psimi-master</artifactId>
+    <packaging>pom</packaging>
+    <version>1.7.9</version>
+
+    <name>PSI</name>
+    <description>Base build file</description>
+
+    <modules>
+        <module>psi25-xml</module>
+        <module>psimitab-parser</module>
+        <module>psimitab-search</module>
+        <module>psimitab-organism</module>
+        <!--<module>validator</module>-->
+        <module>psimi-examples</module>
+        <module>calimocho</module>
+        <module>calimocho-tab</module>
+  </modules>
+
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.7.9</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.7.9</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/tags/psimi-master-1.7.9</url>
+    </scm>
+
+    <properties>
+        <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
+        <psimi.version>${pom.version}</psimi.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>skerrien</id>
+            <name>Samuel Kerrien</name>
+            <email>skerrien@ebi.ac.uk</email>
+            <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+
+        <developer>
+            <id>mmueller</id>
+            <name>Michael Mueller</name>
+            <email>mmueller@ebi.ac.uk</email>
+            <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+
+        <developer>
+            <id>baranda</id>
+            <name>Bruno Aranda</name>
+            <email>baranda@ebi.ac.uk</email>
+            <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+
+        <developer>
+            <id>nneuhaus</id>
+            <name>Nadin Neuhauser</name>
+            <email>nneuhaus@ebi.ac.uk</email>
+            <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <finalName>${artifactId}-${version}</finalName>
+                        <outputDirectory>${assembly.outputDirectory}</outputDirectory>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.ops4j</groupId>
+                    <artifactId>maven-pax-plugin</artifactId>
+                    <version>1.4</version>
+                    <extensions>true</extensions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>1.4.3</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <excludes>
+                        <exclude>**/test/**/*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>ebi-repo</id>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>ebi-repo-snapshots</id>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots</url>
+        </snapshotRepository>
+
+<!--
+        <site>
+            <id>psimilib-site</id>
+            <name>PSI MI lib site</name>
+            <url>${site.remote.basedir}/${artifactId}</url>
+        </site>
+  -->
+    </distributionManagement>
+
+
+</project>

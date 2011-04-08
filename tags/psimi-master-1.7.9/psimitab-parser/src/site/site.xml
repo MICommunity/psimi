@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="PSI MI TAB 2.5 Parser">
+    <bannerLeft>
+        <name>PSI-MI TAB 2.5 Parser</name>
+    </bannerLeft>
+
+    <body>
+        <links>
+            <item name="PSI-MI home page" href="http://psidev.sf.net"/>
+            <item name="PSI-MI @ SourceForge" href="http://sf.net/projects/psidev"/>
+        </links>
+
+        <menu name="Development">
+            <item name="MITAB25 format" href="mitab25_format.html"/>
+            <item name="Tutorial" href="tutorial.html"/>
+            <!--<item name="Client" href="client.html"/>-->
+            <!--<item name="FAQ" href="faq.html"/>-->
+        </menu>
+
+        ${reports}
+
+    </body>
+</project>
