@@ -4,8 +4,8 @@
 
     <parent>
         <groupId>psidev.psi.mi</groupId>
-        <artifactId>psimi-master</artifactId>
-        <version>1.7.9-SNAPSHOT</version>
+        <artifactId>validator</artifactId>
+        <version>2.0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -13,7 +13,7 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-schema-validator</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.1-SNAPSHOT</version>
 
     <name>PSI :: Schema Validator :: PSI-MI Extension</name>
     <description>
@@ -61,7 +61,7 @@
         <dependency>
             <artifactId>psi25-xml</artifactId>
             <groupId>psidev.psi.mi</groupId>
-            <version>1.7.9-SNAPSHOT</version>
+            <version>1.7.10-SNAPSHOT</version>
         </dependency>
 
                <!-- OBO -->
@@ -107,4 +107,13 @@
         </dependency>
 
     </dependencies>
+
+  <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
+        </repository>
+  </repositories>
+
 </project>
