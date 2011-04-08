@@ -8,7 +8,7 @@
         <import type="resource" rules="/config/psi_mi/dependency-rules.xml"/>
         <import type="resource" rules="/config/psi_mi/mimix-rules.xml">
             <exclude>
-                <rule class="psidev.psi.mi.validator.extension.rules.mimix.HostOrganismRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
             </exclude>
         </import>
     </importRuleList>

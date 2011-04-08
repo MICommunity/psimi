@@ -16,7 +16,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentInteractionDetectionMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentParticipantIdentificationMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentalRoleRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.HostOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorIdentityRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ProteinOrganismRule"/>
 
