@@ -21,13 +21,13 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class InteractorOrganismRule extends ObjectRule<Interactor> {
-    public InteractorOrganismRule(OntologyManager ontologyManager) {
+public class ProteinOrganismRule extends ObjectRule<Interactor> {
+    public ProteinOrganismRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
         // describe the rule.
-        setName( "Interactor Organism Check" );
-        setDescription( "Checks that each interactor has an organism." );
+        setName( "Protein Organism Check" );
+        setDescription( "Checks that each protein has an organism." );
         addTip( "Search http://www.ebi.ac.uk/newt/display with an organism name to retrieve its taxid" );
         addTip( "By convention, the taxid for 'in vitro' is -1" );
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );

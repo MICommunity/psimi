@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules.mimix;
+package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.FeatureUtils;

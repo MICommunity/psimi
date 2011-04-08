@@ -10,7 +10,6 @@
 
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.BiologicalRoleRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ConfidenceScoreRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.FeatureRangeRule"/>
     <!--<rule class="psidev.psi.mi.validator.extension.rules.InteractorNameRule"/>-->
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentBibRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentHostOrganismRule"/>
@@ -19,6 +18,6 @@
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentalRoleRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.HostOrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorIdentityRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ProteinOrganismRule"/>
 
 </objectRuleList>
