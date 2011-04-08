@@ -20,9 +20,9 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class HostOrganismRule extends ObjectRule<Organism> {
+public class OrganismRule extends ObjectRule<Organism> {
 
-    public HostOrganismRule( OntologyManager ontologyMaganer ) {
+    public OrganismRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
 
         // describe the rule.

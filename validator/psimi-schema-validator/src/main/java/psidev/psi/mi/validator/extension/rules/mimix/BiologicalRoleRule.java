@@ -59,7 +59,7 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
         int participantId = participant.getId();
         if ( !participant.hasBiologicalRole() ) {
             final Mi25Context context = buildContext( participantId );
-            messages.add( new ValidatorMessage( "Participant without a biological role. It is required by IMEx. ",
+            messages.add( new ValidatorMessage( "Participant without a biological role. It is required by MIMIx. ",
                     MessageLevel.ERROR,
                     context,
                     this ) );

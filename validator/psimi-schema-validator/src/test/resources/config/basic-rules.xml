@@ -4,7 +4,7 @@
 
     <rule class="psidev.psi.mi.validator.extension.rules.BibRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentFullCoverageRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.HostOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentInteractionDetectionMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.InteractorOrganismRule"/>
     <!--<rule class="psidev.psi.mi.validator.extension.rules.InteractorNameRule"/>-->
