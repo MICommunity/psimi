@@ -19,7 +19,18 @@ Two different flavours of this format have been developed : the *compact* format
 
 == Compact format ==
 
-In the compact format, the description of experiments and interactors is done at the beginning of the file using *<experimentList>* and *<interactorList>* elements. When describing the interactions (in the next element *<interactionList>*), we will use references to the *id* attribute of previously described experiments and interactors
+In the compact format, the description of experiments and interactors is done at the beginning of the file using <experimentList> and <interactorList> elements. When describing the interactions (in the next element <interactionList>), we will use references to the previously described experiments and interactors using their *id* attributes.
+
+=== Advantages ===
+
+* when using several time the same experiments and same interactors for different interactions, it allows to reduce redundancy of the experiment descriptions and/or interactor descriptions in the file.
+* As a result, the file is more compact and smaller
+
+=== Drawbacks ===
+
+* It can be more difficult to edit manually. Indeed, there is a lot of interactors and/or experiments in the file, using references to them using their 'id' attributes can be fastidious and take more time.
+* When a user reads the file, it can be annoying to come back to the beginning of the file every time he wants to read the experiment description of an interaction.
+
 
 
 = Details =
