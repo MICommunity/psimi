@@ -148,4 +148,5 @@ In some cases, a specific feature will be detected with different method(s) and 
 == Complexes ==
 
  You can describe complexes in two different ways :
- * You can
+ * You can use an interactor with interactorType = 'complex' (MI:0314 or one of its children). However you will not be able to give several sequences.
+ * You can use an interaction. However, you will have to describe an experiment which is not always relevant for describing a complex. The interaction type as well is not really adapted neither.
