@@ -72,7 +72,7 @@ In some cases, you may need to refer to experiments because you cannot describe 
  * participant confidence : if several experiments are attached to a same interaction and one of the participant has different confidence scores depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment.
  * participant parameters : if several experiments are attached to a same interaction and one of the participant has different parameters depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment.    
 
-It is possible to use references in the expanded format *only* if we refer to an experiment/interactor described within the current interaction. In the expanded format, each interaction is independent from each other and it is not possible to be be within an interaction and use references to other experiments and interactors which have been described in other interactions. 
+It is possible to use experiment references in the expanded format *only* if we refer to an experiment described within the current interaction. In the expanded format, each interaction is independent from each other and it is not possible to be be within an interaction and use references to other experiments and interactors which have been described in other interactions. 
 
 === Examples ===
 
