@@ -1,9 +1,13 @@
-#summary One-sentence summary of this page.
+#summary PSI-MI XML 2.5 format specifications
 #labels Featured
 
 = Introduction =
 
-Add your content here.
+The PSI-MI XML 2.5 is a community standard for molecular interactions which has been jointly developed by major data providers (BIND, CellZome, DIP, GSK, HPRD, Hybrigenics, IntAct, MINT, MIPS, Serono, U. Bielefeld, U. Bordeaux, U. Cambridge, and others). 
+
+This format is stable for several years now : published in October 2007 (Broadening the Horizon – Level 2.5 of the HUPO-PSI Format for Molecular Interactions; Samuel Kerrien et al. BioMed Central. 2007.), it has been used since then and could be adapted for many different usages.
+
+
 
 
 = Details =
