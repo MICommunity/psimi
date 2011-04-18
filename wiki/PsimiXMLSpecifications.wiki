@@ -31,11 +31,21 @@ In the compact format, the description of experiments and interactors is done at
  * It can be more difficult to edit manually. Indeed, there is a lot of interactors and/or experiments in the file, using references to them using their 'id' attributes can be fastidious and take more time.
  * When a user reads the file, it can be annoying to come back to the beginning of the file every time he wants to read the experiment description of an interaction.
 
+=== Examples ===
 
 
-= Details =
+== Expanded format ==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+In the expanded format, the description of experiments and interactors is done within each interaction. The file doesn't contain any *experimentList* or *interactorList* at the beginning of the file, it only contains an *interactionList*.
+
+=== Advantages ===
+
+ * It is easier to edit and read the file
+
+=== Drawbacks ===
+
+ * Can be very redundant because we may have to repeat the description of the same experiment and interactor several times in different interactions.
+ * It is easier to forget some elements in the experiment description and/or interactor description.
+ * The file is bigger
+
+=== Examples ===
