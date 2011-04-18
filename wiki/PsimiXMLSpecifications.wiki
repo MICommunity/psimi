@@ -25,6 +25,8 @@ Two different flavours of this format have been developed : the *compact* format
 
 In the compact format, the description of experiments and interactors is done at the beginning of the *entry* using *experimentList* and *interactorList* elements. When describing the interactions (in the next element *interactionList*), we will use references to the previously described experiments and interactors using their *id* attributes.
 
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/compact-xml.png"/>
+
 === Advantages ===
 
  * when using several time the same experiments and same interactors for different interactions, it allows to reduce redundancy of the experiment descriptions and/or interactor descriptions in the file.
@@ -41,6 +43,8 @@ In the compact format, the description of experiments and interactors is done at
 == Expanded format ==
 
 In the expanded format, the description of experiments and interactors is done within each interaction. The file doesn't contain any *experimentList* or *interactorList* at the *entry* level, it only contains an *interactionList*.
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/expanded-xml.png"/>
 
 === Advantages ===
 
