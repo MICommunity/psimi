@@ -5,9 +5,17 @@
 
 The PSI-MI XML 2.5 is a community standard for molecular interactions which has been jointly developed by major data providers (BIND, CellZome, DIP, GSK, HPRD, Hybrigenics, IntAct, MINT, MIPS, Serono, U. Bielefeld, U. Bordeaux, U. Cambridge, and others). 
 
-This format is stable for several years now : published in October 2007 (Broadening the Horizon – Level 2.5 of the HUPO-PSI Format for Molecular Interactions; Samuel Kerrien et al. BioMed Central. 2007.), it has been used since then and could be adapted for many different usages.
+This format is stable and used for several years now : published in October 2007 (Broadening the Horizon – Level 2.5 of the HUPO-PSI Format for Molecular Interactions; Samuel Kerrien et al. BioMed Central. 2007.), it has been adapted for many different usages.
+
+It can be used for storing any kind of molecular interaction data :
+ * complexes and binary interactions
+ * not only protein-protein interactions, can describe nucleic acids interactions and others
+ * complexes modelling by using interactionRef in participants instead of interactor or interactorRef
 
 
+= XML compact and expanded formats =
+
+Two different flavours of this format have been developed : the *compact* format and the *expanded* format. 
 
 
 = Details =
