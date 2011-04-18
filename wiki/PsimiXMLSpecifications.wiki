@@ -15,7 +15,11 @@ It can be used for storing any kind of molecular interaction data :
 
 = XML compact and expanded formats =
 
-Two different flavours of this format have been developed : the *compact* format and the *expanded* format. 
+Two different flavours of this format have been developed : the *compact* format and the *expanded* format. These two different formats are described in a single XML schema which can be confusing because it is easy to mix the two different flavours. To be able to fully enjoy the flexibility of the PSI-MI XML 2.5 format, it is important to understand what are the two different flavours and what are the limits between them.
+
+== Compact format ==
+
+In the compact format, the description of experiments and interactors is done at the beginning of the file using *<experimentList>* and *<interactorList>* elements. When describing the interactions (in the next element *<interactionList>*), we will use references to the *id* attribute of previously described experiments and interactors
 
 
 = Details =
