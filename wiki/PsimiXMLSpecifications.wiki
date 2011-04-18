@@ -12,6 +12,8 @@ It can be used for storing any kind of molecular interaction data :
  * not only protein-protein interactions, can describe nucleic acids interactions and others
  * complexes modelling by using interactionRef in participants instead of interactor or interactorRef
 
+= Simplified view of the schema =
+
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/xml-schema.png"/>
 
 
