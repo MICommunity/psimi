@@ -33,9 +33,27 @@ In the compact format, the description of experiments and interactors is done at
 
 2) Describe all the interactors of your file in the interactorList at the entry level. All the id attributes of the interactors must be present and unique in the all file (not only with interactors but also must be different from interaction ids, experiment ids, etc.)
 
-3) For each interaction, use the element *experimentRef* in the experimentList.
+3) For each interaction, use the element *experimentRef* in the experimentList. You should refer to the id attribute of one of the experiments described at the entry level.
 
-4) For each participant, use the element *interactorRef* (or *interactionRef* if you want to describe a complex)
+4) For each participant, use the element *interactorRef* (or *interactionRef* if you want to describe a complex). You should refer to the id attribute of one of the interactors/interactions described at the entry level. 
+
+5) For each experimental interactor (participant level), use the element *interactorRef*. You should refer to the id attribute of one of the interactors described at the entry level.
+
+6) For each inferred interaction (interaction level), the participantRef (interacting participant) or featureRef (binding site interacting with other binding sites) should refer to a participant or feature described within the interaction and not to a participant or feature described in another interaction.
+
+7) Several elements can use experiment references which should point to one experiment described at the entry level :
+
+ * interaction confidences
+ * interaction parameters
+ * inferred interaction  
+ * participant identification method
+ * participant experimental role
+ * participant experimental preparation
+ * participant experimental interactor
+ * participant feature
+ * participant host organism 
+ * participant confidence
+ * participant parameters  
 
 === Advantages ===
 
@@ -77,7 +95,8 @@ In the expanded format, the description of experiments and interactors is done w
 In some cases, you may need to refer to experiments because you cannot describe experiments within this element :
 
  * interaction confidences : if several experiments are attached to a same interaction and this interaction has different confidence scores depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment.
- * interaction parameters : if several experiments are attached to a same interaction and this interaction has different parameters depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment. 
+ * interaction parameters : if several experiments are attached to a same interaction and this interaction has different parameters depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment.
+ * inferred interaction : if several experiments are attached to a same interaction and this interaction has different inferred interactions depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment.  
  * participant identification method : if several experiments are attached to a same interaction and one of the participant has different identification methods depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment.
  * participant experimental role : if several experiments are attached to a same interaction and one of the participant has different experimental roles, you may want to add the experimentRef element pointing to the *id* attribute of one experiment. 
  * participant experimental preparation : if several experiments are attached to a same interaction and one of the participant has different experimental preparations, you may want to add the experimentRef element pointing to the *id* attribute of one experiment. 
