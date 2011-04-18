@@ -3,27 +3,28 @@
 
 = Introduction =
 
-The PSI-MI XML 2.5 is a community standard for molecular interactions which has been jointly developed by major data providers (BIND, CellZome, DIP, GSK, HPRD, Hybrigenics, IntAct, MINT, MIPS, Serono, U. Bielefeld, U. Bordeaux, U. Cambridge, and others). 
+The PSI-MI XML 2.5 is a community standard for molecular interactions which has been jointly developed by major data providers (BIND, CellZome, DIP, GSK, HPRD, Hybrigenics, !IntAct, MINT, MIPS, Serono, U. Bielefeld, U. Bordeaux, U. Cambridge, and others). 
 
-This format is stable and used for several years now : published in October 2007 (Broadening the Horizon – Level 2.5 of the HUPO-PSI Format for Molecular Interactions; Samuel Kerrien et al. BioMed Central. 2007.), it has been adapted for many different usages.
+This format is stable and used for several years now : published in October 2007 ([http://www.biomedcentral.com/1741-7007/5/44 Broadening the Horizon – Level 2.5 of the HUPO-PSI Format for Molecular Interactions; Samuel Kerrien et al. BioMed Central. 2007.]), it has been adapted for many different usages.
 
 It can be used for storing any kind of molecular interaction data :
  * complexes and binary interactions
  * not only protein-protein interactions, can describe nucleic acids interactions and others
- * complexes modelling by using interactionRef in participants instead of interactor or interactorRef
+ * hierarchical complexes modelling by using interactionRef in participants instead of an interactor
 
 = Simplified view of the schema =
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/xml-schema.png"/>
 
 
-= XML compact and expanded formats =
+= XML Compact and Expanded formats =
 
-Two different flavours of this format have been developed : the *compact* format and the *expanded* format. These two different formats are described in a single XML schema which can be confusing because it is easy to mix the two different flavours. To be able to fully enjoy the flexibility of the PSI-MI XML 2.5 format, it is important to understand what are the two different flavours and what are the limits between them.
+Two different flavours of this format have been developed : the *Compact* format and the *Expanded* format. These two different formats are described in a single XML schema which can be confusing because it is easy to mix the two different flavours. To be able to fully enjoy the flexibility of the PSI-MI XML 2.5 format, it is important to understand what are the two different flavours and what are the limits between them.
 
+<br/>
 == Compact format ==
 
-In the compact format, the description of experiments and interactors is done at the beginning of the *entry* using *experimentList* and *interactorList* elements. When describing the interactions (in the next element *interactionList*), we will use references to the previously described experiments and interactors using their *id* attributes.
+In the Compact format, the description of experiments and interactors is done at the beginning of the *entry* using *experimentList* and *interactorList* elements. When describing the interactions (in the next element *interactionList*), we will use references to the previously described experiments and interactors using their *id* attributes.
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/compact-xml.png"/>
 
@@ -58,7 +59,7 @@ In the compact format, the description of experiments and interactors is done at
 === Advantages ===
 
  * when using several time the same experiments and same interactors for different interactions, it allows to reduce redundancy of the experiment descriptions and/or interactor descriptions in the file.
- * As a result, the file is more compact and smaller
+ * As a result, the file is smaller
 
 === Drawbacks ===
 
@@ -67,15 +68,18 @@ In the compact format, the description of experiments and interactors is done at
 
 === Warnings ===
 
- * it is strongly recommended to avoid describing experiments and/or interactors within the interaction instead of describing it at the level of the entry. It will not be a problem at the parsing time if no experiment references are used for the experiment described within the interaction. The experiment described within the interaction will always be considered as the default experiment for this interaction, independently from the compact or expanded flavour of the file. However, it will be impossible to refer to it later in the file and it can be really messy.
+ * it is strongly recommended to avoid describing experiments and/or interactors within the interaction instead of describing it at the level of the entry. It will not be a problem at the parsing time if no experiment references are used for the experiment described within the interaction. The experiment described within the interaction will always be considered as the default experiment for this interaction, independently from the Compact or Expanded flavour of the file. However, it will be impossible to refer to it later in the file and it can be really messy.
 
 === Examples ===
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/compact-example.png"/>
 
+
+<br/>
+<br/>
 == Expanded format ==
 
-In the expanded format, the description of experiments and interactors is done within each interaction. The file doesn't contain any *experimentList* or *interactorList* at the *entry* level, it only contains an *interactionList*.
+In the Expanded format, the description of experiments and interactors is done within each interaction. The file doesn't contain any *experimentList* or *interactorList* at the *entry* level, it only contains an *interactionList*.
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/expanded-xml.png"/>
 
@@ -115,7 +119,7 @@ In the expanded format, the description of experiments and interactors is done w
 
 === Warnings ===  
 
-It is possible to use experiment references in the expanded format *only* if we refer to an experiment described within the current interaction. In the expanded format, each interaction is independent from each other and it is not possible to be be within an interaction and use references to other experiments and interactors which have been described in other interactions. 
+It is possible to use experiment references in the Expanded format *only* if we refer to an experiment described within the current interaction. In the Expanded format, each interaction is independent from each other and it is not possible to be be within an interaction and use references to other experiments and interactors which have been described in other interactions. 
 
 === Examples ===
 
@@ -144,9 +148,3 @@ In some cases, a specific feature will be detected with different method(s) and 
 == Publication ==
 
  * There isn't any publication element in the XML, only a bibRef element in each experimentDescription. You should always describe your publication (pubmed id -> XRef and authors, journal, etc. -> attributes of bibRef) within the bibRef element.
-
-== Complexes ==
-
- You can describe complexes in two different ways :
- * You can use an interactor with interactorType = 'complex' (MI:0314 or one of its children). However you will not be able to give several sequences.
- * You can use an interaction. However, you will have to describe an experiment which is not always relevant for describing a complex. The interaction type as well is not really adapted neither.
