@@ -37,6 +37,11 @@ In the compact format, the description of experiments and interactors is done at
  * It can be more difficult to edit manually. Indeed, there is a lot of interactors and/or experiments in the file, using references to them using their 'id' attributes can be fastidious and take more time.
  * When a user reads the file, it can be annoying to come back to the beginning of the file every time he wants to read the experiment description of an interaction.
 
+=== Warnings ===
+
+ * the *experimentalInteractor* element of a participant must also refer to an interactor described in the interactorList at the entry level using the interactorRef element.
+ * it is strongly recommended to only use references to experiments and/or interactors in the experimentList and/or interactorList at the entry level> 
+
 === Examples ===
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/compact-example.png"/>
