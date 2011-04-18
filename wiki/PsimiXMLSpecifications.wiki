@@ -40,7 +40,7 @@ In the compact format, the description of experiments and interactors is done at
 === Warnings ===
 
  * the *experimentalInteractor* element of a participant must also refer to an interactor described in the interactorList at the entry level using the interactorRef element.
- * it is strongly recommended to only use references to experiments and/or interactors in the experimentList and/or interactorList at the entry level> 
+ * it is strongly recommended to avoid describing experiments and/or interactors within the interaction instead of describing it at the level of the entry. It will not be a problem at the parsing time if no experiment references are used for the experiment described within the interaction. The experiment described within the interaction will always be considered as the default experiment for this interaction, independently from the compact or expanded flavour of the file. However, it will be impossible to refer to it later in the file and it can be really messy.
 
 === Examples ===
 
