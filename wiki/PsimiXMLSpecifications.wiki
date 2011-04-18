@@ -59,4 +59,4 @@ In the expanded format, the description of experiments and interactors is done w
 
 === Examples ===
 
-<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/expanded-example.png"/>
+<img width="500" src="http://psimi.googlecode.com/svn/wiki/images/expanded-example.png"/>
