@@ -27,7 +27,7 @@ In the compact format, the description of experiments and interactors is done at
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/compact-xml.png"/>
 
-== What to do? ==
+== How to build it? ==
 
 1) Describe all the experiments of your file in the experimentList at the entry level. All the id attributes of the experiments must be present and unique in the all file (not only with experiments but also must be different from interaction ids, interactor ids, etc.)
 
@@ -79,7 +79,7 @@ In the expanded format, the description of experiments and interactors is done w
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/expanded-xml.png"/>
 
-== What to do? ==
+== How to build it? ==
 
 1) For each interaction, describe fully your experiments. Use the *experimentDescription* element in the experimentList.
 
