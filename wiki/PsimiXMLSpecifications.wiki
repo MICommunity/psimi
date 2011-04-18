@@ -23,13 +23,13 @@ In the compact format, the description of experiments and interactors is done at
 
 === Advantages ===
 
-* when using several time the same experiments and same interactors for different interactions, it allows to reduce redundancy of the experiment descriptions and/or interactor descriptions in the file.
-* As a result, the file is more compact and smaller
+ * when using several time the same experiments and same interactors for different interactions, it allows to reduce redundancy of the experiment descriptions and/or interactor descriptions in the file.
+ * As a result, the file is more compact and smaller
 
 === Drawbacks ===
 
-* It can be more difficult to edit manually. Indeed, there is a lot of interactors and/or experiments in the file, using references to them using their 'id' attributes can be fastidious and take more time.
-* When a user reads the file, it can be annoying to come back to the beginning of the file every time he wants to read the experiment description of an interaction.
+ * It can be more difficult to edit manually. Indeed, there is a lot of interactors and/or experiments in the file, using references to them using their 'id' attributes can be fastidious and take more time.
+ * When a user reads the file, it can be annoying to come back to the beginning of the file every time he wants to read the experiment description of an interaction.
 
 
 
