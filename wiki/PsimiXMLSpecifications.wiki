@@ -57,6 +57,14 @@ In the expanded format, the description of experiments and interactors is done w
  * It is easier to forget some elements in the experiment description and/or interactor description.
  * The file is bigger
 
+=== Warnings ===
+
+In some cases, you may need to refer to experiments :
+
+ * interaction confidences : if several experiments are attached to a same interaction and this interaction has different confidence scores depending on the experiment, you may want to add the experimentRef element pointing to the *id* attribute of one experiment. 
+
+It is possible to use references in the expanded format *only* if we refer to an experiment/interactor described within the current interaction. In the expanded format, each interaction is independent from each other and it is not possible to be be within an interaction and use references to other experiments and interactors which have been described in other interactions. 
+
 === Examples ===
 
 <img width="500" src="http://psimi.googlecode.com/svn/wiki/images/expanded-example.png"/>
