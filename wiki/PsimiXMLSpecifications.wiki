@@ -22,6 +22,7 @@ It can be used for storing any kind of molecular interaction data :
 
 [http://psidev.sourceforge.net/mi/rel25/doc/ This documentation] is aimed at describing the various elements that compose the PSI-MI 2.5 XML schema.
 
+<br/>
 = XML Compact and Expanded formats =
 
 Two different flavours of this format have been developed : the *Compact* format and the *Expanded* format. These two different formats are described in a single XML schema which can be confusing because it is easy to mix the two different flavours. To be able to fully enjoy the flexibility of the PSI-MI XML 2.5 format, it is important to understand what are the two different flavours and what are the limits between them.
