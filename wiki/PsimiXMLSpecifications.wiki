@@ -148,3 +148,9 @@ In some cases, a specific feature will be detected with different method(s) and 
 == Publication ==
 
  * There isn't any publication element in the XML, only a bibRef element in each experimentDescription. You should always describe your publication (pubmed id -> XRef and authors, journal, etc. -> attributes of bibRef) within the bibRef element.
+
+== Complexes ==
+
+ You can describe complexes in two different ways :
+ * You can use an interactor with interactorType = 'complex' (MI:0314 or one of its children). However you will not be able to give several sequences.
+ * You can use an interaction. However, you will have to describe an experiment which is not always relevant for describing a complex. The interaction type as well is not really adapted neither (a new Cv term should be created to really describe interaction type = complex).
