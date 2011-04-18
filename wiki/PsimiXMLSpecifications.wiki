@@ -19,7 +19,7 @@ Two different flavours of this format have been developed : the *compact* format
 
 == Compact format ==
 
-In the compact format, the description of experiments and interactors is done at the beginning of the file using <experimentList> and <interactorList> elements. When describing the interactions (in the next element <interactionList>), we will use references to the previously described experiments and interactors using their *id* attributes.
+In the compact format, the description of experiments and interactors is done at the beginning of the file using *experimentList* and *interactorList* elements. When describing the interactions (in the next element *interactionList*), we will use references to the previously described experiments and interactors using their *id* attributes.
 
 === Advantages ===
 
