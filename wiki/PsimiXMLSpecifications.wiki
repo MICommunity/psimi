@@ -27,6 +27,16 @@ In the compact format, the description of experiments and interactors is done at
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/compact-xml.png"/>
 
+== What to do? ==
+
+1) Describe all the experiments of your file in the experimentList at the entry level. All the id attributes of the experiments must be present and unique in the all file (not only with experiments but also must be different from interaction ids, interactor ids, etc.)
+
+2) Describe all the interactors of your file in the interactorList at the entry level. All the id attributes of the interactors must be present and unique in the all file (not only with interactors but also must be different from interaction ids, experiment ids, etc.)
+
+3) For each interaction, use the element *experimentRef* in the experimentList.
+
+4) For each participant, use the element *interactorRef* (or *interactionRef* if you want to describe a complex)
+
 === Advantages ===
 
  * when using several time the same experiments and same interactors for different interactions, it allows to reduce redundancy of the experiment descriptions and/or interactor descriptions in the file.
