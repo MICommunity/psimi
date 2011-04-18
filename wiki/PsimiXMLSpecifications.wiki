@@ -34,7 +34,7 @@ In the compact format, the description of experiments and interactors is done at
 
 === Drawbacks ===
 
- * It can be more difficult to edit manually. Indeed, there is a lot of interactors and/or experiments in the file, using references to them using their 'id' attributes can be fastidious and take more time.
+ * It can be more difficult to edit manually the file. Indeed, there is a lot of interactors and/or experiments in the file, using references to them using their 'id' attributes can be fastidious and take more time.
  * When a user reads the file, it can be annoying to come back to the beginning of the file every time he wants to read the experiment description of an interaction.
 
 === Warnings ===
