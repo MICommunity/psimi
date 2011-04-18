@@ -137,9 +137,9 @@ In some cases, a specific feature will be detected with different method(s) and 
 
  * interactionType : an interaction can have several interaction types and can have several experiments. The interaction type currently doesn't have an experimentRef element so when several experiments are attached to a same interaction and this interaction has several interaction types, it is impossible to link the interaction type to a specific experiment. This is currently a bug of the schema as the interaction type is strongly linked to the experiment. If you want to describe several interaction types for one interaction, you may currently have to duplicate the interaction for each interaction type you want to describe instead of listing all the interaction types in the same interaction element.
 
-* featureDetectionMethod : a feature can describe a list of featureDetection methods but it is impossible to link a specific detection method to an experiment as we do with the participantIdentificationMethod. To avoid confusion, you may need to duplicate the interaction for each different set of participants/features instead of listing all the feature detection methods in a same feature.
+ * featureDetectionMethod : a feature can describe a list of featureDetection methods but it is impossible to link a specific detection method to an experiment as we do with the participantIdentificationMethod. To avoid confusion, you may need to duplicate the interaction for each different set of participants/features instead of listing all the feature detection methods in a same feature.
 
-* interaction and participant confidences : this element doesn't have a *method* element to describe the confidence score method. The unit element should not be mandatory as some scoring systems don't have any units defined. You may have to describe your method in the unit element or the attributes of the unit element 
+ * interaction and participant confidences : this element doesn't have a *method* element to describe the confidence score method. The unit element should not be mandatory as some scoring systems don't have any units defined. You may have to describe your method in the unit element or the attributes of the unit element 
 
 == Publication ==
 
