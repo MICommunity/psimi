@@ -144,3 +144,8 @@ In some cases, a specific feature will be detected with different method(s) and 
 == Publication ==
 
  * There isn't any publication element in the XML, only a bibRef element in each experimentDescription. You should always describe your publication (pubmed id -> XRef and authors, journal, etc. -> attributes of bibRef) within the bibRef element.
+
+== Complexes ==
+
+ You can describe complexes in two different ways :
+ * You can
