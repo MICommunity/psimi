@@ -39,6 +39,7 @@ In the compact format, the description of experiments and interactors is done at
 
 === Examples ===
 
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/compact-example.png"/>
 
 == Expanded format ==
 
@@ -57,3 +58,5 @@ In the expanded format, the description of experiments and interactors is done w
  * The file is bigger
 
 === Examples ===
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/expanded-example.png"/>
