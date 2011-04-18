@@ -16,6 +16,9 @@ It can be used for storing any kind of molecular interaction data :
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/xml-schema.png"/>
 
+= Detailed documentation of the schema =
+
+[http://psidev.sourceforge.net/mi/rel25/doc/ This documentation] is aimed at describing the various elements that compose the PSI-MI 2.5 XML schema.
 
 = XML Compact and Expanded formats =
 
