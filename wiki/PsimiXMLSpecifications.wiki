@@ -120,3 +120,13 @@ It is possible to use experiment references in the expanded format *only* if we 
 === Examples ===
 
 <img width="500" src="http://psimi.googlecode.com/svn/wiki/images/expanded-example.png"/>
+
+= Overwriting elements =
+
+The XML format is very flexible and allow you to overwrite some elements :
+
+ * *participant identification methods* : By default, you can describe a single participant identification method at the experiment level if this participant identification method has been used to identify all the participants of the interactions. 
+In some cases, a specific participant will be identified with different method(s) and you can overwrite the participant identification method of the experiment within the participant element using the participantIdentificationMethodList. If several experiments are attached to the interaction, it is necessary to specify the experimentRef for each participantIdentificationMethod described at the participant level.
+
+ * *feature detection method* : By default, you can describe a single feature detection method at the experiment level if this feature detection method has been used to identify all the features of the participants. 
+In some cases, a specific feature will be detected with different method(s) and you can overwrite the feature detection method of the experiment within the feature element using the featureDetectionMethodList.
