@@ -85,11 +85,11 @@ In the expanded format, the description of experiments and interactors is done w
 
 2) For each participant (interaction level), describe fully your interactor. Use the *interactor* element (or *interactionRef* element in case of complex. The references point to an id attribute of one interaction described in the interactionList at the entry level).
 
-5) For each experimental interactor (participant level), use the element *interactor*. You can use the *interacorRef* element but it should only refer to an interactor described within this interaction.
+3) For each experimental interactor (participant level), use the element *interactor*. You can use the *interacorRef* element but it should only refer to an interactor described within this interaction.
 
-6) For each inferred interaction (interaction level), the participantRef (interacting participant) or featureRef (binding site interacting with other binding sites) should refer to a participant or feature described within the interaction and not to a participant or feature described in another interaction.
+4) For each inferred interaction (interaction level), the participantRef (interacting participant) or featureRef (binding site interacting with other binding sites) should refer to a participant or feature described within the interaction and not to a participant or feature described in another interaction.
 
-7) Several elements can have experiment references which should point to one experiment described within the interaction :
+5) Several elements can have experiment references which should point to one experiment described within the interaction :
 
  * interaction confidences
  * interaction parameters
