@@ -48,7 +48,8 @@ public class InteractionTypeRuleTest extends AbstractRuleTest {
         Assert.assertEquals( 0, messages.size() );
     }
 
-    @Test
+    // the rule doesn't check anymore if the term is valid as a controlled vocabulary rule does it
+    /*@Test
     public void test_interaction_one_interaction_type_wrong_psi() throws ValidatorException {
         Interaction interaction = buildInteractionDeterministic();
 
@@ -66,7 +67,7 @@ public class InteractionTypeRuleTest extends AbstractRuleTest {
 
         Assert.assertNotNull(messages);
         Assert.assertEquals( 1, messages.size() );
-    }
+    }*/
 
     @Test
     public void test_interaction_one_interaction_type_no_psi() throws ValidatorException {

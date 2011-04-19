@@ -50,7 +50,8 @@ public class ExperimentInteractionDetectionMethodRuleTest extends AbstractRuleTe
         Assert.assertEquals( 0, messages.size() );
     }
 
-    @Test
+    // the rule doesn't check anymore if the term is valid as a controlled vocabulary rule does it
+    /*@Test
     public void validate_WrongInteractionDetectionMethodID() throws Exception {
 
         final Bibref bibref = new Bibref();
@@ -76,7 +77,7 @@ public class ExperimentInteractionDetectionMethodRuleTest extends AbstractRuleTe
         System.out.println(messages);
 
         Assert.assertEquals( 1, messages.size() );
-    }
+    }*/
 
     @Test
     public void validate_NoInteractionDetectionMethod() throws Exception {

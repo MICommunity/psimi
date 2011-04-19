@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.Interaction;
@@ -83,8 +82,7 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
 
                     for (ParticipantIdentificationMethod method : participantIdentifications){
 
-                        final Mi25Ontology ontology = getMi25Ontology();
-                        RuleUtils.checkPsiMIXRef(method, messages, context, this, ontology, "MI:0002");
+                        RuleUtils.checkPsiMIXRef(method, messages, context, this, "MI:0002");
                     }
                 }
             }
@@ -94,8 +92,7 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
                 context.setInteractionId( interactionId );
                 context.setExperimentId(experimentId);
 
-                final Mi25Ontology ontology = getMi25Ontology();
-                RuleUtils.checkPsiMIXRef(experiment.getParticipantIdentificationMethod(), messages, context, this, ontology, "MI:0002");
+                RuleUtils.checkPsiMIXRef(experiment.getParticipantIdentificationMethod(), messages, context, this, "MI:0002");
             }
         }
 

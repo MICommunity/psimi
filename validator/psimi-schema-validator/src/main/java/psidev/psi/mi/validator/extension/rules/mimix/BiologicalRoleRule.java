@@ -1,6 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <b> Checks that participants have a single biological role.</b>
+ * <b> Checks that participants have a single biological role with a valid psi mi cross reference.</b>
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -28,7 +29,7 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
         // describe the rule.
         setName( "Participant's Biological Role Check" );
 
-        setDescription( "Check that each interaction's participant has a valid biological role." );
+        setDescription( "Check that each interaction's participant has a valid biological role (with one cross reference to PSI-MI ontology)." );
 
         addTip( "Biological role terms can be found in the PSI-MI ontology under term MI:0500" );
     }
@@ -57,12 +58,16 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
 
         // write the rule here ...
         int participantId = participant.getId();
+        final Mi25Context context = buildContext( participantId );
+
         if ( !participant.hasBiologicalRole() ) {
-            final Mi25Context context = buildContext( participantId );
             messages.add( new ValidatorMessage( "Participant without a biological role. It is required by MIMIx. ",
                     MessageLevel.ERROR,
                     context,
                     this ) );
+        }
+        else {
+            RuleUtils.checkPsiMIXRef(participant.getBiologicalRole(), messages, context, this, RuleUtils.BIOLOGICAL_ROLE);
         }
 
         return messages;
