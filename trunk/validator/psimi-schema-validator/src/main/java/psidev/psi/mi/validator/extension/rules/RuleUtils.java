@@ -232,7 +232,7 @@ public final class RuleUtils {
 
             // special cases for Imex
             case -5:
-               // IMEX doesn't allow to use this term to define their host organism
+                // IMEX doesn't allow to use this term to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
                         "' is not valid. IMEx does not allow to choose " + taxId + " for the taxId of an organism. You can choose any NCBI taxID, -1 or -2",
@@ -259,7 +259,7 @@ public final class RuleUtils {
                         rule ) );
                 break;
             default:
-              checkOrganism(ontologyManager, organism, context, messages, rule, objectType, organismType);
+                checkOrganism(ontologyManager, organism, context, messages, rule, objectType, organismType);
         }
     }
 
@@ -337,6 +337,10 @@ public final class RuleUtils {
 
     public static boolean isBiopolymer( OntologyManager ontologyManager, Interactor interactor ) {
         return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.BIOPOLYMER_MI_REF, true );
+    }
+
+    public static boolean isPolysaccharide( OntologyManager ontologyManager, Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.POLYSACCHARIDE_MI_REF, true );
     }
 
     public static boolean isDNA( OntologyManager ontologyManager, Interactor interactor ) {
@@ -624,7 +628,7 @@ public final class RuleUtils {
     }
 
     public static void checkPresenceOfAttributeInExperiment(ExperimentDescription experiment, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, String attMi, String attname){
-    // An experiment must have at least one attribute 'imex-curation' and one attribute 'full coverage'
+        // An experiment must have at least one attribute 'imex-curation' and one attribute 'full coverage'
         if (experiment.hasAttributes()){
             // The attributes of the experiment
             Collection<Attribute> attributes = experiment.getAttributes();
@@ -656,7 +660,7 @@ public final class RuleUtils {
     public static Collection<ExperimentDescription> collectExperiment(Interaction interaction, Collection<ExperimentRef> experimentRefs) {
         ArrayList<ExperimentDescription> collectedExps = new ArrayList<ExperimentDescription>();
 
-        if( experimentRefs != null && !experimentRefs.isEmpty() ) {            
+        if( experimentRefs != null && !experimentRefs.isEmpty() ) {
             for (ExperimentRef ref : experimentRefs) {
                 for (ExperimentDescription ed : interaction.getExperiments()) {
                     if( ed.getId() == ref.getRef() ) {

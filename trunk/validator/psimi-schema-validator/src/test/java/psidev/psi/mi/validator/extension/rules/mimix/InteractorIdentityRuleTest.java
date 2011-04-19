@@ -15,19 +15,18 @@
  */
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
-
+import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.Collection;
 
-import junit.framework.Assert;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.CHEBI_MI_REF;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.UNIPROTKB_MI_REF;
 
 /**
  * InteractorIdentityRule Tester.
@@ -46,6 +45,17 @@ public class InteractorIdentityRuleTest extends AbstractRuleTest {
     public void check_smallmolecule_ok() throws Exception {
         final Interactor interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.SMALL_MOLECULE_MI_REF );
+        updateInteractorIdentity( interactor, CHEBI_MI_REF, "CHEBI:00001" );
+        InteractorIdentityRule rule = new InteractorIdentityRule( ontologyMaganer );
+        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        Assert.assertNotNull( messages );
+        Assert.assertEquals( 0, messages.size() );
+    }
+
+    @Test
+    public void check_smallmolecule_ok_2() throws Exception {
+        final Interactor interactor = buildProtein( "P12345" );
+        updateInteractorType( interactor, RuleUtils.POLYSACCHARIDE_MI_REF );
         updateInteractorIdentity( interactor, CHEBI_MI_REF, "CHEBI:00001" );
         InteractorIdentityRule rule = new InteractorIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );

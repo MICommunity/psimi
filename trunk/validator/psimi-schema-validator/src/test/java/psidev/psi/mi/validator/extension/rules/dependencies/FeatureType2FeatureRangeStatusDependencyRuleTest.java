@@ -30,7 +30,7 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
     @Test
     public void check_Tag_ok() throws Exception {
 
-        Feature feature = buildFeature( "MI:0507", "tag", "MI:0334", "c-terminal position", "MI:0334", "c-terminal position" );
+        Feature feature = buildFeature( "MI:0507", "tag", "MI:1039", "c-terminal position", "MI:1039", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
@@ -47,7 +47,7 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
     @Test
     public void check_Tag_Warning() throws Exception {
 
-        Feature feature = buildFeature( "MI:0507", "tag", "MI:0338", "range", "MI:0334", "c-terminal position" );
+        Feature feature = buildFeature( "MI:0507", "tag", "MI:0338", "range", "MI:1039", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
@@ -64,7 +64,7 @@ public class FeatureType2FeatureRangeStatusDependencyRuleTest extends AbstractRu
     @Test
     public void check_Tag_Children_Warning() throws Exception {
        
-        Feature feature = buildFeature( "MI:0239", "biotin tag", "MI:0338", "range", "MI:0334", "c-terminal position" );
+        Feature feature = buildFeature( "MI:0239", "biotin tag", "MI:0338", "range", "MI:1039", "c-terminal position" );
 
         FeatureType2FeatureRangeDependencyRule rule =
                 new FeatureType2FeatureRangeDependencyRule( ontologyMaganer );
