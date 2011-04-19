@@ -73,13 +73,13 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 final Collection<DbReference> dbReferences = xref.getAllDbReferences();
 
                 // search for reference type: primary-reference
-                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType(dbReferences, "MI:0358", "primary-reference");
+                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType(dbReferences, "MI:0358", "primary-reference", messages, context, this);
 
                 if ( !primaryReferences.isEmpty() ) {
                     // check if we have a pubmed or doi identifier available
 
-                    final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
-                    final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );
+                    final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed", messages, context, this);
+                    final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi", messages, context, this);
 
                     // the following line is commented because a new Rule has been implemented and is doing the same stuff
                     //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);

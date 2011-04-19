@@ -70,7 +70,7 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
                 if (feature.getFeatureType().getXref() != null){
                     Xref ref = feature.getFeatureType().getXref();
 
-                    Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
+                    Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
 
                     if (psiRef.isEmpty()){
                         messages.add( new ValidatorMessage( "The feature type " + (feature.getFeatureType().getNames() != null ? feature.getFeatureType().getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but none of them is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",

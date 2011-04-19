@@ -59,7 +59,7 @@ public class ExperimentImexPrimaryRule extends Mi25ExperimentRule {
             Collection<DbReference> dbReferences = experiment.getXref().getAllDbReferences();
 
             // search for reference type: imex-primary (should not be empty)
-            Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0662", "imex-primary" );
+            Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0662", "imex-primary", messages, context, this );
 
             // At least one cross reference type 'imex-primary' is required and the Imex ID must be valid.
             if (imexReferences.isEmpty()){

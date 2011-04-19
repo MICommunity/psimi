@@ -66,10 +66,10 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 final Collection<DbReference> dbReferences = xref.getAllDbReferences();
 
                 // search for reference type: primary-reference
-                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference" );
+                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference", messages, context, this);
                 // search for database pubmed or DOI.
-                Collection<DbReference> allPubmeds = RuleUtils.findByDatabase( dbReferences, "MI:0446", "pubmed" );
-                Collection<DbReference> allDois = RuleUtils.findByDatabase( dbReferences, "MI:0574", "doi" );
+                Collection<DbReference> allPubmeds = RuleUtils.findByDatabase( dbReferences, "MI:0446", "pubmed", messages, context, this);
+                Collection<DbReference> allDois = RuleUtils.findByDatabase( dbReferences, "MI:0574", "doi", messages, context, this);
 
                 // At least one pubmed/DOI reference is required
                 if ( !allPubmeds.isEmpty() || !allDois.isEmpty()){
@@ -78,8 +78,8 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                     if ( !primaryReferences.isEmpty() ) {
                         // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
 
-                        final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed" );
-                        final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi" );
+                        final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed", messages, context, this);
+                        final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi", messages, context, this);
 
                         // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
                         if (pubmeds.size() > 1){

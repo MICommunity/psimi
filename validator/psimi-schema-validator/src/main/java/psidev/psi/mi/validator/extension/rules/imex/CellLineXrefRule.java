@@ -61,9 +61,9 @@ public class CellLineXrefRule extends ObjectRule<CellType>{
         if (cellType.getXref() != null){
             Xref ref = cellType.getXref();
 
-            Collection<DbReference> cabriReferences = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
-            Collection<DbReference> cellReferences = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.CELL_ONTOLOGY_MI_REF, RuleUtils.CELL_ONTOLOGY, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
-            Collection<DbReference> allPubmeds = RuleUtils.findByDatabaseAndReferenceType( ref.getAllDbReferences(), "MI:0446", "pubmed", "MI:0358", "primary-reference" );
+            Collection<DbReference> cabriReferences = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
+            Collection<DbReference> cellReferences = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.CELL_ONTOLOGY_MI_REF, RuleUtils.CELL_ONTOLOGY, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
+            Collection<DbReference> allPubmeds = RuleUtils.findByDatabaseAndReferenceType( ref.getAllDbReferences(), "MI:0446", "pubmed", "MI:0358", "primary-reference", messages, context, this);
 
             if (cabriReferences.isEmpty() && cellReferences.isEmpty() && allPubmeds.isEmpty()){
                 messages.add( new ValidatorMessage( "The cellType " + (cellType.getNames() != null ? cellType.getNames().getShortLabel() : "") + " does not have a CABRI or Cell Ontology cross reference with a qualifier 'identity' and it is strongly recommended. " +
