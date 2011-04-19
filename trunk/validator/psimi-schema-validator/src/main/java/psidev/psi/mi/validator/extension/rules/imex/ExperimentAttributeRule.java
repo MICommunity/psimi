@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.ExperimentDescription;
@@ -70,8 +69,6 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
             Mi25Context context = new Mi25Context();
             context.setExperimentId(experiment.getId());
 
-            final Mi25Ontology ontology = getMiOntology();
-
             for (Attribute attribute : attributes){
                 if (!attribute.hasNameAc()){
                     if (attribute.getName() != null && !attribute.getName().equalsIgnoreCase(COPYRIGHT)){
@@ -86,7 +83,7 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
                 else {
 
                     if (!acceptedAttributes.contains(attribute.getNameAc())){
-                        messages.add( new ValidatorMessage( "The attribute " + attribute.getName() + " is not a child of 'experiment attribute name' (MI:0665). " +
+                        messages.add( new ValidatorMessage( "The attribute " + attribute.getNameAc() + " ( " + attribute.getName() != null ? attribute.getName() : "no name" + " ) is not a child of MI:0665 ( 'experiment attribute name' ). " +
                                 " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
                                 MessageLevel.WARN,
                                 context,

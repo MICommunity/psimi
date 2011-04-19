@@ -184,8 +184,8 @@ public class BindingDomainSizeRule extends ObjectRule<Feature> {
                             context,
                             this ) );
                 }
-                else if (minSize < 3 && maxSize > 3 && isFeatureSiteDefined){
-                    messages.add( new ValidatorMessage( "The minimal size of this binding site does not contain more than three amino acids.'",
+                else if (minSize < 3 && maxSize >= 3 && isFeatureSiteDefined){
+                    messages.add( new ValidatorMessage( "The minimum size of this binding site is "+minSize+" and binding site should always contain more than three amino acids.'",
                             MessageLevel.WARN,
                             context,
                             this ) );

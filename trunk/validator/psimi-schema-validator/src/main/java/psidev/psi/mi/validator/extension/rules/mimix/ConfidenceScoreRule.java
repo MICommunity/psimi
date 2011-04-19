@@ -2,10 +2,9 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.ExperimentDescription;
+import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -14,6 +13,8 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
  * <b>Checks that the interaction defines its confidence score (if any) correctly.</b>
@@ -51,11 +52,18 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
+        Mi25Context context = new Mi25Context();
+        context.setInteractionId( interactionId );
+
         // write the rule here ...
 
-        final Collection<Attribute> atts = searchAttributes( interaction.getAttributes(), 
-                                                             AUTHOR_CONFIDENCE,
-                                                             AUTHOR_CONFIDENCE_MI_REF );
+        final Collection<Attribute> atts = searchAttributes( interaction.getAttributes(),
+                AUTHOR_CONFIDENCE,
+                AUTHOR_CONFIDENCE_MI_REF,
+                messages,
+                context,
+                this);
+
         if ( ! atts.isEmpty() ) {
 
             // check that in the list of experiment attached to an interaction there should be
@@ -63,32 +71,28 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
 
             if( ! interaction.hasExperiments() ) {
                 // error, we should have at least one exp !!
-
-                Mi25Context context = new Mi25Context();
-                context.setInteractionId( interactionId );
-                context.setExperimentId( interactionId );
-
                 messages.add( new ValidatorMessage( "No experiment defined for this interaction, furthermore, given " +
-                                                    "that the interaction defines an author confidence, the experiment " +
-                                                    "should have had a confidence mapping." ,
-                                                    MessageLevel.ERROR,
-                                                    context,
-                                                    this ) );
+                        "that the interaction defines an author confidence, the experiment " +
+                        "should have had a confidence mapping." ,
+                        MessageLevel.ERROR,
+                        context,
+                        this ) );
             } else {
 
                 boolean foundOne = false;
                 for ( ExperimentDescription experiment : interaction.getExperiments() ) {
                     final Collection<Attribute> expAtts = searchAttributes( experiment.getAttributes(),
-                                                                            CONFIDENCE_MAPPING,
-                                                                            CONFIDENCE_MAPPING_MI_REF );
+                            CONFIDENCE_MAPPING,
+                            CONFIDENCE_MAPPING_MI_REF,
+                            messages,
+                            context,
+                            this);
                     if( ! expAtts.isEmpty() ) {
                         foundOne = true;
                     }
                 }
 
                 if( ! foundOne ) {
-                    Mi25Context context = new Mi25Context();
-                    context.setInteractionId( interactionId );
 
                     final int expCount = interaction.getExperiments().size();
 
@@ -98,13 +102,13 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
                         context.setExperimentId( interaction.getExperiments().iterator().next().getId() );
                     } else {
                         msg = "Could not find a confidence mapping on any of the "+ expCount +
-                              " experiments attached to this interaction.";
+                                " experiments attached to this interaction.";
                     }
 
                     messages.add( new ValidatorMessage( msg ,
-                                                        MessageLevel.ERROR,
-                                                        context,
-                                                        this ) );
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
                 }
             }
         }

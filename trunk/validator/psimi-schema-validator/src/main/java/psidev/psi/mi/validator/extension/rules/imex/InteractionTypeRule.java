@@ -65,7 +65,7 @@ public class InteractionTypeRule extends Mi25InteractionRule{
                     if (type.getXref() != null){
                         Xref ref = type.getXref();
 
-                        Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
+                        Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
 
                         if (psiRef.isEmpty()){
                             messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but none of them is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",

@@ -96,8 +96,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
             final Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
-            int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.BAIT_MI_REF, "bait", experiment.getId());
-            int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.PREY_MI_REF, "prey", experiment.getId());
+            int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.BAIT_MI_REF, "bait", experiment.getId(), messages, context);
+            int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.PREY_MI_REF, "prey", experiment.getId(), messages, context);
 
             for ( Organism host : hostOrganisms ) {
                 for (InteractionType type : interactionType){
@@ -115,7 +115,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
      * @param role
      * @return  true if the role is a role with a psi MI identifier mi or a psi Mi short label shortLabel
      */
-    private boolean checkParticipantRole(ExperimentalRole role, String mi, String shortLabel){
+    private boolean checkParticipantRole(ExperimentalRole role, String mi, String shortLabel, Collection<ValidatorMessage> messages, Mi25Context context){
 
         boolean checkName = false;
 
@@ -123,7 +123,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         if (ref != null){
             Collection<DbReference> references = ref.getAllDbReferences();
 
-            Collection<DbReference> psiMiRef = RuleUtils.findByDatabase(references, RuleUtils.PSI_MI, RuleUtils.PSI_MI_REF);
+            Collection<DbReference> psiMiRef = RuleUtils.findByDatabase(references, RuleUtils.PSI_MI, RuleUtils.PSI_MI_REF, messages, context, this);
             if (!psiMiRef.isEmpty()){
 
                 for (DbReference psi : psiMiRef){
@@ -159,7 +159,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
      * @param roleName
      * @return the number of participants with a specific experimental role
      */
-    private int getNumberOfParticipantWithExperimentalRole(Collection<Participant> participants, String roleMi, String roleName, int experimentId){
+    private int getNumberOfParticipantWithExperimentalRole(Collection<Participant> participants, String roleMi, String roleName, int experimentId, Collection<ValidatorMessage> messages, Mi25Context context){
 
         int num = 0;
         for (Participant p : participants){
@@ -168,7 +168,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                 Collection<ExperimentRef> experimentRefs = role.getExperimentRefs();
 
                 if (experimentRefs.isEmpty()){
-                    if (checkParticipantRole(role, roleMi, roleName)){
+                    if (checkParticipantRole(role, roleMi, roleName, messages, context)){
                         num++;
                         break;
                     }
@@ -177,7 +177,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                     int previousNum = num;
                     for (ExperimentRef ref : experimentRefs){
                         if (ref.getRef() == experimentId){
-                            if (checkParticipantRole(role, roleMi, roleName)){
+                            if (checkParticipantRole(role, roleMi, roleName, messages, context)){
                                 num++;
                                 break;
                             }

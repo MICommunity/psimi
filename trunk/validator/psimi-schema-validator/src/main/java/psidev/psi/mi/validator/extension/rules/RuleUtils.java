@@ -25,6 +25,7 @@ import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
@@ -465,19 +466,29 @@ public final class RuleUtils {
      * @param nameAc     accession number of the name attribute, can be null.
      * @return a non null collection of attributes.
      */
-    public static Collection<Attribute> searchAttributes( Collection<Attribute> attributes, String name, String nameAc ) {
+    public static Collection<Attribute> searchAttributes( Collection<Attribute> attributes, String name, String nameAc, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule) {
 
         Collection<Attribute> foundAttributes = new ArrayList<Attribute>( attributes.size() );
 
         for ( Attribute attribute : attributes ) {
             if( nameAc != null){
                 if (!nameAc.equals( attribute.getNameAc() )) {
+
+                    if (name != null){
+                        if (name.equalsIgnoreCase( attribute.getName() )){
+                            messages.add( new ValidatorMessage( "The attribute " + name + " (name attribute)  is associated with a nameAc which points to a different PSI-MI term. The nameAc always overwrites the name attribute in the attribute elements so the current attribute is not identified as " + name + " and it may not be what you wanted.",
+                                    MessageLevel.WARN,
+                                    context,
+                                    rule ) );
+                        }
+                    }
+
                     continue;
 
                 }
             }
             if( name != null) {
-                if (!name.equals( attribute.getName() )){
+                if (!name.equalsIgnoreCase( attribute.getName() )){
                     continue;
                 }
             }
@@ -487,7 +498,7 @@ public final class RuleUtils {
         return foundAttributes;
     }
 
-    public static Collection<DbReference> findByReferenceType( Collection<DbReference> dbReferences, String mi, String name ) {
+    public static Collection<DbReference> findByReferenceType( Collection<DbReference> dbReferences, String mi, String name, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
         Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
         for ( DbReference reference : dbReferences ) {
             if (mi != null){
@@ -495,10 +506,18 @@ public final class RuleUtils {
                     if (mi.equals( reference.getRefTypeAc() )){
                         selectedReferences.add( reference );
                     }
+                    else if (name != null){
+                        if (name.equalsIgnoreCase( reference.getDb() )){
+                            messages.add( new ValidatorMessage( "The reference Type " + name + " (refType attribute)  is associated with a refTypeAc which points to a different PSI-MI term. The refTypeAc always overwrites the refType attribute in the cross references so the current reference type is not identified as " + name + " and it may not be what you wanted.",
+                                    MessageLevel.WARN,
+                                    context,
+                                    rule ) );
+                        }
+                    }
                 }
             }
             else if (name != null && reference.hasRefType()){
-                if (name.equals( reference.getRefType() )){
+                if (name.equalsIgnoreCase( reference.getRefType() )){
                     selectedReferences.add( reference );
                 }
             }
@@ -506,20 +525,28 @@ public final class RuleUtils {
         return selectedReferences;
     }
 
-    public static  Collection<DbReference> findByDatabaseAndReferenceType( Collection<DbReference> dbReferences, String dbmi, String dbname, String qmi, String qname ) {
-        Collection<DbReference> selectedDatabases = findByDatabase(dbReferences, dbmi, dbname);
-        Collection<DbReference> selectedReferenceTypes = findByReferenceType(selectedDatabases, qmi, qname);
+    public static  Collection<DbReference> findByDatabaseAndReferenceType( Collection<DbReference> dbReferences, String dbmi, String dbname, String qmi, String qname, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
+        Collection<DbReference> selectedDatabases = findByDatabase(dbReferences, dbmi, dbname, messages, context, rule);
+        Collection<DbReference> selectedReferenceTypes = findByReferenceType(selectedDatabases, qmi, qname, messages, context, rule);
 
         return selectedReferenceTypes;
     }
 
-    public static Collection<DbReference> findByDatabase( Collection<DbReference> dbReferences, String mi, String name ) {
+    public static Collection<DbReference> findByDatabase( Collection<DbReference> dbReferences, String mi, String name, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
         Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
         for ( DbReference reference : dbReferences ) {
 
             if (mi != null && reference.hasDbAc()){
                 if (mi.equals( reference.getDbAc() )){
                     selectedReferences.add( reference );
+                }
+                else if (name != null){
+                    if (name.equalsIgnoreCase( reference.getDb() )){
+                        messages.add( new ValidatorMessage( "The database " + name + " (db attribute)  is associated with a dbAc which points to a different PSI-MI term. The dbAc always overwrites the db attribute in the cross references so the current database is not identified as " + name + " and it may not be what you wanted.",
+                                MessageLevel.WARN,
+                                context,
+                                rule ) );
+                    }
                 }
             }
             else if(name != null && reference.getDb() != null){
@@ -557,7 +584,7 @@ public final class RuleUtils {
 
             if (!allDbRef.isEmpty()){
                 // search for database : db="psi-mi" dbAc="MI:0488"
-                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object" );
+                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
 
                 if (!psiMiReferences.isEmpty()){
                     // There is only one psi-mi database reference for an InteractionDetectionMethod
@@ -575,14 +602,14 @@ public final class RuleUtils {
 
                                 if (child != null){
                                     if ( !ontology.isChildOf(term1, child) ) {
-                                        messages.add( new ValidatorMessage( "The " + containerName + " " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " isn't a valid " + containerName + " ( must be any child of "+ mi +").",
+                                        messages.add( new ValidatorMessage( "The " + containerName + " " + psiMiId + "("+name+") isn't a valid " + containerName + " ( must be any child of "+ mi +").",
                                                 MessageLevel.ERROR,
                                                 context,
                                                 rule ) );
                                     }
                                 }
                                 else{
-                                    messages.add( new ValidatorMessage( "The PSI MI id of " + name + "("+psiMiId+") for the experiment " + context.getExperimentId() + " does not exist in the PSI MI ontology. ( must be any child of "+ mi +").",
+                                    messages.add( new ValidatorMessage( "The PSI MI id of " + psiMiId + "("+name+") does not exist in the PSI MI ontology. ( must be any child of "+ mi +").",
                                             MessageLevel.ERROR,
                                             context,
                                             rule ) );
@@ -597,21 +624,21 @@ public final class RuleUtils {
                         }
                     }
                     else {
-                        messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' while there should be only one.",
+                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' while there should be only one.",
                                 MessageLevel.ERROR,
                                 context,
                                 rule ) );
                     }
                 }
                 else {
-                    messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one.",
+                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have any psi-mi cross references with type 'identity' while there should be one.",
                             MessageLevel.ERROR,
                             context,
                             rule ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+                messages.add( new ValidatorMessage( "The "+ containerName + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
@@ -619,7 +646,7 @@ public final class RuleUtils {
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The "+ containerName + " for the experiment " + context.getExperimentId() + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+            messages.add( new ValidatorMessage( "The "+ containerName + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
                     MessageLevel.ERROR,
                     context,
                     rule ) );

@@ -60,8 +60,8 @@ public class TissueXRefRule extends ObjectRule<Tissue> {
         if (tissue.getXref() != null){
             Xref ref = tissue.getXref();
 
-            Collection<DbReference> brendaRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.BRENDA_MI_REF, RuleUtils.BRENDA, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
-            Collection<DbReference> tissueRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.TISSUE_LIST_MI_REF, RuleUtils.TISSUE_LIST, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
+            Collection<DbReference> brendaRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.BRENDA_MI_REF, RuleUtils.BRENDA, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
+            Collection<DbReference> tissueRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.TISSUE_LIST_MI_REF, RuleUtils.TISSUE_LIST, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
 
             if (brendaRef.isEmpty() && tissueRef.isEmpty()){
                 messages.add( new ValidatorMessage( "The tissue " + (tissue.getNames() != null ? tissue.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross reference(s) but none of them is a BRENDA or Tissue List cross reference with a qualifier 'identity' and it  is strongly recommended.'",
