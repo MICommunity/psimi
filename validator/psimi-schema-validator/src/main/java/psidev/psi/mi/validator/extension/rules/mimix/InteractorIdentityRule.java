@@ -63,7 +63,32 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
         // write the rule here ...
         int interactorId = interactor.getId();
 
-        if( RuleUtils.isBiopolymer(ontologyManager, interactor)) {
+        if( RuleUtils.isSmallMolecule( ontologyManager, interactor ) || RuleUtils.isPolysaccharide( ontologyManager, interactor )) {
+
+            // TODO cache these MI refs
+            final Set<OntologyTermI> dbs = mi.getValidTerms( BIOACTIVE_ENTITY_DATABASE_MI_REF, true, false );
+
+            final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
+
+            final Collection<DbReference> identities;
+            if( interactor.hasXref() ) {
+                identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
+                        Arrays.asList( IDENTITY_MI_REF ), dbMiRefs,
+                        null );
+            } else {
+                identities = Collections.EMPTY_LIST;
+            }
+
+            if( identities.isEmpty() ) {
+                Mi25Context context = buildContext( interactorId );
+                messages.add( new ValidatorMessage( "Interactor should have an Xref to a bioactive entity database with a ref type 'identity' ",
+                        MessageLevel.WARN,
+                        context,
+                        this ) );
+            }
+
+        }
+        else if( RuleUtils.isBiopolymer(ontologyManager, interactor)) {
 
             // TODO cache these MI refs
             final Set<OntologyTermI> dbs = mi.getValidTerms( SEQUENCE_DATABASE_MI_REF, true, false );
@@ -95,30 +120,6 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
                             context2,
                             this ) );
                 }
-            }
-
-        } else if( RuleUtils.isSmallMolecule( ontologyManager, interactor )) {
-
-            // TODO cache these MI refs
-            final Set<OntologyTermI> dbs = mi.getValidTerms( BIOACTIVE_ENTITY_DATABASE_MI_REF, true, false );
-
-            final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
-
-            final Collection<DbReference> identities;
-            if( interactor.hasXref() ) {
-                identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                        Arrays.asList( IDENTITY_MI_REF ), dbMiRefs,
-                        null );
-            } else {
-                identities = Collections.EMPTY_LIST;
-            }
-
-            if( identities.isEmpty() ) {
-                Mi25Context context = buildContext( interactorId );
-                messages.add( new ValidatorMessage( "Interactor should have an Xref to a bioactive entity database with a ref type 'identity' ",
-                        MessageLevel.WARN,
-                        context,
-                        this ) );
             }
 
         } else {
