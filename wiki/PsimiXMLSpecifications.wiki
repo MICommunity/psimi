@@ -156,7 +156,9 @@ In some cases, a specific feature will be detected with different method(s) and 
 
 == Publication ==
 
- * There isn't any publication element in the XML, only a bibRef element in each experimentDescription. You should always describe your publication (pubmed id -> XRef and authors, journal, etc. -> attributes of bibRef) within the bibRef element.
+ * There isn't any publication element in the XML, only a bibRef element in each experimentDescription. You should always describe your publication (pubmed id -> XRef OR authors, journal, etc. -> attributes of bibRef) within the bibRef element.
+
+ * A limitation of the current schema is that you cannot fully describe your publication in the bibRef element if you already gave a publication cross reference. In t5his case, the publications details such as author list, contact-email, etc. must be added in the experiment attribute list. 
 
 == Complexes ==
 
