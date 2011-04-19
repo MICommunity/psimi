@@ -1,6 +1,8 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
+import psidev.psi.mi.xml.model.ExperimentalRole;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
@@ -28,7 +30,7 @@ public class ExperimentalRoleRule  extends ObjectRule<Participant> {
         // describe the rule.
         setName( "Participant's experimental Role Check" );
 
-        setDescription( "Check that each interaction's participant has at least one experimental role." );
+        setDescription( "Check that each interaction's participant has at least one experimental role. Each experimental role must refer to a valid term in the PSI-MI ontology." );
 
         addTip( "Experimental role terms can be found in the PSI-MI ontology under term MI:0495" );
     }
@@ -57,13 +59,19 @@ public class ExperimentalRoleRule  extends ObjectRule<Participant> {
 
         // write the rule here ...
         int participantId = participant.getId();
+        final Mi25Context context = buildContext( participantId );
+
         if ( !participant.hasExperimentalRoles() ) {
-            final Mi25Context context = buildContext( participantId );
             messages.add( new ValidatorMessage( "Interaction's participants should have at least one " +
                     "experimental role; found 0.",
                     MessageLevel.ERROR,
                     context,
                     this ) );
+        }
+        else{
+            for (ExperimentalRole role : participant.getExperimentalRoles()){
+                RuleUtils.checkPsiMIXRef(role, messages, context, this, RuleUtils.EXPERIMENTAL_ROLE);
+            }
         }
 
         return messages;

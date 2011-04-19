@@ -73,6 +73,10 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
                             context,
                             this ) );
         }
+        else {
+
+            RuleUtils.checkPsiMIXRef(interactor.getInteractorType(), messages, context, this, RuleUtils.INTERACTOR_TYPE);
+        }
 
         return messages;
     }

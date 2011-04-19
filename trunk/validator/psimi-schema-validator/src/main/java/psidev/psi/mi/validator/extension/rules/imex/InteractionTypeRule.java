@@ -4,14 +4,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.InteractionType;
-import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -53,60 +49,9 @@ public class InteractionTypeRule extends Mi25InteractionRule{
         if (interaction.hasInteractionTypes()){
             Collection<InteractionType> interactionTypes = interaction.getInteractionTypes();
 
-            Mi25Ontology ontology = getMi25Ontology();
-
-            OntologyTermI interactionTypeMi = ontology.search(RuleUtils.INTERACTION_TYPE);
-
-            if (interactionTypeMi == null){
-                log.error("The term "+ RuleUtils.INTERACTION_TYPE +" for 'interaction type' is not recognized so this rule will be ignored.");
+            for (InteractionType type : interactionTypes){
+                RuleUtils.checkPsiMIXRef(type, messages, context, this, RuleUtils.INTERACTION_TYPE);
             }
-            else {
-                for (InteractionType type : interactionTypes){
-                    if (type.getXref() != null){
-                        Xref ref = type.getXref();
-
-                        Collection<DbReference> psiRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.PSI_MI_REF, RuleUtils.PSI_MI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
-
-                        if (psiRef.isEmpty()){
-                            messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross references but none of them is a PSI-MI cross reference with a qualifier 'identity' and it is required by IMEx.",
-                                MessageLevel.ERROR,
-                                context,
-                                this ) );
-                        }
-                        else if (psiRef.size() > 1) {
-                            messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " has "+psiRef.size()+" PSI-MI cross reference with a qualifier 'identity' and only one is accepted.",
-                                MessageLevel.ERROR,
-                                context,
-                                this ) );
-                        }
-                        else{
-                           DbReference psimi = psiRef.iterator().next();
-
-                           OntologyTermI currentType = ontology.search(psimi.getId());
-
-                           if (currentType == null){
-                               messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + "("+psimi.getId()+") is not recognized.",
-                                MessageLevel.ERROR,
-                                context,
-                                this ) );
-                           }
-                            else if(!ontology.isChildOf(interactionTypeMi, currentType)){
-                                messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + "("+psimi.getId()+") is not a valid interaction type.",
-                                MessageLevel.ERROR,
-                                context,
-                                this ) );
-                           }
-                        }
-                    }
-                    else {
-                        messages.add( new ValidatorMessage( "The interaction type " + (type.getNames() != null ? type.getNames().getShortLabel() : "") + " does not have any cross references. A PSI-MI cross reference with qualifier 'identity' is required.",
-                                MessageLevel.ERROR,
-                                context,
-                                this ) );
-                    }
-                }
-            }
-
         }
         else {
             messages.add( new ValidatorMessage( "The interaction does not have any interaction types. At least one interaction type is required by IMEx.'",

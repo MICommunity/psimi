@@ -17,7 +17,6 @@ package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -45,8 +44,11 @@ public final class RuleUtils {
     public static final String IDENTITY = "identity";
 
     public static final String INTERACTION_TYPE = "MI:0190";
+    public static final String INTERACTOR_TYPE = "MI:0313";
     public static final String FEATURE_TYPE = "MI:0116";
     public static final String BINDING_SITE = "MI:0117";
+    public static final String BIOLOGICAL_ROLE= "MI:0500";
+    public static final String EXPERIMENTAL_ROLE = "MI:0495";
 
     /////////////////////////
     // Interactor types
@@ -575,7 +577,15 @@ public final class RuleUtils {
         return selectedAttribute;
     }
 
-    public static void checkPsiMIXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, Mi25Ontology ontology, String mi){
+    /**
+     * Checks that a psi mi cross reference is present and well formatted. The controlled vocabulary rules will already check if the controlled vocabulary is valid
+     * @param container
+     * @param messages
+     * @param context
+     * @param rule
+     * @param mi
+     */
+    public static void checkPsiMIXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
         Xref xref = container.getXref();
         String containerName = container.getClass().getSimpleName();
 
@@ -590,7 +600,8 @@ public final class RuleUtils {
                     // There is only one psi-mi database reference for an InteractionDetectionMethod
                     if (psiMiReferences.size() == 1){
 
-                        for ( DbReference reference : psiMiReferences ) {
+                        // checking already done by controlled vocabulary rules! do not need to check it again here
+                        /*for ( DbReference reference : psiMiReferences ) {
                             String psiMiId = reference.getId();
 
                             OntologyTermI term1 = ontology.search( mi );
@@ -621,24 +632,24 @@ public final class RuleUtils {
                                         context,
                                         rule ) );
                             }
-                        }
+                        }*/
                     }
                     else {
-                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' while there should be only one.",
+                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
                                 MessageLevel.ERROR,
                                 context,
                                 rule ) );
                     }
                 }
                 else {
-                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have any psi-mi cross references with type 'identity' while there should be one.",
+                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
                             MessageLevel.ERROR,
                             context,
                             rule ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "The "+ containerName + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
@@ -646,7 +657,7 @@ public final class RuleUtils {
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The "+ containerName + " does not have any psi-mi cross references with type 'identity' while there should be one ( must be any child of "+ mi +").",
+            messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488' in the XRef/primaryRef element) with type 'identity'(refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of \"+ mi +\").",
                     MessageLevel.ERROR,
                     context,
                     rule ) );

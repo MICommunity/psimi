@@ -36,7 +36,8 @@ public class FeatureTypeRuleTest extends AbstractRuleTest {
         Assert.assertEquals( 0, messages.size() );
     }
 
-    @Test
+    // the rule doesn't check anymore if the term is valid as a controlled vocabulary rule does it
+    /*@Test
     public void test_feature_one_feature_type_wrong_psi() throws ValidatorException {
         Feature feature = buildCertainFeature(3, 8);
         feature.getFeatureType().getXref().getAllDbReferences().iterator().next().setId("xxxx");
@@ -47,7 +48,7 @@ public class FeatureTypeRuleTest extends AbstractRuleTest {
 
         Assert.assertNotNull(messages);
         Assert.assertEquals( 1, messages.size() );
-    }
+    }*/
 
     @Test
     public void test_feature_one_feature_no_type() throws ValidatorException {

@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.InteractionDetectionMethod;
@@ -63,8 +62,7 @@ public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule
         }
         else {
             InteractionDetectionMethod intMethod = experiment.getInteractionDetectionMethod();
-            final Mi25Ontology ontology = getMiOntology();
-            RuleUtils.checkPsiMIXRef(intMethod, messages, context, this, ontology, "MI:0001");
+            RuleUtils.checkPsiMIXRef(intMethod, messages, context, this, "MI:0001");
         }
 
         return messages;
