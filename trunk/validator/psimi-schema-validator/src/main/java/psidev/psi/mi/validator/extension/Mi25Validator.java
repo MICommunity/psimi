@@ -11,11 +11,9 @@ import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.validator.Validator;
-import psidev.psi.tools.validator.ValidatorException;
-import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.*;
 import psidev.psi.tools.validator.preferences.UserPreferences;
+import psidev.psi.tools.validator.rules.Rule;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 import psidev.psi.tools.validator.schema.SaxMessage;
 import psidev.psi.tools.validator.schema.SaxReport;
@@ -224,17 +222,34 @@ public class Mi25Validator extends Validator {
                 hasExperimentList = true;
                 for ( ExperimentDescription experiment : entry.getExperiments() ) {
 
-                    // object rule
-                    Collection<ValidatorMessage> messages = checkExperiment(report.getSemanticMessages(), experiment);
+                    // cv mapping
+                    Collection<ValidatorMessage> messages = checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
+
+                    if( ! messages.isEmpty() ){
+                        checkExperiment(messages, experiment);
+                    }
+                    else{
+                        checkExperiment(messages, experiment);
+                    }
+
+                    report.getSemanticMessages().addAll(messages);
                 }
             }
 
             if (entry.hasInteractors()){
                 hasInteractorList = true;
                 for ( Interactor interactor : entry.getInteractors() ) {
+                    // cv mapping
+                    Collection<ValidatorMessage> messages = checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
 
-                    // object rule
-                    Collection<ValidatorMessage> messages = checkInteractor(report.getSemanticMessages(), interactor);
+                    if( ! messages.isEmpty() ){
+                        checkInteractor(messages, interactor);
+                    }
+                    else{
+                        checkInteractor(messages, interactor);
+                    }
+
+                    report.getSemanticMessages().addAll(messages);
                 }
             }
 
@@ -243,12 +258,18 @@ public class Mi25Validator extends Validator {
                 // cv mapping
                 Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
                 if( ! messages.isEmpty() )
-                    report.getSemanticMessages().addAll( convertToMi25Messages( messages, interaction ) );
+                    messages = convertToMi25Messages( messages, interaction );
 
                 // object rule
-                messages = checkInteraction(report.getSemanticMessages(), interaction, hasExperimentList, hasInteractorList);
+                checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
+
+                report.getSemanticMessages().addAll(messages);
             }
         }
+
+        // cluster all messages!!
+        Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
+        report.setSemanticMessages(clusteredValidatorMessages);
 
         return report;
     }
@@ -272,35 +293,9 @@ public class Mi25Validator extends Validator {
         List<IndexedEntry> entries = null;
 
         try {
-            // Run CV mapping Rules first (if any)
-            if( getCvRuleManager() != null ) {
-                if( entries == null ) {
-                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
-                    entries = psiReader.getIndexedEntries();
-                }
-
-                for ( IndexedEntry entry : entries ) {
-                    Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
-                    while ( interactionIterator.hasNext() ) {
-                        Interaction interaction = interactionIterator.next();
-
-                        // check using cv mapping rules
-                        Collection<ValidatorMessage> interactionMessages =
-                                super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
-
-                        interactionMessages = convertToMi25Messages( interactionMessages, interaction );
-
-                        // append messages to the global collection
-                        messages.addAll( interactionMessages );
-                    }
-                }
-            }
-
-
             // then run the object rules (if any)
             final Set<ObjectRule> rules = getObjectRules();
-            if ( rules != null && !rules.isEmpty() ) {
-                // now that we know that we have at least one rule, it is worth parsing the data.
+            if ( (rules != null && !rules.isEmpty()) || getCvRuleManager() != null) {
                 if( entries == null ) {
                     PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
                     entries = psiReader.getIndexedEntries();
@@ -317,12 +312,27 @@ public class Mi25Validator extends Validator {
 
                         while ( experimentIterator.hasNext() ) {
                             ExperimentDescription experiment = experimentIterator.next();
-                            Collection<ValidatorMessage> validatorMessages = checkExperiment(messages, experiment);
+
+                            // check using cv mapping rules
+                            Collection<ValidatorMessage> validatorMessages =
+                                    super.checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
+
+                            if (validatorMessages != null){
+                                validatorMessages = convertToMi25Messages( validatorMessages, experiment );
+
+                                validatorMessages.addAll(checkExperiment(validatorMessages, experiment));
+                            }
+                            else {
+                                validatorMessages = checkExperiment(validatorMessages, experiment);
+                            }
 
                             if( !validatorMessages.isEmpty() ) {
                                 long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
                                 updateLineNumber( validatorMessages, lineNumber );
                             }
+
+                            // append messages to the global collection
+                            messages.addAll( validatorMessages );
                         }
                     }
 
@@ -334,12 +344,27 @@ public class Mi25Validator extends Validator {
 
                         while ( interactorIterator.hasNext() ) {
                             Interactor interactor = interactorIterator.next();
-                            Collection<ValidatorMessage> validatorMessages = checkInteractor(messages, interactor);
+
+                            // check using cv mapping rules
+                            Collection<ValidatorMessage> validatorMessages =
+                                    super.checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
+
+                            if (validatorMessages != null){
+                                validatorMessages = convertToMi25Messages( validatorMessages, interactor );
+
+                                validatorMessages.addAll(checkInteractor(validatorMessages, interactor));
+                            }
+                            else {
+                                validatorMessages = checkInteractor(validatorMessages, interactor);
+                            }
 
                             if( !validatorMessages.isEmpty() ) {
                                 long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
                                 updateLineNumber( validatorMessages, lineNumber );
                             }
+
+                            // append messages to the global collection
+                            messages.addAll( validatorMessages );
                         }
                     }
 
@@ -347,17 +372,36 @@ public class Mi25Validator extends Validator {
                     Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
                     while ( interactionIterator.hasNext() ) {
                         Interaction interaction = interactionIterator.next();
-                        Collection<ValidatorMessage> interactionMessages = checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
 
+                        // check using cv mapping rules
+                        Collection<ValidatorMessage> interactionMessages =
+                                super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
+
+                        if (interactionMessages != null){
+                            interactionMessages = convertToMi25Messages( interactionMessages, interaction );
+
+                            interactionMessages.addAll(checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList));
+                        }
+                        else {
+                            interactionMessages = checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList);
+                        }
 
                         // add line number
                         if( !interactionMessages.isEmpty() ) {
                             long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
                             updateLineNumber( interactionMessages, lineNumber );
                         }
+
+                        // append messages to the global collection
+                        messages.addAll( interactionMessages );
                     }
                 }
+
+                // cluster all messages!!
+                Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
+                report.setSemanticMessages(clusteredValidatorMessages);
             }
+
         } catch(Exception e){
             PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
 
@@ -664,5 +708,78 @@ public class Mi25Validator extends Validator {
                 }
             }
         }
+    }
+
+    public Collection<ValidatorMessage> clusterByMessagesAndRules (Collection<ValidatorMessage> messages){
+        Collection<ValidatorMessage> clusteredMessages = new ArrayList<ValidatorMessage>( messages.size() );
+
+        // build a first clustering by message and rule
+        Map<String, Map<Rule, Set<ValidatorMessage>>> clustering = new HashMap<String, Map<Rule, Set<ValidatorMessage>>>();
+        for (ValidatorMessage message : messages){
+
+            if (clustering.containsKey(message.getMessage())){
+                Map<Rule, Set<ValidatorMessage>> messagesCluster = clustering.get(message.getMessage());
+
+                if (messagesCluster.containsKey(message.getRule())){
+                    messagesCluster.get(message.getRule()).add(message);
+                }
+                else{
+                    Set<ValidatorMessage> validatorContexts = new HashSet<ValidatorMessage>();
+                    validatorContexts.add(message);
+                    messagesCluster.put(message.getRule(), validatorContexts);
+                }
+            }
+            else {
+                Map<Rule, Set<ValidatorMessage>> messagesCluster = new HashMap<Rule, Set<ValidatorMessage>>();
+
+                Set<ValidatorMessage> validatorContexts = new HashSet<ValidatorMessage>();
+                validatorContexts.add(message);
+                messagesCluster.put(message.getRule(), validatorContexts);
+
+                clustering.put(message.getMessage(), messagesCluster);
+            }
+        }
+
+        // build a second cluster by message level
+        Map<MessageLevel, Mi25ClusteredContext> clusteringByMessageLevel = new HashMap<MessageLevel, Mi25ClusteredContext>();
+
+        for (Map.Entry<String, Map<Rule, Set<ValidatorMessage>>> entry : clustering.entrySet()){
+
+            String message = entry.getKey();
+            Map<Rule, Set<ValidatorMessage>> ruleCluster = entry.getValue();
+
+            // cluster by message level and create proper validatorMessage
+            for (Map.Entry<Rule, Set<ValidatorMessage>> ruleEntry : ruleCluster.entrySet()){
+                clusteringByMessageLevel.clear();
+
+                Rule rule = ruleEntry.getKey();
+                Set<ValidatorMessage> validatorMessages = ruleEntry.getValue();
+
+                for (ValidatorMessage validatorMessage : validatorMessages){
+
+                    if (clusteringByMessageLevel.containsKey(validatorMessage.getLevel())){
+                        Mi25ClusteredContext clusteredContext = clusteringByMessageLevel.get(validatorMessage.getLevel());
+
+                        clusteredContext.getContexts().add(validatorMessage.getContext());
+                    }
+                    else{
+                        Mi25ClusteredContext clusteredContext = new Mi25ClusteredContext();
+
+                        clusteredContext.getContexts().add(validatorMessage.getContext());
+
+                        clusteringByMessageLevel.put(validatorMessage.getLevel(), clusteredContext);
+                    }
+                }
+
+                for (Map.Entry<MessageLevel, Mi25ClusteredContext> levelEntry : clusteringByMessageLevel.entrySet()){
+
+                    ValidatorMessage validatorMessage = new ValidatorMessage(message, levelEntry.getKey(), levelEntry.getValue(), rule);
+                    clusteredMessages.add(validatorMessage);
+
+                }
+            }
+        }
+
+        return clusteredMessages;
     }
 }
