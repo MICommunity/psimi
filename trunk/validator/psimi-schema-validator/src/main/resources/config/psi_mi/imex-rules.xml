@@ -27,6 +27,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionParticipantRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionSourceIdentityXrefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractorTypeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.NegativeInteractionRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ProteinIdentityRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.SingleExperimentRoleRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.TissueXRefRule"/>
