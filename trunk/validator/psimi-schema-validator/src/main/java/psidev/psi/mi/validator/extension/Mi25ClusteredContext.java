@@ -29,10 +29,13 @@ public class Mi25ClusteredContext extends Context {
         return contexts;
     }
 
+    public int getNumberOfContexts(){
+        return contexts.size();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(128);
-        sb.append( "Clustered contexts(" );
 
         for (Context context : contexts){
 
