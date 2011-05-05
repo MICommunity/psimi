@@ -66,7 +66,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Cross reference database and cross reference qualifier check" );
+        setName( "Dependency Check : Cross reference database and cross reference qualifier" );
         setDescription( "Checks that each association database - qualifier respects IMEx curetion rules. For example, for each feature, all the interpro" +
                 " cross references should have a qualifier 'identity'.");
         addTip( "Search the possible terms for database cross reference and reference type on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
