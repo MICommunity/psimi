@@ -468,8 +468,8 @@ Notes:
 </xsl:template>
 
 <xsl:template match="psi:interactor" mode="participant">
-    Interactor #<xsl:apply-templates select="@id"/>
-    <xsl:apply-templates/>
+    <a name="i{@id}">Interactor #<xsl:value-of select="@id"/></a>
+        <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="node()" mode="cellrow">
