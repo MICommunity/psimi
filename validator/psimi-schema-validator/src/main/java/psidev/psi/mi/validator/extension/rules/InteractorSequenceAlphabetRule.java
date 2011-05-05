@@ -48,6 +48,11 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
             AMINO_ACID_WILDCARDS_1_LETTER_CODES +
             "]+" );
 
+    public static final Pattern NOT_AMINO_ACID_SEQUENCE_PATTERN = Pattern.compile( "[^" +
+            AMINO_ACID_1_LETTER_CODES +
+            AMINO_ACID_WILDCARDS_1_LETTER_CODES +
+            "]+" );
+
     // source: http://embnet.ccg.unam.mx/docs/perl-doc/Bio/Tools/IUPAC.html
     public static final String NUCLEOTIDE_WILDCARDS = "MRWSYKVHDBXN";
 
@@ -56,9 +61,17 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
             DNA_1_LETTER_CODES +
             NUCLEOTIDE_WILDCARDS +
             "]+" );
+    public static final Pattern NOT_DNA_SEQUENCE_PATTERN = Pattern.compile( "[^" +
+            DNA_1_LETTER_CODES +
+            NUCLEOTIDE_WILDCARDS +
+            "]+" );
 
     public static final String RNA_1_LETTER_CODES = "AUCG";
     public static final Pattern RNA_SEQUENCE_PATTERN = Pattern.compile( "[" +
+            RNA_1_LETTER_CODES +
+            NUCLEOTIDE_WILDCARDS +
+            "]+" );
+    public static final Pattern NOT_RNA_SEQUENCE_PATTERN = Pattern.compile( "[^" +
             RNA_1_LETTER_CODES +
             NUCLEOTIDE_WILDCARDS +
             "]+" );
@@ -90,31 +103,73 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
             final String seq = interactor.getSequence();
 
             if ( RuleUtils.isProtein( ontologyManager, interactor ) || RuleUtils.isPeptide( ontologyManager, interactor )) {
-                final Matcher matcher = AMINO_ACID_SEQUENCE_PATTERN.matcher( seq );
-                if ( !matcher.matches() ) {
+                final Matcher matcher = NOT_AMINO_ACID_SEQUENCE_PATTERN.matcher( seq );
+
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("Protein interactor with invalid sequence : ");
+                boolean hasFound = false;
+
+                while (matcher.find()){
+                    hasFound = true;
+
+                    buffer.append( matcher.group());
+                    buffer.append("(positions : "+matcher.start()+"-"+matcher.end()+"), ");
+                }
+
+                if ( hasFound ) {
+                    String message= buffer.substring(0, buffer.length()-1);
+
                     // error
                     Mi25Context context = buildContext( interactor );
-                    messages.add( new ValidatorMessage( "Protein interactor with incorrect sequence: " + seq,
+                    messages.add( new ValidatorMessage( message,
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
             } else if ( RuleUtils.isDNA( ontologyManager, interactor ) ) {
-                final Matcher matcher = DNA_SEQUENCE_PATTERN.matcher( seq );
-                if ( !matcher.matches() ) {
+                final Matcher matcher = NOT_DNA_SEQUENCE_PATTERN.matcher( seq );
+
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("DNA interactor with invalid sequence : ");
+                boolean hasFound = false;
+
+                while (matcher.find()){
+                    hasFound = true;
+
+                    buffer.append( matcher.group());
+                    buffer.append("(positions : "+matcher.start()+"-"+matcher.end()+"), ");
+                }
+
+                if ( hasFound ) {
+                    String message= buffer.substring(0, buffer.length()-1);
+
                     // error
                     Mi25Context context = buildContext( interactor );
-                    messages.add( new ValidatorMessage( "DNA interactor with incorrect sequence: " + seq,
+                    messages.add( new ValidatorMessage( message,
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
             } else if ( RuleUtils.isRNA( ontologyManager, interactor ) ) {
-                final Matcher matcher = RNA_SEQUENCE_PATTERN.matcher( seq );
-                if ( !matcher.matches() ) {
+                final Matcher matcher = NOT_RNA_SEQUENCE_PATTERN.matcher( seq );
+
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("RNA interactor with invalid sequence : ");
+                boolean hasFound = false;
+
+                while (matcher.find()){
+                    hasFound = true;
+
+                    buffer.append( matcher.group());
+                    buffer.append("(positions : "+matcher.start()+"-"+matcher.end()+"), ");
+                }
+
+                if ( hasFound ) {
+                    String message= buffer.substring(0, buffer.length()-1);
+
                     // error
                     Mi25Context context = buildContext( interactor );
-                    messages.add( new ValidatorMessage( "RNA interactor with incorrect sequence: " + seq,
+                    messages.add( new ValidatorMessage(message,
                             MessageLevel.WARN,
                             context,
                             this ) );
