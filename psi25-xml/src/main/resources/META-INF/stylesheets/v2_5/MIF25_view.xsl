@@ -399,6 +399,12 @@
                     <xsl:apply-templates select="psi:featureList/psi:feature"/>
                     <xsl:apply-templates select="psi:hostOrganismList/psi:hostOrganism"/>
                     <xsl:apply-templates select="psi:parameterList"/>
+                    <tr>
+                        <xsl:apply-templates select="psi:experimentalInteractorList"/>
+                    </tr>
+                    <tr>
+                        <xsl:apply-templates select="psi:experimentalPreparationList"/>
+                    </tr>
                 </table>
             </td>
         </tr>
@@ -414,6 +420,45 @@
         <xsl:apply-templates select="current()"  mode="cellrow">
             <xsl:with-param name="title" select="'Experimental Role'"/>
         </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="psi:experimentalInteractorList">
+        <xsl:apply-templates select="current()"  mode="cellrow">
+            <xsl:with-param name="title" select="'Experimental Interactor'"/>
+        </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="psi:experimentalPreparationList">
+        <xsl:apply-templates select="current()"  mode="cellrow">
+            <xsl:with-param name="title" select="'Experimental Preparation'"/>
+        </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="psi:experimentalInteractor">
+        <xsl:apply-templates select="psi:interactorRef" mode="experimentalInteractor"/>
+        <xsl:apply-templates select="psi:interactor"    mode="experimentalInteractor"/>
+    </xsl:template>
+
+    <xsl:template match="psi:experimentalPreparation">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="psi:interactorRef" mode="experimentalInteractor">
+        <a href="#i{.}">
+            <xsl:apply-templates select="/psi:entrySet/psi:entry/psi:interactionList/psi:interaction/psi:participantList/psi:participant/psi:interactor[@id = current()/text()]"
+                                 mode="ref">
+                <xsl:with-param name="label" select="'Interactor'"/>
+            </xsl:apply-templates>
+            <xsl:apply-templates select="/psi:entrySet/psi:entry/psi:interactorList/psi:interactor[@id = current()/text()]"
+                                 mode="ref">
+                <xsl:with-param name="label" select="'Interactor'"/>
+            </xsl:apply-templates>
+        </a>
+    </xsl:template>
+
+    <xsl:template match="psi:interactor" mode="experimentalInteractor">
+        <a name="i{@id}">Interactor #<xsl:value-of select="@id"/></a>
+        <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="psi:feature">
