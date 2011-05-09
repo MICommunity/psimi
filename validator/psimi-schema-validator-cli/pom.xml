@@ -48,9 +48,9 @@
                                      also adding the project build directory -->
                                 <classpath/>
                                 <argument>psidev.psi.mi.ValidatorClient</argument>
-                                <!-- The file to validate, when a directory is given, process all files with an extension .xml recursively -->
+                                <!-- The file to validate, when a directory is given, process all files with an extension .XML recursively -->
                                 <argument>${file}</argument>
-                                <!-- Apply validation given scope (xml, cv, mimix, imex) -->
+                                <!-- Apply validation given scope (XML, CV, MIMIX, IMEX) -->
                                 <argument>${scope}</argument>
                                 <!-- If specified, only output messages that are of the same level or more severe -->
                                 <argument>${level}</argument>
