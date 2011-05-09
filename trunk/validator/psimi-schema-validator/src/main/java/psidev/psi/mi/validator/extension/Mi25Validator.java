@@ -919,7 +919,7 @@ public class Mi25Validator extends Validator {
         return clusteredMessages;
     }
 
-    public ValidatorReport getValidatorReport() {
+    public ValidatorReport getMIValidatorReport() {
         return validatorReport;
     }
 }
