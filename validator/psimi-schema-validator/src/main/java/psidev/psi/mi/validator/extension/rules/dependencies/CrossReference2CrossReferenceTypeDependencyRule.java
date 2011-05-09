@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -342,7 +343,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
                     if( refAC == null && refName == null ) {
 
-                        Set<AssociatedTerm> required = getRequiredDependenciesFor(database);
+                        Set<AssociatedTerm> required = getRequiredDependenciesFor(database, container);
                         if (!required.isEmpty()){
                             String msg = "At the level of the "+container.getClass().getSimpleName()+", each " + Term.printTerm(database) + " cross reference must be associated with a reference type." +
                                     " In this case, the possible reference types are " ;
@@ -356,7 +357,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                         }
                         else {
 
-                            Set<AssociatedTerm> recommended = getRecommendedDependenciesFor(database);
+                            Set<AssociatedTerm> recommended = getRecommendedDependenciesFor(database, container);
                             if (!recommended.isEmpty()){
 
                                 final StringBuffer msg = new StringBuffer( 1024 );
@@ -413,7 +414,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                         if (!hasFoundDependency && isAValueRequired){
                             Set<AssociatedTerm> req = getRequiredDependenciesFor(database);
                             final StringBuffer msg = new StringBuffer( 1024 );
-                            msg.append("At the level of the " + container.getClass().getSimpleName() + " one "+Term.printTerm(database)+" cross reference" +
+                            msg.append("At the level of the " + container.getClass().getSimpleName() + " one "+Term.printTerm(database)+" cross reference " +
                                     "cannot be associated with the reference qualifier " +Term.printTerm(type)+
                                     ". In this case, the possible reference qualifiers are : ");
                             writePossibleDependenciesFor(req, msg, container);
@@ -456,6 +457,60 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
             if (msg.toString().endsWith(", ")){
                 msg.delete(msg.lastIndexOf(","), msg.length());
             }
+        }
+
+        /**
+         *
+         * @param term
+         * @return the associated term in the dependency map with a message level 'required'
+         */
+        protected Set<AssociatedTerm> getRequiredDependenciesFor(Term term, XrefContainer container){
+            Set<AssociatedTerm> requiredTerms = new HashSet<AssociatedTerm>();
+
+            if (this.dependencies.containsKey(term)){
+                Set<AssociatedTerm> associatedTerms = this.dependencies.get(term);
+
+                for (AssociatedTerm at : associatedTerms){
+
+                    if (at.getLevel().equals(DependencyLevel.REQUIRED)){
+                        if (at instanceof CrossReferenceType){
+                            CrossReferenceType ct = (CrossReferenceType) at;
+
+                            if (ct.isReferenceTypeRuleApplicableTo(container)){
+                                requiredTerms.add(at);
+                            }
+                        }
+                    }
+                }
+            }
+            return requiredTerms;
+        }
+
+        /**
+         *
+         * @param term
+         * @return the associated term in the dependency map with a message level 'required'
+         */
+        protected Set<AssociatedTerm> getRecommendedDependenciesFor(Term term, XrefContainer container){
+            Set<AssociatedTerm> requiredTerms = new HashSet<AssociatedTerm>();
+
+            if (this.dependencies.containsKey(term)){
+                Set<AssociatedTerm> associatedTerms = this.dependencies.get(term);
+
+                for (AssociatedTerm at : associatedTerms){
+
+                    if (at.getLevel().equals(DependencyLevel.SHOULD)){
+                        if (at instanceof CrossReferenceType){
+                            CrossReferenceType ct = (CrossReferenceType) at;
+
+                            if (ct.isReferenceTypeRuleApplicableTo(container)){
+                                requiredTerms.add(at);
+                            }
+                        }
+                    }
+                }
+            }
+            return requiredTerms;
         }
     }
 }
