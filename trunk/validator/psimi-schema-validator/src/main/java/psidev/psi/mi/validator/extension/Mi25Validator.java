@@ -40,8 +40,8 @@ public class Mi25Validator extends Validator {
     public static final Log log = LogFactory.getLog( Mi25Validator.class );
 
     ///**
-     //* Plateform specific break line.
-     //*/
+    //* Plateform specific break line.
+    //*/
     //public static final String NEW_LINE = System.getProperty( "line.separator" );
 
     /**
@@ -52,6 +52,8 @@ public class Mi25Validator extends Validator {
     private long uniqId = 0;
 
     private UserPreferences userPreferences;
+
+    private ValidatorReport validatorReport;
 
     /**
      * Creates a MI 25 validator with the default user userPreferences.
@@ -66,12 +68,14 @@ public class Mi25Validator extends Validator {
                           InputStream objectRuleConfig ) throws ValidatorException, OntologyLoaderException {
 
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
+        validatorReport = new ValidatorReport();
     }
 
     public Mi25Validator( OntologyManager ontologyManager,
                           CvMapping cvMapping,
                           Collection<ObjectRule> objectRules) {
         super( ontologyManager, cvMapping, objectRules);
+        validatorReport = new ValidatorReport();
     }
 
     ///////////////////////////
@@ -146,33 +150,79 @@ public class Mi25Validator extends Validator {
     /////////////////////////////
     // Validator
 
+    /**
+     * Validate a file and use the user preferences to decide if run semantic and syntax validation or not
+     * @param file
+     * @return
+     * @throws ValidatorException
+     */
     public ValidatorReport validate( File file ) throws ValidatorException {
-        final ValidatorReport report = new ValidatorReport();
+        this.validatorReport.clear();
 
         try {
-            // the given inputStream should not be used anymore.
-            InputStream nis = new FileInputStream( file );
 
             // 1. Validate XML input using Schema (MIF)
             if ( userPreferences.isSaxValidationEnabled() ) {
-                if (false == runSyntaxValidation(report, nis)) {
-                    return report;
+                if (false == validateSyntax(file)) {
+                    return this.validatorReport;
                 }
             }
-            // close the inputstream
-            nis.close();
 
-            nis = new FileInputStream( file );
+            validateSemantic(file);
 
-            runSemanticValidation(report, nis);
-            // close the inputstream
-            nis.close();
-
-            return report;
+            return this.validatorReport;
 
         } catch ( Exception e ) {
             throw new ValidatorException( "Unable to process input file:" + file.getAbsolutePath(), e );
         }
+    }
+
+    /**
+     * Validate the syntax of a file.
+     * @param file
+     * @return false if syntax not valid
+     */
+    public boolean validateSyntax(File file){
+        this.validatorReport.getSyntaxMessages().clear();
+
+        return runSyntaxValidation(this.validatorReport, file);
+    }
+
+    /**
+     * validate the syntax of an inputStream
+     * @param streamToValidate
+     * @return false if not valid
+     */
+    public boolean validateSyntax(InputStream streamToValidate){
+        this.validatorReport.getSyntaxMessages().clear();
+
+        return runSyntaxValidation(this.validatorReport, streamToValidate);
+    }
+
+    /**
+     * validate the semantic of a file and write the results in the report of this validator
+     * @param file
+     * @throws ValidatorException
+     * @throws PsimiXmlReaderException
+     */
+    public void validateSemantic(File file) throws ValidatorException, PsimiXmlReaderException {
+        this.validatorReport.getSemanticMessages().clear();
+        this.validatorReport.setInteractionCount(0);
+
+        runSemanticValidation(this.validatorReport, file);
+    }
+
+    /**
+     * validate the semantic of an inputstream and write the results in the report of this validator
+     * @param streamToValidate
+     * @throws ValidatorException
+     * @throws PsimiXmlReaderException
+     */
+    public void validateSemantic(InputStream streamToValidate) throws ValidatorException, PsimiXmlReaderException {
+        this.validatorReport.getSyntaxMessages().clear();
+        this.validatorReport.setInteractionCount(0);
+
+        runSemanticValidation(this.validatorReport, streamToValidate);
     }
 
     /**
@@ -184,7 +234,7 @@ public class Mi25Validator extends Validator {
      */
     public ValidatorReport validate( InputStream is ) throws ValidatorException {
 
-        final ValidatorReport report = new ValidatorReport();
+        this.validatorReport.clear();
 
         try {
             File tempFile = storeAsTemporaryFile( is );
@@ -192,25 +242,17 @@ public class Mi25Validator extends Validator {
             // close the original inputStream as it has been successfully read
             is.close();
 
-            // the given inputStream should not be used anymore.
-            InputStream nis = new FileInputStream( tempFile );
 
             // 1. Validate XML input using Schema (MIF)
             if ( userPreferences.isSaxValidationEnabled() ) {
-                if (false == runSyntaxValidation(report, nis)) {
-                    return report;
+                if (false == validateSyntax(tempFile)) {
+                    return this.validatorReport;
                 }
             }
-            // close the inputstream
-            nis.close();
 
-            nis = new FileInputStream( tempFile );
+            validateSemantic(tempFile);
 
-            runSemanticValidation(report, nis);
-            // close the inputstream
-            nis.close();
-
-            return report;
+            return this.validatorReport;
 
         } catch ( Exception e ) {
             throw new ValidatorException( "Unable to process input stream", e );
@@ -226,7 +268,7 @@ public class Mi25Validator extends Validator {
      */
     public ValidatorReport validate( EntrySet es ) throws ValidatorException {
 
-        final ValidatorReport report = new ValidatorReport();
+        this.validatorReport.clear();
 
         for ( Entry entry : es.getEntries() ) {
             boolean hasExperimentList = false;
@@ -246,7 +288,7 @@ public class Mi25Validator extends Validator {
                         checkExperiment(messages, experiment);
                     }
 
-                    report.getSemanticMessages().addAll(messages);
+                    this.validatorReport.getSemanticMessages().addAll(messages);
                 }
             }
 
@@ -263,7 +305,7 @@ public class Mi25Validator extends Validator {
                         checkInteractor(messages, interactor);
                     }
 
-                    report.getSemanticMessages().addAll(messages);
+                    this.validatorReport.getSemanticMessages().addAll(messages);
                 }
             }
 
@@ -277,15 +319,15 @@ public class Mi25Validator extends Validator {
                 // object rule
                 checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
 
-                report.getSemanticMessages().addAll(messages);
+                this.validatorReport.getSemanticMessages().addAll(messages);
             }
         }
 
         // cluster all messages!!
-        Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
-        report.setSemanticMessages(clusteredValidatorMessages);
+        Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(this.validatorReport.getSemanticMessages());
+        this.validatorReport.setSemanticMessages(clusteredValidatorMessages);
 
-        return report;
+        return this.validatorReport;
     }
 
     //////////////////////////////
@@ -315,105 +357,7 @@ public class Mi25Validator extends Validator {
                     entries = psiReader.getIndexedEntries();
                 }
 
-                for ( IndexedEntry entry : entries ) {
-                    boolean hasExperimentList = false;
-                    boolean hasInteractorList = false;
-
-                    final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
-
-                    if (experimentIterator.hasNext()){
-                        hasExperimentList = true;
-
-                        while ( experimentIterator.hasNext() ) {
-                            ExperimentDescription experiment = experimentIterator.next();
-
-                            // check using cv mapping rules
-                            Collection<ValidatorMessage> validatorMessages =
-                                    super.checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
-
-                            if (validatorMessages != null){
-                                validatorMessages = convertToMi25Messages( validatorMessages, experiment );
-
-                                validatorMessages.addAll(checkExperiment(validatorMessages, experiment));
-                            }
-                            else {
-                                validatorMessages = checkExperiment(validatorMessages, experiment);
-                            }
-
-                            if( !validatorMessages.isEmpty() ) {
-                                long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
-                                updateLineNumber( validatorMessages, lineNumber );
-                            }
-
-                            // append messages to the global collection
-                            messages.addAll( validatorMessages );
-                        }
-                    }
-
-                    // now process interactors
-                    final Iterator<Interactor> interactorIterator = entry.unmarshallInteractorIterator();
-
-                    if (interactorIterator.hasNext()){
-                        hasInteractorList = true;
-
-                        while ( interactorIterator.hasNext() ) {
-                            Interactor interactor = interactorIterator.next();
-
-                            // check using cv mapping rules
-                            Collection<ValidatorMessage> validatorMessages =
-                                    super.checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
-
-                            if (validatorMessages != null){
-                                validatorMessages = convertToMi25Messages( validatorMessages, interactor );
-
-                                validatorMessages.addAll(checkInteractor(validatorMessages, interactor));
-                            }
-                            else {
-                                validatorMessages = checkInteractor(validatorMessages, interactor);
-                            }
-
-                            if( !validatorMessages.isEmpty() ) {
-                                long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
-                                updateLineNumber( validatorMessages, lineNumber );
-                            }
-
-                            // append messages to the global collection
-                            messages.addAll( validatorMessages );
-                        }
-                    }
-
-                    // now process interactions
-                    Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
-                    while ( interactionIterator.hasNext() ) {
-                        Interaction interaction = interactionIterator.next();
-
-                        // check using cv mapping rules
-                        Collection<ValidatorMessage> interactionMessages =
-                                super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
-
-                        if (interactionMessages != null){
-                            interactionMessages = convertToMi25Messages( interactionMessages, interaction );
-
-                            interactionMessages.addAll(checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList));
-                        }
-                        else {
-                            interactionMessages = checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList);
-                        }
-
-                        // add line number
-                        if( !interactionMessages.isEmpty() ) {
-                            long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
-                            updateLineNumber( interactionMessages, lineNumber );
-                        }
-
-                        // append messages to the global collection
-                        messages.addAll( interactionMessages );
-                    }
-                }
-
-                // cluster all messages!!
-                Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
-                report.setSemanticMessages(clusteredValidatorMessages);
+                processSemanticValidation(report, messages, entries);
             }
 
         } catch(Exception e){
@@ -431,6 +375,152 @@ public class Mi25Validator extends Validator {
                     context,
                     schemaRule ) );
         }
+    }
+
+    /**
+     * Runs the semantic validation and append messages to the given report.
+     *
+     * @param report the report to be completed.
+     * @param file the file to be validated.
+     * @throws PsimiXmlReaderException
+     * @throws ValidatorException
+     */
+    private void runSemanticValidation(ValidatorReport report, File file) throws PsimiXmlReaderException, ValidatorException {
+
+        // Build the collection of messages in which we will accumulate the output of the validator
+        Collection<ValidatorMessage> messages = report.getSemanticMessages();
+
+        List<IndexedEntry> entries = null;
+
+        try {
+            // then run the object rules (if any)
+            final Set<ObjectRule> rules = getObjectRules();
+            if ( (rules != null && !rules.isEmpty()) || getCvRuleManager() != null) {
+                if( entries == null ) {
+                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( file );
+                    entries = psiReader.getIndexedEntries();
+                }
+
+                processSemanticValidation(report, messages, entries);
+            }
+
+        } catch(Exception e){
+            PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
+
+            StringBuffer messageBuffer = schemaRule.createMessageFromException(e);
+            messageBuffer.append("\n The validator reported at least " + messages.size() + " messages but the error in the xml file need " +
+                    "to be fixed before finishing the validation of the file.");
+
+            Mi25Context context = new Mi25Context();
+
+            messages.clear();
+            messages.add( new ValidatorMessage( messageBuffer.toString(),
+                    MessageLevel.FATAL,
+                    context,
+                    schemaRule ) );
+        }
+    }
+
+    private void processSemanticValidation(ValidatorReport report, Collection<ValidatorMessage> messages, List<IndexedEntry> entries) throws PsimiXmlReaderException, ValidatorException {
+        for ( IndexedEntry entry : entries ) {
+            boolean hasExperimentList = false;
+            boolean hasInteractorList = false;
+
+            final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
+
+            if (experimentIterator.hasNext()){
+                hasExperimentList = true;
+
+                while ( experimentIterator.hasNext() ) {
+                    ExperimentDescription experiment = experimentIterator.next();
+
+                    // check using cv mapping rules
+                    Collection<ValidatorMessage> validatorMessages =
+                            super.checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
+
+                    if (validatorMessages != null){
+                        validatorMessages = convertToMi25Messages( validatorMessages, experiment );
+
+                        validatorMessages.addAll(checkExperiment(validatorMessages, experiment));
+                    }
+                    else {
+                        validatorMessages = checkExperiment(validatorMessages, experiment);
+                    }
+
+                    if( !validatorMessages.isEmpty() ) {
+                        long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
+                        updateLineNumber( validatorMessages, lineNumber );
+                    }
+
+                    // append messages to the global collection
+                    messages.addAll( validatorMessages );
+                }
+            }
+
+            // now process interactors
+            final Iterator<Interactor> interactorIterator = entry.unmarshallInteractorIterator();
+
+            if (interactorIterator.hasNext()){
+                hasInteractorList = true;
+
+                while ( interactorIterator.hasNext() ) {
+                    Interactor interactor = interactorIterator.next();
+
+                    // check using cv mapping rules
+                    Collection<ValidatorMessage> validatorMessages =
+                            super.checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
+
+                    if (validatorMessages != null){
+                        validatorMessages = convertToMi25Messages( validatorMessages, interactor );
+
+                        validatorMessages.addAll(checkInteractor(validatorMessages, interactor));
+                    }
+                    else {
+                        validatorMessages = checkInteractor(validatorMessages, interactor);
+                    }
+
+                    if( !validatorMessages.isEmpty() ) {
+                        long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
+                        updateLineNumber( validatorMessages, lineNumber );
+                    }
+
+                    // append messages to the global collection
+                    messages.addAll( validatorMessages );
+                }
+            }
+
+            // now process interactions
+            Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
+            while ( interactionIterator.hasNext() ) {
+                Interaction interaction = interactionIterator.next();
+
+                // check using cv mapping rules
+                Collection<ValidatorMessage> interactionMessages =
+                        super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
+
+                if (interactionMessages != null){
+                    interactionMessages = convertToMi25Messages( interactionMessages, interaction );
+
+                    interactionMessages.addAll(checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList));
+                }
+                else {
+                    interactionMessages = checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList);
+                }
+
+                // add line number
+                if( !interactionMessages.isEmpty() ) {
+                    long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
+                    updateLineNumber( interactionMessages, lineNumber );
+                }
+
+                // append messages to the global collection
+                messages.addAll( interactionMessages );
+            }
+        }
+
+        // cluster all messages!!
+        Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
+        report.setSemanticMessages(clusteredValidatorMessages);
     }
 
     private Collection<ValidatorMessage> checkInteraction(Collection<ValidatorMessage> messages, Interaction interaction, boolean hasExperimentList, boolean hasInteractorList) throws ValidatorException {
@@ -627,6 +717,38 @@ public class Mi25Validator extends Validator {
             return false; // abort
         }
 
+        return processSyntaxValidation(report, saxReport);
+    }
+
+    /**
+     * Runs the XML syntax validation and append messages to the report if any.
+     *
+     * @param report report in which errors should be reported.
+     * @param file file to be validated.
+     * @return true is the validation passed, false otherwise.
+     */
+    private boolean runSyntaxValidation(ValidatorReport report, File file) {
+
+        if (log.isDebugEnabled()) log.debug("[SAX Validation] enabled via user preferences" );
+        SaxReport saxReport = null;
+        try {
+            saxReport = SaxValidatorHandler.validate( file );
+        } catch (Exception e) {
+            log.error("SAX error while running syntax validation", e);
+            String msg = "An unexpected error occured while running the syntax validation";
+            if( e.getMessage() != null ) {
+                msg = msg + ": " + e.getMessage();
+            }
+            final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
+            report.getSyntaxMessages().add(message);
+
+            return false; // abort
+        }
+
+        return processSyntaxValidation(report, saxReport);
+    }
+
+    private boolean processSyntaxValidation(ValidatorReport report, SaxReport saxReport) {
         if ( !saxReport.isValid() ) {
 
             if (log.isDebugEnabled()) log.debug( "[SAX Validation] File not PSI 2.5 valid." );
@@ -795,5 +917,9 @@ public class Mi25Validator extends Validator {
         }
 
         return clusteredMessages;
+    }
+
+    public ValidatorReport getValidatorReport() {
+        return validatorReport;
     }
 }

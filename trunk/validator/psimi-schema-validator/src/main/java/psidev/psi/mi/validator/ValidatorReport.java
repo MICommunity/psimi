@@ -77,4 +77,10 @@ public class ValidatorReport {
     public boolean hasSemanticMessages() {
         return ! semanticMessages.isEmpty();
     }
+
+    public void clear(){
+        this.getSyntaxMessages().clear();
+        this.getSemanticMessages().clear();
+        this.setInteractionCount(0);
+    }
 }
