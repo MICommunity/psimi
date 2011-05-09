@@ -127,7 +127,6 @@ public class Mi25Validator extends Validator {
         long id = getUniqueId();
 
         File tempFile = File.createTempFile( "validator." + id, ".xml", tempDirectory );
-        tempFile.deleteOnExit();
 
         log.info( "The file is temporary store as: " + tempFile.getAbsolutePath() );
 
@@ -251,6 +250,8 @@ public class Mi25Validator extends Validator {
             }
 
             validateSemantic(tempFile);
+
+            tempFile.delete();
 
             return this.validatorReport;
 
