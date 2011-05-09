@@ -11,7 +11,10 @@ import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-import psidev.psi.tools.validator.*;
+import psidev.psi.tools.validator.MessageLevel;
+import psidev.psi.tools.validator.Validator;
+import psidev.psi.tools.validator.ValidatorException;
+import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.rules.Rule;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -36,10 +39,10 @@ public class Mi25Validator extends Validator {
      */
     public static final Log log = LogFactory.getLog( Mi25Validator.class );
 
-    /**
-     * Plateform specific break line.
-     */
-    public static final String NEW_LINE = System.getProperty( "line.separator" );
+    ///**
+     //* Plateform specific break line.
+     //*/
+    //public static final String NEW_LINE = System.getProperty( "line.separator" );
 
     /**
      * counter used for creating unique IDs.
@@ -156,10 +159,14 @@ public class Mi25Validator extends Validator {
                     return report;
                 }
             }
+            // close the inputstream
+            nis.close();
 
             nis = new FileInputStream( file );
 
             runSemanticValidation(report, nis);
+            // close the inputstream
+            nis.close();
 
             return report;
 
@@ -182,6 +189,9 @@ public class Mi25Validator extends Validator {
         try {
             File tempFile = storeAsTemporaryFile( is );
 
+            // close the original inputStream as it has been successfully read
+            is.close();
+
             // the given inputStream should not be used anymore.
             InputStream nis = new FileInputStream( tempFile );
 
@@ -191,10 +201,14 @@ public class Mi25Validator extends Validator {
                     return report;
                 }
             }
+            // close the inputstream
+            nis.close();
 
             nis = new FileInputStream( tempFile );
 
             runSemanticValidation(report, nis);
+            // close the inputstream
+            nis.close();
 
             return report;
 
