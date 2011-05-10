@@ -376,8 +376,8 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
                                     Map results = query.getTermsByName(dbName, ontologyId, false);
 
                                     if (results == null || results.isEmpty()){
-                                        messages.add( new ValidatorMessage( "The database "+dbName+" is not recognized.",
-                                                MessageLevel.ERROR,
+                                        messages.add( new ValidatorMessage( "The database "+dbName+" is not recognized in the PSI-MI ontology.",
+                                                MessageLevel.INFO,
                                                 context,
                                                 this ) );
                                     }
