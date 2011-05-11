@@ -54,7 +54,7 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
             throw new ValidatorRuleException("We can't build the map containing the dependencies from the file " + fileName, e);
         }
         // describe the rule.
-        setName( "Dependency Check : articipant's feature type and participant's feature range status" );
+        setName( "Dependency Check : Participant's feature type and participant's feature range status" );
         setDescription( "Checks association participant's feature type - participant's feature range status is valid and respects IMEx curation rules.");
         addTip( "Search the possible terms for feature type and feature range status on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/featureType2FeatureRangeStatus.tsv for the possible dependencies feature type - feature range status" );
