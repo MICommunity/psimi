@@ -28,11 +28,12 @@
     <build>
         <plugins>
             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-jar-plugin</artifactId>
                  <configuration>
-                    <archive>  
+                    <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                     </archive> 
+                     </archive>
                  </configuration>
             </plugin> 
             <plugin>
@@ -196,6 +197,13 @@
             <groupId>javax.xml.stream</groupId>
             <artifactId>com.springsource.javax.xml.stream</artifactId>
             <version>1.0.1</version>
+        </dependency>
+
+        <!-- SAXON -->
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon-xom</artifactId>
+            <version>8.7</version>
         </dependency>
     </dependencies>
 

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0"
-                xmlns:psi="net:sf:psidev:mi"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0"
+    xmlns:psi="net:sf:psidev:mi"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:json="http://json.org/"
+    xmlns:fn="http://www.w3.org/2005/xpath-functions">
 
     <!--
     @id: $Id$
@@ -60,7 +62,6 @@
                select="'http://www.ncbi.nlm.nih.gov/sites/entrez?db=pccompound&amp;term='"/>
     <xsl:param name="pdbUrl"
                select="'http://www.rcsb.org/pdb/explore/explore.do?structureId='"/>
-    '"/>
 
 
     <xsl:template match="psi:entrySet">
