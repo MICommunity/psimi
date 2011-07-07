@@ -172,4 +172,40 @@ public class XslTransformerUtilsTest {
         assertTrue( output.exists() );
         System.out.println( "Resulting file: " + output.getAbsolutePath() );
     }
+
+    @Test
+    public void jsonPsiMi254() throws XslTransformException, IOException {
+        File input = new File( XslTransformerUtilsTest.class.getResource( "/sample-xml/intact/10320477.254.xml" ).getFile() );
+        assertTrue( input.exists() );
+
+        File output = new File( input.getParentFile(), "10320477.254.json" );
+        if ( output.exists() ) {
+            output.delete();
+        }
+        assertFalse( output.exists() );
+
+        XslTransformerUtils.jsonPsiMi( input, output );
+
+        assertTrue( input.exists() );
+        assertTrue( output.exists() );
+        System.out.println( "Resulting file: " + output.getAbsolutePath() );
+    }
+
+    @Test
+    public void jsonPsiMi253() throws XslTransformException, IOException {
+        File input = new File( XslTransformerUtilsTest.class.getResource( "/sample-xml/intact/10320477.253.xml" ).getFile() );
+        assertTrue( input.exists() );
+
+        File output = new File( input.getParentFile(), "10320477.254.json" );
+        if ( output.exists() ) {
+            output.delete();
+        }
+        assertFalse( output.exists() );
+
+        XslTransformerUtils.jsonPsiMi( input, output );
+
+        assertTrue( input.exists() );
+        assertTrue( output.exists() );
+        System.out.println( "Resulting file: " + output.getAbsolutePath() );
+    }
 }

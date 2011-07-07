@@ -39,8 +39,13 @@ public class XmlUnitDifferenceTest extends XMLTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-
+        XMLUnit.setTransformerFactory("org.apache.xalan.processor.TransformerFactoryImpl");
         XMLUnit.setIgnoreWhitespace( true );
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        XMLUnit.setTransformerFactory("net.sf.saxon.TransformerFactoryImpl");
     }
 
     public void testXmlSimilar_parameter() throws Exception {

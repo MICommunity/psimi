@@ -22,9 +22,11 @@ import psidev.psi.mi.xml.PsimiXmlVersion;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.util.ResourceBundle;
 
 /**
  * Utility to run an XSLT script on PSI-MI XML data.
@@ -47,8 +49,12 @@ public class XslTransformerUtils {
     private static final String PSI_254_COMPACT = "/META-INF/stylesheets/v2_5/MIF254_compact.xsl";
     private static final String PSI_254_HTML = "/META-INF/stylesheets/v2_5/MIF254_view.xsl";
 
+    private static final String PSI_JSON = "/META-INF/stylesheets/v2_5/MIF25_json.xsl";
+
     private static final String NAMESPACE_FROM_254 = "http://psi.hupo.org/mi/mif";
     private static final String NAMESPACE_BEFORE_254 = "net:sf:psidev:mi";
+
+    private static final URIResolver URI_RESOLVER = new CustomURIResolver("/META-INF/stylesheets/");
 
     /////////////////////
     // Constructor
@@ -61,8 +67,8 @@ public class XslTransformerUtils {
 
     private static InputStream loadFromMetaInf( String resource ) throws XslTransformException {
         try {
-            return XslTransformerUtils.class.getResource( resource ).openStream();
-        } catch ( IOException e ) {
+            return XslTransformerUtils.class.getResourceAsStream( resource );
+        } catch ( Exception e ) {
             throw new XslTransformException( "An error occured while retrieving XSL located at: " + resource, e );
         }
     }
@@ -81,6 +87,10 @@ public class XslTransformerUtils {
 
         // the factory pattern supports different XSLT processors
         TransformerFactory transFact = TransformerFactory.newInstance();
+
+        // setting the path for xsl:import in xslt file,
+        // will have an effect only if there is an xsl:import or xsl:include in the xslt file
+        transFact.setURIResolver(URI_RESOLVER);
         try {
             Transformer trans = transFact.newTransformer( xsltSource );
             trans.transform( xmlSource, new StreamResult( outputWriter ) );
@@ -217,10 +227,25 @@ public class XslTransformerUtils {
         transform(pReader, outputXML, xsl);
     }
 
+    public static void jsonPsiMi( File inputXML, File outputXML ) throws XslTransformException {
+        checkFiles(inputXML, outputXML);
+
+        try {
+            jsonPsiMi(new FileInputStream(inputXML), new FileOutputStream(outputXML));
+        } catch (FileNotFoundException e) {
+            throw new XslTransformException("Problem compacting file: "+inputXML, e);
+        }
+    }
+
+    public static void jsonPsiMi( InputStream inputXML, OutputStream outputXML) throws  XslTransformException {
+        PushbackReader pReader = new PushbackReader(new InputStreamReader(inputXML), PsimiXmlVersionDetector.BUFFER_SIZE);
+
+        transform(pReader, outputXML, PSI_JSON);
+    }
+
     private static void transform(PushbackReader pReader, OutputStream outputXML, String xsl) throws XslTransformException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputXML);
         runXslt( pReader, loadFromMetaInf( xsl ), outputStreamWriter);
-
         try {
             outputStreamWriter.close();
         } catch (IOException e) {
@@ -256,5 +281,26 @@ public class XslTransformerUtils {
             throw new XslTransformException("Problem reading stream", e);
         }
         return namespace;
+    }
+
+    private static class CustomURIResolver implements URIResolver {
+
+        private String path;
+
+        public CustomURIResolver(String path){
+            this.path = path;
+        }
+
+        public Source resolve(String href, String base){
+            InputStream inputStream = null;
+            try {
+                inputStream = loadFromMetaInf(path + href);
+            } catch (XslTransformException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+
+            return new StreamSource(inputStream);
+        }
+
     }
 }
