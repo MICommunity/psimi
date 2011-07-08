@@ -93,10 +93,13 @@ public class GraphmlBuilder {
         final Iterator<BinaryInteraction> iterator;
         int interactionCount = 0;
 
-        is.mark(0);
+        boolean hasHeader = false;
         BufferedReader testReader = new BufferedReader(new InputStreamReader( is ));
-        boolean hasHeader = testReader.readLine().contains("ID interactor A");
-        is.reset();
+        if(is.markSupported()){
+            is.mark(0);
+            hasHeader = testReader.readLine().contains("ID interactor A");
+            is.reset();
+        }
         try {
             iterator = getMitabIterator(is, hasHeader);
 
