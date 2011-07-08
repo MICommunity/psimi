@@ -78,10 +78,8 @@ public class GraphmlBuilder {
     public GraphmlBuilder() {
     }
 
-    protected Iterator<BinaryInteraction> getMitabIterator(InputStream is) throws ConverterException, IOException {
-        BufferedReader testReader = new BufferedReader(new InputStreamReader( is ));
-
-        PsimiTabReader reader = new PsimiTabReader(testReader.readLine().equals("ID interactor A"));
+    protected Iterator<BinaryInteraction> getMitabIterator(InputStream is, boolean hasHeader) throws ConverterException, IOException {
+        PsimiTabReader reader = new PsimiTabReader(hasHeader);
         return reader.iterate(is);
     }
 
@@ -94,8 +92,13 @@ public class GraphmlBuilder {
         // get MITAB data from the current service
         final Iterator<BinaryInteraction> iterator;
         int interactionCount = 0;
+
+        is.mark(0);
+        BufferedReader testReader = new BufferedReader(new InputStreamReader( is ));
+        boolean hasHeader = testReader.readLine().contains("ID interactor A");
+        is.reset();
         try {
-            iterator = getMitabIterator(is);
+            iterator = getMitabIterator(is, hasHeader);
 
             // create header of GraphML
             sb.append(GRAPHML_HEADER);
@@ -132,7 +135,7 @@ public class GraphmlBuilder {
             sb.append(ExceptionUtils.getFullStackTrace(e));
 
         } finally {
-
+            testReader.close();
             molecule2node.clear();
         }
 
