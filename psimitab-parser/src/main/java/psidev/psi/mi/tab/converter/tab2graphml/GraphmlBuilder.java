@@ -97,7 +97,7 @@ public class GraphmlBuilder {
         BufferedReader testReader = new BufferedReader(new InputStreamReader( is ));
         if(is.markSupported()){
             is.mark(0);
-            hasHeader = testReader.readLine().contains("ID interactor A");
+            hasHeader = testReader.readLine().startsWith("ID interactor A");
             is.reset();
         }
         try {
