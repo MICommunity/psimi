@@ -204,6 +204,12 @@
             <groupId>net.sf.saxon</groupId>
             <artifactId>saxon-xom</artifactId>
             <version>8.7</version>
+            <exclusions>
+                <exclusion>
+                   <groupId>xerces</groupId>
+                   <artifactId>xercesImpl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
