@@ -53,7 +53,15 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
     private static final String WILDCARD = "*";
 
-    private Directory indexDirectory;
+    protected Directory indexDirectory;
+
+    /**
+     * IndexSearcher is thread-safe, and the api recommends to open only one
+     * and use it for all searches.
+     * @see <a href="http://lucene.apache.org/java/2_9_0/api/all/org/apache/lucene/search/IndexSearcher.html">IndexSearcher</a>
+     *
+     */
+    protected IndexSearcher indexSearcher;
 
     public AbstractSearchEngine(Directory indexDirectory) throws IOException
     {
@@ -62,6 +70,12 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         }
 
         this.indexDirectory = indexDirectory;
+
+        try {
+            this.indexSearcher = new IndexSearcher(indexDirectory);
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(e);
+        }
     }
 
     public AbstractSearchEngine(String indexDirectory) throws IOException
@@ -75,7 +89,14 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         this(FSDirectory.getDirectory(indexDirectory));
     }
 
-    public void closeIndexSearcher(IndexSearcher indexSearcher) {
+    public void close() {
+        closeIndexSearcher();
+    }
+
+    protected void closeIndexSearcher() {
+        if (indexSearcher == null) {
+            return;
+        }
         try {
             indexSearcher.close();
         } catch (IOException e) {
@@ -83,7 +104,10 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         }
     }
 
-    public void closeIndexReader(IndexReader indexReader) {
+    protected void closeIndexReader(IndexReader indexReader) {
+        if (indexReader == null) {
+            return;
+        }
         try {
             indexReader.close();
         } catch (IOException e) {
@@ -129,13 +153,6 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
     {
         if (log.isDebugEnabled()) log.debug("Searching=\""+query+"\" (first="+firstResult+"/max="+maxResults+")");
 
-        IndexSearcher indexSearcher;
-        try {
-            indexSearcher = new IndexSearcher(indexDirectory);
-        } catch (Exception e) {
-            throw new SearchEngineException("Problem creating index searcher", e);
-        }
-
         if (firstResult == null) firstResult = 0;
         if (maxResults == null) maxResults = Integer.MAX_VALUE;
 
@@ -153,7 +170,6 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             if (log.isDebugEnabled()) log.debug("\tTime: " + (System.currentTimeMillis() - startTime) + "ms");
         }
         catch (Exception e) {
-            closeIndexSearcher(indexSearcher);
             throw new SearchEngineException(e);
         }
 
@@ -162,8 +178,6 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         if (totalCount < firstResult)
         {
             if (log.isDebugEnabled()) log.debug("\tNo hits. No results returned");
-
-            closeIndexSearcher(indexSearcher);
 
             return new SearchResult(Collections.EMPTY_LIST, totalCount, firstResult, maxResults, query);
         }
@@ -184,12 +198,9 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             }
             catch (Exception e)
             {
-                closeIndexSearcher(indexSearcher);
                 throw new SearchEngineException(e);
             }
         }
-
-        closeIndexSearcher(indexSearcher);
 
          return new SearchResult<T>(dataObjects, totalCount, firstResult, maxResults, query);
     }
@@ -202,13 +213,6 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
     {
         if (firstResult == null) firstResult = 0;
         if (maxResults == null) maxResults = Integer.MAX_VALUE;
-
-        IndexSearcher indexSearcher = null;
-        try {
-            indexSearcher = new IndexSearcher(indexDirectory);
-        } catch (Exception e) {
-            throw new SearchEngineException(e);
-        }
 
         IndexReader reader = indexSearcher.getIndexReader();
 
@@ -223,8 +227,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
         if (firstResult > totalCount)
         {
-            closeIndexReader(reader);
-            closeIndexSearcher(indexSearcher);
+//            closeIndexReader(reader);
             return new SearchResult(Collections.EMPTY_LIST, totalCount, firstResult, maxResults, new WildcardQuery(new Term("", "*")));
         }
 
@@ -242,14 +245,12 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             }
             catch (Exception e)
             {
-                closeIndexReader(reader);
-                closeIndexSearcher(indexSearcher);
+//                closeIndexReader(reader);
                 throw new SearchEngineException(e);
             }
         }
 
-        closeIndexReader(reader);
-        closeIndexSearcher(indexSearcher);
+//        closeIndexReader(reader);
         return new SearchResult(dataObjects, totalCount, firstResult, maxResults, new WildcardQuery( new Term("", "*")));
     }
 

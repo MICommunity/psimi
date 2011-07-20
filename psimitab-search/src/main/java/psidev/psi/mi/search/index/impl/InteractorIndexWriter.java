@@ -32,15 +32,10 @@ import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.model.builder.DocumentDefinition;
 import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
 import psidev.psi.mi.tab.model.builder.Row;
-import psidev.psi.mi.tab.model.builder.Column;
 import psidev.psi.mi.tab.utils.AbstractBinaryInteractionHandler;
 import psidev.psi.mi.tab.utils.OnlyOneInteractorHandler;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Interactor index writer.
@@ -52,7 +47,6 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
 
     private static final Log log = LogFactory.getLog( InteractorIndexWriter.class );
 
-    private SearchEngine searchEngine;
     private AbstractBinaryInteractionHandler binaryInteractionHandler;
 
     public InteractorIndexWriter() {
@@ -68,11 +62,6 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
         this.binaryInteractionHandler = binaryInteractionHandler;
     }
 
-    public InteractorIndexWriter(DocumentBuilder documentBuilder, AbstractBinaryInteractionHandler binaryInteractionHandler, SearchEngine searchEngine) {
-        this(documentBuilder, binaryInteractionHandler);
-        this.searchEngine = searchEngine;
-    }
-
     protected AbstractBinaryInteractionHandler getBinaryInteractionHandler() {
         return binaryInteractionHandler;
     }
@@ -84,14 +73,19 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
         BinaryInteraction copy1 = binaryInteractionHandler.cloneBinaryInteraction(binaryInteraction);
         BinaryInteraction copy2 = binaryInteractionHandler.cloneBinaryInteraction(binaryInteraction);
 
+        SearchEngine searchEngine = createSearchEngine(indexWriter.getDirectory());
         // interactor A
-        indexBinaryInteraction(indexWriter, copy1, docDefinition);
-
+        indexBinaryInteraction(indexWriter,searchEngine, copy1, docDefinition);
+        //IndexSearcher sees index as it was when it was opened, if it gets modified
+        // the searcher needs to be reopened:
+        searchEngine.close();
+        searchEngine = createSearchEngine(indexWriter.getDirectory());
         // invert interaction interactors
         invertInteractors(copy2);
 
         // interactor B
-        indexBinaryInteraction(indexWriter, copy2, docDefinition);
+        indexBinaryInteraction(indexWriter,searchEngine, copy2, docDefinition);
+        searchEngine.close();
     }
 
     @Override
@@ -106,11 +100,7 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
         binaryInteraction.setInteractorB(a);
     }
 
-    private void indexBinaryInteraction(IndexWriter indexWriter, BinaryInteraction binaryInteraction, DocumentDefinition docDefinition) throws IOException {
-        if (searchEngine == null) {
-            searchEngine = createSearchEngine(indexWriter.getDirectory());
-        }
-
+    private void indexBinaryInteraction(IndexWriter indexWriter, SearchEngine searchEngine, BinaryInteraction binaryInteraction, DocumentDefinition docDefinition) throws IOException {
         final String idAColumnName = docDefinition.getColumnDefinition(MitabDocumentDefinition.ID_INTERACTOR_A).getShortName();
 
         final String identifier = getMainIdentifier(binaryInteraction.getInteractorA());
