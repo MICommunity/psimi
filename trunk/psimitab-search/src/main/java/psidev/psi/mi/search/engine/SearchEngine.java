@@ -37,4 +37,6 @@ public interface SearchEngine<T extends BinaryInteraction>
     SearchResult<T> search(Query searchQuery, Integer firstResult, Integer maxResults, Sort sort) throws SearchEngineException;
 
     String[] getSearchFields();
+
+    void close();
 }
