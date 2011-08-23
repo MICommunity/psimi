@@ -3,7 +3,9 @@ package org.hupo.psi.calimocho.model;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO document this !
@@ -23,25 +25,27 @@ public class DefaultRow implements Row {
     }
 
     public boolean addField(String columnKey, Field field) {
-//        setFieldColumnKey( columnKey, field );
         return fieldMultimap.put( columnKey, field );
     }
 
     public boolean addFields( String columnKey, Collection<Field> fields ) {
-//        for (Field field : fields) {
-//            setFieldColumnKey( columnKey, field );
-//        }
-
-
         return fieldMultimap.putAll( columnKey, fields );
     }
 
-//    private void setFieldColumnKey( String columnKey, Field field ) {
-//        field.getEntries().put(CalimochoKeys.COLUMN_KEY, columnKey);
-//    }
-
     public Collection<Field> getFields( String columnKey ) {
         return fieldMultimap.get( columnKey );
+    }
+
+    public Collection<Field> getFieldsByKey(String columnKey, String fieldKey) {
+        List<Field> fields = new ArrayList<Field>();
+
+        for (Field field : getFields(columnKey)) {
+            if (fieldKey.equals(field.get(CalimochoKeys.KEY))) {
+                fields.add(field);
+            }
+        }
+
+        return fields;
     }
 
     public Collection<Field> getAllFields() {
