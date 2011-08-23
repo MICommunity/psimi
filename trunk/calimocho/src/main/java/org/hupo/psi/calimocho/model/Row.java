@@ -17,6 +17,8 @@ public interface Row {
 
     Collection<Field> getFields(String columnKey);
 
+    Collection<Field> getFieldsByKey(String columnKey, String fieldKey);
+
     Collection<Field> getAllFields();
 
     Collection<String> keySet();
