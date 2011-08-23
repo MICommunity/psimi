@@ -19,6 +19,7 @@
         <module>psimi-examples</module>
         <module>calimocho</module>
         <module>calimocho-tab</module>
+        <module>calimocho-xml</module>
   </modules>
 
     <scm>
