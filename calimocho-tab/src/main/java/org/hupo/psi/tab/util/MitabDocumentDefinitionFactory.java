@@ -145,6 +145,8 @@ public class MitabDocumentDefinitionFactory {
                 .build();
 
         ColumnBasedDocumentDefinition docDefinition = new ColumnBasedDocumentDefinitionBuilder()
+                .setName("mitab25")
+                .setDefinition("MITAB25 Specification")
                 .addColumnDefinition( idACol )
                 .addColumnDefinition( idBCol )
                 .addColumnDefinition(altidA)
@@ -334,6 +336,8 @@ public class MitabDocumentDefinitionFactory {
 
         ColumnBasedDocumentDefinition docDefinition = new ColumnBasedDocumentDefinitionBuilder()
                 .extendDocumentDefinition( mitab25() )
+                .setName("mitab26")
+                .setDefinition("MITAB26 Specification")
                 .addColumnDefinition(expansion)
                 .addColumnDefinition(bioRoleA)
                 .addColumnDefinition(bioRoleB)
@@ -355,6 +359,151 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(checksumB)
                 .addColumnDefinition(checksumI)
                 .addColumnDefinition(negative)
+                .build();
+        return docDefinition;
+    }
+
+    public static ColumnBasedDocumentDefinition mitab25Intact() {
+        XrefFieldParser xrefParser = new XrefFieldParser();
+        XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
+
+        ColumnDefinition expRoleA = new ColumnDefinitionBuilder()
+                .setName("Experimental Role A")
+                .setKey(Mitab25IntactColumnKeys.KEY_EXPROLE_A)
+                .setFieldSeparator("|")
+                .setEmptyValue("-")
+                .setFieldDelimiter("")
+                .setIsAllowsEmpty(true)
+                .setPosition(15)
+                .setFieldFormatter(xrefFormatter)
+                .setFieldParser(xrefParser)
+                .build();
+
+        ColumnDefinition expRoleB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Experimental Role B")
+                .setKey(Mitab25IntactColumnKeys.KEY_EXPROLE_B)
+                .setPosition(16)
+                .build();
+
+        ColumnDefinition bioRoleA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Biological Role A")
+                .setKey(Mitab25IntactColumnKeys.KEY_BIOROLE_A)
+                .setPosition(17)
+                .build();
+
+        ColumnDefinition bioRoleB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Biological Role B")
+                .setKey(Mitab25IntactColumnKeys.KEY_BIOROLE_B)
+                .setPosition(18)
+                .build();
+
+        ColumnDefinition xrefsA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Xrefs A")
+                .setKey(Mitab25IntactColumnKeys.KEY_XREFS_A)
+                .setPosition(19)
+                .build();
+
+        ColumnDefinition xrefsB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Xrefs B")
+                .setKey(Mitab25IntactColumnKeys.KEY_XREFS_B)
+                .setPosition(20)
+                .build();
+
+        ColumnDefinition interactorTypeA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Interactor type A")
+                .setKey(Mitab25IntactColumnKeys.KEY_INTERACTOR_TYPE_A)
+                .setPosition(21)
+                .build();
+
+        ColumnDefinition interactorTypeB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Interactor type B")
+                .setKey(Mitab25IntactColumnKeys.KEY_INTERACTOR_TYPE_B)
+                .setPosition(22)
+                .build();
+
+        ColumnDefinition hostOrganism = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Host Organism")
+                .setKey(Mitab25IntactColumnKeys.KEY_HOST_ORGANISM)
+                .setPosition(23)
+                .build();
+
+        ColumnDefinition expansion = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Expansion")
+                .setKey(Mitab25IntactColumnKeys.KEY_EXPANSION)
+                .setPosition(24)
+                .build();
+
+        ColumnDefinition dataset = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Dataset")
+                .setKey(Mitab25IntactColumnKeys.KEY_DATASET)
+                .setPosition(25)
+                .build();
+
+        ColumnDefinition annotA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Annotations A")
+                .setKey(Mitab25IntactColumnKeys.KEY_ANNOTATIONS_A)
+                .setPosition(26)
+                .build();
+
+        ColumnDefinition annotB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Annotations B")
+                .setKey(Mitab25IntactColumnKeys.KEY_ANNOTATIONS_B)
+                .setPosition(27)
+                .build();
+
+        ColumnDefinition paramA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Parameters A")
+                .setKey(Mitab25IntactColumnKeys.KEY_PARAMETERS_A)
+                .setPosition(28)
+                .build();
+
+        ColumnDefinition paramB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Parameters B")
+                .setKey(Mitab25IntactColumnKeys.KEY_PARAMETERS_B)
+                .setPosition(29)
+                .build();
+
+        ColumnDefinition paramInteraction = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(expRoleA)
+                .setName("Parameters Interaction")
+                .setKey(Mitab25IntactColumnKeys.KEY_PARAMETERS_I)
+                .setPosition(30)
+                .build();
+
+        ColumnBasedDocumentDefinition docDefinition = new ColumnBasedDocumentDefinitionBuilder()
+                .extendDocumentDefinition( mitab25() )
+                .setName("mitab25-intact")
+                .setDefinition("Extension of MITAB25 used by IntAct")
+                .addColumnDefinition(expRoleA)
+                .addColumnDefinition(expRoleB)
+                .addColumnDefinition(bioRoleA)
+                .addColumnDefinition(bioRoleB)
+                .addColumnDefinition(xrefsA)
+                .addColumnDefinition(xrefsB)
+                .addColumnDefinition(interactorTypeA)
+                .addColumnDefinition(interactorTypeB)
+                .addColumnDefinition(hostOrganism)
+                .addColumnDefinition(expansion)
+                .addColumnDefinition(dataset)
+                .addColumnDefinition(annotA)
+                .addColumnDefinition(annotB)
+                .addColumnDefinition(paramA)
+                .addColumnDefinition(paramB)
+                .addColumnDefinition(paramInteraction)
                 .build();
         return docDefinition;
     }
