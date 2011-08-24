@@ -50,7 +50,7 @@ public class XrefFieldParser implements FieldParser {
 
     private String removeLineReturn(String str) {
         // check that the given string doesn't have any line return, and if so, remove them.
-        if (str != null && (str.indexOf("\n") != -1)) {
+        if (str != null && (str.contains("\n"))) {
             str = str.replaceAll("\\n", " ");
         }
         return str;
