@@ -71,7 +71,7 @@ public class PsimiRdfConverter {
         convert(entrySet, format, writer);
     }
 
-    public void convert(EntrySet entrySet, String format, Writer writer) throws IOException {
+    public void convert(EntrySet entrySet, String format, Writer writer) {
 
         if (format.startsWith("BioPAX")) {
             BioPAXLevel biopaxLevel;
@@ -82,8 +82,11 @@ public class PsimiRdfConverter {
                 biopaxLevel = BioPAXLevel.L3;
             }
 
-            final String biopaxOutput = convertToBioPAXAndFixURIs(entrySet, biopaxLevel);
-            writer.write(biopaxOutput);
+            try {
+                convertToBioPAXAndFixURIs(entrySet, biopaxLevel, writer);
+            } catch (IOException e) {
+                throw new RuntimeException("Problem converting EntrySet to BioPAX", e);
+            }
         } else {
             final String baseUri = "http://org.hupo.psi.mi";
 
@@ -95,21 +98,39 @@ public class PsimiRdfConverter {
 
             rdfWriter.write(jenaModel, writer, baseUri);
         }
+
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Problem flushing writer", e);
+        }
     }
 
     public OntModel convertToJena(EntrySet entrySet) {
-        String fixedBiopax = convertToBioPAXAndFixURIs(entrySet, BioPAXLevel.L3);
+        StringWriter sw = new StringWriter();
 
-        return createJenaModel(new StringReader(fixedBiopax), "http://org.hupo.psi.mi");
+        try {
+            convertToBioPAXAndFixURIs(entrySet, BioPAXLevel.L3, sw);
+        } catch (IOException e) {
+            throw new RuntimeException("Problem converting EntrySet to BioPAX", e);
+        }
+
+        return createJenaModel(new StringReader(sw.toString()), "http://org.hupo.psi.mi");
     }
 
     public Model convertToBioPAX(EntrySet entrySet, BioPAXLevel biopaxLevel) {
-        String fixedBiopax = convertToBioPAXAndFixURIs(entrySet, biopaxLevel);
+        StringWriter sw = new StringWriter();
 
-        return new SimpleIOHandler().convertFromOWL(new ByteArrayInputStream(fixedBiopax.getBytes()));
+        try {
+            convertToBioPAXAndFixURIs(entrySet, biopaxLevel, sw);
+        } catch (IOException e) {
+            throw new RuntimeException("Problem converting EntrySet to BioPAX", e);
+        }
+
+        return new SimpleIOHandler().convertFromOWL(new ByteArrayInputStream(sw.toString().getBytes()));
     }
 
-    private String convertToBioPAXAndFixURIs(EntrySet entrySet, BioPAXLevel biopaxLevel) {
+    private void convertToBioPAXAndFixURIs(EntrySet entrySet, BioPAXLevel biopaxLevel, Writer writer) throws IOException {
         OutputStream os = new ByteArrayOutputStream();
 
         PSIMIBioPAXConverter biopaxConverter = new PSIMIBioPAXConverter(biopaxLevel);
@@ -117,17 +138,14 @@ public class PsimiRdfConverter {
 
         String biopaxOutput = os.toString();
 
-        String output = "";
-
         if (!biopaxOutput.isEmpty()) {
             // fix the biopax non-dereferenciable URIs
             Model model = new SimpleIOHandler().convertFromOWL(new ByteArrayInputStream(biopaxOutput.getBytes()));
 
             BioPaxUriFixer fixer = new BioPaxUriFixer();
-            output = fixer.fixBioPaxUris(model);
-        }
 
-        return output;
+            fixer.fixBioPaxUris(model, writer);
+        }
     }
 
     private OntModel createJenaModel(Reader reader, String baseUri) {

@@ -22,9 +22,7 @@ import org.biopax.paxtools.model.level3.SimplePhysicalEntity;
 import org.biopax.paxtools.model.level3.Xref;
 import org.biopax.validator.utils.Normalizer;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -40,10 +38,10 @@ public class BioPaxUriFixer {
 
     }
 
-    public String fixBioPaxUris(Model model) {
+    public void fixBioPaxUris(Model model, Writer writer) throws IOException {
         model.getNameSpacePrefixMap().clear();
 
-        Map<String,String> mappings = new HashMap<String,String>();
+        Map<String, String> mappings = new HashMap<String, String>();
         mappings.put("psi-mi", "mi");
         mappings.put("rcsb pdb", "pdb");
 
@@ -57,21 +55,20 @@ public class BioPaxUriFixer {
 
         new SimpleIOHandler().convertToOWL(model, baos);
 
-        return fixURIs(idMappings, baos.toString());
+        fixURIs(idMappings, new StringReader(baos.toString()), writer);
     }
 
-    private String fixURIs(Map<String, String> idMappings, String output) {
-        String[] lines = output.split(NEW_LINE);
+    private void fixURIs(Map<String, String> idMappings, Reader reader, Writer writer) throws IOException {
+        BufferedReader in = new BufferedReader(reader);
+        String line;
+        while ((line = in.readLine()) != null) {
 
-        List<String> modifiedLines = new ArrayList<String>();
-
-        for (String line : lines) {
             if (line.contains("Reference")) {
-               for (Map.Entry<String,String> protMapEntry : idMappings.entrySet()) {
-                   if (line.contains(protMapEntry.getKey())) {
-                       line = line.replaceAll(protMapEntry.getKey(), protMapEntry.getValue());
-                   }
-               }
+                for (Map.Entry<String, String> protMapEntry : idMappings.entrySet()) {
+                    if (line.contains(protMapEntry.getKey())) {
+                        line = line.replaceAll(protMapEntry.getKey(), protMapEntry.getValue());
+                    }
+                }
             }
 
             if (line.contains("urn:miriam:")) {
@@ -81,14 +78,12 @@ public class BioPaxUriFixer {
                 line = StringUtils.join(tokens, IDENTIFIERS_ORG);
             }
 
-            modifiedLines.add( line );
+            writer.write(line + NEW_LINE);
         }
-
-        return StringUtils.join(modifiedLines, NEW_LINE);
     }
 
     private Map<String, String> calculateIdMapings(Model model) {
-        Map<String,String> idMappings = new HashMap<String,String>();
+        Map<String, String> idMappings = new HashMap<String, String>();
 
         final Set<SimplePhysicalEntity> proteins = model.getObjects(SimplePhysicalEntity.class);
 
@@ -97,11 +92,11 @@ public class BioPaxUriFixer {
 
             for (Xref xref : protein.getXref()) {
                 if ("uniprotkb".equals(xref.getDb())) {
-                    String newId = IDENTIFIERS_ORG + "uniprot/"+xref.getId();
+                    String newId = IDENTIFIERS_ORG + "uniprot/" + xref.getId();
                     idMappings.put(protRefId, newId);
                     break;
                 } else if ("chebi".equals(xref.getDb())) {
-                    String newId = IDENTIFIERS_ORG+xref.getDb()+"/"+xref.getId();
+                    String newId = IDENTIFIERS_ORG + xref.getDb() + "/" + xref.getId();
                     idMappings.put(protRefId, newId);
                     break;
                 }
