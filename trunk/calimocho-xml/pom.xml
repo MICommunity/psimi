@@ -26,6 +26,11 @@
             <artifactId>calimocho</artifactId>
             <version>${pom.version}</version>
         </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>psi25-xml</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>
 
     </dependencies>
 
