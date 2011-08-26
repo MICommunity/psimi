@@ -14,7 +14,7 @@ public enum RdfFormat {
     TURTLE("TURTLE"),
     N3("N3"),
     N3_PP("N3-PP"),
-    N3_PLAN("N3-PLAIN"),
+    N3_PLAIN("N3-PLAIN"),
     N3_TRIPLE("N3-TRIPLE");
 
     private String name;
