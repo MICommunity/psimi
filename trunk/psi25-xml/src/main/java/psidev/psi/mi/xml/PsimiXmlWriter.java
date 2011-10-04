@@ -13,10 +13,8 @@ import psidev.psi.mi.xml.model.*;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Write PSI MI data to various format.
@@ -76,30 +74,57 @@ public class PsimiXmlWriter implements psidev.psi.mi.xml.io.PsimiXmlWriter {
                     } // participants
                 } // interactions
 
-                entry.getInteractors().clear();
-                entry.getInteractors().addAll( uniqueInteractors.keySet() );
+                // if we had a compact format, we cannot remove interactor redundancy without changing the interactions
+                // and update the interactor xref
+                if (!uniqueInteractors.isEmpty()){
+                    entry.getInteractors().clear();
+                    entry.getInteractors().addAll( uniqueInteractors.keySet() );
+                }
 
             } // entries
         } // model is compact
     }
 
     public void write(EntrySet mEntrySet, File file) throws PsimiXmlWriterException {
-        removeInteractorRedundancy( mEntrySet );
-        psiWriter.write(mEntrySet, file);
+        write(mEntrySet, file, true);
     }
 
     public void write(EntrySet mEntrySet, OutputStream os) throws PsimiXmlWriterException {
-        removeInteractorRedundancy( mEntrySet );
-        psiWriter.write(mEntrySet, os);
+        write(mEntrySet, os, true);
     }
 
     public void write(EntrySet mEntrySet, Writer writer) throws IOException, ConverterException, JAXBException, PsimiXmlWriterException {
-        removeInteractorRedundancy( mEntrySet );
-        psiWriter.write(mEntrySet, writer);
+        write(mEntrySet, writer, true);
     }
 
     public void write(EntrySet mEntrySet, PrintStream ps) throws IOException, ConverterException, JAXBException, PsimiXmlWriterException {
-        removeInteractorRedundancy( mEntrySet );
+        write(mEntrySet, ps, true);
+    }
+
+    public void write(EntrySet mEntrySet, File file, boolean removeInteractorRedundancy) throws PsimiXmlWriterException {
+        if (removeInteractorRedundancy){
+            removeInteractorRedundancy( mEntrySet );
+        }
+        psiWriter.write(mEntrySet, file);
+    }
+
+    public void write(EntrySet mEntrySet, OutputStream os, boolean removeInteractorRedundancy) throws PsimiXmlWriterException {
+        if (removeInteractorRedundancy){
+            removeInteractorRedundancy( mEntrySet );
+        }        psiWriter.write(mEntrySet, os);
+    }
+
+    public void write(EntrySet mEntrySet, Writer writer, boolean removeInteractorRedundancy) throws IOException, ConverterException, JAXBException, PsimiXmlWriterException {
+        if (removeInteractorRedundancy){
+            removeInteractorRedundancy( mEntrySet );
+        }
+        psiWriter.write(mEntrySet, writer);
+    }
+
+    public void write(EntrySet mEntrySet, PrintStream ps, boolean removeInteractorRedundancy) throws IOException, ConverterException, JAXBException, PsimiXmlWriterException {
+        if (removeInteractorRedundancy){
+            removeInteractorRedundancy( mEntrySet );
+        }
         psiWriter.write(mEntrySet, ps);
     }
 
