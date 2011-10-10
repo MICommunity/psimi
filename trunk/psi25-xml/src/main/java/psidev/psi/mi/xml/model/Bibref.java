@@ -33,7 +33,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Bibref implements XrefContainer {
+public class Bibref implements XrefContainer, AttributeContainer {
 
     private Xref xref;
 
@@ -72,6 +72,13 @@ public class Bibref implements XrefContainer {
      */
     public void setXref( Xref value ) {
         this.xref = value;
+    }
+
+    public boolean hasAttributes() {
+        if (attributes == null){
+            return false;
+        }
+        return !attributes.isEmpty();
     }
 
     /**
