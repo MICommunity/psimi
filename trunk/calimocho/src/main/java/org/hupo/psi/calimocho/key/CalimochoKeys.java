@@ -1,4 +1,4 @@
-package org.hupo.psi.calimocho.model;
+package org.hupo.psi.calimocho.key;
 
 /**
  * TODO document this !

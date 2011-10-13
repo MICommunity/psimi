@@ -1,5 +1,6 @@
 package org.hupo.psi.calimocho.model;
 
+import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 
 /**
