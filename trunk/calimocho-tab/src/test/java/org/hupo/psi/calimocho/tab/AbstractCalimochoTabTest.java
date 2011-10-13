@@ -1,6 +1,6 @@
 package org.hupo.psi.calimocho.tab;
 
-import org.hupo.psi.calimocho.model.CalimochoKeys;
+import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.tab.io.formatter.KeyValueFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.formatter.LiteralFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.parser.KeyValueFieldParser;

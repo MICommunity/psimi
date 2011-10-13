@@ -2,7 +2,7 @@ package org.hupo.psi.calimocho.tab.io.parser;
 
 import org.hupo.psi.calimocho.tab.io.FieldParser;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
-import org.hupo.psi.calimocho.model.CalimochoKeys;
+import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.model.DefaultField;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
