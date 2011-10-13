@@ -15,27 +15,29 @@
  */
 package org.hupo.psi.calimocho.tab.util;
 
+import org.hupo.psi.calimocho.key.InteractionKeys;
+
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
 public interface Mitab25ColumnKeys {
 
-    String KEY_ID_A = "idA";
-    String KEY_ID_B = "idB";
-    String KEY_ALTID_A = "altidA";
-    String KEY_ALTID_B = "altidB";
-    String KEY_ALIAS_A = "aliasA";
-    String KEY_ALIAS_B = "aliasB";
-    String KEY_DETMETHOD = "detmethod_exact";
-    String KEY_PUBAUTH = "pubauth";
-    String KEY_PUBID = "pubid";
-    String KEY_TAXID_A = "taxidA";
-    String KEY_TAXID_B = "taxidB";
-    String KEY_INTERACTION_TYPE = "type_exact";
-    String KEY_SOURCE = "source";
-    String KEY_INTERACTION_ID = "interaction_id";
-    String KEY_CONFIDENCE = "confidence";
+    String KEY_ID_A = InteractionKeys.KEY_ID_A;
+    String KEY_ID_B = InteractionKeys.KEY_ID_B;
+    String KEY_ALTID_A = InteractionKeys.KEY_ALTID_A;
+    String KEY_ALTID_B = InteractionKeys.KEY_ALTID_B;
+    String KEY_ALIAS_A = InteractionKeys.KEY_ALIAS_A;
+    String KEY_ALIAS_B = InteractionKeys.KEY_ALIAS_B;
+    String KEY_DETMETHOD = InteractionKeys.KEY_DETMETHOD;
+    String KEY_PUBAUTH = InteractionKeys.KEY_PUBAUTH;
+    String KEY_PUBID = InteractionKeys.KEY_PUBID;
+    String KEY_TAXID_A = InteractionKeys.KEY_TAXID_A;
+    String KEY_TAXID_B = InteractionKeys.KEY_TAXID_B;
+    String KEY_INTERACTION_TYPE = InteractionKeys.KEY_INTERACTION_TYPE;
+    String KEY_SOURCE = InteractionKeys.KEY_SOURCE;
+    String KEY_INTERACTION_ID = InteractionKeys.KEY_INTERACTION_ID;
+    String KEY_CONFIDENCE = InteractionKeys.KEY_CONFIDENCE;
 
 
 }
