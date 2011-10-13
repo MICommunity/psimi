@@ -3,6 +3,7 @@ package org.hupo.psi.calimocho.tab.io;
 import junit.framework.Assert;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.io.IllegalRowException;
+import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.tab.AbstractCalimochoTabTest;
 import org.hupo.psi.calimocho.model.*;
 import org.hupo.psi.calimocho.tab.io.formatter.KeyValueFieldFormatter;
