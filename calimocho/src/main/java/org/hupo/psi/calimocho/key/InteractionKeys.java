@@ -19,7 +19,7 @@ package org.hupo.psi.calimocho.key;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
-public class InteractionKeys {
+public interface InteractionKeys {
 
     String KEY_ID_A = "idA";
     String KEY_ID_B = "idB";
