@@ -184,8 +184,8 @@ public class MitabDocumentDefinitionFactory {
                 .setFieldDelimiter("")
                 .setIsAllowsEmpty(true)
                 .setPosition(15)
-                .setFieldFormatter(xrefFormatter)
-                .setFieldParser(xrefParser)
+                .setFieldFormatter(literalFieldFormatter)
+                .setFieldParser(literalParser)
                 .build();
 
         ColumnDefinition bioRoleA = new ColumnDefinitionBuilder()
@@ -193,52 +193,54 @@ public class MitabDocumentDefinitionFactory {
                 .setName("Biological Role A")
                 .setKey(Mitab26ColumnKeys.KEY_BIOROLE_A)
                 .setPosition(16)
+                .setFieldFormatter(xrefFormatter)
+                .setFieldParser(xrefParser)
                 .build();
 
         ColumnDefinition bioRoleB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Biological Role B")
                 .setKey(Mitab26ColumnKeys.KEY_BIOROLE_B)
                 .setPosition(17)
                 .build();
 
         ColumnDefinition expRoleA = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Experimental Role A")
                 .setKey(Mitab26ColumnKeys.KEY_EXPROLE_A)
                 .setPosition(18)
                 .build();
 
         ColumnDefinition expRoleB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Experimental Role B")
                 .setKey(Mitab26ColumnKeys.KEY_EXPROLE_B)
                 .setPosition(19)
                 .build();
 
         ColumnDefinition typeA = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Interactor type A")
                 .setKey(Mitab26ColumnKeys.KEY_INTERACTOR_TYPE_A)
                 .setPosition(20)
                 .build();
 
         ColumnDefinition typeB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Interactor type B")
                 .setKey(Mitab26ColumnKeys.KEY_INTERACTOR_TYPE_B)
                 .setPosition(21)
                 .build();
 
         ColumnDefinition xrefsA = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Xrefs A")
                 .setKey(Mitab26ColumnKeys.KEY_XREFS_A)
                 .setPosition(22)
                 .build();
 
         ColumnDefinition xrefsB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Xrefs B")
                 .setKey(Mitab26ColumnKeys.KEY_XREFS_B)
                 .setPosition(23)
@@ -246,49 +248,49 @@ public class MitabDocumentDefinitionFactory {
 
 
         ColumnDefinition xrefsI = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Xrefs Interaction")
                 .setKey(Mitab26ColumnKeys.KEY_XREFS_I)
                 .setPosition(24)
                 .build();
 
         ColumnDefinition annotationsA = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Annotations A")
                 .setKey(Mitab26ColumnKeys.KEY_ANNOTATIONS_A)
                 .setPosition(25)
                 .build();
 
         ColumnDefinition annotationsB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Annotations B")
                 .setKey(Mitab26ColumnKeys.KEY_ANNOTATIONS_B)
                 .setPosition(26)
                 .build();
 
         ColumnDefinition annotationsI = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Annotations Interaction")
                 .setKey(Mitab26ColumnKeys.KEY_ANNOTATIONS_I)
                 .setPosition(27)
                 .build();
 
         ColumnDefinition hostOrganism = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Host Organism")
                 .setKey(Mitab26ColumnKeys.KEY_HOST_ORGANISM)
                 .setPosition(28)
                 .build();
 
         ColumnDefinition parametersI = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Parameters Interaction")
                 .setKey(Mitab26ColumnKeys.KEY_PARAMETERS_I)
                 .setPosition(29)
                 .build();
 
         ColumnDefinition creationDate = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName( "Creation Date" )
                 .setKey( Mitab26ColumnKeys.KEY_CREATION_DATE )
                 .setPosition( 30 )
@@ -304,28 +306,28 @@ public class MitabDocumentDefinitionFactory {
                 .build();
 
         ColumnDefinition checksumA = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Checksum A")
                 .setKey(Mitab26ColumnKeys.KEY_CHECKSUM_A)
                 .setPosition(32)
                 .build();
 
         ColumnDefinition checksumB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Checksum B")
                 .setKey(Mitab26ColumnKeys.KEY_CHECKSUM_B)
                 .setPosition(33)
                 .build();
 
         ColumnDefinition checksumI = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Checksum Interaction")
                 .setKey(Mitab26ColumnKeys.KEY_CHECKSUM_I)
                 .setPosition(34)
                 .build();
 
         ColumnDefinition negative = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(bioRoleA)
                 .setName("Negative")
                 .setKey(Mitab26ColumnKeys.KEY_NEGATIVE)
                 .setPosition(35)
@@ -366,6 +368,9 @@ public class MitabDocumentDefinitionFactory {
     public static ColumnBasedDocumentDefinition mitab25Intact() {
         XrefFieldParser xrefParser = new XrefFieldParser();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
+
+        LiteralFieldParser literalParser = new LiteralFieldParser();
+        LiteralFieldFormatter literalFieldFormatter = new LiteralFieldFormatter();
 
         ColumnDefinition expRoleA = new ColumnDefinitionBuilder()
                 .setName("Experimental Role A")
@@ -440,6 +445,8 @@ public class MitabDocumentDefinitionFactory {
                 .setName("Expansion")
                 .setKey(Mitab25IntactColumnKeys.KEY_EXPANSION)
                 .setPosition(24)
+                .setFieldFormatter(literalFieldFormatter)
+                .setFieldParser(literalParser)
                 .build();
 
         ColumnDefinition dataset = new ColumnDefinitionBuilder()
