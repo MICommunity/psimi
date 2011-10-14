@@ -28,7 +28,6 @@ public class MitabDocumentDefinitionFactory {
         XrefFieldParser xrefParser = new XrefFieldParser();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
 
-        LiteralFieldParser literalParser = new LiteralFieldParser();
         LiteralFieldFormatter literalFieldFormatter = new LiteralFieldFormatter();
 
         ColumnDefinition idACol = new ColumnDefinitionBuilder()
@@ -92,7 +91,7 @@ public class MitabDocumentDefinitionFactory {
                 .setKey(Mitab25ColumnKeys.KEY_PUBAUTH)
                 .setPosition(7)
                 .setFieldFormatter(literalFieldFormatter)
-                .setFieldParser(literalParser)
+                .setFieldParser(new LiteralFieldParser("author"))
                 .build();
 
         ColumnDefinition pubid = new ColumnDefinitionBuilder()
@@ -369,7 +368,6 @@ public class MitabDocumentDefinitionFactory {
         XrefFieldParser xrefParser = new XrefFieldParser();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
 
-        LiteralFieldParser literalParser = new LiteralFieldParser();
         LiteralFieldFormatter literalFieldFormatter = new LiteralFieldFormatter();
 
         ColumnDefinition expRoleA = new ColumnDefinitionBuilder()
@@ -446,14 +444,16 @@ public class MitabDocumentDefinitionFactory {
                 .setKey(Mitab25IntactColumnKeys.KEY_EXPANSION)
                 .setPosition(24)
                 .setFieldFormatter(literalFieldFormatter)
-                .setFieldParser(literalParser)
+                .setFieldParser(new LiteralFieldParser("expansion"))
                 .build();
 
         ColumnDefinition dataset = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expansion)
+                .extendColumnDefinition(expRoleA)
                 .setName("Dataset")
                 .setKey(Mitab25IntactColumnKeys.KEY_DATASET)
                 .setPosition(25)
+                .setFieldFormatter(literalFieldFormatter)
+                .setFieldParser(new LiteralFieldParser("dataset"))
                 .build();
 
         ColumnDefinition annotA = new ColumnDefinitionBuilder()
