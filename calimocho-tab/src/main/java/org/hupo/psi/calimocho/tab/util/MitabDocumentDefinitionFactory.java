@@ -450,7 +450,7 @@ public class MitabDocumentDefinitionFactory {
                 .build();
 
         ColumnDefinition dataset = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(expRoleA)
+                .extendColumnDefinition(expansion)
                 .setName("Dataset")
                 .setKey(Mitab25IntactColumnKeys.KEY_DATASET)
                 .setPosition(25)
