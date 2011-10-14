@@ -17,6 +17,15 @@ import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
  */
 public class LiteralFieldParser implements FieldParser {
 
+    private String defaultKey;
+
+    public LiteralFieldParser() {
+    }
+
+    public LiteralFieldParser(String defaultKey) {
+        this.defaultKey = defaultKey;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -25,10 +34,15 @@ public class LiteralFieldParser implements FieldParser {
      * @return the field generated using the value
      * @throws IllegalFieldException cannot be thrown by this implementation
      */
-    public Field parse( String value, ColumnDefinition columnDefinition ) throws IllegalFieldException {
-       Field field = new DefaultField();
-       field.set( CalimochoKeys.VALUE, value);
-       return field;
+    public Field parse(String value, ColumnDefinition columnDefinition) throws IllegalFieldException {
+        Field field = new DefaultField();
+        field.set(CalimochoKeys.VALUE, value);
+
+        if (defaultKey != null) {
+            field.set(CalimochoKeys.KEY, defaultKey);
+        }
+
+        return field;
     }
 
 }
