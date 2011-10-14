@@ -27,6 +27,7 @@ import org.hupo.psi.calimocho.model.Row;
 
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -36,12 +37,17 @@ import java.util.Map;
  */
 public class GraphBuilder {
     
+    private String title;
+    private String description;
+    private String source;
+    
     private Map<String,Node> nodeMap;
     private Map<String,Edge> edgeMap;
     private ObjectFactory xgmmlObjectFactory;
     private calimocho.internal.rdf.ObjectFactory rdfObjectFactory;
 
     public GraphBuilder() {
+        this("Calimocho", "Data generated using Calimocho", "PSI");
         this.nodeMap = Maps.newHashMap();
         this.edgeMap = Maps.newHashMap();
 
@@ -49,10 +55,16 @@ public class GraphBuilder {
         rdfObjectFactory = new calimocho.internal.rdf.ObjectFactory();
     }
 
+    public GraphBuilder(String title, String description, String source) {
+        this.title = title;
+        this.description = description;
+        this.source = source;
+    }
+
     public Graph createGraph(CalimochoDocument calimochoDocument) {
         Graph graph = xgmmlObjectFactory.createGraph();
         graph.setId("calimocho-"+System.currentTimeMillis());
-        graph.setLabel("Calimocho");
+        graph.setLabel(title);
 //        graph.setDirected("1");
         graph.getAtts().add(createAtt("documentVersion", "1.1"));
         graph.getAtts().add(createAtt("backgroundColor", "#ffffff", ObjectType.STRING));
@@ -62,7 +74,6 @@ public class GraphBuilder {
         int nodeIndex = 0;
 
         for (Row row : calimochoDocument.getRows()) {
-
             Node nodeA = toNodeA(row, ++nodeIndex);
             Node nodeB = toNodeB(row, ++nodeIndex);
 
@@ -124,7 +135,7 @@ public class GraphBuilder {
         rdfDescription.getDcmes().add(rdfObjectFactory.createType(type));
 
         final Description description = rdfObjectFactory.createDescription();
-        description.setContent("Data generated using Calimocho");
+        description.setContent(this.description);
         rdfDescription.getDcmes().add(rdfObjectFactory.createDescription(description));
         
         final Identifier identifier = rdfObjectFactory.createIdentifier();
@@ -136,11 +147,11 @@ public class GraphBuilder {
         rdfDescription.getDcmes().add(rdfObjectFactory.createDate(date));
         
         final Title title = rdfObjectFactory.createTitle();
-        title.setContent("Calimocho");
+        title.setContent(this.title);
         rdfDescription.getDcmes().add(rdfObjectFactory.createTitle(title));
 
         final Source source = rdfObjectFactory.createSource();
-        source.setContent("http://www.ebi.ac.uk/intact");
+        source.setContent(this.source);
         rdfDescription.getDcmes().add(rdfObjectFactory.createSource(source));
 
         final Format format = rdfObjectFactory.createFormat();
@@ -168,31 +179,101 @@ public class GraphBuilder {
 
 
     private Node toNodeA(Row row, int nodeIndex) {
-        return toNode(row.getFields(InteractionKeys.KEY_ID_A), nodeIndex);
+        return toNode(row.getFields(InteractionKeys.KEY_ID_A),
+                row.getFields(InteractionKeys.KEY_ALTID_A),
+                row.getFields(InteractionKeys.KEY_ALIAS_A),
+                row.getFields(InteractionKeys.KEY_TAXID_A),
+                row.getFields(InteractionKeys.KEY_BIOROLE_A),
+                row.getFields(InteractionKeys.KEY_EXPROLE_A),
+                row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A),
+                row.getFields(InteractionKeys.KEY_XREFS_A),
+                row.getFields(InteractionKeys.KEY_ANNOTATIONS_A),
+                row.getFields(InteractionKeys.KEY_PARAMETERS_A),
+                nodeIndex);
     }
 
     private Node toNodeB(Row row, int nodeIndex) {
-        return toNode(row.getFields(InteractionKeys.KEY_ID_B), nodeIndex);
+        return toNode(row.getFields(InteractionKeys.KEY_ID_B),
+                row.getFields(InteractionKeys.KEY_ALTID_B),
+                row.getFields(InteractionKeys.KEY_ALIAS_B),
+                row.getFields(InteractionKeys.KEY_TAXID_A),
+                row.getFields(InteractionKeys.KEY_BIOROLE_B),
+                row.getFields(InteractionKeys.KEY_EXPROLE_B),
+                row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B),
+                row.getFields(InteractionKeys.KEY_XREFS_B),
+                row.getFields(InteractionKeys.KEY_ANNOTATIONS_B),
+                row.getFields(InteractionKeys.KEY_PARAMETERS_B),
+                nodeIndex);
     }
 
-    private Node toNode(Collection<Field> idFields, int nodeIndex) {
-        final String idValue = idFields.iterator().next().get(CalimochoKeys.VALUE);
+    private Node toNode(Collection<Field> idFields, Collection<Field> altidFields, Collection<Field> aliasFields,
+                        Collection<Field> taxidFields, Collection<Field> bioRoleFields, Collection<Field> expRoleFields,
+                        Collection<Field> typeFields, Collection<Field> xrefFields, Collection<Field> annotFields, Collection<Field> paramFields, 
+                        int nodeIndex) {
+        String displayName = null;
 
-        if (nodeMap.containsKey(idValue)) {
-            return nodeMap.get(idValue);
+        Node node = xgmmlObjectFactory.createNode();
+        
+        Collection<Field> altidAndAliasFields = new ArrayList<Field>(altidFields.size()+aliasFields.size());
+        altidAndAliasFields.addAll(altidFields);
+        altidAndAliasFields.addAll(aliasFields);
+        
+        for (Field alField : altidAndAliasFields) {
+            if ("gene name".equals(alField.get(CalimochoKeys.TEXT))) {
+                displayName = alField.get(CalimochoKeys.VALUE);
+                node.getAtts().add(createAtt("gene name", displayName));
+                break;
+            }
         }
         
-        Node node = xgmmlObjectFactory.createNode();
-        node.setId(String.valueOf(++nodeIndex));
-        node.setLabel(idValue);
+        if (displayName == null) {
+            for (Field idField : idFields) {
+                if ("uniprotkb".equals(idField.get(CalimochoKeys.KEY)) || "chebi".equals(idField.get(CalimochoKeys.KEY))) {
+                    displayName = idField.get(CalimochoKeys.VALUE);
+                    break;
+                }
+            }
+            
+            if (displayName == null) {
+                displayName = idFields.iterator().next().get(CalimochoKeys.VALUE);
+            }
+        }
 
+        if (nodeMap.containsKey(displayName)) {
+            return nodeMap.get(displayName);
+        }
+        
+
+        node.setId(String.valueOf(++nodeIndex));
+        node.setLabel(displayName);
+
+        addFieldsAsAtts(idFields, node, "id");
+        addFieldsAsAtts(altidFields, node, "altid");
+        addFieldsAsAtts(aliasFields, node, "alias");
+        addFieldsAsAtts(taxidFields, node, null);
+        addFieldsAsAtts(bioRoleFields, node, "biorole");
+        addFieldsAsAtts(expRoleFields, node, "exprole");
+        addFieldsAsAtts(typeFields, node, "type");
+        addFieldsAsAtts(xrefFields, node, "xref");
+        addFieldsAsAtts(annotFields, node, "annot");
+        addFieldsAsAtts(paramFields, node, "param");
+
+        return node;
+    }
+
+    private void addFieldsAsAtts(Collection<Field> idFields, Node node, String prefix) {
         for (Field field : idFields) {
-            Att att = createAtt(field.get(CalimochoKeys.KEY), field.get(CalimochoKeys.VALUE));
+            
+            String prefixAndDot = "";
+            
+            if (prefix != null && !prefix.isEmpty()) {
+                prefixAndDot = prefix+".";
+            }
+            
+            Att att = createAtt(prefixAndDot+field.get(CalimochoKeys.KEY), field.get(CalimochoKeys.VALUE));
             att.setType(ObjectType.STRING);
             node.getAtts().add(att);
         }
-
-        return node;
     }
 
     private Edge toEdge(Row row, Node nodeA, Node nodeB) {
@@ -203,6 +284,7 @@ public class GraphBuilder {
         final Collection<Field> idFields = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
 
         if (!idFields.isEmpty()) {
+            // TODO sort the fields By KEY, so we always choose the same
             edge.setLabel(idFields.iterator().next().get(CalimochoKeys.VALUE));
         } else {
             edge.setLabel("Interaction-" + nodeA.getId() + "-" + nodeB.getId());
@@ -224,15 +306,31 @@ public class GraphBuilder {
 
     private Graphics createGraphicsForNode(Node node, double x, double y) {
         Graphics graphics = xgmmlObjectFactory.createGraphics();
-        graphics.setType(TypeGraphicsType.RECTANGLE);
+        
         graphics.setH(25.0);
         graphics.setW(45.0);
-        graphics.setFill("#008080");
+        graphics.setFill("#ffffff");
         graphics.setWidth(new BigInteger("3"));
         graphics.setOutline("#282828");
 
         graphics.setX(x);
         graphics.setY(y);
+        
+        // shape depends on type
+        graphics.setType(TypeGraphicsType.ELLIPSE);
+        
+        for (Att att : node.getAtts()) {
+            if (att.getName().startsWith("type.")) {
+                
+                if ("MI:0326".equals(att.getValue())) { // protein
+                    graphics.setFill("#00ffcc");
+                } else if ("MI:0328".equals(att.getValue())) { // small molecule
+                    graphics.setType(TypeGraphicsType.TRIANGLE);
+                    graphics.setFill("#33CCCC");
+                }
+                
+            }
+        }
 
         return graphics;
     }
