@@ -10,9 +10,10 @@ import java.io.*;
 public class Playground {
 
     public static void main(String[] args) throws Exception {
-        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab26/14726512.txt");
+//        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/14726512.mitab26.txt");
+        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
 
-        ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab26();
+        ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25Intact();
         DocumentDefinition definition = new XGMMLDocumentDefinition();
 
         OutputStream os = new FileOutputStream("/tmp/lala.xml");
