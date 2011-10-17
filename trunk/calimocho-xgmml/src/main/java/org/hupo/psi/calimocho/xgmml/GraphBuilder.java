@@ -305,7 +305,7 @@ public class GraphBuilder {
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_INTERACTION_ID), attMultimap, "id");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_CONFIDENCE), attMultimap, "confidence");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_DATASET), attMultimap, "dataset");
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_EXPANSION), attMultimap, "expansion");
+        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_EXPANSION), attMultimap, null);
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_XREFS_I), attMultimap, "xref");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_HOST_ORGANISM), attMultimap, "host");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_ANNOTATIONS_I), attMultimap, "annot");
