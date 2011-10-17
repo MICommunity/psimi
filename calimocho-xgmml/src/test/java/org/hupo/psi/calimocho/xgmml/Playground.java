@@ -16,7 +16,7 @@ public class Playground {
         ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25Intact();
         DocumentDefinition definition = new XGMMLDocumentDefinition();
 
-        OutputStream os = new FileOutputStream("/tmp/lala.xml");
+        OutputStream os = new FileOutputStream("/tmp/tmp2/lala.xml");
 
         DocumentConverter converter = new DocumentConverter( mitabDefinition, definition );
         converter.convert( stream, os );
@@ -26,7 +26,7 @@ public class Playground {
 
 
         try {
-            BufferedReader in = new BufferedReader(new FileReader("/tmp/lala.xml"));
+            BufferedReader in = new BufferedReader(new FileReader("/tmp/tmp2/lala.xml"));
             String str;
             while ((str = in.readLine()) != null) {
                 System.out.println(str);
