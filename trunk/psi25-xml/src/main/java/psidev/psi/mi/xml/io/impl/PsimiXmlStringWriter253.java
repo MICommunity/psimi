@@ -66,10 +66,12 @@ public class PsimiXmlStringWriter253 implements PsimiXmlStringWriter {
             final EntryType.Source s = sourceConverter.toJaxb( source );
 
             Writer writer = new StringWriter( 4096 );
-            getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "source" ),
-                                                      EntryType.Source.class,
-                                                      s ),
-                                     writer );
+            Marshaller marshaller = getMarshaller();
+
+            marshaller.marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "source" ),
+                    EntryType.Source.class,
+                    s ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -86,10 +88,12 @@ public class PsimiXmlStringWriter253 implements PsimiXmlStringWriter {
 
         Writer writer = new StringWriter( 4096 );
         try {
-            getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "availability" ),
-                                                      AvailabilityType.class,
-                                                      a ),
-                                     writer );
+            Marshaller marshaller = getMarshaller();
+
+            marshaller.marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "availability" ),
+                    AvailabilityType.class,
+                    a ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -107,10 +111,12 @@ public class PsimiXmlStringWriter253 implements PsimiXmlStringWriter {
             final EntryType.InteractionList.Interaction i = ic.toJaxb( interaction );
 
             Writer writer = new StringWriter( 4096 );
-            getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "interaction" ),
-                                                      EntryType.InteractionList.Interaction.class,
-                                                      i ),
-                                     writer );
+            Marshaller marshaller = getMarshaller();
+
+            marshaller.marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "interaction" ),
+                    EntryType.InteractionList.Interaction.class,
+                    i ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -127,10 +133,12 @@ public class PsimiXmlStringWriter253 implements PsimiXmlStringWriter {
 
         Writer writer = new StringWriter( 4096 );
         try {
-            getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "attribute" ),
-                                                      AttributeListType.Attribute.class,
-                                                      a ),
-                                     writer );
+            Marshaller marshaller = getMarshaller();
+
+            marshaller.marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "attribute" ),
+                    AttributeListType.Attribute.class,
+                    a ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -152,6 +160,7 @@ public class PsimiXmlStringWriter253 implements PsimiXmlStringWriter {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
         marshaller.setProperty( Marshaller.JAXB_FRAGMENT, Boolean.TRUE );
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
         return marshaller;
     }
