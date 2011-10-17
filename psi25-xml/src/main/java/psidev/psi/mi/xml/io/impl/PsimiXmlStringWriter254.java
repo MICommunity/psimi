@@ -64,9 +64,9 @@ public class PsimiXmlStringWriter254 implements PsimiXmlStringWriter {
 
             Writer writer = new StringWriter( 4096 );
             getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "source" ),
-                                                      psidev.psi.mi.xml254.jaxb.Source.class,
-                                                      s ),
-                                     writer );
+                    psidev.psi.mi.xml254.jaxb.Source.class,
+                    s ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -84,9 +84,9 @@ public class PsimiXmlStringWriter254 implements PsimiXmlStringWriter {
         Writer writer = new StringWriter( 4096 );
         try {
             getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "availability" ),
-                                                      psidev.psi.mi.xml254.jaxb.Availability.class,
-                                                      a ),
-                                     writer );
+                    psidev.psi.mi.xml254.jaxb.Availability.class,
+                    a ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -105,9 +105,9 @@ public class PsimiXmlStringWriter254 implements PsimiXmlStringWriter {
 
             Writer writer = new StringWriter( 4096 );
             getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "interaction" ),
-                                                      psidev.psi.mi.xml254.jaxb.Interaction.class,
-                                                      i ),
-                                     writer );
+                    psidev.psi.mi.xml254.jaxb.Interaction.class,
+                    i ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -125,9 +125,9 @@ public class PsimiXmlStringWriter254 implements PsimiXmlStringWriter {
         Writer writer = new StringWriter( 4096 );
         try {
             getMarshaller().marshal( new JAXBElement( new QName( PSI_MI_NAMESPACE, "attribute" ),
-                                                      psidev.psi.mi.xml254.jaxb.Attribute.class,
-                                                      a ),
-                                     writer );
+                    psidev.psi.mi.xml254.jaxb.Attribute.class,
+                    a ),
+                    writer );
 
             writer.close();
             String xml = writer.toString();
@@ -149,6 +149,7 @@ public class PsimiXmlStringWriter254 implements PsimiXmlStringWriter {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
         marshaller.setProperty( Marshaller.JAXB_FRAGMENT, Boolean.TRUE );
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
         return marshaller;
     }
