@@ -42,14 +42,13 @@ public class GraphBuilder {
     private String source;
     
     private Map<String,Node> nodeMap;
-    private Map<String,Edge> edgeMap;
+    
     private ObjectFactory xgmmlObjectFactory;
     private calimocho.internal.rdf.ObjectFactory rdfObjectFactory;
 
     public GraphBuilder() {
         this("Calimocho", "Data generated using Calimocho", "PSI");
         this.nodeMap = Maps.newHashMap();
-        this.edgeMap = Maps.newHashMap();
 
         xgmmlObjectFactory = new ObjectFactory();
         rdfObjectFactory = new calimocho.internal.rdf.ObjectFactory();
@@ -82,6 +81,8 @@ public class GraphBuilder {
             addNodeToGraph(graph, nodeA);
             addNodeToGraph(graph, nodeB);
             addEdgeToMap(graph, edge);
+
+            System.out.println("Edge: "+nodeA.getLabel()+" "+nodeB.getLabel());
         }
 
         // calculate node positions
@@ -164,16 +165,15 @@ public class GraphBuilder {
     }
 
     private void addEdgeToMap(Graph graph, Edge edge) {
-        if (!edgeMap.containsKey(edge.getLabel())) {
-            graph.getNodesAndEdges().add(edge);
-            edgeMap.put(edge.getLabel(), edge);
-        }
+       graph.getNodesAndEdges().add(edge);
     }
 
     private void addNodeToGraph(Graph graph, Node node) {
-        if (!nodeMap.containsKey(node.getLabel())) {
+        final String key = node.getLabel();
+
+        if (!nodeMap.containsKey(key)) {
             graph.getNodesAndEdges().add(node);
-            nodeMap.put(node.getLabel(), node);
+            nodeMap.put(key, node);
         }
     }
 
@@ -196,7 +196,7 @@ public class GraphBuilder {
         return toNode(row.getFields(InteractionKeys.KEY_ID_B),
                 row.getFields(InteractionKeys.KEY_ALTID_B),
                 row.getFields(InteractionKeys.KEY_ALIAS_B),
-                row.getFields(InteractionKeys.KEY_TAXID_A),
+                row.getFields(InteractionKeys.KEY_TAXID_B),
                 row.getFields(InteractionKeys.KEY_BIOROLE_B),
                 row.getFields(InteractionKeys.KEY_EXPROLE_B),
                 row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B),
@@ -238,14 +238,24 @@ public class GraphBuilder {
                 displayName = idFields.iterator().next().get(CalimochoKeys.VALUE);
             }
         }
-
-        if (nodeMap.containsKey(displayName)) {
-            return nodeMap.get(displayName);
-        }
         
+        //species
+        String taxid = null;
+        
+        if (!taxidFields.isEmpty()) {
+            taxid = taxidFields.iterator().next().get(CalimochoKeys.VALUE);
+        }
+
+        final String key = displayName + "_" + taxid;
+
+        if (nodeMap.containsKey(key)) {
+            return nodeMap.get(key);
+        }
 
         node.setId(String.valueOf(++nodeIndex));
-        node.setLabel(displayName);
+        node.setLabel(key);
+        
+        node.getAtts().add(createAtt("canonicalName", displayName, ObjectType.STRING));
 
         addFieldsAsAtts(idFields, node, "id");
         addFieldsAsAtts(altidFields, node, "altid");
@@ -284,7 +294,6 @@ public class GraphBuilder {
         final Collection<Field> idFields = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
 
         if (!idFields.isEmpty()) {
-            // TODO sort the fields By KEY, so we always choose the same
             edge.setLabel(idFields.iterator().next().get(CalimochoKeys.VALUE));
         } else {
             edge.setLabel("Interaction-" + nodeA.getId() + "-" + nodeB.getId());
