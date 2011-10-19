@@ -129,16 +129,19 @@ public class InferredInteractionConverter {
         }
 
         // experiments
-        if ( jInferredInteraction.getExperimentRefList() == null ) {
-            jInferredInteraction.setExperimentRefList( new ExperimentRefListType() );
-        }
 
         if ( mInferredInteraction.hasExperiments() ) {
+            if ( jInferredInteraction.getExperimentRefList() == null ) {
+                jInferredInteraction.setExperimentRefList( new ExperimentRefListType() );
+            }
             for ( ExperimentDescription mExperiment : mInferredInteraction.getExperiments() ) {
                 Integer experimentId = mExperiment.getId();
                 jInferredInteraction.getExperimentRefList().getExperimentReves().add( experimentId );
             }
         } else if ( mInferredInteraction.hasExperimentRefs() ) {
+            if ( jInferredInteraction.getExperimentRefList() == null ) {
+                jInferredInteraction.setExperimentRefList( new ExperimentRefListType() );
+            }
             for ( ExperimentRef mExperiment : mInferredInteraction.getExperimentRefs() ) {
                 Integer experimentId = mExperiment.getRef();
                 jInferredInteraction.getExperimentRefList().getExperimentReves().add( experimentId );
