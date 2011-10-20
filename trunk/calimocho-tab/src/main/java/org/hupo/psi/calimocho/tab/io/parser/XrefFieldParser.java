@@ -28,14 +28,28 @@ public class XrefFieldParser implements FieldParser {
         if (!str.isEmpty()) {
             String[] groups = ParseUtils.quoteAwareSplit( str, new String[]{":", "(", ")"}, true );
 
+            
+            
+            
             // some exception handling
-            if (groups.length < 2 || groups.length > 3) {
+            if (groups.length > 3) {
                 throw new IllegalFieldException("Incorrect number of groups found ("+groups.length+"): "+ Arrays.asList( groups ) + ", in field '"+str+"' / Is this a xref field?");
             }
+            
+            String key;
+            String value;
+            
+            if (groups.length >= 2) {
+                key = groups[0];
+                value = groups[1];
+            } else {
+                // if ony one group, assume it is unknown key
+                key = value = groups[0];
+            }
 
-            field.set( CalimochoKeys.KEY, groups[0]);
-            field.set( CalimochoKeys.DB, groups[0]);
-            field.set( CalimochoKeys.VALUE, groups[1]);
+            field.set( CalimochoKeys.KEY, key);
+            field.set( CalimochoKeys.DB, key);
+            field.set( CalimochoKeys.VALUE, value);
 
             if (groups.length == 3) {
                 field.set( CalimochoKeys.TEXT, groups[2]);
