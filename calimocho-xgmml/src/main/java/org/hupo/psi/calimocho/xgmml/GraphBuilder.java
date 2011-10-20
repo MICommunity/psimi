@@ -241,15 +241,38 @@ public class GraphBuilder {
                 displayName = idFields.iterator().next().get(CalimochoKeys.VALUE);
             }
         }
+        
+        String key = displayName;
+        
+        String id = null;
+        
+        // Uniprot ID att for Bingo
+        for (Field idField : idFields) {
+            final String fieldKey = idField.get(CalimochoKeys.KEY);
+            if ("uniprotkb".equals(fieldKey) || "chebi".equals(fieldKey)) {
+                node.getAtts().add(createAtt("identifier type", fieldKey));
+                node.getAtts().add(createAtt("identifier", idField.get(CalimochoKeys.VALUE)));
+                break;
+            }
+        }
+        
+        if (key == null) {
+            final Field idField = idFields.iterator().next();
+            final String fieldKey = idField.get(CalimochoKeys.KEY);
+            node.getAtts().add(createAtt("identifier type", fieldKey));
+            node.getAtts().add(createAtt("identifier", idField.get(CalimochoKeys.VALUE)));
+        }
+        
+        
 
         //species
-        String taxid = null;
-
-        if (!taxidFields.isEmpty()) {
-            taxid = taxidFields.iterator().next().get(CalimochoKeys.VALUE);
-        }
-
-        final String key = displayName + "_" + taxid;
+//        String taxid = null;
+//
+//        if (!taxidFields.isEmpty()) {
+//            taxid = taxidFields.iterator().next().get(CalimochoKeys.VALUE);
+//        }
+//
+//        final String key = displayName + "_" + taxid;
 
         if (nodeMap.containsKey(key)) {
             return nodeMap.get(key);
