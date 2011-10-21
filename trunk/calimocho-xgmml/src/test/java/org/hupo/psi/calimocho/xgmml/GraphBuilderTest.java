@@ -66,7 +66,7 @@ public class GraphBuilderTest {
 
         final Graph graph = graphBuilder.createGraph(calimochoDocument);
 
-        assertThat(graph.getNodesAndEdges().size(), is(equalTo(2)));
+        assertThat(graph.getNodesAndEdges().size(), is(equalTo(3)));
 
     }
 }
