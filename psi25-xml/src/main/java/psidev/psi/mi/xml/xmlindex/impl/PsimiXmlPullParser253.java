@@ -165,15 +165,20 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
     public Interactor parseInteractor( InputStream is ) throws PsimiXmlReaderException {
 
+        InteractorElementType i = null;
         try {
-            InteractorElementType i = um.unmarshal( buildSaxSource( is ), InteractorElementType.class ).getValue();
+            i = um.unmarshal( buildSaxSource( is ), InteractorElementType.class ).getValue();
 
             InteractorConverter ic = new InteractorConverter();
             ic.setDAOFactory( new LazyDAOFactory() );
 
             return ic.fromJaxb( i );
         } catch ( Exception e ) {
-            throw new PsimiXmlReaderException( "An error occured while parsing an interactor.", e );
+            if( i != null ) {
+                throw new PsimiXmlReaderException( "An error occured while parsing interactor with id: "+i.getId(), e );
+            } else {
+                throw new PsimiXmlReaderException( "Could not unmarshall interactor.", e );
+            }
         }
     }
 
