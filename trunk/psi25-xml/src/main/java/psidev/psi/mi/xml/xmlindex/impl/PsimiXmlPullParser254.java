@@ -174,7 +174,11 @@ public class PsimiXmlPullParser254 implements PsimiXmlPullParser {
 
             return ic.fromJaxb( i );
         } catch ( Exception e ) {
-            throw new PsimiXmlReaderException( "An error occured while parsing interactor with id: "+i.getId(), e );
+            if( i != null ) {
+                throw new PsimiXmlReaderException( "An error occured while parsing interactor with id: "+i.getId(), e );
+            } else {
+                throw new PsimiXmlReaderException( "Could not unmarshall interactor.", e );
+            }
         }
     }
 
