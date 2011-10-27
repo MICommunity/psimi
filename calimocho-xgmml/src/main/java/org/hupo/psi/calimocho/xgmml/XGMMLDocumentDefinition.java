@@ -35,12 +35,26 @@ import java.io.Writer;
  */
 public class XGMMLDocumentDefinition extends AbstractDocumentDefinition {
 
+    private String title;
+    private String description;
+    private String source;
+    
+    public XGMMLDocumentDefinition() {
+        this("Graph", "Created using Calimocho", "not set");
+    }
+
+    public XGMMLDocumentDefinition(String title, String description, String source) {
+        this.title = title;
+        this.description = description;
+        this.source = source;
+    }
+
     public CalimochoDocument readDocument(Reader reader) throws IOException, IllegalRowException {
         throw new UnsupportedOperationException();
     }
 
     public void writeDocument(Writer writer, CalimochoDocument calimochoDocument) throws IOException, IllegalRowException {
-        GraphBuilder graphBuilder = new GraphBuilder();
+        GraphBuilder graphBuilder = new GraphBuilder(title, description, source);
         Graph graph = graphBuilder.createGraph(calimochoDocument);
 
         try {
