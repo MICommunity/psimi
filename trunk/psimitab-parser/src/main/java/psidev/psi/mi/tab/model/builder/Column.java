@@ -5,9 +5,9 @@
  */
 package psidev.psi.mi.tab.model.builder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.ArrayList;
 
 /**
  * TODO comment this
@@ -60,7 +60,9 @@ public final class Column {
         for (Iterator<Field> fieldIterator = fields.iterator(); fieldIterator.hasNext();) {
             Field field = fieldIterator.next();
 
-            sb.append(field.toString());
+            if (field != null) {
+                sb.append(field.toString());
+            }
 
             if (fieldIterator.hasNext()) {
                 sb.append(FIELD_DELIMITER);
