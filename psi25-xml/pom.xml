@@ -10,7 +10,7 @@
 
     <artifactId>psi25-xml</artifactId>
     <packaging>jar</packaging>
-    <version>1.7.10-SNAPSHOT</version>
+    <version>1.7.10-20111027-SNAPSHOT</version>
 
     <name>PSI :: PSI-MI XML 2.5 Library</name>
     <description>
