@@ -51,16 +51,17 @@ public class GraphBuilder {
 
     public GraphBuilder() {
         this("Calimocho", "Data generated using Calimocho", "PSI");
-        this.nodeMap = Maps.newHashMap();
-
-        xgmmlObjectFactory = new ObjectFactory();
-        rdfObjectFactory = new calimocho.internal.rdf.ObjectFactory();
     }
 
     public GraphBuilder(String title, String description, String source) {
         this.title = title;
         this.description = description;
         this.source = source;
+
+        this.nodeMap = Maps.newHashMap();
+
+        xgmmlObjectFactory = new ObjectFactory();
+        rdfObjectFactory = new calimocho.internal.rdf.ObjectFactory();
     }
 
     public Graph createGraph(CalimochoDocument calimochoDocument) {
