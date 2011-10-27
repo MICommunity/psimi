@@ -60,7 +60,9 @@ public class CrossReferenceFactory implements isCache {
         identifier = identifier.trim();
 
         if ( identifier.length() == 0 ) {
-            throw new IllegalArgumentException( "You must give a non empty identifier for database: "+database );
+            //throw new IllegalArgumentException( "You must give a non empty identifier for database: "+database );
+            log.error("You must give a non empty identifier for database: "+database);
+            identifier = "-";
         }
 
         CrossReference cr = null;
