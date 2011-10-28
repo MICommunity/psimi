@@ -160,7 +160,6 @@ public class PsimiXmlStringWriter253 implements PsimiXmlStringWriter {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
         marshaller.setProperty( Marshaller.JAXB_FRAGMENT, Boolean.TRUE );
-        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
         return marshaller;
     }
