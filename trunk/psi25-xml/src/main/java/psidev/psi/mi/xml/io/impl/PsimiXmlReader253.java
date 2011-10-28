@@ -72,7 +72,7 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
     ////////////////////////
     // Private methods
 
-    private psidev.psi.mi.xml253.jaxb.EntrySet unmarshall( Reader reader ) throws PsimiXmlReaderException {
+    public psidev.psi.mi.xml253.jaxb.EntrySet unmarshall( Reader reader ) throws PsimiXmlReaderException {
 
         if ( reader == null ) {
             throw new IllegalArgumentException( "You must give a non null reader." );
