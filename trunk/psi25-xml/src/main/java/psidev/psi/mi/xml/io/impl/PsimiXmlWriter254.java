@@ -52,7 +52,6 @@ public class PsimiXmlWriter254 implements PsimiXmlWriter {
 
             // create and return Unmarshaller
             Marshaller marshaller = jc.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 
             // configure marshaller
             marshaller.setProperty( Marshaller.JAXB_SCHEMA_LOCATION, calculateSchemaLocation( jEntrySet.getLevel(), jEntrySet.getVersion(), jEntrySet.getMinorVersion() ) );
@@ -74,7 +73,6 @@ public class PsimiXmlWriter254 implements PsimiXmlWriter {
             Marshaller m = getMarshaller( jEntrySet );
 
             m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-            m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             m.marshal( jEntrySet, os );
         } catch ( Exception e ) {
             throw new PsimiXmlWriterException( "En error occured while writing EntrySet", e );
@@ -92,7 +90,6 @@ public class PsimiXmlWriter254 implements PsimiXmlWriter {
             Marshaller m = getMarshaller( jEntrySet );
 
             m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-            m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             m.marshal( jEntrySet, writer );
         } catch ( Exception e ) {
             throw new PsimiXmlWriterException( "En error occured while writing EntrySet", e );
@@ -105,7 +102,6 @@ public class PsimiXmlWriter254 implements PsimiXmlWriter {
             Marshaller m = getMarshaller( jEntrySet );
 
             m.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
-            m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             m.marshal( jEntrySet, new FileWriter( file ) );
         } catch ( Exception e ) {
             throw new PsimiXmlWriterException( "En error occured while writing EntrySet", e );
