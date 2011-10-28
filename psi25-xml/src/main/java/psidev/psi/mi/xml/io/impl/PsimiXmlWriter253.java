@@ -61,7 +61,7 @@ public class PsimiXmlWriter253 implements PsimiXmlWriter {
         }
     }
 
-    private void marshall( psidev.psi.mi.xml253.jaxb.EntrySet jEntrySet, OutputStream os ) throws PsimiXmlWriterException {
+    public void marshall( psidev.psi.mi.xml253.jaxb.EntrySet jEntrySet, OutputStream os ) throws PsimiXmlWriterException {
 
         if ( os == null ) {
             throw new IllegalArgumentException( "You must give a non null otuput stream." );
@@ -77,7 +77,7 @@ public class PsimiXmlWriter253 implements PsimiXmlWriter {
         }
     }
 
-    private void marshall( psidev.psi.mi.xml253.jaxb.EntrySet jEntrySet, Writer writer ) throws PsimiXmlWriterException {
+    public void marshall( psidev.psi.mi.xml253.jaxb.EntrySet jEntrySet, Writer writer ) throws PsimiXmlWriterException {
 
         if ( writer == null ) {
             throw new IllegalArgumentException( "You must give a non null writer." );
