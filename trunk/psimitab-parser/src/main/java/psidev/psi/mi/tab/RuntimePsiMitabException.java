@@ -13,21 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package psidev.psi.mi.tab.model.builder;
-
-import psidev.psi.mi.tab.PsiMitabException;
-import psidev.psi.mi.tab.RuntimePsiMitabException;
-import psidev.psi.mi.tab.model.BinaryInteraction;
+package psidev.psi.mi.tab;
 
 /**
- * TODO comment that class header
+ * PSIMITAB Runtime Exception.
  *
- * @author Bruno Aranda (baranda@ebi.ac.uk)
+ * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
+ * @since TODO specify the maven artifact version
  */
-public interface InteractionRowConverter<T extends BinaryInteraction> {
+public class RuntimePsiMitabException extends RuntimeException {
+    public RuntimePsiMitabException() {
+        super();
+    }
 
-    T createBinaryInteraction(Row row) throws RuntimePsiMitabException;
+    public RuntimePsiMitabException( String message ) {
+        super( message );
+    }
 
-    Row createRow(T interaction);
+    public RuntimePsiMitabException( String message, Throwable cause ) {
+        super( message, cause );
+    }
+
+    public RuntimePsiMitabException( Throwable cause ) {
+        super( cause );
+    }
 }

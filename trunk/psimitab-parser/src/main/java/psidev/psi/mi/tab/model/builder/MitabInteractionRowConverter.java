@@ -15,6 +15,8 @@
  */
 package psidev.psi.mi.tab.model.builder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.*;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import java.util.List;
  * @version $Id$
  */
 public class MitabInteractionRowConverter extends AbstractInteractionRowConverter<BinaryInteraction> {
+
+    private static final Log log = LogFactory.getLog( MitabInteractionRowConverter.class );
 
     protected Interactor newInteractor() {
         return new Interactor();
@@ -109,7 +113,7 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
             try {
                 xrefs.add(createInteractionDetectionMethod(field));
             } catch (Throwable e) {
-                throw new IllegalFormatException("Problem creating interaction detection method from field: " + field);
+                throw new IllegalFormatException("Problem creating interaction detection method from field: " + field, e);
             }
         }
 
@@ -123,7 +127,7 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
             try {
                 xrefs.add(createInteractionType(field));
             } catch (Throwable e) {
-                throw new IllegalFormatException("Problem creating interaction type from field: " + field);
+                throw new IllegalFormatException("Problem creating interaction type from field: " + field, e);
             }
         }
 
@@ -183,7 +187,7 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
             try {
                 confidences.add(createConfidence(field));
             } catch (Throwable e) {
-                throw new IllegalFormatException("Problem creating confidence from field: " + field);
+                throw new IllegalFormatException("Problem creating confidence from field: " + field, e);
             }
         }
 
