@@ -15,6 +15,8 @@
  */
 package psidev.psi.mi.tab.model.builder;
 
+import psidev.psi.mi.tab.PsiMitabException;
+import psidev.psi.mi.tab.RuntimePsiMitabException;
 import psidev.psi.mi.tab.model.*;
 
 import java.util.ArrayList;
@@ -34,13 +36,18 @@ public abstract class AbstractInteractionRowConverter<T extends BinaryInteractio
 
     protected abstract Interactor newInteractor();
 
-    public T createBinaryInteraction(Row row) {
+    public T createBinaryInteraction(Row row) throws RuntimePsiMitabException {
         if (row.getColumnCount() < 15) {
             throw new IllegalArgumentException("At least 15 columns were expected in row: "+row);
         }
 
-        T binaryInteraction = newBinaryInteraction(createInteractorA(row), createInteractorB(row));
-        populateBinaryInteraction(binaryInteraction, row);
+        T binaryInteraction = null;
+        try {
+            binaryInteraction = newBinaryInteraction(createInteractorA(row), createInteractorB(row));
+            populateBinaryInteraction(binaryInteraction, row);
+        } catch ( Exception e ) {
+            throw new RuntimePsiMitabException( "Failed to create a BinaryInteraction from line: " + row, e );
+        }
 
         return binaryInteraction;
     }
@@ -120,6 +127,4 @@ public abstract class AbstractInteractionRowConverter<T extends BinaryInteractio
         binaryInteraction.setInteractionAcs(ParseUtils.createCrossReferences(intIdCol));
         binaryInteraction.setConfidenceValues(ParseUtils.createConfidenceValues(confCol));
     }
-
-
 }

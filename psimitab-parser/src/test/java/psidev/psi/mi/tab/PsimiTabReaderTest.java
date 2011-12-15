@@ -149,4 +149,13 @@ public class PsimiTabReaderTest {
         Assert.assertEquals("PSICQUIC entries are truncated here.  Seeirefindex.uio.no", confidence.getValue());
         Assert.assertEquals("free-text", confidence.getText());
     }
+    
+    @Test
+    public void readBadFormatLine() throws Exception {
+        final String line = "BindingDB_monomerID:18129\tBindingDB_polymerID:50003968\t-\tDisplayName:\"(2S)-2-amino-3-(4-hydroxyphenyl)propanoic acid\"|DisplayName:L-[U-14C]Tyr|DisplayName:Tyrosine\tDisplayName:Tubulin--tyrosine ligase\t-\tBanerjee et al:2010\tpmid:20545322\t-\t-\tpsi-mi:\"MI:0915\"(physical association)\t-\thttp://www.bindingdb.org/jsp/dbsearch/PrimarySearch_ki.jsp?energyterm=kJ/mole&tag=r22&monomerid=18129&polymerid=50003968&column=ki&startPg=0&Increment=50&submit=Search\t-\t-";
+        PsimiTabReader mitabReader = new PsimiTabReader( false );
+        final BinaryInteraction binaryInteraction = mitabReader.readLine(line);
+
+        Assert.assertNotNull( binaryInteraction );
+    }
 }
