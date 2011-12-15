@@ -42,7 +42,10 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
         try {
             // Init JAXB
-            JAXBContext jaxbContext = JAXBContext.newInstance( EntrySet.class.getPackage().getName() );
+        	
+        		// This is required for OSGi environments to set correct class loader.
+        		final ClassLoader cl = ObjectFactory.class.getClassLoader();
+            final JAXBContext jaxbContext = JAXBContext.newInstance( EntrySet.class.getPackage().getName(), cl );
             this.um = jaxbContext.createUnmarshaller();
             UnmarshallerHandler uh = um.getUnmarshallerHandler();
 

@@ -149,13 +149,9 @@ public class InMemoryDAOTest {
         bibref.setXref( xref );
         e4.setBibref( bibref );
 
-        try {
-            dao.store( e4 ); // e4 and e2 are equals !!
-            fail();
-        } catch ( Exception e ) {
-            // ok
-            assertEquals( 3, dao.getAll().size() );
-        }
+        final int currentCount = dao.getAll().size();
+        dao.store( e4 ); // e4 and e2 are equals !!
+        assertEquals(currentCount, dao.getAll().size());
     }
 
     public void remove( PsiDAO<ExperimentDescription> dao ) {

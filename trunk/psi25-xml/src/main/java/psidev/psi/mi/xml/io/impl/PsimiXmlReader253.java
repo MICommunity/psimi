@@ -33,16 +33,19 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
     /**
      * Sets up a logger for that class.
      */
-    public static final Log log = LogFactory.getLog( PsimiXmlReader253.class );
+    private static final Log log = LogFactory.getLog( PsimiXmlReader253.class );
 
+    // Custom buffer size for buffered readers.  This is for performance tuning.
+    private static final int BUFFER_SIZE = 100000;
+    
     //////////////////////////
     // Public methods
 
-    public psidev.psi.mi.xml.model.EntrySet read( String s ) throws PsimiXmlReaderException {
+    public psidev.psi.mi.xml.model.EntrySet read(final String s) throws PsimiXmlReaderException {
         return read(new StringReader(s));
     }
 
-    public psidev.psi.mi.xml.model.EntrySet read( File file ) throws PsimiXmlReaderException {
+    public psidev.psi.mi.xml.model.EntrySet read(final File file) throws PsimiXmlReaderException {
         try {
             return read(new FileReader(file));
         } catch (FileNotFoundException e) {
@@ -50,11 +53,11 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
         }
     }
 
-    public psidev.psi.mi.xml.model.EntrySet read( InputStream is ) throws PsimiXmlReaderException {
-        return read ( new InputStreamReader(is) );
+    public psidev.psi.mi.xml.model.EntrySet read(final InputStream is ) throws PsimiXmlReaderException {
+        return read(new InputStreamReader(is));
     }
 
-    public psidev.psi.mi.xml.model.EntrySet read( URL url ) throws PsimiXmlReaderException {
+    public psidev.psi.mi.xml.model.EntrySet read(final URL url) throws PsimiXmlReaderException {
         try {
             return read(url.openStream());
         } catch (IOException e) {
@@ -62,9 +65,10 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
         }
     }
 
-    public psidev.psi.mi.xml.model.EntrySet read( Reader reader ) throws PsimiXmlReaderException {
-
-        psidev.psi.mi.xml253.jaxb.EntrySet jEntrySet = unmarshall( reader );
+    public psidev.psi.mi.xml.model.EntrySet read(final Reader reader ) throws PsimiXmlReaderException {
+    		// Read using buffered stream for performance.
+    		final Reader bufferedReader = new BufferedReader(reader, BUFFER_SIZE);
+        psidev.psi.mi.xml253.jaxb.EntrySet jEntrySet = unmarshall( bufferedReader );
 
         return convertInMemory( jEntrySet );
     }
@@ -72,7 +76,7 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
     ////////////////////////
     // Private methods
 
-    public psidev.psi.mi.xml253.jaxb.EntrySet unmarshall( Reader reader ) throws PsimiXmlReaderException {
+    private psidev.psi.mi.xml253.jaxb.EntrySet unmarshall(final Reader reader ) throws PsimiXmlReaderException {
 
         if ( reader == null ) {
             throw new IllegalArgumentException( "You must give a non null reader." );
@@ -80,10 +84,10 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
 
         try {
             // create an Unmarshaller
-            Unmarshaller u = getUnmarshaller();
+            final Unmarshaller u = getUnmarshaller();
 
             // unmarshal an entrySet instance document into a tree of Java content objects composed of classes from the jaxb package.
-            psidev.psi.mi.xml253.jaxb.EntrySet es = ( psidev.psi.mi.xml253.jaxb.EntrySet ) u.unmarshal( reader );
+            final psidev.psi.mi.xml253.jaxb.EntrySet es = ( psidev.psi.mi.xml253.jaxb.EntrySet ) u.unmarshal( reader );
 
             return es;
         } catch ( Exception e ) {
@@ -96,8 +100,8 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
 
         try {
             // create a JAXBContext capable of handling classes generated into the jaxb package
-            ClassLoader cl = ObjectFactory.class.getClassLoader();
-            JAXBContext jc = JAXBContext.newInstance( EntrySet.class.getPackage().getName(), cl );
+            final ClassLoader cl = ObjectFactory.class.getClassLoader();
+            final JAXBContext jc = JAXBContext.newInstance( EntrySet.class.getPackage().getName(), cl );
 
             // create and return Unmarshaller
             return jc.createUnmarshaller();

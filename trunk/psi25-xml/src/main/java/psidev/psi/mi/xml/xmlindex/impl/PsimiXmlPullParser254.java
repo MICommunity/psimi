@@ -9,6 +9,7 @@ import psidev.psi.mi.xml.dao.lazy.LazyDAOFactory;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml.xmlindex.PsimiXmlNamespaceFilter254;
 import psidev.psi.mi.xml.xmlindex.PsimiXmlPullParser;
+import psidev.psi.mi.xml253.jaxb.ObjectFactory;
 import psidev.psi.mi.xml254.jaxb.AvailabilityList;
 import psidev.psi.mi.xml254.jaxb.EntrySet;
 
@@ -42,9 +43,12 @@ public class PsimiXmlPullParser254 implements PsimiXmlPullParser {
 
         try {
             // Init JAXB
-            JAXBContext jaxbContext = JAXBContext.newInstance( EntrySet.class.getPackage().getName() );
+        	
+        		// This is required for OSGi environments to set correct class loader.
+        		final ClassLoader cl = ObjectFactory.class.getClassLoader();
+            final JAXBContext jaxbContext = JAXBContext.newInstance( EntrySet.class.getPackage().getName(), cl );
             this.um = jaxbContext.createUnmarshaller();
-            UnmarshallerHandler uh = um.getUnmarshallerHandler();
+            final UnmarshallerHandler uh = um.getUnmarshallerHandler();
 
             // Create a new XML parser
             SAXParserFactory factory = SAXParserFactory.newInstance();
