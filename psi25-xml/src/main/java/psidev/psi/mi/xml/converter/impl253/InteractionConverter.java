@@ -143,14 +143,14 @@ public class InteractionConverter {
         if ( jInteraction.getExperimentList() != null ) {
             for ( Object o : jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions() ) {
 
-                log.info( "Reading object of type: " + o.getClass() );
+                log.debug( "Reading object of type: " + o.getClass() );
 
                 ExperimentDescription mExperiment = null;
                 ExperimentRef experimentRef = null;
 
                 if ( o instanceof ExperimentType ) {
 
-                    log.info( "Found an experiment" );
+                    log.debug( "Found an experiment" );
 
                     mExperiment = experimentDescriptionConverter.fromJaxb( ( ExperimentType ) o );
 

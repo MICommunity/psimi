@@ -74,20 +74,18 @@ public class InMemoryDAO<T extends HasId> implements PsiDAO<T> {
             T original = map.get( id );
 
             if ( !object.equals( original ) ) {
-                log.error( "The new " + name + " was different" );
-                log.error( "Original : " + original );
-                log.error( "New : " + object );
-
-                throw new IllegalArgumentException( "Attemp to overwrite " + name + " having id:" + id +
-                                                    ") with a different " + name + " of the same type." );
-
+                log.warn( "The new " + name + " was different" );
+                log.warn( "Original : " + original );
+                log.warn( "New : " + object );
+                // Crash is too strict, so just ignore duplicate entry.
+                return;
             } else {
                 log.warn( "The " + name + " to store was the same." );
             }
         }
 
         // store it
-        log.info( "Storing " + name + " under key( " + id + " )" );
+        log.debug( "Storing " + name + " under key( " + id + " )" );
         map.put( id, object );
     }
 
