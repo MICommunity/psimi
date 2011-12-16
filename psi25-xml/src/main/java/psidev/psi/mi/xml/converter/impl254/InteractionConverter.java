@@ -5,8 +5,11 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -15,16 +18,17 @@ import psidev.psi.mi.xml.dao.PsiDAO;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.ExperimentRef;
 import psidev.psi.mi.xml.model.InferredInteraction;
 import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.InteractionType;
 import psidev.psi.mi.xml.model.Parameter;
 import psidev.psi.mi.xml.model.Participant;
-import psidev.psi.mi.xml254.jaxb.*;
+import psidev.psi.mi.xml254.jaxb.AttributeList;
+import psidev.psi.mi.xml254.jaxb.ConfidenceList;
 import psidev.psi.mi.xml254.jaxb.CvType;
-
-import java.io.Serializable;
-import java.util.List;
+import psidev.psi.mi.xml254.jaxb.ExperimentList;
+import psidev.psi.mi.xml254.jaxb.ParticipantList;
 
 /**
  * Converter to and from JAXB of the class Interaction.
@@ -150,14 +154,14 @@ public class InteractionConverter {
         if ( jInteraction.getExperimentList() != null ) {
             for ( Object o : jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions() ) {
 
-                log.info( "Reading object of type: " + o.getClass() );
+                log.debug( "Reading object of type: " + o.getClass() );
 
                 ExperimentDescription mExperiment = null;
                 ExperimentRef experimentRef = null;
 
                 if ( o instanceof psidev.psi.mi.xml254.jaxb.ExperimentDescription) {
 
-                    log.info( "Found an experiment" );
+                    log.debug( "Found an experiment" );
 
                     mExperiment = experimentDescriptionConverter.fromJaxb( ( psidev.psi.mi.xml254.jaxb.ExperimentDescription ) o );
 
