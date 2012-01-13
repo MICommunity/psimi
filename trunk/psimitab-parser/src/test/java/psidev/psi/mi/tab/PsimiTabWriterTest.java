@@ -63,6 +63,27 @@ public class PsimiTabWriterTest {
     }
 
     @Test
+    public void writeToFileWriter() throws Exception {
+        File file = TestHelper.getFileByResources( "/psi25-samples/11585365-2.xml", Xml2TabTest.class );
+        File outputFile = new File( file.getAbsolutePath() + ".tab" );
+
+        if ( outputFile.exists() ) {
+            outputFile.delete();
+        }
+        FileWriter fileWriter = new FileWriter( outputFile );
+
+        // convert into Tab object model
+        Xml2Tab xml2tab = new Xml2Tab();
+        Collection<BinaryInteraction> interactions = xml2tab.convert( file );
+        assertEquals( 8, interactions.size() );
+
+        // write it our to a file
+        PsimiTabWriter writer = new PsimiTabWriter( new MitabDocumentDefinition(), true );
+        writer.write( interactions, fileWriter );
+        assertEquals( 9, lineCount( outputFile ) );
+    }
+
+    @Test
     public void appendOrWrite() throws Exception {
         File file = TestHelper.getFileByResources( "/mitab-testset/chen.txt", Xml2TabTest.class );
         File outputFile = new File( file.getAbsolutePath() + ".tab" );

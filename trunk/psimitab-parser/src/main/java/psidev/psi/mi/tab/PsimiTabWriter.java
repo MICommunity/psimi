@@ -170,6 +170,7 @@ public class PsimiTabWriter {
             String line = documentDefinition.interactionToString(binaryInteraction);
             writer.write( line + NEW_LINE );
         }
+        writer.flush();
     }
 
     public void write( Collection<BinaryInteraction> interactions, PrintStream ps ) throws IOException, ConverterException {
