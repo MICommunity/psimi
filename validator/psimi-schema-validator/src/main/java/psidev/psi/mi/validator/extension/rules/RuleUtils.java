@@ -598,43 +598,8 @@ public final class RuleUtils {
 
                 if (!psiMiReferences.isEmpty()){
                     // There is only one psi-mi database reference for an InteractionDetectionMethod
-                    if (psiMiReferences.size() == 1){
+                    if (psiMiReferences.size() != 1){
 
-                        // checking already done by controlled vocabulary rules! do not need to check it again here
-                        /*for ( DbReference reference : psiMiReferences ) {
-                            String psiMiId = reference.getId();
-
-                            OntologyTermI term1 = ontology.search( mi );
-
-                            if (term1 != null){
-                                String name = term1.getPreferredName();
-
-                                OntologyTermI child = ontology.search( psiMiId );
-
-                                if (child != null){
-                                    if ( !ontology.isChildOf(term1, child) ) {
-                                        messages.add( new ValidatorMessage( "The " + containerName + " " + psiMiId + "("+name+") isn't a valid " + containerName + " ( must be any child of "+ mi +").",
-                                                MessageLevel.ERROR,
-                                                context,
-                                                rule ) );
-                                    }
-                                }
-                                else{
-                                    messages.add( new ValidatorMessage( "The PSI MI id of " + psiMiId + "("+name+") does not exist in the PSI MI ontology. ( must be any child of "+ mi +").",
-                                            MessageLevel.ERROR,
-                                            context,
-                                            rule ) );
-                                }
-                            }
-                            else{
-                                messages.add( new ValidatorMessage( "This is an unexpected error. The PSI MI id of " + containerName + "("+mi+") does not exist in the PSI MI ontology.",
-                                        MessageLevel.ERROR,
-                                        context,
-                                        rule ) );
-                            }
-                        }*/
-                    }
-                    else {
                         messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
                                 MessageLevel.ERROR,
                                 context,
@@ -658,6 +623,75 @@ public final class RuleUtils {
         }
         else {
             messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488' in the XRef/primaryRef element) with type 'identity'(refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of \"+ mi +\").",
+                    MessageLevel.ERROR,
+                    context,
+                    rule ) );
+
+        }
+    }
+
+    /**
+     * Checks that a psi mi cross reference is present and well formatted. The controlled vocabulary rules will already check if the controlled vocabulary is valid
+     * @param container
+     * @param messages
+     * @param context
+     * @param rule
+     * @param mi
+     */
+    public static void checkPsiMIOrModXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
+        Xref xref = container.getXref();
+        String containerName = container.getClass().getSimpleName();
+
+        if (xref != null){
+            Collection<DbReference> allDbRef = xref.getAllDbReferences();
+
+            if (!allDbRef.isEmpty()){
+                // search for database : db="psi-mi" dbAc="MI:0488"
+                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
+                Collection<DbReference> psiModReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0897", "psi-mod","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
+
+                if (!psiModReferences.isEmpty() && !psiMiReferences.isEmpty()){
+                    messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and "+ psiMiReferences.size() +" psi-mi cross references with type 'identity'. As it is confusing, it is better to give only one identity cross reference (psi-mi or psi-mod)",
+                            MessageLevel.WARN,
+                            context,
+                            rule ) );
+                }
+                else if (!psiModReferences.isEmpty()){
+                    if (psiModReferences.size() != 1){
+                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and only one is allowed.",
+                                MessageLevel.ERROR,
+                                context,
+                                rule ) );
+                    }
+
+                }
+                else if (!psiMiReferences.isEmpty()){
+                    // There is only one psi-mi database reference for an InteractionDetectionMethod
+                    if (psiMiReferences.size() != 1){
+
+                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
+                                MessageLevel.ERROR,
+                                context,
+                                rule ) );
+                    }
+                }
+                else {
+                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
+                            MessageLevel.ERROR,
+                            context,
+                            rule ) );
+                }
+            }
+            else {
+                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
+                        MessageLevel.ERROR,
+                        context,
+                        rule ) );
+
+            }
+        }
+        else {
+            messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897' in the XRef/primaryRef element) with type 'identity'(refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of \"+ mi +\").",
                     MessageLevel.ERROR,
                     context,
                     rule ) );
