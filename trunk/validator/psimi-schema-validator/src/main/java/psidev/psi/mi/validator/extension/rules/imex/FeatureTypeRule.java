@@ -55,7 +55,7 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
 
         if (feature.hasFeatureType()){
 
-            RuleUtils.checkPsiMIXRef(feature.getFeatureType(), messages, context, this, RuleUtils.FEATURE_TYPE);
+            RuleUtils.checkPsiMIOrModXRef(feature.getFeatureType(), messages, context, this, RuleUtils.FEATURE_TYPE);
 
         }
         else {
