@@ -153,10 +153,13 @@
         <xsl:value-of select="substring($str, 2, string-length($str) - 1)" />
     </xsl:template>
 
-    <xsl:template match="@releaseDate">
+    <xsl:template match="psi:source" mode="name">
+        <xsl:param name="str" select="name(.)"/>
+        <xsl:value-of select="translate(substring($str, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+        <xsl:value-of select="substring($str, 2, string-length($str) - 1)" />
         <tr>
             <td class="table-title">Release Date:</td>
-            <td class="normal-cell"><xsl:value-of select="text()"/></td>
+            <td class="normal-cell"><xsl:value-of select="@releaseDate"/></td>
         </tr>
     </xsl:template>
 
@@ -335,6 +338,9 @@
                 <a name="ix{@id}">Interaction #<xsl:value-of select="@id"/></a>
             </td>
         </tr>
+        <tr>
+            <xsl:apply-templates select="psi:inferredInteractionList"/>
+        </tr>
         <xsl:apply-templates/>
     </xsl:template>
 
@@ -351,7 +357,10 @@
         </tr>
     </xsl:template>
 
-    <xsl:template match="psi:experimentList">
+    <xsl:template match="psi:experimentList" mode="name">
+        <xsl:param name="str" select="name(.)"/>
+        <xsl:value-of select="translate(substring($str, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
+        <xsl:value-of select="substring($str, 2, string-length($str) - 1)" />
         <tr>
             <td class="table-title">Experiments:</td>
             <td class="table-subtitle">
@@ -418,6 +427,16 @@
         <xsl:apply-templates select="current()"  mode="cellrow">
             <xsl:with-param name="title" select="'Experimental Preparation'"/>
         </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="psi:inferredInteractionList">
+        <xsl:apply-templates select="current()"  mode="cellrow">
+            <xsl:with-param name="title" select="'Inferred Interaction'"/>
+        </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="psi:inferredInteraction">
+        <xsl:apply-templates select="psi:participant" mode="inferredInteraction"/>
     </xsl:template>
 
     <xsl:template match="psi:experimentalInteractor">
@@ -514,6 +533,11 @@
     </xsl:template>
 
     <xsl:template match="psi:interactor" mode="experimentalInteractor">
+        <a name="i{@id}">Interactor #<xsl:value-of select="@id"/></a>
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="psi:participant" mode="inferredInteraction">
         <a name="i{@id}">Interactor #<xsl:value-of select="@id"/></a>
         <xsl:apply-templates/>
     </xsl:template>
