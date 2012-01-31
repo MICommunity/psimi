@@ -16,7 +16,7 @@
         <module>psimitab-parser</module>
         <module>psimitab-search</module>
         <module>psimitab-organism</module>
-        <!--<module>validator</module>-->
+        <module>validator</module>
         <module>psimi-examples</module>
         <module>calimocho</module>
         <module>calimocho-tab</module>
