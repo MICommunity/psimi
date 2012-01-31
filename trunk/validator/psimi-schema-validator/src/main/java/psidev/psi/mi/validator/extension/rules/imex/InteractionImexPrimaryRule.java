@@ -68,7 +68,7 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
                         this ) );
             }
             else {
-                PublicationRuleUtils.checkImexId(imexReferences, messages, context, this);
+                PublicationRuleUtils.checkImexInteractionId(imexReferences, messages, context, this);
             }
 
         }
