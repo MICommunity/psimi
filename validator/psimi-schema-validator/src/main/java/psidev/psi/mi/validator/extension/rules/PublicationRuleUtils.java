@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 public class PublicationRuleUtils {
 
     private static Pattern IMEx_ID = Pattern.compile( "IM-[0-9]+" );
+    private static Pattern IMEx_INTERACTION_ID = Pattern.compile( "IM-[0-9]+-[0-9]+" );
 
     /**
      * Checks if the pubmed ids in a collection of pubmed references are valid. Add new ValidatorMessage to messages if not.
@@ -86,6 +87,33 @@ public class PublicationRuleUtils {
                 }
                 else {
                     messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx).",
+                            MessageLevel.ERROR,
+                            context,
+                            experimentRule ) );
+                }
+            }
+        }
+    }
+
+    public static void checkImexInteractionId(Collection<DbReference> imexPrimaryReferences, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
+
+        // If there is a reference type set to 'imex-primary'
+        if (!imexPrimaryReferences.isEmpty()){
+            for ( DbReference imex  : imexPrimaryReferences ) {
+                final String imexId = imex.getId();
+                if( imexId != null) {
+                    if (imexId.trim().length() > 0 ){
+                        if (!IMEx_INTERACTION_ID.matcher(imexId).matches()){
+                            messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx-xx).",
+                                    MessageLevel.ERROR,
+                                    context,
+                                    experimentRule ) );
+                        }
+                    }
+
+                }
+                else {
+                    messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx-xx).",
                             MessageLevel.ERROR,
                             context,
                             experimentRule ) );
