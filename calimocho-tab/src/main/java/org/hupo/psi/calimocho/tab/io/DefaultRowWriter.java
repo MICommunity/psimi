@@ -75,7 +75,7 @@ public class DefaultRowWriter implements RowWriter {
                 }
 
                 final Collection<Field> fields = row.getFields( columnDefinition.getKey() );
-                if ( fields == null ) {
+                if ( fields == null || fields.isEmpty()) {
                     if( ! columnDefinition.isAllowsEmpty() ) {
                         final IllegalRowException ire = new IllegalRowException( "Could not find column " + columnDefinition.getKey() );
                         ire.setRow( row );
