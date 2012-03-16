@@ -55,6 +55,8 @@ The column contents should be as follows:
   # *Binding domain for interactor B*: feature_type:range(text), for instance sufficient to bind:27-195,201-133 (IPR000785). The use of the following characters is allowed to describe a range: ‘?’, ‘n’, ‘>1’ etc.
   # *Stoichiometry for interactor A*: A numerical value describing the count of instance of the molecule participanting in the interaction. Example: for self interactors e.g. a kinase occluding its kinase domain by an internal phospho-tyrosine/SH2 domain interaction, both Interactor A/B columns will show the same molecule accession number with the stoichiometry 1 and 0.
   # *Stoichiometry for interactor B*: A numerical value describing the count of instance of the molecule participanting in the interaction. Example: for self interactors e.g. a kinase occluding its kinase domain by an internal phospho-tyrosine/SH2 domain interaction, both Interactor A/B columns will show the same molecule accession number with the stoichiometry 1 and 0.
+  # *Participant identification method for interactor A*: 
+  # *Participant identification method for interactor B*: 
 
 All the columns are mandatory.
 
