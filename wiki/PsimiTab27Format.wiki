@@ -47,12 +47,12 @@ The column contents should be as follows:
   #  *Parameters of the interaction*, for example kinetics. Representation as type:value(text). The type can be taken from the corresponding [http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0640&termName=parameter%20type PSI-MI controlled vocabulary]. Multiple parameters separated by "|".
   #  *Creation date* when the curation of the publication started. Representation as yyyy/mm/dd. This field is equivalent to the release date in the PSI-XML schema.
   #  *Update date* when the interaction was updated for the last time. Representation as yyyy/mm/dd. This field does not have any equivalence in PSI-XML (could be the release date as well) and helps to keep track of changes in curated data.
-  #  *Checksum for interactor A*, for instance the ROGID of the interactor. Representation as databaseName:checksum
-  #  *Checksum for interactor B*, for instance the ROGID of the interactor. Representation as databaseName:checksum
-  #  *Checksum for interaction*, for instance the RIGID of the interaction. Representation as databaseName:checksum
-  #  *negative* Boolean value to distinguish positive interactions (negative = false) from negative interactions (negative = true)
-  # *Binding domain for interactor A*: feature_type:range(text), for instance sufficient to bind:27-195,201-133 (IPR000785). The use of the following characters is allowed to describe a range: ‘?’, ‘n’, ‘>1’ etc.
-  # *Binding domain for interactor B*: feature_type:range(text), for instance sufficient to bind:27-195,201-133 (IPR000785). The use of the following characters is allowed to describe a range: ‘?’, ‘n’, ‘>1’ etc.
+  #  *Checksum for interactor A*, for instance the ROGID of the interactor which takes into consideration both the sequence and the organism of the interactor. Representation as methodName:checksum where methodName is the name of the method used to create the checksum. It is recommended to give the ROGID and CROGID for proteins and the standard Inchi key for small molecules.
+  #  *Checksum for interactor B*.
+  #  *Checksum for interaction*, for instance the RIGID of the interaction. Representation as methodName:checksum where methodName is the name of the method used to create the checksum.
+  #  *negative* Boolean value to distinguish positive interactions (false) from negative interactions (true). By default, if the column is empty ('-'), the negative value is considered to be false (positive interaction).
+  # *Feature for interactor A*: feature_type:range(text), for instance sufficient to bind:27-195,201-133 (IPR000785). The use of the following characters is allowed to describe a range: ‘?’, ‘n’, ‘>1’ etc.
+  # *Feature for interactor B*: feature_type:range(text), for instance sufficient to bind:27-195,201-133 (IPR000785). The use of the following characters is allowed to describe a range: ‘?’, ‘n’, ‘>1’ etc.
   # *Stoichiometry for interactor A*: A numerical value describing the count of instance of the molecule participanting in the interaction. Example: for self interactors e.g. a kinase occluding its kinase domain by an internal phospho-tyrosine/SH2 domain interaction, both Interactor A/B columns will show the same molecule accession number with the stoichiometry 1 and 0.
   # *Stoichiometry for interactor B*: A numerical value describing the count of instance of the molecule participanting in the interaction. Example: for self interactors e.g. a kinase occluding its kinase domain by an internal phospho-tyrosine/SH2 domain interaction, both Interactor A/B columns will show the same molecule accession number with the stoichiometry 1 and 0.
   # *Participant identification method for interactor A*: 
