@@ -37,8 +37,8 @@ The column contents should be as follows:
   # *Experimental role B* .
   # *Interactor type A* , taken from the corresponding [http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type PSI-MI controlled vocabulary], and represented as dataBaseName:identifier(interactor type name), separated by "|". As the interactor types are taken from the PSI-MI ontology, the database name is 'psi-mi'. It is recommended to always give this information as it can be useful for recognizing protein-protein, small molecule-proteins, nucleic acids-proteins and gene-proteins interactions
   # *Interactor type B*.
-  #  *Xref for interactor A*, for example the gene ontology cross references associated. Representation as databaseName:identifier(text). Multiple cross references separated by "|".
-  #  *Xref for interactor B*, for example the gene ontology cross references associated. Representation as databaseName:identifier(text). Multiple cross references separated by "|".
+  #  *Xref for interactor A*, for example the gene ontology cross references associated. Representation as databaseName:accession(text). Multiple cross references separated by "|".
+  #  *Xref for interactor B*.
   #  *Xref for the interaction*, for example the gene ontology cross references associated (components, etc.) or OMIM cross references. Representation as databaseName:identifier(text). Multiple cross references separated by "|".
   #  *Annotations for interactor A*, for example comments about this interactor. Representation as topic:text. Multiple annotations separated by "|".
   #  *Annotations for Interactor B*, for example comments about this interactor. Representation as databaseName:identifier(text). Multiple annotations separated by "|".
