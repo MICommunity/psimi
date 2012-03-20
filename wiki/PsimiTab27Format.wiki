@@ -58,7 +58,7 @@ The column contents should be as follows:
   # *Participant identification method for interactor A*: 
   # *Participant identification method for interactor B*: 
 
-Empty columns should be represented with '-'.
+Empty columns should be represented with '-' to keep track of the columns.
 
 == Syntax ==
 
