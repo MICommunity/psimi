@@ -68,6 +68,23 @@
             <organization>EBI</organization>
             <timezone>0</timezone>
         </developer>
+
+        <developer>
+            <id>marine</id>
+            <name>Marine Dumousseau</name>
+            <email>marine@ebi.ac.uk</email>
+            <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+
+        <developer>
+            <id>rafael</id>
+            <name>Rafael Jimenez</name>
+            <email>rafael@ebi.ac.uk</email>
+            <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+
     </developers>
 
     <licenses>
