@@ -5,7 +5,7 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>validator</artifactId>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>1.7.10-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -61,7 +61,7 @@
         <dependency>
             <artifactId>psi25-xml</artifactId>
             <groupId>psidev.psi.mi</groupId>
-            <version>1.7.10-SNAPSHOT</version>
+            <version>${pom.parent.version}</version>
         </dependency>
 
                <!-- OBO -->

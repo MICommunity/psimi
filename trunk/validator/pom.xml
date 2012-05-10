@@ -11,7 +11,6 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>validator</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.1-SNAPSHOT</version>
 
     <name>PSI :: Schema Validator</name>
     <description>Base build file for validator related projects</description>
