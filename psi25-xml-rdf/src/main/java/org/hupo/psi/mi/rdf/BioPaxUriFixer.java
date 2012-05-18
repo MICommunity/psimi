@@ -56,6 +56,9 @@ public class BioPaxUriFixer {
         new SimpleIOHandler().convertToOWL(model, baos);
 
         fixURIs(idMappings, new StringReader(baos.toString()), writer);
+        
+        // close OutputStream
+        baos.close();
     }
 
     private void fixURIs(Map<String, String> idMappings, Reader reader, Writer writer) throws IOException {
@@ -80,6 +83,9 @@ public class BioPaxUriFixer {
 
             writer.write(line + NEW_LINE);
         }
+
+        // close bufferReader
+        in.close();
     }
 
     private Map<String, String> calculateIdMapings(Model model) {
