@@ -111,9 +111,11 @@ public class PsimiRdfConverter {
 
         try {
             convertToBioPAXAndFixURIs(entrySet, BioPAXLevel.L3, sw);
-            OntModel model = createJenaModel(new StringReader(sw.toString()), "http://org.hupo.psi.mi");
+            StringReader stringReader = new StringReader(sw.toString());
+            OntModel model = createJenaModel(stringReader, "http://org.hupo.psi.mi");
 
-            // close writer
+            // close reader and writer
+            stringReader.close();
             sw.close();
 
             return model;
