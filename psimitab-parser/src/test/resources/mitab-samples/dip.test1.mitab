@@ -1,3 +1,0 @@
-ID interactor A	ID interactor B	Alt. ID interactor A	Alt. ID interactor B	Alias(es) interactor A	Alias(es) interactor B	Interaction detection method(s)	Publication 1st author(s)	Publication Identifier(s)	Taxid interactor A	Taxid interactor B	Interaction type(s)	Source database(s)	Interaction identifier(s)	Confidence value(s)
-DIP:27533N|uniprotkb:O00221	 DIP:27536N|uniprotkb:P19838	-	-	-	-	MI:0676(Tandem Affinity Purification)	-	pmid:14743216	taxid:9606	taxid:9606	MI:0218(physical interaction)	MI:0465(dip)	DIP:44835E	-
-DIP:24237N|uniprotkb:P19838	 DIP:27533N|uniprotkb:O00221	-	-	-	-	MI:0676(Tandem Affinity Purification)	-	pmid:14743216	taxid:9606	taxid:9606	MI:0218(physical interaction)	MI:0465(dip)	DIP:44816E	-
