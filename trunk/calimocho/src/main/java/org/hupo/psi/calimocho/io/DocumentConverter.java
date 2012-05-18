@@ -20,7 +20,6 @@ import org.hupo.psi.calimocho.model.CalimochoDocument;
 import org.hupo.psi.calimocho.model.DocumentDefinition;
 
 import java.io.*;
-import java.util.Collection;
 
 /**
  * Converts documents from one format to another, by using DocumentDefinitions.
@@ -51,6 +50,7 @@ public class DocumentConverter {
         convert( reader, writer);
 
         writer.close();
+        reader.close();
     }
 
     /**

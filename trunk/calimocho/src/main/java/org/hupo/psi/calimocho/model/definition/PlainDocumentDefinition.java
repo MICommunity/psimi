@@ -45,6 +45,7 @@ public class PlainDocumentDefinition extends AbstractDocumentDefinition {
             }
 
             writer.write( "}"+NEW_LINE );
+            writer.flush();
         }
 
 
