@@ -111,11 +111,15 @@ public class PsimiRdfConverter {
 
         try {
             convertToBioPAXAndFixURIs(entrySet, BioPAXLevel.L3, sw);
+            OntModel model = createJenaModel(new StringReader(sw.toString()), "http://org.hupo.psi.mi");
+
+            // close writer
+            sw.close();
+
+            return model;
         } catch (IOException e) {
             throw new RuntimeException("Problem converting EntrySet to BioPAX", e);
         }
-
-        return createJenaModel(new StringReader(sw.toString()), "http://org.hupo.psi.mi");
     }
 
     public Model convertToBioPAX(EntrySet entrySet, BioPAXLevel biopaxLevel) {
@@ -123,11 +127,17 @@ public class PsimiRdfConverter {
 
         try {
             convertToBioPAXAndFixURIs(entrySet, biopaxLevel, sw);
+
+            Model model = new SimpleIOHandler().convertFromOWL(new ByteArrayInputStream(sw.toString().getBytes()));
+
+            //close writer
+            sw.close();
+
+            return model;
+
         } catch (IOException e) {
             throw new RuntimeException("Problem converting EntrySet to BioPAX", e);
         }
-
-        return new SimpleIOHandler().convertFromOWL(new ByteArrayInputStream(sw.toString().getBytes()));
     }
 
     private void convertToBioPAXAndFixURIs(EntrySet entrySet, BioPAXLevel biopaxLevel, Writer writer) throws IOException {
@@ -138,13 +148,21 @@ public class PsimiRdfConverter {
 
         String biopaxOutput = os.toString();
 
+        // close outputStream
+        os.close();
+
         if (!biopaxOutput.isEmpty()) {
+            ByteArrayInputStream byteInputStream = new ByteArrayInputStream(biopaxOutput.getBytes());
+
             // fix the biopax non-dereferenciable URIs
-            Model model = new SimpleIOHandler().convertFromOWL(new ByteArrayInputStream(biopaxOutput.getBytes()));
+            Model model = new SimpleIOHandler().convertFromOWL(byteInputStream);
 
             BioPaxUriFixer fixer = new BioPaxUriFixer();
 
             fixer.fixBioPaxUris(model, writer);
+
+            // close byteInputStream
+            byteInputStream.close();
         }
     }
 
