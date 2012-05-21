@@ -87,10 +87,10 @@ public class PsimiTabWriter {
 
         Writer writer;
         if (createFile && hasHeaderEnabled()) {
-            writer = new FileWriter(file, false) ;
+            writer = new BufferedWriter(new FileWriter(file, false)) ;
             writer.write( buildHeaderLine() + NEW_LINE );
         } else{
-            writer = new FileWriter(file, true);
+            writer = new BufferedWriter(new FileWriter(file, true));
         }
 
         String line = documentDefinition.interactionToString( binaryInteraction );
@@ -118,7 +118,7 @@ public class PsimiTabWriter {
             write(interactions, file);
         } else{
             //appending
-            writer = new FileWriter(file, true);
+            writer = new BufferedWriter(new FileWriter(file, true));
 
             for ( Iterator<BinaryInteraction> iter = interactions.iterator(); iter.hasNext(); ) {
                 BinaryInteraction binaryInteraction = iter.next();
@@ -154,9 +154,12 @@ public class PsimiTabWriter {
     }
 
     public void write( Collection<BinaryInteraction> interactions, OutputStream os ) throws IOException, ConverterException {
-        final OutputStreamWriter writer = new OutputStreamWriter(os);
+        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
         write( interactions, writer);
         writer.flush();
+
+        // close writer
+        writer.close();
     }
 
     public void write( Collection<BinaryInteraction> interactions, Writer writer ) throws IOException, ConverterException {
@@ -174,13 +177,13 @@ public class PsimiTabWriter {
     }
 
     public void write( Collection<BinaryInteraction> interactions, PrintStream ps ) throws IOException, ConverterException {
-        final OutputStreamWriter writer = new OutputStreamWriter(ps);
+        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ps));
         write( interactions, writer);
         writer.close();
     }
 
     public void write( BinaryInteraction interaction, OutputStream os ) throws IOException {
-        final OutputStreamWriter writer = new OutputStreamWriter(os);
+        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
         write( interaction, writer);
         writer.close();
     }
