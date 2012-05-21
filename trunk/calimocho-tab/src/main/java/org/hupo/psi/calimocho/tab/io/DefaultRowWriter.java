@@ -7,10 +7,7 @@ import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -47,6 +44,8 @@ public class DefaultRowWriter implements RowWriter {
                 throw new IllegalRowException( "Failed to write row.", e );
             }
         }
+
+        writer.flush();
     }
 
     // TODO write header as a commented line
@@ -133,6 +132,10 @@ public class DefaultRowWriter implements RowWriter {
      * {@inheritDoc}
      */
     public void write( OutputStream os, Collection<Row> rows ) throws IOException, IllegalRowException {
-        write( new OutputStreamWriter( os ), rows );
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter( os ));
+
+        write(writer , rows );
+
+        writer.close();
     }
 }
