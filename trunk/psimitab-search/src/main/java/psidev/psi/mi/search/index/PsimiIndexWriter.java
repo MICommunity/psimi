@@ -95,6 +95,9 @@ public class PsimiIndexWriter {
             addLineToIndex(indexModifier, line);
         }
 
+        // close reader
+        reader.close();
+
         if (log.isInfoEnabled())
         {
             long elapsedTime = (System.currentTimeMillis()-startTime)/1000;
