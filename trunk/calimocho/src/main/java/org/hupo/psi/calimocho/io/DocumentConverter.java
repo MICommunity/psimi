@@ -44,8 +44,8 @@ public class DocumentConverter {
      * @throws IOException
      */
     public void convert(InputStream is, OutputStream os) throws IOException {
-        final InputStreamReader reader = new InputStreamReader( is );
-        OutputStreamWriter writer = new OutputStreamWriter(os);
+        final BufferedReader reader = new BufferedReader(new InputStreamReader( is ));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
 
         convert( reader, writer);
 
