@@ -307,10 +307,6 @@ public final class ParseUtils {
             }
         }
 
-        if (description == null) {
-            description = "free-text";
-        }
-
         return new ConfidenceImpl(type, value, description);
     }
 
