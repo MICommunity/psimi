@@ -90,7 +90,7 @@ public class CrossReferenceFieldBuilder extends AbstractFieldBuilder {
     }
 
     protected Field fixPsimiFieldfNecessary(Field field) {
-        if ( MI_PREFIX.equals(field.getType())) {
+        if ( MI_PREFIX.equalsIgnoreCase(field.getType())) {
             String identifier = field.getValue();
 
             return new Field("psi-mi", MI_PREFIX + ":" + identifier, field.getDescription());
