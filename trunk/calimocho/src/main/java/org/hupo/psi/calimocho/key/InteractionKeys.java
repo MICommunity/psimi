@@ -62,5 +62,10 @@ public interface InteractionKeys {
     String KEY_CHECKSUM_B = "checksumB";
     String KEY_CHECKSUM_I = "checksumI";
     String KEY_NEGATIVE = "negative";
-
+    String KEY_FEATURE_A = "ftypeA";
+    String KEY_FEATURE_B = "ftypeB";
+    String KEY_STOICHIOMETRY_A = "stcA";
+    String KEY_STOICHIOMETRY_B = "stcB";
+    String KEY_PART_IDENT_METHOD_A = "pmethodA";
+    String KEY_PART_IDENT_METHOD_B = "pmethodB";
 }
