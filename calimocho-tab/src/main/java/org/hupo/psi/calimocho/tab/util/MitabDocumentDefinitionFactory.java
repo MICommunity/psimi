@@ -1,13 +1,7 @@
 package org.hupo.psi.calimocho.tab.util;
 
-import org.hupo.psi.calimocho.tab.io.formatter.BooleanFieldFormatter;
-import org.hupo.psi.calimocho.tab.io.formatter.DateFieldFormatter;
-import org.hupo.psi.calimocho.tab.io.formatter.LiteralFieldFormatter;
-import org.hupo.psi.calimocho.tab.io.parser.BooleanFieldParser;
-import org.hupo.psi.calimocho.tab.io.parser.DateFieldParser;
-import org.hupo.psi.calimocho.tab.io.parser.LiteralFieldParser;
-import org.hupo.psi.calimocho.tab.io.formatter.XrefFieldFormatter;
-import org.hupo.psi.calimocho.tab.io.parser.XrefFieldParser;
+import org.hupo.psi.calimocho.tab.io.formatter.*;
+import org.hupo.psi.calimocho.tab.io.parser.*;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinitionBuilder;
 import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
@@ -171,9 +165,12 @@ public class MitabDocumentDefinitionFactory {
     public static ColumnBasedDocumentDefinition mitab26() {
         XrefFieldParser xrefParser = new XrefFieldParser();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
-
-        LiteralFieldParser literalParser = new LiteralFieldParser();
-        LiteralFieldFormatter literalFieldFormatter = new LiteralFieldFormatter();
+        AnnotationFieldFormatter annotFormatter = new AnnotationFieldFormatter(":");
+        AnnotationFieldParser annotParser = new AnnotationFieldParser(":");
+        DateFieldParser dateFieldParser = new DateFieldParser( "yyyy/MM/dd" );
+        DateFieldFormatter dateFieldFormatter = new DateFieldFormatter( "yyyy/MM/dd" );
+        BooleanFieldFormatter booleanFieldFormatter = new BooleanFieldFormatter();
+        BooleanFieldParser booleanFieldParser = new BooleanFieldParser();
 
         ColumnDefinition expansion = new ColumnDefinitionBuilder()
                 .setName("Expansion")
@@ -183,8 +180,8 @@ public class MitabDocumentDefinitionFactory {
                 .setFieldDelimiter("")
                 .setIsAllowsEmpty(true)
                 .setPosition(15)
-                .setFieldFormatter(literalFieldFormatter)
-                .setFieldParser(literalParser)
+                .setFieldFormatter(xrefFormatter)
+                .setFieldParser(xrefParser)
                 .build();
 
         ColumnDefinition bioRoleA = new ColumnDefinitionBuilder()
@@ -257,18 +254,20 @@ public class MitabDocumentDefinitionFactory {
                 .extendColumnDefinition(bioRoleA)
                 .setName("Annotations A")
                 .setKey(Mitab26ColumnKeys.KEY_ANNOTATIONS_A)
+                .setFieldFormatter(annotFormatter)
+                .setFieldParser(annotParser)
                 .setPosition(25)
                 .build();
 
         ColumnDefinition annotationsB = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(bioRoleA)
+                .extendColumnDefinition(annotationsA)
                 .setName("Annotations B")
                 .setKey(Mitab26ColumnKeys.KEY_ANNOTATIONS_B)
                 .setPosition(26)
                 .build();
 
         ColumnDefinition annotationsI = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(bioRoleA)
+                .extendColumnDefinition(annotationsB)
                 .setName("Annotations Interaction")
                 .setKey(Mitab26ColumnKeys.KEY_ANNOTATIONS_I)
                 .setPosition(27)
@@ -293,8 +292,8 @@ public class MitabDocumentDefinitionFactory {
                 .setName( "Creation Date" )
                 .setKey( Mitab26ColumnKeys.KEY_CREATION_DATE )
                 .setPosition( 30 )
-                .setFieldParser( new DateFieldParser( "yyyy/MM/dd" ) )
-                .setFieldFormatter( new DateFieldFormatter( "yyyy/MM/dd" ) )
+                .setFieldParser( dateFieldParser )
+                .setFieldFormatter( dateFieldFormatter )
                 .build();
 
         ColumnDefinition updateDate = new ColumnDefinitionBuilder()
@@ -330,8 +329,8 @@ public class MitabDocumentDefinitionFactory {
                 .setName("Negative")
                 .setKey(Mitab26ColumnKeys.KEY_NEGATIVE)
                 .setPosition(35)
-                .setFieldParser( new BooleanFieldParser() )
-                .setFieldFormatter( new BooleanFieldFormatter() )
+                .setFieldParser( booleanFieldParser )
+                .setFieldFormatter( booleanFieldFormatter )
                 .build();
 
 
@@ -360,6 +359,76 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(checksumB)
                 .addColumnDefinition(checksumI)
                 .addColumnDefinition(negative)
+                .build();
+        return docDefinition;
+    }
+
+    public static ColumnBasedDocumentDefinition mitab27() {
+        XrefFieldParser xrefParser = new XrefFieldParser();
+        XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
+
+        PositiveIntegerFieldFormatter integerFormatter = new PositiveIntegerFieldFormatter();
+        PositiveIntegerFieldParser integerParser = new PositiveIntegerFieldParser();
+
+        ColumnDefinition ftypeA = new ColumnDefinitionBuilder()
+                .setName("Feature(s) for interactor A")
+                .setKey(Mitab27ColumnKeys.KEY_FEATURE_A)
+                .setFieldSeparator("|")
+                .setEmptyValue("-")
+                .setFieldDelimiter("")
+                .setIsAllowsEmpty(true)
+                .setPosition(36)
+                .setFieldFormatter(xrefFormatter)
+                .setFieldParser(xrefParser)
+                .build();
+
+        ColumnDefinition ftypeB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(ftypeA)
+                .setName("\"Feature(s) for interactor A\"")
+                .setKey(Mitab27ColumnKeys.KEY_FEATURE_B)
+                .setPosition(37)
+                .build();
+
+        ColumnDefinition stochioA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(ftypeB)
+                .setName("Stoichiometry for interactor A")
+                .setKey(Mitab27ColumnKeys.KEY_STOICHIOMETRY_A)
+                .setPosition(38)
+                .setFieldParser( integerParser )
+                .setFieldFormatter( integerFormatter )
+                .build();
+
+        ColumnDefinition stochioB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(stochioA)
+                .setName("Stoichiometry for interactor B")
+                .setKey(Mitab27ColumnKeys.KEY_STOICHIOMETRY_B)
+                .setPosition(39)
+                .build();
+
+        ColumnDefinition partDetMethodA = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(ftypeA)
+                .setName("Participant identification method for interactor A")
+                .setKey(Mitab27ColumnKeys.KEY_PART_IDENT_METHOD_A)
+                .setPosition(40)
+                .build();
+
+        ColumnDefinition partDetMethodB = new ColumnDefinitionBuilder()
+                .extendColumnDefinition(partDetMethodA)
+                .setName("Participant identification method for interactor B")
+                .setKey(Mitab27ColumnKeys.KEY_PART_IDENT_METHOD_B)
+                .setPosition(41)
+                .build();
+
+        ColumnBasedDocumentDefinition docDefinition = new ColumnBasedDocumentDefinitionBuilder()
+                .extendDocumentDefinition(mitab25())
+                .setName("mitab27")
+                .setDefinition("MITAB27 Specification")
+                .addColumnDefinition(ftypeA)
+                .addColumnDefinition(ftypeB)
+                .addColumnDefinition(stochioA)
+                .addColumnDefinition(stochioB)
+                .addColumnDefinition(partDetMethodA)
+                .addColumnDefinition(partDetMethodB)
                 .build();
         return docDefinition;
     }
