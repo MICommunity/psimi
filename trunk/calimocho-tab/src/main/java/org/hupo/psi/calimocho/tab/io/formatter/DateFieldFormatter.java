@@ -38,6 +38,6 @@ public class DateFieldFormatter implements FieldFormatter {
     }
 
     public String format( Field field, Row row ) throws IllegalFieldException {
-        return format(field, null);
+        return format(field);
     }
 }

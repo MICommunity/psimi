@@ -28,9 +28,7 @@ public class XrefFieldParser implements FieldParser {
         if (!str.isEmpty()) {
             String[] groups = ParseUtils.quoteAwareSplit( str, new String[]{":", "(", ")"}, true );
 
-            
-            
-            
+
             // some exception handling
             if (groups.length > 3) {
                 throw new IllegalFieldException("Incorrect number of groups found ("+groups.length+"): "+ Arrays.asList( groups ) + ", in field '"+str+"' / Is this a xref field?");
