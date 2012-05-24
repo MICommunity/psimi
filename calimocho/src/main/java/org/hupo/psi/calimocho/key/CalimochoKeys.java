@@ -13,7 +13,6 @@ public interface CalimochoKeys {
     String DB = "db";
     String VALUE = "value";
     String TEXT = "text";
-    String RANGE = "range";
     String NAME = "name";
     String COLUMN_KEY = "colkey";
 
