@@ -14,6 +14,7 @@ public interface CalimochoKeys {
     String VALUE = "value";
     String TEXT = "text";
     String RANGE = "range";
+    String NAME = "name";
     String COLUMN_KEY = "colkey";
 
     String DAY = "day";
