@@ -1,14 +1,15 @@
 package psidev.psi.mi.calimocho.solr.converter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.hupo.psi.calimocho.key.InteractionKeys;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -16,12 +17,16 @@ import org.hupo.psi.calimocho.model.Row;
  */
 public class Converter {
 
-    private Map<SolrFieldName, Collection<String>> keyMap;
+    private Map<SolrFieldName, SolrFieldUnit> keyMap;
 
     public Converter() {
-        keyMap = new HashMap<SolrFieldName, Collection<String>>();
+        keyMap = new HashMap<SolrFieldName, SolrFieldUnit>();
 
-        keyMap.put(SolrFieldName.idA, Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A));
+        initializeKeyMap();
+    }
+
+    private void initializeKeyMap() {
+        keyMap.put(SolrFieldName.idA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A), new XrefFieldCrossReference());
         keyMap.put(SolrFieldName.idB, Arrays.asList(InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B));
         keyMap.put(SolrFieldName.id, Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A, InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B));
         keyMap.put(SolrFieldName.alias, Arrays.asList(InteractionKeys.KEY_ALIAS_A, InteractionKeys.KEY_ALIAS_B));
@@ -55,7 +60,6 @@ public class Converter {
         keyMap.put(SolrFieldName.pmethodB, Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B));
         keyMap.put(SolrFieldName.stc, Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A,InteractionKeys.KEY_STOICHIOMETRY_B));
         keyMap.put(SolrFieldName.param, Arrays.asList(InteractionKeys.KEY_PARAMETERS_I));
-
     }
 
     /*
@@ -65,16 +69,21 @@ public class Converter {
     public SolrInputDocument toSolrDocument(Row row) throws SolrServerException {
         SolrInputDocument doc = new SolrInputDocument();
         
-        for (Map.Entry<SolrFieldName,Collection<String>> entry : keyMap.entrySet()) {
+        for (Map.Entry<SolrFieldName,SolrFieldUnit> entry : keyMap.entrySet()) {
 
-            for (String key : entry.getValue()) {
+            Collection<String> rowKeys = entry.getValue().getRowKeys();
+            SolrFieldConverter converter = entry.getValue().getConverter();
 
-                Collection<Field> fields = row.getFields(key);
+            if (rowKeys != null && converter != null && !rowKeys.isEmpty()){
+                for (String key : rowKeys) {
 
-                for (Field field : fields) {
+                    Collection<Field> fields = row.getFields(key);
 
-                    
-
+                    if (fields != null && !fields.isEmpty()){
+                        for (Field field : fields) {
+                            converter.indexFieldValues(field, entry.getKey(), doc);
+                        }
+                    }
                 }
             }
 
