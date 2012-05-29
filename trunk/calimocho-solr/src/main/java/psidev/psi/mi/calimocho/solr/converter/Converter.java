@@ -26,40 +26,42 @@ public class Converter {
     }
 
     private void initializeKeyMap() {
-        keyMap.put(SolrFieldName.idA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A), new XrefFieldCrossReference());
-        keyMap.put(SolrFieldName.idB, Arrays.asList(InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B));
-        keyMap.put(SolrFieldName.id, Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A, InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B));
-        keyMap.put(SolrFieldName.alias, Arrays.asList(InteractionKeys.KEY_ALIAS_A, InteractionKeys.KEY_ALIAS_B));
-        keyMap.put(SolrFieldName.identifier, Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A, InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B, InteractionKeys.KEY_ALIAS_A, InteractionKeys.KEY_ALIAS_B));
-        keyMap.put(SolrFieldName.pubid, Arrays.asList(InteractionKeys.KEY_PUBID));
-        keyMap.put(SolrFieldName.pubauth, Arrays.asList(InteractionKeys.KEY_PUBAUTH));
-        keyMap.put(SolrFieldName.taxidA, Arrays.asList(InteractionKeys.KEY_TAXID_A));
-        keyMap.put(SolrFieldName.taxidB, Arrays.asList(InteractionKeys.KEY_TAXID_B));
-        keyMap.put(SolrFieldName.species, Arrays.asList(InteractionKeys.KEY_TAXID_A, InteractionKeys.KEY_TAXID_B));
-        keyMap.put(SolrFieldName.type, Arrays.asList(InteractionKeys.KEY_INTERACTION_TYPE));
-        keyMap.put(SolrFieldName.detmethod, Arrays.asList(InteractionKeys.KEY_DETMETHOD));
-        keyMap.put(SolrFieldName.interaction_id, Arrays.asList(InteractionKeys.KEY_INTERACTION_ID));
-        keyMap.put(SolrFieldName.pbioroleA, Arrays.asList(InteractionKeys.KEY_BIOROLE_A));
-        keyMap.put(SolrFieldName.pbioroleB, Arrays.asList(InteractionKeys.KEY_BIOROLE_B));
-        keyMap.put(SolrFieldName.pbiorole, Arrays.asList(InteractionKeys.KEY_BIOROLE_A,InteractionKeys.KEY_BIOROLE_B));
-        keyMap.put(SolrFieldName.ptypeA, Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A));
-        keyMap.put(SolrFieldName.ptypeB, Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_B));
-        keyMap.put(SolrFieldName.ptype, Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A, InteractionKeys.KEY_INTERACTOR_TYPE_B));
-        keyMap.put(SolrFieldName.pxrefA, Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_XREFS_A));
-        keyMap.put(SolrFieldName.pxrefB, Arrays.asList(InteractionKeys.KEY_ID_B, InteractionKeys.KEY_XREFS_B));
-        keyMap.put(SolrFieldName.pxref, Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_XREFS_A,InteractionKeys.KEY_ID_B, InteractionKeys.KEY_XREFS_B));
-        keyMap.put(SolrFieldName.xref, Arrays.asList(InteractionKeys.KEY_XREFS_I, InteractionKeys.KEY_INTERACTION_ID));
-        keyMap.put(SolrFieldName.annot, Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_I));
-        keyMap.put(SolrFieldName.udate, Arrays.asList(InteractionKeys.KEY_UPDATE_DATE));
-        keyMap.put(SolrFieldName.negative, Arrays.asList(InteractionKeys.KEY_NEGATIVE));
-        keyMap.put(SolrFieldName.complex, Arrays.asList(InteractionKeys.KEY_EXPANSION));
-        keyMap.put(SolrFieldName.ftypeA, Arrays.asList(InteractionKeys.KEY_FEATURE_A));
-        keyMap.put(SolrFieldName.ftypeB, Arrays.asList(InteractionKeys.KEY_FEATURE_B));
-        keyMap.put(SolrFieldName.ftype, Arrays.asList(InteractionKeys.KEY_FEATURE_A, InteractionKeys.KEY_FEATURE_B));
-        keyMap.put(SolrFieldName.pmethodA, Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A));
-        keyMap.put(SolrFieldName.pmethodB, Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B));
-        keyMap.put(SolrFieldName.stc, Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A,InteractionKeys.KEY_STOICHIOMETRY_B));
-        keyMap.put(SolrFieldName.param, Arrays.asList(InteractionKeys.KEY_PARAMETERS_I));
+        keyMap.put(SolrFieldName.idA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.idB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.id, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A, InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.alias, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ALIAS_A, InteractionKeys.KEY_ALIAS_B), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.identifier, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A, InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B, InteractionKeys.KEY_ALIAS_A, InteractionKeys.KEY_ALIAS_B), new XrefFieldConverter()));
+
+        keyMap.put(SolrFieldName.pubid, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PUBID), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.pubauth, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PUBAUTH), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.taxidA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_TAXID_A), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.taxidB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_TAXID_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.species, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_TAXID_A, InteractionKeys.KEY_TAXID_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.type, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTION_TYPE), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.detmethod, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_DETMETHOD), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.interaction_id, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTION_ID), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.pbioroleA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIOROLE_A), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.pbioroleB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIOROLE_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.pbiorole, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIOROLE_A,InteractionKeys.KEY_BIOROLE_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.ptypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.ptypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.ptype, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A, InteractionKeys.KEY_INTERACTOR_TYPE_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.pxrefA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_XREFS_A), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.pxrefB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_B, InteractionKeys.KEY_XREFS_B), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.pxref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_XREFS_A,InteractionKeys.KEY_ID_B, InteractionKeys.KEY_XREFS_B), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.xref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_XREFS_I, InteractionKeys.KEY_INTERACTION_ID), new XrefFieldConverter()));
+        keyMap.put(SolrFieldName.annot, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_I), new AnnotationFieldConverter()));
+        keyMap.put(SolrFieldName.udate, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_UPDATE_DATE), new DateFieldConverter()));
+        keyMap.put(SolrFieldName.negative, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_NEGATIVE), new BooleanFieldConverter()));
+        keyMap.put(SolrFieldName.complex, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPANSION), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.ftypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_A), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.ftypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.ftype, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_A, InteractionKeys.KEY_FEATURE_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.pmethodA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.pmethodB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B), new TextFieldConverter()));
+        keyMap.put(SolrFieldName.stc, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A,InteractionKeys.KEY_STOICHIOMETRY_B), new BooleanFieldConverter()));
+        keyMap.put(SolrFieldName.param, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), new BooleanFieldConverter()));
+        
     }
 
     /*
