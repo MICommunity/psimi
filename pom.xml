@@ -22,6 +22,7 @@
         <module>calimocho-tab</module>
         <module>calimocho-xml</module>
         <module>calimocho-xgmml</module>
+    <module>calimocho-solr</module>
   </modules>
 
     <scm>
