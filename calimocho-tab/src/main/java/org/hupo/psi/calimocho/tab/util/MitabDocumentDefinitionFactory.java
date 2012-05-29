@@ -420,7 +420,7 @@ public class MitabDocumentDefinitionFactory {
                 .build();
 
         ColumnBasedDocumentDefinition docDefinition = new ColumnBasedDocumentDefinitionBuilder()
-                .extendDocumentDefinition(mitab25())
+                .extendDocumentDefinition(mitab26())
                 .setName("mitab27")
                 .setDefinition("MITAB27 Specification")
                 .addColumnDefinition(ftypeA)
