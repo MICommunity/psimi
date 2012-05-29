@@ -12,12 +12,13 @@ import org.hupo.psi.calimocho.model.Field;
  * @since <pre>29/05/12</pre>
  */
 
-public class XrefFieldCrossReference implements SolrFieldConverter{
-    
+public class TextFieldConverter implements SolrFieldConverter{
+
     public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc) {
-        
+
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
+        String text = field.get(CalimochoKeys.TEXT);
         String nameField = name.toString();
 
         if (db != null){
@@ -28,6 +29,9 @@ public class XrefFieldCrossReference implements SolrFieldConverter{
         }
         if (value != null){
             doc.addField(nameField, value);
+        }
+        if (text != null){
+            doc.addField(nameField, text);
         }
     }
 }
