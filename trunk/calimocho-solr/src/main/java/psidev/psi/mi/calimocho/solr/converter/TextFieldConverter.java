@@ -14,24 +14,39 @@ import org.hupo.psi.calimocho.model.Field;
 
 public class TextFieldConverter implements SolrFieldConverter{
 
-    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc) {
+    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, boolean facet) {
 
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
         String text = field.get(CalimochoKeys.TEXT);
         String nameField = name.toString();
 
+        if (stored && formattedField != null && !formattedField.isEmpty()) {
+            doc.addField(nameField+"_s", formattedField);
+        }
+
         if (db != null){
             doc.addField(nameField, db);
             if (value != null){
                 doc.addField(nameField, db+":"+value);
+                if (facet){
+                    doc.addField(nameField+"_f", db+":"+value);
+                }
+                if (stored){
+                    doc.addField(nameField+"_s", db);
+                    doc.addField(nameField+"_s", db+":"+value);
+                }
             }
         }
         if (value != null){
             doc.addField(nameField, value);
+            doc.addField(nameField+"_s", value);
         }
         if (text != null){
             doc.addField(nameField, text);
+                if (stored){
+                    doc.addField(nameField+"_s", text);
+                }
         }
     }
 }
