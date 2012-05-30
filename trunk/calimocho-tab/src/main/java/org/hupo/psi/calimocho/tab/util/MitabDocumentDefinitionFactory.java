@@ -367,8 +367,8 @@ public class MitabDocumentDefinitionFactory {
         XrefFieldParser xrefParser = new XrefFieldParser();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
 
-        PositiveIntegerFieldFormatter integerFormatter = new PositiveIntegerFieldFormatter();
-        PositiveIntegerFieldParser integerParser = new PositiveIntegerFieldParser();
+        PositiveFloatFieldFormatter integerFormatter = new PositiveFloatFieldFormatter();
+        PositiveFloatrFieldParser integerParser = new PositiveFloatrFieldParser();
         DateFieldParser dateFieldParser = new DateFieldParser( "yyyy/MM/dd" );
         DateFieldFormatter dateFieldFormatter = new DateFieldFormatter( "yyyy/MM/dd" );
         BooleanFieldFormatter booleanFieldFormatter = new BooleanFieldFormatter();

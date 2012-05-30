@@ -15,17 +15,17 @@ import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
  * @since <pre>24/05/12</pre>
  */
 
-public class PositiveIntegerFieldParser implements FieldParser {
+public class PositiveFloatrFieldParser implements FieldParser {
 
     public Field parse( String fieldStr, ColumnDefinition columnDefinition ) throws IllegalFieldException {
         try {
-            int num = Integer.parseInt( fieldStr );
+            float num = Float.parseFloat( fieldStr );
 
             if (num < 0){
-                throw new IllegalFieldException( "Positive integer expected, found: "+fieldStr );
+                throw new IllegalFieldException( "Positive float expected, found: "+fieldStr );
             }
         } catch ( Exception e ) {
-            throw new IllegalFieldException( "Positive integer expected, found: "+fieldStr );
+            throw new IllegalFieldException( "Positive float expected, found: "+fieldStr );
         }
 
         return new FieldBuilder()
