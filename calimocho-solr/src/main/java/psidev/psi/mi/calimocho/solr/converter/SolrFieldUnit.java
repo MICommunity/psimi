@@ -19,12 +19,11 @@ public class SolrFieldUnit {
     private boolean stored;
     private boolean facet;
 
-    public SolrFieldUnit(Collection<String> rowKeys, SolrFieldConverter converter, FieldFormatter formatter, boolean stored, boolean facet){
+    public SolrFieldUnit(Collection<String> rowKeys, SolrFieldConverter converter, FieldFormatter formatter, boolean stored){
         this.rowKeys = rowKeys;
         this.converter = converter;
         this.formatter = formatter;
         this.stored = stored;
-        this.facet = facet;
     }
 
     public Collection<String> getRowKeys() {
@@ -49,9 +48,5 @@ public class SolrFieldUnit {
 
     public boolean isStored() {
         return stored;
-    }
-
-    public boolean isFacet() {
-        return facet;
     }
 }
