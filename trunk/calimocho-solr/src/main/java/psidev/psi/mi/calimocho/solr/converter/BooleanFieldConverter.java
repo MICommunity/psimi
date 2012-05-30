@@ -11,7 +11,7 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class BooleanFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, boolean facet) {
+    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored) {
 
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
@@ -27,14 +27,12 @@ public class BooleanFieldConverter implements SolrFieldConverter {
             if (stored) {
                 doc.addField(nameField+"_s", "false");
             }
-            //facet?
         }
         else {
             doc.addField(nameField, "true");
             if (stored) {
                 doc.addField(nameField+"_s", "true");
             }
-            //facet?
         }
 
     }
