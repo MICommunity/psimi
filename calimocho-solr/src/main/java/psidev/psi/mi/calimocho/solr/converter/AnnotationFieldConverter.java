@@ -10,18 +10,36 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class AnnotationFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, SolrFieldName fName, SolrInputDocument doc) {
+    public void indexFieldValues(Field field, String formattedField, SolrFieldName fName, SolrInputDocument doc, boolean stored, boolean facet) {
 
         String name = field.get(CalimochoKeys.NAME);
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = fName.toString();
 
+        if (stored && formattedField != null && !formattedField.isEmpty()) {
+            doc.addField(nameField+"_s", formattedField);
+        }
+
         if (name != null){
             doc.addField(nameField, name);
+            if (facet) {
+                doc.addField(nameField+"_f", name);
+            }
+            if (stored) {
+                doc.addField(nameField+"_s", name);
+            }
+            if (value != null && facet) {
+                doc.addField(nameField+"_f", name+":"+value);
+            }
         }
         if (value != null){
-            doc.addField(nameField, value);
-        }
+            doc.addField(nameField, value);        }
+            if (facet) {
+                doc.addField(nameField+"_f", value);
+            }
+            if (stored) {
+                doc.addField(nameField+"_s", value);
+            }
     }
 
 }
