@@ -14,18 +14,18 @@ import org.hupo.psi.calimocho.tab.io.FieldFormatter;
  * @since <pre>24/05/12</pre>
  */
 
-public class PositiveIntegerFieldFormatter implements FieldFormatter {
+public class PositiveFloatFieldFormatter implements FieldFormatter {
     public String format(Field field) throws IllegalFieldException {
         String value = field.get( CalimochoKeys.VALUE );
 
         try {
-            int num = Integer.parseInt( value );
+            float num = Float.parseFloat( value );
 
             if (num < 0){
-                throw new IllegalFieldException( "Positive integer expected, found: "+value );
+                throw new IllegalFieldException( "Positive float expected, found: "+value );
             }
         } catch ( Exception e ) {
-            throw new IllegalFieldException( "Positive integer expected, found: "+value );
+            throw new IllegalFieldException( "Positive float expected, found: "+value );
         }
 
         return value;
