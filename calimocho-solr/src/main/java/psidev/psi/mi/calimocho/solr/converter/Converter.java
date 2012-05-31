@@ -95,7 +95,7 @@ public class Converter {
 //        keyMap.put(SolrFieldName.pmethod, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A, InteractionKeys.KEY_PART_IDENT_METHOD_B), textConverter, textFormatter, stored));
         keyMap.put(SolrFieldName.stcA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A), floatConverter, floatFormatter, !stored));
         keyMap.put(SolrFieldName.stcB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_B), floatConverter, floatFormatter, !stored));
-        keyMap.put(SolrFieldName.stc, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A,InteractionKeys.KEY_STOICHIOMETRY_B), singleBoolConverter, boolFormatter, stored));
+//        keyMap.put(SolrFieldName.stc, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A,InteractionKeys.KEY_STOICHIOMETRY_B), singleBoolConverter, boolFormatter, stored));
         keyMap.put(SolrFieldName.param, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), boolConverter, boolFormatter, stored));
         keyMap.put(SolrFieldName.paramText,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), textConverter, textFormatter, !stored));
         keyMap.put(SolrFieldName.confidence,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CONFIDENCE), textConverter, textFormatter, !stored));
