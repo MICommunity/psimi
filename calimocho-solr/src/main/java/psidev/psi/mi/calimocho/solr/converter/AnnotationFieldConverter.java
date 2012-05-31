@@ -20,17 +20,19 @@ public class AnnotationFieldConverter implements SolrFieldConverter {
             doc.addField(nameField+"_s", formattedField);
         }
 
-        if (name != null){
-            doc.addField(nameField, name);
-            if (stored) {
-                doc.addField(nameField+"_s", name);
-            }
-        }
-        if (value != null){
-            doc.addField(nameField, value);        }
-            if (stored) {
-                doc.addField(nameField+"_s", value);
-            }
+        //tokenizer takes now care of this
+//        if (name != null){
+//            doc.addField(nameField, name);
+//            if (stored) {
+//                doc.addField(nameField+"_s", name);
+//            }
+//        }
+//        if (value != null){
+//            doc.addField(nameField, value);
+//            if (stored) {
+//                doc.addField(nameField+"_s", value);
+//            }
+//        }
     }
 
 }

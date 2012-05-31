@@ -25,27 +25,28 @@ public class TextFieldConverter implements SolrFieldConverter{
             doc.addField(nameField+"_s", formattedField);
         }
 
-        if (db != null){
-            doc.addField(nameField, db);
-            if (value != null){
-                doc.addField(nameField, db+":"+value);
-                if (stored){
-                    doc.addField(nameField+"_s", db);
-                    doc.addField(nameField+"_s", db+":"+value);
-                }
-            }
-        }
-        if (value != null){
-            doc.addField(nameField, value);
-            if (stored) {
-                doc.addField(nameField+"_s", value);
-            }
-        }
-        if (text != null){
-            doc.addField(nameField, text);
-            if (stored){
-                doc.addField(nameField+"_s", text);
-            }
-        }
+        //tokenizer takes now care of this
+//        if (db != null){
+//            doc.addField(nameField, db);
+//            if (value != null){
+//                doc.addField(nameField, db+":"+value);
+//                if (stored){
+//                    doc.addField(nameField+"_s", db);
+//                    doc.addField(nameField+"_s", db+":"+value);
+//                }
+//            }
+//        }
+//        if (value != null){
+//            doc.addField(nameField, value);
+//            if (stored) {
+//                doc.addField(nameField+"_s", value);
+//            }
+//        }
+//        if (text != null){
+//            doc.addField(nameField, text);
+//            if (stored){
+//                doc.addField(nameField+"_s", text);
+//            }
+//        }
     }
 }

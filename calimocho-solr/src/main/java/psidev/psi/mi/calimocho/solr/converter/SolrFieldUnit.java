@@ -17,11 +17,17 @@ public class SolrFieldUnit {
     private SolrFieldConverter converter;
     private FieldFormatter formatter;
     private boolean stored;
-    private boolean facet;
 
     public SolrFieldUnit(Collection<String> rowKeys, SolrFieldConverter converter, FieldFormatter formatter, boolean stored){
         this.rowKeys = rowKeys;
         this.converter = converter;
+        this.formatter = formatter;
+        this.stored = stored;
+    }
+
+    public SolrFieldUnit(Collection<String> rowKeys, FieldFormatter formatter, boolean stored){
+        this.rowKeys = rowKeys;
+        this.converter = null;
         this.formatter = formatter;
         this.stored = stored;
     }
