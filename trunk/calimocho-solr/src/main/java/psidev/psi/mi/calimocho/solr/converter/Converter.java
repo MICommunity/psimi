@@ -98,9 +98,9 @@ public class Converter {
         keyMap.put(SolrFieldName.paramText, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), textConverter, textFormatter, stored));
         keyMap.put(SolrFieldName.confidence, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CONFIDENCE), textConverter, textFormatter, stored));
         keyMap.put(SolrFieldName.source, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_SOURCE), textConverter, textFormatter, stored));
-        keyMap.put(SolrFieldName.chksumA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_A), textConverter, textFormatter, stored));
-        keyMap.put(SolrFieldName.chksumB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_B), textConverter, textFormatter, stored));
-        keyMap.put(SolrFieldName.chksumI, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_I), textConverter, textFormatter, stored));
+        keyMap.put(SolrFieldName.checksumA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_A), textConverter, textFormatter, stored));
+        keyMap.put(SolrFieldName.checksumB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_B), textConverter, textFormatter, stored));
+        keyMap.put(SolrFieldName.checksumI, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_I), textConverter, textFormatter, stored));
         
     }
 
