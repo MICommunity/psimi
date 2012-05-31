@@ -23,9 +23,9 @@ public class SingleBooleanFieldConverter implements SolrFieldConverter {
             String text = field.get(CalimochoKeys.TEXT);
             String nameField = name.toString();
 
-            if (!uniques.contains(formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
+            if (!uniques.contains("_o"+formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
                 doc.addField(nameField+"_o", formattedField);
-                uniques.add(formattedField);
+                uniques.add("_o"+formattedField);
             }
 
             if ((db == null || db.isEmpty()) && (value == null || value.isEmpty()) && (text == null || text.isEmpty())){

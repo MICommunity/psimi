@@ -124,10 +124,10 @@ public class Converter {
                 for (String key : rowKeys) {
 
                     Collection<Field> fields = row.getFields(key);
+                    uniques.clear();
 
                     if (fields != null && !fields.isEmpty()){
                         for (Field field : fields) {
-                            uniques.clear();
                             String formattedField = solrField.getFormatter().format(field);
                             converter.indexFieldValues(field, formattedField, solrFieldName, doc, solrField.isStored(), uniques);
                         }
