@@ -21,9 +21,9 @@ public class XrefFieldConverter implements SolrFieldConverter{
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = name.toString();
         
-        if (!uniques.contains(formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
+        if (!uniques.contains("_o"+formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
             doc.addField(nameField+"_o", formattedField);
-            uniques.add(formattedField);
+            uniques.add("_o"+formattedField);
         }
 
         if (db != null && !uniques.contains(db)){

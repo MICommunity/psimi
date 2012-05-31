@@ -19,9 +19,9 @@ public class DateFieldConverter implements SolrFieldConverter {
         String day = field.get(CalimochoKeys.DAY);
         String nameField = name.toString();
 
-        if (!uniques.contains(formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
+        if (!uniques.contains("_o"+formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
             doc.addField(nameField+"_o", formattedField);
-            uniques.add(formattedField);
+            uniques.add("_o"+formattedField);
         }
 
         if (year != null && month != null && day != null){
