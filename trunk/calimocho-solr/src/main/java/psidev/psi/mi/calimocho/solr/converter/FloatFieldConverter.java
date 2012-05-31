@@ -23,12 +23,11 @@ public class FloatFieldConverter implements SolrFieldConverter{
             doc.addField(nameField+"_s", formattedField);
         }
 
-        //tokenizer takes now care of this
-//        if (value != null){
-//            doc.addField(nameField, value);
-//            if (stored){
-//                doc.addField(nameField+"_s", value);
-//            }
-//        }
+        if (value != null){
+            doc.addField(nameField, value);
+            if (stored){
+                doc.addField(nameField+"_s", value);
+            }
+        }
     }
 }
