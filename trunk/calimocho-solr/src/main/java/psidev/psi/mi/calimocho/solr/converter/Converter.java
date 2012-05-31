@@ -40,6 +40,7 @@ public class Converter {
         DateFieldFormatter dateFormatter = new DateFieldFormatter("yyyy/MM/dd");
         AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
         AnnotationFieldFormatter annotFormatter = new AnnotationFieldFormatter();
+        SingleBooleanFieldConverter singleBoolConverter = new SingleBooleanFieldConverter();
         BooleanFieldConverter boolConverter = new BooleanFieldConverter();
         BooleanFieldFormatter boolFormatter = new BooleanFieldFormatter();
 //        LiteralFieldFormatter literalFormatter = new LiteralFieldFormatter();
@@ -78,7 +79,7 @@ public class Converter {
         keyMap.put(SolrFieldName.ftype, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_A, InteractionKeys.KEY_FEATURE_B), textConverter, textFormatter, stored));
         keyMap.put(SolrFieldName.pmethodA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A), textConverter, textFormatter, stored));
         keyMap.put(SolrFieldName.pmethodB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B), textConverter, textFormatter, stored));
-        keyMap.put(SolrFieldName.stc, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A,InteractionKeys.KEY_STOICHIOMETRY_B), boolConverter, boolFormatter, stored));
+        keyMap.put(SolrFieldName.stc, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A,InteractionKeys.KEY_STOICHIOMETRY_B), singleBoolConverter, boolFormatter, stored));
         keyMap.put(SolrFieldName.param, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), boolConverter, boolFormatter, stored));
         
     }
