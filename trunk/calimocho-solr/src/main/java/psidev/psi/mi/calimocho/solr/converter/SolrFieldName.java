@@ -41,6 +41,8 @@ public enum SolrFieldName {
    pmethodB,
    stc,
    param,
+   confidence,
+   source,
    recId;
 
 }
