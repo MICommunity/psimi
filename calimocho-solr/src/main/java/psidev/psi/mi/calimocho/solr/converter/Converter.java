@@ -9,7 +9,9 @@ import org.hupo.psi.calimocho.model.Row;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.tab.io.formatter.AnnotationFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.formatter.BooleanFieldFormatter;
@@ -116,16 +118,18 @@ public class Converter {
             SolrFieldUnit solrField = entry.getValue();
             Collection<String> rowKeys = solrField.getRowKeys();
             SolrFieldConverter converter = solrField.getConverter();
+            Set<String> uniques = new HashSet();
 
             if (rowKeys != null && converter != null && !rowKeys.isEmpty()){
                 for (String key : rowKeys) {
+                    uniques.clear();
 
                     Collection<Field> fields = row.getFields(key);
 
                     if (fields != null && !fields.isEmpty()){
                         for (Field field : fields) {
                             String formattedField = solrField.getFormatter().format(field);
-                            converter.indexFieldValues(field, formattedField, solrFieldName, doc, solrField.isStored());
+                            converter.indexFieldValues(field, formattedField, solrFieldName, doc, solrField.isStored(), uniques);
                         }
                     }
                 }

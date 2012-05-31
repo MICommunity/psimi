@@ -1,5 +1,6 @@
 package psidev.psi.mi.calimocho.solr.converter;
 
+import java.util.Set;
 import org.apache.solr.common.SolrInputDocument;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
@@ -14,38 +15,45 @@ import org.hupo.psi.calimocho.model.Field;
 
 public class TextFieldConverter implements SolrFieldConverter{
 
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored) {
+    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
 
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
         String text = field.get(CalimochoKeys.TEXT);
         String nameField = name.toString();
 
-        if (stored && formattedField != null && !formattedField.isEmpty()) {
-            doc.addField(nameField+"_s", formattedField);
+        if (!uniques.contains(formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
+            doc.addField(nameField+"_o", formattedField);
+            uniques.add(formattedField);
         }
 
-        if (db != null){
+        if (db != null && !uniques.contains(db)){
             doc.addField(nameField, db);
-            if (value != null){
-                doc.addField(nameField, db+":"+value);
-                if (stored){
-                    doc.addField(nameField+"_s", db);
-                    doc.addField(nameField+"_s", db+":"+value);
-                }
+            if (stored){
+                doc.addField(nameField+"_s", db);
             }
+            uniques.add(db);
         }
-        if (value != null){
+        if (value != null && !uniques.contains(value)){
             doc.addField(nameField, value);
             if (stored) {
                 doc.addField(nameField+"_s", value);
             }
+            uniques.add(value);
         }
-        if (text != null){
+        if (db != null && value != null && !uniques.contains(db+":"+value)) {
+            doc.addField(nameField, db+":"+value);
+            if (stored){
+                doc.addField(nameField+"_s", db+":"+value);
+            }
+            uniques.add(db+":"+value);
+        }
+        if (text != null && !uniques.contains(text)){
             doc.addField(nameField, text);
             if (stored){
                 doc.addField(nameField+"_s", text);
             }
+            uniques.add(text);
         }
     }
 }

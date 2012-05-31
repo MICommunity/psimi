@@ -1,5 +1,6 @@
 package psidev.psi.mi.calimocho.solr.converter;
 
+import java.util.Set;
 import org.apache.solr.common.SolrInputDocument;
 import org.hupo.psi.calimocho.model.Field;
 
@@ -13,5 +14,5 @@ import org.hupo.psi.calimocho.model.Field;
 
 public interface SolrFieldConverter {
     
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored);
+    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques);
 }
