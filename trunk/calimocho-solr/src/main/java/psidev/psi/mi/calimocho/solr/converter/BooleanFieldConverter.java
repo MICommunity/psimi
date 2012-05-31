@@ -1,5 +1,6 @@
 package psidev.psi.mi.calimocho.solr.converter;
 
+import java.util.Set;
 import org.apache.solr.common.SolrInputDocument;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
@@ -11,27 +12,34 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class BooleanFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored) {
+    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
 
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
         String text = field.get(CalimochoKeys.TEXT);
         String nameField = name.toString();
 
-        if (stored && formattedField != null && !formattedField.isEmpty()) {
-            doc.addField(nameField+"_s", formattedField);
+        if (!uniques.contains(formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
+            doc.addField(nameField+"_o", formattedField);
+            uniques.add(formattedField);
         }
 
         if ((db == null || db.isEmpty()) && (value == null || value.isEmpty()) && (text == null || text.isEmpty())){
-            doc.addField(nameField, "false");
-            if (stored) {
-                doc.addField(nameField+"_s", "false");
+            if (!uniques.contains("false")) {
+                doc.addField(nameField, "false");
+                if (stored) {
+                    doc.addField(nameField+"_s", "false");
+                }
+                uniques.add("false");
             }
         }
         else {
-            doc.addField(nameField, "true");
-            if (stored) {
-                doc.addField(nameField+"_s", "true");
+            if (!uniques.contains("true")) {
+                doc.addField(nameField, "true");
+                if (stored) {
+                    doc.addField(nameField+"_s", "true");
+                }
+                uniques.add("true");
             }
         }
 

@@ -1,5 +1,6 @@
 package psidev.psi.mi.calimocho.solr.converter;
 
+import java.util.Set;
 import org.apache.solr.common.SolrInputDocument;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
@@ -10,27 +11,30 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class AnnotationFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName fName, SolrInputDocument doc, boolean stored) {
+    public void indexFieldValues(Field field, String formattedField, SolrFieldName fName, SolrInputDocument doc, boolean stored, Set<String> uniques) {
 
         String name = field.get(CalimochoKeys.NAME);
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = fName.toString();
 
-        if (stored && formattedField != null && !formattedField.isEmpty()) {
-            doc.addField(nameField+"_s", formattedField);
+        if (!uniques.contains(formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
+            doc.addField(nameField+"_o", formattedField);
+            uniques.add(formattedField);
         }
 
         if (name != null){
-            doc.addField(nameField, name);
-            if (stored) {
-                doc.addField(nameField+"_s", name);
+            if (!uniques.contains(name)) {
+                doc.addField(nameField, name);
+                uniques.add(name);
+            }
+            if (stored && value != null && !uniques.contains(name+":"+value)) {
+                doc.addField(nameField+"_s", name+":"+value);
+                uniques.add(name+":"+value);
             }
         }
-        if (value != null){
+        if (value != null && !uniques.contains(value)){
             doc.addField(nameField, value);
-            if (stored) {
-                doc.addField(nameField+"_s", value);
-            }
+            uniques.add(value);
         }
     }
 
