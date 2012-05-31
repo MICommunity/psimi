@@ -31,4 +31,6 @@ public interface ColumnBasedDocumentDefinition extends DocumentDefinition {
     boolean hasColumnDelimiter();
 
     int getHighestColumnPosition();
+    
+    String getEmptyValue();
 }
