@@ -1,5 +1,7 @@
 package psidev.psi.mi.calimocho.solr.converter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.solr.common.SolrInputDocument;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
@@ -22,10 +24,16 @@ public class DateFieldConverter implements SolrFieldConverter {
         }
 
         if (year != null && month != null && day != null){
-            //TODO check format: YYYYMMDD
-            doc.addField(nameField, year+month+day);
-            if (stored) {
-                doc.addField(nameField+"_s", year+month+day);
+            String formattedDate = "";
+            try {
+                SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyyMMdd");
+                formattedDate = simpleFormat.format(simpleFormat.parse(year+"/"+month+"/"+day));
+            } catch (Exception e) {}
+            if (!formattedDate.isEmpty()) {
+                doc.addField(nameField, formattedDate);
+                if (stored) {
+                    doc.addField(nameField+"_s", formattedDate);
+                }
             }
         }
     }
