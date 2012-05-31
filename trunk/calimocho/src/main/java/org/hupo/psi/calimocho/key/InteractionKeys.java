@@ -58,9 +58,9 @@ public interface InteractionKeys {
     String KEY_PARAMETERS_I = "paramI";
     String KEY_CREATION_DATE = "cdate";
     String KEY_UPDATE_DATE = "udate";
-    String KEY_CHECKSUM_A = "cheksumA";
-    String KEY_CHECKSUM_B = "cheksumB";
-    String KEY_CHECKSUM_I = "cheksumI";
+    String KEY_CHECKSUM_A = "checksumA";
+    String KEY_CHECKSUM_B = "checksumB";
+    String KEY_CHECKSUM_I = "checksumI";
     String KEY_NEGATIVE = "negative";
     String KEY_FEATURE_A = "ftypeA";
     String KEY_FEATURE_B = "ftypeB";
