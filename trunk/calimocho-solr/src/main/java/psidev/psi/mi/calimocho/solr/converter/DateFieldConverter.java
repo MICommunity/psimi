@@ -12,17 +12,12 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class DateFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
+    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
 
         String year = field.get(CalimochoKeys.YEAR);
         String month = field.get(CalimochoKeys.MONTH);
         String day = field.get(CalimochoKeys.DAY);
         String nameField = name.toString();
-
-        if (!uniques.contains("_o"+formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
-            doc.addField(nameField+"_o", formattedField);
-            uniques.add("_o"+formattedField);
-        }
 
         if (year != null && month != null && day != null){
             String formattedDate = "";
