@@ -41,7 +41,7 @@ public class Converter {
         DateFieldConverter dateConverter = new DateFieldConverter();
         DateFieldFormatter dateFormatter = new DateFieldFormatter("yyyy/MM/dd");
         AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
-        AnnotationFieldFormatter annotFormatter = new AnnotationFieldFormatter();
+        AnnotationFieldFormatter annotFormatter = new AnnotationFieldFormatter(":");
         SingleBooleanFieldConverter singleBoolConverter = new SingleBooleanFieldConverter();
         BooleanFieldConverter boolConverter = new BooleanFieldConverter();
         BooleanFieldFormatter boolFormatter = new BooleanFieldFormatter();
