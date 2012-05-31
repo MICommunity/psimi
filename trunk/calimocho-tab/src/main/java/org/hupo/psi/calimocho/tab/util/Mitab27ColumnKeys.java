@@ -26,8 +26,6 @@ public interface Mitab27ColumnKeys {
     String KEY_ANNOTATIONS_B = InteractionKeys.KEY_ANNOTATIONS_B;
     String KEY_ANNOTATIONS_I = InteractionKeys.KEY_ANNOTATIONS_I;
     String KEY_HOST_ORGANISM = InteractionKeys.KEY_HOST_ORGANISM;
-    String KEY_PARAMETERS_A = InteractionKeys.KEY_PARAMETERS_A;
-    String KEY_PARAMETERS_B = InteractionKeys.KEY_PARAMETERS_B;
     String KEY_PARAMETERS_I = InteractionKeys.KEY_PARAMETERS_I;
     String KEY_CREATION_DATE = InteractionKeys.KEY_CREATION_DATE;
     String KEY_UPDATE_DATE = InteractionKeys.KEY_UPDATE_DATE;
