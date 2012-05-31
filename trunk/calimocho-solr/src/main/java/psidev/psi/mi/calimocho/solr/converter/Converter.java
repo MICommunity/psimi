@@ -15,7 +15,7 @@ import org.hupo.psi.calimocho.tab.io.formatter.AnnotationFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.formatter.BooleanFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.formatter.DateFieldFormatter;
 //import org.hupo.psi.calimocho.tab.io.formatter.LiteralFieldFormatter;
-//import org.hupo.psi.calimocho.tab.io.formatter.PositiveIntegerFieldFormatter;
+//import org.hupo.psi.calimocho.tab.io.formatter.PositiveFloatFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.formatter.XrefFieldFormatter;
 
 /**
@@ -28,7 +28,6 @@ public class Converter {
 
     public Converter() {
         keyMap = new HashMap<SolrFieldName, SolrFieldUnit>();
-
         initializeKeyMap();
     }
 
@@ -38,14 +37,14 @@ public class Converter {
         TextFieldConverter textConverter = new TextFieldConverter();
         XrefFieldFormatter textFormatter = new XrefFieldFormatter();
         DateFieldConverter dateConverter = new DateFieldConverter();
-        DateFieldFormatter dateFormatter = new DateFieldFormatter();
+        DateFieldFormatter dateFormatter = new DateFieldFormatter("YYY/MM/DD");
         AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
         AnnotationFieldFormatter annotFormatter = new AnnotationFieldFormatter();
         BooleanFieldConverter boolConverter = new BooleanFieldConverter();
         BooleanFieldFormatter boolFormatter = new BooleanFieldFormatter();
 //        LiteralFieldFormatter literalFormatter = new LiteralFieldFormatter();
-//        PositiveIntegerFieldFormatter floatFormatter = new PositiveIntegerFieldFormatter();
-        boolean stored = true;
+//        PositiveFloatFieldFormatter floatFormatter = new PositiveFloatFieldFormatter();
+        boolean stored = true; //store cell content as is (which means formatted by Calimocho)
 
         keyMap.put(SolrFieldName.idA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A), xrefConverter, xrefFormatter, stored));
         keyMap.put(SolrFieldName.idB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B), xrefConverter, xrefFormatter, stored));
@@ -84,13 +83,18 @@ public class Converter {
         
     }
 
+    /*
+     * reads a MITAB line and converts it into Solr index fields
+     */
     public SolrInputDocument toSolrDocument(Row row) throws SolrServerException, IllegalFieldException {
         SolrInputDocument doc = new SolrInputDocument();
         
         for (Map.Entry<SolrFieldName,SolrFieldUnit> entry : keyMap.entrySet()) {
 
-            Collection<String> rowKeys = entry.getValue().getRowKeys();
-            SolrFieldConverter converter = entry.getValue().getConverter();
+            SolrFieldName solrFieldName = entry.getKey();
+            SolrFieldUnit solrField = entry.getValue();
+            Collection<String> rowKeys = solrField.getRowKeys();
+            SolrFieldConverter converter = solrField.getConverter();
 
             if (rowKeys != null && converter != null && !rowKeys.isEmpty()){
                 for (String key : rowKeys) {
@@ -99,8 +103,8 @@ public class Converter {
 
                     if (fields != null && !fields.isEmpty()){
                         for (Field field : fields) {
-                            String formattedField = entry.getValue().getFormatter().format(field);
-                            converter.indexFieldValues(field, formattedField, entry.getKey(), doc, entry.getValue().isStored());
+                            String formattedField = solrField.getFormatter().format(field);
+                            converter.indexFieldValues(field, formattedField, solrFieldName, doc, solrField.isStored());
                         }
                     }
                 }
