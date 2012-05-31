@@ -51,7 +51,7 @@ public interface InteractionKeys {
     String KEY_XREFS_I = "xref";
     String KEY_ANNOTATIONS_A = "annotA";
     String KEY_ANNOTATIONS_B = "annotB";
-    String KEY_ANNOTATIONS_I = "annoI";
+    String KEY_ANNOTATIONS_I = "annotI";
     String KEY_HOST_ORGANISM = "taxidHost";
     String KEY_PARAMETERS_A = "paramA";
     String KEY_PARAMETERS_B = "paramB";
