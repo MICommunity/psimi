@@ -121,10 +121,10 @@ public class Converter {
             Set<String> uniques = new HashSet();
 
             if (rowKeys != null && converter != null && !rowKeys.isEmpty()){
+                uniques.clear();
                 for (String key : rowKeys) {
 
                     Collection<Field> fields = row.getFields(key);
-                    uniques.clear();
 
                     if (fields != null && !fields.isEmpty()){
                         for (Field field : fields) {
