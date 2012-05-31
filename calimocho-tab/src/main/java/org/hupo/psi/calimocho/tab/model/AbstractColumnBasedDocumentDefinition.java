@@ -32,6 +32,7 @@ public class AbstractColumnBasedDocumentDefinition extends AbstractDefined imple
     private String columnSeparator;
     private String columnDelimiter;
     private String commentPrefix;
+    private String emptyValue;
     private boolean partial;
 
     public CalimochoDocument readDocument( Reader reader ) throws IOException, IllegalRowException {
@@ -150,4 +151,11 @@ public class AbstractColumnBasedDocumentDefinition extends AbstractDefined imple
         return columns.get( columns.size() - 1 ).getPosition();
     }
 
+    public String getEmptyValue() {
+        return emptyValue;
+    }
+
+    public void setEmptyValue(String emptyValue) {
+        this.emptyValue = emptyValue;
+    }
 }
