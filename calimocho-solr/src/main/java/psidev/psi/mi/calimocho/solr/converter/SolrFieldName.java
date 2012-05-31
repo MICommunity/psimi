@@ -58,8 +58,8 @@ public enum SolrFieldName {
    confidence,
    source,
    recId,
-   chksumA,
-   chksumB,
-   chksumI;
+   checksumA,
+   checksumB,
+   checksumI;
 
 }
