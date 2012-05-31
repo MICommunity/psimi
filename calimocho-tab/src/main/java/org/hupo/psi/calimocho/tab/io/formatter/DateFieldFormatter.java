@@ -34,7 +34,7 @@ public class DateFieldFormatter implements FieldFormatter {
 
         DateTime dateTime = new DateTime(year, month, day, 0, 0, 0, 0);
 
-        return dateTime.toString( dateTimeFormat );
+        return dateTime.toString( DateTimeFormat.forPattern( dateTimeFormat ) );
     }
 
     public String format( Field field, Row row ) throws IllegalFieldException {
