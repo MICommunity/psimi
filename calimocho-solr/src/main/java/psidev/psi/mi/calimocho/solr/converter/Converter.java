@@ -135,7 +135,7 @@ public class Converter {
                             }
                         }
                         if (origField.length() != 0 && !uniques.contains("_o"+origField)) {
-                            doc.addField(solrFieldName+"_o", origField.toString());
+                            doc.addField(solrFieldName+"_o", origField.toString().substring(0, origField.length()-2));
                             uniques.add("_o"+origField);
                         }
                     }
