@@ -122,12 +122,12 @@ public class Converter {
 
             if (rowKeys != null && converter != null && !rowKeys.isEmpty()){
                 for (String key : rowKeys) {
-                    uniques.clear();
 
                     Collection<Field> fields = row.getFields(key);
 
                     if (fields != null && !fields.isEmpty()){
                         for (Field field : fields) {
+                            uniques.clear();
                             String formattedField = solrField.getFormatter().format(field);
                             converter.indexFieldValues(field, formattedField, solrFieldName, doc, solrField.isStored(), uniques);
                         }
