@@ -37,7 +37,7 @@ public class Converter {
         TextFieldConverter textConverter = new TextFieldConverter();
         XrefFieldFormatter textFormatter = new XrefFieldFormatter();
         DateFieldConverter dateConverter = new DateFieldConverter();
-        DateFieldFormatter dateFormatter = new DateFieldFormatter("YYY/MM/DD");
+        DateFieldFormatter dateFormatter = new DateFieldFormatter("yyyy/MM/dd");
         AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
         AnnotationFieldFormatter annotFormatter = new AnnotationFieldFormatter();
         BooleanFieldConverter boolConverter = new BooleanFieldConverter();
