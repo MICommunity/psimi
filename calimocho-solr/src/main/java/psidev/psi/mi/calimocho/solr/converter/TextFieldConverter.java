@@ -15,17 +15,12 @@ import org.hupo.psi.calimocho.model.Field;
 
 public class TextFieldConverter implements SolrFieldConverter{
 
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
+    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
 
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
         String text = field.get(CalimochoKeys.TEXT);
         String nameField = name.toString();
-
-        if (!uniques.contains("_o"+formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
-            doc.addField(nameField+"_o", formattedField);
-            uniques.add("_o"+formattedField);
-        }
 
         if (db != null && !uniques.contains(db)){
             doc.addField(nameField, db);

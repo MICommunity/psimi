@@ -14,5 +14,5 @@ import org.hupo.psi.calimocho.model.Field;
 
 public interface SolrFieldConverter {
     
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques);
+    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques);
 }

@@ -15,15 +15,10 @@ import org.hupo.psi.calimocho.model.Field;
 
 public class FloatFieldConverter implements SolrFieldConverter{
 
-    public void indexFieldValues(Field field, String formattedField, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
+    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
 
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = name.toString();
-
-        if (!uniques.contains("_o"+formattedField) && stored && formattedField != null && !formattedField.isEmpty()) {
-            doc.addField(nameField+"_o", formattedField);
-            uniques.add("_o"+formattedField);
-        }
 
         if (value != null && !uniques.contains(value)){
             doc.addField(nameField, value);

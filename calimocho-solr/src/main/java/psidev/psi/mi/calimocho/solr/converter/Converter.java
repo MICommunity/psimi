@@ -127,9 +127,13 @@ public class Converter {
                     Collection<Field> fields = row.getFields(key);
 
                     if (fields != null && !fields.isEmpty()){
+                        StringBuilder origField = new StringBuilder();
                         for (Field field : fields) {
-                            String formattedField = solrField.getFormatter().format(field);
-                            converter.indexFieldValues(field, formattedField, solrFieldName, doc, solrField.isStored(), uniques);
+                            origField.append(solrField.getFormatter().format(field)).append("|");
+                            converter.indexFieldValues(field, solrFieldName, doc, solrField.isStored(), uniques);
+                        }
+                        if (origField.length() != 0) {
+                            doc.addField(solrFieldName+"_o", origField.toString());
                         }
                     }
                 }
