@@ -24,16 +24,10 @@ public class TextFieldConverter implements SolrFieldConverter{
 
         if (db != null && !uniques.contains(db)){
             doc.addField(nameField, db);
-            if (stored){
-                doc.addField(nameField+"_s", db);
-            }
             uniques.add(db);
         }
         if (value != null && !uniques.contains(value)){
             doc.addField(nameField, value);
-            if (stored) {
-                doc.addField(nameField+"_s", value);
-            }
             uniques.add(value);
         }
         if (db != null && value != null && !uniques.contains(db+":"+value)) {
@@ -45,9 +39,6 @@ public class TextFieldConverter implements SolrFieldConverter{
         }
         if (text != null && !uniques.contains(text)){
             doc.addField(nameField, text);
-            if (stored){
-                doc.addField(nameField+"_s", text);
-            }
             uniques.add(text);
         }
     }
