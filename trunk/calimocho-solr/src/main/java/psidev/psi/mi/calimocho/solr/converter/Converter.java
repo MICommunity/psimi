@@ -11,8 +11,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import org.apache.solr.common.SolrInputField;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.model.DefaultRow;
 import org.hupo.psi.calimocho.tab.io.formatter.AnnotationFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.formatter.BooleanFieldFormatter;
 import org.hupo.psi.calimocho.tab.io.formatter.DateFieldFormatter;
@@ -144,6 +147,24 @@ public class Converter {
         }
 
         return doc;
+    }
+
+    // TODO
+    public Row toCalimochoRow(SolrInputDocument doc) throws Exception {
+        Row row = new DefaultRow();
+
+//        for (Entry<String, SolrInputField> entry : doc.entrySet() ) {
+//
+//            String solrFieldName = entry.getKey();
+//            SolrInputField solrField = entry.getValue();
+//
+//            row.addField(solrFieldName, null);
+//
+//
+//        }
+
+
+        return row;
     }
 
 }
