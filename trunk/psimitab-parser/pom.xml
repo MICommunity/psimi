@@ -15,6 +15,12 @@
     <name>PSI :: PSI-MI TABular format tools</name>
     <url>http://psidev.sf.net</url>
 
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psimitab-parser</url>
+    </scm>
+
     <properties>
         <bundle.namespace>psidev.psi.mi.tab</bundle.namespace>
         <bundle.symbolicName>psidev.psi.mi.psimitab</bundle.symbolicName>
