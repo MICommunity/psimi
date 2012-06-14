@@ -79,10 +79,10 @@ public class Converter {
         keyMap.put(SolrFieldName.ptypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A), textConverter, textFormatter, stored));
         keyMap.put(SolrFieldName.ptypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_B), textConverter, textFormatter, stored));
 //        keyMap.put(SolrFieldName.ptype, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A, InteractionKeys.KEY_INTERACTOR_TYPE_B), textConverter, textFormatter, stored));
-        keyMap.put(SolrFieldName.pxrefA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_XREFS_A), xrefConverter, xrefFormatter, stored));
-        keyMap.put(SolrFieldName.pxrefB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_B, InteractionKeys.KEY_XREFS_B), xrefConverter, xrefFormatter, stored));
+        keyMap.put(SolrFieldName.pxrefA, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_A, */InteractionKeys.KEY_XREFS_A), xrefConverter, xrefFormatter, stored));
+        keyMap.put(SolrFieldName.pxrefB, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_B, */InteractionKeys.KEY_XREFS_B), xrefConverter, xrefFormatter, stored));
 //        keyMap.put(SolrFieldName.pxref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_XREFS_A,InteractionKeys.KEY_ID_B, InteractionKeys.KEY_XREFS_B), xrefConverter, xrefFormatter, stored));
-        keyMap.put(SolrFieldName.xref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_XREFS_I, InteractionKeys.KEY_INTERACTION_ID), xrefConverter, xrefFormatter, stored));
+        keyMap.put(SolrFieldName.xref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_XREFS_I/*, InteractionKeys.KEY_INTERACTION_ID*/), xrefConverter, xrefFormatter, stored));
         keyMap.put(SolrFieldName.annotA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_A), annotConverter, annotFormatter, !stored));
         keyMap.put(SolrFieldName.annotB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_B), annotConverter, annotFormatter, !stored));
         keyMap.put(SolrFieldName.annot, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_I), annotConverter, annotFormatter, stored));
@@ -138,6 +138,7 @@ public class Converter {
                             }
                         }
                         if (origField.length() != 0 && !uniques.contains("_o"+origField)) {
+                            //TODO - this needs to be changed so that really only the original content is stored in case SolrFieldUnit holds multiple fields; quick fix for now: we only have single columns in the SolrFieldUnit
                             doc.addField(solrFieldName+"_o", origField.toString().substring(0, origField.length()-1));
                             uniques.add("_o"+origField);
                         }
