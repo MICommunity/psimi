@@ -59,6 +59,13 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
                     } catch ( IOException e ) {
                         log.error( "Failed to load cache configuration properties for database cross reference checking: " + cacheConfig, e );
                     }
+                    finally {
+                        try {
+                            is.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     if ( cacheProps.isEmpty() ) {
                         log.warn( "Using default cache configuration for database cross reference checking!" );
                         return new GeneralCacheAdministrator();

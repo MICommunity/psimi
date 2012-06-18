@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * JTable displaying the result of a Validator run. <br/> The adapted source code was found at:
@@ -174,7 +175,13 @@ public class ValidatorTable extends JPanel {
             try {
 
                 FileInputStream f = new FileInputStream( row.getFile() );
-                Collection<ValidatorMessage> validatorMessages = validator.validate( f );
+                Collection<ValidatorMessage> validatorMessages = Collections.EMPTY_LIST;
+                try{
+                     validatorMessages = validator.validate( f );
+                }
+                finally {
+                    f.close();
+                }
 
                 if ( DEBUG ) {
                     log.info( validatorMessages.size() + " messages found." );

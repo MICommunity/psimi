@@ -23,10 +23,7 @@ import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import java.io.*;
 
 /**
  * Simple Swing front end for validating PSI-MI XML files.
@@ -206,6 +203,13 @@ public class DragAndDropValidator {
             validator = new Mi25Validator( configStream, null, null );
         } catch ( OntologyLoaderException e ) {
             throw new ValidatorException( "", e );
+        }
+        finally {
+            try {
+                configStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         //Create and set up the window.

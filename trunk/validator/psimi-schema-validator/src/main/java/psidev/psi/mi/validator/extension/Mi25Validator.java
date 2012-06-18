@@ -113,9 +113,6 @@ public class Mi25Validator extends Validator {
         if ( is == null ) {
             throw new IllegalArgumentException( "You must give a non null InputStream" );
         }
-
-        BufferedReader in = new BufferedReader( new InputStreamReader( is ) );
-
         // Create a temp file and write URL content in it.
         File tempDirectory = new File( System.getProperty( "java.io.tmpdir", "tmp" ) );
         if ( !tempDirectory.exists() ) {
@@ -128,20 +125,29 @@ public class Mi25Validator extends Validator {
 
         File tempFile = File.createTempFile( "validator." + id, ".xml", tempDirectory );
 
-        log.info( "The file is temporary store as: " + tempFile.getAbsolutePath() );
+        BufferedReader in = new BufferedReader( new InputStreamReader( is ) );
+        try{
 
-        BufferedWriter out = new BufferedWriter( new FileWriter( tempFile ) );
+            log.info( "The file is temporary store as: " + tempFile.getAbsolutePath() );
 
-        String line;
-        while ( ( line = in.readLine() ) != null ) {
-            out.write( line );
+            BufferedWriter out = new BufferedWriter( new FileWriter( tempFile ) );
+
+            try{
+                String line;
+                while ( ( line = in.readLine() ) != null ) {
+                    out.write( line );
+                }
+
+
+                out.flush();
+            }
+            finally {
+                out.close();
+            }
         }
-
-        in.close();
-
-        out.flush();
-        out.close();
-
+        finally {
+            in.close();
+        }
 
         return tempFile;
     }

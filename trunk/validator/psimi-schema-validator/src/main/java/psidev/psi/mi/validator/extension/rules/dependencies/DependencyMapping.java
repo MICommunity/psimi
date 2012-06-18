@@ -143,103 +143,108 @@ public class DependencyMapping {
         InputStream is = url.openStream();
         BufferedReader in = new BufferedReader( new InputStreamReader(is) );
 
-        String str;
-        int lineCount = 0;
-        while ( ( str = in.readLine() ) != null ) {
-            try {
-                lineCount++;
-                str = extractValueOf(str);
+        try {
+            String str;
+            int lineCount = 0;
+            while ( ( str = in.readLine() ) != null ) {
+                try {
+                    lineCount++;
+                    str = extractValueOf(str);
 
-                if( str.startsWith( comment ) || str.trim().length() == 0) {
-                    continue; // skip the commentary
-                }
-
-                // 0. first term MI
-                // 1. first term NAME
-                // 2. INCLUDE CHILDREN
-                // 3. second term MI
-                // 4. second term NAME
-                // 5. message level
-
-                if (str.contains(separator)){
-                    final String[] columns = StringUtils.splitPreserveAllTokens(str,separator);
-
-                    // we skip empty lines and those starting with the symbol '#'. We remove the " if they it appears at the beginning or the end of the line
-                    for (int i = 0; i < columns.length; i++){
-                        String col = columns[i];
-                        if (col != null){
-                            columns[i] = extractValueOf(col);
-                        }
+                    if( str.startsWith( comment ) || str.trim().length() == 0) {
+                        continue; // skip the commentary
                     }
 
-                    // Creates the first term of the dependency
-                    Term firstTerm = createFirstTermOfTheDependency(columns);
+                    // 0. first term MI
+                    // 1. first term NAME
+                    // 2. INCLUDE CHILDREN
+                    // 3. second term MI
+                    // 4. second term NAME
+                    // 5. message level
 
-                    // creates the associated term
-                    AssociatedTerm associatedTerm = createSecondaryTermOfTheDependency(columns);
+                    if (str.contains(separator)){
+                        final String[] columns = StringUtils.splitPreserveAllTokens(str,separator);
 
-                    // Create a dependency for these terms
-                    loadDependencies(firstTerm, associatedTerm, mi, lineCount);
-
-                    // contains all the possible children of the first term of the dependency.
-                    Set<Term> firstTermChildren = new HashSet<Term>();
-
-                    // If the first term is including its children, we duplicate the dependency for all the children
-                    if(firstTerm.isIncludeChildren()) {
-                        // fetch all children and append them to the local map
-                        final Collection<OntologyTermI> children = mi.getValidTerms( firstTerm.getId(), true, false );
-                        if( ! children.isEmpty() ) {
-
-                            for ( OntologyTermI child : children ) {
-                                final Term termChild = new Term( child.getTermAccession(), child.getPreferredName() );
-                                termChild.setParent(firstTerm);
-
-                                // add the child in the set of the children of the first term.
-                                firstTermChildren.add(termChild);
-
-                                // Create a dependency with the children
-                                loadDependencies(termChild, associatedTerm, mi, lineCount);
+                        // we skip empty lines and those starting with the symbol '#'. We remove the " if they it appears at the beginning or the end of the line
+                        for (int i = 0; i < columns.length; i++){
+                            String col = columns[i];
+                            if (col != null){
+                                columns[i] = extractValueOf(col);
                             }
                         }
-                    }
-                    // If the second term is including its children, we duplicate the dependency for all the children
-                    if (associatedTerm.getSecondTermOfTheDependency().isIncludeChildren()){
-                        // fetch all children and append them to the local map
-                        final Collection<OntologyTermI> children2 = mi.getValidTerms( associatedTerm.getSecondTermOfTheDependency().getId(), true, false );
-                        if( ! children2.isEmpty() ) {
 
-                            for ( OntologyTermI child2 : children2 ) {
-                                final Term termChild2 = new Term( child2.getTermAccession(), child2.getPreferredName() );
-                                AssociatedTerm childTerm2 = createSecondaryTermOfTheDependencyFrom(termChild2, associatedTerm);
-                                childTerm2.getSecondTermOfTheDependency().setParent(associatedTerm.getSecondTermOfTheDependency());
+                        // Creates the first term of the dependency
+                        Term firstTerm = createFirstTermOfTheDependency(columns);
 
-                                // Create a dependency with the children
-                                loadDependencies(firstTerm, childTerm2, mi, lineCount);
+                        // creates the associated term
+                        AssociatedTerm associatedTerm = createSecondaryTermOfTheDependency(columns);
 
-                                if (!firstTermChildren.isEmpty()){
-                                    // duplicate the dependencies for the children of the first term too
-                                    for (Term first : firstTermChildren){
-                                        // Create a dependency with the children
-                                        loadDependencies(first, childTerm2, mi, lineCount);
+                        // Create a dependency for these terms
+                        loadDependencies(firstTerm, associatedTerm, mi, lineCount);
+
+                        // contains all the possible children of the first term of the dependency.
+                        Set<Term> firstTermChildren = new HashSet<Term>();
+
+                        // If the first term is including its children, we duplicate the dependency for all the children
+                        if(firstTerm.isIncludeChildren()) {
+                            // fetch all children and append them to the local map
+                            final Collection<OntologyTermI> children = mi.getValidTerms( firstTerm.getId(), true, false );
+                            if( ! children.isEmpty() ) {
+
+                                for ( OntologyTermI child : children ) {
+                                    final Term termChild = new Term( child.getTermAccession(), child.getPreferredName() );
+                                    termChild.setParent(firstTerm);
+
+                                    // add the child in the set of the children of the first term.
+                                    firstTermChildren.add(termChild);
+
+                                    // Create a dependency with the children
+                                    loadDependencies(termChild, associatedTerm, mi, lineCount);
+                                }
+                            }
+                        }
+                        // If the second term is including its children, we duplicate the dependency for all the children
+                        if (associatedTerm.getSecondTermOfTheDependency().isIncludeChildren()){
+                            // fetch all children and append them to the local map
+                            final Collection<OntologyTermI> children2 = mi.getValidTerms( associatedTerm.getSecondTermOfTheDependency().getId(), true, false );
+                            if( ! children2.isEmpty() ) {
+
+                                for ( OntologyTermI child2 : children2 ) {
+                                    final Term termChild2 = new Term( child2.getTermAccession(), child2.getPreferredName() );
+                                    AssociatedTerm childTerm2 = createSecondaryTermOfTheDependencyFrom(termChild2, associatedTerm);
+                                    childTerm2.getSecondTermOfTheDependency().setParent(associatedTerm.getSecondTermOfTheDependency());
+
+                                    // Create a dependency with the children
+                                    loadDependencies(firstTerm, childTerm2, mi, lineCount);
+
+                                    if (!firstTermChildren.isEmpty()){
+                                        // duplicate the dependencies for the children of the first term too
+                                        for (Term first : firstTermChildren){
+                                            // Create a dependency with the children
+                                            loadDependencies(first, childTerm2, mi, lineCount);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-                else{
-                    log.error( "The dependency mapping file is not valid. It should be a tab file : first term MI  first term name  includeChildren  second term MI  second term name  includeChildren  message level" );
-                }
+                    else{
+                        log.error( "The dependency mapping file is not valid. It should be a tab file : first term MI  first term name  includeChildren  second term MI  second term name  includeChildren  message level" );
+                    }
 
-                if ( log.isInfoEnabled() ) {
-                    log.info( "Completed reading " + this.dependencies.size() + " dependencies from mapping file" );
+                    if ( log.isInfoEnabled() ) {
+                        log.info( "Completed reading " + this.dependencies.size() + " dependencies from mapping file" );
+                    }
                 }
-            }
-            catch (ValidatorRuleException e) {
-                throw new ValidatorRuleException("Check the file " + url.getFile() + " at the line "+ lineCount +".", e);
+                catch (ValidatorRuleException e) {
+                    throw new ValidatorRuleException("Check the file " + url.getFile() + " at the line "+ lineCount +".", e);
+                }
             }
         }
-        in.close();
+        finally {
+            in.close();
+            is.close();
+        }
     }
 
     private boolean isParentOf(OntologyTermI child, OntologyTermI parent, OntologyAccess mi){
