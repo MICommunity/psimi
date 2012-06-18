@@ -57,6 +57,7 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
         acceptedAttributes.add(RuleUtils.CONTACT_EMAIL_MI_REF);
         acceptedAttributes.add(RuleUtils.CURATION_REQUEST);
         acceptedAttributes.add(RuleUtils.IMEX_CURATION);
+        acceptedAttributes.add(RuleUtils.FULL_COVERAGE);
     }
 
     @Override

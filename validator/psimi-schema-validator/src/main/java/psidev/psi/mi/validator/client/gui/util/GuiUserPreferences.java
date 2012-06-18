@@ -7,9 +7,8 @@ package psidev.psi.mi.validator.client.gui.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.ValidatorException;
+import psidev.psi.tools.validator.preferences.UserPreferences;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,19 +77,41 @@ public class GuiUserPreferences {
         }
 
         Properties properties = new Properties();
+        FileInputStream inputStream = null;
         try {
-            properties.load( new FileInputStream( props ) );
+            inputStream = new FileInputStream( props );
+            properties.load( inputStream );
         } catch ( IOException e ) {
             log.error( "Error - loading properties.", e );
+        }
+        finally {
+            if (inputStream != null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         properties.setProperty( GuiUserPreferences.LAST_DIRECTORY_OPENED, lastDir.getAbsolutePath() );
 
         // Write properties file.
+        FileOutputStream outputStream = null;
         try {
-            properties.store( new FileOutputStream( props ), null );
+            outputStream = new FileOutputStream( props );
+            properties.store( outputStream, null );
         } catch ( IOException e ) {
             log.warn( "Error - writting properties.", e );
+        }
+        finally {
+            if (outputStream != null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -112,8 +133,10 @@ public class GuiUserPreferences {
 
         // we have the properties file, now read the property
         Properties properties = new Properties();
+        FileInputStream inputStream = null;
         try {
-            properties.load( new FileInputStream( props ) );
+            inputStream = new FileInputStream( props );
+            properties.load( inputStream );
             String lastPath = properties.getProperty( GuiUserPreferences.LAST_DIRECTORY_OPENED );
             if ( lastPath == null ) {
                 // not defined yet
@@ -124,6 +147,15 @@ public class GuiUserPreferences {
             }
         } catch ( IOException e ) {
             log.error( "Error - loading properties.", e );
+        }
+        finally {
+            if (inputStream != null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return null;

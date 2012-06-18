@@ -114,7 +114,8 @@ public final class RuleUtils {
     public static final String COMMENT = "MI:0612";
     public static final String CAUTION = "MI:0618";
     public static final String ANTIBODIES = "MI:0671";
-    public static final String IMEX_CURATION = " MI:0959";
+    public static final String IMEX_CURATION = "MI:0959";
+    public static final String FULL_COVERAGE = "MI:0957";
     public static final String CURATION_REQUEST = "MI:0873";
     public static final String AUTHOR_SUBMITTED = "MI:0878";
     public static final String PUBLICATION_YEAR = "MI:0886";

@@ -248,72 +248,76 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
                 .getResource( "/interactionDetection2roles.tsv" ).getFile();
 
         BufferedReader in = new BufferedReader( new FileReader( new File( resource ) ) );
-        String str;
-        int lineCount = 0;
-        while ( ( str = in.readLine() ) != null ) {
-            // we skip empty lines and those starting with the symbol '#'
-            lineCount++;
-            if ( log.isDebugEnabled() ) {
-                log.debug( "L" + lineCount + ":\t" + str );
-            }
+        try{
+            String str;
+            int lineCount = 0;
+            while ( ( str = in.readLine() ) != null ) {
+                // we skip empty lines and those starting with the symbol '#'
+                lineCount++;
+                if ( log.isDebugEnabled() ) {
+                    log.debug( "L" + lineCount + ":\t" + str );
+                }
 
-            if (str.startsWith( "\"" )){
-                str = str.substring(1);
-            }
-            if (str.endsWith("\"")){
-                str = str.substring(0, str.length() - 1);
-            }
+                if (str.startsWith( "\"" )){
+                    str = str.substring(1);
+                }
+                if (str.endsWith("\"")){
+                    str = str.substring(0, str.length() - 1);
+                }
 
-            if( str.startsWith( "#" ) || str.trim().length() == 0) {
-                continue; // skip
-            }
+                if( str.startsWith( "#" ) || str.trim().length() == 0) {
+                    continue; // skip
+                }
 
-            // 0. DETECTION MI	
-            // 1. DETECTION NAME
-            // 2. INCLUDE CHILDREN
-            // 3. EXP ROLE MI
-            // 4. EXP ROLE NAME
-            // 5. BIOL ROLE MI
-            // 6. BIOL ROLE NAME
-            // 7. ERROR LEVEL
+                // 0. DETECTION MI
+                // 1. DETECTION NAME
+                // 2. INCLUDE CHILDREN
+                // 3. EXP ROLE MI
+                // 4. EXP ROLE NAME
+                // 5. BIOL ROLE MI
+                // 6. BIOL ROLE NAME
+                // 7. ERROR LEVEL
 
-            if (str.contains("\t")){
-                final String[] columns = str.split( "\t" );
+                if (str.contains("\t")){
+                    final String[] columns = str.split( "\t" );
 
-                // Remove the possible " characters we can find after editing a tab file using excel.
-                for (int i = 0; i < columns.length; i++){
-                    String col = columns[i];
-                    if (col != null){
-                        if (col.startsWith( "\"" )){
-                            columns[i] = columns[i].substring(1);
-                        }
-                        if (col.endsWith("\"")){
-                            columns[i] = columns[i].substring(0, columns[i].length() - 1);
+                    // Remove the possible " characters we can find after editing a tab file using excel.
+                    for (int i = 0; i < columns.length; i++){
+                        String col = columns[i];
+                        if (col != null){
+                            if (col.startsWith( "\"" )){
+                                columns[i] = columns[i].substring(1);
+                            }
+                            if (col.endsWith("\"")){
+                                columns[i] = columns[i].substring(0, columns[i].length() - 1);
+                            }
                         }
                     }
-                }
-                Term detection = new Term( columns[0], columns[1] );
-                if( columns[2].length() > 0 ) {
-                    detection.setIncludeChildren( Boolean.valueOf( columns[2] ) );
-                }
-                Set<RolePair> pairs = null;
-                if( ! mapping.getDependencies().containsKey( detection ) ) {
-                    pairs = new HashSet<RolePair>();
-                    mapping.getDependencies().put( detection, pairs );
-                } else {
-                    pairs = mapping.getDependencies().get( detection );
-                }
+                    Term detection = new Term( columns[0], columns[1] );
+                    if( columns[2].length() > 0 ) {
+                        detection.setIncludeChildren( Boolean.valueOf( columns[2] ) );
+                    }
+                    Set<RolePair> pairs = null;
+                    if( ! mapping.getDependencies().containsKey( detection ) ) {
+                        pairs = new HashSet<RolePair>();
+                        mapping.getDependencies().put( detection, pairs );
+                    } else {
+                        pairs = mapping.getDependencies().get( detection );
+                    }
 
-                RolePair roles = new RolePair(
-                        new Term( columns[5], columns[6] ),
-                        new Term( columns[3], columns[4] ),
-                        ( columns.length > 7 && columns[7] != null && columns[7].length()> 0 ? MessageLevel.forName( columns[7] ) : null )
-                );
+                    RolePair roles = new RolePair(
+                            new Term( columns[5], columns[6] ),
+                            new Term( columns[3], columns[4] ),
+                            ( columns.length > 7 && columns[7] != null && columns[7].length()> 0 ? MessageLevel.forName( columns[7] ) : null )
+                    );
 
-                pairs.add( roles ); // will only add if not already in. (cf. RolePair equals/hashcode)
+                    pairs.add( roles ); // will only add if not already in. (cf. RolePair equals/hashcode)
+                }
             }
         }
-        in.close();
+        finally {
+            in.close();
+        }
 
         if ( log.isInfoEnabled() ) {
             log.info( "Completed reading " + mapping.getDependencies().size() + " dependencies from mapping file" );

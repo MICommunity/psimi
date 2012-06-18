@@ -9,6 +9,7 @@ import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,10 +31,12 @@ public class MI25ConsoleClient {
      * @param logLevel
      */
     private static void validate( String psiFile, String configFile, String logLevel ) {
-
+        FileInputStream f = null;
+        FileInputStream c = null;
+        
         try {
-            FileInputStream f = new FileInputStream( psiFile );
-            FileInputStream c = new FileInputStream( configFile );
+            f = new FileInputStream( psiFile );
+            c = new FileInputStream( configFile );
             // TODO this will not work  !!! has to be fixed.
             Mi25Validator val = new Mi25Validator( c, null, null );
             List messages = ( List ) val.validate( f );
@@ -54,6 +57,22 @@ public class MI25ConsoleClient {
             e.getCause().printStackTrace();
         } catch ( OntologyLoaderException e ) {
             e.printStackTrace();
+        }
+        finally {
+            if (f != null){
+                try {
+                    f.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (c != null){
+                try {
+                    c.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
