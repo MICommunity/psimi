@@ -3,7 +3,7 @@
               xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/CvSourceList.xsd">
 
     <cvSource source="file" uri="http://psidev.cvs.sourceforge.net/psidev/psi/mi/controlledVocab/proteomeBinder/psi-par.obo" format="OBO" name="PSI-PAR"  identifier="PAR"  version="2.5"/>
-    <cvSource source="file" uri="http://psidev.sourceforge.net/mod/data/PSI-MOD.obo" format="OBO" name="PSI-MOD" identifier="MOD" version="1.x"/>
+    <cvSource source="file" uri="http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mod/data/PSI-MOD.obo" format="OBO" name="PSI-MOD" identifier="MOD" version="1.x"/>
     <cvSource source="OLS" uri="" format="OBO" name="Gene Ontology" identifier="GO" version="latest in OLS"/>
     <cvSource source="OLS" uri="" format="OBO" name="Newt Taxonomy" identifier="NEWT" version="latest in OLS"/>
 
