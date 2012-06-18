@@ -2,6 +2,7 @@ package psidev.psi.mi;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import psidev.psi.mi.validator.ValidatorReport;
 import psidev.psi.mi.validator.extension.Mi25Validator;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
@@ -53,38 +54,73 @@ public class ValidatorClient {
      */
     public static Mi25Validator buildValidator(String validationScope) throws ValidatorException, OntologyLoaderException, IOException {
 
-        Mi25Validator validator = null;
         // the ontology
-        InputStream ontologyConfig = Mi25Validator.class.getResource( "/config/psi_mi/ontologies.xml" ).openStream();
+        InputStream ontologyConfig = null;
         // the CV mapping file
-        InputStream cvMappingConfig = Mi25Validator.class.getResource( "/config/psi_mi/cv-mapping.xml" ).openStream();
+        InputStream cvMappingConfig = null;
         // the object rules
         InputStream objectRuleConfig = null;
 
-        // XML scope
-        if (validationScope.equalsIgnoreCase(XML)){
-            validator = new Mi25Validator( ontologyConfig, cvMappingConfig, null );
-        }
-        // CV scope
-        else if (validationScope.equalsIgnoreCase(CV)) {
+        Mi25Validator validator = null;
+        try{
+            // the ontology
+            ontologyConfig = Mi25Validator.class.getResource( "/config/psi_mi/ontologies.xml" ).openStream();
+            // the CV mapping file
+            cvMappingConfig = Mi25Validator.class.getResource( "/config/psi_mi/cv-mapping.xml" ).openStream();
+            // the object rules
+            objectRuleConfig = null;
 
-            validator = new Mi25Validator(ontologyConfig, cvMappingConfig, null);
-        }
-        // MIMIX scope
-        else if (validationScope.equalsIgnoreCase(MIMIX)) {
-            objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/mimix-rules.xml" ).openStream();
+            // XML scope
+            if (validationScope.equalsIgnoreCase(XML)){
+                validator = new Mi25Validator( ontologyConfig, cvMappingConfig, null );
+            }
+            // CV scope
+            else if (validationScope.equalsIgnoreCase(CV)) {
 
-            validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
-        }
-        // IMEX scope
-        else if (validationScope.equalsIgnoreCase(IMEX)) {
-            objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
+                validator = new Mi25Validator(ontologyConfig, cvMappingConfig, null);
+            }
+            // MIMIX scope
+            else if (validationScope.equalsIgnoreCase(MIMIX)) {
+                objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/mimix-rules.xml" ).openStream();
 
-            validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
+                validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
+            }
+            // IMEX scope
+            else if (validationScope.equalsIgnoreCase(IMEX)) {
+                objectRuleConfig = Mi25Validator.class.getResource( "/config/psi_mi/imex-rules.xml" ).openStream();
+
+                validator = new Mi25Validator(ontologyConfig, cvMappingConfig, objectRuleConfig);
+            }
+            else {
+                System.err.println( validationScope + " is not a valid scope. You can only choose XML, CV, MIMIX or IMEX." );
+                System.exit( 1 );
+            }
         }
-        else {
-            System.err.println( validationScope + " is not a valid scope. You can only choose XML, CV, MIMIX or IMEX." );
-            System.exit( 1 );
+        finally {
+            if (ontologyConfig != null){
+                try{
+                    ontologyConfig.close();
+                }
+                catch (IOException e){
+                    System.out.println(ExceptionUtils.getFullStackTrace(e));
+                }
+            }
+            if (cvMappingConfig != null){
+                try{
+                    cvMappingConfig.close();
+                }
+                catch (IOException e){
+                    System.out.println(ExceptionUtils.getFullStackTrace(e));
+                }
+            }
+            if (objectRuleConfig != null){
+                try{
+                    objectRuleConfig.close();
+                }
+                catch (IOException e){
+                    System.out.println(ExceptionUtils.getFullStackTrace(e));
+                }
+            }
         }
 
         // validator successfully created
@@ -289,64 +325,68 @@ public class ValidatorClient {
         if (validatorReport.hasSyntaxMessages() || validatorReport.hasSemanticMessages()) {
             // the outout file
             File output = new File(path+"report-"+fileName);
-            FileWriter writer = new FileWriter(output);
+            Writer writer = new BufferedWriter(new FileWriter(output));
 
-            writer.write("Validator reported " + validatorReport.getSyntaxMessages().size() + " syntax messages \n" );
-            writer.write("Validator reported " + validatorReport.getSemanticMessages().size() + " semantic messages \n" );
-            writer.flush();
-            writer.write("XML syntax validation failed. \n");
-
-            if (validatorReport.hasSyntaxMessages()){
-                for (ValidatorMessage message : validatorReport.getSyntaxMessages()){
-
-                    writer.write(message.getLevel().toString() + " : " + message.getMessage() + "\n");
-                    if (message.getContext() != null){
-                        writer.write(message.getContext() + "\n");
-                    }
-                    writer.flush();
-                }
-                writer.write("\n");
-            }
-            else {
-                writer.write("XML syntax valid. \n \n");
+            try{
+                writer.write("Validator reported " + validatorReport.getSyntaxMessages().size() + " syntax messages \n" );
+                writer.write("Validator reported " + validatorReport.getSemanticMessages().size() + " semantic messages \n" );
                 writer.flush();
-            }
+                writer.write("XML syntax validation failed. \n");
 
-            if ( validatorReport.hasSemanticMessages()) {
+                if (validatorReport.hasSyntaxMessages()){
+                    for (ValidatorMessage message : validatorReport.getSyntaxMessages()){
 
-                // we need to determine the status of the semantics validation.
-                // If there are no validatorMessages, the status is "valid" (already set).
-                // If there are messages, but all of them are warnings, the status will be "warnings".
-                // If there are error or fatal messages, the status, the status will be failed
-                String status = null;
-
-                for (ValidatorMessage message : validatorReport.getSemanticMessages()){
-                    if (message.getLevel() == MessageLevel.WARN && status == null){
-                        status = "Validated with warnings";
-                    }
-                    else if (message.getLevel() == MessageLevel.ERROR && status == null){
-                        status = "Validation failed";
-                    }
-                    if (message.getRule() != null){
-                        writer.write(message.getRule().getName() + " : ");
-                    }
-                    writer.write(message.getLevel().toString() + "\n");
-                    writer.write(message.getMessage() + "\n");
-                    if (message.getContext() != null){
-                        writer.write(message.getContext() + "\n");
+                        writer.write(message.getLevel().toString() + " : " + message.getMessage() + "\n");
+                        if (message.getContext() != null){
+                            writer.write(message.getContext() + "\n");
+                        }
+                        writer.flush();
                     }
                     writer.write("\n");
+                }
+                else {
+                    writer.write("XML syntax valid. \n \n");
                     writer.flush();
                 }
-                writer.write("\n");
-                writer.write(status + "\n");
 
-            } else {
+                if ( validatorReport.hasSemanticMessages()) {
 
-                writer.write("Document is valid" + "\n");
-                writer.flush();
+                    // we need to determine the status of the semantics validation.
+                    // If there are no validatorMessages, the status is "valid" (already set).
+                    // If there are messages, but all of them are warnings, the status will be "warnings".
+                    // If there are error or fatal messages, the status, the status will be failed
+                    String status = null;
+
+                    for (ValidatorMessage message : validatorReport.getSemanticMessages()){
+                        if (message.getLevel() == MessageLevel.WARN && status == null){
+                            status = "Validated with warnings";
+                        }
+                        else if (message.getLevel() == MessageLevel.ERROR && status == null){
+                            status = "Validation failed";
+                        }
+                        if (message.getRule() != null){
+                            writer.write(message.getRule().getName() + " : ");
+                        }
+                        writer.write(message.getLevel().toString() + "\n");
+                        writer.write(message.getMessage() + "\n");
+                        if (message.getContext() != null){
+                            writer.write(message.getContext() + "\n");
+                        }
+                        writer.write("\n");
+                        writer.flush();
+                    }
+                    writer.write("\n");
+                    writer.write(status + "\n");
+
+                } else {
+
+                    writer.write("Document is valid" + "\n");
+                    writer.flush();
+                }
             }
-            writer.close();
+            finally {
+                writer.close();
+            }
         }
     }
 
@@ -428,20 +468,27 @@ public class ValidatorClient {
                         if (entry.getName().endsWith(XML_EXTENSION)){
                             System.out.println("Extracting: " +entry.getName());
 
-                            BufferedOutputStream dest = null;
                             String entryName = parentDirectory.getAbsolutePath() + File.separator + entry.getName();
                             // write the files to the disk
                             FileOutputStream fos = new
                                     FileOutputStream(entryName);
-                            dest = new
+                            BufferedOutputStream dest = new
                                     BufferedOutputStream(fos, BUFFER);
 
-                            InputStream inputStream = zis.getInputStream(entry);
+                            try{
+                                InputStream inputStream = zis.getInputStream(entry);
+                                try{
+                                    IOUtils.copy(inputStream, dest);
+                                }
+                                finally {
+                                    inputStream.close();
+                                }
 
-                            IOUtils.copy(inputStream, dest);
-
-                            dest.flush();
-                            dest.close();
+                                dest.flush();
+                            }
+                            finally {
+                                dest.close();
+                            }
 
                             File fileToValidate = new File(entry.getName());
                             System.out.println("Validate File : " + fileToValidate.getAbsolutePath());
