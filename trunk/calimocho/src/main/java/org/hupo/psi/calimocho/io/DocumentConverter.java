@@ -47,10 +47,13 @@ public class DocumentConverter {
         final BufferedReader reader = new BufferedReader(new InputStreamReader( is ));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
 
-        convert( reader, writer);
-
-        writer.close();
-        reader.close();
+        try{
+            convert( reader, writer);
+        }
+        finally {
+            writer.close();
+            reader.close();
+        }
     }
 
     /**
