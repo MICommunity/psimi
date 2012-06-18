@@ -374,7 +374,7 @@ public class Mi25Validator extends Validator {
             messageBuffer.append("\n The validator reported at least " + messages.size() + " messages but the error in the xml file need " +
                     "to be fixed before finishing the validation of the file.");
 
-            Mi25Context context = new Mi25Context();
+            Mi25ClusteredContext context = new Mi25ClusteredContext();
 
             messages.clear();
             messages.add( new ValidatorMessage( messageBuffer.toString(),
