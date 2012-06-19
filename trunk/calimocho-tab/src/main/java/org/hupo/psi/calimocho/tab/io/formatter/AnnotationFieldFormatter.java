@@ -16,7 +16,7 @@ import org.hupo.psi.calimocho.tab.util.MitabEscapeUtils;
 public class AnnotationFieldFormatter extends KeyValueFieldFormatter {
 
     public AnnotationFieldFormatter(){
-        super();
+        super(":");
     }
     
     public AnnotationFieldFormatter(String separator){
