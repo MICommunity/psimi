@@ -3,6 +3,7 @@ package org.hupo.psi.calimocho.tab.io.formatter;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.model.Field;
+import org.hupo.psi.calimocho.tab.util.MitabEscapeUtils;
 
 /**
  * TODO comment this
@@ -24,8 +25,8 @@ public class AnnotationFieldFormatter extends KeyValueFieldFormatter {
     
     @Override
     public String format(Field field) throws IllegalFieldException {
-        String name = field.get( CalimochoKeys.NAME );
-        String value = field.get( CalimochoKeys.VALUE );
+        String name = MitabEscapeUtils.escapeFieldElement(field.get( CalimochoKeys.NAME ));
+        String value = MitabEscapeUtils.escapeFieldElement(field.get( CalimochoKeys.VALUE ));
 
         if (name == null) {
             if (getDefaultKey() == null) {

@@ -12,6 +12,7 @@ import org.hupo.psi.calimocho.tab.util.ParseUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,6 +28,9 @@ public class DefaultRowReader implements RowReader {
     private ColumnBasedDocumentDefinition documentDefinition;
 
     public DefaultRowReader( ColumnBasedDocumentDefinition documentDefinition ) {
+        if (documentDefinition == null){
+            throw new IllegalArgumentException("The defaultRowWriter needs a valid non null document definition");
+        }
         this.documentDefinition = documentDefinition;
     }
 
@@ -39,28 +43,33 @@ public class DefaultRowReader implements RowReader {
         List<Row> rows = new ArrayList<Row>();
 
         BufferedReader in = new BufferedReader( reader );
-        String str;
+        
+        try{
+            String str;
 
-        int lineNumber = 0;
+            int lineNumber = 0;
 
-        while ( ( str = in.readLine() ) != null ) {
-            lineNumber++;
+            while ( ( str = in.readLine() ) != null ) {
+                lineNumber++;
 
-            final String commentPrefix = documentDefinition.getCommentPrefix();
+                final String commentPrefix = documentDefinition.getCommentPrefix();
 
-            if ( commentPrefix != null && str.trim().startsWith( commentPrefix ) ) {
-                continue;
+                if ( commentPrefix != null && str.trim().startsWith( commentPrefix ) ) {
+                    continue;
+                }
+
+                try {
+                    rows.add( readLine( str ) );
+                } catch ( Throwable t ) {
+                    throw new IllegalRowException( "Problem in line: " + lineNumber + "  /  LINE: " + str, str, lineNumber, t );
+                }
+
             }
-
-            try {
-                rows.add( readLine( str ) );
-            } catch ( Throwable t ) {
-                throw new IllegalRowException( "Problem in line: " + lineNumber + "  /  LINE: " + str, str, lineNumber, t );
-            }
-
         }
-        in.close();
-
+        finally {
+            in.close(); 
+        }
+        
         return rows;
     }
 
@@ -68,7 +77,15 @@ public class DefaultRowReader implements RowReader {
      * {@inheritDoc}
      */
     public List<Row> read( InputStream is ) throws IOException, IllegalRowException {
-        return read( new BufferedReader( new InputStreamReader( is ) ) );
+        Reader reader = new BufferedReader( new InputStreamReader( is ) );
+        List<Row> rows = Collections.EMPTY_LIST;
+        try{
+            rows = read( reader );
+        }
+        finally {
+            reader.close();
+        }
+        return rows;
     }
 
     /**
@@ -86,12 +103,6 @@ public class DefaultRowReader implements RowReader {
         String[] cols = ParseUtils.quoteAwareSplit( line, new String[]{documentDefinition.getColumnSeparator()}, false );
 
         final int expectedColumnCount = documentDefinition.getHighestColumnPosition() + 1;
-        if( cols.length < expectedColumnCount ) {
-            final IllegalRowException ire = new IllegalRowException( "Row having less columns than defined. Expected:" +
-                                                                     expectedColumnCount + ", found:" + cols.length );
-            ire.setLine( line );
-            throw ire;
-        }
 
         // iterate through the columns to parse the fields
         for ( int i = 0; i < cols.length; i++ ) {
@@ -136,6 +147,11 @@ public class DefaultRowReader implements RowReader {
                     }
 
                     FieldParser fieldParser = columnDefinition.getFieldParser();
+
+                    if (fieldParser == null){
+                        throw new IllegalColumnException(columnDefinition.getName()+" does not have a field parser.");
+                    }
+
                     Field field = fieldParser.parse( strField, columnDefinition );
 
                     // default values

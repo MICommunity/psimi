@@ -18,14 +18,15 @@ import org.joda.time.format.DateTimeFormat;
  */
 public class DateFieldParser implements FieldParser {
 
-    private String dateTimeFormat;
+    private String dateTimeFormat = "yyyy/MM/dd";
 
     public DateFieldParser() {
-        this.dateTimeFormat = DateTimeFormat.longDate().toString();
     }
 
     public DateFieldParser( String dateTimeFormat ) {
-        this.dateTimeFormat = dateTimeFormat;
+        if (dateTimeFormat != null){
+            this.dateTimeFormat = dateTimeFormat;
+        }
     }
 
     public Field parse( String fieldStr, ColumnDefinition columnDefinition ) throws IllegalFieldException {

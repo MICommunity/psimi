@@ -18,6 +18,8 @@ import java.util.Arrays;
  * @since 1.0
  */
 public class XrefFieldParser implements FieldParser {
+    private static final String MI_PREFIX = "MI";
+    private static final String MI_DB = "psi-mi";
 
     public Field parse( String str, ColumnDefinition columnDefinition ) throws IllegalFieldException {
         DefaultField field = new DefaultField();
@@ -42,7 +44,8 @@ public class XrefFieldParser implements FieldParser {
                 value = groups[1];
             } else {
                 // if ony one group, assume it is unknown key
-                key = value = groups[0];
+                key = groups[0];
+                value = groups[0];
             }
 
             field.set( CalimochoKeys.KEY, key);
@@ -53,8 +56,8 @@ public class XrefFieldParser implements FieldParser {
                 field.set( CalimochoKeys.TEXT, groups[2]);
             }
 
-            // TODO correct MI:0012(blah) to psi-mi:"MI:0012"(blah)
-            //field = fixPsimiFieldfNecessary(field);
+            // correct MI:0012(blah) to psi-mi:"MI:0012"(blah) for backward compatibility
+            fixPsimiFieldfNecessary(field);
         }
 
         return field;
@@ -68,4 +71,12 @@ public class XrefFieldParser implements FieldParser {
         return str;
     }
 
+    protected void fixPsimiFieldfNecessary(Field field) {
+        if ( MI_PREFIX.equalsIgnoreCase(field.get(CalimochoKeys.DB))) {
+            String identifier = field.get(CalimochoKeys.VALUE);
+
+            field.set(CalimochoKeys.DB, MI_DB);
+            field.set(CalimochoKeys.VALUE, MI_PREFIX+":"+identifier);
+        }
+    }
 }

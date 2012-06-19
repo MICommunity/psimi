@@ -41,6 +41,11 @@ public class ColumnBasedDocumentDefinitionBuilder {
         return this;
     }
 
+    public ColumnBasedDocumentDefinitionBuilder setEmptyValue(String emptyColumn) {
+        docDefinition.setEmptyValue( emptyColumn );
+        return this;
+    }
+
     public ColumnBasedDocumentDefinitionBuilder setColumnDelimiter(String columnDelimiter) {
         docDefinition.setColumnDelimiter( columnDelimiter );
         return this;
