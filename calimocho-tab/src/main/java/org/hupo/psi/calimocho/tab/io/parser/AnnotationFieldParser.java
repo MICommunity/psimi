@@ -18,7 +18,7 @@ import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
 public class AnnotationFieldParser extends KeyValueFieldParser {
 
     public AnnotationFieldParser() {
-        super();
+        super(":");
     }
 
     public AnnotationFieldParser(String separator) {
