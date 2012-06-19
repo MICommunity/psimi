@@ -65,6 +65,7 @@ public class ColumnBasedDocumentDefinitionBuilder {
             docDefinition.setColumnSeparator(docDef.getColumnSeparator());
             docDefinition.setCommentPrefix(docDef.getCommentPrefix());
             docDefinition.setPartial(docDef.isPartial());
+            docDefinition.setEmptyValue(docDef.getEmptyValue());
 
             docDefinition.getColumns().addAll(docDef.getColumns());
         }

@@ -156,35 +156,4 @@ public class ParseUtils {
         }
         return quoteAwareSplit(columnString, new String[]{separator}, false);
     }
-
-
-//    private static Field fixPsimiFieldfNecessary(Field field) {
-//        if ("MI".equals(field.getType())) {
-//            String identifier = field.getValue();
-//
-//            return new Field(field.getColumnKey(), "psi-mi", "MI" + ":" + identifier, field.getText());
-//        }
-//
-//        return field;
-//    }
-
-//    private static String removeLineReturn(String str) {
-//        // check that the given string doesn't have any line return, and if so, remove them.
-//        if (str != null && (str.indexOf("\n") != -1)) {
-//            str = str.replaceAll("\\n", " ");
-//        }
-//        return str;
-//    }
-//
-//    private static boolean isFieldEmpty(Field field) {
-//        if (field == null || field.getValue() == null) {
-//            return true;
-//        }
-//
-//        if ("-".equals(field.getValue().trim())) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
 }
