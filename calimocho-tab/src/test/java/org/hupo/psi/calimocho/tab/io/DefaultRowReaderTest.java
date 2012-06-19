@@ -14,6 +14,7 @@ import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinitionBuilder;
 import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
 import org.hupo.psi.calimocho.tab.model.ColumnDefinitionBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -137,6 +138,9 @@ public class DefaultRowReaderTest extends AbstractCalimochoTabTest {
     }
 
     @Test()
+    @Ignore
+    // we don't want this test anymore. If the number of columns is bigger/lower that the one expected in column definitions, we just ignore the supplementary columns.
+    // this would help with parsing MITAB 2.5 files using 2.7 parser and 2.7 files using 2.5 parser
     public void invalidInputFile_columnCount() throws Exception {
         ColumnBasedDocumentDefinition dd = new ColumnBasedDocumentDefinitionBuilder().addColumnDefinition( new ColumnDefinitionBuilder()
                                               .setKey( "gene" )

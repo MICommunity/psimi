@@ -24,8 +24,11 @@ public class DefaultRowWriter implements RowWriter {
     private ColumnBasedDocumentDefinition documentDefinition;
 
     public DefaultRowWriter( ColumnBasedDocumentDefinition documentDefinition ) {
-        this.documentDefinition = documentDefinition;
 
+        if (documentDefinition == null){
+            throw new IllegalArgumentException("The defaultRowWriter needs a valid non null document definition");
+        }
+        this.documentDefinition = documentDefinition;
     }
 
     /**
@@ -65,7 +68,7 @@ public class DefaultRowWriter implements RowWriter {
             if( columnDefinition == null ) {
 
                 // This column isn't defined and we output an empty column
-                sb.append( columnDefinition.getEmptyValue() );
+                sb.append( documentDefinition.getEmptyValue() );
 
             } else {
 
@@ -91,6 +94,12 @@ public class DefaultRowWriter implements RowWriter {
                     }
 
                     final FieldFormatter fieldFormatter = columnDefinition.getFieldFormatter();
+
+                    if (fieldFormatter == null){
+                        throw new IllegalColumnException( "The column definition ("+ columnDefinition.getKey() +") doesn't " +
+                                "have a field formatter." );
+                    }
+
                     for ( Iterator<Field> fieldIterator = fields.iterator(); fieldIterator.hasNext(); ) {
                         Field field = fieldIterator.next();
 
@@ -134,8 +143,11 @@ public class DefaultRowWriter implements RowWriter {
     public void write( OutputStream os, Collection<Row> rows ) throws IOException, IllegalRowException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter( os ));
 
-        write(writer , rows );
-
-        writer.close();
+        try{
+            write(writer , rows );
+        }
+        finally {
+            writer.close();
+        }
     }
 }

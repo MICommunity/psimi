@@ -157,6 +157,7 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(confidence)
                 .setColumnSeparator("\t")
                 .setCommentPrefix( "#" )
+                .setEmptyValue("-")
                 .build();
 
         return docDefinition;

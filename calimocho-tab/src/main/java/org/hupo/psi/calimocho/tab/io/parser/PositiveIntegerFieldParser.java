@@ -8,24 +8,24 @@ import org.hupo.psi.calimocho.tab.io.FieldParser;
 import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
 
 /**
- * Positive float parser
+ * Positive integer parser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>24/05/12</pre>
+ * @since <pre>19/06/12</pre>
  */
 
-public class PositiveFloatrFieldParser implements FieldParser {
+public class PositiveIntegerFieldParser implements FieldParser{
 
     public Field parse( String fieldStr, ColumnDefinition columnDefinition ) throws IllegalFieldException {
         try {
-            float num = Float.parseFloat( fieldStr );
+            int num = Integer.parseInt( fieldStr );
 
             if (num < 0){
-                throw new IllegalFieldException( "Positive float expected, found: "+fieldStr );
+                throw new IllegalFieldException( "Positive integer expected, found: "+fieldStr );
             }
         } catch ( Exception e ) {
-            throw new IllegalFieldException( "Positive float expected, found: "+fieldStr );
+            throw new IllegalFieldException( "Positive integer expected, found: "+fieldStr );
         }
 
         return new FieldBuilder()

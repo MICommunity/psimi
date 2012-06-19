@@ -17,14 +17,15 @@ import org.joda.time.format.DateTimeFormat;
  */
 public class DateFieldFormatter implements FieldFormatter {
 
-    private String dateTimeFormat;
+    private String dateTimeFormat = "yyyy/MM/dd";
 
     public DateFieldFormatter() {
-        this.dateTimeFormat = DateTimeFormat.longDate().toString();
     }
 
     public DateFieldFormatter( String dateTimeFormat ) {
-        this.dateTimeFormat = dateTimeFormat;
+        if (dateTimeFormat != null){
+            this.dateTimeFormat = dateTimeFormat;
+        }
     }
 
     public String format( Field field ) throws IllegalFieldException {
