@@ -18,8 +18,8 @@ import java.util.Arrays;
  * @since 1.0
  */
 public class XrefFieldParser implements FieldParser {
-    private static final String MI_PREFIX = "MI";
-    private static final String MI_DB = "psi-mi";
+    protected static final String MI_PREFIX = "MI";
+    protected static final String MI_DB = "psi-mi";
 
     public Field parse( String str, ColumnDefinition columnDefinition ) throws IllegalFieldException {
         DefaultField field = new DefaultField();

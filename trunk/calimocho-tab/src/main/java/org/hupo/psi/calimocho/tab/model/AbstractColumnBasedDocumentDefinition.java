@@ -35,10 +35,16 @@ public class AbstractColumnBasedDocumentDefinition extends AbstractDefined imple
     private String emptyValue;
     private boolean partial;
 
+    private RowReader rowReader;
+
+    public AbstractColumnBasedDocumentDefinition(){
+        rowReader = new DefaultRowReader(this);
+        columns = new ArrayList<ColumnDefinition>();
+    }
+
     public CalimochoDocument readDocument( Reader reader ) throws IOException, IllegalRowException {
         CalimochoDocument calimochoDocument = new DefaultCalimochoDocument();
 
-        RowReader rowReader = new DefaultRowReader( this );
         final List<Row> rows = rowReader.read( reader );
 
         calimochoDocument.setRows( rows );
@@ -52,15 +58,15 @@ public class AbstractColumnBasedDocumentDefinition extends AbstractDefined imple
     }
 
     public List<ColumnDefinition> getColumns() {
-        if (columns == null){
-            columns = new ArrayList<ColumnDefinition>();
-        }
         return columns;
     }
 
     public void setColumns( List<ColumnDefinition> columns ) {
-        this.columns = new ArrayList<ColumnDefinition>( columns );
-        Collections.sort( this.columns );
+        if (columns != null){
+            this.columns.clear();
+            this.columns.addAll(columns);
+            Collections.sort( this.columns );
+        }
     }
 
     public String getName() {

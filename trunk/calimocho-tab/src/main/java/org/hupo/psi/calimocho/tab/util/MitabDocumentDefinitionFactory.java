@@ -172,6 +172,7 @@ public class MitabDocumentDefinitionFactory {
         DateFieldFormatter dateFieldFormatter = new DateFieldFormatter( "yyyy/MM/dd" );
         BooleanFieldFormatter booleanFieldFormatter = new BooleanFieldFormatter();
         BooleanFieldParser booleanFieldParser = new BooleanFieldParser();
+        ComplexExpansionFieldParser complexExpansionFieldParser = new ComplexExpansionFieldParser();
 
         ColumnDefinition expansion = new ColumnDefinitionBuilder()
                 .setName("Expansion")
@@ -182,7 +183,7 @@ public class MitabDocumentDefinitionFactory {
                 .setIsAllowsEmpty(true)
                 .setPosition(15)
                 .setFieldFormatter(xrefFormatter)
-                .setFieldParser(xrefParser)
+                .setFieldParser(complexExpansionFieldParser)
                 .build();
 
         ColumnDefinition bioRoleA = new ColumnDefinitionBuilder()
@@ -378,6 +379,7 @@ public class MitabDocumentDefinitionFactory {
         AnnotationFieldParser annotParser = new AnnotationFieldParser(":");
 
         LiteralFieldFormatter literalFieldFormatter = new LiteralFieldFormatter();
+        ComplexExpansionFieldParser complexExpansionFieldParser = new ComplexExpansionFieldParser();
 
         ColumnDefinition idACol = new ColumnDefinitionBuilder()
                 .setName("ID(s) interactor A")
@@ -400,7 +402,7 @@ public class MitabDocumentDefinitionFactory {
                 .build();
 
         ColumnDefinition altidA = new ColumnDefinitionBuilder()
-                .extendColumnDefinition(idACol)
+                .extendColumnDefinition(idBCol)
                 .setName("Alt. ID(s) interactor A")
                 .setKey(Mitab25ColumnKeys.KEY_ALTID_A)
                 .setPosition(2)
@@ -502,7 +504,7 @@ public class MitabDocumentDefinitionFactory {
                 .setIsAllowsEmpty(true)
                 .setPosition(15)
                 .setFieldFormatter(xrefFormatter)
-                .setFieldParser(xrefParser)
+                .setFieldParser(complexExpansionFieldParser)
                 .build();
 
         ColumnDefinition bioRoleA = new ColumnDefinitionBuilder()
@@ -750,6 +752,7 @@ public class MitabDocumentDefinitionFactory {
                 .addColumnDefinition(partDetMethodB)
                 .setColumnSeparator("\t")
                 .setCommentPrefix( "#" )
+                .setEmptyValue("-")
                 .build();
         return docDefinition;
     }

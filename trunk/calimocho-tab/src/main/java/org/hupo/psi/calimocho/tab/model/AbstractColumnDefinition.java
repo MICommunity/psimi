@@ -29,6 +29,7 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
 
     public AbstractColumnDefinition(){
         this.allowsEmpty = true;
+        defaultValuesMap = Maps.newHashMap();
     }
 
     public Integer getPosition() {
@@ -105,14 +106,14 @@ public abstract class AbstractColumnDefinition extends AbstractDefined implement
     }
 
     public Map<String, String> getDefaultValues() {
-        if (defaultValuesMap == null) {
-            defaultValuesMap = Maps.newHashMap();
-        }
         return defaultValuesMap;
     }
 
     public void setDefaultValuesMap( Map<String, String> defaultValuesMap ) {
-        this.defaultValuesMap = defaultValuesMap;
+        if (defaultValuesMap != null){
+            this.defaultValuesMap.clear();
+            this.defaultValuesMap.putAll(defaultValuesMap);
+        }
     }
 
     public void addDefaultValue(String key, String value) {
