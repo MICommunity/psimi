@@ -105,6 +105,7 @@ public class DefaultRowReader implements RowReader {
         final int expectedColumnCount = documentDefinition.getHighestColumnPosition() + 1;
 
         // iterate through the columns to parse the fields
+        int indexColumns = 0;
         for ( int i = 0; i < cols.length; i++ ) {
             ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition( i );
 
@@ -158,6 +159,25 @@ public class DefaultRowReader implements RowReader {
                     field.setIfMissing(columnDefinition.getDefaultValues());
 
                     row.addField( columnDefinition.getKey(), field );
+                }
+            }
+            
+            indexColumns ++;
+        }
+
+        // the missing columns are considered as empty. We just need to check if empty columns are allowed
+        if (indexColumns < expectedColumnCount){
+            for (int i = indexColumns; i < expectedColumnCount ; i++){
+                ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition( i );
+
+                if ( columnDefinition == null ) {
+                    continue;
+                }
+                // check if the column is empty
+                final boolean allowEmpty = columnDefinition.isAllowsEmpty();
+
+                if ( !allowEmpty) {
+                    throw new IllegalColumnException( "Empty column not allowed: " + columnDefinition.getKey() + ", pos=" + columnDefinition.getPosition(), null, columnDefinition );
                 }
             }
         }
