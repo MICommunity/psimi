@@ -38,6 +38,9 @@ public class XGMMLDocumentDefinition extends AbstractDocumentDefinition {
     private String title;
     private String description;
     private String source;
+
+    private GraphBuilder graphBuilder;
+    private NamespacePrefixMapper mapper;
     
     public XGMMLDocumentDefinition() {
         this("Graph", "Created using Calimocho", "not set");
@@ -47,6 +50,22 @@ public class XGMMLDocumentDefinition extends AbstractDocumentDefinition {
         this.title = title;
         this.description = description;
         this.source = source;
+        this.graphBuilder = new GraphBuilder(title, description, source);
+        mapper = new NamespacePrefixMapper() {
+            @Override
+            public String getPreferredPrefix(String namespaceUri, String suggestion, boolean b) {
+                if ("http://www.cs.rpi.edu/XGMML".equals(namespaceUri)) {
+                    return "";
+                } else if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#".equals(namespaceUri)) {
+                    return "rdf";
+                } else if ("http://purl.org/dc/elements/1.1/".equals(namespaceUri)) {
+                    return "dc";
+                } else if ("http://www.w3.org/1999/xlink".equals(namespaceUri)) {
+                    return "xlink";
+                }
+                return suggestion;
+            }
+        };
     }
 
     public CalimochoDocument readDocument(Reader reader) throws IOException, IllegalRowException {
@@ -54,28 +73,12 @@ public class XGMMLDocumentDefinition extends AbstractDocumentDefinition {
     }
 
     public void writeDocument(Writer writer, CalimochoDocument calimochoDocument) throws IOException, IllegalRowException {
-        GraphBuilder graphBuilder = new GraphBuilder(title, description, source);
         Graph graph = graphBuilder.createGraph(calimochoDocument);
 
         try {
             JAXBContext jc = JAXBContext.newInstance(ObjectFactory.class);
             Marshaller marshaller = jc.createMarshaller();
 
-            NamespacePrefixMapper mapper = new NamespacePrefixMapper() {
-                @Override
-                public String getPreferredPrefix(String namespaceUri, String suggestion, boolean b) {
-                    if ("http://www.cs.rpi.edu/XGMML".equals(namespaceUri)) {
-                        return "";
-                    } else if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#".equals(namespaceUri)) {
-                        return "rdf";
-                    } else if ("http://purl.org/dc/elements/1.1/".equals(namespaceUri)) {
-                        return "dc";
-                    } else if ("http://www.w3.org/1999/xlink".equals(namespaceUri)) {
-                        return "xlink";
-                    }
-                    return suggestion;
-                }
-            };
 
             marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", mapper);
             marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
