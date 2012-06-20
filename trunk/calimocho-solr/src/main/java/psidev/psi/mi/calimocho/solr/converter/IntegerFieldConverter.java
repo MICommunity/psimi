@@ -13,19 +13,25 @@ import org.hupo.psi.calimocho.model.Field;
  * @since <pre>29/05/12</pre>
  */
 
-public class FloatFieldConverter implements SolrFieldConverter{
+public class IntegerFieldConverter implements SolrFieldConverter {
 
     public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean storeOnly, Set<String> uniques) {
 
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = name.toString();
 
-        if (value != null && !uniques.contains(value)){
-            doc.addField(nameField, value);
-            if (!storeOnly){
-                doc.addField(nameField+"_s", value);
+        if (value != null && !value.isEmpty() && !uniques.contains("true")) {
+            doc.addField(nameField, true);
+            if (!storeOnly) {
+                doc.addField(nameField + "_s", "true");
             }
-            uniques.add(value);
+            uniques.add("true");
+        } else if ((value == null || value.isEmpty()) && !uniques.contains("false")) {
+            doc.addField(nameField, false);
+            if (!storeOnly) {
+                doc.addField(nameField + "_s", "false");
+            }
+            uniques.add("false");
         }
     }
 }

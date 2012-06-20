@@ -16,20 +16,20 @@ public class SolrFieldUnit {
     private Collection<String> rowKeys;
     private SolrFieldConverter converter;
     private FieldFormatter formatter;
-    private boolean stored;
+    private boolean storeOnly; //fn_o VS fn + fn_s + fn_o (fields in MIQL2.7)
 
-    public SolrFieldUnit(Collection<String> rowKeys, SolrFieldConverter converter, FieldFormatter formatter, boolean stored){
+    public SolrFieldUnit(Collection<String> rowKeys, SolrFieldConverter converter, FieldFormatter formatter, boolean storeOnly){
         this.rowKeys = rowKeys;
         this.converter = converter;
         this.formatter = formatter;
-        this.stored = stored;
+        this.storeOnly = storeOnly;
     }
 
-    public SolrFieldUnit(Collection<String> rowKeys, FieldFormatter formatter, boolean stored){
+    public SolrFieldUnit(Collection<String> rowKeys, FieldFormatter formatter, boolean storeOnly){
         this.rowKeys = rowKeys;
         this.converter = null;
         this.formatter = formatter;
-        this.stored = stored;
+        this.storeOnly = storeOnly;
     }
 
     public Collection<String> getRowKeys() {
@@ -52,7 +52,7 @@ public class SolrFieldUnit {
         return this.formatter;
     }
 
-    public boolean isStored() {
-        return stored;
+    public boolean isStoreOnly() {
+        return storeOnly;
     }
 }
