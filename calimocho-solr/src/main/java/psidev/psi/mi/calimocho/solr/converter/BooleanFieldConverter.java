@@ -12,17 +12,18 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class BooleanFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean stored, Set<String> uniques) {
+    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean storeOnly, Set<String> uniques) {
 
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
         String text = field.get(CalimochoKeys.TEXT);
         String nameField = name.toString();
 
-        if ((db == null || db.isEmpty()) && (value == null || value.isEmpty()) && (text == null || text.isEmpty())){
+        //if ((db == null || db.isEmpty()) && (value == null || value.isEmpty()) && (text == null || text.isEmpty())){
+        if (value == null || value.isEmpty()){ //check for value is sufficient
             if (!uniques.contains("false")) {
-                doc.addField(nameField, "false");
-                if (stored) {
+                doc.addField(nameField, false);
+                if (!storeOnly) {
                     doc.addField(nameField+"_s", "false");
                 }
                 uniques.add("false");
@@ -30,8 +31,8 @@ public class BooleanFieldConverter implements SolrFieldConverter {
         }
         else {
             if (!uniques.contains("true")) {
-                doc.addField(nameField, "true");
-                if (stored) {
+                doc.addField(nameField, true);
+                if (!storeOnly) {
                     doc.addField(nameField+"_s", "true");
                 }
                 uniques.add("true");

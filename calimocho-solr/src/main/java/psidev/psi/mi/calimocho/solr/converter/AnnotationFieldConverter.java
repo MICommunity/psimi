@@ -11,7 +11,7 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class AnnotationFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, SolrFieldName fName, SolrInputDocument doc, boolean stored, Set<String> uniques) {
+    public void indexFieldValues(Field field, SolrFieldName fName, SolrInputDocument doc, boolean storeOnly, Set<String> uniques) {
 
         String name = field.get(CalimochoKeys.NAME);
         String value = field.get(CalimochoKeys.VALUE);
@@ -22,9 +22,15 @@ public class AnnotationFieldConverter implements SolrFieldConverter {
                 doc.addField(nameField, name);
                 uniques.add(name);
             }
-            if (stored && value != null && !uniques.contains(name+":"+value)) {
-                doc.addField(nameField+"_s", name+":"+value);
-                uniques.add(name+":"+value);
+            if (!storeOnly) {
+                if (value != null && !value.isEmpty() && !uniques.contains(name+":"+value)) {
+                    doc.addField(nameField+"_s", name+":"+value);
+                    uniques.add(name+":"+value);
+                }
+                else if ((value == null || value.isEmpty()) && !uniques.contains(name+"_s")) {
+                    doc.addField(nameField+"_s", name);
+                    uniques.add(name+"_s");
+                }
             }
         }
         if (value != null && !uniques.contains(value)){
