@@ -129,7 +129,7 @@ public class Converter {
                         StringBuilder origField = new StringBuilder();
                         for (Field field : fields) {
                             origField.append(solrFieldUnit.getFormatter().format(field)).append("|");
-                            if (converter != null) {
+                            if (converter != null && !solrFieldUnit.isStoreOnly()) {
                                 converter.indexFieldValues(field, solrFieldName, doc, solrFieldUnit.isStoreOnly(), uniques);
                             }
                         }
