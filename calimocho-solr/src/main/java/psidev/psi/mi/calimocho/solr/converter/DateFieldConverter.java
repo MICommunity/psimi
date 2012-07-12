@@ -22,10 +22,10 @@ public class DateFieldConverter implements SolrFieldConverter {
         if (year != null && month != null && day != null){
             String formattedDate = "";
             try {
-                SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyyMMdd");
+                SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy/MM/dd");
                 formattedDate = simpleFormat.format(simpleFormat.parse(year+"/"+month+"/"+day));
                 if (!formattedDate.isEmpty() && !uniques.contains(formattedDate)) {
-                    doc.addField(nameField, Integer.parseInt((simpleFormat.parse(year+month+day)).toString())); //int representation of date
+                    doc.addField(nameField, Integer.parseInt(formattedDate.replace("/", ""))); //int representation of date
                     if (!storeOnly) {
                         doc.addField(nameField+"_s", formattedDate);
                     }
