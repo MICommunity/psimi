@@ -18,7 +18,7 @@ public class SingleBooleanFieldConverter implements SolrFieldConverter {
         String nameField = name.toString();
 
         //if ((db == null || db.isEmpty()) && (value == null || value.isEmpty()) && (text == null || text.isEmpty())){
-        if (value == null || value.isEmpty()) {
+        if (value == null || value.isEmpty() || !Boolean.parseBoolean(value)) {
             if (!uniques.contains("false")) {
                 doc.addField(nameField, false);
                 if (!storeOnly) {

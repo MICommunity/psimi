@@ -14,13 +14,11 @@ public class BooleanFieldConverter implements SolrFieldConverter {
 
     public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean storeOnly, Set<String> uniques) {
 
-        String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
-        String text = field.get(CalimochoKeys.TEXT);
         String nameField = name.toString();
 
         //if ((db == null || db.isEmpty()) && (value == null || value.isEmpty()) && (text == null || text.isEmpty())){
-        if (value == null || value.isEmpty()){ //check for value is sufficient
+        if (value == null || value.isEmpty() || !Boolean.parseBoolean(value)){ //check for value is sufficient
             if (!uniques.contains("false")) {
                 doc.addField(nameField, false);
                 if (!storeOnly) {
