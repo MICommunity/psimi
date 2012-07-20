@@ -89,19 +89,14 @@ public class AnnotationFieldConverterTest extends TestCase {
             Collection<Field> fieldsA = row.getFields(InteractionKeys.KEY_ANNOTATIONS_A);
             SolrFieldName fName = SolrFieldName.annotA;
             SolrInputDocument solrDoc = new SolrInputDocument();
-            boolean storeOnly = true;
             Set<String> uniques = new HashSet();
             AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
 
             for (Field field : fieldsA) {
-                annotConverter.indexFieldValues(field, fName, solrDoc, storeOnly, uniques);
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
                 Assert.assertEquals(solrDoc.getField(fName.toString()), origSolrDoc.getField(fName.toString()));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                annotConverter.indexFieldValues(field, fName, solrDoc, !storeOnly, uniques);
+                annotConverter.indexFieldValues(field, fName, solrDoc, uniques);
                 Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));
@@ -130,14 +125,10 @@ public class AnnotationFieldConverterTest extends TestCase {
             AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
 
             for (Field field : fieldsB) {
-                annotConverter.indexFieldValues(field, fName, solrDoc, storeOnly, uniques);
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
                 Assert.assertEquals(solrDoc.getField(fName.toString()), origSolrDoc.getField(fName.toString()));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                annotConverter.indexFieldValues(field, fName, solrDoc, !storeOnly, uniques);
+                annotConverter.indexFieldValues(field, fName, solrDoc, uniques);
                 Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));
@@ -166,14 +157,10 @@ public class AnnotationFieldConverterTest extends TestCase {
             AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
 
             for (Field field : fieldsA) {
-                annotConverter.indexFieldValues(field, fName, solrDoc, storeOnly, uniques);
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
                 Assert.assertEquals(solrDoc.getField(fName.toString()), origSolrDoc.getField(fName.toString()));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                annotConverter.indexFieldValues(field, fName, solrDoc, !storeOnly, uniques);
+                annotConverter.indexFieldValues(field, fName, solrDoc, uniques);
                 Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));
@@ -202,14 +189,10 @@ public class AnnotationFieldConverterTest extends TestCase {
             AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
 
             for (Field field : fieldsB) {
-                annotConverter.indexFieldValues(field, fName, solrDoc, storeOnly, uniques);
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
                 Assert.assertEquals(solrDoc.getField(fName.toString()), origSolrDoc.getField(fName.toString()));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                annotConverter.indexFieldValues(field, fName, solrDoc, !storeOnly, uniques);
+                annotConverter.indexFieldValues(field, fName, solrDoc, uniques);
                 Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));
@@ -238,14 +221,10 @@ public class AnnotationFieldConverterTest extends TestCase {
             AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
 
             for (Field field : fieldsA) {
-                annotConverter.indexFieldValues(field, fName, solrDoc, storeOnly, uniques);
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
                 Assert.assertEquals(solrDoc.getField(fName.toString()), origSolrDoc.getField(fName.toString()));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                annotConverter.indexFieldValues(field, fName, solrDoc, !storeOnly, uniques);
+                annotConverter.indexFieldValues(field, fName, solrDoc, uniques);
                 Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));
@@ -269,19 +248,14 @@ public class AnnotationFieldConverterTest extends TestCase {
             Collection<Field> fieldsB = row.getFields(InteractionKeys.KEY_ANNOTATIONS_B);
             SolrFieldName fName = SolrFieldName.annotB;
             SolrInputDocument solrDoc = new SolrInputDocument();
-            boolean storeOnly = true;
             Set<String> uniques = new HashSet();
             AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
 
             for (Field field : fieldsB) {
-                annotConverter.indexFieldValues(field, fName, solrDoc, storeOnly, uniques);
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
                 Assert.assertEquals(solrDoc.getField(fName.toString()), origSolrDoc.getField(fName.toString()));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                annotConverter.indexFieldValues(field, fName, solrDoc, !storeOnly, uniques);
+                annotConverter.indexFieldValues(field, fName, solrDoc, uniques);
                 Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));

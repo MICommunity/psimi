@@ -54,7 +54,6 @@ public enum SolrFieldName {
    stcB,
    stc,
    param,
-   paramText,
    confidence,
    source,
    recId,

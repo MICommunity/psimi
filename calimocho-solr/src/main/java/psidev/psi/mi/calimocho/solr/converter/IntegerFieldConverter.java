@@ -15,22 +15,18 @@ import org.hupo.psi.calimocho.model.Field;
 
 public class IntegerFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, boolean storeOnly, Set<String> uniques) {
+    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, Set<String> uniques) {
 
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = name.toString();
 
         if (value != null && !value.isEmpty() && !uniques.contains("true")) {
             doc.addField(nameField, true);
-            if (!storeOnly) {
-                doc.addField(nameField + "_s", "true");
-            }
+            doc.addField(nameField + "_s", "true");
             uniques.add("true");
         } else if ((value == null || value.isEmpty()) && !uniques.contains("false")) {
             doc.addField(nameField, false);
-            if (!storeOnly) {
-                doc.addField(nameField + "_s", "false");
-            }
+            doc.addField(nameField + "_s", "false");
             uniques.add("false");
         }
     }

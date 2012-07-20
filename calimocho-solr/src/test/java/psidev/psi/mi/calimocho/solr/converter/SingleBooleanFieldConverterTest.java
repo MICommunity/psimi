@@ -89,18 +89,13 @@ public class SingleBooleanFieldConverterTest extends TestCase {
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
             SolrFieldName fName = SolrFieldName.negative;
             SolrInputDocument solrDoc = new SolrInputDocument();
-            boolean storeOnly = true;
             SingleBooleanFieldConverter boolConverter = new SingleBooleanFieldConverter();
 
             for (Field field : fields) {
-                boolConverter.indexFieldValues(field, fName, solrDoc, storeOnly, new HashSet());
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                Assert.assertEquals(solrDoc.getFieldValue(fName.toString()), origSolrDoc.getFieldValue(fName.toString()));
-                boolConverter.indexFieldValues(field, fName, solrDoc, !storeOnly, new HashSet());
+                Assert.assertNotSame(solrDoc.getFieldValue(fName.toString()), origSolrDoc.getFieldValue(fName.toString()));
+                boolConverter.indexFieldValues(field, fName, solrDoc, new HashSet());
                 Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
                 Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));

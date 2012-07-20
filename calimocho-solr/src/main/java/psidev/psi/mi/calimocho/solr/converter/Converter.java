@@ -26,14 +26,14 @@ import org.hupo.psi.calimocho.tab.io.formatter.XrefFieldFormatter;
  */
 public class Converter {
 
-    private Map<SolrFieldName, SolrFieldUnit> keyMap;
+    protected Map<SolrFieldName, SolrFieldUnit> keyMap;
 
     public Converter() {
         keyMap = new HashMap<SolrFieldName, SolrFieldUnit>();
         initializeKeyMap();
     }
 
-    private void initializeKeyMap() {
+    protected void initializeKeyMap() {
         XrefFieldConverter xrefConverter = new XrefFieldConverter();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
         TextFieldConverter textConverter = new TextFieldConverter();
@@ -67,9 +67,9 @@ public class Converter {
         keyMap.put(SolrFieldName.pexproleB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPROLE_B), textConverter, textFormatter, storeOnly));
         keyMap.put(SolrFieldName.ptypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A), textConverter, textFormatter, !storeOnly));
         keyMap.put(SolrFieldName.ptypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_B), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.pxrefA, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_A, */InteractionKeys.KEY_XREFS_A), xrefConverter, xrefFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.pxrefB, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_B, */InteractionKeys.KEY_XREFS_B), xrefConverter, xrefFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.xref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_XREFS_I/*, InteractionKeys.KEY_INTERACTION_ID*/), xrefConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.pxrefA, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_A, */InteractionKeys.KEY_XREFS_A), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.pxrefB, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_B, */InteractionKeys.KEY_XREFS_B), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.xref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_XREFS_I/*, InteractionKeys.KEY_INTERACTION_ID*/), textConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.annotA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_A), annotConverter, annotFormatter, storeOnly));
         keyMap.put(SolrFieldName.annotB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_B), annotConverter, annotFormatter, storeOnly));
         keyMap.put(SolrFieldName.annot, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ANNOTATIONS_I), annotConverter, annotFormatter, !storeOnly));
@@ -81,10 +81,9 @@ public class Converter {
         keyMap.put(SolrFieldName.ftypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_B), textConverter, textFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pmethodA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A), textConverter, textFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pmethodB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.stcA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A), boolConverter, boolFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.stcB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_B), boolConverter, boolFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.stcA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A), boolConverter, boolFormatter, storeOnly));
+        keyMap.put(SolrFieldName.stcB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_B), boolConverter, boolFormatter, storeOnly));
         keyMap.put(SolrFieldName.param, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), boolConverter, boolFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.paramText,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), textConverter, textFormatter, storeOnly));
         keyMap.put(SolrFieldName.confidence,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CONFIDENCE), textConverter, textFormatter, storeOnly));
         keyMap.put(SolrFieldName.source,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_SOURCE), textConverter, textFormatter, storeOnly));
         keyMap.put(SolrFieldName.checksumA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_A), textConverter, textFormatter, storeOnly));
@@ -130,7 +129,7 @@ public class Converter {
                         for (Field field : fields) {
                             origField.append(solrFieldUnit.getFormatter().format(field)).append("|");
                             if (converter != null && !solrFieldUnit.isStoreOnly()) {
-                                converter.indexFieldValues(field, solrFieldName, doc, solrFieldUnit.isStoreOnly(), uniques);
+                                converter.indexFieldValues(field, solrFieldName, doc, uniques);
                             }
                         }
                         if (origField.length() > 0 && !uniques.contains(origField+"_o")) {
