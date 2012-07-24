@@ -28,6 +28,7 @@ import java.util.List;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public class MitabInteractionRowConverter extends AbstractInteractionRowConverter<BinaryInteraction> {
 
     private static final Log log = LogFactory.getLog( MitabInteractionRowConverter.class );

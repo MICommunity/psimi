@@ -15,12 +15,9 @@
  */
 package psidev.psi.mi.tab.model.builder;
 
-import psidev.psi.mi.tab.PsiMitabException;
 import psidev.psi.mi.tab.RuntimePsiMitabException;
 import psidev.psi.mi.tab.model.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,6 +27,7 @@ import java.util.List;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public abstract class AbstractInteractionRowConverter<T extends BinaryInteraction> implements InteractionRowConverter<T> {
 
     protected abstract T newBinaryInteraction(Interactor interactorA, Interactor interactorB);
@@ -58,7 +56,7 @@ public abstract class AbstractInteractionRowConverter<T extends BinaryInteractio
         final Interactor interactorA = interaction.getInteractorA();
         final Interactor interactorB = interaction.getInteractorB();
 
-        columns.add( ParseUtils.createColumnFromCrossReferences( interactorA.getIdentifiers() ) );
+        columns.add( ParseUtils.createColumnFromCrossReferences(interactorA.getIdentifiers()) );
         columns.add( ParseUtils.createColumnFromCrossReferences( interactorB.getIdentifiers() ) );
         columns.add( ParseUtils.createColumnFromCrossReferences( interactorA.getAlternativeIdentifiers() ) );
         columns.add( ParseUtils.createColumnFromCrossReferences( interactorB.getAlternativeIdentifiers() ) );

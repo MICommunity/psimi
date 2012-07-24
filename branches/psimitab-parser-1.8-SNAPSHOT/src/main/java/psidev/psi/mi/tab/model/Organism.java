@@ -10,6 +10,7 @@ import java.util.Collection;
  * @version $Id$
  * @since specify the maven artifact version
  */
+
 public interface Organism extends Serializable {
     /**
      * The default database in case it is not specified.

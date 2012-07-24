@@ -22,6 +22,7 @@ package psidev.psi.mi.tab.model.builder;
  * @version $Id$
  * @since 1.6.0
  */
+@Deprecated
 public abstract class AbstractFieldBuilder implements FieldBuilder {
     public String removeLineReturn( String str ) {
         // check that the given string doesn't have any line return, and if so, remove them.

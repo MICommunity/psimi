@@ -30,6 +30,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public class RowBuilder<T extends BinaryInteraction> {
 
     private static final Log log = LogFactory.getLog( RowBuilder.class );

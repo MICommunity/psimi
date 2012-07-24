@@ -12,6 +12,8 @@ import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
+import psidev.psi.mi.tab.model.builder.PsimiTab;
+import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.*;
 import java.util.Collection;
@@ -42,7 +44,7 @@ public class PsimiTabWriterTest {
 
     @Test
     public void writeToFile() throws Exception {
-        File file = TestHelper.getFileByResources( "/psi25-samples/11585365.xml", Xml2TabTest.class );
+        File file = TestHelper.getFileByResources("/psi25-samples/11585365.xml", Xml2TabTest.class);
         File outputFile = new File( file.getAbsolutePath() + ".tab" );
 
         if ( outputFile.exists() ) {
@@ -89,7 +91,7 @@ public class PsimiTabWriterTest {
         File outputFile = new File( file.getAbsolutePath() + ".tab" );
 
         //read binary interactions
-        PsimiTabReader reader = new PsimiTabReader( new MitabDocumentDefinition(), true );
+        PsimiTabReader reader = new PsimiTabReader(true);
         Collection<BinaryInteraction> interactions = reader.read( file );
 
         // write binary interactions
@@ -209,5 +211,75 @@ public class PsimiTabWriterTest {
         final BinaryInteraction bi2 = interactions.iterator().next();
 
         Assert.assertEquals( bi, bi2 );
+    }
+
+    @Test
+    public void readAndWriteMitab27WithHeader() throws ConverterException, IOException {
+
+        File inputFile = TestHelper.getFileByResources("/mitab-samples/mitab_27_example.txt", PsimiTabReader.class);
+        File outputFile = new File(inputFile.getAbsolutePath() + ".csv");
+
+        Writer fileWriter = new FileWriter(outputFile);
+
+        PsimiTabReader firstReader = new PsimiTabReader(true);
+        PsimiTabWriter writer = new PsimiTabWriter(PsimiTab.VERSION_2_7, true);
+
+        Iterator<BinaryInteraction> iterator = firstReader.iterate(inputFile);
+
+        int count = 1;
+
+        while (iterator.hasNext()) {
+            count++;
+            BinaryInteraction interaction = iterator.next();
+            writer.write(interaction, fileWriter);
+        }
+
+        fileWriter.close();
+
+        outputFile.deleteOnExit();
+
+        assertEquals(15, count);
+    }
+
+    @Test
+    public void compareTwoMITAB27() throws ConverterException, IOException {
+
+        File inputFile = TestHelper.getFileByResources("/mitab-samples/mitab_27_example.txt", PsimiTabReader.class);
+        File outputFile = new File(inputFile.getAbsolutePath() + ".csv");
+
+        Writer fileWriter = new FileWriter(outputFile);
+
+        PsimiTabReader reader = new PsimiTabReader(true);
+        PsimiTabWriter writer = new PsimiTabWriter(PsimiTab.VERSION_2_7, true);
+
+        Iterator<BinaryInteraction> iterator = reader.iterate(inputFile);
+
+
+        while (iterator.hasNext()) {
+            BinaryInteraction interaction = iterator.next();
+            writer.write(interaction, fileWriter);
+        }
+
+        fileWriter.close();
+
+
+        PsimiTabReader firstReader = new PsimiTabReader(true);
+        PsimiTabReader secondReader = new PsimiTabReader(true);
+
+        Iterator<BinaryInteraction> iterator1 = firstReader.iterate(inputFile);
+        Iterator<BinaryInteraction> iterator2 = secondReader.iterate(outputFile);
+
+        int count = 1;
+
+        while (iterator1.hasNext() && iterator2.hasNext()) {
+
+            count++;
+            BinaryInteraction interaction1 = iterator1.next();
+            BinaryInteraction interaction2 = iterator2.next();
+            assertEquals(interaction1, interaction2);
+
+        }
+
+        outputFile.deleteOnExit();
     }
 }

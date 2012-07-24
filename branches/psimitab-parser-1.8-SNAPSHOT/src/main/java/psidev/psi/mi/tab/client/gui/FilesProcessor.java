@@ -92,7 +92,7 @@ public class FilesProcessor {
             // configure it
             x2t.setPostProcessor( postProcessorStrategy );
 
-            PsimiTabWriter fileWriter = new PsimiTabWriter();
+            PsimiTabWriter fileWriter = new psidev.psi.mi.tab.PsimiTabWriter();
 
             if ( aggregateFiles ) {
 

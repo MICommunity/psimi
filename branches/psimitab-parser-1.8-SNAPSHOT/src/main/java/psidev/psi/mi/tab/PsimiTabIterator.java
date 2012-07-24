@@ -1,57 +1,34 @@
-/**
- * Copyright 2007 The European Bioinformatics Institute, and others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 package psidev.psi.mi.tab;
 
+import au.com.bytecode.opencsv.CSVReader;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
+import psidev.psi.mi.tab.model.builder.MitabParsingUtils;
+import psidev.psi.mi.tab.model.builder.PsimiTabColumns;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
- * Iterator implementation to avoid memory errors when reading a large MI Tab file.
- * This class is not Thread safe.
- *
- * @author Bruno Aranda (baranda@ebi.ac.uk), Samuel Kerrien (skerrien@ebi.ac.uk).
- * @version $Id$
+ * Created by IntelliJ IDEA.
+ * User: noedelta
+ * Date: 18/06/2012
+ * Time: 15:51
  */
 public class PsimiTabIterator implements Iterator<BinaryInteraction> {
 
-    /**
-     * DocumentDefinition 
-     */
-    private DocumentDefinition documentDefinition;
+    private CSVReader csvReader;
 
-    /**
-     * Reader on the data we are going to iterate.
-     */
-    private BufferedReader interactionStreamReader;
 
     /**
      * Has the input got a header ?
      */
-    private boolean hasHeader;
+    protected boolean hasHeader;
 
     /**
      * Next line to be processed.
      */
-    private String nextLine;
+    private String[] nextLine;
 
     /**
      * Count of interaction already processed.
@@ -61,118 +38,70 @@ public class PsimiTabIterator implements Iterator<BinaryInteraction> {
     /**
      * Line number currently being parsed.
      */
-    private int lineIndex = 0;
-
-    /**
-     * indicate if the line that has been read was already consummed by the user via the next() nethod.
-     */
-    private boolean lineConsummed = true;
+    protected int lineIndex = 0;
 
     ////////////////////////
     // Constructor
 
-    public PsimiTabIterator( DocumentDefinition documentDefinition, Reader psiMiTabInteractionsReader, boolean hasHeaderLine ) {
-        if ( documentDefinition == null ) {
-            throw new NullPointerException( "You must give a non null document definition." );
-        }
 
-        if ( psiMiTabInteractionsReader == null ) {
-            throw new IllegalArgumentException( "You must give a non null input stream." );
-        }
-
-        this.documentDefinition = documentDefinition;
-
-        this.interactionStreamReader = new BufferedReader( psiMiTabInteractionsReader );
+    public PsimiTabIterator(Reader psiMiTabInteractionsReader, boolean hasHeaderLine) {
         this.hasHeader = hasHeaderLine;
 
+        if (psiMiTabInteractionsReader == null) {
+            throw new IllegalArgumentException("You must give a non null input stream.");
+        }
+
         try {
-            if ( hasHeader ) {
-                readNextLine();
+            if (hasHeader) {
                 lineIndex++;
             }
-        } catch ( IOException e ) {
-            closeStreamReader();
-            throw new RuntimeException( "Error while reading the header line.", e );
+            this.csvReader = new CSVReader(psiMiTabInteractionsReader, '\t', '\0',lineIndex);
+            nextLine = csvReader.readNext();
+            if (nextLine != null) {
+
+                if (nextLine.length < PsimiTabColumns.MITAB_LENGTH.ordinal()) {
+                    nextLine = MitabParsingUtils.extendFormat(nextLine, PsimiTabColumns.MITAB_LENGTH.ordinal());
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error while reading the header line.", e);
         }
     }
 
-    //////////////////////////
-    // Iterator
-
     public boolean hasNext() {
-        try {
-            if ( lineConsummed ) {
-                nextLine = readNextLine();
-                lineIndex++;
-
-                if (nextLine != null && nextLine.startsWith("#")) {
-                    return hasNext();
-                }
-
-                lineConsummed = false;
-            }
-        }
-        catch ( IOException e ) {
-            closeStreamReader();
-            return false;
-        }
-
-        return ( nextLine != null );
+        return (nextLine != null);
     }
 
     public BinaryInteraction next() {
-        if ( nextLine == null && !hasNext() ) {
+        if (nextLine == null && !hasNext()) {
             throw new NoSuchElementException();
         }
 
-        BinaryInteraction interaction = null;
+        BinaryInteraction interaction;
+        String[] temp = nextLine;
         try {
-            interaction = documentDefinition.interactionFromString(nextLine);
-        }
-        catch ( Throwable e ) {
-            throw new RuntimeException( "Exception upon parsing at line " + lineIndex, e );
+            nextLine = csvReader.readNext();
+            if (nextLine != null) {
+                if (nextLine.length < PsimiTabColumns.MITAB_LENGTH.ordinal()) {
+                    nextLine = MitabParsingUtils.extendFormat(nextLine, PsimiTabColumns.MITAB_LENGTH.ordinal());
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Exception upon parsing at line " + lineIndex, e);
         }
 
+        interaction = MitabParsingUtils.buildBinaryInteraction(temp);
         interactionsProcessedCount++;
-        lineConsummed = true;
-        nextLine = null;
 
         return interaction;
     }
 
     public void remove() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("This is a read only iterator.");
     }
-
-    //////////////////////////////////
-    // additional public method(s)
 
     public int getInteractionsProcessedCount() {
         return interactionsProcessedCount;
-    }
-
-    /////////////////////
-    // Private method(s)
-
-    private String readNextLine() throws IOException {
-        String line = null;
-        if ( interactionStreamReader != null ) {
-            line = interactionStreamReader.readLine();
-            if ( line == null ) {
-                closeStreamReader();
-                interactionStreamReader = null;
-            }
-        }
-        return line;
-    }
-
-    private void closeStreamReader() {
-        if ( interactionStreamReader != null ) {
-            try {
-                interactionStreamReader.close();
-            } catch ( IOException e ) {
-                // keep it quiet ...
-            }
-        }
     }
 }

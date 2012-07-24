@@ -21,6 +21,7 @@ package psidev.psi.mi.tab.model.builder;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public class ColumnDefinition {
 
     private String columnName;

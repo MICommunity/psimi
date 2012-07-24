@@ -20,6 +20,9 @@ public class AuthorImpl implements Author {
      */
     private static final long serialVersionUID = -4763395239997399170L;
 
+    /////////////////////////
+    // Instance variables
+
     /**
      * Name of the first author.
      */
@@ -27,10 +30,6 @@ public class AuthorImpl implements Author {
 
     /////////////////////////
     // Constructor
-
-    public AuthorImpl() {
-    }
-
     public AuthorImpl( String name ) {
         if( name == null ) {
             throw new IllegalArgumentException( );

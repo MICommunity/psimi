@@ -16,6 +16,7 @@ import java.util.Iterator;
  * @version $Id$
  * @since <pre>30-Jan-2007</pre>
  */
+@Deprecated
 public final class Column {
 
     public static final char FIELD_DELIMITER = '|';

@@ -23,7 +23,7 @@ public class OrganismImpl implements Organism {
      */
     private static final long serialVersionUID = 5647365864375422507L;
 
-    Collection<CrossReference> identifiers = new ArrayList<CrossReference>( 2 );
+    Collection<CrossReference> identifiers = new ArrayList<CrossReference>();
 
     ///////////////////////
     // Cosntructor
@@ -66,7 +66,7 @@ public class OrganismImpl implements Organism {
         if ( identifiers == null ) {
             throw new IllegalArgumentException( "Identifiers cannot be null." );
         }
-        this.identifiers = identifiers;
+        this.identifiers.addAll(identifiers);
     }
 
     ///////////////////
