@@ -14,6 +14,7 @@ import java.util.*;
  * @version $Id$
  * @since <pre>02-Feb-2007</pre>
  */
+@Deprecated
 public class Row {
 
     public static final char COLUMN_DELIMITER = '\t';

@@ -37,7 +37,7 @@ public class CvConverter {
 
 
     // here we are giving the Class, while now we have to use the Factory
-    public <CV extends CrossReferenceImpl> CV toMitab( CvType cv, Class<CV> clazz ) throws TabConversionException {
+    public static <CV extends CrossReferenceImpl, T extends CvType> CV toMitab(T cv, Class<CV> clazz ) throws TabConversionException {
 
         CV myCv = null;
 

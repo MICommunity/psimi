@@ -58,36 +58,28 @@ public class AliasImpl implements Alias {
     // Getters and setters
 
     /**
-     * Getter for property 'type'.
-     *
-     * @return Value for property 'type'.
+     * {@inheritDoc}
      */
     public String getDbSource() {
         return dbSource;
     }
 
     /**
-     * Setter for property 'type'.
-     *
-     * @param dbSource Value to set for property 'type'.
+     * {@inheritDoc}
      */
     public void setDbSource( String dbSource ) {
         this.dbSource = dbSource;
     }
 
     /**
-     * Getter for property 'name'.
-     *
-     * @return Value for property 'name'.
+     * {@inheritDoc}
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Setter for property 'name'.
-     *
-     * @param name Value to set for property 'name'.
+     * {@inheritDoc}
      */
     public void setName( String name ) {
         if ( name == null ) {
@@ -97,18 +89,14 @@ public class AliasImpl implements Alias {
     }
 
     /**
-     * Getter for property 'text'.
-     *
-     * @return Value for property 'text'.
+     * {@inheritDoc}
      */
     public String getAliasType() {
         return aliasType;
     }
 
     /**
-     * Setter for property 'text'.
-     *
-     * @param aliasType Value to set for property 'text'.
+     * {@inheritDoc}
      */
     public void setAliasType( String aliasType ) {
         if ( aliasType != null ) {

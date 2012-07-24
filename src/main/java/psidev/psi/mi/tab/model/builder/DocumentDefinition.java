@@ -26,6 +26,7 @@ import java.util.List;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public abstract class DocumentDefinition<T extends BinaryInteraction> {
 
     private List<ColumnDefinition> columnDefinitions;

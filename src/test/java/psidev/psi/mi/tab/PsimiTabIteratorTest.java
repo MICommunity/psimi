@@ -25,7 +25,7 @@ public class PsimiTabIteratorTest {
         while ( iterator.hasNext() ) {
             iterator.next();
         }
-        assertEquals( 6, ( ( PsimiTabIterator ) iterator ).getInteractionsProcessedCount() );
+        assertEquals( 6, ( (PsimiTabIterator) iterator ).getInteractionsProcessedCount() );
     }
 
     @Test

@@ -15,7 +15,6 @@
  */
 package psidev.psi.mi.tab.model.builder;
 
-import psidev.psi.mi.tab.PsiMitabException;
 import psidev.psi.mi.tab.RuntimePsiMitabException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 
@@ -25,6 +24,7 @@ import psidev.psi.mi.tab.model.BinaryInteraction;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public interface InteractionRowConverter<T extends BinaryInteraction> {
 
     T createBinaryInteraction(Row row) throws RuntimePsiMitabException;

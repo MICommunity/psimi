@@ -1,6 +1,5 @@
 package psidev.psi.mi.tab.model.builder;
 
-import static org.junit.Assert.*;
 import org.junit.*;
 
 import java.util.Arrays;

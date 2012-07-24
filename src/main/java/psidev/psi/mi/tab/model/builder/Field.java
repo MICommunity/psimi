@@ -24,6 +24,7 @@ import psidev.psi.mi.tab.utils.MitabEscapeUtils;
  * @version $Id$
  * @since 1.5.2
  */
+@Deprecated
 public final class Field {
 
     private static final String COLON = ":";

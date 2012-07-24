@@ -31,6 +31,7 @@ import java.util.List;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public final class ParseUtils {
 
     private static final Log log = LogFactory.getLog(ParseUtils.class);

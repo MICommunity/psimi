@@ -23,6 +23,7 @@ import psidev.psi.mi.tab.model.BinaryInteraction;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public class MitabDocumentDefinition extends AbstractDocumentDefinition<BinaryInteraction> {
 
     public InteractionRowConverter<BinaryInteraction> createInteractionRowConverter() {

@@ -23,6 +23,7 @@ import psidev.psi.mi.tab.model.BinaryInteraction;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public abstract class AbstractDocumentDefinition<T extends BinaryInteraction> extends DocumentDefinition<T> {
 
     public static final int ID_INTERACTOR_A = 0;

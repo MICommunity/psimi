@@ -30,7 +30,7 @@ public class ParseUtilsTest {
 
     @Test
     public void quoteAwareSplit() throws Exception {
-        Assert.assertEquals(3, ParseUtils.quoteAwareSplit("a:b(c)", new char[] {':', '(', ')'}, true).length);
+        Assert.assertEquals(3, ParseUtils.quoteAwareSplit("a:b(c)", new char[]{':', '(', ')'}, true).length);
         
         Assert.assertEquals(2, ParseUtils.quoteAwareSplit("aaaaa|bbbb", new char[] {'|'}, true).length);
         Assert.assertEquals(2, ParseUtils.quoteAwareSplit("\"aaa|aaa\"|bbbbb", new char[] {'|'}, true).length);

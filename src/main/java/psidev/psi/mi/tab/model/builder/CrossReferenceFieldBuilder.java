@@ -21,6 +21,7 @@ package psidev.psi.mi.tab.model.builder;
  * @author Bruno Aranda (baranda@ebi.ac.uk)
  * @version $Id$
  */
+@Deprecated
 public class CrossReferenceFieldBuilder extends AbstractFieldBuilder {
 
     private static final String MI_PREFIX = "MI";
@@ -49,7 +50,7 @@ public class CrossReferenceFieldBuilder extends AbstractFieldBuilder {
 
         str = removeLineReturn(str);
 
-        String[] groups = ParseUtils.quoteAwareSplit(str, new char[] {':', '(', ')'}, true);
+        String[] groups = ParseUtils.quoteAwareSplit(str, new char[]{':', '(', ')'}, true);
 
         // some exception handling
         if (groups.length == 0 || groups.length > 3) {
