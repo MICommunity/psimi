@@ -11,15 +11,15 @@
 
     <artifactId>psimitab</artifactId>
     <packaging>jar</packaging>
-    <version>1.7.11-SNAPSHOT</version>
+    <version>1.8.0-SNAPSHOT</version>
 
     <name>PSI :: PSI-MI TABular format tools BRANCH</name>
     <url>http://psidev.sf.net</url>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psimitab-parser</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/branches/psimitab-parser-1.8-SNAPSHOT</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/banches/psimitab-parser-1.8-SNAPSHOT</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/branches/psimitab-parser-1.8-SNAPSHOT</url>
     </scm>
 
     <properties>
@@ -126,7 +126,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psi25-xml</artifactId>
-            <version>${project.version}</version>
+            <version>1.7.11-SNAPSHOT</version>
         </dependency>
 
         <dependency>
