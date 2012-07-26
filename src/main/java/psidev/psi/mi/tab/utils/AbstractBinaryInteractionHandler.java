@@ -20,8 +20,8 @@ import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.model.OrganismImpl;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract binary interaction handler.
@@ -33,7 +33,7 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
 
     public abstract T newBinaryInteraction(Interactor i1, Interactor i2);
 
-    public abstract Interactor newInteractor(Collection<CrossReference> identifiers);
+    public abstract Interactor newInteractor(List<CrossReference> identifiers);
 
     public T merge(T bi1, T bi2) {
         T merged = cloneBinaryInteraction(bi1);

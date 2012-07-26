@@ -1,7 +1,6 @@
 package psidev.psi.mi.tab.converter.xml2tab;
 
 import org.junit.Assert;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.model.*;
@@ -12,7 +11,9 @@ import psidev.psi.mi.xml.model.Interaction;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * InteractionConverter Tester.
@@ -25,44 +26,44 @@ public class InteractionConverterTest {
 
     public Interactor buildInteractorA() {
 
-        Collection<CrossReference> identifiers = new ArrayList<CrossReference>();
-        identifiers.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "P23367" ) );
+        List<CrossReference> identifiers = new ArrayList<CrossReference>();
+        identifiers.add( new CrossReferenceImpl( "uniprotkb", "P23367" ) );
         Interactor i = new Interactor( identifiers );
 
-        Collection<CrossReference> altIds = new ArrayList<CrossReference>();
-        altIds.add( CrossReferenceFactory.getInstance().build( "interpro", "IPR003594" ) );
-        altIds.add( CrossReferenceFactory.getInstance().build( "interpro", "IPR002099" ) );
-        altIds.add( CrossReferenceFactory.getInstance().build( "go", "GO:0005515" ) );
-        altIds.add( CrossReferenceFactory.getInstance().build( "intact", "EBI-554913" ) );
+        List<CrossReference> altIds = new ArrayList<CrossReference>();
+        altIds.add( new CrossReferenceImpl( "interpro", "IPR003594" ) );
+        altIds.add( new CrossReferenceImpl( "interpro", "IPR002099" ) );
+        altIds.add( new CrossReferenceImpl( "go", "GO:0005515" ) );
+        altIds.add( new CrossReferenceImpl( "intact", "EBI-554913" ) );
         i.setAlternativeIdentifiers( altIds );
 
-        Collection<Alias> aliases = new ArrayList<Alias>();
+        List<Alias> aliases = new ArrayList<Alias>();
         aliases.add( new AliasImpl( "gene name", "mutL" ) );
         aliases.add( new AliasImpl( "locus name", "b4170" ) );
         i.setAliases( aliases );
 
-        i.setOrganism( OrganismFactory.getInstance().build( 562 ) );
+        i.setOrganism( new OrganismImpl( 562 ) );
 
         return i;
     }
 
     public Interactor buildInteractorB() {
 
-        Collection<CrossReference> identifiers = new ArrayList<CrossReference>();
-        identifiers.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "P09184" ) );
+        List<CrossReference> identifiers = new ArrayList<CrossReference>();
+        identifiers.add( new CrossReferenceImpl( "uniprotkb", "P09184" ) );
         Interactor i = new Interactor( identifiers );
 
-        Collection<CrossReference> altIds = new ArrayList<CrossReference>();
-        altIds.add( CrossReferenceFactory.getInstance().build( "interpro", "IPR004603" ) );
-        altIds.add( CrossReferenceFactory.getInstance().build( "intact", "EBI-765033" ) );
+        List<CrossReference> altIds = new ArrayList<CrossReference>();
+        altIds.add( new CrossReferenceImpl( "interpro", "IPR004603" ) );
+        altIds.add( new CrossReferenceImpl( "intact", "EBI-765033" ) );
         i.setAlternativeIdentifiers( altIds );
 
-        Collection<Alias> aliases = new ArrayList<Alias>();
+        List<Alias> aliases = new ArrayList<Alias>();
         aliases.add( new AliasImpl( "gene name", "vsr" ) );
         aliases.add( new AliasImpl( "locus name", "b1960" ) );
         i.setAliases( aliases );
 
-        i.setOrganism( OrganismFactory.getInstance().build( 562 ) );
+        i.setOrganism( new OrganismImpl( 562 ) );
 
         return i;
     }
@@ -99,15 +100,15 @@ public class InteractionConverterTest {
 
         // publications
         assertEquals( 1, bi.getPublications().size() );
-        assertTrue( bi.getPublications().contains( CrossReferenceFactory.getInstance().build( "pubmed", "11585365" ) ) );
+        assertTrue( bi.getPublications().contains( new CrossReferenceImpl( "pubmed", "11585365" ) ) );
 
         // interaction detection method
         assertEquals( 1, bi.getDetectionMethods().size() );
-        assertEquals( InteractionDetectionMethodFactory.getInstance().build( "psi-mi", "MI:0018", "two hybrid" ), bi.getDetectionMethods().iterator().next() );
+        assertEquals( new CrossReferenceImpl( "psi-mi", "MI:0018", "two hybrid" ), bi.getDetectionMethods().iterator().next() );
 
         // interaction type
         assertEquals( 1, bi.getInteractionTypes().size() );
-        assertEquals( InteractionTypeFactory.getInstance().build( "psi-mi", "MI:0218", "physical interaction" ), bi.getInteractionTypes().iterator().next() );
+        assertEquals( new CrossReferenceImpl( "psi-mi", "MI:0218", "physical interaction" ), bi.getInteractionTypes().iterator().next() );
 
         // author
         //assertTrue( bi.getAuthors().isEmpty() );

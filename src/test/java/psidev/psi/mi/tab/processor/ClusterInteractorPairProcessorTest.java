@@ -1,13 +1,12 @@
 package psidev.psi.mi.tab.processor;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Ignore;
+import org.junit.Test;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.TestHelper;
-import psidev.psi.mi.tab.mock.PsimiTabMockBuilder;
 import psidev.psi.mi.tab.converter.txt2tab.behaviour.FailFastUnparseableLine;
+import psidev.psi.mi.tab.mock.PsimiTabMockBuilder;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor.SimpleInteractor;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor.TwoInteractor;
@@ -20,6 +19,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
+import static org.junit.Assert.*;
+
 /**
  * ClusterPerInteractorProcessor Tester.
  *
@@ -31,39 +32,39 @@ public class ClusterInteractorPairProcessorTest {
 
     public Interactor buildInteractorA() {
 
-        Collection<CrossReference> identifiers = new ArrayList<CrossReference>();
-        identifiers.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "Q98765" ) );
+        List<CrossReference> identifiers = new ArrayList<CrossReference>();
+        identifiers.add( new CrossReferenceImpl( "uniprotkb", "Q98765" ) );
         Interactor i = new Interactor( identifiers );
 
-        Collection<CrossReference> altIds = new ArrayList<CrossReference>();
-        altIds.add( CrossReferenceFactory.getInstance().build( "interpro", "IPR002099" ) );
-        altIds.add( CrossReferenceFactory.getInstance().build( "go", "GO:0005515" ) );
+        List<CrossReference> altIds = new ArrayList<CrossReference>();
+        altIds.add( new CrossReferenceImpl( "interpro", "IPR002099" ) );
+        altIds.add( new CrossReferenceImpl( "go", "GO:0005515" ) );
         i.setAlternativeIdentifiers( altIds );
 
-        Collection<Alias> aliases = new ArrayList<Alias>();
+        List<Alias> aliases = new ArrayList<Alias>();
         aliases.add( new AliasImpl( "gene name", "abc" ) );
         i.setAliases( aliases );
 
-        i.setOrganism( OrganismFactory.getInstance().build( 10032 ) );
+        i.setOrganism( new OrganismImpl( 10032 ) );
 
         return i;
     }
 
     public Interactor buildInteractorB() {
 
-        Collection<CrossReference> identifiers = new ArrayList<CrossReference>();
-        identifiers.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "P12345" ) );
+        List<CrossReference> identifiers = new ArrayList<CrossReference>();
+        identifiers.add( new CrossReferenceImpl( "uniprotkb", "P12345" ) );
         Interactor i = new Interactor( identifiers );
 
-        Collection<CrossReference> altIds = new ArrayList<CrossReference>();
-        altIds.add( CrossReferenceFactory.getInstance().build( "interpro", "IPR002099" ) );
+        List<CrossReference> altIds = new ArrayList<CrossReference>();
+        altIds.add( new CrossReferenceImpl( "interpro", "IPR002099" ) );
         i.setAlternativeIdentifiers( altIds );
 
-        Collection<Alias> aliases = new ArrayList<Alias>();
+        List<Alias> aliases = new ArrayList<Alias>();
         aliases.add( new AliasImpl( "gene name", "def" ) );
         i.setAliases( aliases );
 
-        i.setOrganism( OrganismFactory.getInstance().build( 9606 ) );
+        i.setOrganism( new OrganismImpl( 9606 ) );
 
         return i;
     }
@@ -77,17 +78,17 @@ public class ClusterInteractorPairProcessorTest {
 
         BinaryInteractionImpl bi1 = new BinaryInteractionImpl( buildInteractorA(), buildInteractorB() );
         bi1.getAuthors().add( new AuthorImpl( "samuel" ) );
-        bi1.getDetectionMethods().add( InteractionDetectionMethodFactory.getInstance().build( "int-detect", "MI:0123" ) );
-        bi1.getInteractionTypes().add( InteractionTypeFactory.getInstance().build( "int-type", "MI:2345" ) );
-        bi1.getPublications().add( CrossReferenceFactory.getInstance().build( "pubmed", "123456789" ) );
-        bi1.getSourceDatabases().add( CrossReferenceFactory.getInstance().build( "intact", "MI:9999" ) );
+        bi1.getDetectionMethods().add( new CrossReferenceImpl( "int-detect", "MI:0123" ) );
+        bi1.getInteractionTypes().add( new CrossReferenceImpl( "int-type", "MI:2345" ) );
+        bi1.getPublications().add( new CrossReferenceImpl( "pubmed", "123456789" ) );
+        bi1.getSourceDatabases().add( new CrossReferenceImpl( "intact", "MI:9999" ) );
 
         BinaryInteractionImpl bi2 = new BinaryInteractionImpl( buildInteractorB(), buildInteractorA() );
         bi2.getAuthors().add( new AuthorImpl( "samuel" ) );
-        bi2.getDetectionMethods().add( InteractionDetectionMethodFactory.getInstance().build( "int-detect", "MI:0123" ) );
-        bi2.getInteractionTypes().add( InteractionTypeFactory.getInstance().build( "int-type", "MI:2345" ) );
-        bi2.getPublications().add( CrossReferenceFactory.getInstance().build( "pubmed", "123456789" ) );
-        bi2.getSourceDatabases().add( CrossReferenceFactory.getInstance().build( "intact", "MI:9999" ) );
+        bi2.getDetectionMethods().add( new CrossReferenceImpl( "int-detect", "MI:0123" ) );
+        bi2.getInteractionTypes().add( new CrossReferenceImpl( "int-type", "MI:2345" ) );
+        bi2.getPublications().add( new CrossReferenceImpl( "pubmed", "123456789" ) );
+        bi2.getSourceDatabases().add( new CrossReferenceImpl( "intact", "MI:9999" ) );
 
         ClusterInteractorPairProcessor.TwoInteractor ti1 =
                 new ClusterInteractorPairProcessor.TwoInteractor(
@@ -115,17 +116,17 @@ public class ClusterInteractorPairProcessorTest {
 
         BinaryInteractionImpl bi1 = new BinaryInteractionImpl( buildInteractorA(), buildInteractorB() );
         bi1.getAuthors().add( new AuthorImpl( "samuel" ) );
-        bi1.getDetectionMethods().add( InteractionDetectionMethodFactory.getInstance().build( "int-detect", "MI:0123" ) );
-        bi1.getInteractionTypes().add( InteractionTypeFactory.getInstance().build( "int-type", "MI:2345" ) );
-        bi1.getPublications().add( CrossReferenceFactory.getInstance().build( "pubmed", "123456789" ) );
-        bi1.getSourceDatabases().add( CrossReferenceFactory.getInstance().build( "intact", "MI:9999" ) );
+        bi1.getDetectionMethods().add( new CrossReferenceImpl( "int-detect", "MI:0123" ) );
+        bi1.getInteractionTypes().add( new CrossReferenceImpl( "int-type", "MI:2345" ) );
+        bi1.getPublications().add( new CrossReferenceImpl( "pubmed", "123456789" ) );
+        bi1.getSourceDatabases().add( new CrossReferenceImpl( "intact", "MI:9999" ) );
 
         BinaryInteractionImpl bi2 = new BinaryInteractionImpl( buildInteractorB(), buildInteractorA() );
         bi2.getAuthors().add( new AuthorImpl( "samuel" ) );
-        bi2.getDetectionMethods().add( InteractionDetectionMethodFactory.getInstance().build( "int-detect", "MI:0123" ) );
-        bi2.getInteractionTypes().add( InteractionTypeFactory.getInstance().build( "int-type", "MI:2345" ) );
-        bi2.getPublications().add( CrossReferenceFactory.getInstance().build( "pubmed", "123456789" ) );
-        bi2.getSourceDatabases().add( CrossReferenceFactory.getInstance().build( "intact", "MI:9999" ) );
+        bi2.getDetectionMethods().add( new CrossReferenceImpl( "int-detect", "MI:0123" ) );
+        bi2.getInteractionTypes().add( new CrossReferenceImpl( "int-type", "MI:2345" ) );
+        bi2.getPublications().add( new CrossReferenceImpl( "pubmed", "123456789" ) );
+        bi2.getSourceDatabases().add( new CrossReferenceImpl( "intact", "MI:9999" ) );
 
         Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>( 2 );
         interactions.add( bi1 );
@@ -143,17 +144,17 @@ public class ClusterInteractorPairProcessorTest {
 
         BinaryInteractionImpl bi1 = new BinaryInteractionImpl( buildInteractorA(), buildInteractorB() );
         bi1.getAuthors().add( new AuthorImpl( "samuel" ) );
-        bi1.getDetectionMethods().add( InteractionDetectionMethodFactory.getInstance().build( "int-detect", "MI:0123" ) );
-        bi1.getInteractionTypes().add( InteractionTypeFactory.getInstance().build( "int-type", "MI:2345" ) );
-        bi1.getPublications().add( CrossReferenceFactory.getInstance().build( "pubmed", "123456789" ) );
-        bi1.getSourceDatabases().add( CrossReferenceFactory.getInstance().build( "intact", "MI:9999" ) );
+        bi1.getDetectionMethods().add( new CrossReferenceImpl( "int-detect", "MI:0123" ) );
+        bi1.getInteractionTypes().add( new CrossReferenceImpl( "int-type", "MI:2345" ) );
+        bi1.getPublications().add( new CrossReferenceImpl( "pubmed", "123456789" ) );
+        bi1.getSourceDatabases().add( new CrossReferenceImpl( "intact", "MI:9999" ) );
 
         BinaryInteractionImpl bi2 = new BinaryInteractionImpl( buildInteractorA(), buildInteractorB() );
         bi2.getAuthors().add( new AuthorImpl( "Jeannot" ) );
-        bi2.getDetectionMethods().add( InteractionDetectionMethodFactory.getInstance().build( "int-detect2", "MI:1111" ) );
-        bi2.getInteractionTypes().add( InteractionTypeFactory.getInstance().build( "int-type2", "MI:2345" ) );
-        bi2.getPublications().add( CrossReferenceFactory.getInstance().build( "pubmed", "765432100" ) );
-        bi2.getSourceDatabases().add( CrossReferenceFactory.getInstance().build( "mint", "MI:8888" ) );
+        bi2.getDetectionMethods().add( new CrossReferenceImpl( "int-detect2", "MI:1111" ) );
+        bi2.getInteractionTypes().add( new CrossReferenceImpl( "int-type2", "MI:2345" ) );
+        bi2.getPublications().add( new CrossReferenceImpl( "pubmed", "765432100" ) );
+        bi2.getSourceDatabases().add( new CrossReferenceImpl( "mint", "MI:8888" ) );
 
         Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>( 2 );
         interactions.add( bi1 );
@@ -179,35 +180,35 @@ public class ClusterInteractorPairProcessorTest {
 
         // interaction type merge
         assertEquals( 2, bi3.getInteractionTypes().size() );
-        assertTrue( bi3.getInteractionTypes().contains( InteractionTypeFactory.getInstance().build( "int-type", "MI:2345" ) ) );
-        assertTrue( bi3.getInteractionTypes().contains( InteractionTypeFactory.getInstance().build( "int-type2", "MI:2345" ) ) );
+        assertTrue( bi3.getInteractionTypes().contains( new CrossReferenceImpl( "int-type", "MI:2345" ) ) );
+        assertTrue( bi3.getInteractionTypes().contains( new CrossReferenceImpl( "int-type2", "MI:2345" ) ) );
 
         // interaction detection merge
         assertEquals( 2, bi3.getDetectionMethods().size() );
-        assertTrue( bi3.getDetectionMethods().contains( InteractionDetectionMethodFactory.getInstance().build( "int-detect", "MI:0123" ) ) );
-        assertTrue( bi3.getDetectionMethods().contains( InteractionDetectionMethodFactory.getInstance().build( "int-detect2", "MI:1111" ) ) );
+        assertTrue( bi3.getDetectionMethods().contains( new CrossReferenceImpl( "int-detect", "MI:0123" ) ) );
+        assertTrue( bi3.getDetectionMethods().contains( new CrossReferenceImpl( "int-detect2", "MI:1111" ) ) );
 
         // publication merge
         assertEquals( 2, bi3.getPublications().size() );
-        assertTrue( bi3.getPublications().contains( CrossReferenceFactory.getInstance().build( "pubmed", "123456789" ) ) );
-        assertTrue( bi3.getPublications().contains( CrossReferenceFactory.getInstance().build( "pubmed", "765432100" ) ) );
+        assertTrue( bi3.getPublications().contains( new CrossReferenceImpl( "pubmed", "123456789" ) ) );
+        assertTrue( bi3.getPublications().contains( new CrossReferenceImpl( "pubmed", "765432100" ) ) );
 
         // source database merge
         assertEquals( 2, bi3.getSourceDatabases().size() );
-        assertTrue( bi3.getSourceDatabases().contains( CrossReferenceFactory.getInstance().build( "intact", "MI:9999" ) ) );
-        assertTrue( bi3.getSourceDatabases().contains( CrossReferenceFactory.getInstance().build( "mint", "MI:8888" ) ) );
+        assertTrue( bi3.getSourceDatabases().contains( new CrossReferenceImpl( "intact", "MI:9999" ) ) );
+        assertTrue( bi3.getSourceDatabases().contains( new CrossReferenceImpl( "mint", "MI:8888" ) ) );
     }
 
     @Test
     public void simpleInteractor() {
 
-        Collection<CrossReference> identifiersA = new ArrayList<CrossReference>( 2 );
-        identifiersA.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "P12345" ) );
-        identifiersA.add( CrossReferenceFactory.getInstance().build( "gi", "12345" ) );
+        List<CrossReference> identifiersA = new ArrayList<CrossReference>( 2 );
+        identifiersA.add( new CrossReferenceImpl( "uniprotkb", "P12345" ) );
+        identifiersA.add( new CrossReferenceImpl( "gi", "12345" ) );
 
-        Collection<CrossReference> identifiersB = new ArrayList<CrossReference>( 2 );
-        identifiersB.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "Q98765" ) );
-        identifiersB.add( CrossReferenceFactory.getInstance().build( "gi", "12345" ) );
+        List<CrossReference> identifiersB = new ArrayList<CrossReference>( 2 );
+        identifiersB.add( new CrossReferenceImpl( "uniprotkb", "Q98765" ) );
+        identifiersB.add( new CrossReferenceImpl( "gi", "12345" ) );
 
         Interactor a = new Interactor( identifiersA );
         Interactor b = new Interactor( identifiersB );
@@ -217,7 +218,7 @@ public class ClusterInteractorPairProcessorTest {
 
         assertEquals( sia, sib );
 
-        identifiersA.remove( CrossReferenceFactory.getInstance().build( "gi", "12345" ) );
+        identifiersA.remove( new CrossReferenceImpl( "gi", "12345" ) );
         assertEquals( 1, identifiersA.size() );
 
         assertNotSame( sia, sib );
@@ -226,16 +227,16 @@ public class ClusterInteractorPairProcessorTest {
     @Test
     public void twoInteractor() {
 
-        Collection<CrossReference> identifiersA = new ArrayList<CrossReference>( 2 );
-        identifiersA.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "P12345" ) );
-        identifiersA.add( CrossReferenceFactory.getInstance().build( "gi", "12345" ) );
+        List<CrossReference> identifiersA = new ArrayList<CrossReference>( 2 );
+        identifiersA.add( new CrossReferenceImpl( "uniprotkb", "P12345" ) );
+        identifiersA.add( new CrossReferenceImpl( "gi", "12345" ) );
 
-        Collection<CrossReference> identifiersB = new ArrayList<CrossReference>( 2 );
-        identifiersB.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "Q98765" ) );
-        identifiersB.add( CrossReferenceFactory.getInstance().build( "gi", "12345" ) );
+        List<CrossReference> identifiersB = new ArrayList<CrossReference>( 2 );
+        identifiersB.add( new CrossReferenceImpl( "uniprotkb", "Q98765" ) );
+        identifiersB.add( new CrossReferenceImpl( "gi", "12345" ) );
 
-        Collection<CrossReference> identifiersC = new ArrayList<CrossReference>( 2 );
-        identifiersC.add( CrossReferenceFactory.getInstance().build( "uniprotkb", "A00000" ) );
+        List<CrossReference> identifiersC = new ArrayList<CrossReference>( 2 );
+        identifiersC.add( new CrossReferenceImpl( "uniprotkb", "A00000" ) );
 
         Interactor a = new Interactor( identifiersA );
         Interactor b = new Interactor( identifiersB );

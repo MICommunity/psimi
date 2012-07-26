@@ -20,12 +20,12 @@ import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.model.Feature;
 import psidev.psi.mi.tab.model.Interactor;
-import psidev.psi.mi.tab.model.ParticipantIdentificationMethod;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.model.Alias;
 import psidev.psi.mi.xml.model.*;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO comment that class header
@@ -98,14 +98,6 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
 
             participant.setBiologicalRole(biologicalRole);
 
-
-//            toMitab()
-//
-//            Interactor A = new Interactor();
-//            BiologicalRole biologicalRole1 = participant.getBiologicalRole();
-//
-//
-//            A.setBiologicalRoles();
 
             //Fields 19 20 ExperimentalRole
 
@@ -255,7 +247,7 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
             }
 
             //Fields 41 42 Participant Identification Methods
-            Collection<ParticipantIdentificationMethod> participantIdentificationMethods = mitabInteractor.getParticipantIdentificationMethods();
+            List<CrossReference> participantIdentificationMethods = mitabInteractor.getParticipantIdentificationMethods();
             if (!participantIdentificationMethods.isEmpty()) {
 
                 //In this moment we assumed that we have only one identification method per Interactor
@@ -265,7 +257,7 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
                 Names names = new Names();
                 Xref xref = new Xref();
 
-                for (ParticipantIdentificationMethod participantIdentificationMethod : participantIdentificationMethods) {
+                for (CrossReference participantIdentificationMethod : participantIdentificationMethods) {
                     //The first psi-mi term is ours primary ref and name
                     if (!found && participantIdentificationMethod.getDatabase().equalsIgnoreCase("psi-mi")) {
 

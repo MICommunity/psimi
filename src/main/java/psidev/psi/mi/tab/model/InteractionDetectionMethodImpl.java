@@ -12,6 +12,7 @@ package psidev.psi.mi.tab.model;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
+@Deprecated
 public class InteractionDetectionMethodImpl extends CrossReferenceImpl implements InteractionDetectionMethod {
 
     //////////////////////

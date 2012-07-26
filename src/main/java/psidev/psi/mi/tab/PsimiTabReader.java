@@ -51,15 +51,6 @@ public class PsimiTabReader {
         this.unparseableLineBehaviour = unparseableLineBehaviour;
     }
 
-    @Deprecated
-    public void setEnableObjectPooling(boolean enabled) {
-        // propagate this request to all factories
-        CrossReferenceFactory.getInstance().setCacheEnabled(enabled);
-        InteractionTypeFactory.getInstance().setCacheEnabled(enabled);
-        InteractionDetectionMethodFactory.getInstance().setCacheEnabled(enabled);
-        OrganismFactory.getInstance().setCacheEnabled(enabled);
-    }
-
     public Collection<BinaryInteraction> read(Reader reader) throws IOException, ConverterException {
 
         Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();

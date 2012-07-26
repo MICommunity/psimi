@@ -72,7 +72,7 @@ public class MitabWriterUtils {
                 line[PsimiTabColumns.CHECKSUM_B.ordinal()] = joinChecksumCollection(interactorB.getChecksums());// 34
 
                 //MITAB 2.6
-                line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()] = joinComplexExpansionCollection(interaction.getComplexExpansion()); // 16
+                line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()] = joinCrossReferencStyleCollection(interaction.getComplexExpansion()); // 16
                 line[PsimiTabColumns.XREFS_I.ordinal()] = joinCrossReferencStyleCollection(interaction.getInteractionXrefs());// 25
                 line[PsimiTabColumns.ANNOTATIONS_I.ordinal()] = joinAnnotationsCollection(interaction.getInteractionAnnotations());// 28
                 line[PsimiTabColumns.HOST_ORGANISM.ordinal()] = joinOrganism(interaction.getHostOrganism());// 29
@@ -84,7 +84,7 @@ public class MitabWriterUtils {
 
             case PsimiTab.VERSION_2_5:
 
-                if(interaction.hasNegativeInteraction()){
+                if(interaction.hasNegativeInteraction() && interaction.isNegativeInteraction()){
                     //TODO check the version
                     throw new IllegalFormatException("The interaction between interactors: "
                             + interaction.getInteractorA().getIdentifiers().toString() +  "->"
@@ -120,7 +120,7 @@ public class MitabWriterUtils {
     }
 
     /* Create a string from a collection of features */
-    private static String joinFeatureCollection(Collection<Feature> collection) {
+    private static String joinFeatureCollection(List<Feature> collection) {
         StringBuilder sb = new StringBuilder();
         if (collection != null && !collection.isEmpty()) {
 
@@ -142,30 +142,8 @@ public class MitabWriterUtils {
         return sb.toString();
     }
 
-    /* Create a string from a collection of complex expansion */
-    private static String joinComplexExpansionCollection(List<ComplexExpansion> collection) {
-        StringBuilder sb = new StringBuilder();
-        if (collection != null && !collection.isEmpty()) {
-
-            Iterator<ComplexExpansion> iterator = collection.iterator();
-
-            while (iterator.hasNext()) {
-                ComplexExpansion field = iterator.next();
-
-                sb.append(joinAttributes(field.getDatabaseName(), field.getIdentifier(), field.getExpansionName()));
-
-                if (iterator.hasNext()) {
-                    sb.append(FIELD_DELIMITER);
-                }
-            }
-        } else {
-            sb.append('-');
-        }
-        return sb.toString();
-    }
-
     /* Create a string from a collection of annotations */
-    private static String joinAnnotationsCollection(Collection<Annotation> collection) {
+    private static String joinAnnotationsCollection(List<Annotation> collection) {
         StringBuilder sb = new StringBuilder();
         if (collection != null && !collection.isEmpty()) {
 
@@ -188,7 +166,7 @@ public class MitabWriterUtils {
     }
 
     /* Create a string from a collection of stoichiometries */
-    private static String joinStoichiometryCollection(Collection<Integer> stoichiometry) {
+    private static String joinStoichiometryCollection(List<Integer> stoichiometry) {
         StringBuilder sb = new StringBuilder();
         if (stoichiometry != null && !stoichiometry.isEmpty()) {
 
@@ -222,7 +200,7 @@ public class MitabWriterUtils {
     }
 
     /* Create a string from a collection of checksums */
-    private static String joinChecksumCollection(Collection<Checksum> collection) {
+    private static String joinChecksumCollection(List<Checksum> collection) {
         StringBuilder sb = new StringBuilder();
         if (collection != null && !collection.isEmpty()) {
 
@@ -326,7 +304,7 @@ public class MitabWriterUtils {
      * @param collection The values can not be null.
      * @return
      */
-    private static String joinCrossReferencStyleCollection(Collection<? extends CrossReference> collection) {
+    private static String joinCrossReferencStyleCollection(List<? extends CrossReference> collection) {
         StringBuilder sb = new StringBuilder();
         if (collection != null && !collection.isEmpty()) {
 

@@ -12,7 +12,7 @@ import psidev.psi.mi.tab.directoryProcessor.PatternBasedFilenameSelection;
 import psidev.psi.mi.tab.expansion.ExpansionStrategy;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.CrossReferenceFactory;
+import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.tab.processor.PostProcessorStrategy;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.*;
@@ -397,9 +397,9 @@ public class Xml2Tab {
                         String id = values[1];
 
                         // set the source on the converter
-                        interactionConverter.addSourceDatabase( CrossReferenceFactory.getInstance().build( db, id, sourceName ) );
+                        interactionConverter.addSourceDatabase( new CrossReferenceImpl( db, id, sourceName ) );
                     } else {
-                        interactionConverter.addSourceDatabase(CrossReferenceFactory.getInstance().build("unknown", sourceName, sourceName));
+                        interactionConverter.addSourceDatabase(new CrossReferenceImpl("unknown", sourceName, sourceName));
                     }
                 }
             } else {

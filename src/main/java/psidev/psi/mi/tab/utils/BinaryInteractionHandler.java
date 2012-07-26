@@ -20,7 +20,7 @@ import psidev.psi.mi.tab.model.BinaryInteractionImpl;
 import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.Interactor;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO comment that class header
@@ -34,7 +34,7 @@ public class BinaryInteractionHandler extends AbstractBinaryInteractionHandler<B
         return new BinaryInteractionImpl(i1, i2);
     }
 
-    public Interactor newInteractor(Collection<CrossReference> identifiers) {
+    public Interactor newInteractor(List<CrossReference> identifiers) {
         return new Interactor(identifiers);
     }
 }

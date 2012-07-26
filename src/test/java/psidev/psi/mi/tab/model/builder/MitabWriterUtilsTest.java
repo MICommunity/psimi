@@ -137,7 +137,7 @@ public class MitabWriterUtilsTest {
         B.setAlternativeIdentifiers(new ArrayList<CrossReference>(
                 Collections.singletonList(new CrossReferenceImpl("ensembl", "ENSG00000141655"))));
 
-        Collection<Alias> aliasesA = new ArrayList<Alias>() {{
+        List<Alias> aliasesA = new ArrayList<Alias>() {{
             add(new AliasImpl("uniprotkb", "Q9Y4K3"));
             add(new AliasImpl("uniprotkb", "TRAF6_HUMAN"));
             add(new AliasImpl("refseq", "NM_145803"));
@@ -148,7 +148,7 @@ public class MitabWriterUtilsTest {
         }};
         A.setAliases(aliasesA);
 
-        Collection<Alias> aliasesB = new ArrayList<Alias>() {{
+        List<Alias> aliasesB = new ArrayList<Alias>() {{
             add(new AliasImpl("uniprotkb", "Q9Y6Q6"));
             add(new AliasImpl("uniprotkb", "TNR11_HUMAN"));
             add(new AliasImpl("refseq", "NM_003839"));
@@ -157,9 +157,9 @@ public class MitabWriterUtilsTest {
         }};
         B.setAliases(aliasesB);
 
-        interactionToCompare.setDetectionMethods(new ArrayList<InteractionDetectionMethod>(
+        interactionToCompare.setDetectionMethods(new ArrayList<CrossReference>(
                 Collections.singletonList(
-                        new InteractionDetectionMethodImpl("psi-mi", "MI:0007", "anti tag coimmunoprecipitation"))));
+                        new CrossReferenceImpl("psi-mi", "MI:0007", "anti tag coimmunoprecipitation"))));
         interactionToCompare.setAuthors(new ArrayList<Author>(
                 Collections.singletonList(new AuthorImpl("Arron et al. (2001)"))));
         interactionToCompare.setPublications(new ArrayList<CrossReference>(
@@ -173,8 +173,8 @@ public class MitabWriterUtilsTest {
         B.setOrganism(organism);
 
 
-        interactionToCompare.setInteractionTypes(new ArrayList<InteractionType>(
-                Collections.singletonList(new InteractionTypeImpl("psi-mi", "MI:0915", "physical association"))));
+        interactionToCompare.setInteractionTypes(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0915", "physical association"))));
         interactionToCompare.setSourceDatabases(new ArrayList<CrossReference>(
                 Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0974", "innatedb"))));
         interactionToCompare.setInteractionAcs(new ArrayList<CrossReference>(
@@ -243,10 +243,10 @@ public class MitabWriterUtilsTest {
 //        B.setStoichiometry();
 
 
-        A.setParticipantIdentificationMethods(new ArrayList<ParticipantIdentificationMethod>(
-                Collections.singletonList(new ParticipantIdentificationMethodImpl("psi-mi", "MI:0363", "inferred by author"))));
-        B.setParticipantIdentificationMethods(new ArrayList<ParticipantIdentificationMethod>(
-                Collections.singletonList(new ParticipantIdentificationMethodImpl("psi-mi", "MI:0363", "inferred by author"))));
+        A.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
+        B.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
 
         return interactionToCompare;
     }

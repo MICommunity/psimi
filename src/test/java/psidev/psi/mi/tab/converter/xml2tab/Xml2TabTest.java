@@ -3,12 +3,11 @@ package psidev.psi.mi.tab.converter.xml2tab;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.expansion.SpokeWithoutBaitExpansion;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.CrossReferenceFactory;
+import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.EntrySet;
@@ -16,6 +15,8 @@ import psidev.psi.mi.xml.model.EntrySet;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 /**
  * Xml2Tab Tester.
@@ -72,7 +73,7 @@ public class Xml2TabTest {
         Xml2Tab x2t = new Xml2Tab();
 
         x2t.setExpansionStrategy( new SpokeWithoutBaitExpansion() );
-        x2t.addOverrideSourceDatabase( CrossReferenceFactory.getInstance().build( "MI", "0469", "intact" ) );
+        x2t.addOverrideSourceDatabase( new CrossReferenceImpl( "MI", "0469", "intact" ) );
         x2t.setPostProcessor( new ClusterInteractorPairProcessor() );
 
         // read original PSI-MI XML 2.5 File and get the originalEntrySet
@@ -157,7 +158,7 @@ public class Xml2TabTest {
         try {
             Collection<BinaryInteraction> binaryInteractions = x2t.convert( entrySet );
             assertFalse( binaryInteractions.isEmpty() );
-            assertEquals( 1, binaryInteractions.size() );
+            assertEquals( true, binaryInteractions.iterator().next().isNegativeInteraction());
 
         } catch ( TabConversionException e ) {
             fail();

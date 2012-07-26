@@ -7,5 +7,6 @@ package psidev.psi.mi.tab.model;
  * @version $Id$
  * @since specify the maven artifact version
  */
+@Deprecated
 public interface InteractionType extends CrossReference {
 }
