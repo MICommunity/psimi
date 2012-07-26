@@ -6,7 +6,7 @@
 package psidev.psi.mi.tab.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a simple organism.
@@ -23,7 +23,7 @@ public class OrganismImpl implements Organism {
      */
     private static final long serialVersionUID = 5647365864375422507L;
 
-    Collection<CrossReference> identifiers = new ArrayList<CrossReference>();
+    List<CrossReference> identifiers = new ArrayList<CrossReference>();
 
     ///////////////////////
     // Cosntructor
@@ -35,16 +35,16 @@ public class OrganismImpl implements Organism {
         addIdentifier( ref );
     }
 
-    public OrganismImpl( Collection<CrossReference> identifiers ) {
+    public OrganismImpl( List<CrossReference> identifiers ) {
         setIdentifiers( identifiers );
     }
 
     public OrganismImpl( int taxid ) {
-        addIdentifier( CrossReferenceFactory.getInstance().build( DEFAULT_DATABASE, String.valueOf( taxid ) ) );
+        addIdentifier( new CrossReferenceImpl( DEFAULT_DATABASE, String.valueOf( taxid ) ) );
     }
 
     public OrganismImpl( int taxid, String name ) {
-        addIdentifier( CrossReferenceFactory.getInstance().build( DEFAULT_DATABASE, String.valueOf( taxid ), name ) );
+        addIdentifier( new CrossReferenceImpl( DEFAULT_DATABASE, String.valueOf( taxid ), name ) );
     }
 
     ////////////////
@@ -58,11 +58,11 @@ public class OrganismImpl implements Organism {
     // Getters & Setters
 
 
-    public Collection<CrossReference> getIdentifiers() {
+    public List<CrossReference> getIdentifiers() {
         return identifiers;
     }
 
-    public void setIdentifiers( Collection<CrossReference> identifiers ) {
+    public void setIdentifiers( List<CrossReference> identifiers ) {
         if ( identifiers == null ) {
             throw new IllegalArgumentException( "Identifiers cannot be null." );
         }

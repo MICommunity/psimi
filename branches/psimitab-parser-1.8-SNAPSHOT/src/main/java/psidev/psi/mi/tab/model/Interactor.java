@@ -6,7 +6,7 @@
 package psidev.psi.mi.tab.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -30,19 +30,19 @@ public class Interactor implements Serializable {
     /**
      * Primary identifiers of the interactor.
      */
-    private Collection<CrossReference> identifiers
+    private List<CrossReference> identifiers
             = new ArrayList<CrossReference>();
 
     /**
      * Alternative identifiers of the interactor.
      */
-    private Collection<CrossReference> alternativeIdentifiers
+    private List<CrossReference> alternativeIdentifiers
             = new ArrayList<CrossReference>();
 
     /**
      * Aliases of the interactor (ie. alternative names).
      */
-    private Collection<Alias> aliases
+    private List<Alias> aliases
             = new ArrayList<Alias>();
 
     /**
@@ -53,56 +53,56 @@ public class Interactor implements Serializable {
     /**
      * Interactor's biological role.
      */
-    private Collection<CrossReference> biologicalRoles
+    private List<CrossReference> biologicalRoles
             = new ArrayList<CrossReference>();
 
     /**
      * Interactor's experimental role.
      */
-    private Collection<CrossReference> experimentalRoles
+    private List<CrossReference> experimentalRoles
             = new ArrayList<CrossReference>();
 
     /**
      * Type of the interactor.
      */
-    private Collection<CrossReference> interactorTypes
+    private List<CrossReference> interactorTypes
             = new ArrayList<CrossReference>();
 
     /**
      * Cross references of the interactor.
      */
-    private Collection<CrossReference> xrefs
+    private List<CrossReference> xrefs
             = new ArrayList<CrossReference>();
 
     /**
      * Annotations of the interactor.
      */
-    private Collection<Annotation> annotations
+    private List<Annotation> annotations
             = new ArrayList<Annotation>();
 
     /**
      * Checksums of the interactor.
      */
-    private Collection<Checksum> checksums
+    private List<Checksum> checksums
             = new ArrayList<Checksum>();
 
     /**
      * Features of the interactor.
      */
-    private Collection<Feature> features
+    private List<Feature> features
             = new ArrayList<Feature>();
 
     /**
      * Stoichiometry of the interactor.
      */
-    private Collection<Integer> stoichiometry
+    private List<Integer> stoichiometry
             = new ArrayList<Integer>();
 
     /**
      * Participant identification method.
      */
-    private Collection<ParticipantIdentificationMethod> participantIdentificationMethods
-            = new ArrayList<ParticipantIdentificationMethod>();
+    private List<CrossReference> participantIdentificationMethods
+            = new ArrayList<CrossReference>();
 
 
     ///////////////////////////
@@ -111,7 +111,7 @@ public class Interactor implements Serializable {
     public Interactor() {
     }
 
-    public Interactor(Collection<CrossReference> identifiers) {
+    public Interactor(List<CrossReference> identifiers) {
         if (identifiers == null) {
             throw new IllegalArgumentException("You must give a non null collection of identifiers.");
         }
@@ -126,7 +126,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'identifiers'.
      */
-    public Collection<CrossReference> getIdentifiers() {
+    public List<CrossReference> getIdentifiers() {
         return identifiers;
     }
 
@@ -135,7 +135,7 @@ public class Interactor implements Serializable {
      *
      * @param identifiers Value to set for property 'identifiers'.
      */
-    public void setIdentifiers(Collection<CrossReference> identifiers) {
+    public void setIdentifiers(List<CrossReference> identifiers) {
         this.identifiers = identifiers;
     }
 
@@ -144,7 +144,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'alternativeIdentifiers'.
      */
-    public Collection<CrossReference> getAlternativeIdentifiers() {
+    public List<CrossReference> getAlternativeIdentifiers() {
         return alternativeIdentifiers;
     }
 
@@ -153,7 +153,7 @@ public class Interactor implements Serializable {
      *
      * @param alternativeIdentifiers Value to set for property 'alternativeIdentifiers'.
      */
-    public void setAlternativeIdentifiers(Collection<CrossReference> alternativeIdentifiers) {
+    public void setAlternativeIdentifiers(List<CrossReference> alternativeIdentifiers) {
         this.alternativeIdentifiers = alternativeIdentifiers;
     }
 
@@ -162,7 +162,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'aliases'.
      */
-    public Collection<Alias> getAliases() {
+    public List<Alias> getAliases() {
         return aliases;
     }
 
@@ -171,7 +171,7 @@ public class Interactor implements Serializable {
      *
      * @param aliases Value to set for property 'aliases'.
      */
-    public void setAliases(Collection<Alias> aliases) {
+    public void setAliases(List<Alias> aliases) {
         this.aliases = aliases;
     }
 
@@ -207,7 +207,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'biologicalRoles'.
      */
-    public Collection<CrossReference> getBiologicalRoles() {
+    public List<CrossReference> getBiologicalRoles() {
         return biologicalRoles;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -216,7 +216,7 @@ public class Interactor implements Serializable {
      *
      * @param biologicalRoles Value to set for property 'biologicalRoles'.
      */
-    public void setBiologicalRoles(Collection<CrossReference> biologicalRoles) {
+    public void setBiologicalRoles(List<CrossReference> biologicalRoles) {
         this.biologicalRoles = biologicalRoles;
     }
 
@@ -225,7 +225,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'experimentalRoles'.
      */
-    public Collection<CrossReference> getExperimentalRoles() {
+    public List<CrossReference> getExperimentalRoles() {
         return experimentalRoles;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -234,7 +234,7 @@ public class Interactor implements Serializable {
      *
      * @param experimentalRoles Value to set for property 'experimentalRoles'.
      */
-    public void setExperimentalRoles(Collection<CrossReference> experimentalRoles) {
+    public void setExperimentalRoles(List<CrossReference> experimentalRoles) {
         this.experimentalRoles = experimentalRoles;
     }
 
@@ -243,7 +243,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'interactorTypes'.
      */
-    public Collection<CrossReference> getInteractorTypes() {
+    public List<CrossReference> getInteractorTypes() {
         return interactorTypes;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -252,7 +252,7 @@ public class Interactor implements Serializable {
      *
      * @param interactorTypes Value to set for property 'interactorTypes'.
      */
-    public void setInteractorTypes(Collection<CrossReference> interactorTypes) {
+    public void setInteractorTypes(List<CrossReference> interactorTypes) {
         this.interactorTypes = interactorTypes;
     }
 
@@ -261,7 +261,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'xrefs'.
      */
-    public Collection<CrossReference> getXrefs() {
+    public List<CrossReference> getXrefs() {
         return xrefs;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -270,7 +270,7 @@ public class Interactor implements Serializable {
      *
      * @param xrefs Value to set for property 'xrefs'.
      */
-    public void setXrefs(Collection<CrossReference> xrefs) {
+    public void setXrefs(List<CrossReference> xrefs) {
         this.xrefs = xrefs;
     }
 
@@ -279,7 +279,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'annotations'.
      */
-    public Collection<Annotation> getAnnotations() {
+    public List<Annotation> getAnnotations() {
         return annotations;
     }
 
@@ -288,7 +288,7 @@ public class Interactor implements Serializable {
      *
      * @param annotations Value to set for property 'annotations'.
      */
-    public void setAnnotations(Collection<Annotation> annotations) {
+    public void setAnnotations(List<Annotation> annotations) {
         this.annotations = annotations;
     }
 
@@ -297,7 +297,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'checksums'.
      */
-    public Collection<Checksum> getChecksums() {
+    public List<Checksum> getChecksums() {
         return checksums;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -306,7 +306,7 @@ public class Interactor implements Serializable {
      *
      * @param checksums Value to set for property 'checksums'.
      */
-    public void setChecksums(Collection<Checksum> checksums) {
+    public void setChecksums(List<Checksum> checksums) {
         this.checksums = checksums;
     }
 
@@ -315,7 +315,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'features'.
      */
-    public Collection<Feature> getFeatures() {
+    public List<Feature> getFeatures() {
         return features;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -324,7 +324,7 @@ public class Interactor implements Serializable {
      *
      * @param features Value to set for property 'features'.
      */
-    public void setFeatures(Collection<Feature> features) {
+    public void setFeatures(List<Feature> features) {
         this.features = features;
     }
 
@@ -333,7 +333,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'stoichiometry'.
      */
-    public Collection<Integer> getStoichiometry() {
+    public List<Integer> getStoichiometry() {
         return stoichiometry;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -342,7 +342,7 @@ public class Interactor implements Serializable {
      *
      * @param stoichiometry Value to set for property 'stoichiometry'.
      */
-    public void setStoichiometry(Collection<Integer> stoichiometry) {
+    public void setStoichiometry(List<Integer> stoichiometry) {
         this.stoichiometry = stoichiometry;
     }
 
@@ -351,7 +351,7 @@ public class Interactor implements Serializable {
      *
      * @return Value for property 'participants'.
      */
-    public Collection<ParticipantIdentificationMethod> getParticipantIdentificationMethods() {
+    public List<CrossReference> getParticipantIdentificationMethods() {
         return participantIdentificationMethods;
     }
 
@@ -361,7 +361,7 @@ public class Interactor implements Serializable {
      * @param participantIdentificationMethods
      *         Value to set for property 'participant'.
      */
-    public void setParticipantIdentificationMethods(Collection<ParticipantIdentificationMethod> participantIdentificationMethods) {
+    public void setParticipantIdentificationMethods(List<CrossReference> participantIdentificationMethods) {
         this.participantIdentificationMethods = participantIdentificationMethods;
     }
 
@@ -407,17 +407,17 @@ public class Interactor implements Serializable {
 
         if (identifiers != null ? !identifiers.equals(that.identifiers) : that.identifiers != null) return false;
         if (organism != null ? !organism.equals(that.organism) : that.organism != null) return false;
-//        if (alternativeIdentifiers != null ? !alternativeIdentifiers.equals(that.alternativeIdentifiers) : that.alternativeIdentifiers != null) return false;
-//        if (aliases != null ? !aliases.equals(that.aliases) : that.aliases != null) return false;
-//        if (biologicalRoles != null ? !biologicalRoles.equals(that.biologicalRoles) : that.biologicalRoles != null) return false;
-//        if (experimentalRoles != null ? !experimentalRoles.equals(that.experimentalRoles) : that.experimentalRoles != null) return false;
-//        if (interactorTypes != null ? !interactorTypes.equals(that.interactorTypes) : that.interactorTypes != null) return false;
-//        if (xrefs != null ? !xrefs.equals(that.xrefs) : that.xrefs != null) return false;
-//        if (annotations != null ? !annotations.equals(that.annotations) : that.annotations != null) return false;
-//        if (checksums != null ? !checksums.equals(that.checksums) : that.checksums != null) return false;
-//        if (features != null ? !features.equals(that.features) : that.features != null) return false;
-//        if (stoichiometry != null ? !stoichiometry.equals(that.stoichiometry) : that.stoichiometry != null) return false;
-//        if (participantIdentificationMethods != null ? !participantIdentificationMethods.equals(that.participantIdentificationMethods) : that.participantIdentificationMethods != null) return false;
+        if (alternativeIdentifiers != null ? !alternativeIdentifiers.equals(that.alternativeIdentifiers) : that.alternativeIdentifiers != null) return false;
+        if (aliases != null ? !aliases.equals(that.aliases) : that.aliases != null) return false;
+        if (biologicalRoles != null ? !biologicalRoles.equals(that.biologicalRoles) : that.biologicalRoles != null) return false;
+        if (experimentalRoles != null ? !experimentalRoles.equals(that.experimentalRoles) : that.experimentalRoles != null) return false;
+        if (interactorTypes != null ? !interactorTypes.equals(that.interactorTypes) : that.interactorTypes != null) return false;
+        if (xrefs != null ? !xrefs.equals(that.xrefs) : that.xrefs != null) return false;
+        if (annotations != null ? !annotations.equals(that.annotations) : that.annotations != null) return false;
+        if (checksums != null ? !checksums.equals(that.checksums) : that.checksums != null) return false;
+        if (features != null ? !features.equals(that.features) : that.features != null) return false;
+        if (stoichiometry != null ? !stoichiometry.equals(that.stoichiometry) : that.stoichiometry != null) return false;
+        if (participantIdentificationMethods != null ? !participantIdentificationMethods.equals(that.participantIdentificationMethods) : that.participantIdentificationMethods != null) return false;
 
         return true;
     }

@@ -10,14 +10,11 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.converter.IdentifierGenerator;
 import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.model.*;
-import psidev.psi.mi.tab.model.InteractionDetectionMethod;
-import psidev.psi.mi.tab.model.InteractionType;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.model.Parameter;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.Organism;
-import psidev.psi.mi.xml.model.Participant;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -33,16 +30,6 @@ import java.util.regex.Pattern;
 public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
     private static final Log log = LogFactory.getLog(InteractionConverter.class);
-
-    /**
-     * Interaction type converter.
-     */
-    private InteractionTypeConverter itConverter = new InteractionTypeConverter();
-
-    /**
-     * Interaction detection method converter.
-     */
-    private InteractionDetectionMethodConverter idmConverter = new InteractionDetectionMethodConverter();
 
     /**
      * Class converting an XML source into a Publication.
@@ -99,12 +86,12 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
     // Convertion
 
     public BinaryInteraction toMitab(Interaction interaction) throws TabConversionException {
-
-        //TODO check the version
-        if (interaction.isNegative()) {
-            log.warn("interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it is negative.");
-            return null;
-        }
+//        In this moment, we always convert to mitab 2.7, so it will be the writer which needs to check the version and
+//        if the interaction is negative.
+//        if (interaction.isNegative()) {
+//            log.warn("interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it is negative.");
+//            return null;
+//        }
 
         if (interaction.getParticipants().size() != 2) {
             log.warn("interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it does not have exactly 2 participants.");
@@ -181,19 +168,20 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             List<CrossReference> refs = new ArrayList<CrossReference>();
 
             for (DbReference interactionAc : interactionAcs) {
-                refs.add(CrossReferenceFactory.getInstance().build(interactionAc.getDb(), interactionAc.getId()));
+                refs.add(new CrossReferenceImpl(interactionAc.getDb(), interactionAc.getId()));
             }
 
+            /* Interaction AC  field 14	 */
             bi.getInteractionAcs().addAll(refs);
         }
 
-        // Interaction type field 12
+        /* Interaction type field 12 */
         if (interaction.hasInteractionTypes()) {
-            List<InteractionType> types = new ArrayList<InteractionType>(interaction.getInteractionTypes().size());
+            List<CrossReference> types = new ArrayList<CrossReference>(interaction.getInteractionTypes().size());
 
             for (psidev.psi.mi.xml.model.InteractionType interactionType : interaction.getInteractionTypes()) {
 
-                psidev.psi.mi.tab.model.InteractionType type = itConverter.toMitab(interactionType);
+                CrossReference type = CvConverter.toMitab(interactionType, CrossReferenceImpl.class);
 
                 if (type != null) {
                     types.add(type);
@@ -213,16 +201,17 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
             // init the interaction
             List<CrossReference> publications = new ArrayList<CrossReference>(expCount);
+	        /* Publication field 7 */
             bi.setPublications(publications);
 
-            List<psidev.psi.mi.tab.model.InteractionDetectionMethod> detections =
-                    new ArrayList<psidev.psi.mi.tab.model.InteractionDetectionMethod>(expCount);
+            List<CrossReference> detections =
+                    new ArrayList<CrossReference>(expCount);
             bi.setDetectionMethods(detections);
 
             for (ExperimentDescription experiment : interaction.getExperiments()) {
 
                 // detection method
-                InteractionDetectionMethod detection = idmConverter.toMitab(experiment.getInteractionDetectionMethod());
+                CrossReference detection = CvConverter.toMitab(experiment.getInteractionDetectionMethod(),CrossReferenceImpl.class);
 
                 if (detection != null) {
                     bi.getDetectionMethods().add(detection);
@@ -387,8 +376,8 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             log.warn("Size of InteractionAcs is " + binaryInteraction.getInteractionAcs().size() + " but we have only " +
                     binaryInteraction.getDetectionMethods().size() + " detectionMethod(s)! -> We could not know which detectionMethode dependents on which InteractionAcs");
         } else {
-            InteractionDetectionMethod binaryDetectionMethod = binaryInteraction.getDetectionMethods().get(index);
-            detectionMethod = idmConverter.fromMitab(binaryDetectionMethod, psidev.psi.mi.xml.model.InteractionDetectionMethod.class);
+            CrossReference binaryDetectionMethod = binaryInteraction.getDetectionMethods().get(index);
+            detectionMethod = CvConverter.fromMitab(binaryDetectionMethod, psidev.psi.mi.xml.model.InteractionDetectionMethod.class);
         }
 
         if (bibref != null && detectionMethod != null) {
@@ -527,12 +516,12 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
         if (binaryInteraction.getInteractionTypes() != null) {
 
             types = new ArrayList<psidev.psi.mi.xml.model.InteractionType>(binaryInteraction.getInteractionTypes().size());
-            List<InteractionType> tabInteractionTypes = binaryInteraction.getInteractionTypes();
+            List<CrossReference> tabInteractionTypes = binaryInteraction.getInteractionTypes();
 
-            for (InteractionType intactType : tabInteractionTypes) {
+            for (CrossReference intactType : tabInteractionTypes) {
                 psidev.psi.mi.xml.model.InteractionType type = null;
                 try {
-                    type = itConverter.fromMitab(intactType, psidev.psi.mi.xml.model.InteractionType.class);
+                    type = CvConverter.fromMitab(intactType, psidev.psi.mi.xml.model.InteractionType.class);
                 } catch (XmlConversionException e) {
                     e.printStackTrace();
                 }

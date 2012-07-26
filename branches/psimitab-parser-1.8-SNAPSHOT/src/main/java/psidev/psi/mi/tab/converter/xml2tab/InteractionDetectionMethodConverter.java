@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.model.InteractionDetectionMethod;
-import psidev.psi.mi.tab.model.InteractionDetectionMethodFactory;
+import psidev.psi.mi.tab.model.InteractionDetectionMethodImpl;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Names;
@@ -26,6 +26,7 @@ import java.util.Iterator;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
+@Deprecated
 public class InteractionDetectionMethodConverter {
 
     /**
@@ -82,7 +83,7 @@ public class InteractionDetectionMethodConverter {
             throw new NullPointerException( "Invalid interaction detection method without identifier: " + name );
         } 
 
-        return InteractionDetectionMethodFactory.getInstance().build( db, id, name );
+        return new InteractionDetectionMethodImpl( db, id, name );
     }
 
     /**

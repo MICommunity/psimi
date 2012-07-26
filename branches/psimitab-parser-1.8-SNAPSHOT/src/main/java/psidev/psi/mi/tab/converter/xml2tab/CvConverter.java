@@ -8,7 +8,7 @@ package psidev.psi.mi.tab.converter.xml2tab;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
-import psidev.psi.mi.tab.model.CrossReferenceImpl;
+import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Names;
@@ -37,7 +37,7 @@ public class CvConverter {
 
 
     // here we are giving the Class, while now we have to use the Factory
-    public static <CV extends CrossReferenceImpl, T extends CvType> CV toMitab(T cv, Class<CV> clazz ) throws TabConversionException {
+    public static <CV extends CrossReference, T extends CvType> CV toMitab(T cv, Class<CV> clazz ) throws TabConversionException {
 
         CV myCv = null;
 
@@ -63,7 +63,7 @@ public class CvConverter {
             // search by identity
             refs = XrefUtils.searchByType( cv.getXref(), "identity", "MI:0356" );
         }
-        
+
         if ( !refs.isEmpty() ) {
             db = PSI_MI;
             Iterator<DbReference> iterator = refs.iterator();
@@ -78,6 +78,7 @@ public class CvConverter {
                 }
             }
         }
+
 
         if ( name != null ) {
             try {
@@ -97,7 +98,7 @@ public class CvConverter {
         return myCv;
     }
 
-    public <CV extends CrossReferenceImpl, T extends CvType> T fromMitab( CV tabCv, Class<T> clazz ) throws XmlConversionException {
+    public static <CV extends CrossReference, T extends CvType> T fromMitab(CV tabCv, Class<T> clazz) throws XmlConversionException {
         T myCv = null;
 
         if ( tabCv == null ) {
@@ -107,30 +108,37 @@ public class CvConverter {
         if ( clazz == null ) {
             throw new IllegalArgumentException( "You must give a non null implementation class of CV" );
         }
-        
+
         Names names = null;
         Xref xref = null;
-        
+
         if (tabCv.hasText()){
         	String shortLabel = tabCv.getText();
         	names = new Names();
         	names.setShortLabel(shortLabel);
         }
-        if (tabCv.getIdentifier() != null){
-        	String id = "MI:".concat(tabCv.getIdentifier());
-        	DbReference primaryRef = new DbReference();
-        	primaryRef.setId(id);
-        	xref = new Xref(primaryRef);
+
+        // Identifier of CrossReference is part of the id in primaryRef
+        if (tabCv.getIdentifier() != null) {
+            String id = tabCv.getIdentifier();
+
+            DbReference primaryRef = new DbReference(id, PSI_MI);
+            primaryRef.setDbAc(PSI_MI_REF);
+            primaryRef.setRefType("identity");
+            primaryRef.setRefTypeAc("MI:0356");
+
+            xref = new Xref(primaryRef);
         }
+
         try{
         	// request constructor
         	Constructor <T> constructor = clazz.getConstructor(new Class[]{});
-        	
+
             // instanciate object
             myCv = constructor.newInstance( new Object[]{} );
             if (names != null)myCv.setNames(names);
             if (xref != null)myCv.setXref(xref);
-        	
+
         } catch (Exception e) {
         	throw new XmlConversionException( "An exception was thrown while instanciating an xml.", e );
 		}

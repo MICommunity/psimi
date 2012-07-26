@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.model.InteractionType;
-import psidev.psi.mi.tab.model.InteractionTypeFactory;
+import psidev.psi.mi.tab.model.InteractionTypeImpl;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Names;
@@ -26,6 +26,7 @@ import java.util.Iterator;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
+@Deprecated
 public class InteractionTypeConverter {
 
     /**
@@ -78,7 +79,7 @@ public class InteractionTypeConverter {
         }
 
 //        if ( name != null ) {
-        myCv = InteractionTypeFactory.getInstance().build( db, id, name );
+        myCv = new InteractionTypeImpl( db, id, name );
 //        }
 
         return myCv;

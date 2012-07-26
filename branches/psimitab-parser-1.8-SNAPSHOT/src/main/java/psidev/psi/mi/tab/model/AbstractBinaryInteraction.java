@@ -42,14 +42,14 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      * Detection method for that interaction.
      */
-    private List<InteractionDetectionMethod> detectionMethods
-            = new ArrayList<InteractionDetectionMethod>();
+    private List<CrossReference> detectionMethods
+            = new ArrayList<CrossReference>();
 
     /**
      * Types of the interaction.
      */
-    private List<InteractionType> interactionTypes
-            = new ArrayList<InteractionType>();
+    private List<CrossReference> interactionTypes
+            = new ArrayList<CrossReference>();
 
     /**
      * Associated publications of that interaction.
@@ -89,8 +89,8 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      * Model used to convert n-ary interactions into binary.
      */
-    private List<ComplexExpansion> complexExpansion
-            = new ArrayList<ComplexExpansion>();
+    private List<CrossReference> complexExpansion
+            = new ArrayList<CrossReference>();
 
     /**
      * Cross references associated to the interaction.
@@ -200,28 +200,28 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      * {@inheritDoc}
      */
-    public List<InteractionDetectionMethod> getDetectionMethods() {
+    public List<CrossReference> getDetectionMethods() {
         return detectionMethods;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setDetectionMethods(List<InteractionDetectionMethod> detectionMethods) {
+    public void setDetectionMethods(List<CrossReference> detectionMethods) {
         this.detectionMethods = detectionMethods;
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<InteractionType> getInteractionTypes() {
+    public List<CrossReference> getInteractionTypes() {
         return interactionTypes;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setInteractionTypes(List<InteractionType> interactionTypes) {
+    public void setInteractionTypes(List<CrossReference> interactionTypes) {
         this.interactionTypes = interactionTypes;
     }
 
@@ -302,14 +302,14 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      * {@inheritDoc}
      */
-    public List<ComplexExpansion> getComplexExpansion() {
+    public List<CrossReference> getComplexExpansion() {
         return complexExpansion;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setComplexExpansion(List<ComplexExpansion> complexExpansion) {
+    public void setComplexExpansion(List<CrossReference> complexExpansion) {
         this.complexExpansion = complexExpansion;
     }
 
@@ -524,56 +524,56 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
             return false;
         }
 
-//        if (confidenceValues != null ? !confidenceValues.equals(that.confidenceValues) : that.confidenceValues != null) {
-//            return false;
-//        }
-//
-//        if (sourceDatabases != null ? !sourceDatabases.equals(that.sourceDatabases) : that.sourceDatabases != null) {
-//            return false;
-//        }
-//
-//        if (interactionAcs != null ? !interactionAcs.equals(that.interactionAcs) : that.interactionAcs != null) {
-//            return false;
-//        }
-//
-//        if (authors != null ? !authors.equals(that.authors) : that.authors != null) {
-//            return false;
-//        }
-//
-//        if (complexExpansion != null ? !complexExpansion.equals(that.complexExpansion) : that.complexExpansion != null) {
-//            return false;
-//        }
-//
-//        if (interactionXrefs != null ? !interactionXrefs.equals(that.interactionXrefs) : that.interactionXrefs != null) {
-//            return false;
-//        }
-//
-//        if (interactionAnnotations != null ? !interactionAnnotations.equals(that.interactionAnnotations) : that.interactionAnnotations != null) {
-//            return false;
-//        }
-//
-//        if (hostOrganism != null ? !hostOrganism.equals(that.hostOrganism) : that.hostOrganism != null) {
-//            return false;
-//        }
-//
-//        if (interactionParameters != null ? !interactionParameters.equals(that.interactionParameters) : that.interactionParameters != null) {
-//            return false;
-//        }
-//
-//        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
-//            return false;
-//        }
-//
-//        if (updateDate != null ? !updateDate.equals(that.updateDate) : that.updateDate != null) {
-//            return false;
-//        }
-//        if (interactionChecksums != null ? !interactionChecksums.equals(that.interactionChecksums) : that.interactionChecksums != null) {
-//            return false;
-//        }
-//
-//        if (negativeInteraction != null ? !negativeInteraction.equals(that.negativeInteraction) : that.negativeInteraction != null) {
-//            return false;
-//        }
+        if (confidenceValues != null ? !confidenceValues.equals(that.confidenceValues) : that.confidenceValues != null) {
+            return false;
+        }
+
+        if (sourceDatabases != null ? !sourceDatabases.equals(that.sourceDatabases) : that.sourceDatabases != null) {
+            return false;
+        }
+
+        if (interactionAcs != null ? !interactionAcs.equals(that.interactionAcs) : that.interactionAcs != null) {
+            return false;
+        }
+
+        if (authors != null ? !authors.equals(that.authors) : that.authors != null) {
+            return false;
+        }
+
+        if (complexExpansion != null ? !complexExpansion.equals(that.complexExpansion) : that.complexExpansion != null) {
+            return false;
+        }
+
+        if (interactionXrefs != null ? !interactionXrefs.equals(that.interactionXrefs) : that.interactionXrefs != null) {
+            return false;
+        }
+
+        if (interactionAnnotations != null ? !interactionAnnotations.equals(that.interactionAnnotations) : that.interactionAnnotations != null) {
+            return false;
+        }
+
+        if (hostOrganism != null ? !hostOrganism.equals(that.hostOrganism) : that.hostOrganism != null) {
+            return false;
+        }
+
+        if (interactionParameters != null ? !interactionParameters.equals(that.interactionParameters) : that.interactionParameters != null) {
+            return false;
+        }
+
+        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
+            return false;
+        }
+
+        if (updateDate != null ? !updateDate.equals(that.updateDate) : that.updateDate != null) {
+            return false;
+        }
+        if (interactionChecksums != null ? !interactionChecksums.equals(that.interactionChecksums) : that.interactionChecksums != null) {
+            return false;
+        }
+
+        if (negativeInteraction != null ? !negativeInteraction.equals(that.negativeInteraction) : that.negativeInteraction != null) {
+            return false;
+        }
 
         return true;
     }

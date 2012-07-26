@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.CrossReferenceFactory;
+import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.xml.model.*;
 
 import java.lang.reflect.Constructor;
@@ -83,7 +83,7 @@ public class CrossReferenceConverter {
         }
 
         if (name != null) {
-            CrossReferenceFactory.getInstance().build(db, id, name);
+	        myCv = new CrossReferenceImpl(db, id, name);
         }
 
         return myCv;

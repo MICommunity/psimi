@@ -107,8 +107,8 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
         return xrefs;
     }
 
-    protected List<InteractionDetectionMethod> createInteractionDetectionMethods(Column column) {
-        List<InteractionDetectionMethod> xrefs = new ArrayList<InteractionDetectionMethod>();
+    protected List<CrossReference> createInteractionDetectionMethods(Column column) {
+        List<CrossReference> xrefs = new ArrayList<CrossReference>();
 
         for (Field field : column.getFields()) {
             try {
@@ -121,8 +121,8 @@ public class MitabInteractionRowConverter extends AbstractInteractionRowConverte
         return xrefs;
     }
 
-    protected List<InteractionType> createInteractionTypes(Column column) {
-        List<InteractionType> xrefs = new ArrayList<InteractionType>();
+    protected List<CrossReference> createInteractionTypes(Column column) {
+        List<CrossReference> xrefs = new ArrayList<CrossReference>();
 
         for (Field field : column.getFields()) {
             try {

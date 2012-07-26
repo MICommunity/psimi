@@ -14,139 +14,139 @@ package psidev.psi.mi.tab.model;
  */
 public class CrossReferenceImpl implements CrossReference {
 
-    /**
-     * Generated with IntelliJ plugin generateSerialVersionUID.
-     * To keep things consistent, please use the same thing.
-     */
-    private static final long serialVersionUID = 3681849842863471840L;
+	/**
+	 * Generated with IntelliJ plugin generateSerialVersionUID.
+	 * To keep things consistent, please use the same thing.
+	 */
+	private static final long serialVersionUID = 3681849842863471840L;
 
-    /**
-     * Database name.
-     */
-    private String database;
+	/**
+	 * Database name.
+	 */
+	private String database;
 
-    /**
-     * The identifier.
-     */
-    private String identifier;
+	/**
+	 * The identifier.
+	 */
+	private String identifier;
 
-    /**
-     * Optional piece of text.
-     */
-    private String text;
+	/**
+	 * Optional piece of text.
+	 */
+	private String text;
 
-    //////////////////////////
-    // Constructor
+	//////////////////////////
+	// Constructor
 
-    public CrossReferenceImpl() {
-    }
+	public CrossReferenceImpl() {
+	}
 
-    public CrossReferenceImpl( String database, String identifier ) {
-        setIdentifier( identifier );
-        setDatabase( database );
-    }
+	public CrossReferenceImpl(String database, String identifier) {
+		setIdentifier(identifier);
+		setDatabase(database);
+	}
 
-    public CrossReferenceImpl( String database, String identifier, String text ) {
-        this( database, identifier );
-        setText( text );
-    }
+	public CrossReferenceImpl(String database, String identifier, String text) {
+		this(database, identifier);
+		setText(text);
+	}
 
-    /////////////////////////
-    // Getters and Setters
+	/////////////////////////
+	// Getters and Setters
 
-    public String getDatabase() {
-        return database;
-    }
+	public String getDatabase() {
+		return database;
+	}
 
-    public void setDatabase( String database ) {
-        if ( database == null ) {
-            throw new IllegalArgumentException( "You must give a non null database." );
-        }
-        database = database.trim();
-        if ( database.length() == 0 ) {
-            throw new IllegalArgumentException( "You must give a non empty database." );
-        }
+	public void setDatabase(String database) {
+		if (database == null) {
+			throw new IllegalArgumentException("You must give a non null database.");
+		}
+		database = database.trim();
+		if (database.length() == 0) {
+			throw new IllegalArgumentException("You must give a non empty database.");
+		}
 
-        this.database = database;
-    }
+		this.database = database;
+	}
 
-    public String getIdentifier() {
-        return identifier;
-    }
+	public String getIdentifier() {
+		return identifier;
+	}
 
-    public void setIdentifier( String identifier ) {
-        if ( identifier == null ) {
-            throw new IllegalArgumentException( "You must give a non null identifier." );
-        }
-        identifier = identifier.trim();
-        if ( identifier.length() == 0 ) {
-            throw new IllegalArgumentException( "You must give a non empty identifier." );
-        }
+	public void setIdentifier(String identifier) {
+		if (identifier == null) {
+			throw new IllegalArgumentException("You must give a non null identifier.");
+		}
+		identifier = identifier.trim();
+		if (identifier.length() == 0) {
+			throw new IllegalArgumentException("You must give a non empty identifier.");
+		}
 
-        this.identifier = identifier;
-    }
+		this.identifier = identifier;
+	}
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setText( String text ) {
-        if ( text != null ) {
-            // ignore empty string
-            text = text.trim();
-            if ( text.length() == 0 ) {
-                text = null;
-            }
-        }
-        this.text = text;
-    }
+	public void setText(String text) {
+		if (text != null) {
+			// ignore empty string
+			text = text.trim();
+			if (text.length() == 0) {
+				text = null;
+			}
+		}
+		this.text = text;
+	}
 
-    public boolean hasText() {
-        return ( text != null && text.trim().length() > 0 );
-    }
+	public boolean hasText() {
+		return (text != null && text.trim().length() > 0);
+	}
 
-    //////////////////////////
-    // Object's override
+	//////////////////////////
+	// Object's override
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append( "CrossReference" );
-        sb.append( "{database='" ).append( database ).append( '\'' );
-        sb.append( ", identifier='" ).append( identifier ).append( '\'' );
-        if ( text != null ) {
-            sb.append( ", text='" ).append( text ).append( '\'' );
-        }
-        sb.append( '}' );
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("CrossReference");
+		sb.append("{database='").append(database).append('\'');
+		sb.append(", identifier='").append(identifier).append('\'');
+		if (text != null) {
+			sb.append(", text='").append(text).append('\'');
+		}
+		sb.append('}');
+		return sb.toString();
+	}
 
-    @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
-            return true;
-        }
-        if ( o == null || getClass() != o.getClass() ) {
-            return false;
-        }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-        final CrossReferenceImpl that = ( CrossReferenceImpl ) o;
+		final CrossReferenceImpl that = (CrossReferenceImpl) o;
 
-        if ( !database.equals( that.database ) ) {
-            return false;
-        }
-        if ( !identifier.equals( that.identifier ) ) {
-            return false;
-        }
+		if (!database.equals(that.database)) {
+			return false;
+		}
+		if (!identifier.equals(that.identifier)) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int hashCode() {
-        int result;
-        result = database.hashCode();
-        result = 29 * result + identifier.hashCode();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result;
+		result = database.hashCode();
+		result = 29 * result + identifier.hashCode();
+		return result;
+	}
 }

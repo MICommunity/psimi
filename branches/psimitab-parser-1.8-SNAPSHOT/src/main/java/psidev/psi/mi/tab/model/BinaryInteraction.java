@@ -46,28 +46,28 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return detection method for that interaction.
      */
-    List<InteractionDetectionMethod> getDetectionMethods();
+    List<CrossReference> getDetectionMethods();
 
     /**
      * Sets detection method for that interaction.
      *
      * @param detectionMethods detection method for that interaction.
      */
-    void setDetectionMethods(List<InteractionDetectionMethod> detectionMethods);
+    void setDetectionMethods(List<CrossReference> detectionMethods);
 
     /**
      * Returns types of the interaction
      *
      * @return types of the interaction
      */
-    List<InteractionType> getInteractionTypes();
+    List<CrossReference> getInteractionTypes();
 
     /**
      * Sets types of the interaction
      *
      * @param interactionTypes types of the interaction
      */
-    void setInteractionTypes(List<InteractionType> interactionTypes);
+    void setInteractionTypes(List<CrossReference> interactionTypes);
 
     /**
      * Returns associated publications of that interaction.
@@ -146,14 +146,14 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return type of complex expansion.
      */
-    List<ComplexExpansion> getComplexExpansion();
+    List<CrossReference> getComplexExpansion();
 
     /**
      * Sets the type of complex expansion for the interaction.
      *
      * @param complexExpansion for the interaction.
      */
-    void setComplexExpansion(List<ComplexExpansion> complexExpansion);
+    void setComplexExpansion(List<CrossReference> complexExpansion);
 
     /**
      * Returns the cross references for the interaction.

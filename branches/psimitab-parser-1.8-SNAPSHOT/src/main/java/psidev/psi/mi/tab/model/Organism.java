@@ -1,7 +1,7 @@
 package psidev.psi.mi.tab.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * TODO commenta that class header
@@ -19,9 +19,9 @@ public interface Organism extends Serializable {
 
     void addIdentifier( CrossReference ref );
 
-    Collection<CrossReference> getIdentifiers();
+    List<CrossReference> getIdentifiers();
 
-    void setIdentifiers( Collection<CrossReference> identifiers );
+    void setIdentifiers( List<CrossReference> identifiers );
 
     String getTaxid();
 }
