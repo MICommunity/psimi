@@ -18,9 +18,9 @@ import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
 public class PositiveIntegerFieldParser implements FieldParser{
 
     public Field parse( String fieldStr, ColumnDefinition columnDefinition ) throws IllegalFieldException {
-        int num = 0;
+        int num;
         try {
-            num = Integer.parseInt( fieldStr );
+            num = Integer.parseInt( fieldStr.substring(fieldStr.lastIndexOf(".")) );
 
             if (num < 0){
                 throw new IllegalFieldException( "Positive integer expected, found: "+fieldStr );
