@@ -18,8 +18,9 @@ import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
 public class PositiveIntegerFieldParser implements FieldParser{
 
     public Field parse( String fieldStr, ColumnDefinition columnDefinition ) throws IllegalFieldException {
+        int num = 0;
         try {
-            int num = Integer.parseInt( fieldStr );
+            num = Integer.parseInt( fieldStr );
 
             if (num < 0){
                 throw new IllegalFieldException( "Positive integer expected, found: "+fieldStr );
@@ -29,7 +30,7 @@ public class PositiveIntegerFieldParser implements FieldParser{
         }
 
         return new FieldBuilder()
-                .addKeyValue( CalimochoKeys.VALUE, fieldStr )
+                .addKeyValue( CalimochoKeys.VALUE, Integer.toString(num) )
                 .build();
     }
 }
