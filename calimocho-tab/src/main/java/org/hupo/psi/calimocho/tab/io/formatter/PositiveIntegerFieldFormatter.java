@@ -17,17 +17,17 @@ import org.hupo.psi.calimocho.tab.io.FieldFormatter;
 public class PositiveIntegerFieldFormatter implements FieldFormatter {
 
     public String format(Field field) throws IllegalFieldException {
-        String value = field.get( CalimochoKeys.VALUE );
-        int num = 0;
+        String value = field.get(CalimochoKeys.VALUE);
+        int num;
 
         try {
-            num = Integer.parseInt( value );
+            num = Integer.parseInt(value.substring(value.lastIndexOf(".")));
 
-            if (num < 0){
-                throw new IllegalFieldException( "Positive integer expected, found: "+value );
+            if (num < 0) {
+                throw new IllegalFieldException("Positive integer expected, found: " + value);
             }
-        } catch ( Exception e ) {
-            throw new IllegalFieldException( "Positive integer expected, found: "+value );
+        } catch (Exception e) {
+            throw new IllegalFieldException("Positive integer expected, found: " + value);
         }
 
         return Integer.toString(num);
