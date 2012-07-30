@@ -21,7 +21,7 @@ public class PositiveIntegerFieldFormatter implements FieldFormatter {
         int num;
 
         try {
-            num = Integer.parseInt(value.substring(value.lastIndexOf(".")));
+            num = Integer.parseInt(value);
 
             if (num < 0) {
                 throw new IllegalFieldException("Positive integer expected, found: " + value);
