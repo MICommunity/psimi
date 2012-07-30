@@ -18,9 +18,10 @@ public class PositiveIntegerFieldFormatter implements FieldFormatter {
 
     public String format(Field field) throws IllegalFieldException {
         String value = field.get( CalimochoKeys.VALUE );
+        int num = 0;
 
         try {
-            int num = Integer.parseInt( value );
+            num = Integer.parseInt( value );
 
             if (num < 0){
                 throw new IllegalFieldException( "Positive integer expected, found: "+value );
@@ -29,7 +30,7 @@ public class PositiveIntegerFieldFormatter implements FieldFormatter {
             throw new IllegalFieldException( "Positive integer expected, found: "+value );
         }
 
-        return value;
+        return Integer.toString(num);
     }
 
     public String format(Field field, Row row) throws IllegalFieldException {
