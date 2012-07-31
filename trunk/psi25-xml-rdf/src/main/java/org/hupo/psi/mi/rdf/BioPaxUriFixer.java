@@ -16,14 +16,17 @@
 package org.hupo.psi.mi.rdf;
 
 import org.apache.commons.lang.StringUtils;
-import org.biopax.paxtools.io.SimpleIOHandler;
+import org.biopax.paxtools.io.jena.JenaIOHandler;
+import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.level3.SimplePhysicalEntity;
 import org.biopax.paxtools.model.level3.Xref;
 import org.biopax.validator.utils.Normalizer;
 
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
@@ -33,9 +36,10 @@ public class BioPaxUriFixer {
 
     private static final String NEW_LINE = System.getProperty("line.separator");
     private static final String IDENTIFIERS_ORG = "http://identifiers.org/";
+    private BioPAXLevel biopaxLevel;
 
-    public BioPaxUriFixer() {
-
+    public BioPaxUriFixer(BioPAXLevel biopaxLevel) {
+        this.biopaxLevel = biopaxLevel;
     }
 
     public void fixBioPaxUris(Model model, Writer writer) throws IOException {
@@ -53,7 +57,7 @@ public class BioPaxUriFixer {
 
         OutputStream baos = new ByteArrayOutputStream();
 
-        new SimpleIOHandler().convertToOWL(model, baos);
+        new JenaIOHandler(this.biopaxLevel).convertToOWL(model, baos);
 
         fixURIs(idMappings, new StringReader(baos.toString()), writer);
         

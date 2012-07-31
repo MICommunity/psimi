@@ -21,7 +21,7 @@ import com.hp.hpl.jena.rdf.arp.JenaReader;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFReader;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
-import org.biopax.paxtools.io.SimpleIOHandler;
+import org.biopax.paxtools.io.jena.JenaIOHandler;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.Model;
 import org.mskcc.psibiopax.converter.PSIMIBioPAXConverter;
@@ -130,7 +130,7 @@ public class PsimiRdfConverter {
         try {
             convertToBioPAXAndFixURIs(entrySet, biopaxLevel, sw);
 
-            Model model = new SimpleIOHandler().convertFromOWL(new ByteArrayInputStream(sw.toString().getBytes()));
+            Model model = new JenaIOHandler(biopaxLevel).convertFromOWL(new ByteArrayInputStream(sw.toString().getBytes()));
 
             //close writer
             sw.close();
@@ -155,11 +155,10 @@ public class PsimiRdfConverter {
 
         if (!biopaxOutput.isEmpty()) {
             ByteArrayInputStream byteInputStream = new ByteArrayInputStream(biopaxOutput.getBytes());
-
             // fix the biopax non-dereferenciable URIs
-            Model model = new SimpleIOHandler().convertFromOWL(byteInputStream);
+            Model model = new JenaIOHandler(biopaxLevel).convertFromOWL(byteInputStream);
 
-            BioPaxUriFixer fixer = new BioPaxUriFixer();
+            BioPaxUriFixer fixer = new BioPaxUriFixer(biopaxLevel);
 
             fixer.fixBioPaxUris(model, writer);
 
