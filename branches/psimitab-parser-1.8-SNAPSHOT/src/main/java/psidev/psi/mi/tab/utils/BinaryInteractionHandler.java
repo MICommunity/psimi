@@ -21,6 +21,7 @@ import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.Interactor;
 
 import java.util.List;
+import java.util.List;
 
 /**
  * TODO comment that class header

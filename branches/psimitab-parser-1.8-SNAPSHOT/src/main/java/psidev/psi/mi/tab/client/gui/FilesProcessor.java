@@ -7,16 +7,17 @@ package psidev.psi.mi.tab.client.gui;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.tab.PsimiTabWriter;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
 import psidev.psi.mi.tab.expansion.ExpansionStrategy;
 import psidev.psi.mi.tab.expansion.MatrixExpansion;
 import psidev.psi.mi.tab.expansion.SpokeExpansion;
+import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.processor.PostProcessorStrategy;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -92,7 +93,7 @@ public class FilesProcessor {
             // configure it
             x2t.setPostProcessor( postProcessorStrategy );
 
-            PsimiTabWriter fileWriter = new psidev.psi.mi.tab.PsimiTabWriter();
+            PsimiTabWriter fileWriter = new PsimiTabWriter();
 
             if ( aggregateFiles ) {
 
@@ -102,10 +103,12 @@ public class FilesProcessor {
                 File output = buildOutputFile( inputFiles.get( 0 ), aggregateFiles, expansionStrategy );
 
                 try {
+                    FileWriter outputWriter = new FileWriter(output);
+
                     long start = System.currentTimeMillis();
 
                     Collection<BinaryInteraction> interactions = x2t.convert( inputFiles );
-                    fileWriter.write( interactions, output );
+                    fileWriter.write( interactions, outputWriter );
 
                     long stop = System.currentTimeMillis();
                     log.debug( "conversion took: " + ( stop - start ) + "ms" );
@@ -117,6 +120,8 @@ public class FilesProcessor {
                                                    message,
                                                    "Conversion complete",
                                                    JOptionPane.INFORMATION_MESSAGE );
+
+                    outputWriter.close();
 
                 } catch ( Exception e ) {
                     e.printStackTrace();
@@ -141,18 +146,22 @@ public class FilesProcessor {
                     File output = buildOutputFile( inputFile, aggregateFiles, expansionStrategy );
 
                     try {
+                        FileWriter outputWriter = new FileWriter(output);
+
                         long start = System.currentTimeMillis();
 
                         List<File> singleFile = new ArrayList<File>( 1 );
                         singleFile.add( inputFile );
 
                         Collection<BinaryInteraction> interactions = x2t.convert( singleFile );
-                        fileWriter.write( interactions, output );
+                        fileWriter.write( interactions, outputWriter );
 
                         long stop = System.currentTimeMillis();
                         log.debug( "conversion took: " + ( stop - start ) + "ms" );
 
                         ok++;
+
+                        outputWriter.close();
 
                     } catch ( Exception e ) {
                         e.printStackTrace();

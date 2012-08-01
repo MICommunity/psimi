@@ -1,6 +1,10 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
+
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -28,7 +32,7 @@ public class ParameterImpl implements Parameter {
     /**
      * Factor of the value in scientific notation.
      */
-    private Double factor;
+    private Double factor = 0.0;
 
     /**
      * Base of the value in scientific notation. The default value is 10.
@@ -50,6 +54,10 @@ public class ParameterImpl implements Parameter {
      */
     private String unit;
 
+    /**
+     * Uncertainty for the parameter.
+     */
+    private Double uncertainty = 0.0;
 
     //////////////////////
     // Constructors
@@ -65,17 +73,15 @@ public class ParameterImpl implements Parameter {
      */
     public ParameterImpl(String type, String value) {
         this.type = type;
-        this.base = 10;
-        this.exponent = 0;
 
-        this.value = value;
+        setValue(value);
 
-        // value using scientific notation
-        try {
-            this.factor = Double.parseDouble(value);
-        } catch (NumberFormatException e) {
-            this.factor = Double.NaN;
-        }
+//        // value using scientific notation
+//        try {
+//            this.factor = Double.parseDouble(value);
+//        } catch (NumberFormatException e) {
+//            this.factor = Double.NaN;
+//        }
     }
 
     /**
@@ -89,10 +95,8 @@ public class ParameterImpl implements Parameter {
     public ParameterImpl(String type, String value, String unit) {
         this.type = type;
         this.unit = unit;
-        this.base = 10;
-        this.exponent = 0;
 
-        this.value = value;
+        setValue(value);
 
 // value using scientific notation
 //		try {
@@ -101,51 +105,32 @@ public class ParameterImpl implements Parameter {
 //			this.factor = Double.NaN;
 //		}
 
-        Scanner scanner = new Scanner(value);
-        if (scanner.hasNextDouble()) {
-            factor = scanner.nextDouble();
-            if (scanner.hasNextInt()) {
-                base = scanner.nextInt();
-                if (scanner.hasNextInt()) {
-                    exponent = scanner.nextInt();
-
-                }
-            }
-        }
     }
 
     /**
      * Builds a parameter.
      *
-     * @param type  the type of the parameter.
-     * @param factor the factor of the parameter.
-     * @param base the base of the parameter.
+     * @param type     the type of the parameter.
+     * @param factor   the factor of the parameter.
+     * @param base     the base of the parameter.
      * @param exponent the exponent of the parameter.
-     * @param unit  the unit of the parameter.
+     * @param unit     the unit of the parameter.
      */
-    public ParameterImpl(String type, double factor, int base, int exponent, String unit) {
+    public ParameterImpl(String type, double factor, int base, int exponent, double uncertainty, String unit) {
         this.type = type;
         this.factor = factor;
         this.base = base;
         this.exponent = exponent;
         this.unit = unit;
+        this.uncertainty = uncertainty;
 
-        this.value = String.valueOf(factor);
-        if (exponent != 0) {
-            value = value + " x " + base + "^" + exponent;
-        }
+        this.value = getValue();
     }
 
     /**
      * {@inheritDoc}
      */
     public String getType() {
-
-        this.value = String.valueOf(factor);
-
-        if (exponent != 0 && base != 10) {
-            value = factor + " x " + base + "^" + exponent;
-        }
         return type;
     }
 
@@ -202,6 +187,16 @@ public class ParameterImpl implements Parameter {
      * {@inheritDoc}
      */
     public String getValue() {
+        this.value = String.valueOf(factor);
+
+        if (exponent != 0 && base != 10) {
+            value = factor + " x " + base + "^" + exponent;
+        }
+
+        if (uncertainty != 0) {
+            value = value + " ~" + uncertainty;
+        }
+
         return value;
     }
 
@@ -211,17 +206,29 @@ public class ParameterImpl implements Parameter {
     public void setValue(String value) {
         this.value = value;
 
-        Scanner scanner = new Scanner(value);
-        if (scanner.hasNextDouble()) {
-            factor = scanner.nextDouble();
-            if (scanner.hasNextInt()) {
-                base = scanner.nextInt();
-                if (scanner.hasNextInt()) {
-                    exponent = scanner.nextInt();
+        value = value.replace(' ','\0');
+        Pattern pattern = Pattern.compile("([-+]?[0-9]+\\.?[0-9]*)+x?([-+]?[0-9]*\\.?[0-9]*)?\\^?([-+]?[0-9]*\\.?[0-9]*)?~?([-+]?[0-9]*\\.?[0-9]*)?");
 
+        Matcher matcher = pattern.matcher(value);
+        try {
+            if (matcher.matches()) {
+                switch (matcher.groupCount()) {
+                    case 5:
+                        uncertainty = Double.parseDouble(matcher.group(4));
+                    case 4:
+                        exponent = Integer.parseInt(matcher.group(3));
+                    case 3:
+                        base = Integer.parseInt(matcher.group(2));
+                    case 2:
+                        factor = Double.parseDouble(matcher.group(1));
+                    default:
+                        break;
                 }
             }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("The value of the parameter is bad formatted: " + value);
         }
+
     }
 
     /**
@@ -236,6 +243,24 @@ public class ParameterImpl implements Parameter {
      */
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    /**
+     * Getter fot property 'uncertainty'.
+     *
+     * @return a double with the uncertainty.
+     */
+    public Double getUncertainty() {
+        return uncertainty;
+    }
+
+    /**
+     * Setter for property 'uncertainty'.
+     *
+     * @param uncertainty a double with the uncertainty
+     */
+    public void setUncertainty(Double uncertainty) {
+        this.uncertainty = uncertainty;
     }
 
     //////////////////////////

@@ -5,21 +5,19 @@
  */
 package psidev.psi.mi.tab.filter;
 
-import org.junit.After;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.After;
+
 import psidev.psi.mi.tab.PsimiTabReaderTest;
 import psidev.psi.mi.tab.TestHelper;
-import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.Organism;
+import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.utils.PsimiTabFileMerger;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 
 /**

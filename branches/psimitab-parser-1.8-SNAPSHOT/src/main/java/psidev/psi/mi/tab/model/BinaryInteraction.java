@@ -290,6 +290,7 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return expected colmn count
      */
+    @Deprecated
     int getExpectedColumnCount();
 
     /**
@@ -297,6 +298,7 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @param expectedColumnCount of expected columns
      */
+    @Deprecated
     void setExpectedColumnCount(int expectedColumnCount);
 
 

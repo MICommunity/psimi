@@ -28,15 +28,15 @@ public class RoundTripTest {
     @Test
     public void roundTrip() throws Exception {
 
-        PsimiTabReader mitabReader = new PsimiTabReader( true );
+        PsimiTabReader mitabReader = new psidev.psi.mi.tab.io.PsimiTabReader( );
         Collection<BinaryInteraction> interactions = mitabReader.read( MITAB_2_LINE_WITH_HEADER );
         assertEquals( 2, interactions.size() );
 
         // convert it back to a String
 
-        PsimiTabWriter mitabWriter = new PsimiTabWriter();
-        mitabWriter.setHeaderEnabled( true );
+        PsimiTabWriter mitabWriter = new psidev.psi.mi.tab.io.PsimiTabWriter();
         StringWriter sw = new StringWriter();
+        mitabWriter.writeMitabHeader(sw );
         mitabWriter.write( interactions, sw );
         assertNotNull( sw.getBuffer() );
         String output = sw.getBuffer().toString();

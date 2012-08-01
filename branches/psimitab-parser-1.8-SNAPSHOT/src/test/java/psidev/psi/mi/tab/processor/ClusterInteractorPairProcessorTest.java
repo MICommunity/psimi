@@ -3,9 +3,8 @@ package psidev.psi.mi.tab.processor;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import psidev.psi.mi.tab.PsimiTabReader;
+import psidev.psi.mi.tab.io.PsimiTabReader;
 import psidev.psi.mi.tab.TestHelper;
-import psidev.psi.mi.tab.converter.txt2tab.behaviour.FailFastUnparseableLine;
 import psidev.psi.mi.tab.mock.PsimiTabMockBuilder;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor.SimpleInteractor;
@@ -262,8 +261,8 @@ public class ClusterInteractorPairProcessorTest {
     public Collection<BinaryInteraction> parseMitab( File mitab ) throws IOException, ConverterException {
         Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
         boolean hasFileHeader = true;
-        PsimiTabReader mitabReader = new PsimiTabReader( hasFileHeader );
-        mitabReader.setUnparseableLineBehaviour( new FailFastUnparseableLine() );
+        PsimiTabReader mitabReader = new PsimiTabReader();
+//        mitabReader.setUnparseableLineBehaviour( new FailFastUnparseableLine() );
         Iterator<BinaryInteraction> iterator;
         iterator = mitabReader.iterate( mitab );
 
