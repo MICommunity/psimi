@@ -7,6 +7,7 @@ package psidev.psi.mi.tab.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
 
 /**
  * Represents a simple organism.

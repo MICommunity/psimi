@@ -7,15 +7,16 @@ package psidev.psi.mi.tab.utils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.tab.PsimiTabReader;
-import psidev.psi.mi.tab.PsimiTabWriter;
 import psidev.psi.mi.tab.converter.txt2tab.behaviour.IgnoreAndPrintUnparseableLine;
 import psidev.psi.mi.tab.converter.txt2tab.behaviour.UnparseableLineBehaviour;
+import psidev.psi.mi.tab.io.PsimiTabReader;
+import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,8 +59,7 @@ public class PsimiTabFileMerger {
         long start = System.currentTimeMillis();
 
         Collection<BinaryInteraction> all = new ArrayList<BinaryInteraction>( 1024 );
-        PsimiTabReader reader = new PsimiTabReader( true );
-        reader.setUnparseableLineBehaviour( unparseableLineBehaviour );
+        PsimiTabReader reader = new PsimiTabReader( );
 
         for ( File inputFile : inputFiles ) {
             if ( log.isDebugEnabled() ) {
@@ -123,8 +123,7 @@ public class PsimiTabFileMerger {
         long start = System.currentTimeMillis();
 
         Collection<BinaryInteraction> all = new ArrayList<BinaryInteraction>( 1024 );
-        PsimiTabReader reader = new PsimiTabReader( true );
-        reader.setUnparseableLineBehaviour( unparseableLineBehaviour );
+        PsimiTabReader reader = new PsimiTabReader();
 
         for ( File inputFile : inputFiles ) {
             if ( log.isDebugEnabled() ) {
@@ -140,9 +139,10 @@ public class PsimiTabFileMerger {
 
             log.debug( "Writing result on disk..." );
             PsimiTabWriter writer = new PsimiTabWriter();
-            writer.setHeaderEnabled( true );
+            FileWriter fileWriter = new FileWriter(output);
+            writer.writeMitabHeader(fileWriter);
 
-            writer.write( allClustered, output );
+            writer.write( allClustered, fileWriter );
         } else {
             System.out.println( "No interaction to merge." );
         }

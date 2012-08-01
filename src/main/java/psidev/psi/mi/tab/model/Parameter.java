@@ -63,7 +63,7 @@ public interface Parameter extends Serializable {
     /**
      * Setter for property 'exponent'.
      *
-     * @param exponent a integer with exponent of the value in scientific notation.
+     * @param exponent a integer with the exponent of the value in scientific notation.
      */
     public void setExponent(Integer exponent);
 
@@ -94,4 +94,18 @@ public interface Parameter extends Serializable {
      * @param unit a String with the unit of the parameter.
      */
     public void setUnit(String unit);
+
+    /**
+     * Getter fot property 'uncertainty'.
+     *
+     * @return a double with the uncertainty.
+     */
+    public Double getUncertainty();
+
+    /**
+     * Setter for property 'uncertainty'.
+     *
+     * @param uncertainty a double with the uncertainty
+     */
+    public void setUncertainty(Double uncertainty);
 }

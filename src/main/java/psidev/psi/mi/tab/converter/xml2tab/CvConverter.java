@@ -36,7 +36,6 @@ public class CvConverter {
     public static final String PSI_MI_REF = "MI:0488";
 
 
-    // here we are giving the Class, while now we have to use the Factory
     public static <CV extends CrossReference, T extends CvType> CV toMitab(T cv, Class<CV> clazz ) throws TabConversionException {
 
         CV myCv = null;

@@ -7,6 +7,8 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import psidev.psi.mi.tab.io.PsimiTabIterator;
+import psidev.psi.mi.tab.io.PsimiTabReader;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 
 /**
@@ -20,7 +22,7 @@ public class PsimiTabIteratorTest {
 
     @Test
     public void getInteractionsProcessedCount() throws Exception {
-        PsimiTabReader reader = new PsimiTabReader( true );
+        psidev.psi.mi.tab.PsimiTabReader reader = new PsimiTabReader();
         Iterator<BinaryInteraction> iterator = reader.iterate( TestHelper.HEADER_TAB_11585365);
         while ( iterator.hasNext() ) {
             iterator.next();
@@ -30,7 +32,7 @@ public class PsimiTabIteratorTest {
 
     @Test
     public void next() throws Exception {
-        PsimiTabReader reader = new PsimiTabReader( true );
+        psidev.psi.mi.tab.PsimiTabReader reader = new PsimiTabReader();
         Iterator<BinaryInteraction> iterator = reader.iterate( TestHelper.HEADER_TAB_11585365);
 
         // next() should keep returning the next element even if hasNext() hasn't been called.
@@ -50,7 +52,7 @@ public class PsimiTabIteratorTest {
 
     @Test
     public void hasNext() throws Exception {
-        PsimiTabReader reader = new PsimiTabReader( true );
+        psidev.psi.mi.tab.PsimiTabReader reader = new PsimiTabReader();
         Iterator<BinaryInteraction> iterator = reader.iterate(TestHelper.HEADER_TAB_11585365);
 
         // hasNext should not be gready.

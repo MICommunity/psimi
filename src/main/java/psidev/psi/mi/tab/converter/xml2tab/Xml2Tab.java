@@ -13,6 +13,7 @@ import psidev.psi.mi.tab.expansion.ExpansionStrategy;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
+import psidev.psi.mi.tab.model.builder.*;
 import psidev.psi.mi.tab.processor.PostProcessorStrategy;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.*;
@@ -277,9 +278,9 @@ public class Xml2Tab {
                                               ( f == null ? file.getAbsolutePath() : f.getAbsolutePath() ), e );
         }
 
-        if ( false == skipPostProcessing ) {
-            interactions = doPostProcessing( interactions );
-        }
+//        if ( false == skipPostProcessing ) {
+//            interactions = doPostProcessing( interactions );
+//        }
 
         return interactions;
     }
@@ -311,9 +312,9 @@ public class Xml2Tab {
             interactions.addAll( convert( file ) );
         }
 
-        if ( false == skipPostProcessing ) {
-            interactions = doPostProcessing( interactions );
-        }
+//        if ( false == skipPostProcessing ) {
+//            interactions = doPostProcessing( interactions );
+//        }
 
         return interactions;
     }
@@ -425,8 +426,30 @@ public class Xml2Tab {
                     for ( Interaction exi : expandedInteractions ) {
                         // convert the interaction into a MITAB25 line
                         BinaryInteraction binaryInteraction = interactionConverter.toMitab( exi );
-                        processAfterConversion(binaryInteraction, true);
+//                        processAfterConversion(binaryInteraction, true);
                         if ( binaryInteraction != null ) {
+
+                            String expansionName = expansionStrategy.getName();
+                            List<CrossReference> complexExpansion = new ArrayList<CrossReference>();
+                            if (expansionName.equalsIgnoreCase("spoke")) {
+                                complexExpansion.add(new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion"));
+                            } else if (expansionName.equalsIgnoreCase("matrix")) {
+                                complexExpansion.add(new CrossReferenceImpl("psi-mi", "MI:1061", "matrix expansion"));
+                            } else if (expansionName.equalsIgnoreCase("bipartite")) {
+                                complexExpansion.add(new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion"));
+                            }
+                            binaryInteraction.setComplexExpansion(complexExpansion);
+
+                            //Creation date and update date field 31 and 32
+                            //Now a days is the same
+                            List<Date> creationDate = new ArrayList<Date>();
+                            creationDate.add(entry.getSource().getReleaseDate());
+                            if (!creationDate.isEmpty()) {
+                                binaryInteraction.setCreationDate(creationDate);
+                                binaryInteraction.setUpdateDate(creationDate);
+
+                            }
+
                             interactions.add( binaryInteraction );
                         }
                     }
@@ -435,56 +458,69 @@ public class Xml2Tab {
 
                     // convert the interaction into a MITAB25 line
                     BinaryInteraction binaryInteraction = interactionConverter.toMitab( interaction );
-                    processAfterConversion(binaryInteraction, false);
+//                    processAfterConversion(binaryInteraction, false);
 
                     if ( binaryInteraction != null ) {
+                        //Creation date and update date field 31 and 32
+                        //Now a days is the same
+                        //TODO add a overwrite mechanism?
+
+                        List<Date> creationDate = new ArrayList<Date>();
+                        creationDate.add(entry.getSource().getReleaseDate());
+                        if (!creationDate.isEmpty()) {
+                            binaryInteraction.setCreationDate(creationDate);
+                            binaryInteraction.setUpdateDate(creationDate);
+                        }
+
                         interactions.add( binaryInteraction );
                     }
                 }
             }
         } 
 
-        if (!skipPostProcessing) {
-            interactions = doPostProcessing( interactions );
-        }
+//        if (!skipPostProcessing) {
+//            interactions = doPostProcessing( interactions );
+//        }
 
         return interactions;
     }
 
-    protected void processAfterConversion(BinaryInteraction binaryInteraction, boolean expanded) {
-        // nothing here. This methods is only here to keep the intact-psimitab dependecy happy. Not good design.
-    }
+//    @Deprecated
+//    protected void processAfterConversion(BinaryInteraction binaryInteraction, boolean expanded) {
+//        // nothing here. This methods is only here to keep the intact-psimitab dependecy happy. Not good design.
+//    }
 
-    /**
-     * Apply post processing to the given collecition of interactions. if no processing was requested, the given
-     * collection is returned.
-     *
-     * @param interactions the collection of interaction on which to apply post processing.
-     * @return a non null collection of interactions.
-     */
-    private Collection<BinaryInteraction> doPostProcessing( final Collection<BinaryInteraction> interactions ) {
-
-        if ( interactions == null ) {
-            throw new IllegalArgumentException( "Interaction cannot be null." );
-        }
-
-        Collection<BinaryInteraction> processedInteraction = null;
-
-        // Run post processing (if requested)
-        if ( postProcessor != null ) {
-            if ( log.isDebugEnabled() ) {
-                log.debug( "Running " + postProcessor.getClass().getSimpleName() + "..." );
-            }
-            //postProcessor.setColumnHandler( columnHandler );
-            processedInteraction = postProcessor.process( interactions );
-            log.debug( "Post processing completed." );
-        } else {
-            log.debug( "No post processing requested." );
-            processedInteraction = interactions;
-        }
-
-        return processedInteraction;
-    }
+//    /**
+//     * Apply post processing to the given collecition of interactions. if no processing was requested, the given
+//     * collection is returned.
+//     *
+//     * @param interactions the collection of interaction on which to apply post processing.
+//     * @return a non null collection of interactions.
+//     */
+//    @Deprecated
+//    private Collection<BinaryInteraction> doPostProcessing( final Collection<BinaryInteraction> interactions ) {
+//
+//        if ( interactions == null ) {
+//            throw new IllegalArgumentException( "Interaction cannot be null." );
+//        }
+//
+//        Collection<BinaryInteraction> processedInteraction = null;
+//
+//        // Run post processing (if requested)
+//        if ( postProcessor != null ) {
+//            if ( log.isDebugEnabled() ) {
+//                log.debug( "Running " + postProcessor.getClass().getSimpleName() + "..." );
+//            }
+//            //postProcessor.setColumnHandler( columnHandler );
+//            processedInteraction = postProcessor.process( interactions );
+//            log.debug( "Post processing completed." );
+//        } else {
+//            log.debug( "No post processing requested." );
+//            processedInteraction = interactions;
+//        }
+//
+//        return processedInteraction;
+//    }
 
     public EntrySet convert( Collection<BinaryInteraction> interactions ) {
         // TODO impplement that !

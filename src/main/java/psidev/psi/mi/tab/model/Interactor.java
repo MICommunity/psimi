@@ -7,6 +7,7 @@ package psidev.psi.mi.tab.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -113,7 +114,7 @@ public class Interactor implements Serializable {
 
     public Interactor(List<CrossReference> identifiers) {
         if (identifiers == null) {
-            throw new IllegalArgumentException("You must give a non null collection of identifiers.");
+            throw new IllegalArgumentException("You must give a non null list of identifiers.");
         }
         this.identifiers = identifiers;
     }

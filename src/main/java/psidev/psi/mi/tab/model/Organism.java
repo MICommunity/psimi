@@ -2,6 +2,7 @@ package psidev.psi.mi.tab.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.List;
 
 /**
  * TODO commenta that class header

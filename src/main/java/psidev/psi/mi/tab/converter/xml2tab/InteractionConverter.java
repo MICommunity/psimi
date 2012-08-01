@@ -29,6 +29,9 @@ import java.util.regex.Pattern;
  */
 public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
+    public static final String IDENTITY = "identity";
+    public static final String IDENTITY_REF = "MI:0356";
+
     private static final Log log = LogFactory.getLog(InteractionConverter.class);
 
     /**
@@ -48,6 +51,11 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
     // identifies patterns like "AuthorName B (2002)", capturing the authorName and the year
     private Pattern FIRST_AUTHOR_REGEX = Pattern.compile("(\\w+(?:\\P{Ps}+)?)(?:\\((\\d{4})\\))?");
+
+    private static final List<String> checksumNames = new ArrayList<String>(Arrays.asList(new String[]
+            {"checksum", "smiles string", "standard inchi", "inchi key",
+                    "standard inchi key", "rogid", "rigid", "crogid", "crc", "crc64"}));
+
 
     protected static final String IREFINDEX = "irefindex";
 
@@ -136,6 +144,14 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             bi.getSourceDatabases().addAll(sourceDatabases);
         }
 
+        //Interaction AC and Xrefs
+
+        //We have several options:
+        // 1 - We can use the primary xref for the InteractionAc and the secondary refs as mitab xrefs
+        // 2 - We can search the identities xref for the Interaction Acs and the rest of xrefs for the mitab xrefs.
+
+        // This code implements the second option
+
         if (interaction.hasXref()) {
 
             // First, try to search by source-reference type.
@@ -144,9 +160,10 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             // but in some cases you will get more than one interactionAcs
 
             // Interaction AC  field 14
-            Collection<DbReference> interactionAcs = XrefUtils.searchByType(interaction.getXref(), "identity", "MI:0356");
+            Collection<DbReference> interactionAcs = XrefUtils.searchByType(interaction.getXref(), IDENTITY, IDENTITY_REF);
 
-            // filter the identities by the source databases
+            // If the interaction ACs has the source, we remove it.
+
             Iterator<DbReference> interactionAcsIter = interactionAcs.iterator();
 
             while (interactionAcsIter.hasNext()) {
@@ -161,8 +178,10 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                 }
             }
 
+            // We don't have any identity ref, but we can add the first xref that we have
             if (interactionAcs.isEmpty() && interaction.hasXref()) {
                 interactionAcs.add(interaction.getXref().getPrimaryRef());
+                log.warn("The interaction identifiers provided is not an identity in the original XML");
             }
 
             List<CrossReference> refs = new ArrayList<CrossReference>();
@@ -201,7 +220,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
             // init the interaction
             List<CrossReference> publications = new ArrayList<CrossReference>(expCount);
-	        /* Publication field 7 */
+            /* Publication field 7 */
             bi.setPublications(publications);
 
             List<CrossReference> detections =
@@ -211,7 +230,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             for (ExperimentDescription experiment : interaction.getExperiments()) {
 
                 // detection method
-                CrossReference detection = CvConverter.toMitab(experiment.getInteractionDetectionMethod(),CrossReferenceImpl.class);
+                CrossReference detection = CvConverter.toMitab(experiment.getInteractionDetectionMethod(), CrossReferenceImpl.class);
 
                 if (detection != null) {
                     bi.getDetectionMethods().add(detection);
@@ -271,6 +290,58 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             psidev.psi.mi.tab.model.Confidence tabConfidence = new ConfidenceImpl(type, value, text);
             bi.getConfidenceValues().add(tabConfidence);
         }
+
+
+        // complex expansion field 16 is in Xml2Tab file
+
+
+        //Annotations && Checksum for the interaction fields 28 and 33
+        List<Annotation> iAnnotations = new ArrayList<Annotation>();
+        List<Checksum> iChecksums = new ArrayList<Checksum>();
+
+        for (Attribute attribute : interaction.getAttributes()) {
+            String name = attribute.getName();
+            String text = attribute.getValue();
+            if (checksumNames.contains(name.toLowerCase())) {
+                //Is a checksum
+                iChecksums.add(new ChecksumImpl(name, text));
+            } else {
+                //Is a normal attribute
+                iAnnotations.add(new AnnotationImpl(name, text));
+            }
+        }
+
+
+        if (!iAnnotations.isEmpty()) {
+            bi.setAnnotations(iAnnotations);
+        }
+        if (!iChecksums.isEmpty()) {
+            bi.setChecksums(iChecksums);
+        }
+
+        //Host organism field 29
+        //It is in the Experiment
+
+        //Parameters for the interaction field 30
+        List<Parameter> iParameters = new ArrayList<Parameter>();
+        for (psidev.psi.mi.xml.model.Parameter parameter : interaction.getParameters()) {
+            iParameters.add(new ParameterImpl(parameter.getTerm(),
+                    parameter.getFactor(),
+                    parameter.getBase(),
+                    parameter.getExponent(),
+                    parameter.getUncertainty(),
+                    parameter.getUnit()));
+
+        }
+        if (!iParameters.isEmpty()) {
+            bi.setParameters(iParameters);
+        }
+
+
+        //Creation date and update date field 31 and 32 is in Xml2Tab file
+
+        //Negative interaction field  36
+        bi.setNegativeInteraction(interaction.isNegative());
 
         return bi;
     }
@@ -427,30 +498,30 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
         //Field 29
 
         // taxonomy
-        if ( binaryInteraction.hasHostOrganism() ) {
+        if (binaryInteraction.hasHostOrganism()) {
             psidev.psi.mi.tab.model.Organism o = binaryInteraction.getHostOrganism();
 
             // get shortLabel
             Iterator<CrossReference> idIterator = o.getIdentifiers().iterator();
             String shortlabel = null;
-            if ( idIterator.hasNext() ) {
+            if (idIterator.hasNext()) {
                 CrossReference first = idIterator.next();
-                if ( first.hasText() ) {
+                if (first.hasText()) {
                     shortlabel = first.getText();
                 }
             }
 
             // get taxid
-            //TODO Test thit
+            //TODO Test this
             int ncbiTaxId = 0;
             Organism xmlOrganism = null;
-            if( o.getTaxid() != null ) {
+            if (o.getTaxid() != null) {
 
                 try {
-                    ncbiTaxId = Integer.parseInt( o.getTaxid() );
-                } catch ( NumberFormatException e ) {
-                    final String msg =  "Could not parse taxid " + o.getTaxid() + ", it doesn't seem to be a valid integer value.";
-                    throw new XmlConversionException( msg );
+                    ncbiTaxId = Integer.parseInt(o.getTaxid());
+                } catch (NumberFormatException e) {
+                    final String msg = "Could not parse taxid " + o.getTaxid() + ", it doesn't seem to be a valid integer value.";
+                    throw new XmlConversionException(msg);
                 }
 
 
@@ -676,18 +747,16 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                     for (Parameter parameter : parameters) {
                         psidev.psi.mi.xml.model.Parameter xmlParameter = new psidev.psi.mi.xml.model.Parameter();
 
-                        String  parameterType = parameter.getType();
-                        if(parameterType != null){
+                        String parameterType = parameter.getType();
+                        if (parameterType != null) {
                             // We complete the termAc for the most frequent terms
 
                             xmlParameter.setTerm(parameter.getType());
-                            if(parameterType.equalsIgnoreCase("kd")){
+                            if (parameterType.equalsIgnoreCase("kd")) {
                                 xmlParameter.setTermAc("MI:0646");
-                            }
-                            else if(parameterType.equalsIgnoreCase("ic50")){
+                            } else if (parameterType.equalsIgnoreCase("ic50")) {
                                 xmlParameter.setTermAc("MI:0641");
-                            }
-                            else if(parameterType.equalsIgnoreCase("kcat")){
+                            } else if (parameterType.equalsIgnoreCase("kcat")) {
                                 xmlParameter.setTermAc("MI:0645");
                             }
 
@@ -705,20 +774,18 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                         }
 
 
-                        String  unit = parameter.getUnit();
-                        if ( unit != null) {
+                        String unit = parameter.getUnit();
+                        if (unit != null) {
                             xmlParameter.setUnit(parameter.getUnit());
                             // We complete the unitAc for the most frequent units
-                            if(unit.equalsIgnoreCase("molar")){
+                            if (unit.equalsIgnoreCase("molar")) {
                                 xmlParameter.setUnitAc("MI:0648");
-                            }
-                            else if(unit.equalsIgnoreCase("second -1")){
+                            } else if (unit.equalsIgnoreCase("second -1")) {
                                 xmlParameter.setUnitAc("IA:1721");
                             }
                         }
 
-//                        xmlParameter.setUncertainty(?);
-
+                        xmlParameter.setUncertainty(parameter.getUncertainty());
 
                     }
                 }

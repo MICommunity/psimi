@@ -6,7 +6,7 @@ package psidev.psi.mi.tab.converter.tab2xml;
 import org.junit.Assert;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import psidev.psi.mi.tab.PsimiTabReader;
+import psidev.psi.mi.tab.io.PsimiTabReader;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
 import psidev.psi.mi.tab.model.BinaryInteraction;
@@ -42,7 +42,7 @@ public class Tab2XmlTest {
             File tabFile = TestHelper.getFileByResources( "/mitab-testset/chen.txt", Tab2XmlTest.class );
             assertTrue( tabFile.canRead() );
 
-            PsimiTabReader reader = new PsimiTabReader( tabFile.canRead() );
+            psidev.psi.mi.tab.PsimiTabReader reader = new PsimiTabReader();
 
             binaryInteractions = reader.read( tabFile );
 
@@ -76,6 +76,48 @@ public class Tab2XmlTest {
     }
 
     @Test
+    // This test runs with the old tabformat version
+    public void writer27() throws Exception {
+
+        Collection<BinaryInteraction> binaryInteractions = null;
+        try {
+            File tabFile = TestHelper.getFileByResources( "/mitab-testset/19696444_27.txt", Tab2XmlTest.class );
+            assertTrue( tabFile.canRead() );
+
+            psidev.psi.mi.tab.PsimiTabReader reader = new PsimiTabReader();
+
+            binaryInteractions = reader.read( tabFile );
+
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        } catch ( ConverterException e ) {
+            e.printStackTrace();
+        }
+
+
+        EntrySet entrySet = null;
+        try {
+            Tab2Xml t2x = new Tab2Xml();
+            t2x.setInteractorNameBuilder( new InteractorIdBuilder() );
+
+            entrySet = t2x.convert( binaryInteractions );
+            assertNotNull( entrySet );
+        } catch ( XmlConversionException e ) {
+            e.printStackTrace();
+        } catch ( IllegalAccessException e ) {
+            e.printStackTrace();
+        }
+
+
+        File xmlFile = new File( TestHelper.getTargetDirectory(), "19696444_27.xml" );
+        assertTrue( xmlFile.getParentFile().canWrite() );
+
+        PsimiXmlWriter writer = new PsimiXmlWriter();
+        writer.write( entrySet, xmlFile );
+
+    }
+
+    @Test
     // This test runs with the new tabformat version
     public void roundTripTest() throws Exception {
 
@@ -87,7 +129,7 @@ public class Tab2XmlTest {
         Assert.assertEquals( 2, originalEntrySet.getEntries().iterator().next().getInteractions().size());
 
         // convert the originalEntrySet to BinaryInteractions (and save result into MITAB2.5)
-        PsimiTabReader tabReader = new PsimiTabReader( true );
+        psidev.psi.mi.tab.PsimiTabReader tabReader = new PsimiTabReader();
         File originalTabFile = TestHelper.getFileByResources( "/mitab-testset/9560268.txt", Tab2XmlTest.class );
         Collection<BinaryInteraction> binaryInteractions = tabReader.read( originalTabFile );
         Assert.assertEquals( 2, binaryInteractions.size() );

@@ -35,6 +35,13 @@ import java.util.List;
  */
 public class MitabInteractorConverter extends InteractorConverter<Interactor> {
 
+    public static final String PSIMI = "psi-mi";
+    public static final String PSIMI_MI = "MI:0488";
+    public static final String IDENTITY = "identity";
+    public static final String IDENTITY_REF = "MI:0356";
+    private static final String FEATURE_TYPE = "MI:0116";
+    private static final String UNSPECIFIED_ROLE = "MI:0499";
+
     public Participant buildParticipantA(psidev.psi.mi.xml.model.Interactor xmlInteractor,
                                          BinaryInteraction binaryInteraction,
                                          int index) throws XmlConversionException {
@@ -67,7 +74,7 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
 
 
             //Fields 17 18 BiologicalRole
-            //TODO check the logic
+
             Collection<CrossReference> biologicalRoles = mitabInteractor.getBiologicalRoles();
             BiologicalRole biologicalRole;
 
@@ -82,18 +89,17 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
                 names.setFullName("unspecified role");
 
                 DbReference dbRef = new DbReference();
-                dbRef.setDb("psi-mi");
-                dbRef.setDbAc("MI:0488");
-                dbRef.setId("MI:0499");
-                dbRef.setRefType("identity");
-                dbRef.setRefTypeAc("MI:0356");
+                dbRef.setDb(PSIMI);
+                dbRef.setDbAc(PSIMI_MI);
+                dbRef.setId(UNSPECIFIED_ROLE);
+                dbRef.setRefType(IDENTITY);
+                dbRef.setRefTypeAc(IDENTITY_REF);
 
                 biologicalRole.setNames(names);
                 biologicalRole.setXref(new Xref(dbRef));
 
-            }
-            else{
-                  biologicalRole = CrossReferenceConverter.fromMitab(biologicalRoles, BiologicalRole.class);
+            } else {
+                biologicalRole = CrossReferenceConverter.fromMitab(biologicalRoles, BiologicalRole.class);
             }
 
             participant.setBiologicalRole(biologicalRole);
@@ -116,11 +122,11 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
                 names.setFullName("unspecified role");
 
                 DbReference dbRef = new DbReference();
-                dbRef.setDb("psi-mi");
-                dbRef.setDbAc("MI:0488");
-                dbRef.setId("MI:0499");
-                dbRef.setRefType("identity");
-                dbRef.setRefTypeAc("MI:0356");
+                dbRef.setDb(PSIMI);
+                dbRef.setDbAc(PSIMI_MI);
+                dbRef.setId(UNSPECIFIED_ROLE);
+                dbRef.setRefType(IDENTITY);
+                dbRef.setRefTypeAc(IDENTITY_REF);
 
                 experimentalRole.setNames(names);
                 experimentalRole.setXref(new Xref(dbRef));
@@ -134,47 +140,11 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
 
             //Fields 21 22 Interactor Type (They are in InteractorConverter)
 
-//            //Fields 23 24
-//            //TODO Noe Is it correct in this place? Delete from the other InteractorConverter
-//            if(!mitabInteractor.getXrefs().isEmpty()){
-//
-//                Iterator<CrossReference> xrefsIterator = mitabInteractor.getXrefs().iterator();
-//                CrossReference primaryIdentifier = xrefsIterator.next();
-//
-//                DbReference primaryReference = new DbReference(primaryIdentifier.getDatabase(), primaryIdentifier.getIdentifier());
-//                Collection<DbReference> secondaryRefs = new ArrayList<DbReference>();
-//
-//                while (xrefsIterator.hasNext()){
-//                    CrossReference secondaryIdentifier = xrefsIterator.next();
-//
-//                    String database = secondaryIdentifier.getDatabase();
-//                    String id = secondaryIdentifier.getIdentifier();
-//
-//                    DbReference secondaryRef = new DbReference(id,database);
-//                    secondaryRefs.add(secondaryRef);
-//
-//                }
-//
-//                Xref xref = new Xref(primaryReference, secondaryRefs);
-//                participant.setXref(xref);
-//            }
+            //Fields 23 24 Xrefs (They are in InteractorConverter)
 
-            //Field 26 27 (They are in InteractorConverter)
-//            Collection<Annotation> annotations = mitabInteractor.getAnnotations();
+            //Field 26 27 Annotations (They are in InteractorConverter)
 
-
-            //Field 33 34
-            // TODO I don't find the field in the xml
-            Collection<Checksum> checksums = mitabInteractor.getChecksums();
-            if (!checksums.isEmpty()) {
-                for (Checksum checksum : checksums) {
-                    Attribute attribute = new Attribute(checksum.getMethodName(), checksum.getChecksum());
-                    if (!participant.getAttributes().contains(attribute)) {
-                        participant.getAttributes().add(attribute);
-                    }
-                }
-            }
-
+            //Field 33 34 Checksums (They are in InteractorConverter)
 
             //Field 37 38 Features
             Collection<Feature> features = mitabInteractor.getFeatures();
@@ -185,38 +155,39 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
                     //Feature Id
                     xmlfeature.setId(IdentifierGenerator.getInstance().nextId());
 
-                    //Feature Name
-                    Names featureNames = new Names();
-
-                    //In this moment we don't have information about the name of the feature
-                    // we can guess that is in the text of the feature if it exists.
-                    //TODO improve the method to search the name
-                    if (mitabFeature.getText() != null) {
-
-                        featureNames.setShortLabel(mitabFeature.getText());
-                        featureNames.setFullName(mitabFeature.getText());
-
-                        xmlfeature.setNames(featureNames);
-                    }
-
                     //Feature Type
                     FeatureType featureType = new FeatureType();
 
-                    //In this moment we don't have information about the type, only the name (we would need to search the CVTerm)
-                    //TODO search the MITAB term by Name
-                    //featureType.setXref(searchTermByName(names));
-                    if (mitabFeature.getFeatureType() != null) {
+                    // In this moment we don't have all the information about the  feature type,
+                    // only the name (we would need to search the CVTerm)
+                    // TODO search the MITAB term by Name
 
+                    if (mitabFeature.getFeatureType() != null) {
+                        // If we have the feature type, the name and xref are mandatory in the xml schema, so
+                        // we need to create a temporal solution for the xref, because now we can't provide the
+                        // real ID for the feature type
 
                         Names featureTypeNames = new Names();
                         featureTypeNames.setShortLabel(mitabFeature.getFeatureType());
                         featureTypeNames.setFullName(mitabFeature.getFeatureType());
 
                         featureType.setNames(featureTypeNames);
+                        //TODO search the MITAB term by Name
+//                        featureType.setXref(searchTermByName(names));
+                        DbReference dbRef = new DbReference();
+                        dbRef.setDb(PSIMI);
+                        dbRef.setDbAc(PSIMI_MI);
+                        dbRef.setId(FEATURE_TYPE);
+                        dbRef.setRefType(IDENTITY);
+                        dbRef.setRefTypeAc(IDENTITY_REF);
 
+                        Xref xref = new Xref(dbRef);
+                        featureType.setXref(xref);
                         xmlfeature.setFeatureType(featureType);
-
+                        Attribute attribute = new Attribute("MI:0018", "caution", "Due to a limitation in the converion mitab to xml, the real xref for the feature type can not be provided.However, you could use the name of the feature type.");
+                        participant.getAttributes().add(attribute);
                     }
+
 
                     //Feature RangeList
                     //Review
@@ -229,17 +200,21 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
 
                     }
 
+                    if (mitabFeature.getText() != null && !mitabFeature.getText().isEmpty()) {
+                        Attribute attribute = new Attribute("MI:0612", "comment", "This feature in mitab had the next text: " + mitabFeature.getText());
+                        xmlfeature.getAttributes().add(attribute);
+                    }
+                    participant.getFeatures().add(xmlfeature);
                 }
 
             }
 
             //Field 39 40 Stoichiometry
-            //TODO I don't find it in the xml
             Collection<Integer> stoichiometry = mitabInteractor.getStoichiometry();
             if (!stoichiometry.isEmpty()) {
                 for (Integer integer : stoichiometry) {
                     //TODO Review the format
-                    Attribute attribute = new Attribute("MI:0612", "comment","Stoichiometry: " + integer.toString());
+                    Attribute attribute = new Attribute("MI:0612", "comment", "Stoichiometry: " + integer.toString());
                     if (!participant.getAttributes().contains(attribute)) {
                         participant.getAttributes().add(attribute);
                     }
@@ -259,18 +234,18 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
 
                 for (CrossReference participantIdentificationMethod : participantIdentificationMethods) {
                     //The first psi-mi term is ours primary ref and name
-                    if (!found && participantIdentificationMethod.getDatabase().equalsIgnoreCase("psi-mi")) {
+                    if (!found && participantIdentificationMethod.getDatabase().equalsIgnoreCase(PSIMI)) {
 
                         names.setShortLabel(participantIdentificationMethod.getText());
                         //TODO find a better full name
                         names.setFullName(participantIdentificationMethod.getText());
 
                         DbReference dbRef = new DbReference();
-                        dbRef.setDb("psi-mi");
-                        dbRef.setDbAc("MI:0488");
+                        dbRef.setDb(PSIMI);
+                        dbRef.setDbAc(PSIMI_MI);
                         dbRef.setId(participantIdentificationMethod.getIdentifier());
-                        dbRef.setRefType("identity");
-                        dbRef.setRefTypeAc("MI:0356");
+                        dbRef.setRefType(IDENTITY);
+                        dbRef.setRefTypeAc(IDENTITY_REF);
 
                         xref.setPrimaryRef(dbRef);
                         found = true;

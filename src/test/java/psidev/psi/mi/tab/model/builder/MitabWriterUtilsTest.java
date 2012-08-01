@@ -251,21 +251,8 @@ public class MitabWriterUtilsTest {
         return interactionToCompare;
     }
 
-    @Test
-    public void testBuildHeader() throws Exception {
 
-        String[] header1 = MitabWriterUtils.buildHeader(PsimiTab.VERSION_2_5);
-        Assert.assertEquals(PsimiTab.VERSION_2_5,header1.length);
-
-        String[] header2 = MitabWriterUtils.buildHeader(PsimiTab.VERSION_2_6);
-        Assert.assertEquals(PsimiTab.VERSION_2_6,header2.length);
-
-        String [] header3 = MitabWriterUtils.buildHeader(PsimiTab.VERSION_2_7);
-        Assert.assertEquals(PsimiTab.VERSION_2_7,header3.length);
-
-    }
-
-    @Test(expected = IllegalArgumentException.class)
+   @Test(expected = IllegalArgumentException.class)
     public void testBuildHeaderException() throws Exception {
 
         final int WRONG_VERSION = 40;
@@ -276,14 +263,14 @@ public class MitabWriterUtilsTest {
 
     @Test
     public void testBuildLine() throws Exception {
-        String[] result1 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_5);
-        Assert.assertEquals(Arrays.toString(result1), Arrays.toString(line25));
+        String result1 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_5);
+        Assert.assertEquals(result1, MitabWriterUtils.createMitabLine(line25,PsimiTab.VERSION_2_5));
 
-        String[] result2 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_6);
-        Assert.assertEquals(Arrays.toString(result2), Arrays.toString(line26));
+        String result2 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_6);
+        Assert.assertEquals(result2, MitabWriterUtils.createMitabLine(line26,PsimiTab.VERSION_2_6));
 
-        String[] result3 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_7);
-        Assert.assertEquals(Arrays.toString(result3), Arrays.toString(line27));
+        String result3 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_7);
+        Assert.assertEquals(result3, MitabWriterUtils.createMitabLine(line27, PsimiTab.VERSION_2_7));
     }
 
     @Test(expected = IllegalArgumentException.class)

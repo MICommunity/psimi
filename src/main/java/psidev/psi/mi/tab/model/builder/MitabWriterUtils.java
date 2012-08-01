@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.model.builder;
 
+import com.sun.tools.javac.resources.version;
 import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.utils.MitabEscapeUtils;
@@ -22,12 +23,15 @@ public class MitabWriterUtils {
     private static final String MI_PREFIX = "MI";
     private static final String FIELD_DELIMITER = "|";
     private static final String EMPTY_COLUMN = "-";
+    private static final String COLUMN_DELIMITER = "\t";
+    private static final String EOF_DELIMITER = "\n";
 
-    public static String[] buildHeader(int version) {
-        return PsimiTabColumns.getHeader(version);
+
+    public static String buildHeader(int version) {
+        return createMitabLine(PsimiTabColumns.getHeader(version),version);
     }
 
-    public static String[] buildLine(BinaryInteraction interaction, int version) throws IllegalArgumentException{
+    public static String buildLine(BinaryInteraction interaction, int version) throws IllegalArgumentException{
 
         if (version != PsimiTab.VERSION_2_5 && version != PsimiTab.VERSION_2_6 && version != PsimiTab.VERSION_2_7) {
             throw new IllegalArgumentException("The version of MITAB can not be written");
@@ -116,7 +120,7 @@ public class MitabWriterUtils {
         }
 
 
-        return line;  //To change body of created methods use File | Settings | File Templates.
+        return createMitabLine(line,version);  //To change body of created methods use File | Settings | File Templates.
     }
 
     /* Create a string from a collection of features */
@@ -327,7 +331,7 @@ public class MitabWriterUtils {
         return sb.toString();
     }
 
-    private static String joinAliasCollection(Collection<Alias> collection) {
+    private static String joinAliasCollection(List<Alias> collection) {
 
         StringBuilder sb = new StringBuilder();
         if (collection != null && !collection.isEmpty()) {
@@ -413,6 +417,22 @@ public class MitabWriterUtils {
             sb.append(MitabEscapeUtils.escapeFieldElement(description));
             sb.append(')');
         }
+
+        return sb.toString();
+    }
+
+    protected static String createMitabLine( String [] columns, int version) {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(columns[0]);
+
+        for ( int i = 1; i < version; i++ ) {
+            sb.append(COLUMN_DELIMITER) ;
+            sb.append(columns[i]);
+        }
+
+        sb.append(EOF_DELIMITER);
 
         return sb.toString();
     }

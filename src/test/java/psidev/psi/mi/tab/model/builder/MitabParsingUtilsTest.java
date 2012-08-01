@@ -74,7 +74,8 @@ public class MitabParsingUtilsTest {
 //                "psi-mi:\"MI:0974(innatedb)\"(innatedb)", TODO Report this problem
                 "psi-mi:\"MI:0974\"(innatedb)",
                 "innatedb:IDB-113260",
-                "lpr:2|hpr:2|np:1|",
+//                "lpr:2|hpr:2|np:1|",
+                "lpr:2|",
                 "-",
                 "psi-mi:\"MI:0499\"(unspecified role)",
                 "psi-mi:\"MI:0499\"(unspecified role)",
@@ -165,8 +166,8 @@ public class MitabParsingUtilsTest {
 
         List<Confidence> confidences = new ArrayList<Confidence>() {{
             add(new ConfidenceImpl("lpr", "2"));
-            add(new ConfidenceImpl("hpr", "2"));
-            add(new ConfidenceImpl("np", "1"));
+//            add(new ConfidenceImpl("hpr", "2"));
+//            add(new ConfidenceImpl("np", "1"));
         }};
 
         interactionToCompare.setConfidenceValues(confidences);
@@ -251,7 +252,7 @@ public class MitabParsingUtilsTest {
                 "psi-mi:\"MI:0915\"(physical association)",
                 "psi-mi:\"MI:0974\"(innatedb)",
                 "innatedb:IDB-113260",
-                "lpr:2|hpr:2|np:1"
+                "lpr:2|hpr:2|np:1|"
         };
 
         String[] line26 = {
@@ -269,7 +270,7 @@ public class MitabParsingUtilsTest {
                 "psi-mi:\"MI:0915\"(physical association)",
                 "psi-mi:\"MI:0974\"(innatedb)",
                 "innatedb:IDB-113260",
-                "lpr:2|hpr:2|np:1",
+                "lpr:2|hpr:2|np:1|",
                 "-",
                 "psi-mi:\"MI:0499\"(unspecified role)",
                 "psi-mi:\"MI:0499\"(unspecified role)",
@@ -308,7 +309,7 @@ public class MitabParsingUtilsTest {
                 "psi-mi:\"MI:0915\"(physical association)",
                 "psi-mi:\"MI:0974\"(innatedb)",
                 "innatedb:IDB-113260",
-                "lpr:2|hpr:2|np:1",
+                "lpr:2|hpr:2|np:1|",
                 "-",
                 "psi-mi:\"MI:0499\"(unspecified role)",
                 "psi-mi:\"MI:0499\"(unspecified role)",
