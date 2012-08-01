@@ -63,7 +63,16 @@ public abstract class BinaryExpansionStrategy implements ExpansionStrategy {
         target.getConfidences().addAll( source.getConfidences() );
         target.getExperiments().addAll( source.getExperiments() );
         target.getInteractionTypes().addAll( source.getInteractionTypes() );
-        target.getParameters().addAll( source.getParameters() );
+
+        // added with mitab 27
+        target.setModelled(source.isModelled());
+        target.setIntraMolecular(source.isIntraMolecular());
+        target.setNegative(source.isNegative());
+        target.getParameters().addAll( source.getParameters());
+        target.getAttributes().addAll(source.getAttributes());
+
+        target.setAvailability(source.getAvailability());
+
 
         return target;
     }
