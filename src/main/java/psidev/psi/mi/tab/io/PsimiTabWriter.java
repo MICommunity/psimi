@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.builder.MitabWriterUtils;
 import psidev.psi.mi.tab.model.builder.PsimiTab;
-import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.*;
 import java.util.Collection;
@@ -45,22 +44,26 @@ public class PsimiTabWriter implements psidev.psi.mi.tab.PsimiTabWriter {
     }
 
     public void write(Collection<BinaryInteraction> interactions, OutputStream os) throws IOException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
-        write( interactions, writer);
-        writer.flush();
+        final OutputStreamWriter writer = new OutputStreamWriter(os);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        write(interactions, bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
     public void write(Collection<BinaryInteraction> interactions, PrintStream ps) throws IOException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ps));
-        write( interactions, writer);
+        final OutputStreamWriter writer = new OutputStreamWriter(ps);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        write(interactions, bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
     public void write(Collection<BinaryInteraction> interactions, File file) throws IOException {
-        final BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
-        write( interactions, writer );
-        writer.flush();
+        final FileWriter writer = new FileWriter(file, true);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        write(interactions, bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
@@ -72,23 +75,26 @@ public class PsimiTabWriter implements psidev.psi.mi.tab.PsimiTabWriter {
     }
 
     public void write(BinaryInteraction interaction, OutputStream os) throws IOException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
-        write(interaction, writer);
-        writer.flush();
+        final OutputStreamWriter writer = new OutputStreamWriter(os);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        write(interaction, bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
     public void write(BinaryInteraction interaction, PrintStream ps) throws IOException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ps));
-        write( interaction, writer);
-        writer.flush();
+        final OutputStreamWriter writer = new OutputStreamWriter(ps);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        write(interaction, bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
     public void write(BinaryInteraction interaction, File file) throws IOException {
-        final BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
-        write( interaction, writer );
-        writer.flush();
+        final FileWriter writer = new FileWriter(file, true);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        write(interaction, bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
@@ -99,23 +105,26 @@ public class PsimiTabWriter implements psidev.psi.mi.tab.PsimiTabWriter {
     }
 
     public void writeMitabHeader(OutputStream os) throws IOException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
-        writeMitabHeader(writer);
-        writer.flush();
+        final OutputStreamWriter writer = new OutputStreamWriter(os);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        writeMitabHeader(bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
     public void writeMitabHeader(PrintStream ps) throws IOException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ps));
-        writeMitabHeader(writer);
-        writer.flush();
+        final OutputStreamWriter writer = new OutputStreamWriter(ps);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        writeMitabHeader(bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
     public void writeMitabHeader(File file) throws IOException {
-        final BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
-        writeMitabHeader(writer);
-        writer.flush();
+        final FileWriter writer = new FileWriter(file, true);
+        final BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        writeMitabHeader(bufferedWriter);
+        bufferedWriter.close();
         writer.close();
     }
 
