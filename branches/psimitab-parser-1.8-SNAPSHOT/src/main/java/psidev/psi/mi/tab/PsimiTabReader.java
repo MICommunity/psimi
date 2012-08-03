@@ -30,7 +30,7 @@ public interface PsimiTabReader {
 
     Collection<BinaryInteraction> read(URL url) throws IOException, ConverterException;
 
-    BinaryInteraction readLine(String str);
+    BinaryInteraction readLine(String str) throws ConverterException;
 
     Iterator<BinaryInteraction> iterate(Reader r) throws IOException, ConverterException;
 

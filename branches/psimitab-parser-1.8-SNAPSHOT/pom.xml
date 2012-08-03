@@ -18,7 +18,8 @@
 
     <scm>
         <connection>scm:svn:https://psimi.googlecode.com/svn/branches/psimitab-parser-1.8-SNAPSHOT</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/banches/psimitab-parser-1.8-SNAPSHOT</developerConnection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/banches/psimitab-parser-1.8-SNAPSHOT
+        </developerConnection>
         <url>http://code.google.com/p/psimi/source/browse/#svn/branches/psimitab-parser-1.8-SNAPSHOT</url>
     </scm>
 
@@ -102,8 +103,8 @@
                     <extension>true</extension>
                     <schemaDirectory>src/main/resources/psixml</schemaDirectory>
                     <!--<schemaIncludes>-->
-                        <!--<include>MIF253.xsd</include>-->
-                        <!--<include>MIF254.xsd</include>-->
+                    <!--<include>MIF253.xsd</include>-->
+                    <!--<include>MIF254.xsd</include>-->
                     <!--</schemaIncludes>-->
                     <bindingDirectory>src/main/resources/psixml</bindingDirectory>
                     <bindingIncludes>
@@ -176,20 +177,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>r09</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sf.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>2.3</version>
-        </dependency>
-
-        <!-- tsv parser -->
-        <dependency>
-            <groupId>net.sf.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>2.3
-            </version>
         </dependency>
 
     </dependencies>

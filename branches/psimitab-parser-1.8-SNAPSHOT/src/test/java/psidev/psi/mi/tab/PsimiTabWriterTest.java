@@ -1,10 +1,6 @@
 package psidev.psi.mi.tab;
 
 import org.junit.Assert;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2TabTest;
@@ -13,13 +9,15 @@ import psidev.psi.mi.tab.model.AliasImpl;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.tab.model.Interactor;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
 import psidev.psi.mi.tab.model.builder.PsimiTab;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.*;
 import java.util.Collection;
 import java.util.Iterator;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * PsimiTabWriter Tester.
@@ -60,9 +58,9 @@ public class PsimiTabWriterTest {
 
         // write it our to a file
         PsimiTabWriter writer = new psidev.psi.mi.tab.io.PsimiTabWriter();
-        FileWriter fileWriter = new FileWriter(outputFile);
-        writer.writeMitabHeader(fileWriter);
-        writer.write(interactions, fileWriter);
+//        FileWriter fileWriter = new FileWriter(outputFile,true);
+        writer.writeMitabHeader(outputFile);
+        writer.write(interactions, outputFile);
 
         assertTrue(outputFile.exists());
         assertEquals(9, lineCount(outputFile));
@@ -76,7 +74,7 @@ public class PsimiTabWriterTest {
         if (outputFile.exists()) {
             outputFile.delete();
         }
-        FileWriter fileWriter = new FileWriter(outputFile);
+        FileWriter fileWriter = new FileWriter(outputFile, true);
 
         // convert into Tab object model
         Xml2Tab xml2tab = new Xml2Tab();
@@ -101,7 +99,7 @@ public class PsimiTabWriterTest {
 
         // write binary interactions
         PsimiTabWriter writer = new psidev.psi.mi.tab.io.PsimiTabWriter();
-        FileWriter fileWriter = new FileWriter(outputFile,true);
+        FileWriter fileWriter = new FileWriter(outputFile, true);
         writer.writeMitabHeader(fileWriter);
 
         for (Iterator<BinaryInteraction> iter = interactions.iterator(); iter.hasNext(); ) {
@@ -129,7 +127,7 @@ public class PsimiTabWriterTest {
 
         // write binary interactions
         PsimiTabWriter writer = new psidev.psi.mi.tab.io.PsimiTabWriter();
-        FileWriter fileWriter = new FileWriter(outputFile,true);
+        FileWriter fileWriter = new FileWriter(outputFile, true);
         writer.writeMitabHeader(fileWriter);
         writer.write(interactions, fileWriter);
         assertTrue(outputFile.exists());
@@ -150,7 +148,7 @@ public class PsimiTabWriterTest {
 
         // write binary interactions
         PsimiTabWriter writer = new psidev.psi.mi.tab.io.PsimiTabWriter();
-        FileWriter fileWriter = new FileWriter(outputFile);
+        FileWriter fileWriter = new FileWriter(outputFile, true);
         writer.write(interactions, fileWriter);
 
 

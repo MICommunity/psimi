@@ -122,7 +122,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void emptyInteractionAc() {
+    public void emptyInteractionAc() throws ConverterException {
         String line = "entrez gene/locuslink:3069\tentrez gene/locuslink:11260\tentrez " +
                 "gene/locuslink:HDLBP\tentrez gene/locuslink:XPOT\tentrez " +
                 "gene/locuslink:FLJ16432|entrez gene/locuslink:HBP|entrez " +
@@ -138,7 +138,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void unexpectedFreeTextInConfidences() {
+    public void unexpectedFreeTextInConfidences() throws ConverterException {
         String line = "uniprotkb:P23367\tuniprotkb:P06722\tinterpro:IPR003594|interpro:IPR002099|go:GO:0005515|intact:EBI-554913\tinterpro:IPR004230|uniprotkb:Q9R2X2|uniprotkb:Q9R3A8|uniprotkb:Q9R411|uniprotkb:Q9S6P5|uniprotkb:Q9S6P6|uniprotkb:Q9S6P7|go:GO:0005515|intact:EBI-545170\tgene name:mutL|locus name:b4170\tgene name:mutH|gene name synonym:mutR|gene name synonym:prv|locus name:b2831\tadenylate cyclase:MI:0014\t-\tpubmed:11585365\ttaxid:562\ttaxid:562\tphysical interaction:MI:0218\t-\t-\t" +
                 "lpr:640|hpr:640|np:1|PSICQUIC entries are truncated here.  Seeirefindex.uio.no";
         psidev.psi.mi.tab.PsimiTabReader mitabReader = new PsimiTabReader();
