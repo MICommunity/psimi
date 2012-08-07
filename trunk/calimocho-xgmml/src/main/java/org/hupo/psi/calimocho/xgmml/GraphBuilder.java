@@ -21,12 +21,25 @@ import calimocho.internal.xgmml.ObjectFactory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.io.IllegalRowException;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.key.InteractionKeys;
 import org.hupo.psi.calimocho.model.CalimochoDocument;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
+import org.hupo.psi.calimocho.tab.io.DefaultRowReader;
+import org.hupo.psi.calimocho.tab.io.IllegalColumnException;
+import org.hupo.psi.calimocho.tab.io.RowReader;
+import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +62,8 @@ public class GraphBuilder {
     private ObjectFactory xgmmlObjectFactory;
     private calimocho.internal.rdf.ObjectFactory rdfObjectFactory;
 
+    private RowReader calimochoReader;
+
     public GraphBuilder() {
         this("Calimocho", "Data generated using Calimocho", "PSI");
     }
@@ -62,6 +77,93 @@ public class GraphBuilder {
 
         xgmmlObjectFactory = new ObjectFactory();
         rdfObjectFactory = new calimocho.internal.rdf.ObjectFactory();
+    }
+
+    public Graph createGraphFromMitab(InputStream mitabStream, ColumnBasedDocumentDefinition docDefinition) throws IOException{
+        this.calimochoReader = new DefaultRowReader(docDefinition);
+
+        Graph graph = xgmmlObjectFactory.createGraph();
+        graph.setId("calimocho-" + System.currentTimeMillis());
+        graph.setLabel(title);
+//        graph.setDirected("1");
+        graph.getAtts().add(createAtt("documentVersion", "1.1"));
+        graph.getAtts().add(createAtt("backgroundColor", "#ffffff", ObjectType.STRING));
+
+        graph.getAtts().add(createMetadata(graph));
+
+        int nodeIndex = 0;
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(mitabStream));
+
+        try{
+            String line = reader.readLine();
+
+            while (line != null) {
+                try {
+                    Row row = calimochoReader.readLine(line);
+                    Node nodeA = toNodeA(row, ++nodeIndex);
+                    Node nodeB = toNodeB(row, ++nodeIndex);
+
+                    Edge edge = toEdge(row, nodeA, nodeB);
+
+                    addNodeToGraph(graph, nodeA);
+                    addNodeToGraph(graph, nodeB);
+                    addEdgeToMap(graph, edge);
+                }
+                catch( IllegalRowException e){
+                    System.out.println("Ignore badly formatted mitab line : " + line);
+                }
+                catch( IllegalColumnException e){
+                    System.out.println("Ignore badly formatted mitab line : " + line);
+                }
+                catch( IllegalFieldException e){
+                    System.out.println("Ignore badly formatted mitab line : " + line);
+                }
+
+                line = reader.readLine();
+            }
+        }
+        finally {
+            reader.close();
+        }
+
+        // calculate node positions
+        int nodeSize = nodeMap.size();
+        int cols = Double.valueOf(Math.ceil(Math.sqrt(nodeSize))).intValue();
+        int distance = 80;
+
+        double x = 0.0;
+        double y = 0.0;
+        int rowIndex = 0;
+        int colIndex = 0;
+
+        for (Node node : nodeMap.values()) {
+            Graphics graphics = createGraphicsForNode(node, x, y);
+
+            final Att graphicsNodeAtts = createAtt("cytoscapeNodeGraphicsAttributes", null);
+            graphicsNodeAtts.getContent().add(createAtt("nodeLabelFont", "Default-0-12"));
+            graphics.getAtts().add(graphicsNodeAtts);
+
+            node.setGraphics(graphics);
+
+            colIndex++;
+
+            if (colIndex >= cols) {
+                rowIndex++;
+                colIndex = 0;
+            }
+
+            x = distance * colIndex;
+            y = distance * rowIndex;
+        }
+
+        double viewCenter = ((cols - 1) * distance) / 2;
+
+        graph.getAtts().add(createAtt("GRAPH_VIEW_ZOOM", "0.86823", ObjectType.REAL));
+        graph.getAtts().add(createAtt("GRAPH_VIEW_CENTER_X", String.valueOf(viewCenter), ObjectType.REAL));
+        graph.getAtts().add(createAtt("GRAPH_VIEW_CENTER_Y", String.valueOf(viewCenter), ObjectType.REAL));
+
+        return graph;
     }
 
     public Graph createGraph(CalimochoDocument calimochoDocument) {
@@ -242,11 +344,11 @@ public class GraphBuilder {
                 displayName = idFields.iterator().next().get(CalimochoKeys.VALUE);
             }
         }
-        
+
         String key = displayName;
-        
+
         String id = null;
-        
+
         // Uniprot ID att for Bingo
         for (Field idField : idFields) {
             final String fieldKey = idField.get(CalimochoKeys.KEY);
@@ -256,15 +358,15 @@ public class GraphBuilder {
                 break;
             }
         }
-        
+
         if (key == null) {
             final Field idField = idFields.iterator().next();
             final String fieldKey = idField.get(CalimochoKeys.KEY);
             node.getAtts().add(createAtt("identifier type", fieldKey));
             node.getAtts().add(createAtt("identifier", idField.get(CalimochoKeys.VALUE)));
         }
-        
-        
+
+
 
         //species
 //        String taxid = null;
