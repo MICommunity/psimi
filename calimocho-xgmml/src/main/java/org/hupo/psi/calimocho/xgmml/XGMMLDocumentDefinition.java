@@ -21,11 +21,13 @@ import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import org.hupo.psi.calimocho.io.IllegalRowException;
 import org.hupo.psi.calimocho.model.AbstractDocumentDefinition;
 import org.hupo.psi.calimocho.model.CalimochoDocument;
+import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -88,7 +90,21 @@ public class XGMMLDocumentDefinition extends AbstractDocumentDefinition {
         }
     }
 
+    public void writeDocument(Writer writer, InputStream mitabStream, ColumnBasedDocumentDefinition docDefinition) throws IOException, IllegalRowException {
+        Graph graph = graphBuilder.createGraphFromMitab(mitabStream, docDefinition);
 
+        try {
+            JAXBContext jc = JAXBContext.newInstance(ObjectFactory.class);
+            Marshaller marshaller = jc.createMarshaller();
+
+
+            marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", mapper);
+            marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE );
+            marshaller.marshal(graph, writer);
+        } catch (JAXBException e) {
+            throw new IOException("Problem marshalling graph", e);
+        }
+    }
 
     public String getName() {
         return "XGMML";
