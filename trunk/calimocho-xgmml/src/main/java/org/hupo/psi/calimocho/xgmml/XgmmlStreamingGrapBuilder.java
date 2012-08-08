@@ -157,7 +157,7 @@ public class XgmmlStreamingGrapBuilder {
         attributeStreamBuilder.write(createAtt("GRAPH_VIEW_ZOOM", "0.86823", calimocho.internal.xgmml.ObjectType.REAL));
 
         // calculate node size estimation
-        int nodeSize = numberOfResults*2;
+        int nodeSize = numberOfResults;
         int distance = 80;
         int cols = Double.valueOf(Math.ceil(Math.sqrt(nodeSize))).intValue();
         double viewCenter = ((cols - 1) * distance) / 2;
