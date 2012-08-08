@@ -104,12 +104,30 @@ public class XgmmlStreamingGrapBuilder {
         return fileStream;
     }
 
+    /**
+     * Will close ouputStream as well as writer
+     * @param stream
+     * @throws XMLStreamException
+     * @throws IOException
+     */
     public void close(OutputStream stream) throws XMLStreamException, IOException {
         xmlOut.writeEndElement();
         xmlOut.writeEndDocument();
         xmlOut.flush();
         xmlOut.close();
         stream.close();
+    }
+
+    /**
+     * Will close writer but not outputStream
+     * @throws XMLStreamException
+     * @throws IOException
+     */
+    public void close() throws XMLStreamException, IOException {
+        xmlOut.writeEndElement();
+        xmlOut.writeEndDocument();
+        xmlOut.flush();
+        xmlOut.close();
     }
 
     public void open(OutputStream outputStream, int numberOfResults) throws XMLStreamException, IOException, JAXBException {
