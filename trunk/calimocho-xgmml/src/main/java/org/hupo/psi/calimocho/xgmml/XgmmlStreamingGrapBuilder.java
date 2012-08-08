@@ -56,6 +56,11 @@ public class XgmmlStreamingGrapBuilder {
 
     private NamespacePrefixMapper mapper;
 
+    private int nodeSize = 0;
+    private int distance = 80;
+    private int cols = 0;
+    private double viewCenter = ((cols - 1) * distance) / 2;
+
     public XgmmlStreamingGrapBuilder() throws JAXBException{
         this("Calimocho", "Data generated using Calimocho", "PSI");
     }
@@ -91,11 +96,10 @@ public class XgmmlStreamingGrapBuilder {
         this.edgeStreamBuilder = new CalimochoXgmmlStreamingMarshall(calimocho.internal.xgmml.Edge.class, this.xmlOut, this.mapper);
     }
 
-    public OutputStream open(String filename) throws XMLStreamException, IOException
-    {
+    public OutputStream open(String filename, int numberOfResultsToWrite) throws XMLStreamException, IOException, JAXBException {
         OutputStream fileStream = new FileOutputStream(filename);
 
-        open(fileStream);
+        open(fileStream, numberOfResultsToWrite);
 
         return fileStream;
     }
@@ -108,8 +112,7 @@ public class XgmmlStreamingGrapBuilder {
         stream.close();
     }
 
-    public void open(OutputStream outputStream) throws XMLStreamException, IOException
-    {
+    public void open(OutputStream outputStream, int numberOfResults) throws XMLStreamException, IOException, JAXBException {
         xmlOut = new IndentingXMLStreamWriter(XMLOutputFactory.newFactory().createXMLStreamWriter(outputStream));
         xmlOut.setDefaultNamespace("http://www.cs.rpi.edu/XGMML");
         xmlOut.setNamespaceContext(new NamespaceContext() {
@@ -137,19 +140,15 @@ public class XgmmlStreamingGrapBuilder {
         xmlOut.writeNamespace("dc", "http://purl.org/dc/elements/1.1/");
         xmlOut.writeNamespace("xlink", "http://www.w3.org/1999/xlink");
 
+        createdStartGraph(numberOfResults);
+
         xmlOut.flush();
     }
 
-    public void writeAttributes(String name, String value) throws XMLStreamException {
-        xmlOut.writeAttribute(name, value);
-        xmlOut.flush();
-    }
-
-    public void createAndWriteGraph(OutputStream outputStream, InputStream mitabStream, ColumnBasedDocumentDefinition docDefinition, int numberOfResults) throws XMLStreamException, IOException, JAXBException {
-        this.calimochoReader = new DefaultRowReader(docDefinition);
+    public void createdStartGraph(int numberOfResults) throws XMLStreamException, JAXBException {
 
         writeAttributes("id", "calimocho-" + System.currentTimeMillis());
-        writeAttributes("title", title);
+        writeAttributes("label", title);
 
         attributeStreamBuilder.write(createAtt("documentVersion", "1.1"));
         attributeStreamBuilder.write(createAtt("backgroundColor", "#ffffff", calimocho.internal.xgmml.ObjectType.STRING));
@@ -157,18 +156,28 @@ public class XgmmlStreamingGrapBuilder {
         attributeStreamBuilder.write(createAtt("GRAPH_VIEW_ZOOM", "0.86823", calimocho.internal.xgmml.ObjectType.REAL));
 
         // calculate node size estimation
-        int nodeSize = numberOfResults;
-        int distance = 80;
-        int cols = Double.valueOf(Math.ceil(Math.sqrt(nodeSize))).intValue();
-        double viewCenter = ((cols - 1) * distance) / 2;
+        nodeSize = numberOfResults;
+        distance = 80;
+        cols = Double.valueOf(Math.ceil(Math.sqrt(nodeSize))).intValue();
+        viewCenter = ((cols - 1) * distance) / 2;
 
         attributeStreamBuilder.write(createAtt("GRAPH_VIEW_CENTER_X", String.valueOf(viewCenter), calimocho.internal.xgmml.ObjectType.REAL));
         attributeStreamBuilder.write(createAtt("GRAPH_VIEW_CENTER_Y", String.valueOf(viewCenter), calimocho.internal.xgmml.ObjectType.REAL));
 
+    }
+
+
+    public void writeAttributes(String name, String value) throws XMLStreamException {
+        xmlOut.writeAttribute(name, value);
+        xmlOut.flush();
+    }
+
+    public void writeNodesAndEdgesFromMitab(InputStream mitabStream, ColumnBasedDocumentDefinition docDefinition) throws XMLStreamException, IOException, JAXBException {
+
+        this.calimochoReader = new DefaultRowReader(docDefinition);
+
         // start exporting results
         int nodeIndex = 0;
-        double x = 0.0;
-        double y = 0.0;
         int rowIndex = 0;
         int colIndex = 0;
 

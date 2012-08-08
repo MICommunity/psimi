@@ -11,10 +11,10 @@ public class Playground {
 
     public static void main(String[] args) throws Exception {
 //        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
-        final InputStream stream = new FileInputStream("/home/marine/Downloads/P62258_Q13.txt");
-        final String outFile = "/home/marine/Desktop/P62258_Q13.xgmml";
+        final InputStream stream = new FileInputStream("/home/marine/Downloads/(Q86X80_Q7.txt");
+        final String outFile = "/home/marine/Downloads/(Q86X80_Q7.xgmml";
 
-        ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25Intact();
+        ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25();
         DocumentDefinition definition = new XGMMLDocumentDefinition();
 
         OutputStream os = new FileOutputStream(outFile);
@@ -30,8 +30,8 @@ public class Playground {
         while ((str = in.readLine()) != null) {
             System.out.println(str);
         }
-        in.close();*/
-
+        */
+        stream.close();
     }
 
 }
