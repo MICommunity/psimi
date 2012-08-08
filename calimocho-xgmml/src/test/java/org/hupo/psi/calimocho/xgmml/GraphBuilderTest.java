@@ -16,16 +16,21 @@
 package org.hupo.psi.calimocho.xgmml;
 
 import calimocho.internal.xgmml.Graph;
+import org.hupo.psi.calimocho.io.DocumentConverter;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
 import org.hupo.psi.calimocho.key.InteractionKeys;
 import org.hupo.psi.calimocho.model.CalimochoDocument;
+import org.hupo.psi.calimocho.model.DocumentDefinition;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
+import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
+import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.*;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -68,5 +73,79 @@ public class GraphBuilderTest {
 
         assertThat(graph.getNodesAndEdges().size(), is(equalTo(3)));
 
+    }
+
+    @Test
+    public void test() throws Exception {
+//        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
+        final InputStream stream = new FileInputStream("/home/marine/Downloads/Q86X80_Q7.txt");
+        final String outFile = "/home/marine/Downloads/Q86X80_Q7_3.xgmml";
+
+        ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25();
+        XGMMLDocumentDefinition definition = new XGMMLDocumentDefinition();
+
+        OutputStream os = new FileOutputStream(outFile);
+
+        definition.writeDocument(new BufferedWriter(new OutputStreamWriter(os)), stream, mitabDefinition);
+
+        os.flush();
+        os.close();
+
+        /*BufferedReader in = new BufferedReader(new FileReader(outFile));
+        String str;
+        while ((str = in.readLine()) != null) {
+            System.out.println(str);
+        }
+        */
+        stream.close();
+    }
+
+    @Test
+    public void test2() throws Exception {
+//        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
+        final InputStream stream = new FileInputStream("/home/marine/Downloads/Q86X80_Q7.txt");
+        final String outFile = "/home/marine/Downloads/Q86X80_Q7_4.xgmml";
+
+        ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25();
+        DocumentDefinition definition = new XGMMLDocumentDefinition();
+
+        OutputStream os = new FileOutputStream(outFile);
+
+        DocumentConverter converter = new DocumentConverter( mitabDefinition, definition );
+        converter.convert( stream, os );
+
+        os.flush();
+        os.close();
+
+        /*BufferedReader in = new BufferedReader(new FileReader(outFile));
+        String str;
+        while ((str = in.readLine()) != null) {
+            System.out.println(str);
+        }
+        */
+        stream.close();
+    }
+
+    @Test
+    public void test3() throws Exception {
+//        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
+        final InputStream stream = new FileInputStream("/home/marine/Downloads/Q86X80_Q7.txt");
+        final String outFile = "/home/marine/Downloads/Q86X80_Q7_final.xgmml";
+        ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25();
+        XgmmlStreamingGrapBuilder definition = new XgmmlStreamingGrapBuilder();
+
+        OutputStream os = definition.open(outFile, 3263);
+
+        definition.writeNodesAndEdgesFromMitab(stream, mitabDefinition);
+
+        definition.close(os);
+
+        /*BufferedReader in = new BufferedReader(new FileReader(outFile));
+        String str;
+        while ((str = in.readLine()) != null) {
+            System.out.println(str);
+        }
+        */
+        stream.close();
     }
 }
