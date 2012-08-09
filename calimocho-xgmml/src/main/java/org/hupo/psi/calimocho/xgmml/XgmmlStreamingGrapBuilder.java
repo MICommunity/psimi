@@ -533,7 +533,7 @@ public class XgmmlStreamingGrapBuilder {
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_DATASET), attMultimap, "dataset");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_EXPANSION), attMultimap, null);
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_XREFS_I), attMultimap, "xref");
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_HOST_ORGANISM), attMultimap, "host");
+        addFieldsWithNameAsAtts(row.getFields(InteractionKeys.KEY_HOST_ORGANISM), attMultimap, "host");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_ANNOTATIONS_I), attMultimap, "annot");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_PARAMETERS_I), attMultimap, "param");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_NEGATIVE), attMultimap, "negative");
