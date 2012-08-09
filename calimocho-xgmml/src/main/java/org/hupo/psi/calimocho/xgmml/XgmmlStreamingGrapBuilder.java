@@ -58,8 +58,13 @@ public class XgmmlStreamingGrapBuilder {
 
     private int nodeSize = 0;
     private int distance = 80;
+    // start exporting results
+    private int nodeIndex = 0;
+    private int rowIndex = 0;
+    private int colIndex = 0;
     private int cols = 0;
-    private double viewCenter = ((cols - 1) * distance) / 2;
+    private double viewCenterX = ((cols - 1) * distance) / 2;
+    private double viewCenterY = ((cols - 1) * distance) / 4;
 
     public XgmmlStreamingGrapBuilder() throws JAXBException{
         this("Calimocho", "Data generated using Calimocho", "PSI");
@@ -111,10 +116,7 @@ public class XgmmlStreamingGrapBuilder {
      * @throws IOException
      */
     public void close(OutputStream stream) throws XMLStreamException, IOException {
-        xmlOut.writeEndElement();
-        xmlOut.writeEndDocument();
-        xmlOut.flush();
-        xmlOut.close();
+        close();
         stream.close();
     }
 
@@ -128,6 +130,14 @@ public class XgmmlStreamingGrapBuilder {
         xmlOut.writeEndDocument();
         xmlOut.flush();
         xmlOut.close();
+
+        this.nodeMap.clear();
+        this.nodeSize = 0;
+        this.distance = 80;
+        this.nodeIndex = 0;
+        this.rowIndex = 0;
+        this.colIndex = 0;
+        this.cols = 0;
     }
 
     public void open(OutputStream outputStream, int numberOfResults) throws XMLStreamException, IOException, JAXBException {
@@ -177,10 +187,14 @@ public class XgmmlStreamingGrapBuilder {
         nodeSize = numberOfResults;
         distance = 80;
         cols = Double.valueOf(Math.ceil(Math.sqrt(nodeSize))).intValue();
-        viewCenter = ((cols - 1) * distance) / 2;
+        viewCenterY = ((cols - 1) * distance) / 4;
+        viewCenterX = ((cols - 1) * distance) / 2;
+        nodeIndex = 0;
+        rowIndex = 0;
+        colIndex = 0;
 
-        attributeStreamBuilder.write(createAtt("GRAPH_VIEW_CENTER_X", String.valueOf(viewCenter), calimocho.internal.xgmml.ObjectType.REAL));
-        attributeStreamBuilder.write(createAtt("GRAPH_VIEW_CENTER_Y", String.valueOf(viewCenter), calimocho.internal.xgmml.ObjectType.REAL));
+        attributeStreamBuilder.write(createAtt("GRAPH_VIEW_CENTER_X", String.valueOf(viewCenterX), calimocho.internal.xgmml.ObjectType.REAL));
+        attributeStreamBuilder.write(createAtt("GRAPH_VIEW_CENTER_Y", String.valueOf(viewCenterY), calimocho.internal.xgmml.ObjectType.REAL));
 
     }
 
@@ -193,11 +207,6 @@ public class XgmmlStreamingGrapBuilder {
     public void writeNodesAndEdgesFromMitab(InputStream mitabStream, ColumnBasedDocumentDefinition docDefinition) throws XMLStreamException, IOException, JAXBException {
 
         this.calimochoReader = new DefaultRowReader(docDefinition);
-
-        // start exporting results
-        int nodeIndex = 0;
-        int rowIndex = 0;
-        int colIndex = 0;
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(mitabStream));
 
@@ -423,24 +432,26 @@ public class XgmmlStreamingGrapBuilder {
 
             String value = idField.get(CalimochoKeys.VALUE);
             node.getAtts().add(createAtt("identifier", value));
+            displayName = value;
         }
 
         // Uniprot ID att for Bingo
         for (Field idField : idFields) {
             final String fieldKey = idField.get(CalimochoKeys.KEY);
-            if ("uniprotkb".equals(fieldKey) || "chebi".equals(fieldKey)) {
+            String value = idField.get(CalimochoKeys.VALUE);
+            if (("uniprotkb".equals(fieldKey) || "chebi".equals(fieldKey)) && value != null && !value.equals(displayName)) {
                 node.getAtts().add(createAtt("identifier type", fieldKey));
-                node.getAtts().add(createAtt("identifier", idField.get(CalimochoKeys.VALUE)));
+                node.getAtts().add(createAtt("identifier", value));
                 break;
             }
         }
 
-        addToMultimap(attMultimap, createAtt("canonicalName", displayName, ObjectType.STRING));
+        addToMultimap(attMultimap, createAtt("canonicalName", displayName, calimocho.internal.xgmml.ObjectType.STRING));
 
         addFieldsAsAtts(idFields, attMultimap, "id");
         addFieldsAsAtts(altidFields, attMultimap, "altid");
         addFieldsAsAtts(aliasFields, attMultimap, "alias");
-        addFieldsAsAtts(taxidFields, attMultimap, null);
+        addFieldsWithNameAsAtts(taxidFields, attMultimap, null);
         addFieldsAsAtts(bioRoleFields, attMultimap, "biorole");
         addFieldsAsAtts(expRoleFields, attMultimap, "exprole");
         addFieldsAsAtts(typeFields, attMultimap, "type");
@@ -474,6 +485,7 @@ public class XgmmlStreamingGrapBuilder {
         graphics.setWidth(new BigInteger("3"));
         graphics.setOutline("#282828");
 
+        //cy:nodeTransparency="0.5882352941176471" cy:nodeLabelFont="SansSerif-0-13" cy:nodeLabel="CHEBI:45783" cy:borderLineType="solid"
         graphics.setX(xgmmlNode.getX());
         graphics.setY(xgmmlNode.getY());
 
@@ -511,11 +523,11 @@ public class XgmmlStreamingGrapBuilder {
             edge.setLabel(nodeA.getKey() + "(interaction)" + nodeB.getKey());
         }
 
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_DETMETHOD), attMultimap, "detmethod");
+        addFieldsWithNameAsAtts(row.getFields(InteractionKeys.KEY_DETMETHOD), attMultimap, "detmethod");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_PUBAUTH), attMultimap, "pubauth");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_PUBID), attMultimap, "pubid");
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_INTERACTION_TYPE), attMultimap, "type");
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_SOURCE), attMultimap, "source");
+        addFieldsWithNameAsAtts(row.getFields(InteractionKeys.KEY_INTERACTION_TYPE), attMultimap, "type");
+        addFieldsWithNameAsAtts(row.getFields(InteractionKeys.KEY_SOURCE), attMultimap, "source");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_INTERACTION_ID), attMultimap, "id");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_CONFIDENCE), attMultimap, "confidence");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_DATASET), attMultimap, "dataset");
@@ -538,10 +550,10 @@ public class XgmmlStreamingGrapBuilder {
     }
 
     private calimocho.internal.xgmml.Att createAtt(String key, String value) {
-        return createAtt(key, value, null);
+        return createAtt(key, value, calimocho.internal.xgmml.ObjectType.STRING);
     }
 
-    private calimocho.internal.xgmml.Att createAtt(String key, String value, ObjectType type) {
+    private calimocho.internal.xgmml.Att createAtt(String key, String value, calimocho.internal.xgmml.ObjectType type) {
         calimocho.internal.xgmml.Att att = xgmmlObjectFactory.createAtt();
         att.setName(key);
         att.setValue(value);
@@ -568,6 +580,32 @@ public class XgmmlStreamingGrapBuilder {
             addToMultimap(multimap, att);
         }
     }
+    private void addFieldsWithNameAsAtts(Collection<Field> idFields, Multimap<String, calimocho.internal.xgmml.Att> multimap, String prefix) {
+        for (Field field : idFields) {
+
+            String prefixAndDot = "";
+
+            if (prefix != null && !prefix.isEmpty()) {
+                prefixAndDot = prefix + ".";
+            }
+
+            String text = field.get(CalimochoKeys.TEXT);
+            if(text != null){
+                calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY) + "_identifier", field.get(CalimochoKeys.VALUE));
+                att.setType(calimocho.internal.xgmml.ObjectType.STRING);
+                calimocho.internal.xgmml.Att att2 = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), text);
+                att2.setType(calimocho.internal.xgmml.ObjectType.STRING);
+                addToMultimap(multimap, att);
+                addToMultimap(multimap, att2);
+            }
+            else{
+                calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), field.get(CalimochoKeys.VALUE));
+                att.setType(calimocho.internal.xgmml.ObjectType.STRING);
+                addToMultimap(multimap, att);
+            }
+        }
+    }
+
 
     private void addAttsFromMap(Multimap<String, calimocho.internal.xgmml.Att> attMultimap, List<calimocho.internal.xgmml.Att> atts) {
         for (Map.Entry<String, Collection<calimocho.internal.xgmml.Att>> entry : attMultimap.asMap().entrySet()) {
