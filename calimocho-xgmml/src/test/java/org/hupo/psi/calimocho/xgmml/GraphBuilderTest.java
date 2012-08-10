@@ -25,6 +25,7 @@ import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -76,6 +77,7 @@ public class GraphBuilderTest {
     }
 
     @Test
+    @Ignore
     public void test() throws Exception {
 //        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
         final InputStream stream = new FileInputStream("/home/marine/Downloads/Q86X80_Q7.txt");
@@ -101,6 +103,7 @@ public class GraphBuilderTest {
     }
 
     @Test
+    @Ignore
     public void test2() throws Exception {
 //        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
         final InputStream stream = new FileInputStream("/home/marine/Downloads/Q86X80_Q7.txt");
@@ -127,6 +130,7 @@ public class GraphBuilderTest {
     }
 
     @Test
+    @Ignore
     public void test3() throws Exception {
 //        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
         final InputStream stream = new FileInputStream("/home/marine/Downloads/Q86X80_Q7.txt");
