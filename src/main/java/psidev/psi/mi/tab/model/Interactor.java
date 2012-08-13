@@ -5,10 +5,11 @@
  */
 package psidev.psi.mi.tab.model;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import java.io.Serializable;
-import java.util.List;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple description of an Interactor.
@@ -370,6 +371,7 @@ public class Interactor implements Serializable {
     // Object's override
 
     //TODO Update the toString, equals and hash
+
     /**
      * {@inheritDoc}
      */
@@ -406,19 +408,30 @@ public class Interactor implements Serializable {
 
         Interactor that = (Interactor) o;
 
-        if (identifiers != null ? !identifiers.equals(that.identifiers) : that.identifiers != null) return false;
+        if (identifiers != null ? !CollectionUtils.isEqualCollection(identifiers, that.identifiers) : that.identifiers != null)
+            return false;
         if (organism != null ? !organism.equals(that.organism) : that.organism != null) return false;
-        if (alternativeIdentifiers != null ? !alternativeIdentifiers.equals(that.alternativeIdentifiers) : that.alternativeIdentifiers != null) return false;
-        if (aliases != null ? !aliases.equals(that.aliases) : that.aliases != null) return false;
-        if (biologicalRoles != null ? !biologicalRoles.equals(that.biologicalRoles) : that.biologicalRoles != null) return false;
-        if (experimentalRoles != null ? !experimentalRoles.equals(that.experimentalRoles) : that.experimentalRoles != null) return false;
-        if (interactorTypes != null ? !interactorTypes.equals(that.interactorTypes) : that.interactorTypes != null) return false;
-        if (xrefs != null ? !xrefs.equals(that.xrefs) : that.xrefs != null) return false;
-        if (annotations != null ? !annotations.equals(that.annotations) : that.annotations != null) return false;
-        if (checksums != null ? !checksums.equals(that.checksums) : that.checksums != null) return false;
-        if (features != null ? !features.equals(that.features) : that.features != null) return false;
-        if (stoichiometry != null ? !stoichiometry.equals(that.stoichiometry) : that.stoichiometry != null) return false;
-        if (participantIdentificationMethods != null ? !participantIdentificationMethods.equals(that.participantIdentificationMethods) : that.participantIdentificationMethods != null) return false;
+        if (alternativeIdentifiers != null ? !CollectionUtils.isEqualCollection(alternativeIdentifiers, that.alternativeIdentifiers) : that.alternativeIdentifiers != null)
+            return false;
+        if (aliases != null ? !CollectionUtils.isEqualCollection(aliases, that.aliases) : that.aliases != null)
+            return false;
+        if (biologicalRoles != null ? !CollectionUtils.isEqualCollection(biologicalRoles, that.biologicalRoles) : that.biologicalRoles != null)
+            return false;
+        if (experimentalRoles != null ? !CollectionUtils.isEqualCollection(experimentalRoles, that.experimentalRoles) : that.experimentalRoles != null)
+            return false;
+        if (interactorTypes != null ? !CollectionUtils.isEqualCollection(interactorTypes, that.interactorTypes) : that.interactorTypes != null)
+            return false;
+        if (xrefs != null ? !CollectionUtils.isEqualCollection(xrefs, that.xrefs) : that.xrefs != null) return false;
+        if (annotations != null ? !CollectionUtils.isEqualCollection(annotations, that.annotations) : that.annotations != null)
+            return false;
+        if (checksums != null ? !CollectionUtils.isEqualCollection(checksums, that.checksums) : that.checksums != null)
+            return false;
+        if (features != null ? !CollectionUtils.isEqualCollection(features, that.features) : that.features != null)
+            return false;
+        if (stoichiometry != null ? !CollectionUtils.isEqualCollection(stoichiometry, that.stoichiometry) : that.stoichiometry != null)
+            return false;
+        if (participantIdentificationMethods != null ? !CollectionUtils.isEqualCollection(participantIdentificationMethods, that.participantIdentificationMethods) : that.participantIdentificationMethods != null)
+            return false;
 
         return true;
     }
@@ -431,6 +444,19 @@ public class Interactor implements Serializable {
         int result;
         result = (identifiers != null ? identifiers.hashCode() : 0);
         result = 31 * result + (organism != null ? organism.hashCode() : 0);
+        result = 31 * result + (alternativeIdentifiers != null ? alternativeIdentifiers.hashCode() : 0);
+        result = 31 * result + (aliases != null ? aliases.hashCode() : 0);
+        result = 31 * result + (biologicalRoles != null ? biologicalRoles.hashCode() : 0);
+        result = 31 * result + (experimentalRoles != null ? experimentalRoles.hashCode() : 0);
+        result = 31 * result + (interactorTypes != null ? interactorTypes.hashCode() : 0);
+        result = 31 * result + (xrefs != null ? xrefs.hashCode() : 0);
+        result = 31 * result + (annotations != null ? annotations.hashCode() : 0);
+        result = 31 * result + (checksums != null ? checksums.hashCode() : 0);
+        result = 31 * result + (features != null ? features.hashCode() : 0);
+        result = 31 * result + (stoichiometry != null ? stoichiometry.hashCode() : 0);
+        result = 31 * result + (participantIdentificationMethods != null ? participantIdentificationMethods.hashCode() : 0);
+
+
         return result;
     }
 }
