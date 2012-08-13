@@ -193,9 +193,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
      * {@inheritDoc}
      */
     public void setInteractorB(T interactorB) {
-        if (interactorB == null) {
-            throw new IllegalArgumentException("You must give a non null interactor B.");
-        }
         this.interactorB = interactorB;
     }
 
