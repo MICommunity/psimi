@@ -187,12 +187,5 @@
             <name>IntAct Nexus</name>
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
         </repository>
-
-        <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-
     </repositories>
 </project>
