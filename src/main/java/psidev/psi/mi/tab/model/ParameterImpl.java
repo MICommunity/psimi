@@ -1,8 +1,5 @@
 package psidev.psi.mi.tab.model;
 
-import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
-
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -206,27 +203,36 @@ public class ParameterImpl implements Parameter {
     public void setValue(String value) {
         this.value = value;
 
-        value = value.replace(' ','\0');
+        value = value.replaceAll(" ", "");
         Pattern pattern = Pattern.compile("([-+]?[0-9]+\\.?[0-9]*)+x?([-+]?[0-9]*\\.?[0-9]*)?\\^?([-+]?[0-9]*\\.?[0-9]*)?~?([-+]?[0-9]*\\.?[0-9]*)?");
 
         Matcher matcher = pattern.matcher(value);
         try {
             if (matcher.matches()) {
+//                System.out.println(matcher.groupCount());
                 switch (matcher.groupCount()) {
-                    case 5:
-                        uncertainty = Double.parseDouble(matcher.group(4));
                     case 4:
-                        exponent = Integer.parseInt(matcher.group(3));
+                        if (!matcher.group(4).isEmpty()) {
+                            uncertainty = Double.parseDouble(matcher.group(4));
+                        }
                     case 3:
-                        base = Integer.parseInt(matcher.group(2));
+                        if (!matcher.group(3).isEmpty()) {
+                            exponent = Integer.parseInt(matcher.group(3));
+                        }
                     case 2:
-                        factor = Double.parseDouble(matcher.group(1));
+                        if (!matcher.group(2).isEmpty()) {
+                            base = Integer.parseInt(matcher.group(2));
+                        }
+                    case 1:
+                        if (!matcher.group(1).isEmpty()) {
+                            factor = Double.parseDouble(matcher.group(1));
+                        }
                     default:
                         break;
                 }
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("The value of the parameter is bad formatted: " + value);
+            throw new IllegalArgumentException("The value of the parameter is bad formatted: " + value + " Exception: " + e);
         }
 
     }

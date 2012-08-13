@@ -2,6 +2,8 @@ package psidev.psi.mi.tab.model;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ntoro
@@ -11,67 +13,118 @@ import org.junit.Test;
  */
 public class ParameterImplTest {
     @Test
-    public void testGetType() throws Exception {
+    public void testParameterOnlyFactor() throws Exception {
+
+        Parameter parameter = new ParameterImpl("Kd", "4.0", "molar");
+
+        assertEquals(parameter.getFactor(), Double.valueOf(4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(10));
+        assertEquals(parameter.getExponent(), Integer.valueOf(0));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
+
 
     }
 
     @Test
-    public void testSetType() throws Exception {
+    public void testParameterFactorAndBase() throws Exception {
+
+        Parameter parameter = new ParameterImpl("Kd", "4.0x2", "molar");
+
+        assertEquals(parameter.getFactor(), Double.valueOf(4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(2));
+        assertEquals(parameter.getExponent(), Integer.valueOf(0));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
+
 
     }
 
     @Test
-    public void testGetFactor() throws Exception {
+    public void testParameterFactorBaseAndExponent() throws Exception {
+
+        Parameter parameter = new ParameterImpl("Kd", "4.0x3^2", "molar");
+
+        assertEquals(parameter.getFactor(), Double.valueOf(4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(3));
+        assertEquals(parameter.getExponent(), Integer.valueOf(2));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
 
     }
 
     @Test
-    public void testSetFactor() throws Exception {
+    public void testParameterAll() throws Exception {
+
+        Parameter parameter = new ParameterImpl("Kd", "4.0x2^5 ~0.3", "molar");
+
+        assertEquals(parameter.getFactor(), Double.valueOf(4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(2));
+        assertEquals(parameter.getExponent(), Integer.valueOf(5));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(0.3));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
 
     }
 
     @Test
-    public void testGetBase() throws Exception {
+    public void testParameterOnlyNegFactor() throws Exception {
+
+        Parameter parameter = new ParameterImpl("Kd", "-4.0", "molar");
+
+        assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(10));
+        assertEquals(parameter.getExponent(), Integer.valueOf(0));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
+
 
     }
 
     @Test
-    public void testSetBase() throws Exception {
+    public void testParameterNegFactorAndBase() throws Exception {
+
+        Parameter parameter = new ParameterImpl("Kd", "-4.0x-2", "molar");
+
+        assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(-2));
+        assertEquals(parameter.getExponent(), Integer.valueOf(0));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
+
 
     }
 
     @Test
-    public void testGetExponent() throws Exception {
+    public void testParameterNegFactorBaseAndExponent() throws Exception {
+
+        Parameter parameter = new ParameterImpl("Kd", "-4.0x-12^-2", "molar");
+
+        assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(-12));
+        assertEquals(parameter.getExponent(), Integer.valueOf(-2));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
 
     }
 
     @Test
-    public void testSetExponent() throws Exception {
+    public void testParameterAllNeg() throws Exception {
 
-    }
+        Parameter parameter = new ParameterImpl("Kd", "-4.0x-12^-2 ~-0.3", "molar");
 
-    @Test
-    public void testGetValue() throws Exception {
-
-    }
-
-    @Test
-    public void testSetValue() throws Exception {
-
-    }
-
-    @Test
-    public void testGetUnit() throws Exception {
-
-    }
-
-    @Test
-    public void testSetUnit() throws Exception {
-
-    }
-
-    @Test
-    public void testEquals() throws Exception {
+        assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
+        assertEquals(parameter.getBase(), Integer.valueOf(-12));
+        assertEquals(parameter.getExponent(), Integer.valueOf(-2));
+        assertEquals(parameter.getUncertainty(), Double.valueOf(-0.3));
+        assertEquals(parameter.getUnit(), "molar");
+        assertEquals(parameter.getType(), "Kd");
 
     }
 }
