@@ -134,7 +134,7 @@ public class GraphBuilderTest {
     public void test3() throws Exception {
 //        InputStream stream = Playground.class.getResourceAsStream("/META-INF/mitab/brca2.mitab25-ia.txt");
         final InputStream stream = new FileInputStream("/home/marine/Downloads/Q86X80_Q7.txt");
-        final String outFile = "/home/marine/Downloads/Q86X80_Q7_final.xgmml";
+        final String outFile = "/home/marine/Downloads/Q86X80_Q7_final_labels.xgmml";
         ColumnBasedDocumentDefinition mitabDefinition = MitabDocumentDefinitionFactory.mitab25();
         XgmmlStreamingGrapBuilder definition = new XgmmlStreamingGrapBuilder();
 
