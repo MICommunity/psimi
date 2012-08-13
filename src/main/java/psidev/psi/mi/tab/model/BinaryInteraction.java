@@ -160,21 +160,21 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return cross references for the interaction.
      */
-    List<CrossReference> getInteractionXrefs();
+    List<CrossReference> getXrefs();
 
     /**
      * Sets the cross references for the interaction.
      *
-     * @param interactionXrefs for the interaction.
+     * @param xrefs for the interaction.
      */
-    void setXrefs(List<CrossReference> interactionXrefs);
+    void setXrefs(List<CrossReference> xrefs);
 
     /**
      * Returns the annotations for the interaction.
      *
      * @return annotations for the interaction.
      */
-    List<Annotation> getInteractionAnnotations();
+    List<Annotation> getAnnotations();
 
     /**
      * Sets the annotations for the interaction.
@@ -209,14 +209,14 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return parameters for the interaction.
      */
-    List<Parameter> getInteractionParameters();
+    List<Parameter> getParameters();
 
     /**
      * Sets the parameters for the interaction.
      *
-     * @param interactionParameters for the interaction.
+     * @param parameters for the interaction.
      */
-    void setParameters(List<Parameter> interactionParameters);
+    void setParameters(List<Parameter> parameters);
 
     /**
      * Returns the date when the curation started.
@@ -251,7 +251,7 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return checksums for the interaction.
      */
-    List<Checksum> getInteractionChecksums();
+    List<Checksum> getChecksums();
 
     /**
      * Sets the checksum for the interaction.

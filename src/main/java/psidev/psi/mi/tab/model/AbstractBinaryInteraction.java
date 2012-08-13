@@ -315,21 +315,21 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      * {@inheritDoc}
      */
-    public List<CrossReference> getInteractionXrefs() {
+    public List<CrossReference> getXrefs() {
         return interactionXrefs;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setXrefs(List<CrossReference> interactionXrefs) {
-        this.interactionXrefs = interactionXrefs;
+    public void setXrefs(List<CrossReference> xrefs) {
+        this.interactionXrefs = xrefs;
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<Annotation> getInteractionAnnotations() {
+    public List<Annotation> getAnnotations() {
         return interactionAnnotations;
     }
 
@@ -364,15 +364,15 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      * {@inheritDoc}
      */
-    public List<Parameter> getInteractionParameters() {
+    public List<Parameter> getParameters() {
         return interactionParameters;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setParameters(List<Parameter> interactionParameters) {
-        this.interactionParameters = interactionParameters;
+    public void setParameters(List<Parameter> parameters) {
+        this.interactionParameters = parameters;
     }
 
     /**
@@ -406,7 +406,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      * {@inheritDoc}
      */
-    public List<Checksum> getInteractionChecksums() {
+    public List<Checksum> getChecksums() {
         return interactionChecksums;
     }
 

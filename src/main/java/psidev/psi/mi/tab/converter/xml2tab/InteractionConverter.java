@@ -716,7 +716,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             }
 
             // set xrefs field 25
-            Collection<CrossReference> xrefs = binaryInteraction.getInteractionXrefs();
+            Collection<CrossReference> xrefs = binaryInteraction.getXrefs();
             if (xrefs != null) {
                 if (!xrefs.isEmpty()) {
                     Collection<DbReference> secondaryRefs = new ArrayList<DbReference>();
@@ -736,7 +736,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             }
 
             //set Annotations field 28
-            Collection<Annotation> annotations = binaryInteraction.getInteractionAnnotations();
+            Collection<Annotation> annotations = binaryInteraction.getAnnotations();
             if (annotations != null) {
                 if (!annotations.isEmpty()) {
                     for (Annotation annotation : annotations) {
@@ -747,7 +747,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             }
 
             //set parameters field 30
-            Collection<Parameter> parameters = binaryInteraction.getInteractionParameters();
+            Collection<Parameter> parameters = binaryInteraction.getParameters();
             if (parameters != null) {
                 if (!parameters.isEmpty()) {
                     for (Parameter parameter : parameters) {
@@ -798,7 +798,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             }
 
             //set checksum field 35
-            Collection<Checksum> checksums = binaryInteraction.getInteractionChecksums();
+            Collection<Checksum> checksums = binaryInteraction.getChecksums();
             if (checksums != null) {
                 if (!checksums.isEmpty()) {
                     for (Checksum checksum : checksums) {
