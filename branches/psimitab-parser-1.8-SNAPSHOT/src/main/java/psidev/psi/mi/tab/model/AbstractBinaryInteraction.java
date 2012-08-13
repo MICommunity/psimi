@@ -6,6 +6,8 @@
 package psidev.psi.mi.tab.model;
 
 
+import org.apache.commons.collections.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -496,39 +498,40 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 
         boolean part1 = (interactorA.equals(that.interactorA) && interactorB.equals(that.interactorB));
         boolean part2 = (interactorB.equals(that.interactorA) && interactorA.equals(that.interactorB));
+
         if (!(part1 || part2)) {
             return false;
         }
 
-        if (publications != null ? !publications.equals(that.publications) : that.publications != null) {
+        if (publications != null ? !CollectionUtils.isEqualCollection(publications, that.publications) : that.publications != null) {
             return false;
         }
 
-        if (confidenceValues != null ? !confidenceValues.equals(that.confidenceValues) : that.confidenceValues != null) {
+        if (confidenceValues != null ? !CollectionUtils.isEqualCollection(confidenceValues, that.confidenceValues) : that.confidenceValues != null) {
             return false;
         }
 
-        if (sourceDatabases != null ? !sourceDatabases.equals(that.sourceDatabases) : that.sourceDatabases != null) {
+        if (sourceDatabases != null ? !CollectionUtils.isEqualCollection(sourceDatabases, that.sourceDatabases) : that.sourceDatabases != null) {
             return false;
         }
 
-        if (interactionAcs != null ? !interactionAcs.equals(that.interactionAcs) : that.interactionAcs != null) {
+        if (interactionAcs != null ? !CollectionUtils.isEqualCollection(interactionAcs, that.interactionAcs) : that.interactionAcs != null) {
             return false;
         }
 
-        if (authors != null ? !authors.equals(that.authors) : that.authors != null) {
+        if (authors != null ? !CollectionUtils.isEqualCollection(authors, that.authors) : that.authors != null) {
             return false;
         }
 
-        if (complexExpansion != null ? !complexExpansion.equals(that.complexExpansion) : that.complexExpansion != null) {
+        if (complexExpansion != null ? !CollectionUtils.isEqualCollection(complexExpansion, that.complexExpansion) : that.complexExpansion != null) {
             return false;
         }
 
-        if (interactionXrefs != null ? !interactionXrefs.equals(that.interactionXrefs) : that.interactionXrefs != null) {
+        if (interactionXrefs != null ? !CollectionUtils.isEqualCollection(interactionXrefs, that.interactionXrefs) : that.interactionXrefs != null) {
             return false;
         }
 
-        if (interactionAnnotations != null ? !interactionAnnotations.equals(that.interactionAnnotations) : that.interactionAnnotations != null) {
+        if (interactionAnnotations != null ? !CollectionUtils.isEqualCollection(interactionAnnotations, that.interactionAnnotations) : that.interactionAnnotations != null) {
             return false;
         }
 
@@ -536,19 +539,19 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
             return false;
         }
 
-        if (interactionParameters != null ? !interactionParameters.equals(that.interactionParameters) : that.interactionParameters != null) {
+        if (interactionParameters != null ? !CollectionUtils.isEqualCollection(interactionParameters, that.interactionParameters) : that.interactionParameters != null) {
             return false;
         }
 
-        if (creationDate != null ? !creationDate.equals(that.creationDate) : that.creationDate != null) {
+        if (creationDate != null ? !CollectionUtils.isEqualCollection(creationDate, that.creationDate) : that.creationDate != null) {
             return false;
         }
 
-        if (updateDate != null ? !updateDate.equals(that.updateDate) : that.updateDate != null) {
+        if (updateDate != null ? !CollectionUtils.isEqualCollection(updateDate, that.updateDate) : that.updateDate != null) {
             return false;
         }
 
-        if (interactionChecksums != null ? !interactionChecksums.equals(that.interactionChecksums) : that.interactionChecksums != null) {
+        if (interactionChecksums != null ? !CollectionUtils.isEqualCollection(interactionChecksums, that.interactionChecksums) : that.interactionChecksums != null) {
             return false;
         }
 
@@ -569,6 +572,21 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
         result = 31 * result + (detectionMethods != null ? detectionMethods.hashCode() : 0);
         result = 31 * result + (interactionTypes != null ? interactionTypes.hashCode() : 0);
         result = 31 * result + (publications != null ? publications.hashCode() : 0);
+        result = 31 * result + (confidenceValues != null ? confidenceValues.hashCode() : 0);
+        result = 31 * result + (sourceDatabases != null ? sourceDatabases.hashCode() : 0);
+        result = 31 * result + (interactionAcs != null ? interactionAcs.hashCode() : 0);
+        result = 31 * result + (authors != null ? authors.hashCode() : 0);
+        result = 31 * result + (sourceDatabases != null ? sourceDatabases.hashCode() : 0);
+        result = 31 * result + (complexExpansion != null ? complexExpansion.hashCode() : 0);
+        result = 31 * result + (interactionXrefs != null ? interactionXrefs.hashCode() : 0);
+        result = 31 * result + (interactionAnnotations != null ? interactionAnnotations.hashCode() : 0);
+        result = 31 * result + (hostOrganism != null ? hostOrganism.hashCode() : 0);
+        result = 31 * result + (interactionParameters != null ? interactionParameters.hashCode() : 0);
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        result = 31 * result + (updateDate != null ? updateDate.hashCode() : 0);
+        result = 31 * result + (interactionChecksums != null ? interactionChecksums.hashCode() : 0);
+
+
         return result;
     }
 
