@@ -7,7 +7,10 @@ import psidev.psi.mi.tab.model.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -252,30 +255,28 @@ public class MitabWriterUtilsTest {
     }
 
 
-   @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testBuildHeaderException() throws Exception {
 
-        final int WRONG_VERSION = 40;
-        MitabWriterUtils.buildHeader(WRONG_VERSION);
+        MitabWriterUtils.buildHeader(null);
 
     }
 
 
     @Test
     public void testBuildLine() throws Exception {
-        String result1 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_5);
-        Assert.assertEquals(result1, MitabWriterUtils.createMitabLine(line25,PsimiTab.VERSION_2_5));
+        String result1 = MitabWriterUtils.buildLine(buildInteraction(), PsimiTabVersion.v2_5);
+        Assert.assertEquals(result1, MitabWriterUtils.createMitabLine(line25, PsimiTabVersion.v2_5));
 
-        String result2 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_6);
-        Assert.assertEquals(result2, MitabWriterUtils.createMitabLine(line26,PsimiTab.VERSION_2_6));
+        String result2 = MitabWriterUtils.buildLine(buildInteraction(), PsimiTabVersion.v2_6);
+        Assert.assertEquals(result2, MitabWriterUtils.createMitabLine(line26, PsimiTabVersion.v2_6));
 
-        String result3 = MitabWriterUtils.buildLine(buildInteraction(),PsimiTab.VERSION_2_7);
-        Assert.assertEquals(result3, MitabWriterUtils.createMitabLine(line27, PsimiTab.VERSION_2_7));
+        String result3 = MitabWriterUtils.buildLine(buildInteraction(), PsimiTabVersion.v2_7);
+        Assert.assertEquals(result3, MitabWriterUtils.createMitabLine(line27, PsimiTabVersion.v2_7));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testBuildLineException() throws Exception {
-        final int WRONG_VERSION = 40;
-        MitabWriterUtils.buildLine(buildInteraction(),WRONG_VERSION);
+        MitabWriterUtils.buildLine(buildInteraction(), null);
     }
 }

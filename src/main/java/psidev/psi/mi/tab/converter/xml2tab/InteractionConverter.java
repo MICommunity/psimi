@@ -49,6 +49,12 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
      */
     private Collection<CrossReference> sourceDatabases;
 
+    /**
+     * Converts a CV to a CrossReference in Mitab
+     */
+    private CvConverter cvConverter = new CvConverter();
+
+
     // identifies patterns like "AuthorName B (2002)", capturing the authorName and the year
     private Pattern FIRST_AUTHOR_REGEX = Pattern.compile("(\\w+(?:\\P{Ps}+)?)(?:\\((\\d{4})\\))?");
 
@@ -200,7 +206,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
             for (psidev.psi.mi.xml.model.InteractionType interactionType : interaction.getInteractionTypes()) {
 
-                CrossReference type = CvConverter.toMitab(interactionType, CrossReferenceImpl.class);
+                CrossReference type = cvConverter.toMitab(interactionType);
 
                 if (type != null) {
                     types.add(type);
@@ -230,7 +236,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             for (ExperimentDescription experiment : interaction.getExperiments()) {
 
                 // detection method
-                CrossReference detection = CvConverter.toMitab(experiment.getInteractionDetectionMethod(), CrossReferenceImpl.class);
+                CrossReference detection = cvConverter.toMitab(experiment.getInteractionDetectionMethod());
 
                 if (detection != null) {
                     bi.getDetectionMethods().add(detection);
@@ -448,7 +454,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
                     binaryInteraction.getDetectionMethods().size() + " detectionMethod(s)! -> We could not know which detectionMethode dependents on which InteractionAcs");
         } else {
             CrossReference binaryDetectionMethod = binaryInteraction.getDetectionMethods().get(index);
-            detectionMethod = CvConverter.fromMitab(binaryDetectionMethod, psidev.psi.mi.xml.model.InteractionDetectionMethod.class);
+            detectionMethod = cvConverter.fromMitab(binaryDetectionMethod, psidev.psi.mi.xml.model.InteractionDetectionMethod.class);
         }
 
         if (bibref != null && detectionMethod != null) {
@@ -589,10 +595,10 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
             types = new ArrayList<psidev.psi.mi.xml.model.InteractionType>(binaryInteraction.getInteractionTypes().size());
             List<CrossReference> tabInteractionTypes = binaryInteraction.getInteractionTypes();
 
-            for (CrossReference intactType : tabInteractionTypes) {
+            for (CrossReference interactionType : tabInteractionTypes) {
                 psidev.psi.mi.xml.model.InteractionType type = null;
                 try {
-                    type = CvConverter.fromMitab(intactType, psidev.psi.mi.xml.model.InteractionType.class);
+                    type = cvConverter.fromMitab(interactionType, psidev.psi.mi.xml.model.InteractionType.class);
                 } catch (XmlConversionException e) {
                     e.printStackTrace();
                 }

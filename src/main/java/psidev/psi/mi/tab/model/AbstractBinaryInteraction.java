@@ -27,7 +27,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      *  MITAB 2.5
      */
-    //private static int expectedColumnCount = 15;
 
     /**
      * Interactor A.
@@ -84,7 +83,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
     /**
      *  MITAB 2.6
      */
-    //private static int expectedColumnCount = 36;
 
     /**
      * Model used to convert n-ary interactions into binary.
@@ -125,7 +123,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
      * Update Date
      */
     private List<Date> updateDate
-            =  new ArrayList<Date>();
+            = new ArrayList<Date>();
 
     /**
      * Checksum for interaction.
@@ -137,20 +135,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
      * Boolean value ti distinguish positive interactions and
      * negative interactions.
      */
-    private Boolean negativeInteraction;
+    private boolean negativeInteraction;
 
     /**
      * MITAB 2.7
      */
-    private static int expectedColumnCount = 42;
 
     ///////////////////////
     // Constructors
+    public AbstractBinaryInteraction() {
+
+    }
+
+    public AbstractBinaryInteraction(T interactor) {
+        setInteractorA(interactor);
+    }
 
     public AbstractBinaryInteraction(T interactorA, T interactorB) {
         setInteractorA(interactorA);
         setInteractorB(interactorB);
     }
+
 
     public void flip() {
         T interactorA = getInteractorA();
@@ -174,9 +179,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
      * {@inheritDoc}
      */
     public void setInteractorA(T interactorA) {
-        if (interactorA == null) {
-            throw new IllegalArgumentException("You must give a non null interactor A.");
-        }
         this.interactorA = interactorA;
     }
 
@@ -418,17 +420,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
         this.interactionChecksums = interactionChecksums;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean hasNegativeInteraction() {
-        return negativeInteraction != null;
-    }
 
     /**
      * {@inheritDoc}
      */
-    public Boolean isNegativeInteraction() {
+    public boolean isNegativeInteraction() {
         return negativeInteraction;
     }
 
@@ -439,19 +435,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
         this.negativeInteraction = negativeInteraction;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public int getExpectedColumnCount() {
-        return expectedColumnCount;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setExpectedColumnCount(int expectedColumnCount) {
-        AbstractBinaryInteraction.expectedColumnCount = expectedColumnCount;
-    }
 
     /////////////////////////
     // Object's override
@@ -567,15 +550,13 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
         if (updateDate != null ? !updateDate.equals(that.updateDate) : that.updateDate != null) {
             return false;
         }
+
         if (interactionChecksums != null ? !interactionChecksums.equals(that.interactionChecksums) : that.interactionChecksums != null) {
             return false;
         }
 
-        if (negativeInteraction != null ? !negativeInteraction.equals(that.negativeInteraction) : that.negativeInteraction != null) {
-            return false;
-        }
+        return negativeInteraction == that.negativeInteraction;
 
-        return true;
     }
 
     /**

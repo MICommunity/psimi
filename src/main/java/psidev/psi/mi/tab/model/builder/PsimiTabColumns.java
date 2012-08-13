@@ -1,7 +1,5 @@
 package psidev.psi.mi.tab.model.builder;
 
-import com.sun.tools.javac.resources.version;
-
 /**
  * Created with IntelliJ IDEA.
  * User: ntoro
@@ -66,15 +64,16 @@ public enum PsimiTabColumns {
     private final String name;
 
 
-    private static String[] buildHeader(int version) throws IllegalArgumentException {
-        if (version != PsimiTab.VERSION_2_5 && version != PsimiTab.VERSION_2_6 && version != PsimiTab.VERSION_2_7) {
+    private static String[] buildHeader(PsimiTabVersion version) throws IllegalArgumentException {
+        if (version == null) {
             throw new IllegalArgumentException("The header for this version of MITAB can not be created ");
         }
 
         PsimiTabColumns[] columns = PsimiTabColumns.values();
-        String[] header  = new String[version];
+        int numberOfColumns = version.getNumberOfColumns();
+        String[] header = new String[numberOfColumns];
 
-        for (int i = 0; i < version; i++) {
+        for (int i = 0; i < numberOfColumns; i++) {
             header[i] = columns[i].toString();
         }
         //We add the start of the header #
@@ -88,7 +87,7 @@ public enum PsimiTabColumns {
     }
 
 
-    public static String[] getHeader(int version) throws IllegalArgumentException{
+    public static String[] getHeader(PsimiTabVersion version) throws IllegalArgumentException {
         return buildHeader(version);
 
     }

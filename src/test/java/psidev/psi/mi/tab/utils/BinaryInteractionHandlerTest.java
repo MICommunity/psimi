@@ -15,12 +15,12 @@
  */
 package psidev.psi.mi.tab.utils;
 
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
 import org.junit.Assert;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
+import org.junit.Before;
+import org.junit.Test;
 import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.builder.MitabParserUtils;
 
 /**
  * TODO comment that class header
@@ -41,12 +41,12 @@ public class BinaryInteractionHandlerTest {
     public void after() throws Exception {
         handler = null;
     }
-    
+
     @Test
     public void cloneBinaryInteraction1() throws Exception {
-        BinaryInteraction binaryInteraction = new MitabDocumentDefinition()
-                .interactionFromString("uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-");
+        String line = "uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-";
 
+        BinaryInteraction binaryInteraction = MitabParserUtils.buildBinaryInteraction(line.split("\t"));
         BinaryInteraction clone = handler.cloneBinaryInteraction(binaryInteraction);
 
         Assert.assertEquals(binaryInteraction, clone);
@@ -54,10 +54,10 @@ public class BinaryInteractionHandlerTest {
 
     @Test
     public void merge1() throws Exception {
-        BinaryInteraction binaryInteraction1 = new MitabDocumentDefinition()
-                .interactionFromString("uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-");
-        BinaryInteraction binaryInteraction2 = new MitabDocumentDefinition()
-                .interactionFromString("uniprotkb:P06722\tuniprotkb:P23367\tgene name:mutH\tgene name:mutL\tgene name synonym:mutR|gene name synonym:prv|locus name:b2831\tlocus name:b4170\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-");
+        String line1 = "uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-";
+        String line2 = "uniprotkb:P06722\tuniprotkb:P23367\tgene name:mutH\tgene name:mutL\tgene name synonym:mutR|gene name synonym:prv|locus name:b2831\tlocus name:b4170\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-";
+        BinaryInteraction binaryInteraction1 = MitabParserUtils.buildBinaryInteraction(line1.split("\t"));
+        BinaryInteraction binaryInteraction2 = MitabParserUtils.buildBinaryInteraction(line2.split("\t"));
 
         BinaryInteraction merged = handler.merge(binaryInteraction1, binaryInteraction2);
 

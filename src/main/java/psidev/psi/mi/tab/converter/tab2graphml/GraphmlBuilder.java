@@ -6,15 +6,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.tab.io.PsimiTabReader;
+import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.xml.converter.ConverterException;
 
-import java.io.*;
-import java.lang.IllegalArgumentException;
-import java.lang.IllegalStateException;
-import java.lang.String;
-import java.lang.StringBuilder;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -47,7 +46,7 @@ public class GraphmlBuilder {
             "  <key id=\"identifier\" for=\"node\" attr.name=\"identifier\" attr.type=\"string\"/>" + NEW_LINE +
             "  <key id=\"specie\" for=\"node\" attr.name=\"specie\" attr.type=\"string\"/>" + NEW_LINE +
             "  <key id=\"type\" for=\"node\" attr.name=\"type\" attr.type=\"string\"/>" + NEW_LINE +
-            "  <key id=\"shape\" for=\"node\" attr.name=\"shape\" attr.type=\"string\">"  + NEW_LINE +
+            "  <key id=\"shape\" for=\"node\" attr.name=\"shape\" attr.type=\"string\">" + NEW_LINE +
 
             /* Edge's properties */
 
@@ -58,8 +57,8 @@ public class GraphmlBuilder {
 //            "  <key id=\"author\" for=\"edge\" attr.name=\"author\" attr.type=\"string\">"  + NEW_LINE +
 //            "  <key id=\"confidence\" for=\"edge\" attr.name=\"confidence\" attr.type=\"string\">"  + NEW_LINE +
 //
-            "    <default>ELLIPSE</default>"  + NEW_LINE +
-            "  </key>"  + NEW_LINE +
+            "    <default>ELLIPSE</default>" + NEW_LINE +
+            "  </key>" + NEW_LINE +
             "  <graph id=\"G\" edgedefault=\"undirected\">" + NEW_LINE;
 
     public static final String GRAPHML_FOOTER = "  </graph>" + NEW_LINE +
@@ -79,7 +78,7 @@ public class GraphmlBuilder {
     }
 
     protected Iterator<BinaryInteraction> getMitabIterator(InputStream is, boolean hasHeader) throws ConverterException, IOException {
-        psidev.psi.mi.tab.PsimiTabReader reader = new PsimiTabReader();
+        psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
         return reader.iterate(is);
     }
 
@@ -87,15 +86,15 @@ public class GraphmlBuilder {
 
         final long start = System.currentTimeMillis();
 
-        StringBuilder sb = new StringBuilder( 8192 );
+        StringBuilder sb = new StringBuilder(8192);
 
         // get MITAB data from the current service
         final Iterator<BinaryInteraction> iterator;
         int interactionCount = 0;
 
         boolean hasHeader = false;
-        BufferedReader testReader = new BufferedReader(new InputStreamReader( is ));
-        if(is.markSupported()){
+        BufferedReader testReader = new BufferedReader(new InputStreamReader(is));
+        if (is.markSupported()) {
             is.mark(0);
             hasHeader = testReader.readLine().startsWith("ID interactor A");
             is.reset();
@@ -225,29 +224,29 @@ public class GraphmlBuilder {
         }
 
         String moleculeType = "protein";
-        if( db.equals( "chebi" ) || db.equals("chembl") || db.equals("drugbank") ) {
+        if (db.equals("chebi") || db.equals("chembl") || db.equals("drugbank")) {
             moleculeType = COMPOUND;
-        } else if( db.equals( COMPLEX ) ) {
+        } else if (db.equals(COMPLEX)) {
             moleculeType = COMPLEX;
         }
 
         StringBuilder sb = new StringBuilder(256);
         String label = pickLabel(interactor);
         final int nodeId = getNextNodeId();
-        sb.append("     <node id=\"").append( nodeId ).append("\">").append(NEW_LINE);
-        sb.append("        <data key=\"label\">").append( escape(label) ).append("</data>").append(NEW_LINE);
-        sb.append("        <data key=\"identifier\">").append( db+"#"+id ).append("</data>").append(NEW_LINE);
+        sb.append("     <node id=\"").append(nodeId).append("\">").append(NEW_LINE);
+        sb.append("        <data key=\"label\">").append(escape(label)).append("</data>").append(NEW_LINE);
+        sb.append("        <data key=\"identifier\">").append(db + "#" + id).append("</data>").append(NEW_LINE);
 
         final String specieName = getSpecieName(interactor.getOrganism());
-        if( specieName != null ) {
+        if (specieName != null) {
             sb.append("        <data key=\"specie\">").append(escape(specieName)).append("</data>").append(NEW_LINE);
         }
 
         sb.append("        <data key=\"type\">").append(moleculeType).append("</data>").append(NEW_LINE);
 
-        if( moleculeType.equals( COMPOUND ) ) {
+        if (moleculeType.equals(COMPOUND)) {
             sb.append("        <data key=\"shape\">").append("TRIANGLE").append("</data>").append(NEW_LINE);
-        } else if( moleculeType.equals( COMPLEX ) ) {
+        } else if (moleculeType.equals(COMPLEX)) {
             sb.append("        <data key=\"shape\">").append("VEE").append("</data>").append(NEW_LINE);
         }
 
@@ -260,25 +259,26 @@ public class GraphmlBuilder {
 
     /**
      * Makes sure the data stored in XML don't contain offending characters.
+     *
      * @param s
      * @return
      */
-    private String escape( String s ) {
-        return StringEscapeUtils.escapeXml( s );
+    private String escape(String s) {
+        return StringEscapeUtils.escapeXml(s);
     }
 
     private String getSpecieName(Organism organism) {
 
         String name = null;
-        if( ! organism.getIdentifiers().isEmpty() ) {
+        if (!organism.getIdentifiers().isEmpty()) {
             final CrossReference first = organism.getIdentifiers().iterator().next();
             name = first.getText();
-            if( name == null || StringUtils.isEmpty( name ) ) {
+            if (name == null || StringUtils.isEmpty(name)) {
                 name = first.getIdentifier();
             }
         }
 
-        if( name == null ) {
+        if (name == null) {
             name = organism.getTaxid();
         }
 
@@ -299,20 +299,20 @@ public class GraphmlBuilder {
 
         CrossReference identifier = null;
 
-        if( ! interactor.getIdentifiers().isEmpty() ) {
+        if (!interactor.getIdentifiers().isEmpty()) {
             final CrossReferenceComparator comparator = new IdentifierByDatabaseComparator();
-            identifier = pickFirstRelevantIdentifier(interactor.getIdentifiers(), comparator, true );
-        } else if( ! interactor.getAlternativeIdentifiers().isEmpty() ) {
+            identifier = pickFirstRelevantIdentifier(interactor.getIdentifiers(), comparator, true);
+        } else if (!interactor.getAlternativeIdentifiers().isEmpty()) {
             final CrossReferenceComparator comparator = new IdentifierByDatabaseComparator();
-            identifier = pickFirstRelevantIdentifier( interactor.getAlternativeIdentifiers(), comparator, true );
+            identifier = pickFirstRelevantIdentifier(interactor.getAlternativeIdentifiers(), comparator, true);
         }
 
         // get less strict and just pick the first thing available in identifier or alt. identifier.
-        if( identifier == null ) {
+        if (identifier == null) {
             log.debug("WARNING - Could not find a relevant identifier for interactor: " + interactor);
-            if( ! interactor.getIdentifiers().isEmpty() ) {
+            if (!interactor.getIdentifiers().isEmpty()) {
                 identifier = interactor.getIdentifiers().iterator().next();
-            } else if( ! interactor.getAlternativeIdentifiers().isEmpty() ) {
+            } else if (!interactor.getAlternativeIdentifiers().isEmpty()) {
                 identifier = interactor.getAlternativeIdentifiers().iterator().next();
             }
         }
@@ -330,9 +330,9 @@ public class GraphmlBuilder {
      * @param identifiers a non null, non empty list of <code>CrossRefenrence</code>.
      * @return the identifier of the first relevant cross reference based on the current IdentifierByDatabaseComparator.
      */
-    private CrossReference pickFirstRelevantIdentifier( Collection<CrossReference> identifiers,
-                                                        CrossReferenceComparator comparator,
-                                                        boolean allowNullIfNoMatch ) {
+    private CrossReference pickFirstRelevantIdentifier(Collection<CrossReference> identifiers,
+                                                       CrossReferenceComparator comparator,
+                                                       boolean allowNullIfNoMatch) {
 
         if (identifiers == null || identifiers.isEmpty()) {
             throw new java.lang.IllegalArgumentException("You must give a non null/empty collection of identifiers");
@@ -340,18 +340,18 @@ public class GraphmlBuilder {
 
         boolean hasMatched = false;
         CrossReference picked = null;
-        if( identifiers.size() > 1 ) {
-            List<CrossReference> orderedRefs = new ArrayList<CrossReference>( identifiers );
+        if (identifiers.size() > 1) {
+            List<CrossReference> orderedRefs = new ArrayList<CrossReference>(identifiers);
             Collections.sort(orderedRefs, comparator);
-            picked = orderedRefs.get( 0 );
+            picked = orderedRefs.get(0);
             hasMatched = comparator.hasMatchedAny();
         } else {
             // only 1 element
             picked = identifiers.iterator().next();
-            hasMatched = comparator.matches( picked );
+            hasMatched = comparator.matches(picked);
         }
 
-        if( allowNullIfNoMatch && ! hasMatched ) {
+        if (allowNullIfNoMatch && !hasMatched) {
             return null;
         }
 
@@ -361,7 +361,7 @@ public class GraphmlBuilder {
     private static void printIdentifiers(List<CrossReference> identifiers) {
         log.info("--- ordered list of Refs ---");
         for (CrossReference cr : identifiers) {
-            log.info( cr.getDatabase() + ":" + cr.getIdentifier());
+            log.info(cr.getDatabase() + ":" + cr.getIdentifier());
         }
         log.info("----------------------------");
     }
@@ -381,23 +381,23 @@ public class GraphmlBuilder {
 
         // TODO Encourage the use of the alias type: 'display name' so that PSICQUIC providers can control the label used
 
-        if ( ! interactor.getAliases().isEmpty() ) {
+        if (!interactor.getAliases().isEmpty()) {
             label = pickFirstRelevantAlias(interactor.getAliases(), new AliasByTypeComparator(), true);
-        } else if ( ! interactor.getAlternativeIdentifiers().isEmpty() ) {
+        } else if (!interactor.getAlternativeIdentifiers().isEmpty()) {
             final IdentifierByTextComparator comparator = new IdentifierByTextComparator();
             CrossReference cr = pickFirstRelevantIdentifier(interactor.getAlternativeIdentifiers(), comparator, true);
-            if( cr != null ) label = cr.getIdentifier();
+            if (cr != null) label = cr.getIdentifier();
         }
 
-        if( label == null ) {
-            log.debug( "WARNING - Could not find a relevant label for interactor: " + interactor );
+        if (label == null) {
+            log.debug("WARNING - Could not find a relevant label for interactor: " + interactor);
             if (!interactor.getAliases().isEmpty()) {
                 label = pickFirstRelevantAlias(interactor.getAliases(), new AliasByIncreasingLengthComparator(), true);
-            } else if(!interactor.getIdentifiers().isEmpty()) {
+            } else if (!interactor.getIdentifiers().isEmpty()) {
                 final CrossReferenceComparator comparator = new IdentifierByDatabaseComparator();
                 CrossReference cr = pickFirstRelevantIdentifier(interactor.getIdentifiers(), comparator, false);
-                if( cr != null ) label = cr.getIdentifier();
-            }else if (!interactor.getAlternativeIdentifiers().isEmpty()) {
+                if (cr != null) label = cr.getIdentifier();
+            } else if (!interactor.getAlternativeIdentifiers().isEmpty()) {
                 final CrossReference cr = interactor.getAlternativeIdentifiers().iterator().next();
                 label = cr.getIdentifier();
             }
@@ -416,9 +416,9 @@ public class GraphmlBuilder {
      * @param aliases a non null, non empty list of <code>CrossRefenrence</code>.
      * @return the identifier of the first relevant cross reference based on the current IdentifierByDatabaseComparator.
      */
-    private String pickFirstRelevantAlias( Collection<Alias> aliases,
-                                           AliasComparator comparator,
-                                           boolean allowNullIfNoMatch ) {
+    private String pickFirstRelevantAlias(Collection<Alias> aliases,
+                                          AliasComparator comparator,
+                                          boolean allowNullIfNoMatch) {
 
         if (aliases == null || aliases.isEmpty()) {
             throw new IllegalArgumentException("You must give a non null/empty collection of aliases");
@@ -426,17 +426,17 @@ public class GraphmlBuilder {
 
         boolean hasMatched = false;
         Alias picked = null;
-        if( aliases.size() > 1 ) {
+        if (aliases.size() > 1) {
             List<Alias> orderedRefs = new ArrayList<Alias>(aliases);
             Collections.sort(orderedRefs, comparator);
             picked = orderedRefs.get(0);
             hasMatched = comparator.hasMatchedAny();
         } else {
             picked = aliases.iterator().next();
-            hasMatched = comparator.matches( picked );
+            hasMatched = comparator.matches(picked);
         }
 
-        if( allowNullIfNoMatch && ! hasMatched ) {
+        if (allowNullIfNoMatch && !hasMatched) {
             return null;
         }
 
@@ -446,7 +446,7 @@ public class GraphmlBuilder {
     private void printAliases(List<Alias> aliases) {
         log.info("--- Ordered list of Aliases ---");
         for (Alias a : aliases) {
-            log.info( a.getDbSource() + ":" + a.getName()+"("+ a.getAliasType() +")");
+            log.info(a.getDbSource() + ":" + a.getName() + "(" + a.getAliasType() + ")");
         }
         log.info("-------------------------------");
     }
