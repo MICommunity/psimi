@@ -261,19 +261,12 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
     void setChecksums(List<Checksum> interactionChecksums);
 
     /**
-     * Checks if the interaction has a negative value associated.
-     *
-     * @return boolean with the result.
-     */
-    boolean hasNegativeInteraction();
-
-    /**
      * Returns if the interaction is negative (true) or
      * positive (false)
      *
      * @return if the interaction is negative or not.
      */
-    Boolean isNegativeInteraction();
+    boolean isNegativeInteraction();
 
     /**
      * Sets if the interaction is negative (true) or
@@ -284,22 +277,6 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
     void setNegativeInteraction(Boolean negativeInteraction);
 
     //MITAB 2.7
-
-    /**
-     * Getter for number of expected columns
-     *
-     * @return expected colmn count
-     */
-    @Deprecated
-    int getExpectedColumnCount();
-
-    /**
-     * Setter for number of expected columns
-     *
-     * @param expectedColumnCount of expected columns
-     */
-    @Deprecated
-    void setExpectedColumnCount(int expectedColumnCount);
 
 
 }

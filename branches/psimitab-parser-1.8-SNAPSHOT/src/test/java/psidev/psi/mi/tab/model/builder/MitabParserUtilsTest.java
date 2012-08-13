@@ -3,14 +3,14 @@ package psidev.psi.mi.tab.model.builder;
 
 import org.junit.Assert;
 import org.junit.Test;
-import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.BinaryInteractionImpl;
-import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.model.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -20,16 +20,16 @@ import java.util.*;
  * Time: 13:34
  * To change this template use File | Settings | File Templates.
  */
-public class MitabParsingUtilsTest {
+public class MitabParserUtilsTest {
     @Test
     public void testQuoteAwareSplit() throws Exception {
-        Assert.assertEquals(3, MitabParsingUtils.quoteAwareSplit("a:b(c)", new char[]{':', '(', ')'}, true).length);
+        Assert.assertEquals(3, MitabParserUtils.quoteAwareSplit("a:b(c)", new char[]{':', '(', ')'}, true).length);
 
-        Assert.assertEquals(2, MitabParsingUtils.quoteAwareSplit("aaaaa|bbbb", new char[]{'|'}, true).length);
-        Assert.assertEquals(2, MitabParsingUtils.quoteAwareSplit("\"aaa|aaa\"|bbbbb", new char[]{'|'}, true).length);
-        Assert.assertEquals(2, MitabParsingUtils.quoteAwareSplit("\"a\\aa|aaa\"|bbbbb", new char[]{'|'}, true).length);
-        Assert.assertEquals(2, MitabParsingUtils.quoteAwareSplit("\"aa\\\"a|a\\\"aa\"|bbbbb", new char[]{'|'}, true).length);
-        Assert.assertEquals(2, MitabParsingUtils.quoteAwareSplit("\"a(a:a)a\":\"b(b:b)b\"(\"c(c:c)c\")" +
+        Assert.assertEquals(2, MitabParserUtils.quoteAwareSplit("aaaaa|bbbb", new char[]{'|'}, true).length);
+        Assert.assertEquals(2, MitabParserUtils.quoteAwareSplit("\"aaa|aaa\"|bbbbb", new char[]{'|'}, true).length);
+        Assert.assertEquals(2, MitabParserUtils.quoteAwareSplit("\"a\\aa|aaa\"|bbbbb", new char[]{'|'}, true).length);
+        Assert.assertEquals(2, MitabParserUtils.quoteAwareSplit("\"aa\\\"a|a\\\"aa\"|bbbbb", new char[]{'|'}, true).length);
+        Assert.assertEquals(2, MitabParserUtils.quoteAwareSplit("\"a(a:a)a\":\"b(b:b)b\"(\"c(c:c)c\")" +
                 "|" +
                 "\"a(\\\"a:a)a\":\"b(\\\"b:b\\\")b\"(\"c(c:c)\\\"c\")", new char[]{'|'}, true).length);
 
@@ -37,24 +37,41 @@ public class MitabParsingUtilsTest {
 
     @Test(expected = NullPointerException.class)
     public void testQuoteAwareSplit_no_str() throws Exception {
-        MitabParsingUtils.quoteAwareSplit(null, new char[]{':', '(', ')'}, true);
+        MitabParserUtils.quoteAwareSplit(null, new char[]{':', '(', ')'}, true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testQuoteAwareSplit_empty_str() throws Exception {
-        MitabParsingUtils.quoteAwareSplit("", new char[]{':', '(', ')'}, true);
+        MitabParserUtils.quoteAwareSplit("", new char[]{':', '(', ')'}, true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testQuoteAwareSplit_empty_delimiter() throws Exception {
-        MitabParsingUtils.quoteAwareSplit("lala", new char[]{}, true);
+        MitabParserUtils.quoteAwareSplit("lala", new char[]{}, true);
     }
 
     @Test(expected = NullPointerException.class)
     public void testQuoteAwareSplit_null_delimiter() throws Exception {
-        MitabParsingUtils.quoteAwareSplit("lala", null, true);
+        MitabParserUtils.quoteAwareSplit("lala", null, true);
     }
 
+    @Test
+    public void quoteAwareSplit1() throws Exception {
+        String str = "a:b(c)";
+        final String[] splitted = MitabParserUtils.quoteAwareSplit(str, new char[]{':', '(', ')'}, true);
+        Assert.assertEquals("a", splitted[0]);
+        Assert.assertEquals("b", splitted[1]);
+        Assert.assertEquals("c", splitted[2]);
+    }
+
+    @Test
+    public void quoteAwareSplit2() throws Exception {
+        String str = "a:\"(+)b\"(c)";
+        final String[] splitted = MitabParserUtils.quoteAwareSplit(str, new char[]{':', '(', ')'}, true);
+        Assert.assertEquals("a", splitted[0]);
+        Assert.assertEquals("(+)b", splitted[1]);
+        Assert.assertEquals("c", splitted[2]);
+    }
 
     @Test
     public void testBuildBinaryInteraction() throws Exception {
@@ -104,7 +121,7 @@ public class MitabParsingUtilsTest {
                 "psi-mi:\"MI:0363\"(inferred by author)",
                 "psi-mi:\"MI:0363\"(inferred by author)"};
 
-        BinaryInteraction interactionBuilt = MitabParsingUtils.buildBinaryInteraction(line);
+        BinaryInteraction interactionBuilt = MitabParserUtils.buildBinaryInteraction(line);
 
         Interactor A = new Interactor();
         Interactor B = new Interactor();
@@ -227,10 +244,10 @@ public class MitabParsingUtilsTest {
         B.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
                 Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
 
-        Assert.assertEquals(A,A);
-        Assert.assertEquals(B,B);
-        Assert.assertEquals(A,interactionBuilt.getInteractorA());
-        Assert.assertEquals(B,interactionBuilt.getInteractorB());
+        Assert.assertEquals(A, A);
+        Assert.assertEquals(B, B);
+        Assert.assertEquals(A, interactionBuilt.getInteractorA());
+        Assert.assertEquals(B, interactionBuilt.getInteractorB());
         Assert.assertEquals(interactionBuilt, interactionToCompare);
     }
 
@@ -339,23 +356,27 @@ public class MitabParsingUtilsTest {
                 "psi-mi:\"MI:0363\"(inferred by author)"};
 
 
-        String[] result1 = MitabParsingUtils.extendFormat(line27,PsimiTab.VERSION_2_5);
-        Assert.assertEquals(PsimiTab.VERSION_2_7, result1.length);
+        int numColumns2_5 = PsimiTabVersion.v2_5.getNumberOfColumns();
+        int numColumns2_6 = PsimiTabVersion.v2_6.getNumberOfColumns();
+        int numColumns2_7 = PsimiTabVersion.v2_7.getNumberOfColumns();
 
-        String[] result2 = MitabParsingUtils.extendFormat(line26,PsimiTab.VERSION_2_5);
-        Assert.assertEquals(PsimiTab.VERSION_2_6,result2.length);
+        String[] result1 = MitabParserUtils.extendFormat(line27, numColumns2_5);
+        Assert.assertEquals(numColumns2_7, result1.length);
 
-        String[] result3 = MitabParsingUtils.extendFormat(line25,PsimiTab.VERSION_2_5);
-        Assert.assertEquals(PsimiTab.VERSION_2_5,result3.length);
+        String[] result2 = MitabParserUtils.extendFormat(line26, numColumns2_5);
+        Assert.assertEquals(numColumns2_6, result2.length);
 
-        String[] result4 = MitabParsingUtils.extendFormat(line25,PsimiTab.VERSION_2_6);
-        Assert.assertEquals(PsimiTab.VERSION_2_6,result4.length);
+        String[] result3 = MitabParserUtils.extendFormat(line25, numColumns2_5);
+        Assert.assertEquals(numColumns2_5, result3.length);
 
-        String[] result5 = MitabParsingUtils.extendFormat(line25,PsimiTab.VERSION_2_7);
-        Assert.assertEquals(PsimiTab.VERSION_2_7,result5.length);
+        String[] result4 = MitabParserUtils.extendFormat(line25, numColumns2_6);
+        Assert.assertEquals(numColumns2_6, result4.length);
 
-        String[] result6 = MitabParsingUtils.extendFormat(line26,PsimiTab.VERSION_2_7);
-        Assert.assertEquals(PsimiTab.VERSION_2_7,result6.length);
+        String[] result5 = MitabParserUtils.extendFormat(line25, numColumns2_7);
+        Assert.assertEquals(numColumns2_7, result5.length);
+
+        String[] result6 = MitabParserUtils.extendFormat(line26, numColumns2_7);
+        Assert.assertEquals(numColumns2_7, result6.length);
 
     }
 }

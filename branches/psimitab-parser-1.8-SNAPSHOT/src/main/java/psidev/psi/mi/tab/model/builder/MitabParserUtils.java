@@ -29,9 +29,9 @@ import java.util.*;
  * Date: 08/07/2012
  * Time: 23:30
  */
-public final class MitabParsingUtils {
+public final class MitabParserUtils {
 
-    private static final Log log = LogFactory.getLog(MitabParsingUtils.class);
+    private static final Log log = LogFactory.getLog(MitabParserUtils.class);
 
     /**
      * <p>Processes an String and splits using a set of delimiters.
@@ -144,8 +144,20 @@ public final class MitabParsingUtils {
         return false;
     }
 
-    //    @SuppressWarnings("unchecked")
+
     public static BinaryInteraction<Interactor> buildBinaryInteraction(String[] line) throws IllegalFormatException {
+
+        if (line == null) {
+            throw new NullPointerException("Null line to create to create a BinaryInteraction");
+        }
+
+        if (line.length == 0) {
+            throw new IllegalArgumentException("Empty line passed to create a BinaryInteraction");
+        }
+
+        if (line.length < PsimiTabColumns.MITAB_LENGTH.ordinal()) {
+            line = MitabParserUtils.extendFormat(line, PsimiTabColumns.MITAB_LENGTH.ordinal());
+        }
 
         Interactor interactorA = new Interactor();
         Interactor interactorB = new Interactor();
@@ -248,12 +260,12 @@ public final class MitabParsingUtils {
         if (column != null && !column.isEmpty()) {
             organism = new OrganismImpl();
 
-            String[] result = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] result = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
 
             for (String r : result) {
 
                 if (r != null) {
-                    String[] fields = MitabParsingUtils.quoteAwareSplit(r, new char[]{':', '(', ')'}, true);
+                    String[] fields = MitabParserUtils.quoteAwareSplit(r, new char[]{':', '(', ')'}, true);
                     if (fields != null) {
                         int length = fields.length;
 
@@ -286,11 +298,11 @@ public final class MitabParsingUtils {
 
         if (column != null && !column.isEmpty()) {
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -333,11 +345,11 @@ public final class MitabParsingUtils {
 
         if (column != null && !column.isEmpty()) {
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -374,11 +386,11 @@ public final class MitabParsingUtils {
         if (column != null && !column.isEmpty()) {
 
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -414,11 +426,11 @@ public final class MitabParsingUtils {
 
         if (column != null && !column.isEmpty()) {
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -452,11 +464,11 @@ public final class MitabParsingUtils {
         Parameter object = null;
 
         if (column != null && !column.isEmpty()) {
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -494,11 +506,11 @@ public final class MitabParsingUtils {
         if (column != null && !column.isEmpty()) {
 
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -535,11 +547,11 @@ public final class MitabParsingUtils {
         if (column != null && !column.isEmpty()) {
 
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -571,11 +583,11 @@ public final class MitabParsingUtils {
 
         if (column != null && !column.isEmpty()) {
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -616,11 +628,11 @@ public final class MitabParsingUtils {
         if (column != null && !column.isEmpty()) {
 
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -651,11 +663,11 @@ public final class MitabParsingUtils {
         if (column != null && !column.isEmpty()) {
 
 
-            String[] fields = MitabParsingUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParsingUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -686,11 +698,11 @@ public final class MitabParsingUtils {
     }
 
     private static Boolean splitNegative(String column) throws IllegalFormatException {
-        Boolean object = null;
+        boolean object = false;
 
         if (column != null && !column.isEmpty()) {
 
-            String[] result = MitabParsingUtils.quoteAwareSplit(column, new char[]{':', '(', ')'}, true);
+            String[] result = MitabParserUtils.quoteAwareSplit(column, new char[]{':', '(', ')'}, true);
             if (result != null) {
 
                 int length = result.length;

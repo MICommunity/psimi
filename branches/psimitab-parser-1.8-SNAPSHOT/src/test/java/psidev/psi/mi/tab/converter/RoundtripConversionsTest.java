@@ -17,7 +17,7 @@ package psidev.psi.mi.tab.converter;
 
 import org.junit.Assert;
 import org.junit.Test;
-import psidev.psi.mi.tab.io.PsimiTabReader;
+import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.converter.tab2xml.Tab2Xml;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
 import psidev.psi.mi.tab.model.BinaryInteraction;
@@ -53,7 +53,7 @@ public class RoundtripConversionsTest {
     }
 
     private BinaryInteraction roundtrip(String line) throws Exception {
-        final psidev.psi.mi.tab.PsimiTabReader mitabReader = new PsimiTabReader();
+        final psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
         final BinaryInteraction binaryInteraction = mitabReader.readLine(line);
 
         final Tab2Xml tab2Xml = new Tab2Xml();

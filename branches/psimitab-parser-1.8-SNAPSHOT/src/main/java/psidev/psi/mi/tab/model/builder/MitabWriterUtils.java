@@ -1,13 +1,11 @@
 package psidev.psi.mi.tab.model.builder;
 
-import com.sun.tools.javac.resources.version;
 import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.utils.MitabEscapeUtils;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -27,18 +25,18 @@ public class MitabWriterUtils {
     private static final String EOF_DELIMITER = "\n";
 
 
-    public static String buildHeader(int version) {
-        return createMitabLine(PsimiTabColumns.getHeader(version),version);
+    public static String buildHeader(PsimiTabVersion version) {
+        return createMitabLine(PsimiTabColumns.getHeader(version), version);
     }
 
-    public static String buildLine(BinaryInteraction interaction, int version) throws IllegalArgumentException{
+    public static String buildLine(BinaryInteraction interaction, PsimiTabVersion version) throws IllegalArgumentException {
 
-        if (version != PsimiTab.VERSION_2_5 && version != PsimiTab.VERSION_2_6 && version != PsimiTab.VERSION_2_7) {
+        if (version == null) {
             throw new IllegalArgumentException("The version of MITAB can not be written");
         }
 
         //Interaction to string
-        String[] line = new String[version];
+        String[] line = new String[version.getNumberOfColumns()];
 
         //version is 2.5
         Interactor interactorA = interaction.getInteractorA();
@@ -46,7 +44,7 @@ public class MitabWriterUtils {
 
 
         switch (version) {
-            case PsimiTab.VERSION_2_7:
+            case v2_7:
 
                 // MITAB 2.7
                 line[PsimiTabColumns.FEATURES_A.ordinal()] = joinFeatureCollection(interactorA.getFeatures());//37
@@ -58,7 +56,7 @@ public class MitabWriterUtils {
                 line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()] = joinStoichiometryCollection(interactorB.getStoichiometry()); //40
                 line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getParticipantIdentificationMethods());//42
 
-            case PsimiTab.VERSION_2_6:
+            case v2_6:
                 //MITAB 2.6
                 line[PsimiTabColumns.BIOROLE_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getBiologicalRoles()); // 17
                 line[PsimiTabColumns.EXPROLE_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getExperimentalRoles());// 19
@@ -86,12 +84,12 @@ public class MitabWriterUtils {
                 line[PsimiTabColumns.CHECKSUM_I.ordinal()] = joinChecksumCollection(interaction.getInteractionChecksums());// 35
                 line[PsimiTabColumns.NEGATIVE.ordinal()] = createNegative(interaction.isNegativeInteraction());//36
 
-            case PsimiTab.VERSION_2_5:
+            case v2_5:
 
-                if(interaction.hasNegativeInteraction() && interaction.isNegativeInteraction()){
+                if (interaction.isNegativeInteraction()) {
                     //TODO check the version
                     throw new IllegalFormatException("The interaction between interactors: "
-                            + interaction.getInteractorA().getIdentifiers().toString() +  "->"
+                            + interaction.getInteractorA().getIdentifiers().toString() + "->"
                             + interaction.getInteractorB().getIdentifiers().toString() + " could not be converted to MITAB25 as it is negative.");
                 }
                 //MITAB 2.5
@@ -120,7 +118,7 @@ public class MitabWriterUtils {
         }
 
 
-        return createMitabLine(line,version);  //To change body of created methods use File | Settings | File Templates.
+        return createMitabLine(line, version);  //To change body of created methods use File | Settings | File Templates.
     }
 
     /* Create a string from a collection of features */
@@ -421,14 +419,15 @@ public class MitabWriterUtils {
         return sb.toString();
     }
 
-    protected static String createMitabLine( String [] columns, int version) {
+    protected static String createMitabLine(String[] columns, PsimiTabVersion version) {
 
         StringBuilder sb = new StringBuilder();
+        int numberOfColumns = version.getNumberOfColumns();
 
         sb.append(columns[0]);
 
-        for ( int i = 1; i < version; i++ ) {
-            sb.append(COLUMN_DELIMITER) ;
+        for (int i = 1; i < numberOfColumns; i++) {
+            sb.append(COLUMN_DELIMITER);
             sb.append(columns[i]);
         }
 

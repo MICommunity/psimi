@@ -16,7 +16,6 @@ import psidev.psi.mi.xml.model.Alias;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml.model.Feature;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.model.ParticipantIdentificationMethod;
 
 import java.util.*;
 
@@ -65,6 +64,11 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
      * Sets up a logger for that class.
      */
     public static final Log log = LogFactory.getLog(InteractorConverter.class);
+
+    /**
+     * Converts a CV to a CrossReference in Mitab
+     */
+    private CvConverter cvConverter = new CvConverter();
 
 
     ///////////////////////////
@@ -307,7 +311,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
             List<CrossReference> tabBioRole = new ArrayList<CrossReference>();
 
             BiologicalRole xmlBioRole = xmlParticipant.getBiologicalRole();
-            CrossReference cr = CvConverter.toMitab(xmlBioRole, CrossReferenceImpl.class);
+            CrossReference cr = cvConverter.toMitab(xmlBioRole);
 
             if (cr != null) {
                 tabBioRole.add(cr);
@@ -326,7 +330,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
             Collection<ExperimentalRole> xmlExpRoles = xmlParticipant.getExperimentalRoles();
 
             for (ExperimentalRole xmlExpRole : xmlExpRoles) {
-                CrossReference cr = CvConverter.toMitab(xmlExpRole, CrossReferenceImpl.class);
+                CrossReference cr = cvConverter.toMitab(xmlExpRole);
 
                 if (cr != null && !tabExpRoles.contains(cr)) {
                     tabExpRoles.add(cr);
@@ -347,7 +351,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
             List<CrossReference> tabInteractorType = new ArrayList<CrossReference>();
 
             InteractorType xmlInteractorType = xmlInteractor.getInteractorType();
-            CrossReference cr = CvConverter.toMitab(xmlInteractorType, CrossReferenceImpl.class);
+            CrossReference cr = cvConverter.toMitab(xmlInteractorType);
 
             if (cr != null) {
                 tabInteractorType.add(cr);
@@ -506,7 +510,7 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
 
             for (ParticipantIdentificationMethod xmlPartIdentMethodsRole : xmlPartIdentMethodsRoles) {
                 psidev.psi.mi.tab.model.CrossReference cr
-                        = CvConverter.toMitab(xmlPartIdentMethodsRole, CrossReferenceImpl.class);
+                        = cvConverter.toMitab(xmlPartIdentMethodsRole);
 
                 if (cr != null && !tabPartIdentMethods.contains(cr)) {
                     tabPartIdentMethods.add(cr);
@@ -729,9 +733,9 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
         if (tabInteractor.getInteractorTypes() != null && !tabInteractor.getInteractorTypes().isEmpty()) {
 
             Collection<CrossReference> interactorTypes = tabInteractor.getInteractorTypes();
-            interactorType = CrossReferenceConverter.fromMitab(interactorTypes, InteractorType.class);
+            interactorType = cvConverter.fromMitab(interactorTypes, InteractorType.class);
 
-            if(!interactorType.hasNames() && interactorType.getXref()!=null && interactorType.getXref().getPrimaryRef()!=null){
+            if (!interactorType.hasNames() && interactorType.getXref() != null && interactorType.getXref().getPrimaryRef() != null) {
                 String id = interactorType.getXref().getPrimaryRef().getId();
                 Names interactorTypeName = new Names();
 
@@ -818,7 +822,6 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
 
 
         //Fields 26 27  Annotations for interactors
-
         if (tabInteractor.getAnnotations() != null) {
             if (!tabInteractor.getAnnotations().isEmpty()) {
                 for (Annotation annotation : tabInteractor.getAnnotations()) {

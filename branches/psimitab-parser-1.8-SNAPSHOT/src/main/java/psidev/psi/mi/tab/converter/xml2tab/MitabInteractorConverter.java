@@ -17,11 +17,11 @@ package psidev.psi.mi.tab.converter.xml2tab;
 
 import psidev.psi.mi.tab.converter.IdentifierGenerator;
 import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
-import psidev.psi.mi.tab.model.*;
+import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.Feature;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.xml.converter.ConverterException;
-import psidev.psi.mi.xml.model.Alias;
 import psidev.psi.mi.xml.model.*;
 
 import java.util.Collection;
@@ -41,6 +41,13 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
     public static final String IDENTITY_REF = "MI:0356";
     private static final String FEATURE_TYPE = "MI:0116";
     private static final String UNSPECIFIED_ROLE = "MI:0499";
+
+
+    /**
+     * Converts a CrossReference to CV from Mitab
+     */
+    private CvConverter cvConverter = new CvConverter();
+
 
     public Participant buildParticipantA(psidev.psi.mi.xml.model.Interactor xmlInteractor,
                                          BinaryInteraction binaryInteraction,
@@ -99,7 +106,7 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
                 biologicalRole.setXref(new Xref(dbRef));
 
             } else {
-                biologicalRole = CrossReferenceConverter.fromMitab(biologicalRoles, BiologicalRole.class);
+                biologicalRole = cvConverter.fromMitab(biologicalRoles, BiologicalRole.class);
             }
 
             participant.setBiologicalRole(biologicalRole);
@@ -132,7 +139,7 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
                 experimentalRole.setXref(new Xref(dbRef));
 
             } else {
-                experimentalRole = CrossReferenceConverter.fromMitab(experimentalRoles, ExperimentalRole.class);
+                experimentalRole = cvConverter.fromMitab(experimentalRoles, ExperimentalRole.class);
 
             }
 
