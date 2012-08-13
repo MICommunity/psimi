@@ -92,6 +92,9 @@ public class XgmmlStreamingGrapBuilder {
                 } else if ("http://www.w3.org/1999/xlink".equals(namespaceUri)) {
                     return "xlink";
                 }
+                else if ("http://www.cytoscape.org".equals(namespaceUri)) {
+                    return "cy";
+                }
                 return null;
             }
         };
@@ -167,6 +170,7 @@ public class XgmmlStreamingGrapBuilder {
         xmlOut.writeNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
         xmlOut.writeNamespace("dc", "http://purl.org/dc/elements/1.1/");
         xmlOut.writeNamespace("xlink", "http://www.w3.org/1999/xlink");
+        xmlOut.writeNamespace("cy", "http://www.cytoscape.org");
 
         createdStartGraph(numberOfResults);
 
@@ -481,9 +485,13 @@ public class XgmmlStreamingGrapBuilder {
 
         graphics.setH(25.0);
         graphics.setW(45.0);
-        graphics.setFill("#ffffff");
+        graphics.setFill("#99ff99");
         graphics.setWidth(new BigInteger("3"));
-        graphics.setOutline("#282828");
+        graphics.setOutline("#009900");
+        graphics.setNodeTransparency(new Double(0.5882352941176471));
+        graphics.setNodeLabelFont("SansSerif-0-13");
+        graphics.setNodeLabel(xgmmlNode.getKey());
+        graphics.setBorderLineType("solid");
 
         //cy:nodeTransparency="0.5882352941176471" cy:nodeLabelFont="SansSerif-0-13" cy:nodeLabel="CHEBI:45783" cy:borderLineType="solid"
         graphics.setX(xgmmlNode.getX());
