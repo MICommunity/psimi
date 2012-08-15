@@ -15,6 +15,11 @@
 
     <name>PSI :: PSI-MI TABular Search</name>
     <url>http://psidev.sf.net</url>
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-search</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-search</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psimitab-search</url>
+    </scm>
 
     <properties>
         <bundle.namespace>psidev.psi.mi.search</bundle.namespace>
