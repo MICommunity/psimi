@@ -39,6 +39,7 @@ public class MitabDocumentDefinitionFactory {
         ColumnDefinition idBCol = new ColumnDefinitionBuilder()
                 .extendColumnDefinition(idACol)
                 .setName("ID(s) interactor B")
+                .setIsAllowsEmpty(true)
                 .setKey(Mitab25ColumnKeys.KEY_ID_B)
                 .setPosition(1)
                 .build();
