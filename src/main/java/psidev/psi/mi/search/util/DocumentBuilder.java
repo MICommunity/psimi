@@ -16,9 +16,13 @@
 package psidev.psi.mi.search.util;
 
 import org.apache.lucene.document.Document;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.model.Row;
+import org.hupo.psi.calimocho.tab.io.RowReader;
+import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
+import psidev.psi.mi.tab.PsimiTabException;
+import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
-import psidev.psi.mi.tab.model.builder.Row;
 
 /**
  * TODO comment that class header
@@ -35,15 +39,19 @@ public interface DocumentBuilder<T> {
     @Deprecated
     Document createDocumentFromPsimiTabLine(String psiMiTabLine) throws MitabLineException;
 
-    T createData(Document doc);
+    T createData(Document doc) throws PsimiTabException;
 
-    DocumentDefinition getDocumentDefinition();
+    ColumnBasedDocumentDefinition getDocumentDefinition();
 
-    Document createDocument(T binaryInteraction);
+    Document createDocument(T binaryInteraction) throws MitabLineException;
 
-    Document createDocument(Row row);
+    Document createDocument(Row row) throws IllegalFieldException;
 
     void setDisableExpandInteractorsProperties( boolean disable );
 
     boolean hasDisableExpandInteractorsProperties();
+
+    public RowReader getRowReader();
+
+    public PsimiTabReader getMitabReader();
 }

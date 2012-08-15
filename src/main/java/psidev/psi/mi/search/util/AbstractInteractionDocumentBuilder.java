@@ -3,14 +3,29 @@
  */
 package psidev.psi.mi.search.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.io.IllegalRowException;
+import org.hupo.psi.calimocho.key.CalimochoKeys;
+import org.hupo.psi.calimocho.key.InteractionKeys;
+import org.hupo.psi.calimocho.model.Row;
+import org.hupo.psi.calimocho.tab.io.DefaultRowReader;
+import org.hupo.psi.calimocho.tab.io.FieldFormatter;
+import org.hupo.psi.calimocho.tab.io.IllegalColumnException;
+import org.hupo.psi.calimocho.tab.io.RowReader;
+import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
+import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
+import psidev.psi.mi.tab.PsimiTabException;
+import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.*;
+import psidev.psi.mi.tab.model.builder.MitabWriterUtils;
+import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -25,12 +40,16 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
 
     protected static final String DEFAULT_COL_SEPARATOR = "\t";
 
-    private DocumentDefinition<?> documentDefinition;
+    private ColumnBasedDocumentDefinition documentDefinition;
 
     public static final int DEFAULT_DOCUMENT_BUFFER_SIZE = 8196;
+    private RowReader rowReader;
+    private PsimiTabReader mitabReader;
 
-    protected AbstractInteractionDocumentBuilder( DocumentDefinition<?> documentDefinition ) {
+    protected AbstractInteractionDocumentBuilder( ColumnBasedDocumentDefinition documentDefinition ) {
         this.documentDefinition = documentDefinition;
+        this.rowReader = new DefaultRowReader(this.documentDefinition);
+        this.mitabReader = new PsimiTabReader();
     }
 
     /**
@@ -38,36 +57,53 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
      */
     @Deprecated
     public Document createDocumentFromPsimiTabLine( String psiMiTabLine ) throws MitabLineException {
-        final RowBuilder rowBuilder = documentDefinition.createRowBuilder();
-        final Row row = rowBuilder.createRow( psiMiTabLine );
+        Row row = null;
+        try {
+            row = rowReader.readLine(psiMiTabLine);
+        } catch (IllegalRowException e) {
+            throw new MitabLineException(e);
+        } catch (IllegalColumnException e) {
+            throw new MitabLineException(e);
+        } catch (IllegalFieldException e) {
+            throw new MitabLineException(e);
+        }
 
         return createDocument( row );
     }
 
-    public Document createDocument( T binaryInteraction ) {
-        final InteractionRowConverter interactionRowConverter = documentDefinition.createInteractionRowConverter();
-        final Row row = interactionRowConverter.createRow( binaryInteraction );
+    public Document createDocument( T binaryInteraction ) throws MitabLineException {
+        String mitabLine = MitabWriterUtils.buildLine(binaryInteraction, PsimiTabVersion.v2_5);
+        final Row row;
+        try {
+            row = rowReader.readLine(mitabLine);
+        } catch (IllegalRowException e) {
+            throw new MitabLineException(e);
+        } catch (IllegalColumnException e) {
+            throw new MitabLineException(e);
+        } catch (IllegalFieldException e) {
+            throw new MitabLineException(e);
+        }
 
         return createDocument( row );
     }
 
     public Document createDocument( Row row ) {
         // raw fields
-        Column interactorsA = row.getColumnByIndex( MitabDocumentDefinition.ID_INTERACTOR_A );
-        Column interactorsB = row.getColumnByIndex( MitabDocumentDefinition.ID_INTERACTOR_B );
-        Column altIdA = row.getColumnByIndex( MitabDocumentDefinition.ALTID_INTERACTOR_A );
-        Column altIdB = row.getColumnByIndex( MitabDocumentDefinition.ALTID_INTERACTOR_B );
-        Column aliasesA = row.getColumnByIndex( MitabDocumentDefinition.ALIAS_INTERACTOR_A );
-        Column aliasesB = row.getColumnByIndex( MitabDocumentDefinition.ALIAS_INTERACTOR_B );
-        Column detMethod = row.getColumnByIndex( MitabDocumentDefinition.INT_DET_METHOD );
-        Column pubAuthors = row.getColumnByIndex( MitabDocumentDefinition.PUB_AUTH );
-        Column pubId = row.getColumnByIndex( MitabDocumentDefinition.PUB_ID );
-        Column taxidA = row.getColumnByIndex( MitabDocumentDefinition.TAXID_A );
-        Column taxidB = row.getColumnByIndex( MitabDocumentDefinition.TAXID_B );
-        Column interactionTypes = row.getColumnByIndex( MitabDocumentDefinition.INT_TYPE );
-        Column sourceDbs = row.getColumnByIndex( MitabDocumentDefinition.SOURCE );
-        Column interactionAcs = row.getColumnByIndex( MitabDocumentDefinition.INTERACTION_ID );
-        Column confidence = row.getColumnByIndex( MitabDocumentDefinition.CONFIDENCE );
+        Collection<org.hupo.psi.calimocho.model.Field> interactorsA = row.getFields(InteractionKeys.KEY_ID_A);
+        Collection<org.hupo.psi.calimocho.model.Field> interactorsB = row.getFields(InteractionKeys.KEY_ID_B);
+        Collection<org.hupo.psi.calimocho.model.Field> altIdA = row.getFields(InteractionKeys.KEY_ALTID_A);
+        Collection<org.hupo.psi.calimocho.model.Field> altIdB = row.getFields(InteractionKeys.KEY_ALTID_B);
+        Collection<org.hupo.psi.calimocho.model.Field> aliasesA = row.getFields(InteractionKeys.KEY_ALIAS_A);
+        Collection<org.hupo.psi.calimocho.model.Field> aliasesB = row.getFields(InteractionKeys.KEY_ALIAS_B);
+        Collection<org.hupo.psi.calimocho.model.Field> detMethod = row.getFields(InteractionKeys.KEY_DETMETHOD);
+        Collection<org.hupo.psi.calimocho.model.Field> pubAuthors = row.getFields(InteractionKeys.KEY_PUBAUTH);
+        Collection<org.hupo.psi.calimocho.model.Field> pubId = row.getFields(InteractionKeys.KEY_PUBID);
+        Collection<org.hupo.psi.calimocho.model.Field> taxidA = row.getFields(InteractionKeys.KEY_TAXID_A);
+        Collection<org.hupo.psi.calimocho.model.Field> taxidB = row.getFields(InteractionKeys.KEY_TAXID_B);
+        Collection<org.hupo.psi.calimocho.model.Field> interactionTypes = row.getFields(InteractionKeys.KEY_INTERACTION_TYPE);
+        Collection<org.hupo.psi.calimocho.model.Field> sourceDbs = row.getFields(InteractionKeys.KEY_SOURCE);
+        Collection<org.hupo.psi.calimocho.model.Field> interactionAcs = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
+        Collection<org.hupo.psi.calimocho.model.Field> confidence = row.getFields(InteractionKeys.KEY_CONFIDENCE);
 
 
         Document doc = new Document();
@@ -76,70 +112,108 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
                             Field.Store.NO,
                             Field.Index.TOKENIZED ) );
 
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.ID_INTERACTOR_A ), interactorsA );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.ID_INTERACTOR_B ), interactorsB );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition( 0 ), interactorsA );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(1), interactorsB );
 
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.ALTID_INTERACTOR_A ), altIdA );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.ALTID_INTERACTOR_B ), altIdB );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(2), altIdA );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(3), altIdB );
 
         doc.add( new Field( "alias", isolateValue( aliasesA ) + " " + isolateValue( aliasesB ),
                             Field.Store.NO,
                             Field.Index.TOKENIZED ) );
 
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.ALIAS_INTERACTOR_A ), aliasesA );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.ALIAS_INTERACTOR_B ), aliasesB );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(4), aliasesA );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(5), aliasesB );
 
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.INT_DET_METHOD ), detMethod );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.PUB_AUTH ), pubAuthors );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.PUB_ID ), pubId );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(6), detMethod );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(7), pubAuthors );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(8), pubId );
 
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.TAXID_A ), taxidA );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.TAXID_B ), taxidB );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(9), taxidA );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(10), taxidB );
 
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.INT_TYPE ), interactionTypes );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.SOURCE ), sourceDbs );
-        addTokenizedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.INTERACTION_ID ), interactionAcs );
-        addNonIndexedAndSortableField( doc, documentDefinition.getColumnDefinition( MitabDocumentDefinition.CONFIDENCE ), confidence );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(11), interactionTypes );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(12), sourceDbs );
+        addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(13), interactionAcs );
+        addNonIndexedAndSortableField( doc, documentDefinition.getColumnByPosition(14), confidence );
 
         addAdvancedSearchFields( doc, row );
 
         return doc;
     }
 
-    protected void addNonIndexedAndSortableField( Document doc, ColumnDefinition columnDefinition, Column column ) {
-        doc.add( new Field( columnDefinition.getShortName(),
-                            column.toString(),
-                            Field.Store.YES,
-                            Field.Index.NO ) );
-        addHelperFields( doc, columnDefinition, column );
+    protected void addNonIndexedAndSortableField( Document doc, ColumnDefinition columnDefinition, Collection<org.hupo.psi.calimocho.model.Field> column ) {
+        String val = buildColumn(columnDefinition, column);
+        doc.add(new Field(columnDefinition.getKey(),
+                val,
+                Field.Store.YES,
+                Field.Index.NO));
+        addHelperFields( doc, columnDefinition, val, column, false );
     }
 
-    protected void addTokenizedAndSortableField( Document doc, ColumnDefinition columnDefinition, Column column ) {
+    private String buildColumn(ColumnDefinition columnDefinition, Collection<org.hupo.psi.calimocho.model.Field> column) {
+        StringBuffer columnValue = new StringBuffer();
+
+        if (column == null){
+            columnValue.append(columnDefinition.getEmptyValue());
+        }
+        else if (column.isEmpty()){
+            columnValue.append(columnDefinition.getEmptyValue());
+        }
+        else {
+            Iterator<org.hupo.psi.calimocho.model.Field> fieldIterator = column.iterator();
+            while (fieldIterator.hasNext()){
+                org.hupo.psi.calimocho.model.Field field = fieldIterator.next();
+                FieldFormatter formatter = columnDefinition.getFieldFormatter();
+                try {
+                    columnValue.append(formatter.format(field));
+                } catch (IllegalFieldException e) {
+                    e.printStackTrace();
+                    columnValue.append(columnDefinition.getEmptyValue());
+                }
+
+                if (fieldIterator.hasNext()){
+                    columnValue.append(columnDefinition.getFieldSeparator());
+                }
+            }
+        }
+
+        return columnValue.toString();
+    }
+
+    protected void addTokenizedAndSortableField( Document doc, ColumnDefinition columnDefinition,  Collection<org.hupo.psi.calimocho.model.Field> columnFields ) {
         if ( doc == null ) throw new NullPointerException( "doc is null" );
         if ( columnDefinition == null ) throw new NullPointerException( "columnDefinition doc is null" );
 
-        if ( column != null ) {
-            doc.add( new Field( columnDefinition.getShortName(),
-                                column.toString(),
+        String column = buildColumn(columnDefinition, columnFields);
+        if ( column != null && (columnDefinition.getKey().equals("detmethod") || columnDefinition.getKey().equals("type"))) {
+            doc.add( new Field( columnDefinition.getKey()+"_exact",
+                                column,
                                 Field.Store.YES,
                                 Field.Index.TOKENIZED ) );
-            addHelperFields( doc, columnDefinition, column );
+            addHelperFields( doc, columnDefinition, column, columnFields, true );
+        }
+        else if ( column != null && !columnDefinition.getKey().equals("detmethod") && !columnDefinition.getKey().equals("type")) {
+            doc.add( new Field( columnDefinition.getKey(),
+                    column,
+                    Field.Store.YES,
+                    Field.Index.TOKENIZED ) );
+            addHelperFields( doc, columnDefinition, column, columnFields, false );
         }
     }
 
-    protected void addHelperFields( Document doc, ColumnDefinition columnDefinition, Column column ) {
-        doc.add( new Field( columnDefinition.getSortableColumnName(),
+    protected void addHelperFields( Document doc, ColumnDefinition columnDefinition, String columnValue, Collection<org.hupo.psi.calimocho.model.Field> column, boolean isExact ) {
+        doc.add( new Field( columnDefinition.getKey()+"_s",
                             isolateValue( column ),
                             Field.Store.NO,
                             Field.Index.UN_TOKENIZED ) );
 
-        if (columnDefinition.getShortName().endsWith("_exact")) {
-            String fieldName = columnDefinition.getShortName().replaceAll("_exact", "");
-            doc.add( new Field(fieldName,
-                                column.toString(),
+        if (isExact) {
+            doc.add( new Field(columnDefinition.getKey(),
+                                columnValue,
                                 Field.Store.NO,
                                 Field.Index.TOKENIZED ) );
-            doc.add( new Field(fieldName,
+            doc.add( new Field(columnDefinition.getKey(),
                                 isolateValue( column ),
                                 Field.Store.NO,
                                 Field.Index.UN_TOKENIZED ) );
@@ -147,17 +221,17 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
     }
 
     protected void addAdvancedSearchFields( Document doc, Row row ) {
-        String identifiers = columnsToString( row.getColumnByIndex( MitabDocumentDefinition.ID_INTERACTOR_A ),
-                                              row.getColumnByIndex( MitabDocumentDefinition.ID_INTERACTOR_B ),
+        String identifiers = columnsToString( row.getFields(InteractionKeys.KEY_ID_A),
+                                              row.getFields(InteractionKeys.KEY_ID_B),
 
-                                              row.getColumnByIndex( MitabDocumentDefinition.ALTID_INTERACTOR_A ),
-                                              row.getColumnByIndex( MitabDocumentDefinition.ALTID_INTERACTOR_B ),
+                                              row.getFields(InteractionKeys.KEY_ALTID_A),
+                                              row.getFields(InteractionKeys.KEY_ALTID_B),
 
-                                              row.getColumnByIndex( MitabDocumentDefinition.ALIAS_INTERACTOR_A ),
-                                              row.getColumnByIndex( MitabDocumentDefinition.ALIAS_INTERACTOR_B ) );
+                                              row.getFields(InteractionKeys.KEY_ALIAS_A),
+                                              row.getFields(InteractionKeys.KEY_ALIAS_B) );
 
-        String species = columnsToString( row.getColumnByIndex( MitabDocumentDefinition.TAXID_A ),
-                                          row.getColumnByIndex( MitabDocumentDefinition.TAXID_B ) );
+        String species = columnsToString( row.getFields(InteractionKeys.KEY_TAXID_A),
+                                          row.getFields(InteractionKeys.KEY_TAXID_B) );
 
         doc.add( new Field( "identifier",
                             identifiers,
@@ -181,14 +255,19 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
 
         StringBuilder sb = new StringBuilder( DEFAULT_DOCUMENT_BUFFER_SIZE );
 
-        for ( int i = 0; i < documentDefinition.getColumnsCount(); i++ ) {
-            ColumnDefinition columnDefinition = documentDefinition.getColumnDefinition( i );
+        for ( int i = 0; i < documentDefinition.getHighestColumnPosition(); i++ ) {
+            ColumnDefinition columnDefinition = documentDefinition.getColumnByPosition( i );
 
             if ( i > 0 ) {
                 sb.append( DEFAULT_COL_SEPARATOR );
             }
 
-            sb.append( doc.get( columnDefinition.getShortName() ) );
+            if (columnDefinition.getKey().equals("detmethod") || columnDefinition.getKey().equals("type")){
+                sb.append( doc.get( columnDefinition.getKey()+"_exact" ) );
+            }
+            else {
+                sb.append( doc.get( columnDefinition.getKey() ) );
+            }
         }
 
         if ( log.isTraceEnabled() ) {
@@ -211,7 +290,11 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
      */
     @Deprecated
     public T createBinaryInteraction( Document doc ) throws MitabLineException {
-        return createData( doc );
+        try {
+            return createData( doc );
+        } catch (PsimiTabException e) {
+            throw new MitabLineException(e);
+        }
     }
 
     /**
@@ -222,29 +305,33 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
      * @throws psidev.psi.mi.tab.converter.txt2tab.MitabLineException
      *          thrown if there are syntax or other problems parsing the document/line
      */
-    public T createData( Document doc ) {
+    public T createData( Document doc ) throws PsimiTabException {
         String line = createPsimiTabLine( doc );
-        return ( T ) documentDefinition.interactionFromString( line );
+        return ( T ) this.mitabReader.readLine(line);
     }
 
-    protected String columnsToString( Column... columns ) {
+    protected String columnsToString( Collection<org.hupo.psi.calimocho.model.Field>... columns ) {
         int estimatedLength = 0;
         for ( int i = 0; i < columns.length; i++ ) {
-            Column column = columns[i];
-            estimatedLength += column.getFields().size() * 32;
+            Collection<org.hupo.psi.calimocho.model.Field> column = columns[i];
+            if (column != null){
+                estimatedLength += column.size() * 32;
+            }
         }
         final StringBuilder sb = new StringBuilder( estimatedLength );
 
-        for ( Column column : columns ) {
+        for ( Collection<org.hupo.psi.calimocho.model.Field> column : columns ) {
             if ( column == null ) continue;
 
-            for ( psidev.psi.mi.tab.model.builder.Field field : column.getFields() ) {
+            for ( org.hupo.psi.calimocho.model.Field field : column ) {
                 sb.append( " " );
-                sb.append( field.getValue() );
+                String value = field.get(CalimochoKeys.VALUE);
+                sb.append( value != null ? value : "-" );
 
-                if ( field.getDescription() != null ) {
+                String text = field.get(CalimochoKeys.TEXT);
+                if ( text != null ) {
                     sb.append( " " );
-                    sb.append( field.getDescription() );
+                    sb.append( text );
                 }
             }
         }
@@ -263,17 +350,24 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
      * @param column
      * @return
      */
-    protected String isolateValue( Column column ) {
-        final int estimatedSize = column.getFields().size() * 128;
+    protected String isolateValue( Collection<org.hupo.psi.calimocho.model.Field> column ) {
+        if (column == null){
+           return "-";
+        }
+        final int estimatedSize = column.size() * 128;
         final StringBuilder sb = new StringBuilder( estimatedSize );
 
-        for ( Iterator<psidev.psi.mi.tab.model.builder.Field> iterator = column.getFields().iterator(); iterator.hasNext(); ) {
-            psidev.psi.mi.tab.model.builder.Field field = iterator.next();
+        for ( Iterator<org.hupo.psi.calimocho.model.Field> iterator = column.iterator(); iterator.hasNext(); ) {
+            org.hupo.psi.calimocho.model.Field field = iterator.next();
 
-            sb.append( field.getValue() );
+            String value = field.get(CalimochoKeys.VALUE);
 
-            if ( iterator.hasNext() ) {
-                sb.append( " " );
+            if (value != null){
+                sb.append( field.get(CalimochoKeys.VALUE) );
+
+                if ( iterator.hasNext() ) {
+                    sb.append( " " );
+                }
             }
         }
         if ( log.isTraceEnabled() ) {
@@ -283,7 +377,15 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
         return sb.toString();
     }
 
-    public DocumentDefinition<?> getDocumentDefinition() {
+    public ColumnBasedDocumentDefinition getDocumentDefinition() {
         return documentDefinition;
+    }
+
+    public RowReader getRowReader() {
+        return rowReader;
+    }
+
+    public PsimiTabReader getMitabReader() {
+        return mitabReader;
     }
 }

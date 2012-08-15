@@ -21,10 +21,12 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.model.Row;
 import psidev.psi.mi.search.util.DocumentBuilder;
+import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.Row;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.*;
@@ -110,14 +112,18 @@ public class PsimiIndexWriter {
      */
     @Deprecated
     public void addLineToIndex(IndexWriter indexWriter, String line) throws IOException, MitabLineException {
-        addBinaryInteractionToIndex(indexWriter, documentBuilder.getDocumentDefinition().interactionFromString(line));
+        try {
+            addBinaryInteractionToIndex(indexWriter, documentBuilder.getMitabReader().readLine(line));
+        } catch (PsimiTabException e) {
+           throw new MitabLineException(e);
+        }
     }
 
-    public void addBinaryInteractionToIndex(IndexWriter indexWriter, BinaryInteraction binaryInteraction) throws IOException {
+    public void addBinaryInteractionToIndex(IndexWriter indexWriter, BinaryInteraction binaryInteraction) throws IOException, MitabLineException {
         indexWriter.addDocument(documentBuilder.createDocument(binaryInteraction));
     }
 
-    public void addBinaryInteractionToIndex(IndexWriter indexWriter, Row row) throws IOException {
+    public void addBinaryInteractionToIndex(IndexWriter indexWriter, Row row) throws IOException, IllegalFieldException {
         indexWriter.addDocument(documentBuilder.createDocument(row));
     }
 
