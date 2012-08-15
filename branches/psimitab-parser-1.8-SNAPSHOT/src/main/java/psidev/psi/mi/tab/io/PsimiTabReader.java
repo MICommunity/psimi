@@ -1,12 +1,12 @@
 package psidev.psi.mi.tab.io;
 
+import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.xml.converter.ConverterException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
@@ -20,23 +20,23 @@ import java.util.Iterator;
  */
 public interface PsimiTabReader {
 
-    Collection<BinaryInteraction> read(Reader reader) throws IOException, ConverterException;
+    Collection<BinaryInteraction> read(BufferedReader reader) throws IOException, PsimiTabException;
 
-    Collection<BinaryInteraction> read(String s) throws IOException, ConverterException;
+    Collection<BinaryInteraction> read(String s) throws IOException, PsimiTabException;
 
-    Collection<BinaryInteraction> read(InputStream is) throws IOException, ConverterException;
+    Collection<BinaryInteraction> read(InputStream is) throws IOException, PsimiTabException;
 
-    Collection<BinaryInteraction> read(File file) throws IOException, ConverterException;
+    Collection<BinaryInteraction> read(File file) throws IOException, PsimiTabException;
 
-    Collection<BinaryInteraction> read(URL url) throws IOException, ConverterException;
+    Collection<BinaryInteraction> read(URL url) throws IOException, PsimiTabException;
 
-    BinaryInteraction readLine(String str) throws ConverterException;
+    BinaryInteraction readLine(String str) throws PsimiTabException;
 
-    Iterator<BinaryInteraction> iterate(Reader r) throws IOException, ConverterException;
+    Iterator<BinaryInteraction> iterate(String s) throws IOException;
 
-    Iterator<BinaryInteraction> iterate(String s) throws IOException, ConverterException;
+    Iterator<BinaryInteraction> iterate(InputStream is) throws IOException;
 
-    Iterator<BinaryInteraction> iterate(InputStream is) throws IOException, ConverterException;
+    Iterator<BinaryInteraction> iterate(File file) throws IOException;
 
-    Iterator<BinaryInteraction> iterate(File file) throws IOException, ConverterException;
+    void handleError(String message, Throwable e) throws PsimiTabException;
 }

@@ -5,6 +5,7 @@ package psidev.psi.mi.tab.converter.tab2xml;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
@@ -12,7 +13,6 @@ import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlWriter;
-import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.Interaction;
@@ -49,7 +49,7 @@ public class Tab2XmlTest {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ConverterException e) {
+        } catch (PsimiTabException e) {
             e.printStackTrace();
         }
 
@@ -91,7 +91,7 @@ public class Tab2XmlTest {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ConverterException e) {
+        } catch (PsimiTabException e) {
             e.printStackTrace();
         }
 

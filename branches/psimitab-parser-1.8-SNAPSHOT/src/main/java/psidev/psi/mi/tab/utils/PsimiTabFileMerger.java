@@ -7,6 +7,7 @@ package psidev.psi.mi.tab.utils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.PsimiTabWriter;
 import psidev.psi.mi.tab.converter.txt2tab.behaviour.IgnoreAndPrintUnparseableLine;
@@ -16,7 +17,6 @@ import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +45,7 @@ public class PsimiTabFileMerger {
      */
     public static Collection<BinaryInteraction> merge(Collection<File> inputFiles,
                                                       UnparseableLineBehaviour unparseableLineBehaviour
-    ) throws ConverterException, IOException {
+    ) throws PsimiTabException, IOException {
 
         for (File inputFile : inputFiles) {
             if (!inputFile.exists()) {
@@ -91,7 +91,7 @@ public class PsimiTabFileMerger {
      * @throws ConverterException
      * @throws IOException
      */
-    public static Collection<BinaryInteraction> merge(Collection<File> inputFiles) throws ConverterException, IOException {
+    public static Collection<BinaryInteraction> merge(Collection<File> inputFiles) throws PsimiTabException, IOException {
         return merge(inputFiles, new IgnoreAndPrintUnparseableLine(System.err));
     }
 
@@ -105,7 +105,7 @@ public class PsimiTabFileMerger {
      */
     public static void merge(Collection<File> inputFiles,
                              File output,
-                             UnparseableLineBehaviour unparseableLineBehaviour) throws ConverterException,
+                             UnparseableLineBehaviour unparseableLineBehaviour) throws PsimiTabException,
             IOException {
         for (File inputFile : inputFiles) {
             if (!inputFile.exists()) {
@@ -139,10 +139,10 @@ public class PsimiTabFileMerger {
 
             log.debug("Writing result on disk...");
             PsimiTabWriter writer = new PsimiTabWriter();
-            FileWriter fileWriter = new FileWriter(output);
-            writer.writeMitabHeader(fileWriter);
+//            FileWriter fileWriter = new FileWriter(output);
+            writer.writeMitabHeader(output);
 
-            writer.write(allClustered, fileWriter);
+            writer.write(allClustered, output);
         } else {
             System.out.println("No interaction to merge.");
         }
@@ -161,11 +161,11 @@ public class PsimiTabFileMerger {
      * @throws ConverterException
      * @throws IOException
      */
-    public static void merge(Collection<File> inputFiles, File output) throws ConverterException, IOException {
+    public static void merge(Collection<File> inputFiles, File output) throws PsimiTabException, IOException {
         merge(inputFiles, output, new IgnoreAndPrintUnparseableLine(System.err));
     }
 
-    public static void main(String[] args) throws ConverterException, IOException {
+    public static void main(String[] args) throws PsimiTabException, IOException {
         Collection<File> inputs = new ArrayList<File>(1);
         inputs.add(new File("C:\\MITAB25\\2007-02-02-MINT.sam.txt"));
         merge(inputs, new File("C:\\MITAB25\\mint_clustered.txt"));

@@ -16,26 +16,26 @@
 package psidev.psi.mi.tab;
 
 /**
- * PSIMITAB Exception.
+ * PSIMITAB Runtime Exception.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
  * @since TODO specify the maven artifact version
  */
-public class PsiMitabException extends Exception {
-    public PsiMitabException() {
+public class RuntimePsimiTabException extends RuntimeException {
+    public RuntimePsimiTabException() {
         super();
     }
 
-    public PsiMitabException( String message ) {
-        super( message );
+    public RuntimePsimiTabException(String message) {
+        super(message);
     }
 
-    public PsiMitabException( String message, Throwable cause ) {
-        super( message, cause );
+    public RuntimePsimiTabException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public PsiMitabException( Throwable cause ) {
-        super( cause );
+    public RuntimePsimiTabException(Throwable cause) {
+        super(cause);
     }
 }

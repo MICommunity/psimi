@@ -15,6 +15,7 @@
  */
 package psidev.psi.mi.tab.model.builder;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.*;
@@ -321,7 +322,7 @@ public final class MitabParserUtils {
                             } else if (field.equalsIgnoreCase("bipartite")) {
                                 object = new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion");
                             } else if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create a cross reference (check the syntax): " + Arrays.asList(result).toString());
+                                throw new IllegalFormatException("String cannot be parsed to create a cross reference (check the syntax): " + ArrayUtils.toString(result));
                             }
                         } else if (length == 2) {
                             object = new CrossReferenceImpl(result[0], result[1]);

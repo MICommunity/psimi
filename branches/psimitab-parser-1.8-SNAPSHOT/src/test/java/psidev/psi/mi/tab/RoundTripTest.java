@@ -5,6 +5,7 @@ import psidev.psi.mi.tab.io.PsimiTabReader;
 import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 
+import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.util.Collection;
 
@@ -38,12 +39,16 @@ public class RoundTripTest {
         // convert it back to a String
 
         PsimiTabWriter mitabWriter = new psidev.psi.mi.tab.PsimiTabWriter();
-        StringWriter sw = new StringWriter();
-        mitabWriter.writeMitabHeader(sw);
-        mitabWriter.write(interactions, sw);
-        assertNotNull(sw.getBuffer());
-        String output = sw.getBuffer().toString();
+        StringWriter stringWriter = new StringWriter();
 
-        assertEquals(MITAB_2_LINE_WITH_HEADER, output);
+        BufferedWriter bw = new BufferedWriter(stringWriter);
+        mitabWriter.writeMitabHeader(bw);
+        mitabWriter.write(interactions, bw);
+
+        assertNotNull(bw);
+
+        assertEquals(MITAB_2_LINE_WITH_HEADER, stringWriter.getBuffer().toString());
+
+        bw.close();
     }
 }
