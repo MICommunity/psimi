@@ -15,7 +15,7 @@ import java.util.Collection;
  */
 public interface PsimiTabWriter {
 
-    void write(Collection<BinaryInteraction> interactions, BufferedWriter bw) throws IOException;
+    void write(Collection<BinaryInteraction> interactions, Writer writer) throws IOException;
 
     void write(Collection<BinaryInteraction> interactions, OutputStream os) throws IOException;
 
@@ -23,7 +23,7 @@ public interface PsimiTabWriter {
 
     void write(Collection<BinaryInteraction> interactions, File file) throws IOException;
 
-    void write(BinaryInteraction interaction, BufferedWriter bw) throws IOException;
+    void write(BinaryInteraction interaction, Writer writer) throws IOException;
 
     void write(BinaryInteraction interaction, OutputStream os) throws IOException;
 
@@ -31,7 +31,7 @@ public interface PsimiTabWriter {
 
     void write(BinaryInteraction interaction, File file) throws IOException;
 
-    void writeMitabHeader(BufferedWriter bw) throws IOException;
+    void writeMitabHeader(Writer bw) throws IOException;
 
     void writeMitabHeader(OutputStream os) throws IOException;
 

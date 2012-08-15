@@ -306,7 +306,7 @@ public class MitabWriterUtils {
      * @param collection The values can not be null.
      * @return
      */
-    private static String joinCrossReferencStyleCollection(List<? extends CrossReference> collection) {
+    private static String joinCrossReferencStyleCollection(List<CrossReference> collection) {
         StringBuilder sb = new StringBuilder();
         if (collection != null && !collection.isEmpty()) {
 

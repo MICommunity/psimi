@@ -38,11 +38,11 @@ public class FeatureImpl implements Feature {
      * Construct a FeatureImpl object
      *
      * @param featureType String with the PSI-MI name of the CVTerm for the feature
-     * @param range range where appears the feature. See more information in:
+     * @param range       range where appears the feature. See more information in:
      * @link https://docs.google.com/spreadsheet/ccc?key=0AhnBwV7LOdY_dE1xbDVSYkpoa3ptZ3NRbzNmdWpySXc&hl=en_GB#gid=0
      */
     public FeatureImpl(String featureType, List<String> range) {
-       this(featureType,range,null);
+        this(featureType, range, null);
     }
 
 
@@ -53,15 +53,16 @@ public class FeatureImpl implements Feature {
      * Construct a FeatureImpl object
      *
      * @param featureType String with the PSI-MI name of the CVTerm for the feature
-     * @param range Range where appears of the feature. See more information in:
+     * @param range       Range where appears of the feature. See more information in:
+     * @param text        optional information like features type names, interpro cross references, etc.
      * @link https://docs.google.com/spreadsheet/ccc?key=0AhnBwV7LOdY_dE1xbDVSYkpoa3ptZ3NRbzNmdWpySXc&hl=en_GB#gid=0
-     * @param text optional information like features type names, interpro cross references, etc.
      */
     public FeatureImpl(String featureType, List<String> range, String text) {
         setFeatureType(featureType);
         setRange(range);
         setText(text);
     }
+
     /**
      * {@inheritDoc}
      */
@@ -73,12 +74,12 @@ public class FeatureImpl implements Feature {
      * {@inheritDoc}
      */
     public void setFeatureType(String featureType) {
-        if ( featureType == null ) {
-            throw new IllegalArgumentException( "You must give a non null feature type." );
+        if (featureType == null) {
+            throw new IllegalArgumentException("You must give a non null feature type.");
         }
         featureType = featureType.trim();
-        if ( featureType.length() == 0 ) {
-            throw new IllegalArgumentException( "You must give a non empty feature type." );
+        if (featureType.length() == 0) {
+            throw new IllegalArgumentException("You must give a non empty feature type.");
         }
 
         this.featureType = featureType;
@@ -95,9 +96,8 @@ public class FeatureImpl implements Feature {
      * {@inheritDoc}
      */
     public void setRange(List<String> ranges) {
-        if ( ranges != null ) {
-
-            if ( ranges.isEmpty() ) {
+        if (ranges != null) {
+            if (ranges.isEmpty()) {
                 text = null;
             }
         }
@@ -116,10 +116,10 @@ public class FeatureImpl implements Feature {
      * {@inheritDoc}
      */
     public void setText(String text) {
-        if ( text != null ) {
+        if (text != null) {
             // ignore empty string
             text = text.trim();
-            if ( text.length() == 0 ) {
+            if (text.length() == 0) {
                 text = null;
             }
         }
@@ -135,13 +135,13 @@ public class FeatureImpl implements Feature {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append( "Feature" );
-        sb.append( "{featureType='" ).append( featureType ).append( '\'' );
-        sb.append( ", range='" ).append( range ).append( '\'' );
-        if ( text != null ) {
-            sb.append( ", text='" ).append( text ).append( '\'' );
+        sb.append("Feature");
+        sb.append("{featureType='").append(featureType).append('\'');
+        sb.append(", range='").append(range).append('\'');
+        if (text != null) {
+            sb.append(", text='").append(text).append('\'');
         }
-        sb.append( '}' );
+        sb.append('}');
         return sb.toString();
     }
 
@@ -149,20 +149,20 @@ public class FeatureImpl implements Feature {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        final FeatureImpl that = ( FeatureImpl ) o;
+        final FeatureImpl that = (FeatureImpl) o;
 
-        if ( !featureType.equals( that.featureType ) ) {
+        if (!featureType.equals(that.featureType)) {
             return false;
         }
-        if ( !range.equals( that.range ) ) {
+        if (!range.equals(that.range)) {
             return false;
         }
 

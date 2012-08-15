@@ -443,8 +443,11 @@ public final class MitabParserUtils {
 
                         if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create an annotation (check the syntax): " + Arrays.asList(result).toString());
+
+                                //We allow annotations only with free text.
+                                object = new AnnotationImpl(result[0]);
                             }
+
                         } else if (length == 2) {
                             object = new AnnotationImpl(result[0], result[1]);
                         } else
@@ -457,6 +460,7 @@ public final class MitabParserUtils {
                 }
             }
         }
+
         return objects;
     }
 
@@ -600,7 +604,10 @@ public final class MitabParserUtils {
 
                         if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create a feature (check the syntax): " + Arrays.asList(result).toString());
+
+                                //We have a feature without ranges {?-?}
+                                String[] undeterminedRange = {"?-?"};
+                                object = new FeatureImpl(result[0], Arrays.asList(undeterminedRange));
                             }
                         } else if (length == 2) {
                             object = new FeatureImpl(result[0], Arrays.asList(result[1].split(",")));

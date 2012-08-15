@@ -53,7 +53,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
     private int lineIndex = 0;
 
     /**
-     * indicate if the line that has been read was already consummed by the user via the next() nethod.
+     * indicate if the line that has been read was already consumed by the user via the next() nethod.
      */
     private boolean lineConsummed = false;
 

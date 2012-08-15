@@ -76,7 +76,6 @@ public class PsimiTabWriterTest {
             outputFile.delete();
         }
         FileWriter fileWriter = new FileWriter(outputFile, true);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
         // convert into Tab object model
         Xml2Tab xml2tab = new Xml2Tab();
@@ -85,11 +84,11 @@ public class PsimiTabWriterTest {
 
         // write it our to a file
         PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
-        writer.writeMitabHeader(bufferedWriter);
-        writer.write(interactions, bufferedWriter);
+        writer.writeMitabHeader(fileWriter);
+        writer.write(interactions, fileWriter);
         assertEquals(9, lineCount(outputFile));
 
-        bufferedWriter.close();
+        fileWriter.close();
     }
 
     @Test
@@ -104,15 +103,14 @@ public class PsimiTabWriterTest {
         // write binary interactions
         PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
         FileWriter fileWriter = new FileWriter(outputFile, true);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        writer.writeMitabHeader(bufferedWriter);
+        writer.writeMitabHeader(fileWriter);
 
         for (Iterator<BinaryInteraction> iter = interactions.iterator(); iter.hasNext(); ) {
             BinaryInteraction binaryInteraction = iter.next();
-            writer.write(binaryInteraction, bufferedWriter);
+            writer.write(binaryInteraction, fileWriter);
         }
 
-        bufferedWriter.close();
+        fileWriter.close();
 
         assertTrue(outputFile.exists());
         assertEquals(interactions.size() + 1, lineCount(outputFile));
@@ -133,14 +131,13 @@ public class PsimiTabWriterTest {
         // write binary interactions
         PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
         FileWriter fileWriter = new FileWriter(outputFile, true);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        writer.writeMitabHeader(bufferedWriter);
-        writer.write(interactions, bufferedWriter);
+        writer.writeMitabHeader(fileWriter);
+        writer.write(interactions, fileWriter);
         assertTrue(outputFile.exists());
         assertEquals(interactions.size() + 1, lineCount(outputFile));
 
-        bufferedWriter.close();
+        fileWriter.close();
     }
 
     @Test
@@ -158,15 +155,14 @@ public class PsimiTabWriterTest {
         // write binary interactions
         PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
         FileWriter fileWriter = new FileWriter(outputFile, true);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-        writer.write(interactions, bufferedWriter);
+        writer.write(interactions, fileWriter);
 
 
         assertTrue(outputFile.exists());
         assertEquals(interactions.size(), lineCount(outputFile));
 
-        bufferedWriter.close();
+        fileWriter.close();
     }
 
     @Test
@@ -185,11 +181,10 @@ public class PsimiTabWriterTest {
         PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
 
         StringWriter outputWriter = new StringWriter(1024);
-        BufferedWriter bufferedWriter = new BufferedWriter(outputWriter);
 
-        writer.writeMitabHeader(bufferedWriter);
+        writer.writeMitabHeader(outputWriter);
         for (BinaryInteraction interaction : interactions) {
-            writer.write(interaction, bufferedWriter);
+            writer.write(interaction, outputWriter);
         }
 
         final String result = outputWriter.getBuffer().toString();
@@ -221,9 +216,8 @@ public class PsimiTabWriterTest {
         PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
 
         StringWriter outputWriter = new StringWriter(512);
-        BufferedWriter bufferedWriter = new BufferedWriter(outputWriter);
 
-        writer.write(bi, bufferedWriter);
+        writer.write(bi, outputWriter);
 
         final String line = outputWriter.getBuffer().toString();
 
@@ -231,16 +225,15 @@ public class PsimiTabWriterTest {
 
         PsimiTabReader reader = new psidev.psi.mi.tab.PsimiTabReader();
         StringReader sr = new StringReader(line);
-        BufferedReader bufferedReader = new BufferedReader(sr);
-        final Collection<BinaryInteraction> interactions = reader.read(bufferedReader);
+        final Collection<BinaryInteraction> interactions = reader.read(sr);
         Assert.assertNotNull(interactions);
         Assert.assertEquals(1, interactions.size());
         final BinaryInteraction bi2 = interactions.iterator().next();
 
         Assert.assertEquals(bi, bi2);
 
-        bufferedReader.close();
-        bufferedWriter.close();
+        //sr.close(); Closed in PsimiTabReader. See Documentation.
+        outputWriter.close();
     }
 
     @Test

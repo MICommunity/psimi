@@ -3,10 +3,10 @@ package psidev.psi.mi.tab.io;
 import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
@@ -20,7 +20,15 @@ import java.util.Iterator;
  */
 public interface PsimiTabReader {
 
-    Collection<BinaryInteraction> read(BufferedReader reader) throws IOException, PsimiTabException;
+    /**
+     * This method reads and creates a collection of binary interactions.
+     *
+     * @param reader the source to read. The reader will be wrap in a BufferedReader and it will be close at the end.
+     * @return a collection of BinaryInteraction objects
+     * @throws IOException
+     * @throws PsimiTabException
+     */
+    Collection<BinaryInteraction> read(Reader reader) throws IOException, PsimiTabException;
 
     Collection<BinaryInteraction> read(String s) throws IOException, PsimiTabException;
 
@@ -31,6 +39,16 @@ public interface PsimiTabReader {
     Collection<BinaryInteraction> read(URL url) throws IOException, PsimiTabException;
 
     BinaryInteraction readLine(String str) throws PsimiTabException;
+
+    /**
+     * This method creates and Iterator of collection of binary interactions.
+     *
+     * @param reader the source to read. The reader will be wrap in a BufferedReader and it will be close at the end.
+     * @return a collection of BinaryInteraction objects
+     * @throws IOException
+     * @throws PsimiTabException
+     */
+    Iterator<BinaryInteraction> iterate(Reader reader) throws IOException, PsimiTabException;
 
     Iterator<BinaryInteraction> iterate(String s) throws IOException;
 

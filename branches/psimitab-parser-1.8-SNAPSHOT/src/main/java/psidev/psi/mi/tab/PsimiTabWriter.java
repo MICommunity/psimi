@@ -37,7 +37,7 @@ public class PsimiTabWriter implements psidev.psi.mi.tab.io.PsimiTabWriter {
         log.warn("MITAB version was not provided. The default version MITAB 2.5 has been assigned by default.");
     }
 
-    public void write(Collection<BinaryInteraction> interactions, BufferedWriter writer) throws IOException {
+    public void write(Collection<BinaryInteraction> interactions, Writer writer) throws IOException {
         for (BinaryInteraction interaction : interactions) {
             write(interaction, writer);
         }
@@ -95,7 +95,7 @@ public class PsimiTabWriter implements psidev.psi.mi.tab.io.PsimiTabWriter {
     }
 
 
-    public void write(BinaryInteraction binaryInteraction, BufferedWriter writer) throws IOException {
+    public void write(BinaryInteraction binaryInteraction, Writer writer) throws IOException {
         String line = MitabWriterUtils.buildLine(binaryInteraction, version);
         writer.write(line);
         writer.flush();
@@ -152,7 +152,7 @@ public class PsimiTabWriter implements psidev.psi.mi.tab.io.PsimiTabWriter {
         }
     }
 
-    public void writeMitabHeader(BufferedWriter writer) throws IOException {
+    public void writeMitabHeader(Writer writer) throws IOException {
         String line = MitabWriterUtils.buildHeader(version);
         writer.write(line);
         writer.flush();
