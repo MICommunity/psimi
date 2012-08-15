@@ -18,7 +18,7 @@ import java.util.Iterator;
  */
 public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
 
-    public Collection<BinaryInteraction> read(BufferedReader reader) throws IOException, PsimiTabException {
+    protected Collection<BinaryInteraction> read(BufferedReader reader) throws IOException, PsimiTabException {
 
         Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
 
@@ -53,7 +53,38 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
         return interactions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<BinaryInteraction> read(Reader reader) throws IOException, PsimiTabException {
 
+        BufferedReader bufferedReader = null;
+
+        Collection<BinaryInteraction> interactions;
+
+        try {
+
+            bufferedReader = new BufferedReader(reader);
+
+            interactions = read(bufferedReader);
+
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+
+        }
+
+        return interactions;
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Collection<BinaryInteraction> read(String s) throws IOException, PsimiTabException {
 
         ByteArrayInputStream is = null;
@@ -86,6 +117,9 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Collection<BinaryInteraction> read(InputStream is) throws IOException, PsimiTabException {
 
         BufferedReader bufferedReader = null;
@@ -110,6 +144,9 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
         return interactions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Collection<BinaryInteraction> read(File file) throws IOException, PsimiTabException {
 
         FileReader reader = null;
@@ -141,6 +178,9 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
         return interactions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Collection<BinaryInteraction> read(URL url) throws IOException, PsimiTabException {
 
         InputStream is = null;
@@ -196,6 +236,11 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
         return interaction;
     }
 
+
+    public Iterator<BinaryInteraction> iterate(Reader reader) throws IOException {
+        final BufferedReader bufferedReader = new BufferedReader(reader);
+        return new PsimiTabIterator(bufferedReader);
+    }
 
     public Iterator<BinaryInteraction> iterate(String s) throws IOException {
         final ByteArrayInputStream is = new ByteArrayInputStream(s.getBytes());

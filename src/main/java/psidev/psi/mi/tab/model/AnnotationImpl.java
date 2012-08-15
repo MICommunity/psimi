@@ -32,12 +32,12 @@ public class AnnotationImpl implements Annotation {
     // Constructor
 
     public AnnotationImpl(String topic) {
-        this.topic = topic;
+        setTopic(topic);
     }
 
     public AnnotationImpl(String topic, String text) {
-        this.topic = topic;
-        this.text = text;
+        setTopic(topic);
+        setText(text);
     }
 
     /////////////////////////////////
@@ -54,8 +54,8 @@ public class AnnotationImpl implements Annotation {
      * {@inheritDoc}
      */
     public void setTopic(String topic) {
-        if ( topic == null ) {
-            throw new IllegalArgumentException( "Topic name cannot be null." );
+        if (topic == null) {
+            throw new IllegalArgumentException("Topic name cannot be null.");
         }
         this.topic = topic;
     }
@@ -71,10 +71,10 @@ public class AnnotationImpl implements Annotation {
      * {@inheritDoc}
      */
     public void setText(String text) {
-        if ( text != null ) {
+        if (text != null) {
             // ignore empty string
             this.text = text.trim();
-            if ( text.length() == 0 ) {
+            if (text.length() == 0) {
                 this.text = null;
             }
         }
@@ -89,10 +89,10 @@ public class AnnotationImpl implements Annotation {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append( "Annotation" );
-        sb.append( "{topic='" ).append( topic ).append( '\'' );
-        sb.append( ", text='" ).append( text ).append( '\'' );
-        sb.append( '}' );
+        sb.append("Annotation");
+        sb.append("{topic='").append(topic).append('\'');
+        sb.append(", text='").append(text).append('\'');
+        sb.append('}');
         return sb.toString();
     }
 
@@ -100,20 +100,20 @@ public class AnnotationImpl implements Annotation {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        final AnnotationImpl that = ( AnnotationImpl ) o;
+        final AnnotationImpl that = (AnnotationImpl) o;
 
-        if ( !topic.equals( that.topic ) ) {
+        if (!topic.equals(that.topic)) {
             return false;
         }
-        if ( text != null ? !text.equals( that.text) : that.text != null ) {
+        if (text != null ? !text.equals(that.text) : that.text != null) {
             return false;
         }
 
@@ -126,7 +126,7 @@ public class AnnotationImpl implements Annotation {
     @Override
     public int hashCode() {
         int result;
-        result = ( text != null ? text.hashCode() : 0 );
+        result = (text != null ? text.hashCode() : 0);
         result = 29 * result + topic.hashCode();
         return result;
     }

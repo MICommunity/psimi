@@ -17,6 +17,7 @@ import psidev.psi.mi.tab.processor.PostProcessorStrategy;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -102,12 +103,12 @@ public class FilesProcessor {
                 File output = buildOutputFile(inputFiles.get(0), aggregateFiles, expansionStrategy);
 
                 try {
-//                    FileWriter outputWriter = new FileWriter(output);
+                    FileWriter outputWriter = new FileWriter(output);
 
                     long start = System.currentTimeMillis();
 
                     Collection<BinaryInteraction> interactions = x2t.convert(inputFiles);
-                    fileWriter.write(interactions, output);
+                    fileWriter.write(interactions, outputWriter);
 
                     long stop = System.currentTimeMillis();
                     log.debug("conversion took: " + (stop - start) + "ms");
@@ -120,7 +121,7 @@ public class FilesProcessor {
                             "Conversion complete",
                             JOptionPane.INFORMATION_MESSAGE);
 
-//                    output.close();
+                    outputWriter.close();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,7 +146,7 @@ public class FilesProcessor {
                     File output = buildOutputFile(inputFile, aggregateFiles, expansionStrategy);
 
                     try {
-//                        FileWriter outputWriter = new FileWriter(output);
+                        FileWriter outputWriter = new FileWriter(output);
 
                         long start = System.currentTimeMillis();
 
@@ -153,14 +154,14 @@ public class FilesProcessor {
                         singleFile.add(inputFile);
 
                         Collection<BinaryInteraction> interactions = x2t.convert(singleFile);
-                        fileWriter.write(interactions, output);
+                        fileWriter.write(interactions, outputWriter);
 
                         long stop = System.currentTimeMillis();
                         log.debug("conversion took: " + (stop - start) + "ms");
 
                         ok++;
 
-//                        outputWriter.close();
+                        outputWriter.close();
 
                     } catch (Exception e) {
                         e.printStackTrace();

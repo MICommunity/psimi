@@ -17,6 +17,7 @@ import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -139,10 +140,9 @@ public class PsimiTabFileMerger {
 
             log.debug("Writing result on disk...");
             PsimiTabWriter writer = new PsimiTabWriter();
-//            FileWriter fileWriter = new FileWriter(output);
-            writer.writeMitabHeader(output);
-
-            writer.write(allClustered, output);
+            FileWriter fileWriter = new FileWriter(output);
+            writer.writeMitabHeader(fileWriter);
+            writer.write(allClustered, fileWriter);
         } else {
             System.out.println("No interaction to merge.");
         }
@@ -158,7 +158,7 @@ public class PsimiTabFileMerger {
      *
      * @param inputFiles input files.
      * @param output     output file.
-     * @throws ConverterException
+     * @throws PsimiTabException
      * @throws IOException
      */
     public static void merge(Collection<File> inputFiles, File output) throws PsimiTabException, IOException {
