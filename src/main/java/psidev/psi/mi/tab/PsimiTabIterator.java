@@ -55,7 +55,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
     /**
      * indicate if the line that has been read was already consummed by the user via the next() nethod.
      */
-    private boolean lineConsummed = true;
+    private boolean lineConsummed = false;
 
     private PsimiTabReader mReader;
 
@@ -63,6 +63,8 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
     // Constructor
 
     public PsimiTabIterator(Reader psiMiTabInteractionsReader) {
+
+        boolean isHeader = true;
 
         if (psiMiTabInteractionsReader == null) {
             throw new IllegalArgumentException("You must give a non null input stream.");
@@ -76,8 +78,16 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 
 
         try {
-            nextLine = mReader.readLine(interactionStreamReader.readLine());
-            lineIndex++;
+            do {
+                String firstLine = interactionStreamReader.readLine();
+                if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
+                    //This line is not a comment, we read
+                    nextLine = mReader.readLine(firstLine);
+                    lineIndex++;
+                    isHeader = false;
+                }
+
+            } while (isHeader);
 
         } catch (Exception e) {
             closeStreamReader();

@@ -16,7 +16,6 @@ import psidev.psi.mi.xml.converter.ConverterException;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -62,7 +61,7 @@ public class ProcessDirectory {
         Collection<BinaryInteraction> interactions = x2t.convert(dir);
 
         PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
-        writer.write(interactions, new FileWriter("C:\\psimitab.csv"));
+        writer.write(interactions, new File("C:\\psimitab.csv"));
 
         long stop = System.currentTimeMillis();
         log.debug("Conversion took: " + (stop - start) + "ms");

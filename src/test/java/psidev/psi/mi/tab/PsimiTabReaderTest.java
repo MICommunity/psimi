@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.ConfidenceImpl;
-import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 public class PsimiTabReaderTest {
 
     @Test
-    public void readFileNoHeader() throws ConverterException, IOException {
+    public void readFileNoHeader() throws PsimiTabException, IOException {
 
         psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
         Collection<BinaryInteraction> interactions = reader.read(TestHelper.TAB_11585365);
@@ -31,7 +30,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void readFileWithHeader() throws ConverterException, IOException {
+    public void readFileWithHeader() throws PsimiTabException, IOException {
 
         psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
         Collection<BinaryInteraction> interactions = reader.read(TestHelper.TXT_11585365);
@@ -58,7 +57,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void read_file() throws ConverterException, IOException {
+    public void read_file() throws PsimiTabException, IOException {
         psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
         Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.TXT_11585365);
         int count = 0;
@@ -69,7 +68,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void iterate_file() throws ConverterException, IOException {
+    public void iterate_file() throws PsimiTabException, IOException {
         psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
         Iterator<BinaryInteraction> ii = mitabReader.iterate(TestHelper.TXT_11585365);
 
@@ -88,7 +87,7 @@ public class PsimiTabReaderTest {
                     "uniprotkb:P23367\tuniprotkb:P06722\t-\t-\t-\t-\t-\t-\t-\ttaxid:562\ttaxid:562\t-\t-\t-\t-\t-";
 
     @Test
-    public void read_String() throws ConverterException, IOException {
+    public void read_String() throws PsimiTabException, IOException {
 
         psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
         Collection<BinaryInteraction> interactions = mitabReader.read(MITAB_2_LINE_WITH_HEADER);
@@ -102,7 +101,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void iterate_String() throws ConverterException, IOException {
+    public void iterate_String() throws PsimiTabException, IOException {
         psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
         Iterator<BinaryInteraction> ii = mitabReader.iterate(MITAB_2_LINE_WITH_HEADER);
 
@@ -120,7 +119,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void emptyInteractionAc() throws ConverterException {
+    public void emptyInteractionAc() throws PsimiTabException {
         String line = "entrez gene/locuslink:3069\tentrez gene/locuslink:11260\tentrez " +
                 "gene/locuslink:HDLBP\tentrez gene/locuslink:XPOT\tentrez " +
                 "gene/locuslink:FLJ16432|entrez gene/locuslink:HBP|entrez " +
@@ -136,7 +135,7 @@ public class PsimiTabReaderTest {
     }
 
     @Test
-    public void unexpectedFreeTextInConfidences() throws ConverterException {
+    public void unexpectedFreeTextInConfidences() throws PsimiTabException {
         String line = "uniprotkb:P23367\tuniprotkb:P06722\tinterpro:IPR003594|interpro:IPR002099|go:GO:0005515|intact:EBI-554913\tinterpro:IPR004230|uniprotkb:Q9R2X2|uniprotkb:Q9R3A8|uniprotkb:Q9R411|uniprotkb:Q9S6P5|uniprotkb:Q9S6P6|uniprotkb:Q9S6P7|go:GO:0005515|intact:EBI-545170\tgene name:mutL|locus name:b4170\tgene name:mutH|gene name synonym:mutR|gene name synonym:prv|locus name:b2831\tadenylate cyclase:MI:0014\t-\tpubmed:11585365\ttaxid:562\ttaxid:562\tphysical interaction:MI:0218\t-\t-\t" +
                 "lpr:640|hpr:640|np:1|PSICQUIC entries are truncated here.  Seeirefindex.uio.no";
         psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
