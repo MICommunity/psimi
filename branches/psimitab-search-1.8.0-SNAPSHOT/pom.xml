@@ -11,7 +11,7 @@
     <artifactId>psimitab-search</artifactId>
     <packaging>jar</packaging>
 
-    <version>1.7.11-SNAPSHOT</version>
+    <version>1.8.0-SNAPSHOT</version>
 
     <name>PSI :: PSI-MI TABular Search</name>
     <url>http://psidev.sf.net</url>
@@ -73,13 +73,18 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psimitab</artifactId>
-            <version>${pom.version}</version>
+            <version>1.8.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>calimocho-tab</artifactId>
+            <version>2.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>  
             <groupId>org.apache.lucene</groupId>  
             <artifactId>com.springsource.org.apache.lucene</artifactId>  
-            <version>2.3.2</version> 
+            <version>2.4.1</version>
         </dependency>
 
          <!-- OSGi -->
@@ -107,7 +112,7 @@
         <dependency>
             <groupId>org.apache.log4j</groupId>
             <artifactId>com.springsource.org.apache.log4j</artifactId>
-            <version>1.2.15</version>
+            <version>1.2.16</version>
             <optional>true</optional>
         </dependency>
 

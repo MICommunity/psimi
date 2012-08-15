@@ -3,8 +3,8 @@
  */
 package psidev.psi.mi.search.util;
 
+import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
 
 /**
  * @author Nadin Neuhauser (nneuhaus@ebi.ac.uk)
@@ -16,7 +16,7 @@ public class DefaultDocumentBuilder extends AbstractInteractionDocumentBuilder<B
     private boolean disableExpandInteractorsProperties;
 
     public DefaultDocumentBuilder(){
-        super(new MitabDocumentDefinition());
+        super(MitabDocumentDefinitionFactory.mitab25());
     }
 
     public void setDisableExpandInteractorsProperties( boolean disable ) {

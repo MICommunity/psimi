@@ -35,8 +35,6 @@ import psidev.psi.mi.search.engine.SearchEngineException;
 import psidev.psi.mi.search.util.DefaultDocumentBuilder;
 import psidev.psi.mi.search.util.DocumentBuilder;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
 
 import java.io.File;
 import java.io.IOException;

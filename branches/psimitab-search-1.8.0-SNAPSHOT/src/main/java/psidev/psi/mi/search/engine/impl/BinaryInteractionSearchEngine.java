@@ -19,7 +19,6 @@ import org.apache.lucene.store.Directory;
 import psidev.psi.mi.search.util.DefaultDocumentBuilder;
 import psidev.psi.mi.search.util.DocumentBuilder;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,13 +49,12 @@ public class BinaryInteractionSearchEngine extends AbstractSearchEngine<BinaryIn
     }
 
     public String[] getSearchFields() {
-        final MitabDocumentDefinition documentDefinition = new MitabDocumentDefinition();
         return new String[]{"identifier",
-                            documentDefinition.getColumnDefinition(MitabDocumentDefinition.PUB_ID).getShortName(), // pub id
-                            documentDefinition.getColumnDefinition(MitabDocumentDefinition.PUB_AUTH).getShortName(), // pub auth
+                            "pubid", // pub id
+                            "pubauth", // pub auth
                             "species",
                             "detmethod", // det method
                             "type", // int type
-                            documentDefinition.getColumnDefinition(MitabDocumentDefinition.INTERACTION_ID).getShortName()}; // int ac
+                            "interaction_id"}; // int ac
     }
 }
