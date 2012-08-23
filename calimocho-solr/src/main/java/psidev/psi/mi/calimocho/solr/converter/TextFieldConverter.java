@@ -26,19 +26,26 @@ public class TextFieldConverter implements SolrFieldConverter{
             doc.addField(nameField, db);
             uniques.add(db);
         }
-        if (value != null && !uniques.contains(value)){
-            doc.addField(nameField, value);
-            uniques.add(value);
+        if (!name.toString().equalsIgnoreCase(SolrFieldName.ftypeA.toString()) && !name.toString().equalsIgnoreCase(SolrFieldName.ftypeB.toString())) {
+	        if (value != null && !uniques.contains(value)){
+	            doc.addField(nameField, value);
+	            uniques.add(value);
+	        }
+	        if (db != null && value != null && !uniques.contains(db+":"+value)) {
+	            doc.addField(nameField, db+":"+value);
+	            doc.addField(nameField+"_s", db+":"+value);
+	            uniques.add(db+":"+value);
+	        }
+	        if (text != null && !uniques.contains(text)){
+	            doc.addField(nameField, text);
+	            doc.addField(nameField+"_s", text);
+	            uniques.add(text);
+	        }
         }
-        if (db != null && value != null && !uniques.contains(db+":"+value)) {
-            doc.addField(nameField, db+":"+value);
-            doc.addField(nameField+"_s", db+":"+value);
-            uniques.add(db+":"+value);
-        }
-        if (text != null && !uniques.contains(text)){
-            doc.addField(nameField, text);
-            doc.addField(nameField+"_s", text);
-            uniques.add(text);
+        if (db != null && value != null && text != null && !uniques.contains(db+":"+value+"("+text+")")) {
+            doc.addField(nameField, db+":"+value+"("+text+")");
+            doc.addField(nameField+"_s", db+":"+value+"("+text+")");
+            uniques.add(db+":"+value+"("+text+")");
         }
     }
 }
