@@ -157,12 +157,12 @@ public class MitabWriterUtils {
 
 				String topic = field.getTopic();
 				if (topic != null) {
-					topic = field.getTopic().replaceAll("\\p{Cntrl}", " ");
+					topic = topic.replaceAll("\\p{Cntrl}", " ");
 				}
 
 				String text = field.getText();
 				if (text != null) {
-					field.getText().replaceAll("\\p{Cntrl}", " ");
+					text = text.replaceAll("\\p{Cntrl}", " ");
 				}
 
 				sb.append(joinAttributes(topic, text, null));
