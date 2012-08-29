@@ -155,7 +155,17 @@ public class MitabWriterUtils {
 			while (iterator.hasNext()) {
 				Annotation field = iterator.next();
 
-				sb.append(joinAttributes(field.getTopic().replaceAll("\\p{Cntrl}", " "), field.getText().replaceAll("\\p{Cntrl}", " "), null));
+				String topic = field.getTopic();
+				if (topic != null) {
+					topic = field.getTopic().replaceAll("\\p{Cntrl}", " ");
+				}
+
+				String text = field.getText();
+				if (text != null) {
+					field.getText().replaceAll("\\p{Cntrl}", " ");
+				}
+
+				sb.append(joinAttributes(topic, text, null));
 
 				if (iterator.hasNext()) {
 					sb.append(FIELD_DELIMITER);
