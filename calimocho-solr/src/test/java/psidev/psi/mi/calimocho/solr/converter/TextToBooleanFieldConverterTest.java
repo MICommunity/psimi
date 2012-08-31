@@ -38,17 +38,17 @@ import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
  *
  * @author kbreuer
  */
-public class AnnotationFieldConverterTest extends TestCase {
-    
+public class TextToBooleanFieldConverterTest extends TestCase {
+
     List<Row> rowList_mitab27, rowList_mitab26, rowList_mitab25;
     Converter converter;
-
-    public AnnotationFieldConverterTest(String testName) {
+    
+    public TextToBooleanFieldConverterTest(String testName) {
         super(testName);
     }
 
     public static Test suite() {
-        TestSuite suite = new TestSuite(AnnotationFieldConverterTest.class);
+        TestSuite suite = new TestSuite(TextToBooleanFieldConverterTest.class);
         return suite;
     }
 
@@ -76,15 +76,43 @@ public class AnnotationFieldConverterTest extends TestCase {
         super.tearDown();
     }
 
-    public void testIndexFieldValues_annotI_mitab27() throws Exception {
-        System.out.println("AnnotationField: indexFieldValues - annotI - mitab2.7");
+    public void testIndexFieldValues_param_mitab27() throws Exception {
+        System.out.println("TextField: indexFieldValues - param - mitab2.7");
 
         Assert.assertNotNull(rowList_mitab27);
 
         for (Row row:rowList_mitab27) {
 
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_ANNOTATIONS_I);
-            SolrFieldName fName = SolrFieldName.annot;
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_PARAMETERS_I);
+            SolrFieldName fName = SolrFieldName.param;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
+    public void testIndexFieldValues_param_mitab26() throws Exception {
+        System.out.println("TextField: indexFieldValues - param - mitab2.6");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_PARAMETERS_I);
+            SolrFieldName fName = SolrFieldName.param;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
+    public void testIndexFieldValues_param_mitab25() throws Exception {
+        System.out.println("TextField: indexFieldValues - param - mitab2.5");
+
+        Assert.assertNotNull(rowList_mitab25);
+
+        for (Row row:rowList_mitab25) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_PARAMETERS_I);
+            SolrFieldName fName = SolrFieldName.param;
 
             testIndexFieldValues(fName, fields, row);
         }
@@ -111,12 +139,12 @@ public class AnnotationFieldConverterTest extends TestCase {
 
             SolrInputDocument solrDoc = new SolrInputDocument();
             Set<String> uniques = new HashSet();
-            AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
+            TextToBooleanFieldConverter textToBoolConverter = new TextToBooleanFieldConverter();
 
             for (Field field : fields) {
 //                System.out.println("field: " + field);
 
-                solrDoc = annotConverter.indexFieldValues(field, fName, solrDoc, uniques);
+                solrDoc = textToBoolConverter.indexFieldValues(field, fName, solrDoc, uniques);
 
 //                System.out.println("\tsolrDoc-field: " + solrDoc.getField(fName.toString()).toString());
 //                System.out.println("\tsolrDoc-stored: " + solrDoc.getField(fName.toString() + "_s").toString());
@@ -136,77 +164,4 @@ public class AnnotationFieldConverterTest extends TestCase {
         }
     }
 
-    public void testIndexFieldValues_annotA_mitab27() throws Exception {
-        System.out.println("AnnotationField: indexFieldValues - annotA - mitab2.7");
-
-        Assert.assertNotNull(rowList_mitab27);
-
-        for (Row row:rowList_mitab27) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_ANNOTATIONS_A);
-            SolrFieldName fName = SolrFieldName.annotA;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_annotB_mitab27() throws Exception {
-        System.out.println("AnnotationField: indexFieldValues - annotB - mitab2.7");
-
-        Assert.assertNotNull(rowList_mitab27);
-
-        for (Row row:rowList_mitab27) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_ANNOTATIONS_B);
-            SolrFieldName fName = SolrFieldName.annotB;
-
-            testIndexFieldValues(fName, fields, row);
-            
-        }
-    }
-
-    public void testIndexFieldValues_annotI_mitab26() throws Exception {
-        System.out.println("AnnotationField: indexFieldValues - annotI - mitab2.6");
-
-        Assert.assertNotNull(rowList_mitab26);
-
-        for (Row row:rowList_mitab26) {
-            
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_ANNOTATIONS_I);
-            SolrFieldName fName = SolrFieldName.annot;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_annotA_mitab26() throws Exception {
-        System.out.println("AnnotationField: indexFieldValues - annotA - mitab2.6");
-
-        Assert.assertNotNull(rowList_mitab26);
-
-        for (Row row:rowList_mitab26) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_ANNOTATIONS_A);
-            SolrFieldName fName = SolrFieldName.annotA;
-            
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_annotB_mitab26() throws Exception {
-        System.out.println("AnnotationField: indexFieldValues - annotB - mitab2.6");
-
-        Assert.assertNotNull(rowList_mitab26);
-
-        for (Row row:rowList_mitab26) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_ANNOTATIONS_B);
-            SolrFieldName fName = SolrFieldName.annotB;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    //no annotation field in MITAB 2.5
-    
 }

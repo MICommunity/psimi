@@ -15,7 +15,7 @@ import org.hupo.psi.calimocho.model.Field;
 
 public class XrefFieldConverter implements SolrFieldConverter{
     
-    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, Set<String> uniques) {
+    public SolrInputDocument indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, Set<String> uniques) {
         
         String db = field.get(CalimochoKeys.DB);
         String value = field.get(CalimochoKeys.VALUE);
@@ -34,5 +34,8 @@ public class XrefFieldConverter implements SolrFieldConverter{
             doc.addField(nameField+"_s", db+":"+value);
             uniques.add(db+":"+value);
         }
+
+        return doc;
+        
     }
 }
