@@ -18,15 +18,12 @@
 package psidev.psi.mi.calimocho.solr.converter;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map.Entry;
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.common.SolrInputField;
 import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.calimocho.tab.io.DefaultRowReader;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;

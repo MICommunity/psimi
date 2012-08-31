@@ -12,7 +12,7 @@ import org.hupo.psi.calimocho.model.Field;
  */
 public class DateFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, Set<String> uniques) {
+    public SolrInputDocument indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, Set<String> uniques) {
 
         String year = field.get(CalimochoKeys.YEAR);
         String month = field.get(CalimochoKeys.MONTH);
@@ -36,6 +36,9 @@ public class DateFieldConverter implements SolrFieldConverter {
             }
 
         }
+
+        return doc;
+        
     }
 
 }

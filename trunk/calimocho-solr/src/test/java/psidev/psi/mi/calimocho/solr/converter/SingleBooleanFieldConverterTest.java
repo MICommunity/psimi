@@ -82,34 +82,147 @@ public class SingleBooleanFieldConverterTest extends TestCase {
         Assert.assertNotNull(rowList_mitab27);
 
         for (Row row:rowList_mitab27) {
-            Assert.assertNotNull(row);
-            SolrInputDocument origSolrDoc = converter.toSolrDocument(row);
-            Assert.assertNotNull(origSolrDoc);
 
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
             SolrFieldName fName = SolrFieldName.negative;
-            SolrInputDocument solrDoc = new SolrInputDocument();
-            SingleBooleanFieldConverter boolConverter = new SingleBooleanFieldConverter();
 
-            for (Field field : fields) {
-                Assert.assertNotSame(solrDoc.getField(fName.toString()+"_s"), origSolrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotSame(solrDoc.getFieldValue(fName.toString()), origSolrDoc.getFieldValue(fName.toString()));
-                boolConverter.indexFieldValues(field, fName, solrDoc, new HashSet());
-                Assert.assertNotNull(solrDoc.getField(fName.toString()+"_s"));
-                Assert.assertNull(solrDoc.getField(fName.toString()+"_o"));
-                Assert.assertNotNull(solrDoc.getField(fName.toString()));
-                Assert.assertEquals(solrDoc.getFieldValue(fName.toString()), origSolrDoc.getFieldValue(fName.toString()));
-                Assert.assertNotSame(solrDoc.getField(fName.toString()+"_o"), origSolrDoc.getField(fName.toString()+"_o"));
-                Assert.assertEquals(solrDoc.getFieldValue(fName.toString()+"_s"), origSolrDoc.getFieldValue(fName.toString()+"_s"));
-            }
+            testIndexFieldValues(fName, fields, row);
         }
     }
 
-    public void testIndexFieldValues_stc() {
+    public void testIndexFieldValues_stc_mitab27() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - stcA and stcB - mitab2.7");
+
+        Assert.assertNotNull(rowList_mitab27);
+
+        for (Row row:rowList_mitab27) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_A);
+            SolrFieldName fName = SolrFieldName.stcA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = null;
+            fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_B);
+            fName = SolrFieldName.stcB;
+
+            testIndexFieldValues(fName, fields, row);
+        }
     }
 
-    public void testIndexFieldValues_param() {
+    public void testIndexFieldValues_negative_mitab26() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - negative - mitab2.6");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
+            SolrFieldName fName = SolrFieldName.negative;
+
+            testIndexFieldValues(fName, fields, row);
+        }
     }
 
+    public void testIndexFieldValues_stc_mitab26() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - stcA and stcB - mitab2.6");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_A);
+            SolrFieldName fName = SolrFieldName.stcA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = null;
+            fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_B);
+            fName = SolrFieldName.stcB;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
+    public void testIndexFieldValues_negative_mitab25() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - negative - mitab2.5");
+
+        Assert.assertNotNull(rowList_mitab25);
+
+        for (Row row:rowList_mitab25) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
+            SolrFieldName fName = SolrFieldName.negative;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
+    public void testIndexFieldValues_stc_mitab25() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - stcA and stcB - mitab2.5");
+
+        Assert.assertNotNull(rowList_mitab25);
+
+        for (Row row:rowList_mitab25) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_A);
+            SolrFieldName fName = SolrFieldName.stcA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = null;
+            fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_B);
+            fName = SolrFieldName.stcB;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
+    private void testIndexFieldValues(SolrFieldName fName, Collection<Field> fields, Row row) throws Exception {
+
+        Assert.assertNotNull(row);
+//        System.out.println("row: "+row.keySet().toString());
+
+        SolrInputDocument origSolrDoc = converter.toSolrDocument(row);
+        Assert.assertNotNull(origSolrDoc);
+
+        if (origSolrDoc.getField(fName.toString()) != null) {
+
+//            System.out.println("\torigSolrDoc-field-name: " + fName);
+//            System.out.println("\torigSolrDoc-field: " + origSolrDoc.getField(fName.toString()).toString());
+//            System.out.println("\torigSolrDoc-stored: " + origSolrDoc.getField(fName.toString() + "_s").toString());
+//            System.out.println("\torigSolrDoc-original: " + origSolrDoc.getField(fName.toString() + "_o").toString());
+
+            Assert.assertNotNull(origSolrDoc.getField(fName.toString()));
+            Assert.assertTrue(origSolrDoc.getField(fName.toString()).getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(fName.toString()).getValue().toString().equalsIgnoreCase("false"));
+            Assert.assertNotNull(origSolrDoc.getField(fName.toString() + "_s"));
+            Assert.assertTrue(origSolrDoc.getField(fName.toString() + "_s").getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(fName.toString() + "_s").getValue().toString().equalsIgnoreCase("false"));
+            Assert.assertNotNull(origSolrDoc.getField(fName.toString() + "_o"));
+
+            SolrInputDocument solrDoc = new SolrInputDocument();
+            Set<String> uniques = new HashSet();
+            SingleBooleanFieldConverter singleBoolConverter = new SingleBooleanFieldConverter();
+
+            for (Field field : fields) {
+//                System.out.println("field: " + field);
+
+                solrDoc = singleBoolConverter.indexFieldValues(field, fName, solrDoc, uniques);
+
+//                System.out.println("\tsolrDoc-field: " + solrDoc.getField(fName.toString()).toString());
+//                System.out.println("\tsolrDoc-stored: " + solrDoc.getField(fName.toString() + "_s").toString());
+
+                Assert.assertNotNull(solrDoc.getField(fName.toString()));
+                String s1 = origSolrDoc.getField(fName.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                String s2 = solrDoc.getField(fName.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                Assert.assertTrue(s1.equalsIgnoreCase(s2));
+                Assert.assertNotNull(solrDoc.getField(fName.toString() + "_s"));
+                s1 = origSolrDoc.getField(fName.toString() + "_s").getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                s2 = solrDoc.getField(fName.toString() + "_s").getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                Assert.assertTrue(s1.equalsIgnoreCase(s2));
+                Assert.assertNull(solrDoc.getField(fName.toString() + "_o")); //indexFieldValues-method doesn't write _o
+            }
+        } else {
+            System.err.println("\tField "+fName.toString()+" not found!");
+        }
+    }
 }

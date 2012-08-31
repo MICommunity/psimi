@@ -26,14 +26,14 @@ import org.hupo.psi.calimocho.tab.io.formatter.XrefFieldFormatter;
  */
 public class Converter {
 
-    protected Map<SolrFieldName, SolrFieldUnit> keyMap;
+    static protected Map<SolrFieldName, SolrFieldUnit> keyMap;
 
     public Converter() {
         keyMap = new HashMap<SolrFieldName, SolrFieldUnit>();
         initializeKeyMap();
     }
 
-    protected void initializeKeyMap() {
+    protected static void initializeKeyMap() {
         XrefFieldConverter xrefConverter = new XrefFieldConverter();
         XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
         TextFieldConverter textConverter = new TextFieldConverter();
@@ -131,14 +131,12 @@ public class Converter {
                         for (Field field : fields) {
                             origField.append(solrFieldUnit.getFormatter().format(field)).append("|");
                             if (converter != null && !solrFieldUnit.isStoreOnly()) {
-                                converter.indexFieldValues(field, solrFieldName, doc, uniques);
+                                doc = converter.indexFieldValues(field, solrFieldName, doc, uniques);
                             }
                         }
                         if (origField.length() > 0 && !uniques.contains(origField+"_o")) {
-                            //if (solrFieldName.toString().equalsIgnoreCase(key)) { // make sure only the original content is stored in case SolrFieldUnit holds multiple fields
-                                doc.addField(solrFieldName+"_o", origField.toString().replaceAll("\\|$",""));//substring(0, origField.length()-1));
-                                uniques.add(origField+"_o");
-                            //}
+                            doc.addField(solrFieldName+"_o", origField.toString().replaceAll("\\|$",""));
+                            uniques.add(origField+"_o"); 
                         }
                     }
                 }

@@ -7,7 +7,7 @@ import org.hupo.psi.calimocho.model.Field;
 
 public class TextToBooleanFieldConverter implements SolrFieldConverter {
 
-    public void indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, Set<String> uniques) {
+    public SolrInputDocument indexFieldValues(Field field, SolrFieldName name, SolrInputDocument doc, Set<String> uniques) {
 
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = name.toString();
@@ -26,6 +26,8 @@ public class TextToBooleanFieldConverter implements SolrFieldConverter {
                 uniques.add("true");
             }
         }
+
+        return doc;
 
     }
 

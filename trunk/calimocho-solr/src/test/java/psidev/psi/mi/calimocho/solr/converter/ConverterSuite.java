@@ -35,13 +35,11 @@ public class ConverterSuite extends TestCase {
         TestSuite suite = new TestSuite("ConverterSuite");
         suite.addTest(SingleBooleanFieldConverterTest.suite());
         suite.addTest(XrefFieldConverterTest.suite());
-        suite.addTest(IntegerFieldConverterTest.suite());
         suite.addTest(TextFieldConverterTest.suite());
+        suite.addTest(TextToBooleanFieldConverterTest.suite());
         suite.addTest(ConverterTest.suite());
         suite.addTest(AnnotationFieldConverterTest.suite());
-        suite.addTest(BooleanFieldConverterTest.suite());
         suite.addTest(DateFieldConverterTest.suite());
-        suite.addTest(FloatFieldConverterTest.suite());
         return suite;
     }
 
