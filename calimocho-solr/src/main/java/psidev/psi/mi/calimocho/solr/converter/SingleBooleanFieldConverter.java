@@ -17,6 +17,8 @@ public class SingleBooleanFieldConverter implements SolrFieldConverter {
         String value = field.get(CalimochoKeys.VALUE);
         String nameField = name.toString();
 
+        boolean isStc = name.toString().toLowerCase().contains("stc");
+
         //if ((db == null || db.isEmpty()) && (value == null || value.isEmpty()) && (text == null || text.isEmpty())){
         if (value == null || value.isEmpty() || !Boolean.parseBoolean(value)) {
             if (!uniques.contains("false")) {
@@ -30,6 +32,17 @@ public class SingleBooleanFieldConverter implements SolrFieldConverter {
                 doc.addField(nameField + "_s", "true");
                 uniques.add("true");
             }
+        }
+
+        if (isStc) {
+            if (doc.getField(SolrFieldName.stcA.toString()).getValue().toString().equalsIgnoreCase("true") || doc.getField(SolrFieldName.stcB.toString()).getValue().toString().equalsIgnoreCase("true")) {
+                doc.addField(SolrFieldName.stc.toString(), true);
+                doc.addField(SolrFieldName.stc.toString() + "_s", "true");
+            } else {
+                doc.addField(SolrFieldName.stc.toString(), false);
+                doc.addField(SolrFieldName.stc.toString() + "_s", "false");
+            }
+
         }
 
         return doc;
