@@ -77,7 +77,7 @@ public class ConverterTest extends TestCase {
         for (Row row:rowList_mitab27) {
             Assert.assertNotNull(row);
             System.out.println("MITAB 2.7 row - key set:"+row.keySet());
-            Assert.assertEquals(42-8, row.keySet().size());
+            Assert.assertEquals(42-7, row.keySet().size());
 
             Converter converter = new Converter();
             SolrInputDocument solrDoc = converter.toSolrDocument(row);
