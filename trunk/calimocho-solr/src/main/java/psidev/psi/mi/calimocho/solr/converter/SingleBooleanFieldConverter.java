@@ -35,7 +35,7 @@ public class SingleBooleanFieldConverter implements SolrFieldConverter {
         }
 
         if (isStc) {
-            if (doc.getField(SolrFieldName.stcA.toString()).getValue().toString().equalsIgnoreCase("true") || doc.getField(SolrFieldName.stcB.toString()).getValue().toString().equalsIgnoreCase("true")) {
+            if ((doc.getField(SolrFieldName.stcA.toString()+"_s") != null && doc.getField(SolrFieldName.stcA.toString()+"_s").getValue().toString().equalsIgnoreCase("true")) || (doc.getField(SolrFieldName.stcB.toString()+"_s") != null && doc.getField(SolrFieldName.stcB.toString()+"_s").getValue().toString().equalsIgnoreCase("true"))) {
                 doc.addField(SolrFieldName.stc.toString(), true);
                 doc.addField(SolrFieldName.stc.toString() + "_s", "true");
             } else {

@@ -26,8 +26,6 @@ public class TextFieldConverter implements SolrFieldConverter{
             if (db != null && !uniques.contains(db)){
                 doc.addField(nameField, db);
                 doc.addField(nameField+"_s", db);
-                doc.addField(SolrFieldName.ftype.toString(), db);
-                doc.addField(SolrFieldName.ftype.toString()+"_s", db);
                 uniques.add(db);
             }
         } else {
