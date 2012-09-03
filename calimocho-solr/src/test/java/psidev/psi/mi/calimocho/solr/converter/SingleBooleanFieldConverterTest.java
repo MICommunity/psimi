@@ -223,11 +223,16 @@ public class SingleBooleanFieldConverterTest extends TestCase {
             }
         } else if (fName.toString().toLowerCase().contains("stc")) {
 
-            Assert.assertNotNull(origSolrDoc.getField(fName.stc.toString()));
-            Assert.assertTrue(origSolrDoc.getField(fName.stc.toString()).getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(fName.stc.toString()).getValue().toString().equalsIgnoreCase("false"));
-            Assert.assertNotNull(origSolrDoc.getField(fName.stc.toString() + "_s"));
-            Assert.assertTrue(origSolrDoc.getField(fName.stc.toString() + "_s").getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(fName.stc.toString() + "_s").getValue().toString().equalsIgnoreCase("false"));
-//            Assert.assertNotNull(origSolrDoc.getField(fName.toString() + "_o"));
+            Assert.assertNotNull(origSolrDoc.getField(SolrFieldName.stc.toString()));
+            Assert.assertTrue(origSolrDoc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("false"));
+            Assert.assertNotNull(origSolrDoc.getField(SolrFieldName.stc.toString() + "_s"));
+            Assert.assertTrue(origSolrDoc.getField(SolrFieldName.stc.toString() + "_s").getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(SolrFieldName.stc.toString() + "_s").getValue().toString().equalsIgnoreCase("false"));
+            if (origSolrDoc.getField(SolrFieldName.stc.toString() + "_s").getValue().toString().equalsIgnoreCase("true")) {
+                Assert.assertTrue(origSolrDoc.getField(SolrFieldName.stcA.toString() + "_o") != null || origSolrDoc.getField(SolrFieldName.stcB.toString() + "_o") != null);
+            } else {
+                Assert.assertTrue(origSolrDoc.getField(SolrFieldName.stcA.toString() + "_o") == null && origSolrDoc.getField(SolrFieldName.stcB.toString() + "_o") == null);
+            }
+
             
         } else {
             System.err.println("\tField "+fName.toString()+" not found!");
