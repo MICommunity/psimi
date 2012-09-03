@@ -82,8 +82,8 @@ public class Converter {
         keyMap.put(SolrFieldName.ftypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_B), textConverter, textFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pmethodA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A), textConverter, textFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pmethodB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.stcA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A), boolConverter, boolFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.stcB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_B), boolConverter, boolFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.stcA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A), boolConverter, boolFormatter, storeOnly));
+        keyMap.put(SolrFieldName.stcB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_B), boolConverter, boolFormatter, storeOnly));
         keyMap.put(SolrFieldName.param, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), textToBoolConverter, textFormatter, !storeOnly));
         keyMap.put(SolrFieldName.confidence,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CONFIDENCE), textConverter, textFormatter, storeOnly));
         keyMap.put(SolrFieldName.source,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_SOURCE), textConverter, textFormatter, storeOnly));
@@ -136,6 +136,15 @@ public class Converter {
                         if (origField.length() > 0 && !uniques.contains(origField+"_o")) {
                             doc.addField(solrFieldName+"_o", origField.toString().replaceAll("\\|$",""));
                             uniques.add(origField+"_o"); 
+                        }
+                    }
+                    if (key.contains("stc") && doc.getField(SolrFieldName.stc.toString()) == null) { //special case for composite field stc
+                        if (fields.isEmpty()) {
+                            doc.addField(SolrFieldName.stc.toString(), false);
+                            doc.addField(SolrFieldName.stc.toString() + "_s", "false");
+                        } else {
+                            doc.addField(SolrFieldName.stc.toString(), true);
+                            doc.addField(SolrFieldName.stc.toString() + "_s", "true");
                         }
                     }
                 }
