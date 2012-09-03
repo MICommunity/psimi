@@ -138,11 +138,16 @@ public class Converter {
                             uniques.add(origField+"_o"); 
                         }
                     }
-                    if (key.contains("stc") && doc.getField(SolrFieldName.stc.toString()) == null) { //special case for composite field stc
+                    //handle special case for composite field stc:
+                    if (key.contains("stc") && doc.getField(SolrFieldName.stc.toString()) == null || (doc.getField(SolrFieldName.stc.toString()) != null && doc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("false"))) { 
                         if (fields.isEmpty()) {
                             doc.addField(SolrFieldName.stc.toString(), false);
                             doc.addField(SolrFieldName.stc.toString() + "_s", "false");
                         } else {
+                            if (doc.getField(SolrFieldName.stc.toString()) != null && doc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("false")) {
+                                doc.removeField(SolrFieldName.stc.toString());
+                                doc.removeField(SolrFieldName.stc.toString()+"_s");
+                            }
                             doc.addField(SolrFieldName.stc.toString(), true);
                             doc.addField(SolrFieldName.stc.toString() + "_s", "true");
                         }
