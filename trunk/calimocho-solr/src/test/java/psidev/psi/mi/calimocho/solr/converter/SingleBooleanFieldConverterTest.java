@@ -221,6 +221,33 @@ public class SingleBooleanFieldConverterTest extends TestCase {
                 Assert.assertTrue(s1.equalsIgnoreCase(s2));
                 Assert.assertNull(solrDoc.getField(fName.toString() + "_o")); //indexFieldValues-method doesn't write _o
             }
+        } else if (fName.toString().toLowerCase().contains("stc")) {
+
+            Assert.assertNotNull(origSolrDoc.getField(fName.stc.toString()));
+            Assert.assertTrue(origSolrDoc.getField(fName.stc.toString()).getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(fName.stc.toString()).getValue().toString().equalsIgnoreCase("false"));
+            Assert.assertNotNull(origSolrDoc.getField(fName.stc.toString() + "_s"));
+            Assert.assertTrue(origSolrDoc.getField(fName.stc.toString() + "_s").getValue().toString().equalsIgnoreCase("true")||origSolrDoc.getField(fName.stc.toString() + "_s").getValue().toString().equalsIgnoreCase("false"));
+//            Assert.assertNotNull(origSolrDoc.getField(fName.toString() + "_o"));
+
+            SolrInputDocument solrDoc = new SolrInputDocument();
+            Set<String> uniques = new HashSet();
+            SingleBooleanFieldConverter singleBoolConverter = new SingleBooleanFieldConverter();
+
+            for (Field field : fields) {
+//                System.out.println("field: " + field);
+
+                solrDoc = singleBoolConverter.indexFieldValues(field, fName, solrDoc, uniques);
+
+                Assert.assertNotNull(solrDoc.getField(fName.stc.toString()));
+                String s1 = origSolrDoc.getField(fName.stc.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                String s2 = solrDoc.getField(fName.stc.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                Assert.assertTrue(s1.equalsIgnoreCase(s2));
+                Assert.assertNotNull(solrDoc.getField(fName.stc.toString() + "_s"));
+                s1 = origSolrDoc.getField(fName.stc.toString() + "_s").getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                s2 = solrDoc.getField(fName.stc.toString() + "_s").getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                Assert.assertTrue(s1.equalsIgnoreCase(s2));
+                Assert.assertNull(solrDoc.getField(fName.toString() + "_o")); //indexFieldValues-method doesn't write _o
+            }
         } else {
             System.err.println("\tField "+fName.toString()+" not found!");
         }
