@@ -139,12 +139,12 @@ public class Converter {
                         }
                     }
                     //handle special case for composite field stc:
-                    if (key.contains("stc") && doc.getField(SolrFieldName.stc.toString()) == null || (doc.getField(SolrFieldName.stc.toString()) != null && doc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("false"))) { 
-                        if (fields.isEmpty()) {
+                    if (key.contains("stc") && (doc.getField(SolrFieldName.stc.toString()) == null || (doc.getField(SolrFieldName.stc.toString()) != null && doc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("false")))) {
+                        if (fields.isEmpty() && doc.getField(SolrFieldName.stc.toString()) == null) {
                             doc.addField(SolrFieldName.stc.toString(), false);
                             doc.addField(SolrFieldName.stc.toString() + "_s", "false");
-                        } else {
-                            if (doc.getField(SolrFieldName.stc.toString()) != null && doc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("false")) {
+                        } else if (!fields.isEmpty()) {
+                            if ( doc.getField(SolrFieldName.stc.toString()) != null && doc.getField(SolrFieldName.stc.toString()).getValue().toString().equalsIgnoreCase("false")) {
                                 doc.removeField(SolrFieldName.stc.toString());
                                 doc.removeField(SolrFieldName.stc.toString()+"_s");
                             }
