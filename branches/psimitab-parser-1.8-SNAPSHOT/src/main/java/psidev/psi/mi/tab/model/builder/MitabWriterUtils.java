@@ -132,7 +132,7 @@ public class MitabWriterUtils {
 			while (iterator.hasNext()) {
 				Feature field = iterator.next();
 
-				String ranges = StringUtils.join(field.getRanges(), ", ");
+				String ranges = StringUtils.join(field.getRanges(), ",");
 				sb.append(joinAttributes(field.getFeatureType(), ranges, field.getText()));
 
 				if (iterator.hasNext()) {
