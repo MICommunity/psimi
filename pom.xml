@@ -80,6 +80,14 @@
         </developer>
 
         <developer>
+            <id>ntoro</id>
+            <name>Noemi del-Toro</name>
+            <email>ntoro@ebi.ac.uk</email>
+            <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+
+        <developer>
             <id>rafael</id>
             <name>Rafael Jimenez</name>
             <email>rafael@ebi.ac.uk</email>
