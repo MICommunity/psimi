@@ -20,14 +20,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 import psidev.psi.mi.search.SearchResult;
 import psidev.psi.mi.search.engine.SearchEngine;
 import psidev.psi.mi.search.engine.SearchEngineException;
@@ -65,6 +65,22 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
     public AbstractSearchEngine(Directory indexDirectory) throws IOException
     {
+        this(indexDirectory, null);
+    }
+
+    public AbstractSearchEngine(String indexDirectory) throws IOException
+    {
+        this(indexDirectory, null);
+    }
+
+
+    public AbstractSearchEngine(File indexDirectory) throws IOException
+    {
+        this(indexDirectory, null);
+    }
+
+    public AbstractSearchEngine(Directory indexDirectory, IndexWriter indexWriter) throws IOException
+    {
         if (indexDirectory == null) {
             throw new NullPointerException("indexDirectory cannot be null");
         }
@@ -72,21 +88,41 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         this.indexDirectory = indexDirectory;
 
         try {
-            this.indexSearcher = new IndexSearcher(indexDirectory);
-        } catch (Exception e) {
+            IndexReader reader = IndexReader.open(indexDirectory);
+            this.indexSearcher = new IndexSearcher(reader);
+        }
+        // directory is empty, needs to create the segment files manually because of a bug in lucene 3.6
+        catch (IndexNotFoundException e){
+            if (indexWriter == null){
+                IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_36, new StandardAnalyzer(Version.LUCENE_36));
+                config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+                indexWriter = new IndexWriter(indexDirectory, config);
+            }
+
+            indexWriter.commit();
+
+            try {
+                IndexReader reader = IndexReader.open(indexDirectory);
+                this.indexSearcher = new IndexSearcher(reader);
+            }
+            catch (Exception e2) {
+                throw new ExceptionInInitializerError(e);
+            }
+        }
+        catch (Exception e) {
             throw new ExceptionInInitializerError(e);
         }
     }
 
-    public AbstractSearchEngine(String indexDirectory) throws IOException
+    public AbstractSearchEngine(String indexDirectory, IndexWriter indexWriter) throws IOException
     {
-        this(FSDirectory.getDirectory(indexDirectory));
+        this(FSDirectory.open(new File(indexDirectory)), indexWriter);
     }
 
 
-    public AbstractSearchEngine(File indexDirectory) throws IOException
+    public AbstractSearchEngine(File indexDirectory, IndexWriter indexWriter) throws IOException
     {
-        this(FSDirectory.getDirectory(indexDirectory));
+        this(FSDirectory.open(indexDirectory), indexWriter);
     }
 
     public void close() {
@@ -125,6 +161,24 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         return search(searchQuery, firstResult, maxResults, null);
     }
 
+    public Query createQueryFor(String query){
+        if (query == null)
+        {
+            throw new NullPointerException("searchQuery cannot be null");
+        }
+
+        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
+        QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, getSearchFields(), analyzer);
+        Query queryResult = null;
+        try {
+            queryResult = parser.parse(query);
+        } catch (ParseException e) {
+            throw new SearchEngineException("Problem creating lucene query from string: "+query, e);
+        }
+
+        return  queryResult;
+    }
+
     public SearchResult<T> search(String searchQuery, Integer firstResult, Integer maxResults, Sort sort) throws SearchEngineException
     {
         if (searchQuery == null)
@@ -137,8 +191,8 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             return searchAll(firstResult, maxResults);
         }
 
-        Analyzer analyzer = new StandardAnalyzer();
-        QueryParser parser = new MultiFieldQueryParser(getSearchFields(), analyzer);
+        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
+        QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, getSearchFields(), analyzer);
         Query query = null;
         try {
             query = parser.parse(searchQuery);
@@ -158,13 +212,13 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
         long startTime = System.currentTimeMillis();
 
-        Hits hits;
+        TopDocs hits;
 
         try {
             if (sort != null) {
-                hits = indexSearcher.search(query, sort);
+                hits = indexSearcher.search(query, Integer.MAX_VALUE, sort);
             } else {
-                hits = indexSearcher.search(query);
+                hits = indexSearcher.search(query, Integer.MAX_VALUE);
             }
 
             if (log.isDebugEnabled()) log.debug("\tTime: " + (System.currentTimeMillis() - startTime) + "ms");
@@ -173,7 +227,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             throw new SearchEngineException(e);
         }
 
-        int totalCount = hits.length();
+        int totalCount = hits.totalHits;
 
         if (totalCount < firstResult)
         {
@@ -184,15 +238,16 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
         int maxIndex = Math.min(totalCount, firstResult+maxResults);
 
-        if (log.isDebugEnabled()) log.debug("\tHits: "+hits.length()+". Will return from "+firstResult+" to "+maxIndex);
+        if (log.isDebugEnabled()) log.debug("\tHits: "+hits.totalHits+". Will return from "+firstResult+" to "+maxIndex);
 
         List<T> dataObjects = new ArrayList<T>();
 
+        ScoreDoc[] scoreDocs = hits.scoreDocs;
         for (int i=firstResult; i<maxIndex; i++)
         {
             try
             {
-                Document doc = hits.doc(i);
+                Document doc = indexSearcher.getIndexReader().document(scoreDocs[i].doc);
                 T data = (T) createDocumentBuilder().createData(doc);
                 dataObjects.add(data);
             }

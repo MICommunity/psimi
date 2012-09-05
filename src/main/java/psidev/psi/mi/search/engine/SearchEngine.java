@@ -38,5 +38,7 @@ public interface SearchEngine<T extends BinaryInteraction>
 
     String[] getSearchFields();
 
+    Query createQueryFor(String query);
+
     void close();
 }

@@ -15,6 +15,7 @@
  */
 package psidev.psi.mi.search.index.impl;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
@@ -22,13 +23,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.search.SearchResult;
 import psidev.psi.mi.search.Searcher;
-import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.Interactor;
-import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.CrossReferenceImpl;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -82,7 +79,11 @@ public class InteractorIndexWriterTest {
     @Test
     public void indexDDR1() throws Exception {
         InputStream is = InteractorIndexWriterTest.class.getResourceAsStream("/mitab_samples/DDR1.tsv");
-        directory = FSDirectory.getDirectory("C:\\testDir");
+        File file = new File("C:\\testDir");
+        if (file.exists()){
+            FileUtils.deleteDirectory(file);
+        }
+        directory = FSDirectory.open(new File("C:\\testDir"));
         indexWriter.index(directory, is, true, true);
 
         // identifier

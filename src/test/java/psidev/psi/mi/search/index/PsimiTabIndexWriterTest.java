@@ -18,20 +18,20 @@ package psidev.psi.mi.search.index;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Hit;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.util.Version;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 import org.hupo.psi.calimocho.tab.model.ColumnDefinition;
 import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.search.TestHelper;
-
-import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
 
@@ -54,19 +54,19 @@ public class PsimiTabIndexWriterTest
 
         ColumnBasedDocumentDefinition docDefinition = MitabDocumentDefinitionFactory.mitab25();
 
-        Analyzer analyzer = new StandardAnalyzer();
-        IndexSearcher is = new IndexSearcher(indexDirectory);
-        QueryParser parser = new QueryParser("id", analyzer);
+        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
+        IndexReader reader = IndexReader.open(indexDirectory);
+        IndexSearcher is = new IndexSearcher(reader);
+        QueryParser parser = new QueryParser(Version.LUCENE_36, "id", analyzer);
         Query query = parser.parse("P47077");
-        Hits hits = is.search(query);
+        TopDocs hits = is.search(query, 20);
 
-        assertEquals(1, hits.length());
+        assertEquals(1, hits.totalHits);
 
-        Iterator<Hit> iter = hits.iterator();
-        while (iter.hasNext())
+        ScoreDoc[] docs = hits.scoreDocs;
+        for (ScoreDoc hit : docs)
         {
-            Hit hit = iter.next();
-            Document doc = hit.getDocument();
+            Document doc = is.getIndexReader().document(hit.doc);
 
             for (int i=0; i<docDefinition.getHighestColumnPosition(); i++) {
                 ColumnDefinition colDef = docDefinition.getColumnByPosition(i);
