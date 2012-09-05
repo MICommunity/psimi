@@ -81,6 +81,8 @@ public class PsimiIndexWriter {
 
         if (createIndex){
             indexWriter.commit();
+            indexWriter.deleteAll();
+            indexWriter.commit();
         }
 
         index(indexWriter, is, hasHeaderLine);
