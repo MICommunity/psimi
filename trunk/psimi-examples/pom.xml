@@ -4,14 +4,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.7.11</version>
+        <version>1.8.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimi-examples</artifactId>
     <packaging>jar</packaging>
-    <version>1.7.11</version>
+    <version>1.8.0-SNAPSHOT</version>
 
     <name>PSI :: PSI-MI Examples</name>
 
