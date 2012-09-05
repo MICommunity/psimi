@@ -18,20 +18,21 @@ package psidev.psi.mi.search.index.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
+import org.hupo.psi.calimocho.model.Row;
+import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 import psidev.psi.mi.search.SearchResult;
 import psidev.psi.mi.search.engine.SearchEngine;
 import psidev.psi.mi.search.engine.impl.BinaryInteractionSearchEngine;
 import psidev.psi.mi.search.index.PsimiIndexWriter;
 import psidev.psi.mi.search.util.DefaultDocumentBuilder;
 import psidev.psi.mi.search.util.DocumentBuilder;
+import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.Interactor;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
-import psidev.psi.mi.tab.model.builder.Row;
+import psidev.psi.mi.tab.model.builder.MitabWriterUtils;
+import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 import psidev.psi.mi.tab.utils.AbstractBinaryInteractionHandler;
 import psidev.psi.mi.tab.utils.OnlyOneInteractorHandler;
 
@@ -67,19 +68,19 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
     }
 
     @Override
-    public void addBinaryInteractionToIndex(IndexWriter indexWriter, BinaryInteraction binaryInteraction) throws IOException {
-        DocumentDefinition docDefinition = getDocumentBuilder().getDocumentDefinition();
+    public void addBinaryInteractionToIndex(IndexWriter indexWriter, BinaryInteraction binaryInteraction) throws IOException, MitabLineException {
+        ColumnBasedDocumentDefinition docDefinition = getDocumentBuilder().getDocumentDefinition();
 
         BinaryInteraction copy1 = binaryInteractionHandler.cloneBinaryInteraction(binaryInteraction);
         BinaryInteraction copy2 = binaryInteractionHandler.cloneBinaryInteraction(binaryInteraction);
 
-        SearchEngine searchEngine = createSearchEngine(indexWriter.getDirectory());
+        SearchEngine searchEngine = createSearchEngine(indexWriter.getDirectory(), indexWriter);
         // interactor A
         indexBinaryInteraction(indexWriter,searchEngine, copy1, docDefinition);
         //IndexSearcher sees index as it was when it was opened, if it gets modified
         // the searcher needs to be reopened:
         searchEngine.close();
-        searchEngine = createSearchEngine(indexWriter.getDirectory());
+        searchEngine = createSearchEngine(indexWriter.getDirectory(), indexWriter);
         // invert interaction interactors
         invertInteractors(copy2);
 
@@ -100,8 +101,8 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
         binaryInteraction.setInteractorB(a);
     }
 
-    private void indexBinaryInteraction(IndexWriter indexWriter, SearchEngine searchEngine, BinaryInteraction binaryInteraction, DocumentDefinition docDefinition) throws IOException {
-        final String idAColumnName = docDefinition.getColumnDefinition(MitabDocumentDefinition.ID_INTERACTOR_A).getShortName();
+    private void indexBinaryInteraction(IndexWriter indexWriter, SearchEngine searchEngine, BinaryInteraction binaryInteraction, ColumnBasedDocumentDefinition docDefinition) throws IOException, MitabLineException {
+        final String idAColumnName = docDefinition.getColumnByPosition(0).getKey();
 
         final String identifier = getMainIdentifier(binaryInteraction.getInteractorA());
 
@@ -118,8 +119,8 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
 
             if (log.isDebugEnabled()) log.debug("Deleting existing document for interactor: "+identifier);
 
-            indexWriter.deleteDocuments(new Term(idAColumnName, identifier.toLowerCase()));
-            indexWriter.flush();
+            indexWriter.deleteDocuments(searchEngine.createQueryFor(idAColumnName +":"+identifier.toLowerCase()));
+            indexWriter.commit();
 
             disableCVexpansion = true;
 
@@ -129,7 +130,7 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
             final String newLine = System.getProperty("line.separator");
 
             for (BinaryInteraction bi : result.getData()) {
-                sb.append(docDefinition.interactionToString(bi)+ newLine);
+                sb.append(MitabWriterUtils.buildLine(bi, PsimiTabVersion.v2_5));
             }
 
             throw new IllegalStateException("More than one document existing for identifier A: " + identifier + newLine + sb.toString());
@@ -141,7 +142,7 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
 
         getDocumentBuilder().setDisableExpandInteractorsProperties( disableCVexpansion );
         indexWriter.addDocument(getDocumentBuilder().createDocument(interactionToIndex));
-        indexWriter.flush();
+        indexWriter.commit();
     }
 
     /**
@@ -165,7 +166,7 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
         return binaryInteractionHandler.merge(source, target);
     }
 
-    protected SearchEngine createSearchEngine(Directory directory) throws IOException{
-        return new BinaryInteractionSearchEngine(directory);
+    protected SearchEngine createSearchEngine(Directory directory, IndexWriter indexWriter) throws IOException{
+        return new BinaryInteractionSearchEngine(directory, indexWriter);
     }
 }

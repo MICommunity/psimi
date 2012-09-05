@@ -75,11 +75,17 @@
             <artifactId>psimitab</artifactId>
             <version>${pom.version}</version>
         </dependency>
-
-        <dependency>  
-            <groupId>org.apache.lucene</groupId>  
-            <artifactId>com.springsource.org.apache.lucene</artifactId>  
-            <version>2.3.2</version> 
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>calimocho-tab</artifactId>
+            <version>2.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-core</artifactId>
+            <version>3.6.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
 
          <!-- OSGi -->
@@ -107,7 +113,7 @@
         <dependency>
             <groupId>org.apache.log4j</groupId>
             <artifactId>com.springsource.org.apache.log4j</artifactId>
-            <version>1.2.15</version>
+            <version>1.2.16</version>
             <optional>true</optional>
         </dependency>
 

@@ -47,27 +47,27 @@ public class Searcher
 
     public static Directory buildIndex(File indexDirectory, File psimiTabData, boolean createIndex, boolean hasHeader)
             throws IOException, ConverterException, MitabLineException {
-        return buildIndex(FSDirectory.getDirectory(indexDirectory), new FileInputStream(psimiTabData), createIndex, hasHeader);
+        return buildIndex(FSDirectory.open(indexDirectory), new FileInputStream(psimiTabData), createIndex, hasHeader);
     }
     
     public static Directory buildIndex(File indexDirectory, File psimiTabData, boolean createIndex, boolean hasHeader, PsimiIndexWriter indexWriter)
     		throws IOException, ConverterException, MitabLineException {
-    	return buildIndex(FSDirectory.getDirectory(indexDirectory), new FileInputStream(psimiTabData), createIndex, hasHeader, indexWriter);
+    	return buildIndex(FSDirectory.open(indexDirectory), new FileInputStream(psimiTabData), createIndex, hasHeader, indexWriter);
     }
 
     public static Directory buildIndex(String indexDirectory, String psimiTabData, boolean createIndex, boolean hasHeader)
             throws IOException, ConverterException, MitabLineException {
-        return buildIndex(FSDirectory.getDirectory(indexDirectory), new FileInputStream(new File(psimiTabData)), createIndex, hasHeader);
+        return buildIndex(FSDirectory.open(new File(indexDirectory)), new FileInputStream(new File(psimiTabData)), createIndex, hasHeader);
     }
 
     public static Directory buildIndex(String indexDirectory, InputStream psimiTabData, boolean createIndex, boolean hasHeader)
             throws IOException, ConverterException, MitabLineException {
-        return buildIndex(FSDirectory.getDirectory(indexDirectory), psimiTabData, createIndex, hasHeader);
+        return buildIndex(FSDirectory.open(new File(indexDirectory)), psimiTabData, createIndex, hasHeader);
     }
 
     public static Directory buildIndex(File indexDirectory, InputStream psimiTabData, boolean createIndex, boolean hasHeader)
             throws IOException, ConverterException, MitabLineException {
-        return buildIndex(FSDirectory.getDirectory(indexDirectory), psimiTabData, createIndex, hasHeader);
+        return buildIndex(FSDirectory.open(indexDirectory), psimiTabData, createIndex, hasHeader);
     }
 
     public static Directory buildIndexInMemory(InputStream psimiTabData, boolean createIndex, boolean hasHeader)
@@ -120,7 +120,7 @@ public class Searcher
     {
         try
         {
-            return search(query, FSDirectory.getDirectory(indexDirectory), firstResult, maxResults, null);
+            return search(query, FSDirectory.open(new File(indexDirectory)), firstResult, maxResults, null);
         }
         catch (IOException e)
         {
@@ -133,7 +133,7 @@ public class Searcher
     {
         try
         {
-            return search(query, FSDirectory.getDirectory(indexDirectory), firstResult, maxResults, sort);
+            return search(query, FSDirectory.open(new File(indexDirectory)), firstResult, maxResults, sort);
         }
         catch (IOException e)
         {
@@ -146,7 +146,7 @@ public class Searcher
     {
         try
         {
-            return search(query, FSDirectory.getDirectory(indexDirectory), firstResult, maxResults, null);
+            return search(query, FSDirectory.open(indexDirectory), firstResult, maxResults, null);
         }
         catch (IOException e)
         {
@@ -159,7 +159,7 @@ public class Searcher
     {
         try
         {
-            return search(query, FSDirectory.getDirectory(indexDirectory), firstResult, maxResults, null);
+            return search(query, FSDirectory.open(indexDirectory), firstResult, maxResults, null);
         }
         catch (IOException e)
         {
@@ -172,7 +172,7 @@ public class Searcher
     {
         try
         {
-            return search(query, FSDirectory.getDirectory(indexDirectory), firstResult, maxResults, sort);
+            return search(query, FSDirectory.open(indexDirectory), firstResult, maxResults, sort);
         }
         catch (IOException e)
         {
@@ -185,7 +185,7 @@ public class Searcher
     {
         try
         {
-            return search(query, FSDirectory.getDirectory(indexDirectory), firstResult, maxResults, sort);
+            return search(query, FSDirectory.open(indexDirectory), firstResult, maxResults, sort);
         }
         catch (IOException e)
         {
@@ -211,7 +211,7 @@ public class Searcher
         SearchEngine<BinaryInteraction> engine;
         try
         {
-            engine = new BinaryInteractionSearchEngine(indexDirectory);
+            engine = new BinaryInteractionSearchEngine(indexDirectory, null);
         }
         catch (IOException e)
         {
@@ -227,7 +227,7 @@ public class Searcher
         SearchEngine<BinaryInteraction> engine;
         try
         {
-            engine = new BinaryInteractionSearchEngine(indexDirectory);
+            engine = new BinaryInteractionSearchEngine(indexDirectory, null);
         }
         catch (IOException e)
         {
