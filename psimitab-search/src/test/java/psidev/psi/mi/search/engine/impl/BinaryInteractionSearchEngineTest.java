@@ -16,14 +16,16 @@
 package psidev.psi.mi.search.engine.impl;
 
 import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.store.Directory;
-import static org.junit.Assert.assertEquals;
+import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
+import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
 import org.junit.Test;
 import psidev.psi.mi.search.SearchResult;
 import psidev.psi.mi.search.TestHelper;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * BinaryInteractionSearchEngine Tester.
@@ -37,7 +39,7 @@ public class BinaryInteractionSearchEngineTest {
     public void testSearch() throws Exception {
         Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.tsv");
 
-        BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory);
+        BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory, null);
 
         SearchResult result = searchEngine.search("identifier:P47077", null, null);
 
@@ -51,11 +53,11 @@ public class BinaryInteractionSearchEngineTest {
     public void testSearchSort() throws Exception {
         Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample.tsv");
 
-        BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory);
+        BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory, null);
 
-        DocumentDefinition documentDefinition = new MitabDocumentDefinition();
+        ColumnBasedDocumentDefinition documentDefinition = MitabDocumentDefinitionFactory.mitab25();
 
-        Sort sort = new Sort(documentDefinition.getColumnDefinition(MitabDocumentDefinition.ID_INTERACTOR_A).getSortableColumnName());
+        Sort sort = new Sort(new SortField(documentDefinition.getColumnByPosition(0).getKey()+"_s", SortField.STRING));
 
         SearchResult<BinaryInteraction> result = searchEngine.search("id:P*", 50, 10, sort);
         assertEquals(10, result.getInteractions().size());
@@ -67,7 +69,7 @@ public class BinaryInteractionSearchEngineTest {
     public void testSearch2() throws Exception {
         Directory indexDirectory = TestHelper.createIndexFromResource("/mitab_samples/intact.sample2.txt");
 
-        BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory);
+        BinaryInteractionSearchEngine searchEngine = new BinaryInteractionSearchEngine(indexDirectory, null);
 
         SearchResult<BinaryInteraction> result = searchEngine.search("molindone", null, null);
 

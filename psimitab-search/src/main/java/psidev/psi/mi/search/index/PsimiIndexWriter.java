@@ -18,13 +18,16 @@ package psidev.psi.mi.search.index;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
+import org.hupo.psi.calimocho.io.IllegalFieldException;
+import org.hupo.psi.calimocho.model.Row;
 import psidev.psi.mi.search.util.DocumentBuilder;
+import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.Row;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.*;
@@ -58,21 +61,31 @@ public class PsimiIndexWriter {
     }
 
     public void index(String indexDir, InputStream is, boolean createIndex, boolean hasHeaderLine) throws IOException, ConverterException, MitabLineException {
-        Directory directory = FSDirectory.getDirectory(indexDir);
+        Directory directory = FSDirectory.open(new File(indexDir));
         index(directory, is, createIndex, hasHeaderLine);
     }
 
     public void index(File indexDir, InputStream is, boolean createIndex, boolean hasHeaderLine) throws IOException, ConverterException, MitabLineException {
-        Directory directory = FSDirectory.getDirectory(indexDir);
+        Directory directory = FSDirectory.open(indexDir);
         index(directory, is, createIndex, hasHeaderLine);
     }
 
     public void index(Directory directory, InputStream is, boolean createIndex, boolean hasHeaderLine) throws IOException, ConverterException, MitabLineException {
-        IndexWriter indexWriter = new IndexWriter(directory, new StandardAnalyzer(), createIndex);
-        indexWriter.setMergeFactor(MERGE_FACTOR);
-        indexWriter.setMaxMergeDocs(Integer.MAX_VALUE);
+        IndexWriterConfig writerConfig = new IndexWriterConfig(Version.LUCENE_36, new StandardAnalyzer(Version.LUCENE_36));
+        LogMergePolicy policy = new LogDocMergePolicy();
+        policy.setMergeFactor(MERGE_FACTOR);
+        policy.setMaxMergeDocs(Integer.MAX_VALUE);
+        writerConfig.setMergePolicy(policy);
+
+        IndexWriter indexWriter = new IndexWriter(directory, writerConfig);
+
+        if (createIndex){
+            indexWriter.commit();
+            indexWriter.deleteAll();
+            indexWriter.commit();
+        }
+
         index(indexWriter, is, hasHeaderLine);
-        indexWriter.optimize();
         indexWriter.close();
     }
 
@@ -110,14 +123,18 @@ public class PsimiIndexWriter {
      */
     @Deprecated
     public void addLineToIndex(IndexWriter indexWriter, String line) throws IOException, MitabLineException {
-        addBinaryInteractionToIndex(indexWriter, documentBuilder.getDocumentDefinition().interactionFromString(line));
+        try {
+            addBinaryInteractionToIndex(indexWriter, documentBuilder.getMitabReader().readLine(line));
+        } catch (PsimiTabException e) {
+           throw new MitabLineException(e);
+        }
     }
 
-    public void addBinaryInteractionToIndex(IndexWriter indexWriter, BinaryInteraction binaryInteraction) throws IOException {
+    public void addBinaryInteractionToIndex(IndexWriter indexWriter, BinaryInteraction binaryInteraction) throws IOException, MitabLineException {
         indexWriter.addDocument(documentBuilder.createDocument(binaryInteraction));
     }
 
-    public void addBinaryInteractionToIndex(IndexWriter indexWriter, Row row) throws IOException {
+    public void addBinaryInteractionToIndex(IndexWriter indexWriter, Row row) throws IOException, IllegalFieldException {
         indexWriter.addDocument(documentBuilder.createDocument(row));
     }
 
