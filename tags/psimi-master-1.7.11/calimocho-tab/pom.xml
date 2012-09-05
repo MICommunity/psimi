@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>psidev.psi.mi</groupId>
+        <artifactId>psimi-master</artifactId>
+        <version>1.7.11</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>calimocho-tab</artifactId>
+    <packaging>jar</packaging>
+    <version>2.2</version>
+
+    <name>PSI :: Calimocho TAB</name>
+    <url>http://psimi.googlecode.com</url>
+
+    <properties>
+        <bundle.namespace>psidev.psi.mi.tab</bundle.namespace>
+        <bundle.symbolicName>psidev.psi.mi.psimitab</bundle.symbolicName>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>calimocho</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
+        </repository>
+
+    </repositories>
+</project>

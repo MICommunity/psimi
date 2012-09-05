@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>psidev.psi.mi</groupId>
+        <artifactId>psimi-master</artifactId>
+        <version>1.7.11</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>calimocho-xgmml</artifactId>
+    <packaging>jar</packaging>
+    <version>2.2</version>
+
+    <name>PSI :: Calimocho XGMML</name>
+    <url>http://psimi.googlecode.com</url>
+
+    <build>
+        <plugins>
+            <!-- Conversion of XML Schema into Java source code using JAXB-XJC -->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.8.2</version>
+                <configuration>
+                    <schemaDirectory>${project.basedir}/src/main/resources/META-INF/schema</schemaDirectory>
+                    <bindingDirectory>${project.basedir}/src/main/resources/META-INF/schema</bindingDirectory>
+                    <extension>true</extension>
+                    <args>
+                        <arg>-Xannotate</arg>
+                    </args>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics-annotate</artifactId>
+                            <version>0.6.4</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>calimocho</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>calimocho-tab</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.servicemix.specs</groupId>
+            <artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
+            <version>2.2.4_2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.0-rc1</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
+        </repository>
+
+    </repositories>
+</project>
