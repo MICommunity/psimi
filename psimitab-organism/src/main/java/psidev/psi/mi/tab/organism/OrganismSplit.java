@@ -31,7 +31,7 @@ public class OrganismSplit {
 
         System.out.println( "Starting at: " + new SimpleDateFormat( "hh:mm:ss a" ).format( new Date() ) );
 
-        PsimiTabReader tabReader = new PsimiTabReader( true );
+        PsimiTabReader tabReader = new PsimiTabReader();
         Iterator<BinaryInteraction> iterator = tabReader.iterate( new File( "C:\\intact.txt" ) );
 
         // by storing in a Map and keeping the count of interactions we can optimize the closure of organism specific writer.
