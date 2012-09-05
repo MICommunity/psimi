@@ -1,4 +1,4 @@
-package psidev.psi.mi;
+package psidev.psi.mi.calimocho.solr.converter;
 
 import java.text.SimpleDateFormat;
 
@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
  * Hello world!
  *
  */
-public class App 
+public class AppTest
 {
     public static void main( String[] args )
     {
