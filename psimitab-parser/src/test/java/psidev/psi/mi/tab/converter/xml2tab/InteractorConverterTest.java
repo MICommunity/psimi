@@ -86,6 +86,7 @@ public class InteractorConverterTest {
 
                         }
 
+                        // TODO SHORT_LABEL OR DISPLAY_SHORT
                         if ( alias.getAliasType().equals( InteractorConverter.SHORT_LABEL ) ) {
                             Assert.assertEquals( "muth_ecoli", alias.getName() );
                             shortLabelAliasExists = true;

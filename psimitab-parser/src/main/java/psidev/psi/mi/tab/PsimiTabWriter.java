@@ -1,225 +1,217 @@
-/*
- * Copyright (c) 2002 The European Bioinformatics Institute, and others.
- * All rights reserved. Please see the file LICENSE
- * in the root directory of this distribution.
- */
 package psidev.psi.mi.tab;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
-import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.tab.model.builder.MitabWriterUtils;
+import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 
 import java.io.*;
 import java.util.Collection;
-import java.util.Iterator;
+
 
 /**
- * Utility class allowing users to write PSIMITAB format.
- *
- * @author Samuel Kerrien (skerrien@ebi.ac.uk)
- * @version $Id$
- * @since <pre>02-Oct-2006</pre>
+ * Created with IntelliJ IDEA.
+ * User: ntoro
+ * Date: 22/06/2012
+ * Time: 16:09
+ * To change this template use File | Settings | File Templates.
  */
-public class PsimiTabWriter {
+public class PsimiTabWriter implements psidev.psi.mi.tab.io.PsimiTabWriter {
 
     /**
      * Sets up a logger for that class.
      */
-    public static final Log log = LogFactory.getLog( PsimiTabWriter.class );
+    Log log = LogFactory.getLog(PsimiTabWriter.class);
 
-    public static final String NEW_LINE = System.getProperty( "line.separator" );
-
-    boolean headerAlreadyWritten = false;
-
-    private boolean headerEnabled = true;
-
-    private DocumentDefinition documentDefinition;
-
+    private PsimiTabVersion version = PsimiTabVersion.v2_5;
 
     ///////////////////////////////
     // Constructors
+    public PsimiTabWriter(PsimiTabVersion version) {
+        this.version = version;
+    }
 
     public PsimiTabWriter() {
-        this(true);
+        this(PsimiTabVersion.v2_5);
+        log.warn("MITAB version was not provided. The default version MITAB 2.5 has been assigned by default.");
     }
 
-    public PsimiTabWriter( boolean headerEnabled ) {
-        this.headerEnabled = headerEnabled;
-        this.documentDefinition = new MitabDocumentDefinition();
-    }
-
-    public PsimiTabWriter(DocumentDefinition documentDefinition, boolean headerEnabled) {
-        this.documentDefinition = documentDefinition;
-        this.headerEnabled = headerEnabled;
-    }
-
-    ///////////////////////////////
-    // Handling of the filter
-
-    public boolean hasHeaderEnabled() {
-        return headerEnabled;
-    }
-
-    public void setHeaderEnabled( boolean headerEnabled ) {
-        this.headerEnabled = headerEnabled;
-    }
-
-    //////////////////////////
-    // Writer public methods
-
-    public void writeOrAppend( BinaryInteraction binaryInteraction, File file, boolean createFile ) throws IOException {
-        if ( file == null ) {
-            throw new IllegalArgumentException( "You must give a non null file." );
+    public void write(Collection<BinaryInteraction> interactions, Writer writer) throws IOException {
+        for (BinaryInteraction interaction : interactions) {
+            write(interaction, writer);
         }
+    }
 
-        if ( file.exists() ) {
-            if (createFile && log.isWarnEnabled()){
-                log.warn( file.getAbsolutePath() + " is going to be overwritten" );
-            }
+    public void write(Collection<BinaryInteraction> interactions, OutputStream os) throws IOException {
 
-            if ( !file.canWrite() ) {
-                throw new IllegalArgumentException( "You must give a writeable file." );
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(os));
+            write(interactions, bufferedWriter);
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
             }
         }
-
-        Writer writer;
-        if (createFile && hasHeaderEnabled()) {
-            writer = new BufferedWriter(new FileWriter(file, false)) ;
-            writer.write( buildHeaderLine() + NEW_LINE );
-        } else{
-            writer = new BufferedWriter(new FileWriter(file, true));
-        }
-
-        String line = documentDefinition.interactionToString( binaryInteraction );
-        writer.write( line + NEW_LINE );
-        writer.close();
     }
 
-    public void writeOrAppend(Collection<BinaryInteraction> interactions, File file, boolean createFile) throws IOException, ConverterException {
-         if ( file == null ) {
-            throw new IllegalArgumentException( "You must give a non null file." );
-        }
+    public void write(Collection<BinaryInteraction> interactions, PrintStream ps) throws IOException {
 
-        if ( file.exists() ) {
-            if (createFile && log.isWarnEnabled()){
-                log.warn( file.getAbsolutePath() + " is going to be overwritten" );
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(ps));
+            write(interactions, bufferedWriter);
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
             }
-
-            if ( !file.canWrite() ) {
-                throw new IllegalArgumentException( "You must give a writeable file." );
-            }
-        }
-
-        Writer writer;
-        if (createFile ) {
-            write(interactions, file);
-        } else{
-            //appending
-            writer = new BufferedWriter(new FileWriter(file, true));
-
-            for ( Iterator<BinaryInteraction> iter = interactions.iterator(); iter.hasNext(); ) {
-                BinaryInteraction binaryInteraction = iter.next();
-                String line = documentDefinition.interactionToString(binaryInteraction);
-                writer.append( line + NEW_LINE );
-            }
-            writer.close();
         }
     }
 
-    public void write( Collection<BinaryInteraction> interactions, File file ) throws IOException, ConverterException {
+    public void write(Collection<BinaryInteraction> interactions, File file) throws IOException {
 
-        if ( file == null ) {
-            throw new IllegalArgumentException( "You must give a non null file." );
-        }
+        BufferedWriter bufferedWriter = null;
 
-        if ( file.exists() ) {
-            log.warn( file.getAbsolutePath() + " is going to be overwritten" );
+        try {
+            bufferedWriter = new BufferedWriter(new BufferedWriter(new FileWriter(file, true)));
+            write(interactions, bufferedWriter);
+        } finally {
 
-            if ( !file.canWrite() ) {
-                throw new IllegalArgumentException( "You must give a writeable file." );
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
             }
         }
-
-        // write content to file
-        Writer out = new BufferedWriter( new FileWriter( file ) );
-
-        write( interactions, out );
-
-        // flush & close
-        out.flush();
-        out.close();
     }
 
-    public void write( Collection<BinaryInteraction> interactions, OutputStream os ) throws IOException, ConverterException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
-        write( interactions, writer);
-        writer.flush();
 
-        // close writer
-        writer.close();
-    }
-
-    public void write( Collection<BinaryInteraction> interactions, Writer writer ) throws IOException, ConverterException {
-
-        if ( !headerAlreadyWritten && hasHeaderEnabled() ) {
-            writer.write( buildHeaderLine() + NEW_LINE );
-            headerAlreadyWritten = true;
-        }
-
-        for ( BinaryInteraction binaryInteraction : interactions ) {
-            String line = documentDefinition.interactionToString(binaryInteraction);
-            writer.write( line + NEW_LINE );
-        }
+    public void write(BinaryInteraction binaryInteraction, Writer writer) throws IOException {
+        String line = MitabWriterUtils.buildLine(binaryInteraction, version);
+        writer.write(line);
         writer.flush();
     }
 
-    public void write( Collection<BinaryInteraction> interactions, PrintStream ps ) throws IOException, ConverterException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ps));
-        write( interactions, writer);
-        writer.close();
-    }
+    public void write(BinaryInteraction interaction, OutputStream os) throws IOException {
 
-    public void write( BinaryInteraction interaction, OutputStream os ) throws IOException {
-        final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
-        write( interaction, writer);
-        writer.close();
-    }
+        BufferedWriter bufferedWriter = null;
 
-    public void write( BinaryInteraction interaction, Writer writer ) throws IOException {
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(os));
+            write(interaction, bufferedWriter);
+        } finally {
 
-        if ( !headerAlreadyWritten && hasHeaderEnabled() ) {
-            writer.write( buildHeaderLine() + NEW_LINE );
-            headerAlreadyWritten = true;
-        }
-
-        String line = documentDefinition.interactionToString(interaction);
-        writer.write( ( line + NEW_LINE ) );
-    }
-
-    /////////////////////
-    // Utility
-
-    private String buildHeaderLine() {
-        StringBuilder sb = new StringBuilder( 256 );
-
-        if( documentDefinition == null ) {
-            throw new IllegalStateException( "You cannot request a header without giving a valid documentDefinition." );
-        }
-        int columnCount = documentDefinition.getColumnsCount();
-
-        sb.append("#");
-
-        for (int i=0; i<columnCount; i++) {
-            if (i > 0) {
-                sb.append("\t");
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
             }
-            String columnName = documentDefinition.getColumnDefinition(i).getColumnName();
-            sb.append(columnName);
         }
-
-        return sb.toString();
     }
+
+    public void write(BinaryInteraction interaction, PrintStream ps) throws IOException {
+
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(ps));
+            write(interaction, bufferedWriter);
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+        }
+    }
+
+    public void write(BinaryInteraction interaction, File file) throws IOException {
+
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+            write(interaction, bufferedWriter);
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+        }
+    }
+
+    public void writeMitabHeader(Writer writer) throws IOException {
+        String line = MitabWriterUtils.buildHeader(version);
+        writer.write(line);
+        writer.flush();
+    }
+
+    public void writeMitabHeader(OutputStream os) throws IOException {
+
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(os));
+            writeMitabHeader(bufferedWriter);
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+        }
+    }
+
+    public void writeMitabHeader(PrintStream ps) throws IOException {
+
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(ps));
+            writeMitabHeader(bufferedWriter);
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+        }
+    }
+
+    public void writeMitabHeader(File file) throws IOException {
+
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+            writeMitabHeader(bufferedWriter);
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+        }
+    }
+
+    public void handleError(String message, Throwable e) throws PsimiTabException {
+        //TODO
+    }
+
+
 }

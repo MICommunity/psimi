@@ -53,7 +53,7 @@ public class RoundtripConversionsTest {
     }
 
     private BinaryInteraction roundtrip(String line) throws Exception {
-        final PsimiTabReader mitabReader = new PsimiTabReader(false);
+        final psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
         final BinaryInteraction binaryInteraction = mitabReader.readLine(line);
 
         final Tab2Xml tab2Xml = new Tab2Xml();

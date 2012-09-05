@@ -16,12 +16,10 @@
 package psidev.psi.mi.tab;
 
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -31,27 +29,18 @@ import java.util.NoSuchElementException;
  * @author Bruno Aranda (baranda@ebi.ac.uk), Samuel Kerrien (skerrien@ebi.ac.uk).
  * @version $Id$
  */
-public class PsimiTabIterator implements Iterator<BinaryInteraction> {
-
-    /**
-     * DocumentDefinition 
-     */
-    private DocumentDefinition documentDefinition;
+public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 
     /**
      * Reader on the data we are going to iterate.
      */
     private BufferedReader interactionStreamReader;
 
-    /**
-     * Has the input got a header ?
-     */
-    private boolean hasHeader;
 
     /**
      * Next line to be processed.
      */
-    private String nextLine;
+    private BinaryInteraction nextLine;
 
     /**
      * Count of interaction already processed.
@@ -64,35 +53,45 @@ public class PsimiTabIterator implements Iterator<BinaryInteraction> {
     private int lineIndex = 0;
 
     /**
-     * indicate if the line that has been read was already consummed by the user via the next() nethod.
+     * indicate if the line that has been read was already consumed by the user via the next() nethod.
      */
-    private boolean lineConsummed = true;
+    private boolean lineConsummed = false;
+
+    private PsimiTabReader mReader;
 
     ////////////////////////
     // Constructor
 
-    public PsimiTabIterator( DocumentDefinition documentDefinition, Reader psiMiTabInteractionsReader, boolean hasHeaderLine ) {
-        if ( documentDefinition == null ) {
-            throw new NullPointerException( "You must give a non null document definition." );
+    public PsimiTabIterator(Reader psiMiTabInteractionsReader) {
+
+        boolean isHeader = true;
+
+        if (psiMiTabInteractionsReader == null) {
+            throw new IllegalArgumentException("You must give a non null input stream.");
         }
-
-        if ( psiMiTabInteractionsReader == null ) {
-            throw new IllegalArgumentException( "You must give a non null input stream." );
+        if (psiMiTabInteractionsReader instanceof BufferedReader) {
+            this.interactionStreamReader = (BufferedReader) psiMiTabInteractionsReader;
+        } else {
+            this.interactionStreamReader = new BufferedReader(psiMiTabInteractionsReader);
         }
+        this.mReader = new PsimiTabReader();
 
-        this.documentDefinition = documentDefinition;
-
-        this.interactionStreamReader = new BufferedReader( psiMiTabInteractionsReader );
-        this.hasHeader = hasHeaderLine;
 
         try {
-            if ( hasHeader ) {
-                readNextLine();
-                lineIndex++;
-            }
-        } catch ( IOException e ) {
+            do {
+                String firstLine = interactionStreamReader.readLine();
+                if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
+                    //This line is not a comment, we read
+                    nextLine = mReader.readLine(firstLine);
+                    lineIndex++;
+                    isHeader = false;
+                }
+
+            } while (isHeader);
+
+        } catch (Exception e) {
             closeStreamReader();
-            throw new RuntimeException( "Error while reading the header line.", e );
+            throw new RuntimeException("Error while reading the header line.", e);
         }
     }
 
@@ -101,37 +100,30 @@ public class PsimiTabIterator implements Iterator<BinaryInteraction> {
 
     public boolean hasNext() {
         try {
-            if ( lineConsummed ) {
-                nextLine = readNextLine();
-                lineIndex++;
-
-                if (nextLine != null && nextLine.startsWith("#")) {
-                    return hasNext();
+            if (lineConsummed) {
+                nextLine = mReader.readLine(interactionStreamReader.readLine());
+                if (nextLine == null) {
+                    closeStreamReader();
+                    interactionStreamReader = null;
+                } else {
+                    lineIndex++;
+                    lineConsummed = false;
                 }
-
-                lineConsummed = false;
             }
-        }
-        catch ( IOException e ) {
+        } catch (Exception e) {
             closeStreamReader();
             return false;
         }
 
-        return ( nextLine != null );
+        return (nextLine != null);
     }
 
     public BinaryInteraction next() {
-        if ( nextLine == null && !hasNext() ) {
+        if (nextLine == null && !hasNext()) {
             throw new NoSuchElementException();
         }
 
-        BinaryInteraction interaction = null;
-        try {
-            interaction = documentDefinition.interactionFromString(nextLine);
-        }
-        catch ( Throwable e ) {
-            throw new RuntimeException( "Exception upon parsing at line " + lineIndex, e );
-        }
+        BinaryInteraction interaction = nextLine;
 
         interactionsProcessedCount++;
         lineConsummed = true;
@@ -151,26 +143,12 @@ public class PsimiTabIterator implements Iterator<BinaryInteraction> {
         return interactionsProcessedCount;
     }
 
-    /////////////////////
-    // Private method(s)
-
-    private String readNextLine() throws IOException {
-        String line = null;
-        if ( interactionStreamReader != null ) {
-            line = interactionStreamReader.readLine();
-            if ( line == null ) {
-                closeStreamReader();
-                interactionStreamReader = null;
-            }
-        }
-        return line;
-    }
 
     private void closeStreamReader() {
-        if ( interactionStreamReader != null ) {
+        if (interactionStreamReader != null) {
             try {
                 interactionStreamReader.close();
-            } catch ( IOException e ) {
+            } catch (IOException e) {
                 // keep it quiet ...
             }
         }

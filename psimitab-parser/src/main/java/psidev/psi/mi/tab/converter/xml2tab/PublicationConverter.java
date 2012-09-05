@@ -8,7 +8,7 @@ package psidev.psi.mi.tab.converter.xml2tab;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.CrossReferenceFactory;
+import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.xml.model.Bibref;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Xref;
@@ -41,7 +41,7 @@ public class PublicationConverter {
             Collection<DbReference> refs = XrefUtils.searchByType( bibref.getXref(), PRIMARY_REFERENCE, PRIMARY_REFERENCE_REF );
             for ( DbReference ref : refs ) {
                 if ( cr == null ) {
-                    cr = CrossReferenceFactory.getInstance().build( ref.getDb(), ref.getId() );
+                    cr = new CrossReferenceImpl( ref.getDb(), ref.getId() );
                 } else {
                     log.warn( "More than once " + PRIMARY_REFERENCE + " found, first one was chosen." );
                 }

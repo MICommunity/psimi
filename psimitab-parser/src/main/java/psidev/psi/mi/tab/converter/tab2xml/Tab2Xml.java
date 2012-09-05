@@ -47,15 +47,15 @@ public class Tab2Xml {
      */
     private InteractionConverter<?> interactionConverter;
 
-    /**
-     * Collection of all Interactions.
-     */
-    private Collection<Interaction> interactions;
-
-    /**
-     * Collection of Interactors.
-     */
-    private Collection<Interactor> interactors = new ArrayList<Interactor>();
+//    /**
+//     * Collection of all Interactions.
+//     */
+//    private Collection<Interaction> interactions;
+//
+//    /**
+//     * Collection of Interactors.
+//     */
+//    private Collection<Interactor> interactors = new ArrayList<Interactor>();
 
     /**
      * Strategy defining which interactor name used.
@@ -116,13 +116,11 @@ public class Tab2Xml {
         Entry entry = new Entry();
         entry.setSource(source);
 
-        interactions = new ArrayList<Interaction>();
-
         Map<String, Collection<Participant>> interactionMap = createInteractionMap(mitabInteractions);
 
         for (BinaryInteraction<?> binaryInteraction : mitabInteractions) {
 
-            interactions = interactionConverter.fromMitab(binaryInteraction, interactionMap);
+            Collection<Interaction> interactions = interactionConverter.fromMitab(binaryInteraction, interactionMap);
 
             entry.getInteractions().addAll(interactions);
         }
@@ -146,13 +144,13 @@ public class Tab2Xml {
         this.interactorNameBuilder = interactorNameBuilder;
     }
 
-    public Collection<Interaction> getInteractions() {
-        return interactions;
-    }
-
-    public Collection<Interactor> getInteractors() {
-        return interactors;
-    }
+//    public Collection<Interaction> getInteractions() {
+//        return interactions;
+//    }
+//
+//    public Collection<Interactor> getInteractors() {
+//        return interactors;
+//    }
 
     /**
      * This method create a Map which is used to find the ExperimentalRole (bait,prey or unspecified)
@@ -184,8 +182,8 @@ public class Tab2Xml {
             Interactor iB = interactorConverter.fromMitab(binaryInteraction.getInteractorB());
 
             // reusing the interactor in the participants
-            iA = checkInteractor(iA);
-            iB = checkInteractor(iB);
+//            iA = checkInteractor(iA);
+//            iB = checkInteractor(iB);
 
             // Note: the index is not used by these methods, just left here not to break the API.
             Participant pA = interactorConverter.buildParticipantA(iA, binaryInteraction, 0);
@@ -210,26 +208,26 @@ public class Tab2Xml {
         return interactionMap;
     }
 
-    private psidev.psi.mi.xml.model.Interactor checkInteractor(psidev.psi.mi.xml.model.Interactor interactor1) {
-        psidev.psi.mi.xml.model.Interactor interactor = interactor1;
-
-        for (psidev.psi.mi.xml.model.Interactor interactor2 : interactors) {
-
-            if (interactor1.getNames().equals(interactor2.getNames()) &&
-                    interactor1.getXref().equals(interactor2.getXref())) {
-                interactor = interactor2;
-                break;
-            }
-
-        }
-        if (interactor.equals(interactor1)) {
-            if (!interactors.contains(interactor1)) {
-                interactors.add(interactor);
-            }
-        }
-
-        return interactor;
-    }
+//    private psidev.psi.mi.xml.model.Interactor checkInteractor(psidev.psi.mi.xml.model.Interactor interactor1) {
+//        psidev.psi.mi.xml.model.Interactor interactor = interactor1;
+//
+//        for (psidev.psi.mi.xml.model.Interactor interactor2 : interactors) {
+//
+//            if (interactor1.getNames().equals(interactor2.getNames()) &&
+//                    interactor1.getXref().equals(interactor2.getXref())) {
+//                interactor = interactor2;
+//                break;
+//            }
+//
+//        }
+//        if (interactor.equals(interactor1)) {
+//            if (!interactors.contains(interactor1)) {
+//                interactors.add(interactor);
+//            }
+//        }
+//
+//        return interactor;
+//    }
 
     /**
      * This method create a new Source of the binaryInteraction data.

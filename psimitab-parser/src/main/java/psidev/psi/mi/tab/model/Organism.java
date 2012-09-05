@@ -1,7 +1,8 @@
 package psidev.psi.mi.tab.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
+import java.util.List;
 
 /**
  * TODO commenta that class header
@@ -10,6 +11,7 @@ import java.util.Collection;
  * @version $Id$
  * @since specify the maven artifact version
  */
+
 public interface Organism extends Serializable {
     /**
      * The default database in case it is not specified.
@@ -18,9 +20,9 @@ public interface Organism extends Serializable {
 
     void addIdentifier( CrossReference ref );
 
-    Collection<CrossReference> getIdentifiers();
+    List<CrossReference> getIdentifiers();
 
-    void setIdentifiers( Collection<CrossReference> identifiers );
+    void setIdentifiers( List<CrossReference> identifiers );
 
     String getTaxid();
 }

@@ -7,9 +7,9 @@ package psidev.psi.mi.tab.client.batch;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.tab.PsimiTabWriter;
 import psidev.psi.mi.tab.converter.xml2tab.TabConversionException;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
+import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -31,22 +31,22 @@ public class ProcessDirectory {
     /**
      * Sets up a logger for that class.
      */
-    public static final Log log = LogFactory.getLog( ProcessDirectory.class );
+    public static final Log log = LogFactory.getLog(ProcessDirectory.class);
 
-    public static void main( String[] args ) throws JAXBException, IOException, TabConversionException, ConverterException {
+    public static void main(String[] args) throws JAXBException, IOException, TabConversionException, ConverterException {
 
-        if( args.length != 1 ) {
-            System.err.println( "usage: ProcessDirectory <dir>" );
-            System.exit( 1 );
+        if (args.length != 1) {
+            System.err.println("usage: ProcessDirectory <dir>");
+            System.exit(1);
         }
 
-        File dir = new File( args[0] );
-        if( ! dir.exists() ) {
-            throw new IllegalArgumentException( "Directory doesn't exists: " + dir.getAbsolutePath() );
+        File dir = new File(args[0]);
+        if (!dir.exists()) {
+            throw new IllegalArgumentException("Directory doesn't exists: " + dir.getAbsolutePath());
         }
 
-        if( ! dir.canRead() ) {
-            throw new IllegalArgumentException( "Cannot read directory: " + dir.getAbsolutePath() );
+        if (!dir.canRead()) {
+            throw new IllegalArgumentException("Cannot read directory: " + dir.getAbsolutePath());
         }
 
         long start = System.currentTimeMillis();
@@ -55,15 +55,15 @@ public class ProcessDirectory {
         Xml2Tab x2t = new Xml2Tab();
 
         // set strategies
-        x2t.setPostProcessor( new ClusterInteractorPairProcessor() );
-        System.out.println( "Applying Spoke model expansion wherever appropriate." );
+        x2t.setPostProcessor(new ClusterInteractorPairProcessor());
+        System.out.println("Applying Spoke model expansion wherever appropriate.");
 
-        Collection<BinaryInteraction> interactions = x2t.convert( dir );
+        Collection<BinaryInteraction> interactions = x2t.convert(dir);
 
-        PsimiTabWriter writer = new PsimiTabWriter();
-        writer.write( interactions, new File( "C:\\psimitab.csv" ) );
+        PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter();
+        writer.write(interactions, new File("C:\\psimitab.csv"));
 
         long stop = System.currentTimeMillis();
-        log.debug( "Conversion took: " + ( stop - start ) + "ms" );
+        log.debug("Conversion took: " + (stop - start) + "ms");
     }
 }
