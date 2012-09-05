@@ -79,6 +79,10 @@ public class PsimiIndexWriter {
 
         IndexWriter indexWriter = new IndexWriter(directory, writerConfig);
 
+        if (createIndex){
+            indexWriter.commit();
+        }
+
         index(indexWriter, is, hasHeaderLine);
         indexWriter.close();
     }
