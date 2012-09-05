@@ -12,10 +12,7 @@ import org.junit.After;
 
 import psidev.psi.mi.tab.PsimiTabReaderTest;
 import psidev.psi.mi.tab.TestHelper;
-import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.InteractionDetectionMethod;
-import psidev.psi.mi.tab.model.InteractionType;
-import psidev.psi.mi.tab.model.Organism;
+import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.utils.PsimiTabFileMerger;
 
 import java.io.File;
@@ -81,7 +78,7 @@ public abstract class AbstractFilterTest {
 
         return new BinaryInteractionFilter() {
             public boolean evaluate( BinaryInteraction<?> interaction ) {
-                for ( InteractionType type : interaction.getInteractionTypes() ) {
+                for ( CrossReference type : interaction.getInteractionTypes() ) {
                     String mi = type.getDatabase() + ":" + type.getIdentifier();
                     if ( mi.equals( miRef ) || type.getIdentifier().equals( miRef ) ) {
                         return true;
@@ -97,7 +94,7 @@ public abstract class AbstractFilterTest {
 
         return new BinaryInteractionFilter() {
             public boolean evaluate( BinaryInteraction<?> interaction ) {
-                for ( InteractionDetectionMethod method : interaction.getDetectionMethods() ) {
+                for ( CrossReference method : interaction.getDetectionMethods() ) {
                     String mi = method.getDatabase() + ":" + method.getIdentifier();
                     if ( mi.equals( miRef ) || method.getIdentifier().equals( miRef ) ) {
                         return true;

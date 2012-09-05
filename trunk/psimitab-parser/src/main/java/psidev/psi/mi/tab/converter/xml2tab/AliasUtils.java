@@ -86,6 +86,7 @@ public class AliasUtils {
      *
      * @return a non null collection.
      */
+    @Deprecated
     public static Collection<Alias> getAllAliases( Names names ) {
         ArrayList<Alias> aliases = new ArrayList<Alias>( names.getAliases().size() );
 

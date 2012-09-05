@@ -19,14 +19,18 @@ import java.util.Collection;
 public interface ExpansionStrategy {
 
     /**
-     * Expand an interaction into a 
+     * Expand an interaction into a
+     *
      * @param interaction
      * @return
      */
-    public Collection<Interaction> expand( Interaction interaction );
-    
+
+    //TODO Modified the expansion interface to have a Collection of BinaryInteractions instead of xml interactions
+    public Collection<Interaction> expand(Interaction interaction);
+
     /**
      * Gets the method of the ExpansionStrategy
+     *
      * @return spoke, matrix or none
      */
     public String getName();

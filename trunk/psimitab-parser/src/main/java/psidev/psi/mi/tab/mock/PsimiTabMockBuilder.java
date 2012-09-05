@@ -16,7 +16,6 @@
 package psidev.psi.mi.tab.mock;
 
 import psidev.psi.mi.tab.model.*;
-import psidev.psi.mi.xml.model.Interaction;
 
 import java.util.*;
 
@@ -35,8 +34,8 @@ public class PsimiTabMockBuilder{
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private static List<CrossReference> sourceDatabases = new ArrayList<CrossReference>();
-    private static List<InteractionType> interactionTypes = new ArrayList<InteractionType>();
-    private static List<InteractionDetectionMethod> interactionDetectionMethods = new ArrayList<InteractionDetectionMethod>();
+    private static List<CrossReference> interactionTypes = new ArrayList<CrossReference>();
+    private static List<CrossReference> interactionDetectionMethods = new ArrayList<CrossReference>();
     private static List<String> confidenceTypes = new ArrayList<String>();
     private static List<Organism> organisms = new ArrayList<Organism>();
 
@@ -47,17 +46,17 @@ public class PsimiTabMockBuilder{
         sourceDatabases.add( new CrossReferenceImpl( "dip", "MI:0465", "DIP" ) );
 
         // Interaction Types
-        interactionTypes.add( new InteractionTypeImpl( "psi-mi", "MI:0914", "association" ) );
-        interactionTypes.add( new InteractionTypeImpl( "psi-mi", "MI:0915", "physical association" ) );
-        interactionTypes.add( new InteractionTypeImpl( "psi-mi", "MI:0403", "colocalization" ) );
+        interactionTypes.add( new CrossReferenceImpl( "psi-mi", "MI:0914", "association" ) );
+        interactionTypes.add( new CrossReferenceImpl( "psi-mi", "MI:0915", "physical association" ) );
+        interactionTypes.add( new CrossReferenceImpl( "psi-mi", "MI:0403", "colocalization" ) );
 
         // Interaction Detection Methods
-        interactionDetectionMethods.add( new InteractionDetectionMethodImpl( "psi-mi", "MI:0435", "protease assay" ) );
-        interactionDetectionMethods.add( new InteractionDetectionMethodImpl( "psi-mi", "MI:0055", "fluorescent resonance energy transfer" ) );
-        interactionDetectionMethods.add( new InteractionDetectionMethodImpl( "psi-mi", "MI:0018", "2 hybrid" ) );
-        interactionDetectionMethods.add( new InteractionDetectionMethodImpl( "psi-mi", "MI:0115", "yeast display" ) );
-        interactionDetectionMethods.add( new InteractionDetectionMethodImpl( "psi-mi", "MI:0027", "cosedimentation" ) );
-        interactionDetectionMethods.add( new InteractionDetectionMethodImpl( "psi-mi", "MI:0397", "two hybrid array" ) );
+        interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0435", "protease assay" ) );
+        interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0055", "fluorescent resonance energy transfer" ) );
+        interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0018", "2 hybrid" ) );
+        interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0115", "yeast display" ) );
+        interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0027", "cosedimentation" ) );
+        interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0397", "two hybrid array" ) );
 
         confidenceTypes.add( "intact confidence" );
         confidenceTypes.add( "psi-score" );
@@ -105,8 +104,8 @@ public class PsimiTabMockBuilder{
 
     // alias
 
-    public Collection<Alias> createAliasRandom( int aliasCount, String db ) {
-        Collection<Alias> aliases = new ArrayList<Alias>( aliasCount );
+    public List<Alias> createAliasRandom( int aliasCount, String db ) {
+        List<Alias> aliases = new ArrayList<Alias>( aliasCount );
         for ( int i = 0; i < aliasCount; i++ ) {
             aliases.add( new AliasImpl( db, randomString() ) );
         }
@@ -127,7 +126,7 @@ public class PsimiTabMockBuilder{
 
     public BinaryInteraction createInteraction( Interactor a, Interactor b ) {
         BinaryInteraction bi = buildInteraction( a, b );
-        bi.getDetectionMethods().add( new InteractionDetectionMethodImpl( "psi-mi", "MI:0071", "molecular sieving" ) );
+        bi.getDetectionMethods().add( new CrossReferenceImpl("psi-mi", "MI:0071", "molecular sieving" ) );
         return bi;
     }
 
@@ -150,13 +149,13 @@ public class PsimiTabMockBuilder{
 
     // interaction type
 
-    public InteractionType createInteractionTypeRandom() {
+    public CrossReference createInteractionTypeRandom() {
         return pickRandom( interactionTypes );
     }
 
     // interaction detection method
 
-    public InteractionDetectionMethod createInteractionDetectionMethodRandom() {
+    public CrossReference createInteractionDetectionMethodRandom() {
         return pickRandom( interactionDetectionMethods );
     }
 
@@ -176,8 +175,8 @@ public class PsimiTabMockBuilder{
 
     // Xrefs
 
-    public Collection<CrossReference> createUniprotCrossReferenceList( int crossRefCount ) {
-        Collection<CrossReference> references = new ArrayList<CrossReference>( crossRefCount );
+    public List<CrossReference> createUniprotCrossReferenceList( int crossRefCount ) {
+        List<CrossReference> references = new ArrayList<CrossReference>( crossRefCount );
         for ( int i = 0; i < crossRefCount; i++ ) {
             references.add( createCrossReference( "uniprotkb", randomUniprotAc() ) );
         }
@@ -185,15 +184,15 @@ public class PsimiTabMockBuilder{
     }
 
     public CrossReference createCrossReference( String db, String id, String text ) {
-        return CrossReferenceFactory.getInstance().build( db, id, text );
+        return new CrossReferenceImpl( db, id, text );
     }
 
     public CrossReference createCrossReference( String db, String id ) {
-        return CrossReferenceFactory.getInstance().build( db, id );
+        return new CrossReferenceImpl( db, id );
     }
 
     public CrossReference createUniprotCrossReference( String id ) {
-        return CrossReferenceFactory.getInstance().build( "uniprotkb", id );
+        return new CrossReferenceImpl( "uniprotkb", id );
     }
 
     ///////////////////

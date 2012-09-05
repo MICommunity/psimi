@@ -1,10 +1,13 @@
 package psidev.psi.mi.tab.model;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import java.util.List;
 
 /**
  * Interactor Tester.
@@ -32,10 +35,10 @@ public class InteractorTest {
     }
 
     private Interactor buildSimpleInteractor( String ac, int taxid ) {
-        Collection<CrossReference> refs = new ArrayList<CrossReference>( );
+        List<CrossReference> refs = new ArrayList<CrossReference>( );
         refs.add( new CrossReferenceImpl( "uniprotkb", ac ) );
         Interactor i = new Interactor( refs );
-        i.setOrganism( OrganismFactory.getInstance().build( taxid ) );
+        i.setOrganism( new OrganismImpl( taxid ) );
         return i;
     }
     

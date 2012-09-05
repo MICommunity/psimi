@@ -1,177 +1,268 @@
-/*
- * Copyright (c) 2002 The European Bioinformatics Institute, and others.
- * All rights reserved. Please see the file LICENSE
- * in the root directory of this distribution.
- */
 package psidev.psi.mi.tab;
 
-import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
-import psidev.psi.mi.tab.converter.txt2tab.behaviour.UnparseableLineBehaviour;
-import psidev.psi.mi.tab.model.*;
-import psidev.psi.mi.tab.model.builder.DocumentDefinition;
-import psidev.psi.mi.tab.model.builder.MitabDocumentDefinition;
-import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.builder.MitabParserUtils;
 
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Utility class allowing users to read PSIMITAB data.
- *
- * @author Samuel Kerrien (skerrien@ebi.ac.uk)
- * @version $Id$
- * @since <pre>02-Oct-2006</pre>
+ * Created by IntelliJ IDEA.
+ * User: noedelta
+ * Date: 18/06/2012
+ * Time: 14:01
  */
-public class PsimiTabReader {
+public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
 
-    private DocumentDefinition documentDefinition;
+    protected Collection<BinaryInteraction> read(BufferedReader reader) throws IOException, PsimiTabException {
 
-    /**
-     * has the input got a header.
-     * That is, if true, the first line sis skipped.
-     */
-    private boolean hasHeaderLine = true;
+        Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
 
-    /**
-     * Collection of interactions build.
-     */
-    private Collection<BinaryInteraction> interactions;
+        String[] line;
+        String completeLine;
 
-    /**
-     * Strategy that defines how the reader behaves when encountering unparseable line.
-     */
-    private UnparseableLineBehaviour unparseableLineBehaviour;
+        int lineIndex = 0;
 
-    
-    ///////////////////////////
-    // Constructor
 
-    public PsimiTabReader( boolean hasHeaderLine ) {
-        this(new MitabDocumentDefinition(), hasHeaderLine);
-    }
+        while ((completeLine = reader.readLine()) != null) {
 
-    public PsimiTabReader(DocumentDefinition documentDefinition, boolean hasHeaderLine) {
-        this.documentDefinition = documentDefinition;
-        this.hasHeaderLine = hasHeaderLine;
-    }
+            line = MitabParserUtils.quoteAwareSplit(completeLine, new char[]{'\t'}, false);
 
-    ////////////////////////////
-    // Getters and Setters
+            if (line != null && line.length > 0 && line[0].startsWith("#")) {
+                //This line is a comment, we skip the line
+                lineIndex++;
+                continue;
+            }
+            // line[] is an array of values from the line
+            // Avoid the problem of the size with the different formats
 
-    public boolean isHasHeaderLine() {
-        return hasHeaderLine;
-    }
 
-    public void setHasHeaderLine( boolean hasHeaderLine ) {
-        this.hasHeaderLine = hasHeaderLine;
-    }
+            try {
+                interactions.add(MitabParserUtils.buildBinaryInteraction(line));
 
-    public UnparseableLineBehaviour getUnparseableLineBehaviour() {
-        return unparseableLineBehaviour;
-    }
-
-    public void setUnparseableLineBehaviour( UnparseableLineBehaviour unparseableLineBehaviour ) {
-        this.unparseableLineBehaviour = unparseableLineBehaviour;
-    }
-
-    /**
-     * If true, will make sure redundant objects are pooled to save memory.
-     * @param enabled
-     */
-    public void setEnableObjectPooling( boolean enabled ) {
-        // propagate this request to all factories
-        CrossReferenceFactory.getInstance().setCacheEnabled( enabled );
-        InteractionTypeFactory.getInstance().setCacheEnabled( enabled );
-        InteractionDetectionMethodFactory.getInstance().setCacheEnabled( enabled );
-        OrganismFactory.getInstance().setCacheEnabled( enabled );
-    }
-
-    //////////////////////////
-    // Public methods
-
-    public Collection<BinaryInteraction> read( String s ) throws IOException, ConverterException {
-        return read( new ByteArrayInputStream( s.getBytes() ) );
-    }
-
-    public Iterator<BinaryInteraction> iterate( String s ) throws IOException, ConverterException {
-        final ByteArrayInputStream is = new ByteArrayInputStream( s.getBytes() );
-        final InputStreamReader reader = new InputStreamReader( is );
-        return new PsimiTabIterator( documentDefinition, reader, hasHeaderLine );
-    }
-
-    public Collection<BinaryInteraction> read( File file ) throws IOException, ConverterException {
-        return read( new FileReader( file ) );
-    }
-
-    public Iterator<BinaryInteraction> iterate( File file ) throws IOException, ConverterException {
-        return new PsimiTabIterator( documentDefinition, new FileReader( file ), hasHeaderLine );
-    }
-
-    public Collection<BinaryInteraction> read( InputStream is ) throws IOException, ConverterException {
-         return read( new InputStreamReader( is ) );
-    }
-
-    public Collection<BinaryInteraction> read( Reader reader ) throws IOException, ConverterException {
-        interactions = new ArrayList<BinaryInteraction>();
-
-        BufferedReader in = new BufferedReader( reader );
-        String line;
-
-        int lineIndex = 1;
-
-        if ( hasHeaderLine ) {
-            String l = in.readLine(); // skip header line
+            } catch (Throwable e) {
+                handleError("Exception parsing line " + lineIndex + ": " + Arrays.toString(line), e);
+            }
             lineIndex++;
         }
-
-        while ( ( line = in.readLine() ) != null ) {
-            try {
-                BinaryInteraction interaction = documentDefinition.interactionFromString(line);
-                processInteraction( interaction );
-                lineIndex++;
-            }
-            catch ( Throwable e ) {
-                in.close();
-                throw new ConverterException( "Exception parsing line " + lineIndex+": "+line, e );
-            }
-        }
-
-        in.close();
 
         return interactions;
     }
 
-    public Iterator<BinaryInteraction> iterate( InputStream is ) throws IOException, ConverterException {
-        return new PsimiTabIterator( documentDefinition, new InputStreamReader( is ), hasHeaderLine );
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<BinaryInteraction> read(Reader reader) throws IOException, PsimiTabException {
+
+        BufferedReader bufferedReader = null;
+
+        Collection<BinaryInteraction> interactions;
+
+        try {
+
+            bufferedReader = new BufferedReader(reader);
+
+            interactions = read(bufferedReader);
+
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+
+        }
+
+        return interactions;
+
     }
 
     /**
-     * Reads MITAB data and provides an iterator on interactions.
-     *
-     * @param r reader on PSIMITAB data
-     * @return a non null Iterator of BinaryInteraction
-     * @throws IOException
-     * @throws ConverterException
-     *
-     * @since 1.5.2
+     * {@inheritDoc}
      */
-    public Iterator<BinaryInteraction> iterate( Reader r ) throws IOException, ConverterException {
-        return new PsimiTabIterator( documentDefinition, r, hasHeaderLine );
+    public Collection<BinaryInteraction> read(String s) throws IOException, PsimiTabException {
+
+        ByteArrayInputStream is = null;
+        BufferedReader bufferedReader = null;
+
+        Collection<BinaryInteraction> interactions;
+
+        try {
+
+            is = new ByteArrayInputStream(s.getBytes());
+            bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+            interactions = read(bufferedReader);
+
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+
+            if (is != null) {
+                is.close();
+            }
+
+        }
+
+        return interactions;
+
     }
 
-    public Collection<BinaryInteraction> read( URL url ) throws IOException, ConverterException {
-        return read( url.openStream() );
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<BinaryInteraction> read(InputStream is) throws IOException, PsimiTabException {
+
+        BufferedReader bufferedReader = null;
+
+        Collection<BinaryInteraction> interactions;
+
+        try {
+
+            bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+            interactions = read(bufferedReader);
+
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+        }
+
+        return interactions;
     }
 
-    public BinaryInteraction readLine( String str) {
-        return documentDefinition.interactionFromString(str);
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<BinaryInteraction> read(File file) throws IOException, PsimiTabException {
+
+        FileReader reader = null;
+        BufferedReader bufferedReader = null;
+
+        Collection<BinaryInteraction> interactions;
+
+        try {
+
+            reader = new FileReader(file);
+            bufferedReader = new BufferedReader(reader);
+
+            interactions = read(bufferedReader);
+
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+
+            if (reader != null) {
+                reader.close();
+            }
+
+        }
+
+        return interactions;
     }
 
-    protected void processInteraction( BinaryInteraction interaction ) throws MitabLineException {
-        interactions.add( interaction );
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<BinaryInteraction> read(URL url) throws IOException, PsimiTabException {
+
+        InputStream is = null;
+        BufferedReader bufferedReader = null;
+
+        Collection<BinaryInteraction> interactions;
+
+        try {
+
+            is = url.openStream();
+            bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+            interactions = read(bufferedReader);
+
+        } finally {
+
+            // You only need to close the outermost stream class because the close()
+            // call is automatically trickled through all the chained classes
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+
+            if (is != null) {
+                is.close();
+            }
+
+        }
+
+        return interactions;
+    }
+
+    public BinaryInteraction readLine(String str) throws PsimiTabException {
+
+        BinaryInteraction interaction = null;
+        String[] line;
+
+        line = MitabParserUtils.quoteAwareSplit(str, new char[]{'\t'}, false);
+
+        if (line.length > 0 && line[0].startsWith("#")) {
+            //This line is a comment, we skip the line
+            return null;
+        }
+        // line[] is an array of values from the line
+        // Avoid the problem of the size with the different formats
+
+        try {
+            interaction = MitabParserUtils.buildBinaryInteraction(line);
+
+        } catch (Throwable e) {
+            handleError("Exception parsing line :" + Arrays.toString(line), e);
+        }
+
+        return interaction;
+    }
+
+
+    public Iterator<BinaryInteraction> iterate(Reader reader) throws IOException {
+        final BufferedReader bufferedReader = new BufferedReader(reader);
+        return new PsimiTabIterator(bufferedReader);
+    }
+
+    public Iterator<BinaryInteraction> iterate(String s) throws IOException {
+        final ByteArrayInputStream is = new ByteArrayInputStream(s.getBytes());
+        final InputStreamReader reader = new InputStreamReader(is);
+        final BufferedReader bufferedReader = new BufferedReader(reader);
+        return new PsimiTabIterator(bufferedReader);
+    }
+
+    public Iterator<BinaryInteraction> iterate(InputStream is) throws IOException {
+        final InputStreamReader reader = new InputStreamReader(is);
+        final BufferedReader bufferedReader = new BufferedReader(reader);
+        return new PsimiTabIterator(bufferedReader);
+    }
+
+    public Iterator<BinaryInteraction> iterate(File file) throws IOException {
+        final FileReader reader = new FileReader(file);
+        final BufferedReader bufferedReader = new BufferedReader(reader);
+        return new PsimiTabIterator(bufferedReader);
+    }
+
+    public void handleError(String message, Throwable e) throws PsimiTabException {
+        throw new PsimiTabException(message, e);
     }
 
 }

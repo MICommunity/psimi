@@ -6,9 +6,6 @@
 package psidev.psi.mi.tab.model;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Representation of a binary interaction as in the MITAB25 format.
  *
@@ -17,6 +14,14 @@ import java.util.List;
  * @since 1.0
  */
 public class BinaryInteractionImpl extends AbstractBinaryInteraction<Interactor> {
+
+    public BinaryInteractionImpl() {
+        super();
+    }
+
+    public BinaryInteractionImpl(Interactor interactor) {
+        super(interactor);
+    }
 
     public BinaryInteractionImpl(Interactor interactorA, Interactor interactorB) {
         super(interactorA, interactorB);
