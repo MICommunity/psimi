@@ -15,33 +15,11 @@
  */
 package psidev.psi.mi.search.engine.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Sort;
+import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-import psidev.psi.mi.search.SearchResult;
-import psidev.psi.mi.search.engine.SearchEngine;
-import psidev.psi.mi.search.engine.SearchEngineException;
-import psidev.psi.mi.search.util.DefaultDocumentBuilder;
-import psidev.psi.mi.search.util.DocumentBuilder;
-import psidev.psi.mi.tab.model.BinaryInteraction;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Arrays;
 
 /**
  * A Search Engine based on lucene
@@ -65,5 +43,17 @@ public class FastSearchEngine extends BinaryInteractionSearchEngine
 
     public FastSearchEngine(File indexDirectory) throws IOException {
         super(indexDirectory);
+    }
+
+    public FastSearchEngine(Directory indexDirectory, IndexWriter indexWriter) throws IOException {
+        super(indexDirectory, indexWriter);
+    }
+
+    public FastSearchEngine(String indexDirectory, IndexWriter indexWriter) throws IOException {
+        super(indexDirectory, indexWriter);
+    }
+
+    public FastSearchEngine(File indexDirectory, IndexWriter indexWriter) throws IOException {
+        super(indexDirectory, indexWriter);
     }
 }

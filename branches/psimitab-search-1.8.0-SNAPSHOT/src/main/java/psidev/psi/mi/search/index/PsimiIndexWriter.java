@@ -18,9 +18,10 @@ package psidev.psi.mi.search.index;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.model.Row;
 import psidev.psi.mi.search.util.DocumentBuilder;
@@ -60,21 +61,25 @@ public class PsimiIndexWriter {
     }
 
     public void index(String indexDir, InputStream is, boolean createIndex, boolean hasHeaderLine) throws IOException, ConverterException, MitabLineException {
-        Directory directory = FSDirectory.getDirectory(indexDir);
+        Directory directory = FSDirectory.open(new File(indexDir));
         index(directory, is, createIndex, hasHeaderLine);
     }
 
     public void index(File indexDir, InputStream is, boolean createIndex, boolean hasHeaderLine) throws IOException, ConverterException, MitabLineException {
-        Directory directory = FSDirectory.getDirectory(indexDir);
+        Directory directory = FSDirectory.open(indexDir);
         index(directory, is, createIndex, hasHeaderLine);
     }
 
     public void index(Directory directory, InputStream is, boolean createIndex, boolean hasHeaderLine) throws IOException, ConverterException, MitabLineException {
-        IndexWriter indexWriter = new IndexWriter(directory, new StandardAnalyzer(), createIndex);
-        indexWriter.setMergeFactor(MERGE_FACTOR);
-        indexWriter.setMaxMergeDocs(Integer.MAX_VALUE);
+        IndexWriterConfig writerConfig = new IndexWriterConfig(Version.LUCENE_36, new StandardAnalyzer(Version.LUCENE_36));
+        LogMergePolicy policy = new LogDocMergePolicy();
+        policy.setMergeFactor(MERGE_FACTOR);
+        policy.setMaxMergeDocs(Integer.MAX_VALUE);
+        writerConfig.setMergePolicy(policy);
+
+        IndexWriter indexWriter = new IndexWriter(directory, writerConfig);
+
         index(indexWriter, is, hasHeaderLine);
-        indexWriter.optimize();
         indexWriter.close();
     }
 

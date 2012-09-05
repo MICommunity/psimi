@@ -18,7 +18,6 @@ package psidev.psi.mi.search.index.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
@@ -75,13 +74,13 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
         BinaryInteraction copy1 = binaryInteractionHandler.cloneBinaryInteraction(binaryInteraction);
         BinaryInteraction copy2 = binaryInteractionHandler.cloneBinaryInteraction(binaryInteraction);
 
-        SearchEngine searchEngine = createSearchEngine(indexWriter.getDirectory());
+        SearchEngine searchEngine = createSearchEngine(indexWriter.getDirectory(), indexWriter);
         // interactor A
         indexBinaryInteraction(indexWriter,searchEngine, copy1, docDefinition);
         //IndexSearcher sees index as it was when it was opened, if it gets modified
         // the searcher needs to be reopened:
         searchEngine.close();
-        searchEngine = createSearchEngine(indexWriter.getDirectory());
+        searchEngine = createSearchEngine(indexWriter.getDirectory(), indexWriter);
         // invert interaction interactors
         invertInteractors(copy2);
 
@@ -120,8 +119,8 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
 
             if (log.isDebugEnabled()) log.debug("Deleting existing document for interactor: "+identifier);
 
-            indexWriter.deleteDocuments(new Term(idAColumnName, identifier.toLowerCase()));
-            indexWriter.flush();
+            indexWriter.deleteDocuments(searchEngine.createQueryFor(idAColumnName +":"+identifier.toLowerCase()));
+            indexWriter.commit();
 
             disableCVexpansion = true;
 
@@ -167,7 +166,7 @@ public class InteractorIndexWriter extends PsimiIndexWriter{
         return binaryInteractionHandler.merge(source, target);
     }
 
-    protected SearchEngine createSearchEngine(Directory directory) throws IOException{
-        return new BinaryInteractionSearchEngine(directory);
+    protected SearchEngine createSearchEngine(Directory directory, IndexWriter indexWriter) throws IOException{
+        return new BinaryInteractionSearchEngine(directory, indexWriter);
     }
 }

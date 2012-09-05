@@ -110,7 +110,7 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
 
         doc.add( new Field( "id", isolateValue( interactorsA ) + " " + isolateValue( interactorsB ),
                             Field.Store.NO,
-                            Field.Index.TOKENIZED ) );
+                            Field.Index.ANALYZED ) );
 
         addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition( 0 ), interactorsA );
         addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(1), interactorsB );
@@ -120,7 +120,7 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
 
         doc.add( new Field( "alias", isolateValue( aliasesA ) + " " + isolateValue( aliasesB ),
                             Field.Store.NO,
-                            Field.Index.TOKENIZED ) );
+                            Field.Index.ANALYZED ) );
 
         addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(4), aliasesA );
         addTokenizedAndSortableField( doc, documentDefinition.getColumnByPosition(5), aliasesB );
@@ -190,14 +190,14 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
             doc.add( new Field( columnDefinition.getKey()+"_exact",
                                 column,
                                 Field.Store.YES,
-                                Field.Index.TOKENIZED ) );
+                                Field.Index.ANALYZED ) );
             addHelperFields( doc, columnDefinition, column, columnFields, true );
         }
         else if ( column != null && !columnDefinition.getKey().equals("detmethod") && !columnDefinition.getKey().equals("type")) {
             doc.add( new Field( columnDefinition.getKey(),
                     column,
                     Field.Store.YES,
-                    Field.Index.TOKENIZED ) );
+                    Field.Index.ANALYZED ) );
             addHelperFields( doc, columnDefinition, column, columnFields, false );
         }
     }
@@ -206,17 +206,17 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
         doc.add( new Field( columnDefinition.getKey()+"_s",
                             isolateValue( column ),
                             Field.Store.NO,
-                            Field.Index.UN_TOKENIZED ) );
+                            Field.Index.NOT_ANALYZED ) );
 
         if (isExact) {
             doc.add( new Field(columnDefinition.getKey(),
                                 columnValue,
                                 Field.Store.NO,
-                                Field.Index.TOKENIZED ) );
+                                Field.Index.ANALYZED ) );
             doc.add( new Field(columnDefinition.getKey(),
                                 isolateValue( column ),
                                 Field.Store.NO,
-                                Field.Index.UN_TOKENIZED ) );
+                                Field.Index.NOT_ANALYZED ) );
         }
     }
 
@@ -236,16 +236,16 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
         doc.add( new Field( "identifier",
                             identifiers,
                             Field.Store.NO,
-                            Field.Index.TOKENIZED ) );
+                            Field.Index.ANALYZED ) );
         // this fields will be removed eventually, as we will use singular names for the searches
         doc.add( new Field( "identifiers",
                             identifiers,
                             Field.Store.NO,
-                            Field.Index.TOKENIZED ) );
+                            Field.Index.ANALYZED ) );
         doc.add( new Field( "species",
                             species,
                             Field.Store.NO,
-                            Field.Index.TOKENIZED ) );
+                            Field.Index.ANALYZED ) );
     }
 
     public String createPsimiTabLine( Document doc ) {

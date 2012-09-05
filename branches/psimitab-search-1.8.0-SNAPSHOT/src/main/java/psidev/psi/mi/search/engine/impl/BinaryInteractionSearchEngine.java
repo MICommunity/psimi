@@ -15,6 +15,7 @@
  */
 package psidev.psi.mi.search.engine.impl;
 
+import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.Directory;
 import psidev.psi.mi.search.util.DefaultDocumentBuilder;
 import psidev.psi.mi.search.util.DocumentBuilder;
@@ -42,6 +43,18 @@ public class BinaryInteractionSearchEngine extends AbstractSearchEngine<BinaryIn
 
     public BinaryInteractionSearchEngine(File indexDirectory) throws IOException {
         super(indexDirectory);
+    }
+
+    public BinaryInteractionSearchEngine(Directory indexDirectory, IndexWriter indexWriter) throws IOException {
+        super(indexDirectory, indexWriter);
+    }
+
+    public BinaryInteractionSearchEngine(String indexDirectory, IndexWriter indexWriter) throws IOException {
+        super(indexDirectory, indexWriter);
+    }
+
+    public BinaryInteractionSearchEngine(File indexDirectory, IndexWriter indexWriter) throws IOException {
+        super(indexDirectory, indexWriter);
     }
 
     protected DocumentBuilder createDocumentBuilder() {
