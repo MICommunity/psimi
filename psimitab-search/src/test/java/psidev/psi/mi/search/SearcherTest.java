@@ -96,4 +96,18 @@ public class SearcherTest
 
         assertEquals(89, results.getData().size());
     }
+
+    @Test
+    public void testSearch_interactionId() throws Exception
+    {
+        InputStream is = SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.tsv");
+
+        Assert.assertNotNull("Ensure that the above file is in the classpath and the compiler accepts *.tsv", is);
+
+        Directory indexDir = Searcher.buildIndexInMemory(is, true, true);
+
+        SearchResult results = Searcher.search("interaction_id:\"EBI-785909\"", indexDir);
+
+        assertEquals(1, results.getData().size());
+    }
 }
