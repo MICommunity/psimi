@@ -15,13 +15,19 @@
  */
 package psidev.psi.mi.search;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.store.Directory;
 import org.junit.Assert;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import psidev.psi.mi.search.index.impl.BinaryInteractionIndexWriter;
+import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
+import psidev.psi.mi.xml.converter.ConverterException;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * TODO comment this!
@@ -39,6 +45,18 @@ public class SearcherTest
 
         SearchResult results = Searcher.search("*", indexDir);
         assertEquals(199, results.getInteractions().size());
+    }
+
+    @Test
+    public void testBuildIndex3() throws ConverterException, IOException, MitabLineException {
+        File indexDir = new File("target", "intact-sample.index");
+
+        Directory index = Searcher.buildIndex(indexDir, SearcherTest.class.getResourceAsStream("/mitab_samples/intact.sample.tsv"), true, true);
+
+        SearchResult results = Searcher.search("*", index);
+        assertEquals(199, results.getInteractions().size());
+
+        FileUtils.deleteDirectory(indexDir);
     }
     
 	@Test
