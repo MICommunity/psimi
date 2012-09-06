@@ -94,7 +94,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         // directory is empty, needs to create the segment files manually because of a bug in lucene 3.6
         catch (IndexNotFoundException e){
             if (indexWriter == null){
-                IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_36, new StandardAnalyzer(Version.LUCENE_36));
+                IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_30, new StandardAnalyzer(Version.LUCENE_30));
                 config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
                 indexWriter = new IndexWriter(indexDirectory, config);
             }
@@ -167,8 +167,8 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             throw new NullPointerException("searchQuery cannot be null");
         }
 
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
-        QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, getSearchFields(), analyzer);
+        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_30);
+        QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_30, getSearchFields(), analyzer);
         Query queryResult = null;
         try {
             queryResult = parser.parse(query);
@@ -191,14 +191,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             return searchAll(firstResult, maxResults);
         }
 
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
-        QueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, getSearchFields(), analyzer);
-        Query query = null;
-        try {
-            query = parser.parse(searchQuery);
-        } catch (ParseException e) {
-            throw new SearchEngineException("Problem creating lucene query from string: "+searchQuery, e);
-        }
+        Query query = createQueryFor(searchQuery);
 
         return search(query, firstResult, maxResults, sort);
     }

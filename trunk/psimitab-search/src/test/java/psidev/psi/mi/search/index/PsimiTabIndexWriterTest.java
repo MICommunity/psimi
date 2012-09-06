@@ -54,10 +54,10 @@ public class PsimiTabIndexWriterTest
 
         ColumnBasedDocumentDefinition docDefinition = MitabDocumentDefinitionFactory.mitab25();
 
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_36);
+        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_30);
         IndexReader reader = IndexReader.open(indexDirectory);
         IndexSearcher is = new IndexSearcher(reader);
-        QueryParser parser = new QueryParser(Version.LUCENE_36, "id", analyzer);
+        QueryParser parser = new QueryParser(Version.LUCENE_30, "id", analyzer);
         Query query = parser.parse("P47077");
         TopDocs hits = is.search(query, 20);
 

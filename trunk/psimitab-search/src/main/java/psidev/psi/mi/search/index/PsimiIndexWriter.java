@@ -71,7 +71,7 @@ public class PsimiIndexWriter {
     }
 
     public void index(Directory directory, InputStream is, boolean createIndex, boolean hasHeaderLine) throws IOException, ConverterException, MitabLineException {
-        IndexWriterConfig writerConfig = new IndexWriterConfig(Version.LUCENE_36, new StandardAnalyzer(Version.LUCENE_36));
+        IndexWriterConfig writerConfig = new IndexWriterConfig(Version.LUCENE_30, new StandardAnalyzer(Version.LUCENE_30));
         LogMergePolicy policy = new LogDocMergePolicy();
         policy.setMergeFactor(MERGE_FACTOR);
         policy.setMaxMergeDocs(Integer.MAX_VALUE);
