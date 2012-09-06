@@ -18,6 +18,7 @@ package psidev.psi.mi.search;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.store.Directory;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.search.index.impl.BinaryInteractionIndexWriter;
 import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
@@ -48,6 +49,7 @@ public class SearcherTest
     }
 
     @Test
+    @Ignore
     public void testBuildIndex3() throws ConverterException, IOException, MitabLineException {
         File indexDir = new File("target", "intact-sample.index");
 
