@@ -75,6 +75,7 @@ public class MitabParserUtilsTest {
 
 	@Test
 	public void testBuildBinaryInteraction() throws Exception {
+		//TODO Update the line with one that has all the fields
 		String[] line = {
 				"innatedb:IDBG-40102",
 				"innatedb:IDBG-4279",
@@ -238,7 +239,6 @@ public class MitabParserUtilsTest {
 //        A.setStoichiometry();
 //        B.setStoichiometry();
 
-
 		A.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
 		B.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
@@ -379,6 +379,4 @@ public class MitabParserUtilsTest {
 		Assert.assertEquals(numColumns2_7, result6.length);
 
 	}
-
-
 }

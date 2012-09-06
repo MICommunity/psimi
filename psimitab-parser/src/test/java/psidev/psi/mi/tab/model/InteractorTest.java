@@ -17,22 +17,6 @@ import java.util.List;
  * @version 1.0
  */
 public class InteractorTest {
-    
-    @Test public void setGetIdentifiers() throws Exception {
-        // TODO: Test goes here...
-    }
-
-    @Test public void setGetAlternativeIdentifiers() throws Exception {
-        // TODO: Test goes here...
-    }
-
-    @Test public void setGetAliases() throws Exception {
-        // TODO: Test goes here...
-    }
-
-    @Test public void setGetOrganism() throws Exception {
-        // TODO: Test goes here...
-    }
 
     private Interactor buildSimpleInteractor( String ac, int taxid ) {
         List<CrossReference> refs = new ArrayList<CrossReference>( );

@@ -41,69 +41,67 @@ import java.util.List;
  */
 public class InteractorConverterTest {
 
-    private static final Log log = LogFactory.getLog( InteractorConverterTest.class );
+	private static final Log log = LogFactory.getLog( InteractorConverterTest.class );
 
-    private static final List<String> uniprotKeys = new ArrayList<String>( Arrays.asList( new String[]
-            {"gene name", "gene name synonym", "isoform synonym", "ordered locus name", "open reading frame name"} ) );
-
-
-    @Test
-    public void dbSourceAndShortLabelofAliasTest() throws Exception {
-
-        File file = new File( InteractorConverterTest.class.getResource( "/psi25-samples/11585365.xml" ).getFile() );
-        PsimiXmlReader reader = new PsimiXmlReader();
-
-        boolean shortLabelAliasExists = false;
-
-        EntrySet entrySet = reader.read( file );
-        Xml2Tab x2t = new Xml2Tab();
-        try {
-            Collection<BinaryInteraction> binaryInteractions = x2t.convert( entrySet );
-            assertFalse( binaryInteractions.isEmpty() );
+	private static final List<String> uniprotKeys = new ArrayList<String>( Arrays.asList( new String[]
+			{"gene name", "gene name synonym", "isoform synonym", "locus name", "ordered locus name", "open reading frame name"} ) );
 
 
-            for ( BinaryInteraction binaryInteraction : binaryInteractions ) {
+	@Test
+	public void dbSourceAndShortLabelofAliasTest() throws Exception {
 
-                Collection<CrossReference> identifierCrossReference = binaryInteraction.getInteractorA().getIdentifiers();
+		File file = new File( InteractorConverterTest.class.getResource( "/psi25-samples/11585365.xml" ).getFile() );
+		PsimiXmlReader reader = new PsimiXmlReader();
 
-                String identifier = null;
-                for ( CrossReference identCR : identifierCrossReference ) {
-                    if ( log.isDebugEnabled() ) {
-                        log.debug( "Identifier " + identCR.getIdentifier() );
-                    }
-                    identifier = identCR.getIdentifier();
-                }
+		boolean shortLabelAliasExists = false;
 
-                if ( identifier != null && identifier.equals( "P06722" ) ) {
+		EntrySet entrySet = reader.read( file );
+		Xml2Tab x2t = new Xml2Tab();
+		try {
+			Collection<BinaryInteraction> binaryInteractions = x2t.convert( entrySet );
+			assertFalse( binaryInteractions.isEmpty() );
 
-                    Collection<Alias> aliases = binaryInteraction.getInteractorA().getAliases();
 
-                    for ( Alias alias : aliases ) {
-                        if ( uniprotKeys.contains( alias.getAliasType() ) ) {
-                            Assert.assertEquals( InteractorConverter.UNIPROT, alias.getDbSource() );
-                        } else {
-                            Assert.assertEquals( "unknown", alias.getDbSource() );
+			for ( BinaryInteraction binaryInteraction : binaryInteractions ) {
 
-                        }
+				Collection<CrossReference> identifierCrossReference = binaryInteraction.getInteractorA().getIdentifiers();
 
-                        // TODO SHORT_LABEL OR DISPLAY_SHORT
-                        if ( alias.getAliasType().equals( InteractorConverter.SHORT_LABEL ) ) {
-                            Assert.assertEquals( "muth_ecoli", alias.getName() );
-                            shortLabelAliasExists = true;
-                        }
+				String identifier = null;
+				for ( CrossReference identCR : identifierCrossReference ) {
+					if ( log.isDebugEnabled() ) {
+						log.debug( "Identifier " + identCR.getIdentifier() );
+					}
+					identifier = identCR.getIdentifier();
+				}
 
-                    }//end for
-                    break;
-                } //end of if
+				if ( identifier != null && identifier.equals( "P06722" ) ) {
 
-            }//outermost for loop
+					Collection<Alias> aliases = binaryInteraction.getInteractorA().getAliases();
 
-            Assert.assertEquals( true, shortLabelAliasExists );
-        } catch ( TabConversionException e ) {
-            Assert.fail();
-        }
+					for ( Alias alias : aliases ) {
+						if ( uniprotKeys.contains( alias.getAliasType() ) ) {
+							Assert.assertEquals( InteractorConverter.UNIPROT, alias.getDbSource() );
+						} else {
+							Assert.assertEquals( "unknown", alias.getDbSource() );
 
-    }
+						}
+						if ( alias.getAliasType().equals( InteractorConverter.SHORT_LABEL ) ) {
+							Assert.assertEquals( "muth_ecoli", alias.getName() );
+							shortLabelAliasExists = true;
+						}
+
+					}//end for
+					break;
+				} //end of if
+
+			}//outermost for loop
+
+			Assert.assertEquals( true, shortLabelAliasExists );
+		} catch ( TabConversionException e ) {
+			Assert.fail();
+		}
+
+	}
 
 
 }

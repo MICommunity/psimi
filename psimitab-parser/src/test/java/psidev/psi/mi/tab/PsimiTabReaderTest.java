@@ -210,7 +210,8 @@ public class PsimiTabReaderTest {
 				"\tintact-crc:4185B91CD6A27DC2|rigid:g2O5LVCenKS94OEpfrEyAh3EM5I\tfalse\t-\t-\t1\t1\t-\t-";
 
 		psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
-		BinaryInteraction interactions = mitabReader.readLine(ANNOTATION_WITH_CONTROL);
+		BinaryInteraction interaction = mitabReader.readLine(ANNOTATION_WITH_CONTROL);
 
+		Assert.assertNotNull(interaction);
 	}
 }

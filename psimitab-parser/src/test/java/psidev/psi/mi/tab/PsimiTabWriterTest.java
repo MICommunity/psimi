@@ -286,11 +286,9 @@ public class PsimiTabWriterTest {
         Iterator<BinaryInteraction> iterator1 = firstReader.iterate(inputFile);
         Iterator<BinaryInteraction> iterator2 = secondReader.iterate(outputFile);
 
-        int count = 1;
 
         while (iterator1.hasNext() && iterator2.hasNext()) {
 
-            count++;
             BinaryInteraction interaction1 = iterator1.next();
             BinaryInteraction interaction2 = iterator2.next();
             assertEquals(interaction1, interaction2);
