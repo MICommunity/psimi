@@ -59,7 +59,7 @@
         <dependency>
             <artifactId>psi25-xml</artifactId>
             <groupId>psidev.psi.mi</groupId>
-            <version>1.8.0-SNAPSHOT</version>
+            <version>${pom.parent.version}</version>
         </dependency>
 
                <!-- OBO -->
