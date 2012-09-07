@@ -1,0 +1,117 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>psidev.psi.mi</groupId>
+        <artifactId>validator</artifactId>
+        <version>1.8.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>psidev.psi.mi</groupId>
+    <artifactId>psimi-schema-validator</artifactId>
+    <packaging>jar</packaging>
+    <version>2.0.3</version>
+
+    <name>PSI :: Schema Validator :: PSI-MI Extension</name>
+    <description>
+        The library intends to provide a framework for validating
+        PSI-MI XML Schema both at the syntactic and semantic level.
+    </description>
+
+    <build>
+        <plugins>
+            <!-- Assembly -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptor>${descriptor}</descriptor>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- PSI libs -->
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>validator</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>ontology-manager</artifactId>
+            <version>2.0.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>xxindex</artifactId>
+            <version>0.6</version>	   
+        </dependency>
+        <dependency>
+            <artifactId>psi25-xml</artifactId>
+            <groupId>psidev.psi.mi</groupId>
+            <version>1.8.0</version>
+        </dependency>
+
+               <!-- OBO -->
+
+        <dependency>
+            <groupId>obo</groupId>
+            <artifactId>obo</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>obo</groupId>
+            <artifactId>bbop</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <!-- 3rd party -->
+       <dependency>
+           <groupId>commons-logging</groupId>
+           <artifactId>commons-logging</artifactId>
+           <version>1.1.1</version>
+       </dependency>
+       <dependency>
+           <groupId>log4j</groupId>
+           <artifactId>log4j</artifactId>
+           <version>1.2.15</version>
+           <exclusions>
+               <exclusion>
+                   <groupId>javax.jms</groupId>
+                   <artifactId>jms</artifactId>
+               </exclusion>
+           </exclusions>
+       </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>com.springsource.antlr</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>com.springsource.antlr</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+
+    </dependencies>
+
+  <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
+        </repository>
+  </repositories>
+
+</project>

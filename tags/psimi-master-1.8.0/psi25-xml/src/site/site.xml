@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="PSI 2.5 XML Parser">
+    <bannerLeft>
+        <name>PSI-MI 2.5 XML Parser</name>
+    </bannerLeft>
+
+    <body>
+        <links>
+            <item name="PSI home page" href="http://psidev.info/"/>
+            <item name="PSI-MI home page" href="http://psidev.info/index.php?q=node/60"/>
+            <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=65472"/>
+        </links>
+
+        <menu name="Development">
+            <item name="Tutorial" href="tutorial.html"/>
+            <item name="FAQ" href="faq.html"/>
+        </menu>
+
+        ${reports}
+
+    </body>
+</project>

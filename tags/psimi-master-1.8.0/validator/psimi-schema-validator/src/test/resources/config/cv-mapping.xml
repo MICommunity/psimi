@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CvMapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/CvMapping.xsd"
+           modelName="PSI-MI" modelURI="MI" modelVersion="2.5">
+
+    <CvReferenceList>
+        <CvReference cvName="PSI-MI" cvIdentifier="MI"/>
+        <CvReference cvName="PSI-MOD" cvIdentifier="MOD"/>
+        <CvReference cvName="Gene Ontology" cvIdentifier="GO"/>
+    </CvReferenceList>
+
+   <CvMappingRuleList>
+
+       <CvMappingRule id="R1" name="Interaction Detection Method"
+                      cvElementPath="/entrySet/entry/interactionList/interaction/experiments/interactionDetectionMethod/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/experiments/interactionDetectionMethod"
+                      requirementLevel="MUST">
+           <CvTerm termAccession="MI:0001" allowChildren="true" termName="interaction detection method" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <CvMappingRule id="R2" name="Participant Detection Method"
+               cvElementPath="/entrySet/entry/interactionList/interaction/experiments/participantIdentificationMethod/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/experiments/participantIdentificationMethod"
+                      requirementLevel="MUST">
+           <CvTerm termAccession="MI:0002" allowChildren="true" termName="participant identification method" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <CvMappingRule id="R3" name="" cvElementPath="/entrySet/entry/interactionList/interaction/participants/features/featureType/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/participants/features/featureType"
+                      requirementLevel="SHOULD">
+           <!--feature type from MI like binding domain, mutations-->
+           <CvTerm termAccession="MI:0116" allowChildren="true" termName="feature type" useTerm="false" cvIdentifierRef="MI" />
+           <!--feature type from MOD full list of ptm-->
+           <CvTerm termAccession="MOD:00000" allowChildren="true" termName="protein modification" useTerm="false" cvIdentifierRef="MOD" />
+       </CvMappingRule>
+
+       <CvMappingRule id="R4" name="" cvElementPath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod"
+                      requirementLevel="SHOULD">
+           <CvTerm termAccession="MI:0003" allowChildren="true" termName="feature detection method" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <!-- TODO mail Luisa, Lennart & Florian
+            I would like to bring to your attention the following that relates to using scopePath.
+            A message is generated if :
+                1. an instance of the scope specified exist model we are checking on
+                2. the value denoted by the cvElementPath doesn't exist
+            eg.
+                No message generated for:
+                cvElementPath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod/xref/primaryRef/@id"
+                scopePath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod"
+
+                Message generated for:
+                cvElementPath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod/xref/primaryRef/@id"
+                scopePath="/entrySet/entry/interactionList/interaction/participants/features"
+
+                And message generated also for:
+                cvElementPath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod/xref/primaryRef/@id"
+                scopePath="/entrySet/entry/interactionList/interaction"
+
+             My concern is that I was considering to use the scope for generating the context of a message.
+        -->
+
+       <CvMappingRule id="R5" name="" cvElementPath="/entrySet/entry/interactionList/interaction/experiments/featureDetectionMethod/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/experiments/featureDetectionMethod"
+                      requirementLevel="SHOULD">
+           <CvTerm termAccession="MI:0003" allowChildren="true" termName="feature detection method" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <CvMappingRule id="R6" name="" cvElementPath="/entrySet/entry/interactionList/interaction/experiments/bibref/xref/primaryRef/@dbAc"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/experiments"
+                      requirementLevel="SHOULD">
+           <CvTerm termAccession="MI:0446" allowChildren="false" termName="pubmed" useTerm="true" cvIdentifierRef="MI"/>
+           <CvTerm termAccession="MI:0574" allowChildren="false" termName="digital object identifier" useTerm="true" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <CvMappingRule id="R7" name="" cvElementPath="/entrySet/entry/interactionList/interaction/participants/interactor/interactorType/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/participants/interactor/interactorType"
+                      requirementLevel="MUST">
+           <CvTerm termAccession="MI:0313" allowChildren="true" termName="interactor type" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <CvMappingRule id="R8" name="" cvElementPath="/entrySet/entry/interactionList/interaction/participants/biologicalRole/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/participants/biologicalRole"
+                      requirementLevel="MAY">
+           <CvTerm termAccession="MI:0500" allowChildren="true" termName="biological role" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <CvMappingRule id="R9" name="" cvElementPath="/entrySet/entry/interactionList/interaction/participants/experimentalRoles/xref/primaryRef/@id"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/participants/experimentalRoles"
+                      requirementLevel="MAY">
+           <CvTerm termAccession="MI:0495" allowChildren="true" termName="experimental role" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <CvMappingRule id="R10" name="" cvElementPath="/entrySet/entry/interactionList/interaction/participants/interactor/xref/primaryRef/@dbAc"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/entrySet/entry/interactionList/interaction/participants/interactor"
+                      requirementLevel="MUST">
+           <CvTerm termAccession="MI:0683" allowChildren="true" termName="sequence database" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
+       <!-- NOTE: Problem integrating GO terms -->
+       <!--<CvMappingRule id="R11" name=""-->
+                      <!--cvElementPath="/entrySet/entry/interactionList/interaction/participants/interactor/xref/secondaryRef/@id"-->
+                      <!--cvTermsCombinationLogic="OR"-->
+                      <!--scopePath="/entrySet/entry/interactionList/interaction/participants/interactor/xref"-->
+                      <!--requirementLevel="MAY">-->
+           <!--<CvTerm termAccession="GO:0005575" allowChildren="true" termName="cellular_component" useTerm="false" cvIdentifierRef="GO"/>-->
+           <!--<CvTerm termAccession="GO:0003674" allowChildren="true" termName="molecular_function" useTerm="false" cvIdentifierRef="GO"/>-->
+           <!--<CvTerm termAccession="GO:0008150" allowChildren="true" termName="biological_process" useTerm="false" cvIdentifierRef="GO"/>-->
+       <!--</CvMappingRule>-->
+
+   </CvMappingRuleList>
+</CvMapping>

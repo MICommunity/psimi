@@ -1,0 +1,331 @@
+   <entrySet level="2" minorVersion="3" version="5" xmlns="net:sf:psidev:mi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/rel25/src/MIF253.xsd">
+     <entry>
+       <source releaseDate="2007-07-20">
+         <names>
+           <shortLabel>European Bioinformatics Institute</shortLabel>
+         </names>
+         <bibref>
+           <xref>
+             <primaryRef db="pubmed" dbAc="MI:0446" id="14681455" refType="primary-reference" refTypeAc="MI:0358"/>
+           </xref>
+         </bibref>
+         <xref>
+           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0469" refType="primary-reference" refTypeAc="MI:0358"/>
+         </xref>
+         <attributeList>
+           <attribute name="postalAddress">Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SD, United Kingdom</attribute>
+           <attribute name="url">http://www.ebi.ac.uk</attribute>
+         </attributeList>
+       </source>
+       <experimentList>
+         <experimentDescription id="2">
+           <names>
+             <shortLabel>thoden-1999-1</shortLabel>
+             <fullName>Carbamoyl phosphate synthetase: closure of the B-domain as a result of nucleotide binding.</fullName>
+           </names>
+           <bibref>
+             <xref>
+               <primaryRef db="pubmed" dbAc="MI:0446" id="10029528" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </bibref>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-1027634" secondary="thoden-1999-1"/>
+             <secondaryRef db="newt" dbAc="MI:0247" id="562" refType="target-species" secondary="ecoli"/>
+           </xref>
+           <hostOrganismList>
+             <hostOrganism ncbiTaxId="-1">
+               <names>
+                 <shortLabel>in vitro</shortLabel>
+               </names>
+             </hostOrganism>
+           </hostOrganismList>
+           <interactionDetectionMethod>
+             <names>
+               <shortLabel>x-ray diffraction</shortLabel>
+               <fullName>x-ray crystallography</fullName>
+               <alias>X-ray</alias>
+               <alias>X-ray</alias>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0114" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionDetectionMethod>
+           <participantIdentificationMethod>
+             <names>
+               <shortLabel>predetermined</shortLabel>
+               <fullName>predetermined participant</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0396" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="7940758" refType="go-definition-ref" refTypeAc="MI:0242"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </participantIdentificationMethod>
+           <attributeList>
+             <attribute name="author-list">Thoden JB., Wesenberg G., Raushel FM., Holden HM.</attribute>
+             <attribute name="journal">Biochemistry (0006-2960)</attribute>
+             <attribute name="publication year">1999</attribute>
+             <attribute name="dataset">MSD - Data obtained from The Macromolecular Structure Database</attribute>
+           </attributeList>
+         </experimentDescription>
+       </experimentList>
+       <interactorList>
+         <interactor id="4">
+           <names>
+             <shortLabel>cara_ecoli</shortLabel>
+             <fullName>Carbamoyl-phosphate synthase small chain</fullName>
+             <alias type="gene name" typeAc="MI:0301">carA</alias>
+             <alias type="gene name synonym" typeAc="MI:0302">pyrA</alias>
+             <alias type="locus name" typeAc="MI:0305">b0032</alias>
+           </names>
+           <xref>
+             <primaryRef db="uniprotkb" dbAc="MI:0486" id="P0A6F1" refType="identity" refTypeAc="MI:0356" secondary="cara_ecoli" version="SP_49"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006274" secondary="CarA_synth_small"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR001317" secondary="CP_synthGATase"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR002474" secondary="CP_synthsmall"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR000991" secondary="GATase_1"/>
+             <secondaryRef db="uniprotkb" dbAc="MI:0486" id="P00907" refType="secondary-ac" refTypeAc="MI:0360" secondary="cara_ecoli" version="SP_49"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0005515" secondary="F:protein binding"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006220" secondary="Anth_synthII"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR011702" secondary="GATASE"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR012998" secondary="GATASE_TYPE1_AS"/>
+             <secondaryRef db="intact" dbAc="MI:0469" id="EBI-546107" secondary="cara_ecoli"/>
+           </xref>
+           <interactorType>
+             <names>
+               <shortLabel>protein</shortLabel>
+               <fullName>protein</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+             </xref>
+           </interactorType>
+           <organism ncbiTaxId="562">
+             <names>
+               <shortLabel>ecoli</shortLabel>
+               <fullName>Escherichia coli</fullName>
+             </names>
+           </organism>
+           <sequence>MIKSALLVLEDGTQFHGRAIGATGSAVGEVVFNTSMTGYQEILTDPSYSRQIVTLTYPHIGNVGTNDADEESSQVHAQGLVIRDLPLIASNFRNTEDLSSYLKRHNIVAIADIDTRKLTRLLREKGAQNGCIIAGDNPDAALALEKARAFPGLNGMDLAKEVTTAEAYSWTQGSWTLTGGLPEAKKEDELPFHVVAYDFGAKRNILRMLVDRGCRLTIVPAQTSAEDVLKMNPDGIFLSNGPGDPAPCDYAITAIQKFLETDIPVFGICLGHQLLALASGAKTVKMKFGHHGGNHPVKDVEKNVVMITAQNHGFAVDEATLPANLRVTHKSLFDGTLQGIHRTDKPAFSFQGHPEASPGPHDAAPLFDHFIELIEQYRKTAK</sequence>
+         </interactor>
+         <interactor id="7">
+           <names>
+             <shortLabel>carb_ecoli</shortLabel>
+             <fullName>Carbamoyl-phosphate synthase large chain</fullName>
+             <alias type="gene name" typeAc="MI:0301">carB</alias>
+             <alias type="gene name synonym" typeAc="MI:0302">pyrA</alias>
+             <alias type="locus name" typeAc="MI:0305">b0033</alias>
+           </names>
+           <xref>
+             <primaryRef db="uniprotkb" dbAc="MI:0486" id="P00968" refType="identity" refTypeAc="MI:0356" secondary="carb_ecoli" version="SP_49"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006275" secondary="CarA_L_glu"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005483" secondary="CPase_L"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005480" secondary="CPase_L_D3"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005481" secondary="CPase_L_N"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005479" secondary="Cphp_synth_L_D2"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR011761" secondary="ATP_GRASP"/>
+             <secondaryRef db="go" dbAc="MI:0448" id="GO:0005515" secondary="F:protein binding"/>
+             <secondaryRef db="interpro" dbAc="MI:0449" id="IPR011607" secondary="MGS"/>
+             <secondaryRef db="intact" dbAc="MI:0469" id="EBI-546118" secondary="carb_ecoli"/>
+           </xref>
+           <interactorType>
+             <names>
+               <shortLabel>protein</shortLabel>
+               <fullName>protein</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+               <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+             </xref>
+           </interactorType>
+           <organism ncbiTaxId="562">
+             <names>
+               <shortLabel>ecoli</shortLabel>
+               <fullName>Escherichia coli</fullName>
+             </names>
+           </organism>
+           <sequence>PKRTDIKSILILGAGPIVIGQACEFDYSGAQACKALREEGYRVILVNSNPATIMTDPEMADATYIEPIHWEVVRKIIEKERPDAVLPTMGGQTALNCALELERQGVLEEFGVTMIGATADAIDKAEDRRRFDVAMKKIGLETARSGIAHTMEEALAVAADVGFPCIIRPSFTMGGSGGGIAYNREEFEEICARGLDLSPTKELLIDESLIGWKEYEMEVVRDKNDNCIIVCSIENFDAMGIHTGDSITVAPAQTLTDKEYQIMRNASMAVLREIGVETGGSNVQFAVNPKNGRLIVIEMNPRVSRSSALASKATGFPIAKVAAKLAVGYTLDELMNDITGGRTPASFEPSIDYVVTKIPRFNFEKFAGANDRLTTQMKSVGEVMAIGRTQQESLQKALRGLEVGATGFDPKVSLDDPEALTKIRRELKDAGADRIWYIADAFRAGLSVDGVFNLTNIDRWFLVQIEELVRLEEKVAEVGITGLNADFLRQLKRKGFADARLAKLAGVREAEIRKLRDQYDLHPVYKRVDTCAAEFATDTAYMYSTYEEECEANPSTDREKIMVLGGGPNRIGQGIEFDYCCVHASLALREDGYETIMVNCNPETVSTDYDTSDRLYFEPVTLEDVLEIVRIEKPKGVIVQYGGQTPLKLARALEAAGVPVIGTSPDAIDRAEDRERFQHAVERLKLKQPANATVTAIEMAVEKAKEIGYPLVVRPSYVLGGRAMEIVYDEADLRRYFQTAVSVSNDAPVLLDHFLDDAVEVDVDAICDGEMVLIGGIMEHIEQAGVHSGDSACSLPAYTLSQEIQDVMRQQVQKLAFELQVRGLMNVQFAVKNNEVYLIEVNPRAARTVPFVSKATGVPLAKVAARVMAGKSLAEQGVTKEVIPPYYSVKEVVLPFNKFPGVDPLLGPEMRSTGEVMGVGRTFAEAFAKAQLGSNSTMKKHGRALLSVREGDKERVVDLAAKLLKQGFELDATHGTAIVLGEAGINPRLVNKVHEGRPHIQDRIKNGEYTYIINTTSGRRAIEDSRVIRRSALQYKVHYDTTLNGGFATAMALNADATEKVISVQEMHAQIK</sequence>
+         </interactor>
+       </interactorList>
+       <interactionList>
+         <interaction id="1">
+           <names>
+             <shortLabel>cara-carb-4</shortLabel>
+             <fullName>Structure of carbamoyl phosphate synthetase complexed with
+   the atp analog amppnp</fullName>
+           </names>
+           <xref>
+             <primaryRef db="intact" dbAc="MI:0469" id="EBI-1027640" secondary="cara-carb-4"/>
+             <secondaryRef db="rcsb pdb" dbAc="MI:0460" id="1BXR" refType="identity" refTypeAc="MI:0356"/>
+           </xref>
+           <experimentList>
+             <experimentRef>2</experimentRef>
+           </experimentList>
+           <participantList>
+             <participant id="3">
+               <interactorRef>4</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>neutral component</shortLabel>
+                     <fullName>neutral component</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0497" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+               <featureList>
+                 <feature id="5">
+                   <names>
+                     <shortLabel>region</shortLabel>
+                   </names>
+                   <featureType>
+                     <names>
+                       <shortLabel>sufficient to bind</shortLabel>
+                       <fullName>sufficient binding site</fullName>
+                     </names>
+                     <xref>
+                       <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0442" refType="identity" refTypeAc="MI:0356"/>
+                       <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                     </xref>
+                   </featureType>
+                   <featureRangeList>
+                     <featureRange>
+                       <startStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </startStatus>
+                       <begin position="1"/>
+                       <endStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </endStatus>
+                       <end position="382"/>
+                     </featureRange>
+                   </featureRangeList>
+                 </feature>
+               </featureList>
+               <hostOrganismList>
+                 <hostOrganism ncbiTaxId="562">
+                   <names>
+                     <shortLabel>ecoli</shortLabel>
+                     <fullName>Escherichia coli</fullName>
+                   </names>
+                 </hostOrganism>
+               </hostOrganismList>
+             </participant>
+             <participant id="6">
+               <interactorRef>7</interactorRef>
+               <biologicalRole>
+                 <names>
+                   <shortLabel>unspecified role</shortLabel>
+                   <fullName>unspecified role</fullName>
+                 </names>
+                 <xref>
+                   <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                   <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                 </xref>
+               </biologicalRole>
+               <experimentalRoleList>
+                 <experimentalRole>
+                   <names>
+                     <shortLabel>neutral component</shortLabel>
+                     <fullName>neutral component</fullName>
+                   </names>
+                   <xref>
+                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0497" refType="identity" refTypeAc="MI:0356"/>
+                     <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                   </xref>
+                 </experimentalRole>
+               </experimentalRoleList>
+               <featureList>
+                 <feature id="8">
+                   <names>
+                     <shortLabel>region</shortLabel>
+                   </names>
+                   <featureType>
+                     <names>
+                       <shortLabel>sufficient to bind</shortLabel>
+                       <fullName>sufficient binding site</fullName>
+                     </names>
+                     <xref>
+                       <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0442" refType="identity" refTypeAc="MI:0356"/>
+                       <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                     </xref>
+                   </featureType>
+                   <featureRangeList>
+                     <featureRange>
+                       <startStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </startStatus>
+                       <begin position="1"/>
+                       <endStatus>
+                         <names>
+                           <shortLabel>certain</shortLabel>
+                         </names>
+                         <xref>
+                           <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                         </xref>
+                       </endStatus>
+                       <end position="1072"/>
+                     </featureRange>
+                   </featureRangeList>
+                 </feature>
+               </featureList>
+               <hostOrganismList>
+                 <hostOrganism ncbiTaxId="562">
+                   <names>
+                     <shortLabel>ecoli</shortLabel>
+                     <fullName>Escherichia coli</fullName>
+                   </names>
+                 </hostOrganism>
+               </hostOrganismList>
+             </participant>
+           </participantList>
+           <interactionType>
+             <names>
+               <shortLabel>direct interaction</shortLabel>
+               <fullName>direct interaction</fullName>
+             </names>
+             <xref>
+               <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
+               <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+             </xref>
+           </interactionType>
+           <attributeList>
+             <attribute name="assembly">octameric, multimeric</attribute>
+             <attribute name="3d-resolution">2.1A</attribute>
+           </attributeList>
+         </interaction>
+       </interactionList>
+     </entry>
+   </entrySet>
