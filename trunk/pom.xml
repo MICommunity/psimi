@@ -5,7 +5,7 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.0</version>
+    <version>1.8.1-SNAPSHOT</version>
 
     <name>PSI</name>
     <description>Base build file</description>
@@ -26,9 +26,9 @@
   </modules>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.0</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.0</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/tags/psimi-master-1.8.0</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk</url>
     </scm>
 
     <properties>
