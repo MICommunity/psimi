@@ -321,7 +321,7 @@ public final class MitabParserUtils {
                                 object = new CrossReferenceImpl("psi-mi", "MI:1061", "matrix expansion");
                             } else if (field.equalsIgnoreCase("bipartite")) {
                                 object = new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion");
-                            } else if (!result[0].equalsIgnoreCase("-")) {
+							} else if (!result[0].equalsIgnoreCase("-")) {
                                 throw new IllegalFormatException("String cannot be parsed to create a cross reference (check the syntax): " + ArrayUtils.toString(result));
                             }
                         } else if (length == 2) {

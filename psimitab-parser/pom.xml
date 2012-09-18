@@ -12,14 +12,14 @@
     <packaging>jar</packaging>
     <version>1.8.1-SNAPSHOT</version>
 
-    <name>PSI :: PSI-MI TABular format tools BRANCH</name>
+    <name>PSI :: PSI-MI TABular format tools</name>
     <url>http://psidev.sf.net</url>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/branches/psimitab-parser-1.8-SNAPSHOT</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/banches/psimitab-parser-1.8-SNAPSHOT
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser
         </developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/branches/psimitab-parser-1.8-SNAPSHOT</url>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psimitab-search</url>
     </scm>
 
     <properties>
