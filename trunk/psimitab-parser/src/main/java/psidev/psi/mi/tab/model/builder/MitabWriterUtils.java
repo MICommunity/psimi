@@ -23,6 +23,7 @@ public class MitabWriterUtils {
 	private static final String EMPTY_COLUMN = "-";
 	private static final String COLUMN_DELIMITER = "\t";
 	private static final String EOF_DELIMITER = "\n";
+	private static final String UNKNOWN = "unknown";
 
 
 	public static String buildHeader(PsimiTabVersion version) {
@@ -327,6 +328,9 @@ public class MitabWriterUtils {
 				Object field = iterator.next();
 				if (field instanceof CrossReference) {
 					CrossReference crossReference = (CrossReference) field;
+					if(crossReference.getDatabase() == null){
+						crossReference.setDatabase(UNKNOWN);
+					}
 					sb.append(joinAttributes(crossReference.getDatabase(), crossReference.getIdentifier(), crossReference.getText()));
 				}
 
