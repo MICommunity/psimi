@@ -127,4 +127,31 @@ public class ParameterImplTest {
         assertEquals(parameter.getType(), "Kd");
 
     }
+
+	@Test
+	public void testParameterDifferentConstructor() throws Exception {
+
+		Parameter parameterOne = new ParameterImpl("Kd", "1.62 x10^-8 ~ 0.01", "molar");
+		Parameter parameterTwo = new ParameterImpl("Kd", 1.62, 10, -8, 0.01, "molar");
+
+		assertEquals(parameterOne.getFactor(), Double.valueOf(1.62));
+		assertEquals(parameterOne.getBase(), Integer.valueOf(10));
+		assertEquals(parameterOne.getExponent(), Integer.valueOf(-8));
+		assertEquals(parameterOne.getUncertainty(), Double.valueOf(0.01));
+		assertEquals(parameterOne.getUnit(), "molar");
+		assertEquals(parameterOne.getType(), "Kd");
+		assertEquals(parameterOne.getValue(),"1.62x10^-8 ~0.01");
+
+		assertEquals(parameterTwo.getFactor(), Double.valueOf(1.62));
+		assertEquals(parameterTwo.getBase(), Integer.valueOf(10));
+		assertEquals(parameterTwo.getExponent(), Integer.valueOf(-8));
+		assertEquals(parameterTwo.getUncertainty(), Double.valueOf(0.01));
+		assertEquals(parameterTwo.getUnit(), "molar");
+		assertEquals(parameterTwo.getType(), "Kd");
+		assertEquals(parameterTwo.getValue(),"1.62x10^-8 ~0.01");
+
+		assertEquals(parameterOne, parameterTwo);
+
+
+	}
 }
