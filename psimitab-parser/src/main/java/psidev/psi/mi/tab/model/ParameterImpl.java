@@ -186,11 +186,10 @@ public class ParameterImpl implements Parameter {
     public String getValue() {
         this.value = String.valueOf(factor);
 
-        if (exponent != 0 && base != 10) {
-            value = factor + " x " + base + "^" + exponent;
-        }
-
-        if (uncertainty != 0) {
+		if (exponent != 0 || base != 10) {
+			value = factor + "x" + base + "^" + exponent;
+		}
+		if (uncertainty != 0.0) {
             value = value + " ~" + uncertainty;
         }
 
