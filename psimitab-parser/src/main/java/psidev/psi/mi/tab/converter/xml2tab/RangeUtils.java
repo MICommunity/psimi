@@ -69,6 +69,7 @@ public class RangeUtils {
 		Collection<Range> xmlRanges = new ArrayList<Range>();
 
 		for (String range : ranges) {
+			range = range.trim();
 			if (range.contains(RANGE_SEPARATOR)) {
 				// The range has a begin and a end
 				String[] positions = range.split(RANGE_SEPARATOR);
