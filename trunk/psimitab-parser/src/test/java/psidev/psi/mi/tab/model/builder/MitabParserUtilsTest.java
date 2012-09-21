@@ -379,4 +379,111 @@ public class MitabParserUtilsTest {
 		Assert.assertEquals(numColumns2_7, result6.length);
 
 	}
+
+	@Test
+	public void testIntraInterMoleculeInteraction() throws Exception {
+
+		//TODO Change for a real example
+		String[] interactorANull ={
+				"-",
+				"innatedb:IDBG-4279",
+				"-",
+				"ensembl:ENSG00000141655",
+				"-",
+				"uniprotkb:Q9Y6Q6",
+				"psi-mi:\"MI:0007\"(\"anti tag coimmunoprecipitation\")",
+				"Arron et al. (2001)",
+				"pubmed:11406619",
+				"-",
+				"taxid:9606(Human)",
+				"psi-mi:\"MI:0915\"(physical association)",
+				"psi-mi:\"MI:0974\"(innatedb)",
+				"innatedb:IDB-113260",
+				"lpr:2|hpr:2|np:1|",
+			     "-",
+				"-",
+				"psi-mi:\"MI:0499\"(unspecified role)",
+				"-",
+				"psi-mi:\"MI:0496\"(\"bait\")",
+				"-",
+				"psi-mi:\"MI:0326\"(protein)",
+				"-",
+				"-",
+				"-",
+				"-",
+				"-",
+				"-",
+				"taxid:9606",
+				"-",
+				"2008/03/30",
+				"2008/03/30",
+				"-",
+				"-",
+				"-",
+				"false",
+				"-",
+				"-",
+				"-",
+				"2",
+				"-",
+				"psi-mi:\"MI:0363\"(inferred by author)"};
+
+		String[] interactorBNull = {
+					"innatedb:IDBG-40102",
+					"-",
+					"ensembl:ENSG00000175104",
+					"-",
+					"uniprotkb:Q9Y4K3",
+					"-",
+					"psi-mi:\"MI:0007\"(\"anti tag coimmunoprecipitation\")",
+					"Arron et al. (2001)",
+					"pubmed:11406619",
+					"taxid:9606(Human)",
+					"-",
+					"psi-mi:\"MI:0915\"(physical association)",
+					"psi-mi:\"MI:0974\"(innatedb)",
+					"innatedb:IDB-113260",
+					"lpr:2|hpr:2|np:1|",
+					"-",
+					"psi-mi:\"MI:0499\"(unspecified role)",
+					"-",
+					"psi-mi:\"MI:0498\"(\"prey\")",
+					"-",
+					"psi-mi:\"MI:0326\"(protein)",
+					"-",
+					"-",
+					"-",
+					"-",
+					"-",
+					"-",
+					"-",
+					"taxid:9606",
+					"-",
+					"2008/03/30",
+					"2008/03/30",
+					"-",
+					"-",
+					"-",
+					"false",
+					"-",
+					"-",
+					"2",
+					"-",
+					"psi-mi:\"MI:0363\"(inferred by author)",
+					"-"};
+
+		BinaryInteraction interactionABuilt = MitabParserUtils.buildBinaryInteraction(interactorANull);
+		BinaryInteraction interactionBBuilt = MitabParserUtils.buildBinaryInteraction(interactorBNull);
+
+		Interactor ANull = null;
+		Interactor BOK = new Interactor();
+
+		BinaryInteraction interactionANullToCompare = new BinaryInteractionImpl(ANull, BOK);
+
+		Interactor AOK = new Interactor();
+		Interactor BNull = null;
+
+		BinaryInteraction interactionBNullToCompare = new BinaryInteractionImpl(AOK, BNull);
+
+	}
 }
