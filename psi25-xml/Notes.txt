@@ -2,6 +2,7 @@
 Issue: currently the converters are taking care of storing experiments, interactions in DAOs.
        as such, we cannot do a pull parsing where we only iterate over interactions ...
 
+
        idea: the converters could simply convert and leave the resolution of references to the user.
 
        if we do not store object in DAOs from within the converters, we need to keep the reference in the model.
