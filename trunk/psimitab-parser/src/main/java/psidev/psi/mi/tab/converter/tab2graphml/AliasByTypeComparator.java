@@ -22,7 +22,12 @@ public class AliasByTypeComparator implements AliasComparator {
         DEFAULT_ALIAS_TYPE.add("orf name");
         DEFAULT_ALIAS_TYPE.add("locus name");
         DEFAULT_ALIAS_TYPE.add("gene name synonym");
-    }
+		DEFAULT_ALIAS_TYPE.add("shortlabel");
+		DEFAULT_ALIAS_TYPE.add("shortLabel");
+		DEFAULT_ALIAS_TYPE.add("short label");
+
+
+	}
 
     private List<String> aliasTypes = Lists.newArrayList();
 
