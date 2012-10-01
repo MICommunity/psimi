@@ -16,13 +16,12 @@ public class AliasByTypeComparator implements AliasComparator {
 
     private static List<String> DEFAULT_ALIAS_TYPE = Lists.newArrayList();
     static {
-        DEFAULT_ALIAS_TYPE.add("display name");
-        DEFAULT_ALIAS_TYPE.add("gene name");
+        DEFAULT_ALIAS_TYPE.add("display_short");
+		DEFAULT_ALIAS_TYPE.add("display_long");
+		DEFAULT_ALIAS_TYPE.add("gene name");
         DEFAULT_ALIAS_TYPE.add("orf name");
         DEFAULT_ALIAS_TYPE.add("locus name");
         DEFAULT_ALIAS_TYPE.add("gene name synonym");
-        DEFAULT_ALIAS_TYPE.add("short label");
-        DEFAULT_ALIAS_TYPE.add("shortlabel");
     }
 
     private List<String> aliasTypes = Lists.newArrayList();
