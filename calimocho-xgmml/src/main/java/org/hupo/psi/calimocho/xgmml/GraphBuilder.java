@@ -31,6 +31,7 @@ import org.hupo.psi.calimocho.model.Row;
 import org.hupo.psi.calimocho.tab.io.DefaultRowReader;
 import org.hupo.psi.calimocho.tab.io.IllegalColumnException;
 import org.hupo.psi.calimocho.tab.io.RowReader;
+import org.hupo.psi.calimocho.tab.io.parser.BooleanFieldParser;
 import org.hupo.psi.calimocho.tab.model.ColumnBasedDocumentDefinition;
 
 import javax.xml.bind.JAXBContext;
@@ -79,6 +80,30 @@ public class GraphBuilder {
         rdfObjectFactory = new calimocho.internal.rdf.ObjectFactory();
     }
 
+    private boolean isNegativeInteractions(Row row){
+        Collection<Field> negative = row.getFields(InteractionKeys.KEY_NEGATIVE);
+        if (negative == null){
+            return false;
+        }
+
+        for (Field field : negative){
+            String value = field.get(CalimochoKeys.VALUE);
+            if (value != null){
+                boolean neg = false;
+                try {
+                    neg = Boolean.parseBoolean( value );
+                } catch ( Exception e ) {
+                    System.out.println( "Boolean expected, found: "+value );
+                }
+                if (neg){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public Graph createGraphFromMitab(InputStream mitabStream, ColumnBasedDocumentDefinition docDefinition) throws IOException{
         this.calimochoReader = new DefaultRowReader(docDefinition);
 
@@ -101,14 +126,20 @@ public class GraphBuilder {
             while (line != null) {
                 try {
                     Row row = calimochoReader.readLine(line);
-                    Node nodeA = toNodeA(row, ++nodeIndex);
-                    Node nodeB = toNodeB(row, ++nodeIndex);
 
-                    Edge edge = toEdge(row, nodeA, nodeB);
+                    if (!isNegativeInteractions(row)){
+                        Node nodeA = toNodeA(row, ++nodeIndex);
+                        Node nodeB = toNodeB(row, ++nodeIndex);
 
-                    addNodeToGraph(graph, nodeA);
-                    addNodeToGraph(graph, nodeB);
-                    addEdgeToMap(graph, edge);
+                        Edge edge = toEdge(row, nodeA, nodeB);
+
+                        addNodeToGraph(graph, nodeA);
+                        addNodeToGraph(graph, nodeB);
+                        addEdgeToMap(graph, edge);
+                    }
+                    else {
+                        System.out.println("Ignore negative interaction");
+                    }
                 }
                 catch( IllegalRowException e){
                     System.out.println("Ignore badly formatted mitab line : " + line);
