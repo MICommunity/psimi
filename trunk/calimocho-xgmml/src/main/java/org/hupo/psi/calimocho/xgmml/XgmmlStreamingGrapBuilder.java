@@ -208,6 +208,30 @@ public class XgmmlStreamingGrapBuilder {
         xmlOut.flush();
     }
 
+    private boolean isNegativeInteractions(Row row){
+        Collection<Field> negative = row.getFields(InteractionKeys.KEY_NEGATIVE);
+        if (negative == null){
+            return false;
+        }
+
+        for (Field field : negative){
+            String value = field.get(CalimochoKeys.VALUE);
+            if (value != null){
+                boolean neg = false;
+                try {
+                    neg = Boolean.parseBoolean( value );
+                } catch ( Exception e ) {
+                    System.out.println( "Boolean expected, found: "+value );
+                }
+                if (neg){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void writeNodesAndEdgesFromMitab(InputStream mitabStream, ColumnBasedDocumentDefinition docDefinition) throws XMLStreamException, IOException, JAXBException {
 
         this.calimochoReader = new DefaultRowReader(docDefinition);
@@ -220,46 +244,52 @@ public class XgmmlStreamingGrapBuilder {
             while (line != null) {
                 try {
                     Row row = calimochoReader.readLine(line);
-                    XgmmlNode nodeA = toNodeA(row, ++nodeIndex, rowIndex, colIndex, cols, distance);
-                    XgmmlNode nodeB = null;
-                    // node A is not null
-                    if (nodeA != null){
-                        // we need to update coordinate if a new node has been found
-                        if (!this.nodeMap.containsKey(nodeA.getKey())){
-                            colIndex = nodeA.getColIndex();
-                            rowIndex = nodeA.getRowIndex();
-                            this.nodeMap.put(nodeA.getKey(), nodeA);
+
+                    if (!isNegativeInteractions(row)){
+                        XgmmlNode nodeA = toNodeA(row, ++nodeIndex, rowIndex, colIndex, cols, distance);
+                        XgmmlNode nodeB = null;
+                        // node A is not null
+                        if (nodeA != null){
+                            // we need to update coordinate if a new node has been found
+                            if (!this.nodeMap.containsKey(nodeA.getKey())){
+                                colIndex = nodeA.getColIndex();
+                                rowIndex = nodeA.getRowIndex();
+                                this.nodeMap.put(nodeA.getKey(), nodeA);
+                            }
+
+                            // we create nodeB
+                            nodeB = toNodeB(row, ++nodeIndex, rowIndex, colIndex, cols, distance);
+                            // self interaction, only one interactor is provided
+                            if (nodeB == null){
+                                nodeB = nodeA;
+                            }
+                            // we need to update coordinate if a new node has been found
+                            else if (!this.nodeMap.containsKey(nodeB.getKey())){
+                                colIndex = nodeB.getColIndex();
+                                rowIndex = nodeB.getRowIndex();
+                                this.nodeMap.put(nodeB.getKey(), nodeB);
+                            }
+                        }
+                        // self interaction, only one interactor is provided and it should be nodeB
+                        else {
+                            // we create nodeB
+                            nodeB = toNodeB(row, ++nodeIndex, rowIndex, colIndex, cols, distance);
+
+                            nodeA = nodeB;
+
+                            if (nodeB != null && !this.nodeMap.containsKey(nodeB.getKey())){
+                                colIndex = nodeB.getColIndex();
+                                rowIndex = nodeB.getRowIndex();
+                                this.nodeMap.put(nodeB.getKey(), nodeB);
+                            }
                         }
 
-                        // we create nodeB
-                        nodeB = toNodeB(row, ++nodeIndex, rowIndex, colIndex, cols, distance);
-                        // self interaction, only one interactor is provided
-                        if (nodeB == null){
-                            nodeB = nodeA;
-                        }
-                        // we need to update coordinate if a new node has been found
-                        else if (!this.nodeMap.containsKey(nodeB.getKey())){
-                            colIndex = nodeB.getColIndex();
-                            rowIndex = nodeB.getRowIndex();
-                            this.nodeMap.put(nodeB.getKey(), nodeB);
+                        if (nodeA != null && nodeB != null){
+                            toEdge(row, nodeA, nodeB);
                         }
                     }
-                    // self interaction, only one interactor is provided and it should be nodeB
                     else {
-                        // we create nodeB
-                        nodeB = toNodeB(row, ++nodeIndex, rowIndex, colIndex, cols, distance);
-
-                        nodeA = nodeB;
-
-                        if (nodeB != null && !this.nodeMap.containsKey(nodeB.getKey())){
-                            colIndex = nodeB.getColIndex();
-                            rowIndex = nodeB.getRowIndex();
-                            this.nodeMap.put(nodeB.getKey(), nodeB);
-                        }
-                    }
-
-                    if (nodeA != null && nodeB != null){
-                        toEdge(row, nodeA, nodeB);
+                        System.out.println("Ignore negative interaction");
                     }
                 }
                 catch( IllegalRowException e){
