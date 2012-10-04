@@ -6,9 +6,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.model.*;
-import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,12 +77,12 @@ public class GraphmlBuilder {
     public GraphmlBuilder() {
     }
 
-    protected Iterator<BinaryInteraction> getMitabIterator(InputStream is, boolean hasHeader) throws ConverterException, IOException {
-        psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
-        return reader.iterate(is);
-    }
+//    protected Iterator<BinaryInteraction> getMitabIterator(InputStream is) throws ConverterException, IOException {
+//
+//        return reader.iterate(is);
+//    }
 
-    public String build(InputStream is) throws IOException, ConverterException {
+    public String build(InputStream is) throws IOException, PsimiTabException {
 
         final long start = System.currentTimeMillis();
 
@@ -92,15 +92,17 @@ public class GraphmlBuilder {
         final Iterator<BinaryInteraction> iterator;
         int interactionCount = 0;
 
-        boolean hasHeader = false;
+//        boolean hasHeader = false;
         BufferedReader testReader = new BufferedReader(new InputStreamReader(is));
-        if (is.markSupported()) {
-            is.mark(0);
-            hasHeader = testReader.readLine().startsWith("ID interactor A");
-            is.reset();
-        }
+//        if (is.markSupported()) {
+//            is.mark(0);
+//            hasHeader = testReader.readLine().startsWith("ID interactor A");
+//            is.reset();
+//        }
         try {
-            iterator = getMitabIterator(is, hasHeader);
+			psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
+			iterator = reader.iterate(testReader);
+//            iterator = getMitabIterator(is, hasHeader);
 
             // create header of GraphML
             sb.append(GRAPHML_HEADER);
@@ -110,12 +112,22 @@ public class GraphmlBuilder {
 
                 BinaryInteraction interaction = iterator.next();
 
-                final Node nodeA = buildNode(interaction.getInteractorA());
+				Interactor A = interaction.getInteractorA();
+				Interactor B = interaction.getInteractorB();
+
+				if(A == null && B != null){
+					A = B;
+				}
+				else if(B == null && A != null){
+					B = A;
+				}
+
+				final Node nodeA = buildNode(A);
                 if (nodeA.hasXml()) {
                     sb.append(nodeA.getXml());
                 }
 
-                final Node nodeB = buildNode(interaction.getInteractorB());
+                final Node nodeB = buildNode(B);
                 if (nodeB.hasXml()) {
                     sb.append(nodeB.getXml());
                 }
@@ -130,7 +142,7 @@ public class GraphmlBuilder {
             // create footer of GraphML
             sb.append(GRAPHML_FOOTER);
 
-        } catch (ConverterException e) {
+        } catch (PsimiTabException e) {
 
             sb.append("Failed to parse MITAB data");
             sb.append(NEW_LINE);

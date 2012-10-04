@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.converter.tab2graphml;
 
+import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class Tab2Cytoscapeweb {
      * @throws IOException
      */
 
-    public String convert(InputStream inputStream) throws ConverterException, IOException {
+    public String convert(InputStream inputStream) throws PsimiTabException, IOException {
         return graphmlBuilder.build(inputStream);
     }
 }
