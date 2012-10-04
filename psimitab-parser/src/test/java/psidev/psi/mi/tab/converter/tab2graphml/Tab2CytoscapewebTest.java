@@ -2,7 +2,8 @@ package psidev.psi.mi.tab.converter.tab2graphml;
 
 import org.junit.Assert;
 import org.junit.Test;
-import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.tab.PsimiTabException;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -21,7 +22,7 @@ public class Tab2CytoscapewebTest{
         Tab2Cytoscapeweb tab2Cytoscapeweb = new Tab2Cytoscapeweb();
         try {
             output = tab2Cytoscapeweb.convert(inputStream);
-        } catch (ConverterException e) {
+        } catch (PsimiTabException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -160,7 +161,7 @@ public class Tab2CytoscapewebTest{
         Tab2Cytoscapeweb tab2Cytoscapeweb = new Tab2Cytoscapeweb();
         try {
             output = tab2Cytoscapeweb.convert(inputStream);
-        } catch (ConverterException e) {
+        } catch (PsimiTabException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
