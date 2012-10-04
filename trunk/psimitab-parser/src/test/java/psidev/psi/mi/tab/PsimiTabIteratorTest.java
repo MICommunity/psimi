@@ -5,6 +5,8 @@ import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.builder.MitabWriterUtils;
 import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
@@ -103,4 +105,42 @@ public class PsimiTabIteratorTest {
         }
         assertEquals(6, ((PsimiTabIterator) iterator).getInteractionsProcessedCount());
     }
+
+	@Test
+	public void readEmptyFile() throws Exception {
+
+		//read binary interactions
+		psidev.psi.mi.tab.io.PsimiTabReader reader = new psidev.psi.mi.tab.PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/emptyFile.txt", PsimiTabIteratorTest.class);
+		Collection<BinaryInteraction> interactions = reader.read(file);
+		assertEquals(interactions.size(),0);
+
+
+		// next() should keep returning the next element even if hasNext() hasn't been called.
+		interactions.clear();
+		Iterator<BinaryInteraction> iterator = reader.iterate(file);
+		while (iterator.hasNext()) {
+			interactions.add(iterator.next());
+		}
+		assertEquals(interactions.size(),0);
+
+	}
+
+	@Test
+	public void readEmptyFileWithHeader() throws Exception {
+		//read binary interactions
+		psidev.psi.mi.tab.io.PsimiTabReader reader = new psidev.psi.mi.tab.PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/onlyHeader.txt", PsimiTabIteratorTest.class);
+		Collection<BinaryInteraction> interactions = reader.read(file);
+		assertEquals(interactions.size(),0);
+
+
+		// next() should keep returning the next element even if hasNext() hasn't been called.
+		interactions.clear();
+		Iterator<BinaryInteraction> iterator = reader.iterate(file);
+		while (iterator.hasNext()) {
+			interactions.add(iterator.next());
+		}
+		assertEquals(interactions.size(),0);
+	}
 }
