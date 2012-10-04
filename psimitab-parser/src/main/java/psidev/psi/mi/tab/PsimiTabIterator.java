@@ -31,40 +31,40 @@ import java.util.NoSuchElementException;
  */
 public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 
-    /**
-     * Reader on the data we are going to iterate.
-     */
-    private BufferedReader interactionStreamReader;
+	/**
+	 * Reader on the data we are going to iterate.
+	 */
+	private BufferedReader interactionStreamReader;
 
 
-    /**
-     * Next line to be processed.
-     */
-    private BinaryInteraction nextLine;
+	/**
+	 * Next line to be processed.
+	 */
+	private BinaryInteraction nextLine;
 
-    /**
-     * Count of interaction already processed.
-     */
-    private int interactionsProcessedCount = 0;
+	/**
+	 * Count of interaction already processed.
+	 */
+	private int interactionsProcessedCount = 0;
 
-    /**
-     * Line number currently being parsed.
-     */
-    private int lineIndex = 0;
+	/**
+	 * Line number currently being parsed.
+	 */
+	private int lineIndex = 0;
 
-    /**
-     * indicate if the line that has been read was already consumed by the user via the next() nethod.
-     */
-    private boolean lineConsummed = false;
+	/**
+	 * indicate if the line that has been read was already consumed by the user via the next() nethod.
+	 */
+	private boolean lineConsummed = false;
 
-    private PsimiTabReader mReader;
+	private PsimiTabReader mReader;
 
-    ////////////////////////
-    // Constructor
+	////////////////////////
+	// Constructor
 
-    public PsimiTabIterator(Reader psiMiTabInteractionsReader) {
+	public PsimiTabIterator(Reader psiMiTabInteractionsReader) {
 
-        boolean isHeader = true;
+		boolean isHeader = true;
 
         if (psiMiTabInteractionsReader == null) {
             throw new IllegalArgumentException("You must give a non null input stream.");
@@ -80,7 +80,11 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
         try {
             do {
                 String firstLine = interactionStreamReader.readLine();
-                if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
+				if(firstLine == null){
+					nextLine = null;
+					isHeader = false;
+				}
+                else if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
                     //This line is not a comment, we read
                     nextLine = mReader.readLine(firstLine);
                     lineIndex++;
@@ -95,62 +99,62 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
         }
     }
 
-    //////////////////////////
-    // Iterator
+	//////////////////////////
+	// Iterator
 
-    public boolean hasNext() {
-        try {
-            if (lineConsummed) {
-                nextLine = mReader.readLine(interactionStreamReader.readLine());
-                if (nextLine == null) {
-                    closeStreamReader();
-                    interactionStreamReader = null;
-                } else {
-                    lineIndex++;
-                    lineConsummed = false;
-                }
-            }
-        } catch (Exception e) {
-            closeStreamReader();
-            return false;
-        }
+	public boolean hasNext() {
+		try {
+			if (lineConsummed) {
+				nextLine = mReader.readLine(interactionStreamReader.readLine());
+				if (nextLine == null) {
+					closeStreamReader();
+					interactionStreamReader = null;
+				} else {
+					lineIndex++;
+					lineConsummed = false;
+				}
+			}
+		} catch (Exception e) {
+			closeStreamReader();
+			return false;
+		}
 
-        return (nextLine != null);
-    }
+		return (nextLine != null);
+	}
 
-    public BinaryInteraction next() {
-        if (nextLine == null && !hasNext()) {
-            throw new NoSuchElementException();
-        }
+	public BinaryInteraction next() {
+		if (nextLine == null && !hasNext()) {
+			throw new NoSuchElementException();
+		}
 
-        BinaryInteraction interaction = nextLine;
+		BinaryInteraction interaction = nextLine;
 
-        interactionsProcessedCount++;
-        lineConsummed = true;
-        nextLine = null;
+		interactionsProcessedCount++;
+		lineConsummed = true;
+		nextLine = null;
 
-        return interaction;
-    }
+		return interaction;
+	}
 
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 
-    //////////////////////////////////
-    // additional public method(s)
+	//////////////////////////////////
+	// additional public method(s)
 
-    public int getInteractionsProcessedCount() {
-        return interactionsProcessedCount;
-    }
+	public int getInteractionsProcessedCount() {
+		return interactionsProcessedCount;
+	}
 
 
-    private void closeStreamReader() {
-        if (interactionStreamReader != null) {
-            try {
-                interactionStreamReader.close();
-            } catch (IOException e) {
-                // keep it quiet ...
-            }
-        }
-    }
+	private void closeStreamReader() {
+		if (interactionStreamReader != null) {
+			try {
+				interactionStreamReader.close();
+			} catch (IOException e) {
+				// keep it quiet ...
+			}
+		}
+	}
 }
