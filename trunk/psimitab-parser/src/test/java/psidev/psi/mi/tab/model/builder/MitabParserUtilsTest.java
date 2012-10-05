@@ -472,18 +472,101 @@ public class MitabParserUtilsTest {
 					"psi-mi:\"MI:0363\"(inferred by author)",
 					"-"};
 
-		BinaryInteraction interactionABuilt = MitabParserUtils.buildBinaryInteraction(interactorANull);
-		BinaryInteraction interactionBBuilt = MitabParserUtils.buildBinaryInteraction(interactorBNull);
+		BinaryInteraction interactionABuilt = MitabParserUtils.buildBinaryInteraction(interactorBNull);
+		BinaryInteraction interactionBBuilt = MitabParserUtils.buildBinaryInteraction(interactorANull);
 
 		Interactor ANull = null;
-		Interactor BOK = new Interactor();
+		Interactor BOK = interactionBBuilt.getInteractorB();
 
 		BinaryInteraction interactionANullToCompare = new BinaryInteractionImpl(ANull, BOK);
 
-		Interactor AOK = new Interactor();
+
+		interactionANullToCompare.setDetectionMethods(new ArrayList<CrossReference>(
+				Collections.singletonList(
+						new CrossReferenceImpl("psi-mi", "MI:0007", "anti tag coimmunoprecipitation"))));
+		interactionANullToCompare.setAuthors(new ArrayList<Author>(
+				Collections.singletonList(new AuthorImpl("Arron et al. (2001)"))));
+		interactionANullToCompare.setPublications(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("pubmed", "11406619"))));
+		interactionANullToCompare.setInteractionTypes(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0915", "physical association"))));
+		interactionANullToCompare.setSourceDatabases(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0974", "innatedb"))));
+		interactionANullToCompare.setInteractionAcs(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("innatedb", "IDB-113260"))));
+		List<Confidence> confidences = new ArrayList<Confidence>() {{
+			add(new ConfidenceImpl("lpr", "2"));
+            add(new ConfidenceImpl("hpr", "2"));
+            add(new ConfidenceImpl("np", "1"));
+		}};
+
+		interactionANullToCompare.setConfidenceValues(confidences);
+
+		Organism hostOrganism = new OrganismImpl();
+		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("taxid", "9606"))));
+
+		interactionANullToCompare.setHostOrganism(hostOrganism);
+
+		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+		Date date = formatter.parse("2008/03/30");
+
+		interactionANullToCompare.setCreationDate(new ArrayList<Date>(
+				Collections.singletonList(date)));
+		interactionANullToCompare.setUpdateDate(new ArrayList<Date>(
+				Collections.singletonList(date)));
+
+		interactionANullToCompare.setNegativeInteraction(false);
+
+		Interactor AOK = interactionABuilt.getInteractorA();
 		Interactor BNull = null;
 
 		BinaryInteraction interactionBNullToCompare = new BinaryInteractionImpl(AOK, BNull);
+
+		interactionBNullToCompare.setDetectionMethods(new ArrayList<CrossReference>(
+				Collections.singletonList(
+						new CrossReferenceImpl("psi-mi", "MI:0007", "anti tag coimmunoprecipitation"))));
+		interactionBNullToCompare.setAuthors(new ArrayList<Author>(
+				Collections.singletonList(new AuthorImpl("Arron et al. (2001)"))));
+		interactionBNullToCompare.setPublications(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("pubmed", "11406619"))));
+		interactionBNullToCompare.setInteractionTypes(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0915", "physical association"))));
+		interactionBNullToCompare.setSourceDatabases(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0974", "innatedb"))));
+		interactionBNullToCompare.setInteractionAcs(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("innatedb", "IDB-113260"))));
+
+		interactionBNullToCompare.setConfidenceValues(confidences);
+
+		interactionBNullToCompare.setHostOrganism(hostOrganism);
+
+
+		interactionBNullToCompare.setCreationDate(new ArrayList<Date>(
+				Collections.singletonList(date)));
+		interactionBNullToCompare.setUpdateDate(new ArrayList<Date>(
+				Collections.singletonList(date)));
+
+		interactionBNullToCompare.setNegativeInteraction(false);
+
+		Interactor AEmpty = new Interactor();
+
+		BinaryInteraction interactionAEmptyToCompare = new BinaryInteractionImpl(AEmpty, BOK);
+
+		Interactor BEmpty = new Interactor();
+
+		BinaryInteraction interactionBEmptyToCompare = new BinaryInteractionImpl(AOK, BEmpty);
+
+		Assert.assertNotSame(interactionANullToCompare, interactionAEmptyToCompare);
+		Assert.assertNotSame(interactionBNullToCompare, interactionBEmptyToCompare);
+
+		//It is not the same when you have an empty interaction than a null interactor
+		Assert.assertNotSame(interactionABuilt,interactionAEmptyToCompare);
+		Assert.assertEquals(interactionABuilt,interactionBNullToCompare);
+
+		//It is not the same when you have an empty interaction than a null interactor
+		Assert.assertNotSame(interactionBBuilt,interactionBEmptyToCompare);
+		Assert.assertEquals(interactionBBuilt,interactionANullToCompare);
 
 	}
 }

@@ -162,7 +162,8 @@ public final class MitabParserUtils {
 
         Interactor interactorA = new Interactor();
         Interactor interactorB = new Interactor();
-        BinaryInteraction<Interactor> interaction = new BinaryInteractionImpl(interactorA, interactorB);
+
+		BinaryInteraction<Interactor> interaction = new BinaryInteractionImpl(interactorA, interactorB);
 
         //MITAB 2.5
         interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()]));
@@ -224,6 +225,33 @@ public final class MitabParserUtils {
         interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()]));
         interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()]));
 
+		//We check some consistency in the interactors
+
+		if(!interactorA.isEmpty() && (interactorA.getIdentifiers() == null || interactorA.getIdentifiers().isEmpty())){
+			//We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
+			throw new IllegalFormatException("The interactor A has not an identifier but contains information in other attributes." +
+					"Please, add an identifier: " + interactorA.toString());
+		}
+
+		if(!interactorB.isEmpty() && (interactorB.getIdentifiers() == null || interactorB.getIdentifiers().isEmpty())){
+			//We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
+			throw new IllegalFormatException("The interactor B has not an identifier but contains information in other attributes. " +
+					"Please, add an identifier: " + interactorB.toString());
+		}
+
+		if(interactorA.isEmpty() && interactorB.isEmpty()){
+			//We don't have interactor, so we throw an exception
+			throw new IllegalFormatException("Both interactors are null or empety. We can have a interaction without interactors");
+		}
+
+		//We check if it is a intra-inter interaction. In that case one of the interactors can be null
+		if(interactorA.isEmpty() && !interactorB.isEmpty()){
+			interaction.setInteractorA(null);
+		}
+
+		if(interactorB.isEmpty() && !interactorA.isEmpty()){
+			interaction.setInteractorB(null);
+		}
 
         return interaction;
     }
