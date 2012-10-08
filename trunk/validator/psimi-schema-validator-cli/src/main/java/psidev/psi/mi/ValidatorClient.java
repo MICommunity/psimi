@@ -397,13 +397,13 @@ public class ValidatorClient {
     public static void main( String[] args ) {
 
         // three possible arguments
-        /*if( args.length != 3 ) {
+        if( args.length != 3 ) {
             System.err.println( "Usage: ValidatorClient <file> <scope> <level.threshold>" );
             System.exit( 1 );
-        }*/
-        final String filename = "/home/marine/Desktop/Jaeger12_xml_02.xml";//args[0];
-        final String validationScope = "imex";//args[1];
-        final String levelThreshold = "warn";//args[2];
+        }
+        final String filename = args[0];
+        final String validationScope = args[1];
+        final String levelThreshold = args[2];
 
         System.out.println( "filename = " + filename );
         System.out.println( "validationScope = " + validationScope );
