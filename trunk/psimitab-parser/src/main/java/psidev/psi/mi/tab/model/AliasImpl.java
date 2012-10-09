@@ -119,8 +119,9 @@ public class AliasImpl implements Alias {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Alias" );
-        sb.append( "{type='" ).append( dbSource ).append( '\'' );
+        sb.append( "{dbSource='" ).append( dbSource ).append( '\'' );
         sb.append( ", name='" ).append( name ).append( '\'' );
+		sb.append( ", type='" ).append( aliasType ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
     }
