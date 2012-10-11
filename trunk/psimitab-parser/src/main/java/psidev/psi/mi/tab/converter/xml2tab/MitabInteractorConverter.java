@@ -191,7 +191,8 @@ public class MitabInteractorConverter extends InteractorConverter<Interactor> {
 						Xref xref = new Xref(dbRef);
 						featureType.setXref(xref);
 						xmlfeature.setFeatureType(featureType);
-						Attribute attribute = new Attribute("MI:0018", "caution", "Due to a limitation in the converion mitab to xml, the real xref for the feature type can not be provided.However, you could use the name of the feature type.");
+						Attribute attribute = new Attribute("MI:0018", "caution", "Due to a limitation in the conversion form MITAB to XML," +
+								" the real xref for the feature type can not be provided. However, you could use the name of the feature type.");
 						participant.getAttributes().add(attribute);
 					}
 

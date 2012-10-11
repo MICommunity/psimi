@@ -143,6 +143,7 @@ public class AliasImpl implements Alias {
         if ( !name.equals( alias.name ) ) {
             return false;
         }
+
         if ( dbSource != null ? !dbSource.equals( alias.dbSource ) : alias.dbSource != null ) {
             return false;
         }
