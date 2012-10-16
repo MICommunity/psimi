@@ -41,9 +41,9 @@ public class MatrixExpansion extends BinaryExpansionStrategy {
     public Collection<Interaction> expand( Interaction interaction ) {
         Collection<Interaction> interactions = new ArrayList<Interaction>();
 
-        if ( isBinary( interaction ) ) {
+        if ( isBinary( interaction ) || interaction.getParticipants().size() == 1) {
 
-            log.debug( "interaction " + interaction.getId() + "/" + interaction.getImexId() + " was binary, no further processing involved." );
+            log.debug( "interaction " + interaction.getId() + "/" + interaction.getImexId() + " was binary or intra molecular, no further processing involved." );
             interactions.add( interaction );
 
         } else {

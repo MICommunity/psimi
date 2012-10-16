@@ -484,15 +484,17 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
 					= new ArrayList<Integer>();
 
 			for (Attribute attribute : attributes) {
-				if (attribute.getName().equals("comment") || attribute.getName().equals("MI:0612")) {
-					if (attribute.getValue() != null && attribute.getValue().equalsIgnoreCase("stoichiometry")) {
-						Scanner s = new Scanner(attribute.getValue());
+				if (attribute.getName().equals("comment") || attribute.getNameAc().equals("MI:0612")) {
+					if (attribute.getValue() != null && attribute.getValue().contains("Stoichiometry:")) {
+						String[] s = attribute.getValue().split(" ");
 						try {
-							if (s.hasNextLong()) {
-								tabStoichiometry.add(s.nextInt());
+							if (s.length == 2) {
+								Float st = Float.parseFloat(s[1]);
+								tabStoichiometry.add(st.intValue());
 							}
-						} finally {
-							s.close();
+						}
+						catch	(NumberFormatException e){
+							log.error("The stoichiometry can not be converted, " + attribute.toString(),e);
 						}
 					}
 				}
