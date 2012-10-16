@@ -34,4 +34,7 @@ public interface ExpansionStrategy {
      * @return spoke, matrix or none
      */
     public String getName();
+
+	public InteractionCategory findInteractionCategory(Interaction interaction);
+
 }
