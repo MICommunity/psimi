@@ -39,14 +39,31 @@ public class MatrixExpansion extends BinaryExpansionStrategy {
      * @return a non null collection of binary interaction
      */
     public Collection<Interaction> expand( Interaction interaction ) {
-        Collection<Interaction> interactions = new ArrayList<Interaction>();
+	    Collection<Interaction> interactions = new ArrayList<Interaction>();
 
-        if ( isBinary( interaction ) || interaction.getParticipants().size() == 1) {
+	    		if (interaction.getParticipants().isEmpty()) {
+	    			return interactions;
+	    		}
 
-            log.debug( "interaction " + interaction.getId() + "/" + interaction.getImexId() + " was binary or intra molecular, no further processing involved." );
-            interactions.add( interaction );
+	    		InteractionCategory category = findInteractionCategory(interaction);
 
-        } else {
+	    		if (category == null) {
+	    			return interactions;
+	    		}
+
+
+	    		if (isBinary(interaction) || category.equals(InteractionCategory.self_intra_molecular)) {
+
+	    			log.debug("interaction " + interaction.getId() + "/" + interaction.getImexId() + " was binary or intra molecular, no further processing involved.");
+	    			interactions.add(interaction);
+
+	    		}
+	    		if (category.equals(InteractionCategory.self_inter_molecular)) {
+	    			//TODO when we return the list of binary interactions in this point we need duplicate the participant and
+	    			//put zero to one of the stoichiometry
+				    log.debug("interaction " + interaction.getId() + "/" + interaction.getImexId() + " was inter molecular, reset stoichiometry of one of interactors");
+	    			interactions.add(interaction);
+	    		} else {
 
             // split interaction
             Participant[] participants = interaction.getParticipants().toArray( new Participant[]{ } );

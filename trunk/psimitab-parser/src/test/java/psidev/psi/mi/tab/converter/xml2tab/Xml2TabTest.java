@@ -22,10 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -70,7 +67,6 @@ public class Xml2TabTest {
 			assertEquals(1, binaryInteractions.size());
 			BinaryInteraction binaryInteraction = binaryInteractions.iterator().next();
 
-			assertEquals(binaryInteraction.getInteractorA(), binaryInteraction.getInteractorB());
 			assertEquals(false, isIntraMolecular(binaryInteraction));
 
 			File tabFile = new File(TestHelper.getTargetDirectory(), "8805587.txt");
@@ -134,7 +130,7 @@ public class Xml2TabTest {
 		Xml2Tab x2t = new Xml2Tab();
 		try {
 			//Without expasion
-			Collection<BinaryInteraction> binaryInteractions = x2t.convert(entrySet);
+			List<BinaryInteraction> binaryInteractions = (List<BinaryInteraction>) x2t.convert(entrySet);
 			assertFalse(binaryInteractions.isEmpty());
 			assertEquals(10, binaryInteractions.size());
 
@@ -144,6 +140,13 @@ public class Xml2TabTest {
 			PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter(PsimiTabVersion.v2_7);
 
 			writer.write(binaryInteractions, tabFile);
+
+			assertEquals((Integer) 2 , binaryInteractions.get(6).getInteractorA().getStoichiometry().get(0));
+			assertEquals((Integer) 0,binaryInteractions.get(6).getInteractorB().getStoichiometry().get(0));
+			assertEquals((Integer) 3,binaryInteractions.get(7).getInteractorA().getStoichiometry().get(0));
+			assertEquals((Integer) 0,binaryInteractions.get(7).getInteractorB().getStoichiometry().get(0));
+			assertEquals((Integer) 2,binaryInteractions.get(8).getInteractorA().getStoichiometry().get(0));
+			assertEquals((Integer) 0,binaryInteractions.get(8).getInteractorB().getStoichiometry().get(0));
 
 
 			assertTrue(tabFile.exists());

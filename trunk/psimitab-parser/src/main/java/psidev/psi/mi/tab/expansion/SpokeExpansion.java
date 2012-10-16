@@ -25,140 +25,152 @@ import java.util.Collections;
  */
 public class SpokeExpansion extends BinaryExpansionStrategy {
 
-    public static final String EXPANSION_NAME = "Spoke";
+	public static final String EXPANSION_NAME = "Spoke";
 
-    public static final String BAIT_MI_REF = "MI:0496";
+	public static final String BAIT_MI_REF = "MI:0496";
 
-    /**
-     * Sets up a logger for that class.
-     */
-    public static final Log log = LogFactory.getLog( SpokeExpansion.class );
+	/**
+	 * Sets up a logger for that class.
+	 */
+	public static final Log log = LogFactory.getLog(SpokeExpansion.class);
 
-    ///////////////////////////////////////////
-    // Implements ExpansionStrategy contract
+	///////////////////////////////////////////
+	// Implements ExpansionStrategy contract
 
-    /**
-     * Interaction having more than 2 participants get split following the spoke model expansion. That is, we build
-     * pairs of participant following bait-prey and enzyme-target associations.
-     *
-     * @param interaction a non null interaction.
-     *
-     * @return a non null collection of interaction, in case the expansion is not possible, we may return an empty
-     *         collection.
-     */
-    public Collection<Interaction> expand( Interaction interaction ) {
+	/**
+	 * Interaction having more than 2 participants get split following the spoke model expansion. That is, we build
+	 * pairs of participant following bait-prey and enzyme-target associations.
+	 *
+	 * @param interaction a non null interaction.
+	 * @return a non null collection of interaction, in case the expansion is not possible, we may return an empty
+	 *         collection.
+	 */
+	public Collection<Interaction> expand(Interaction interaction) {
 
-        Collection<Interaction> interactions = new ArrayList<Interaction>();
+		Collection<Interaction> interactions = new ArrayList<Interaction>();
 
-        if (interaction.getParticipants().isEmpty()) {
-            return interactions;
-        }
+		if (interaction.getParticipants().isEmpty()) {
+			return interactions;
+		}
 
-        if ( isBinary( interaction ) || interaction.getParticipants().size() == 1 ) {
+		InteractionCategory category = findInteractionCategory(interaction);
 
-            log.debug( "interaction " + interaction.getId() + "/" + interaction.getImexId() + " was binary or intra molecular, no further processing involved." );
-            interactions.add( interaction );
+		if (category == null) {
+			return interactions;
+		}
 
-        } else {
 
-            // split interaction
-            Collection<Participant> participants = interaction.getParticipants();
-            log.debug( participants.size() + " participant(s) found." );
+		if (isBinary(interaction) || category.equals(InteractionCategory.self_intra_molecular)) {
 
-            Participant bait = searchBaitParticipant( participants );
-            if ( bait != null ) {
-                Collection<Participant> preys = new ArrayList<Participant>( participants.size() - 1 );
-                preys.addAll( participants );
-                preys.remove( bait );
+			log.debug("interaction " + interaction.getId() + "/" + interaction.getImexId() + " was binary or intra molecular, no further processing involved.");
+			interactions.add(interaction);
 
-                for ( Participant prey : preys ) {
+		}
+		if (category.equals(InteractionCategory.self_inter_molecular)) {
+			//TODO when we return the list of binary interactions in this point we need duplicate the participant and
+			//put zero to one of the stoichiometry
+			log.debug("interaction " + interaction.getId() + "/" + interaction.getImexId() + " was inter molecular, reset stoichiometry of one of interactors");
+			interactions.add(interaction);
+		} else {
 
-                    if ( log.isDebugEnabled() ) {
-                        String baitStr = displayParticipant( bait );
-                        String preyStr = displayParticipant( prey );
-                        log.debug( "Build new binary interaction [" + baitStr + "," + preyStr + "]" );
-                    }
+			// split interaction
+			Collection<Participant> participants = interaction.getParticipants();
+			log.debug(participants.size() + " participant(s) found.");
 
-                    Interaction i = buildInteraction( interaction, bait, prey );
-                    interactions.add( i );
-                }
-            } else {
-                Collection<Interaction> noBaitExpandedInteractions = processNoBaitExpansion(interaction);
-                interactions.addAll(noBaitExpandedInteractions);
-            }
+			Participant bait = searchBaitParticipant(participants);
+			if (bait != null) {
+				Collection<Participant> preys = new ArrayList<Participant>(participants.size() - 1);
+				preys.addAll(participants);
+				preys.remove(bait);
 
-            log.debug( "After expansion: " + interactions.size() + " binary interaction(s) were generated." );
-        }
+				for (Participant prey : preys) {
 
-        return interactions;
-    }
+					if (log.isDebugEnabled()) {
+						String baitStr = displayParticipant(bait);
+						String preyStr = displayParticipant(prey);
+						log.debug("Build new binary interaction [" + baitStr + "," + preyStr + "]");
+					}
 
-    protected Collection<Interaction> processNoBaitExpansion(Interaction interaction) {
-        log.debug( "Could not find a bait participant. No further processing involved." );
-        return Collections.EMPTY_LIST;
-    }
+					Interaction i = buildInteraction(interaction, bait, prey);
+					interactions.add(i);
+				}
+			} else {
+				Collection<Interaction> noBaitExpandedInteractions = processNoBaitExpansion(interaction);
+				interactions.addAll(noBaitExpandedInteractions);
+			}
 
-    ////////////////////////////
-    // Private methods
+			log.debug("After expansion: " + interactions.size() + " binary interaction(s) were generated.");
+		}
 
-    protected String displayParticipant( Participant p ) {
+		return interactions;
+	}
 
-        // fetch role
-        String role = "";
+	protected Collection<Interaction> processNoBaitExpansion(Interaction interaction) {
+		log.debug("Could not find a bait participant. No further processing involved.");
+		return Collections.EMPTY_LIST;
+	}
 
-        for ( ExperimentalRole aRole : p.getExperimentalRoles() ) {
-            if ( role.length() > 0 ) {
-                role += "&";
-            }
+	////////////////////////////
+	// Private methods
 
-            if ( aRole.hasNames() ) {
-                role += aRole.getNames().getShortLabel();
-            } else {
-                role += "?";
-            }
-        }
+	protected String displayParticipant(Participant p) {
 
-        // fetch interactor
-        String interactor = p.getInteractor().getNames().getShortLabel();
+		// fetch role
+		String role = "";
 
-        return interactor + ":" + role;
-    }
+		for (ExperimentalRole aRole : p.getExperimentalRoles()) {
+			if (role.length() > 0) {
+				role += "&";
+			}
 
-    protected boolean isBait( Participant participant ) {
+			if (aRole.hasNames()) {
+				role += aRole.getNames().getShortLabel();
+			} else {
+				role += "?";
+			}
+		}
 
-        if ( participant == null ) {
-            throw new IllegalArgumentException( "Participant must not be null." );
-        }
+		// fetch interactor
+		String interactor = p.getInteractor().getNames().getShortLabel();
 
-        if ( participant.hasExperimentalRoles() ) {
-            for ( ExperimentalRole role : participant.getExperimentalRoles() ) {
-                // search for bait
-                log.debug( "Checking if participant (id:" + participant.getId() + ") is a bait." );
-                if ( XrefUtils.hasPsiId( role.getXref(), BAIT_MI_REF ) ) {
-                    log.debug( "Yes it is." );
-                    return true;
-                }
-                log.debug( "No it is not." );
-            }
-        }
+		return interactor + ":" + role;
+	}
 
-        return false;
-    }
+	protected boolean isBait(Participant participant) {
 
-    protected Participant searchBaitParticipant( Collection<Participant> participants ) {
+		if (participant == null) {
+			throw new IllegalArgumentException("Participant must not be null.");
+		}
 
-        if ( participants == null ) {
-            throw new IllegalArgumentException( "Participants must not be null." );
-        }
+		if (participant.hasExperimentalRoles()) {
+			for (ExperimentalRole role : participant.getExperimentalRoles()) {
+				// search for bait
+				log.debug("Checking if participant (id:" + participant.getId() + ") is a bait.");
+				if (XrefUtils.hasPsiId(role.getXref(), BAIT_MI_REF)) {
+					log.debug("Yes it is.");
+					return true;
+				}
+				log.debug("No it is not.");
+			}
+		}
 
-        for ( Participant participant : participants ) {
-            if ( isBait( participant ) ) {
-                return participant;
-            }
-        }
+		return false;
+	}
 
-        return null;
-    }
+	protected Participant searchBaitParticipant(Collection<Participant> participants) {
+
+		if (participants == null) {
+			throw new IllegalArgumentException("Participants must not be null.");
+		}
+
+		for (Participant participant : participants) {
+			if (isBait(participant)) {
+				return participant;
+			}
+		}
+
+		return null;
+	}
 
 	public String getName() {
 		return EXPANSION_NAME;

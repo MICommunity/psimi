@@ -130,6 +130,9 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 			pB = pA;
 			interactorA = getInteractorConverter().toMitab(pA);
 			interactorB = getInteractorConverter().toMitab(pB);
+			if(interactorA.getStoichiometry() != null && !interactorA.getStoichiometry().isEmpty()){
+				interactorB.setStoichiometry(Collections.singletonList(0));
+			}
 		}
 		else {
 
@@ -882,7 +885,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 		Interactor B = binaryInteraction.getInteractorB();
 
 		if ((A == null && B != null && !B.isEmpty())) {
-			//We have only one participant and we only check the first stoichiometry
+			//We have only one participant in mitab so we don't need to check the stoichiometry.
 			return true;
 
 		} else if (B == null && A != null && !A.isEmpty()) {
