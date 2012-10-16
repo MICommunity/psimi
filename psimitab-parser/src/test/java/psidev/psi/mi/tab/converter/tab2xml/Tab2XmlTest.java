@@ -185,4 +185,47 @@ public class Tab2XmlTest {
 			Assert.assertTrue(participantIterator.next().hasInteractor());
 		}
 	}
+
+	@Test
+	public void selfInteraction() throws Exception {
+		//Example EBI-988177
+
+		Collection<BinaryInteraction> binaryInteractions = null;
+		try {
+			File tabFile = TestHelper.getFileByResources("/mitab-testset/selfInteraction.txt", Tab2XmlTest.class);
+			assertTrue(tabFile.canRead());
+
+			psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
+
+			binaryInteractions = reader.read(tabFile);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (PsimiTabException e) {
+			e.printStackTrace();
+		}
+
+
+		EntrySet entrySet = null;
+		try {
+			Tab2Xml t2x = new Tab2Xml();
+			t2x.setInteractorNameBuilder(new InteractorIdBuilder());
+
+			entrySet = t2x.convert(binaryInteractions);
+			assertNotNull(entrySet);
+		} catch (XmlConversionException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+
+		File xmlFile = new File(TestHelper.getTargetDirectory(), "selfInteraction.xml");
+		assertTrue(xmlFile.getParentFile().canWrite());
+
+		PsimiXmlWriter writer = new PsimiXmlWriter();
+		writer.write(entrySet, xmlFile);
+
+	}
 }
+

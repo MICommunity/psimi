@@ -21,10 +21,10 @@ import psidev.psi.mi.tab.converter.xml2tab.InteractionConverter;
 import psidev.psi.mi.tab.converter.xml2tab.InteractorConverter;
 import psidev.psi.mi.tab.converter.xml2tab.MitabInteractionConverter;
 import psidev.psi.mi.tab.converter.xml2tab.NullCrossReference;
-import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.CrossReference;
+import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.xml.PsimiXmlVersion;
 import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Interactor;
 
 import java.util.*;
 
@@ -37,15 +37,15 @@ import java.util.*;
 
 public class Tab2Xml {
 
-    /**
-     * Sets up a logger for that class.
-     */
-    public static final Log log = LogFactory.getLog(Tab2Xml.class);
+	/**
+	 * Sets up a logger for that class.
+	 */
+	public static final Log log = LogFactory.getLog(Tab2Xml.class);
 
-    /**
-     * Interaction Converter
-     */
-    private InteractionConverter<?> interactionConverter;
+	/**
+	 * Interaction Converter
+	 */
+	private InteractionConverter<?> interactionConverter;
 
 //    /**
 //     * Collection of all Interactions.
@@ -57,92 +57,92 @@ public class Tab2Xml {
 //     */
 //    private Collection<Interactor> interactors = new ArrayList<Interactor>();
 
-    /**
-     * Strategy defining which interactor name used.
-     */
-    private InteractorNameBuilder interactorNameBuilder;
+	/**
+	 * Strategy defining which interactor name used.
+	 */
+	private InteractorNameBuilder interactorNameBuilder;
 
-    protected static final String IREFINDEX = "irefindex";
+	protected static final String IREFINDEX = "irefindex";
 
-    public Tab2Xml() {
-        this(new MitabInteractionConverter());
-    }
+	public Tab2Xml() {
+		this(new MitabInteractionConverter());
+	}
 
-    public Tab2Xml(InteractionConverter<?> interactionConverter) {
-        this.interactionConverter = interactionConverter;
-    }
+	public Tab2Xml(InteractionConverter<?> interactionConverter) {
+		this.interactionConverter = interactionConverter;
+	}
 
-    /**
-     * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
-     *
-     * @param binaryInteractions
-     * @return EntrySet
-     * @throws IllegalAccessException
-     * @throws XmlConversionException
-     */
-    public EntrySet convert(Collection<BinaryInteraction> binaryInteractions) throws IllegalAccessException, XmlConversionException {
-        return convert(binaryInteractions, createSource(null, null));
-    }
+	/**
+	 * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
+	 *
+	 * @param binaryInteractions
+	 * @return EntrySet
+	 * @throws IllegalAccessException
+	 * @throws XmlConversionException
+	 */
+	public EntrySet convert(Collection<BinaryInteraction> binaryInteractions) throws IllegalAccessException, XmlConversionException {
+		return convert(binaryInteractions, createSource(null, null));
+	}
 
-    /**
-     * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
-     *
-     * @param binaryInteractions
-     * @return EntrySet
-     * @throws IllegalAccessException
-     * @throws XmlConversionException
-     */
-    public EntrySet convert(Collection<BinaryInteraction> binaryInteractions, String dbMi, String dbName) throws IllegalAccessException, XmlConversionException {
-        return convert(binaryInteractions, createSource(dbName, dbMi));
-    }
+	/**
+	 * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
+	 *
+	 * @param binaryInteractions
+	 * @return EntrySet
+	 * @throws IllegalAccessException
+	 * @throws XmlConversionException
+	 */
+	public EntrySet convert(Collection<BinaryInteraction> binaryInteractions, String dbMi, String dbName) throws IllegalAccessException, XmlConversionException {
+		return convert(binaryInteractions, createSource(dbName, dbMi));
+	}
 
 
-    /**
-     * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
-     *
-     * @param mitabInteractions
-     * @return EntrySet
-     * @throws IllegalAccessException
-     * @throws XmlConversionException
-     */
-    public EntrySet convert(Collection<BinaryInteraction> mitabInteractions, Source source) throws IllegalAccessException, XmlConversionException {
+	/**
+	 * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
+	 *
+	 * @param mitabInteractions
+	 * @return EntrySet
+	 * @throws IllegalAccessException
+	 * @throws XmlConversionException
+	 */
+	public EntrySet convert(Collection<BinaryInteraction> mitabInteractions, Source source) throws IllegalAccessException, XmlConversionException {
 
-        if (mitabInteractions.isEmpty()) {
-            throw new IllegalAccessException("No binary interactions found in the collection");
-        }
+		if (mitabInteractions.isEmpty()) {
+			throw new IllegalAccessException("No binary interactions found in the collection");
+		}
 
-        EntrySet entrySet = new EntrySet(PsimiXmlVersion.VERSION_25_UNDEFINED);
+		EntrySet entrySet = new EntrySet(PsimiXmlVersion.VERSION_25_UNDEFINED);
 
-        Entry entry = new Entry();
-        entry.setSource(source);
+		Entry entry = new Entry();
+		entry.setSource(source);
 
-        Map<String, Collection<Participant>> interactionMap = createInteractionMap(mitabInteractions);
+		Map<String, Collection<Participant>> interactionMap = createInteractionMap(mitabInteractions);
 
-        for (BinaryInteraction<?> binaryInteraction : mitabInteractions) {
+		for (BinaryInteraction<?> binaryInteraction : mitabInteractions) {
 
-            Collection<Interaction> interactions = interactionConverter.fromMitab(binaryInteraction, interactionMap);
+			Collection<Interaction> interactions = interactionConverter.fromMitab(binaryInteraction, interactionMap);
 
-            entry.getInteractions().addAll(interactions);
-        }
+			entry.getInteractions().addAll(interactions);
+		}
 
-        entrySet.getEntries().add(entry);
+		entrySet.getEntries().add(entry);
 
-        return entrySet;
-    }
+		return entrySet;
+	}
 
-    /**
-     * Getter for property 'interactorNameBuilder'
-     */
-    public InteractorNameBuilder getInteractorNameBuilder() {
-        return interactorNameBuilder;
-    }
+	/**
+	 * Getter for property 'interactorNameBuilder'
+	 */
+	public InteractorNameBuilder getInteractorNameBuilder() {
+		return interactorNameBuilder;
+	}
 
-    /**
-     * Setter for property 'interactorNameBuilder'
-     */
-    public void setInteractorNameBuilder(InteractorNameBuilder interactorNameBuilder) {
-        this.interactorNameBuilder = interactorNameBuilder;
-    }
+	/**
+	 * Setter for property 'interactorNameBuilder'
+	 */
+	public void setInteractorNameBuilder(InteractorNameBuilder interactorNameBuilder) {
+		this.interactorNameBuilder = interactorNameBuilder;
+	}
 
 //    public Collection<Interaction> getInteractions() {
 //        return interactions;
@@ -152,61 +152,99 @@ public class Tab2Xml {
 //        return interactors;
 //    }
 
-    /**
-     * This method create a Map which is used to find the ExperimentalRole (bait,prey or unspecified)
-     * key = InteractionID and value = tab.model.InteractorPair(s)
-     *
-     * @param miTabInteractions
-     * @return
-     * @throws IllegalAccessException
-     */
-    protected Map<String, Collection<Participant>> createInteractionMap(Collection<BinaryInteraction> miTabInteractions) throws IllegalAccessException, XmlConversionException {
-        InteractorConverter<?> interactorConverter = interactionConverter.getInteractorConverter();
+	/**
+	 * This method create a Map which is used to find the ExperimentalRole (bait,prey or unspecified)
+	 * key = InteractionID and value = tab.model.InteractorPair(s)
+	 *
+	 * @param miTabInteractions
+	 * @return
+	 * @throws IllegalAccessException
+	 */
+	protected Map<String, Collection<Participant>> createInteractionMap(Collection<BinaryInteraction> miTabInteractions) throws IllegalAccessException, XmlConversionException {
+		InteractorConverter<?> interactorConverter = interactionConverter.getInteractorConverter();
 
-        Map<String, Collection<Participant>> interactionMap = new HashMap<String, Collection<Participant>>();
-        interactorConverter.setInteractorNameBuilder(getInteractorNameBuilder());
+		Map<String, Collection<Participant>> interactionMap = new HashMap<String, Collection<Participant>>();
+		interactorConverter.setInteractorNameBuilder(getInteractorNameBuilder());
 
-        for (BinaryInteraction<?> binaryInteraction : miTabInteractions) {
-            final List<CrossReference> crossReference = binaryInteraction.getInteractionAcs();
+		for (BinaryInteraction<?> binaryInteraction : miTabInteractions) {
+			final List<CrossReference> crossReference = binaryInteraction.getInteractionAcs();
 
-            if (crossReference.isEmpty()) {
-                crossReference.add(new NullCrossReference(binaryInteraction));
-            }
+			if (crossReference.isEmpty()) {
+				crossReference.add(new NullCrossReference(binaryInteraction));
+			}
 
-            // Arbitrarily pick the first one
-            String interactionId = crossReference.get(0).getIdentifier();
-            interactionId = interactionId + "_" + binaryInteraction.getInteractorA().getIdentifiers().iterator().next().getIdentifier()
-                    + "_" + binaryInteraction.getInteractorB().getIdentifiers().iterator().next().getIdentifier();
+			// Arbitrarily pick the first one
+			StringBuilder interactionIdBuilder = new StringBuilder();
 
-            Interactor iA = interactorConverter.fromMitab(binaryInteraction.getInteractorA());
-            Interactor iB = interactorConverter.fromMitab(binaryInteraction.getInteractorB());
+			interactionIdBuilder.append(crossReference.get(0).getIdentifier());
+			interactionIdBuilder.append("_");
 
-            // reusing the interactor in the participants
+			psidev.psi.mi.tab.model.Interactor A = binaryInteraction.getInteractorA();
+			psidev.psi.mi.tab.model.Interactor B = binaryInteraction.getInteractorB();
+
+			Participant pA = null;
+			Participant pB = null;
+
+			if (A != null && B != null) {
+				interactionIdBuilder.append(binaryInteraction.getInteractorA().getIdentifiers().iterator().next().getIdentifier());
+				interactionIdBuilder.append("_");
+				interactionIdBuilder.append(binaryInteraction.getInteractorB().getIdentifiers().iterator().next().getIdentifier());
+
+				Interactor iA = interactorConverter.fromMitab(binaryInteraction.getInteractorA());
+				// Note: the index is not used by these methods, just left here not to break the API.
+				pA = interactorConverter.buildParticipantA(iA, binaryInteraction, 0);
+				Interactor iB = interactorConverter.fromMitab(binaryInteraction.getInteractorB());
+				// Note: the index is not used by these methods, just left here not to break the API.
+				pB = interactorConverter.buildParticipantB(iB, binaryInteraction, 0);
+
+			} else if (A != null && !A.isEmpty()) {
+				interactionIdBuilder.append(binaryInteraction.getInteractorA().getIdentifiers().iterator().next().getIdentifier());
+				Interactor iA = interactorConverter.fromMitab(binaryInteraction.getInteractorA());
+				// Note: the index is not used by these methods, just left here not to break the API.
+				pA = interactorConverter.buildParticipantA(iA, binaryInteraction, 0);
+
+				//In this case is a self interaction
+
+
+			} else if (B != null && !B.isEmpty()) {
+				interactionIdBuilder.append(binaryInteraction.getInteractorB().getIdentifiers().iterator().next().getIdentifier());
+				Interactor iB = interactorConverter.fromMitab(binaryInteraction.getInteractorB());
+				// Note: the index is not used by these methods, just left here not to break the API.
+				pB = interactorConverter.buildParticipantB(iB, binaryInteraction, 0);
+
+				//In this case is a self interaction
+
+			} else {
+				new XmlConversionException("Both interactors are null or empty , we can not convert the interaction");
+			}
+
+
+			String interactionId = interactionIdBuilder.toString();
+
+
+			// reusing the interactor in the participants
 //            iA = checkInteractor(iA);
 //            iB = checkInteractor(iB);
 
-            // Note: the index is not used by these methods, just left here not to break the API.
-            Participant pA = interactorConverter.buildParticipantA(iA, binaryInteraction, 0);
-            Participant pB = interactorConverter.buildParticipantB(iB, binaryInteraction, 0);
 
-            Collection<Participant> participants = null;
-            if (!interactionMap.containsKey(interactionId)) {
-                participants = new ArrayList<Participant>();
-            } else {
-                participants = interactionMap.get(interactionId);
-            }
+			Collection<Participant> participants = null;
+			if (!interactionMap.containsKey(interactionId)) {
+				participants = new ArrayList<Participant>();
+			} else {
+				participants = interactionMap.get(interactionId);
+			}
 
-            if (!participants.contains(pA)) {
-                participants.add(pA);
-            }
-            if (!participants.contains(pB)) {
-                participants.add(pB);
-            }
+			if (pA != null && !participants.contains(pA)) {
+				participants.add(pA);
+			}
+			if (pB != null && !participants.contains(pB)) {
+				participants.add(pB);
+			}
 
-            interactionMap.put(interactionId, participants);
-        }
-        return interactionMap;
-    }
+			interactionMap.put(interactionId, participants);
+		}
+		return interactionMap;
+	}
 
 //    private psidev.psi.mi.xml.model.Interactor checkInteractor(psidev.psi.mi.xml.model.Interactor interactor1) {
 //        psidev.psi.mi.xml.model.Interactor interactor = interactor1;
@@ -229,36 +267,36 @@ public class Tab2Xml {
 //        return interactor;
 //    }
 
-    /**
-     * This method create a new Source of the binaryInteraction data.
-     *
-     * @return source
-     */
-    private Source createSource(String db, String dbMi) {
+	/**
+	 * This method create a new Source of the binaryInteraction data.
+	 *
+	 * @return source
+	 */
+	private Source createSource(String db, String dbMi) {
 
-        Source source = new Source();
+		Source source = new Source();
 
-        // set default release Date
-        Date date = new Date();
-        source.setReleaseDate(date);
+		// set default release Date
+		Date date = new Date();
+		source.setReleaseDate(date);
 
-        // set Source name
-        Names names = new Names();
+		// set Source name
+		Names names = new Names();
 
-        if (db != null) {
-            names.setShortLabel(db);
-        } else {
-            names.setShortLabel("unspecified");
-        }
+		if (db != null) {
+			names.setShortLabel(db);
+		} else {
+			names.setShortLabel("unspecified");
+		}
 
-        source.setNames(names);
+		source.setNames(names);
 
-        if (dbMi != null && dbMi.startsWith("MI:")) {
-            DbReference dbReference = new DbReference("psi-mi", "MI:0488", dbMi, "primary-reference", "MI:0358");
-            Xref xref = new Xref(dbReference);
-            source.setXref(xref);
-        }
+		if (dbMi != null && dbMi.startsWith("MI:")) {
+			DbReference dbReference = new DbReference("psi-mi", "MI:0488", dbMi, "primary-reference", "MI:0358");
+			Xref xref = new Xref(dbReference);
+			source.setXref(xref);
+		}
 
-        return source;
-    }
+		return source;
+	}
 }
