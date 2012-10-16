@@ -74,6 +74,10 @@ public class Tab2XmlTest {
 		PsimiXmlWriter writer = new PsimiXmlWriter();
 		writer.write(entrySet, xmlFile);
 
+		if(xmlFile.exists()){
+			xmlFile.deleteOnExit();
+		}
+
 	}
 
 	@Test
@@ -116,6 +120,9 @@ public class Tab2XmlTest {
 		PsimiXmlWriter writer = new PsimiXmlWriter();
 		writer.write(entrySet, xmlFile);
 
+		if(xmlFile.exists()){
+			xmlFile.deleteOnExit();
+		}
 	}
 
 	@Test
@@ -225,6 +232,11 @@ public class Tab2XmlTest {
 
 		PsimiXmlWriter writer = new PsimiXmlWriter();
 		writer.write(entrySet, xmlFile);
+
+
+		if(xmlFile.exists()){
+			xmlFile.deleteOnExit();
+		}
 
 	}
 }
