@@ -6,9 +6,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.expansion.SpokeWithoutBaitExpansion;
+import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
+import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.EntrySet;
 
@@ -225,7 +227,7 @@ public class Xml2TabTest {
 	}
 
     @Test
-    public void negative_interactions() throws Exception {
+    public void negativeInteractions() throws Exception {
 
         // negative interactions shouldn't be converted into MITAB 2.5
         File file = TestHelper.getFileByResources("/psi25-testset/simple-negative.xml", Xml2TabTest.class);
@@ -237,6 +239,32 @@ public class Xml2TabTest {
             Collection<BinaryInteraction> binaryInteractions = x2t.convert(entrySet);
             assertFalse(binaryInteractions.isEmpty());
             assertEquals(true, binaryInteractions.iterator().next().isNegativeInteraction());
+
+        } catch (TabConversionException e) {
+            fail();
+        }
+
+    }
+
+	@Test
+    public void intraMolecularInteractions() throws Exception {
+
+        // negative interactions shouldn't be converted into MITAB 2.5
+        File file = TestHelper.getFileByResources("/psi25-testset/intraMolecular.xml", Xml2TabTest.class);
+        PsimiXmlReader reader = new PsimiXmlReader();
+
+        EntrySet entrySet = reader.read(file);
+        Xml2Tab x2t = new Xml2Tab();
+        try {
+            Collection<BinaryInteraction> binaryInteractions = x2t.convert(entrySet);
+            assertFalse(binaryInteractions.isEmpty());
+
+	        File tabFile = new File(TestHelper.getTargetDirectory(), "intraMolecular.txt");
+            assertTrue(tabFile.getParentFile().canWrite());
+
+	        PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter(PsimiTabVersion.v2_7);
+
+            writer.write(binaryInteractions, tabFile);
 
         } catch (TabConversionException e) {
             fail();
