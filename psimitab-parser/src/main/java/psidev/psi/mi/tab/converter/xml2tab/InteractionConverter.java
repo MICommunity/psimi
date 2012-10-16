@@ -107,17 +107,39 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 //            return null;
 //        }
 
-		if (interaction.getParticipants().size() != 2) {
-			log.warn("interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it does not have exactly 2 participants.");
+		if (interaction.getParticipants().size() > 2) {
+			log.error("interaction (id:" + interaction.getId() + ") could not be converted to MITAB25 as it does not have exactly 1 or 2 participants.");
 			return null;
 		}
 
-		Iterator<Participant> pi = interaction.getParticipants().iterator();
-		Participant pA = pi.next();
-		Participant pB = pi.next();
+		Participant pA = null;
+		Participant pB = null;
+		Interactor interactorA = null;
+		Interactor interactorB = null;
 
-		final Interactor interactorA = getInteractorConverter().toMitab(pA);
-		final Interactor interactorB = getInteractorConverter().toMitab(pB);
+		if(interaction.getParticipants().size() == 1 && interaction.isIntraMolecular()){
+			Iterator<Participant> pi = interaction.getParticipants().iterator();
+			pA = pi.next();
+			interactorA = getInteractorConverter().toMitab(pA);
+
+		}
+		else if (interaction.getParticipants().size() == 1 && !interaction.isIntraMolecular()) {
+			//IntraMolecular
+			Iterator<Participant> pi = interaction.getParticipants().iterator();
+			pA = pi.next();
+			pB = pA;
+			interactorA = getInteractorConverter().toMitab(pA);
+			interactorB = getInteractorConverter().toMitab(pB);
+		}
+		else {
+
+			Iterator<Participant> pi = interaction.getParticipants().iterator();
+			pA = pi.next();
+			pB = pi.next();
+			interactorA = getInteractorConverter().toMitab(pA);
+			interactorB = getInteractorConverter().toMitab(pB);
+
+		}
 
 		BinaryInteraction<?> bi = newBinaryInteraction(interactorA, interactorB);
 
