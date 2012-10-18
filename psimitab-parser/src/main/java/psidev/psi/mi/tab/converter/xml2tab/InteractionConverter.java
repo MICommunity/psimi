@@ -40,11 +40,6 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 	private PublicationConverter pubConverter = new PublicationConverter();
 
 	/**
-	 * Override the alias source database (column 3/4 & 5/6).
-	 */
-	private CrossReference overrideAliasSourceDatabase;
-
-	/**
 	 * Source database for the Interaction Id (column 14).
 	 */
 	private Collection<CrossReference> sourceDatabases;
@@ -87,14 +82,6 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 		getSourceDatabase().add(sourceDatabase);
 	}
 
-	/**
-	 * Setter for property 'overrideAliasSourceDatabase'.
-	 *
-	 * @param overrideAliasSourceDatabase Value to set for property 'overrideAliasSourceDatabase'.
-	 */
-	public void setOverrideAliasSourceDatabase(CrossReference overrideAliasSourceDatabase) {
-		this.overrideAliasSourceDatabase = overrideAliasSourceDatabase;
-	}
 
 	//////////////////////
 	// Convertion
@@ -132,6 +119,15 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 			interactorB = getInteractorConverter().toMitab(pB);
 			if(interactorA.getStoichiometry() != null && !interactorA.getStoichiometry().isEmpty()){
 				interactorB.setStoichiometry(Collections.singletonList(0));
+				List<Annotation> annotations = interactorB.getAnnotations();
+				List<Annotation> filterAnnotations = new ArrayList<Annotation>();
+
+				for (Annotation annotation : annotations) {
+					if(!annotation.getText().contains("Stoichiometry: ")){
+						filterAnnotations.add(annotation);
+					}
+				}
+				interactorB.setAnnotations(filterAnnotations);
 			}
 		}
 		else {

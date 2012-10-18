@@ -73,20 +73,6 @@ public abstract class InteractorConverter<T extends psidev.psi.mi.tab.model.Inte
 	private CvConverter cvConverter = new CvConverter();
 
 
-	///////////////////////////
-	// Setter
-
-	/**
-	 * Setter for property 'overrideAliasSourceDatabase'.
-	 *
-	 * @param overrideAliasSourceDatabase Value to set for property 'overrideAliasSourceDatabase'.
-	 */
-	@Deprecated
-	public void setOverrideAliasSourceDatabase(CrossReference overrideAliasSourceDatabase) {
-		this.overrideAliasSourceDatabase = overrideAliasSourceDatabase;
-
-	}
-
 	private CrossReference buildCrossReference(DbReference ref) {
 		return new CrossReferenceImpl(ref.getDb(), ref.getId());
 	}

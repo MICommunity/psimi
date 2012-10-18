@@ -10,15 +10,15 @@ import psidev.psi.mi.xml.model.Names;
 
 /**
  * Interface for build a name to an interaction.
- * 
+ *
  * @author Nadin Neuhauser (nneuhaus@ebi.ac.uk)
  *
  */
 public interface InteractorNameBuilder {
-	
+
 	/**
 	 * Select a name into a
-	 * @param interaction
+	 * @param interactor
 	 * @return
 	 */
 	public Names select(Interactor interactor);

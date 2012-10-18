@@ -21,10 +21,10 @@ import psidev.psi.mi.tab.converter.xml2tab.InteractionConverter;
 import psidev.psi.mi.tab.converter.xml2tab.InteractorConverter;
 import psidev.psi.mi.tab.converter.xml2tab.MitabInteractionConverter;
 import psidev.psi.mi.tab.converter.xml2tab.NullCrossReference;
-import psidev.psi.mi.tab.model.*;
+import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.xml.PsimiXmlVersion;
 import psidev.psi.mi.xml.model.*;
-import psidev.psi.mi.xml.model.Interactor;
 
 import java.util.*;
 
@@ -63,6 +63,21 @@ public class Tab2Xml {
 	private InteractorNameBuilder interactorNameBuilder;
 
 	protected static final String IREFINDEX = "irefindex";
+	public static final String PSI_MI = "psi-mi";
+	public static final String PSI_MI_REF = "MI:0488";
+	public static final String IDENTITY = "identity";
+	public static final String IDENTITY_REF = "MI:0356";
+	public static final String UNKNOWN = "unknown";
+
+	public static final String UNIPROT = "uniprotkb";
+	private static final String UNIPROT_MI = "MI:0486";
+
+	public static final String INTACT = "intact";
+	private static final String INTACT_MI = "MI:0469";
+
+	public static final String CHEBI = "chebi";
+	private static final String CHEBI_MI = "MI:0474";
+
 
 	public Tab2Xml() {
 		this(new MitabInteractionConverter());
@@ -81,54 +96,56 @@ public class Tab2Xml {
 	 * @throws XmlConversionException
 	 */
 	public EntrySet convert(Collection<BinaryInteraction> binaryInteractions) throws IllegalAccessException, XmlConversionException {
-		return convert(binaryInteractions, createSource(null, null));
-	}
 
-	/**
-	 * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
-	 *
-	 * @param binaryInteractions
-	 * @return EntrySet
-	 * @throws IllegalAccessException
-	 * @throws XmlConversionException
-	 */
-	public EntrySet convert(Collection<BinaryInteraction> binaryInteractions, String dbMi, String dbName) throws IllegalAccessException, XmlConversionException {
-		return convert(binaryInteractions, createSource(dbName, dbMi));
-	}
-
-
-	/**
-	 * This method convert a Collection of BinaryInteractions to a EntrySet, grouping the interactions by entries depending on its source db.
-	 *
-	 * @param mitabInteractions
-	 * @return EntrySet
-	 * @throws IllegalAccessException
-	 * @throws XmlConversionException
-	 */
-	public EntrySet convert(Collection<BinaryInteraction> mitabInteractions, Source source) throws IllegalAccessException, XmlConversionException {
-
-		if (mitabInteractions.isEmpty()) {
+		if (binaryInteractions.isEmpty()) {
 			throw new IllegalAccessException("No binary interactions found in the collection");
 		}
 
 		EntrySet entrySet = new EntrySet(PsimiXmlVersion.VERSION_25_UNDEFINED);
 
-		Entry entry = new Entry();
-		entry.setSource(source);
+		HashMap<List<CrossReference>, Entry> listXrefEntryHashMap = new HashMap<List<CrossReference>, Entry>();
 
-		Map<String, Collection<Participant>> interactionMap = createInteractionMap(mitabInteractions);
 
-		for (BinaryInteraction<?> binaryInteraction : mitabInteractions) {
+		Map<Entry, List<BinaryInteraction>> interactionsPerSource = new HashMap<Entry, List<BinaryInteraction>>();
 
-			Collection<Interaction> interactions = interactionConverter.fromMitab(binaryInteraction, interactionMap);
+		for (BinaryInteraction<?> binaryInteraction : binaryInteractions) {
 
-			entry.getInteractions().addAll(interactions);
+			Entry xmlEntry;
+
+			List<CrossReference> sources = binaryInteraction.getSourceDatabases();
+
+			if (!listXrefEntryHashMap.containsKey(sources)) {
+				//If we have more than one source we only use the first one
+				Source xmlSource = createSource(sources);
+				xmlEntry = new Entry();
+				xmlEntry.setSource(xmlSource);
+				listXrefEntryHashMap.put(sources, xmlEntry);
+
+				List<BinaryInteraction> lbi = new ArrayList<BinaryInteraction>();
+				lbi.add(binaryInteraction);
+
+				interactionsPerSource.put(xmlEntry, lbi);
+
+			} else {
+				xmlEntry = listXrefEntryHashMap.get(sources);
+				interactionsPerSource.get(xmlEntry).add(binaryInteraction);
+			}
 		}
 
-		entrySet.getEntries().add(entry);
+		for(Entry entry : interactionsPerSource.keySet()){
+			Collection<BinaryInteraction> binaryInteractionsPerSource = interactionsPerSource.get(entry);
+			Map<String, Collection<Participant>> interactionMap = createInteractionMap(binaryInteractionsPerSource);
+
+			for (BinaryInteraction interaction : binaryInteractionsPerSource) {
+				Collection<Interaction> interactions = interactionConverter.fromMitab(interaction, interactionMap);
+				entry.getInteractions().addAll(interactions);
+			}
+			entrySet.getEntries().add(entry);
+		}
 
 		return entrySet;
 	}
+
 
 	/**
 	 * Getter for property 'interactorNameBuilder'
@@ -144,13 +161,6 @@ public class Tab2Xml {
 		this.interactorNameBuilder = interactorNameBuilder;
 	}
 
-//    public Collection<Interaction> getInteractions() {
-//        return interactions;
-//    }
-//
-//    public Collection<Interactor> getInteractors() {
-//        return interactors;
-//    }
 
 	/**
 	 * This method create a Map which is used to find the ExperimentalRole (bait,prey or unspecified)
@@ -161,6 +171,10 @@ public class Tab2Xml {
 	 * @throws IllegalAccessException
 	 */
 	protected Map<String, Collection<Participant>> createInteractionMap(Collection<BinaryInteraction> miTabInteractions) throws IllegalAccessException, XmlConversionException {
+
+
+		List<Interactor> interactors = new ArrayList<Interactor>();
+
 		InteractorConverter<?> interactorConverter = interactionConverter.getInteractorConverter();
 
 		Map<String, Collection<Participant>> interactionMap = new HashMap<String, Collection<Participant>>();
@@ -191,24 +205,35 @@ public class Tab2Xml {
 				interactionIdBuilder.append(binaryInteraction.getInteractorB().getIdentifiers().iterator().next().getIdentifier());
 
 				Interactor iA = interactorConverter.fromMitab(binaryInteraction.getInteractorA());
+				Interactor iB = interactorConverter.fromMitab(binaryInteraction.getInteractorB());
+
+				// reusing the interactor in the participants
+				iA = checkInteractor(iA, interactors);
+				iB = checkInteractor(iB, interactors);
+
 				// Note: the index is not used by these methods, just left here not to break the API.
 				pA = interactorConverter.buildParticipantA(iA, binaryInteraction, 0);
-				Interactor iB = interactorConverter.fromMitab(binaryInteraction.getInteractorB());
-				// Note: the index is not used by these methods, just left here not to break the API.
 				pB = interactorConverter.buildParticipantB(iB, binaryInteraction, 0);
 
 			} else if (A != null && !A.isEmpty()) {
 				interactionIdBuilder.append(binaryInteraction.getInteractorA().getIdentifiers().iterator().next().getIdentifier());
 				Interactor iA = interactorConverter.fromMitab(binaryInteraction.getInteractorA());
+
+				// reusing the interactor in the participants
+				iA = checkInteractor(iA, interactors);
+
 				// Note: the index is not used by these methods, just left here not to break the API.
 				pA = interactorConverter.buildParticipantA(iA, binaryInteraction, 0);
 
 				//In this case is a self interaction
 
-
 			} else if (B != null && !B.isEmpty()) {
 				interactionIdBuilder.append(binaryInteraction.getInteractorB().getIdentifiers().iterator().next().getIdentifier());
 				Interactor iB = interactorConverter.fromMitab(binaryInteraction.getInteractorB());
+
+				// reusing the interactor in the participants
+				iB = checkInteractor(iB, interactors);
+
 				// Note: the index is not used by these methods, just left here not to break the API.
 				pB = interactorConverter.buildParticipantB(iB, binaryInteraction, 0);
 
@@ -221,13 +246,8 @@ public class Tab2Xml {
 
 			String interactionId = interactionIdBuilder.toString();
 
-
-			// reusing the interactor in the participants
-//            iA = checkInteractor(iA);
-//            iB = checkInteractor(iB);
-
-
 			Collection<Participant> participants = null;
+
 			if (!interactionMap.containsKey(interactionId)) {
 				participants = new ArrayList<Participant>();
 			} else {
@@ -246,57 +266,112 @@ public class Tab2Xml {
 		return interactionMap;
 	}
 
-//    private psidev.psi.mi.xml.model.Interactor checkInteractor(psidev.psi.mi.xml.model.Interactor interactor1) {
-//        psidev.psi.mi.xml.model.Interactor interactor = interactor1;
-//
-//        for (psidev.psi.mi.xml.model.Interactor interactor2 : interactors) {
-//
-//            if (interactor1.getNames().equals(interactor2.getNames()) &&
-//                    interactor1.getXref().equals(interactor2.getXref())) {
-//                interactor = interactor2;
-//                break;
-//            }
-//
-//        }
-//        if (interactor.equals(interactor1)) {
-//            if (!interactors.contains(interactor1)) {
-//                interactors.add(interactor);
-//            }
-//        }
-//
-//        return interactor;
-//    }
+	private psidev.psi.mi.xml.model.Interactor checkInteractor(psidev.psi.mi.xml.model.Interactor interactor1, List<Interactor> interactors) {
+		psidev.psi.mi.xml.model.Interactor auxInteractor = interactor1;
+
+		for (psidev.psi.mi.xml.model.Interactor interactor2 : interactors) {
+
+			if (interactor1.equals(interactor2)) {
+				auxInteractor = interactor2;
+				break;
+			}
+
+		}
+		if (auxInteractor.equals(interactor1)) {
+			if (!interactors.contains(interactor1)) {
+				interactors.add(auxInteractor);
+			}
+		}
+
+		return auxInteractor;
+	}
+
 
 	/**
 	 * This method create a new Source of the binaryInteraction data.
 	 *
 	 * @return source
 	 */
-	private Source createSource(String db, String dbMi) {
+	private Source createSource(Collection<CrossReference> sources) {
 
 		Source source = new Source();
 
 		// set default release Date
 		Date date = new Date();
 		source.setReleaseDate(date);
-
-		// set Source name
 		Names names = new Names();
+		names.setShortLabel(UNKNOWN);
 
-		if (db != null) {
-			names.setShortLabel(db);
-		} else {
-			names.setShortLabel("unspecified");
-		}
-
+		// set default values
 		source.setNames(names);
 
-		if (dbMi != null && dbMi.startsWith("MI:")) {
-			DbReference dbReference = new DbReference("psi-mi", "MI:0488", dbMi, "primary-reference", "MI:0358");
-			Xref xref = new Xref(dbReference);
-			source.setXref(xref);
-		}
+		if (sources != null) {
 
+			Xref xref = new Xref();
+
+			boolean found = false;
+
+			for (CrossReference crossReference : sources) {
+				//The first psi-mi term is ours primary ref and name
+				if (!found && crossReference.getDatabase().equalsIgnoreCase(PSI_MI)) {
+
+					String label = crossReference.getText();
+					if (label != null) {
+						names.setShortLabel(label);
+					}
+
+					DbReference dbRef = new DbReference();
+					dbRef.setDb(PSI_MI);
+					dbRef.setDbAc(PSI_MI_REF);
+					dbRef.setId(crossReference.getIdentifier());
+					dbRef.setRefType(IDENTITY);
+					dbRef.setRefTypeAc(IDENTITY_REF);
+
+					xref.setPrimaryRef(dbRef);
+					found = true;
+
+				} else {
+
+					String database = crossReference.getDatabase();
+
+					DbReference dbRef = new DbReference();
+					dbRef.setId(crossReference.getIdentifier());
+					dbRef.setDb(crossReference.getDatabase());
+
+					//TODO check more databases
+
+					if (database.equals(UNIPROT)) {
+						dbRef.setDbAc(UNIPROT_MI);
+						dbRef.setRefType(IDENTITY);
+						dbRef.setRefTypeAc(IDENTITY_REF);
+					} else if (database.equals(CHEBI)) {
+						dbRef.setDbAc(CHEBI_MI);
+						dbRef.setRefType(IDENTITY);
+						dbRef.setRefTypeAc(IDENTITY_REF);
+					} else if (database.equals(INTACT)) {
+						dbRef.setDbAc(INTACT_MI);
+						dbRef.setRefType(IDENTITY);
+						dbRef.setRefTypeAc(IDENTITY_REF);
+					}
+
+					xref.getSecondaryRef().add(dbRef);
+
+					if (crossReference.hasText()) {
+						Alias alias = new Alias(crossReference.getText());
+						if (names.getAliases().isEmpty()) {
+							names.getAliases().add(alias);
+						} else {
+							if (!names.getAliases().contains(alias))
+								names.getAliases().add(alias);
+						}
+					}
+				}
+			}
+			if (found) {
+				source.setNames(names);
+				source.setXref(xref);
+			}
+		}
 		return source;
 	}
 }
