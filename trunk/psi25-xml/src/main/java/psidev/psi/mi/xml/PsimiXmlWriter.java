@@ -57,10 +57,10 @@ public class PsimiXmlWriter implements psidev.psi.mi.xml.io.PsimiXmlWriter {
     private void removeInteractorRedundancy( EntrySet mEntrySet ) {
         if( ConverterContext.getInstance().getConverterConfig().getXmlForm() == PsimiXmlForm.FORM_COMPACT ) {
 
-            Map<Interactor, Interactor> uniqueInteractors = new HashMap<Interactor, Interactor>();
-
             for ( Entry entry : mEntrySet.getEntries() ) {
-                for ( Interaction interaction : entry.getInteractions() ) {
+				Map<Interactor, Interactor> uniqueInteractors = new HashMap<Interactor, Interactor>();
+
+				for ( Interaction interaction : entry.getInteractions() ) {
                     for ( Participant participant : interaction.getParticipants() ) {
                         if( participant.getInteractor() != null ) {
                             final Interactor myInteractor = participant.getInteractor();
