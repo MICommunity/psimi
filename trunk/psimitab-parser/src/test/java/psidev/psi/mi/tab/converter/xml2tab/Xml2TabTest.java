@@ -12,7 +12,6 @@ import psidev.psi.mi.tab.expansion.SpokeWithoutBaitExpansion;
 import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 import psidev.psi.mi.xml.PsimiXmlReader;
@@ -185,7 +184,6 @@ public class Xml2TabTest {
 
 			File tab2File = new File(TestHelper.getTargetDirectory(), "19696444_with_spoke_expansion.txt");
 
-
 			assertTrue(tab2File.getParentFile().canWrite());
 
 			PsimiTabWriter writer = new psidev.psi.mi.tab.PsimiTabWriter(PsimiTabVersion.v2_7);
@@ -288,8 +286,6 @@ public class Xml2TabTest {
 
 
 		x2t.setExpansionStrategy(new SpokeWithoutBaitExpansion());
-		x2t.addOverrideSourceDatabase(new CrossReferenceImpl("MI", "0469", "intact"));
-
 
 		// read original PSI-MI XML 2.5 File and get the originalEntrySet
 		File chen1999 = TestHelper.getFileByResources("/psi25-testset/10551859.xml", Xml2TabTest.class);

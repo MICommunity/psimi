@@ -13,7 +13,6 @@ import psidev.psi.mi.tab.expansion.ExpansionStrategy;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
-import psidev.psi.mi.tab.model.builder.*;
 import psidev.psi.mi.tab.processor.PostProcessorStrategy;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.model.*;
@@ -31,459 +30,390 @@ import java.util.regex.Pattern;
  */
 public class Xml2Tab {
 
-    /**
-     * Sets up a logger for that class.
-     */
-    public static final Log log = LogFactory.getLog( Xml2Tab.class );
+	/**
+	 * Sets up a logger for that class.
+	 */
+	public static final Log log = LogFactory.getLog(Xml2Tab.class);
 
-    public static final String PSI_MI = "psi-mi";
-    public static final String PSI_MI_REF = "MI:0488";
+	public static final String PSI_MI = "psi-mi";
+	public static final String PSI_MI_REF = "MI:0488";
+	public static final String IDENTITY = "identity";
+	public static final String IDENTITY_REF = "MI:0356";
+	public static final String UNKNOWN = "unknown";
 
-    private static final Pattern XML_EXTENSION = Pattern.compile( ".*\\.xml" );
+	private static final Pattern XML_EXTENSION = Pattern.compile(".*\\.xml");
 
-    /**
-     * Strategy allowing to customize how the converter behaves when the input if a directory instead of a file.
-     * The default behaviour is to search recursively for any file matching the pattern '*.xml' .
-     */
-    public static final InputDirectoryProcessorStrategy DEFAULT_DIRECTORY_PROCESSOR = new PatternBasedFilenameSelection( true, XML_EXTENSION );
+	/**
+	 * Strategy allowing to customize how the converter behaves when the input if a directory instead of a file.
+	 * The default behaviour is to search recursively for any file matching the pattern '*.xml' .
+	 */
+	public static final InputDirectoryProcessorStrategy DEFAULT_DIRECTORY_PROCESSOR = new PatternBasedFilenameSelection(true, XML_EXTENSION);
 
-    /**
-     * Collection<BinaryInteractionImpl> post processor.
-     */
-    private PostProcessorStrategy postProcessor;
+	/**
+	 * Collection<BinaryInteractionImpl> post processor.
+	 */
+	private PostProcessorStrategy postProcessor;
 
-    /**
-     * When set, expand interaction read from XML file.
-     */
-    private ExpansionStrategy expansionStrategy;
+	/**
+	 * When set, expand interaction read from XML file.
+	 */
+	private ExpansionStrategy expansionStrategy;
 
-    /**
-     * Strategy defining how a directory should be handled
-     */
-    private InputDirectoryProcessorStrategy directoryProcessorStrategy = DEFAULT_DIRECTORY_PROCESSOR;
+	/**
+	 * Strategy defining how a directory should be handled
+	 */
+	private InputDirectoryProcessorStrategy directoryProcessorStrategy = DEFAULT_DIRECTORY_PROCESSOR;
 
-    /**
-     * Collection of source database to export in the MITAB format.
-     * If not empty, it will override the data found in the XML file.
-     */
-    private Set<CrossReference> overrideSourceDatabases;
-
-    /**
-     * if defined, replaces any database reference in AliasImpl (column 3/4 & 5/6 of MITAB25).
-     */
-    private CrossReference overrideAliasSourceDatabase;
-
-    /**
-     * The interaction converter
-     */
-    private InteractionConverter<?> interactionConverter;
+	/**
+	 * The interaction converter
+	 */
+	private InteractionConverter<?> interactionConverter;
 
 
-    ///////////////////////////
-    // Constructor
+	///////////////////////////
+	// Constructor
 
-    /**
-     * Constructs a new Xml2Tab.
-     */
-    public Xml2Tab() {
-        this(new MitabInteractionConverter(), null);
-    }
+	/**
+	 * Constructs a new Xml2Tab.
+	 */
+	public Xml2Tab() {
+		this(new MitabInteractionConverter(), null);
+	}
 
-    public Xml2Tab(InteractionConverter<?> interactionConverter) {
-        this(interactionConverter, null);
-    }
+	public Xml2Tab(InteractionConverter<?> interactionConverter) {
+		this(interactionConverter, null);
+	}
 
-    public Xml2Tab(InteractionConverter<?> interactionConverter, PostProcessorStrategy postProcessorStrategy) {
-        this.interactionConverter = interactionConverter;
-        this.postProcessor = postProcessorStrategy;
-    }
+	public Xml2Tab(InteractionConverter<?> interactionConverter, PostProcessorStrategy postProcessorStrategy) {
+		this.interactionConverter = interactionConverter;
+		this.postProcessor = postProcessorStrategy;
+	}
 
-    //////////////////////////
-    // Getters & Setters
+	//////////////////////////
+	// Getters & Setters
 
-    /**
-     * Getter for property 'postProcessor'.
-     *
-     * @return Value for property 'postProcessor'.
-     */
-    public PostProcessorStrategy getPostProcessor() {
-        return postProcessor;
-    }
+	/**
+	 * Getter for property 'postProcessor'.
+	 *
+	 * @return Value for property 'postProcessor'.
+	 */
+	public PostProcessorStrategy getPostProcessor() {
+		return postProcessor;
+	}
 
-    /**
-     * Setter for property 'postProcessor'.
-     *
-     * @param postProcessor Value to set for property 'postProcessor'.
-     */
-    public void setPostProcessor( PostProcessorStrategy postProcessor ) {
-        this.postProcessor = postProcessor;
-    }
+	/**
+	 * Setter for property 'postProcessor'.
+	 *
+	 * @param postProcessor Value to set for property 'postProcessor'.
+	 */
+	public void setPostProcessor(PostProcessorStrategy postProcessor) {
+		this.postProcessor = postProcessor;
+	}
 
-    /**
-     * Getter for property 'expansionStrategy'.
-     *
-     * @return Value for property 'expansionStrategy'.
-     */
-    public ExpansionStrategy getExpansionStrategy() {
-        return expansionStrategy;
-    }
+	/**
+	 * Getter for property 'expansionStrategy'.
+	 *
+	 * @return Value for property 'expansionStrategy'.
+	 */
+	public ExpansionStrategy getExpansionStrategy() {
+		return expansionStrategy;
+	}
 
-    /**
-     * Setter for property 'expansionStrategy'.
-     *
-     * @param expansionStrategy Value to set for property 'expansionStrategy'.
-     */
-    public void setExpansionStrategy( ExpansionStrategy expansionStrategy ) {
-        this.expansionStrategy = expansionStrategy;
-    }
+	/**
+	 * Setter for property 'expansionStrategy'.
+	 *
+	 * @param expansionStrategy Value to set for property 'expansionStrategy'.
+	 */
+	public void setExpansionStrategy(ExpansionStrategy expansionStrategy) {
+		this.expansionStrategy = expansionStrategy;
+	}
 
-    /**
-     * Getter for property 'directoryProcessorStrategy'.
-     *
-     * @return Value for property 'directoryProcessorStrategy'.
-     */
-    public InputDirectoryProcessorStrategy getDirectoryProcessorStrategy() {
-        return directoryProcessorStrategy;
-    }
+	/**
+	 * Getter for property 'directoryProcessorStrategy'.
+	 *
+	 * @return Value for property 'directoryProcessorStrategy'.
+	 */
+	public InputDirectoryProcessorStrategy getDirectoryProcessorStrategy() {
+		return directoryProcessorStrategy;
+	}
 
-    /**
-     * Setter for property 'directoryProcessorStrategy'.
-     *
-     * @param directoryProcessorStrategy Value to set for property 'directoryProcessorStrategy'.
-     */
-    public void setDirectoryProcessorStrategy( InputDirectoryProcessorStrategy directoryProcessorStrategy ) {
-        this.directoryProcessorStrategy = directoryProcessorStrategy;
-    }
+	/**
+	 * Setter for property 'directoryProcessorStrategy'.
+	 *
+	 * @param directoryProcessorStrategy Value to set for property 'directoryProcessorStrategy'.
+	 */
+	public void setDirectoryProcessorStrategy(InputDirectoryProcessorStrategy directoryProcessorStrategy) {
+		this.directoryProcessorStrategy = directoryProcessorStrategy;
+	}
 
-    /**
-     * Getter for property 'overrideSourceDatabase'.
-     *
-     * @return Value for property 'overrideSourceDatabase'.
-     */
-    public Collection<CrossReference> getOverrideSourceDatabase() {
-        if ( overrideSourceDatabases == null ) {
-            overrideSourceDatabases = new HashSet<CrossReference>();
-        }
-        return overrideSourceDatabases;
-    }
 
-    public void addOverrideSourceDatabase( CrossReference overrideSourceDatabase ) {
-        if ( overrideSourceDatabases == null ) {
-            overrideSourceDatabases = new HashSet<CrossReference>();
-        }
+	////////////////////////
+	// Public methods
 
-        this.overrideSourceDatabases.add( overrideSourceDatabase );
-    }
+	/**
+	 * Convert a file into a collection of PSIMITAB BinaryInteractionImpl. Post processing will be applied if requested.
+	 *
+	 * @param file the file to convert.
+	 * @return a non null collection of PSIMITAB BinaryInteractionImpl.
+	 * @throws TabConversionException if an error occur during the processing.
+	 */
+	public Collection<BinaryInteraction> convert(File file) throws TabConversionException {
+		return convert(file, false);
+	}
 
-    /**
-     * Getter for property 'overrideSourceDatabases'.
-     *
-     * @return Value for property 'overrideSourceDatabases'.
-     */
-    public Collection<CrossReference> getOverrideSourceDatabases() {
-        return overrideSourceDatabases;
-    }
+	/**
+	 * Convert a file into a collection of PSIMITAB BinaryInteractionImpl.
+	 *
+	 * @param file               the file to convert.
+	 * @param skipPostProcessing
+	 * @return a non null collection of PSIMITAB BinaryInteractionImpl.
+	 * @throws TabConversionException if an error occur during the processing.
+	 */
+	public Collection<BinaryInteraction> convert(File file, boolean skipPostProcessing) throws TabConversionException {
 
-    /**
-     * Getter for property 'overrideAliasSourceDatabase'.
-     *
-     * @return Value for property 'overrideAliasSourceDatabase'.
-     */
-    public CrossReference getOverrideAliasSourceDatabase() {
-        return overrideAliasSourceDatabase;
-    }
+		if (file == null) {
+			throw new IllegalArgumentException("File cannot be null.");
+		}
 
-    /**
-     * Setter for property 'overrideAliasSourceDatabase'.
-     *
-     * @param overrideAliasSourceDatabase Value to set for property 'overrideAliasSourceDatabase'.
-     */
-    public void setOverrideAliasSourceDatabase( CrossReference overrideAliasSourceDatabase ) {
-        this.overrideAliasSourceDatabase = overrideAliasSourceDatabase;
-    }
+		Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
 
-    /**
-     * Setter for property 'overrideSourceDatabases'.
-     *
-     * @param overrideSourceDatabases Value to set for property 'overrideSourceDatabases'.
-     */
-    public void setOverrideSourceDatabases( Collection<CrossReference> overrideSourceDatabases ) {
-        this.overrideSourceDatabases = new HashSet<CrossReference>(overrideSourceDatabases);
-    }
+		File f = null;
+		try {
+			if (file.isDirectory()) {
 
-    ////////////////////////
-    // Public methods
+				if (log.isDebugEnabled()) log.debug("Converting directory: " + file.getAbsolutePath());
 
-    /**
-     * Convert a file into a collection of PSIMITAB BinaryInteractionImpl. Post processing will be applied if requested.
-     *
-     * @param file the file to convert.
-     * @return a non null collection of PSIMITAB BinaryInteractionImpl.
-     * @throws TabConversionException if an error occur during the processing.
-     */
-    public Collection<BinaryInteraction> convert( File file ) throws TabConversionException {
-        return convert( file, false );
-    }
+				// search for all XML files recursively
+				Collection<File> files = null;
+				if (directoryProcessorStrategy == null) {
+					files = DEFAULT_DIRECTORY_PROCESSOR.process(file);
+				} else {
+					files = directoryProcessorStrategy.process(file);
+				}
 
-    /**
-     * Convert a file into a collection of PSIMITAB BinaryInteractionImpl.
-     *
-     * @param file               the file to convert.
-     * @param skipPostProcessing
-     * @return a non null collection of PSIMITAB BinaryInteractionImpl.
-     * @throws TabConversionException if an error occur during the processing.
-     */
-    public Collection<BinaryInteraction> convert( File file, boolean skipPostProcessing ) throws TabConversionException {
+				// convert each file found
+				for (Iterator<File> iterator = files.iterator(); iterator.hasNext(); ) {
+					f = iterator.next();
 
-        if ( file == null ) {
-            throw new IllegalArgumentException( "File cannot be null." );
-        }
+					if (log.isDebugEnabled()) log.debug("Converting file: " + f.getAbsolutePath());
 
-        Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
+					PsimiXmlReader reader = new PsimiXmlReader();
+					EntrySet entrySet = reader.read(f);
+					interactions.addAll(convert(entrySet, true)); // skip post processing, we'll do it later.
+				}
 
-        File f = null;
-        try {
-            if ( file.isDirectory() ) {
+			} else {
+				if (log.isDebugEnabled()) log.debug("Converting file: " + file);
 
-                if (log.isDebugEnabled()) log.debug("Converting directory: " + file.getAbsolutePath());
-                
-                // search for all XML files recursively
-                Collection<File> files = null;
-                if ( directoryProcessorStrategy == null ) {
-                    files = DEFAULT_DIRECTORY_PROCESSOR.process( file );
-                } else {
-                    files = directoryProcessorStrategy.process( file );
-                }
-
-                // convert each file found
-                for ( Iterator<File> iterator = files.iterator(); iterator.hasNext(); ) {
-                    f =  iterator.next();
-
-                    if (log.isDebugEnabled()) log.debug("Converting file: " + f.getAbsolutePath());
-
-                    PsimiXmlReader reader = new PsimiXmlReader();
-                    EntrySet entrySet = reader.read( f );
-                    interactions.addAll( convert( entrySet, true ) ); // skip post processing, we'll do it later.
-                }
-
-            } else {
-                if (log.isDebugEnabled()) log.debug("Converting file: "+file);
-                
-                PsimiXmlReader reader = new PsimiXmlReader();
-                EntrySet entrySet = reader.read( file );
-                interactions.addAll( convert( entrySet, true ) ); // skip post processing, we'll do it later.
-            }
-        } catch ( Exception e ) {
-            throw new TabConversionException( "An error occured during PSIMITAB conversion of " +
-                                              ( f == null ? file.getAbsolutePath() : f.getAbsolutePath() ), e );
-        }
+				PsimiXmlReader reader = new PsimiXmlReader();
+				EntrySet entrySet = reader.read(file);
+				interactions.addAll(convert(entrySet, true)); // skip post processing, we'll do it later.
+			}
+		} catch (Exception e) {
+			throw new TabConversionException("An error occured during PSIMITAB conversion of " +
+					(f == null ? file.getAbsolutePath() : f.getAbsolutePath()), e);
+		}
 
 //        if ( false == skipPostProcessing ) {
 //            interactions = doPostProcessing( interactions );
 //        }
 
-        return interactions;
-    }
+		return interactions;
+	}
 
-    /**
-     * Convert a collection of files into a collection of PSIMITAB BinaryInteractionImpl.
-     *
-     * @param inputFiles Collection of files to convert.
-     * @return a non null collection of PSIMITAB BinaryInteractionImpl.
-     * @throws TabConversionException if an error occur during the processing.
-     */
-    public Collection<BinaryInteraction> convert( Collection<File> inputFiles ) throws TabConversionException {
-        return convert( inputFiles, false );
-    }
+	/**
+	 * Convert a collection of files into a collection of PSIMITAB BinaryInteractionImpl.
+	 *
+	 * @param inputFiles Collection of files to convert.
+	 * @return a non null collection of PSIMITAB BinaryInteractionImpl.
+	 * @throws TabConversionException if an error occur during the processing.
+	 */
+	public Collection<BinaryInteraction> convert(Collection<File> inputFiles) throws TabConversionException {
+		return convert(inputFiles, false);
+	}
 
-    /**
-     * Convert a collection of files into a collection of PSIMITAB BinaryInteractionImpl. The postprocessing can be
-     * enabled/disabled by using the skipPostProcessing variable. The postprocessing can be enabled/disabled by using
-     * the skipPostProcessing variable.
-     *
-     * @param inputFiles Collection of files to convert.
-     * @return a non null collection of PSIMITAB BinaryInteractionImpl.
-     * @throws TabConversionException if an error occur during the processing.
-     */
-    public Collection<BinaryInteraction> convert( Collection<File> inputFiles, boolean skipPostProcessing ) throws TabConversionException {
-        Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>( 128 );
+	/**
+	 * Convert a collection of files into a collection of PSIMITAB BinaryInteractionImpl. The postprocessing can be
+	 * enabled/disabled by using the skipPostProcessing variable. The postprocessing can be enabled/disabled by using
+	 * the skipPostProcessing variable.
+	 *
+	 * @param inputFiles Collection of files to convert.
+	 * @return a non null collection of PSIMITAB BinaryInteractionImpl.
+	 * @throws TabConversionException if an error occur during the processing.
+	 */
+	public Collection<BinaryInteraction> convert(Collection<File> inputFiles, boolean skipPostProcessing) throws TabConversionException {
+		Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>(128);
 
-        for ( File file : inputFiles ) {
-            interactions.addAll( convert( file ) );
-        }
+		for (File file : inputFiles) {
+			interactions.addAll(convert(file));
+		}
 
 //        if ( false == skipPostProcessing ) {
 //            interactions = doPostProcessing( interactions );
 //        }
 
-        return interactions;
-    }
+		return interactions;
+	}
 
-    /**
-     * Converts a given entrySet into a Collection of BinaryInteractionImpl. <br/> If a ExpansionStrategy was set, every
-     * interaction in the given entrySet will be expanded prior to conversion to MITAB25. Should the expansion result in
-     * multiple interaction, they are converted iteratively.
-     *
-     * @param entrySet the entrySet to convert in MITAB25.
-     * @return a non null collection of BinaryInteractionImpl.
-     */
-    public Collection<BinaryInteraction> convert( EntrySet entrySet ) throws TabConversionException {
-        return convert( entrySet, false );
-    }
+	/**
+	 * Converts a given entrySet into a Collection of BinaryInteractionImpl. <br/> If a ExpansionStrategy was set, every
+	 * interaction in the given entrySet will be expanded prior to conversion to MITAB25. Should the expansion result in
+	 * multiple interaction, they are converted iteratively.
+	 *
+	 * @param entrySet the entrySet to convert in MITAB25.
+	 * @return a non null collection of BinaryInteractionImpl.
+	 */
+	public Collection<BinaryInteraction> convert(EntrySet entrySet) throws TabConversionException {
+		return convert(entrySet, false);
+	}
 
-    /**
-     * Converts a given entrySet into a Collection of BinaryInteractionImpl. <br/> If a ExpansionStrategy was set, every
-     * interaction in the given entrySet will be expanded prior to conversion to MITAB25. Should the expansion result in
-     * multiple interaction, they are converted iteratively. The postprocessing can be enabled/disabled by using the
-     * skipPostProcessing variable.
-     *
-     * @param entrySet           the entrySet to convert in MITAB25.
-     * @param skipPostProcessing if true, post processing is not applied.
-     * @return a non null collection of BinaryInteractionImpl.
-     */
-    public Collection<BinaryInteraction> convert( EntrySet entrySet, boolean skipPostProcessing ) throws TabConversionException {
+	/**
+	 * Converts a given entrySet into a Collection of BinaryInteractionImpl. <br/> If a ExpansionStrategy was set, every
+	 * interaction in the given entrySet will be expanded prior to conversion to MITAB25. Should the expansion result in
+	 * multiple interaction, they are converted iteratively. The postprocessing can be enabled/disabled by using the
+	 * skipPostProcessing variable.
+	 *
+	 * @param entrySet           the entrySet to convert in MITAB25.
+	 * @param skipPostProcessing if true, post processing is not applied.
+	 * @return a non null collection of BinaryInteractionImpl.
+	 */
+	public Collection<BinaryInteraction> convert(EntrySet entrySet, boolean skipPostProcessing) throws TabConversionException {
 
-        if ( entrySet == null ) {
-            throw new IllegalArgumentException( "You must give a non null entrySet." );
-        }
+		if (entrySet == null) {
+			throw new IllegalArgumentException("You must give a non null entrySet.");
+		}
 
-        Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
+		Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
 
-        // propagate configuration
-        interactionConverter.setOverrideAliasSourceDatabase( overrideAliasSourceDatabase );
+		// propagate configuration
 
-        for ( Entry entry : entrySet.getEntries() ) {
+		for (Entry entry : entrySet.getEntries()) {
 
-            String sourceName = null;
-            String sourceId = null;
+			String sourceName = null;
+			String sourceId = null;
+			String sourceDb = null;
 
-            if ( overrideSourceDatabases == null ) {
+			// extract source database
+			if (entry.hasSource()) {
 
-                // extract source database
-                if ( entry.hasSource() ) {
+				Source source = entry.getSource();
+				if (source.hasNames()) {
+					Names names = source.getNames();
+					if (names.getShortLabel() != null) {
+						sourceName = names.getShortLabel();
+					}
+					else if (names.getFullName() != null) {
+						sourceName = names.getShortLabel();
+					} else {
+						 sourceName = UNKNOWN;
+					}
+				}
 
-                    Source source = entry.getSource();
-                    if ( source.hasNames() ) {
-                        Names names = source.getNames();
-                        if ( names.getShortLabel() != null ) {
-                            sourceName = names.getShortLabel();
-                        }
-                    }
+				if (source.hasXref()) {
+					Xref xref = source.getXref();
+					Collection<DbReference> refs = XrefUtils.searchByType(xref, IDENTITY, IDENTITY_REF);
 
-                    if ( source.hasXref() ) {
-                        Xref xref = source.getXref();
-                        Collection<DbReference> refs = XrefUtils.searchByType( xref, "primary-reference", "MI:0358" );
+					for (Iterator<DbReference> dbReferenceIterator = refs.iterator(); dbReferenceIterator.hasNext(); ) {
+						DbReference dbReference = dbReferenceIterator.next();
 
-                        for (Iterator<DbReference> dbReferenceIterator = refs.iterator(); dbReferenceIterator.hasNext();)
-                        {
-                            DbReference dbReference = dbReferenceIterator.next();
+						// if the dbAc is not the PSI-MI (MI:0488), remove it from the list
+						if (!(dbReference.getDbAc().equals(PSI_MI_REF))) {
+							dbReferenceIterator.remove();
+						}
+					}
 
-                            // if the dbAc is not the PSI-MI (MI:0488), remove it from the list
-                            if (!(dbReference.getDbAc().equals("MI:0488"))) {
-                                dbReferenceIterator.remove();
-                            }
-                        }
+					if (refs.size() >= 1) { //We choose the first one
+						DbReference ref = refs.iterator().next();
+						if (ref != null) {
+							sourceId = ref.getId();
+							sourceDb = ref.getDb();
+						}
 
-                        if ( refs.size() == 1 ) {
-                            DbReference ref = refs.iterator().next();
-                            if ( ref.getId() != null ) {
-                                sourceId = ref.getId();
-                            }
-                        }
-                    }
+					}
+				}
+			}
 
-                    if (sourceId != null) {
-                        String[] values = sourceId.split( ":" );
-                        String db = values[0];
-                        String id = values[1];
+			if (sourceId != null && sourceDb != null) {
+				// set the source on the converter
+				interactionConverter.addSourceDatabase(new CrossReferenceImpl(sourceDb, sourceId, sourceName));
+			} else {
+				interactionConverter.addSourceDatabase(new CrossReferenceImpl(UNKNOWN, sourceName, sourceName));
+			}
 
-                        // set the source on the converter
-                        interactionConverter.addSourceDatabase( new CrossReferenceImpl( db, id, sourceName ) );
-                    } else {
-                        interactionConverter.addSourceDatabase(new CrossReferenceImpl("unknown", sourceName, sourceName));
-                    }
-                }
-            } else {
-                // set the source on the converter
-                for ( CrossReference sd : overrideSourceDatabases ) {
-                    interactionConverter.addSourceDatabase( sd );
-                    log.info( "Add Overriding source database: " + sd );
-                }
-            }
 
-            if ( log.isDebugEnabled() ) {
-                log.debug( "Interaction count: " + entry.getInteractions().size() );
-            }
+			if (log.isDebugEnabled()) {
+				log.debug("Interaction count: " + entry.getInteractions().size());
+			}
 
-            for ( Interaction interaction : entry.getInteractions() ) {
+			for (Interaction interaction : entry.getInteractions()) {
 
-                // apply interaction expansion if required.
-                if ( expansionStrategy != null && interaction.getParticipants().size() != 2) {
+				// apply interaction expansion if required.
+				if (expansionStrategy != null && interaction.getParticipants().size() != 2) {
 
-                    // run expansion on interaction prior to MITAB25 conversion
-                    Collection<Interaction> expandedInteractions = expansionStrategy.expand( interaction );
-                    
-                    for ( Interaction exi : expandedInteractions ) {
-                        // convert the interaction into a MITAB25 line
-                        BinaryInteraction binaryInteraction = interactionConverter.toMitab( exi );
+					// run expansion on interaction prior to MITAB25 conversion
+					Collection<Interaction> expandedInteractions = expansionStrategy.expand(interaction);
+
+					for (Interaction exi : expandedInteractions) {
+						// convert the interaction into a MITAB25 line
+						BinaryInteraction binaryInteraction = interactionConverter.toMitab(exi);
 //                        processAfterConversion(binaryInteraction, true);
-                        if ( binaryInteraction != null ) {
+						if (binaryInteraction != null) {
 
-                            String expansionName = expansionStrategy.getName();
-                            List<CrossReference> complexExpansion = new ArrayList<CrossReference>();
-                            if (expansionName.equalsIgnoreCase("spoke")) {
-                                complexExpansion.add(new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion"));
-                            } else if (expansionName.equalsIgnoreCase("matrix")) {
-                                complexExpansion.add(new CrossReferenceImpl("psi-mi", "MI:1061", "matrix expansion"));
-                            } else if (expansionName.equalsIgnoreCase("bipartite")) {
-                                complexExpansion.add(new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion"));
-                            }
-                            binaryInteraction.setComplexExpansion(complexExpansion);
+							String expansionName = expansionStrategy.getName();
+							List<CrossReference> complexExpansion = new ArrayList<CrossReference>();
+							if (expansionName.equalsIgnoreCase("spoke")) {
+								complexExpansion.add(new CrossReferenceImpl(PSI_MI, "MI:1060", "spoke expansion"));
+							} else if (expansionName.equalsIgnoreCase("matrix")) {
+								complexExpansion.add(new CrossReferenceImpl(PSI_MI, "MI:1061", "matrix expansion"));
+							} else if (expansionName.equalsIgnoreCase("bipartite")) {
+								complexExpansion.add(new CrossReferenceImpl(PSI_MI, "MI:1062", "bipartite expansion"));
+							}
+							binaryInteraction.setComplexExpansion(complexExpansion);
 
-                            //Creation date and update date field 31 and 32
-                            //Now a days is the same
-                            List<Date> creationDate = new ArrayList<Date>();
-                            creationDate.add(entry.getSource().getReleaseDate());
-                            if (!creationDate.isEmpty()) {
-                                binaryInteraction.setCreationDate(creationDate);
-                                binaryInteraction.setUpdateDate(creationDate);
+							//Creation date and update date field 31 and 32
+							//Now a days is the same
+							List<Date> creationDate = new ArrayList<Date>();
+							creationDate.add(entry.getSource().getReleaseDate());
+							if (!creationDate.isEmpty()) {
+								binaryInteraction.setCreationDate(creationDate);
+								binaryInteraction.setUpdateDate(creationDate);
 
-                            }
+							}
 
-                            interactions.add( binaryInteraction );
-                        }
-                    }
+							interactions.add(binaryInteraction);
+						}
+					}
 
-                } else {
+				} else {
 
-                    // convert the interaction into a MITAB25 line
-                    BinaryInteraction binaryInteraction = interactionConverter.toMitab( interaction );
+					// convert the interaction into a MITAB25 line
+					BinaryInteraction binaryInteraction = interactionConverter.toMitab(interaction);
 //                    processAfterConversion(binaryInteraction, false);
 
-                    if ( binaryInteraction != null ) {
-                        //Creation date and update date field 31 and 32
-                        //Now a days is the same
-                        //TODO add a overwrite mechanism?
+					if (binaryInteraction != null) {
+						//Creation date and update date field 31 and 32
+						//Now a days is the same
+						//TODO add a overwrite mechanism?
 
-                        List<Date> creationDate = new ArrayList<Date>();
-                        creationDate.add(entry.getSource().getReleaseDate());
-                        if (!creationDate.isEmpty()) {
-                            binaryInteraction.setCreationDate(creationDate);
-                            binaryInteraction.setUpdateDate(creationDate);
-                        }
+						List<Date> creationDate = new ArrayList<Date>();
+						creationDate.add(entry.getSource().getReleaseDate());
+						if (!creationDate.isEmpty()) {
+							binaryInteraction.setCreationDate(creationDate);
+							binaryInteraction.setUpdateDate(creationDate);
+						}
 
-                        interactions.add( binaryInteraction );
-                    }
-                }
-            }
-        } 
+						interactions.add(binaryInteraction);
+					}
+				}
+			}
+		}
 
 //        if (!skipPostProcessing) {
 //            interactions = doPostProcessing( interactions );
 //        }
 
-        return interactions;
-    }
+		return interactions;
+	}
 
 //    @Deprecated
 //    protected void processAfterConversion(BinaryInteraction binaryInteraction, boolean expanded) {
@@ -522,8 +452,8 @@ public class Xml2Tab {
 //        return processedInteraction;
 //    }
 
-    public EntrySet convert( Collection<BinaryInteraction> interactions ) {
-        // TODO impplement that !
-        throw new UnsupportedOperationException();
-    }
+	public EntrySet convert(Collection<BinaryInteraction> interactions) {
+		// TODO impplement that !
+		throw new UnsupportedOperationException();
+	}
 }

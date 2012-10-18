@@ -5,15 +5,12 @@
  */
 package psidev.psi.mi.tab.converter.xml2tab;
 
+import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.BinaryInteractionImpl;
 import psidev.psi.mi.tab.model.Interactor;
-import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.converter.tab2xml.XmlConversionException;
-import psidev.psi.mi.xml.model.Organism;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Names;
+import psidev.psi.mi.xml.model.Organism;
 
 /**
  * Default MITAB implementation.
@@ -24,12 +21,6 @@ public class MitabInteractionConverter extends InteractionConverter<BinaryIntera
 
     public MitabInteractionConverter() {
         this.interactorConverter = new MitabInteractorConverter();
-    }
-
-    @Override
-    public void setOverrideAliasSourceDatabase(CrossReference overrideAliasSourceDatabase) {
-        super.setOverrideAliasSourceDatabase(overrideAliasSourceDatabase);
-        this.interactorConverter.setOverrideAliasSourceDatabase(overrideAliasSourceDatabase);
     }
 
     /**
@@ -55,7 +46,7 @@ public class MitabInteractionConverter extends InteractionConverter<BinaryIntera
        // nothing
     }
 
-    public psidev.psi.mi.xml.model.Interactor fromMitabInteractor(Interactor interactor) 
+    public psidev.psi.mi.xml.model.Interactor fromMitabInteractor(Interactor interactor)
         throws XmlConversionException{
          return interactorConverter.fromMitab(interactor);
     }

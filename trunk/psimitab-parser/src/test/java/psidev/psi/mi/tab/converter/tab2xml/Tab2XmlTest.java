@@ -9,21 +9,22 @@ import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.TestHelper;
 import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
+import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
-import psidev.psi.mi.tab.model.CrossReferenceImpl;
+import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlWriter;
-import psidev.psi.mi.xml.model.Entry;
-import psidev.psi.mi.xml.model.EntrySet;
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.xml.model.*;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tab2Xml Tester.
@@ -33,6 +34,20 @@ import static org.junit.Assert.*;
  * @since <pre>23/08/2007</pre>
  */
 public class Tab2XmlTest {
+
+	private int lineCount(File file) throws IOException {
+
+		BufferedReader in = new BufferedReader(new FileReader(file));
+		String line;
+		int count = 0;
+		while ((line = in.readLine()) != null) {
+			// process line here
+			count++;
+		}
+		in.close();
+
+		return count;
+	}
 
 	@Test
 	// This test runs with mitab25 version
@@ -74,7 +89,7 @@ public class Tab2XmlTest {
 		PsimiXmlWriter writer = new PsimiXmlWriter();
 		writer.write(entrySet, xmlFile);
 
-		if(xmlFile.exists()){
+		if (xmlFile.exists()) {
 			xmlFile.deleteOnExit();
 		}
 
@@ -120,7 +135,7 @@ public class Tab2XmlTest {
 		PsimiXmlWriter writer = new PsimiXmlWriter();
 		writer.write(entrySet, xmlFile);
 
-		if(xmlFile.exists()){
+		if (xmlFile.exists()) {
 			xmlFile.deleteOnExit();
 		}
 	}
@@ -146,7 +161,6 @@ public class Tab2XmlTest {
 		Assert.assertEquals(1, bi.getInteractionTypes().size());
 
 		Xml2Tab x2t = new Xml2Tab();
-		x2t.addOverrideSourceDatabase(new CrossReferenceImpl("MI", "0469", "intact"));
 //        x2t.setPostProcessor( new ClusterInteractorPairProcessor() );
 		Collection<BinaryInteraction> convertedBinaryInteractions = x2t.convert(originalEntrySet);
 		assertNotNull(convertedBinaryInteractions);
@@ -199,7 +213,7 @@ public class Tab2XmlTest {
 
 		Collection<BinaryInteraction> binaryInteractions = null;
 		try {
-			File tabFile = TestHelper.getFileByResources("/mitab-testset/selfInteraction.txt", Tab2XmlTest.class);
+			File tabFile = TestHelper.getFileByResources("/mitab-testset/intraMolecular.txt", Tab2XmlTest.class);
 			assertTrue(tabFile.canRead());
 
 			psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
@@ -220,6 +234,8 @@ public class Tab2XmlTest {
 
 			entrySet = t2x.convert(binaryInteractions);
 			assertNotNull(entrySet);
+			assertTrue(entrySet.getEntries().iterator().next().getInteractions().iterator().next().isIntraMolecular());
+
 		} catch (XmlConversionException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -227,17 +243,100 @@ public class Tab2XmlTest {
 		}
 
 
-		File xmlFile = new File(TestHelper.getTargetDirectory(), "selfInteraction.xml");
+		File xmlFile = new File(TestHelper.getTargetDirectory(), "intraMolecular.xml");
 		assertTrue(xmlFile.getParentFile().canWrite());
 
 		PsimiXmlWriter writer = new PsimiXmlWriter();
 		writer.write(entrySet, xmlFile);
 
 
-		if(xmlFile.exists()){
+		if (xmlFile.exists()) {
 			xmlFile.deleteOnExit();
 		}
 
+	}
+
+	@Test
+	public void severalSources() throws Exception {
+
+		Collection<BinaryInteraction> binaryInteractions = null;
+		try {
+			File tabFile = TestHelper.getFileByResources("/mitab-testset/twoSources.txt", Tab2XmlTest.class);
+			assertTrue(tabFile.canRead());
+
+			psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
+
+			binaryInteractions = reader.read(tabFile);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (PsimiTabException e) {
+			e.printStackTrace();
+		}
+
+
+		EntrySet entrySet = null;
+		try {
+			Tab2Xml t2x = new Tab2Xml();
+			t2x.setInteractorNameBuilder(new InteractorIdBuilder());
+
+			entrySet = t2x.convert(binaryInteractions);
+			assertNotNull(entrySet);
+
+			Collection<Entry> entries = entrySet.getEntries();
+
+			assertEquals(2, entries.size());
+
+//			Iterator<Entry> iterator = entries.iterator();
+//			Entry firstEntry = iterator.next();
+//			Entry secondEntry = iterator.next();
+//
+//			Source firstSource = firstEntry.getSource();
+//			Source secondSource = secondEntry.getSource();
+//
+//			assertEquals("IntAct", firstSource.getNames().getShortLabel());
+//			assertEquals("SPIKE", secondSource.getNames().getShortLabel());
+//
+//			assertEquals(2, firstEntry.getInteractions().size());
+//			assertEquals(2, secondEntry.getInteractions().size());
+//
+//			assertEquals(3, firstEntry.getInteractors().size());
+//			assertEquals(3, secondEntry.getInteractors().size());
+
+
+		} catch (XmlConversionException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+
+		File xmlFile = new File(TestHelper.getTargetDirectory(), "twoSources.xml");
+		assertTrue(xmlFile.getParentFile().canWrite());
+
+		PsimiXmlWriter writer = new PsimiXmlWriter();
+		writer.write(entrySet, xmlFile);
+
+
+		if (xmlFile.exists()) {
+			xmlFile.deleteOnExit();
+		}
+
+		Xml2Tab xml2Tab = new Xml2Tab();
+
+		File tab2File = new File(TestHelper.getTargetDirectory(), "twoSources2.txt");
+		assertTrue(tab2File.getParentFile().canWrite());
+
+		Collection<BinaryInteraction> binaryInteractions2 = xml2Tab.convert(entrySet);
+		PsimiTabWriter tabWriter = new psidev.psi.mi.tab.PsimiTabWriter(PsimiTabVersion.v2_7);
+		tabWriter.write(binaryInteractions2, tab2File);
+
+		assertTrue(tab2File.exists());
+		assertEquals(4, lineCount(tab2File));
+
+		if (tab2File.exists()) {
+			tab2File.deleteOnExit();
+		}
 	}
 }
 

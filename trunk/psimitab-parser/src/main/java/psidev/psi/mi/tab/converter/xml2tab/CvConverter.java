@@ -118,8 +118,8 @@ public class CvConverter {
 
             DbReference primaryRef = new DbReference(id, PSI_MI);
             primaryRef.setDbAc(PSI_MI_REF);
-            primaryRef.setRefType("identity");
-            primaryRef.setRefTypeAc("MI:0356");
+            primaryRef.setRefType(IDENTITY);
+            primaryRef.setRefTypeAc(IDENTITY_REF);
 
             xref = new Xref(primaryRef);
         }
@@ -154,18 +154,18 @@ public class CvConverter {
 
             for (CrossReference crossReference : crossReferences) {
                 //The first psi-mi term is ours primary ref and name
-                if (!found && crossReference.getDatabase().equalsIgnoreCase("psi-mi")) {
+                if (!found && crossReference.getDatabase().equalsIgnoreCase(PSI_MI)) {
 
                     names.setShortLabel(crossReference.getText());
                     //TODO find a better full name
                     names.setFullName(crossReference.getText());
 
                     DbReference dbRef = new DbReference();
-                    dbRef.setDb("psi-mi");
-                    dbRef.setDbAc("MI:0488");
+                    dbRef.setDb(PSI_MI);
+                    dbRef.setDbAc(PSI_MI_REF);
                     dbRef.setId(crossReference.getIdentifier());
-                    dbRef.setRefType("identity");
-                    dbRef.setRefTypeAc("MI:0356");
+                    dbRef.setRefType(IDENTITY);
+                    dbRef.setRefTypeAc(IDENTITY_REF);
 
                     xref.setPrimaryRef(dbRef);
                     found = true;
