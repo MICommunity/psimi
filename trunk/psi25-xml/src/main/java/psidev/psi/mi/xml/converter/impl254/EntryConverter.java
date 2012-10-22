@@ -135,14 +135,27 @@ public class EntryConverter {
         }
 
         if (mEntry.getExperiments().isEmpty()) {
+            List<Integer> experimentIds = new ArrayList<Integer>();
+
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                mEntry.getExperiments().addAll(mInteraction.getExperiments());
+                for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : mInteraction.getExperiments()) {
+                    if (!experimentIds.contains(jExperiment.getId())) {
+                        mEntry.getExperiments().add(jExperiment);
+                        experimentIds.add(jExperiment.getId());
+                    }
+                }
             }
         }
         if (mEntry.getInteractors().isEmpty()) {
+            List<Integer> participantIds = new ArrayList<Integer>();
+
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
                 for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
-                    mEntry.getInteractors().add(mParticipant.getInteractor());
+
+                    if (!participantIds.contains(mParticipant.getId())) {
+                        mEntry.getInteractors().add(mParticipant.getInteractor());
+                        participantIds.add(mParticipant.getInteractor().getId());
+                    }
                 }
             }
         }
@@ -186,7 +199,7 @@ public class EntryConverter {
         // experiments
         if ( mEntry.hasExperiments() && PsimiXmlForm.FORM_COMPACT == ConverterContext.getInstance().getConverterConfig().getXmlForm()) {
             if ( jEntry.getExperimentList() == null ) {
-                jEntry.setExperimentList( new ExperimentDescriptionList()); 
+                jEntry.setExperimentList( new ExperimentDescriptionList());
             }
 
             List<Integer> experimentIds = new ArrayList<Integer>();
