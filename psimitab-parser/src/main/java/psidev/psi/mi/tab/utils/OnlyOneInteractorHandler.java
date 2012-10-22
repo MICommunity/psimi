@@ -17,11 +17,7 @@ package psidev.psi.mi.tab.utils;
 
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.Interactor;
-import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.BinaryInteractionImpl;
-import psidev.psi.mi.tab.converter.txt2tab.MitabLineException;
 
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -44,6 +40,14 @@ public class OnlyOneInteractorHandler extends BinaryInteractionHandler {
 
     @Override
     protected Interactor mergeInteractorA(Interactor i1, Interactor i2) {
-        return cloneInteractor(i1);
+        if (i1 != null && i2 != null){
+            return cloneInteractor(i1);
+        }
+        else if (i1 != null){
+            return i1;
+        }
+        else {
+            return i2;
+        }
     }
 }
