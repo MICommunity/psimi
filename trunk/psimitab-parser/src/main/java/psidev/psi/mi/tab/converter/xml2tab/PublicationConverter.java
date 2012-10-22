@@ -68,4 +68,21 @@ public class PublicationConverter {
     	
         return bibref;
     }
+
+    public Xref imexPrimaryFromMitab( CrossReference ref ) {
+        Xref imex = null;
+
+        if (ref != null && ref.getIdentifier() != null && ref.getDatabase() != null){
+            String db = ref.getDatabase();
+            String id = ref.getIdentifier();
+
+            DbReference primaryRef = new DbReference(id, db);
+            primaryRef.setRefType("imex-primary");
+            primaryRef.setRefTypeAc("MI:0662");
+            if (db.equals("imex")) primaryRef.setDbAc("MI:0670");
+            imex = new Xref(primaryRef);
+        }
+
+        return imex;
+    }
 }
