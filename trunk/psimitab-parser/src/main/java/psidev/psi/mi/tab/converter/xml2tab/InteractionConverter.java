@@ -700,8 +700,8 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 			interaction.setId(IdentifierGenerator.getInstance().nextId());
 			interaction.setXref(new Xref(primaryReference));
 
-			// database source field 13
-			for (CrossReference sourceXref : binaryInteraction.getSourceDatabases()) {
+			// database source field 13 : no needs to convert it as it is converted in the source of the entry
+			/*for (CrossReference sourceXref : binaryInteraction.getSourceDatabases()) {
 				String id = sourceXref.getIdentifier();
 
 				String refDbMi = null;
@@ -718,11 +718,10 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 				if (sourceXref.hasText()) {
 					interaction.getAttributes().add(new Attribute("source reference:label", sourceXref.getText()));
 				}
-
-			}
+			}*/
 
 			// set participants
-			if (interactionMap.get(interactionId).size() > 1) {
+			if (interactionMap.get(interactionId).size() >= 1) {
 				for (Participant participant : interactionMap.get(interactionId)) {
 					interaction.getParticipants().add(participant);
 				}
@@ -835,7 +834,16 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 							}
 						}
 
-						xmlParameter.setUncertainty(parameter.getUncertainty());
+                        // set parameter reference
+                        if (!interaction.getExperiments().isEmpty()){
+                           xmlParameter.setExperiment(interaction.getExperiments().iterator().next());
+                        }
+
+                        if (parameter.getUncertainty() != 0){
+                            xmlParameter.setUncertainty(parameter.getUncertainty());
+                        }
+
+                        interaction.getParameters().add(xmlParameter);
 
 					}
 				}
