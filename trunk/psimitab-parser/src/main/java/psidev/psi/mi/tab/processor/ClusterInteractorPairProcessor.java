@@ -9,14 +9,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
-import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.utils.PsiCollectionUtils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Processor that reorganises the interactions by collapsing all that have the same couple of interactor.
@@ -48,13 +44,15 @@ public class ClusterInteractorPairProcessor<T extends BinaryInteraction> impleme
 
         public SimpleInteractor( Interactor interactor ) {
             if ( interactor == null ) {
-                throw new IllegalArgumentException( "Interactor should not be null." );
+                this.identifiers = new ArrayList<CrossReference>();
             }
-            this.identifiers = interactor.getIdentifiers();
-            if ( interactor.hasOrganism() ) {
-                for ( CrossReference cr : interactor.getOrganism().getIdentifiers() ) {
-                    if ( cr.getDatabase().equals( "taxid" ) ) {
-                        taxid = new Integer( cr.getIdentifier() );
+            else {
+                this.identifiers = interactor.getIdentifiers();
+                if ( interactor.hasOrganism() ) {
+                    for ( CrossReference cr : interactor.getOrganism().getIdentifiers() ) {
+                        if ( cr.getDatabase().equals( "taxid" ) ) {
+                            taxid = new Integer( cr.getIdentifier() );
+                        }
                     }
                 }
             }
@@ -75,7 +73,7 @@ public class ClusterInteractorPairProcessor<T extends BinaryInteraction> impleme
                 return false;
             }
             // Equals if at least one of the identifier is the same
-            if ( PsiCollectionUtils.intersection( identifiers, that.identifiers ).isEmpty() ) {
+            if ( PsiCollectionUtils.intersection(identifiers, that.identifiers).isEmpty() ) {
                 return false;
             }
 
@@ -100,12 +98,6 @@ public class ClusterInteractorPairProcessor<T extends BinaryInteraction> impleme
         private SimpleInteractor interactorB;
 
         public TwoInteractor( SimpleInteractor interactorA, SimpleInteractor interactorB ) {
-            if ( interactorA == null ) {
-                throw new IllegalArgumentException();
-            }
-            if ( interactorB == null ) {
-                throw new IllegalArgumentException();
-            }
             this.interactorA = interactorA;
             this.interactorB = interactorB;
         }
@@ -121,28 +113,73 @@ public class ClusterInteractorPairProcessor<T extends BinaryInteraction> impleme
 
             TwoInteractor that = ( TwoInteractor ) o;
 
-            // A = A' and B = B'     OR     A = B' and B = A'
-            return ( ( interactorA.equals( that.interactorA ) && interactorB.equals( that.interactorB ) )
-                     ||
-                     ( interactorA.equals( that.interactorB ) && interactorB.equals( that.interactorA ) ) );
+            boolean isEqualAA = compareInteractors(this.interactorA, that.interactorA);
+            boolean isEqualBB = compareInteractors(this.interactorB, that.interactorB);
+
+            if (isEqualAA && isEqualBB){
+                return true;
+            }
+            else {
+                boolean isEqualAB = compareInteractors(this.interactorA, that.interactorB);
+                boolean isEqualBA = compareInteractors(this.interactorB, that.interactorA);
+                if (isEqualAB && isEqualBA){
+                    return true;
+                }
+                return false;
+            }
         }
 
         @Override
         public int hashCode() {
             // new implementation of the intersection in PsiCollectionUtils is faster
-            //Collection<CrossReferenceImpl> inter = CollectionUtils.intersection(interactorA.identifiers, interactorB.identifiers);
-            Collection<CrossReferenceImpl> inter = PsiCollectionUtils.intersection( interactorA.identifiers, interactorB.identifiers );
-            int res = 1;
-            for ( CrossReference reference : inter ) {
-                res = 31 * res * reference.hashCode();
-            }
-            res *= ( interactorA.taxid != null ? interactorA.taxid.hashCode() : 1 );
-            res *= ( interactorB.taxid != null ? interactorB.taxid.hashCode() : 1 );
 
+            Collection<CrossReference> inter = Collections.EMPTY_LIST;
+
+            int res = 1;
+
+            if (interactorA != null && interactorB != null){
+                inter = PsiCollectionUtils.intersection(interactorA.identifiers, interactorB.identifiers);
+                for ( CrossReference reference : inter ) {
+                    res = 31 * res * reference.hashCode();
+                }
+                res *= ( interactorA.taxid != null ? interactorA.taxid.hashCode() : 1 );
+                res *= ( interactorB.taxid != null ? interactorB.taxid.hashCode() : 1 );
+            }
+            else if (interactorA != null){
+                inter = interactorA.identifiers;
+                for ( CrossReference reference : inter ) {
+                    res = 31 * res * reference.hashCode();
+                }
+                res *= ( interactorA.taxid != null ? interactorA.taxid.hashCode() : 1 );
+            }
+            else if (interactorB != null){
+                inter = interactorB.identifiers;
+                for ( CrossReference reference : inter ) {
+                    res = 31 * res * reference.hashCode();
+                }
+                res *= ( interactorB.taxid != null ? interactorB.taxid.hashCode() : 1 );
+            }
             return res;
             //return 31 * interactorA.hashCode() * interactorB.hashCode();
         }
+
+        private boolean compareInteractors(SimpleInteractor a, SimpleInteractor b){
+
+            if (a != null && b != null){
+                return a.equals(b);
+            }
+            else if (a != null){
+                return false;
+            }
+            else if (b != null){
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
     }
+
 
     ////////////////////
     // Utility

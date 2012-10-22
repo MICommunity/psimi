@@ -63,6 +63,18 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
         target.getConfidenceValues().addAll(source.getConfidenceValues());
         target.getSourceDatabases().addAll(source.getSourceDatabases());
         target.getInteractionAcs().addAll(source.getInteractionAcs());
+        target.getAnnotations().addAll(source.getAnnotations());
+        target.getChecksums().addAll(source.getChecksums());
+        target.getComplexExpansion().addAll(source.getComplexExpansion());
+        target.getCreationDate().addAll(source.getCreationDate());
+        target.getParameters().addAll(source.getParameters());
+
+        if (target.getHostOrganism() == null){
+            target.setHostOrganism(source.getHostOrganism());
+        }
+        else if (source.getHostOrganism() != null){
+            target.getHostOrganism().getIdentifiers().addAll(source.getHostOrganism().getIdentifiers());
+        }
     }
 
     protected Interactor mergeInteractorA(Interactor i1, Interactor i2) {
@@ -74,15 +86,26 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
     }
 
     protected Interactor mergeInteractors(Interactor i1, Interactor i2) {
-        Interactor merged = cloneInteractor(i1);
-        merged.getIdentifiers().addAll(i2.getIdentifiers());
+        if (i1 != null && i2 != null){
+            Interactor merged = cloneInteractor(i1);
+            merged.getIdentifiers().addAll(i2.getIdentifiers());
 
-        populateInteractor(i2, merged);
+            populateInteractor(i2, merged);
 
-        return merged;
+            return merged;
+        }
+        else if (i1 != null){
+            return i1;
+        }
+        else {
+            return i2;
+        }
     }
 
     public Interactor cloneInteractor(Interactor interactor) {
+        if (interactor == null){
+           return null;
+        }
         Interactor clone = newInteractor( new ArrayList( interactor.getIdentifiers() ) );
 
         populateInteractor(interactor, clone);
@@ -91,15 +114,26 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
     }
 
     protected void populateInteractor(Interactor source, Interactor target) {
-        target.getAlternativeIdentifiers().addAll(source.getAlternativeIdentifiers());
-        target.getAliases().addAll(source.getAliases());
+        if (target != null && source != null){
+            target.getAlternativeIdentifiers().addAll(source.getAlternativeIdentifiers());
+            target.getAliases().addAll(source.getAliases());
 
-        if ( !target.hasOrganism() ) {
-            target.setOrganism(new OrganismImpl());
-        }
+            if ( !target.hasOrganism() ) {
+                target.setOrganism(new OrganismImpl());
+            }
 
-        if( source.hasOrganism() ) {
-            target.getOrganism().getIdentifiers().addAll(source.getOrganism().getIdentifiers());
+            if( source.hasOrganism() ) {
+                target.getOrganism().getIdentifiers().addAll(source.getOrganism().getIdentifiers());
+            }
+
+            target.getAnnotations().addAll(source.getAnnotations());
+            target.getBiologicalRoles().addAll(source.getBiologicalRoles());
+            target.getChecksums().addAll(source.getChecksums());
+            target.getFeatures().addAll(source.getFeatures());
+            target.getInteractorTypes().addAll(source.getInteractorTypes());
+            target.getParticipantIdentificationMethods().addAll(source.getParticipantIdentificationMethods());
+            target.getStoichiometry().addAll(source.getStoichiometry());
+            target.getXrefs().addAll(source.getXrefs());
         }
     }
 }
