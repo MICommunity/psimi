@@ -460,12 +460,30 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
 		//Field 9
 		psidev.psi.mi.xml.model.Bibref bibref = null;
+        Xref ref = null;
+        Xref imexPrimary = null;
 		if (binaryInteraction.getPublications().size() <= index) {
 			log.warn("Size of InteractionAcs is " + binaryInteraction.getInteractionAcs().size() + " but we have only " +
 					binaryInteraction.getPublications().size() + " publication(s)! -> We could not know which publication dependents on which InteractionAcs");
 		} else {
-			CrossReference binaryPublication = binaryInteraction.getPublications().get(index);
-			bibref = pubConverter.fromMitab(binaryPublication);
+            for (CrossReference xref : binaryInteraction.getPublications()){
+                if (xref.getDatabase() != null && xref.getDatabase().equalsIgnoreCase("pubmed") && bibref == null){
+                    bibref = pubConverter.fromMitab(xref);
+                }
+                else if (xref.getDatabase() != null && xref.getDatabase().equalsIgnoreCase("imex") && imexPrimary == null){
+                    imexPrimary = pubConverter.imexPrimaryFromMitab(xref);
+                }
+                else {
+                    if (ref == null){
+                        DbReference primaryRef = new DbReference(xref.getIdentifier(), xref.getDatabase());
+                        ref = new Xref(primaryRef);
+                    }
+                    else {
+                        DbReference secondaryRef = new DbReference(xref.getIdentifier(), xref.getDatabase());
+                        ref.getSecondaryRef().add(secondaryRef);
+                    }
+                }
+            }
 		}
 
 		//Field 7
@@ -482,6 +500,28 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 			experimentDescription = new ExperimentDescription(bibref, detectionMethod);
 			experimentDescription.setId(IdentifierGenerator.getInstance().nextId());
 		}
+
+        if (imexPrimary != null){
+            if (bibref == null){
+                experimentDescription = new ExperimentDescription(new Bibref(imexPrimary), detectionMethod);
+                experimentDescription.setId(IdentifierGenerator.getInstance().nextId());
+            }
+            else {
+                experimentDescription.setXref(imexPrimary);
+            }
+        }
+        if (ref != null){
+            if (bibref == null){
+                experimentDescription = new ExperimentDescription(new Bibref(ref), detectionMethod);
+                experimentDescription.setId(IdentifierGenerator.getInstance().nextId());
+            }
+            else if (imexPrimary == null){
+                experimentDescription.setXref(ref);
+            }
+            else {
+                experimentDescription.getXref().getSecondaryRef().addAll(ref.getAllDbReferences());
+            }
+        }
 
 		//Field 8
 		if (index < binaryInteraction.getAuthors().size()) {
@@ -694,11 +734,38 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 
 			CrossReference source = binaryInteraction.getSourceDatabases().get(0);
 
-			DbReference primaryReference = getPrimaryRef(interactionAc, source);
 			Interaction interaction = new psidev.psi.mi.xml.model.Interaction();
 			// this generates the id for the interaction
 			interaction.setId(IdentifierGenerator.getInstance().nextId());
-			interaction.setXref(new Xref(primaryReference));
+
+            boolean hasFoundImex=false;
+            Xref xref = null;
+            for (CrossReference ac : binaryInteraction.getInteractionAcs() ){
+                String database = ac.getDatabase();
+                String id = ac.getIdentifier();
+                if (database.equalsIgnoreCase("imex") && !hasFoundImex){
+                    hasFoundImex = true;
+                    DbReference secondaryRef = new DbReference(database, "MI:0670", id, "imex-primary", "MI:0662");
+
+                    if (xref == null){
+                        xref = new Xref(secondaryRef);
+                    }
+                    else {
+                        xref.getSecondaryRef().add(secondaryRef);
+                    }
+                }
+                else {
+                    DbReference secondaryRef = new DbReference(database, source.getIdentifier(), id, "identity", "MI:0356");
+
+                    if (xref == null){
+                        xref = new Xref(secondaryRef);
+                    }
+                    else {
+                        xref.getSecondaryRef().add(secondaryRef);
+                    }
+                }
+            }
+			interaction.setXref(xref);
 
 			// database source field 13 : no needs to convert it as it is converted in the source of the entry
 			/*for (CrossReference sourceXref : binaryInteraction.getSourceDatabases()) {
@@ -763,16 +830,19 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 			if (xrefs != null) {
 				if (!xrefs.isEmpty()) {
 					Collection<DbReference> secondaryRefs = new ArrayList<DbReference>();
-					for (CrossReference xref : xrefs) {
-						String database = xref.getDatabase();
-						String id = xref.getIdentifier();
+					for (CrossReference xref2 : xrefs) {
+						String database = xref2.getDatabase();
+						String id = xref2.getIdentifier();
 
-						//TODO What are the refType and refTypeAcs? How can we obtain the dbAcs?
-						DbReference secondaryRef = new DbReference(database, null, id, "identity", "MI:0356");
-						secondaryRefs.add(secondaryRef);
+                        //TODO What are the refType and refTypeAcs? How can we obtain the dbAcs?
+                        DbReference secondaryRef = new DbReference(database, null, id, null, null);
+                        secondaryRefs.add(secondaryRef);
 
 					}
 					if (!secondaryRefs.isEmpty()) {
+                        if (interaction.getXref() == null){
+                           interaction.setXref(new Xref());
+                        }
 						interaction.getXref().getSecondaryRef().addAll(secondaryRefs);
 					}
 				}
