@@ -3,7 +3,7 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.2-SNAPSHOT</version>
+        <version>1.8.2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
     <artifactId>psi25-xml</artifactId>
     <packaging>jar</packaging>
 
-    <version>1.8.2-SNAPSHOT</version>
+    <version>1.8.2</version>
 
     <name>PSI :: PSI-MI XML 2.5 Library</name>
     <description>

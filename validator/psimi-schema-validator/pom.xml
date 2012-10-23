@@ -3,7 +3,7 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>validator</artifactId>
-        <version>1.8.2-SNAPSHOT</version>
+        <version>1.8.2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-schema-validator</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.4-SNAPSHOT</version>
+    <version>2.0.4</version>
 
     <name>PSI :: Schema Validator :: PSI-MI Extension</name>
     <description>
@@ -59,7 +59,7 @@
         <dependency>
             <artifactId>psi25-xml</artifactId>
             <groupId>psidev.psi.mi</groupId>
-            <version>${pom.parent.version}</version>
+            <version>1.8.2</version>
         </dependency>
 
                <!-- OBO -->
