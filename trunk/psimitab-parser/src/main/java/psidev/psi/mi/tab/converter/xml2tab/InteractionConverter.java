@@ -768,7 +768,7 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 			interaction.setXref(xref);
 
 			// database source field 13 : no needs to convert it as it is converted in the source of the entry
-			/*for (CrossReference sourceXref : binaryInteraction.getSourceDatabases()) {
+			for (CrossReference sourceXref : binaryInteraction.getSourceDatabases()) {
 				String id = sourceXref.getIdentifier();
 
 				String refDbMi = null;
@@ -780,12 +780,17 @@ public abstract class InteractionConverter<T extends BinaryInteraction<?>> {
 				}
 
 				DbReference sourceReference = new DbReference(refDb, refDbMi, id, "source reference", "MI:0685");
-				interaction.getXref().getSecondaryRef().add(sourceReference);
+                if (interaction.getXref() == null){
+                    interaction.setXref(new Xref(sourceReference));
+                }
+                else {
+                    interaction.getXref().getSecondaryRef().add(sourceReference);
+                }
 
-				if (sourceXref.hasText()) {
+				/*if (sourceXref.hasText()) {
 					interaction.getAttributes().add(new Attribute("source reference:label", sourceXref.getText()));
-				}
-			}*/
+				} */
+			}
 
 			// set participants
 			if (interactionMap.get(interactionId).size() >= 1) {
