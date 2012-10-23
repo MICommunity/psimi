@@ -1,0 +1,4 @@
+- Integrate a DB/cache based DAO for handling references of the schema.
+- build a PSIMITAB conterter
+- build filter for loading only subsets
+- use pull parser to fill up DAO and provide iterator on Interactions
