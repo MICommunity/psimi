@@ -303,7 +303,7 @@ public class Xml2Tab {
 						sourceName = names.getShortLabel();
 					}
 					else if (names.getFullName() != null) {
-						sourceName = names.getShortLabel();
+						sourceName = names.getFullName();
 					} else {
 						 sourceName = UNKNOWN;
 					}
