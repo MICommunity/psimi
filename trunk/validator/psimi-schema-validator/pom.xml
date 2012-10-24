@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>psidev.psi.mi</groupId>
@@ -21,11 +22,22 @@
 
     <build>
         <plugins>
-            <!-- Assembly -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <descriptor>${descriptor}</descriptor>
+                    <descriptors>
+                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
+                    </descriptors>
                 </configuration>
             </plugin>
         </plugins>
@@ -54,7 +66,7 @@
         <dependency>
             <groupId>psidev.psi.tools</groupId>
             <artifactId>xxindex</artifactId>
-            <version>0.6</version>	   
+            <version>0.6</version>
         </dependency>
         <dependency>
             <artifactId>psi25-xml</artifactId>
@@ -62,7 +74,7 @@
             <version>1.8.3-SNAPSHOT</version>
         </dependency>
 
-               <!-- OBO -->
+        <!-- OBO -->
 
         <dependency>
             <groupId>obo</groupId>
@@ -77,26 +89,21 @@
         </dependency>
 
         <!-- 3rd party -->
-       <dependency>
-           <groupId>commons-logging</groupId>
-           <artifactId>commons-logging</artifactId>
-           <version>1.1.1</version>
-       </dependency>
-       <dependency>
-           <groupId>log4j</groupId>
-           <artifactId>log4j</artifactId>
-           <version>1.2.15</version>
-           <exclusions>
-               <exclusion>
-                   <groupId>javax.jms</groupId>
-                   <artifactId>jms</artifactId>
-               </exclusion>
-           </exclusions>
-       </dependency>
         <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>com.springsource.antlr</artifactId>
-            <version>2.7.7</version>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.15</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
@@ -106,12 +113,12 @@
 
     </dependencies>
 
-  <repositories>
+    <repositories>
         <repository>
             <id>intact.nexus</id>
             <name>IntAct Nexus</name>
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
         </repository>
-  </repositories>
+    </repositories>
 
 </project>

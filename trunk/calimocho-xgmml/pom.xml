@@ -17,6 +17,26 @@
 
     <build>
         <plugins>
+            <!--assembly-->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+
             <!-- Conversion of XML Schema into Java source code using JAXB-XJC -->
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>

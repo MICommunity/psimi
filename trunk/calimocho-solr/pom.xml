@@ -9,7 +9,31 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>calimocho-solr</artifactId>
     <version>2.5-SNAPSHOT</version>
-    <name>calimocho-solr</name>
+    <name>PSI :: Calimocho Solr</name>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!-- Apache Solr -->

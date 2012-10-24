@@ -28,6 +28,25 @@
 
     <build>
         <plugins>
+            <!--assembly-->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
             <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-jar-plugin</artifactId>
@@ -36,7 +55,7 @@
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                      </archive>
                  </configuration>
-            </plugin> 
+            </plugin>
             <plugin>
                 <groupId>org.ops4j</groupId>
                 <artifactId>maven-pax-plugin</artifactId>
@@ -58,9 +77,9 @@
                      <execution>
                         <id>bundle-manifest</id>
                         <phase>process-classes</phase>
-                        <goals>    
+                        <goals>
                             <goal>manifest</goal>
-                        </goals>   
+                        </goals>
                      </execution>
                 </executions>
                 <configuration>
@@ -72,7 +91,7 @@
                         -->
                         <Export-Package>
                             !${bundle.namespace}.internal.*,
-                            
+
                              ${bundle.namespace}.*;version=${pom.version},
                              psidev.psi.mi.xml254.jaxb;version=${pom.version},
                              psidev.psi.mi.xml253.jaxb;version=${pom.version}"
@@ -104,14 +123,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <!-- Assembly -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptor>${descriptor}</descriptor>
-                </configuration>
             </plugin>
         </plugins>
     </build>
