@@ -22,7 +22,8 @@
         <module>calimocho-tab</module>
         <module>calimocho-xml</module>
         <module>calimocho-xgmml</module>
-    <module>calimocho-solr</module>
+        <module>calimocho-solr</module>
+        <module>assembly</module>
   </modules>
 
     <scm>
@@ -109,14 +110,14 @@
         <defaultGoal>clean install</defaultGoal>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.2</version>
-                    <configuration>
-                        <finalName>${artifactId}-${version}</finalName>
-                        <outputDirectory>${assembly.outputDirectory}</outputDirectory>
-                    </configuration>
-                </plugin>
+                <!--<plugin>-->
+                    <!--<artifactId>maven-assembly-plugin</artifactId>-->
+                    <!--<version>2.2</version>-->
+                    <!--<configuration>-->
+                        <!--<finalName>${artifactId}-${version}</finalName>-->
+                        <!--<outputDirectory>${assembly.outputDirectory}</outputDirectory>-->
+                    <!--</configuration>-->
+                <!--</plugin>-->
                 <plugin>
                     <groupId>org.ops4j</groupId>
                     <artifactId>maven-pax-plugin</artifactId>
