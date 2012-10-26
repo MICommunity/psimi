@@ -15,6 +15,12 @@
     <name>PSI :: RDF converter</name>
     <url>http://psimi.googlecode.com</url>
 
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi25-xml-rdf/</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi25-xml-rdf/</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psi25-xml-rdf</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
