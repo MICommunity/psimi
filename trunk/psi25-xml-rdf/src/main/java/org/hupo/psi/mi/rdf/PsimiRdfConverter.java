@@ -27,9 +27,12 @@ import org.biopax.paxtools.model.Model;
 import org.mskcc.psibiopax.converter.PSIMIBioPAXConverter;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
+import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
@@ -142,11 +145,35 @@ public class PsimiRdfConverter {
         }
     }
 
+    private EntrySet mergeEntriesIfNecessary(EntrySet entrySet){
+        if (entrySet == null){
+            return null;
+        }
+
+        if (entrySet.getEntries().size() > 1){
+            Iterator<Entry> entryIterator = entrySet.getEntries().iterator();
+
+            Entry originalEntry = entryIterator.next();
+
+            while (entryIterator.hasNext()){
+                 Entry newEntry = entryIterator.next();
+
+                originalEntry.getExperiments().addAll(newEntry.getExperiments());
+                originalEntry.getInteractors().addAll(newEntry.getInteractors());
+                originalEntry.getInteractions().addAll(newEntry.getInteractions());
+            }
+
+            return new EntrySet(Arrays.asList(originalEntry), entrySet.getLevel(), entrySet.getVersion(), entrySet.getMinorVersion());
+        }
+
+        return entrySet;
+    }
+
     private void convertToBioPAXAndFixURIs(EntrySet entrySet, BioPAXLevel biopaxLevel, Writer writer) throws IOException {
         OutputStream os = new ByteArrayOutputStream();
 
         PSIMIBioPAXConverter biopaxConverter = new PSIMIBioPAXConverter(biopaxLevel);
-        biopaxConverter.convert(entrySet, os);
+        biopaxConverter.convert(mergeEntriesIfNecessary(entrySet), os);
 
         String biopaxOutput = os.toString();
 
