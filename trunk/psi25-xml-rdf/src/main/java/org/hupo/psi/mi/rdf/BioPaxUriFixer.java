@@ -80,7 +80,15 @@ public class BioPaxUriFixer {
 
             if (line.contains("urn:miriam:")) {
                 String[] tokens = line.split("urn:miriam:");
-                tokens[1] = StringUtils.replaceOnce(tokens[1], ":", "/");
+                // hack : only take first word
+                if (tokens[1].contains(" <")){
+                    int index = tokens[1].indexOf(" <");
+                    String uriToFix = tokens[1].substring(0, index);
+                    tokens[1] = StringUtils.replaceOnce(uriToFix, ":", "/")+tokens[1].substring(index);
+                }
+                else {
+                    tokens[1] = StringUtils.replaceOnce(tokens[1], ":", "/");
+                }
 
                 line = StringUtils.join(tokens, IDENTIFIERS_ORG);
             }
