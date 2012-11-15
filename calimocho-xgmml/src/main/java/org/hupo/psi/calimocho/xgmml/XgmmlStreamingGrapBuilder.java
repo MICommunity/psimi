@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import com.sun.xml.txw2.output.IndentingXMLStreamWriter;
+import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.io.IllegalRowException;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
@@ -358,7 +359,7 @@ public class XgmmlStreamingGrapBuilder {
                 row.getFields(InteractionKeys.KEY_BIOROLE_A),
                 row.getFields(InteractionKeys.KEY_EXPROLE_A),
                 row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A),
-                row.getFields(InteractionKeys.KEY_XREFS_A),
+                //row.getFields(InteractionKeys.KEY_XREFS_A),
                 row.getFields(InteractionKeys.KEY_ANNOTATIONS_A),
                 nodeIndex, rowIndex, colIndex, cols, distance);
     }
@@ -372,7 +373,7 @@ public class XgmmlStreamingGrapBuilder {
                 row.getFields(InteractionKeys.KEY_EXPROLE_B),
                 row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B),
                 row.getFields(InteractionKeys.KEY_XREFS_B),
-                row.getFields(InteractionKeys.KEY_ANNOTATIONS_B),
+                //row.getFields(InteractionKeys.KEY_ANNOTATIONS_B),
                 nodeIndex, rowIndex, colIndex, cols, distance);
     }
 
@@ -406,7 +407,7 @@ public class XgmmlStreamingGrapBuilder {
 
     private XgmmlNode toNode(Collection<Field> idFields, Collection<Field> altidFields, Collection<Field> aliasFields,
                              Collection<Field> taxidFields, Collection<Field> bioRoleFields, Collection<Field> expRoleFields,
-                             Collection<Field> typeFields, Collection<Field> xrefFields, Collection<Field> annotFields, int nodeIndex, int rowIndex, int colIndex, int cols, int distance) throws JAXBException, XMLStreamException {
+                             Collection<Field> typeFields, Collection<Field> xrefFields, int nodeIndex, int rowIndex, int colIndex, int cols, int distance) throws JAXBException, XMLStreamException {
 
         int initialSize=0;
         if (altidFields != null){
@@ -490,7 +491,6 @@ public class XgmmlStreamingGrapBuilder {
         addFieldsAsAtts(expRoleFields, attMultimap, "exprole");
         addFieldsAsAtts(typeFields, attMultimap, "type");
         addFieldsAsAtts(xrefFields, attMultimap, "xref");
-        addFieldsAsAtts(annotFields, attMultimap, "annot");
 
         // process the multimap. When there is more than one value, create a list att to wrap the atts
         final List<Att> atts = node.getAtts();
@@ -572,7 +572,7 @@ public class XgmmlStreamingGrapBuilder {
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_EXPANSION), attMultimap, null);
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_XREFS_I), attMultimap, "xref");
         addFieldsWithNameAsAtts(row.getFields(InteractionKeys.KEY_HOST_ORGANISM), attMultimap, "host");
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_ANNOTATIONS_I), attMultimap, "annot");
+        //addFieldsAsAtts(row.getFields(InteractionKeys.KEY_ANNOTATIONS_I), attMultimap, "annot");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_PARAMETERS_I), attMultimap, "param");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_NEGATIVE), attMultimap, "negative");
 
@@ -648,11 +648,15 @@ public class XgmmlStreamingGrapBuilder {
     private void addAttsFromMap(Multimap<String, calimocho.internal.xgmml.Att> attMultimap, List<calimocho.internal.xgmml.Att> atts) {
         for (Map.Entry<String, Collection<calimocho.internal.xgmml.Att>> entry : attMultimap.asMap().entrySet()) {
             if (entry.getValue().size() > 1) {
-                calimocho.internal.xgmml.Att list = createAtt(entry.getKey(), null);
 
+                TreeSet<String> values = new TreeSet<String>();
                 for (calimocho.internal.xgmml.Att att : entry.getValue()) {
-                    list.getContent().add(att);
+                    if (att.getValue() != null){
+                        values.add(att.getValue());
+                    }
                 }
+
+                calimocho.internal.xgmml.Att list = createAtt(entry.getKey(), StringUtils.join(values, ","));
 
                 atts.add(list);
             } else {

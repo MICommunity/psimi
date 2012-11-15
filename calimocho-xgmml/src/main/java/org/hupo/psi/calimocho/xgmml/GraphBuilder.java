@@ -21,6 +21,7 @@ import calimocho.internal.xgmml.ObjectFactory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import org.apache.commons.lang.StringUtils;
 import org.hupo.psi.calimocho.io.IllegalFieldException;
 import org.hupo.psi.calimocho.io.IllegalRowException;
 import org.hupo.psi.calimocho.key.CalimochoKeys;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
@@ -322,7 +324,7 @@ public class GraphBuilder {
                 row.getFields(InteractionKeys.KEY_EXPROLE_A),
                 row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A),
                 row.getFields(InteractionKeys.KEY_XREFS_A),
-                row.getFields(InteractionKeys.KEY_ANNOTATIONS_A),
+                //row.getFields(InteractionKeys.KEY_ANNOTATIONS_A),
                 row.getFields(InteractionKeys.KEY_PARAMETERS_A),
                 nodeIndex);
     }
@@ -336,14 +338,14 @@ public class GraphBuilder {
                 row.getFields(InteractionKeys.KEY_EXPROLE_B),
                 row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B),
                 row.getFields(InteractionKeys.KEY_XREFS_B),
-                row.getFields(InteractionKeys.KEY_ANNOTATIONS_B),
+                //row.getFields(InteractionKeys.KEY_ANNOTATIONS_B),
                 row.getFields(InteractionKeys.KEY_PARAMETERS_B),
                 nodeIndex);
     }
 
     private Node toNode(Collection<Field> idFields, Collection<Field> altidFields, Collection<Field> aliasFields,
                         Collection<Field> taxidFields, Collection<Field> bioRoleFields, Collection<Field> expRoleFields,
-                        Collection<Field> typeFields, Collection<Field> xrefFields, Collection<Field> annotFields, Collection<Field> paramFields,
+                        Collection<Field> typeFields, Collection<Field> xrefFields, Collection<Field> paramFields,
                         int nodeIndex) {
         String displayName = null;
 
@@ -425,7 +427,6 @@ public class GraphBuilder {
         addFieldsAsAtts(expRoleFields, attMultimap, "exprole");
         addFieldsAsAtts(typeFields, attMultimap, "type");
         addFieldsAsAtts(xrefFields, attMultimap, "xref");
-        addFieldsAsAtts(annotFields, attMultimap, "annot");
         addFieldsAsAtts(paramFields, attMultimap, "param");
 
         // process the multimap. When there is more than one value, create a list att to wrap the atts
@@ -465,7 +466,7 @@ public class GraphBuilder {
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_EXPANSION), attMultimap, null);
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_XREFS_I), attMultimap, "xref");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_HOST_ORGANISM), attMultimap, "host");
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_ANNOTATIONS_I), attMultimap, "annot");
+        //addFieldsAsAtts(row.getFields(InteractionKeys.KEY_ANNOTATIONS_I), attMultimap, "annot");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_PARAMETERS_I), attMultimap, "param");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_NEGATIVE), attMultimap, "negative");
 
@@ -514,12 +515,14 @@ public class GraphBuilder {
     private void addAttsFromMap(Multimap<String, Att> attMultimap, List<Att> atts) {
         for (Map.Entry<String, Collection<Att>> entry : attMultimap.asMap().entrySet()) {
             if (entry.getValue().size() > 1) {
-                Att list = createAtt(entry.getKey(), null);
-
-                for (Att att : entry.getValue()) {
-                    list.getContent().add(att);
+                TreeSet<String> values = new TreeSet<String>(entry.getValue().size());
+                for (calimocho.internal.xgmml.Att att : entry.getValue()) {
+                    if (att.getValue() != null){
+                        values.add(att.getValue());
+                    }
                 }
 
+                calimocho.internal.xgmml.Att list = createAtt(entry.getKey(), StringUtils.join(values, ","));
                 atts.add(list);
             } else {
                 atts.add(entry.getValue().iterator().next());
