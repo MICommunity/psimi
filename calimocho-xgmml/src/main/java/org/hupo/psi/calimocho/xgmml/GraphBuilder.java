@@ -515,7 +515,7 @@ public class GraphBuilder {
     private void addAttsFromMap(Multimap<String, Att> attMultimap, List<Att> atts) {
         for (Map.Entry<String, Collection<Att>> entry : attMultimap.asMap().entrySet()) {
             if (entry.getValue().size() > 1) {
-                TreeSet<String> values = new TreeSet<String>(entry.getValue().size());
+                TreeSet<String> values = new TreeSet<String>();
                 for (calimocho.internal.xgmml.Att att : entry.getValue()) {
                     if (att.getValue() != null){
                         values.add(att.getValue());
