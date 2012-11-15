@@ -326,6 +326,7 @@ public class GraphBuilder {
                 row.getFields(InteractionKeys.KEY_XREFS_A),
                 //row.getFields(InteractionKeys.KEY_ANNOTATIONS_A),
                 row.getFields(InteractionKeys.KEY_PARAMETERS_A),
+                row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_A),
                 nodeIndex);
     }
 
@@ -340,12 +341,13 @@ public class GraphBuilder {
                 row.getFields(InteractionKeys.KEY_XREFS_B),
                 //row.getFields(InteractionKeys.KEY_ANNOTATIONS_B),
                 row.getFields(InteractionKeys.KEY_PARAMETERS_B),
+                row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_B),
                 nodeIndex);
     }
 
     private Node toNode(Collection<Field> idFields, Collection<Field> altidFields, Collection<Field> aliasFields,
                         Collection<Field> taxidFields, Collection<Field> bioRoleFields, Collection<Field> expRoleFields,
-                        Collection<Field> typeFields, Collection<Field> xrefFields, Collection<Field> paramFields,
+                        Collection<Field> typeFields, Collection<Field> xrefFields, Collection<Field> paramFields, Collection<Field> pmethodFields,
                         int nodeIndex) {
         String displayName = null;
 
@@ -428,6 +430,7 @@ public class GraphBuilder {
         addFieldsAsAtts(typeFields, attMultimap, "type");
         addFieldsAsAtts(xrefFields, attMultimap, "xref");
         addFieldsAsAtts(paramFields, attMultimap, "param");
+        addFieldsAsAtts(pmethodFields, attMultimap, "pmethod");
 
         // process the multimap. When there is more than one value, create a list att to wrap the atts
         final List<Att> atts = node.getAtts();

@@ -359,8 +359,9 @@ public class XgmmlStreamingGrapBuilder {
                 row.getFields(InteractionKeys.KEY_BIOROLE_A),
                 row.getFields(InteractionKeys.KEY_EXPROLE_A),
                 row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A),
-                //row.getFields(InteractionKeys.KEY_XREFS_A),
-                row.getFields(InteractionKeys.KEY_ANNOTATIONS_A),
+                row.getFields(InteractionKeys.KEY_XREFS_A),
+                row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_A),
+                //row.getFields(InteractionKeys.KEY_ANNOTATIONS_A),
                 nodeIndex, rowIndex, colIndex, cols, distance);
     }
 
@@ -373,6 +374,7 @@ public class XgmmlStreamingGrapBuilder {
                 row.getFields(InteractionKeys.KEY_EXPROLE_B),
                 row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B),
                 row.getFields(InteractionKeys.KEY_XREFS_B),
+                row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_B),
                 //row.getFields(InteractionKeys.KEY_ANNOTATIONS_B),
                 nodeIndex, rowIndex, colIndex, cols, distance);
     }
@@ -407,7 +409,7 @@ public class XgmmlStreamingGrapBuilder {
 
     private XgmmlNode toNode(Collection<Field> idFields, Collection<Field> altidFields, Collection<Field> aliasFields,
                              Collection<Field> taxidFields, Collection<Field> bioRoleFields, Collection<Field> expRoleFields,
-                             Collection<Field> typeFields, Collection<Field> xrefFields, int nodeIndex, int rowIndex, int colIndex, int cols, int distance) throws JAXBException, XMLStreamException {
+                             Collection<Field> typeFields, Collection<Field> xrefFields, Collection<Field> pmethodFields, int nodeIndex, int rowIndex, int colIndex, int cols, int distance) throws JAXBException, XMLStreamException {
 
         int initialSize=0;
         if (altidFields != null){
@@ -487,10 +489,11 @@ public class XgmmlStreamingGrapBuilder {
         addFieldsAsAtts(altidFields, attMultimap, "altid");
         addFieldsAsAtts(aliasFields, attMultimap, "alias");
         addFieldsWithNameAsAtts(taxidFields, attMultimap, null);
-        addFieldsAsAtts(bioRoleFields, attMultimap, "biorole");
-        addFieldsAsAtts(expRoleFields, attMultimap, "exprole");
-        addFieldsAsAtts(typeFields, attMultimap, "type");
+        addFieldsWithNameAsAtts(bioRoleFields, attMultimap, "biorole");
+        addFieldsWithNameAsAtts(expRoleFields, attMultimap, "exprole");
+        addFieldsWithNameAsAtts(typeFields, attMultimap, "type");
         addFieldsAsAtts(xrefFields, attMultimap, "xref");
+        addFieldsAsAtts(pmethodFields, attMultimap, "pmethod");
 
         // process the multimap. When there is more than one value, create a list att to wrap the atts
         final List<Att> atts = node.getAtts();
@@ -569,7 +572,7 @@ public class XgmmlStreamingGrapBuilder {
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_INTERACTION_ID), attMultimap, "id");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_CONFIDENCE), attMultimap, "confidence");
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_DATASET), attMultimap, "dataset");
-        addFieldsAsAtts(row.getFields(InteractionKeys.KEY_EXPANSION), attMultimap, null);
+        addFieldsWithNameAsAtts(row.getFields(InteractionKeys.KEY_EXPANSION), attMultimap, null);
         addFieldsAsAtts(row.getFields(InteractionKeys.KEY_XREFS_I), attMultimap, "xref");
         addFieldsWithNameAsAtts(row.getFields(InteractionKeys.KEY_HOST_ORGANISM), attMultimap, "host");
         //addFieldsAsAtts(row.getFields(InteractionKeys.KEY_ANNOTATIONS_I), attMultimap, "annot");
