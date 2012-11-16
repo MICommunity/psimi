@@ -391,7 +391,7 @@ public class XgmmlStreamingGrapBuilder {
             }
         }
 
-        if (key == null && idFields != null) {
+        if (key == null && idFields != null && !idFields.isEmpty()) {
             for (Field idField : idFields) {
                 if ("uniprotkb".equals(idField.get(CalimochoKeys.KEY)) || "chebi".equals(idField.get(CalimochoKeys.KEY))) {
                     key = idField.get(CalimochoKeys.VALUE);
