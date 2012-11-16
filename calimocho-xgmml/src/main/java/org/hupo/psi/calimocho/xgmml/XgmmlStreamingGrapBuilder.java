@@ -419,8 +419,12 @@ public class XgmmlStreamingGrapBuilder {
             initialSize+=aliasFields.size();
         }
         Collection<Field> altidAndAliasFields = new ArrayList< Field>(initialSize);
-        altidAndAliasFields.addAll(altidFields);
-        altidAndAliasFields.addAll(aliasFields);
+        if (altidFields != null){
+            altidAndAliasFields.addAll(altidFields);
+        }
+        if (aliasFields != null){
+            altidAndAliasFields.addAll(aliasFields);
+        }
 
         String key = extractKeyValueForNode(altidAndAliasFields, idFields);
 
