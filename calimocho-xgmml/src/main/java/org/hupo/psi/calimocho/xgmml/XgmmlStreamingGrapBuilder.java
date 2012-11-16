@@ -497,7 +497,7 @@ public class XgmmlStreamingGrapBuilder {
         addFieldsWithNameAsAtts(expRoleFields, attMultimap, "exprole");
         addFieldsWithNameAsAtts(typeFields, attMultimap, "type");
         addFieldsAsAtts(xrefFields, attMultimap, "xref");
-        addFieldsAsAtts(pmethodFields, attMultimap, "pmethod");
+        addFieldsWithNameAsAtts(pmethodFields, attMultimap, "pmethod");
 
         // process the multimap. When there is more than one value, create a list att to wrap the atts
         final List<Att> atts = node.getAtts();
