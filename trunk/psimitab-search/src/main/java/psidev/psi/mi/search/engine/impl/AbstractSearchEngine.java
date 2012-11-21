@@ -217,7 +217,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
                 indexSearcher.search(query, countCollector);
                 totalCount = countCollector.getTotalHits();
             }
-            if (sort != null) {
+            else if (sort != null) {
                 hits = indexSearcher.search(query, maxResults+firstResult, sort);
             } else {
                 hits = indexSearcher.search(query, maxResults+firstResult);
