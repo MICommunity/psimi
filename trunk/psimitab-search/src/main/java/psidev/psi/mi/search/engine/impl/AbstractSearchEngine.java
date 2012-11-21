@@ -55,6 +55,8 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
     protected Directory indexDirectory;
 
+    private static int MAX_TOP_RESULTS = 200;
+
     /**
      * IndexSearcher is thread-safe, and the api recommends to open only one
      * and use it for all searches.
@@ -201,7 +203,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         if (log.isDebugEnabled()) log.debug("Searching=\""+query+"\" (first="+firstResult+"/max="+maxResults+")");
 
         if (firstResult == null) firstResult = 0;
-        if (maxResults == null) maxResults = Integer.MAX_VALUE;
+        if (maxResults == null) maxResults = MAX_TOP_RESULTS;
 
         long startTime = System.currentTimeMillis();
 
@@ -209,9 +211,9 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
         try {
             if (sort != null) {
-                hits = indexSearcher.search(query, Integer.MAX_VALUE, sort);
+                hits = indexSearcher.search(query, maxResults+firstResult, sort);
             } else {
-                hits = indexSearcher.search(query, Integer.MAX_VALUE);
+                hits = indexSearcher.search(query, maxResults+firstResult);
             }
 
             if (log.isDebugEnabled()) log.debug("\tTime: " + (System.currentTimeMillis() - startTime) + "ms");
@@ -260,7 +262,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
     public SearchResult<T> searchAll(Integer firstResult, Integer maxResults) throws SearchEngineException
     {
         if (firstResult == null) firstResult = 0;
-        if (maxResults == null) maxResults = Integer.MAX_VALUE;
+        if (maxResults == null) maxResults = MAX_TOP_RESULTS;
 
         IndexReader reader = indexSearcher.getIndexReader();
 
