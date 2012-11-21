@@ -242,7 +242,7 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         {
             try
             {
-                Document doc = indexSearcher.getIndexReader().document(scoreDocs[i].doc);
+                Document doc = indexSearcher.doc(scoreDocs[i].doc);
                 T data = (T) createDocumentBuilder().createData(doc);
                 dataObjects.add(data);
             }
