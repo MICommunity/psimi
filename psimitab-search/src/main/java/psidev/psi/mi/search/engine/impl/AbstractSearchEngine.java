@@ -207,9 +207,16 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
 
         long startTime = System.currentTimeMillis();
 
-        TopDocs hits;
+        TopDocs hits=null;
+
+        int totalCount = 0;
 
         try {
+            if (maxResults == 0){
+                TotalHitCountCollector countCollector = new TotalHitCountCollector();
+                indexSearcher.search(query, countCollector);
+                totalCount = countCollector.getTotalHits();
+            }
             if (sort != null) {
                 hits = indexSearcher.search(query, maxResults+firstResult, sort);
             } else {
@@ -222,37 +229,41 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
             throw new SearchEngineException(e);
         }
 
-        int totalCount = hits.totalHits;
+        if (hits != null){
+            totalCount = hits.totalHits;
 
-        if (totalCount < firstResult)
-        {
-            if (log.isDebugEnabled()) log.debug("\tNo hits. No results returned");
+            if (totalCount < firstResult)
+            {
+                if (log.isDebugEnabled()) log.debug("\tNo hits. No results returned");
 
+                return new SearchResult(Collections.EMPTY_LIST, totalCount, firstResult, maxResults, query);
+            }
+
+            int maxIndex = Math.min(totalCount, firstResult+maxResults);
+
+            if (log.isDebugEnabled()) log.debug("\tHits: "+hits.totalHits+". Will return from "+firstResult+" to "+maxIndex);
+
+            List<T> dataObjects = new ArrayList<T>();
+
+            ScoreDoc[] scoreDocs = hits.scoreDocs;
+            for (int i=firstResult; i<maxIndex; i++)
+            {
+                try
+                {
+                    Document doc = indexSearcher.doc(scoreDocs[i].doc);
+                    T data = (T) createDocumentBuilder().createData(doc);
+                    dataObjects.add(data);
+                }
+                catch (Exception e)
+                {
+                    throw new SearchEngineException(e);
+                }
+            }
+            return new SearchResult<T>(dataObjects, totalCount, firstResult, maxResults, query);
+        }
+        else {
             return new SearchResult(Collections.EMPTY_LIST, totalCount, firstResult, maxResults, query);
         }
-
-        int maxIndex = Math.min(totalCount, firstResult+maxResults);
-
-        if (log.isDebugEnabled()) log.debug("\tHits: "+hits.totalHits+". Will return from "+firstResult+" to "+maxIndex);
-
-        List<T> dataObjects = new ArrayList<T>();
-
-        ScoreDoc[] scoreDocs = hits.scoreDocs;
-        for (int i=firstResult; i<maxIndex; i++)
-        {
-            try
-            {
-                Document doc = indexSearcher.doc(scoreDocs[i].doc);
-                T data = (T) createDocumentBuilder().createData(doc);
-                dataObjects.add(data);
-            }
-            catch (Exception e)
-            {
-                throw new SearchEngineException(e);
-            }
-        }
-
-         return new SearchResult<T>(dataObjects, totalCount, firstResult, maxResults, query);
     }
 
     protected DocumentBuilder createDocumentBuilder() {
@@ -267,6 +278,10 @@ public abstract class AbstractSearchEngine<T extends BinaryInteraction> implemen
         IndexReader reader = indexSearcher.getIndexReader();
 
         int totalCount = reader.maxDoc();
+
+        if (maxResults == 0){
+            return new SearchResult(Collections.EMPTY_LIST, totalCount, firstResult, maxResults, new WildcardQuery(new Term("", "*")));
+        }
 
         // this is a hack to ignore any header introduced in the index by mistake (first development versions)
         if (reader.isDeleted(0))
