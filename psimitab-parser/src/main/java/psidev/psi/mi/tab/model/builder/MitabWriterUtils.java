@@ -164,7 +164,7 @@ public class MitabWriterUtils {
 	}
 
 	/* Create a string from a collection of features */
-	private static String joinFeatureCollection(List<Feature> collection) {
+	public static String joinFeatureCollection(List<Feature> collection) {
 		StringBuilder sb = new StringBuilder();
 		if (collection != null && !collection.isEmpty()) {
 
@@ -187,7 +187,7 @@ public class MitabWriterUtils {
 	}
 
 	/* Create a string from a collection of annotations */
-	private static String joinAnnotationsCollection(List<Annotation> collection) {
+	public static String joinAnnotationsCollection(List<Annotation> collection) {
 		StringBuilder sb = new StringBuilder();
 		if (collection != null && !collection.isEmpty()) {
 
@@ -220,7 +220,7 @@ public class MitabWriterUtils {
 	}
 
 	/* Create a string from a collection of stoichiometries */
-	private static String joinStoichiometryCollection(List<Integer> stoichiometry) {
+	public static String joinStoichiometryCollection(List<Integer> stoichiometry) {
 		StringBuilder sb = new StringBuilder();
 		if (stoichiometry != null && !stoichiometry.isEmpty()) {
 
@@ -241,7 +241,7 @@ public class MitabWriterUtils {
 	}
 
 	/* Create a string from the negative value */
-	private static String createNegative(Boolean negativeInteraction) {
+	public static String createNegative(Boolean negativeInteraction) {
 		String negative;
 
 		if (negativeInteraction == null) {
@@ -254,7 +254,7 @@ public class MitabWriterUtils {
 	}
 
 	/* Create a string from a collection of checksums */
-	private static String joinChecksumCollection(List<Checksum> collection) {
+	public static String joinChecksumCollection(List<Checksum> collection) {
 		StringBuilder sb = new StringBuilder();
 		if (collection != null && !collection.isEmpty()) {
 
@@ -276,7 +276,7 @@ public class MitabWriterUtils {
 		return sb.toString();
 	}
 
-	private static String joinParametersCollection(List<Parameter> collection) {
+	public static String joinParametersCollection(List<Parameter> collection) {
 		StringBuilder sb = new StringBuilder();
 		if (collection != null && !collection.isEmpty()) {
 
@@ -297,7 +297,7 @@ public class MitabWriterUtils {
 		return sb.toString();
 	}
 
-	private static String joinOrganism(Organism organism) {
+	public static String joinOrganism(Organism organism) {
 		String result;
 		if (organism != null && !organism.getIdentifiers().isEmpty()) {
 			result = joinCrossReferencStyleCollection(organism.getIdentifiers());
@@ -307,7 +307,7 @@ public class MitabWriterUtils {
 		return result;
 	}
 
-	private static String joinAuthorCollection(List<Author> collection) {
+	public static String joinAuthorCollection(List<Author> collection) {
 		StringBuilder sb = new StringBuilder();
 
 		if (collection != null && !collection.isEmpty()) {
@@ -331,7 +331,7 @@ public class MitabWriterUtils {
 		return sb.toString();
 	}
 
-	private static String joinConfidenceCollection(List<Confidence> collection) {
+	public static String joinConfidenceCollection(List<Confidence> collection) {
 		StringBuilder sb = new StringBuilder();
 
 		if (collection != null && !collection.isEmpty()) {
@@ -358,7 +358,7 @@ public class MitabWriterUtils {
 	 * @param collection The values can not be null.
 	 * @return
 	 */
-	private static String joinCrossReferencStyleCollection(List<CrossReference> collection) {
+	public static String joinCrossReferencStyleCollection(List<CrossReference> collection) {
 		StringBuilder sb = new StringBuilder();
 		if (collection != null && !collection.isEmpty()) {
 
@@ -384,7 +384,7 @@ public class MitabWriterUtils {
 		return sb.toString();
 	}
 
-	private static String joinAliasCollection(List<Alias> collection) {
+	public static String joinAliasCollection(List<Alias> collection) {
 
 		StringBuilder sb = new StringBuilder();
 		if (collection != null && !collection.isEmpty()) {
@@ -407,7 +407,7 @@ public class MitabWriterUtils {
 
 	}
 
-	private static String joinDateCollection(List<Date> collection) {
+	public static String joinDateCollection(List<Date> collection) {
 
 		StringBuilder sb = new StringBuilder();
 		// Some examples
@@ -432,7 +432,7 @@ public class MitabWriterUtils {
 
 	}
 
-	private static String joinAttributes(String type, String value, String description) {
+	public static String joinAttributes(String type, String value, String description) {
 		StringBuilder sb = new StringBuilder();
 
 		boolean psiCvTerm = false;
@@ -474,7 +474,7 @@ public class MitabWriterUtils {
 		return sb.toString();
 	}
 
-	protected static String createMitabLine(String[] columns, PsimiTabVersion version) {
+	public static String createMitabLine(String[] columns, PsimiTabVersion version) {
 
 		StringBuilder sb = new StringBuilder();
 		int numberOfColumns = version.getNumberOfColumns();
