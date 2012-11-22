@@ -282,7 +282,7 @@ public final class MitabParserUtils {
 
     // TODO delegate the creation of the objects
 
-    private static Organism splitOrganism(String column) throws IllegalFormatException {
+    public static Organism splitOrganism(String column) throws IllegalFormatException {
 
         Organism organism = null;
 
@@ -320,7 +320,7 @@ public final class MitabParserUtils {
     }
 
 
-    private static List<CrossReference> splitCrossReferences(String column) throws IllegalFormatException {
+    public static List<CrossReference> splitCrossReferences(String column) throws IllegalFormatException {
 
         List<CrossReference> objects = new ArrayList<CrossReference>();
         CrossReference object = null;
@@ -368,7 +368,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Alias> splitAliases(String column) throws IllegalFormatException {
+    public static List<Alias> splitAliases(String column) throws IllegalFormatException {
         List<Alias> objects = new ArrayList<Alias>();
         Alias object = null;
 
@@ -408,7 +408,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Confidence> splitConfidences(String column) throws IllegalFormatException {
+    public static List<Confidence> splitConfidences(String column) throws IllegalFormatException {
         List<Confidence> objects = new ArrayList<Confidence>();
         Confidence object = null;
 
@@ -449,7 +449,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Annotation> splitAnnotations(String column) throws IllegalFormatException {
+    public static List<Annotation> splitAnnotations(String column) throws IllegalFormatException {
         List<Annotation> objects = new ArrayList<Annotation>();
         Annotation object = null;
 
@@ -492,7 +492,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Parameter> splitParameters(String column) throws IllegalFormatException {
+    public static List<Parameter> splitParameters(String column) throws IllegalFormatException {
         List<Parameter> objects = new ArrayList<Parameter>();
         Parameter object = null;
 
@@ -531,7 +531,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Checksum> splitChecksums(String column) throws IllegalFormatException {
+    public static List<Checksum> splitChecksums(String column) throws IllegalFormatException {
 
         List<Checksum> objects = new ArrayList<Checksum>();
         Checksum object = null;
@@ -573,7 +573,7 @@ public final class MitabParserUtils {
     }
 
 
-    private static List<Integer> splitStoichiometries(String column) throws IllegalFormatException {
+    public static List<Integer> splitStoichiometries(String column) throws IllegalFormatException {
         List<Integer> objects = new ArrayList<Integer>();
         Integer object = null;
 
@@ -610,7 +610,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Feature> splitFeatures(String column) throws IllegalFormatException {
+    public static List<Feature> splitFeatures(String column) throws IllegalFormatException {
         List<Feature> objects = new ArrayList<Feature>();
         Feature object = null;
 
@@ -653,7 +653,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Author> splitAuthor(String column) throws IllegalFormatException {
+    public static List<Author> splitAuthor(String column) throws IllegalFormatException {
 
         //TODO in the future add the year as a new field in the author
         //Now all is a string and we don not need split the author
@@ -692,7 +692,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static List<Date> splitDates(String column) throws IllegalFormatException {
+    public static List<Date> splitDates(String column) throws IllegalFormatException {
         List<Date> objects = new ArrayList<Date>();
         Date object = null;
 
@@ -733,7 +733,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    private static Boolean splitNegative(String column) throws IllegalFormatException {
+    public static Boolean splitNegative(String column) throws IllegalFormatException {
         boolean object = false;
 
         if (column != null && !column.isEmpty()) {
