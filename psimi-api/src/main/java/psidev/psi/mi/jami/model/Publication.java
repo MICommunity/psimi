@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -26,8 +27,8 @@ public interface Publication {
     public String getJournal();
     public void setJournal(String journal);
 
-    public int getYear();
-    public int setYear(int year);
+    public Date getYear();
+    public void setYear(Date year);
 
     public List<String> getAuthors();
 
@@ -38,4 +39,10 @@ public interface Publication {
     public Set<Alias> getAliases();
 
     public Collection<Experiment> getExperiments();
+
+    public CurationDepth getCurationDepth();
+    public void setCurationDepth(CurationDepth curationDepth);
+
+    public Date getReleasedDate();
+    public void setReleasedDate(Date released);
 }
