@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.model;
 
 /**
- * An annotations is composed of a topic and a value which is free text.
+ * An Annotations gives some information about a specific topic.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -10,9 +10,21 @@ package psidev.psi.mi.jami.model;
 
 public interface Annotation {
 
+    /**
+     * The annotation topic is a controlled vocabulary term and it cannot be null.
+     * @return the annotation topic
+     */
     public CvTerm getTopic();
-    public void setTopic(CvTerm topic);
 
+    /**
+     * The value of this annotation. Usually free text but can be null if the topic itself is just a tag.
+     * @return the description of an annotation
+     */
     public String getValue();
+
+    /**
+     * Set the value of this annotation.
+     * @param value
+     */
     public void setValue(String value);
 }
