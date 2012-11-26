@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -46,4 +47,10 @@ public interface Interaction {
 
     public boolean isModelled();
     public void setModelled(boolean modelled);
+
+    public boolean isInferred();
+    public void setInferred(boolean inferred);
+
+    public Date getUpdatedDate();
+    public void setUpdatedDate(Date updated);
 }

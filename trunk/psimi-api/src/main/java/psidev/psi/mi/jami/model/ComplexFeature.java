@@ -11,7 +11,7 @@ import java.util.Set;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Feature {
+public interface ComplexFeature{
 
     public String getShortName();
     public void setShortName(String name);
@@ -30,9 +30,6 @@ public interface Feature {
 
     public Participant getParticipant();
     public void setParticipant(Participant participant);
-
-    public CvTerm getDetectionMethod();
-    public void setDetectionMethod(CvTerm method);
 
     public Collection<Feature> getBindingSites();
 }

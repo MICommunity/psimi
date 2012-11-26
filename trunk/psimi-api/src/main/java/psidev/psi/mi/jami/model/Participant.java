@@ -13,6 +13,9 @@ import java.util.Set;
 
 public interface Participant {
 
+    public Interaction getInteraction();
+    public void setInteraction(Interaction interaction);
+
     public Interactor getInteractor();
     public void setInteractor(Interactor interactor);
 
