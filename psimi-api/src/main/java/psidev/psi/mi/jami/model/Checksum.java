@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.model;
 
 /**
- * Checksum of an object. It is defined by a method and a value
+ * Checksum is a value for checking consistency of the data and can also be used for identifying objects.
+ * (ex: crc64, rogid, etc.)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -10,9 +11,15 @@ package psidev.psi.mi.jami.model;
 
 public interface Checksum {
 
+    /**
+     * The method is a controlled vocabulary term and cannot be null
+     * @return the method used to compute this checksum.
+     */
     public CvTerm getMethod();
-    public void setMethod(CvTerm method);
 
+    /**
+     * The checksum cannot be null.
+     * @return the checksum
+     */
     public String getValue();
-    public void setValue(String value);
 }

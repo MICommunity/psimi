@@ -10,9 +10,16 @@ package psidev.psi.mi.jami.model;
 
 public interface Alias {
 
+    /**
+     * The alias type is a controlled vocabulary term.
+     * The type can be null.
+     * @return the type of the current alias
+     */
     public CvTerm getType();
-    public void setType(CvTerm type);
 
+    /**
+     * Alias name cannot be null.
+     * @return the alias name.
+     */
     public String getName();
-    public void setName(String name);
 }

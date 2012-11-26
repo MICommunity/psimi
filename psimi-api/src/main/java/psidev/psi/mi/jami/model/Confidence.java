@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.model;
 
 /**
- * A Confidence gives information about how reliable an object is. It is defined by a type, a value and maybe a unit as well.
+ * A Confidence gives information about how reliable an object is.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -10,12 +10,22 @@ package psidev.psi.mi.jami.model;
 
 public interface Confidence {
 
+    /**
+     * Method used to compute the confidence value.
+     * The confidence type is a controlled vocabulary term and it cannot be null.
+     * @return the confidence type
+     */
     public CvTerm getType();
-    public void setType(CvTerm type);
 
+    /**
+     * The confidence value cannot be null. It can be a numerical or literal value
+     * @return the confidence value
+     */
     public String getValue();
-    public void setValue(String value);
 
+    /**
+     * The unit of a confidence can be null.
+     * @return The unit of the value if it exists.
+     */
     public CvTerm getUnit();
-    public void setUnit(CvTerm unit);
 }

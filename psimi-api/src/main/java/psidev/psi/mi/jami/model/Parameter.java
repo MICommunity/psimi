@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.model;
 
+import java.math.BigDecimal;
+
 /**
- * A parameter which is defined by its type, base, exponent, factor, uncertainty and unit
+ * A numeric parameter e.g. for a kinetic value
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -10,22 +12,27 @@ package psidev.psi.mi.jami.model;
 
 public interface Parameter {
 
+    /**
+     * The parameter type is a controlled vocabulary term and it cannot be null.
+     * @return the parameter type
+     */
     public CvTerm getType();
-    public void setType(CvTerm type);
 
-    public short getBase();
-    public void setBase(short base);
+    /**
+     * The uncertainty of the parameter. By default is null
+     * @return the uncertainty of the parameter.
+     */
+    public BigDecimal getUncertainty();
 
-    public short getExponent();
-    public void setExponent(short value);
-
-    public double getFactor();
-    public void setFactor(double value);
-
-    public double getUncertainty();
-    public void setUncertainty(double value);
-
+    /**
+     * Unit of the parameter is a controlled vocabulary term. It can be null
+     * @return the unit
+     */
     public CvTerm getUnit();
-    public void setUnit(CvTerm unit);
 
+    /**
+     * The parameter value cannot be null
+     * @return the parameter value
+     */
+    public ParameterValue getValue();
 }
