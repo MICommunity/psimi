@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.model;
 
 /**
- * External identifier. It contains a database CvTerm and an id.
+ * Identifier from an external database or resource which allows to identify an object without ambiguity
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -9,9 +9,22 @@ package psidev.psi.mi.jami.model;
  */
 public interface ExternalIdentifier {
 
+    /**
+     * The database is a controlled vocabulary term. It cannot be null.
+     * @return the database
+     */
     public CvTerm getDatabase();
-    public void setDatabase(CvTerm database);
 
+    /**
+     * The identifier in the external database/resource. It cannot be null or empty.
+     * @return the database identifier
+     */
     public String getId();
-    public void setId(String id);
+
+    /**
+     * The version of the identifier in the database/resource if relevant.
+     * It can be null if no versions have been specified
+     * @return the version
+     */
+    public Integer getVersion();
 }

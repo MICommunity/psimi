@@ -1,7 +1,14 @@
 package psidev.psi.mi.jami.model;
 
 /**
- * Xref is an extension of ExternalIdentifier and is giving information about the type of the cross reference.
+ * Cross reference to an external database/resource which can give more information about an object.
+ * Ex:
+ * - GO cross references for an interactor to give information about its biological role(s) or location.
+ * - publication primary references
+ * - identifier of an object (use ExternalIdentifier)
+ * - imex primary references
+ * - secondary references to an external database
+ * - ...
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -10,6 +17,10 @@ package psidev.psi.mi.jami.model;
 
 public interface Xref extends ExternalIdentifier {
 
+    /**
+     * The qualifier of the xref is the reference type and is a controlled vocabulary term.
+     * It can be null. If null, the Xref is giving unqualified information which is not an identifier (different from ExternalIdentifier)
+     * @return the qualifier of the xref
+     */
     public CvTerm getQualifier();
-    public void setQualifier(CvTerm refType);
 }
