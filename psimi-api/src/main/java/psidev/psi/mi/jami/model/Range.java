@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.model;
 
 /**
- * A feature range has a start position and end position, a feature sequence an isLink boolean
+ * A feature range indicates the positions of a feature in the interactor sequence
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -10,12 +10,33 @@ package psidev.psi.mi.jami.model;
 
 public interface Range {
 
+    /**
+     * The start position of the feature range in the interactor sequence
+     * It cannot be null
+     * @return the start position
+     */
     public Position getStart();
-    public void setStart(Position start);
 
+    /**
+     * The end position of the feature range in the interactor sequence
+     * It cannot be null
+     * @return the end position
+     */
     public Position getEnd();
-    public void setEnd(Position end);
 
+    /**
+     * Set the positions of the feature range in the interactor sequence
+     * @param start : start position
+     * @param end : end position
+     * @throws IllegalArgumentException if
+     * - start or end is null
+     * - start > end
+     */
+    public void setPositions(Position start, Position end);
+
+    /**
+     * Link boolean to know if two amino acids/nucleic acids are linked in the feature range (ex: disulfure bridges).
+     * @return true if two amino acids/nucleic acids are linked together (does not form a linear feature).
+     */
     public boolean isLink();
-    public void setLink(boolean link);
 }
