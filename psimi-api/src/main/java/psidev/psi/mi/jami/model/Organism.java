@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.model;
 import java.util.Set;
 
 /**
- * The organism is defined by a taxonomy identifier, short name, full name. It can have synonyms, xrefs and annotations.
+ * The organism is defined by a taxonomy identifier.
+ * It can be used to decsribe the source organism of an interactor, the organism in which the experiment has been performed or
+ * the organism where the participants of an interaction have been expressed in.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -12,24 +14,68 @@ import java.util.Set;
 
 public interface Organism {
 
-    public String getShortName();
-    public void setShortName(String name);
+    /**
+     * The common name of an organism.
+     * It can be null.
+     * @return the common name/mnemonic
+     */
+    public String getCommonName();
 
-    public String getFullName();
-    public void setFullName(String name);
+    /**
+     * Set the common name
+     * @param name : common name or mnemonic (or scientific name if no common names/mnemonic)
+     * @throws IllegalArgumentException if the name is null or empty
+     */
+    public void setCommonName(String name);
 
+    /**
+     * The scientific name of the organism. It can be null
+     * @return the scientific name
+     */
+    public String getScientificName();
+
+    /**
+     * Set the scientific name
+     * @param name : scientific name
+     */
+    public void setScientificName(String name);
+
+    /**
+     * The taxonomy identifier of the organism. It should be :
+     * - '-1' for 'in vitro'
+     * - '-2' for 'chemical synthesis'
+     * - '-3' for unknown
+     * - '-4' for in vivo
+     * - valid NCBI taxonomy identifier
+     * @return the taxonomy identifier
+     */
     public int getTaxId();
-    public void setTaxId(int taxId);
 
+    /**
+     * The other names of the organism.
+     * It cannot be null and should return an emtpy Set if no aliases are attached to this organism
+     * @return the aliases
+     */
     public Set<Alias> getAliases();
-    public void setAliases(Set<Alias> aliases);
 
+    /**
+     * Cell type of the organism.
+     * It can be null for the interactor source organisms
+     * @return the celltype
+     */
     public CvTerm getCellType();
-    public void setCellType(CvTerm cellType);
 
+    /**
+     * The subcellular compartment of the organism.
+     * It can be null for the interactor source organisms
+     * @return the compartment
+     */
     public CvTerm getCompartment();
-    public void setCompartment(CvTerm compartment);
 
+    /**
+     * The source tissue.
+     * It can be null for the interacator source organisms
+     * @return the tissue
+     */
     public CvTerm getTissue();
-    public void setTissue(CvTerm tissue);
 }
