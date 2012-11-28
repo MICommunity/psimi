@@ -317,9 +317,12 @@ public class Xml2Tab {
 						DbReference dbReference = dbReferenceIterator.next();
 
 						// if the dbAc is not the PSI-MI (MI:0488), remove it from the list
-						if (!(dbReference.getDbAc().equals(PSI_MI_REF))) {
+						if (dbReference.getDbAc() != null && !(dbReference.getDbAc().equals(PSI_MI_REF))) {
 							dbReferenceIterator.remove();
 						}
+                        else if (dbReference.getDbAc() == null && !(dbReference.getDb().equals(PSI_MI))){
+                            dbReferenceIterator.remove();
+                        }
 					}
 
 					if (refs.size() >= 1) { //We choose the first one
