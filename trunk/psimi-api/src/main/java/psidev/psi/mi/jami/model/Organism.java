@@ -17,6 +17,7 @@ public interface Organism {
     /**
      * The common name of an organism.
      * It can be null.
+     * Ex: human, mouse, ...
      * @return the common name/mnemonic
      */
     public String getCommonName();
@@ -30,6 +31,7 @@ public interface Organism {
 
     /**
      * The scientific name of the organism. It can be null
+     * Ex: Homo sapiens, Mus musculus, ...
      * @return the scientific name
      */
     public String getScientificName();
@@ -46,7 +48,7 @@ public interface Organism {
      * - '-2' for 'chemical synthesis'
      * - '-3' for unknown
      * - '-4' for in vivo
-     * - valid NCBI taxonomy identifier
+     * - valid NCBI taxonomy identifier (Ex: 9606 for human)
      * @return the taxonomy identifier
      */
     public int getTaxId();
@@ -54,6 +56,7 @@ public interface Organism {
     /**
      * The other names of the organism.
      * It cannot be null and should return an emtpy Set if no aliases are attached to this organism
+     * Ex: Mus muscaris, transgenic mice and house mouse are mouse synonyms/aliases.
      * @return the aliases
      */
     public Set<Alias> getAliases();
@@ -61,6 +64,7 @@ public interface Organism {
     /**
      * Cell type of the organism.
      * It can be null for the interactor source organisms
+     * Ex: Human RCH_ACV -cALL ( B cell precursor) cell line
      * @return the celltype
      */
     public CvTerm getCellType();
@@ -68,6 +72,7 @@ public interface Organism {
     /**
      * The subcellular compartment of the organism.
      * It can be null for the interactor source organisms
+     * Ex: nuclear
      * @return the compartment
      */
     public CvTerm getCompartment();
@@ -75,6 +80,7 @@ public interface Organism {
     /**
      * The source tissue.
      * It can be null for the interacator source organisms
+     * Ex: non pigmented ciliary epithelium
      * @return the tissue
      */
     public CvTerm getTissue();

@@ -20,6 +20,7 @@ public interface Xref extends ExternalIdentifier {
     /**
      * The qualifier of the xref is the reference type and is a controlled vocabulary term.
      * It can be null. If null, the Xref is giving unqualified information which is not an identifier (different from ExternalIdentifier)
+     * Ex: primary-reference, see-also, identity, method reference, ...
      * @return the qualifier of the xref
      */
     public CvTerm getQualifier();

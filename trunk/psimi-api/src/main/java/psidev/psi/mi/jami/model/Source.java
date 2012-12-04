@@ -13,6 +13,7 @@ public interface Source extends CvTerm{
     /**
      * Public URL of the data source.
      * It can be null
+     * Ex: www.ebi.ac.uk/intact
      * @return the url
      */
     public String getUrl();
@@ -26,6 +27,7 @@ public interface Source extends CvTerm{
     /**
      * Postal address of the data source.
      * It can be null
+     * Ex: European Bioinformatics Institute; Wellcome Trust Genome Campus; Hinxton, Cambridge; CB10 1SD; United Kingdom
      * @return the url
      */
     public String getPostalAddress();
@@ -39,6 +41,7 @@ public interface Source extends CvTerm{
     /**
      * Bibliographical reference of the data source.
      * It can be null.
+     * Ex: 14681455 is the pubmed primary reference for the IntAct database
      * @return the bibref
      */
     public ExternalIdentifier getBibRef();
