@@ -14,6 +14,7 @@ public interface Parameter {
 
     /**
      * The parameter type is a controlled vocabulary term and it cannot be null.
+     * Ex: dissociation constant
      * @return the parameter type
      */
     public CvTerm getType();
@@ -26,6 +27,7 @@ public interface Parameter {
 
     /**
      * Unit of the parameter is a controlled vocabulary term. It can be null
+     * Ex: KiloDalton
      * @return the unit
      */
     public CvTerm getUnit();

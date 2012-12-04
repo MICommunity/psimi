@@ -12,7 +12,8 @@ public interface Position {
 
     /**
      * The range status is a controlled vocabulary term which cannot be null.
-     * It gives more information about the position e.g. 'n-terminal' or 'certain'
+     * It gives more information about the position.
+     * Ex: 'n-terminal', 'certain', 'range', 'greater than', 'less than', 'c-terminal', 'undetermined', ...
      * @return the status
      */
     public CvTerm getStatus();
