@@ -6,6 +6,8 @@ import java.util.Set;
  * A controlled vocabulary term defined by an ontology.
  * If the term cannot be described in any ontologies, it should at least have a shortName,
  *
+ * Ex: controlled vocabulary terms from the MI ontology (http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI)
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/11/12</pre>
@@ -15,6 +17,7 @@ public interface CvTerm {
 
     /**
      * Short label of a controlled vocabulary. It cannot be null or empty.
+     * Ex: electrophoresis, binding site, protein, ...
      * @return the short label
      */
     public String getShortName();
@@ -28,6 +31,7 @@ public interface CvTerm {
 
     /**
      * Full name of the controlled vocabulary as it appears in the ontology. It can be null.
+     * Ex: electrophoretic mobility-based method, binding-associated region, protein
      * @return the full name
      */
     public String getFullName();
@@ -41,6 +45,7 @@ public interface CvTerm {
     /**
      * The definition of the controlled vocabulary as it appears in the ontology.
      * It can be null
+     * Ex: electrophoresis is Any method which relies on the motion of particles relative to a matrix under the influence of an electrical field.
      * @return the definition
      */
     public String getDefinition();
@@ -53,6 +58,7 @@ public interface CvTerm {
 
     /**
      * The ontology ID which identifies this CvTerm. It can be null if the term does not exist in any ontologies.
+     * Ex: MI:0982 from the psi-mi ontology
      * @return the ontology identifier
      */
     public ExternalIdentifier getOntologyIdentifier();
@@ -73,8 +79,8 @@ public interface CvTerm {
 
     /**
      * Set of annotations describing the CvTerm.
-     * Ex: search url, validation regexp, etc
      * This method should never return null. It can return an empty Set if no annotations are available for this Cvterm.
+     * Ex: search url, validation regexp, etc
      * @return the set of annotations
      */
     public Set<Annotation> getAnnotations();
@@ -82,6 +88,7 @@ public interface CvTerm {
     /**
      * Set of synonyms for this CvTerm
      * This method should never return null. It can return an empty Set if no synonyms are available for this Cvterm
+     * Ex: participant detection is a synonym of participant identification method (MI:0002)
      * @return the se of synonyms
      */
     public Set<Alias> getSynonyms();
