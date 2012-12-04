@@ -19,6 +19,7 @@ public interface Publication {
      * The publication identifier. Usually a pubmed id or DOI number, it could also refers to a
      * database internal identifier if the publication is not published yet.
      * The identifier could be null if the publications is not published or will not be published in a journal
+     * Ex: pubmed:14681455
      * @return the publication identifier
      */
     public ExternalIdentifier getIdentifier();
@@ -32,6 +33,7 @@ public interface Publication {
     /**
      * IMEx identifier of the publication if it has been registered in IMEx central as a publication curated following IMEx curation rules.
      * It can be null if the publication is not registered in IMEx central or does not follow the IMEx curation rules.
+     * Ex: IM-123
      * @return the IMEx identifier
      */
     public String getImexId();
@@ -93,6 +95,7 @@ public interface Publication {
     /**
      * Other cross references which give more information about the publication.
      * It cannot be null. If the publication does not have any xrefs, the method should return an empty set.
+     * Ex: other primary references such as DOI : 10.1023/A:1005823620291
      * @return the xrefs
      */
     public Set<Xref> getXrefs();
@@ -100,6 +103,7 @@ public interface Publication {
     /**
      * Other publication annotations which can give more information about the curated publication.
      * It cannot be null. If the publication does not have any other annotations, the method should return an empty Set.
+     * Ex: topic = dataset value = Cyanobacteria - Interaction dataset based on Cyanobacteria proteins and related species
      * @return the annotations
      */
     public Set<Annotation> getAnnotations();
@@ -115,6 +119,7 @@ public interface Publication {
      * The curation depth for this publication.
      * If the curation depth is undefined, the method should not return null but
      * CurationDepth.undefined.
+     * Ex: IMEx, MIMIx, undefined
      * @return the curation depth
      */
     public CurationDepth getCurationDepth();
