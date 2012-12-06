@@ -7,6 +7,7 @@ package psidev.psi.mi.tab.converter.xml2tab;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.tab.converter.IdentifierGenerator;
 import psidev.psi.mi.tab.directoryProcessor.InputDirectoryProcessorStrategy;
 import psidev.psi.mi.tab.directoryProcessor.PatternBasedFilenameSelection;
 import psidev.psi.mi.tab.expansion.ExpansionStrategy;
@@ -459,4 +460,8 @@ public class Xml2Tab {
 		// TODO impplement that !
 		throw new UnsupportedOperationException();
 	}
+
+    public void close(){
+        IdentifierGenerator.remove();
+    }
 }

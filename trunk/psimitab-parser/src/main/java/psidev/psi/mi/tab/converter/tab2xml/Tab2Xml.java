@@ -17,6 +17,7 @@ package psidev.psi.mi.tab.converter.tab2xml;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.tab.converter.IdentifierGenerator;
 import psidev.psi.mi.tab.converter.xml2tab.InteractionConverter;
 import psidev.psi.mi.tab.converter.xml2tab.InteractorConverter;
 import psidev.psi.mi.tab.converter.xml2tab.MitabInteractionConverter;
@@ -24,6 +25,7 @@ import psidev.psi.mi.tab.converter.xml2tab.NullCrossReference;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReference;
 import psidev.psi.mi.xml.PsimiXmlVersion;
+import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.model.*;
 
 import java.util.*;
@@ -374,4 +376,11 @@ public class Tab2Xml {
 		}
 		return source;
 	}
+
+    public void close(){
+        // identifier generator threadlocal to remove
+        IdentifierGenerator.remove();
+        // xml converterContext to remove
+        ConverterContext.remove();
+    }
 }
