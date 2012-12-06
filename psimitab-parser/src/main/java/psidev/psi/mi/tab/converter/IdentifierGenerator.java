@@ -47,4 +47,8 @@ public class IdentifierGenerator {
     public void reset() {
         currentId = 0;
     }
+
+    public static void remove(){
+        instance.remove();
+    }
 }
