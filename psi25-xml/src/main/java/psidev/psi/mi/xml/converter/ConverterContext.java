@@ -43,7 +43,7 @@ public class ConverterContext extends Exception {
 		this.converterConfig = converterConfig;
 	}
 
-    public void remove(){
+    public static void remove(){
         instance.remove();
     }
 }
