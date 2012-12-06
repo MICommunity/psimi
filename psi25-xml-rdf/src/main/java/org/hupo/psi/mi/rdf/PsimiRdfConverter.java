@@ -28,6 +28,7 @@ import org.biopax.paxtools.model.Model;
 import org.mskcc.psibiopax.converter.PSIMIBioPAXConverter;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
+import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 
@@ -206,6 +207,8 @@ public class PsimiRdfConverter {
     public void close(){
         // remove current value for threadlocal
         PropertyEditor.checkRestrictions.remove();
+        // removed current value for xml converterContext
+        ConverterContext.remove();
     }
 
 }
