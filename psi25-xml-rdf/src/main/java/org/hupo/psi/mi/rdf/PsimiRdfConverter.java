@@ -21,6 +21,7 @@ import com.hp.hpl.jena.rdf.arp.JenaReader;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFReader;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
+import org.biopax.paxtools.controller.PropertyEditor;
 import org.biopax.paxtools.io.jena.JenaIOHandler;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.Model;
@@ -200,6 +201,11 @@ public class PsimiRdfConverter {
         final RDFReader rdfReader = new JenaReader();
         rdfReader.read(model, reader, baseUri);
         return model;
+    }
+
+    public void close(){
+        // remove current value for threadlocal
+        PropertyEditor.checkRestrictions.remove();
     }
 
 }
