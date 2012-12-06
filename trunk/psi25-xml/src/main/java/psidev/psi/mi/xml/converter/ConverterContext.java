@@ -42,5 +42,8 @@ public class ConverterContext extends Exception {
 	public void setConverterConfig(PsimiXmlConverterConfig converterConfig) {
 		this.converterConfig = converterConfig;
 	}
-    
+
+    public void remove(){
+        instance.remove();
+    }
 }
