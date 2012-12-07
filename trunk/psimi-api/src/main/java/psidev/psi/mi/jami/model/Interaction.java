@@ -12,7 +12,7 @@ import java.util.Set;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Interaction<P extends Participant> {
+public interface Interaction {
 
     public String getShortName();
     public void setShortName(String name);
