@@ -22,7 +22,7 @@ public interface ComplexParticipant {
 
     public Set<Annotation> getAnnotations();
 
-    public Collection<ComplexFeature> getFeatures();
+    public Collection<BiologicalFeature> getFeatures();
 
     public Set<Parameter> getParameters();
 

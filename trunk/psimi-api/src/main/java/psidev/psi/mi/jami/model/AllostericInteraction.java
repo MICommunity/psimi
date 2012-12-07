@@ -22,6 +22,6 @@ public interface AllostericInteraction extends CooperativeInteraction {
     public ComplexParticipant getAllostericEffector();
     public void setAllostericEffector(ComplexParticipant effector);
 
-    public ComplexFeature getAllostericPtm();
-    public void setAllostericPtm(ComplexFeature feature);
+    public BiologicalFeature getAllostericPtm();
+    public void setAllostericPtm(BiologicalFeature feature);
 }
