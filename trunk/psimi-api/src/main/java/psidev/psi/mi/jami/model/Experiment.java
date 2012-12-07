@@ -30,6 +30,7 @@ public interface Experiment {
     /**
      * The short label of experiment.
      * It can be null.
+     * Ex: brehme-2009-1
      * @return the shortName
      */
     public String getShortLabel();
@@ -43,6 +44,7 @@ public interface Experiment {
     /**
      * Set of cross references for an experiment which can give more information about the experiment.
      * It cannot be null and if the experiment does not have any xrefs, the method should return an empty set.
+     * Ex: PRIDE experiment/project xrefs
      * @return the xrefs
      */
     public Set<Xref> getXrefs();
@@ -50,12 +52,14 @@ public interface Experiment {
     /**
      * Set of annotations for an experiment.
      * It cannot be null. If the experiment does not have any annotations, the method should return an empty set.
+     * Ex: data-processing, comments, cautions, confidence-mapping annotations
      * @return the annotations
      */
     public Set<Annotation> getAnnotations();
 
     /**
      * The experimental method to determine the interaction. It is a controlled vocabulary term and cannot not be null.
+     * Ex: pull down, coip, ...
      * @return the interaction detection method
      */
     public CvTerm getInteractionDetectionMethod();
@@ -70,6 +74,7 @@ public interface Experiment {
     /**
      * The host organism where the interaction took place in this experiment.
      * It can be null.
+     * Ex: in vitro, human-hela cells
      * @return the host organism
      */
     public Organism getHostOrganism();
