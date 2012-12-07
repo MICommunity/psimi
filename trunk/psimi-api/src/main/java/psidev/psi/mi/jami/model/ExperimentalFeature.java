@@ -9,7 +9,7 @@ package psidev.psi.mi.jami.model;
  * @since <pre>07/12/12</pre>
  */
 
-public interface ExperimentalFeature extends Feature<ExperimentalFeature> {
+public interface ExperimentalFeature extends Feature<ExperimentalFeature, ExperimentalParticipant> {
 
     /**
      * The feature detection method. It is a controlled vocabulary term and can be null.
@@ -23,11 +23,4 @@ public interface ExperimentalFeature extends Feature<ExperimentalFeature> {
      * @param method : detection method
      */
     public void setDetectionMethod(CvTerm method);
-
-    /**
-     * The participant to which the feature is attached.
-     * It cannot be null.
-     * @return the participant
-     */
-    public Participant getParticipant();
 }
