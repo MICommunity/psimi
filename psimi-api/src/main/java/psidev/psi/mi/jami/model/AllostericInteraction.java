@@ -16,11 +16,11 @@ public interface AllostericInteraction extends CooperativeInteraction {
     public CvTerm getAllosteryType();
     public void setAllosteryType(CvTerm type);
 
-    public ComplexParticipant getAllostericMolecule();
-    public void setAllostericMolecule(ComplexParticipant participant);
+    public Component getAllostericMolecule();
+    public void setAllostericMolecule(Component participant);
 
-    public ComplexParticipant getAllostericEffector();
-    public void setAllostericEffector(ComplexParticipant effector);
+    public Component getAllostericEffector();
+    public void setAllostericEffector(Component effector);
 
     public BiologicalFeature getAllostericPtm();
     public void setAllostericPtm(BiologicalFeature feature);

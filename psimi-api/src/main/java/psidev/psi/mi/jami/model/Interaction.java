@@ -5,17 +5,14 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * Interaction involving some molecules in a specific experiment
+ * Interaction involving one to several molecules
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>23/11/12</pre>
  */
 
-public interface Interaction {
-
-    public Experiment getExperiment();
-    public void setExperiment(Experiment experiment);
+public interface Interaction<P extends Participant> {
 
     public String getShortName();
     public void setShortName(String name);
@@ -30,17 +27,20 @@ public interface Interaction {
     public CvTerm getType();
     public void setType(CvTerm term);
 
+    public Collection<ExperimentalParticipant> getParticipants();
+
+    public Set<Parameter> getParameters();
+
+    public Experiment getExperiment();
+    public void setExperiment(Experiment experiment);
+
     public Source getSource();
     public void setSource(Source source);
 
     public String getAvailability();
     public void setAvailability(String availability);
 
-    public Collection<Participant> getParticipants();
-
     public Set<Confidence> getConfidences();
-
-    public Set<Parameter> getParameters();
 
     public boolean isNegative();
     public void setNegative(boolean negative);

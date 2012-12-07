@@ -15,7 +15,7 @@ public interface Complex extends Interactor {
 
     public Collection<Experiment> getExperiments();
 
-    public Collection<ComplexParticipant> getParticipants();
+    public Collection<Component> getParticipants();
 
     public Set<Parameter> getParameters();
 }

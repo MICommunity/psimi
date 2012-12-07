@@ -11,7 +11,7 @@ import java.util.Set;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Feature<T extends Feature> {
+public interface Feature<T extends Feature, P extends Participant> {
 
     /**
      * The short name of a feature.
@@ -97,4 +97,18 @@ public interface Feature<T extends Feature> {
      * @return the binding features
      */
     public Collection<T> getBindingFeatures();
+
+    /**
+     * The participant to which the feature is attached.
+     * It cannot be null.
+     * @return the participant
+     */
+    public P getParticipant();
+
+    /**
+     * Sets the participant.
+     * @param participant : participant
+     * @throws IllegalArgumentException when participant is null
+     */
+    public void setParticipant(P participant);
 }
