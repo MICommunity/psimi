@@ -69,20 +69,4 @@ public interface ExperimentalParticipant extends Participant<Interaction,Interac
      * @return the confidences
      */
     public Set<Confidence> getConfidences();
-
-    /**
-     * Describes molecules which have been used in specific experiments if these molecules are different from the one listed as
-     * interactors. Example: The author of a paper makes a statement about human proteins, but has really worked with mouse
-     * proteins. In this case the human protein would be the main interactor, while the experimentalForm would be the mouse protein
-     * listed in this element. Optionally this can refer to the experiment(s) in which this form has been used.
-     * It can be null if not relevant.
-     * @return experimental interactor
-     */
-    public Interactor getExperimentalInteractor();
-
-    /**
-     * Sets the experimental interactor.
-     * @param interactor : experimental interactor
-     */
-    public void setExperimentalInteractor(Interactor interactor);
 }
