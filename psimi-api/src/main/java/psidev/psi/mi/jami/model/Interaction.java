@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * Interaction involving one to several molecules supported by experiments.
+ * Interaction involving one to several molecules.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -98,4 +98,18 @@ public interface Interaction<P extends Participant> {
      * @return the confidences
      */
     public Set<Confidence> getConfidences();
+
+    /**
+     * The interaction type is a controlled vocabulary term.
+     * It can be null.
+     * Ex: direct interaction, association, ...
+     * @return the interaction type
+     */
+    public CvTerm getType();
+
+    /**
+     * Sets the interaction type.
+     * @param term : interaction type
+     */
+    public void setType(CvTerm term);
 }
