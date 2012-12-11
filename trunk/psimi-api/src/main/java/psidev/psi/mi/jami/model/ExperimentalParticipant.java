@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model;
 import java.util.Set;
 
 /**
- * TODO comment this
+ * Participant of an interaction which is supported by experimental evidences
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

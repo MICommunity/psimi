@@ -44,20 +44,6 @@ public interface ExperimentalInteraction extends Interaction<ExperimentalPartici
     public void setExperiment(Experiment experiment);
 
     /**
-     * The interaction type is a controlled vocabulary term.
-     * It can be null.
-     * Ex: direct interaction, association, ...
-     * @return the interaction type
-     */
-    public CvTerm getType();
-
-    /**
-     * Sets the interaction type.
-     * @param term : interaction type
-     */
-    public void setType(CvTerm term);
-
-    /**
      * The availability for this interaction. By default it is null because freely available.
      * Ex: copyrights, ...
      * @return the availability
