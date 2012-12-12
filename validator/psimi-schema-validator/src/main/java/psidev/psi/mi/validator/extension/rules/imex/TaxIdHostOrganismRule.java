@@ -62,4 +62,8 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
 
         return messages;
     }
+
+    public String getId() {
+        return "R33";
+    }
 }

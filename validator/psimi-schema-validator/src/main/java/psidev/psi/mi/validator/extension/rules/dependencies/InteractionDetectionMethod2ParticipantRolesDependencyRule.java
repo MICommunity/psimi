@@ -353,6 +353,10 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
         return mapping;
     }
 
+    public String getId() {
+        return null;
+    }
+
     //////////////////////
     // Inner classes
 

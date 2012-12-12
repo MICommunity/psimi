@@ -2,11 +2,8 @@ package psidev.psi.mi.validator.extension.rules;
 
 import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.Names;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -77,5 +74,9 @@ public class InteractorNameRule extends ObjectRule<Interactor> {
         }
 
         return messages;
+    }
+
+    public String getId() {
+        return null;
     }
 }

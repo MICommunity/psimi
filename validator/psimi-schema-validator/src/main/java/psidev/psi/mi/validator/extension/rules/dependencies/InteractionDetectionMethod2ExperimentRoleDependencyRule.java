@@ -102,4 +102,8 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Mi2
 
         return messages;
     }
+
+    public String getId() {
+        return "R47";
+    }
 }

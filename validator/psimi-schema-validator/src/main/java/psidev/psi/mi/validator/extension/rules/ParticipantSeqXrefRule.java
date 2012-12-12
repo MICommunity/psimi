@@ -1,14 +1,8 @@
 package psidev.psi.mi.validator.extension.rules;
 
-import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25Ontology;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
-import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -163,5 +157,9 @@ public class ParticipantSeqXrefRule extends Mi25InteractionRule {
 //            }   //if  xref not null
 //        }// for participant
         return messages;
+    }
+
+    public String getId() {
+        return null;
     }
 }

@@ -54,5 +54,9 @@ public class ExperimentImexCurationRule extends Mi25ExperimentRule {
         RuleUtils.checkPresenceOfAttributeInExperiment(experiment, messages, context, this, "MI:0959", "imex curation");
   
         return messages;
-    } 
+    }
+
+    public String getId() {
+        return "R30";
+    }
 }

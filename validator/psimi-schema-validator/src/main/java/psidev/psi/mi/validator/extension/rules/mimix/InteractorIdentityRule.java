@@ -139,4 +139,8 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
     public OntologyAccess getMiOntology() throws ValidatorException {
         return ontologyManager.getOntologyAccess( "MI" );
     }
+
+    public String getId() {
+        return "R23";
+    }
 }

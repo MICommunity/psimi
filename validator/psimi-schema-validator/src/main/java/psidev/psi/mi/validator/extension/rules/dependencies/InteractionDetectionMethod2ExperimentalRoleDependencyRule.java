@@ -220,6 +220,10 @@ public class InteractionDetectionMethod2ExperimentalRoleDependencyRule extends M
         return mapping;
     }
 
+    public String getId() {
+        return null;
+    }
+
     //////////////////////
     // Inner classes
 

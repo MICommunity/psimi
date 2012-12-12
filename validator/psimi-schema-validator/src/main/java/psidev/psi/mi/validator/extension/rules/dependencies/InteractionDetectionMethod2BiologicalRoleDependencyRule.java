@@ -100,4 +100,7 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
         return messages;
     }
 
+    public String getId() {
+        return "R46";
+    }
 }

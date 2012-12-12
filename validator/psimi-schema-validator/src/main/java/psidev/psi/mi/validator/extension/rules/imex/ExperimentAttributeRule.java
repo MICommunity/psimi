@@ -97,4 +97,8 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
 
         return messages;
     }
+
+    public String getId() {
+        return "R27";
+    }
 }

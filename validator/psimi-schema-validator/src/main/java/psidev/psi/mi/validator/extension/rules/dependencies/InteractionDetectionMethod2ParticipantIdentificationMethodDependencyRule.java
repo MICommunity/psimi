@@ -100,4 +100,8 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
 
         return messages;
     }
+
+    public String getId() {
+        return "R49";
+    }
 }

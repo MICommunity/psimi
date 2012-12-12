@@ -3,6 +3,7 @@ package psidev.psi.mi.validator.extension;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.ValidatorReport;
+import psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule;
 import psidev.psi.mi.validator.extension.rules.PsimiXmlSchemaRule;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
@@ -10,11 +11,9 @@ import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
 import psidev.psi.tools.ontology_manager.OntologyManager;
+import psidev.psi.tools.ontology_manager.OntologyManagerContext;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-import psidev.psi.tools.validator.MessageLevel;
-import psidev.psi.tools.validator.Validator;
-import psidev.psi.tools.validator.ValidatorException;
-import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.*;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.rules.Rule;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -180,6 +179,9 @@ public class Mi25Validator extends Validator {
         } catch ( Exception e ) {
             throw new ValidatorException( "Unable to process input file:" + file.getAbsolutePath(), e );
         }
+        finally {
+            clearThreadLocals();
+        }
     }
 
     /**
@@ -263,6 +265,8 @@ public class Mi25Validator extends Validator {
 
         } catch ( Exception e ) {
             throw new ValidatorException( "Unable to process input stream", e );
+        } finally{
+            clearThreadLocals();
         }
     }
 
@@ -277,62 +281,67 @@ public class Mi25Validator extends Validator {
 
         this.validatorReport.clear();
 
-        for ( Entry entry : es.getEntries() ) {
-            boolean hasExperimentList = false;
-            boolean hasInteractorList = false;
+        try{
+            for ( Entry entry : es.getEntries() ) {
+                boolean hasExperimentList = false;
+                boolean hasInteractorList = false;
 
-            if (entry.hasExperiments()){
-                hasExperimentList = true;
-                for ( ExperimentDescription experiment : entry.getExperiments() ) {
+                if (entry.hasExperiments()){
+                    hasExperimentList = true;
+                    for ( ExperimentDescription experiment : entry.getExperiments() ) {
+
+                        // cv mapping
+                        Collection<ValidatorMessage> messages = checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
+
+                        if( ! messages.isEmpty() ){
+                            checkExperiment(messages, experiment);
+                        }
+                        else{
+                            checkExperiment(messages, experiment);
+                        }
+
+                        this.validatorReport.getSemanticMessages().addAll(messages);
+                    }
+                }
+
+                if (entry.hasInteractors()){
+                    hasInteractorList = true;
+                    for ( Interactor interactor : entry.getInteractors() ) {
+                        // cv mapping
+                        Collection<ValidatorMessage> messages = checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
+
+                        if( ! messages.isEmpty() ){
+                            checkInteractor(messages, interactor);
+                        }
+                        else{
+                            checkInteractor(messages, interactor);
+                        }
+
+                        this.validatorReport.getSemanticMessages().addAll(messages);
+                    }
+                }
+
+                for ( Interaction interaction : entry.getInteractions() ) {
 
                     // cv mapping
-                    Collection<ValidatorMessage> messages = checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
+                    Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
+                    if( ! messages.isEmpty() )
+                        messages = convertToMi25Messages( messages, interaction );
 
-                    if( ! messages.isEmpty() ){
-                        checkExperiment(messages, experiment);
-                    }
-                    else{
-                        checkExperiment(messages, experiment);
-                    }
+                    // object rule
+                    checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
 
                     this.validatorReport.getSemanticMessages().addAll(messages);
                 }
             }
 
-            if (entry.hasInteractors()){
-                hasInteractorList = true;
-                for ( Interactor interactor : entry.getInteractors() ) {
-                    // cv mapping
-                    Collection<ValidatorMessage> messages = checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
-
-                    if( ! messages.isEmpty() ){
-                        checkInteractor(messages, interactor);
-                    }
-                    else{
-                        checkInteractor(messages, interactor);
-                    }
-
-                    this.validatorReport.getSemanticMessages().addAll(messages);
-                }
-            }
-
-            for ( Interaction interaction : entry.getInteractions() ) {
-
-                // cv mapping
-                Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
-                if( ! messages.isEmpty() )
-                    messages = convertToMi25Messages( messages, interaction );
-
-                // object rule
-                checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
-
-                this.validatorReport.getSemanticMessages().addAll(messages);
-            }
+            // cluster all messages!!
+            Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(this.validatorReport.getSemanticMessages());
+            this.validatorReport.setSemanticMessages(clusteredValidatorMessages);
         }
-
-        // cluster all messages!!
-        Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(this.validatorReport.getSemanticMessages());
-        this.validatorReport.setSemanticMessages(clusteredValidatorMessages);
+        finally{
+            clearThreadLocals();
+        }
 
         return this.validatorReport;
     }
@@ -381,6 +390,9 @@ public class Mi25Validator extends Validator {
                     MessageLevel.FATAL,
                     context,
                     schemaRule ) );
+        }
+        finally {
+            clearThreadLocals();
         }
     }
 
@@ -928,5 +940,14 @@ public class Mi25Validator extends Validator {
 
     public ValidatorReport getMIValidatorReport() {
         return validatorReport;
+    }
+
+    private void clearThreadLocals(){
+        // remove validator CvContext
+        ValidatorCvContext.removeInstance();
+        // close GeneralCacheAdministrator for DatabaseAccessionRule
+        DatabaseAccessionRule.closeGeneralCacheAdministrator();
+        // close GeneralCacheAdministrator for OntologyManagerContext
+        OntologyManagerContext.removeInstance();
     }
 }

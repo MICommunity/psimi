@@ -83,4 +83,8 @@ public class CellLineXrefRule extends ObjectRule<CellType>{
 
         return messages;
     }
+
+    public String getId() {
+        return "R26";
+    }
 }

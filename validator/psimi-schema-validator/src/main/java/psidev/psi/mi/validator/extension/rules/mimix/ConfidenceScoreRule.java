@@ -115,4 +115,8 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
 
         return messages;
     }
+
+    public String getId() {
+        return "R16";
+    }
 }

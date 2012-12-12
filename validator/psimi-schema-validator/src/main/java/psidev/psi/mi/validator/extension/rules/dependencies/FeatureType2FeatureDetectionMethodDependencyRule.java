@@ -131,4 +131,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         return messages;
     }
 
+    public String getId() {
+        return "R44";
+    }
 }

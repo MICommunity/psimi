@@ -80,4 +80,8 @@ public class TissueXRefRule extends ObjectRule<Tissue> {
 
         return messages;
     }
+
+    public String getId() {
+        return "R42";
+    }
 }

@@ -195,4 +195,8 @@ public class BindingDomainSizeRule extends ObjectRule<Feature> {
 
         return messages;
     }
+
+    public String getId() {
+        return "R25";
+    }
 }
