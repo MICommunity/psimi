@@ -78,4 +78,8 @@ public class SingleExperimentRoleRule extends ObjectRule<Participant> {
         context.setParticipantId( participantId );
         return context;
     }
+
+    public String getId() {
+        return "R41";
+    }
 }

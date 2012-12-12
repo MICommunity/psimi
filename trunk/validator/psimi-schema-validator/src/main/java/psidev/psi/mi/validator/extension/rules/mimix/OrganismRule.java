@@ -64,4 +64,8 @@ public class OrganismRule extends ObjectRule<Organism> {
 
         return messages;
     }
+
+    public String getId() {
+        return "R22";
+    }
 }

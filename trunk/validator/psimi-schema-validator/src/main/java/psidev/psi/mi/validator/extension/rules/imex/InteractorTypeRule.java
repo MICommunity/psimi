@@ -87,4 +87,8 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
         context.setInteractorId( interactorId );
         return context;
     }
+
+    public String getId() {
+        return "R38";
+    }
 }

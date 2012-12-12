@@ -194,6 +194,10 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         return num;
     }
 
+    public String getId() {
+        return "R48";
+    }
+
     //////////////////////
     // Inner classes
 

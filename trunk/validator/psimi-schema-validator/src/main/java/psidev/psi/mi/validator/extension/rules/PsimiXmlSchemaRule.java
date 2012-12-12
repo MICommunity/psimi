@@ -60,4 +60,8 @@ public class PsimiXmlSchemaRule extends ObjectRule<Object>{
 
         return bufferMessage;
     }
+
+    public String getId() {
+        return "R41";
+    }
 }

@@ -64,4 +64,8 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
 
         return messages;
     }
+
+    public String getId() {
+        return "R18";
+    }
 }

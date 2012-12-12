@@ -128,4 +128,8 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
         context.setInteractorId( interactorId );
         return context;
     }
+
+    public String getId() {
+        return "R40";
+    }
 }

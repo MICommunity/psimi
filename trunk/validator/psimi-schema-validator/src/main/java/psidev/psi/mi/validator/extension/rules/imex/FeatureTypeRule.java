@@ -67,4 +67,8 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
 
         return messages;
     }
+
+    public String getId() {
+        return "R32";
+    }
 }

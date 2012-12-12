@@ -15,20 +15,20 @@
  */
 package psidev.psi.mi.validator.extension.rules.imex;
 
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
-import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.ValidatorException;
-import psidev.psi.tools.validator.MessageLevel;
+import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
+import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
+import psidev.psi.tools.validator.MessageLevel;
+import psidev.psi.tools.validator.ValidatorException;
+import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.*;
+
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
 
 /**
  * Checks that the given interaction does have an identity xref to a valid interaction database, as defined in the
@@ -125,5 +125,9 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
             length = length - 2; // gets rid of the last comma
         }
         return sb.substring( 0, length );
+    }
+
+    public String getId() {
+        return "R37";
     }
 }

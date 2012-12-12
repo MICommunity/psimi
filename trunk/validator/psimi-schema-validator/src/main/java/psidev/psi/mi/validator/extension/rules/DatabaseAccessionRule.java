@@ -14,9 +14,8 @@ import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
-import uk.ac.ebi.ook.web.services.Query;
-import uk.ac.ebi.ook.web.services.QueryService;
-import uk.ac.ebi.ook.web.services.QueryServiceLocator;
+import uk.ac.ebi.ols.soap.Query;
+import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,7 +127,7 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
 
         // setting up OLS client
         try {
-            QueryService locator = new QueryServiceLocator();
+            QueryServiceLocator locator = new QueryServiceLocator();
             query = locator.getOntologyQuery();
         } catch ( Exception e ) {
             log.error( "Exception setting up OLS query client! The database cross reference check will not be effective.", e );
@@ -434,5 +433,13 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
             }
         }
 
+    }
+
+    public static void closeGeneralCacheAdministrator(){
+        admin.remove();
+    }
+
+    public String getId() {
+        return "R12";
     }
 }

@@ -31,5 +31,6 @@
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ProteinIdentityRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.SingleExperimentRoleRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.TissueXRefRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionTypeRule"/>
 
 </objectRuleList>

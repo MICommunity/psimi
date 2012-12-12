@@ -98,4 +98,8 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
 
         return messages;
     }
+
+    public String getId() {
+        return "R20";
+    }
 }

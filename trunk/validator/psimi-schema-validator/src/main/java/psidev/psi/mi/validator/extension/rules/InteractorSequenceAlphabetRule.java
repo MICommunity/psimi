@@ -198,4 +198,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
     }
 
 
+    public String getId() {
+        return "R13";
+    }
 }

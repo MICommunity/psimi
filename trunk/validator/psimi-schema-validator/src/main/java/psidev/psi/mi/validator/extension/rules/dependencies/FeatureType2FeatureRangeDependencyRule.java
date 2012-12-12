@@ -100,4 +100,8 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
 
         return messages;
     }
+
+    public String getId() {
+        return "R45";
+    }
 }

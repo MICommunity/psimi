@@ -63,4 +63,8 @@ public class ProteinOrganismRule extends ObjectRule<Interactor> {
 
         return messages;
     }
+
+    public String getId() {
+        return "R24";
+    }
 }

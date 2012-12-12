@@ -140,6 +140,10 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         return messages;
     }
 
+    public String getId() {
+        return "R43";
+    }
+
     //////////////////////
     // Inner classes
 

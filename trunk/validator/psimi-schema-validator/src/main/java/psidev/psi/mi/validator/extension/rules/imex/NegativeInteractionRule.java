@@ -51,4 +51,8 @@ public class NegativeInteractionRule extends Mi25InteractionRule{
 
         return messages;
     }
+
+    public String getId() {
+        return "R39";
+    }
 }
