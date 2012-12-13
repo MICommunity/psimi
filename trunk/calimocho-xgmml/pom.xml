@@ -3,22 +3,22 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.3-SNAPSHOT</version>
+        <version>1.8.3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>calimocho-xgmml</artifactId>
     <packaging>jar</packaging>
-    <version>2.5-SNAPSHOT</version>
+    <version>2.5.0</version>
 
     <name>PSI :: Calimocho XGMML</name>
     <url>http://psimi.googlecode.com</url>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/calimocho-xgmml/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/calimocho-xgmml/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/calimocho-xgmml</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.3/calimocho-xgmml</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.3/calimocho-xgmml</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/tags/psimi-master-1.8.3/calimocho-xgmml</url>
     </scm>
 
     <build>
