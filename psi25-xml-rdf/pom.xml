@@ -3,22 +3,22 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.3-SNAPSHOT</version>
+        <version>1.8.3</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psi25-xml-rdf</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.3-SNAPSHOT</version>
+    <version>1.8.3</version>
 
     <name>PSI :: RDF converter</name>
     <url>http://psimi.googlecode.com</url>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi25-xml-rdf/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi25-xml-rdf/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psi25-xml-rdf</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.3/psi25-xml-rdf</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-master-1.8.3/psi25-xml-rdf</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/#svn/tags/psimi-master-1.8.3/psi25-xml-rdf</url>
     </scm>
 
     <build>
