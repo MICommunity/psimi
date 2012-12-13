@@ -1,0 +1,112 @@
+<entrySet xmlns="net:sf:psidev:mi"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="net:sf:psidev:mi http://psidev.sourceforge.net/mi/rel25/src/MIF25.xsd" level="2" version="5">
+  <entry>
+    <source>
+      <names>
+        <shortLabel>bind</shortLabel>
+        <fullName>The Biomolecular Interaction Network Database</fullName>
+      </names>
+      <bibref>
+        <xref>
+          <primaryRef db="pubmed" dbAc="MI:0446" id="12519993" refTypeAc="MI:0685" refType="primary-reference"></primaryRef>
+        </xref>
+      </bibref>
+    </source>
+    <interactionList>
+      <interaction id="19940">
+        <names>
+          <shortLabel>Interaction between AGR_L_2275 (PDB ID: 1VKI_B) and AGR_L_2275 (PDB ID: 1VKI_A).</shortLabel>
+          <fullName>Interaction between AGR_L_2275 (PDB ID: 1VKI_B) and AGR_L_2275 (PDB ID: 1VKI_A).</fullName>
+        </names>
+        <xref>
+          <primaryRef db="bind" dbAc="MI:0462" id="162035" refTypeAc="MI:0356" refType="identity"></primaryRef>
+        </xref>
+        <experimentList>
+          <experimentDescription id="19939">
+            <names>
+              <shortLabel>three-dimensional-structure</shortLabel>
+              <fullName>The three dimensional structure of Hypothetical Protein (Atu3699) from Agrobacterium Tumefaciens at 1.60 A Resolution was determined by crystallography.  The crystal was grown by sitting drops and vapour diffusion using Hypothetical Protein Atu3699, 20.025% PEG 8000, 0.08m HEPES, 0.02m HEPES_na ,  at 277K. X-ray data were collected using synchrotron radiation and were 95.4% complete to a resolution limit of 1.600 angstroms and with an overall Rsym of 5.1%. This crystal contained 2 chains per asymmetric unit and belonged to the space group P 1 21 1. The structure was determined using Molecular Replacement and the modeled structure was refined to an R-factor = 15.4% and had an R-free = 18.5%. PDB: 1VKI, MMDB: 28102.</fullName>
+            </names>
+            <bibref>
+              <attributeList>
+                <attribute name="BIND Record">162035</attribute>
+                <attribute name="Publication title">Crystal Structure Of Hypothetical Protein (Atu3699) From Agrobacterium Tumefaciens At 1.60 A Resolution</attribute>
+              </attributeList>
+            </bibref>
+            <interactionDetectionMethod>
+              <names>
+                <shortLabel>x-ray diffraction</shortLabel>
+                <fullName>x-ray crystallography</fullName>
+              </names>
+              <xref>
+                <primaryRef db="psimi" dbAc="MI:0488" id="MI:0114" refTypeAc="MI:0356" refType="identity"></primaryRef>
+              </xref>
+            </interactionDetectionMethod>
+          </experimentDescription>
+        </experimentList>
+        <participantList>
+          <participant id="19935">
+            <interactor id="19936">
+              <names>
+                <shortLabel>AGR_L_2275</shortLabel>
+                <fullName>AGR_L_2275p [BLAST Evalue to experimental molecule = 2.20e-90]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15891247" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFJ8" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1141400" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+          <participant id="19937">
+            <interactor id="19938">
+              <names>
+                <shortLabel>AGR_L_2275</shortLabel>
+                <fullName>AGR_L_2275p [BLAST Evalue to experimental molecule = 2.20e-90]</fullName>
+              </names>
+              <xref>
+                <primaryRef db="genbank_protein_gi" dbAc="MI:0851" id="15891247" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A9CFJ8" refTypeAc="MI:0356" refType="identity"></secondaryRef>
+                <secondaryRef db="entrezgene/locuslink" dbAc="MI:0477" id="1141400" refTypeAc="MI:0251" refType="gene product"></secondaryRef>
+              </xref>
+              <interactorType>
+                <names>
+                  <shortLabel>protein</shortLabel>
+                  <fullName>protein</fullName>
+                </names>
+                <xref>
+                  <primaryRef db="psimi" dbAc="MI:0488" id="MI:0326" refTypeAc="MI:0356" refType="identity"></primaryRef>
+                </xref>
+              </interactorType>
+              <organism ncbiTaxId="176299">
+                <names>
+                  <shortLabel>Agrobacterium tumefaciens str. C58</shortLabel>
+                  <fullName>Agrobacterium tumefaciens str. C58</fullName>
+                </names>
+              </organism>
+            </interactor>
+          </participant>
+        </participantList>
+        <attributeList>
+          <attribute name="BIND Interaction Division">BIND-3DBP</attribute>
+        </attributeList>
+      </interaction>
+    </interactionList>
+  </entry>
+</entrySet>

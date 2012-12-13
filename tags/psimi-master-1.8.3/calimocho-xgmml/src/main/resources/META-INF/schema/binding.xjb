@@ -1,0 +1,47 @@
+<bindings
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://java.sun.com/xml/ns/jaxb"
+        xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+        version="2.1">
+
+
+    <bindings schemaLocation="xgmml.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="calimocho.internal.xgmml"/>
+        </schemaBindings>
+    </bindings>
+
+    <bindings schemaLocation="rdf.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="calimocho.internal.rdf"/>
+            <nameXmlTransform>
+                <elementName prefix="Rdf"/>
+                <anonymousTypeName prefix="Rdf" suffix="Type"/>
+            </nameXmlTransform>
+        </schemaBindings>
+    </bindings>
+    <bindings schemaLocation="dcmes-xml-dtd.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="calimocho.internal.rdf"/>
+        </schemaBindings>
+    </bindings>
+
+    <bindings schemaLocation="cysession.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="calimocho.internal.cysession"/>
+        </schemaBindings>
+    </bindings>
+
+
+    <!--<bindings schemaLocation="plugins.xsd" node="/xs:schema">-->
+        <!--<schemaBindings>-->
+            <!--<package name="cytoscape.plugins"/>-->
+        <!--</schemaBindings>-->
+    <!--</bindings>-->
+
+    <globalBindings>
+        <xjc:simple/>
+        <xjc:serializable/>
+    </globalBindings>
+
+</bindings>
