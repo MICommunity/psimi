@@ -23,7 +23,7 @@
         <module>calimocho-xml</module>
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
-        <!--<module>assembly</module>-->
+        <module>assembly</module>
   </modules>
 
     <scm>
