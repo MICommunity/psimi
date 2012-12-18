@@ -12,7 +12,7 @@ package psidev.psi.mi.jami.utils.comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public class StrictExternalIdentifierComparator extends ExternalIdentifierComparator<StrictCvTermComparator>{
+public class StrictExternalIdentifierComparator extends AbstractExternalIdentifierComparator<StrictCvTermComparator> {
     @Override
     protected void instantiateDatabaseComparator() {
         this.databaseComparator = new StrictCvTermComparator();

@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultCvTermComparator extends CvTermComparator<DefaultExternalIdentifierComparator> {
+public class DefaultCvTermComparator extends AbstractCvTermComparator<DefaultExternalIdentifierComparator> {
 
     @Override
     protected void instantiateOntologyIdentifierComparator() {
