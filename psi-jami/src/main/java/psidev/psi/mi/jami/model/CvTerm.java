@@ -93,4 +93,17 @@ public interface CvTerm {
      */
     public Set<Alias> getSynonyms();
 
+    /**
+     * The parent terms of this controlled vocabulary term.
+     * The set cannot be null. If the term does not have any parents, the method should return an empty set.
+     * @return the parents
+     */
+    public Set<CvTerm> getParents();
+
+    /**
+     * The children terms of this controlled vocabulary term.
+     * The set cannot be null. If the term does not have any children, the method should return an empty set.
+     * @return the children
+     */
+    public Set<CvTerm> getChildren();
 }
