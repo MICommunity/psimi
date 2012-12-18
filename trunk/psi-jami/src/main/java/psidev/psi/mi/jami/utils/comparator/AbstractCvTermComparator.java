@@ -12,11 +12,11 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class CvTermComparator<T extends ExternalIdentifierComparator> implements Comparator<CvTerm> {
+public abstract class AbstractCvTermComparator<T extends AbstractExternalIdentifierComparator> implements Comparator<CvTerm> {
 
     protected T identifierComparator;
 
-    public CvTermComparator(){
+    public AbstractCvTermComparator(){
        instantiateOntologyIdentifierComparator();
     }
 

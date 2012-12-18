@@ -13,7 +13,7 @@ package psidev.psi.mi.jami.utils.comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultAnnotationComparator extends AnnotationComparator<DefaultCvTermComparator>{
+public class DefaultAnnotationComparator extends AbstractAnnotationComparator<DefaultCvTermComparator> {
     @Override
     protected void instantiateAnnotationComparator() {
         this.topicComparator = new DefaultCvTermComparator();

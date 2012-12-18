@@ -13,11 +13,11 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class AnnotationComparator<T extends CvTermComparator> implements Comparator<Annotation> {
+public abstract class AbstractAnnotationComparator<T extends AbstractCvTermComparator> implements Comparator<Annotation> {
 
     protected T topicComparator;
 
-    public AnnotationComparator(){
+    public AbstractAnnotationComparator(){
         instantiateAnnotationComparator();
     }
 

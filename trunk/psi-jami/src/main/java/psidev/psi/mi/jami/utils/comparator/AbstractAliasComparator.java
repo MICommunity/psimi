@@ -13,11 +13,11 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class AliasComparator<T extends CvTermComparator> implements Comparator<Alias>{
+public abstract class AbstractAliasComparator<T extends AbstractCvTermComparator> implements Comparator<Alias>{
 
     protected T typeComparator;
 
-    public AliasComparator(){
+    public AbstractAliasComparator(){
         instantiateTypeComparator();
     }
 

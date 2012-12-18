@@ -13,7 +13,7 @@ package psidev.psi.mi.jami.utils.comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultAliasComparator extends AliasComparator<DefaultCvTermComparator>{
+public class DefaultAliasComparator extends AbstractAliasComparator<DefaultCvTermComparator> {
 
     @Override
     protected void instantiateTypeComparator() {
