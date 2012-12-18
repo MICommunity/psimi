@@ -13,7 +13,7 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class ExternalIdentifierComparator<T extends Comparator<CvTerm>> implements Comparator<ExternalIdentifier>  {
+public abstract class ExternalIdentifierComparator<T extends CvTermComparator> implements Comparator<ExternalIdentifier>  {
 
     protected T databaseComparator;
 

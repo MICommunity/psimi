@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 
 import java.util.Comparator;
 
@@ -13,7 +12,7 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class CvTermComparator<T extends Comparator<ExternalIdentifier>> implements Comparator<CvTerm> {
+public abstract class CvTermComparator<T extends ExternalIdentifierComparator> implements Comparator<CvTerm> {
 
     protected T identifierComparator;
 
