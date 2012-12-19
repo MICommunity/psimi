@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 
 /**
- * Abstract class for parameter comparator
+ * Abstract class for parameter comparator.
+ *
+ * It uses ParameterValueComparator for comparing parameter values
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -18,9 +20,11 @@ import java.util.Comparator;
 public abstract class AbstractParameterComparator<T extends AbstractCvTermComparator> implements Comparator<Parameter> {
 
     protected T cvTermComparator;
+    protected ParameterValueComparator valueComparator;
 
     public AbstractParameterComparator(){
         instantiateCvTermComparator();
+        valueComparator = new ParameterValueComparator();
     }
 
     protected abstract void instantiateCvTermComparator();
@@ -61,8 +65,7 @@ public abstract class AbstractParameterComparator<T extends AbstractCvTermCompar
             ParameterValue value1 = parameter1.getValue();
             ParameterValue value2 = parameter2.getValue();
 
-            int comp3 = (value1.getFactor().multiply(BigDecimal.valueOf(value1.getBase()^value1.getExponent())))
-                    .compareTo(value2.getFactor().multiply(BigDecimal.valueOf(value2.getBase()^value2.getExponent())));
+            int comp3 = valueComparator.compare(value1, value2);
             if (comp3 != 0){
                 return comp3;
             }

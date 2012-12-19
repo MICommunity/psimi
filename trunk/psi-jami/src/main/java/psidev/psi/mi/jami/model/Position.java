@@ -9,6 +9,28 @@ package psidev.psi.mi.jami.model;
  */
 
 public interface Position {
+    public static final String UNDETERMINED = "undetermined";
+    public static final String UNDETERMINED_FULL = "undetermined sequence position";
+    public static final String UNDETERMINED_MI = "MI:0339";
+
+    public static final String N_TERMINAL_RANGE = "n-term range";
+    public static final String N_TERMINAL_RANGE_FULL = "n-terminal range";
+    public static final String N_TERMINAL_RANGE_MI = "MI:1040";
+
+    public static final String C_TERMINAL_RANGE = "c-term range";
+    public static final String C_TERMINAL_RANGE_FULL = "c-terminal range";
+    public static final String C_TERMINAL_RANGE_MI = "MI:1039";
+
+    public static final String RAGGED_N_TERMINAL = "ragged n-terminus";
+    public static final String RAGGED_N_TERMINAL_MI = "MI:0341";
+
+    public static final String N_TERMINAL = "n-terminal";
+    public static final String N_TERMINAL_FULL = "n-terminal position";
+    public static final String N_TERMINAL_MI = "MI:0340";
+
+    public static final String C_TERMINAL = "c-terminal";
+    public static final String C_TERMINAL_FULL = "c-terminal position";
+    public static final String C_TERMINAL_MI = "MI:0334";
 
     /**
      * The range status is a controlled vocabulary term which cannot be null.
