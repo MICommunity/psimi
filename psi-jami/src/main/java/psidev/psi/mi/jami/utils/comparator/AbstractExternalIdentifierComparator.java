@@ -53,4 +53,8 @@ public abstract class AbstractExternalIdentifierComparator<T extends AbstractCvT
 
         return id1.compareTo(id2);
     }
+
+    public T getDatabaseComparator(){
+        return databaseComparator;
+    }
 }
