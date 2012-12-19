@@ -50,31 +50,16 @@ public abstract class AbstractConfidenceComparator<T extends AbstractCvTermCompa
             CvTerm unit1 = confidence1.getUnit();
             CvTerm unit2 = confidence2.getUnit();
 
-            // no units, check the value
-            if (unit1 == null && unit2 == null){
-                String value1 = confidence1.getValue();
-                String value2 = confidence2.getValue();
+            int comp2 = cvTermComparator.compare(unit1, unit2);
 
-                return value1.compareTo(value2);
+            if (comp2 != 0){
+                return comp2;
             }
-            else if (unit1 == null){
-                return AFTER;
-            }
-            else if (unit2 == null){
-                return BEFORE;
-            }
-            else {
 
-                int comp2 = cvTermComparator.compare(unit1, unit2);
-                if (comp2 != 0){
-                    return comp2;
-                }
+            String value1 = confidence1.getValue();
+            String value2 = confidence2.getValue();
 
-                String value1 = confidence1.getValue();
-                String value2 = confidence2.getValue();
-
-                return value1.compareTo(value2);
-            }
+            return value1.compareTo(value2);
         }
     }
 }
