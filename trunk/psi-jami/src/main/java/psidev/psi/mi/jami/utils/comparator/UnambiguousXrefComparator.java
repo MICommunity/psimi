@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Xref;
 
 /**
  * Strict Xref comparator
- * It will first compare the external identifier composed of database, id and version using UnambiguousExternalIdentifierComparator and then it will
+ * It will first compare the external identifier composed of database and id using UnambiguousExternalIdentifierComparator and then it will
  * compare the qualifier with the same CvTermComparator used by UnambiguousExternalIdentifierComparator.
  *
  * - Two xrefs which are null are equals
@@ -28,7 +28,7 @@ public class UnambiguousXrefComparator extends XrefComparator {
 
     @Override
     /**
-     * It will first compare the external identifier composed of database, id and version using UnambiguousExternalIdentifierComparator and then it will
+     * It will first compare the external identifier composed of database and id using UnambiguousExternalIdentifierComparator and then it will
      * compare the qualifier with the same CvTermComparator used by UnambiguousExternalIdentifierComparator.
      *
      * - Two xrefs which are null are equals
