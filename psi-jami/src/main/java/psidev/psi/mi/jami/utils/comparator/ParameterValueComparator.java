@@ -20,7 +20,9 @@ import java.util.Comparator;
 public class ParameterValueComparator implements Comparator<ParameterValue>{
 
     /**
-     *
+     * It compares the BigDecimal value of factor.multiply(BigDecimal.valueOf(base^exponent))
+     * If both values are null, they are equals.
+     * The value that is not null comes before the one that is null.
      * @param value1
      * @param value2
      * @return

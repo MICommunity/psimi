@@ -6,7 +6,8 @@ import psidev.psi.mi.jami.model.CvTerm;
 import java.util.Comparator;
 
 /**
- * Abstract class for checksum comparators
+ * Simple comparator for checksum.
+ * It will first compares the method using a CvTermComparator and then it will compare the checksum values
  *
  * - Two annotations which are null are equals
  * - The annotation which is not null is before null.
@@ -18,16 +19,36 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class AbstractChecksumComparator<T extends AbstractCvTermComparator> implements Comparator<Checksum>{
+public class ChecksumComparator implements Comparator<Checksum>{
 
-    protected T methodComparator;
+    protected AbstractCvTermComparator methodComparator;
 
-    public AbstractChecksumComparator(){
-       instantiateMethodComparator();
+    /**
+     * Creates a new ChecksumComparator.
+     * @param termComparator : comparator for the method which is required
+     */
+    public ChecksumComparator(AbstractCvTermComparator termComparator){
+        if (termComparator == null){
+            throw new IllegalArgumentException("The method comparator is required and cannot be null");
+        }
+        this.methodComparator = termComparator;
     }
 
-    protected abstract void instantiateMethodComparator();
+    public AbstractCvTermComparator getMethodComparator() {
+        return methodComparator;
+    }
 
+    /**
+     * It will first compares the method using a CvTermComparator and then it will compare the checksum values
+     *
+     * - Two annotations which are null are equals
+     * - The annotation which is not null is before null.
+     * - use CvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
+     * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
+     * @param checksum1
+     * @param checksum2
+     * @return
+     */
     public int compare(Checksum checksum1, Checksum checksum2) {
         int EQUAL = 0;
         int BEFORE = -1;

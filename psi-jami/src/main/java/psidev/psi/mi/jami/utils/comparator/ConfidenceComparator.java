@@ -6,23 +6,47 @@ import psidev.psi.mi.jami.model.CvTerm;
 import java.util.Comparator;
 
 /**
- * Abstract class for Confidence comparator
+ * Simple Comparator for Confidences.
+ * It will compares the confidence types first, then the units and finally the value.
+ *
+ * - Two confidences which are null are equals
+ * - The confidence which is not null is before null.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class AbstractConfidenceComparator<T extends AbstractCvTermComparator> implements Comparator<Confidence>{
+public class ConfidenceComparator implements Comparator<Confidence>{
 
-    protected T cvTermComparator;
+    protected AbstractCvTermComparator cvTermComparator;
 
-    public AbstractConfidenceComparator(){
-       instantiateCvTermComparator();
+    /**
+     * Creates a new ConfidenceComparator.
+     * @param termComparator: CvTerm comparator for the types and units. It is required
+     */
+    public ConfidenceComparator(AbstractCvTermComparator termComparator){
+
+        if (termComparator == null){
+            throw new IllegalArgumentException("The CvTerm comparator is required for comparing confidence types and units. It cannot be null");
+        }
+
+        this.cvTermComparator = termComparator;
     }
 
-    protected abstract void instantiateCvTermComparator();
+    public AbstractCvTermComparator getCvTermComparator() {
+        return cvTermComparator;
+    }
 
+    /**
+     * It will compares the confidence types first, then the units and finally the value.
+     *
+     * - Two confidences which are null are equals
+     * - The confidence which is not null is before null.
+     * @param confidence1
+     * @param confidence2
+     * @return
+     */
     public int compare(Confidence confidence1, Confidence confidence2) {
         int EQUAL = 0;
         int BEFORE = -1;

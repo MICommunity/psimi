@@ -12,16 +12,30 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public abstract class AbstractCvTermComparator<T extends AbstractExternalIdentifierComparator> implements Comparator<CvTerm> {
+public abstract class AbstractCvTermComparator implements Comparator<CvTerm> {
 
-    protected T identifierComparator;
+    protected ExternalIdentifierComparator identifierComparator;
+    /**
+     * Creates a new CvTermComparator
+     * @param comparator : external identifier comparator which is required to compare ontology identifiers
+     */
+    public AbstractCvTermComparator(ExternalIdentifierComparator comparator){
+        if (comparator == null){
+            throw new IllegalArgumentException("The ExternalIdentifier comparator is required and cannot be null");
+        }
+        this.identifierComparator = comparator;
+    }
 
-    public AbstractCvTermComparator(){
-       instantiateOntologyIdentifierComparator();
+    public ExternalIdentifierComparator getIdentifierComparator(){
+        return identifierComparator;
     }
 
     /**
-     * Create the ontology identifier comparator
+     * Two Cv terms that are null/not null are equals.
+     * The Cv term that is not null comes before the one that is null.
+     * @param cvTerm1
+     * @param cvTerm2
+     * @return
      */
-    protected abstract void instantiateOntologyIdentifierComparator();
+    public abstract int compare(CvTerm cvTerm1, CvTerm cvTerm2);
 }
