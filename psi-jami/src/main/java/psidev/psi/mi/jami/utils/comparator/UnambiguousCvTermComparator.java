@@ -29,14 +29,6 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
         super(new UnambiguousExternalIdentifierComparator());
     }
 
-    /**
-     * Creates a new CvTermComparator
-     * @param comparator : external identifier comparator which is required to compare ontology identifiers
-     */
-    public UnambiguousCvTermComparator(UnambiguousExternalIdentifierComparator comparator){
-        super(comparator);
-    }
-
     @Override
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
         return (UnambiguousExternalIdentifierComparator) identifierComparator;
