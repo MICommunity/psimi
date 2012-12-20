@@ -6,23 +6,48 @@ import psidev.psi.mi.jami.model.Position;
 import java.util.Comparator;
 
 /**
- * Abstract class for Position comparator
+ * Simple Position comparator.
+ *
+ * It will first compare the status and then will check if the position is undetermined. It will then check the start and the end.
+ * - Two positions which are null are equals
+ * - The position which is not null is before null.
+ * - An undetermined position always comes after a determined position
+ * - Two undetermined positions with same status are equals (no need to look at the positions start and end)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>19/12/12</pre>
  */
 
-public abstract class AbstractPositionComparator<T extends AbstractCvTermComparator> implements Comparator<Position>{
+public class PositionComparator implements Comparator<Position>{
 
-    protected T statusComparator;
+    protected AbstractCvTermComparator statusComparator;
 
-    public AbstractPositionComparator(){
-        instantiateStatusComparator();
+    /**
+     * Creates a new positionComparator
+     * @param statusComparator : the status comparator is required for comparing the position status
+     */
+    public PositionComparator(AbstractCvTermComparator statusComparator){
+        if (statusComparator == null){
+            throw new IllegalArgumentException("The status comparator is required for comparing the position status. It cannot be null");
+        }
+        this.statusComparator = statusComparator;
     }
 
-    protected abstract void instantiateStatusComparator();
+    public AbstractCvTermComparator getStatusComparator() {
+        return statusComparator;
+    }
 
+    /**
+     * It will first compare the status and then will check if the position is undetermined. It will then check the start and the end.
+     * - Two positions which are null are equals
+     * - The position which is not null is before null.
+     * - An undetermined position always comes after a determined position
+     * - Two undetermined positions with same status are equals (no need to look at the positions start and end)
+     * @param position1
+     * @param position2
+     * @return
+     */
     public int compare(Position position1, Position position2) {
 
         int EQUAL = 0;

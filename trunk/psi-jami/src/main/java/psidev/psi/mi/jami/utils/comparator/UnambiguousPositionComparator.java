@@ -3,11 +3,11 @@ package psidev.psi.mi.jami.utils.comparator;
 import psidev.psi.mi.jami.model.Position;
 
 /**
- * Default PositionComparator.
- * It will first compare the status (using DefaultCvTermComparator) and then will check if the position is undetermined. It will then check the start and the end.
+ * Strict PositionComparator.
+ * It will first compare the status (using UnambiguousCvTermComparator) and then will check if the position is undetermined. It will then check the start and the end.
  * - Two positions which are null are equals
  * - The position which is not null is before null.
- * - Use DefaultCvTermComparator to compare first the position status.
+ * - Use UnambiguousCvTermComparator to compare first the position status.
  * - If position status are equals, the undetermined positions are always coming after the determined positions.
  * - If both positions have same status and are undetermined, they are equals
  * - If both positions are not undetermined, compare the start position first and then the end position
@@ -17,27 +17,27 @@ import psidev.psi.mi.jami.model.Position;
  * @since <pre>19/12/12</pre>
  */
 
-public class DefaultPositionComparator extends PositionComparator {
+public class UnambiguousPositionComparator extends PositionComparator {
 
     /**
-     * Creates a new positionComparator with DefaultCvTermComparator
+     * Creates a new positionComparator with UnambiguousCvTermComparator
      *
      */
-    public DefaultPositionComparator() {
+    public UnambiguousPositionComparator() {
         super(new DefaultCvTermComparator());
     }
 
     @Override
-    public DefaultCvTermComparator getStatusComparator() {
-        return (DefaultCvTermComparator) this.statusComparator;
+    public UnambiguousCvTermComparator getStatusComparator() {
+        return (UnambiguousCvTermComparator) this.statusComparator;
     }
 
     @Override
     /**
-     * It will first compare the status (using DefaultCvTermComparator) and then will check if the position is undetermined. It will then check the start and the end.
+     * It will first compare the status (using UnambiguousCvTermComparator) and then will check if the position is undetermined. It will then check the start and the end.
      * - Two positions which are null are equals
      * - The position which is not null is before null.
-     * - Use DefaultCvTermComparator to compare first the position status.
+     * - Use UnambiguousCvTermComparator to compare first the position status.
      * - If position status are equals, the undetermined positions are always coming after the determined positions.
      * - If both positions have same status and are undetermined, they are equals
      * - If both positions are not undetermined, compare the start position first and then the end position

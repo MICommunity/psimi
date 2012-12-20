@@ -4,10 +4,13 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExternalIdentifier;
 
 /**
- * Simple comparator for CvTerms :
+ * Default comparator for CvTerms.
+ * If one of the identifiers is null (or both), it will only compare the short names (case insensitive).
+ * If both identifiers are set, it will compare the ontology identifiers using DefaultExternalIdentifierComparator and ignores all the other properties.
+ *
  * - Two CvTerms which are null are equals
  * - The CvTerm which is not null is before null.
- * - If the two external identifiers are set, use External identifier comparator
+ * - If the two external identifiers are set, use DefaultExternalIdentifierComparator
  * - When one of the CvTerms (or both CvTerms) do not have an external identifier, it compares the short names (case insensitive) which cannot be null
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -15,15 +18,25 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultCvTermComparator extends AbstractCvTermComparator<DefaultExternalIdentifierComparator> {
+public class DefaultCvTermComparator extends AbstractCvTermComparator{
+
+    public DefaultCvTermComparator() {
+        super(new DefaultExternalIdentifierComparator());
+    }
 
     @Override
-    protected void instantiateOntologyIdentifierComparator() {
-        this.identifierComparator = new DefaultExternalIdentifierComparator();
+    public DefaultExternalIdentifierComparator getIdentifierComparator(){
+        return (DefaultExternalIdentifierComparator) identifierComparator;
     }
 
     /**
+     * If one of the identifiers is null (or both), it will only compare the short names (case insensitive).
+     * If both identifiers are set, it will compare the ontology identifiers using DefaultExternalIdentifierComparator and ignores all the other properties.
      *
+     * - Two CvTerms which are null are equals
+     * - The CvTerm which is not null is before null.
+     * - If the two external identifiers are set, use DefaultExternalIdentifierComparator
+     * - When one of the CvTerms (or both CvTerms) do not have an external identifier, it compares the short names (case insensitive) which cannot be null
      * @param cvTerm1
      * @param cvTerm2
      * @return
@@ -45,7 +58,8 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator<DefaultExt
         else {
             ExternalIdentifier externalIdentifier1 = cvTerm1.getOntologyIdentifier();
             ExternalIdentifier externalIdentifier2 = cvTerm1.getOntologyIdentifier();
-            // no identifiers so relies on short name
+
+            // no identifiers or one identifier is null so relies on short name
             if ((externalIdentifier1 == null && externalIdentifier2 == null)
                     || (externalIdentifier1 != null && externalIdentifier2 == null)
                     || (externalIdentifier1 == null && externalIdentifier2 != null)){
@@ -53,8 +67,9 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator<DefaultExt
                 String label1 = cvTerm1.getShortName();
                 String label2 = cvTerm1.getShortName();
 
-                return label1.toLowerCase().compareTo(label2.toLowerCase());
+                return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
             }
+            // both identifiers are set so compares identifiers
             else {
                 return identifierComparator.compare(externalIdentifier1, externalIdentifier2);
             }

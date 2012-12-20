@@ -3,34 +3,34 @@ package psidev.psi.mi.jami.utils.comparator;
 import psidev.psi.mi.jami.model.Checksum;
 
 /**
- * Default checksum comparator.
+ * Unambiguous checksum comparator.
  *
  * - Two checksum which are null are equals
  * - The checksum which is not null is before null.
- * - use DefaultCvTermComparator to compare the methods. If they are equals, compares the values (case sensitive)
+ * - use UnambiguousCvTermComparator to compare the methods. If they are equals, compares the values (case sensitive)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultChecksumComparator extends ChecksumComparator {
+public class UnambiguousChecksumComparator extends ChecksumComparator {
 
-    public DefaultChecksumComparator() {
-        super(new DefaultCvTermComparator());
+    public UnambiguousChecksumComparator() {
+        super(new UnambiguousCvTermComparator());
     }
 
     @Override
-    public DefaultCvTermComparator getMethodComparator() {
-        return (DefaultCvTermComparator) methodComparator;
+    public UnambiguousCvTermComparator getMethodComparator() {
+        return (UnambiguousCvTermComparator) methodComparator;
     }
 
     /**
-     * It will first compares the method using a DefaultCvTermComparator and then it will compare the checksum values
+     * It will first compares the method using a UnambiguousCvTermComparator and then it will compare the checksum values
      *
      * - Two annotations which are null are equals
      * - The annotation which is not null is before null.
-     * - use DefaultCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
+     * - use UnambiguousCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
      * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
      * @param checksum1
      * @param checksum2

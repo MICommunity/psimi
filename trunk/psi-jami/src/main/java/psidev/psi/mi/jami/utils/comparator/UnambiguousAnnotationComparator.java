@@ -3,11 +3,11 @@ package psidev.psi.mi.jami.utils.comparator;
 import psidev.psi.mi.jami.model.Annotation;
 
 /**
- * Default annotation comparator
+ * Strict annotation comparator
  * It compares first the topics and then the value (case insensitive)
  * - Two annotations which are null are equals
  * - The annotation which is not null is before null.
- * - use DefaultCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
+ * - use UnambiguousCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
  * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -15,26 +15,26 @@ import psidev.psi.mi.jami.model.Annotation;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultAnnotationComparator extends AnnotationComparator {
+public class UnambiguousAnnotationComparator extends AnnotationComparator {
 
     /**
-     * Creates a new AnnotationComparator with DefaultCvTermComparator
+     * Creates a new AnnotationComparator with UnambiguousCvTermComparator
      *
      */
-    public DefaultAnnotationComparator() {
-        super(new DefaultCvTermComparator());
+    public UnambiguousAnnotationComparator() {
+        super(new UnambiguousCvTermComparator());
     }
 
     @Override
-    public DefaultCvTermComparator getTopicComparator() {
-        return (DefaultCvTermComparator) topicComparator;
+    public UnambiguousCvTermComparator getTopicComparator() {
+        return (UnambiguousCvTermComparator) topicComparator;
     }
 
     /**
      * It compares first the topics and then the value (case insensitive)
      * - Two annotations which are null are equals
      * - The annotation which is not null is before null.
-     * - use DefaultCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
+     * - use UnambiguousCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
      * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
      * @param annotation1
      * @param annotation2

@@ -3,13 +3,12 @@ package psidev.psi.mi.jami.utils.comparator;
 import psidev.psi.mi.jami.model.Parameter;
 
 /**
- * Default parameter comparator.
- *
+ * Unambiguous parameter comparator.
  *
  * - Two parameters which are null are equals
  * - The parameter which is not null is before null.
- * - Use DefaultCvTermComparator to compare first the parameter types.
- * - If parameter types are equals, use DefaultCvTermComparator to compare the units.
+ * - Use UnambiguousCvTermComparator to compare first the parameter types.
+ * - If parameter types are equals, use UnambiguousCvTermComparator to compare the units.
  * - If the units are not set, compares the values
  * - If both units are set and If they are equals, compares the values (case sensitive)
  * - If both values are equals, compares the uncertainty.
@@ -19,19 +18,19 @@ import psidev.psi.mi.jami.model.Parameter;
  * @since <pre>19/12/12</pre>
  */
 
-public class DefaultParameterComparator extends ParameterComparator {
+public class UnambiguousParameterComparator extends ParameterComparator {
 
-    public DefaultParameterComparator() {
-        super(new DefaultCvTermComparator());
+    public UnambiguousParameterComparator() {
+        super(new UnambiguousCvTermComparator());
     }
 
-    public DefaultParameterComparator(ParameterValueComparator valueComparator) {
-        super(new DefaultCvTermComparator(), valueComparator);
+    public UnambiguousParameterComparator(ParameterValueComparator valueComparator) {
+        super(new UnambiguousCvTermComparator(), valueComparator);
     }
 
     @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) cvTermComparator;
+    public UnambiguousCvTermComparator getCvTermComparator() {
+        return (UnambiguousCvTermComparator) cvTermComparator;
     }
 
     /**
@@ -39,8 +38,8 @@ public class DefaultParameterComparator extends ParameterComparator {
      * It will also compare the uncertainty.
      * - Two parameters which are null are equals
      * - The parameter which is not null is before null.
-     * - Use DefaultCvTermComparator to compare first the parameter types.
-     * - If parameter types are equals, use DefaultCvTermComparator to compare the units.
+     * - Use UnambiguousCvTermComparator to compare first the parameter types.
+     * - If parameter types are equals, use UnambiguousCvTermComparator to compare the units.
      * - If the units are not set, compares the values
      * - If both units are set and If they are equals, compares the values (case sensitive)
      * - If both values are equals, compares the uncertainty.
