@@ -17,6 +17,7 @@ import psidev.psi.mi.jami.model.Annotation;
 
 public class DefaultAnnotationComparator extends AnnotationComparator {
 
+    private static DefaultAnnotationComparator defaultAnnotationComparator;
     /**
      * Creates a new AnnotationComparator with DefaultCvTermComparator
      *
@@ -42,5 +43,19 @@ public class DefaultAnnotationComparator extends AnnotationComparator {
      */
     public int compare(Annotation annotation1, Annotation annotation2) {
         return super.compare(annotation1, annotation2);
+    }
+
+    /**
+     * Use DefaultAnnotationComparator to know if two annotations are equals.
+     * @param annotation1
+     * @param annotation2
+     * @return true if the two annotations are equal
+     */
+    public static boolean areEquals(Annotation annotation1, Annotation annotation2){
+        if (defaultAnnotationComparator == null){
+            defaultAnnotationComparator = new DefaultAnnotationComparator();
+        }
+
+        return defaultAnnotationComparator.compare(annotation1, annotation2) == 0;
     }
 }

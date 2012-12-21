@@ -19,6 +19,7 @@ import psidev.psi.mi.jami.model.Position;
 
 public class UnambiguousPositionComparator extends PositionComparator {
 
+    private static UnambiguousPositionComparator unambiguousPositionComparator;
     /**
      * Creates a new positionComparator with UnambiguousCvTermComparator
      *
@@ -44,5 +45,19 @@ public class UnambiguousPositionComparator extends PositionComparator {
      */
     public int compare(Position position1, Position position2) {
         return super.compare(position1, position2);
+    }
+
+    /**
+     * Use UnabmbiguousPositionComparator to know if two positions are equals.
+     * @param pos1
+     * @param pos2
+     * @return true if the two positions are equal
+     */
+    public static boolean areEquals(Position pos1, Position pos2){
+        if (unambiguousPositionComparator == null){
+            unambiguousPositionComparator = new UnambiguousPositionComparator();
+        }
+
+        return unambiguousPositionComparator.compare(pos1, pos2) == 0;
     }
 }

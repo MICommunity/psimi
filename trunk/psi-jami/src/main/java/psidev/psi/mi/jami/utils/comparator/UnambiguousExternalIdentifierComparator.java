@@ -22,6 +22,8 @@ import java.util.Comparator;
 
 public class UnambiguousExternalIdentifierComparator implements Comparator<ExternalIdentifier> {
 
+    private static UnambiguousExternalIdentifierComparator unambiguousIdentifierComparator;
+
     public UnambiguousExternalIdentifierComparator() {
     }
 
@@ -81,5 +83,19 @@ public class UnambiguousExternalIdentifierComparator implements Comparator<Exter
 
             return id1.compareTo(id2);
         }
+    }
+
+    /**
+     * Use UnambiguousIdentifierComparator to know if two external identifiers are equals.
+     * @param externalIdentifier1
+     * @param externalIdentifier2
+     * @return true if the two external identifiers are equal
+     */
+    public static boolean areEquals(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2){
+        if (unambiguousIdentifierComparator == null){
+            unambiguousIdentifierComparator = new UnambiguousExternalIdentifierComparator();
+        }
+
+        return unambiguousIdentifierComparator.compare(externalIdentifier1, externalIdentifier2) == 0;
     }
 }

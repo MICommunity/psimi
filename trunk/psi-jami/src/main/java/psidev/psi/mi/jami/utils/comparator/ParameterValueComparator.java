@@ -19,6 +19,8 @@ import java.util.Comparator;
 
 public class ParameterValueComparator implements Comparator<ParameterValue>{
 
+    private static ParameterValueComparator parameterValueComparator;
+
     /**
      * It compares the BigDecimal value of factor.multiply(BigDecimal.valueOf(base^exponent))
      * If both values are null, they are equals.
@@ -44,5 +46,19 @@ public class ParameterValueComparator implements Comparator<ParameterValue>{
         else {
             return (value1.getFactor().multiply(BigDecimal.valueOf(value1.getBase() ^ value1.getExponent()))).compareTo(value2.getFactor().multiply(BigDecimal.valueOf(value2.getBase()^value2.getExponent())));
         }
+    }
+
+    /**
+     * Use ParameterValueComparator to know if two ParameterValue are equals.
+     * @param value1
+     * @param value2
+     * @return true if the two parameter values are equal
+     */
+    public static boolean areEquals(ParameterValue value1, ParameterValue value2){
+        if (parameterValueComparator == null){
+            parameterValueComparator = new ParameterValueComparator();
+        }
+
+        return parameterValueComparator.compare(value1, value2) == 0;
     }
 }

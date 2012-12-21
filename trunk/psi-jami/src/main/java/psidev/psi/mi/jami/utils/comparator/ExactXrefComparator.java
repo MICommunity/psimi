@@ -17,7 +17,9 @@ import psidev.psi.mi.jami.model.Xref;
  * @since <pre>20/12/12</pre>
  */
 
-public class ExactXrefComparator extends AbstractXrefComparator {
+public class ExactXrefComparator extends UnambiguousXrefComparator {
+
+    private static ExactXrefComparator exactXrefComparator;
 
     public ExactXrefComparator() {
         super(new ExactExternalIdentifierComparator());
@@ -42,5 +44,19 @@ public class ExactXrefComparator extends AbstractXrefComparator {
      */
     public int compare(Xref xref1, Xref xref2) {
         return super.compare(xref1, xref2);
+    }
+
+    /**
+     * Use ExactXrefComparator to know if two xrefs are equals.
+     * @param xref1
+     * @param xref2
+     * @return true if the two xrefs are equal
+     */
+    public static boolean areEquals(Xref xref1, Xref xref2){
+        if (exactXrefComparator == null){
+            exactXrefComparator = new ExactXrefComparator();
+        }
+
+        return exactXrefComparator.compare(xref1, xref2) == 0;
     }
 }

@@ -23,6 +23,8 @@ import psidev.psi.mi.jami.model.Xref;
 
 public class DefaultXrefComparator extends AbstractXrefComparator {
 
+    private static DefaultXrefComparator defaultXrefComparator;
+
     public DefaultXrefComparator() {
         super(new DefaultExternalIdentifierComparator());
     }
@@ -80,5 +82,19 @@ public class DefaultXrefComparator extends AbstractXrefComparator {
                 return qualifier1.getShortName().toLowerCase().trim().compareTo(qualifier2.getShortName().toLowerCase().trim());
             }
         }
+    }
+
+    /**
+     * Use DefaultXrefComparator to know if two xrefs are equals.
+     * @param xref1
+     * @param xref2
+     * @return true if the two xrefs are equal
+     */
+    public static boolean areEquals(Xref xref1, Xref xref2){
+        if (defaultXrefComparator == null){
+            defaultXrefComparator = new DefaultXrefComparator();
+        }
+
+        return defaultXrefComparator.compare(xref1, xref2) == 0;
     }
 }

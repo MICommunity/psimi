@@ -20,6 +20,8 @@ import psidev.psi.mi.jami.model.Parameter;
 
 public class UnambiguousParameterComparator extends ParameterComparator {
 
+    private static UnambiguousParameterComparator unambiguousParameterComparator;
+
     public UnambiguousParameterComparator() {
         super(new UnambiguousCvTermComparator());
     }
@@ -49,5 +51,19 @@ public class UnambiguousParameterComparator extends ParameterComparator {
      */
     public int compare(Parameter parameter1, Parameter parameter2) {
         return super.compare(parameter1, parameter2);
+    }
+
+    /**
+     * Use UnabmbiguousComparatorParameter to know if two parameters are equals.
+     * @param param1
+     * @param param2
+     * @return true if the two parameters are equal
+     */
+    public static boolean areEquals(Parameter param1, Parameter param2){
+        if (unambiguousParameterComparator == null){
+            unambiguousParameterComparator = new UnambiguousParameterComparator();
+        }
+
+        return unambiguousParameterComparator.compare(param1, param2) == 0;
     }
 }

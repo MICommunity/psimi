@@ -22,6 +22,8 @@ import java.util.Comparator;
 
 public class DefaultExternalIdentifierComparator implements Comparator<ExternalIdentifier> {
 
+    private static DefaultExternalIdentifierComparator defaultIdentifierComparator;
+
     public DefaultExternalIdentifierComparator() {
     }
 
@@ -76,5 +78,19 @@ public class DefaultExternalIdentifierComparator implements Comparator<ExternalI
 
             return id1.compareTo(id2);
         }
+    }
+
+    /**
+     * Use DefaultIdentifierComparator to know if two external identifiers are equals.
+     * @param externalIdentifier1
+     * @param externalIdentifier2
+     * @return true if the two external identifiers are equal
+     */
+    public static boolean areEquals(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2){
+        if (defaultIdentifierComparator == null){
+            defaultIdentifierComparator = new DefaultExternalIdentifierComparator();
+        }
+
+        return defaultIdentifierComparator.compare(externalIdentifier1, externalIdentifier2) == 0;
     }
 }
