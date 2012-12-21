@@ -21,6 +21,8 @@ import psidev.psi.mi.jami.model.Parameter;
 
 public class DefaultParameterComparator extends ParameterComparator {
 
+    private static DefaultParameterComparator defaultParameterComparator;
+
     public DefaultParameterComparator() {
         super(new DefaultCvTermComparator());
     }
@@ -50,5 +52,19 @@ public class DefaultParameterComparator extends ParameterComparator {
      */
     public int compare(Parameter parameter1, Parameter parameter2) {
         return super.compare(parameter1, parameter2);
+    }
+
+    /**
+     * Use DefaultComparator to know if two parameters are equals.
+     * @param param1
+     * @param param2
+     * @return true if the two parameters are equal
+     */
+    public static boolean areEquals(Parameter param1, Parameter param2){
+        if (defaultParameterComparator == null){
+            defaultParameterComparator = new DefaultParameterComparator();
+        }
+
+        return defaultParameterComparator.compare(param1, param2) == 0;
     }
 }

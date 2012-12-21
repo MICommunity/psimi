@@ -18,6 +18,8 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
 
 public class ExactExternalIdentifierComparator extends UnambiguousExternalIdentifierComparator{
 
+    private static ExactExternalIdentifierComparator exactIdentifierComparator;
+
     public ExactExternalIdentifierComparator() {
         super();
     }
@@ -72,5 +74,19 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
                 return version1.compareTo(version2);
             }
         }
+    }
+
+    /**
+     * Use ExactExternalIdentifierComparator to know if two external identifiers are equals.
+     * @param externalIdentifier1
+     * @param externalIdentifier2
+     * @return true if the two external identifiers are equal
+     */
+    public static boolean areEquals(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2){
+        if (exactIdentifierComparator == null){
+            exactIdentifierComparator = new ExactExternalIdentifierComparator();
+        }
+
+        return exactIdentifierComparator.compare(externalIdentifier1, externalIdentifier2) == 0;
     }
 }

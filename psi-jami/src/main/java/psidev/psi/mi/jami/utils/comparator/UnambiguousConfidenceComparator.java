@@ -21,6 +21,8 @@ import psidev.psi.mi.jami.model.Confidence;
 
 public class UnambiguousConfidenceComparator extends ConfidenceComparator {
 
+    private static UnambiguousConfidenceComparator unambiguousConfidenceComparator;
+
     public UnambiguousConfidenceComparator() {
         super(new UnambiguousCvTermComparator());
     }
@@ -46,5 +48,19 @@ public class UnambiguousConfidenceComparator extends ConfidenceComparator {
      */
     public int compare(Confidence confidence1, Confidence confidence2) {
         return super.compare(confidence1, confidence2);
+    }
+
+    /**
+     * Use UnambiguousConfidenceComparator to know if two confidences are equals.
+     * @param conf1
+     * @param conf2
+     * @return true if the two confidences are equal
+     */
+    public static boolean areEquals(Confidence conf1, Confidence conf2){
+        if (unambiguousConfidenceComparator == null){
+            unambiguousConfidenceComparator = new UnambiguousConfidenceComparator();
+        }
+
+        return unambiguousConfidenceComparator.compare(conf1, conf2) == 0;
     }
 }

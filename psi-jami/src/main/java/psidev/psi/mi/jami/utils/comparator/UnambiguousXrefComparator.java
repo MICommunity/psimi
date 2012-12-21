@@ -21,8 +21,14 @@ import psidev.psi.mi.jami.model.Xref;
  */
 
 public class UnambiguousXrefComparator extends AbstractXrefComparator {
+    private static UnambiguousXrefComparator unambiguousXrefComparator;
+
     public UnambiguousXrefComparator() {
         super(new UnambiguousExternalIdentifierComparator());
+    }
+
+    public UnambiguousXrefComparator(UnambiguousExternalIdentifierComparator comparator) {
+        super(comparator);
     }
 
     @Override
@@ -83,5 +89,19 @@ public class UnambiguousXrefComparator extends AbstractXrefComparator {
                 return qualifier1.getShortName().toLowerCase().trim().compareTo(qualifier2.getShortName().toLowerCase().trim());
             }
         }
+    }
+
+    /**
+     * Use UnambiguousXrefComparator to know if two xrefs are equals.
+     * @param xref1
+     * @param xref2
+     * @return true if the two xrefs are equal
+     */
+    public static boolean areEquals(Xref xref1, Xref xref2){
+        if (unambiguousXrefComparator == null){
+            unambiguousXrefComparator = new UnambiguousXrefComparator();
+        }
+
+        return unambiguousXrefComparator.compare(xref1, xref2) == 0;
     }
 }

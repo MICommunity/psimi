@@ -18,6 +18,8 @@ import psidev.psi.mi.jami.model.Alias;
 
 public class DefaultAliasComparator extends AliasComparator {
 
+    private static DefaultAliasComparator defaultAliasComparator;
+
     /**
      * Creates a new AliasComparator with DefaultCvTermComparator
      */
@@ -42,5 +44,19 @@ public class DefaultAliasComparator extends AliasComparator {
      */
     public int compare(Alias alias1, Alias alias2) {
         return super.compare(alias1, alias2);
+    }
+
+    /**
+     * Use DefaultAliasComparator to know if two aliases are equals.
+     * @param alias1
+     * @param alias2
+     * @return true if the two aliases are equal
+     */
+    public static boolean areEquals(Alias alias1, Alias alias2){
+        if (defaultAliasComparator == null){
+            defaultAliasComparator = new DefaultAliasComparator();
+        }
+
+        return defaultAliasComparator.compare(alias1, alias2) == 0;
     }
 }

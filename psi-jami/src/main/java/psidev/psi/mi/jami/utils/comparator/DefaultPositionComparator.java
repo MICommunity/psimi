@@ -19,6 +19,8 @@ import psidev.psi.mi.jami.model.Position;
 
 public class DefaultPositionComparator extends PositionComparator {
 
+    private static DefaultPositionComparator defaultPositionComparator;
+
     /**
      * Creates a new positionComparator with DefaultCvTermComparator
      *
@@ -44,5 +46,19 @@ public class DefaultPositionComparator extends PositionComparator {
      */
     public int compare(Position position1, Position position2) {
         return super.compare(position1, position2);
+    }
+
+    /**
+     * Use DefaultPositionComparator to know if two positions are equals.
+     * @param pos1
+     * @param pos2
+     * @return true if the two positions are equal
+     */
+    public static boolean areEquals(Position pos1, Position pos2){
+        if (defaultPositionComparator == null){
+            defaultPositionComparator = new DefaultPositionComparator();
+        }
+
+        return defaultPositionComparator.compare(pos1, pos2) == 0;
     }
 }

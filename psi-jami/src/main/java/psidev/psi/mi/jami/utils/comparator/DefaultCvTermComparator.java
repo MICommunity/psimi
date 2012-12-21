@@ -20,6 +20,8 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
 
 public class DefaultCvTermComparator extends AbstractCvTermComparator{
 
+    private static DefaultCvTermComparator defaultCvTermComparator;
+
     public DefaultCvTermComparator() {
         super(new DefaultExternalIdentifierComparator());
     }
@@ -74,5 +76,19 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator{
                 return identifierComparator.compare(externalIdentifier1, externalIdentifier2);
             }
         }
+    }
+
+    /**
+     * Use DefaultCvTermComparator to know if two CvTerms are equals.
+     * @param cv1
+     * @param cv2
+     * @return true if the two CvTerms are equal
+     */
+    public static boolean areEquals(CvTerm cv1, CvTerm cv2){
+        if (defaultCvTermComparator == null){
+            defaultCvTermComparator = new DefaultCvTermComparator();
+        }
+
+        return defaultCvTermComparator.compare(cv1, cv2) == 0;
     }
 }

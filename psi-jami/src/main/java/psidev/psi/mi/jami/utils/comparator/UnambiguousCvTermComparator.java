@@ -21,6 +21,8 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
 
 public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
 
+    private static UnambiguousCvTermComparator unambiguousCvTermComparator;
+
     /**
      * Creates a new CvTermComparator with UnambiguousExternalIdentifierComparator
      *
@@ -76,5 +78,19 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
 
             return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
         }
+    }
+
+    /**
+     * Use UnambiguousCvTermComparator to know if two CvTerms are equals.
+     * @param cv1
+     * @param cv2
+     * @return true if the two CvTerms are equal
+     */
+    public static boolean areEquals(CvTerm cv1, CvTerm cv2){
+        if (unambiguousCvTermComparator == null){
+            unambiguousCvTermComparator = new UnambiguousCvTermComparator();
+        }
+
+        return unambiguousCvTermComparator.compare(cv1, cv2) == 0;
     }
 }

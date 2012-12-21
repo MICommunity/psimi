@@ -16,6 +16,8 @@ import psidev.psi.mi.jami.model.Checksum;
 
 public class UnambiguousChecksumComparator extends ChecksumComparator {
 
+    private static UnambiguousChecksumComparator unambiguousChecksumComparator;
+
     public UnambiguousChecksumComparator() {
         super(new UnambiguousCvTermComparator());
     }
@@ -38,5 +40,19 @@ public class UnambiguousChecksumComparator extends ChecksumComparator {
      */
     public int compare(Checksum checksum1, Checksum checksum2){
         return super.compare(checksum1, checksum2);
+    }
+
+    /**
+     * Use UnambiguousChecksumComparator to know if two checksum are equals.
+     * @param checksum1
+     * @param checksum2
+     * @return true if the two checksum are equal
+     */
+    public static boolean areEquals(Checksum checksum1, Checksum checksum2){
+        if (unambiguousChecksumComparator == null){
+            unambiguousChecksumComparator = new UnambiguousChecksumComparator();
+        }
+
+        return unambiguousChecksumComparator.compare(checksum1, checksum2) == 0;
     }
 }
