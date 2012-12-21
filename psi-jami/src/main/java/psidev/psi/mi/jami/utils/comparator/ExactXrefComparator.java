@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.model.Xref;
  * @since <pre>20/12/12</pre>
  */
 
-public class ExactXrefComparator extends XrefComparator {
+public class ExactXrefComparator extends AbstractXrefComparator {
 
     public ExactXrefComparator() {
         super(new ExactExternalIdentifierComparator());

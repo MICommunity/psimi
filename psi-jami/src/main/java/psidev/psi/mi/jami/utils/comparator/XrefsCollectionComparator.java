@@ -16,12 +16,12 @@ public class XrefsCollectionComparator extends CollectionComparator<Xref>{
      *
      * @param xrefComparator
      */
-    public XrefsCollectionComparator(XrefComparator xrefComparator) {
+    public XrefsCollectionComparator(AbstractXrefComparator xrefComparator) {
         super(xrefComparator);
     }
 
     @Override
-    public XrefComparator getObjectComparator() {
-        return (XrefComparator) objectComparator;
+    public AbstractXrefComparator getObjectComparator() {
+        return (AbstractXrefComparator) objectComparator;
     }
 }
