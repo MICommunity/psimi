@@ -5,11 +5,11 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
 /**
  * Exact comparator for external identifiers.
  * It compares first the databases using UnambiguousCvTermComparator, then the ids (case sensitive) and then the version.
- *
+ * To compare the databases, it looks first at the identifiers id if they both exist, otherwise it looks at the database shortlabel only.
  * - Two external identifiers which are null are equals
  * - The external identifier which is not null is before null.
  * - If the two external identifiers are set :
- *     - use UnambiguousCvTermComparator to compare the databases. If both databases are equal, compare the ids (is case sensitive)
+ *     - compare the databases. If both databases are equal, compare the ids (is case sensitive)
  *     - if both ids are the same, compares the versions.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,20 +19,16 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
 public class ExactExternalIdentifierComparator extends UnambiguousExternalIdentifierComparator{
 
     public ExactExternalIdentifierComparator() {
-        super(new UnambiguousCvTermComparator());
-    }
-
-    public ExactExternalIdentifierComparator(UnambiguousCvTermComparator comparator) {
-        super(comparator);
+        super();
     }
 
     /**
      * It compares first the databases using ExactCvTermComparator, then the ids (case sensitive) and then the version.
-     *
+     * To compare the databases, it looks first at the identifiers id if they both exist, otherwise it looks at the database shortlabel only.
      * - Two external identifiers which are null are equals
      * - The external identifier which is not null is before null.
      * - If the two external identifiers are set :
-     *     - use ExactCvTermComparator to compare the databases. If both databases are equal, compare the ids (is case sensitive)
+     *     - compare the databases. If both databases are equal, compare the ids (is case sensitive)
      *     - if both ids are the same, compares the versions.
      * @param externalIdentifier1
      * @param externalIdentifier2
