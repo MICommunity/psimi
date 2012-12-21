@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator;
 
-import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Comparator;
@@ -16,22 +16,22 @@ import java.util.Comparator;
  * @since <pre>19/12/12</pre>
  */
 
-public class XrefComparator implements Comparator<Xref> {
+public abstract class AbstractXrefComparator implements Comparator<Xref> {
 
-    protected ExternalIdentifierComparator identifierComparator;
+    protected Comparator<ExternalIdentifier> identifierComparator;
 
     /**
-     * Creates a new XrefComparator
+     * Creates a new AbstractXrefComparator
      * @param identifierComparator : the ExternalIdentifierComparator is required to compare database, id and qualifier
      */
-    public XrefComparator(ExternalIdentifierComparator identifierComparator){
+    public AbstractXrefComparator(Comparator<ExternalIdentifier> identifierComparator){
         if(identifierComparator == null){
             throw new IllegalArgumentException("The ExternalIdentifierComparator is required to compare the database, id and qualifier. It cannot be null");
         }
         this.identifierComparator = identifierComparator;
     }
 
-    public ExternalIdentifierComparator getIdentifierComparator() {
+    public Comparator<ExternalIdentifier> getIdentifierComparator() {
         return identifierComparator;
     }
 
@@ -44,31 +44,5 @@ public class XrefComparator implements Comparator<Xref> {
      * @param xref2
      * @return
      */
-    public int compare(Xref xref1, Xref xref2) {
-
-        int EQUAL = 0;
-        int BEFORE = -1;
-        int AFTER = 1;
-
-        if (xref1 == null && xref2 == null){
-            return EQUAL;
-        }
-        else if (xref1 == null){
-            return AFTER;
-        }
-        else if (xref2 == null){
-            return BEFORE;
-        }
-        else {
-            int comp = identifierComparator.compare(xref1, xref2);
-            if (comp != 0){
-                return comp;
-            }
-
-            CvTerm qualifier1 = xref1.getQualifier();
-            CvTerm qualifier2 = xref2.getQualifier();
-
-            return identifierComparator.getDatabaseComparator().compare(qualifier1, qualifier2);
-        }
-    }
+    public abstract int compare(Xref xref1, Xref xref2);
 }
