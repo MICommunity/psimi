@@ -26,7 +26,7 @@ public class ExactInteractorComparator implements Comparator<Interactor> {
     protected ChecksumComparator checksumComparator;
 
     /**
-     * Creates a new EaxctInteractorComparator.
+     * Creates a new ExactInteractorComparator.
      * @param interactorComparator : the interactor comparator to compare basic ids. It is required
      * @param organismComparator : the comparator for organisms. if null will be OrganismTaxIdComparator
      * @param typeComparator : the interactor type comparator. It is required

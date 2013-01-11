@@ -10,12 +10,6 @@ import java.util.Set;
  * @since <pre>11/01/13</pre>
  */
 
-public interface InteractorCandidates extends Interactor{
+public interface InteractorCandidates extends Interactor,Set{
 
-    /**
-     * The set of potential interactors.
-     * It cannot be null. If we don't have any candidates, the method should return an empty set.
-     * @return
-     */
-    public Set<Interactor> getCandidates();
 }

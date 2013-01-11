@@ -48,7 +48,7 @@ public class DefaultInteractorComparator extends InteractorComparator {
     }
 
     /**
-     * Use DefaultConfidenceComparator to know if two confidences are equals.
+     * Use DefaultConfidenceComparator to know if two interactors are equals.
      * @param interactor1
      * @param interactor2
      * @return true if the two confidences are equal
