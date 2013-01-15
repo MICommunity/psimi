@@ -48,10 +48,10 @@ public class DefaultInteractorComparator extends InteractorComparator {
     }
 
     /**
-     * Use DefaultConfidenceComparator to know if two interactors are equals.
+     * Use DefaultInteractorComparator to know if two interactors are equals.
      * @param interactor1
      * @param interactor2
-     * @return true if the two confidences are equal
+     * @return true if the two interactors are equal
      */
     public static boolean areEquals(Interactor interactor1, Interactor interactor2){
         if (defaultInteractorComparator == null){
