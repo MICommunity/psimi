@@ -29,7 +29,7 @@ public interface Complex extends Interactor {
 
     /**
      * Numerical parameters for this complex.
-     * The set cannot be null. If the compplex does not have any parameters, the method should return an empty set.
+     * The set cannot be null. If the complex does not have any parameters, the method should return an empty set.
      * @return the parameters
      */
     public Set<Parameter> getParameters();

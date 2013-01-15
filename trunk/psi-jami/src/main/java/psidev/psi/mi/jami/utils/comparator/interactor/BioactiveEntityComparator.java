@@ -11,7 +11,6 @@ import java.util.Comparator;
  * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
  * will look at the standard Inchi.
  * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use Comparator<Interactor> to compare the interactor properties
- * This comparator will ignore all the other properties of an interactor.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -22,9 +21,13 @@ public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
 
     protected Comparator<Interactor> interactorComparator;
 
+    /**
+     * Creates a bew BioactiveEntityComparator. It needs a Comparator<Interactor> to compares interactor properties
+     * @param interactorComparator : comparator for interactor properties. It is required
+     */
     public BioactiveEntityComparator(Comparator<Interactor> interactorComparator){
         if (interactorComparator == null){
-            throw new IllegalArgumentException("The interactor comparator is required to compares identifiers. It cannot be null");
+            throw new IllegalArgumentException("The interactor comparator is required to compare bioactive entities. It cannot be null");
         }
         this.interactorComparator = interactorComparator;
     }
@@ -34,7 +37,6 @@ public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
      * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
      * will look at the standard Inchi.
      * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use Comparator<Interactor> to compare the interactor properties
-     * This comparator will ignore all the other properties of an interactor.
      * @param bioactiveEntity1
      * @param bioactiveEntity2
      * @return
