@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
  * will look at the standard Inchi.
  * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use UnambiguousInteractorComparator to compare the interactor properties
- * This comparator will ignore all the other properties of an interactor.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -32,7 +31,6 @@ public class UnambiguousBioactiveEntityComparator extends BioactiveEntityCompara
      * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
      * will look at the standard Inchi.
      * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use UnambiguousInteractorComparator to compare the interactor properties
-     * This comparator will ignore all the other properties of an interactor.
      */
     public int compare(BioactiveEntity bioactiveEntity1, BioactiveEntity bioactiveEntity2) {
         return super.compare(bioactiveEntity1, bioactiveEntity2);
@@ -47,7 +45,7 @@ public class UnambiguousBioactiveEntityComparator extends BioactiveEntityCompara
      * Use UnambiguousBioactiveEntityComparator to know if two bioactive entities are equals.
      * @param entity1
      * @param entity2
-     * @return true if the two confidences are equal
+     * @return true if the two bioactive entities are equal
      */
     public static boolean areEquals(BioactiveEntity entity1, BioactiveEntity entity2){
         if (unambiguousBioactiveEntityComparator == null){

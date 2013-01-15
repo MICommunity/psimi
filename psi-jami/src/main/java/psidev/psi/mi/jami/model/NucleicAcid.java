@@ -24,6 +24,19 @@ public interface NucleicAcid extends Interactor {
     public void setDdbjEmblGenbank(String id);
 
     /**
+     * The unique Refseq identifier which identifies the nucleic acid.
+     * It can be null if it is not known and in such a case, the sequence should be provided.
+     * @return the DDBJ/EMBL/GemBank identifier
+     */
+    public String getRefseq();
+
+    /**
+     * Sets the Refseq identifier
+     * @param id : Refseq identifier
+     */
+    public void setRefseq(String id);
+
+    /**
      * The sequence of nucleotides for this nucleic acid
      * @return the sequence
      */
