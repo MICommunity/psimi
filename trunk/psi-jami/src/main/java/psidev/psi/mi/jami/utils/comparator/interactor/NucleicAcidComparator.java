@@ -23,7 +23,7 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
     protected OrganismTaxIdComparator organismComparator;
 
     /**
-     * Creates a bew NucleicAcidComparator. It needs a Comparator<Interactor> to compares interactor properties and it will creates a new OrganismTaxIdComparator
+     * Creates a new NucleicAcidComparator. It needs a Comparator<Interactor> to compares interactor properties and it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      */
     public NucleicAcidComparator(Comparator<Interactor> interactorComparator){
@@ -36,7 +36,7 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
     }
 
     /**
-     * Creates a bew NucleicAcidComparator. It needs a Comparator<Interactor> to compares interactor properties and a OrganismComparator
+     * Creates a new NucleicAcidComparator. It needs a Comparator<Interactor> to compares interactor properties and a OrganismComparator
      * to compare the sequence and organism. If the organism comparator is null,it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      * @param organismComparator : comparator for organism
@@ -55,7 +55,7 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
     }
 
     /**
-     *  * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
+     *  It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
      * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use Comparator<Interactor> to compare the interactor properties
      *
@@ -87,7 +87,7 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
                 return ddbjEmblGenbank1.compareTo(ddbjEmblGenbank2);
             }
 
-            // compares Refseq if at least one Refseq identifier is not set
+            // compares Refseq if at least one DDBJ/EMBL/Genbank identifier is not set
             String refseq1 = nucleicAcid1.getRefseq();
             String refseq2 = nucleicAcid2.getRefseq();
 
