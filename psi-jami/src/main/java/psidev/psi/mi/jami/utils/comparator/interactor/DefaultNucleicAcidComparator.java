@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * Default nucleic acids comparator.
  * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
- * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use DefaultInteractorComparator to compare the interactor properties
+ * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use DefaultInteractorBaseComparator to compare the interactor properties
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -20,18 +20,18 @@ public class DefaultNucleicAcidComparator extends NucleicAcidComparator {
     private static DefaultNucleicAcidComparator defaultNucleicAcidComparator;
 
     /**
-     * Creates a new DefaultNucleicAcidComparator. It will uses a DefaultInteractorComparator to compare interactor properties and a
+     * Creates a new DefaultNucleicAcidComparator. It will uses a DefaultInteractorBaseComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public DefaultNucleicAcidComparator() {
-        super(new DefaultInteractorComparator(), new OrganismTaxIdComparator());
+        super(new DefaultInteractorBaseComparator(), new OrganismTaxIdComparator());
     }
 
     @Override
     /**
      * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
-     * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use DefaultInteractorComparator to compare the interactor properties
+     * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use DefaultInteractorBaseComparator to compare the interactor properties
      *
      */
     public int compare(NucleicAcid nucleicAcid1, NucleicAcid nucleicAcid2) {
@@ -39,8 +39,8 @@ public class DefaultNucleicAcidComparator extends NucleicAcidComparator {
     }
 
     @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorComparator;
+    public DefaultInteractorBaseComparator getInteractorComparator() {
+        return (DefaultInteractorBaseComparator) this.interactorComparator;
     }
 
     /**

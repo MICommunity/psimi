@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * Exact nucleic acids comparator.
  * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
- * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use ExactInteractorComparator to compare the interactor properties
+ * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use ExactInteractorBaseComparator to compare the interactor properties
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>15/01/13</pre>
@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 public class ExactNucleicAcidComparator extends NucleicAcidComparator{
 
-    public ExactNucleicAcidComparator(ExactInteractorComparator interactorComparator) {
+    public ExactNucleicAcidComparator(ExactInteractorBaseComparator interactorComparator) {
         super(interactorComparator, new OrganismTaxIdComparator());
     }
 
@@ -23,14 +23,14 @@ public class ExactNucleicAcidComparator extends NucleicAcidComparator{
     /**
      * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
-     * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use ExactInteractorComparator to compare the interactor properties
+     * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use ExactInteractorBaseComparator to compare the interactor properties
      */
     public int compare(NucleicAcid nucleicAcid1, NucleicAcid nucleicAcid2) {
         return super.compare(nucleicAcid1, nucleicAcid2);
     }
 
     @Override
-    public ExactInteractorComparator getInteractorComparator() {
-        return (ExactInteractorComparator) this.interactorComparator;
+    public ExactInteractorBaseComparator getInteractorComparator() {
+        return (ExactInteractorBaseComparator) this.interactorComparator;
     }
 }

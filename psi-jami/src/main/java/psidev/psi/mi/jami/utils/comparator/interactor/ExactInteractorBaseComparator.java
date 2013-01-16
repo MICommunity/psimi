@@ -18,22 +18,22 @@ import java.util.*;
  * @since <pre>21/12/12</pre>
  */
 
-public class ExactInteractorComparator implements Comparator<Interactor> {
+public class ExactInteractorBaseComparator implements Comparator<Interactor> {
 
-    protected InteractorComparator interactorComparator;
+    protected InteractorBaseComparator interactorComparator;
     private OrganismTaxIdComparator organismComparator;
     private AbstractCvTermComparator typeComparator;
     protected ChecksumComparator checksumComparator;
 
     /**
-     * Creates a new ExactInteractorComparator.
+     * Creates a new ExactInteractorBaseComparator.
      * @param interactorComparator : the interactor comparator to compare basic ids. It is required
      * @param organismComparator : the comparator for organisms. if null will be OrganismTaxIdComparator
      * @param typeComparator : the interactor type comparator. It is required
      * @param checksumComparator : the checksum comparator. It is required
      */
-    public ExactInteractorComparator(InteractorComparator interactorComparator, OrganismTaxIdComparator organismComparator,
-                                     AbstractCvTermComparator typeComparator, ChecksumComparator checksumComparator){
+    public ExactInteractorBaseComparator(InteractorBaseComparator interactorComparator, OrganismTaxIdComparator organismComparator,
+                                         AbstractCvTermComparator typeComparator, ChecksumComparator checksumComparator){
 
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compares interactor basic identifiers. It cannot be null");
@@ -59,7 +59,7 @@ public class ExactInteractorComparator implements Comparator<Interactor> {
         return organismComparator;
     }
 
-    public InteractorComparator getInteractorComparator() {
+    public InteractorBaseComparator getInteractorComparator() {
         return interactorComparator;
     }
 

@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
  * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
  * will look at the standard Inchi.
- * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use DefaultInteractorComparator to compare the interactor properties
+ * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use DefaultInteractorBaseComparator to compare the interactor properties
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -20,10 +20,10 @@ public class DefaultBioactiveEntityComparator extends BioactiveEntityComparator 
     private static DefaultBioactiveEntityComparator defaultBioactiveEntityComparator;
 
     /**
-     * Creates a new DefaultBioactiveComparator. It will use a DefaultInteractorComparator.
+     * Creates a new DefaultBioactiveComparator. It will use a DefaultInteractorBaseComparator.
      */
     public DefaultBioactiveEntityComparator() {
-        super(new DefaultInteractorComparator());
+        super(new DefaultInteractorBaseComparator());
     }
 
     @Override
@@ -31,7 +31,7 @@ public class DefaultBioactiveEntityComparator extends BioactiveEntityComparator 
      * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
      * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
      * will look at the standard Inchi.
-     * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use DefaultInteractorComparator to compare the interactor properties
+     * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use DefaultInteractorBaseComparator to compare the interactor properties
      *
      */
     public int compare(BioactiveEntity bioactiveEntity1, BioactiveEntity bioactiveEntity2) {
@@ -39,8 +39,8 @@ public class DefaultBioactiveEntityComparator extends BioactiveEntityComparator 
     }
 
     @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorComparator;
+    public DefaultInteractorBaseComparator getInteractorComparator() {
+        return (DefaultInteractorBaseComparator) this.interactorComparator;
     }
 
     /**

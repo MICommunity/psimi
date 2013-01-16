@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Gene;
  * Default gene comparator.
  * It will look first at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
  * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
- * If the properties of a gene were not enough to compare the proteins, it will use DefaultInteractorComparator to compare the interactor properties
+ * If the properties of a gene were not enough to compare the proteins, it will use DefaultInteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -18,17 +18,17 @@ public class DefaultGeneComparator extends GeneComparator {
     private static DefaultGeneComparator defaultGeneComparator;
 
     /**
-     * Creates a new DefaultGeneComparator. It will uses a DefaultInteractorComparator to compare interactor properties
+     * Creates a new DefaultGeneComparator. It will uses a DefaultInteractorBaseComparator to compare interactor properties
      */
     public DefaultGeneComparator(){
-        super(new DefaultInteractorComparator());
+        super(new DefaultInteractorBaseComparator());
     }
 
     @Override
     /**
      * It will look first at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
      * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
-     * If the properties of a gene were not enough to compare the genes, it will use DefaultInteractorComparator to compare the interactor properties
+     * If the properties of a gene were not enough to compare the genes, it will use DefaultInteractorBaseComparator to compare the interactor properties
      *
      */
     public int compare(Gene gene1, Gene gene2) {
@@ -36,8 +36,8 @@ public class DefaultGeneComparator extends GeneComparator {
     }
 
     @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorComparator;
+    public DefaultInteractorBaseComparator getInteractorComparator() {
+        return (DefaultInteractorBaseComparator) this.interactorComparator;
     }
 
     /**
