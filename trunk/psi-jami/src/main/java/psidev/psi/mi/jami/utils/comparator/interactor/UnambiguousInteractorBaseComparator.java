@@ -16,10 +16,10 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierCom
  * @since <pre>21/12/12</pre>
  */
 
-public class UnambiguousInteractorComparator extends InteractorComparator{
-    private static UnambiguousInteractorComparator unambiguousInteractorComparator;
+public class UnambiguousInteractorBaseComparator extends InteractorBaseComparator {
+    private static UnambiguousInteractorBaseComparator unambiguousInteractorComparator;
 
-    public UnambiguousInteractorComparator() {
+    public UnambiguousInteractorBaseComparator() {
         super(new UnambiguousExternalIdentifierComparator(), new UnambiguousAliasComparator());
     }
 
@@ -53,7 +53,7 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
      */
     public static boolean areEquals(Interactor interactor1, Interactor interactor2){
         if (unambiguousInteractorComparator == null){
-            unambiguousInteractorComparator = new UnambiguousInteractorComparator();
+            unambiguousInteractorComparator = new UnambiguousInteractorBaseComparator();
         }
 
         return unambiguousInteractorComparator.compare(interactor1, interactor2) == 0;

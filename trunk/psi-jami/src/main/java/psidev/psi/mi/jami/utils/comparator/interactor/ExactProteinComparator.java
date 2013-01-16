@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.Protein;
  * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
  * If at least one gene name is not set, it will look at sequence/organism.
- * If the properties of a protein were not enough to compare the proteins, it will use ExactInteractorComparator to compare the interactor properties
+ * If the properties of a protein were not enough to compare the proteins, it will use ExactInteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -17,10 +17,10 @@ import psidev.psi.mi.jami.model.Protein;
 public class ExactProteinComparator extends ProteinComparator {
 
     /**
-     * Creates a new ExactProteinComparator. It needs an ExactInteractorComparator to compare interactor properties.
-     * @param interactorComparator : ExactInteractorComparator to compare interactor properties
+     * Creates a new ExactProteinComparator. It needs an ExactInteractorBaseComparator to compare interactor properties.
+     * @param interactorComparator : ExactInteractorBaseComparator to compare interactor properties
      */
-    public ExactProteinComparator(ExactInteractorComparator interactorComparator) {
+    public ExactProteinComparator(ExactInteractorBaseComparator interactorComparator) {
         super(interactorComparator);
     }
 
@@ -29,7 +29,7 @@ public class ExactProteinComparator extends ProteinComparator {
      * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
      * If at least one gene name is not set, it will look at sequence/organism.
-     * If the properties of a protein were not enough to compare the proteins, it will use ExactInteractorComparator to compare the interactor properties
+     * If the properties of a protein were not enough to compare the proteins, it will use ExactInteractorBaseComparator to compare the interactor properties
      *
      */
     public int compare(Protein protein1, Protein protein2) {
@@ -37,7 +37,7 @@ public class ExactProteinComparator extends ProteinComparator {
     }
 
     @Override
-    public ExactInteractorComparator getInteractorComparator() {
-        return (ExactInteractorComparator) this.interactorComparator;
+    public ExactInteractorBaseComparator getInteractorComparator() {
+        return (ExactInteractorBaseComparator) this.interactorComparator;
     }
 }

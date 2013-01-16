@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
  * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
  * will look at the standard Inchi.
- * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use ExactInteractorComparator to compare the interactor properties
+ * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use ExactInteractorBaseComparator to compare the interactor properties
  * This comparator will ignore all the other properties of an interactor.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -18,16 +18,16 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
 public class ExactBioactiveEntityComparator extends BioactiveEntityComparator {
 
     /**
-     * Creates a new ExactBioactiveEntityComparator which will use an ExactInteractorComparator
+     * Creates a new ExactBioactiveEntityComparator which will use an ExactInteractorBaseComparator
      * @param interactorComparator
      */
-    public ExactBioactiveEntityComparator(ExactInteractorComparator interactorComparator) {
+    public ExactBioactiveEntityComparator(ExactInteractorBaseComparator interactorComparator) {
         super(interactorComparator);
     }
 
     @Override
-    public ExactInteractorComparator getInteractorComparator() {
-        return (ExactInteractorComparator) this.interactorComparator;
+    public ExactInteractorBaseComparator getInteractorComparator() {
+        return (ExactInteractorBaseComparator) this.interactorComparator;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ExactBioactiveEntityComparator extends BioactiveEntityComparator {
      * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
      * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
      * will look at the standard Inchi.
-     * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use ExactInteractorComparator to compare the interactor properties
+     * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use ExactInteractorBaseComparator to compare the interactor properties
      * This comparator will ignore all the other properties of an interactor.
      */
     public int compare(BioactiveEntity bioactiveEntity1, BioactiveEntity bioactiveEntity2) {

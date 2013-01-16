@@ -17,11 +17,11 @@ import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierCompara
  * @since <pre>21/12/12</pre>
  */
 
-public class DefaultInteractorComparator extends InteractorComparator {
+public class DefaultInteractorBaseComparator extends InteractorBaseComparator {
 
-    private static DefaultInteractorComparator defaultInteractorComparator;
+    private static DefaultInteractorBaseComparator defaultInteractorComparator;
 
-    public DefaultInteractorComparator() {
+    public DefaultInteractorBaseComparator() {
         super(new DefaultExternalIdentifierComparator(), new DefaultAliasComparator());
     }
 
@@ -48,14 +48,14 @@ public class DefaultInteractorComparator extends InteractorComparator {
     }
 
     /**
-     * Use DefaultInteractorComparator to know if two interactors are equals.
+     * Use DefaultInteractorBaseComparator to know if two interactors are equals.
      * @param interactor1
      * @param interactor2
      * @return true if the two interactors are equal
      */
     public static boolean areEquals(Interactor interactor1, Interactor interactor2){
         if (defaultInteractorComparator == null){
-            defaultInteractorComparator = new DefaultInteractorComparator();
+            defaultInteractorComparator = new DefaultInteractorBaseComparator();
         }
 
         return defaultInteractorComparator.compare(interactor1, interactor2) == 0;

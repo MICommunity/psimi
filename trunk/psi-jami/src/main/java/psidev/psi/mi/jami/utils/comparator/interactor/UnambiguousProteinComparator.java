@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
  * If at least one gene name is not set, it will look at sequence/organism.
- * If the properties of a protein were not enough to compare the proteins, it will use UnambiguousInteractorComparator to compare the interactor properties
+ * If the properties of a protein were not enough to compare the proteins, it will use UnambiguousInteractorBaseComparator to compare the interactor properties
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -21,11 +21,11 @@ public class UnambiguousProteinComparator extends ProteinComparator {
     private static UnambiguousProteinComparator unambiguousProteinComparator;
 
     /**
-     * Creates a new UnambiguousProteinComparator. It will uses a UnambiguousInteractorComparator to compare interactor properties and a
+     * Creates a new UnambiguousProteinComparator. It will uses a UnambiguousInteractorBaseComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public UnambiguousProteinComparator(){
-        super(new UnambiguousInteractorComparator(), new OrganismTaxIdComparator());
+        super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator());
     }
 
     @Override
@@ -33,7 +33,7 @@ public class UnambiguousProteinComparator extends ProteinComparator {
      * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
      * If at least one gene name is not set, it will look at sequence/organism.
-     * If the properties of a protein were not enough to compare the proteins, it will use UnambiguousInteractorComparator to compare the interactor properties
+     * If the properties of a protein were not enough to compare the proteins, it will use UnambiguousInteractorBaseComparator to compare the interactor properties
      *
      */
     public int compare(Protein protein1, Protein protein2) {
@@ -41,8 +41,8 @@ public class UnambiguousProteinComparator extends ProteinComparator {
     }
 
     @Override
-    public UnambiguousInteractorComparator getInteractorComparator() {
-        return (UnambiguousInteractorComparator) this.interactorComparator;
+    public UnambiguousInteractorBaseComparator getInteractorComparator() {
+        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
     }
 
     /**

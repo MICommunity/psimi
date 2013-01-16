@@ -20,17 +20,17 @@ import java.util.*;
  * @since <pre>21/12/12</pre>
  */
 
-public class InteractorComparator implements Comparator<Interactor> {
+public class InteractorBaseComparator implements Comparator<Interactor> {
 
     protected Comparator<ExternalIdentifier> identifierComparator;
     protected AliasComparator aliasComparator;
 
     /**
-     * Creates a new InteractorComparator.
+     * Creates a new InteractorBaseComparator.
      * @param identifierComparator : the identifier comparator. It is required
      * @param aliasComparator : the comparator for aliases. it is required
      */
-    public InteractorComparator(Comparator<ExternalIdentifier> identifierComparator, AliasComparator aliasComparator){
+    public InteractorBaseComparator(Comparator<ExternalIdentifier> identifierComparator, AliasComparator aliasComparator){
 
         if (identifierComparator == null){
             throw new IllegalArgumentException("The external identifier comparator is required to compares identifiers. It cannot be null");
