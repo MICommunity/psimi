@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterComparator;
 
@@ -11,7 +12,7 @@ import java.util.Comparator;
 
 /**
  * Basic participant comparator.
- * It will first compare the interactors using Comparator<Interactor>. If both interactors are the same,
+ * It will first compare the interactors using InteractorComparator. If both interactors are the same,
  * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
  * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
  * it will compare the features using a Comparator<Feature>. If both participants have the same features, it will look at
@@ -24,9 +25,8 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ParticipantComparator implements Comparator<Participant> {
+public class ParticipantComparator extends ParticipantInteractorComparator {
 
-    protected Comparator<Interactor> interactorComparator;
     protected AbstractCvTermComparator cvTermComparator;
     protected FeatureCollectionComparator featureCollectionComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
@@ -38,12 +38,11 @@ public class ParticipantComparator implements Comparator<Participant> {
      * @param featureComparator : FeatureComparator required for comparing participant features
      * @param parameterComparator: ParameterComparator required for comparing participant features
      */
-    public ParticipantComparator(Comparator<Interactor> interactorComparator, AbstractCvTermComparator cvTermComparator,
+    public ParticipantComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator,
                                  Comparator<Feature> featureComparator, ParameterComparator parameterComparator){
-        if (interactorComparator == null){
-            throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
-        }
-        this.interactorComparator = interactorComparator;
+
+        super(interactorComparator);
+
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare biological roles. It cannot be null");
         }
@@ -56,10 +55,6 @@ public class ParticipantComparator implements Comparator<Participant> {
             throw new IllegalArgumentException("The parameter comparator is required to compare participant parameters. It cannot be null");
         }
         this.parameterCollectionComparator = new ParameterCollectionComparator(parameterComparator);
-    }
-
-    public Comparator<Interactor> getInteractorComparator() {
-        return interactorComparator;
     }
 
     public AbstractCvTermComparator getCvTermComparator() {
@@ -75,7 +70,7 @@ public class ParticipantComparator implements Comparator<Participant> {
     }
 
     /**
-     * It will first compare the interactors using Comparator<Interactor>. If both interactors are the same,
+     * It will first compare the interactors using InteractorComparator. If both interactors are the same,
      * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
      * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
      * it will compare the features using a Comparator<Feature>. If both participants have the same features, it will look at

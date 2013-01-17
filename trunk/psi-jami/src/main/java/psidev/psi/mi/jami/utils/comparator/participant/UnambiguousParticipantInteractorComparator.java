@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
 /**
- * It will compare the interactors using UnambiguousInteractorBaseComparator.
+ * It will compare the interactors using UnambiguousInteractorComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -21,17 +21,17 @@ public class UnambiguousParticipantInteractorComparator extends ParticipantInter
      * interactors.
      */
     public UnambiguousParticipantInteractorComparator() {
-        super(new UnambiguousInteractorBaseComparator());
+        super(new UnambiguousInteractorComparator());
     }
 
     @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousInteractorComparator getInteractorComparator() {
+        return (UnambiguousInteractorComparator) this.interactorComparator;
     }
 
     @Override
     /**
-     * It will compare the interactors using UnambiguousInteractorBaseComparator.
+     * It will compare the interactors using UnambiguousInteractorComparator.
      *
      * This comparator will ignore all the other properties of a participant.
      */
