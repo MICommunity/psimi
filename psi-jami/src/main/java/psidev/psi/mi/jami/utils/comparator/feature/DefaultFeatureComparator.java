@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.range.DefaultRangeComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 
 /**
@@ -21,11 +20,11 @@ public class DefaultFeatureComparator extends FeatureComparator {
     private static DefaultFeatureComparator defaultFeatureComparator;
 
     /**
-     * Creates a new DefaultFeatureComparator. It will use a DefaultCvTermComparator to compare feature types,
+     * Creates a new DefaultFeatureComparator. It will use a DefaultCvTermComparator to compare feature types and range status,
      * a DefaultExternalIdentifierComparator to compare identifiers and a DefaultRangeComparator to compare ranges
      */
     public DefaultFeatureComparator() {
-        super(new DefaultCvTermComparator(), new DefaultExternalIdentifierComparator(), new DefaultRangeComparator());
+        super(new DefaultCvTermComparator(), new DefaultExternalIdentifierComparator());
     }
 
     @Override

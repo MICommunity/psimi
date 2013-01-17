@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.ExperimentalFeature;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * Default ExperimentalFeature comparator.
@@ -24,17 +23,12 @@ public class DefaultExperimentalFeatureComparator extends ExperimentalFeatureCom
      * compare feature detection methods and a DefaultFeatureComparator to compare basic feature properties
      */
     public DefaultExperimentalFeatureComparator() {
-        super(new DefaultFeatureComparator(), new DefaultCvTermComparator());
+        super(new DefaultFeatureComparator());
     }
 
     @Override
     public DefaultFeatureComparator getFeatureComparator() {
         return (DefaultFeatureComparator) this.featureComparator;
-    }
-
-    @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) this.cvTermComparator;
     }
 
     @Override

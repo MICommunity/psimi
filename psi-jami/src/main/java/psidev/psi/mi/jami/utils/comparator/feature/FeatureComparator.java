@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.range.PositionComparator;
 import psidev.psi.mi.jami.utils.comparator.range.RangeCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.range.RangeComparator;
 
@@ -28,14 +29,13 @@ public class FeatureComparator implements Comparator<Feature> {
 
     /**
      * Creates a new FeatureComparator.
-     * @param cvTermComparator : CvTerm comparator required for comparing feature types
+     * @param cvTermComparator : CvTerm comparator required for comparing feature types and range status positions
      * @param identifierComparator : ExternalIdentifier comparator required for comparing feature identifiers
-     * @param rangeComparator : RangeComparator required for comparing ranges
      */
-    public FeatureComparator(AbstractCvTermComparator cvTermComparator, Comparator<ExternalIdentifier> identifierComparator, RangeComparator rangeComparator){
+    public FeatureComparator(AbstractCvTermComparator cvTermComparator, Comparator<ExternalIdentifier> identifierComparator){
 
         if (cvTermComparator == null){
-            throw new IllegalArgumentException("The CvTerm comparator is required to compare feature types. It cannot be null");
+            throw new IllegalArgumentException("The CvTerm comparator is required to compare feature types and range status positions. It cannot be null");
         }
         this.cvTermComparator = cvTermComparator;
 
@@ -44,10 +44,7 @@ public class FeatureComparator implements Comparator<Feature> {
         }
         this.identifierComparator = identifierComparator;
 
-        if (rangeComparator == null){
-            throw new IllegalArgumentException("The Range comparator is required to compare feature ranges. It cannot be null");
-        }
-        this.rangeCollectionComparator = new RangeCollectionComparator(rangeComparator);
+        this.rangeCollectionComparator = new RangeCollectionComparator(new RangeComparator(new PositionComparator(this.cvTermComparator)));
     }
 
     /**

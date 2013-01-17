@@ -33,9 +33,8 @@ public class ExperimentComparator implements Comparator<Experiment>{
      * and a AbstractCvTermComparator to compare interaction detection methods.
      * @param publicationComparator : comparator for the publication which is required
      * @param organismComparator : comparator for the host organism which is required
-     * @param cvTermComparator : cv term comparator for the interaction detection method which is required
      */
-    public ExperimentComparator(Comparator<Publication> publicationComparator, OrganismComparator organismComparator, AbstractCvTermComparator cvTermComparator){
+    public ExperimentComparator(Comparator<Publication> publicationComparator, OrganismComparator organismComparator){
         if (publicationComparator == null){
             throw new IllegalArgumentException("The publication comparator is required to compare the publications where the experiments have been published. It cannot be null");
         }
@@ -44,10 +43,7 @@ public class ExperimentComparator implements Comparator<Experiment>{
             throw new IllegalArgumentException("The organism comparator is required to compare the host organisms where the experiments took place. It cannot be null");
         }
         this.organismComparator = organismComparator;
-        if (cvTermComparator == null){
-            throw new IllegalArgumentException("The CvTerm comparator is required to compare interaction detection methods. It cannot be null");
-        }
-        this.cvTermComparator = cvTermComparator;
+        this.cvTermComparator = this.organismComparator.getCvTermComparator();
     }
 
     /**
@@ -107,9 +103,5 @@ public class ExperimentComparator implements Comparator<Experiment>{
 
     public OrganismComparator getOrganismComparator() {
         return organismComparator;
-    }
-
-    public AbstractCvTermComparator getCvTermComparator() {
-        return cvTermComparator;
     }
 }
