@@ -13,18 +13,18 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class FeatureCollectionComparator extends CollectionComparator<Feature> {
+public class FeatureCollectionComparator<T extends Feature> extends CollectionComparator<T> {
     /**
      * Creates a new feature CollectionComparator. It requires a Comparator for the ranges in the Collection
      *
      * @param featureComparator
      */
-    public FeatureCollectionComparator(Comparator<Feature> featureComparator) {
+    public FeatureCollectionComparator(Comparator<T> featureComparator) {
         super(featureComparator);
     }
 
     @Override
-    public Comparator<Feature> getObjectComparator() {
-        return (Comparator<Feature>) objectComparator;
+    public Comparator<T> getObjectComparator() {
+        return (Comparator<T>) objectComparator;
     }
 }

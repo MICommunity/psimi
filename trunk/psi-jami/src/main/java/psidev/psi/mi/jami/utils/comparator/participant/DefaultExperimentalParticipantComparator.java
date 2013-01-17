@@ -1,8 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.ExperimentalFeature;
 import psidev.psi.mi.jami.model.ExperimentalParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.DefaultExperimentalFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 
 /**
  * Default Experimental participant comparator.
@@ -27,7 +31,7 @@ public class DefaultExperimentalParticipantComparator extends ExperimentalPartic
      * and a DefaultOrganismComparator to compare expressed in Organisms
      */
     public DefaultExperimentalParticipantComparator() {
-        super(new DefaultParticipantComparator(), new DefaultCvTermComparator(), new DefaultOrganismComparator());
+        super(new ParticipantComparator<ExperimentalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator(), new DefaultParameterComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator());
     }
 
     @Override

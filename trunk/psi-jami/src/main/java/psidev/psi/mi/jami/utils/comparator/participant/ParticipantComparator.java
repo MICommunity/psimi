@@ -25,7 +25,7 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ParticipantComparator extends ParticipantInteractorComparator {
+public class ParticipantComparator<T extends Feature> extends ParticipantInteractorComparator {
 
     protected AbstractCvTermComparator cvTermComparator;
     protected FeatureCollectionComparator featureCollectionComparator;
@@ -39,7 +39,7 @@ public class ParticipantComparator extends ParticipantInteractorComparator {
      * @param parameterComparator: ParameterComparator required for comparing participant features
      */
     public ParticipantComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator,
-                                 Comparator<Feature> featureComparator, ParameterComparator parameterComparator){
+                                 Comparator<T> featureComparator, ParameterComparator parameterComparator){
 
         super(interactorComparator);
 
@@ -126,8 +126,8 @@ public class ParticipantComparator extends ParticipantInteractorComparator {
             }
 
             // then compares the features
-            Collection<Feature> features1 = participant1.getFeatures();
-            Collection<Feature> features2 = participant2.getFeatures();
+            Collection<T> features1 = participant1.getFeatures();
+            Collection<T> features2 = participant2.getFeatures();
 
             comp = featureCollectionComparator.compare(features1, features2);
             if (comp != 0){
