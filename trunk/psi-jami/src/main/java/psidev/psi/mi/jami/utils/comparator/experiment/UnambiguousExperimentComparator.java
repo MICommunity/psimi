@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.experiment;
 
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationComparator;
@@ -30,7 +28,7 @@ public class UnambiguousExperimentComparator extends ExperimentComparator {
      * to compare interaction detection methods and it will use UnambiguousOrganismComparator to compare host organisms.
      */
     public UnambiguousExperimentComparator() {
-        super(new UnambiguousPublicationComparator(), new UnambiguousOrganismComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousPublicationComparator(), new UnambiguousOrganismComparator());
     }
 
     @Override
@@ -53,11 +51,6 @@ public class UnambiguousExperimentComparator extends ExperimentComparator {
     @Override
     public DefaultOrganismComparator getOrganismComparator() {
         return (DefaultOrganismComparator) this.organismComparator;
-    }
-
-    @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) this.cvTermComparator;
     }
 
     /**

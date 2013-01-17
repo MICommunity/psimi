@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.experiment;
 
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationComparator;
 
@@ -27,7 +26,7 @@ public class DefaultExperimentComparator extends ExperimentComparator {
      * to compare interaction detection methods and it will use DefaultOrganismComparator to compare host organisms.
      */
     public DefaultExperimentComparator() {
-        super(new DefaultPublicationComparator(), new DefaultOrganismComparator(), new DefaultCvTermComparator());
+        super(new DefaultPublicationComparator(), new DefaultOrganismComparator());
     }
 
     @Override
@@ -50,11 +49,6 @@ public class DefaultExperimentComparator extends ExperimentComparator {
     @Override
     public DefaultOrganismComparator getOrganismComparator() {
         return (DefaultOrganismComparator) this.organismComparator;
-    }
-
-    @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) this.cvTermComparator;
     }
 
     /**

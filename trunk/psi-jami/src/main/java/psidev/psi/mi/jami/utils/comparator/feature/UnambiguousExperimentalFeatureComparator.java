@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.ExperimentalFeature;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
  * Unambiguous ExperimentalFeature comparator.
@@ -24,17 +23,12 @@ public class UnambiguousExperimentalFeatureComparator extends ExperimentalFeatur
      * compare feature detection methods and a UnambiguousFeatureComparator to compare basic feature properties
      */
     public UnambiguousExperimentalFeatureComparator() {
-        super(new UnambiguousFeatureComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousFeatureComparator());
     }
 
     @Override
     public UnambiguousFeatureComparator getFeatureComparator() {
         return (UnambiguousFeatureComparator) this.featureComparator;
-    }
-
-    @Override
-    public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) this.cvTermComparator;
     }
 
     @Override

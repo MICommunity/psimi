@@ -27,7 +27,7 @@ public class ExperimentalFeatureComparator implements Comparator<ExperimentalFea
      * Creates a new ExperimentalFeatureComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public ExperimentalFeatureComparator(FeatureComparator featureComparator, AbstractCvTermComparator cvTermComparator){
+    public ExperimentalFeatureComparator(FeatureComparator featureComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
@@ -35,15 +35,11 @@ public class ExperimentalFeatureComparator implements Comparator<ExperimentalFea
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare feature detection methods . It cannot be null");
         }
-        this.cvTermComparator = cvTermComparator;
+        this.cvTermComparator = featureComparator.getCvTermComparator();
     }
 
     public FeatureComparator getFeatureComparator() {
         return featureComparator;
-    }
-
-    public AbstractCvTermComparator getCvTermComparator() {
-        return cvTermComparator;
     }
 
     /**
