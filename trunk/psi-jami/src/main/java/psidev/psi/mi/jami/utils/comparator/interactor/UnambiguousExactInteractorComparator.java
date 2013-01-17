@@ -12,7 +12,8 @@ import psidev.psi.mi.jami.model.Interactor;
  * - Uses UnambiguousExactGeneComparator for comparing Gene objects.
  * - Uses UnambiguousExactNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses UnambiguousExactComplexComparator for comparing complexes
- * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above.
+ * - Uses UnambiguousExactInteractorCandidatesComparator for comparing interactor candidates
+ * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>17/01/13</pre>
@@ -29,8 +30,9 @@ public class UnambiguousExactInteractorComparator extends InteractorComparator {
      * - Uses UnambiguousExactGeneComparator for comparing Gene objects.
      * - Uses UnambiguousExactNucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses UnambiguousExactComplexComparator for comparing complexes
-     * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above.
-     */
+     * - Uses UnambiguousExactInteractorCandidatesComparator for comparing interactor candidates
+     * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
+     * */
     public UnambiguousExactInteractorComparator() {
         super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousExactComplexComparator());
     }
@@ -54,7 +56,8 @@ public class UnambiguousExactInteractorComparator extends InteractorComparator {
      * - Uses UnambiguousExactGeneComparator for comparing Gene objects.
      * - Uses UnambiguousExactNucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses UnambiguousExactComplexComparator for comparing complexes
-     * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above.
+     * - Uses UnambiguousExactInteractorCandidatesComparator for comparing interactor candidates
+     * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public int compare(Interactor interactor1, Interactor interactor2) {
         return super.compare(interactor1, interactor2);

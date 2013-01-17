@@ -12,7 +12,8 @@ import psidev.psi.mi.jami.model.Interactor;
  * - Uses DefaultExactGeneComparator for comparing Gene objects.
  * - Uses DefaultExactNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses DefaultExactComplexComparator for comparing complexes
- * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above.
+ * - Uses DefaultExactInteractorCandidatesComparator for comparing interactor candidates
+ * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -30,7 +31,8 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
      * - Uses DefaultExactGeneComparator for comparing Gene objects.
      * - Uses DefaultExactNucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses DefaultExactComplexComparator for comparing complexes
-     * - use DefaultExactInteractorComparator for comparing basic interactors that are not one of the above.
+     * - Uses DefaultExactInteractorCandidatesComparator for comparing interactor candidates
+     * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public DefaultExactInteractorComparator() {
         super(new DefaultInteractorBaseComparator(), new DefaultExactComplexComparator());
@@ -55,7 +57,8 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
      * - Uses DefaultExactGeneComparator for comparing Gene objects.
      * - Uses DefaultExactNucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses DefaultExactComplexComparator for comparing complexes
-     * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above.
+     * - Uses DefaultExactInteractorCandidatesComparator for comparing interactor candidates
+     * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public int compare(Interactor interactor1, Interactor interactor2) {
         return super.compare(interactor1, interactor2);

@@ -43,21 +43,6 @@ public class ComponentComparator implements Comparator<Component> {
      * @return
      */
     public int compare(Component component1, Component component2) {
-        int EQUAL = 0;
-        int BEFORE = -1;
-        int AFTER = 1;
-
-        if (component1 == null && component1 == null){
-            return EQUAL;
-        }
-        else if (component1 == null){
-            return AFTER;
-        }
-        else if (component2 == null){
-            return BEFORE;
-        }
-        else {
-            return participantComparator.compare(component1, component2);
-        }
+        return participantComparator.compare(component1, component2);
     }
 }

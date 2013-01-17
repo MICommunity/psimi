@@ -44,22 +44,6 @@ public class BiologicalFeatureComparator implements Comparator<BiologicalFeature
      * @return
      */
     public int compare(BiologicalFeature biologicalFeature1, BiologicalFeature biologicalFeature2) {
-        int EQUAL = 0;
-        int BEFORE = -1;
-        int AFTER = 1;
-
-        if (biologicalFeature1 == null && biologicalFeature2 == null){
-            return EQUAL;
-        }
-        else if (biologicalFeature1 == null){
-            return AFTER;
-        }
-        else if (biologicalFeature2 == null){
-            return BEFORE;
-        }
-        else {
-
-            return featureComparator.compare(biologicalFeature1, biologicalFeature2);
-        }
+        return featureComparator.compare(biologicalFeature1, biologicalFeature2);
     }
 }
