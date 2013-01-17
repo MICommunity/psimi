@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
- * It will compare the interactors using DefaultInteractorBaseComparator.
+ * It will compare the interactors using DefaultInteractorComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -22,17 +22,17 @@ public class DefaultParticipantInteractorComparator extends ParticipantInteracto
      * interactors.
      */
     public DefaultParticipantInteractorComparator() {
-        super(new DefaultInteractorBaseComparator());
+        super(new DefaultInteractorComparator());
     }
 
     @Override
-    public DefaultInteractorBaseComparator getInteractorComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorComparator;
+    public DefaultInteractorComparator getInteractorComparator() {
+        return (DefaultInteractorComparator) this.interactorComparator;
     }
 
     @Override
     /**
-     * It will compare the interactors using DefaultInteractorBaseComparator.
+     * It will compare the interactors using DefaultInteractorComparator.
      *
      * This comparator will ignore all the other properties of a participant.
      */
