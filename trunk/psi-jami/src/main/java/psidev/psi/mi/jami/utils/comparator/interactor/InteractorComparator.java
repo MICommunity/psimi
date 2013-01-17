@@ -26,13 +26,13 @@ public class InteractorComparator implements Comparator<Interactor> {
     protected GeneComparator geneComparator;
     protected ProteinComparator proteinComparator;
     protected NucleicAcidComparator nucleicAcidComparator;
-    protected Comparator<Interactor> interactorBaseComparator;
+    protected InteractorBaseComparator interactorBaseComparator;
 
     /**
      * Creates a new InteractorComparator.
      * @param interactorBaseComparator : required to create more specific comparators and to compare basic interactor objects
      */
-    public InteractorComparator(Comparator<Interactor> interactorBaseComparator){
+    public InteractorComparator(InteractorBaseComparator interactorBaseComparator){
         if (interactorBaseComparator == null){
             throw new IllegalArgumentException("The interactorBaseComparator is required to create more specific interactor comparators and compares basic interactor properties. It cannot be null");
         }
@@ -59,7 +59,7 @@ public class InteractorComparator implements Comparator<Interactor> {
         return nucleicAcidComparator;
     }
 
-    public Comparator<Interactor> getInteractorBaseComparator() {
+    public InteractorBaseComparator getInteractorBaseComparator() {
         return interactorBaseComparator;
     }
 
