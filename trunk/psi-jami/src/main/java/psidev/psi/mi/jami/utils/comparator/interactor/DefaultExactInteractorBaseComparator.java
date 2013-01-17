@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 
 /**
  * Default Interactor base comparator.
@@ -25,12 +27,17 @@ public class DefaultExactInteractorBaseComparator extends ExactInteractorBaseCom
      * organisms and a DefaultCvTermComparator to compare checksum types and interactor types
      */
     public DefaultExactInteractorBaseComparator() {
-        super(new DefaultInteractorBaseComparator(), new OrganismTaxIdComparator(), new DefaultCvTermComparator());
+        super(new DefaultExternalIdentifierComparator(), new DefaultAliasComparator(), new OrganismTaxIdComparator(), new DefaultCvTermComparator());
     }
 
     @Override
-    public DefaultInteractorBaseComparator getInteractorComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorComparator;
+    public DefaultExternalIdentifierComparator getIdentifierComparator() {
+        return (DefaultExternalIdentifierComparator) this.identifierComparator;
+    }
+
+    @Override
+    public DefaultAliasComparator getAliasComparator() {
+        return (DefaultAliasComparator) this.aliasComparator;
     }
 
     @Override

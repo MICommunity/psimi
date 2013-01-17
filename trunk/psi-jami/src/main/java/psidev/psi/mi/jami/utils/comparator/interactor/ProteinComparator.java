@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
-import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
@@ -11,7 +10,7 @@ import java.util.Comparator;
  * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
  * If at least one gene name is not set, it will look at sequence/organism.
- * If the properties of a protein were not enough to compare the proteins, it will use Comparator<Interactor> to compare the interactor properties
+ * If the properties of a protein were not enough to compare the proteins, it will use InteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,14 +19,14 @@ import java.util.Comparator;
 
 public class ProteinComparator implements Comparator<Protein>{
 
-    protected Comparator<Interactor> interactorComparator;
+    protected InteractorBaseComparator interactorComparator;
     protected OrganismTaxIdComparator organismComparator;
 
     /**
-     * Creates a new ProteinComparator. It needs a Comparator<Interactor> to compares interactor properties and it will creates a new OrganismTaxIdComparator
+     * Creates a new ProteinComparator. It needs a InteractorBaseComparator to compares interactor properties and it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      */
-    public ProteinComparator(Comparator<Interactor> interactorComparator){
+    public ProteinComparator(InteractorBaseComparator interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare proteins. It cannot be null");
         }
@@ -37,12 +36,12 @@ public class ProteinComparator implements Comparator<Protein>{
     }
 
     /**
-     * Creates a new ProteinComparator. It needs a Comparator<Interactor> to compares interactor properties and a OrganismComparator
+     * Creates a new ProteinComparator. It needs a InteractorBaseComparator to compares interactor properties and a OrganismComparator
      * to compare the sequence and organism. If the organism comparator is null,it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      * @param organismComparator : comparator for organism
      */
-    public ProteinComparator(Comparator<Interactor> interactorComparator, OrganismTaxIdComparator organismComparator){
+    public ProteinComparator(InteractorBaseComparator interactorComparator, OrganismTaxIdComparator organismComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare proteins. It cannot be null");
         }
@@ -59,7 +58,7 @@ public class ProteinComparator implements Comparator<Protein>{
      * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
      * If at least one gene name is not set, it will look at sequence/organism.
-     * If the properties of a protein were not enough to compare the proteins, it will use Comparator<Interactor> to compare the interactor properties
+     * If the properties of a protein were not enough to compare the proteins, it will use InteractorBaseComparator to compare the interactor properties
      *
      * @param protein1
      * @param protein2
@@ -130,7 +129,7 @@ public class ProteinComparator implements Comparator<Protein>{
         }
     }
 
-    public Comparator<Interactor> getInteractorComparator() {
+    public InteractorBaseComparator getInteractorComparator() {
         return interactorComparator;
     }
 }
