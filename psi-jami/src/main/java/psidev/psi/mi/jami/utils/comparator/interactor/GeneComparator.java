@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Gene;
-import psidev.psi.mi.jami.model.Interactor;
 
 import java.util.Comparator;
 
@@ -9,7 +8,7 @@ import java.util.Comparator;
  * Basic genes comparator.
  * It will look first at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
  * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
- * If the properties of a gene were not enough to compare the genes, it will use Comparator<Interactor> to compare the interactor properties
+ * If the properties of a gene were not enough to compare the genes, it will use InteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -18,9 +17,9 @@ import java.util.Comparator;
 
 public class GeneComparator implements Comparator<Gene> {
 
-    protected Comparator<Interactor> interactorComparator;
+    protected InteractorBaseComparator interactorComparator;
 
-    public GeneComparator(Comparator<Interactor> interactorComparator){
+    public GeneComparator(InteractorBaseComparator interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare genes. It cannot be null");
         }
@@ -30,7 +29,7 @@ public class GeneComparator implements Comparator<Gene> {
     /**
      * It will look first at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
      * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
-     * If the properties of a gene were not enough to compare the genes, it will use Comparator<Interactor> to compare the interactor properties
+     * If the properties of a gene were not enough to compare the genes, it will use InteractorBaseComparator to compare the interactor properties
      *
      * @param gene1
      * @param gene2
@@ -88,7 +87,7 @@ public class GeneComparator implements Comparator<Gene> {
         }
     }
 
-    public Comparator<Interactor> getInteractorComparator() {
+    public InteractorBaseComparator getInteractorComparator() {
         return interactorComparator;
     }
 }

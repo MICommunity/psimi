@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.BioactiveEntity;
-import psidev.psi.mi.jami.model.Interactor;
 
 import java.util.Comparator;
 
@@ -10,7 +9,7 @@ import java.util.Comparator;
  * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
  * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
  * will look at the standard Inchi.
- * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use Comparator<Interactor> to compare the interactor properties
+ * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use CInteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,13 +18,13 @@ import java.util.Comparator;
 
 public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
 
-    protected Comparator<Interactor> interactorComparator;
+    protected InteractorBaseComparator interactorComparator;
 
     /**
-     * Creates a bew BioactiveEntityComparator. It needs a Comparator<Interactor> to compares interactor properties
+     * Creates a bew BioactiveEntityComparator. It needs a InteractorBaseComparator to compares interactor properties
      * @param interactorComparator : comparator for interactor properties. It is required
      */
-    public BioactiveEntityComparator(Comparator<Interactor> interactorComparator){
+    public BioactiveEntityComparator(InteractorBaseComparator interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare bioactive entities. It cannot be null");
         }
@@ -36,7 +35,7 @@ public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
      * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
      * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
      * will look at the standard Inchi.
-     * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use Comparator<Interactor> to compare the interactor properties
+     * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use InteractorBaseComparator to compare the interactor properties
      * @param bioactiveEntity1
      * @param bioactiveEntity2
      * @return
@@ -93,7 +92,7 @@ public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
         }
     }
 
-    public Comparator<Interactor> getInteractorComparator() {
+    public InteractorBaseComparator getInteractorComparator() {
         return interactorComparator;
     }
 }

@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
 /**
  * Unambiguous Interactor base comparator.
@@ -25,12 +27,17 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
      * organisms and a UnambiguousCvTermComparator to compare checksum types and interactor types
      */
     public UnambiguousExactInteractorBaseComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousExternalIdentifierComparator(), new UnambiguousAliasComparator(), new OrganismTaxIdComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
+        return (UnambiguousExternalIdentifierComparator) this.identifierComparator;
+    }
+
+    @Override
+    public UnambiguousAliasComparator getAliasComparator() {
+        return (UnambiguousAliasComparator) this.aliasComparator;
     }
 
     @Override

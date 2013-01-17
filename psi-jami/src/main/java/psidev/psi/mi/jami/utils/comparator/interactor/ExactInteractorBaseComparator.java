@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.alias.AliasComparator;
 import psidev.psi.mi.jami.utils.comparator.checksum.ChecksumComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
@@ -14,33 +12,32 @@ import java.util.*;
  * Exact Interactor base comparator.
  * It will first compare the interactor types using AbstractCvTermComparator. If both types are equal,
  * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal, it will compare Checksums.
- * If at least one checksum is identical, it will use a InteractorBaseComparator to compare basic Interactor properties.
+ * If at least one checksum is identical, it will compare basic Interactor properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/12/12</pre>
  */
 
-public class ExactInteractorBaseComparator implements Comparator<Interactor> {
+public class ExactInteractorBaseComparator extends InteractorBaseComparator {
 
-    protected InteractorBaseComparator interactorComparator;
     protected OrganismTaxIdComparator organismComparator;
     protected AbstractCvTermComparator typeComparator;
     protected ChecksumComparator checksumComparator;
 
     /**
      * Creates a new ExactInteractorBaseComparator.
-     * @param interactorComparator : the interactor comparator to compare basic ids. It is required
+     * @param identifierComparator : the identifier comparator is required
+     * @param aliasComparator : the alisComparator is required
      * @param organismComparator : the comparator for organisms. if null will be OrganismTaxIdComparator
      * @param typeComparator : the interactor type comparator. It is required
      */
-    public ExactInteractorBaseComparator(InteractorBaseComparator interactorComparator, OrganismTaxIdComparator organismComparator,
+    public ExactInteractorBaseComparator(Comparator<ExternalIdentifier> identifierComparator, AliasComparator aliasComparator,
+                                         OrganismTaxIdComparator organismComparator,
                                          AbstractCvTermComparator typeComparator){
 
-        if (interactorComparator == null){
-            throw new IllegalArgumentException("The interactor comparator is required to compares interactor basic identifiers. It cannot be null");
-        }
-        this.interactorComparator = interactorComparator;
+        super(identifierComparator, aliasComparator);
+
         if (organismComparator == null){
             this.organismComparator = new OrganismTaxIdComparator();
         }
@@ -56,10 +53,6 @@ public class ExactInteractorBaseComparator implements Comparator<Interactor> {
 
     public OrganismTaxIdComparator getOrganismComparator() {
         return organismComparator;
-    }
-
-    public InteractorBaseComparator getInteractorComparator() {
-        return interactorComparator;
     }
 
     public AbstractCvTermComparator getTypeComparator() {
@@ -168,7 +161,7 @@ public class ExactInteractorBaseComparator implements Comparator<Interactor> {
                 }
             }
 
-            int comp4 = interactorComparator.compare(interactor1, interactor2);
+            int comp4 = super.compare(interactor1, interactor2);
             if (comp4 == 0){
                 return comp4;
             }

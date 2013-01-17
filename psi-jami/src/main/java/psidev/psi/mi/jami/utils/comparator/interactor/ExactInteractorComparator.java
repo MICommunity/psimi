@@ -8,5 +8,7 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
  * @since <pre>17/01/13</pre>
  */
 
-public class ExactInteractorComparator {
+public class ExactInteractorComparator{
+
+
 }
