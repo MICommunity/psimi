@@ -2,17 +2,18 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.*;
 
-import java.util.*;
+import java.util.Comparator;
 
 /**
  * Generic Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes and finally nucleic acids.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses BioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses ProteinComparator for comparing Protein objects.
  * - Uses GeneComparator for comparing Gene objects.
  * - Uses NucleicAcidComparator for comparing NucleicAcids objects.
+ * - Uses ComplexComparator for comparing complexes
  * - use Comparator<Interactor> for comparing basic interactors that are not one of the above.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -27,12 +28,14 @@ public class InteractorComparator implements Comparator<Interactor> {
     protected ProteinComparator proteinComparator;
     protected NucleicAcidComparator nucleicAcidComparator;
     protected InteractorBaseComparator interactorBaseComparator;
+    protected ComplexComparator complexComparator;
 
     /**
      * Creates a new InteractorComparator.
      * @param interactorBaseComparator : required to create more specific comparators and to compare basic interactor objects
+     * @param complexComparator : required to compare complex objects
      */
-    public InteractorComparator(InteractorBaseComparator interactorBaseComparator){
+    public InteractorComparator(InteractorBaseComparator interactorBaseComparator, ComplexComparator complexComparator){
         if (interactorBaseComparator == null){
             throw new IllegalArgumentException("The interactorBaseComparator is required to create more specific interactor comparators and compares basic interactor properties. It cannot be null");
         }
@@ -41,6 +44,11 @@ public class InteractorComparator implements Comparator<Interactor> {
         this.geneComparator = new GeneComparator(this.interactorBaseComparator);
         this.proteinComparator = new ProteinComparator(this.interactorBaseComparator);
         this.nucleicAcidComparator = new NucleicAcidComparator(this.interactorBaseComparator);
+
+        if (complexComparator == null){
+            throw new IllegalArgumentException("The ComplexComparator is required to compare complexes. It cannot be null");
+        }
+        this.complexComparator = complexComparator;
     }
 
     public BioactiveEntityComparator getBioactiveEntityComparator() {
@@ -63,9 +71,13 @@ public class InteractorComparator implements Comparator<Interactor> {
         return interactorBaseComparator;
     }
 
+    public ComplexComparator getComplexComparator() {
+        return complexComparator;
+    }
+
     /**
      *
-     *  * Bioactive entities come first, then proteins, then genes and finally nucleic acids.
+     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
      * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
      * - Uses BioactiveEntityComparator for comparing BioactiveEntity objects.
      * - Uses ProteinComparator for comparing Protein objects.
@@ -94,47 +106,77 @@ public class InteractorComparator implements Comparator<Interactor> {
             // first check if both interactors are from the same interface
 
             // both are small molecules
-            if (interactor1 instanceof BioactiveEntity && interactor2 instanceof BioactiveEntity){
+            boolean isBioactiveEntity1 = interactor1 instanceof BioactiveEntity;
+            boolean isBioactiveEntity2 = interactor2 instanceof BioactiveEntity;
+            if (isBioactiveEntity1 && isBioactiveEntity2){
                 return bioactiveEntityComparator.compare((BioactiveEntity) interactor1, (BioactiveEntity) interactor2);
             }
             // the small molecule is before
-            else if (interactor1 instanceof BioactiveEntity){
+            else if (isBioactiveEntity1){
                 return BEFORE;
             }
-            else if (interactor2 instanceof BioactiveEntity){
+            else if (isBioactiveEntity2){
                 return AFTER;
             }
-            else if (interactor1 instanceof Protein && interactor2 instanceof Protein){
-                return proteinComparator.compare((Protein) interactor1, (Protein) interactor2);
-            }
-            // the protein is before
-            else if (interactor1 instanceof Protein){
-                return BEFORE;
-            }
-            else if (interactor2 instanceof Protein){
-                return AFTER;
-            }
-            // both are genes
-            else if (interactor1 instanceof Gene && interactor2 instanceof Gene){
-                return geneComparator.compare((Gene) interactor1, (Gene) interactor2);
-            }
-            // the gene is before
-            else if (interactor1 instanceof Gene){
-                return BEFORE;
-            }
-            else if (interactor2 instanceof Gene){
-                return AFTER;
-            }
-            // both are nucleic acids
-            else if (interactor1 instanceof NucleicAcid && interactor2 instanceof NucleicAcid){
-                return nucleicAcidComparator.compare((NucleicAcid) interactor1, (NucleicAcid) interactor2);
-            }
-            // the nucleic acid is before
-            else if (interactor1 instanceof NucleicAcid){
-                return BEFORE;
-            }
-            else if (interactor2 instanceof NucleicAcid){
-                return AFTER;
+            else {
+                // both are proteins
+                boolean isProtein1 = interactor1 instanceof Protein;
+                boolean isProtein2 = interactor2 instanceof Protein;
+                if (isProtein1 && isProtein2){
+                    return proteinComparator.compare((Protein) interactor1, (Protein) interactor2);
+                }
+                // the protein is before
+                else if (isProtein1){
+                    return BEFORE;
+                }
+                else if (isProtein2){
+                    return AFTER;
+                }
+                else {
+                    // both are genes
+                    boolean isGene1 = interactor1 instanceof Gene;
+                    boolean isGene2 = interactor2 instanceof Gene;
+                    if (isGene1 && isGene2){
+                        return geneComparator.compare((Gene) interactor1, (Gene) interactor2);
+                    }
+                    // the gene is before
+                    else if (isGene1){
+                        return BEFORE;
+                    }
+                    else if (isGene2){
+                        return AFTER;
+                    }
+                    else {
+                        // both are nucleic acids
+                        boolean isNucleicAcid1 = interactor1 instanceof NucleicAcid;
+                        boolean isNucleicAcid2 = interactor2 instanceof NucleicAcid;
+                        if (isNucleicAcid1 && isNucleicAcid2){
+                            return nucleicAcidComparator.compare((NucleicAcid) interactor1, (NucleicAcid) interactor2);
+                        }
+                        // the nucleic acid is before
+                        else if (isNucleicAcid1){
+                            return BEFORE;
+                        }
+                        else if (isNucleicAcid2){
+                            return AFTER;
+                        }
+                        else {
+                            boolean isComplex1 = interactor1 instanceof Complex;
+                            boolean isComplex2 = interactor2 instanceof Complex;
+                            // both are complexes
+                            if (isComplex1 && isComplex2){
+                                return complexComparator.compare((Complex) interactor1, (Complex) interactor2);
+                            }
+                            // the complex is before
+                            else if (isComplex1){
+                                return BEFORE;
+                            }
+                            else if (isComplex2){
+                                return AFTER;
+                            }
+                        }
+                    }
+                }
             }
 
             return EQUAL;
