@@ -11,7 +11,10 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 import java.util.*;
 
 /**
- * TODO comment this
+ * Exact Interactor base comparator.
+ * It will first compare the interactor types using AbstractCvTermComparator. If both types are equal,
+ * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal, it will compare Checksums.
+ * If at least one checksum is identical, it will use a InteractorBaseComparator to compare basic Interactor properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -21,8 +24,8 @@ import java.util.*;
 public class ExactInteractorBaseComparator implements Comparator<Interactor> {
 
     protected InteractorBaseComparator interactorComparator;
-    private OrganismTaxIdComparator organismComparator;
-    private AbstractCvTermComparator typeComparator;
+    protected OrganismTaxIdComparator organismComparator;
+    protected AbstractCvTermComparator typeComparator;
     protected ChecksumComparator checksumComparator;
 
     /**
@@ -30,10 +33,9 @@ public class ExactInteractorBaseComparator implements Comparator<Interactor> {
      * @param interactorComparator : the interactor comparator to compare basic ids. It is required
      * @param organismComparator : the comparator for organisms. if null will be OrganismTaxIdComparator
      * @param typeComparator : the interactor type comparator. It is required
-     * @param checksumComparator : the checksum comparator. It is required
      */
     public ExactInteractorBaseComparator(InteractorBaseComparator interactorComparator, OrganismTaxIdComparator organismComparator,
-                                         AbstractCvTermComparator typeComparator, ChecksumComparator checksumComparator){
+                                         AbstractCvTermComparator typeComparator){
 
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compares interactor basic identifiers. It cannot be null");
@@ -49,10 +51,7 @@ public class ExactInteractorBaseComparator implements Comparator<Interactor> {
             throw new IllegalArgumentException("The interactor type comparator is required to compares interactor types. It cannot be null");
         }
         this.typeComparator = typeComparator;
-        if (checksumComparator == null){
-            throw new IllegalArgumentException("The checksum comparator is required to compares interactor checksums. It cannot be null");
-        }
-        this.checksumComparator = checksumComparator;
+        this.checksumComparator = new ChecksumComparator(this.typeComparator);
     }
 
     public OrganismTaxIdComparator getOrganismComparator() {
@@ -71,6 +70,14 @@ public class ExactInteractorBaseComparator implements Comparator<Interactor> {
         return checksumComparator;
     }
 
+    /**
+     * It will first compare the interactor types using AbstractCvTermComparator. If both types are equal,
+     * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal, it will compare Checksums.
+     * If at least one checksum is identical, it will use a InteractorBaseComparator to compare basic Interactor properties.
+     * @param interactor1
+     * @param interactor2
+     * @return
+     */
     public int compare(Interactor interactor1, Interactor interactor2) {
 
         int EQUAL = 0;
