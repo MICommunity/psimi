@@ -12,7 +12,8 @@ import psidev.psi.mi.jami.model.Interactor;
  * - Uses DefaultGeneComparator for comparing Gene objects.
  * - Uses DefaultNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses DefaultComplexComparator for comparing complexes
- * - use DefaultInteractorComparator for comparing basic interactors that are not one of the above.
+ * - Uses DefaultInteractorCandidatesComparator for comparing interactor candidates
+ * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -30,7 +31,8 @@ public class DefaultInteractorComparator extends InteractorComparator{
      * - Uses DefaultGeneComparator for comparing Gene objects.
      * - Uses DefaultNucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses DefaultComplexComparator for comparing complexes
-     * - use DefaultInteractorComparator for comparing basic interactors that are not one of the above.
+     * - Uses DefaultInteractorCandidatesComparator for comparing interactor candidates
+     * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public DefaultInteractorComparator() {
         super(new DefaultInteractorBaseComparator(), new DefaultComplexComparator());
@@ -55,7 +57,8 @@ public class DefaultInteractorComparator extends InteractorComparator{
      * - Uses DefaultGeneComparator for comparing Gene objects.
      * - Uses DefaultNucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses DefaultComplexComparator for comparing complexes
-     * - use DefaultInteractorComparator for comparing basic interactors that are not one of the above.
+     * - Uses DefaultInteractorCandidatesComparator for comparing interactor candidates
+     * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above.
      */
     public int compare(Interactor interactor1, Interactor interactor2) {
         return super.compare(interactor1, interactor2);
