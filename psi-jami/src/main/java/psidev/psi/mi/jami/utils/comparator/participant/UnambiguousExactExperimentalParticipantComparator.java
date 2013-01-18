@@ -4,12 +4,12 @@ import psidev.psi.mi.jami.model.ExperimentalFeature;
 import psidev.psi.mi.jami.model.ExperimentalParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousExperimentalFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 
 /**
- * Unambiguous Experimental participant comparator.
+ * Unambiguous exact Experimental participant comparator.
  *
  * It will first compares experimental roles using UnambiguousCvTermComparator. If both experimental roles are equals, it
  * will look at the identification methods using UnambiguousCvTermComparator. If both identification methods are equals, it will
@@ -18,20 +18,20 @@ import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterCompara
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>17/01/13</pre>
+ * @since <pre>18/01/13</pre>
  */
 
-public class UnambiguousExperimentalParticipantComparator extends ExperimentalParticipantComparator{
+public class UnambiguousExactExperimentalParticipantComparator extends ExperimentalParticipantComparator {
 
-    private static UnambiguousExperimentalParticipantComparator unambiguousExperimentalParticipantComparator;
+    private static UnambiguousExactExperimentalParticipantComparator unambiguousExactExperimentalParticipantComparator;
 
     /**
-     * Creates a new UnambiguousExperimentalParticipantComparator. It will use a UnambiguousParticipantComparator to compare
+     * Creates a new UnambiguousExactExperimentalParticipantComparator. It will use a UnambiguousExactParticipantComparator to compare
      * the basic properties of a participant, a UnambiguousCvTermComparator to compare experimental roles, preparations and identification methods
      * and a UnambiguousOrganismComparator to compare expressed in organisms
      */
-    public UnambiguousExperimentalParticipantComparator() {
-        super(new ParticipantComparator<ExperimentalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousExperimentalFeatureComparator(), new UnambiguousParameterComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator());
+    public UnambiguousExactExperimentalParticipantComparator() {
+        super(new ParticipantComparator<ExperimentalFeature>(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousExperimentalFeatureComparator(), new UnambiguousParameterComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator());
     }
 
     @Override
@@ -56,16 +56,16 @@ public class UnambiguousExperimentalParticipantComparator extends ExperimentalPa
     }
 
     /**
-     * Use UnambiguousExperimentalParticipantComparator to know if two experimental participants are equals.
+     * Use UnambiguousExactExperimentalParticipantComparator to know if two experimental participants are equals.
      * @param experimentalParticipant1
      * @param component2
      * @return true if the two experimental participants are equal
      */
     public static boolean areEquals(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant component2){
-        if (unambiguousExperimentalParticipantComparator == null){
-            unambiguousExperimentalParticipantComparator = new UnambiguousExperimentalParticipantComparator();
+        if (unambiguousExactExperimentalParticipantComparator == null){
+            unambiguousExactExperimentalParticipantComparator = new UnambiguousExactExperimentalParticipantComparator();
         }
 
-        return unambiguousExperimentalParticipantComparator.compare(experimentalParticipant1, component2) == 0;
+        return unambiguousExactExperimentalParticipantComparator.compare(experimentalParticipant1, component2) == 0;
     }
 }

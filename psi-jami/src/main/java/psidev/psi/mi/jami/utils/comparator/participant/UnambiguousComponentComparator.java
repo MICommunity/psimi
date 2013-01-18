@@ -30,8 +30,8 @@ public class UnambiguousComponentComparator extends ComponentComparator{
     }
 
     @Override
-    public UnambiguousParticipantComparator getParticipantComparator() {
-        return (UnambiguousParticipantComparator) this.participantComparator;
+    public ParticipantComparator<BiologicalFeature> getParticipantComparator() {
+        return (ParticipantComparator<BiologicalFeature>) this.participantComparator;
     }
 
     @Override
