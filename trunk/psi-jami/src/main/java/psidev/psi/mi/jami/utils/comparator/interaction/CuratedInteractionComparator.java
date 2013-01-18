@@ -3,11 +3,14 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Source;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ParticipantComparator;
 
 /**
- * TODO comment this
+ * Basic comparator for Curated interactions.
+ *
+ * It will first compare the sources of the interactions using AbstractCvTermComparator. If the sources are the same, t will compare the participants using ParticipantComparator. If the participants are the same, it will compare
+ * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
+ * A negative interaction will come after a positive interaction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -16,11 +19,20 @@ import psidev.psi.mi.jami.utils.comparator.participant.ParticipantComparator;
 
 public class CuratedInteractionComparator extends InteractionComparator {
 
-    public CuratedInteractionComparator(ParticipantComparator<Feature> participantComparator, AbstractCvTermComparator cvTermComparator) {
-        super(participantComparator, cvTermComparator);
+    /**
+     * Creates a new CuratedInteractionComparator.
+     * @param participantComparator : required for comparing the participants
+     */
+    public CuratedInteractionComparator(ParticipantComparator<Feature> participantComparator) {
+        super(participantComparator, participantComparator.getCvTermComparator());
     }
 
     @Override
+    /**
+     *  * It will first compare the sources of the interactions using AbstractCvTermComparator. If the sources are the same, t will compare the participants using ParticipantComparator. If the participants are the same, it will compare
+     * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
+     * A negative interaction will come after a positive interaction
+     */
     public int compare(Interaction interaction1, Interaction interaction2) {
         int EQUAL = 0;
         int BEFORE = -1;

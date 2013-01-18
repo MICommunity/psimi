@@ -28,6 +28,11 @@ public class InteractionComparator implements Comparator<Interaction> {
     protected ParticipantCollectionComparator participantCollectionComparator;
     protected AbstractCvTermComparator cvTermComparator;
 
+    /**
+     * Creates a new InteractionComparator.
+     * @param participantComparator : required to compare participants
+     * @param cvTermComparator : required to compare interaction type
+     */
     public InteractionComparator(ParticipantComparator<Feature> participantComparator, AbstractCvTermComparator cvTermComparator){
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
