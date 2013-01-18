@@ -21,7 +21,7 @@ public class DefaultComponentInteractorComparator extends ComponentComparator{
      * the basic properties of a participant.
      */
     public DefaultComponentInteractorComparator() {
-        super(new DefaultParticipantComparator());
+        super(new DefaultParticipantInteractorComparator());
     }
 
     @Override

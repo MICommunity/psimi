@@ -4,12 +4,12 @@ import psidev.psi.mi.jami.model.ExperimentalFeature;
 import psidev.psi.mi.jami.model.ExperimentalParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultExperimentalFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 
 /**
- * Default Experimental participant comparator.
+ * Default exact Experimental participant comparator.
  *
  * It will first compares experimental roles using DefaultCvTermComparator. If both experimental roles are equals, it
  * will look at the identification methods using DefaultCvTermComparator. If both identification methods are equals, it will
@@ -18,20 +18,20 @@ import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>17/01/13</pre>
+ * @since <pre>18/01/13</pre>
  */
 
-public class DefaultExperimentalParticipantComparator extends ExperimentalParticipantComparator{
+public class DefaultExactExperimentalParticipantComparator extends ExperimentalParticipantComparator {
 
-    private static DefaultExperimentalParticipantComparator defaultExperimentalParticipantComparator;
+    private static DefaultExactExperimentalParticipantComparator defaultExactExperimentalParticipantComparator;
 
     /**
-     * Creates a new DefaultExperimentalParticipantComparator. It will use a DefaultParticipantComparator to compare
+     * Creates a new DefaultExactExperimentalParticipantComparator. It will use a DefaultExactParticipantComparator to compare
      * the basic properties of a participant, a DefaultCvTermComparator to compare experimental roles, preparations and identification methods
      * and a DefaultOrganismComparator to compare expressed in Organisms
      */
-    public DefaultExperimentalParticipantComparator() {
-        super(new ParticipantComparator<ExperimentalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator(), new DefaultParameterComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator());
+    public DefaultExactExperimentalParticipantComparator() {
+        super(new ParticipantComparator<ExperimentalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator(), new DefaultParameterComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator());
     }
 
     @Override
@@ -56,16 +56,16 @@ public class DefaultExperimentalParticipantComparator extends ExperimentalPartic
     }
 
     /**
-     * Use DefaultExperimentalParticipantComparator to know if two experimental participants are equals.
+     * Use DefaultExactExperimentalParticipantComparator to know if two experimental participants are equals.
      * @param experimentalParticipant1
      * @param component2
      * @return true if the two experimental participants are equal
      */
     public static boolean areEquals(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant component2){
-        if (defaultExperimentalParticipantComparator == null){
-            defaultExperimentalParticipantComparator = new DefaultExperimentalParticipantComparator();
+        if (defaultExactExperimentalParticipantComparator == null){
+            defaultExactExperimentalParticipantComparator = new DefaultExactExperimentalParticipantComparator();
         }
 
-        return defaultExperimentalParticipantComparator.compare(experimentalParticipant1, component2) == 0;
+        return defaultExactExperimentalParticipantComparator.compare(experimentalParticipant1, component2) == 0;
     }
 }

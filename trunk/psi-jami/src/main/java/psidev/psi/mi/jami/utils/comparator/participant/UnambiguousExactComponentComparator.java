@@ -4,30 +4,31 @@ import psidev.psi.mi.jami.model.BiologicalFeature;
 import psidev.psi.mi.jami.model.Component;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultBiologicalFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 
 /**
- * Default component comparator.
- * It will compare the basic properties of a component using DefaultParticipantComparator.
+ * Default exact component comparator.
+ * It will compare the basic properties of a component using DefaultExactParticipantComparator.
  *
  * This comparator will ignore all the other properties of a component.
  *
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>17/01/13</pre>
+ * @since <pre>18/01/13</pre>
  */
 
-public class DefaultComponentComparator extends ComponentComparator {
+public class UnambiguousExactComponentComparator extends ComponentComparator{
 
-    private static DefaultComponentComparator defaultParticipantComparator;
+    private static UnambiguousExactComponentComparator defaultParticipantComparator;
 
     /**
-     * Creates a new DefaultComponentComparator. It will use a DefaultParticipantComparator to compare
+     * Creates a new UnambiguousExactComponentComparator. It will use a DefaultExactParticipantComparator to compare
      * the basic properties of a participant.
      */
-    public DefaultComponentComparator() {
-        super(new ParticipantComparator<BiologicalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator(), new DefaultParameterComparator()));
+    public UnambiguousExactComponentComparator() {
+        super(new ParticipantComparator<BiologicalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator(), new DefaultParameterComparator()));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class DefaultComponentComparator extends ComponentComparator {
 
     @Override
     /**
-     * It will compare the basic properties of a component using DefaultParticipantComparator.
+     * It will compare the basic properties of a component using DefaultExactParticipantComparator.
      *
      * This comparator will ignore all the other properties of a component.
      */
@@ -46,14 +47,14 @@ public class DefaultComponentComparator extends ComponentComparator {
     }
 
     /**
-     * Use DefaultComponentComparator to know if two components are equals.
+     * Use UnambiguousExactComponentComparator to know if two components are equals.
      * @param component1
      * @param component2
      * @return true if the two components are equal
      */
     public static boolean areEquals(Component component1, Component component2){
         if (defaultParticipantComparator == null){
-            defaultParticipantComparator = new DefaultComponentComparator();
+            defaultParticipantComparator = new UnambiguousExactComponentComparator();
         }
 
         return defaultParticipantComparator.compare(component1, component2) == 0;

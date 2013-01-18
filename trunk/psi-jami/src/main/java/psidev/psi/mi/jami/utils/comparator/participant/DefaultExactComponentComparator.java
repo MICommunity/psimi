@@ -8,25 +8,25 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparato
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 
 /**
- * Default component comparator.
- * It will compare the basic properties of a component using DefaultParticipantComparator.
+ * Default exact component comparator.
+ * It will compare the basic properties of a component using DefaultExactParticipantComparator.
  *
  * This comparator will ignore all the other properties of a component.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>17/01/13</pre>
+ * @since <pre>18/01/13</pre>
  */
 
-public class DefaultComponentComparator extends ComponentComparator {
+public class DefaultExactComponentComparator extends ComponentComparator{
 
-    private static DefaultComponentComparator defaultParticipantComparator;
+    private static DefaultExactComponentComparator defaultExactParticipantComparator;
 
     /**
-     * Creates a new DefaultComponentComparator. It will use a DefaultParticipantComparator to compare
+     * Creates a new DefaultExactComponentComparator. It will use a DefaultExactParticipantComparator to compare
      * the basic properties of a participant.
      */
-    public DefaultComponentComparator() {
+    public DefaultExactComponentComparator() {
         super(new ParticipantComparator<BiologicalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator(), new DefaultParameterComparator()));
     }
 
@@ -46,16 +46,16 @@ public class DefaultComponentComparator extends ComponentComparator {
     }
 
     /**
-     * Use DefaultComponentComparator to know if two components are equals.
+     * Use DefaultExactComponentComparator to know if two components are equals.
      * @param component1
      * @param component2
      * @return true if the two components are equal
      */
     public static boolean areEquals(Component component1, Component component2){
-        if (defaultParticipantComparator == null){
-            defaultParticipantComparator = new DefaultComponentComparator();
+        if (defaultExactParticipantComparator == null){
+            defaultExactParticipantComparator = new DefaultExactComponentComparator();
         }
 
-        return defaultParticipantComparator.compare(component1, component2) == 0;
+        return defaultExactParticipantComparator.compare(component1, component2) == 0;
     }
 }
