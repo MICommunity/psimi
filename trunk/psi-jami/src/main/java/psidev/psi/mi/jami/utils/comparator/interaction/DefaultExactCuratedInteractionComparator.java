@@ -25,7 +25,7 @@ public class DefaultExactCuratedInteractionComparator extends CuratedInteraction
      * compare participants and DefaultCvTermcomparator to compare interaction types
      */
     public DefaultExactCuratedInteractionComparator() {
-        super(new DefaultExactParticipantComparator());
+        super(new DefaultExactParticipantComparator(), new DefaultCvTermComparator());
     }
 
     @Override

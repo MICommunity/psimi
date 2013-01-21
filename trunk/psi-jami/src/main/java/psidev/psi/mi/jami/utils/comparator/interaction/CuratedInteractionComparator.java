@@ -1,9 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
-import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Source;
-import psidev.psi.mi.jami.utils.comparator.participant.ParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
+
+import java.util.Comparator;
 
 /**
  * Basic comparator for Curated interactions.
@@ -17,14 +19,14 @@ import psidev.psi.mi.jami.utils.comparator.participant.ParticipantComparator;
  * @since <pre>18/01/13</pre>
  */
 
-public class CuratedInteractionComparator extends InteractionComparator {
+public class CuratedInteractionComparator<T extends Participant> extends InteractionComparator<T> {
 
     /**
      * Creates a new CuratedInteractionComparator.
      * @param participantComparator : required for comparing the participants
      */
-    public CuratedInteractionComparator(ParticipantComparator<Feature> participantComparator) {
-        super(participantComparator, participantComparator.getCvTermComparator());
+    public CuratedInteractionComparator(Comparator<T> participantComparator, AbstractCvTermComparator cvTermComparators) {
+        super(participantComparator, cvTermComparators);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
+import psidev.psi.mi.jami.model.Component;
 import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentComparator;
 
 /**
  * Unambiguous curated ModelledInteraction comparator.
@@ -21,12 +24,12 @@ public class UnambiguousCuratedModelledInteractionComparator extends ModelledInt
      * compare basic interaction properties
      */
     public UnambiguousCuratedModelledInteractionComparator() {
-        super(new UnambiguousCuratedInteractionComparator());
+        super(new InteractionComparator<Component>(new UnambiguousComponentComparator(), new UnambiguousCvTermComparator()));
     }
 
     @Override
-    public UnambiguousCuratedInteractionComparator getInteractionComparator() {
-        return (UnambiguousCuratedInteractionComparator) this.interactionComparator;
+    public InteractionComparator<Component> getInteractionComparator() {
+        return (InteractionComparator<Component>) this.interactionComparator;
     }
 
     @Override

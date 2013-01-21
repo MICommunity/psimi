@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
-import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Component;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 
 import java.util.Comparator;
@@ -8,7 +8,7 @@ import java.util.Comparator;
 /**
  * Basic ModelledInteraction comparator.
  *
- * It will use a Comparator<Interaction> to compare basic interaction properties.
+ * It will use a InteractionComparator to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -17,16 +17,16 @@ import java.util.Comparator;
 
 public class ModelledInteractionComparator implements Comparator<ModelledInteraction> {
 
-    protected Comparator<Interaction> interactionComparator;
+    protected InteractionComparator<Component> interactionComparator;
 
-    public ModelledInteractionComparator(Comparator<Interaction> interactionComparator){
+    public ModelledInteractionComparator(InteractionComparator<Component> interactionComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
         }
         this.interactionComparator = interactionComparator;
     }
 
-    public Comparator<Interaction> getInteractionComparator() {
+    public InteractionComparator<Component> getInteractionComparator() {
         return interactionComparator;
     }
 

@@ -1,12 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.ParticipantComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -23,7 +21,7 @@ import java.util.Comparator;
  * @since <pre>18/01/13</pre>
  */
 
-public class InteractionComparator implements Comparator<Interaction> {
+public class InteractionComparator<T extends Participant> implements Comparator<Interaction> {
 
     protected ParticipantCollectionComparator participantCollectionComparator;
     protected AbstractCvTermComparator cvTermComparator;
@@ -33,11 +31,11 @@ public class InteractionComparator implements Comparator<Interaction> {
      * @param participantComparator : required to compare participants
      * @param cvTermComparator : required to compare interaction type
      */
-    public InteractionComparator(ParticipantComparator<Feature> participantComparator, AbstractCvTermComparator cvTermComparator){
+    public InteractionComparator(Comparator<T> participantComparator, AbstractCvTermComparator cvTermComparator){
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
         }
-        this.participantCollectionComparator = new ParticipantCollectionComparator(participantComparator);
+        this.participantCollectionComparator = new ParticipantCollectionComparator<T>(participantComparator);
 
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare interaction types. It cannot be null");
