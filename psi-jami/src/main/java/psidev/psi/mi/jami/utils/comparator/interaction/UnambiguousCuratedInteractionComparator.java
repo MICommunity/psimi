@@ -25,7 +25,7 @@ public class UnambiguousCuratedInteractionComparator extends CuratedInteractionC
      * compare participants and UnambiguousCvTermComparator to compare interaction types
      */
     public UnambiguousCuratedInteractionComparator() {
-        super(new UnambiguousParticipantComparator());
+        super(new UnambiguousParticipantComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
