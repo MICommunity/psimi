@@ -8,7 +8,7 @@ import java.util.Comparator;
 /**
  * Basic ModelledInteraction comparator.
  *
- * It will use a InteractionComparator to compare basic interaction properties.
+ * It will use a InteractionComparator<Component> to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -31,7 +31,7 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
     }
 
     /**
-     * It will use a Comparator<Interaction> to compare basic interaction properties.
+     * It will use a InteractionComparator<Component> to compare basic interaction properties.
      * @param modelledInteraction1
      * @param modelledInteraction2
      * @return

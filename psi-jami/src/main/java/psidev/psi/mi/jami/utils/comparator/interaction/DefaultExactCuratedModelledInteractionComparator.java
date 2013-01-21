@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactComponentComp
 /**
  * Default exact curated ModelledInteraction comparator.
  *
- * It will use a DefaultExactCuratedInteractionComparator to compare basic interaction properties.
+ * It will use a DefaultCuratedInteractionComparator<Component> to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,7 +20,7 @@ public class DefaultExactCuratedModelledInteractionComparator extends ModelledIn
     private static DefaultExactCuratedModelledInteractionComparator defaultExactCuratedModelledInteractionComparator;
 
     /**
-     * Creates a new DefaultExactCuratedModelledInteractionComparator. It will use a DefaultExactCuratedInteractionComparator to
+     * Creates a new DefaultExactCuratedModelledInteractionComparator. It will use a DefaultCuratedInteractionComparator<Component> to
      * compare basic interaction properties
      */
     public DefaultExactCuratedModelledInteractionComparator() {

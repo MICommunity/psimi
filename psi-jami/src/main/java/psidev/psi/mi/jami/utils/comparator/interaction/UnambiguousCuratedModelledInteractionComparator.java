@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentCompa
 /**
  * Unambiguous curated ModelledInteraction comparator.
  *
- * It will use a UnambiguousCuratedInteractionComparator to compare basic interaction properties.
+ * It will use a UnambiguousCuratedInteractionComparator<Component></> to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -24,17 +24,17 @@ public class UnambiguousCuratedModelledInteractionComparator extends ModelledInt
      * compare basic interaction properties
      */
     public UnambiguousCuratedModelledInteractionComparator() {
-        super(new InteractionComparator<Component>(new UnambiguousComponentComparator(), new UnambiguousCvTermComparator()));
+        super(new CuratedInteractionComparator<Component>(new UnambiguousComponentComparator(), new UnambiguousCvTermComparator()));
     }
 
     @Override
-    public InteractionComparator<Component> getInteractionComparator() {
-        return (InteractionComparator<Component>) this.interactionComparator;
+    public CuratedInteractionComparator<Component> getInteractionComparator() {
+        return (CuratedInteractionComparator<Component>) this.interactionComparator;
     }
 
     @Override
     /**
-     * It will use a UnambiguousCuratedInteractionComparator to compare basic interaction properties.
+     * It will use a UnambiguousCuratedInteractionComparator<Component></> to compare basic interaction properties.
      */
     public int compare(ModelledInteraction interaction1, ModelledInteraction interaction2) {
         return super.compare(interaction1, interaction2);
