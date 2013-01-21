@@ -26,7 +26,7 @@ public interface CooperativeInteraction extends ModelledInteraction {
      * @param mechanism : cooperative mechanism
      * @throws IllegalArgumentException when mechanism is null
      */
-    public void setMechanism(CvTerm mechanism);
+    public void setCooperativeMechanism(CvTerm mechanism);
 
     /**
      * For an interaction that has a cooperative effect on a subsequent interaction, this term indicates whether this effect is
