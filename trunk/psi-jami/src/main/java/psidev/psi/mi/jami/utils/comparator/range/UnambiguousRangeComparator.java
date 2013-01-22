@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.range;
 
+import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 
 /**
@@ -52,5 +53,29 @@ public class UnambiguousRangeComparator extends RangeComparator {
         }
 
         return unambiguousRangeComparator.compare(range1, range2) == 0;
+    }
+
+    /**
+     *
+     * @param range
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Range range){
+        if (unambiguousRangeComparator == null){
+            unambiguousRangeComparator = new UnambiguousRangeComparator();
+        }
+
+        if (range == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        Position start = range.getStart();
+        hashcode = 31*hashcode + unambiguousRangeComparator.getPositionComparator().hashCode(start);
+        Position end = range.getEnd();
+        hashcode = 31*hashcode + unambiguousRangeComparator.getPositionComparator().hashCode(end);
+        hashcode = 31 * hashcode + (range.isLink() ? 0 : 1);
+
+        return hashcode;
     }
 }
