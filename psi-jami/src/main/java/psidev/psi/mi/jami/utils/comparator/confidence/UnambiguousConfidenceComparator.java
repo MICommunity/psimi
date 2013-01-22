@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.confidence;
 
 import psidev.psi.mi.jami.model.Confidence;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
@@ -63,5 +64,32 @@ public class UnambiguousConfidenceComparator extends ConfidenceComparator {
         }
 
         return unambiguousConfidenceComparator.compare(conf1, conf2) == 0;
+    }
+
+    /**
+     *
+     * @param conf
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Confidence conf){
+        if (unambiguousConfidenceComparator == null){
+            unambiguousConfidenceComparator = new UnambiguousConfidenceComparator();
+        }
+
+        if (conf == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm type = conf.getType();
+        hashcode = 31*hashcode + unambiguousConfidenceComparator.getCvTermComparator().hashCode(type);
+
+        String value = conf.getValue();
+        hashcode = 31*hashcode + value.hashCode();
+
+        CvTerm unit = conf.getUnit();
+        hashcode = 31*hashcode + unambiguousConfidenceComparator.getCvTermComparator().hashCode(unit);
+
+        return hashcode;
     }
 }

@@ -1,7 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.parameter;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Parameter;
+import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+
+import java.math.BigDecimal;
 
 /**
  * Unambiguous parameter comparator.
@@ -66,5 +70,35 @@ public class UnambiguousParameterComparator extends ParameterComparator {
         }
 
         return unambiguousParameterComparator.compare(param1, param2) == 0;
+    }
+
+    /**
+     *
+     * @param param
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Parameter param){
+        if (unambiguousParameterComparator == null){
+            unambiguousParameterComparator = new UnambiguousParameterComparator();
+        }
+
+        if (param == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm type = param.getType();
+        hashcode = 31*hashcode + unambiguousParameterComparator.getCvTermComparator().hashCode(type);
+
+        CvTerm unit = param.getUnit();
+        hashcode = 31*hashcode + unambiguousParameterComparator.getCvTermComparator().hashCode(unit);
+
+        ParameterValue value = param.getValue();
+        hashcode = 31*hashcode + unambiguousParameterComparator.getValueComparator().hashCode(value);
+
+        BigDecimal uncertainty = param.getUncertainty();
+        hashcode = 31*hashcode + (uncertainty != null ? uncertainty.hashCode() : 0);
+
+        return hashcode;
     }
 }
