@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExternalIdentifier;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
 import java.io.Serializable;
@@ -14,39 +15,15 @@ import java.io.Serializable;
  * @since <pre>21/01/13</pre>
  */
 
-public class DefaultExternalIdentifier implements ExternalIdentifier, Serializable{
-
-    private CvTerm database;
-    private String id;
-    private Integer version;
+public class DefaultExternalIdentifier extends DefaultXref implements ExternalIdentifier, Serializable{
 
     public DefaultExternalIdentifier(CvTerm database, String id, Integer version){
-        this(database, id);
-        this.version = version;
+        super(database, id, version, new DefaultCvTerm(Xref.IDENTITY, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Xref.IDENTITY_MI)));
     }
 
     public DefaultExternalIdentifier(CvTerm database, String id){
-        if (database == null){
-            throw new IllegalArgumentException("The database is required and cannot be null");
-        }
-        this.database = database;
+        super(database, id, new DefaultCvTerm(Xref.IDENTITY, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Xref.IDENTITY_MI)));
 
-        if (id == null || (id != null && id.length() == 0)){
-            throw new IllegalArgumentException("The id is required and cannot be null or empty");
-        }
-        this.id = id;
-    }
-
-    public CvTerm getDatabase() {
-        return database;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Integer getVersion() {
-        return version;
     }
 
     @Override
@@ -70,6 +47,6 @@ public class DefaultExternalIdentifier implements ExternalIdentifier, Serializab
 
     @Override
     public String toString() {
-        return database.toString() + ":" + id.toString();
+        return getDatabase().toString() + ":" + getId().toString();
     }
 }

@@ -4,9 +4,14 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Xref;
 
+import java.util.Comparator;
+
 /**
  * Strict Xref comparator
- * It will first compare the external identifier composed of database and id using UnambiguousExternalIdentifierComparator and then it will
+ *
+ * It compares first the databases and then the ids (case sensitive) but ignores the version.
+ * To compare the databases, it looks first at the identifiers id (the database with identifier will always come first), otherwise it looks at the database shortlabel only.
+ * If one database identifier is null, it will always comes after an ExternalIdentifier having a non null database id. Then it will
  * compare the qualifier.
  * To compare the qualifiers, it looks first at the identifiers id if they both exist, otherwise it looks at the qualifier shortnames only.
  * If one qualifier identifier is null, it will always comes after a Xref having a non null qualifiers id.
@@ -20,25 +25,17 @@ import psidev.psi.mi.jami.model.Xref;
  * @since <pre>19/12/12</pre>
  */
 
-public class UnambiguousXrefComparator extends AbstractXrefComparator {
+public class UnambiguousXrefComparator implements Comparator<Xref> {
     private static UnambiguousXrefComparator unambiguousXrefComparator;
 
     public UnambiguousXrefComparator() {
-        super(new UnambiguousExternalIdentifierComparator());
+        super();
     }
 
-    public UnambiguousXrefComparator(UnambiguousExternalIdentifierComparator comparator) {
-        super(comparator);
-    }
-
-    @Override
-    public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
-        return (UnambiguousExternalIdentifierComparator) this.identifierComparator;
-    }
-
-    @Override
     /**
-     * It will first compare the external identifier composed of database and id using UnambiguousExternalIdentifierComparator and then it will
+     * It compares first the databases and then the ids (case sensitive) but ignores the version.
+     * To compare the databases, it looks first at the identifiers id (the database with identifier will always come first), otherwise it looks at the database shortlabel only.
+     * If one database identifier is null, it will always comes after an ExternalIdentifier having a non null database id. Then it will
      * compare the qualifier.
      * To compare the qualifiers, it looks first at the identifiers id if they both exist, otherwise it looks at the qualifier shortnames only.
      * If one qualifier identifier is null, it will always comes after a Xref having a non null qualifiers id.
@@ -65,7 +62,35 @@ public class UnambiguousXrefComparator extends AbstractXrefComparator {
             return BEFORE;
         }
         else {
-            int comp = identifierComparator.compare(xref1, xref2);
+            // compares databases first (cannot use CvTermComparator because have to break the loop)
+            CvTerm database1 = xref1.getDatabase();
+            CvTerm database2 = xref2.getDatabase();
+            ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
+            ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+
+            // if external id of database is set, look at database id only otherwise look at shortname
+            int comp;
+            if (databaseId1 != null && databaseId2 != null){
+                comp = databaseId1.getId().compareTo(databaseId2.getId());
+            }
+            else if (databaseId1 == null && databaseId2 != null){
+                return AFTER;
+            }
+            else if (databaseId2 == null && databaseId1 != null){
+                return BEFORE;
+            }
+            else {
+                comp = database1.getShortName().toLowerCase().trim().compareTo(database2.getShortName().toLowerCase().trim());
+            }
+
+            if (comp != 0){
+                return comp;
+            }
+            // check identifiers which cannot be null
+            String id1 = xref1.getId();
+            String id2 = xref2.getId();
+
+            comp = id1.compareTo(id2);
             if (comp != 0){
                 return comp;
             }
@@ -103,5 +128,46 @@ public class UnambiguousXrefComparator extends AbstractXrefComparator {
         }
 
         return unambiguousXrefComparator.compare(xref1, xref2) == 0;
+    }
+
+    /**
+     *
+     * @param xref
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Xref xref){
+        if (unambiguousXrefComparator == null){
+            unambiguousXrefComparator = new UnambiguousXrefComparator();
+        }
+        if (xref == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm database1 = xref.getDatabase();
+        ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
+
+        if (databaseId1 != null){
+            hashcode = 31*hashcode + databaseId1.getId().hashCode();
+        }
+        else {
+            hashcode = 31*hashcode + database1.getShortName().toLowerCase().hashCode();
+        }
+
+        hashcode = 31 * hashcode + xref.getId().hashCode();
+
+        CvTerm qualifier = xref.getQualifier();
+        if (qualifier != null){
+            ExternalIdentifier qualifierId = qualifier.getOntologyIdentifier();
+
+            if (qualifierId != null){
+                hashcode = 31*hashcode + qualifierId.getId().hashCode();
+            }
+            else {
+                hashcode = 31*hashcode + qualifier.getShortName().toLowerCase().hashCode();
+            }
+        }
+
+        return hashcode;
     }
 }

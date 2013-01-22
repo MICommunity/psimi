@@ -4,9 +4,12 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Xref;
 
+import java.util.Comparator;
+
 /**
  * Default Xref comparator
- * It will first compare the external identifier composed of database and id using DefaultExternalIdentifierComparator and then it will
+ * It compares first the databases and then the ids (case sensitive) but ignores the version.
+ * To compare the databases, it looks first at the identifiers id if they exist, otherwise it looks at the database shortlabel only. Then it will
  * compare the qualifier.
  * To compare the qualifiers, it looks first at the identifiers id if they exist, otherwise it looks at the qualifier shortlabel only.
  * It will ignore the version
@@ -21,22 +24,17 @@ import psidev.psi.mi.jami.model.Xref;
  * @since <pre>19/12/12</pre>
  */
 
-public class DefaultXrefComparator extends AbstractXrefComparator {
+public class DefaultXrefComparator implements Comparator<Xref> {
 
     private static DefaultXrefComparator defaultXrefComparator;
 
     public DefaultXrefComparator() {
-        super(new DefaultExternalIdentifierComparator());
+        super();
     }
 
-    @Override
-    public DefaultExternalIdentifierComparator getIdentifierComparator() {
-        return (DefaultExternalIdentifierComparator) this.identifierComparator;
-    }
-
-    @Override
     /**
-     * It will first compare the external identifier composed of database and id using DefaultExternalIdentifierComparator and then it will
+     * It compares first the databases and then the ids (case sensitive) but ignores the version.
+     * To compare the databases, it looks first at the identifiers id if they exist, otherwise it looks at the database shortlabel only. Then it will
      * compare the qualifier.
      * To compare the qualifiers, it looks first at the identifiers id if they exist, otherwise it looks at the qualifier shortlabel only.
      * It will ignore the version
@@ -63,7 +61,29 @@ public class DefaultXrefComparator extends AbstractXrefComparator {
             return BEFORE;
         }
         else {
-            int comp = identifierComparator.compare(xref1, xref2);
+            // compares databases first (cannot use CvTermComparator because have to break the loop)
+            CvTerm database1 = xref1.getDatabase();
+            CvTerm database2 = xref2.getDatabase();
+            ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
+            ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+
+            // if external id of database is set, look at database id only otherwise look at shortname
+            int comp;
+            if (databaseId1 != null && databaseId2 != null){
+                comp = databaseId1.getId().compareTo(databaseId2.getId());
+            }
+            else {
+                comp = database1.getShortName().toLowerCase().trim().compareTo(database2.getShortName().toLowerCase().trim());
+            }
+
+            if (comp != 0){
+                return comp;
+            }
+            // check identifiers which cannot be null
+            String id1 = xref1.getId();
+            String id2 = xref2.getId();
+
+            comp = id1.compareTo(id2);
             if (comp != 0){
                 return comp;
             }

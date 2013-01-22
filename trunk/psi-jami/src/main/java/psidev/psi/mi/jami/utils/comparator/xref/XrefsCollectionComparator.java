@@ -2,7 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.xref;
 
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.AbstractXrefComparator;
+
+import java.util.Comparator;
 
 /**
  * Comparator for collection of Xrefs
@@ -18,12 +19,12 @@ public class XrefsCollectionComparator extends CollectionComparator<Xref> {
      *
      * @param xrefComparator
      */
-    public XrefsCollectionComparator(AbstractXrefComparator xrefComparator) {
+    public XrefsCollectionComparator(Comparator<Xref> xrefComparator) {
         super(xrefComparator);
     }
 
     @Override
-    public AbstractXrefComparator getObjectComparator() {
-        return (AbstractXrefComparator) objectComparator;
+    public Comparator<Xref> getObjectComparator() {
+        return (Comparator<Xref>) objectComparator;
     }
 }
