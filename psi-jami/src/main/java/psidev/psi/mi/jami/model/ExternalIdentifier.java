@@ -7,24 +7,11 @@ package psidev.psi.mi.jami.model;
  * @version $Id$
  * @since <pre>21/11/12</pre>
  */
-public interface ExternalIdentifier {
+public interface ExternalIdentifier extends Xref{
 
     /**
-     * The database is a controlled vocabulary term. It cannot be null.
-     * @return the database
+     * It should return identity (MI:0356) qualifier
+     * @return
      */
-    public CvTerm getDatabase();
-
-    /**
-     * The identifier in the external database/resource. It cannot be null or empty.
-     * @return the database identifier
-     */
-    public String getId();
-
-    /**
-     * The version of the identifier in the database/resource if relevant.
-     * It can be null if no versions have been specified
-     * @return the version
-     */
-    public Integer getVersion();
+    public CvTerm getQualifier();
 }

@@ -15,7 +15,29 @@ package psidev.psi.mi.jami.model;
  * @since <pre>22/11/12</pre>
  */
 
-public interface Xref extends ExternalIdentifier {
+public interface Xref {
+
+    public static String IDENTITY = "identity";
+    public static String IDENTITY_MI = "MI:0356";
+
+    /**
+     * The database is a controlled vocabulary term. It cannot be null.
+     * @return the database
+     */
+    public CvTerm getDatabase();
+
+    /**
+     * The identifier in the external database/resource. It cannot be null or empty.
+     * @return the database identifier
+     */
+    public String getId();
+
+    /**
+     * The version of the identifier in the database/resource if relevant.
+     * It can be null if no versions have been specified
+     * @return the version
+     */
+    public Integer getVersion();
 
     /**
      * The qualifier of the xref is the reference type and is a controlled vocabulary term.
