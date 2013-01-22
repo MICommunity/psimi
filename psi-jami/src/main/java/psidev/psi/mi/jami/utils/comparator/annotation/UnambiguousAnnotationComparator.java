@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.annotation;
 
 import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
@@ -60,5 +61,29 @@ public class UnambiguousAnnotationComparator extends AnnotationComparator {
         }
 
         return unambiguousAnnotationComparator.compare(annotation1, annotation2) == 0;
+    }
+
+    /**
+     *
+     * @param annot
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Annotation annot){
+        if (unambiguousAnnotationComparator == null){
+            unambiguousAnnotationComparator = new UnambiguousAnnotationComparator();
+        }
+
+        if (annot == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm topic = annot.getTopic();
+        hashcode = 31*hashcode + unambiguousAnnotationComparator.getTopicComparator().hashCode(topic);
+
+        String text = annot.getValue();
+        hashcode = 31*hashcode + (text != null ? text.toLowerCase().trim().hashCode() : 0);
+
+        return hashcode;
     }
 }

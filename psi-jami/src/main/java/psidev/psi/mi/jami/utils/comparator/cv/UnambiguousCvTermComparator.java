@@ -100,6 +100,9 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
      * @return the hashcode consistent with the equals method for this comparator
      */
     public static int hashCode(CvTerm cv1){
+        if (unambiguousCvTermComparator == null){
+            unambiguousCvTermComparator = new UnambiguousCvTermComparator();
+        }
 
         if (cv1 == null){
             return 0;

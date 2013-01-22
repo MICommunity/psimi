@@ -12,6 +12,9 @@ package psidev.psi.mi.jami.model;
 
 public interface Alias {
 
+    public static String SYNONYM_MI = "MI:1041";
+    public static String SYNONYM = "synonym";
+
     /**
      * The alias type is a controlled vocabulary term.
      * The type can be null.

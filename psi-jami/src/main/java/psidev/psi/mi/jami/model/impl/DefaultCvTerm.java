@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import java.util.Set;
  * @since <pre>21/01/13</pre>
  */
 
-public class DefaultCvTerm implements CvTerm {
+public class DefaultCvTerm implements CvTerm, Serializable {
 
     private String shortName;
     private String fullName;
@@ -155,5 +156,10 @@ public class DefaultCvTerm implements CvTerm {
         }
 
         return UnambiguousCvTermComparator.areEquals(this, (CvTerm) o);
+    }
+
+    @Override
+    public String toString() {
+        return (ontologyIdentifier != null ? ontologyIdentifier.toString() : "-") + " ("+shortName+")";
     }
 }
