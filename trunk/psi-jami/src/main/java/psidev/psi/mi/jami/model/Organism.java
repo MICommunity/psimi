@@ -70,6 +70,12 @@ public interface Organism {
     public CvTerm getCellType();
 
     /**
+     * Sets the cell type
+     * @param cellType : cell type
+     */
+    public void setCellType(CvTerm cellType);
+
+    /**
      * The subcellular compartment of the organism.
      * It can be null for the interactor source organisms
      * Ex: nuclear
@@ -78,10 +84,22 @@ public interface Organism {
     public CvTerm getCompartment();
 
     /**
+     * Sets the compartment.
+     * @param compartment : the compartment
+     */
+    public void setCompartment(CvTerm compartment);
+
+    /**
      * The source tissue.
      * It can be null for the interacator source organisms
      * Ex: non pigmented ciliary epithelium
      * @return the tissue
      */
     public CvTerm getTissue();
+
+    /**
+     * Sets the tissue
+     * @param tissue : tissue
+     */
+    public void setTissue(CvTerm tissue);
 }

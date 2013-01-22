@@ -75,4 +75,24 @@ public class OrganismTaxIdComparator implements Comparator<Organism>{
 
         return organismTaxIdComparator.compare(organism1, organism2) == 0;
     }
+
+    /**
+     *
+     * @param organism
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Organism organism){
+        if (organismTaxIdComparator == null){
+            organismTaxIdComparator = new OrganismTaxIdComparator();
+        }
+
+        if (organism == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        hashcode = 31*hashcode + organism.getTaxId();
+
+        return hashcode;
+    }
 }
