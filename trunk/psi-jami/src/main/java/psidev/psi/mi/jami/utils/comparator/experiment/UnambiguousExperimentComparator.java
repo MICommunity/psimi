@@ -1,9 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.experiment;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
-import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationComparator;
 import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
 
 /**
@@ -44,13 +45,13 @@ public class UnambiguousExperimentComparator extends ExperimentComparator {
     }
 
     @Override
-    public DefaultPublicationComparator getPublicationComparator() {
-        return (DefaultPublicationComparator) this.publicationComparator;
+    public UnambiguousPublicationComparator getPublicationComparator() {
+        return (UnambiguousPublicationComparator) this.publicationComparator;
     }
 
     @Override
-    public DefaultOrganismComparator getOrganismComparator() {
-        return (DefaultOrganismComparator) this.organismComparator;
+    public UnambiguousOrganismComparator getOrganismComparator() {
+        return (UnambiguousOrganismComparator) this.organismComparator;
     }
 
     /**
@@ -65,5 +66,32 @@ public class UnambiguousExperimentComparator extends ExperimentComparator {
         }
 
         return unambiguousExperimentComparator.compare(experiment1, experiment2) == 0;
+    }
+
+    /**
+     *
+     * @param exp
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Experiment exp){
+        if (unambiguousExperimentComparator == null){
+            unambiguousExperimentComparator = new UnambiguousExperimentComparator();
+        }
+
+        if (exp == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        Publication pub = exp.getPublication();
+        hashcode = 31*hashcode + unambiguousExperimentComparator.getPublicationComparator().hashCode(pub);
+
+        CvTerm detMethod = exp.getInteractionDetectionMethod();
+        hashcode = 31*hashcode + unambiguousExperimentComparator.getOrganismComparator().getCvTermComparator().hashCode(detMethod);
+
+        Organism organism = exp.getHostOrganism();
+        hashcode = 31*hashcode + unambiguousExperimentComparator.getOrganismComparator().hashCode(organism);
+
+        return hashcode;
     }
 }
