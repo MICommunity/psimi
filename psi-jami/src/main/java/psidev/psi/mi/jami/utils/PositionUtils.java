@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Position;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultExternalIdentifier;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * Utility class for Positions
@@ -19,27 +21,10 @@ public class PositionUtils {
             return false;
         }
 
+        CvTerm undetermined = new DefaultCvTerm(Position.UNDETERMINED, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.UNDETERMINED_MI));
         CvTerm status = position.getStatus();
-        ExternalIdentifier statusId = status.getOntologyIdentifier();
 
-        // status id
-        if (statusId != null){
-            ExternalIdentifier databaseId = statusId.getDatabase().getOntologyIdentifier();
-
-            // database has psi-mi identifier
-            if (databaseId != null && CvTerm.PSI_MI.equalsIgnoreCase(databaseId.getDatabase().getShortName()) && CvTerm.PSI_MI_ID.equals(databaseId.getId())){
-                return Position.UNDETERMINED_MI.equals(statusId.getId());
-            }
-            // database has psi-mi shortlabel
-            else if (databaseId == null && CvTerm.PSI_MI.equalsIgnoreCase(statusId.getDatabase().getShortName())){
-                return Position.UNDETERMINED_MI.equals(statusId.getId());
-            }
-
-            return false;
-        }
-        else {
-            return (Position.UNDETERMINED.equalsIgnoreCase(status.getShortName()) || Position.UNDETERMINED_FULL.equals(status.getShortName()));
-        }
+        return DefaultCvTermComparator.areEquals(undetermined, status);
     }
 
     public static boolean isNTerminalRange(Position position){
@@ -47,27 +32,10 @@ public class PositionUtils {
             return false;
         }
 
+        CvTerm nTerminalRange = new DefaultCvTerm(Position.N_TERMINAL_RANGE, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.N_TERMINAL_RANGE_MI));
         CvTerm status = position.getStatus();
-        ExternalIdentifier statusId = status.getOntologyIdentifier();
 
-        // status id
-        if (statusId != null){
-            ExternalIdentifier databaseId = statusId.getDatabase().getOntologyIdentifier();
-
-            // database has psi-mi identifier
-            if (databaseId != null && CvTerm.PSI_MI.equalsIgnoreCase(databaseId.getDatabase().getShortName()) && CvTerm.PSI_MI_ID.equals(databaseId.getId())){
-                return Position.N_TERMINAL_RANGE_MI.equals(statusId.getId());
-            }
-            // database has psi-mi shortlabel
-            else if (databaseId == null && CvTerm.PSI_MI.equalsIgnoreCase(statusId.getDatabase().getShortName())){
-                return Position.N_TERMINAL_RANGE_MI.equals(statusId.getId());
-            }
-
-            return false;
-        }
-        else {
-            return (Position.N_TERMINAL_RANGE.equalsIgnoreCase(status.getShortName()) || Position.N_TERMINAL_RANGE_FULL.equals(status.getShortName()));
-        }
+        return DefaultCvTermComparator.areEquals(nTerminalRange, status);
     }
 
     public static boolean isCTerminalRange(Position position){
@@ -75,27 +43,10 @@ public class PositionUtils {
             return false;
         }
 
+        CvTerm cTerminalRange = new DefaultCvTerm(Position.C_TERMINAL_RANGE, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.C_TERMINAL_RANGE_MI));
         CvTerm status = position.getStatus();
-        ExternalIdentifier statusId = status.getOntologyIdentifier();
 
-        // status id
-        if (statusId != null){
-            ExternalIdentifier databaseId = statusId.getDatabase().getOntologyIdentifier();
-
-            // database has psi-mi identifier
-            if (databaseId != null && CvTerm.PSI_MI.equalsIgnoreCase(databaseId.getDatabase().getShortName()) && CvTerm.PSI_MI_ID.equals(databaseId.getId())){
-                return Position.C_TERMINAL_RANGE_MI.equals(statusId.getId());
-            }
-            // database has psi-mi shortlabel
-            else if (databaseId == null && CvTerm.PSI_MI.equalsIgnoreCase(statusId.getDatabase().getShortName())){
-                return Position.C_TERMINAL_RANGE_MI.equals(statusId.getId());
-            }
-
-            return false;
-        }
-        else {
-            return (Position.C_TERMINAL_RANGE.equalsIgnoreCase(status.getShortName()) || Position.C_TERMINAL_RANGE_FULL.equals(status.getShortName()));
-        }
+        return DefaultCvTermComparator.areEquals(cTerminalRange, status);
     }
 
     public static boolean isNTerminal(Position position){
@@ -103,27 +54,10 @@ public class PositionUtils {
             return false;
         }
 
+        CvTerm nTerminal = new DefaultCvTerm(Position.N_TERMINAL, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.N_TERMINAL_MI));
         CvTerm status = position.getStatus();
-        ExternalIdentifier statusId = status.getOntologyIdentifier();
 
-        // status id
-        if (statusId != null){
-            ExternalIdentifier databaseId = statusId.getDatabase().getOntologyIdentifier();
-
-            // database has psi-mi identifier
-            if (databaseId != null && CvTerm.PSI_MI.equalsIgnoreCase(databaseId.getDatabase().getShortName()) && CvTerm.PSI_MI_ID.equals(databaseId.getId())){
-                return Position.N_TERMINAL_MI.equals(statusId.getId());
-            }
-            // database has psi-mi shortlabel
-            else if (databaseId == null && CvTerm.PSI_MI.equalsIgnoreCase(statusId.getDatabase().getShortName())){
-                return Position.N_TERMINAL_MI.equals(statusId.getId());
-            }
-
-            return false;
-        }
-        else {
-            return (Position.N_TERMINAL.equalsIgnoreCase(status.getShortName()) || Position.N_TERMINAL_FULL.equals(status.getShortName()));
-        }
+        return DefaultCvTermComparator.areEquals(nTerminal, status);
     }
 
     public static boolean isCTerminal(Position position){
@@ -131,27 +65,10 @@ public class PositionUtils {
             return false;
         }
 
+        CvTerm cTerminal = new DefaultCvTerm(Position.C_TERMINAL, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.C_TERMINAL_MI));
         CvTerm status = position.getStatus();
-        ExternalIdentifier statusId = status.getOntologyIdentifier();
 
-        // status id
-        if (statusId != null){
-            ExternalIdentifier databaseId = statusId.getDatabase().getOntologyIdentifier();
-
-            // database has psi-mi identifier
-            if (databaseId != null && CvTerm.PSI_MI.equalsIgnoreCase(databaseId.getDatabase().getShortName()) && CvTerm.PSI_MI_ID.equals(databaseId.getId())){
-                return Position.C_TERMINAL_MI.equals(statusId.getId());
-            }
-            // database has psi-mi shortlabel
-            else if (databaseId == null && CvTerm.PSI_MI.equalsIgnoreCase(statusId.getDatabase().getShortName())){
-                return Position.C_TERMINAL_MI.equals(statusId.getId());
-            }
-
-            return false;
-        }
-        else {
-            return (Position.C_TERMINAL.equalsIgnoreCase(status.getShortName()) || Position.C_TERMINAL_FULL.equals(status.getShortName()));
-        }
+        return DefaultCvTermComparator.areEquals(cTerminal, status);
     }
 
     public static boolean isRaggedNTerminal(Position position){
@@ -159,26 +76,9 @@ public class PositionUtils {
             return false;
         }
 
+        CvTerm nTerminalRagged = new DefaultCvTerm(Position.RAGGED_N_TERMINAL, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.RAGGED_N_TERMINAL_MI));
         CvTerm status = position.getStatus();
-        ExternalIdentifier statusId = status.getOntologyIdentifier();
 
-        // status id
-        if (statusId != null){
-            ExternalIdentifier databaseId = statusId.getDatabase().getOntologyIdentifier();
-
-            // database has psi-mi identifier
-            if (databaseId != null && CvTerm.PSI_MI.equalsIgnoreCase(databaseId.getDatabase().getShortName()) && CvTerm.PSI_MI_ID.equals(databaseId.getId())){
-                return Position.RAGGED_N_TERMINAL_MI.equals(statusId.getId());
-            }
-            // database has psi-mi shortlabel
-            else if (databaseId == null && CvTerm.PSI_MI.equalsIgnoreCase(statusId.getDatabase().getShortName())){
-                return Position.RAGGED_N_TERMINAL_MI.equals(statusId.getId());
-            }
-
-            return false;
-        }
-        else {
-            return Position.RAGGED_N_TERMINAL.equalsIgnoreCase(status.getShortName());
-        }
+        return DefaultCvTermComparator.areEquals(nTerminalRagged, status);
     }
 }

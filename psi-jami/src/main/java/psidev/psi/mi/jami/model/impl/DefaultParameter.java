@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultParameter implements Parameter {
+public class DefaultParameter implements Parameter, Serializable {
 
     private CvTerm type;
     private BigDecimal uncertainty;
