@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.range;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
@@ -61,5 +62,28 @@ public class UnambiguousPositionComparator extends PositionComparator {
         }
 
         return unambiguousPositionComparator.compare(pos1, pos2) == 0;
+    }
+
+    /**
+     *
+     * @param pos
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Position pos){
+        if (unambiguousPositionComparator == null){
+            unambiguousPositionComparator = new UnambiguousPositionComparator();
+        }
+
+        if (pos == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm status = pos.getStatus();
+        hashcode = 31*hashcode + unambiguousPositionComparator.getStatusComparator().hashCode(status);
+        hashcode = 31*hashcode + pos.getStart();
+        hashcode = 31*hashcode + pos.getEnd();
+
+        return hashcode;
     }
 }
