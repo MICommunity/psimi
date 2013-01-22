@@ -68,12 +68,11 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
         else {
             ExternalIdentifier externalIdentifier1 = cvTerm1.getOntologyIdentifier();
             ExternalIdentifier externalIdentifier2 = cvTerm1.getOntologyIdentifier();
-            int comp2 = identifierComparator.compare(externalIdentifier1, externalIdentifier2);
-            if (comp2 != 0){
-               return comp2;
+            if (externalIdentifier1 != null || externalIdentifier2 != null){
+                return identifierComparator.compare(externalIdentifier1, externalIdentifier2);
             }
 
-            // check names which cannot be null
+            // check names which cannot be null only if both identifiers are null
             String label1 = cvTerm1.getShortName();
             String label2 = cvTerm1.getShortName();
 
@@ -93,5 +92,28 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
         }
 
         return unambiguousCvTermComparator.compare(cv1, cv2) == 0;
+    }
+
+    /**
+     *
+     * @param cv1
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(CvTerm cv1){
+
+        if (cv1 == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        ExternalIdentifier externalIdentifier1 = cv1.getOntologyIdentifier();
+        if (externalIdentifier1 != null){
+            hashcode = 31*hashcode + unambiguousCvTermComparator.getIdentifierComparator().hashCode(externalIdentifier1);
+        }
+        else {
+            hashcode = 31*hashcode + cv1.getShortName().toLowerCase().trim().hashCode();
+        }
+
+        return hashcode;
     }
 }

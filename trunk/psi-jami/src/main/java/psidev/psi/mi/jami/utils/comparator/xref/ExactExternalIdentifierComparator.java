@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.xref;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExternalIdentifier;
 
 /**
@@ -88,5 +89,33 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
         }
 
         return exactIdentifierComparator.compare(externalIdentifier1, externalIdentifier2) == 0;
+    }
+
+    /**
+     *
+     * @param externalIdentifier1
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(ExternalIdentifier externalIdentifier1){
+
+        if (externalIdentifier1 == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm database1 = externalIdentifier1.getDatabase();
+        ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
+
+        if (databaseId1 != null){
+            hashcode = 31*hashcode + databaseId1.getId().hashCode();
+        }
+        else {
+            hashcode = 31*hashcode + database1.getShortName().toLowerCase().hashCode();
+        }
+
+        hashcode = 31 * hashcode + externalIdentifier1.getId().hashCode();
+        hashcode = 31 * hashcode + (externalIdentifier1.getVersion() != null ? externalIdentifier1.getVersion().hashCode() : 0);
+
+        return hashcode;
     }
 }
