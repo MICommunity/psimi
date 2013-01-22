@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.alias;
 
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
@@ -58,5 +59,28 @@ public class UnambiguousAliasComparator extends AliasComparator {
         }
 
         return unambiguousAliasComparator.compare(alias1, alias2) == 0;
+    }
+
+    /**
+     *
+     * @param alias
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Alias alias){
+        if (unambiguousAliasComparator == null){
+            unambiguousAliasComparator = new UnambiguousAliasComparator();
+        }
+        if (alias == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm type = alias.getType();
+        hashcode = 31*hashcode + unambiguousAliasComparator.getTypeComparator().hashCode(type);
+
+        String name = alias.getName();
+        hashcode = 31*hashcode + name.hashCode();
+
+        return hashcode;
     }
 }

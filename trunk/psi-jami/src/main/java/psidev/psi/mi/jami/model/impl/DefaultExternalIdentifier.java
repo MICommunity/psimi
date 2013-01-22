@@ -67,4 +67,9 @@ public class DefaultExternalIdentifier implements ExternalIdentifier, Serializab
     public int hashCode() {
         return UnambiguousExternalIdentifierComparator.hashCode(this);
     }
+
+    @Override
+    public String toString() {
+        return database.toString() + ":" + id.toString();
+    }
 }

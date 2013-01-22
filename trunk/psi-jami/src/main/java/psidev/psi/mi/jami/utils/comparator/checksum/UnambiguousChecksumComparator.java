@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.checksum;
 
 import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
@@ -55,5 +56,29 @@ public class UnambiguousChecksumComparator extends ChecksumComparator {
         }
 
         return unambiguousChecksumComparator.compare(checksum1, checksum2) == 0;
+    }
+
+    /**
+     *
+     * @param checksum
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Checksum checksum){
+        if (unambiguousChecksumComparator == null){
+            unambiguousChecksumComparator = new UnambiguousChecksumComparator();
+        }
+
+        if (checksum == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm method = checksum.getMethod();
+        hashcode = 31*hashcode + unambiguousChecksumComparator.getMethodComparator().hashCode(method);
+
+        String value = checksum.getValue();
+        hashcode = 31*hashcode + (value != null ? value.toLowerCase().trim().hashCode() : 0);
+
+        return hashcode;
     }
 }

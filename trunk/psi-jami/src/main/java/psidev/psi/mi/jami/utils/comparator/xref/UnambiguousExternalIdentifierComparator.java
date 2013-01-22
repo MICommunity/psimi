@@ -105,7 +105,9 @@ public class UnambiguousExternalIdentifierComparator implements Comparator<Exter
      * @return the hashcode consistent with the equals method for this comparator
      */
     public static int hashCode(ExternalIdentifier externalIdentifier1){
-
+        if (unambiguousIdentifierComparator == null){
+            unambiguousIdentifierComparator = new UnambiguousExternalIdentifierComparator();
+        }
         if (externalIdentifier1 == null){
             return 0;
         }
