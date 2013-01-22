@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.organism;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
@@ -56,5 +57,34 @@ public class UnambiguousOrganismComparator extends OrganismComparator {
         }
 
         return unambiguousOrganismComparator.compare(organism1, organism2) == 0;
+    }
+
+    /**
+     *
+     * @param organism
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Organism organism){
+        if (unambiguousOrganismComparator == null){
+            unambiguousOrganismComparator = new UnambiguousOrganismComparator();
+        }
+
+        if (organism == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        hashcode = 31*hashcode + organism.getTaxId();
+
+        CvTerm cellType = organism.getCellType();
+        hashcode = 31*hashcode + unambiguousOrganismComparator.getCvTermComparator().hashCode(cellType);
+
+        CvTerm tissue = organism.getTissue();
+        hashcode = 31*hashcode + unambiguousOrganismComparator.getCvTermComparator().hashCode(tissue);
+
+        CvTerm compartment = organism.getCompartment();
+        hashcode = 31*hashcode + unambiguousOrganismComparator.getCvTermComparator().hashCode(compartment);
+
+        return hashcode;
     }
 }
