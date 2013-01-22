@@ -61,4 +61,24 @@ public class ParameterValueComparator implements Comparator<ParameterValue>{
 
         return parameterValueComparator.compare(value1, value2) == 0;
     }
+
+    /**
+     *
+     * @param param
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(ParameterValue param){
+        if (parameterValueComparator == null){
+            parameterValueComparator = new ParameterValueComparator();
+        }
+
+        if (param == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        hashcode = 31*hashcode + (param.getFactor().multiply(BigDecimal.valueOf(param.getBase() ^ param.getExponent()))).hashCode();
+
+        return hashcode;
+    }
 }
