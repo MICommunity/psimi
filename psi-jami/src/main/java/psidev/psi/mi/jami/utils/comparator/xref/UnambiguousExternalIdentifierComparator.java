@@ -8,7 +8,7 @@ import java.util.Comparator;
 /**
  * Unambiguous comparator for external identifiers.
  * It compares first the databases and then the ids (case sensitive) but ignores the version.
- * To compare the databases, it looks first at the identifiers id if they both exist, otherwise it looks at the database shortlabel only.
+ * To compare the databases, it looks first at the identifiers id (the database with identifier will always come first), otherwise it looks at the database shortlabel only.
  * If one database identifier is null, it will always comes after an ExternalIdentifier having a non null database id.
  * - Two external identifiers which are null are equals
  * - The external identifier which is not null is before null.
@@ -97,5 +97,32 @@ public class UnambiguousExternalIdentifierComparator implements Comparator<Exter
         }
 
         return unambiguousIdentifierComparator.compare(externalIdentifier1, externalIdentifier2) == 0;
+    }
+
+    /**
+     *
+     * @param externalIdentifier1
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(ExternalIdentifier externalIdentifier1){
+
+        if (externalIdentifier1 == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm database1 = externalIdentifier1.getDatabase();
+        ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
+
+        if (databaseId1 != null){
+            hashcode = 31*hashcode + databaseId1.getId().hashCode();
+        }
+        else {
+            hashcode = 31*hashcode + database1.getShortName().toLowerCase().hashCode();
+        }
+
+        hashcode = 31 * hashcode + externalIdentifier1.getId().hashCode();
+
+        return hashcode;
     }
 }
