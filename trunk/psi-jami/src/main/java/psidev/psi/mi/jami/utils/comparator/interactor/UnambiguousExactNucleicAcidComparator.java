@@ -5,10 +5,9 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Unambiguous exact nucleic acids comparator.
- * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
+ * It will first use UnambiguousExactInteractorBaseComparator to compare the basic interactor properties.
+ * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
- * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use UnambiguousExactInteractorBaseComparator to compare the interactor properties
- *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,10 +28,9 @@ public class UnambiguousExactNucleicAcidComparator extends NucleicAcidComparator
 
     @Override
     /**
-     * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
+     * It will first use UnambiguousExactInteractorBaseComparator to compare the basic interactor properties.
+     * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
-     * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use UnambiguousExactInteractorBaseComparator to compare the interactor properties
-     *
      */
     public int compare(NucleicAcid nucleicAcid1, NucleicAcid nucleicAcid2) {
         return super.compare(nucleicAcid1, nucleicAcid2);

@@ -6,9 +6,9 @@ import java.util.Comparator;
 
 /**
  * Basic genes comparator.
- * It will look first at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
+ * It will first use InteractorBaseComparator to compare the basic interactor properties
+ * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
  * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
- * If the properties of a gene were not enough to compare the genes, it will use InteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -27,9 +27,9 @@ public class GeneComparator implements Comparator<Gene> {
     }
 
     /**
-     * It will look first at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
+     * It will first use InteractorBaseComparator to compare the basic interactor properties
+     * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
      * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
-     * If the properties of a gene were not enough to compare the genes, it will use InteractorBaseComparator to compare the interactor properties
      *
      * @param gene1
      * @param gene2
@@ -50,6 +50,12 @@ public class GeneComparator implements Comparator<Gene> {
             return BEFORE;
         }
         else {
+            // First compares the interactor properties
+            int comp = interactorComparator.compare(gene1, gene2);
+            if (comp != 0){
+                return comp;
+            }
+
             // first compares ensembl identifiers
             String ensembl1 = gene1.getEnsembl();
             String ensembl2 = gene2.getEnsembl();
@@ -82,8 +88,7 @@ public class GeneComparator implements Comparator<Gene> {
                 return refseq1.compareTo(refseq2);
             }
 
-            // compares the interactor properties if the gene properties are not enough
-            return interactorComparator.compare(gene1, gene2);
+            return comp;
         }
     }
 

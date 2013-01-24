@@ -14,10 +14,9 @@ import java.util.Comparator;
 /**
  * Basic ComplexComparator.
  *
- * It will first compare the collection of components using ComponentComparator.
+ * It will first look at the default properties of an interactor using InteractorBaseComparator.
+ * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
  * If the collection of components is the same, it will look at the parameters using ParameterComparator.
- * If the parameters are the same and the collection of components was empty in both complexes, it will look at the default properties of an interactor
- * using InteractorBaseComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -52,10 +51,10 @@ public class ComplexComparator implements Comparator<Complex> {
     }
 
     /**
-     * It will first compare the collection of components using ComponentComparator.
+     * It will first look at the default properties of an interactor using InteractorBaseComparator.
+     * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
      * If the collection of components is the same, it will look at the parameters using ParameterComparator.
-     * If the parameters are the same and the collection of components was empty in both complexes, it will look at the default properties of an interactor
-     * using InteractorBaseComparator.
+     *
      * @param complex1
      * @param complex2
      * @return
@@ -75,11 +74,17 @@ public class ComplexComparator implements Comparator<Complex> {
             return BEFORE;
         }
         else {
-            // first compares collection of components
+            // compares the basic interactor properties first
+            int comp = interactorComparator.compare(complex1, complex2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compares collection of components
             Collection<Component> components1 = complex1.getComponents();
             Collection<Component> components2 = complex2.getComponents();
 
-            int comp = componentCollectionComparator.compare(components1, components2);
+            comp = componentCollectionComparator.compare(components1, components2);
             if (comp != 0){
                return comp;
             }
@@ -88,19 +93,7 @@ public class ComplexComparator implements Comparator<Complex> {
             Collection<Parameter> parameters1 = complex1.getParameters();
             Collection<Parameter> parameters2 = complex2.getParameters();
 
-            comp = parameterCollectionComparator.compare(parameters1, parameters2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // only compares other participant properties if list of interactors is empty
-            if (components1.isEmpty() && components2.isEmpty()){
-                // compares the interactor properties if the complex properties are not enough
-                return interactorComparator.compare(complex1, complex2);
-            }
-            else {
-                return comp;
-            }
+            return parameterCollectionComparator.compare(parameters1, parameters2);
         }
     }
 

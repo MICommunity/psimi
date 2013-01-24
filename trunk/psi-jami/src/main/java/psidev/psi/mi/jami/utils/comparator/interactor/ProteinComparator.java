@@ -7,10 +7,10 @@ import java.util.Comparator;
 
 /**
  * Basic proteins comparator.
- * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
+ * It will first use InteractorBaseComparator to compare the basic interactor properties
+ * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
  * If at least one gene name is not set, it will look at sequence/organism.
- * If the properties of a protein were not enough to compare the proteins, it will use InteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -55,10 +55,10 @@ public class ProteinComparator implements Comparator<Protein>{
     }
 
     /**
-     * It will look first for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
+     * It will first use InteractorBaseComparator to compare the basic interactor properties
+     * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
      * If at least one gene name is not set, it will look at sequence/organism.
-     * If the properties of a protein were not enough to compare the proteins, it will use InteractorBaseComparator to compare the interactor properties
      *
      * @param protein1
      * @param protein2
@@ -79,7 +79,14 @@ public class ProteinComparator implements Comparator<Protein>{
             return BEFORE;
         }
         else {
-            // first compares uniprot identifiers
+
+            // First compares the basic interactor properties
+            int comp = interactorComparator.compare(protein1, protein2);
+            if (comp != 0){
+               return comp;
+            }
+
+            // then compares uniprot identifiers
             String uniprot1 = protein1.getUniprotkb();
             String uniprot2 = protein2.getUniprotkb();
 
@@ -99,7 +106,7 @@ public class ProteinComparator implements Comparator<Protein>{
             String rogid1 = protein1.getRogid();
             String rogid2 = protein2.getRogid();
 
-            if (refseq1 != null && refseq2 != null){
+            if (rogid1 != null && rogid2 != null){
                 return rogid1.compareTo(rogid2);
             }
 
@@ -116,16 +123,13 @@ public class ProteinComparator implements Comparator<Protein>{
             String seq2 = protein2.getSequence();
 
             if (seq1 != null && seq2 != null){
-                int comp = seq1.compareTo(seq2);
+                comp = seq1.compareTo(seq2);
                 // if sequences are equal, look at the organism before saying that the proteins are equals.
                 if (comp == 0){
                     comp = organismComparator.compare(protein1.getOrganism(), protein2.getOrganism());
                 }
-                return comp;
             }
-
-            // compares the interactor properties if the protein properties are not enough
-            return interactorComparator.compare(protein1, protein2);
+            return comp;
         }
     }
 

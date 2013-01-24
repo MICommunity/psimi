@@ -7,9 +7,9 @@ import java.util.Comparator;
 
 /**
  * Basic nucleic acids comparator.
- * It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
+ * It will first use InteractorBaseComparator to compare the basic interactor properties.
+ * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
- * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use InteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -54,9 +54,9 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
     }
 
     /**
-     *  It will look first for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
+     * It will first use InteractorBaseComparator to compare the basic interactor properties.
+     * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
-     * If the properties of a nucleic acid were not enough to compare the nucleic acids, it will use Comparator<Interactor> to compare the interactor properties
      *
      * @param nucleicAcid1
      * @param nucleicAcid2
@@ -78,7 +78,14 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
             return BEFORE;
         }
         else {
-            // first compares DDBJ/EMBL/Genbank identifiers
+
+            // compares first the basic interactor properties
+            int comp = interactorComparator.compare(nucleicAcid1, nucleicAcid2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compares DDBJ/EMBL/Genbank identifiers
             String ddbjEmblGenbank1 = nucleicAcid1.getDdbjEmblGenbank();
             String ddbjEmblGenbank2 = nucleicAcid1.getDdbjEmblGenbank();
 
@@ -99,16 +106,14 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
             String seq2 = nucleicAcid2.getSequence();
 
             if (seq1 != null && seq2 != null){
-                int comp = seq1.compareTo(seq2);
+                comp = seq1.compareTo(seq2);
                 // if sequences are equal, look at the organism before saying that the nucleic acids are equals.
                 if (comp == 0){
                     comp = organismComparator.compare(nucleicAcid1.getOrganism(), nucleicAcid2.getOrganism());
                 }
-                return comp;
             }
 
-            // compares the interactor properties if the nucleic acid properties are not enough
-            return interactorComparator.compare(nucleicAcid1, nucleicAcid2);
+            return comp;
         }
     }
 
