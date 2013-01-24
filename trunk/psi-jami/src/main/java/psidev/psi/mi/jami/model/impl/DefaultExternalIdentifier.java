@@ -5,8 +5,6 @@ import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
-import java.io.Serializable;
-
 /**
  * Default implementation for ExternalIdentifier
  *
@@ -15,7 +13,7 @@ import java.io.Serializable;
  * @since <pre>21/01/13</pre>
  */
 
-public class DefaultExternalIdentifier extends DefaultXref implements ExternalIdentifier, Serializable{
+public class DefaultExternalIdentifier extends DefaultXref implements ExternalIdentifier{
 
     public DefaultExternalIdentifier(CvTerm database, String id, Integer version){
         super(database, id, version, new DefaultCvTerm(Xref.IDENTITY, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Xref.IDENTITY_MI)));

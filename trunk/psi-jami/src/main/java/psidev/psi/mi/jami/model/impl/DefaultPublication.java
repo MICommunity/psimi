@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -13,7 +14,7 @@ import java.util.*;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultPublication implements Publication {
+public class DefaultPublication implements Publication, Serializable {
 
     private ExternalIdentifier identifier;
     private String imexId;
