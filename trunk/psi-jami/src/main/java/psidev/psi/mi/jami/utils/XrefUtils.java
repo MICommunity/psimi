@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultExternalIdentifier;
 
 import java.util.Collection;
 
@@ -16,14 +14,6 @@ import java.util.Collection;
  */
 
 public class XrefUtils {
-
-    private static CvTerm psimi;
-    private static CvTerm chebiDatabase;
-
-    static {
-        psimi = new DefaultCvTerm(CvTerm.PSI_MI);
-        chebiDatabase = new DefaultCvTerm(CvTerm.CHEBI, new DefaultExternalIdentifier(psimi, CvTerm.CHEBI));
-    }
 
     /**
      * Retrives a unique Xref having a database that matches the database id (if set) or the database name.
@@ -71,13 +61,5 @@ public class XrefUtils {
         }
 
         return uniqueXref;
-    }
-
-    public static CvTerm getPsimi() {
-        return psimi;
-    }
-
-    public static CvTerm getChebiDatabase() {
-        return chebiDatabase;
     }
 }

@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExternalIdentifier;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 /**
  * Utility class for Positions
@@ -16,12 +17,27 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 public class PositionUtils {
 
+    private static CvTerm undetermined;
+    private static CvTerm nTerminalRange;
+    private static CvTerm cTerminalRange;
+    private static CvTerm nTerminal;
+    private static CvTerm cTerminal;
+    private static CvTerm nTerminalRagged;
+
+    static{
+        undetermined = new DefaultCvTerm(Position.UNDETERMINED, new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Position.UNDETERMINED_MI));
+        nTerminalRange = new DefaultCvTerm(Position.N_TERMINAL_RANGE, new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Position.N_TERMINAL_RANGE_MI));
+        cTerminalRange = new DefaultCvTerm(Position.C_TERMINAL_RANGE, new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Position.C_TERMINAL_RANGE_MI));
+        nTerminal = new DefaultCvTerm(Position.N_TERMINAL, new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Position.N_TERMINAL_MI));
+        cTerminal = new DefaultCvTerm(Position.C_TERMINAL, new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Position.C_TERMINAL_MI));
+        nTerminalRagged = new DefaultCvTerm(Position.RAGGED_N_TERMINAL, new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Position.RAGGED_N_TERMINAL_MI));
+    }
+
     public static boolean isUndetermined(Position position){
         if (position == null){
             return false;
         }
 
-        CvTerm undetermined = new DefaultCvTerm(Position.UNDETERMINED, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.UNDETERMINED_MI));
         CvTerm status = position.getStatus();
 
         return DefaultCvTermComparator.areEquals(undetermined, status);
@@ -32,7 +48,6 @@ public class PositionUtils {
             return false;
         }
 
-        CvTerm nTerminalRange = new DefaultCvTerm(Position.N_TERMINAL_RANGE, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.N_TERMINAL_RANGE_MI));
         CvTerm status = position.getStatus();
 
         return DefaultCvTermComparator.areEquals(nTerminalRange, status);
@@ -43,7 +58,6 @@ public class PositionUtils {
             return false;
         }
 
-        CvTerm cTerminalRange = new DefaultCvTerm(Position.C_TERMINAL_RANGE, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.C_TERMINAL_RANGE_MI));
         CvTerm status = position.getStatus();
 
         return DefaultCvTermComparator.areEquals(cTerminalRange, status);
@@ -54,7 +68,6 @@ public class PositionUtils {
             return false;
         }
 
-        CvTerm nTerminal = new DefaultCvTerm(Position.N_TERMINAL, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.N_TERMINAL_MI));
         CvTerm status = position.getStatus();
 
         return DefaultCvTermComparator.areEquals(nTerminal, status);
@@ -65,7 +78,6 @@ public class PositionUtils {
             return false;
         }
 
-        CvTerm cTerminal = new DefaultCvTerm(Position.C_TERMINAL, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.C_TERMINAL_MI));
         CvTerm status = position.getStatus();
 
         return DefaultCvTermComparator.areEquals(cTerminal, status);
@@ -76,7 +88,6 @@ public class PositionUtils {
             return false;
         }
 
-        CvTerm nTerminalRagged = new DefaultCvTerm(Position.RAGGED_N_TERMINAL, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Position.RAGGED_N_TERMINAL_MI));
         CvTerm status = position.getStatus();
 
         return DefaultCvTermComparator.areEquals(nTerminalRagged, status);
