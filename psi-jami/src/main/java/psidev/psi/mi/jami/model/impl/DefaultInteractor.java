@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -135,7 +136,8 @@ public class DefaultInteractor implements Interactor {
             return false;
         }
 
-        return UnambiguousExactInteractorBaseComparator.areEquals(this, (Interactor) o);
+        // use UnambiguousExactInteractor comparator for equals
+        return UnambiguousExactInteractorComparator.areEquals(this, (Interactor) o);
     }
 
     @Override
@@ -145,6 +147,8 @@ public class DefaultInteractor implements Interactor {
 
     @Override
     public int hashCode() {
+        // use UnambiguousExactInteractorBase comparator for hashcode to avoid instance of calls. It is possible that
+        // the method equals will return false and the hashcode will be the same but it is not a big issue
         return UnambiguousExactInteractorBaseComparator.hashCode(this);
     }
 }
