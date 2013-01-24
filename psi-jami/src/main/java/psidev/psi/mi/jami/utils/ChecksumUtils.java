@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultExternalIdentifier;
 
 import java.util.Collection;
 
@@ -16,16 +14,6 @@ import java.util.Collection;
  */
 
 public class ChecksumUtils {
-
-    private static CvTerm smile;
-    private static CvTerm standardInchi;
-    private static CvTerm standardInchiKey;
-
-    static {
-        smile = new DefaultCvTerm(Checksum.SMILE, new DefaultExternalIdentifier(XrefUtils.getPsimi(), Checksum.SMILE_ID));
-        standardInchi = new DefaultCvTerm(Checksum.INCHI, new DefaultExternalIdentifier(XrefUtils.getPsimi(), Checksum.INCHI_ID));
-        standardInchiKey = new DefaultCvTerm(Checksum.INCHI_KEY, new DefaultExternalIdentifier(XrefUtils.getPsimi(), Checksum.INCHI_KEY_ID));
-    }
 
     /**
      * Retrives a unique Checksum having a method that matches the method id (if set) or the method name.
@@ -73,17 +61,5 @@ public class ChecksumUtils {
         }
 
         return uniqueChecksum;
-    }
-
-    public static CvTerm getSmile() {
-        return smile;
-    }
-
-    public static CvTerm getStandardInchi() {
-        return standardInchi;
-    }
-
-    public static CvTerm getStandardInchiKey() {
-        return standardInchiKey;
     }
 }

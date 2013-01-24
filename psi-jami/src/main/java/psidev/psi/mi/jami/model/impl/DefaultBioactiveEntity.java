@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactBioactiveEntityComparator;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 /**
  * Default implementation for bioactive entity
@@ -68,14 +69,14 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     public void setChebi(String id) {
         this.chebi = id;
         if (isUniqueIdentifierFromChebi){
-            this.uniqueIdentifier = new DefaultExternalIdentifier(XrefUtils.getChebiDatabase(), id);
+            this.uniqueIdentifier = new DefaultExternalIdentifier(CvTermFactory.createChebiDatabase(), id);
         }
         else {
             Xref ref = XrefUtils.collectUniqueXrefFromDatabaseIfExists(this.alternativeIdentifiers, CvTerm.CHEBI_ID, CvTerm.CHEBI);
             if (ref != null){
                 this.alternativeIdentifiers.remove(ref);
             }
-            this.alternativeIdentifiers.add(new DefaultExternalIdentifier(XrefUtils.getChebiDatabase(), id));
+            this.alternativeIdentifiers.add(new DefaultExternalIdentifier(CvTermFactory.createChebiDatabase(), id));
         }
     }
 
@@ -92,7 +93,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         if (checksum != null){
             this.checksums.remove(checksum);
         }
-        this.checksums.add(new DefaultChecksum(ChecksumUtils.getSmile(), smile));
+        this.checksums.add(new DefaultChecksum(CvTermFactory.createSmile(), smile));
     }
 
     public String getStandardInchiKey() {
@@ -108,7 +109,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         if (checksum != null){
             this.checksums.remove(checksum);
         }
-        this.checksums.add(new DefaultChecksum(ChecksumUtils.getStandardInchiKey(), key));
+        this.checksums.add(new DefaultChecksum(CvTermFactory.createStandardInchiKey(), key));
     }
 
     public String getStandardInchi() {
@@ -124,7 +125,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         if (checksum != null){
             this.checksums.remove(checksum);
         }
-        this.checksums.add(new DefaultChecksum(ChecksumUtils.getStandardInchi(), inchi));
+        this.checksums.add(new DefaultChecksum(CvTermFactory.createStandardInchi(), inchi));
     }
 
     @Override
