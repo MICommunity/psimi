@@ -6,10 +6,10 @@ import java.util.Comparator;
 
 /**
  * Basic bioactive entity comparator.
- * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
+ * It will first use InteractorBaseComparator to compare the basic interactor properties.
+ * If the basic interactor properties are the same, It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
  * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
  * will look at the standard Inchi.
- * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use CInteractorBaseComparator to compare the interactor properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -32,10 +32,10 @@ public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
     }
 
     /**
-     * It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
+     * It will first use InteractorBaseComparator to compare the basic interactor properties.
+     * If the basic interactor properties are the same, It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
      * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
      * will look at the standard Inchi.
-     * If the properties of a bioactive entity were not enough to compare the bioactive entities, it will use InteractorBaseComparator to compare the interactor properties
      * @param bioactiveEntity1
      * @param bioactiveEntity2
      * @return
@@ -55,7 +55,14 @@ public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
             return BEFORE;
         }
         else {
-            // first compares CHEBI identifiers
+
+            // First compares the basic interactor properties
+            int comp = interactorComparator.compare(bioactiveEntity1, bioactiveEntity2);
+            if (comp != 0){
+               return comp;
+            }
+
+            // then compares CHEBI identifiers
             String chebi1 = bioactiveEntity1.getChebi();
             String chebi2 = bioactiveEntity2.getChebi();
 
@@ -87,8 +94,7 @@ public class BioactiveEntityComparator implements Comparator<BioactiveEntity> {
                 return inchi1.compareTo(inchi2);
             }
 
-            // compares the interactor properties if the bioactive properties are not enough
-            return interactorComparator.compare(bioactiveEntity1, bioactiveEntity2);
+            return comp;
         }
     }
 

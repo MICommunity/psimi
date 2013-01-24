@@ -7,10 +7,10 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentCompa
 /**
  * Unambiguous exact Complex comparator
  *
- * It will first compare the collection of components using UnambiguousComponentComparator.
- * If the collection of components is the same, it will look at the parameters using UnambiguousParameterComparator.
- * If the parameters are the same and the collection of components was empty in both complexes, it will look at the default properties of an interactor
- * using UnambiguousExactInteractorBaseComparator.
+ * It will first look at the default properties of an interactor using UnambiguousExactInteractorBaseComparator.
+ * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
+ * If the collection of components is the same, it will look at the parameters using ParameterComparator.
+ *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -22,7 +22,7 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
     private static UnambiguousExactComplexComparator unambiguousExactComplexComparator;
 
     /**
-     * Creates a new UnambiguousExactComplexComparator. It will use a UnambiguousExactInteractorBaseComparator, UnambiguousComponentComparator to
+     * Creates a new UnambiguousExactComplexComparator. It will use a UnambiguousExactInteractorBaseComparator, UnambiguousExactComponentComparator to
      * compares components and a UnambiguousParameterComparator to compare parameters..
      */
     public UnambiguousExactComplexComparator() {
@@ -32,10 +32,9 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
     @Override
     /**
      *
-     * It will first compare the collection of components using UnambiguousComponentComparator.
-     * If the collection of components is the same, it will look at the parameters using UnambiguousParameterComparator.
-     * If the parameters are the same and the collection of components was empty in both complexes, it will look at the default properties of an interactor
-     * using UnambiguousExactInteractorBaseComparator.
+     * It will first look at the default properties of an interactor using UnambiguousExactInteractorBaseComparator.
+     * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousExactComponentComparator.
+     * If the collection of components is the same, it will look at the parameters using ParameterComparator.
      */
     public int compare(Complex complex1, Complex complex2) {
         return super.compare(complex1, complex2);

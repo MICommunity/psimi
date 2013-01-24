@@ -1,0 +1,150 @@
+package psidev.psi.mi.jami.model.impl;
+
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Default implementation for Interactor
+ *
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id$
+ * @since <pre>22/01/13</pre>
+ */
+
+public class DefaultInteractor implements Interactor {
+
+    private String shortName;
+    private String fullName;
+    private ExternalIdentifier uniqueIdentifier;
+    private Set<ExternalIdentifier> alternativeIdentifiers;
+    private Set<Checksum> checksums;
+    private Set<Xref> xrefs;
+    private Set<Annotation> annotations;
+    private Set<Alias> aliases;
+    private Organism organism;
+    private CvTerm type;
+
+    public DefaultInteractor(String name, CvTerm type){
+        if (name == null || (name != null && name.length() == 0)){
+            throw new IllegalArgumentException("The short name cannot be null or empty.");
+        }
+        this.shortName = name;
+        if (type == null){
+            throw new IllegalArgumentException("The interactor type cannot be null.");
+        }
+        this.type = type;
+
+        this.alternativeIdentifiers = new HashSet<ExternalIdentifier>();
+        this.checksums = new HashSet<Checksum>();
+        this.xrefs = new HashSet<Xref>();
+        this.annotations = new HashSet<Annotation>();
+        this.aliases = new HashSet<Alias>();
+    }
+
+    public DefaultInteractor(String name, String fullName, CvTerm type){
+        this(name, type);
+        this.fullName = fullName;
+    }
+
+    public DefaultInteractor(String name, CvTerm type, Organism organism){
+        this(name, type);
+        this.organism = organism;
+    }
+
+    public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism){
+        this(name, fullName, type);
+        this.organism = organism;
+    }
+
+    public String getShortName() {
+        return this.shortName;
+    }
+
+    public void setShortName(String name) {
+        if (name == null || (name != null && name.length() == 0)){
+             throw new IllegalArgumentException("The short name cannot be null or empty.");
+        }
+        this.shortName = name;
+    }
+
+    public String getFullName() {
+        return this.fullName;
+    }
+
+    public void setFullName(String name) {
+        this.fullName = name;
+    }
+
+    public ExternalIdentifier getUniqueIdentifier() {
+        return this.uniqueIdentifier;
+    }
+
+    public void setUniqueIdentifier(ExternalIdentifier identifier) {
+        this.uniqueIdentifier = identifier;
+    }
+
+    public Set<ExternalIdentifier> getAlternativeIdentifiers() {
+        return this.alternativeIdentifiers;
+    }
+
+    public Set<Checksum> getChecksums() {
+        return this.checksums;
+    }
+
+    public Set<Xref> getXrefs() {
+        return this.xrefs;
+    }
+
+    public Set<Annotation> getAnnotations() {
+        return this.annotations;
+    }
+
+    public Set<Alias> getAliases() {
+        return this.aliases;
+    }
+
+    public Organism getOrganism() {
+        return this.organism;
+    }
+
+    public void setOrganism(Organism organism) {
+        this.organism = organism;
+    }
+
+    public CvTerm getType() {
+        return this.type;
+    }
+
+    public void setType(CvTerm type) {
+        if (type == null){
+            throw new IllegalArgumentException("The interactor type cannot be null.");
+        }
+        this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof Interactor)){
+            return false;
+        }
+
+        return UnambiguousExactInteractorBaseComparator.areEquals(this, (Interactor) o);
+    }
+
+    @Override
+    public String toString() {
+        return shortName + (uniqueIdentifier != null ? uniqueIdentifier.toString() : "");
+    }
+
+    @Override
+    public int hashCode() {
+        return UnambiguousExactInteractorBaseComparator.hashCode(this);
+    }
+}
