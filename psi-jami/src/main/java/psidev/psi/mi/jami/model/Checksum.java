@@ -11,6 +11,13 @@ package psidev.psi.mi.jami.model;
 
 public interface Checksum {
 
+    public static String SMILE = "smiles string";
+    public static String SMILE_ID = "MI:2039";
+    public static String INCHI = "stamdard inchi";
+    public static String INCHI_ID = "MI:2010";
+    public static String INCHI_KEY = "standard inchi key";
+    public static String INCHI_KEY_ID = "MI:1101";
+
     /**
      * The method is a controlled vocabulary term and cannot be null
      * Ex: ROGID, CROGID, RIGID, CRC64, ...

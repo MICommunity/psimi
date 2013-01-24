@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,13 +16,13 @@ import java.util.Set;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultInteractor implements Interactor {
+public class DefaultInteractor implements Interactor, Serializable {
 
     private String shortName;
     private String fullName;
-    private ExternalIdentifier uniqueIdentifier;
-    private Set<ExternalIdentifier> alternativeIdentifiers;
-    private Set<Checksum> checksums;
+    protected ExternalIdentifier uniqueIdentifier;
+    protected Set<ExternalIdentifier> alternativeIdentifiers;
+    protected Set<Checksum> checksums;
     private Set<Xref> xrefs;
     private Set<Annotation> annotations;
     private Set<Alias> aliases;
@@ -58,6 +59,26 @@ public class DefaultInteractor implements Interactor {
     public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism){
         this(name, fullName, type);
         this.organism = organism;
+    }
+
+    public DefaultInteractor(String name, CvTerm type, ExternalIdentifier uniqueId){
+        this(name, type);
+        this.uniqueIdentifier = uniqueId;
+    }
+
+    public DefaultInteractor(String name, String fullName, CvTerm type, ExternalIdentifier uniqueId){
+        this(name, fullName, type);
+        this.uniqueIdentifier = uniqueId;
+    }
+
+    public DefaultInteractor(String name, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
+        this(name, type, organism);
+        this.uniqueIdentifier = uniqueId;
+    }
+
+    public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
+        this(name, fullName, type, organism);
+        this.uniqueIdentifier = uniqueId;
     }
 
     public String getShortName() {

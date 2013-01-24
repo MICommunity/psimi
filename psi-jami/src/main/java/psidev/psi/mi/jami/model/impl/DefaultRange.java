@@ -4,6 +4,8 @@ import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeComparator;
 
+import java.io.Serializable;
+
 /**
  * Default implementation for Range
  *
@@ -12,7 +14,7 @@ import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeComparator;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultRange implements Range {
+public class DefaultRange implements Range, Serializable {
 
     private Position start;
     private Position end;

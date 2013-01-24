@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  * @since <pre>22/01/13</pre>
  */
 
-public class DefaultOrganism implements Organism {
+public class DefaultOrganism implements Organism, Serializable {
 
     private String commonName;
     private String scientificName;
