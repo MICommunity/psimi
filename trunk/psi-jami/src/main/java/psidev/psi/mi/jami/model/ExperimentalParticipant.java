@@ -69,4 +69,11 @@ public interface ExperimentalParticipant extends Participant<Interaction,Interac
      * @return the confidences
      */
     public Set<Confidence> getConfidences();
+
+    /**
+     * Numerical parameters associated with this participant.
+     * The set cannot be null. If the participant does not have any parameters, the method should return an empty set.
+     * @return the parameters
+     */
+    public Set<Parameter> getParameters();
 }

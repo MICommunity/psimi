@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentComparator;
 
 /**
@@ -9,7 +8,6 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentCompa
  *
  * It will first look at the default properties of an interactor using UnambiguousInteractorBaseComparator.
  * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
- * If the collection of components is the same, it will look at the parameters using ParameterComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -22,17 +20,16 @@ public class UnambiguousComplexComparator extends ComplexComparator{
 
     /**
      * Creates a new UnambiguousComplexComparator. It will use a UnambiguousInteractorBaseComparator, UnambiguousComponentComparator to
-     * compares components and a UnambiguousParameterComparator to compare parameters..
+     * compares components.
      */
     public UnambiguousComplexComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new UnambiguousComponentComparator(), new UnambiguousParameterComparator());
+        super(new UnambiguousInteractorBaseComparator(), new UnambiguousComponentComparator());
     }
 
     @Override
     /**
      * It will first look at the default properties of an interactor using UnambiguousInteractorBaseComparator.
-     * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
-     * If the collection of components is the same, it will look at the parameters using ParameterComparator.
+     * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousComponentComparator.
      */
     public int compare(Complex complex1, Complex complex2) {
         return super.compare(complex1, complex2);

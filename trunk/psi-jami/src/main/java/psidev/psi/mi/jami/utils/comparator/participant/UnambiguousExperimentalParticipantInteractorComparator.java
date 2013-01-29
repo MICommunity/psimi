@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.ExperimentalParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 
 /**
  * Unambiguous experimental participant comparator based on the interactor only.
@@ -23,7 +24,7 @@ public class UnambiguousExperimentalParticipantInteractorComparator extends Expe
      * the basic properties of a participant.
      */
     public UnambiguousExperimentalParticipantInteractorComparator() {
-        super(new UnambiguousParticipantComparator(), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator());
+        super(new UnambiguousParticipantComparator(), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
     }
 
     @Override

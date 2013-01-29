@@ -28,9 +28,18 @@ public interface Complex extends Interactor {
     public Collection<Component> getComponents();
 
     /**
-     * Numerical parameters for this complex.
-     * The set cannot be null. If the complex does not have any parameters, the method should return an empty set.
-     * @return the parameters
+     * Go annotations giving information about function, location and process.
+     * The set cannot be null. If the complex does not have any GO annotations, the method should return an empty set.
+     * @return the GO xrefs
      */
-    public Set<Parameter> getParameters();
+    public Set<Xref> getGoXrefs();
+
+    /**
+     * PDB annotations giving information about molecular structure.
+     * The set cannot be null. If the complex does not have any PDB annotations, the method should return an empty set.
+     * @return the PDB xrefs
+     */
+    public Set<Xref> getPdbXrefs();
+
+    public String getPhysicalProperties();
 }

@@ -1,15 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactComponentComparator;
 
 /**
  * Default exact Complex comparator
  *
  * It will first look at the default properties of an interactor using DefaultExactInteractorBaseComparator.
  * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
- * If the collection of components is the same, it will look at the parameters using ParameterComparator.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -22,19 +20,18 @@ public class DefaultExactComplexComparator extends ComplexComparator{
     private static DefaultExactComplexComparator defaultExactComplexComparator;
 
     /**
-     * Creates a new DefaultExactComplexComparator. It will use a DefaultExactInteractorBaseComparator, DefaultComponentComparator to
-     * compares components and a DefaultParameterComparator to compare parameters..
+     * Creates a new DefaultExactComplexComparator. It will use a DefaultExactInteractorBaseComparator, DefaultExactComponentComparator to
+     * compares components.
      */
     public DefaultExactComplexComparator() {
-        super(new DefaultExactInteractorBaseComparator(), new DefaultComponentComparator(), new DefaultParameterComparator());
+        super(new DefaultExactInteractorBaseComparator(), new DefaultExactComponentComparator());
     }
 
     @Override
     /**
      *
      * It will first look at the default properties of an interactor using DefaultExactInteractorBaseComparator.
-     * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
-     * If the collection of components is the same, it will look at the parameters using ParameterComparator.
+     * If the basic interactor properties are the same, It will first compare the collection of components using DefaultExactComponentComparator.
      *
      */
     public int compare(Complex complex1, Complex complex2) {

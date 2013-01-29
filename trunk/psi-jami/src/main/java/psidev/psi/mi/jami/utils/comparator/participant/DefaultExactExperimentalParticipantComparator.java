@@ -31,7 +31,7 @@ public class DefaultExactExperimentalParticipantComparator extends ExperimentalP
      * and a DefaultOrganismComparator to compare expressed in Organisms
      */
     public DefaultExactExperimentalParticipantComparator() {
-        super(new ParticipantComparator<ExperimentalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator(), new DefaultParameterComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator());
+        super(new ParticipantComparator<ExperimentalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
     }
 
     @Override

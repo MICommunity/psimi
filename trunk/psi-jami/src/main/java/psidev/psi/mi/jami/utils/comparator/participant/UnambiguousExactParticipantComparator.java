@@ -4,15 +4,13 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
-import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 
 /**
  * Unambiguous exact participant comparator
  * It will first compare the interactors using UnambiguousExactInteractorComparator. If both interactors are the same,
  * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
  * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a UnambiguousFeatureComparator. If both participants have the same features, it will look at
- * the participant parameters using UnambiguousParameterComparator.
+ * it will compare the features using a UnambiguousFeatureComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -27,10 +25,10 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
     /**
      * Creates a new UnambiguousExactParticipantComparator. It will use a UnambiguousExactInteractorComparator to compare
      * interactors, a UnambiguousCvTermComparator to compare biological roles, a UnambiguousFeatureComparator to
-     * compare features and a UnambiguousParameterComparator to compare parameters.
+     * compare features.
      */
     public UnambiguousExactParticipantComparator() {
-        super(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureComparator(), new UnambiguousParameterComparator());
+        super(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureComparator());
     }
 
     @Override
@@ -48,9 +46,7 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
      * It will first compare the interactors using UnambiguousExactInteractorComparator. If both interactors are the same,
      * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
      * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a UnambiguousFeatureComparator. If both participants have the same features, it will look at
-     * the participant parameters using UnambiguousParameterComparator.
-     *
+     * it will compare the features using a UnambiguousFeatureComparator.
      * This comparator will ignore all the other properties of a participant.
      */
     public int compare(Participant participant1, Participant participant2) {
