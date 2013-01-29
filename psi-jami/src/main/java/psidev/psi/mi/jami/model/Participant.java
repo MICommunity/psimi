@@ -81,13 +81,6 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
     public Collection<F> getFeatures();
 
     /**
-     * Numerical parameters associated with this participant.
-     * The set cannot be null. If the participant does not have any parameters, the method should return an empty set.
-     * @return the parameters
-     */
-    public Set<Parameter> getParameters();
-
-    /**
      * The stoichiometry for this participant.
      * If the stoichiometry for this participant is unknown, the method should return 0.
      * @return the stoichiometry

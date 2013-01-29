@@ -1,15 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponentComparator;
 
 /**
  * Unambiguous exact Complex comparator
  *
  * It will first look at the default properties of an interactor using UnambiguousExactInteractorBaseComparator.
- * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
- * If the collection of components is the same, it will look at the parameters using ParameterComparator.
+ * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousExactComponentComparator.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -23,10 +21,10 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
 
     /**
      * Creates a new UnambiguousExactComplexComparator. It will use a UnambiguousExactInteractorBaseComparator, UnambiguousExactComponentComparator to
-     * compares components and a UnambiguousParameterComparator to compare parameters..
+     * compares components.
      */
     public UnambiguousExactComplexComparator() {
-        super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousComponentComparator(), new UnambiguousParameterComparator());
+        super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousExactComponentComparator());
     }
 
     @Override
@@ -34,7 +32,6 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
      *
      * It will first look at the default properties of an interactor using UnambiguousExactInteractorBaseComparator.
      * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousExactComponentComparator.
-     * If the collection of components is the same, it will look at the parameters using ParameterComparator.
      */
     public int compare(Complex complex1, Complex complex2) {
         return super.compare(complex1, complex2);

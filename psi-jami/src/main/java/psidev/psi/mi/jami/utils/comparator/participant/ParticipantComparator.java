@@ -1,11 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.parameter.ParameterComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -15,8 +17,7 @@ import java.util.Comparator;
  * It will first compare the interactors using InteractorComparator. If both interactors are the same,
  * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
  * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a Comparator<Feature>. If both participants have the same features, it will look at
- * the participant parameters using ParameterComparator.
+ * it will compare the features using a Comparator<Feature>.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -36,10 +37,9 @@ public class ParticipantComparator<T extends Feature> extends ParticipantInterac
      * @param interactorComparator : interactor comparator required for comparing the molecules
      * @param cvTermComparator : CvTerm comparator required for comparing biological roles
      * @param featureComparator : FeatureComparator required for comparing participant features
-     * @param parameterComparator: ParameterComparator required for comparing participant features
      */
     public ParticipantComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator,
-                                 Comparator<T> featureComparator, ParameterComparator parameterComparator){
+                                 Comparator<T> featureComparator){
 
         super(interactorComparator);
 
@@ -51,10 +51,6 @@ public class ParticipantComparator<T extends Feature> extends ParticipantInterac
             throw new IllegalArgumentException("The feature comparator is required to compare participant features. It cannot be null");
         }
         this.featureCollectionComparator = new FeatureCollectionComparator(featureComparator);
-        if (parameterComparator == null){
-            throw new IllegalArgumentException("The parameter comparator is required to compare participant parameters. It cannot be null");
-        }
-        this.parameterCollectionComparator = new ParameterCollectionComparator(parameterComparator);
     }
 
     public AbstractCvTermComparator getCvTermComparator() {
@@ -65,16 +61,11 @@ public class ParticipantComparator<T extends Feature> extends ParticipantInterac
         return featureCollectionComparator;
     }
 
-    public ParameterCollectionComparator getParameterCollectionComparator() {
-        return parameterCollectionComparator;
-    }
-
     /**
      * It will first compare the interactors using InteractorComparator. If both interactors are the same,
      * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
      * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a Comparator<Feature>. If both participants have the same features, it will look at
-     * the participant parameters using ParameterComparator.
+     * it will compare the features using a Comparator<Feature>.
      *
      * This comparator will ignore all the other properties of a participant.
      * @param participant1
@@ -129,16 +120,7 @@ public class ParticipantComparator<T extends Feature> extends ParticipantInterac
             Collection<T> features1 = participant1.getFeatures();
             Collection<T> features2 = participant2.getFeatures();
 
-            comp = featureCollectionComparator.compare(features1, features2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares the parameters
-            Collection<Parameter> param1 = participant1.getParameters();
-            Collection<Parameter> param2 = participant2.getParameters();
-
-            return parameterCollectionComparator.compare(param1, param2);
+            return featureCollectionComparator.compare(features1, features2);
         }
     }
 }

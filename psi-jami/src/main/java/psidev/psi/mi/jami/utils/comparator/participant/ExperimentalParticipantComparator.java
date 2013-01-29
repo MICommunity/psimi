@@ -3,9 +3,12 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExperimentalParticipant;
 import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.ParameterComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -16,7 +19,7 @@ import java.util.Comparator;
  * It will first compares experimental roles using AbstractCvTermComparator. If both experimental roles are equals, it
  * will look at the identification methods using AbstractCvTermComparator. If both identification methods are equals, it will
  * look at the experimental preparations using AbstractCvTermComparator. If both experimental preparations are equals, it will
- * look at the expressed in organisms using OrganismComparator.
+ * look at the expressed in organisms using OrganismComparator. If both organisms are the same, it will compare parameters using ParameterComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -28,15 +31,18 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
     protected ParticipantInteractorComparator participantComparator;
     protected CvTermsCollectionComparator cvTermCollectionComparator;
     protected OrganismComparator organismComparator;
+    protected ParameterCollectionComparator parameterCollectionComparator;
 
     /**
      * Creates a new ExperimentalParticipantComparator
      * @param participantComparator : the participant comparator required to compare basic properties of a participant
      * @param cvTermComparator : the CvTerm comparator required to compare experimental roles, experimental preparations and identification methods
      * @param organismComparator : the organism comparator required to compare expressed in organisms
+     * @param parameterComparator: ParameterComparator required for comparing participant features
      */
     public ExperimentalParticipantComparator(ParticipantInteractorComparator participantComparator,
-                                             AbstractCvTermComparator cvTermComparator, OrganismComparator organismComparator){
+                                             AbstractCvTermComparator cvTermComparator, OrganismComparator organismComparator,
+            ParameterComparator parameterComparator){
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
         }
@@ -49,6 +55,14 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
             throw new IllegalArgumentException("The Organism comparator is required to compare expressed in organisms. It cannot be null");
         }
         this.organismComparator = organismComparator;
+        if (parameterComparator == null){
+            throw new IllegalArgumentException("The parameter comparator is required to compare participant parameters. It cannot be null");
+        }
+        this.parameterCollectionComparator = new ParameterCollectionComparator(parameterComparator);
+    }
+
+    public ParameterCollectionComparator getParameterCollectionComparator() {
+        return parameterCollectionComparator;
     }
 
     public ParticipantInteractorComparator getParticipantComparator() {
@@ -67,7 +81,7 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
      * It will first compares experimental roles using AbstractCvTermComparator. If both experimental roles are equals, it
      * will look at the identification methods using AbstractCvTermComparator. If both identification methods are equals, it will
      * look at the experimental preparations using AbstractCvTermComparator. If both experimental preparations are equals, it will
-     * look at the expressed in organisms using OrganismComparator.
+     * look at the expressed in organisms using OrganismComparator.  If both organisms are the same, it will compare parameters using ParameterComparator
      *
      * @param experimentalParticipant1
      * @param experimentalParticipant2
@@ -121,6 +135,19 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
             Organism organism2 = experimentalParticipant2.getExpressedInOrganism();
 
             comp = organismComparator.compare(organism1, organism2);
+            if (comp != 0){
+                return comp;
+            }
+
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compares the parameters
+            Collection<Parameter> param1 = experimentalParticipant1.getParameters();
+            Collection<Parameter> param2 = experimentalParticipant2.getParameters();
+
+            comp = parameterCollectionComparator.compare(param1, param2);
             if (comp != 0){
                 return comp;
             }

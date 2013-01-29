@@ -31,7 +31,7 @@ public class UnambiguousExperimentalParticipantComparator extends ExperimentalPa
      * and a UnambiguousOrganismComparator to compare expressed in organisms
      */
     public UnambiguousExperimentalParticipantComparator() {
-        super(new ParticipantComparator<ExperimentalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousExperimentalFeatureComparator(), new UnambiguousParameterComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator());
+        super(new ParticipantComparator<ExperimentalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousExperimentalFeatureComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
     }
 
     @Override

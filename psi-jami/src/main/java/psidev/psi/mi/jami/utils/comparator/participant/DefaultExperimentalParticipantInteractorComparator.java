@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.ExperimentalParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
+import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 
 /**
  * Default experimental participant comparator based on the interactor only.
@@ -24,7 +25,7 @@ public class DefaultExperimentalParticipantInteractorComparator extends Experime
      * the basic properties of a participant.
      */
     public DefaultExperimentalParticipantInteractorComparator() {
-        super(new DefaultParticipantInteractorComparator(), new DefaultCvTermComparator(), new DefaultOrganismComparator());
+        super(new DefaultParticipantInteractorComparator(), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
     }
 
     @Override
