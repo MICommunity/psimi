@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.utils.factory;
 
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Gene;
-import psidev.psi.mi.jami.model.Position;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExternalIdentifier;
 
@@ -29,7 +26,7 @@ public class CvTermFactory {
     }
 
     public static CvTerm createChebiDatabase(){
-        return new DefaultCvTerm(CvTerm.CHEBI, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), CvTerm.CHEBI_ID));
+        return new DefaultCvTerm(Xref.CHEBI, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.CHEBI_ID));
     }
 
     public static CvTerm createSmile(){

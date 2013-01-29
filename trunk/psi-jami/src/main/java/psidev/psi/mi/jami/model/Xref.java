@@ -19,6 +19,16 @@ public interface Xref {
 
     public static String IDENTITY = "identity";
     public static String IDENTITY_MI = "MI:0356";
+    public static String ENSEMBL = "ensembl";
+    public static String ENSEMBL_ID = "MI:0476";
+    public static String ENSEMBL_GENOMES = "ensemblgenomes";
+    public static String ENSEMBL_GENOMES_ID = "MI:1013";
+    public static String ENTREZ_GENE = "entrezgene/locuslink";
+    public static String ENTREZ_GENE_ID = "MI:0477";
+    public static String REFSEQ = "refseq";
+    public static String REFSEQ_ID = "MI:0481";
+    public static String CHEBI = "chebi";
+    public static String CHEBI_ID = "MI:0474";
 
     /**
      * The database is a controlled vocabulary term. It cannot be null.
