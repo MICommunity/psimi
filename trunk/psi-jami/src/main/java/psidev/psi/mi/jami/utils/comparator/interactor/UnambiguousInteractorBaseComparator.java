@@ -1,13 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
 /**
  * Unambiguous interactor comparator
- * It will look first for unique identifier if at least one identifier is not null using UnambiguousIdentifierComparator. If the unique identifiers are not both set, it will compare the short names (case sensitive).
+ * It will only compare the short names (case sensitive).
  *
  * This comparator will ignore all the other properties of an interactor.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -34,7 +33,7 @@ public class UnambiguousInteractorBaseComparator extends InteractorBaseComparato
 
     @Override
     /**
-     * It will look first for unique identifier if at least one identifier is not null using UnambiguousIdentifierComparator. If the unique identifiers are not both set, it will compare the short names (case sensitive).
+     * It will only compare the short names (case sensitive).
      *
      * This comparator will ignore all the other properties of an interactor.
      */
@@ -53,15 +52,8 @@ public class UnambiguousInteractorBaseComparator extends InteractorBaseComparato
             return BEFORE;
         }
         else {
-            // first compare unique identifier
-            ExternalIdentifier uniqueId1 = interactor1.getUniqueIdentifier();
-            ExternalIdentifier uniqueId2 = interactor2.getUniqueIdentifier();
 
-            if (uniqueId1 != null || uniqueId2 != null){
-                return identifierComparator.compare(uniqueId1, uniqueId2);
-            }
-
-            // then compares the short name (case sensitive)
+            // compares the short name (case sensitive)
             String shortName1 = interactor1.getShortName();
             String shortName2 = interactor2.getShortName();
             return shortName1.compareTo(shortName2);
@@ -97,14 +89,7 @@ public class UnambiguousInteractorBaseComparator extends InteractorBaseComparato
         }
 
         int hashcode = 31;
-        ExternalIdentifier uniqueId = interactor.getUniqueIdentifier();
-
-        if (uniqueId != null){
-            hashcode = 31*hashcode + unambiguousInteractorComparator.getIdentifierComparator().hashCode(uniqueId);
-        }
-        else {
-            hashcode = 31*hashcode + interactor.getShortName().hashCode();
-        }
+        hashcode = 31*hashcode + interactor.getShortName().hashCode();
 
         return hashcode;
     }

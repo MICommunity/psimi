@@ -9,8 +9,7 @@ import java.util.*;
 
 /**
  * Basic interactor comparator.
- * It will look first for unique identifier if both are set. If the unique identifiers are not both set or equals, it will look for at least one
- * same alternative identifier. If no alternative identifiers are equal, it will look at the short names (case sensitive).
+ * It will first look for at least one identical identifier in the list of identifiers. If it cannot find one, it will look at the short names (case sensitive).
  * If the shortnames do not match, it will look for at least one common alias.
  *
  * This comparator will ignore all the other properties of an interactor.
@@ -52,8 +51,7 @@ public class InteractorBaseComparator implements Comparator<Interactor> {
 
     /**
      * Basic interactor comparator.
-     * It will look first for unique identifier if both are set. If the unique identifiers are not both set or equals, it will look for at least one
-     * same alternative identifier. If no alternative identifiers are equal, it will look at the short names (case sensitive).
+     * It will first look for at least one identical identifier in the list of identifiers. If it cannot find one, it will look at the short names (case sensitive).
      * If the shortnames do not match, it will look for at least one common alias.
      *
      * This comparator will ignore all the other properties of an interactor.
@@ -76,20 +74,12 @@ public class InteractorBaseComparator implements Comparator<Interactor> {
             return BEFORE;
         }
         else {
-            // first compare unique identifier
-            ExternalIdentifier uniqueId1 = interactor1.getUniqueIdentifier();
-            ExternalIdentifier uniqueId2 = interactor2.getUniqueIdentifier();
-
-            int comp = identifierComparator.compare(uniqueId1, uniqueId2);
-            if (comp == EQUAL && uniqueId1 != null && uniqueId2 != null){
-                return comp;
-            }
 
             int comp2 = EQUAL;
-            // then compares alternative identifiers if first identifier is not enough
-            if (!interactor1.getAlternativeIdentifiers().isEmpty() && !interactor2.getAlternativeIdentifiers().isEmpty()){
-                List<ExternalIdentifier> ids1 = new ArrayList<ExternalIdentifier>(interactor1.getAlternativeIdentifiers());
-                List<ExternalIdentifier> ids2 = new ArrayList<ExternalIdentifier>(interactor2.getAlternativeIdentifiers());
+            // first compares identifiers, at least one matching identifier
+            if (!interactor1.getIdentifiers().isEmpty() && !interactor2.getIdentifiers().isEmpty()){
+                List<ExternalIdentifier> ids1 = new ArrayList<ExternalIdentifier>(interactor1.getIdentifiers());
+                List<ExternalIdentifier> ids2 = new ArrayList<ExternalIdentifier>(interactor2.getIdentifiers());
                 // sort the collections first
                 Collections.sort(ids1, identifierComparator);
                 Collections.sort(ids2, identifierComparator);
@@ -189,10 +179,7 @@ public class InteractorBaseComparator implements Comparator<Interactor> {
                 }
             }
 
-            if (comp != 0){
-                return comp;
-            }
-            else if (comp2 != 0) {
+            if (comp2 != 0) {
                 return comp2;
             }
             else if (comp3 != 0) {

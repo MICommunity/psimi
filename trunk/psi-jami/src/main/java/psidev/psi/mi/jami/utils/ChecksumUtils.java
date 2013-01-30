@@ -15,6 +15,26 @@ import java.util.Collection;
 
 public class ChecksumUtils {
 
+    public static boolean isChecksumHavingMethod(Checksum checksum, String methodId, String methodName){
+
+        if (checksum == null || (methodName == null && methodId == null)){
+            return false;
+        }
+
+        CvTerm method = checksum.getMethod();
+        // we can compare identifiers
+        if (methodId != null && method.getOntologyIdentifier() != null){
+            // we have the same method id
+            return method.getOntologyIdentifier().getId().equals(methodId);
+        }
+        // we need to compare methodNames
+        else if (methodName != null) {
+            return methodName.toLowerCase().equals(method.getShortName().toLowerCase());
+        }
+
+        return false;
+    }
+
     /**
      * Retrives a unique Checksum having a method that matches the method id (if set) or the method name.
      * It will return null if it cannot find a single Checksum with a method match or if it finds more than one checksum with a method

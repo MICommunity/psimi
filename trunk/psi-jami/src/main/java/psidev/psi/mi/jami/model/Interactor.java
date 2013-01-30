@@ -42,26 +42,12 @@ public interface Interactor {
     public void setFullName(String name);
 
     /**
-     * Unique external identifier for the interactor. It should be unambiguous.
-     * The unique identifier can be null if the interactor is not registered in any external databases.
-     * Ex: uniprotkb:P51587
-     * @return the unique identifier
-     */
-    public ExternalIdentifier getUniqueIdentifier();
-
-    /**
-     * Sets the unique identifier for this interactor
-     * @param identifier : unique identifier
-     */
-    public void setUniqueIdentifier(ExternalIdentifier identifier);
-
-    /**
-     * Alternative identifiers for this interactor from other databases.
-     * The set cannot be null, when an interactor does not have any alternative identifiers, the method should return an empty set.
-     * Ex: uniprotkb secondary accession O00183, ...
+     * Set of identifiers for this interactor. The identifiers can be from different databases, can be primary identifiers and secondary identifiers but they must be unambiguous.
+     * The set cannot be null, when an interactor does not have any identifiers, the method should return an empty set.
+     * Ex: uniprotkb secondary accession O00183, primary accessions, ...
      * @return the alternative identifier
      */
-    public Set<ExternalIdentifier> getAlternativeIdentifiers();
+    public Set<ExternalIdentifier> getIdentifiers();
 
     /**
      * Set of checksums computed for this interactor.

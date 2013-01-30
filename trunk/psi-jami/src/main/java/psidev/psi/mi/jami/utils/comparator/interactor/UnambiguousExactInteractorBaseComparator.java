@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
@@ -93,14 +92,6 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
                 return comp;
             }
 
-            // then compare unique identifier
-            ExternalIdentifier uniqueId1 = interactor1.getUniqueIdentifier();
-            ExternalIdentifier uniqueId2 = interactor2.getUniqueIdentifier();
-
-            if (uniqueId1 != null || uniqueId2 != null){
-                return identifierComparator.compare(uniqueId1, uniqueId2);
-            }
-
             // then compares the short name (case sensitive)
             String shortName1 = interactor1.getShortName();
             String shortName2 = interactor2.getShortName();
@@ -139,14 +130,7 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
         int hashcode = 31;
         hashcode = 31*hashcode + unambiguousExactInteractorComparator.getTypeComparator().hashCode(interactor.getType());
         hashcode = 31*hashcode + unambiguousExactInteractorComparator.getOrganismComparator().hashCode(interactor.getOrganism());
-
-        ExternalIdentifier uniqueId = interactor.getUniqueIdentifier();
-        if (uniqueId != null){
-            hashcode = 31*hashcode + unambiguousExactInteractorComparator.getIdentifierComparator().hashCode(uniqueId);
-        }
-        else {
-            hashcode = 31*hashcode + interactor.getShortName().hashCode();
-        }
+        hashcode = 31*hashcode + interactor.getShortName().hashCode();
 
         return hashcode;
     }

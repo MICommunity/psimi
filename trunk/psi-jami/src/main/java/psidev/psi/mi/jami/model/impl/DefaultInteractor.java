@@ -20,8 +20,7 @@ public class DefaultInteractor implements Interactor, Serializable {
 
     private String shortName;
     private String fullName;
-    protected ExternalIdentifier uniqueIdentifier;
-    protected Set<ExternalIdentifier> alternativeIdentifiers;
+    protected Set<ExternalIdentifier> identifiers;
     protected Set<Checksum> checksums;
     private Set<Xref> xrefs;
     private Set<Annotation> annotations;
@@ -39,11 +38,11 @@ public class DefaultInteractor implements Interactor, Serializable {
         }
         this.type = type;
 
-        this.alternativeIdentifiers = new HashSet<ExternalIdentifier>();
-        this.checksums = new HashSet<Checksum>();
+        initializeChecksums();
         this.xrefs = new HashSet<Xref>();
         this.annotations = new HashSet<Annotation>();
         this.aliases = new HashSet<Alias>();
+        initializeAlternativeIdentifiers();
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type){
@@ -63,22 +62,30 @@ public class DefaultInteractor implements Interactor, Serializable {
 
     public DefaultInteractor(String name, CvTerm type, ExternalIdentifier uniqueId){
         this(name, type);
-        this.uniqueIdentifier = uniqueId;
+        this.identifiers.add(uniqueId);
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type, ExternalIdentifier uniqueId){
         this(name, fullName, type);
-        this.uniqueIdentifier = uniqueId;
+        this.identifiers.add(uniqueId);
     }
 
     public DefaultInteractor(String name, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
         this(name, type, organism);
-        this.uniqueIdentifier = uniqueId;
+        this.identifiers.add(uniqueId);
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
         this(name, fullName, type, organism);
-        this.uniqueIdentifier = uniqueId;
+        this.identifiers.add(uniqueId);
+    }
+
+    protected void initializeAlternativeIdentifiers(){
+        this.identifiers = new HashSet<ExternalIdentifier>();
+    }
+
+    protected void initializeChecksums(){
+        this.checksums = new HashSet<Checksum>();
     }
 
     public String getShortName() {
@@ -100,16 +107,8 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.fullName = name;
     }
 
-    public ExternalIdentifier getUniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    public void setUniqueIdentifier(ExternalIdentifier identifier) {
-        this.uniqueIdentifier = identifier;
-    }
-
-    public Set<ExternalIdentifier> getAlternativeIdentifiers() {
-        return this.alternativeIdentifiers;
+    public Set<ExternalIdentifier> getIdentifiers() {
+        return this.identifiers;
     }
 
     public Set<Checksum> getChecksums() {
@@ -163,7 +162,7 @@ public class DefaultInteractor implements Interactor, Serializable {
 
     @Override
     public String toString() {
-        return shortName + (uniqueIdentifier != null ? uniqueIdentifier.toString() : "");
+        return shortName + (organism != null ? ", " + organism.toString() : "");
     }
 
     @Override
