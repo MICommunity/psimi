@@ -1,15 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentInteractorComparator;
 
 /**
  * Default Complex comparator which will only compare interactors in the components
  *
  * It will first compare the collection of components using DefaultComponentInteractorComparator.
- * If the collection of components is the same, it will look at the parameters using DefaultParameterComparator.
- * If the parameters are the same and the collection of components was empty in both complexes, it will look at the default properties of an interactor
+ * If the components are the same, it will look at the default properties of an interactor
  * using DefaultInteractorBaseComparator.
  *
  *
@@ -24,17 +22,16 @@ public class DefaultSimpleComplexComparator extends ComplexComparator{
 
     /**
      * Creates a new DefaultSimpleComplexComparator. It will use a DefaultInteractorBaseComparator, DefaultComponentInteractorComparator to
-     * compares components and a DefaultParameterComparator to compare parameters..
+     * compares components
      */
     public DefaultSimpleComplexComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultComponentInteractorComparator(), new DefaultParameterComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultComponentInteractorComparator());
     }
 
     @Override
     /**
      * It will first compare the collection of components using DefaultComponentInteractorComparator.
-     * If the collection of components is the same, it will look at the parameters using DefaultParameterComparator.
-     * If the parameters are the same and the collection of components was empty in both complexes, it will look at the default properties of an interactor
+     * If the components are the same, it will look at the default properties of an interactor
      * using DefaultInteractorBaseComparator.
      */
     public int compare(Complex complex1, Complex complex2) {

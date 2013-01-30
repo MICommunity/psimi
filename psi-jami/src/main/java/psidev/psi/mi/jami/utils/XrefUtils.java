@@ -15,6 +15,26 @@ import java.util.Collection;
 
 public class XrefUtils {
 
+    public static boolean isXrefFromDatabase(Xref ref, String dbId, String dbName){
+
+        if (ref == null || (dbName == null && dbId == null)){
+            return false;
+        }
+
+        CvTerm database = ref.getDatabase();
+        // we can compare identifiers
+        if (dbId != null && database.getOntologyIdentifier() != null){
+            // we have the same database id
+            return database.getOntologyIdentifier().getId().equals(dbId);
+        }
+        // we need to compare dbNames
+        else if (dbName != null) {
+            return dbName.toLowerCase().equals(database.getShortName().toLowerCase());
+        }
+
+        return false;
+    }
+
     /**
      * Retrives a unique Xref having a database that matches the database id (if set) or the database name.
      * It will return null if it cannot find a single Xref with a database match or if it finds more than one xrefs with a database
