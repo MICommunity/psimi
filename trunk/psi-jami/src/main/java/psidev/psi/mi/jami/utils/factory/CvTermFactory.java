@@ -29,6 +29,22 @@ public class CvTermFactory {
         return new DefaultCvTerm(Xref.CHEBI, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.CHEBI_ID));
     }
 
+    public static CvTerm createEnsemblDatabase(){
+        return new DefaultCvTerm(Xref.ENSEMBL, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.ENSEMBL_ID));
+    }
+
+    public static CvTerm createEnsemblGenomesDatabase(){
+        return new DefaultCvTerm(Xref.ENSEMBL_GENOMES, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.ENSEMBL_GENOMES_ID));
+    }
+
+    public static CvTerm createEntrezGeneIdDatabase(){
+        return new DefaultCvTerm(Xref.ENTREZ_GENE, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.ENTREZ_GENE_ID));
+    }
+
+    public static CvTerm createRefseqDatabase(){
+        return new DefaultCvTerm(Xref.REFSEQ, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.REFSEQ_ID));
+    }
+
     public static CvTerm createSmile(){
         return new DefaultCvTerm(Checksum.SMILE, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Checksum.SMILE_ID));
     }

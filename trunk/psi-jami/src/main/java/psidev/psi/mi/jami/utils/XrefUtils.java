@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -81,5 +82,28 @@ public class XrefUtils {
         }
 
         return uniqueXref;
+    }
+
+    public static void removeAllXrefsFromDatabaseIfExists(Collection<? extends Xref> refs, String dbId, String dbName){
+
+        if (refs != null && (dbName == null && dbId == null)){
+            Collection<? extends Xref> xrefsCopy = new ArrayList<Xref>(refs);
+            for (Xref xref : xrefsCopy){
+                CvTerm database = xref.getDatabase();
+                // we can compare identifiers
+                if (dbId != null && database.getOntologyIdentifier() != null){
+                    // we have the same database id
+                    if (database.getOntologyIdentifier().getId().equals(dbId)){
+                        // remove xref
+                        refs.remove(xref);
+                    }
+                }
+                // we need to compare dbNames
+                else if (dbName != null && dbName.toLowerCase().equals(database.getShortName().toLowerCase())) {
+                    // remove xref
+                    refs.remove(xref);
+                }
+            }
+        }
     }
 }

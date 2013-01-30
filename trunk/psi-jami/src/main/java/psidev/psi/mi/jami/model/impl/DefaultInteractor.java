@@ -42,7 +42,7 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.xrefs = new HashSet<Xref>();
         this.annotations = new HashSet<Annotation>();
         this.aliases = new HashSet<Alias>();
-        initializeAlternativeIdentifiers();
+        initializeIdentifiers();
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type){
@@ -80,7 +80,7 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.identifiers.add(uniqueId);
     }
 
-    protected void initializeAlternativeIdentifiers(){
+    protected void initializeIdentifiers(){
         this.identifiers = new HashSet<ExternalIdentifier>();
     }
 
