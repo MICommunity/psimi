@@ -70,14 +70,13 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setChebi(String id) {
-        CvTerm chebiDatabase = CvTermFactory.createChebiDatabase();
-        // first remove old chebi if not null
-        if (this.chebi != null){
-            identifiers.remove(this.chebi);
-        }
-
         // add new chebi if not null
         if (id != null){
+            CvTerm chebiDatabase = CvTermFactory.createChebiDatabase();
+            // first remove old chebi if not null
+            if (this.chebi != null){
+                identifiers.remove(this.chebi);
+            }
             this.chebi = new DefaultExternalIdentifier(chebiDatabase, id);
             this.identifiers.add(this.chebi);
         }
@@ -92,13 +91,12 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setSmile(String smile) {
-        CvTerm smileMethod = CvTermFactory.createSmile();
-        // first remove old smile
-        if (this.smile != null){
-            this.checksums.remove(this.smile);
-        }
-
         if (smile != null){
+            CvTerm smileMethod = CvTermFactory.createSmile();
+            // first remove old smile
+            if (this.smile != null){
+                this.checksums.remove(this.smile);
+            }
             this.smile = new DefaultChecksum(smileMethod, smile);
             this.checksums.add(this.smile);
         }
@@ -113,13 +111,12 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setStandardInchiKey(String key) {
-        CvTerm inchiKeyMethod = CvTermFactory.createStandardInchiKey();
-        // first remove old standard inchi key
-        if (this.standardInchiKey != null){
-            this.checksums.remove(this.standardInchiKey);
-        }
-
         if (standardInchiKey != null){
+            CvTerm inchiKeyMethod = CvTermFactory.createStandardInchiKey();
+            // first remove old standard inchi key
+            if (this.standardInchiKey != null){
+                this.checksums.remove(this.standardInchiKey);
+            }
             this.standardInchiKey = new DefaultChecksum(inchiKeyMethod, key);
             this.checksums.add(this.standardInchiKey);
         }
@@ -134,13 +131,12 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setStandardInchi(String inchi) {
-        CvTerm inchiMethod = CvTermFactory.createStandardInchi();
-        // first remove standard inchi
-        if (this.standardInchi != null){
-            this.checksums.remove(this.standardInchi);
-        }
-
         if (standardInchi != null){
+            CvTerm inchiMethod = CvTermFactory.createStandardInchi();
+            // first remove standard inchi
+            if (this.standardInchi != null){
+                this.checksums.remove(this.standardInchi);
+            }
             this.standardInchi = new DefaultChecksum(inchiMethod, inchi);
             this.checksums.add(this.standardInchi);
         }
