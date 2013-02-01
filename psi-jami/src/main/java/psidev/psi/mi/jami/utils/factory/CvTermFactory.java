@@ -45,6 +45,10 @@ public class CvTermFactory {
         return new DefaultCvTerm(Xref.REFSEQ, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.REFSEQ_ID));
     }
 
+    public static CvTerm createDdbjEmblGenbankDatabase(){
+        return new DefaultCvTerm(Xref.DDBJ_EMBL_GENBANK, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.DDBJ_EMBL_GENBANK_ID));
+    }
+
     public static CvTerm createSmile(){
         return new DefaultCvTerm(Checksum.SMILE, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Checksum.SMILE_ID));
     }

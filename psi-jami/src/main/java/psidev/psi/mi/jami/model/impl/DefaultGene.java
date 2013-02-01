@@ -155,7 +155,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
             return false;
         }
 
-        // use UnambiguousGeneEntity comparator for equals
+        // use UnambiguousExactGeneEntity comparator for equals
         return UnambiguousExactGeneComparator.areEquals(this, (Gene) o);
     }
 
@@ -165,7 +165,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     }
 
     /**
-     * Comparator which sorts external identifiers so chebi identifiers are always first
+     * Comparator which sorts external identifiers so ensembl identifiers are always first, then ensemblGenomes, then entrez/geneId and then refseq
      */
     private class GeneIdentifierComparator implements Comparator<ExternalIdentifier> {
 
@@ -337,7 +337,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         public boolean add(ExternalIdentifier externalIdentifier) {
             boolean added = super.add(externalIdentifier);
 
-            // set standard inchi key, smile or standard inchi if not done
+            // set ensembl, ensemblgenomes, entrez gene id or refseq if not done yet
             if (added && (ensembl == null || ensemblGenome == null || entrezGeneId == null || refseq == null)){
                 Iterator<ExternalIdentifier> identifierIterator = iterator();
                 ExternalIdentifier firstIdentifier = identifierIterator.next();
@@ -389,7 +389,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
 
                 // process refseq
                 if (refseq == null){
-                    // go through all ensemble genomes before finding entrez gene id
+                    // go through all entrez gene id before finding refseq
                     while (identifierIterator.hasNext() &&
                             XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
                         firstIdentifier = identifierIterator.next();
@@ -407,7 +407,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         @Override
         public boolean remove(Object o) {
             if (super.remove(o)){
-                // we have nothing left in checksums, reset standard values
+                // we have nothing left in identifiers, reset standard values
                 if (isEmpty()){
                     ensembl = null;
                     ensemblGenome = null;
