@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactBioactiveEntityComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -196,7 +197,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 if (databaseId1 != null && databaseId2 != null){
                     // both are chebi, sort by id
                     if (Xref.CHEBI_ID.equals(databaseId1.getId()) && Xref.CHEBI_ID.equals(databaseId2.getId())){
-                        return compareChebiIdentifiers(externalIdentifier1, externalIdentifier2);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), chebi != null ? chebi.getId() : null);
                     }
                     // CHEBI is first
                     else if (Xref.CHEBI_ID.equals(databaseId1.getId())){
@@ -215,7 +216,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                     String databaseName2 = database2.getShortName().toLowerCase().trim();
                     // both are chebi, sort by id
                     if (Xref.CHEBI.equals(databaseName1) && Xref.CHEBI.equals(databaseName2)){
-                        return compareChebiIdentifiers(externalIdentifier1, externalIdentifier2);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), chebi != null ? chebi.getId() : null);
                     }
                     // CHEBI is first
                     else if (Xref.CHEBI.equals(databaseName1)){
@@ -238,27 +239,6 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 String id2 = externalIdentifier2.getId();
 
                 return id1.compareTo(id2);
-            }
-        }
-
-        private int compareChebiIdentifiers(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2) {
-            int comp;
-            String id1 = externalIdentifier1.getId();
-            String id2 = externalIdentifier2.getId();
-            comp = id1.compareTo(id2);
-            if (comp == 0){
-                return 0;
-            }
-
-            // the unique chebi is first
-            if (chebi != null && chebi.equals(id1)){
-                return -1;
-            }
-            else if (chebi != null && chebi.equals(id2)){
-                return 1;
-            }
-            else {
-                return comp;
             }
         }
     }
@@ -350,7 +330,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 if (methodId1 != null && methodId2 != null){
                     // both are standard inchi keys, sort by id
                     if (Checksum.INCHI_KEY_ID.equals(methodId1.getId()) && Checksum.INCHI_KEY_ID.equals(methodId2.getId())){
-                        return compareChecksumValuesWithBioactiveEntityProperty(checksum1, checksum2, standardInchiKey);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), standardInchiKey != null ? standardInchiKey.getValue() : null);
                     }
                     // standard inchi key is first
                     else if (Checksum.INCHI_KEY_ID.equals(methodId1.getId())){
@@ -360,7 +340,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                         return AFTER;
                     }
                     else if (Checksum.SMILE_ID.equals(methodId1.getId()) && Checksum.SMILE_ID.equals(methodId2.getId())){
-                        return compareChecksumValuesWithBioactiveEntityProperty(checksum1, checksum2, smile);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), smile != null ? smile.getValue() : null);
                     }
                     // smile is second
                     else if (Checksum.SMILE_ID.equals(methodId1.getId())){
@@ -370,7 +350,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                         return AFTER;
                     }
                     else if (Checksum.INCHI_ID.equals(methodId1.getId()) && Checksum.INCHI_ID.equals(methodId2.getId())){
-                        return compareChecksumValuesWithBioactiveEntityProperty(checksum1, checksum2, standardInchi);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), standardInchi != null ? standardInchi.getValue() : null);
                     }
                     // standard inchi is third
                     else if (Checksum.INCHI_ID.equals(methodId1.getId())){
@@ -387,9 +367,9 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 else {
                     String methodName1 = method1.getShortName().toLowerCase().trim();
                     String methodName2 = method2.getShortName().toLowerCase().trim();
-                    // both are chebi, sort by id
+                    // both are standard inchi key, sort by id
                     if (Checksum.INCHI_KEY.equals(methodName1) && Checksum.INCHI_KEY.equals(methodName2)){
-                        return compareChecksumValuesWithBioactiveEntityProperty(checksum1, checksum2, standardInchiKey);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), standardInchiKey != null ? standardInchiKey.getValue() : null);
                     }
                     // standard inchi key is first
                     else if (Checksum.INCHI_KEY.equals(methodName1)){
@@ -399,7 +379,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                         return AFTER;
                     }
                     else if (Checksum.SMILE.equals(methodName1) && Checksum.SMILE.equals(methodName2)){
-                        return compareChecksumValuesWithBioactiveEntityProperty(checksum1, checksum2, smile);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), smile != null ? smile.getValue() : null);
                     }
                     // smile is second
                     else if (Checksum.SMILE.equals(methodName1)){
@@ -409,7 +389,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                         return AFTER;
                     }
                     else if (Checksum.INCHI.equals(methodName1) && Checksum.INCHI.equals(methodName2)){
-                        return compareChecksumValuesWithBioactiveEntityProperty(checksum1, checksum2, standardInchi);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), standardInchi != null ? standardInchi.getValue() : null);
                     }
                     // smile is second
                     else if (Checksum.INCHI.equals(methodName1)){
@@ -434,27 +414,6 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 return id1.compareTo(id2);
             }
         }
-
-        private int compareChecksumValuesWithBioactiveEntityProperty(Checksum checksum1, Checksum checksum2, Checksum property) {
-            int comp;
-            String check1 = checksum1.getValue();
-            String check2 = checksum2.getValue();
-            comp = check1.compareTo(check2);
-            if (comp == 0){
-                return 0;
-            }
-
-            // the unique chebi is first
-            if (property != null && property.getValue().equals(check1)){
-                return -1;
-            }
-            else if (property != null && property.getValue().equals(check2)){
-                return 1;
-            }
-            else {
-                return comp;
-            }
-        }
     }
 
     private class BioctiveEntityChecksumList extends TreeSet<Checksum>{
@@ -473,7 +432,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
                 // starts with standard inchi key
                 if (standardInchiKey == null){
-                    if (ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
+                    if (ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
                         standardInchiKey = firstChecksum;
                         if (checksumIterator.hasNext()){
                             firstChecksum = checksumIterator.next();
@@ -488,11 +447,11 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 if (smile == null){
                     // go through all inchi keys before finding smiles
                     while (checksumIterator.hasNext() &&
-                            ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
+                            ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
                         firstChecksum = checksumIterator.next();
                     }
 
-                    if (ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
+                    if (ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
                         smile = firstChecksum;
                         if (checksumIterator.hasNext()){
                             firstChecksum = checksumIterator.next();
@@ -507,11 +466,11 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 if (standardInchi == null){
                     // go through all smiles before finding standard inchi
                     while (checksumIterator.hasNext() &&
-                            ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
+                            ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
                         firstChecksum = checksumIterator.next();
                     }
 
-                    if (ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.INCHI_ID, Checksum.INCHI)){
+                    if (ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.INCHI_ID, Checksum.INCHI)){
                         standardInchi = firstChecksum;
                     }
                 }
@@ -535,28 +494,28 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                     Checksum firstChecksum = checksumIterator.next();
 
                     // first checksum is standard inchi key
-                    if (ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
+                    if (ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
                         standardInchiKey = firstChecksum;
                     }
                     // process smile
                     // go through all inchi keys before finding smiles
                     while (checksumIterator.hasNext() &&
-                            ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
+                            ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
                         firstChecksum = checksumIterator.next();
                     }
 
-                    if (ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
+                    if (ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
                         smile = firstChecksum;
                     }
 
                     // process standard inchi
                     // go through all inchi keys before finding smiles
                     while (checksumIterator.hasNext() &&
-                            ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
+                            ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.SMILE_ID, Checksum.SMILE)){
                         firstChecksum = checksumIterator.next();
                     }
 
-                    if (ChecksumUtils.isChecksumHavingMethod(firstChecksum, Checksum.INCHI_ID, Checksum.INCHI)){
+                    if (ChecksumUtils.doesChecksumHaveMethod(firstChecksum, Checksum.INCHI_ID, Checksum.INCHI)){
                         standardInchi = firstChecksum;
                     }
                 }
@@ -577,7 +536,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         public void removeAllStandardInchiKeys(){
 
             Checksum first = first();
-            while (ChecksumUtils.isChecksumHavingMethod(first, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
+            while (ChecksumUtils.doesChecksumHaveMethod(first, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
                 remove(first);
             }
         }
@@ -588,11 +547,11 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 Iterator<Checksum> checksumIterator = iterator();
                 Checksum first = checksumIterator.next();
                 // skip the standard inchi keys
-                while (checksumIterator.hasNext() && ChecksumUtils.isChecksumHavingMethod(first, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
+                while (checksumIterator.hasNext() && ChecksumUtils.doesChecksumHaveMethod(first, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
                     first = checksumIterator.next();
                 }
 
-                while (checksumIterator.hasNext() && ChecksumUtils.isChecksumHavingMethod(first, Checksum.SMILE_ID, Checksum.SMILE)){
+                while (checksumIterator.hasNext() && ChecksumUtils.doesChecksumHaveMethod(first, Checksum.SMILE_ID, Checksum.SMILE)){
                     checksumIterator.remove();
                     first = checksumIterator.next();
                 }
@@ -606,12 +565,12 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 Checksum first = checksumIterator.next();
                 // skip the standard inchi keys and smiles
                 while (checksumIterator.hasNext() &&
-                        ( ChecksumUtils.isChecksumHavingMethod(first, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY) ||
-                                ChecksumUtils.isChecksumHavingMethod(first, Checksum.SMILE_ID, Checksum.SMILE) )){
+                        ( ChecksumUtils.doesChecksumHaveMethod(first, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY) ||
+                                ChecksumUtils.doesChecksumHaveMethod(first, Checksum.SMILE_ID, Checksum.SMILE) )){
                     first = checksumIterator.next();
                 }
 
-                while (checksumIterator.hasNext() && ChecksumUtils.isChecksumHavingMethod(first, Checksum.INCHI_ID, Checksum.INCHI)){
+                while (checksumIterator.hasNext() && ChecksumUtils.doesChecksumHaveMethod(first, Checksum.INCHI_ID, Checksum.INCHI)){
                     checksumIterator.remove();
                     first = checksumIterator.next();
                 }

@@ -49,6 +49,10 @@ public class CvTermFactory {
         return new DefaultCvTerm(Xref.DDBJ_EMBL_GENBANK, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.DDBJ_EMBL_GENBANK_ID));
     }
 
+    public static CvTerm createUniprotkbDatabase(){
+        return new DefaultCvTerm(Xref.UNIPROTKB, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_ID));
+    }
+
     public static CvTerm createSmile(){
         return new DefaultCvTerm(Checksum.SMILE, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Checksum.SMILE_ID));
     }
@@ -59,6 +63,10 @@ public class CvTermFactory {
 
     public static CvTerm createStandardInchiKey(){
         return new DefaultCvTerm(Checksum.INCHI_KEY, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Checksum.INCHI_KEY_ID));
+    }
+
+    public static CvTerm createRogid(){
+        return new DefaultCvTerm(Checksum.ROGID, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Checksum.ROGID_ID));
     }
 
     public static CvTerm createUndeterminedStatus(){
@@ -83,5 +91,9 @@ public class CvTermFactory {
 
     public static CvTerm createGeneInteractorType(){
         return new DefaultCvTerm(Gene.GENE, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Gene.GENE_ID));
+    }
+
+    public static CvTerm createGeneNameAliasType(){
+        return new DefaultCvTerm(Alias.GENE_NAME, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Alias.GENE_NAME_ID));
     }
 }

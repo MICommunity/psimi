@@ -15,7 +15,7 @@ import java.util.Collection;
 
 public class ChecksumUtils {
 
-    public static boolean isChecksumHavingMethod(Checksum checksum, String methodId, String methodName){
+    public static boolean doesChecksumHaveMethod(Checksum checksum, String methodId, String methodName){
 
         if (checksum == null || (methodName == null && methodId == null)){
             return false;
