@@ -31,6 +31,8 @@ public interface Xref {
     public static String CHEBI_ID = "MI:0474";
     public static String DDBJ_EMBL_GENBANK = "ddbj/embl/genbank";
     public static String DDBJ_EMBL_GENBANK_ID = "MI:0475";
+    public static String UNIPROTKB = "uniprotkb";
+    public static String UNIPROTKB_ID = "MI:0486";
 
     /**
      * The database is a controlled vocabulary term. It cannot be null.

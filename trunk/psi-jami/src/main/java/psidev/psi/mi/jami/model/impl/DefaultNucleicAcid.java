@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactNucleicAcidComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -160,7 +161,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
                 if (databaseId1 != null && databaseId2 != null){
                     // both are ensembl, sort by id
                     if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1.getId()) && Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId2.getId())){
-                        return compareNucleicAcidIdentifiers(externalIdentifier1, externalIdentifier2, ddbjEmblGenbank);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : null);
                     }
                     // ddbj/embl/genbank is first
                     else if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1.getId())){
@@ -171,7 +172,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
                     }
                     // both are refseq, sort by id
                     else if (Xref.REFSEQ_ID.equals(databaseId1.getId()) && Xref.REFSEQ_ID.equals(databaseId2.getId())){
-                        return compareNucleicAcidIdentifiers(externalIdentifier1, externalIdentifier2, refseq);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
                     }
                     // refseq is first
                     else if (Xref.REFSEQ_ID.equals(databaseId1.getId())){
@@ -190,7 +191,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
                     String databaseName2 = database2.getShortName().toLowerCase().trim();
                     // both are ddbj/embl/genbank, sort by id
                     if (Xref.DDBJ_EMBL_GENBANK.equals(databaseName1) && Xref.DDBJ_EMBL_GENBANK.equals(databaseName2)){
-                        return compareNucleicAcidIdentifiers(externalIdentifier1, externalIdentifier2, ddbjEmblGenbank);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : null);
                     }
                     // ddbj/embl/genbank is first
                     else if (Xref.DDBJ_EMBL_GENBANK.equals(databaseName1)){
@@ -201,7 +202,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
                     }
                     // both are refseq, sort by id
                     else if (Xref.REFSEQ.equals(databaseName1) && Xref.REFSEQ.equals(databaseName2)){
-                        return compareNucleicAcidIdentifiers(externalIdentifier1, externalIdentifier2, refseq);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
                     }
                     // refseq is first
                     else if (Xref.REFSEQ.equals(databaseName1)){
@@ -224,27 +225,6 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
                 String id2 = externalIdentifier2.getId();
 
                 return id1.compareTo(id2);
-            }
-        }
-
-        private int compareNucleicAcidIdentifiers(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2, ExternalIdentifier geneProperty) {
-            int comp;
-            String id1 = externalIdentifier1.getId();
-            String id2 = externalIdentifier2.getId();
-            comp = id1.compareTo(id2);
-            if (comp == 0){
-                return 0;
-            }
-
-            // the unique gene property is first
-            if (geneProperty != null && geneProperty.getId().equals(id1)){
-                return -1;
-            }
-            else if (geneProperty != null && geneProperty.getId().equals(id2)){
-                return 1;
-            }
-            else {
-                return comp;
             }
         }
     }

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactGeneComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -193,9 +194,10 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                 // if external id of database is set, look at database id only otherwise look at shortname
                 int comp;
                 if (databaseId1 != null && databaseId2 != null){
+
                     // both are ensembl, sort by id
                     if (Xref.ENSEMBL_ID.equals(databaseId1.getId()) && Xref.ENSEMBL_ID.equals(databaseId2.getId())){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, ensembl);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensembl != null ? ensembl.getId() : null);
                     }
                     // ensembl is first
                     else if (Xref.ENSEMBL_ID.equals(databaseId1.getId())){
@@ -206,7 +208,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                     }
                     // both are ensembl genomes, sort by id
                     else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1.getId()) && Xref.ENSEMBL_GENOMES_ID.equals(databaseId2.getId())){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, ensemblGenome);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensemblGenome != null ? ensemblGenome.getId() : null);
                     }
                     // ensembl genomes is second
                     else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1.getId())){
@@ -217,7 +219,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                     }
                     // both are entrez gene id, sort by id
                     else if (Xref.ENTREZ_GENE_ID.equals(databaseId1.getId()) && Xref.ENTREZ_GENE_ID.equals(databaseId2.getId())){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, entrezGeneId);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), entrezGeneId != null ? entrezGeneId.getId() : null);
                     }
                     // entrez gene id is second
                     else if (Xref.ENTREZ_GENE_ID.equals(databaseId1.getId())){
@@ -228,7 +230,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                     }
                     // both are refseq, sort by id
                     else if (Xref.REFSEQ_ID.equals(databaseId1.getId()) && Xref.REFSEQ_ID.equals(databaseId2.getId())){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, refseq);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
                     }
                     // refseq is first
                     else if (Xref.REFSEQ_ID.equals(databaseId1.getId())){
@@ -247,7 +249,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                     String databaseName2 = database2.getShortName().toLowerCase().trim();
                     // both are ensembl, sort by id
                     if (Xref.ENSEMBL.equals(databaseName1) && Xref.ENSEMBL.equals(databaseName2)){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, ensembl);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensembl != null ? ensembl.getId() : null);
                     }
                     // ensembl is first
                     else if (Xref.ENSEMBL.equals(databaseName1)){
@@ -258,7 +260,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                     }
                     // both are ensembl genomes, sort by id
                     else if (Xref.ENSEMBL_GENOMES.equals(databaseName1) && Xref.ENSEMBL_GENOMES.equals(databaseName2)){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, ensemblGenome);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensemblGenome != null ? ensemblGenome.getId() : null);
                     }
                     // ensembl genomes is second
                     else if (Xref.ENSEMBL_GENOMES.equals(databaseName1)){
@@ -269,7 +271,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                     }
                     // both are entrez gene id, sort by id
                     else if (Xref.ENTREZ_GENE.equals(databaseName1) && Xref.ENTREZ_GENE.equals(databaseName2)){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, entrezGeneId);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), entrezGeneId != null ? entrezGeneId.getId() : null);
                     }
                     // entrez gene id is second
                     else if (Xref.ENTREZ_GENE.equals(databaseName1)){
@@ -280,7 +282,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                     }
                     // both are refseq, sort by id
                     else if (Xref.REFSEQ.equals(databaseName1) && Xref.REFSEQ.equals(databaseName2)){
-                        return compareGeneIdentifiers(externalIdentifier1, externalIdentifier2, refseq);
+                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
                     }
                     // refseq is first
                     else if (Xref.REFSEQ.equals(databaseName1)){
@@ -303,27 +305,6 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                 String id2 = externalIdentifier2.getId();
 
                 return id1.compareTo(id2);
-            }
-        }
-
-        private int compareGeneIdentifiers(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2, ExternalIdentifier geneProperty) {
-            int comp;
-            String id1 = externalIdentifier1.getId();
-            String id2 = externalIdentifier2.getId();
-            comp = id1.compareTo(id2);
-            if (comp == 0){
-                return 0;
-            }
-
-            // the unique gene property is first
-            if (geneProperty != null && geneProperty.getId().equals(id1)){
-                return -1;
-            }
-            else if (geneProperty != null && geneProperty.getId().equals(id2)){
-                return 1;
-            }
-            else {
-                return comp;
             }
         }
     }

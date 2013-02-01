@@ -24,7 +24,7 @@ public class DefaultInteractor implements Interactor, Serializable {
     protected Set<Checksum> checksums;
     private Set<Xref> xrefs;
     private Set<Annotation> annotations;
-    private Set<Alias> aliases;
+    protected Set<Alias> aliases;
     private Organism organism;
     private CvTerm type;
 
@@ -41,7 +41,7 @@ public class DefaultInteractor implements Interactor, Serializable {
         initializeChecksums();
         this.xrefs = new HashSet<Xref>();
         this.annotations = new HashSet<Annotation>();
-        this.aliases = new HashSet<Alias>();
+        initializeAliases();
         initializeIdentifiers();
     }
 
@@ -78,6 +78,10 @@ public class DefaultInteractor implements Interactor, Serializable {
     public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
         this(name, fullName, type, organism);
         this.identifiers.add(uniqueId);
+    }
+
+    protected void initializeAliases(){
+        this.aliases = new HashSet<Alias>();
     }
 
     protected void initializeIdentifiers(){
