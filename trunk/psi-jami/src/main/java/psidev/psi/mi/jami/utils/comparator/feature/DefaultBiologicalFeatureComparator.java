@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.BiologicalFeature;
 
 /**
  * Default BiologicalFeature comparator.
- * It will use a DefaultFeatureComparator to compare basic properties of a feature.
+ * It will use a DefaultFeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of a biological feature.
  *
@@ -18,20 +18,20 @@ public class DefaultBiologicalFeatureComparator extends BiologicalFeatureCompara
     private static DefaultBiologicalFeatureComparator defaultBiologicalFeatureComparator;
 
     /**
-     * Creates a new DefaultBiologicalFeatureComparator. It will use a DefaultFeatureComparator to compare basic feature properties
+     * Creates a new DefaultBiologicalFeatureComparator. It will use a DefaultFeatureBaseComparator to compare basic feature properties
      */
     public DefaultBiologicalFeatureComparator() {
-        super(new DefaultFeatureComparator());
+        super(new DefaultFeatureBaseComparator());
     }
 
     @Override
-    public DefaultFeatureComparator getFeatureComparator() {
-        return (DefaultFeatureComparator) this.featureComparator;
+    public DefaultFeatureBaseComparator getFeatureComparator() {
+        return (DefaultFeatureBaseComparator) this.featureComparator;
     }
 
     @Override
     /**
-     * It will use a DefaultFeatureComparator to compare basic properties of a feature.
+     * It will use a DefaultFeatureBaseComparator to compare basic properties of a feature.
      *
      * This comparator will ignore all the other properties of a biological feature.
      */

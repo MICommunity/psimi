@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparato
  * It will first compare the interactors using DefaultInteractorComparator. If both interactors are the same,
  * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
  * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a DefaultFeatureComparator.
+ * it will compare the features using a DefaultFeatureBaseComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -25,11 +25,11 @@ public class DefaultParticipantComparator extends ParticipantComparator {
 
     /**
      * Creates a new DefaultParticipantComparator. It will use a DefaultInteractorBaseComparator to compare
-     * interactors, a DefaultCvTermComparator to compare biological roles, a DefaultFeatureComparator to
+     * interactors, a DefaultCvTermComparator to compare biological roles, a DefaultFeatureBaseComparator to
      * compare features.
      */
     public DefaultParticipantComparator() {
-        super(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultFeatureComparator());
+        super(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultFeatureBaseComparator());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DefaultParticipantComparator extends ParticipantComparator {
      * It will first compare the interactors using DefaultInteractorBaseComparator. If both interactors are the same,
      * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
      * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a DefaultFeatureComparator.
+     * it will compare the features using a DefaultFeatureBaseComparator.
      *
      * This comparator will ignore all the other properties of a participant.
      */

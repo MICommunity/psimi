@@ -9,7 +9,7 @@ import java.util.Comparator;
 /**
  * Basic ExperimentalFeature comparator.
  * It will first compare feature detection methods using AbstractCvTermComparator. If both feature detection methods are the same,
- * it will use a FeatureComparator to compare basic properties of a feature.
+ * it will use a FeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of an experimental feature.
  *
@@ -20,14 +20,14 @@ import java.util.Comparator;
 
 public class ExperimentalFeatureComparator implements Comparator<ExperimentalFeature>{
 
-    protected FeatureComparator featureComparator;
+    protected FeatureBaseComparator featureComparator;
     protected AbstractCvTermComparator cvTermComparator;
 
     /**
      * Creates a new ExperimentalFeatureComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public ExperimentalFeatureComparator(FeatureComparator featureComparator){
+    public ExperimentalFeatureComparator(FeatureBaseComparator featureComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
@@ -38,14 +38,13 @@ public class ExperimentalFeatureComparator implements Comparator<ExperimentalFea
         this.cvTermComparator = featureComparator.getCvTermComparator();
     }
 
-    public FeatureComparator getFeatureComparator() {
+    public FeatureBaseComparator getFeatureComparator() {
         return featureComparator;
     }
 
     /**
-     * It will first compare feature detection methods using AbstractCvTermComparator. If both feature detection methods are the same,
-     * it will use a FeatureComparator to compare basic properties of a feature.
-     *
+     * It will first use a FeatureBaseComparator to compare basic properties of a feature.
+     * If the basic feature properties are the same, it will then compare feature detection methods using AbstractCvTermComparator.
      * This comparator will ignore all the other properties of an experimental feature.
      *
      * @param experimentalFeature1
@@ -67,17 +66,17 @@ public class ExperimentalFeatureComparator implements Comparator<ExperimentalFea
             return BEFORE;
         }
         else {
-            // first compare feature detection methods
+            // first compares basic feature properties
+            int comp = featureComparator.compare(experimentalFeature1, experimentalFeature2);
+            if (comp != 0){
+               return comp;
+            }
+
+            // then compare feature detection methods
             CvTerm detMethod1 = experimentalFeature1.getDetectionMethod();
             CvTerm detMethod2 = experimentalFeature2.getDetectionMethod();
 
-            int comp = cvTermComparator.compare(detMethod1, detMethod2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // compares basic feature properties
-            return featureComparator.compare(experimentalFeature1, experimentalFeature2);
+           return cvTermComparator.compare(detMethod1, detMethod2);
         }
     }
 }

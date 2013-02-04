@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComp
  * It will first compare the interactors using DefaultExactInteractorComparator. If both interactors are the same,
  * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
  * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a DefaultFeatureComparator.
+ * it will compare the features using a DefaultFeatureBaseComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -25,11 +25,11 @@ public class DefaultExactParticipantComparator extends ParticipantComparator{
 
     /**
      * Creates a new DefaultExactParticipantComparator. It will use a DefaultExactInteractorComparator to compare
-     * interactors, a DefaultCvTermComparator to compare biological roles, a DefaultFeatureComparator to
+     * interactors, a DefaultCvTermComparator to compare biological roles, a DefaultFeatureBaseComparator to
      * compare features and a DefaultParameterComparator to compare parameters.
      */
     public DefaultExactParticipantComparator() {
-        super(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultFeatureComparator());
+        super(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultFeatureBaseComparator());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DefaultExactParticipantComparator extends ParticipantComparator{
      * It will first compare the interactors using DefaultExactInteractorComparator. If both interactors are the same,
      * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
      * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a DefaultFeatureComparator.
+     * it will compare the features using a DefaultFeatureBaseComparator.
      *
      * This comparator will ignore all the other properties of a participant.
      */

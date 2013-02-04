@@ -1,18 +1,18 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
+import psidev.psi.mi.jami.model.Interactor;
 
 /**
- * Default feature comparator.
- * It will look first at the feature types using a DefaultCvTermComparator. If the feature types are the same, it will look at the
- * feature identifiers using DefaultExternalIdentifierComparator. If the feature identifiers are the same, it will look at
- * the ranges using DefaultRangeComparator.
+ * Generic default feature comparator.
+ * Biological features come first and then experimental features.
+ * - It uses DefaultBiologicalFeatureComparator to compare biological features
+ * - It uses DefaultExperimentalFeatureComparator to compare experimental features
+ * - It uses DefaultFeatureBaseComparator to compare basic feature properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>16/01/13</pre>
+ * @since <pre>04/02/13</pre>
  */
 
 public class DefaultFeatureComparator extends FeatureComparator {
@@ -20,31 +20,27 @@ public class DefaultFeatureComparator extends FeatureComparator {
     private static DefaultFeatureComparator defaultFeatureComparator;
 
     /**
-     * Creates a new DefaultFeatureComparator. It will use a DefaultCvTermComparator to compare feature types and range status,
-     * a DefaultExternalIdentifierComparator to compare identifiers and a DefaultRangeComparator to compare ranges
+     * Creates a DefaultFeatureComparator. It will use a DefaultFeatureBaseComparator to compare basic feature properties
      */
     public DefaultFeatureComparator() {
-        super(new DefaultCvTermComparator(), new DefaultExternalIdentifierComparator());
+        super(new DefaultFeatureBaseComparator());
+    }
+
+    @Override
+    public DefaultFeatureBaseComparator getFeatureBaseComparator() {
+        return (DefaultFeatureBaseComparator) this.featureBaseComparator;
     }
 
     @Override
     /**
-     * It will look first at the feature types using a DefaultCvTermComparator. If the feature types are the same, it will look at the
-     * feature identifiers using DefaultExternalIdentifierComparator. If the feature identifiers are the same, it will look at
-     * the ranges using DefaultRangeComparator.
+     * Biological features come first and then experimental features.
+     * - It uses DefaultBiologicalFeatureComparator to compare biological features
+     * - It uses DefaultExperimentalFeatureComparator to compare experimental features
+     * - It uses DefaultFeatureBaseComparator to compare basic feature properties
+     *
      */
     public int compare(Feature feature1, Feature feature2) {
         return super.compare(feature1, feature2);
-    }
-
-    @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) this.cvTermComparator;
-    }
-
-    @Override
-    public DefaultExternalIdentifierComparator getIdentifierComparator() {
-        return (DefaultExternalIdentifierComparator) this.identifierComparator;
     }
 
     /**

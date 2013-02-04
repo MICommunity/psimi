@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.BiologicalFeature;
 
 /**
  * Unambiguous BiologicalFeature comparator.
- * It will use a UnambiguousFeatureComparator to compare basic properties of a feature.
+ * It will use a UnambiguousFeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of a biological feature.
  *
@@ -18,20 +18,20 @@ public class UnambiguousBiologicalFeaturecomparator extends BiologicalFeatureCom
     private static UnambiguousBiologicalFeaturecomparator unambiguousBiologicalFeatureComparator;
 
     /**
-     * Creates a new UnambiguousBiologicalFeaturecomparator. It will use a UnambiguousFeatureComparator to compare basic feature properties
+     * Creates a new UnambiguousBiologicalFeaturecomparator. It will use a UnambiguousFeatureBaseComparator to compare basic feature properties
      */
     public UnambiguousBiologicalFeaturecomparator() {
-        super(new UnambiguousFeatureComparator());
+        super(new UnambiguousFeatureBaseComparator());
     }
 
     @Override
-    public UnambiguousFeatureComparator getFeatureComparator() {
-        return (UnambiguousFeatureComparator) this.featureComparator;
+    public UnambiguousFeatureBaseComparator getFeatureComparator() {
+        return (UnambiguousFeatureBaseComparator) this.featureComparator;
     }
 
     @Override
     /**
-     * It will use a UnambiguousFeatureComparator to compare basic properties of a feature.
+     * It will use a UnambiguousFeatureBaseComparator to compare basic properties of a feature.
      *
      * This comparator will ignore all the other properties of a biological feature.
      */
