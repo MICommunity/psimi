@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureComparator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import java.util.Set;
  * @since <pre>01/02/13</pre>
  */
 
-public class DefaultFeature<T extends Feature, P extends Participant> implements Feature<T, P>{
+public class DefaultFeature<T extends Feature, P extends Participant> implements Feature<T, P>, Serializable{
 
     private String shortName;
     private String fullName;
