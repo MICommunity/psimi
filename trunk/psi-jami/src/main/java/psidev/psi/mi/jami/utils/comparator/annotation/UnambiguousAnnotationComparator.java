@@ -79,7 +79,7 @@ public class UnambiguousAnnotationComparator extends AnnotationComparator {
 
         int hashcode = 31;
         CvTerm topic = annot.getTopic();
-        hashcode = 31*hashcode + unambiguousAnnotationComparator.getTopicComparator().hashCode(topic);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(topic);
 
         String text = annot.getValue();
         hashcode = 31*hashcode + (text != null ? text.toLowerCase().trim().hashCode() : 0);

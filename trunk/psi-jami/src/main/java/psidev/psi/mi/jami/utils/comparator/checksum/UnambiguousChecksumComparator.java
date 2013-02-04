@@ -74,7 +74,7 @@ public class UnambiguousChecksumComparator extends ChecksumComparator {
 
         int hashcode = 31;
         CvTerm method = checksum.getMethod();
-        hashcode = 31*hashcode + unambiguousChecksumComparator.getMethodComparator().hashCode(method);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(method);
 
         String value = checksum.getValue();
         hashcode = 31*hashcode + value.hashCode();

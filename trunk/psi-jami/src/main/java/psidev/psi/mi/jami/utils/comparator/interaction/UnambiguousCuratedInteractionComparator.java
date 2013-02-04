@@ -2,12 +2,12 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantBaseComparator;
 
 /**
  * Unambiguous comparator for Curated interactions.
  *
- * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousParticipantComparator. If the participants are the same, it will compare
+ * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousParticipantBaseComparator. If the participants are the same, it will compare
  * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
  * A negative interaction will come after a positive interaction
  *
@@ -21,11 +21,11 @@ public class UnambiguousCuratedInteractionComparator extends CuratedInteractionC
     private static UnambiguousCuratedInteractionComparator unambiguousCuratedInteractionComparator;
 
     /**
-     * Creates a new UnambiguousCuratedInteractionComparator. It will use a UnambiguousParticipantComparator to
+     * Creates a new UnambiguousCuratedInteractionComparator. It will use a UnambiguousParticipantBaseComparator to
      * compare participants and UnambiguousCvTermComparator to compare interaction types
      */
     public UnambiguousCuratedInteractionComparator() {
-        super(new UnambiguousParticipantComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousParticipantBaseComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
@@ -35,7 +35,7 @@ public class UnambiguousCuratedInteractionComparator extends CuratedInteractionC
 
     @Override
     /**
-     * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousParticipantComparator. If the participants are the same, it will compare
+     * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousParticipantBaseComparator. If the participants are the same, it will compare
      * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
      * A negative interaction will come after a positive interaction
      */

@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorCompa
 
 /**
  * Unambiguous component comparator.
- * It will compare the basic properties of a component using UnambiguousParticipantComparator.
+ * It will compare the basic properties of a component using UnambiguousParticipantBaseComparator.
  *
  * This comparator will ignore all the other properties of a component.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -21,21 +21,21 @@ public class UnambiguousComponentComparator extends ComponentComparator{
     private static UnambiguousComponentComparator unambiguousParticipantComparator;
 
     /**
-     * Creates a new UnambiguousComponentComparator. It will use a UnambiguousParticipantComparator to compare
+     * Creates a new UnambiguousComponentComparator. It will use a UnambiguousParticipantBaseComparator to compare
      * the basic properties of a participant.
      */
     public UnambiguousComponentComparator() {
-        super(new ParticipantComparator<BiologicalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousBiologicalFeaturecomparator()));
+        super(new ParticipantBaseComparator<BiologicalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousBiologicalFeaturecomparator()));
     }
 
     @Override
-    public ParticipantComparator<BiologicalFeature> getParticipantComparator() {
-        return (ParticipantComparator<BiologicalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<BiologicalFeature> getParticipantComparator() {
+        return (ParticipantBaseComparator<BiologicalFeature>) this.participantComparator;
     }
 
     @Override
     /**
-     * It will compare the basic properties of a component using UnambiguousParticipantComparator.
+     * It will compare the basic properties of a component using UnambiguousParticipantBaseComparator.
      *
      * This comparator will ignore all the other properties of a component.
      */

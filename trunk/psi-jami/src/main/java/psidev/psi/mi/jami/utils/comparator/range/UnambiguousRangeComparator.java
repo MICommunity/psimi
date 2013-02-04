@@ -71,9 +71,9 @@ public class UnambiguousRangeComparator extends RangeComparator {
 
         int hashcode = 31;
         Position start = range.getStart();
-        hashcode = 31*hashcode + unambiguousRangeComparator.getPositionComparator().hashCode(start);
+        hashcode = 31*hashcode + UnambiguousPositionComparator.hashCode(start);
         Position end = range.getEnd();
-        hashcode = 31*hashcode + unambiguousRangeComparator.getPositionComparator().hashCode(end);
+        hashcode = 31*hashcode + UnambiguousPositionComparator.hashCode(end);
         hashcode = 31 * hashcode + (range.isLink() ? 0 : 1);
 
         return hashcode;

@@ -10,7 +10,7 @@ import java.util.Comparator;
 /**
  * Basic comparator for Curated interactions.
  *
- * It will first compare the sources of the interactions using AbstractCvTermComparator. If the sources are the same, t will compare the participants using ParticipantComparator. If the participants are the same, it will compare
+ * It will first compare the sources of the interactions using AbstractCvTermComparator. If the sources are the same, t will compare the participants using ParticipantBaseComparator. If the participants are the same, it will compare
  * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
  * A negative interaction will come after a positive interaction
  *
@@ -31,7 +31,7 @@ public class CuratedInteractionComparator<T extends Participant> extends Interac
 
     @Override
     /**
-     *  * It will first compare the sources of the interactions using AbstractCvTermComparator. If the sources are the same, t will compare the participants using ParticipantComparator. If the participants are the same, it will compare
+     *  * It will first compare the sources of the interactions using AbstractCvTermComparator. If the sources are the same, t will compare the participants using ParticipantBaseComparator. If the participants are the same, it will compare
      * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
      * A negative interaction will come after a positive interaction
      */

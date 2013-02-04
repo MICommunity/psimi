@@ -18,15 +18,15 @@ import java.util.Set;
 
 public class DefaultInteractor implements Interactor, Serializable {
 
-    private String shortName;
-    private String fullName;
+    protected String shortName;
+    protected String fullName;
     protected Set<ExternalIdentifier> identifiers;
     protected Set<Checksum> checksums;
-    private Set<Xref> xrefs;
-    private Set<Annotation> annotations;
+    protected Set<Xref> xrefs;
+    protected Set<Annotation> annotations;
     protected Set<Alias> aliases;
-    private Organism organism;
-    private CvTerm type;
+    protected Organism organism;
+    protected CvTerm type;
 
     public DefaultInteractor(String name, CvTerm type){
         if (name == null || (name != null && name.length() == 0)){

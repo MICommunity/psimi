@@ -12,7 +12,7 @@ import java.util.Comparator;
 /**
  * Basic Interaction comparator.
  *
- * It will first compare the participants using ParticipantComparator. If the participants are the same, it will compare
+ * It will first compare the participants using ParticipantBaseComparator. If the participants are the same, it will compare
  * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
  * A negative interaction will come after a positive interaction.
  *
@@ -52,7 +52,7 @@ public class InteractionComparator<T extends Participant> implements Comparator<
     }
 
     /**
-     * It will first compare the participants using ParticipantComparator. If the participants are the same, it will compare
+     * It will first compare the participants using ParticipantBaseComparator. If the participants are the same, it will compare
      * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
      * A negative interaction will come after a positive interaction.
      *

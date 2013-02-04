@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
 
@@ -84,13 +85,13 @@ public class UnambiguousExperimentComparator extends ExperimentComparator {
 
         int hashcode = 31;
         Publication pub = exp.getPublication();
-        hashcode = 31*hashcode + unambiguousExperimentComparator.getPublicationComparator().hashCode(pub);
+        hashcode = 31*hashcode + UnambiguousPublicationComparator.hashCode(pub);
 
         CvTerm detMethod = exp.getInteractionDetectionMethod();
-        hashcode = 31*hashcode + unambiguousExperimentComparator.getOrganismComparator().getCvTermComparator().hashCode(detMethod);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(detMethod);
 
         Organism organism = exp.getHostOrganism();
-        hashcode = 31*hashcode + unambiguousExperimentComparator.getOrganismComparator().hashCode(organism);
+        hashcode = 31*hashcode + UnambiguousOrganismComparator.hashCode(organism);
 
         return hashcode;
     }

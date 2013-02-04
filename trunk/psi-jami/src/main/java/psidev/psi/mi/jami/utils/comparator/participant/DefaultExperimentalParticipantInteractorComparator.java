@@ -29,8 +29,8 @@ public class DefaultExperimentalParticipantInteractorComparator extends Experime
     }
 
     @Override
-    public DefaultParticipantComparator getParticipantComparator() {
-        return (DefaultParticipantComparator) this.participantComparator;
+    public DefaultParticipantBaseComparator getParticipantComparator() {
+        return (DefaultParticipantBaseComparator) this.participantComparator;
     }
 
     @Override

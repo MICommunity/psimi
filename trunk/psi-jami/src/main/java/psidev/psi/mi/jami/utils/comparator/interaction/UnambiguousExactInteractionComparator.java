@@ -2,12 +2,12 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantBaseComparator;
 
 /**
  * Unambiguous exact Interaction comparator.
  *
- * It will first compare the participants using UnambiguousExactParticipantComparator. If the participants are the same, it will compare
+ * It will first compare the participants using UnambiguousExactParticipantBaseComparator. If the participants are the same, it will compare
  * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
  * A negative interaction will come after a positive interaction.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -20,11 +20,11 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
     private static UnambiguousExactInteractionComparator unambiguousExactInteractionComparator;
 
     /**
-     * Creates a new UnambiguousExactInteractionComparator. It will use a UnambiguousExactParticipantComparator to
+     * Creates a new UnambiguousExactInteractionComparator. It will use a UnambiguousExactParticipantBaseComparator to
      * compare participants and  UnambiguousCvTermcomparator to compare interaction types
      */
     public UnambiguousExactInteractionComparator() {
-        super(new UnambiguousExactParticipantComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
@@ -34,7 +34,7 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
 
     @Override
     /**
-     * It will first compare the participants using UnambiguousExactParticipantComparator. If the participants are the same, it will compare
+     * It will first compare the participants using UnambiguousExactParticipantBaseComparator. If the participants are the same, it will compare
      * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
      * A negative interaction will come after a positive interaction.
      */

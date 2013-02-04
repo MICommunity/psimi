@@ -24,12 +24,12 @@ public class UnambiguousExperimentalParticipantInteractorComparator extends Expe
      * the basic properties of a participant.
      */
     public UnambiguousExperimentalParticipantInteractorComparator() {
-        super(new UnambiguousParticipantComparator(), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
+        super(new UnambiguousParticipantBaseComparator(), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
     }
 
     @Override
-    public UnambiguousParticipantComparator getParticipantComparator() {
-        return (UnambiguousParticipantComparator) this.participantComparator;
+    public UnambiguousParticipantBaseComparator getParticipantComparator() {
+        return (UnambiguousParticipantBaseComparator) this.participantComparator;
     }
 
     @Override

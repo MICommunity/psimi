@@ -76,7 +76,7 @@ public class UnambiguousAliasComparator extends AliasComparator {
 
         int hashcode = 31;
         CvTerm type = alias.getType();
-        hashcode = 31*hashcode + unambiguousAliasComparator.getTypeComparator().hashCode(type);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(type);
 
         String name = alias.getName();
         hashcode = 31*hashcode + name.hashCode();
