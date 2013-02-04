@@ -42,18 +42,12 @@ public interface Feature<T extends Feature, P extends Participant> {
     public void setFullName(String name);
 
     /**
-     * External identifier which describes this feature.
-     * It can be null if the feature is not described in an external database.
+     * Set of External identifiers which describes this feature.
+     * The set cannot be null and if the feature is not described in an external databases, the method should return an empty set.
      * Ex: interpro:IPR003121
      * @return the identifier
      */
-    public ExternalIdentifier getIdentifier();
-
-    /**
-     * Sets the external identifier
-     * @param identifier: identifier
-     */
-    public void setIdentifier(ExternalIdentifier identifier);
+    public Set<ExternalIdentifier> getIdentifiers();
 
     /**
      * Set of cross references which give more information about the feature.

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.ExperimentalFeature;
 /**
  * Default ExperimentalFeature comparator.
  * It will first compare feature detection methods using DefaultCvTermComparator. If both feature detection methods are the same,
- * it will use a DefaultFeatureComparator to compare basic properties of a feature.
+ * it will use a DefaultFeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of an experimental feature.
  *
@@ -20,21 +20,21 @@ public class DefaultExperimentalFeatureComparator extends ExperimentalFeatureCom
 
     /**
      * Creates a new DefaultExperimentalFeatureComparator. It will use a DefaultCvTermComparator to
-     * compare feature detection methods and a DefaultFeatureComparator to compare basic feature properties
+     * compare feature detection methods and a DefaultFeatureBaseComparator to compare basic feature properties
      */
     public DefaultExperimentalFeatureComparator() {
-        super(new DefaultFeatureComparator());
+        super(new DefaultFeatureBaseComparator());
     }
 
     @Override
-    public DefaultFeatureComparator getFeatureComparator() {
-        return (DefaultFeatureComparator) this.featureComparator;
+    public DefaultFeatureBaseComparator getFeatureComparator() {
+        return (DefaultFeatureBaseComparator) this.featureComparator;
     }
 
     @Override
     /**
      * It will first compare feature detection methods using DefaultCvTermComparator. If both feature detection methods are the same,
-     * it will use a DefaultFeatureComparator to compare basic properties of a feature.
+     * it will use a DefaultFeatureBaseComparator to compare basic properties of a feature.
      *
      * This comparator will ignore all the other properties of an experimental feature.
      */

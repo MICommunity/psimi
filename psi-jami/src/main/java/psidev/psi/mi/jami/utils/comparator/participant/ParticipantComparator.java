@@ -36,7 +36,7 @@ public class ParticipantComparator<T extends Feature> extends ParticipantInterac
      * Creates a new ParticipantComparator
      * @param interactorComparator : interactor comparator required for comparing the molecules
      * @param cvTermComparator : CvTerm comparator required for comparing biological roles
-     * @param featureComparator : FeatureComparator required for comparing participant features
+     * @param featureComparator : FeatureBaseComparator required for comparing participant features
      */
     public ParticipantComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator,
                                  Comparator<T> featureComparator){

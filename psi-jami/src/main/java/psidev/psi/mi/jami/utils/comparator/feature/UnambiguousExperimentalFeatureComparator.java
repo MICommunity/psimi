@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.ExperimentalFeature;
 /**
  * Unambiguous ExperimentalFeature comparator.
  * It will first compare feature detection methods using UnambiguousCvTermComparator. If both feature detection methods are the same,
- * it will use a UnambiguousFeatureComparator to compare basic properties of a feature.
+ * it will use a UnambiguousFeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of an experimental feature.
  *
@@ -20,21 +20,21 @@ public class UnambiguousExperimentalFeatureComparator extends ExperimentalFeatur
 
     /**
      * Creates a new UnambiguousExperimentalFeatureComparator. It will use a UnambiguousCvTermComparator to
-     * compare feature detection methods and a UnambiguousFeatureComparator to compare basic feature properties
+     * compare feature detection methods and a UnambiguousFeatureBaseComparator to compare basic feature properties
      */
     public UnambiguousExperimentalFeatureComparator() {
-        super(new UnambiguousFeatureComparator());
+        super(new UnambiguousFeatureBaseComparator());
     }
 
     @Override
-    public UnambiguousFeatureComparator getFeatureComparator() {
-        return (UnambiguousFeatureComparator) this.featureComparator;
+    public UnambiguousFeatureBaseComparator getFeatureComparator() {
+        return (UnambiguousFeatureBaseComparator) this.featureComparator;
     }
 
     @Override
     /**
      * It will first compare feature detection methods using UnambiguousCvTermComparator. If both feature detection methods are the same,
-     * it will use a UnambiguousFeatureComparator to compare basic properties of a feature.
+     * it will use a UnambiguousFeatureBaseComparator to compare basic properties of a feature.
      *
      * This comparator will ignore all the other properties of an experimental feature.
      */
