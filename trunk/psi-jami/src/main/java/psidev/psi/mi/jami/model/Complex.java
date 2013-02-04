@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.model;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * An interactor composed of interacting molecules that can be copurified.
@@ -28,18 +27,15 @@ public interface Complex extends Interactor {
     public Collection<Component> getComponents();
 
     /**
-     * Go annotations giving information about function, location and process.
-     * The set cannot be null. If the complex does not have any GO annotations, the method should return an empty set.
-     * @return the GO xrefs
+     * The physical properties for this complex.
+     * Example: Molecular mass = 154 kDa
+     * @return
      */
-    public Set<Xref> getGoXrefs();
+    public String getPhysicalProperties();
 
     /**
-     * PDB annotations giving information about molecular structure.
-     * The set cannot be null. If the complex does not have any PDB annotations, the method should return an empty set.
-     * @return the PDB xrefs
+     * Sets the physical properties of this complex
+     * @param properties
      */
-    public Set<Xref> getPdbXrefs();
-
-    public String getPhysicalProperties();
+    public void setPhysicalProperties(String properties);
 }
