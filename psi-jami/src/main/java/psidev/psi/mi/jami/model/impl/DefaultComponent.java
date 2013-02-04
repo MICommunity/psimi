@@ -1,60 +1,45 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
-
-import java.util.Collection;
-import java.util.Set;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponentComparator;
 
 /**
- * TODO comment this
+ * Default implementation for Component
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultComponent implements Component {
-    public Complex getInteraction() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+public class DefaultComponent extends DefaultParticipant<Complex, Interactor, BiologicalFeature> implements Component {
+
+    public DefaultComponent(Complex interaction, Interactor interactor) {
+        super(interaction, interactor);
     }
 
-    public void setInteraction(Complex interaction) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public DefaultComponent(Complex interaction, Interactor interactor, CvTerm bioRole) {
+        super(interaction, interactor, bioRole);
     }
 
-    public Interactor getInteractor() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public DefaultComponent(Complex interaction, Interactor interactor, Integer stoichiometry) {
+        super(interaction, interactor, stoichiometry);
     }
 
-    public void setInteractor(Interactor interactor) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public DefaultComponent(Complex interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry) {
+        super(interaction, interactor, bioRole, stoichiometry);
     }
 
-    public CvTerm getBiologicalRole() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
 
-    public void setBiologicalRole(CvTerm bioRole) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+        if (!(o instanceof Component)){
+            return false;
+        }
 
-    public Set<Xref> getXrefs() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Set<Annotation> getAnnotations() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Collection<BiologicalFeature> getFeatures() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public int getStoichiometry() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void setStoichiometry(int stoichiometry) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // use UnambiguousExactComponent comparator for equals
+        return UnambiguousExactComponentComparator.areEquals(this, (Component) o);
     }
 }

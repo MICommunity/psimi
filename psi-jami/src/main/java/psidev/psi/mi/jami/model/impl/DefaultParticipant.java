@@ -6,7 +6,9 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipa
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,8 +26,54 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     protected CvTerm biologicalRole;
     protected Set<Xref> xrefs;
     protected Set<Annotation> annotations;
+    protected Set<Alias> aliases;
     protected Collection<F> features;
     protected Integer stoichiometry;
+
+    public DefaultParticipant(I interaction, T interactor){
+        if (interaction == null){
+            throw new IllegalArgumentException("The interaction cannot be null.");
+        }
+        this.interaction = interaction;
+        if (interactor == null){
+            throw new IllegalArgumentException("The interactor cannot be null.");
+        }
+        this.interactor = interactor;
+
+        initializeCollections();
+        this.biologicalRole = CvTermFactory.createUnspecifiedRole();
+    }
+
+    private void initializeCollections() {
+        this.xrefs = new HashSet<Xref>();
+        this.annotations = new HashSet<Annotation>();
+        this.features = new ArrayList<F>();
+        this.aliases = new HashSet<Alias>();
+    }
+
+    public DefaultParticipant(I interaction, T interactor, CvTerm bioRole){
+        if (interaction == null){
+            throw new IllegalArgumentException("The interaction cannot be null.");
+        }
+        this.interaction = interaction;
+        if (interactor == null){
+            throw new IllegalArgumentException("The interactor cannot be null.");
+        }
+        this.interactor = interactor;
+
+        initializeCollections();
+        this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
+    }
+
+    public DefaultParticipant(I interaction, T interactor, Integer stoichiometry){
+        this(interaction, interactor);
+        this.stoichiometry = stoichiometry;
+    }
+
+    public DefaultParticipant(I interaction, T interactor, CvTerm bioRole, Integer stoichiometry){
+        this(interaction, interactor, bioRole);
+        this.stoichiometry = stoichiometry;
+    }
 
     public I getInteraction() {
         return this.interaction;
@@ -68,6 +116,10 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
 
     public Set<Annotation> getAnnotations() {
         return this.annotations;
+    }
+
+    public Set<Alias> getAliases() {
+        return this.aliases;
     }
 
     public Collection<F> getFeatures() {
