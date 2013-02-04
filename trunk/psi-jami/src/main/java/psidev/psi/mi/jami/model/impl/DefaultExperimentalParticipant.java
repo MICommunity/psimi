@@ -1,92 +1,155 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactExperimentalParticipantComparator;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO comment this
+ * Default implementation for Participant
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultExperimentalParticipant implements ExperimentalParticipant {
+public class DefaultExperimentalParticipant extends DefaultParticipant<Interaction, Interactor, ExperimentalFeature> implements ExperimentalParticipant {
+
+    private CvTerm experimentalRole;
+    private Set<CvTerm> identificationMethods;
+    private Set<CvTerm> experimentalPreparations;
+    private Organism expressedIn;
+    private Set<Confidence> confidences;
+    private Set<Parameter> parameters;
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor) {
+        super(interaction, interactor);
+        initializeCollections();
+    }
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole) {
+        super(interaction, interactor, bioRole);
+        initializeCollections();
+    }
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, Integer stoichiometry) {
+        super(interaction, interactor, stoichiometry);
+        initializeCollections();
+    }
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry) {
+        super(interaction, interactor, bioRole, stoichiometry);
+        initializeCollections();
+    }
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole) {
+        super(interaction, interactor, bioRole);
+        initializeCollections();
+        if(expRole == null){
+           this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        }
+        else {
+            this.experimentalRole = expRole;
+        }
+    }
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry) {
+        super(interaction, interactor, bioRole, stoichiometry);
+        initializeCollections();
+        if(expRole == null){
+            this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        }
+        else {
+            this.experimentalRole = expRole;
+        }
+    }
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Organism expressedIn) {
+        super(interaction, interactor, bioRole);
+        initializeCollections();
+        if(expRole == null){
+            this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        }
+        else {
+            this.experimentalRole = expRole;
+        }
+        this.expressedIn = expressedIn;
+    }
+
+    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry, Organism expressedIn) {
+        super(interaction, interactor, bioRole, stoichiometry);
+        initializeCollections();
+        if(expRole == null){
+            this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        }
+        else {
+            this.experimentalRole = expRole;
+        }
+        this.expressedIn = expressedIn;
+    }
+
+    private void initializeCollections() {
+        this.identificationMethods = new HashSet<CvTerm>();
+        this.experimentalPreparations = new HashSet<CvTerm>();
+        this.confidences = new HashSet<Confidence>();
+        this.parameters = new HashSet<Parameter>();
+    }
+
     public CvTerm getExperimentalRole() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.experimentalRole;
     }
 
     public void setExperimentalRole(CvTerm expRole) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (expRole == null){
+           this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        }
+        else {
+            this.experimentalRole = expRole;
+        }
     }
 
     public Set<CvTerm> getIdentificationMethods() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.identificationMethods;
     }
 
     public Set<CvTerm> getExperimentalPreparations() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.experimentalPreparations;
     }
 
     public Organism getExpressedInOrganism() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.expressedIn;
     }
 
     public void setExpressedInOrganism(Organism organism) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.expressedIn = organism;
     }
 
     public Set<Confidence> getConfidences() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.confidences;
     }
 
     public Set<Parameter> getParameters() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.parameters;
     }
 
-    public Interaction getInteraction() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    @Override
+    public String toString() {
+        return super.toString() + (experimentalRole != null ? ", " + experimentalRole.toString() : "") + (expressedIn != null ? ", " + expressedIn.toString() : "");
     }
 
-    public void setInteraction(Interaction interaction) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
 
-    public Interactor getInteractor() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+        if (!(o instanceof ExperimentalParticipant)){
+            return false;
+        }
 
-    public void setInteractor(Interactor interactor) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public CvTerm getBiologicalRole() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void setBiologicalRole(CvTerm bioRole) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Set<Xref> getXrefs() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Set<Annotation> getAnnotations() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Collection<ExperimentalFeature> getFeatures() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public int getStoichiometry() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void setStoichiometry(int stoichiometry) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        // use UnambiguousExactExperimentalParticipant comparator for equals
+        return UnambiguousExactExperimentalParticipantComparator.areEquals(this, (ExperimentalParticipant) o);
     }
 }

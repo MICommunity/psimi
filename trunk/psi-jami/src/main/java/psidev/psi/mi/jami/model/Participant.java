@@ -74,6 +74,14 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
     public Set<Annotation> getAnnotations();
 
     /**
+     * Set of aliases which give more information about the participant.
+     * The set of aliases cannot be null. If the participant does not have any aliases, the method should return an empty set.
+     * Ex: author assigned name, ...
+     * @return the xrefs
+     */
+    public Set<Alias> getAliases();
+
+    /**
      * Properties for this participant which are supported by experimental evidences.
      * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
      * @return the features

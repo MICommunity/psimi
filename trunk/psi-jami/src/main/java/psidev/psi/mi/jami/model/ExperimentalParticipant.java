@@ -25,8 +25,8 @@ public interface ExperimentalParticipant extends Participant<Interaction,Interac
 
     /**
      * Sets the experimental role.
+     * If expRole is null, it should create a unspecified role (MI:0499)
      * @param expRole : experimental role
-     * @throws IllegalArgumentException when expRole is null
      */
     public void setExperimentalRole(CvTerm expRole);
 

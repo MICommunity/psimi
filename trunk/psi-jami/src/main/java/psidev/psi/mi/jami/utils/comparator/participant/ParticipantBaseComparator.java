@@ -123,8 +123,8 @@ public class ParticipantBaseComparator<T extends Feature> extends ParticipantInt
             }
 
             // then compares the features
-            Collection<T> features1 = participant1.getFeatures();
-            Collection<T> features2 = participant2.getFeatures();
+            Collection<T> features1 = (Collection<T>) participant1.getFeatures();
+            Collection<T> features2 = (Collection<T>) participant2.getFeatures();
 
             return featureCollectionComparator.compare(features1, features2);
         }
