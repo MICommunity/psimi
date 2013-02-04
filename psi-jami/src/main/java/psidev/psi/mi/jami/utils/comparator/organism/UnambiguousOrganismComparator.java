@@ -77,13 +77,13 @@ public class UnambiguousOrganismComparator extends OrganismComparator {
         hashcode = 31*hashcode + organism.getTaxId();
 
         CvTerm cellType = organism.getCellType();
-        hashcode = 31*hashcode + unambiguousOrganismComparator.getCvTermComparator().hashCode(cellType);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(cellType);
 
         CvTerm tissue = organism.getTissue();
-        hashcode = 31*hashcode + unambiguousOrganismComparator.getCvTermComparator().hashCode(tissue);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(tissue);
 
         CvTerm compartment = organism.getCompartment();
-        hashcode = 31*hashcode + unambiguousOrganismComparator.getCvTermComparator().hashCode(compartment);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(compartment);
 
         return hashcode;
     }

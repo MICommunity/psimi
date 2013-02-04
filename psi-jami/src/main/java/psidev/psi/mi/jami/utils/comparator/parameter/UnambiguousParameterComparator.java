@@ -88,13 +88,13 @@ public class UnambiguousParameterComparator extends ParameterComparator {
 
         int hashcode = 31;
         CvTerm type = param.getType();
-        hashcode = 31*hashcode + unambiguousParameterComparator.getCvTermComparator().hashCode(type);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(type);
 
         CvTerm unit = param.getUnit();
-        hashcode = 31*hashcode + unambiguousParameterComparator.getCvTermComparator().hashCode(unit);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(unit);
 
         ParameterValue value = param.getValue();
-        hashcode = 31*hashcode + unambiguousParameterComparator.getValueComparator().hashCode(value);
+        hashcode = 31*hashcode + ParameterValueComparator.hashCode(value);
 
         BigDecimal uncertainty = param.getUncertainty();
         hashcode = 31*hashcode + (uncertainty != null ? uncertainty.hashCode() : 0);

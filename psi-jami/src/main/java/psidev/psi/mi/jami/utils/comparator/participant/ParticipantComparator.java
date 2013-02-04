@@ -1,73 +1,46 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
-import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.feature.BiologicalFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.ExperimentalFeatureComparator;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 /**
- * Basic participant comparator.
- * It will first compare the interactors using InteractorComparator. If both interactors are the same,
- * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a Comparator<Feature>.
- *
- * This comparator will ignore all the other properties of a participant.
+ * Generic participant comparator.
+ * Components come first and then experimental participants.
+ * - It uses ComponentComparator to compare components
+ * - It uses ExperimentalParticipantComparator to compare experimental participants
+ * - It uses ParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>16/01/13</pre>
+ * @since <pre>04/02/13</pre>
  */
 
-public class ParticipantComparator<T extends Feature> extends ParticipantInteractorComparator {
+public class ParticipantComparator implements Comparator<Participant> {
 
-    protected AbstractCvTermComparator cvTermComparator;
-    protected FeatureCollectionComparator featureCollectionComparator;
-    protected ParameterCollectionComparator parameterCollectionComparator;
+    protected ParticipantBaseComparator participantBaseComparator;
+    protected ComponentComparator componentComparator;
+    protected ExperimentalParticipantComparator experimentalParticipantComparator;
 
-    /**
-     * Creates a new ParticipantComparator
-     * @param interactorComparator : interactor comparator required for comparing the molecules
-     * @param cvTermComparator : CvTerm comparator required for comparing biological roles
-     * @param featureComparator : FeatureBaseComparator required for comparing participant features
-     */
-    public ParticipantComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator,
-                                 Comparator<T> featureComparator){
-
-        super(interactorComparator);
-
-        if (cvTermComparator == null){
-            throw new IllegalArgumentException("The CvTerm comparator is required to compare biological roles. It cannot be null");
+    public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ExperimentalParticipantComparator experimentalParticipantComparator){
+        if (participantBaseComparator == null){
+            throw new IllegalArgumentException("The participantBaseComparator is required to create more specific participant comparators and compares basic participant properties. It cannot be null");
         }
-        this.cvTermComparator = cvTermComparator;
-        if (featureComparator == null){
-            throw new IllegalArgumentException("The feature comparator is required to compare participant features. It cannot be null");
+        this.participantBaseComparator = participantBaseComparator;
+        this.componentComparator = new ComponentComparator(this.participantBaseComparator);
+        if (experimentalParticipantComparator == null){
+            throw new IllegalArgumentException("The experimentalParticipantComparator is required to compare experimental participant properties. It cannot be null");
         }
-        this.featureCollectionComparator = new FeatureCollectionComparator(featureComparator);
-    }
-
-    public AbstractCvTermComparator getCvTermComparator() {
-        return cvTermComparator;
-    }
-
-    public FeatureCollectionComparator getFeatureCollectionComparator() {
-        return featureCollectionComparator;
+        this.experimentalParticipantComparator = experimentalParticipantComparator;
     }
 
     /**
-     * It will first compare the interactors using InteractorComparator. If both interactors are the same,
-     * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
-     * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a Comparator<Feature>.
-     *
-     * This comparator will ignore all the other properties of a participant.
+     *  * Components come first and then experimental participants.
+     * - It uses ComponentComparator to compare components
+     * - It uses ExperimentalParticipantComparator to compare experimental participants
+     * - It uses ParticipantBaseComparator to compare basic participant properties
      * @param participant1
      * @param participant2
      * @return
@@ -87,40 +60,51 @@ public class ParticipantComparator<T extends Feature> extends ParticipantInterac
             return BEFORE;
         }
         else {
-            // first compares interactors
-            Interactor interactor1 = participant1.getInteractor();
-            Interactor interactor2 = participant2.getInteractor();
+            // first check if both participants are from the same interface
 
-            int comp = interactorComparator.compare(interactor1, interactor2);
-            if (comp != 0){
-                return comp;
+            // both are components
+            boolean isComponent1 = participant1 instanceof Component;
+            boolean isComponent2 = participant2 instanceof Component;
+            if (isComponent1 && isComponent2){
+                return componentComparator.compare((Component) participant1, (Component) participant2);
             }
-
-            // then compares the biological role
-            CvTerm role1 = participant1.getBiologicalRole();
-            CvTerm role2 = participant2.getBiologicalRole();
-
-            comp = cvTermComparator.compare(role1, role2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares the stoichiometry
-            int stc1 = participant1.getStoichiometry();
-            int stc2 = participant2.getStoichiometry();
-
-            if (stc1 < stc2){
+            // the component is before
+            else if (isComponent1){
                 return BEFORE;
             }
-            else if (stc1 > stc2){
+            else if (isComponent2){
                 return AFTER;
             }
-
-            // then compares the features
-            Collection<T> features1 = participant1.getFeatures();
-            Collection<T> features2 = participant2.getFeatures();
-
-            return featureCollectionComparator.compare(features1, features2);
+            else {
+                // both are experimental participants
+                boolean isExperimentalParticipant1 = participant1 instanceof ExperimentalParticipant;
+                boolean isExperimentalParticipant2 = participant2 instanceof ExperimentalParticipant;
+                if (isExperimentalParticipant1 && isExperimentalParticipant2){
+                    return experimentalParticipantComparator.compare((ExperimentalParticipant) participant1, (ExperimentalParticipant) participant2);
+                }
+                // the experimental participant is before
+                else if (isExperimentalParticipant1){
+                    return BEFORE;
+                }
+                else if (isExperimentalParticipant2){
+                    return AFTER;
+                }
+                else {
+                    return participantBaseComparator.compare(participant1, participant2);
+                }
+            }
         }
+    }
+
+    public ParticipantBaseComparator getParticipantBaseComparator() {
+        return participantBaseComparator;
+    }
+
+    public ComponentComparator getComponentComparator() {
+        return componentComparator;
+    }
+
+    public ExperimentalParticipantComparator getExperimentalParticipantComparator() {
+        return experimentalParticipantComparator;
     }
 }

@@ -111,7 +111,7 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
         int hashcode = 31;
         ExternalIdentifier externalIdentifier1 = cv1.getOntologyIdentifier();
         if (externalIdentifier1 != null){
-            hashcode = 31*hashcode + unambiguousCvTermComparator.getIdentifierComparator().hashCode(externalIdentifier1);
+            hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(externalIdentifier1);
         }
         else {
             hashcode = 31*hashcode + cv1.getShortName().toLowerCase().trim().hashCode();

@@ -103,11 +103,17 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
         }
         else {
 
+            // first compares basic participant properties
+            int comp = participantComparator.compare(experimentalParticipant1, experimentalParticipant2);
+            if (comp != 0){
+               return comp;
+            }
+
             // first compares the experimental roles
             CvTerm expRoles1 = experimentalParticipant1.getExperimentalRole();
             CvTerm expRoles2 = experimentalParticipant2.getExperimentalRole();
 
-            int comp = cvTermCollectionComparator.getObjectComparator().compare(expRoles1, expRoles2);
+            comp = cvTermCollectionComparator.getObjectComparator().compare(expRoles1, expRoles2);
             if (comp != 0){
                 return comp;
             }
@@ -147,13 +153,7 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
             Collection<Parameter> param1 = experimentalParticipant1.getParameters();
             Collection<Parameter> param2 = experimentalParticipant2.getParameters();
 
-            comp = parameterCollectionComparator.compare(param1, param2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares basic participant properties
-            return participantComparator.compare(experimentalParticipant1, experimentalParticipant2);
+            return parameterCollectionComparator.compare(param1, param2);
         }
     }
 }

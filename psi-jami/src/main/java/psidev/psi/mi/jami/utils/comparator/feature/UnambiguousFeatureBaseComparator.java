@@ -22,7 +22,6 @@ import java.util.Collection;
 public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
 
     private static UnambiguousFeatureBaseComparator unambiguousFeatureComparator;
-    private UnambiguousRangeComparator rangeComparator;
 
     /**
      * Creates a new UnambiguousFeatureBaseComparator. It will use a UnambiguousCvTermComparator to compare feature types and range status,
@@ -30,7 +29,6 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
      */
     public UnambiguousFeatureBaseComparator() {
         super(new UnambiguousCvTermComparator(), new UnambiguousExternalIdentifierComparator());
-        this.rangeComparator = new UnambiguousRangeComparator();
     }
 
     @Override
@@ -80,10 +78,6 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
         return (UnambiguousExternalIdentifierComparator) this.identifierComparator;
     }
 
-    public UnambiguousRangeComparator getRangeComparator() {
-        return rangeComparator;
-    }
-
     /**
      * Use UnambiguousFeatureBaseComparator to know if two features are equals.
      * @param feature1
@@ -113,9 +107,9 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
         }
 
         int hashcode = 31;
-        hashcode = 31*hashcode + unambiguousFeatureComparator.getCvTermComparator().hashCode(feature.getType());
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(feature.getType());
         for (Range range : feature.getRanges()){
-            hashcode = 31*hashcode + unambiguousFeatureComparator.getRangeComparator().hashCode(range);
+            hashcode = 31*hashcode + UnambiguousRangeComparator.hashCode(range);
         }
 
         return hashcode;

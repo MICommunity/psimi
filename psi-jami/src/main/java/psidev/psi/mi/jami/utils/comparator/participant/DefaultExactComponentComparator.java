@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparato
 
 /**
  * Default exact component comparator.
- * It will compare the basic properties of a component using DefaultExactParticipantComparator.
+ * It will compare the basic properties of a component using DefaultExactParticipantBaseComparator.
  *
  * This comparator will ignore all the other properties of a component.
  *
@@ -22,21 +22,21 @@ public class DefaultExactComponentComparator extends ComponentComparator{
     private static DefaultExactComponentComparator defaultExactParticipantComparator;
 
     /**
-     * Creates a new DefaultExactComponentComparator. It will use a DefaultExactParticipantComparator to compare
+     * Creates a new DefaultExactComponentComparator. It will use a DefaultExactParticipantBaseComparator to compare
      * the basic properties of a participant.
      */
     public DefaultExactComponentComparator() {
-        super(new ParticipantComparator<BiologicalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator()));
+        super(new ParticipantBaseComparator<BiologicalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator()));
     }
 
     @Override
-    public ParticipantComparator<BiologicalFeature> getParticipantComparator() {
-        return (ParticipantComparator<BiologicalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<BiologicalFeature> getParticipantComparator() {
+        return (ParticipantBaseComparator<BiologicalFeature>) this.participantComparator;
     }
 
     @Override
     /**
-     * It will compare the basic properties of a component using DefaultParticipantComparator.
+     * It will compare the basic properties of a component using DefaultParticipantBaseComparator.
      *
      * This comparator will ignore all the other properties of a component.
      */

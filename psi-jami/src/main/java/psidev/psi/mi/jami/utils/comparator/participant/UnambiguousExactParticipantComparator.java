@@ -1,21 +1,17 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
 /**
- * Unambiguous exact participant comparator
- * It will first compare the interactors using UnambiguousExactInteractorComparator. If both interactors are the same,
- * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a UnambiguousFeatureBaseComparator.
+ * Unambiguous exact generic Participant comparator
+ * Components come first and then experimental participants.
+ * - It uses UnambiguousExactComponentComparator to compare components
+ * - It uses UnambiguousExactExperimentalParticipantComparator to compare experimental participants
+ * - It uses UnambiguousExactParticipantBaseComparator to compare basic participant properties
  *
- * This comparator will ignore all the other properties of a participant.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/01/13</pre>
+ * @since <pre>04/02/13</pre>
  */
 
 public class UnambiguousExactParticipantComparator extends ParticipantComparator {
@@ -23,31 +19,29 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
     private static UnambiguousExactParticipantComparator unambiguousExactParticipantComparator;
 
     /**
-     * Creates a new UnambiguousExactParticipantComparator. It will use a UnambiguousExactInteractorComparator to compare
-     * interactors, a UnambiguousCvTermComparator to compare biological roles, a UnambiguousFeatureBaseComparator to
-     * compare features.
+     * Creates a UnambiguousExactParticipantComparator. It will use a UnambiguousExactParticipantBaseComparator to compare basic feature properties
      */
     public UnambiguousExactParticipantComparator() {
-        super(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureBaseComparator());
+        super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousExactExperimentalParticipantComparator());
     }
 
     @Override
-    public UnambiguousExactInteractorComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorComparator) this.interactorComparator;
+    public UnambiguousExactParticipantBaseComparator getParticipantBaseComparator() {
+        return (UnambiguousExactParticipantBaseComparator) this.participantBaseComparator;
     }
 
     @Override
-    public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) this.cvTermComparator;
+    public UnambiguousExactExperimentalParticipantComparator getExperimentalParticipantComparator() {
+        return (UnambiguousExactExperimentalParticipantComparator) this.experimentalParticipantComparator;
     }
 
     @Override
     /**
-     * It will first compare the interactors using UnambiguousExactInteractorComparator. If both interactors are the same,
-     * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
-     * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a UnambiguousFeatureBaseComparator.
-     * This comparator will ignore all the other properties of a participant.
+     * Components come first and then experimental participants.
+     * - It uses UnambiguousExactComponentComparator to compare components
+     * - It uses UnambiguousExactExperimentalParticipantComparator to compare experimental participants
+     * - It uses UnambiguousExactParticipantBaseComparator to compare basic participant properties
+     *
      */
     public int compare(Participant participant1, Participant participant2) {
         return super.compare(participant1, participant2);

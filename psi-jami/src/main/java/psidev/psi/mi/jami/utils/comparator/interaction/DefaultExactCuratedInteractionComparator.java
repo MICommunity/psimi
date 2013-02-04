@@ -2,12 +2,12 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactParticipantBaseComparator;
 
 /**
  * Default exact comparator for Curated interactions.
  *
- * It will first compare the sources of the interactions using DefaultCvTermComparator. If the sources are the same, t will compare the participants using DefaultExactParticipantComparator. If the participants are the same, it will compare
+ * It will first compare the sources of the interactions using DefaultCvTermComparator. If the sources are the same, t will compare the participants using DefaultExactParticipantBaseComparator. If the participants are the same, it will compare
  * the interaction types using DefaultCvTermComparator. If the interaction types are the same, it will compare the negative properties.
  * A negative interaction will come after a positive interaction
  *
@@ -21,11 +21,11 @@ public class DefaultExactCuratedInteractionComparator extends CuratedInteraction
     private static DefaultExactCuratedInteractionComparator defaultExactCuratedInteractionComparator;
 
     /**
-     * Creates a new DefaultExactCuratedInteractionComparator. It will use a DefaultParticipantComparator to
+     * Creates a new DefaultExactCuratedInteractionComparator. It will use a DefaultParticipantBaseComparator to
      * compare participants and DefaultCvTermcomparator to compare interaction types
      */
     public DefaultExactCuratedInteractionComparator() {
-        super(new DefaultExactParticipantComparator(), new DefaultCvTermComparator());
+        super(new DefaultExactParticipantBaseComparator(), new DefaultCvTermComparator());
     }
 
     @Override
@@ -35,7 +35,7 @@ public class DefaultExactCuratedInteractionComparator extends CuratedInteraction
 
     @Override
     /**
-     * It will first compare the sources of the interactions using DefaultCvTermComparator. If the sources are the same, t will compare the participants using DefaultExactParticipantComparator. If the participants are the same, it will compare
+     * It will first compare the sources of the interactions using DefaultCvTermComparator. If the sources are the same, t will compare the participants using DefaultExactParticipantBaseComparator. If the participants are the same, it will compare
      * the interaction types using DefaultCvTermComparator. If the interaction types are the same, it will compare the negative properties.
      * A negative interaction will come after a positive interaction
      *

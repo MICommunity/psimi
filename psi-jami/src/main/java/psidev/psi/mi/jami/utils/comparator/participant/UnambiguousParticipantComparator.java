@@ -1,54 +1,47 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
 /**
- * Unambiguous participant comparator
- * It will first compare the interactors using UnambiguousInteractorComparator. If both interactors are the same,
- * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a UnambiguousFeatureBaseComparator.
- *
- * This comparator will ignore all the other properties of a participant.
+ * Unambiguous generic Participant comparator
+ * Components come first and then experimental participants.
+ * - It uses UnambiguousComponentComparator to compare components
+ * - It uses UnambiguousExperimentalParticipantComparator to compare experimental participants
+ * - It uses UnambiguousParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>16/01/13</pre>
+ * @since <pre>04/02/13</pre>
  */
 
-public class UnambiguousParticipantComparator extends ParticipantComparator{
+public class UnambiguousParticipantComparator extends ParticipantComparator {
+
     private static UnambiguousParticipantComparator unambiguousParticipantComparator;
 
     /**
-     * Creates a new UnambiguousParticipantComparator. It will use a UnambiguousInteractorComparator to compare
-     * interactors, a UnambiguousCvTermComparator to compare biological roles, a UnambiguousFeatureBaseComparator to
-     * compare features.
+     * Creates a UnambiguousParticipantComparator. It will use a UnambiguousParticipantBaseComparator to compare basic feature properties
      */
     public UnambiguousParticipantComparator() {
-        super(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureBaseComparator());
+        super(new UnambiguousParticipantBaseComparator(), new UnambiguousExperimentalParticipantComparator());
     }
 
     @Override
-    public UnambiguousInteractorComparator getInteractorComparator() {
-        return (UnambiguousInteractorComparator) this.interactorComparator;
+    public UnambiguousParticipantBaseComparator getParticipantBaseComparator() {
+        return (UnambiguousParticipantBaseComparator) this.participantBaseComparator;
     }
 
     @Override
-    public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) this.cvTermComparator;
+    public UnambiguousExperimentalParticipantComparator getExperimentalParticipantComparator() {
+        return (UnambiguousExperimentalParticipantComparator) this.experimentalParticipantComparator;
     }
 
     @Override
     /**
-     * It will first compare the interactors using UnambiguousInteractorComparator. If both interactors are the same,
-     * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
-     * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a UnambiguousFeatureBaseComparator.
+     * Components come first and then experimental participants.
+     * - It uses UnambiguousComponentComparator to compare components
+     * - It uses UnambiguousExperimentalParticipantComparator to compare experimental participants
+     * - It uses UnambiguousParticipantBaseComparator to compare basic participant properties
      *
-     * This comparator will ignore all the other properties of a participant.
      */
     public int compare(Participant participant1, Participant participant2) {
         return super.compare(participant1, participant2);

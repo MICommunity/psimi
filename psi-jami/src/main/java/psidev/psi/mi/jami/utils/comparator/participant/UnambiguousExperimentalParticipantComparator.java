@@ -26,17 +26,17 @@ public class UnambiguousExperimentalParticipantComparator extends ExperimentalPa
     private static UnambiguousExperimentalParticipantComparator unambiguousExperimentalParticipantComparator;
 
     /**
-     * Creates a new UnambiguousExperimentalParticipantComparator. It will use a UnambiguousParticipantComparator to compare
+     * Creates a new UnambiguousExperimentalParticipantComparator. It will use a UnambiguousParticipantBaseComparator to compare
      * the basic properties of a participant, a UnambiguousCvTermComparator to compare experimental roles, preparations and identification methods
      * and a UnambiguousOrganismComparator to compare expressed in organisms
      */
     public UnambiguousExperimentalParticipantComparator() {
-        super(new ParticipantComparator<ExperimentalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousExperimentalFeatureComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
+        super(new ParticipantBaseComparator<ExperimentalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousExperimentalFeatureComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
     }
 
     @Override
-    public ParticipantComparator<ExperimentalFeature> getParticipantComparator() {
-        return (ParticipantComparator<ExperimentalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<ExperimentalFeature> getParticipantComparator() {
+        return (ParticipantBaseComparator<ExperimentalFeature>) this.participantComparator;
     }
 
     @Override

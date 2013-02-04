@@ -17,6 +17,8 @@ public interface CvTerm {
 
     public static String PSI_MI = "psi-mi";
     public static String PSI_MI_ID = "MI:0488";
+    public static String UNSPECIFIED_ROLE = "unspecified role";
+    public static String UNSPECIFIED_ROLE_ID = "MI:0499";
 
     /**
      * Short label of a controlled vocabulary. It cannot be null or empty.

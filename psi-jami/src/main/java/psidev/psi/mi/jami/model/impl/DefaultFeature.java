@@ -20,15 +20,15 @@ import java.util.Set;
 
 public class DefaultFeature<T extends Feature, P extends Participant> implements Feature<T, P>, Serializable{
 
-    private String shortName;
-    private String fullName;
-    private Set<ExternalIdentifier> identifiers;
-    private Set<Xref> xrefs;
-    private Set<Annotation> annotations;
-    private CvTerm type;
-    private Collection<Range> ranges;
-    private Collection<T> bindingFeatures;
-    private P participant;
+    protected String shortName;
+    protected String fullName;
+    protected Set<ExternalIdentifier> identifiers;
+    protected Set<Xref> xrefs;
+    protected Set<Annotation> annotations;
+    protected CvTerm type;
+    protected Collection<Range> ranges;
+    protected Collection<T> bindingFeatures;
+    protected P participant;
 
     public DefaultFeature(P participant){
         if (participant == null){

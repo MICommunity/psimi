@@ -26,17 +26,17 @@ public class DefaultExactExperimentalParticipantComparator extends ExperimentalP
     private static DefaultExactExperimentalParticipantComparator defaultExactExperimentalParticipantComparator;
 
     /**
-     * Creates a new DefaultExactExperimentalParticipantComparator. It will use a DefaultExactParticipantComparator to compare
+     * Creates a new DefaultExactExperimentalParticipantComparator. It will use a DefaultExactParticipantBaseComparator to compare
      * the basic properties of a participant, a DefaultCvTermComparator to compare experimental roles, preparations and identification methods
      * and a DefaultOrganismComparator to compare expressed in Organisms
      */
     public DefaultExactExperimentalParticipantComparator() {
-        super(new ParticipantComparator<ExperimentalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
+        super(new ParticipantBaseComparator<ExperimentalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
     }
 
     @Override
-    public ParticipantComparator<ExperimentalFeature> getParticipantComparator() {
-        return (ParticipantComparator<ExperimentalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<ExperimentalFeature> getParticipantComparator() {
+        return (ParticipantBaseComparator<ExperimentalFeature>) this.participantComparator;
     }
 
     @Override

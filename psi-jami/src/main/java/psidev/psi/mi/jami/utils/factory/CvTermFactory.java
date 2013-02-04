@@ -96,4 +96,8 @@ public class CvTermFactory {
     public static CvTerm createGeneNameAliasType(){
         return new DefaultCvTerm(Alias.GENE_NAME, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Alias.GENE_NAME_ID));
     }
+
+    public static CvTerm createUnspecifiedRole(){
+        return new DefaultCvTerm(CvTerm.UNSPECIFIED_ROLE, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), CvTerm.UNSPECIFIED_ROLE_ID));
+    }
 }

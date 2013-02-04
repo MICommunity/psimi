@@ -228,7 +228,7 @@ public class UnambiguousPublicationComparator extends PublicationComparator {
 
         ExternalIdentifier identifier = pub.getIdentifier();
         if (identifier != null){
-            hashcode = 31*hashcode + unambiguousPublicationComparator.getIdentifierComparator().hashCode(identifier);
+            hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(identifier);
         }
         else {
             hashcode = 31*hashcode + (pub.getTitle() != null ? pub.getTitle().toLowerCase().trim().hashCode() : 0);

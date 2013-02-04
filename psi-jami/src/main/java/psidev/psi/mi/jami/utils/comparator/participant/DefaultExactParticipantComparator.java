@@ -1,55 +1,47 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
- * Default exact participant comparator
- * It will first compare the interactors using DefaultExactInteractorComparator. If both interactors are the same,
- * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a DefaultFeatureBaseComparator.
- *
- * This comparator will ignore all the other properties of a participant.
+ * Generic default exact participant comparator.
+ * Components come first and then experimental participants.
+ * - It uses DefaultExactComponentComparator to compare components
+ * - It uses DefaultExactExperimentalParticipantComparator to compare experimental participants
+ * - It uses DefaultExactParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/01/13</pre>
+ * @since <pre>04/02/13</pre>
  */
 
-public class DefaultExactParticipantComparator extends ParticipantComparator{
+public class DefaultExactParticipantComparator extends ParticipantComparator {
 
     private static DefaultExactParticipantComparator defaultExactParticipantComparator;
 
     /**
-     * Creates a new DefaultExactParticipantComparator. It will use a DefaultExactInteractorComparator to compare
-     * interactors, a DefaultCvTermComparator to compare biological roles, a DefaultFeatureBaseComparator to
-     * compare features and a DefaultParameterComparator to compare parameters.
+     * Creates a DefaultExactParticipantComparator. It will use a DefaultExactParticipantBaseComparator to compare basic feature properties
      */
     public DefaultExactParticipantComparator() {
-        super(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultFeatureBaseComparator());
+        super(new DefaultExactParticipantBaseComparator(), new DefaultExactExperimentalParticipantComparator());
     }
 
     @Override
-    public DefaultExactInteractorComparator getInteractorComparator() {
-        return (DefaultExactInteractorComparator) this.interactorComparator;
+    public DefaultExactParticipantBaseComparator getParticipantBaseComparator() {
+        return (DefaultExactParticipantBaseComparator) this.participantBaseComparator;
     }
 
     @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) this.cvTermComparator;
+    public DefaultExactExperimentalParticipantComparator getExperimentalParticipantComparator() {
+        return (DefaultExactExperimentalParticipantComparator) this.experimentalParticipantComparator;
     }
 
     @Override
     /**
-     * It will first compare the interactors using DefaultExactInteractorComparator. If both interactors are the same,
-     * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
-     * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a DefaultFeatureBaseComparator.
+     * Components come first and then experimental participants.
+     * - It uses DefaultExactComponentComparator to compare components
+     * - It uses DefaultExactExperimentalParticipantComparator to compare experimental participants
+     * - It uses DefaultExactParticipantBaseComparator to compare basic participant properties
      *
-     * This comparator will ignore all the other properties of a participant.
      */
     public int compare(Participant participant1, Participant participant2) {
         return super.compare(participant1, participant2);

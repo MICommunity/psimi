@@ -2,12 +2,12 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantBaseComparator;
 
 /**
  * Unambiguous exact comparator for Curated interactions.
  *
- * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousExactParticipantComparator. If the participants are the same, it will compare
+ * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousExactParticipantBaseComparator. If the participants are the same, it will compare
  * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
  * A negative interaction will come after a positive interaction
  *
@@ -22,11 +22,11 @@ public class UnambiguousExactCuratedInteractionComparator extends CuratedInterac
     private static UnambiguousExactCuratedInteractionComparator unambiguousExactCuratedInteractionComparator;
 
     /**
-     * Creates a new UnambiguousExactCuratedInteractionComparator. It will use a UnambiguousExactParticipantComparator to
+     * Creates a new UnambiguousExactCuratedInteractionComparator. It will use a UnambiguousExactParticipantBaseComparator to
      * compare participants and UnambiguousCvTermcomparator to compare interaction types
      */
     public UnambiguousExactCuratedInteractionComparator() {
-        super(new UnambiguousExactParticipantComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
@@ -36,7 +36,7 @@ public class UnambiguousExactCuratedInteractionComparator extends CuratedInterac
 
     @Override
     /**
-     * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousExactParticipantComparator. If the participants are the same, it will compare
+     * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousExactParticipantBaseComparator. If the participants are the same, it will compare
      * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
      * A negative interaction will come after a positive interaction
      *

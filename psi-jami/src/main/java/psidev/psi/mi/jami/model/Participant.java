@@ -53,8 +53,8 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
 
     /**
      * Sets the biological role.
-     * @param bioRole : biological role
-     * @throws IllegalArgumentException when bioRole is null
+     * If the bioRole is null, should create a bioRole
+     * @param bioRole : biological role unspecified role (MI:0499)
      */
     public void setBiologicalRole(CvTerm bioRole);
 
@@ -82,14 +82,14 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
 
     /**
      * The stoichiometry for this participant.
-     * If the stoichiometry for this participant is unknown, the method should return 0.
+     * If the stoichiometry for this participant is unknown, the method should return null.
      * @return the stoichiometry
      */
-    public int getStoichiometry();
+    public Integer getStoichiometry();
 
     /**
      * Sets the stoichiometry for this participant.
      * @param stoichiometry : stoichiometry
      */
-    public void setStoichiometry(int stoichiometry);
+    public void setStoichiometry(Integer stoichiometry);
 }

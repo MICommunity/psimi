@@ -128,8 +128,8 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
         }
 
         int hashcode = 31;
-        hashcode = 31*hashcode + unambiguousExactInteractorComparator.getTypeComparator().hashCode(interactor.getType());
-        hashcode = 31*hashcode + unambiguousExactInteractorComparator.getOrganismComparator().hashCode(interactor.getOrganism());
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(interactor.getType());
+        hashcode = 31*hashcode + OrganismTaxIdComparator.hashCode(interactor.getOrganism());
         hashcode = 31*hashcode + interactor.getShortName().hashCode();
 
         return hashcode;
