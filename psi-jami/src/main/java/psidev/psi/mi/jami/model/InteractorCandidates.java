@@ -10,6 +10,6 @@ import java.util.Set;
  * @since <pre>11/01/13</pre>
  */
 
-public interface InteractorCandidates extends Interactor,Set{
+public interface InteractorCandidates extends Interactor,Set<Interactor>{
 
 }
