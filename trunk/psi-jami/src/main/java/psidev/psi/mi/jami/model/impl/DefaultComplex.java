@@ -26,37 +26,45 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         initializeCollections();
     }
 
-    private void initializeCollections() {
-        this.experiments = new HashSet<Experiment>();
-        this.components = new ArrayList<Component>();
-    }
-
     public DefaultComplex(String name, String fullName, CvTerm type) {
         super(name, fullName, type);
+        initializeCollections();
     }
 
     public DefaultComplex(String name, CvTerm type, Organism organism) {
         super(name, type, organism);
+        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, CvTerm type, Organism organism) {
         super(name, fullName, type, organism);
+        initializeCollections();
     }
 
     public DefaultComplex(String name, CvTerm type, ExternalIdentifier uniqueId) {
         super(name, type, uniqueId);
+        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, CvTerm type, ExternalIdentifier uniqueId) {
         super(name, fullName, type, uniqueId);
+        initializeCollections();
     }
 
     public DefaultComplex(String name, CvTerm type, Organism organism, ExternalIdentifier uniqueId) {
         super(name, type, organism, uniqueId);
+        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId) {
         super(name, fullName, type, organism, uniqueId);
+        initializeCollections();
+    }
+
+
+    private void initializeCollections() {
+        this.experiments = new HashSet<Experiment>();
+        this.components = new ArrayList<Component>();
     }
 
     public Collection<Experiment> getExperiments() {
