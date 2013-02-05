@@ -39,8 +39,8 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.type = type;
 
         initializeChecksums();
-        this.xrefs = new HashSet<Xref>();
-        this.annotations = new HashSet<Annotation>();
+        initializeXrefs();
+        initializeAnnotations();
         initializeAliases();
         initializeIdentifiers();
     }
@@ -78,6 +78,14 @@ public class DefaultInteractor implements Interactor, Serializable {
     public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
         this(name, fullName, type, organism);
         this.identifiers.add(uniqueId);
+    }
+
+    protected void initializeAnnotations(){
+        this.annotations = new HashSet<Annotation>();
+    }
+
+    protected void initializeXrefs(){
+        this.xrefs = new HashSet<Xref>();
     }
 
     protected void initializeAliases(){

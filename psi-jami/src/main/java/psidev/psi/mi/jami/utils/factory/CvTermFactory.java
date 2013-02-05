@@ -100,4 +100,8 @@ public class CvTermFactory {
     public static CvTerm createUnspecifiedRole(){
         return new DefaultCvTerm(CvTerm.UNSPECIFIED_ROLE, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), CvTerm.UNSPECIFIED_ROLE_ID));
     }
+
+    public static CvTerm createComplexPhysicalProperties(){
+        return new DefaultCvTerm(Annotation.COMPLEX_PROPERTIES, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Annotation.COMPLEX_PROPERTIES_ID));
+    }
 }

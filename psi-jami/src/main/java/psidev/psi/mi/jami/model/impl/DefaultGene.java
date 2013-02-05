@@ -457,6 +457,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
             ExternalIdentifier first = first();
             while (XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
                 remove(first);
+                first = first();
             }
         }
 

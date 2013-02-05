@@ -320,6 +320,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
             ExternalIdentifier first = first();
             while (XrefUtils.isXrefFromDatabase(first, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
                 remove(first);
+                first = first();
             }
         }
 
