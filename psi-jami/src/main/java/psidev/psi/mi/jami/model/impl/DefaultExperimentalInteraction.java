@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactExperimentalInteractionComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.Comparator;
@@ -11,7 +12,7 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /**
- * TODO comment this
+ * Default implementation for ExperimentalInteraction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -183,6 +184,25 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public void setInferred(boolean inferred) {
         this.isInferred = inferred;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof ExperimentalInteraction)){
+            return false;
+        }
+
+        // use UnambiguousExactExperimentalInteraction comparator for equals
+        return UnambiguousExactExperimentalInteractionComparator.areEquals(this, (ExperimentalInteraction) o);
+    }
+
+    @Override
+    public String toString() {
+        return imexId != null ? imexId.getId() : super.toString();
     }
 
     /**

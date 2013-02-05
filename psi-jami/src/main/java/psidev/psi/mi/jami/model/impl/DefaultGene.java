@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactGeneComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -144,6 +146,17 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         else if (!this.identifiers.isEmpty()) {
             ((GeneIdentifierList) identifiers).removeAllRefseq();
         }
+    }
+
+    @Override
+    public void setType(CvTerm type) {
+        if (type == null){
+            throw new IllegalArgumentException("The interactor type cannot be null.");
+        }
+        else if (!DefaultCvTermComparator.areEquals(type, CvTermUtils.getGene())){
+            throw new IllegalArgumentException("This interactor is a Gene and the only available interactor type is gene (MI:0301)");
+        }
+        this.type = type;
     }
 
     @Override
