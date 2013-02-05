@@ -15,7 +15,7 @@ import java.util.Set;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultExperimentalParticipant extends DefaultParticipant<Interaction, Interactor, ExperimentalFeature> implements ExperimentalParticipant {
+public class DefaultExperimentalParticipant extends DefaultParticipant<ExperimentalInteraction, Interactor, ExperimentalFeature> implements ExperimentalParticipant {
 
     private CvTerm experimentalRole;
     private Set<CvTerm> identificationMethods;

@@ -375,6 +375,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
             ExternalIdentifier first = first();
             while (XrefUtils.isXrefFromDatabase(first, Xref.UNIPROTKB_ID, Xref.UNIPROTKB)){
                 remove(first);
+                first = first();
             }
         }
 
@@ -528,6 +529,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
             Checksum first = first();
             while (ChecksumUtils.doesChecksumHaveMethod(first, Checksum.ROGID_ID, Checksum.ROGID)){
                 remove(first);
+                first = first();
             }
         }
     }
@@ -663,6 +665,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
             Alias first = first();
             while (AliasUtils.doesAliasHaveType(first, Alias.GENE_NAME_ID, Alias.GENE_NAME)){
                 remove(first);
+                first = first();
             }
         }
     }

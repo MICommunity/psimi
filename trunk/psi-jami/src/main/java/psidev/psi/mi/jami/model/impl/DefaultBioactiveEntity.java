@@ -295,6 +295,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
             ExternalIdentifier first = first();
             while (XrefUtils.isXrefFromDatabase(first, Xref.CHEBI_ID, Xref.CHEBI)){
                 remove(first);
+                first = first();
             }
         }
     }
@@ -538,6 +539,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
             Checksum first = first();
             while (ChecksumUtils.doesChecksumHaveMethod(first, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
                 remove(first);
+                first = first();
             }
         }
 
