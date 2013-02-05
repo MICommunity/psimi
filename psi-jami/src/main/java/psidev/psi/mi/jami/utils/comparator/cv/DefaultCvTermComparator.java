@@ -60,7 +60,7 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
         }
         else {
             ExternalIdentifier externalIdentifier1 = cvTerm1.getOntologyIdentifier();
-            ExternalIdentifier externalIdentifier2 = cvTerm1.getOntologyIdentifier();
+            ExternalIdentifier externalIdentifier2 = cvTerm2.getOntologyIdentifier();
 
             // no identifiers or one identifier is null so relies on short name
             if ((externalIdentifier1 == null && externalIdentifier2 == null)
@@ -68,7 +68,7 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
                     || (externalIdentifier1 == null && externalIdentifier2 != null)){
                 // check names which cannot be null
                 String label1 = cvTerm1.getShortName();
-                String label2 = cvTerm1.getShortName();
+                String label2 = cvTerm2.getShortName();
 
                 return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
             }
