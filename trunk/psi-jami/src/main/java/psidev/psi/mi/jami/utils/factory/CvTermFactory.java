@@ -104,4 +104,12 @@ public class CvTermFactory {
     public static CvTerm createComplexPhysicalProperties(){
         return new DefaultCvTerm(Annotation.COMPLEX_PROPERTIES, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Annotation.COMPLEX_PROPERTIES_ID));
     }
+
+    public static CvTerm createImexDatabase(){
+        return new DefaultCvTerm(Xref.IMEX, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.IMEX_ID));
+    }
+
+    public static CvTerm createImexPrimaryQualifier(){
+        return new DefaultCvTerm(Xref.IMEX_PRIMARY, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), Xref.IMEX_PRIMARY_ID));
+    }
 }

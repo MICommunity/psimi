@@ -33,6 +33,11 @@ public interface Xref {
     public static String DDBJ_EMBL_GENBANK_ID = "MI:0475";
     public static String UNIPROTKB = "uniprotkb";
     public static String UNIPROTKB_ID = "MI:0486";
+    public static String IMEX = "imex";
+    public static String IMEX_ID = "MI:0670";
+
+    public static String IMEX_PRIMARY = "imex-primary";
+    public static String IMEX_PRIMARY_ID = "MI:0662";
 
     /**
      * The database is a controlled vocabulary term. It cannot be null.

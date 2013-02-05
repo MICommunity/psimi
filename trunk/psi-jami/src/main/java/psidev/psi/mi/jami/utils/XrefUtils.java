@@ -36,6 +36,29 @@ public class XrefUtils {
         return false;
     }
 
+    public static boolean doesXrefHaveQualifier(Xref ref, String qualifierId, String qualifierName){
+
+        if (ref == null || (qualifierName == null && qualifierId == null)){
+            return false;
+        }
+
+        CvTerm qualifier = ref.getQualifier();
+        if (qualifier == null){
+            return false;
+        }
+        // we can compare identifiers
+        if (qualifierId != null && qualifier.getOntologyIdentifier() != null){
+            // we have the same database id
+            return qualifier.getOntologyIdentifier().getId().equals(qualifierId);
+        }
+        // we need to compare dbNames
+        else if (qualifierName != null) {
+            return qualifierName.toLowerCase().equals(qualifier.getShortName().toLowerCase());
+        }
+
+        return false;
+    }
+
     /**
      * Retrives a unique Xref having a database that matches the database id (if set) or the database name.
      * It will return null if it cannot find a single Xref with a database match or if it finds more than one xrefs with a database
