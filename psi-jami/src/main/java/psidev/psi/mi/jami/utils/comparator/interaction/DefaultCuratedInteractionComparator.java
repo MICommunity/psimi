@@ -1,44 +1,59 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultParticipantBaseComparator;
 
 /**
- * Default comparator for Curated interactions.
- *
- * It will first compare the sources of the interactions using DefaultCvTermComparator. If the sources are the same, t will compare the participants using DefaultParticipantBaseComparator. If the participants are the same, it will compare
- * the interaction types using DefaultCvTermComparator. If the interaction types are the same, it will compare the negative properties.
- * A negative interaction will come after a positive interaction
- *
+ * Default curated Generic interaction comparator.
+ * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * - It uses DefaultCuratedExperimentalInteractionComparator to compare experimental interactions
+ * - It uses DefaultCuratedModelledInteractionComparator to compare modelled interactions
+ * - It uses DefaultCuratedCooperativeInteractionComparator to compare cooperative interactions
+ * - It uses DefaultCuratedAllostericInteractionComparator to compare allosteric interactions
+ * - It uses DefaultCuratedInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/01/13</pre>
+ * @since <pre>05/02/13</pre>
  */
 
-public class DefaultCuratedInteractionComparator extends CuratedInteractionComparator {
-
+public class DefaultCuratedInteractionComparator extends InteractionComparator {
     private static DefaultCuratedInteractionComparator defaultCuratedInteractionComparator;
 
     /**
-     * Creates a new DefaultCuratedInteractionComparator. It will use a DefaultParticipantBaseComparator to
-     * compare participants and DefaultCvTermcomparator to compare interaction types
+     * Creates a new DefaultCuratedInteractionComparator.
      */
     public DefaultCuratedInteractionComparator() {
-        super(new DefaultParticipantBaseComparator(), new DefaultCvTermComparator());
+        super(new DefaultCuratedInteractionBaseComparator(), new DefaultCuratedExperimentalInteractionComparator(), new DefaultCuratedCooperativeInteractionComparator(), new DefaultCuratedAllostericInteractionComparator());
     }
 
     @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) cvTermComparator;
+    public DefaultCuratedInteractionBaseComparator getInteractionBaseComparator() {
+        return (DefaultCuratedInteractionBaseComparator) this.interactionBaseComparator;
+    }
+
+    @Override
+    public DefaultCuratedExperimentalInteractionComparator getExperimentalInteractionComparator() {
+        return (DefaultCuratedExperimentalInteractionComparator) this.experimentalInteractionComparator;
+    }
+
+    @Override
+    public DefaultCuratedCooperativeInteractionComparator getCooperativeInteractionComparator() {
+        return (DefaultCuratedCooperativeInteractionComparator) this.cooperativeInteractionComparator;
+    }
+
+    @Override
+    public DefaultCuratedAllostericInteractionComparator getAllostericInteractionComparator() {
+        return (DefaultCuratedAllostericInteractionComparator) allostericInteractionComparator;
     }
 
     @Override
     /**
-     * It will first compare the sources of the interactions using DefaultCvTermComparator. If the sources are the same, t will compare the participants using DefaultParticipantBaseComparator. If the participants are the same, it will compare
-     * the interaction types using DefaultCvTermComparator. If the interaction types are the same, it will compare the negative properties.
-     * A negative interaction will come after a positive interaction
+     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * - It uses DefaultCuratedExperimentalInteractionComparator to compare experimental interactions
+     * - It uses DefaultCuratedModelledInteractionComparator to compare modelled interactions
+     * - It uses DefaultCuratedCooperativeInteractionComparator to compare cooperative interactions
+     * - It uses DefaultCuratedAllostericInteractionComparator to compare allosteric interactions
+     * - It uses DefaultCuratedInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {
         return super.compare(interaction1, interaction2);

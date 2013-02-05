@@ -7,7 +7,10 @@ import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Unambiguous feature comparator.
@@ -108,7 +111,10 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
 
         int hashcode = 31;
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(feature.getType());
-        for (Range range : feature.getRanges()){
+        List<Range> list1 = new ArrayList<Range>(feature.getRanges());
+
+        Collections.sort(list1, unambiguousFeatureComparator.getRangeCollectionComparator().getObjectComparator());
+        for (Range range : list1){
             hashcode = 31*hashcode + UnambiguousRangeComparator.hashCode(range);
         }
 

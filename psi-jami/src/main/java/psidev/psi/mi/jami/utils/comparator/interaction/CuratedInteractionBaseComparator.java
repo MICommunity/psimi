@@ -19,13 +19,13 @@ import java.util.Comparator;
  * @since <pre>18/01/13</pre>
  */
 
-public class CuratedInteractionComparator<T extends Participant> extends InteractionComparator<T> {
+public class CuratedInteractionBaseComparator<T extends Participant> extends InteractionBaseComparator<T> {
 
     /**
-     * Creates a new CuratedInteractionComparator.
+     * Creates a new CuratedInteractionBaseComparator.
      * @param participantComparator : required for comparing the participants
      */
-    public CuratedInteractionComparator(Comparator<T> participantComparator, AbstractCvTermComparator cvTermComparators) {
+    public CuratedInteractionBaseComparator(Comparator<T> participantComparator, AbstractCvTermComparator cvTermComparators) {
         super(participantComparator, cvTermComparators);
     }
 

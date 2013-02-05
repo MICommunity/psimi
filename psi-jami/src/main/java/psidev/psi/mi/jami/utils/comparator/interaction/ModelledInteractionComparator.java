@@ -8,7 +8,7 @@ import java.util.Comparator;
 /**
  * Basic ModelledInteraction comparator.
  *
- * It will use a InteractionComparator<Component> to compare basic interaction properties.
+ * It will use a InteractionBaseComparator<Component> to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -17,21 +17,21 @@ import java.util.Comparator;
 
 public class ModelledInteractionComparator implements Comparator<ModelledInteraction> {
 
-    protected InteractionComparator<Component> interactionComparator;
+    protected InteractionBaseComparator<Component> interactionComparator;
 
-    public ModelledInteractionComparator(InteractionComparator<Component> interactionComparator){
+    public ModelledInteractionComparator(InteractionBaseComparator<Component> interactionComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
         }
         this.interactionComparator = interactionComparator;
     }
 
-    public InteractionComparator<Component> getInteractionComparator() {
+    public InteractionBaseComparator<Component> getInteractionComparator() {
         return interactionComparator;
     }
 
     /**
-     * It will use a InteractionComparator<Component> to compare basic interaction properties.
+     * It will use a InteractionBaseComparator<Component> to compare basic interaction properties.
      * @param modelledInteraction1
      * @param modelledInteraction2
      * @return

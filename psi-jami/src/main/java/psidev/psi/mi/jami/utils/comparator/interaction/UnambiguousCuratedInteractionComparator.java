@@ -1,43 +1,58 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantBaseComparator;
 
 /**
- * Unambiguous comparator for Curated interactions.
- *
- * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousParticipantBaseComparator. If the participants are the same, it will compare
- * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
- * A negative interaction will come after a positive interaction
- *
+ * Unambiguous curated Generic interaction comparator.
+ * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * - It uses UnambiguousCuratedExperimentalInteractionComparator to compare experimental interactions
+ * - It uses UnambiguousCuratedModelledInteractionComparator to compare modelled interactions
+ * - It uses UnambiguousCuratedCooperativeInteractionComparator to compare cooperative interactions
+ * - It uses UnambiguousCuratedAllostericInteractionComparator to compare allosteric interactions
+ * - It uses UnambiguousCuratedInteractionBaseComparator to compare basic interaction properties
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/01/13</pre>
+ * @since <pre>05/02/13</pre>
  */
 
-public class UnambiguousCuratedInteractionComparator extends CuratedInteractionComparator {
-
+public class UnambiguousCuratedInteractionComparator extends InteractionComparator {
     private static UnambiguousCuratedInteractionComparator unambiguousCuratedInteractionComparator;
 
     /**
-     * Creates a new UnambiguousCuratedInteractionComparator. It will use a UnambiguousParticipantBaseComparator to
-     * compare participants and UnambiguousCvTermComparator to compare interaction types
+     * Creates a new UnambiguousCuratedInteractionComparator.
      */
     public UnambiguousCuratedInteractionComparator() {
-        super(new UnambiguousParticipantBaseComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousCuratedInteractionBaseComparator(), new UnambiguousCuratedExperimentalInteractionComparator(), new UnambiguousCuratedCooperativeInteractionComparator(), new UnambiguousCuratedAllostericInteractionComparator());
     }
 
     @Override
-    public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) cvTermComparator;
+    public UnambiguousCuratedInteractionBaseComparator getInteractionBaseComparator() {
+        return (UnambiguousCuratedInteractionBaseComparator) this.interactionBaseComparator;
+    }
+
+    @Override
+    public UnambiguousCuratedExperimentalInteractionComparator getExperimentalInteractionComparator() {
+        return (UnambiguousCuratedExperimentalInteractionComparator) this.experimentalInteractionComparator;
+    }
+
+    @Override
+    public UnambiguousCuratedCooperativeInteractionComparator getCooperativeInteractionComparator() {
+        return (UnambiguousCuratedCooperativeInteractionComparator) this.cooperativeInteractionComparator;
+    }
+
+    @Override
+    public UnambiguousCuratedAllostericInteractionComparator getAllostericInteractionComparator() {
+        return (UnambiguousCuratedAllostericInteractionComparator) allostericInteractionComparator;
     }
 
     @Override
     /**
-     * It will first compare the sources of the interactions using UnambiguousCvTermComparator. If the sources are the same, t will compare the participants using UnambiguousParticipantBaseComparator. If the participants are the same, it will compare
-     * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
-     * A negative interaction will come after a positive interaction
+     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * - It uses UnambiguousCuratedExperimentalInteractionComparator to compare experimental interactions
+     * - It uses UnambiguousCuratedModelledInteractionComparator to compare modelled interactions
+     * - It uses UnambiguousCuratedCooperativeInteractionComparator to compare cooperative interactions
+     * - It uses UnambiguousCuratedAllostericInteractionComparator to compare allosteric interactions
+     * - It uses UnambiguousCuratedInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {
         return super.compare(interaction1, interaction2);

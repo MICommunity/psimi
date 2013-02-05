@@ -1,19 +1,19 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantBaseComparator;
 
 /**
- * Unambiguous Interaction comparator.
- *
- * It will first compare the participants using UnambiguousParticipantBaseComparator. If the participants are the same, it will compare
- * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
- * A negative interaction will come after a positive interaction.
+ * Unambiguous Generic interaction comparator.
+ * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * - It uses UnambiguousExperimentalInteractionComparator to compare experimental interactions
+ * - It uses UnambiguousModelledInteractionComparator to compare modelled interactions
+ * - It uses UnambiguousCooperativeInteractionComparator to compare cooperative interactions
+ * - It uses UnambiguousAllostericInteractionComparator to compare allosteric interactions
+ * - It uses UnambiguousInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/01/13</pre>
+ * @since <pre>05/02/13</pre>
  */
 
 public class UnambiguousInteractionComparator extends InteractionComparator {
@@ -21,24 +21,40 @@ public class UnambiguousInteractionComparator extends InteractionComparator {
     private static UnambiguousInteractionComparator unambiguousInteractionComparator;
 
     /**
-     * Creates a new UnambiguousInteractionComparator. It will use a UnambiguousParticipantBaseComparator to
-     * compare participants and UnambiguousCvTermcomparator to compare interaction types
+     * Creates a new UnambiguousInteractionComparator.
      */
     public UnambiguousInteractionComparator() {
-        super(new UnambiguousParticipantBaseComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousInteractionBaseComparator(), new UnambiguousExperimentalInteractionComparator(), new UnambiguousCooperativeInteractionComparator(), new UnambiguousAllostericInteractionComparator());
     }
 
     @Override
-    public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) cvTermComparator;
+    public UnambiguousInteractionBaseComparator getInteractionBaseComparator() {
+        return (UnambiguousInteractionBaseComparator) this.interactionBaseComparator;
+    }
+
+    @Override
+    public UnambiguousExperimentalInteractionComparator getExperimentalInteractionComparator() {
+        return (UnambiguousExperimentalInteractionComparator) this.experimentalInteractionComparator;
+    }
+
+    @Override
+    public UnambiguousCooperativeInteractionComparator getCooperativeInteractionComparator() {
+        return (UnambiguousCooperativeInteractionComparator) this.cooperativeInteractionComparator;
+    }
+
+    @Override
+    public UnambiguousAllostericInteractionComparator getAllostericInteractionComparator() {
+        return (UnambiguousAllostericInteractionComparator) allostericInteractionComparator;
     }
 
     @Override
     /**
-     * It will first compare the participants using UnambiguousParticipantBaseComparator. If the participants are the same, it will compare
-     * the interaction types using UnambiguousCvTermComparator. If the interaction types are the same, it will compare the negative properties.
-     * A negative interaction will come after a positive interaction.
-     *
+     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * - It uses UnambiguousExperimentalInteractionComparator to compare experimental interactions
+     * - It uses UnambiguousModelledInteractionComparator to compare modelled interactions
+     * - It uses UnambiguousCooperativeInteractionComparator to compare cooperative interactions
+     * - It uses UnambiguousAllostericInteractionComparator to compare allosteric interactions
+     * - It uses UnambiguousInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {
         return super.compare(interaction1, interaction2);

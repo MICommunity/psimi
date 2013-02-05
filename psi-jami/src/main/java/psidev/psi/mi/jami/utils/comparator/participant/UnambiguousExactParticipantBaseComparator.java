@@ -7,6 +7,11 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseCompara
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Unambiguous exact participant comparator
  * It will first compare the interactors using UnambiguousExactInteractorComparator. If both interactors are the same,
@@ -87,8 +92,11 @@ public class UnambiguousExactParticipantBaseComparator extends ParticipantBaseCo
         hashcode = 31*hashcode + UnambiguousExactInteractorBaseComparator.hashCode(participant.getInteractor());
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(participant.getBiologicalRole());
         hashcode = 31*hashcode + (participant.getStoichiometry() != null ? participant.getStoichiometry() : 0);
-        for (Object f : participant.getFeatures()){
-            hashcode = 31*hashcode + UnambiguousFeatureBaseComparator.hashCode((Feature) f);
+        List<Feature> list1 = new ArrayList<Feature>((Collection<Feature>)participant.getFeatures());
+
+        Collections.sort(list1, unambiguousExactParticipantComparator.getFeatureCollectionComparator().getObjectComparator());
+        for (Feature f : list1){
+            hashcode = 31*hashcode + UnambiguousFeatureBaseComparator.hashCode(f);
         }
 
         return hashcode;

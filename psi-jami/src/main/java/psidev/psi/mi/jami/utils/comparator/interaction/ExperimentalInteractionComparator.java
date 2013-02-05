@@ -14,7 +14,7 @@ import java.util.Comparator;
  * It will first compares the IMEx identifiers if bothe IMEx ids are set. If at least one IMEx id is not set, it will compare
  * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.
  * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using InteractionComparator<ExperimentalParticipant>.
+ * If the experimental interaction properties are the same, it will compare the basic interaction properties using InteractionBaseComparator<ExperimentalParticipant>.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -23,7 +23,7 @@ import java.util.Comparator;
 
 public class ExperimentalInteractionComparator implements Comparator<ExperimentalInteraction> {
 
-    protected InteractionComparator<ExperimentalParticipant> interactionComparator;
+    protected InteractionBaseComparator<ExperimentalParticipant> interactionComparator;
     protected ExperimentComparator experimentComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
 
@@ -33,7 +33,7 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
      * @param experimentComparator : required to compare experiments
      * @param parameterComparator : required to compare parameters
      */
-    public ExperimentalInteractionComparator(InteractionComparator<ExperimentalParticipant> interactionComparator, ExperimentComparator experimentComparator,
+    public ExperimentalInteractionComparator(InteractionBaseComparator<ExperimentalParticipant> interactionComparator, ExperimentComparator experimentComparator,
                                              ParameterComparator parameterComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
@@ -55,7 +55,7 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
         return parameterCollectionComparator;
     }
 
-    public InteractionComparator<ExperimentalParticipant> getInteractionComparator() {
+    public InteractionBaseComparator<ExperimentalParticipant> getInteractionComparator() {
         return interactionComparator;
     }
 
@@ -67,7 +67,7 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
      * It will first compares the IMEx identifiers if bothe IMEx ids are set. If at least one IMEx id is not set, it will compare
      * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.
      * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using InteractionComparator<ExperimentalParticipant>.
+     * If the experimental interaction properties are the same, it will compare the basic interaction properties using InteractionBaseComparator<ExperimentalParticipant>.
      * @param experimentalInteraction1
      * @param experimentalInteraction2
      * @return
