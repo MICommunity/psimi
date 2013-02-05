@@ -62,7 +62,7 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
             Integer version1 = externalIdentifier1.getVersion();
             Integer version2 = externalIdentifier2.getVersion();
 
-            if (version1 == null && version2 == null){
+            if (version1 == version2){
                 return EQUAL;
             }
             else if (version1 == null){
@@ -71,8 +71,11 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
             else if (version2 == null){
                 return BEFORE;
             }
+            else if (version1 < version2) {
+                return BEFORE;
+            }
             else {
-                return version1.compareTo(version2);
+                return AFTER;
             }
         }
     }
@@ -112,7 +115,7 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
             hashcode = 31*hashcode + databaseId1.getId().hashCode();
         }
         else {
-            hashcode = 31*hashcode + database1.getShortName().toLowerCase().hashCode();
+            hashcode = 31*hashcode + database1.getShortName().toLowerCase().trim().hashCode();
         }
 
         hashcode = 31 * hashcode + externalIdentifier1.getId().hashCode();
