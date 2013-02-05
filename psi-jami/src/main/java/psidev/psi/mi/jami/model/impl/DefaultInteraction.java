@@ -28,8 +28,8 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     protected CvTerm type;
 
     public DefaultInteraction(){
-        this.xrefs = new HashSet<Xref>();
-        this.annotations = new HashSet<Annotation>();
+        initializeXrefs();
+        initializeAnnotations();
         this.participants = new ArrayList<P>();
         this.confidences = new HashSet<Confidence>();
     }
@@ -53,6 +53,15 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this(shortName, source);
         this.type = type;
     }
+
+    protected void initializeAnnotations(){
+        this.annotations = new HashSet<Annotation>();
+    }
+
+    protected void initializeXrefs(){
+        this.xrefs = new HashSet<Xref>();
+    }
+
 
     public String getShortName() {
         return this.shortName;

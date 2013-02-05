@@ -90,16 +90,28 @@ public class DefaultXrefComparator implements Comparator<Xref> {
 
             CvTerm qualifier1 = xref1.getQualifier();
             CvTerm qualifier2 = xref2.getQualifier();
-            ExternalIdentifier qualifierId1 = qualifier1.getOntologyIdentifier();
-            ExternalIdentifier qualifierId2 = qualifier2.getOntologyIdentifier();
 
-            // if external id of qualifier is set, look at qualifier id only otherwise look at shortname
-            int comp2;
-            if (qualifierId1 != null && qualifierId2 != null){
-                return qualifierId1.getId().compareTo(qualifierId2.getId());
+            if (qualifier1 == null && qualifier2 == null){
+                return EQUAL;
+            }
+            else if (qualifier1 != null){
+                return BEFORE;
+            }
+            else if (qualifier2 != null){
+                return AFTER;
             }
             else {
-                return qualifier1.getShortName().toLowerCase().trim().compareTo(qualifier2.getShortName().toLowerCase().trim());
+                ExternalIdentifier qualifierId1 = qualifier1.getOntologyIdentifier();
+                ExternalIdentifier qualifierId2 = qualifier2.getOntologyIdentifier();
+
+                // if external id of qualifier is set, look at qualifier id only otherwise look at shortname
+                int comp2;
+                if (qualifierId1 != null && qualifierId2 != null){
+                    return qualifierId1.getId().compareTo(qualifierId2.getId());
+                }
+                else {
+                    return qualifier1.getShortName().toLowerCase().trim().compareTo(qualifier2.getShortName().toLowerCase().trim());
+                }
             }
         }
     }
