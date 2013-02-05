@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponent
 /**
  * Unambiguous exact curated ModelledInteraction comparator.
  *
- * It will use a UnambiguousExactCuratedInteractionComparator to compare basic interaction properties.
+ * It will use a UnambiguousExactCuratedInteractionBaseComparator to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,21 +20,21 @@ public class UnambiguousExactCuratedModelledInteractionComparator extends Modell
     private static UnambiguousExactCuratedModelledInteractionComparator unambiguousExactCuratedModelledInteractionComparator;
 
     /**
-     * Creates a new UnambiguousExactCuratedModelledInteractionComparator. It will use a UnambiguousExactCuratedInteractionComparator to
+     * Creates a new UnambiguousExactCuratedModelledInteractionComparator. It will use a UnambiguousExactCuratedInteractionBaseComparator to
      * compare basic interaction properties
      */
     public UnambiguousExactCuratedModelledInteractionComparator() {
-        super(new CuratedInteractionComparator<Component>(new UnambiguousExactComponentComparator(), new UnambiguousCvTermComparator()));
+        super(new CuratedInteractionBaseComparator<Component>(new UnambiguousExactComponentComparator(), new UnambiguousCvTermComparator()));
     }
 
     @Override
-    public CuratedInteractionComparator<Component> getInteractionComparator() {
-        return (CuratedInteractionComparator<Component>) this.interactionComparator;
+    public CuratedInteractionBaseComparator<Component> getInteractionComparator() {
+        return (CuratedInteractionBaseComparator<Component>) this.interactionComparator;
     }
 
     @Override
     /**
-     * It will use a UnambiguousExactCuratedInteractionComparator to compare basic interaction properties.
+     * It will use a UnambiguousExactCuratedInteractionBaseComparator to compare basic interaction properties.
      */
     public int compare(ModelledInteraction interaction1, ModelledInteraction interaction2) {
         return super.compare(interaction1, interaction2);

@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionComparator;
 
 import java.io.Serializable;
 import java.util.*;
@@ -110,16 +112,26 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
 
     @Override
     public int hashCode() {
-        return super.hashCode();    //To change body of overridden methods use File | Settings | File Templates.
+        // use UnambiguousExactInteractionBase comparator for hashcode
+        return UnambiguousExactInteractionBaseComparator.hashCode(this);
     }
 
     @Override
     public boolean equals(Object o) {
-        return super.equals(o);    //To change body of overridden methods use File | Settings | File Templates.
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof Interaction)){
+            return false;
+        }
+
+        // use UnambiguousExactInteraction comparator for equals
+        return UnambiguousExactInteractionComparator.areEquals(this, (Interaction) o);
     }
 
     @Override
     public String toString() {
-        return super.toString();    //To change body of overridden methods use File | Settings | File Templates.
+        return (shortName != null ? shortName+", " : "") + type != null ? type.toString() : "" + ", negative = " + isNegative;
     }
 }

@@ -1,61 +1,80 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComparator;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.participant.ComponentComparator;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 /**
- * Basic Interaction comparator.
- *
- * It will first compare the participants using ParticipantBaseComparator. If the participants are the same, it will compare
- * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
- * A negative interaction will come after a positive interaction.
+ * Generic interaction comparator.
+ * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * - It uses ExperimentalInteractionComparator to compare experimental interactions
+ * - It uses ModelledInteractionComparator to compare modelled interactions
+ * - It uses CooperativeInteractionComparator to compare cooperative interactions
+ * - It uses AllostericInteractionComparator to compare allosteric interactions
+ * - It uses InteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/01/13</pre>
+ * @since <pre>04/02/13</pre>
  */
 
-public class InteractionComparator<T extends Participant> implements Comparator<Interaction> {
+public class InteractionComparator implements Comparator<Interaction> {
 
-    protected ParticipantCollectionComparator participantCollectionComparator;
-    protected AbstractCvTermComparator cvTermComparator;
+    protected InteractionBaseComparator interactionBaseComparator;
+    protected ExperimentalInteractionComparator experimentalInteractionComparator;
+    protected ModelledInteractionComparator modelledInteractionComparator;
+    protected CooperativeInteractionComparator cooperativeInteractionComparator;
+    protected AllostericInteractionComparator allostericInteractionComparator;
+
+    public InteractionComparator(InteractionBaseComparator interactionBaseComparator, ExperimentalInteractionComparator experimentalInteractionComparator,
+                                 CooperativeInteractionComparator cooperativeInteractionComparator, AllostericInteractionComparator allostericInteractionComparator){
+        if (interactionBaseComparator == null){
+            throw new IllegalArgumentException("The interactionBaseComparator is required to create more specific interaction comparators and compares basic interaction properties. It cannot be null");
+        }
+        this.interactionBaseComparator = interactionBaseComparator;
+        if (experimentalInteractionComparator == null){
+            throw new IllegalArgumentException("The experimentalInteractionComparator is required to compare experimental interactions. It cannot be null");
+        }
+        this.experimentalInteractionComparator = experimentalInteractionComparator;
+        this.modelledInteractionComparator = new ModelledInteractionComparator(this.interactionBaseComparator);
+        if (cooperativeInteractionComparator == null){
+            throw new IllegalArgumentException("The cooperativeInteraction is required to compare cooperative interactions. It cannot be null");
+        }
+        this.cooperativeInteractionComparator = cooperativeInteractionComparator;
+        if (allostericInteractionComparator == null){
+            throw new IllegalArgumentException("The allostericInteraction is required to compare allosteric interactions. It cannot be null");
+        }
+        this.allostericInteractionComparator = allostericInteractionComparator;
+    }
+
+    public InteractionBaseComparator getInteractionBaseComparator() {
+        return interactionBaseComparator;
+    }
+
+    public ExperimentalInteractionComparator getExperimentalInteractionComparator() {
+        return experimentalInteractionComparator;
+    }
+
+    public ModelledInteractionComparator getModelledInteractionComparator() {
+        return modelledInteractionComparator;
+    }
+
+    public CooperativeInteractionComparator getCooperativeInteractionComparator() {
+        return cooperativeInteractionComparator;
+    }
+
+    public AllostericInteractionComparator getAllostericInteractionComparator() {
+        return allostericInteractionComparator;
+    }
 
     /**
-     * Creates a new InteractionComparator.
-     * @param participantComparator : required to compare participants
-     * @param cvTermComparator : required to compare interaction type
-     */
-    public InteractionComparator(Comparator<T> participantComparator, AbstractCvTermComparator cvTermComparator){
-        if (participantComparator == null){
-            throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
-        }
-        this.participantCollectionComparator = new ParticipantCollectionComparator<T>(participantComparator);
-
-        if (cvTermComparator == null){
-            throw new IllegalArgumentException("The CvTerm comparator is required to compare interaction types. It cannot be null");
-        }
-        this.cvTermComparator = cvTermComparator;
-    }
-
-    public ParticipantCollectionComparator getParticipantCollectionComparator() {
-        return participantCollectionComparator;
-    }
-
-    public AbstractCvTermComparator getCvTermComparator() {
-        return cvTermComparator;
-    }
-
-    /**
-     * It will first compare the participants using ParticipantBaseComparator. If the participants are the same, it will compare
-     * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
-     * A negative interaction will come after a positive interaction.
-     *
+     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * - It uses ExperimentalInteractionComparator to compare experimental interactions
+     * - It uses ModelledInteractionComparator to compare modelled interactions
+     * - It uses CooperativeInteractionComparator to compare cooperative interactions
+     * - It uses AllostericInteractionComparator to compare allosteric interactions
+     * - It uses InteractionBaseComparator to compare basic interaction properties
      * @param interaction1
      * @param interaction2
      * @return
@@ -75,39 +94,70 @@ public class InteractionComparator<T extends Participant> implements Comparator<
             return BEFORE;
         }
         else {
-            // first compares participants of an interaction
-            Collection<Participant> participants1 = interaction1.getParticipants();
-            Collection<Participant> participants2 = interaction2.getParticipants();
+            // first check if both interactions are from the same interface
 
-            int comp = participantCollectionComparator.compare(participants1, participants2);
-            if (comp != 0){
-                return comp;
+            // both are experimental interactions
+            boolean isExperimentalInteraction1 = interaction1 instanceof ExperimentalInteraction;
+            boolean isExperimentalInteraction2 = interaction2 instanceof ExperimentalInteraction;
+            if (isExperimentalInteraction1 && isExperimentalInteraction2){
+                return experimentalInteractionComparator.compare((ExperimentalInteraction) interaction1, (ExperimentalInteraction) interaction2);
             }
-
-            // then compares interaction type
-            CvTerm type1 = interaction1.getType();
-            CvTerm type2 = interaction2.getType();
-
-            comp = cvTermComparator.compare(type1, type2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares negative
-            boolean isNegative1 = interaction1.isNegative();
-            boolean  isNegative2 = interaction2.isNegative();
-
-            if (isNegative1 == isNegative2){
-                return EQUAL;
-            }
-            else if (isNegative1){
-                return AFTER;
-            }
-            else if (isNegative2){
+            // the experimental interaction is before
+            else if (isExperimentalInteraction1){
                 return BEFORE;
             }
+            else if (isExperimentalInteraction2){
+                return AFTER;
+            }
             else {
-                return EQUAL;
+                // both are allosteric interactions
+                boolean isAllostericInteraction1 = interaction1 instanceof AllostericInteraction;
+                boolean isAllostericInteraction2 = interaction2 instanceof AllostericInteraction;
+                if (isAllostericInteraction1 && isAllostericInteraction2){
+                    return allostericInteractionComparator.compare((AllostericInteraction) interaction1, (AllostericInteraction) interaction2);
+                }
+                // the allosteric interaction is before
+                else if (isAllostericInteraction1){
+                    return BEFORE;
+                }
+                else if (isAllostericInteraction2){
+                    return AFTER;
+                }
+                else {
+
+                    // both are cooperative interactions
+                    boolean isCooperativeInteraction1 = interaction1 instanceof CooperativeInteraction;
+                    boolean isCooperativeInteraction2 = interaction2 instanceof CooperativeInteraction;
+                    if (isCooperativeInteraction1 && isCooperativeInteraction2){
+                        return cooperativeInteractionComparator.compare((CooperativeInteraction) interaction1, (CooperativeInteraction) interaction2);
+                    }
+                    // the cooperative interaction is before
+                    else if (isCooperativeInteraction1){
+                        return BEFORE;
+                    }
+                    else if (isCooperativeInteraction2){
+                        return AFTER;
+                    }
+                    else {
+
+                        // both are modelled interactions
+                        boolean isModelledInteraction1 = interaction1 instanceof ModelledInteraction;
+                        boolean isModelledInteraction2 = interaction2 instanceof ModelledInteraction;
+                        if (isModelledInteraction1 && isModelledInteraction2){
+                            return modelledInteractionComparator.compare((ModelledInteraction) interaction1, (ModelledInteraction) interaction2);
+                        }
+                        // the modelled interaction is before
+                        else if (isModelledInteraction1){
+                            return BEFORE;
+                        }
+                        else if (isModelledInteraction2){
+                            return AFTER;
+                        }
+                        else {
+                            return interactionBaseComparator.compare(interaction1, interaction2);
+                        }
+                    }
+                }
             }
         }
     }

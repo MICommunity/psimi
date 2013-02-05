@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactComponentComp
 /**
  * Default exact curated ModelledInteraction comparator.
  *
- * It will use a DefaultCuratedInteractionComparator<Component> to compare basic interaction properties.
+ * It will use a DefaultCuratedInteractionBaseComparator<Component> to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,21 +20,21 @@ public class DefaultExactCuratedModelledInteractionComparator extends ModelledIn
     private static DefaultExactCuratedModelledInteractionComparator defaultExactCuratedModelledInteractionComparator;
 
     /**
-     * Creates a new DefaultExactCuratedModelledInteractionComparator. It will use a DefaultCuratedInteractionComparator<Component> to
+     * Creates a new DefaultExactCuratedModelledInteractionComparator. It will use a DefaultCuratedInteractionBaseComparator<Component> to
      * compare basic interaction properties
      */
     public DefaultExactCuratedModelledInteractionComparator() {
-        super(new CuratedInteractionComparator<Component>(new DefaultExactComponentComparator(), new DefaultCvTermComparator()));
+        super(new CuratedInteractionBaseComparator<Component>(new DefaultExactComponentComparator(), new DefaultCvTermComparator()));
     }
 
     @Override
-    public CuratedInteractionComparator<Component> getInteractionComparator() {
-        return (CuratedInteractionComparator<Component>) this.interactionComparator;
+    public CuratedInteractionBaseComparator<Component> getInteractionComparator() {
+        return (CuratedInteractionBaseComparator<Component>) this.interactionComparator;
     }
 
     @Override
     /**
-     * It will use a DefaultCuratedInteractionComparator to compare basic interaction properties.
+     * It will use a DefaultCuratedInteractionBaseComparator to compare basic interaction properties.
      */
     public int compare(ModelledInteraction interaction1, ModelledInteraction interaction2) {
         return super.compare(interaction1, interaction2);

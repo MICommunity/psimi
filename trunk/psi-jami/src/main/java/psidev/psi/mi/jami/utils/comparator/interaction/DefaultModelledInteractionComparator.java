@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentComparato
 /**
  * Default ModelledInteraction comparator.
  *
- * It will use a DefaultInteractionComparator to compare basic interaction properties.
+ * It will use a DefaultInteractionBaseComparator to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,16 +20,16 @@ public class DefaultModelledInteractionComparator extends ModelledInteractionCom
     private static DefaultModelledInteractionComparator defaultModelledInteractionComparator;
 
     /**
-     * Creates a new DefaultModelledInteractionComparator. It will use a DefaultInteractionComparator to
+     * Creates a new DefaultModelledInteractionComparator. It will use a DefaultInteractionBaseComparator to
      * compare basic interaction properties
      */
     public DefaultModelledInteractionComparator() {
-        super(new InteractionComparator<Component>(new DefaultComponentComparator(), new DefaultCvTermComparator()));
+        super(new InteractionBaseComparator<Component>(new DefaultComponentComparator(), new DefaultCvTermComparator()));
     }
 
     @Override
     /**
-     * It will use a DefaultInteractionComparator to compare basic interaction properties.
+     * It will use a DefaultInteractionBaseComparator to compare basic interaction properties.
      */
     public int compare(ModelledInteraction interaction1, ModelledInteraction interaction2) {
         return super.compare(interaction1, interaction2);

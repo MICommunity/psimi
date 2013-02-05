@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentComparato
 /**
  * Default curated ModelledInteraction comparator.
  *
- * It will use a DefaultCuratedInteractionComparator<Component> to compare basic interaction properties.
+ * It will use a DefaultCuratedInteractionBaseComparator<Component> to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,21 +20,21 @@ public class DefaultCuratedModelledInteractionComparator extends ModelledInterac
     private static DefaultCuratedModelledInteractionComparator defaultCuratedModelledInteractionComparator;
 
     /**
-     * Creates a new DefaultCuratedModelledInteractionComparator. It will use a DefaultCuratedInteractionComparator to
+     * Creates a new DefaultCuratedModelledInteractionComparator. It will use a DefaultCuratedInteractionBaseComparator to
      * compare basic interaction properties
      */
     public DefaultCuratedModelledInteractionComparator() {
-        super(new CuratedInteractionComparator<Component>(new DefaultComponentComparator(), new DefaultCvTermComparator()));
+        super(new CuratedInteractionBaseComparator<Component>(new DefaultComponentComparator(), new DefaultCvTermComparator()));
     }
 
     @Override
-    public CuratedInteractionComparator<Component> getInteractionComparator() {
-        return (CuratedInteractionComparator<Component>) this.interactionComparator;
+    public CuratedInteractionBaseComparator<Component> getInteractionComparator() {
+        return (CuratedInteractionBaseComparator<Component>) this.interactionComparator;
     }
 
     @Override
     /**
-     * It will use a DefaultCuratedInteractionComparator<Component> to compare basic interaction properties.
+     * It will use a DefaultCuratedInteractionBaseComparator<Component> to compare basic interaction properties.
      */
     public int compare(ModelledInteraction interaction1, ModelledInteraction interaction2) {
         return super.compare(interaction1, interaction2);

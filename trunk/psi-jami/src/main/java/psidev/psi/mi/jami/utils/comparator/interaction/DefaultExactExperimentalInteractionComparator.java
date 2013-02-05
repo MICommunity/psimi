@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactExperimentalP
  * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
  * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
  * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionComparator<ExperimentalParticipant>.
+ * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ExperimentalParticipant>.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -25,11 +25,11 @@ public class DefaultExactExperimentalInteractionComparator extends ExperimentalI
     private static DefaultExactExperimentalInteractionComparator defaultExactExperimentalInteractionComparator;
 
     /**
-     * Creates a new DefaultExactExperimentalInteractionComparator. It will use a DefaultExactInteractionComparator to
+     * Creates a new DefaultExactExperimentalInteractionComparator. It will use a DefaultExactInteractionBaseComparator to
      * compare basic interaction properties, DefaultExactParameterComparator to compare parameters, DefaultExactExperimentComparator to compare experiments
      */
     public DefaultExactExperimentalInteractionComparator() {
-        super(new InteractionComparator<ExperimentalParticipant>(new DefaultExactExperimentalParticipantComparator(), new DefaultCvTermComparator()),
+        super(new InteractionBaseComparator<ExperimentalParticipant>(new DefaultExactExperimentalParticipantComparator(), new DefaultCvTermComparator()),
                 new DefaultExperimentComparator(), new DefaultParameterComparator());
     }
 
@@ -43,7 +43,7 @@ public class DefaultExactExperimentalInteractionComparator extends ExperimentalI
      * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
      * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
      * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionComparator<ExperimentalParticipant>.
+     * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ExperimentalParticipant>.
      *
      **/
     public int compare(ExperimentalInteraction interaction1, ExperimentalInteraction interaction2) {
