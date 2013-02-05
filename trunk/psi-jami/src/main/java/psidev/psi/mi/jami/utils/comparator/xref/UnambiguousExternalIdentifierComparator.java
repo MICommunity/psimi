@@ -120,7 +120,7 @@ public class UnambiguousExternalIdentifierComparator implements Comparator<Exter
             hashcode = 31*hashcode + databaseId1.getId().hashCode();
         }
         else {
-            hashcode = 31*hashcode + database1.getShortName().toLowerCase().hashCode();
+            hashcode = 31*hashcode + database1.getShortName().toLowerCase().trim().hashCode();
         }
 
         hashcode = 31 * hashcode + externalIdentifier1.getId().hashCode();

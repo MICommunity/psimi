@@ -26,6 +26,9 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) > 0);
         Assert.assertTrue(comparator.compare(id2, id1) < 0);
+
+        Assert.assertFalse(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) != UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 
     @Test
@@ -35,6 +38,9 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) > 0);
         Assert.assertTrue(comparator.compare(id2, id1) < 0);
+
+        Assert.assertFalse(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) != UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 
     @Test
@@ -44,6 +50,9 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
+
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) == UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 
     @Test
@@ -53,6 +62,9 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
+
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) == UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 
     @Test
@@ -62,6 +74,9 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertEquals(comparator.compare(id1, id2), Xref.UNIPROTKB_ID.compareTo(Xref.CHEBI_ID));
         Assert.assertEquals(comparator.compare(id2, id1), Xref.CHEBI_ID.compareTo(Xref.UNIPROTKB_ID));
+
+        Assert.assertFalse(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) != UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 
     @Test
@@ -71,6 +86,9 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertEquals(comparator.compare(id1, id2), Xref.UNIPROTKB.compareTo(Xref.CHEBI));
         Assert.assertEquals(comparator.compare(id2, id1), Xref.CHEBI.compareTo(Xref.UNIPROTKB));
+
+        Assert.assertFalse(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) != UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 
     @Test
@@ -80,6 +98,9 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertEquals(comparator.compare(id1, id2), "CHEBI:xx1".compareTo("CHEBI:xx2"));
         Assert.assertEquals(comparator.compare(id2, id1), "CHEBI:xx2".compareTo("CHEBI:xx1"));
+
+        Assert.assertFalse(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) != UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 
     @Test
@@ -89,5 +110,8 @@ public class UnambiguousExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) != 0);
         Assert.assertTrue(comparator.compare(id2, id1) != 0);
+
+        Assert.assertFalse(UnambiguousExternalIdentifierComparator.areEquals(id1, id2));
+        Assert.assertTrue(UnambiguousExternalIdentifierComparator.hashCode(id1) != UnambiguousExternalIdentifierComparator.hashCode(id2));
     }
 }
