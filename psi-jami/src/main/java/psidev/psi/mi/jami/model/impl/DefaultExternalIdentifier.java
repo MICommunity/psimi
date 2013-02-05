@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExternalIdentifier;
-import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 /**
  * Default implementation for ExternalIdentifier
@@ -16,11 +16,11 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierCom
 public class DefaultExternalIdentifier extends DefaultXref implements ExternalIdentifier{
 
     public DefaultExternalIdentifier(CvTerm database, String id, Integer version){
-        super(database, id, version, new DefaultCvTerm(Xref.IDENTITY, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Xref.IDENTITY_MI)));
+        super(database, id, version, CvTermFactory.createIdentityQualifierNameOnly());
     }
 
     public DefaultExternalIdentifier(CvTerm database, String id){
-        super(database, id, new DefaultCvTerm(Xref.IDENTITY, new DefaultExternalIdentifier(new DefaultCvTerm(CvTerm.PSI_MI), Xref.IDENTITY_MI)));
+        super(database, id, CvTermFactory.createIdentityQualifierNameOnly());
 
     }
 

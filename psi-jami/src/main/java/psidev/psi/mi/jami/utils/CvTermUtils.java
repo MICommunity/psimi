@@ -15,17 +15,74 @@ public class CvTermUtils {
 
     private static CvTerm gene;
     private static CvTerm allosteryMechanism;
-
-    static{
-        gene = CvTermFactory.createGeneNameAliasType();
-        allosteryMechanism = CvTermFactory.createAllosteryCooperativeMechanism();
-    }
+    private static CvTerm psimi;
+    private static CvTerm undetermined;
+    private static CvTerm nTerminalRange;
+    private static CvTerm cTerminalRange;
+    private static CvTerm nTerminal;
+    private static CvTerm cTerminal;
+    private static CvTerm nTerminalRagged;
 
     public static CvTerm getGene() {
+        if (gene == null){
+            gene = CvTermFactory.createGeneNameAliasType();
+        }
         return gene;
     }
 
     public static CvTerm getAllosteryMechanism() {
+        if (allosteryMechanism == null){
+            allosteryMechanism = CvTermFactory.createAllosteryCooperativeMechanism();
+        }
         return allosteryMechanism;
+    }
+
+    public static CvTerm getPsimi() {
+        if (psimi == null){
+            psimi = CvTermFactory.createPsiMiDatabaseNameOnly();
+        }
+        return psimi;
+    }
+
+    public static CvTerm getUndetermined() {
+        if (undetermined == null){
+            undetermined = CvTermFactory.createUndeterminedStatus();
+        }
+        return undetermined;
+    }
+
+    public static CvTerm getNTerminalRange() {
+        if (nTerminalRange == null){
+            nTerminalRange = CvTermFactory.createNTerminalRangeStatus();
+        }
+        return nTerminalRange;
+    }
+
+    public static CvTerm getCTerminalRange() {
+        if (cTerminalRange == null){
+            cTerminalRange = CvTermFactory.createCTerminalRangeStatus();
+        }
+        return cTerminalRange;
+    }
+
+    public static CvTerm getNTerminal() {
+        if (nTerminal == null){
+            nTerminal = CvTermFactory.createNTerminalStatus();
+        }
+        return nTerminal;
+    }
+
+    public static CvTerm getCTerminal() {
+        if (cTerminal == null){
+            cTerminal = CvTermFactory.createCTerminalStatus();
+        }
+        return cTerminal;
+    }
+
+    public static CvTerm getNTerminalRagged() {
+        if (nTerminalRagged == null){
+            nTerminalRagged = CvTermFactory.createRaggedNTerminalStatus();
+        }
+        return nTerminalRagged;
     }
 }

@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.factory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExternalIdentifier;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Factory for creating CvTerms
@@ -18,8 +19,17 @@ public class CvTermFactory {
         return new DefaultCvTerm(CvTerm.PSI_MI);
     }
 
+    public static CvTerm createIdentityQualifierNameOnly(){
+        return new DefaultCvTerm(Xref.IDENTITY);
+    }
+
     public static CvTerm createMICvTerm(String name, String MI){
-        return new DefaultCvTerm(name, new DefaultExternalIdentifier(createPsiMiDatabaseNameOnly(), MI));
+        if (MI != null){
+            return new DefaultCvTerm(name, new DefaultExternalIdentifier(CvTermUtils.getPsimi(), MI));
+        }
+        else {
+            return new DefaultCvTerm(name);
+        }
     }
 
     public static CvTerm createPsiMiDatabase(){
@@ -90,6 +100,10 @@ public class CvTermFactory {
         return createMICvTerm(Position.N_TERMINAL, Position.N_TERMINAL_MI);
     }
 
+    public static CvTerm createCTerminalStatus(){
+        return createMICvTerm(Position.C_TERMINAL, Position.C_TERMINAL_MI);
+    }
+
     public static CvTerm createRaggedNTerminalStatus(){
         return createMICvTerm(Position.RAGGED_N_TERMINAL, Position.RAGGED_N_TERMINAL_MI);
     }
@@ -116,5 +130,9 @@ public class CvTermFactory {
 
     public static CvTerm createAllosteryCooperativeMechanism(){
         return createMICvTerm(CooperativeInteraction.ALLOSTERY, CooperativeInteraction.ALLOSTERY_ID);
+    }
+
+    public static CvTerm createIdentityXrefQualifier(){
+        return createMICvTerm(Xref.IDENTITY, Xref.IDENTITY_MI);
     }
 }
