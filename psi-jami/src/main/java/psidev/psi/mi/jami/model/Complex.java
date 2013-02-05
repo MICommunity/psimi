@@ -28,13 +28,17 @@ public interface Complex extends Interactor {
 
     /**
      * The physical properties for this complex.
+     * It is a shortcut which should point to the first complex-properties annotation in the list of annotations.
      * Example: Molecular mass = 154 kDa
      * @return
      */
     public String getPhysicalProperties();
 
     /**
-     * Sets the physical properties of this complex
+     * Sets the physical properties of this complex.
+     * It will remove the old complex-properties annotation from the list of annotations and replace it
+     * with the new complex-properties annotation. If the new complex-properties is null, all the existing complex-properties annotations will be removed from the
+     * list of annotations
      * @param properties
      */
     public void setPhysicalProperties(String properties);
