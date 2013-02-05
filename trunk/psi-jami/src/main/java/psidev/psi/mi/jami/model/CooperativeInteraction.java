@@ -13,6 +13,9 @@ import java.util.Collection;
 
 public interface CooperativeInteraction extends ModelledInteraction {
 
+    public static String ALLOSTERY = "allostery";
+    public static String ALLOSTERY_ID = "MI:1157";
+
     /**
      * For an interaction that has a cooperative effect on a subsequent interaction, this term indicates the process that mediates this effect.
      * It is a controlled vocabulary term and cannot be null.
