@@ -37,4 +37,14 @@ public class DefaultExternalIdentifierTest {
         Assert.assertNotNull(id1.getQualifier());
         Assert.assertEquals(CvTermFactory.createMICvTerm("identity", null), id1.getQualifier());
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void test_create_external_identifier_no_database() throws Exception {
+        ExternalIdentifier id1 = new DefaultExternalIdentifier(null, "P12345");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void test_create_external_identifier_no_id() throws Exception {
+        ExternalIdentifier id1 = new DefaultExternalIdentifier(CvTermFactory.createMICvTerm("uniprotkb", null), null);
+    }
 }
