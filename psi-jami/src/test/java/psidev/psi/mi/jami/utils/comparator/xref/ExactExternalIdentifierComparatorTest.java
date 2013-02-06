@@ -132,8 +132,8 @@ public class ExactExternalIdentifierComparatorTest {
         ExternalIdentifier id1 = new DefaultExternalIdentifier(CvTermFactory.createMICvTerm("chebi", null), "CHEBI:xxx", 2);
         ExternalIdentifier id2 = new DefaultExternalIdentifier(CvTermFactory.createMICvTerm("CheBi ", null), "CHEBI:xxx", 1);
 
-        Assert.assertTrue(comparator.compare(id1, id2) < 0);
-        Assert.assertTrue(comparator.compare(id2, id1) > 0);
+        Assert.assertTrue(comparator.compare(id1, id2) > 0);
+        Assert.assertTrue(comparator.compare(id2, id1) < 0);
 
         Assert.assertFalse(ExactExternalIdentifierComparator.areEquals(id1, id2));
         Assert.assertTrue(ExactExternalIdentifierComparator.hashCode(id1) != ExactExternalIdentifierComparator.hashCode(id2));
