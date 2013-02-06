@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.cv;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
+import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Comparator;
 
@@ -15,19 +15,19 @@ import java.util.Comparator;
 
 public abstract class AbstractCvTermComparator implements Comparator<CvTerm> {
 
-    protected Comparator<ExternalIdentifier> identifierComparator;
+    protected Comparator<Xref> identifierComparator;
     /**
      * Creates a new CvTermComparator
      * @param comparator : external identifier comparator which is required to compare ontology identifiers
      */
-    public AbstractCvTermComparator(Comparator<ExternalIdentifier> comparator){
+    public AbstractCvTermComparator(Comparator<Xref> comparator){
         if (comparator == null){
             throw new IllegalArgumentException("The ExternalIdentifier comparator is required and cannot be null");
         }
         this.identifierComparator = comparator;
     }
 
-    public Comparator<ExternalIdentifier> getIdentifierComparator(){
+    public Comparator<Xref> getIdentifierComparator(){
         return identifierComparator;
     }
 

@@ -1,14 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.xref;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
+import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Comparator;
 
 /**
- * Default comparator for external identifiers.
+ * Default comparator for external identifiers (Xref database and id).
  * It compares first the databases and then the ids (case sensitive) but ignores the version.
- * To compare the databases, it looks first at the identifiers id if they exist, otherwise it looks at the database shortlabel only.
+ * To compare the databases, it looks first at the PSI-MI id if they exist, otherwise it looks at the database shortlabel only.
  *
  * - Two external identifiers which are null are equals
  * - The external identifier which is not null is before null.
@@ -20,7 +20,7 @@ import java.util.Comparator;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultExternalIdentifierComparator implements Comparator<ExternalIdentifier> {
+public class DefaultExternalIdentifierComparator implements Comparator<Xref> {
 
     private static DefaultExternalIdentifierComparator defaultIdentifierComparator;
 
@@ -28,9 +28,8 @@ public class DefaultExternalIdentifierComparator implements Comparator<ExternalI
     }
 
     /**
-     * Default comparator for external identifiers.
      * It compares first the databases and then the ids (case sensitive) but ignores the version.
-     * To compare the databases, it looks first at the identifiers id if they exist, otherwise it looks at the database shortlabel only.
+     * To compare the databases, it looks first at the PSI-MI id if they exist, otherwise it looks at the database shortlabel only.
      *
      * - Two external identifiers which are null are equals
      * - The external identifier which is not null is before null.
@@ -39,7 +38,7 @@ public class DefaultExternalIdentifierComparator implements Comparator<ExternalI
      * @param externalIdentifier1
      * @param externalIdentifier2
      */
-    public int compare(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2) {
+    public int compare(Xref externalIdentifier1, Xref externalIdentifier2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
@@ -57,13 +56,13 @@ public class DefaultExternalIdentifierComparator implements Comparator<ExternalI
             // compares databases first (cannot use CvTermComparator because have to break the loop)
             CvTerm database1 = externalIdentifier1.getDatabase();
             CvTerm database2 = externalIdentifier2.getDatabase();
-            ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-            ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+            String mi1 = database1.getMIIdentifier();
+            String mi2 = database2.getMIIdentifier();
 
-            // if external id of database is set, look at database id only otherwise look at shortname
+            // if MI of database is set, look at database MI only otherwise look at shortname
             int comp;
-            if (databaseId1 != null && databaseId2 != null){
-                comp = databaseId1.getId().compareTo(databaseId2.getId());
+            if (mi1 != null && mi2 != null){
+                comp = mi1.compareTo(mi2);
             }
             else {
                 comp = database1.getShortName().toLowerCase().trim().compareTo(database2.getShortName().toLowerCase().trim());
@@ -86,7 +85,7 @@ public class DefaultExternalIdentifierComparator implements Comparator<ExternalI
      * @param externalIdentifier2
      * @return true if the two external identifiers are equal
      */
-    public static boolean areEquals(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2){
+    public static boolean areEquals(Xref externalIdentifier1, Xref externalIdentifier2){
         if (defaultIdentifierComparator == null){
             defaultIdentifierComparator = new DefaultExternalIdentifierComparator();
         }

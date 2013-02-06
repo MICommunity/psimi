@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model;
 import java.util.Set;
 
 /**
- * InteractorCandidates represents a list of potential interactors but we cannot determine which one interacts.
+ * InteractorCandidates represents a collection of potential interactors but we cannot determine which one interacts.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

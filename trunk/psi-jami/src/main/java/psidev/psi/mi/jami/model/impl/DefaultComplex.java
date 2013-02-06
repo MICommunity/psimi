@@ -96,7 +96,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
             this.physicalProperties = new DefaultAnnotation(complexPhysicalProperties, properties);
             this.annotations.add(this.physicalProperties);
         }
-        // remove all physical properties if the list is not empty
+        // remove all physical properties if the collection is not empty
         else if (!this.annotations.isEmpty()) {
             ((ComplexAnnotationList) annotations).removeAllPhysicalProperties();
         }
@@ -139,26 +139,26 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
                 // compares annotation topics first
                 CvTerm topic1 = annotation1.getTopic();
                 CvTerm topic2 = annotation2.getTopic();
-                ExternalIdentifier typeId1 = topic1.getOntologyIdentifier();
-                ExternalIdentifier typeId2 = topic2.getOntologyIdentifier();
+                String typeId1 = topic1.getMIIdentifier();
+                String typeId2 = topic2.getMIIdentifier();
 
                 // if external id of topic is set, look at type id only otherwise look at shortname
                 int comp;
                 if (typeId1 != null && typeId2 != null){
                     // both are complex properties, sort by id
-                    if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId1.getId()) && Annotation.COMPLEX_PROPERTIES_ID.equals(typeId2.getId())){
+                    if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId1) && Annotation.COMPLEX_PROPERTIES_ID.equals(typeId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(annotation1.getValue(), annotation2.getValue(), physicalProperties != null ? physicalProperties.getValue() : null);
                     }
                     // complex properties is first
-                    else if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId1.getId())){
+                    else if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId1)){
                         return BEFORE;
                     }
-                    else if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId2.getId())){
+                    else if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId2)){
                         return AFTER;
                     }
                     // both databases are not complex properties
                     else {
-                        comp = typeId1.getId().compareTo(typeId2.getId());
+                        comp = typeId1.compareTo(typeId2);
                     }
                 }
                 else {

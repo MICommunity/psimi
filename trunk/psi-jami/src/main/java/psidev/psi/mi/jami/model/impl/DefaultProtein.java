@@ -90,7 +90,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
             this.uniprotkb = new DefaultExternalIdentifier(uniprotkbDatabase, ac);
             this.identifiers.add(this.uniprotkb);
         }
-        // remove all uniprotkb if the list is not empty
+        // remove all uniprotkb if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((ProteinIdentifierList) identifiers).removeAllUniprotkb();
         }
@@ -111,7 +111,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
             this.refseq = new DefaultExternalIdentifier(refseqDatabase, ac);
             this.identifiers.add(this.refseq);
         }
-        // remove all refseq if the list is not empty
+        // remove all refseq if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((ProteinIdentifierList) identifiers).removeAllRefseq();
         }
@@ -132,7 +132,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
             this.geneName = new DefaultAlias(geneNameType, name);
             this.aliases.add(this.geneName);
         }
-        // remove all gene names if the list is not empty
+        // remove all gene names if the collection is not empty
         else if (!this.aliases.isEmpty()) {
             ((ProteinAliasList) aliases).removeAllGeneNames();
         }
@@ -152,7 +152,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
             this.rogid = new DefaultChecksum(rogidMethod, rogid);
             this.checksums.add(this.rogid);
         }
-        // remove all smiles if the list is not empty
+        // remove all smiles if the collection is not empty
         else if (!this.checksums.isEmpty()) {
             ((ProteinChecksumList) checksums).removeAllRogids();
         }
@@ -208,37 +208,37 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
                 // compares databases first : uniprotkb is before
                 CvTerm database1 = externalIdentifier1.getDatabase();
                 CvTerm database2 = externalIdentifier2.getDatabase();
-                ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-                ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+                String databaseId1 = database1.getMIIdentifier();
+                String databaseId2 = database2.getMIIdentifier();
 
                 // if external id of database is set, look at database id only otherwise look at shortname
                 int comp;
                 if (databaseId1 != null && databaseId2 != null){
                     // both are uniprotkb, sort by id
-                    if (Xref.UNIPROTKB_ID.equals(databaseId1.getId()) && Xref.UNIPROTKB_ID.equals(databaseId2.getId())){
+                    if (Xref.UNIPROTKB_ID.equals(databaseId1) && Xref.UNIPROTKB_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), uniprotkb != null ? uniprotkb.getId() : null);
                     }
                     // uniprotkb is first
-                    else if (Xref.UNIPROTKB_ID.equals(databaseId1.getId())){
+                    else if (Xref.UNIPROTKB_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.UNIPROTKB_ID.equals(databaseId2.getId())){
+                    else if (Xref.UNIPROTKB_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both are refseq, sort by id
-                    else if (Xref.REFSEQ_ID.equals(databaseId1.getId()) && Xref.REFSEQ_ID.equals(databaseId2.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId1) && Xref.REFSEQ_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
                     }
                     // refseq is second
-                    else if (Xref.REFSEQ_ID.equals(databaseId1.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.REFSEQ_ID.equals(databaseId2.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both databases are not standard protein databases
                     else {
-                        comp = databaseId1.getId().compareTo(databaseId2.getId());
+                        comp = databaseId1.compareTo(databaseId2);
                     }
                 }
                 else {
@@ -421,26 +421,26 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
                 // compares methods first
                 CvTerm method1 = checksum1.getMethod();
                 CvTerm method2 = checksum2.getMethod();
-                ExternalIdentifier methodId1 = method1.getOntologyIdentifier();
-                ExternalIdentifier methodId2 = method2.getOntologyIdentifier();
+                String methodId1 = method1.getMIIdentifier();
+                String methodId2 = method2.getMIIdentifier();
 
                 // if external id of method is set, look at method id only otherwise look at shortname
                 int comp;
                 if (methodId1 != null && methodId2 != null){
                     // both are rogids, sort by id
-                    if (Checksum.ROGID_ID.equals(methodId1.getId()) && Checksum.ROGID_ID.equals(methodId2.getId())){
+                    if (Checksum.ROGID_ID.equals(methodId1) && Checksum.ROGID_ID.equals(methodId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), rogid != null ? rogid.getValue() : null);
                     }
                     // rogid is first
-                    else if (Checksum.ROGID_ID.equals(methodId1.getId())){
+                    else if (Checksum.ROGID_ID.equals(methodId1)){
                         return BEFORE;
                     }
-                    else if (Checksum.ROGID_ID.equals(methodId2.getId())){
+                    else if (Checksum.ROGID_ID.equals(methodId2)){
                         return AFTER;
                     }
                     // both databases are not standard rogids
                     else {
-                        comp = methodId1.getId().compareTo(methodId2.getId());
+                        comp = methodId1.compareTo(methodId2);
                     }
                 }
                 else {
@@ -557,26 +557,26 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
                 // compares alias types first
                 CvTerm type1 = alias1.getType();
                 CvTerm type2 = alias2.getType();
-                ExternalIdentifier typeId1 = type1.getOntologyIdentifier();
-                ExternalIdentifier typeId2 = type2.getOntologyIdentifier();
+                String typeId1 = type1.getMIIdentifier();
+                String typeId2 = type2.getMIIdentifier();
 
                 // if external id of type is set, look at type id only otherwise look at shortname
                 int comp;
                 if (typeId1 != null && typeId2 != null){
                     // both are gene names, sort by id
-                    if (Alias.GENE_NAME_ID.equals(typeId1.getId()) && Alias.GENE_NAME_ID.equals(typeId2.getId())){
+                    if (Alias.GENE_NAME_ID.equals(typeId1) && Alias.GENE_NAME_ID.equals(typeId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(alias1.getName(), alias2.getName(), geneName != null ? geneName.getName() : null);
                     }
                     // gene name is first
-                    else if (Alias.GENE_NAME_ID.equals(typeId1.getId())){
+                    else if (Alias.GENE_NAME_ID.equals(typeId1)){
                         return BEFORE;
                     }
-                    else if (Alias.GENE_NAME_ID.equals(typeId2.getId())){
+                    else if (Alias.GENE_NAME_ID.equals(typeId2)){
                         return AFTER;
                     }
                     // both databases are not standard rogids
                     else {
-                        comp = typeId1.getId().compareTo(typeId2.getId());
+                        comp = typeId1.compareTo(typeId2);
                     }
                 }
                 else {

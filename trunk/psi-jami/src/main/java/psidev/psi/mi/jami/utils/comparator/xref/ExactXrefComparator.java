@@ -59,13 +59,13 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
             // compares databases first (cannot use CvTermComparator because have to break the loop)
             CvTerm database1 = xref1.getDatabase();
             CvTerm database2 = xref2.getDatabase();
-            ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-            ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+            String databaseId1 = database1.getMIIdentifier();
+            String databaseId2 = database2.getMIIdentifier();
 
             // if external id of database is set, look at database id only otherwise look at shortname
             int comp;
             if (databaseId1 != null && databaseId2 != null){
-                comp = databaseId1.getId().compareTo(databaseId2.getId());
+                comp = databaseId1.compareTo(databaseId2);
             }
             else if (databaseId1 == null && databaseId2 != null){
                 return AFTER;
@@ -111,12 +111,12 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
 
             CvTerm qualifier1 = xref1.getQualifier();
             CvTerm qualifier2 = xref2.getQualifier();
-            ExternalIdentifier qualifierId1 = qualifier1.getOntologyIdentifier();
-            ExternalIdentifier qualifierId2 = qualifier2.getOntologyIdentifier();
+            String qualifierId1 = qualifier1.getMIIdentifier();
+            String qualifierId2 = qualifier2.getMIIdentifier();
 
             // if external id of qualifier is set, look at qualifier id only otherwise look at shortname
             if (qualifierId1 != null && qualifierId2 != null){
-                return qualifierId1.getId().compareTo(qualifierId2.getId());
+                return qualifierId1.compareTo(qualifierId2);
             }
             else if(qualifierId1 == null && qualifierId2 != null){
                 return AFTER;

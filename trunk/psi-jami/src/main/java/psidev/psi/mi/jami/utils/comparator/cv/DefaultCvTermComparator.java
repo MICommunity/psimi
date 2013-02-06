@@ -1,13 +1,18 @@
 package psidev.psi.mi.jami.utils.comparator.cv;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Default comparator for CvTerms.
- * If one of the identifiers is null (or both), it will only compare the short names (case insensitive).
- * If both identifiers are set, it will compare the ontology identifiers using DefaultExternalIdentifierComparator and ignores all the other properties.
+ * If one CvTerm does not have any identifiers, it will only compare the short names (case insensitive).
+ * If both CvTerm objects have identifiers, it will look for at least one identical identifier using DefaultExternalIdentifierComparator and ignores all the other properties.
  *
  * - Two CvTerms which are null are equals
  * - The CvTerm which is not null is before null.
@@ -33,13 +38,14 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
     }
 
     /**
-     * If one of the identifiers is null (or both), it will only compare the short names (case insensitive).
-     * If both identifiers are set, it will compare the ontology identifiers using DefaultExternalIdentifierComparator and ignores all the other properties.
+     * If one CvTerm does not have any identifiers, it will only compare the short names (case insensitive).
+     * If both CvTerm objects have identifiers, it will look for at least one identical identifier using DefaultExternalIdentifierComparator and ignores all the other properties.
      *
      * - Two CvTerms which are null are equals
      * - The CvTerm which is not null is before null.
      * - If the two external identifiers are set, use DefaultExternalIdentifierComparator
      * - When one of the CvTerms (or both CvTerms) do not have an external identifier, it compares the short names (case insensitive) which cannot be null
+     *
      * @param cvTerm1
      * @param cvTerm2
      * @return
@@ -59,23 +65,56 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
             return BEFORE;
         }
         else {
-            ExternalIdentifier externalIdentifier1 = cvTerm1.getOntologyIdentifier();
-            ExternalIdentifier externalIdentifier2 = cvTerm2.getOntologyIdentifier();
+            // first compares identifiers if both CvTerms have identifiers.
+            if (!cvTerm1.getIdentifiers().isEmpty() && !cvTerm2.getIdentifiers().isEmpty()){
+                List<Xref> ids1 = new ArrayList<Xref>(cvTerm1.getIdentifiers());
+                List<Xref> ids2 = new ArrayList<Xref>(cvTerm2.getIdentifiers());
+                // sort the collections first
+                Collections.sort(ids1, identifierComparator);
+                Collections.sort(ids2, identifierComparator);
+                // get an iterator
+                Iterator<Xref> iterator1 = ids1.iterator();
+                Iterator<Xref> iterator2 = ids2.iterator();
 
-            // no identifiers or one identifier is null so relies on short name
-            if ((externalIdentifier1 == null && externalIdentifier2 == null)
-                    || (externalIdentifier1 != null && externalIdentifier2 == null)
-                    || (externalIdentifier1 == null && externalIdentifier2 != null)){
-                // check names which cannot be null
-                String label1 = cvTerm1.getShortName();
-                String label2 = cvTerm2.getShortName();
+                // at least one external identifier must match
+                Xref altid1 = iterator1.next();
+                Xref altid2 = iterator2.next();
+                int comp = identifierComparator.compare(altid1, altid2);
+                while (comp != 0 && altid1 != null && altid2 != null){
+                    // altid1 is before altid2
+                    if (comp < 0){
+                        // we need to get the next element from ids1
+                        if (iterator1.hasNext()){
+                            altid1 = iterator1.next();
+                            comp = identifierComparator.compare(altid1, altid2);
+                        }
+                        // ids 1 is empty, we can stop here
+                        else {
+                            altid1 = null;
+                        }
+                    }
+                    // altid2 is before altid1
+                    else {
+                        // we need to get the next element from ids2
+                        if (iterator2.hasNext()){
+                            altid2 = iterator2.next();
+                            comp = identifierComparator.compare(altid1, altid2);
+                        }
+                        // ids 2 is empty, we can stop here
+                        else {
+                            altid2 = null;
+                        }
+                    }
+                }
 
-                return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
+                return comp;
             }
-            // both identifiers are set so compares identifiers
-            else {
-                return identifierComparator.compare(externalIdentifier1, externalIdentifier2);
-            }
+
+            // check names which cannot be null because we could not compare the identifiers
+            String label1 = cvTerm1.getShortName();
+            String label2 = cvTerm2.getShortName();
+
+            return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
         }
     }
 

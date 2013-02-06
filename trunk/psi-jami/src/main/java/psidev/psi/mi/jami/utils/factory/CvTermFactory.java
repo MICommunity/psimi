@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.factory;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultExternalIdentifier;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
@@ -25,7 +25,7 @@ public class CvTermFactory {
 
     public static CvTerm createMICvTerm(String name, String MI){
         if (MI != null){
-            return new DefaultCvTerm(name, new DefaultExternalIdentifier(CvTermUtils.getPsimi(), MI));
+            return new DefaultCvTerm(name, new DefaultXref(CvTermUtils.getPsimi(), MI, CvTermUtils.getIdentity()));
         }
         else {
             return new DefaultCvTerm(name);
@@ -34,6 +34,14 @@ public class CvTermFactory {
 
     public static CvTerm createPsiMiDatabase(){
         return createMICvTerm(CvTerm.PSI_MI, CvTerm.PSI_MI_ID);
+    }
+
+    public static CvTerm createPsiModDatabase(){
+        return createMICvTerm(CvTerm.PSI_MOD, CvTerm.PSI_MOD_ID);
+    }
+
+    public static CvTerm createIdentityQualifier(){
+        return createMICvTerm(Xref.IDENTITY, Xref.IDENTITY_MI);
     }
 
     public static CvTerm createChebiDatabase(){

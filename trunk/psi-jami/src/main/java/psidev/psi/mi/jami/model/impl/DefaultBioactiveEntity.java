@@ -81,7 +81,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
             this.chebi = new DefaultExternalIdentifier(chebiDatabase, id);
             this.identifiers.add(this.chebi);
         }
-        // remove all chebi if the list is not empty
+        // remove all chebi if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((BioctiveEntityIdentifierList) identifiers).removeAllChebiIdentifiers();
         }
@@ -101,7 +101,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
             this.smile = new DefaultChecksum(smileMethod, smile);
             this.checksums.add(this.smile);
         }
-        // remove all smiles if the list is not empty
+        // remove all smiles if the collection is not empty
         else if (!this.checksums.isEmpty()) {
             ((BioctiveEntityChecksumList) checksums).removeAllSmiles();
         }
@@ -121,7 +121,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
             this.standardInchiKey = new DefaultChecksum(inchiKeyMethod, key);
             this.checksums.add(this.standardInchiKey);
         }
-        // remove all standard inchi keys if the list is not empty
+        // remove all standard inchi keys if the collection is not empty
         else if (!this.checksums.isEmpty()) {
             ((BioctiveEntityChecksumList) checksums).removeAllStandardInchiKeys();
         }
@@ -141,7 +141,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
             this.standardInchi = new DefaultChecksum(inchiMethod, inchi);
             this.checksums.add(this.standardInchi);
         }
-        // remove all standard inchi if the list is not empty
+        // remove all standard inchi if the collection is not empty
         else if (!this.checksums.isEmpty()) {
             ((BioctiveEntityChecksumList) checksums).removeAllStandardInchi();
         }
@@ -189,26 +189,26 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 // compares databases first : chebi is before
                 CvTerm database1 = externalIdentifier1.getDatabase();
                 CvTerm database2 = externalIdentifier2.getDatabase();
-                ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-                ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+                String databaseId1 = database1.getMIIdentifier();
+                String databaseId2 = database2.getMIIdentifier();
 
                 // if external id of database is set, look at database id only otherwise look at shortname
                 int comp;
                 if (databaseId1 != null && databaseId2 != null){
                     // both are chebi, sort by id
-                    if (Xref.CHEBI_ID.equals(databaseId1.getId()) && Xref.CHEBI_ID.equals(databaseId2.getId())){
+                    if (Xref.CHEBI_ID.equals(databaseId1) && Xref.CHEBI_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), chebi != null ? chebi.getId() : null);
                     }
                     // CHEBI is first
-                    else if (Xref.CHEBI_ID.equals(databaseId1.getId())){
+                    else if (Xref.CHEBI_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.CHEBI_ID.equals(databaseId2.getId())){
+                    else if (Xref.CHEBI_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both databases are not chebi
                     else {
-                        comp = databaseId1.getId().compareTo(databaseId2.getId());
+                        comp = databaseId1.compareTo(databaseId2);
                     }
                 }
                 else {
@@ -323,46 +323,46 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
                 // compares methods first
                 CvTerm method1 = checksum1.getMethod();
                 CvTerm method2 = checksum2.getMethod();
-                ExternalIdentifier methodId1 = method1.getOntologyIdentifier();
-                ExternalIdentifier methodId2 = method2.getOntologyIdentifier();
+                String methodId1 = method1.getMIIdentifier();
+                String methodId2 = method2.getMIIdentifier();
 
                 // if external id of method is set, look at method id only otherwise look at shortname
                 int comp;
                 if (methodId1 != null && methodId2 != null){
                     // both are standard inchi keys, sort by id
-                    if (Checksum.INCHI_KEY_ID.equals(methodId1.getId()) && Checksum.INCHI_KEY_ID.equals(methodId2.getId())){
+                    if (Checksum.INCHI_KEY_ID.equals(methodId1) && Checksum.INCHI_KEY_ID.equals(methodId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), standardInchiKey != null ? standardInchiKey.getValue() : null);
                     }
                     // standard inchi key is first
-                    else if (Checksum.INCHI_KEY_ID.equals(methodId1.getId())){
+                    else if (Checksum.INCHI_KEY_ID.equals(methodId1)){
                         return BEFORE;
                     }
-                    else if (Checksum.INCHI_KEY_ID.equals(methodId2.getId())){
+                    else if (Checksum.INCHI_KEY_ID.equals(methodId2)){
                         return AFTER;
                     }
-                    else if (Checksum.SMILE_ID.equals(methodId1.getId()) && Checksum.SMILE_ID.equals(methodId2.getId())){
+                    else if (Checksum.SMILE_ID.equals(methodId1) && Checksum.SMILE_ID.equals(methodId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), smile != null ? smile.getValue() : null);
                     }
                     // smile is second
-                    else if (Checksum.SMILE_ID.equals(methodId1.getId())){
+                    else if (Checksum.SMILE_ID.equals(methodId1)){
                         return BEFORE;
                     }
-                    else if (Checksum.SMILE_ID.equals(methodId2.getId())){
+                    else if (Checksum.SMILE_ID.equals(methodId2)){
                         return AFTER;
                     }
-                    else if (Checksum.INCHI_ID.equals(methodId1.getId()) && Checksum.INCHI_ID.equals(methodId2.getId())){
+                    else if (Checksum.INCHI_ID.equals(methodId1) && Checksum.INCHI_ID.equals(methodId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(checksum1.getValue(), checksum2.getValue(), standardInchi != null ? standardInchi.getValue() : null);
                     }
                     // standard inchi is third
-                    else if (Checksum.INCHI_ID.equals(methodId1.getId())){
+                    else if (Checksum.INCHI_ID.equals(methodId1)){
                         return BEFORE;
                     }
-                    else if (Checksum.INCHI_ID.equals(methodId2.getId())){
+                    else if (Checksum.INCHI_ID.equals(methodId2)){
                         return AFTER;
                     }
                     // both databases are not standard checksums
                     else {
-                        comp = methodId1.getId().compareTo(methodId2.getId());
+                        comp = methodId1.compareTo(methodId2);
                     }
                 }
                 else {

@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.xref;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Comparator;
@@ -65,18 +64,18 @@ public class UnambiguousXrefComparator implements Comparator<Xref> {
             // compares databases first (cannot use CvTermComparator because have to break the loop)
             CvTerm database1 = xref1.getDatabase();
             CvTerm database2 = xref2.getDatabase();
-            ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-            ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+            String mi1 = database1.getMIIdentifier();
+            String mi2 = database2.getMIIdentifier();
 
             // if external id of database is set, look at database id only otherwise look at shortname
             int comp;
-            if (databaseId1 != null && databaseId2 != null){
-                comp = databaseId1.getId().compareTo(databaseId2.getId());
+            if (mi1 != null && mi2 != null){
+                comp = mi1.compareTo(mi2);
             }
-            else if (databaseId1 == null && databaseId2 != null){
+            else if (mi1 == null && mi2 != null){
                 return AFTER;
             }
-            else if (databaseId2 == null && databaseId1 != null){
+            else if (mi2 == null && mi1 != null){
                 return BEFORE;
             }
             else {
@@ -107,17 +106,17 @@ public class UnambiguousXrefComparator implements Comparator<Xref> {
                 return AFTER;
             }
             else {
-                ExternalIdentifier qualifierId1 = qualifier1.getOntologyIdentifier();
-                ExternalIdentifier qualifierId2 = qualifier2.getOntologyIdentifier();
+                String qualifierMi1 = qualifier1.getMIIdentifier();
+                String qualifierMi2 = qualifier2.getMIIdentifier();
 
                 // if external id of qualifier is set, look at qualifier id only otherwise look at shortname
-                if (qualifierId1 != null && qualifierId2 != null){
-                    return qualifierId1.getId().compareTo(qualifierId2.getId());
+                if (qualifierMi1 != null && qualifierMi2 != null){
+                    return qualifierMi1.compareTo(qualifierMi2);
                 }
-                else if(qualifierId1 == null && qualifierId2 != null){
+                else if(qualifierMi1 == null && qualifierMi2 != null){
                     return AFTER;
                 }
-                else if(qualifierId1 != null && qualifierId2 == null){
+                else if(qualifierMi1 != null && qualifierMi2 == null){
                     return BEFORE;
                 }
                 else {
@@ -156,10 +155,10 @@ public class UnambiguousXrefComparator implements Comparator<Xref> {
 
         int hashcode = 31;
         CvTerm database1 = xref.getDatabase();
-        ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
+        String mi1 = database1.getMIIdentifier();
 
-        if (databaseId1 != null){
-            hashcode = 31*hashcode + databaseId1.getId().hashCode();
+        if (mi1 != null){
+            hashcode = 31*hashcode + mi1.hashCode();
         }
         else {
             hashcode = 31*hashcode + database1.getShortName().toLowerCase().hashCode();
@@ -169,10 +168,10 @@ public class UnambiguousXrefComparator implements Comparator<Xref> {
 
         CvTerm qualifier = xref.getQualifier();
         if (qualifier != null){
-            ExternalIdentifier qualifierId = qualifier.getOntologyIdentifier();
+            String qualifierMi = qualifier.getMIIdentifier();
 
-            if (qualifierId != null){
-                hashcode = 31*hashcode + qualifierId.getId().hashCode();
+            if (qualifierMi != null){
+                hashcode = 31*hashcode + qualifierMi.hashCode();
             }
             else {
                 hashcode = 31*hashcode + qualifier.getShortName().toLowerCase().hashCode();

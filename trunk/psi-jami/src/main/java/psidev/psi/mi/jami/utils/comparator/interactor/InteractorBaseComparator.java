@@ -3,13 +3,14 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.alias.AliasComparator;
 
 import java.util.*;
 
 /**
  * Basic interactor comparator.
- * It will first look for at least one identical identifier in the list of identifiers. If it cannot find one, it will look at the short names (case sensitive).
+ * It will first look for at least one identical identifier in the collection of identifiers. If it cannot find one, it will look at the short names (case sensitive).
  * If the shortnames do not match, it will look for at least one common alias.
  *
  * This comparator will ignore all the other properties of an interactor.
@@ -21,7 +22,7 @@ import java.util.*;
 
 public class InteractorBaseComparator implements Comparator<Interactor> {
 
-    protected Comparator<ExternalIdentifier> identifierComparator;
+    protected Comparator<Xref> identifierComparator;
     protected AliasComparator aliasComparator;
 
     /**
@@ -29,7 +30,7 @@ public class InteractorBaseComparator implements Comparator<Interactor> {
      * @param identifierComparator : the identifier comparator. It is required
      * @param aliasComparator : the comparator for aliases. it is required
      */
-    public InteractorBaseComparator(Comparator<ExternalIdentifier> identifierComparator, AliasComparator aliasComparator){
+    public InteractorBaseComparator(Comparator<Xref> identifierComparator, AliasComparator aliasComparator){
 
         if (identifierComparator == null){
             throw new IllegalArgumentException("The external identifier comparator is required to compares identifiers. It cannot be null");
@@ -41,7 +42,7 @@ public class InteractorBaseComparator implements Comparator<Interactor> {
         this.aliasComparator = aliasComparator;
     }
 
-    public Comparator<ExternalIdentifier> getIdentifierComparator() {
+    public Comparator<Xref> getIdentifierComparator() {
         return identifierComparator;
     }
 
@@ -51,7 +52,7 @@ public class InteractorBaseComparator implements Comparator<Interactor> {
 
     /**
      * Basic interactor comparator.
-     * It will first look for at least one identical identifier in the list of identifiers. If it cannot find one, it will look at the short names (case sensitive).
+     * It will first look for at least one identical identifier in the collection of identifiers. If it cannot find one, it will look at the short names (case sensitive).
      * If the shortnames do not match, it will look for at least one common alias.
      *
      * This comparator will ignore all the other properties of an interactor.

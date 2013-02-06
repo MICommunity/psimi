@@ -23,9 +23,9 @@ public class ChecksumUtils {
 
         CvTerm method = checksum.getMethod();
         // we can compare identifiers
-        if (methodId != null && method.getOntologyIdentifier() != null){
+        if (methodId != null && method.getMIIdentifier() != null){
             // we have the same method id
-            return method.getOntologyIdentifier().getId().equals(methodId);
+            return method.getMIIdentifier().equals(methodId);
         }
         // we need to compare methodNames
         else if (methodName != null) {
@@ -54,9 +54,9 @@ public class ChecksumUtils {
         for (Checksum checksum : checksums){
             CvTerm method = checksum.getMethod();
             // we can compare identifiers
-            if (methodId != null && method.getOntologyIdentifier() != null){
+            if (methodId != null && method.getMIIdentifier() != null){
                 // we have the same database id
-                if (method.getOntologyIdentifier().getId().equals(methodId)){
+                if (method.getMIIdentifier().equals(methodId)){
                     // it is a unique checksum
                     if (uniqueChecksum == null){
                         uniqueChecksum = checksum;

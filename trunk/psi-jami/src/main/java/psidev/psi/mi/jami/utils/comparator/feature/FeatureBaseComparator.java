@@ -23,7 +23,7 @@ import java.util.*;
 public class FeatureBaseComparator implements Comparator<Feature> {
 
     protected AbstractCvTermComparator cvTermComparator;
-    protected Comparator<ExternalIdentifier> identifierComparator;
+    protected Comparator<Xref> identifierComparator;
     protected RangeCollectionComparator rangeCollectionComparator;
 
     /**
@@ -31,7 +31,7 @@ public class FeatureBaseComparator implements Comparator<Feature> {
      * @param cvTermComparator : CvTerm comparator required for comparing feature types and range status positions
      * @param identifierComparator : ExternalIdentifier comparator required for comparing feature identifiers
      */
-    public FeatureBaseComparator(AbstractCvTermComparator cvTermComparator, Comparator<ExternalIdentifier> identifierComparator){
+    public FeatureBaseComparator(AbstractCvTermComparator cvTermComparator, Comparator<Xref> identifierComparator){
 
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare feature types and range status positions. It cannot be null");
@@ -135,7 +135,7 @@ public class FeatureBaseComparator implements Comparator<Feature> {
         return cvTermComparator;
     }
 
-    public Comparator<ExternalIdentifier> getIdentifierComparator() {
+    public Comparator<Xref> getIdentifierComparator() {
         return identifierComparator;
     }
 

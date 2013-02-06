@@ -76,7 +76,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
             this.ddbjEmblGenbank = new DefaultExternalIdentifier(ddbjEmblGenbankDatabase, id);
             this.identifiers.add(this.ddbjEmblGenbank);
         }
-        // remove all ddbj/embl/genbank if the list is not empty
+        // remove all ddbj/embl/genbank if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((NucleicAcidIdentifierList) identifiers).removeAllDdbjEmblGenbank();
         }
@@ -97,7 +97,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
             this.refseq = new DefaultExternalIdentifier(refseqDatabase, id);
             this.identifiers.add(this.refseq);
         }
-        // remove all ensembl genomes if the list is not empty
+        // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((NucleicAcidIdentifierList) identifiers).removeAllRefseq();
         }
@@ -153,37 +153,37 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
                 // compares databases first : ddbj/EMBL/Genbank is before, then refseq
                 CvTerm database1 = externalIdentifier1.getDatabase();
                 CvTerm database2 = externalIdentifier2.getDatabase();
-                ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-                ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+                String databaseId1 = database1.getMIIdentifier();
+                String databaseId2 = database2.getMIIdentifier();
 
                 // if external id of database is set, look at database id only otherwise look at shortname
                 int comp;
                 if (databaseId1 != null && databaseId2 != null){
                     // both are ensembl, sort by id
-                    if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1.getId()) && Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId2.getId())){
+                    if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1) && Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : null);
                     }
                     // ddbj/embl/genbank is first
-                    else if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1.getId())){
+                    else if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId2.getId())){
+                    else if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both are refseq, sort by id
-                    else if (Xref.REFSEQ_ID.equals(databaseId1.getId()) && Xref.REFSEQ_ID.equals(databaseId2.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId1) && Xref.REFSEQ_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
                     }
                     // refseq is first
-                    else if (Xref.REFSEQ_ID.equals(databaseId1.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.REFSEQ_ID.equals(databaseId2.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both databases are not standard gene databases
                     else {
-                        comp = databaseId1.getId().compareTo(databaseId2.getId());
+                        comp = databaseId1.compareTo(databaseId2);
                     }
                 }
                 else {

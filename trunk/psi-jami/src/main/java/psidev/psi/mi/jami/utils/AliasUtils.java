@@ -21,9 +21,9 @@ public class AliasUtils {
 
         CvTerm type = alias.getType();
         // we can compare identifiers
-        if (typeId != null && type.getOntologyIdentifier() != null){
+        if (typeId != null && type.getMIIdentifier() != null){
             // we have the same type id
-            return type.getOntologyIdentifier().getId().equals(typeId);
+            return type.getMIIdentifier().equals(typeId);
         }
         // we need to compare type names
         else if (typeName != null) {

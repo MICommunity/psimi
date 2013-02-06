@@ -19,6 +19,8 @@ public interface Xref {
 
     public static String IDENTITY = "identity";
     public static String IDENTITY_MI = "MI:0356";
+    public static String SECONDARY = "secondary-ac";
+    public static String SECONDARY_MI = "MI:0360";
     public static String ENSEMBL = "ensembl";
     public static String ENSEMBL_ID = "MI:0476";
     public static String ENSEMBL_GENOMES = "ensemblgenomes";

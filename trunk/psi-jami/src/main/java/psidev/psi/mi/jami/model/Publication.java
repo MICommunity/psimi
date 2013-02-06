@@ -87,8 +87,8 @@ public interface Publication {
 
     /**
      * The List of authors with the same order as it appears in the publication.
-     * It cannot be null. If the publication does not have any authors, the list should be empty.
-     * @return list of authors
+     * It cannot be null. If the publication does not have any authors, the collection should be empty.
+     * @return collection of authors
      */
     public List<String> getAuthors();
 

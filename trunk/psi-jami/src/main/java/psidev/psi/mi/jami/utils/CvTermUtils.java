@@ -16,6 +16,7 @@ public class CvTermUtils {
     private static CvTerm gene;
     private static CvTerm allosteryMechanism;
     private static CvTerm psimi;
+    private static CvTerm identity;
     private static CvTerm undetermined;
     private static CvTerm nTerminalRange;
     private static CvTerm cTerminalRange;
@@ -42,6 +43,13 @@ public class CvTermUtils {
             psimi = CvTermFactory.createPsiMiDatabaseNameOnly();
         }
         return psimi;
+    }
+
+    public static CvTerm getIdentity() {
+        if (identity == null){
+            identity = CvTermFactory.createIdentityQualifierNameOnly();
+        }
+        return identity;
     }
 
     public static CvTerm getUndetermined() {
