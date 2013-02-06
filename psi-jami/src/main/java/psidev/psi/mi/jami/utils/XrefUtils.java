@@ -16,6 +16,36 @@ import java.util.Collection;
 
 public class XrefUtils {
 
+    /**
+     * Method to know if a Xref is a potential identifier.
+     * It can be an identity xref or a secondary xref.
+     * @param ref : the Xref
+     * @return true if the Xref has a qualifier identity or secondary-ac
+     */
+    public static boolean isXrefAnIdentifier(Xref ref){
+        if (ref == null || ref.getQualifier() == null){
+            return false;
+        }
+
+        String qualifierMI = ref.getQualifier().getMIIdentifier();
+
+        if (qualifierMI != null){
+            return (Xref.IDENTITY_MI.equals(qualifierMI) || Xref.SECONDARY_MI.equals(qualifierMI));
+        }
+        else {
+            String qualifier = ref.getQualifier().getShortName().toLowerCase().trim();
+
+            return (Xref.IDENTITY.equals(qualifier) || Xref.SECONDARY.equals(qualifier));
+        }
+    }
+
+    /**
+     * Method to know if a Xref is from the same database (dbId is the MI identifier and dbName is the database shortname)
+     * @param ref : the Xref
+     * @param dbId : the database MI identifier
+     * @param dbName : the database shortname
+     * @return true if the Xref has a database MI which is dbId or database shortname which is dbName
+     */
     public static boolean isXrefFromDatabase(Xref ref, String dbId, String dbName){
 
         if (ref == null || (dbName == null && dbId == null)){
@@ -24,9 +54,9 @@ public class XrefUtils {
 
         CvTerm database = ref.getDatabase();
         // we can compare identifiers
-        if (dbId != null && database.getOntologyIdentifier() != null){
+        if (dbId != null && database.getMIIdentifier() != null){
             // we have the same database id
-            return database.getOntologyIdentifier().getId().equals(dbId);
+            return database.getMIIdentifier().equals(dbId);
         }
         // we need to compare dbNames
         else if (dbName != null) {
@@ -36,6 +66,13 @@ public class XrefUtils {
         return false;
     }
 
+    /**
+     * Method to know if a Xref has the same qualifier (qualifierId is the MI identifier and qualifierName is the qualifier shortname)
+     * @param ref : the Xref
+     * @param qualifierId : the qualifier MI identifier
+     * @param qualifierName : the qualifier shortname
+     * @return true if the Xref has a qualifier MI which is qualifierId or qualifier shortname which is qualifierName
+     */
     public static boolean doesXrefHaveQualifier(Xref ref, String qualifierId, String qualifierName){
 
         if (ref == null || (qualifierName == null && qualifierId == null)){
@@ -47,9 +84,9 @@ public class XrefUtils {
             return false;
         }
         // we can compare identifiers
-        if (qualifierId != null && qualifier.getOntologyIdentifier() != null){
+        if (qualifierId != null && qualifier.getMIIdentifier() != null){
             // we have the same database id
-            return qualifier.getOntologyIdentifier().getId().equals(qualifierId);
+            return qualifier.getMIIdentifier().equals(qualifierId);
         }
         // we need to compare dbNames
         else if (qualifierName != null) {
@@ -78,9 +115,9 @@ public class XrefUtils {
         for (Xref xref : refs){
             CvTerm database = xref.getDatabase();
             // we can compare identifiers
-            if (dbId != null && database.getOntologyIdentifier() != null){
+            if (dbId != null && database.getMIIdentifier() != null){
                 // we have the same database id
-                if (database.getOntologyIdentifier().getId().equals(dbId)){
+                if (database.getMIIdentifier().equals(dbId)){
                     // it is a unique xref
                     if (uniqueXref == null){
                         uniqueXref = xref;
@@ -114,9 +151,9 @@ public class XrefUtils {
             for (Xref xref : xrefsCopy){
                 CvTerm database = xref.getDatabase();
                 // we can compare identifiers
-                if (dbId != null && database.getOntologyIdentifier() != null){
+                if (dbId != null && database.getMIIdentifier() != null){
                     // we have the same database id
-                    if (database.getOntologyIdentifier().getId().equals(dbId)){
+                    if (database.getMIIdentifier().equals(dbId)){
                         // remove xref
                         refs.remove(xref);
                     }

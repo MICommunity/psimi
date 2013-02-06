@@ -15,7 +15,7 @@ public interface ExperimentalInteraction extends Interaction<ExperimentalPartici
     /**
      * IMEx identifier if the interaction has been curated following IMEx curation rules.
      * It can be null if the interaction is not registered in IMEx central or does not follow the IMEx curation rules.
-     * This imex id should be a shortcut to the imex-primary Xref in the list of xrefs.
+     * This imex id should be a shortcut to the imex-primary Xref in the collection of xrefs.
      * Ex: IM-123-2
      * @return the IMEx identifier
      */
@@ -23,7 +23,7 @@ public interface ExperimentalInteraction extends Interaction<ExperimentalPartici
 
     /**
      * Assign an IMEx id to an interaction.
-     * It will add the new imex-primary ref to the list of xrefs
+     * It will add the new imex-primary ref to the collection of xrefs
      * @param identifier : the IMEx id from IMEx central
      * @throws IllegalArgumentException if
      * - the identifier is null, empty or not a valid IMEx identifier for interaction

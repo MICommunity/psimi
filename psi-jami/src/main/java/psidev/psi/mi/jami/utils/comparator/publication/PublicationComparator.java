@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.publication;
 
 import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -23,20 +24,20 @@ import java.util.List;
 
 public class PublicationComparator implements Comparator<Publication> {
 
-    protected Comparator<ExternalIdentifier> identifierComparator;
+    protected Comparator<Xref> identifierComparator;
 
     /**
      * Creates a new PublicationComparator.
      * @param identifierComparator : the comparator for identifiers. It is required
      */
-    public PublicationComparator(Comparator<ExternalIdentifier> identifierComparator){
+    public PublicationComparator(Comparator<Xref> identifierComparator){
         if (identifierComparator == null){
            throw new IllegalArgumentException("The ExternalIdentifier comparator is required to compare publication identifiers. It cannot be null");
         }
         this.identifierComparator = identifierComparator;
     }
 
-    public Comparator<ExternalIdentifier> getIdentifierComparator() {
+    public Comparator<Xref> getIdentifierComparator() {
         return identifierComparator;
     }
 

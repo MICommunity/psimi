@@ -1,14 +1,18 @@
 package psidev.psi.mi.jami.utils.comparator.cv;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.XrefsCollectionComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Unambiguous comparator for CvTerms :
- * It will only compare the short names (case insensitive) when both identifiers are null.
- * The CvTerm with a non null identifier will always comes before the one with a null identifier.
- * If both identifiers are set, it will compare the ontology identifiers using UnambiguousExternalIdentifierComparator and ignores all the other properties.
+ * If one CvTerm does not have any identifiers, it will only compare the short names (case insensitive).
+ * If both CvTerm objects have identifiers, it will look for exact same collection of identifiers using UnambiguousExternalIdentifierComparator and ignores all the other properties.
  *
  * - Two CvTerms which are null are equals
  * - The CvTerm which is not null is before null.
@@ -23,6 +27,7 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierCom
 public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
 
     private static UnambiguousCvTermComparator unambiguousCvTermComparator;
+    private XrefsCollectionComparator xrefCollectionComparator;
 
     /**
      * Creates a new CvTermComparator with UnambiguousExternalIdentifierComparator
@@ -30,6 +35,7 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
      */
     public UnambiguousCvTermComparator() {
         super(new UnambiguousExternalIdentifierComparator());
+        this.xrefCollectionComparator = new XrefsCollectionComparator(this.identifierComparator);
     }
 
     @Override
@@ -37,10 +43,13 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
         return (UnambiguousExternalIdentifierComparator) identifierComparator;
     }
 
+    public XrefsCollectionComparator getXrefCollectionComparator() {
+        return xrefCollectionComparator;
+    }
+
     /**
-     * It will only compare the short names (case insensitive) when both identifiers are null.
-     * The CvTerm with a non null identifier will always comes before the one with a null identifier.
-     * If both identifiers are set, it will compare the ontology identifiers using UnambiguousExternalIdentifierComparator and ignores all the other properties.
+     * If one CvTerm does not have any identifiers, it will only compare the short names (case insensitive).
+     * If both CvTerm objects have identifiers, it will look for exact same collection of identifiers using UnambiguousExternalIdentifierComparator and ignores all the other properties.
      *
      * - Two CvTerms which are null are equals
      * - The CvTerm which is not null is before null.
@@ -66,13 +75,13 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
             return BEFORE;
         }
         else {
-            ExternalIdentifier externalIdentifier1 = cvTerm1.getOntologyIdentifier();
-            ExternalIdentifier externalIdentifier2 = cvTerm2.getOntologyIdentifier();
-            if (externalIdentifier1 != null || externalIdentifier2 != null){
-                return identifierComparator.compare(externalIdentifier1, externalIdentifier2);
+            // first compares identifiers if one CvTerm have identifiers.
+            if (!cvTerm1.getIdentifiers().isEmpty() || !cvTerm2.getIdentifiers().isEmpty()){
+
+                return xrefCollectionComparator.compare(cvTerm1.getIdentifiers(), cvTerm2.getIdentifiers());
             }
 
-            // check names which cannot be null only if both identifiers are null
+            // check names which cannot be null because we could not compare the identifiers
             String label1 = cvTerm1.getShortName();
             String label2 = cvTerm2.getShortName();
 
@@ -109,9 +118,14 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
         }
 
         int hashcode = 31;
-        ExternalIdentifier externalIdentifier1 = cv1.getOntologyIdentifier();
-        if (externalIdentifier1 != null){
-            hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(externalIdentifier1);
+
+        if (!cv1.getIdentifiers().isEmpty()){
+            List<Xref> list1 = new ArrayList<Xref>(cv1.getIdentifiers());
+
+            Collections.sort(list1, unambiguousCvTermComparator.getIdentifierComparator());
+            for (Xref x : list1){
+                hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(x);
+            }
         }
         else {
             hashcode = 31*hashcode + cv1.getShortName().toLowerCase().trim().hashCode();

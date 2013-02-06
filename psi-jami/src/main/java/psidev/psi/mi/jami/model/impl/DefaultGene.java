@@ -79,7 +79,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
             this.ensembl = new DefaultExternalIdentifier(ensemblDatabase, ac);
             this.identifiers.add(this.ensembl);
         }
-        // remove all ensembl if the list is not empty
+        // remove all ensembl if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((GeneIdentifierList) identifiers).removeAllEnsembl();
         }
@@ -100,7 +100,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
             this.ensemblGenome = new DefaultExternalIdentifier(ensemblGenomesDatabase, ac);
             this.identifiers.add(this.ensemblGenome);
         }
-        // remove all ensembl genomes if the list is not empty
+        // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((GeneIdentifierList) identifiers).removeAllEnsembleGenomes();
         }
@@ -121,7 +121,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
             this.entrezGeneId = new DefaultExternalIdentifier(entrezDatabase, id);
             this.identifiers.add(this.entrezGeneId);
         }
-        // remove all ensembl genomes if the list is not empty
+        // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((GeneIdentifierList) identifiers).removeAllEntrezGeneId();
         }
@@ -142,7 +142,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
             this.refseq = new DefaultExternalIdentifier(refseqDatabase, ac);
             this.identifiers.add(this.refseq);
         }
-        // remove all ensembl genomes if the list is not empty
+        // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
             ((GeneIdentifierList) identifiers).removeAllRefseq();
         }
@@ -201,60 +201,60 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                 // compares databases first : ensembl is before, then sensemblgenomes, then entrez gene id and then refseq
                 CvTerm database1 = externalIdentifier1.getDatabase();
                 CvTerm database2 = externalIdentifier2.getDatabase();
-                ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-                ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+                String databaseId1 = database1.getMIIdentifier();
+                String databaseId2 = database2.getMIIdentifier();
 
                 // if external id of database is set, look at database id only otherwise look at shortname
                 int comp;
                 if (databaseId1 != null && databaseId2 != null){
 
                     // both are ensembl, sort by id
-                    if (Xref.ENSEMBL_ID.equals(databaseId1.getId()) && Xref.ENSEMBL_ID.equals(databaseId2.getId())){
+                    if (Xref.ENSEMBL_ID.equals(databaseId1) && Xref.ENSEMBL_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensembl != null ? ensembl.getId() : null);
                     }
                     // ensembl is first
-                    else if (Xref.ENSEMBL_ID.equals(databaseId1.getId())){
+                    else if (Xref.ENSEMBL_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.ENSEMBL_ID.equals(databaseId2.getId())){
+                    else if (Xref.ENSEMBL_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both are ensembl genomes, sort by id
-                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1.getId()) && Xref.ENSEMBL_GENOMES_ID.equals(databaseId2.getId())){
+                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1) && Xref.ENSEMBL_GENOMES_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensemblGenome != null ? ensemblGenome.getId() : null);
                     }
                     // ensembl genomes is second
-                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1.getId())){
+                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId2.getId())){
+                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both are entrez gene id, sort by id
-                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId1.getId()) && Xref.ENTREZ_GENE_ID.equals(databaseId2.getId())){
+                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId1) && Xref.ENTREZ_GENE_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), entrezGeneId != null ? entrezGeneId.getId() : null);
                     }
                     // entrez gene id is second
-                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId1.getId())){
+                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId2.getId())){
+                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both are refseq, sort by id
-                    else if (Xref.REFSEQ_ID.equals(databaseId1.getId()) && Xref.REFSEQ_ID.equals(databaseId2.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId1) && Xref.REFSEQ_ID.equals(databaseId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
                     }
                     // refseq is first
-                    else if (Xref.REFSEQ_ID.equals(databaseId1.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.REFSEQ_ID.equals(databaseId2.getId())){
+                    else if (Xref.REFSEQ_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both databases are not standard gene databases
                     else {
-                        comp = databaseId1.getId().compareTo(databaseId2.getId());
+                        comp = databaseId1.compareTo(databaseId2);
                     }
                 }
                 else {

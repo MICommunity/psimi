@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.xref;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
+import psidev.psi.mi.jami.model.Xref;
 
 /**
- * Exact comparator for external identifiers.
+ * Exact comparator for external identifiers (Xref database and id).
  * It compares first the databases using UnambiguousCvTermComparator, then the ids (case sensitive) and then the version.
- * To compare the databases, it looks first at the identifiers id if they both exist, otherwise it looks at the database shortlabel only.
+ * To compare the databases, it looks first at the PSI-MI ids if at least one of the database has a PSI-MI id, otherwise it looks at the database shortlabel only.
  * - Two external identifiers which are null are equals
  * - The external identifier which is not null is before null.
  * - If the two external identifiers are set :
@@ -26,8 +26,8 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
     }
 
     /**
-     * It compares first the databases using ExactCvTermComparator, then the ids (case sensitive) and then the version.
-     * To compare the databases, it looks first at the identifiers id if they both exist, otherwise it looks at the database shortlabel only.
+     * It compares first the databases using UnambiguousCvTermComparator, then the ids (case sensitive) and then the version.
+     * To compare the databases, it looks first at the PSI-MI ids if at least one of the database has a PSI-MI id, otherwise it looks at the database shortlabel only.
      * - Two external identifiers which are null are equals
      * - The external identifier which is not null is before null.
      * - If the two external identifiers are set :
@@ -37,7 +37,7 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
      * @param externalIdentifier2
      * @return
      */
-    public int compare(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2) {
+    public int compare(Xref externalIdentifier1, Xref externalIdentifier2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
@@ -86,7 +86,7 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
      * @param externalIdentifier2
      * @return true if the two external identifiers are equal
      */
-    public static boolean areEquals(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2){
+    public static boolean areEquals(Xref externalIdentifier1, Xref externalIdentifier2){
         if (exactIdentifierComparator == null){
             exactIdentifierComparator = new ExactExternalIdentifierComparator();
         }
@@ -99,7 +99,7 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
      * @param externalIdentifier1
      * @return the hashcode consistent with the equals method for this comparator
      */
-    public static int hashCode(ExternalIdentifier externalIdentifier1){
+    public static int hashCode(Xref externalIdentifier1){
         if (exactIdentifierComparator == null){
             exactIdentifierComparator = new ExactExternalIdentifierComparator();
         }
@@ -109,10 +109,10 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
 
         int hashcode = 31;
         CvTerm database1 = externalIdentifier1.getDatabase();
-        ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
+        String mi = database1.getMIIdentifier();
 
-        if (databaseId1 != null){
-            hashcode = 31*hashcode + databaseId1.getId().hashCode();
+        if (mi != null){
+            hashcode = 31*hashcode + mi.hashCode();
         }
         else {
             hashcode = 31*hashcode + database1.getShortName().toLowerCase().trim().hashCode();

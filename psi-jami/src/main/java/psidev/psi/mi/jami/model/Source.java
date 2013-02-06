@@ -44,7 +44,7 @@ public interface Source extends CvTerm{
      * Ex: 14681455 is the pubmed primary reference for the IntAct database
      * @return the bibref
      */
-    public ExternalIdentifier getBibRef();
+    public Xref getBibRef();
 
     /**
      * Set the bibliographical reference

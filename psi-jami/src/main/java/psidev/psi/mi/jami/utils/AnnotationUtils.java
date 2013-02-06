@@ -21,9 +21,9 @@ public class AnnotationUtils {
 
         CvTerm topic = annotation.getTopic();
         // we can compare identifiers
-        if (topicId != null && topic.getOntologyIdentifier() != null){
+        if (topicId != null && topic.getMIIdentifier() != null){
             // we have the same topic id
-            return topic.getOntologyIdentifier().getId().equals(topicId);
+            return topic.getMIIdentifier().equals(topicId);
         }
         // we need to compare topic names
         else if (topicName != null) {

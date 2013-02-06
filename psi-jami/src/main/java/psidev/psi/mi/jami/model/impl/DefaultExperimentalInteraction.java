@@ -228,26 +228,26 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
                 // compares databases first : imex is before
                 CvTerm database1 = xref1.getDatabase();
                 CvTerm database2 = xref2.getDatabase();
-                ExternalIdentifier databaseId1 = database1.getOntologyIdentifier();
-                ExternalIdentifier databaseId2 = database2.getOntologyIdentifier();
+                String databaseId1 = database1.getMIIdentifier();
+                String databaseId2 = database2.getMIIdentifier();
 
                 // if external id of database is set, look at database id only otherwise look at shortname
                 int comp;
                 if (databaseId1 != null && databaseId2 != null){
                     // both are imex, sort by qualifier
-                    if (Xref.IMEX_ID.equals(databaseId1.getId()) && Xref.IMEX_ID.equals(databaseId2.getId())){
+                    if (Xref.IMEX_ID.equals(databaseId1) && Xref.IMEX_ID.equals(databaseId2)){
                         comp = compareXrefQualifiers(xref1, xref2);
                     }
                     // IMEX is first
-                    else if (Xref.IMEX_ID.equals(databaseId1.getId())){
+                    else if (Xref.IMEX_ID.equals(databaseId1)){
                         return BEFORE;
                     }
-                    else if (Xref.IMEX_ID.equals(databaseId2.getId())){
+                    else if (Xref.IMEX_ID.equals(databaseId2)){
                         return AFTER;
                     }
                     // both databases are not imex
                     else {
-                        comp = databaseId1.getId().compareTo(databaseId2.getId());
+                        comp = databaseId1.compareTo(databaseId2);
                     }
                 }
                 else {
@@ -294,13 +294,13 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
                     return 1;
                 }
                 else {
-                    ExternalIdentifier qualifierId1 = qualifier1.getOntologyIdentifier();
-                    ExternalIdentifier qualifierId2 = qualifier2.getOntologyIdentifier();
+                    String qualifierId1 = qualifier1.getMIIdentifier();
+                    String qualifierId2 = qualifier2.getMIIdentifier();
 
                     // if external id of qualifier is set, look at qualifier id only otherwise look at shortname
                     int comp2;
                     if (qualifierId1 != null && qualifierId2 != null){
-                        return qualifierId1.getId().compareTo(qualifierId2.getId());
+                        return qualifierId1.compareTo(qualifierId2);
                     }
                     else {
                         return qualifier1.getShortName().toLowerCase().trim().compareTo(qualifier2.getShortName().toLowerCase().trim());
@@ -323,24 +323,24 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
                 return 1;
             }
             else {
-                ExternalIdentifier qualifierId1 = qualifier1.getOntologyIdentifier();
-                ExternalIdentifier qualifierId2 = qualifier2.getOntologyIdentifier();
+                String qualifierId1 = qualifier1.getMIIdentifier();
+                String qualifierId2 = qualifier2.getMIIdentifier();
 
                 if (qualifierId1 != null && qualifierId2 != null){
                     // both are imex-primary, they are equals because we can only have one imex id
-                    if (Xref.IMEX_PRIMARY_ID.equals(qualifierId1.getId()) && Xref.IMEX_PRIMARY_ID.equals(qualifierId2.getId())){
+                    if (Xref.IMEX_PRIMARY_ID.equals(qualifierId1) && Xref.IMEX_PRIMARY_ID.equals(qualifierId2)){
                         return 0;
                     }
                     // IMEX-primary is first
-                    else if (Xref.IMEX_PRIMARY_ID.equals(qualifierId1.getId())){
+                    else if (Xref.IMEX_PRIMARY_ID.equals(qualifierId1)){
                         return -1;
                     }
-                    else if (Xref.IMEX_PRIMARY_ID.equals(qualifierId2.getId())){
+                    else if (Xref.IMEX_PRIMARY_ID.equals(qualifierId2)){
                         return 1;
                     }
                     // both xrefs are not imex-primary
                     else {
-                        comp = qualifierId1.getId().compareTo(qualifierId2.getId());
+                        comp = qualifierId1.compareTo(qualifierId2);
                     }
                 }
                 else {

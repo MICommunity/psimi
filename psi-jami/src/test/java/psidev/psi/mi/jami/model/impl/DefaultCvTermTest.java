@@ -44,7 +44,7 @@ public class DefaultCvTermTest {
         CvTerm uniprotkb = new DefaultCvTerm("uniprotkb", new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_ID));
 
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
-        Assert.assertEquals(new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_ID), uniprotkb.getOntologyIdentifier());
+        Assert.assertEquals(Xref.UNIPROTKB_ID, uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
         Assert.assertNotNull(uniprotkb.getParents());
         Assert.assertNotNull(uniprotkb.getChildren());
@@ -58,7 +58,7 @@ public class DefaultCvTermTest {
 
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals("uniprot knowledge database", uniprotkb.getFullName());
-        Assert.assertEquals(new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_ID), uniprotkb.getOntologyIdentifier());
+        Assert.assertEquals(Xref.UNIPROTKB_ID, uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
         Assert.assertNotNull(uniprotkb.getParents());
         Assert.assertNotNull(uniprotkb.getChildren());
@@ -74,7 +74,7 @@ public class DefaultCvTermTest {
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals("uniprot knowledge database", uniprotkb.getFullName());
         Assert.assertEquals("sequence database for proteins", uniprotkb.getDefinition());
-        Assert.assertEquals(new DefaultExternalIdentifier(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_ID), uniprotkb.getOntologyIdentifier());
+        Assert.assertEquals(Xref.UNIPROTKB_ID, uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
         Assert.assertNotNull(uniprotkb.getParents());
         Assert.assertNotNull(uniprotkb.getChildren());

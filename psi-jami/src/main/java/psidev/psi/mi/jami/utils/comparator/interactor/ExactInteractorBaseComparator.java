@@ -32,7 +32,7 @@ public class ExactInteractorBaseComparator extends InteractorBaseComparator {
      * @param organismComparator : the comparator for organisms. if null will be OrganismTaxIdComparator
      * @param typeComparator : the interactor type comparator. It is required
      */
-    public ExactInteractorBaseComparator(Comparator<ExternalIdentifier> identifierComparator, AliasComparator aliasComparator,
+    public ExactInteractorBaseComparator(Comparator<Xref> identifierComparator, AliasComparator aliasComparator,
                                          OrganismTaxIdComparator organismComparator,
                                          AbstractCvTermComparator typeComparator){
 
