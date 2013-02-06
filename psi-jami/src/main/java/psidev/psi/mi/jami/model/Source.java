@@ -50,5 +50,5 @@ public interface Source extends CvTerm{
      * Set the bibliographical reference
      * @param ref : publication reference
      */
-    public void setBibRef(ExternalIdentifier ref);
+    public void setBibRef(Xref ref);
 }
