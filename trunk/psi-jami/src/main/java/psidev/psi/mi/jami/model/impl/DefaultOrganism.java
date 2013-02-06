@@ -6,8 +6,8 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Default implementation for organism
@@ -22,7 +22,7 @@ public class DefaultOrganism implements Organism, Serializable {
     private String commonName;
     private String scientificName;
     private int taxId;
-    private Set<Alias> aliases;
+    private Collection<Alias> aliases;
     private CvTerm cellType;
     private CvTerm compartment;
     private CvTerm tissue;
@@ -34,7 +34,7 @@ public class DefaultOrganism implements Organism, Serializable {
         else {
             throw new IllegalArgumentException("The taxId "+taxId+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
         }
-        this.aliases = new HashSet<Alias>();
+        this.aliases = new ArrayList<Alias>();
     }
 
     public DefaultOrganism(int taxId, String commonName){
@@ -88,7 +88,7 @@ public class DefaultOrganism implements Organism, Serializable {
         return this.taxId;
     }
 
-    public Set<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.aliases;
     }
 

@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.model;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * The organism is defined by a taxonomy identifier.
@@ -55,11 +55,11 @@ public interface Organism {
 
     /**
      * The other names of the organism.
-     * It cannot be null and should return an emtpy Set if no aliases are attached to this organism
+     * It cannot be null and should return an emtpy Collection if no aliases are attached to this organism
      * Ex: Mus muscaris, transgenic mice and house mouse are mouse synonyms/aliases.
      * @return the aliases
      */
-    public Set<Alias> getAliases();
+    public Collection<Alias> getAliases();
 
     /**
      * Cell type of the organism.
