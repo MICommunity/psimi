@@ -44,7 +44,7 @@ public class ParameterValueComparator implements Comparator<ParameterValue>{
             return BEFORE;
         }
         else {
-            return (value1.getFactor().multiply(BigDecimal.valueOf(value1.getBase() ^ value1.getExponent()))).compareTo(value2.getFactor().multiply(BigDecimal.valueOf(value2.getBase()^value2.getExponent())));
+            return (value1.getFactor().multiply(BigDecimal.valueOf(Math.pow(value1.getBase(), value1.getExponent())))).compareTo(value2.getFactor().multiply(BigDecimal.valueOf(Math.pow(value2.getBase(), value2.getExponent()))));
         }
     }
 
@@ -77,7 +77,7 @@ public class ParameterValueComparator implements Comparator<ParameterValue>{
         }
 
         int hashcode = 31;
-        hashcode = 31*hashcode + (param.getFactor().multiply(BigDecimal.valueOf(param.getBase() ^ param.getExponent()))).hashCode();
+        hashcode = 31*hashcode + (param.getFactor().multiply(BigDecimal.valueOf(Math.pow(param.getBase(), param.getExponent())))).hashCode();
 
         return hashcode;
     }

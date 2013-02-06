@@ -17,12 +17,18 @@ public class ParameterValue extends Number{
     private short exponent=0;
 
     public ParameterValue(BigDecimal factor, short base, short exponent){
+        if (factor == null){
+            throw new IllegalArgumentException("The factor is required and cannot be null");
+        }
         this.base = base;
         this.factor = factor;
         this.exponent = exponent;
     }
 
     public ParameterValue(BigDecimal value){
+        if (value == null){
+            throw new IllegalArgumentException("The value is required and cannot be null");
+        }
         this.base = 10;
         this.factor = value;
         this.exponent = 0;
@@ -30,22 +36,22 @@ public class ParameterValue extends Number{
 
     @Override
     public int intValue() {
-        return factor.multiply(BigDecimal.valueOf(base^exponent)).intValue();
+        return factor.multiply(BigDecimal.valueOf(Math.pow(base, exponent))).intValue();
     }
 
     @Override
     public long longValue() {
-        return factor.multiply(BigDecimal.valueOf(base^exponent)).longValue();
+        return factor.multiply(BigDecimal.valueOf(Math.pow(base, exponent))).longValue();
     }
 
     @Override
     public float floatValue() {
-        return factor.multiply(BigDecimal.valueOf(base^exponent)).floatValue();
+        return factor.multiply(BigDecimal.valueOf(Math.pow(base, exponent))).floatValue();
     }
 
     @Override
     public double doubleValue() {
-        return factor.multiply(BigDecimal.valueOf(base^exponent)).doubleValue();
+        return factor.multiply(BigDecimal.valueOf(Math.pow(base, exponent))).doubleValue();
     }
 
     /**
