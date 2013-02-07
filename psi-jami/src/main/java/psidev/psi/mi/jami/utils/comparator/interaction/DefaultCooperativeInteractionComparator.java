@@ -6,11 +6,11 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 /**
  * Default CooperativeInteractionComparator.
  *
- * It will first compare the cooperative mechanism using DefaultCvTermComparator. If the cooperative mechanisms are the same,
+ * It will first compare the basic interaction properties using
+ * DefaultModelledInteractionComparator. It will then compare the cooperative mechanism using DefaultCvTermComparator. If the cooperative mechanisms are the same,
  * it will compare the effect outcome using DefaultCvTermComparator. If the effect outcomes are the same, it will compare the responses using
  * DefaultCvTermComparator. If the responses are the same, it will compare the affected interactions using a DefaultModelledInteractionComparator that does not compare
- * cooperative interaction properties (avoiding internal loop). If the affected interactions are the same, it will compare the basic interaction properties using
- * DefaultModelledInteractionComparator.
+ * cooperative interaction properties (avoiding internal loop).
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -41,11 +41,11 @@ public class DefaultCooperativeInteractionComparator extends CooperativeInteract
 
     @Override
     /**
-     * It will first compare the cooperative mechanism using DefaultCvTermComparator. If the cooperative mechanisms are the same,
+     * It will first compare the basic interaction properties using
+     * DefaultModelledInteractionComparator. It will then compare the cooperative mechanism using DefaultCvTermComparator. If the cooperative mechanisms are the same,
      * it will compare the effect outcome using DefaultCvTermComparator. If the effect outcomes are the same, it will compare the responses using
      * DefaultCvTermComparator. If the responses are the same, it will compare the affected interactions using a DefaultModelledInteractionComparator that does not compare
-     * cooperative interaction properties (avoiding internal loop). If the affected interactions are the same, it will compare the basic interaction properties using
-     * DefaultModelledInteractionComparator.
+     * cooperative interaction properties (avoiding internal loop).
      *
      **/
     public int compare(CooperativeInteraction interaction1, CooperativeInteraction interaction2) {

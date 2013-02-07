@@ -11,11 +11,11 @@ import java.util.Comparator;
 /**
  * Basic CooperativeInteractionComparator.
  *
- * It will first compare the cooperative mechanism using AbstractCvTermComparator. If the cooperative mechanisms are the same,
+ * It will first compare the basic interaction properties using ModelledInteractionComparator.
+ * It will then compare the cooperative mechanism using AbstractCvTermComparator. If the cooperative mechanisms are the same,
  * it will compare the effect outcome using AbstractCvTermComparator. If the effect outcomes are the same, it will compare the responses using
  * AbstractCvTermComparator. If the responses are the same, it will compare the affected interactions using a ModelledInteractionComparator that does not compare
- * cooperative interaction properties (avoiding internal loop). If the affected interactions are the same, it will compare the basic interaction properties using
- * ModelledInteractionComparator.
+ * cooperative interaction properties (avoiding internal loop).
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -58,6 +58,16 @@ public class CooperativeInteractionComparator implements Comparator<CooperativeI
         return modelledInteractionCollectionComparator;
     }
 
+    /**
+     * It will first compare the basic interaction properties using ModelledInteractionComparator.
+     * It will then compare the cooperative mechanism using AbstractCvTermComparator. If the cooperative mechanisms are the same,
+     * it will compare the effect outcome using AbstractCvTermComparator. If the effect outcomes are the same, it will compare the responses using
+     * AbstractCvTermComparator. If the responses are the same, it will compare the affected interactions using a ModelledInteractionComparator that does not compare
+     * cooperative interaction properties (avoiding internal loop).
+     * @param cooperativeInteraction1
+     * @param cooperativeInteraction2
+     * @return
+     */
     public int compare(CooperativeInteraction cooperativeInteraction1, CooperativeInteraction cooperativeInteraction2) {
         int EQUAL = 0;
         int BEFORE = -1;
@@ -73,11 +83,17 @@ public class CooperativeInteractionComparator implements Comparator<CooperativeI
             return BEFORE;
         }
         else {
+            // first compares basic properties of a modelled interaction
+            int comp = interactionComparator.compare(cooperativeInteraction1, cooperativeInteraction2);
+            if (comp != 0){
+                return comp;
+            }
+
             // first check cooperative mechanism
             CvTerm mechanism1 = cooperativeInteraction1.getCooperativeMechanism();
             CvTerm mechanism2 = cooperativeInteraction2.getCooperativeMechanism();
 
-            int comp = cvTermComparator.compare(mechanism1, mechanism2);
+            comp = cvTermComparator.compare(mechanism1, mechanism2);
             if (comp != 0){
                return comp;
             }
@@ -104,13 +120,7 @@ public class CooperativeInteractionComparator implements Comparator<CooperativeI
             Collection<ModelledInteraction> affected1 = cooperativeInteraction1.getAffectedInteractions();
             Collection<ModelledInteraction> affected2 = cooperativeInteraction2.getAffectedInteractions();
 
-            comp = modelledInteractionCollectionComparator.compare(affected1, affected2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares basic properties of a modelled interaction
-            return interactionComparator.compare(cooperativeInteraction1, cooperativeInteraction2);
+            return modelledInteractionCollectionComparator.compare(affected1, affected2);
         }
     }
 }
