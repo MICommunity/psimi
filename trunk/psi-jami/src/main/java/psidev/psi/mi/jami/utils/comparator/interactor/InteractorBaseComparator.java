@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.alias.AliasComparator;
@@ -79,18 +78,18 @@ public class InteractorBaseComparator implements Comparator<Interactor> {
             int comp2 = EQUAL;
             // first compares identifiers, at least one matching identifier
             if (!interactor1.getIdentifiers().isEmpty() && !interactor2.getIdentifiers().isEmpty()){
-                List<ExternalIdentifier> ids1 = new ArrayList<ExternalIdentifier>(interactor1.getIdentifiers());
-                List<ExternalIdentifier> ids2 = new ArrayList<ExternalIdentifier>(interactor2.getIdentifiers());
+                List<Xref> ids1 = new ArrayList<Xref>(interactor1.getIdentifiers());
+                List<Xref> ids2 = new ArrayList<Xref>(interactor2.getIdentifiers());
                 // sort the collections first
                 Collections.sort(ids1, identifierComparator);
                 Collections.sort(ids2, identifierComparator);
                 // get an iterator
-                Iterator<ExternalIdentifier> iterator1 = ids1.iterator();
-                Iterator<ExternalIdentifier> iterator2 = ids2.iterator();
+                Iterator<Xref> iterator1 = ids1.iterator();
+                Iterator<Xref> iterator2 = ids2.iterator();
 
                 // at least one external identifier must match
-                ExternalIdentifier altid1 = iterator1.next();
-                ExternalIdentifier altid2 = iterator2.next();
+                Xref altid1 = iterator1.next();
+                Xref altid2 = iterator2.next();
                 comp2 = identifierComparator.compare(altid1, altid2);
                 while (comp2 != 0 && altid1 != null && altid2 != null){
                     // altid1 is before altid2

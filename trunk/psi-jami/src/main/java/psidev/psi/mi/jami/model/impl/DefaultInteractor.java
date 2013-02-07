@@ -5,8 +5,8 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Default implementation for Interactor
@@ -20,11 +20,11 @@ public class DefaultInteractor implements Interactor, Serializable {
 
     protected String shortName;
     protected String fullName;
-    protected Set<ExternalIdentifier> identifiers;
-    protected Set<Checksum> checksums;
-    protected Set<Xref> xrefs;
-    protected Set<Annotation> annotations;
-    protected Set<Alias> aliases;
+    protected Collection<Xref> identifiers;
+    protected Collection<Checksum> checksums;
+    protected Collection<Xref> xrefs;
+    protected Collection<Annotation> annotations;
+    protected Collection<Alias> aliases;
     protected Organism organism;
     protected CvTerm type;
 
@@ -60,44 +60,44 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.organism = organism;
     }
 
-    public DefaultInteractor(String name, CvTerm type, ExternalIdentifier uniqueId){
+    public DefaultInteractor(String name, CvTerm type, Xref uniqueId){
         this(name, type);
         this.identifiers.add(uniqueId);
     }
 
-    public DefaultInteractor(String name, String fullName, CvTerm type, ExternalIdentifier uniqueId){
+    public DefaultInteractor(String name, String fullName, CvTerm type, Xref uniqueId){
         this(name, fullName, type);
         this.identifiers.add(uniqueId);
     }
 
-    public DefaultInteractor(String name, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
+    public DefaultInteractor(String name, CvTerm type, Organism organism, Xref uniqueId){
         this(name, type, organism);
         this.identifiers.add(uniqueId);
     }
 
-    public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId){
+    public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId){
         this(name, fullName, type, organism);
         this.identifiers.add(uniqueId);
     }
 
     protected void initializeAnnotations(){
-        this.annotations = new HashSet<Annotation>();
+        this.annotations = new ArrayList<Annotation>();
     }
 
     protected void initializeXrefs(){
-        this.xrefs = new HashSet<Xref>();
+        this.xrefs = new ArrayList<Xref>();
     }
 
     protected void initializeAliases(){
-        this.aliases = new HashSet<Alias>();
+        this.aliases = new ArrayList<Alias>();
     }
 
     protected void initializeIdentifiers(){
-        this.identifiers = new HashSet<ExternalIdentifier>();
+        this.identifiers = new ArrayList<Xref>();
     }
 
     protected void initializeChecksums(){
-        this.checksums = new HashSet<Checksum>();
+        this.checksums = new ArrayList<Checksum>();
     }
 
     public String getShortName() {
@@ -119,23 +119,23 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.fullName = name;
     }
 
-    public Set<ExternalIdentifier> getIdentifiers() {
+    public Collection<Xref> getIdentifiers() {
         return this.identifiers;
     }
 
-    public Set<Checksum> getChecksums() {
+    public Collection<Checksum> getChecksums() {
         return this.checksums;
     }
 
-    public Set<Xref> getXrefs() {
+    public Collection<Xref> getXrefs() {
         return this.xrefs;
     }
 
-    public Set<Annotation> getAnnotations() {
+    public Collection<Annotation> getAnnotations() {
         return this.annotations;
     }
 
-    public Set<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.aliases;
     }
 

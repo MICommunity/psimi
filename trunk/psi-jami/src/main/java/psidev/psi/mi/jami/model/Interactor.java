@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.model;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Molecule or complex of molecules that interacts with other molecules/complexes
@@ -43,42 +43,42 @@ public interface Interactor {
 
     /**
      * Set of identifiers for this interactor. The identifiers can be from different databases, can be primary identifiers and secondary identifiers but they must be unambiguous.
-     * The set cannot be null, when an interactor does not have any identifiers, the method should return an empty set.
+     * The Collection cannot be null, when an interactor does not have any identifiers, the method should return an empty Collection.
      * Ex: uniprotkb secondary accession O00183, primary accessions, ...
      * @return the alternative identifier
      */
-    public Set<ExternalIdentifier> getIdentifiers();
+    public Collection<Xref> getIdentifiers();
 
     /**
      * Set of checksums computed for this interactor.
-     * The set cannot be null so when an interactor does not have a checksum, the method should return an empty set
+     * The Collection cannot be null so when an interactor does not have a checksum, the method should return an empty Collection
      * Ex: rogid:u1FCes02jPb3CGRj1aDkzpbSiuI9606, standard Inchi key, ...
      * @return the set of checksums
      */
-    public Set<Checksum> getChecksums();
+    public Collection<Checksum> getChecksums();
 
     /**
-     * Set of other xrefs that give more information about the interactor.
+     * Collection of other xrefs that give more information about the interactor.
      * Ex: GO references to gives function/process/location information
      * @return other xrefs
      */
-    public Set<Xref> getXrefs();
+    public Collection<Xref> getXrefs();
 
     /**
-     * Set of annotations for an interactor.
-     * The set cannot be null and if the interactor does not have any annotations, the method should return an empty set.
+     * Collection of annotations for an interactor.
+     * The set cannot be null and if the interactor does not have any annotations, the method should return an empty Collection.
      * Ex: pharmacology, isoform-comment, etc.
      * @return the annotations
      */
-    public Set<Annotation> getAnnotations();
+    public Collection<Annotation> getAnnotations();
 
     /**
-     * Set of aliases for an interactor
-     * The set cannot be null and if the interactor does not have any aliases, the method should return an empty set.
+     * Collection of aliases for an interactor
+     * The Collection cannot be null and if the interactor does not have any aliases, the method should return an empty Collection.
      * Ex: complex-synonym, author-assigned name, ...
      * @return the aliases
      */
-    public Set<Alias> getAliases();
+    public Collection<Alias> getAliases();
 
     /**
      * The original source organism for this interactor.

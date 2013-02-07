@@ -3,14 +3,10 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractIdentifierList;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactGeneComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
-
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.TreeSet;
 
 /**
  * Default implementation for gene
@@ -22,10 +18,10 @@ import java.util.TreeSet;
 
 public class DefaultGene extends DefaultInteractor implements Gene {
 
-    private ExternalIdentifier ensembl;
-    private ExternalIdentifier ensemblGenome;
-    private ExternalIdentifier entrezGeneId;
-    private ExternalIdentifier refseq;
+    private Xref ensembl;
+    private Xref ensemblGenome;
+    private Xref entrezGeneId;
+    private Xref refseq;
 
     public DefaultGene(String name) {
         super(name, CvTermFactory.createGeneInteractorType());
@@ -81,7 +77,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         }
         // remove all ensembl if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((GeneIdentifierList) identifiers).removeAllEnsembl();
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_ID, Xref.ENSEMBL);
+            this.ensembl = null;
         }
     }
 
@@ -102,7 +99,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((GeneIdentifierList) identifiers).removeAllEnsembleGenomes();
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES);
+            this.ensemblGenome = null;
         }
     }
 
@@ -123,7 +121,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((GeneIdentifierList) identifiers).removeAllEntrezGeneId();
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE);
+            this.entrezGeneId = null;
         }
     }
 
@@ -144,7 +143,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((GeneIdentifierList) identifiers).removeAllRefseq();
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_ID, Xref.REFSEQ);
+            this.refseq = null;
         }
     }
 
@@ -178,356 +178,109 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         return ensembl != null ? ensembl.getId() : (ensemblGenome != null ? ensemblGenome.getId() : (entrezGeneId != null ? entrezGeneId.getId() : (refseq != null ? refseq.getId() : super.toString())));
     }
 
-    /**
-     * Comparator which sorts external identifiers so ensembl identifiers are always first, then ensemblGenomes, then entrez/geneId and then refseq
-     */
-    private class GeneIdentifierComparator implements Comparator<ExternalIdentifier> {
-
-        public int compare(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2) {
-            int EQUAL = 0;
-            int BEFORE = -1;
-            int AFTER = 1;
-
-            if (externalIdentifier1 == null && externalIdentifier2 == null){
-                return EQUAL;
-            }
-            else if (externalIdentifier1 == null){
-                return AFTER;
-            }
-            else if (externalIdentifier2 == null){
-                return BEFORE;
-            }
-            else {
-                // compares databases first : ensembl is before, then sensemblgenomes, then entrez gene id and then refseq
-                CvTerm database1 = externalIdentifier1.getDatabase();
-                CvTerm database2 = externalIdentifier2.getDatabase();
-                String databaseId1 = database1.getMIIdentifier();
-                String databaseId2 = database2.getMIIdentifier();
-
-                // if external id of database is set, look at database id only otherwise look at shortname
-                int comp;
-                if (databaseId1 != null && databaseId2 != null){
-
-                    // both are ensembl, sort by id
-                    if (Xref.ENSEMBL_ID.equals(databaseId1) && Xref.ENSEMBL_ID.equals(databaseId2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensembl != null ? ensembl.getId() : null);
-                    }
-                    // ensembl is first
-                    else if (Xref.ENSEMBL_ID.equals(databaseId1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.ENSEMBL_ID.equals(databaseId2)){
-                        return AFTER;
-                    }
-                    // both are ensembl genomes, sort by id
-                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1) && Xref.ENSEMBL_GENOMES_ID.equals(databaseId2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensemblGenome != null ? ensemblGenome.getId() : null);
-                    }
-                    // ensembl genomes is second
-                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.ENSEMBL_GENOMES_ID.equals(databaseId2)){
-                        return AFTER;
-                    }
-                    // both are entrez gene id, sort by id
-                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId1) && Xref.ENTREZ_GENE_ID.equals(databaseId2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), entrezGeneId != null ? entrezGeneId.getId() : null);
-                    }
-                    // entrez gene id is second
-                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.ENTREZ_GENE_ID.equals(databaseId2)){
-                        return AFTER;
-                    }
-                    // both are refseq, sort by id
-                    else if (Xref.REFSEQ_ID.equals(databaseId1) && Xref.REFSEQ_ID.equals(databaseId2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
-                    }
-                    // refseq is first
-                    else if (Xref.REFSEQ_ID.equals(databaseId1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.REFSEQ_ID.equals(databaseId2)){
-                        return AFTER;
-                    }
-                    // both databases are not standard gene databases
-                    else {
-                        comp = databaseId1.compareTo(databaseId2);
-                    }
-                }
-                else {
-                    String databaseName1 = database1.getShortName().toLowerCase().trim();
-                    String databaseName2 = database2.getShortName().toLowerCase().trim();
-                    // both are ensembl, sort by id
-                    if (Xref.ENSEMBL.equals(databaseName1) && Xref.ENSEMBL.equals(databaseName2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensembl != null ? ensembl.getId() : null);
-                    }
-                    // ensembl is first
-                    else if (Xref.ENSEMBL.equals(databaseName1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.ENSEMBL.equals(databaseName2)){
-                        return AFTER;
-                    }
-                    // both are ensembl genomes, sort by id
-                    else if (Xref.ENSEMBL_GENOMES.equals(databaseName1) && Xref.ENSEMBL_GENOMES.equals(databaseName2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ensemblGenome != null ? ensemblGenome.getId() : null);
-                    }
-                    // ensembl genomes is second
-                    else if (Xref.ENSEMBL_GENOMES.equals(databaseName1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.ENSEMBL_GENOMES.equals(databaseName2)){
-                        return AFTER;
-                    }
-                    // both are entrez gene id, sort by id
-                    else if (Xref.ENTREZ_GENE.equals(databaseName1) && Xref.ENTREZ_GENE.equals(databaseName2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), entrezGeneId != null ? entrezGeneId.getId() : null);
-                    }
-                    // entrez gene id is second
-                    else if (Xref.ENTREZ_GENE.equals(databaseName1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.ENTREZ_GENE.equals(databaseName2)){
-                        return AFTER;
-                    }
-                    // both are refseq, sort by id
-                    else if (Xref.REFSEQ.equals(databaseName1) && Xref.REFSEQ.equals(databaseName2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
-                    }
-                    // refseq is first
-                    else if (Xref.REFSEQ.equals(databaseName1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.REFSEQ.equals(databaseName2)){
-                        return AFTER;
-                    }
-                    // both databases are not standard gene databases
-                    else {
-                        comp = databaseName1.compareTo(databaseName2);
-                    }
-                }
-
-                if (comp != 0){
-                    return comp;
-                }
-                // check identifiers which cannot be null
-                String id1 = externalIdentifier1.getId();
-                String id2 = externalIdentifier2.getId();
-
-                return id1.compareTo(id2);
-            }
-        }
-    }
-
-    private class GeneIdentifierList extends TreeSet<ExternalIdentifier> {
+    private class GeneIdentifierList extends AbstractIdentifierList {
         public GeneIdentifierList(){
-            super(new GeneIdentifierComparator());
+            super();
         }
 
         @Override
-        public boolean add(ExternalIdentifier externalIdentifier) {
-            boolean added = super.add(externalIdentifier);
-
-            // set ensembl, ensemblgenomes, entrez gene id or refseq if not done yet
-            if (added && (ensembl == null || ensemblGenome == null || entrezGeneId == null || refseq == null)){
-                Iterator<ExternalIdentifier> identifierIterator = iterator();
-                ExternalIdentifier firstIdentifier = identifierIterator.next();
-
-                // starts with ensembl
-                if (ensembl == null){
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
-                        ensembl = firstIdentifier;
-                        if (identifierIterator.hasNext()){
-                            firstIdentifier = identifierIterator.next();
-                        }
-                        else {
-                            firstIdentifier = null;
-                        }
+        protected void processAddedXrefEvent(Xref added) {
+            // the added identifier is ensembl and it is not the current ensembl identifier
+            if (ensembl != added && XrefUtils.isXrefFromDatabase(added, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
+                // the current ensembl identifier is not identity, we may want to set ensembl Identifier
+                if (!XrefUtils.doesXrefHaveQualifier(ensembl, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the ensembl identifier is not set, we can set the ensembl identifier
+                    if (ensembl == null){
+                        ensembl = added;
                     }
-                }
-
-                // process ensemblgenome
-                if (ensemblGenome == null){
-                    // go through all ensembl before finding smiles
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
-                        firstIdentifier = identifierIterator.next();
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        ensembl = added;
                     }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES)){
-                        ensemblGenome = firstIdentifier;
-                        if (identifierIterator.hasNext()){
-                            firstIdentifier = identifierIterator.next();
-                        }
-                        else {
-                            firstIdentifier = null;
-                        }
-                    }
-                }
-
-                // process entrez gene id
-                if (entrezGeneId == null){
-                    // go through all ensemble genomes before finding entrez gene id
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES)){
-                        firstIdentifier = identifierIterator.next();
-                    }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
-                        entrezGeneId = firstIdentifier;
-                    }
-                }
-
-                // process refseq
-                if (refseq == null){
-                    // go through all entrez gene id before finding refseq
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
-                        firstIdentifier = identifierIterator.next();
-                    }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.REFSEQ_ID, Xref.REFSEQ)){
-                        refseq = firstIdentifier;
+                    // the added xref is secondary object and the current ensembl identifier is not a secondary object, we reset ensembl identifier
+                    else if (!XrefUtils.doesXrefHaveQualifier(ensembl, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        ensembl = added;
                     }
                 }
             }
-
-            return added;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            if (super.remove(o)){
-                // we have nothing left in identifiers, reset standard values
-                if (isEmpty()){
-                    ensembl = null;
-                    ensemblGenome = null;
-                    entrezGeneId = null;
-                    refseq = null;
-                }
-                else {
-
-                    Iterator<ExternalIdentifier> identifierIterator = iterator();
-                    ExternalIdentifier firstIdentifier = identifierIterator.next();
-
-                    // first identifier is ensembl
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
-                        ensembl = firstIdentifier;
+            // the added identifier is ensembl genomes and it is not the current ensembl genomes identifier
+            else if (ensemblGenome != added && XrefUtils.isXrefFromDatabase(added, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES)){
+                // the current ensembl genomes identifier is not identity, we may want to set ensembl genomes Identifier
+                if (!XrefUtils.doesXrefHaveQualifier(ensemblGenome, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the ensembl genomes Identifier is not set, we can set the ensembl genomes Identifier
+                    if (ensemblGenome == null){
+                        ensemblGenome = added;
                     }
-                    // process ensemblGenome
-                    // go through all ensembl
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
-                        firstIdentifier = identifierIterator.next();
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        ensemblGenome = added;
                     }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES)){
-                        ensemblGenome = firstIdentifier;
-                    }
-
-                    // process entrez gene id
-                    // go through all ensembl genomes before finding entrez gene id
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES)){
-                        firstIdentifier = identifierIterator.next();
-                    }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
-                        entrezGeneId = firstIdentifier;
-                    }
-
-                    // process refseq
-                    // go through all entrez gene id before finding refseq
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
-                        firstIdentifier = identifierIterator.next();
-                    }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.REFSEQ_ID, Xref.REFSEQ)){
-                        refseq = firstIdentifier;
+                    // the added xref is secondary object and the current ensembl genomes Identifier is not a secondary object, we reset ensembl genomes Identifier
+                    else if (!XrefUtils.doesXrefHaveQualifier(ensemblGenome, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        ensemblGenome = added;
                     }
                 }
-
-                return true;
             }
-            return false;
+            // the added identifier is entrez gene id and it is not the current entrez gene id
+            else if (entrezGeneId != added && XrefUtils.isXrefFromDatabase(added, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
+                // the current entrez gene id is not identity, we may want to set entrez gene id
+                if (!XrefUtils.doesXrefHaveQualifier(entrezGeneId, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the entrez gene id is not set, we can set the entrez gene idr
+                    if (entrezGeneId == null){
+                        entrezGeneId = added;
+                    }
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        entrezGeneId = added;
+                    }
+                    // the added xref is secondary object and the current entrez gene id is not a secondary object, we reset entrez gene id
+                    else if (!XrefUtils.doesXrefHaveQualifier(entrezGeneId, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        entrezGeneId = added;
+                    }
+                }
+            }
+            // the added identifier is refseq id and it is not the current refseq id
+            else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_ID, Xref.REFSEQ)){
+                // the current refseq id is not identity, we may want to set refseq id
+                if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the refseq id is not set, we can set the refseq id
+                    if (refseq == null){
+                        refseq = added;
+                    }
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        refseq = added;
+                    }
+                    // the added xref is secondary object and the current refseq id is not a secondary object, we reset refseq id
+                    else if (!XrefUtils.doesXrefHaveQualifier(entrezGeneId, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        refseq = added;
+                    }
+                }
+            }
         }
 
         @Override
-        public void clear() {
-            super.clear();
+        protected void processRemovedXrefEvent(Xref removed) {
+            if (ensembl == removed){
+                ensembl = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_ID, Xref.ENSEMBL);
+            }
+            else if (ensemblGenome == removed){
+                ensemblGenome = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES);
+            }
+            else if (entrezGeneId == removed){
+                entrezGeneId = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE);
+            }
+            else if (refseq == removed){
+                refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_ID, Xref.REFSEQ);
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
             ensembl = null;
             ensemblGenome = null;
             entrezGeneId = null;
             refseq = null;
-        }
-
-        public void removeAllEnsembl(){
-
-            ExternalIdentifier first = first();
-            while (XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
-                remove(first);
-                first = first();
-            }
-        }
-
-        public void removeAllEnsembleGenomes(){
-
-            if (!isEmpty()){
-                Iterator<ExternalIdentifier> identifierIterator = iterator();
-                ExternalIdentifier first = identifierIterator.next();
-                // skip the ensembl
-                while (identifierIterator.hasNext() && XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
-                    first = identifierIterator.next();
-                }
-
-                while (identifierIterator.hasNext() && XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES)){
-                    identifierIterator.remove();
-                    first = identifierIterator.next();
-                }
-            }
-        }
-
-        public void removeAllEntrezGeneId(){
-
-            if (!isEmpty()){
-                Iterator<ExternalIdentifier> identifierIterator = iterator();
-                ExternalIdentifier first = identifierIterator.next();
-                // skip the standard ensembl and ensemblGenomes
-                while (identifierIterator.hasNext() &&
-                        ( XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_ID, Xref.ENSEMBL) ||
-                                XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES) )){
-                    first = identifierIterator.next();
-                }
-
-                while (identifierIterator.hasNext() && XrefUtils.isXrefFromDatabase(first, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
-                    identifierIterator.remove();
-                    first = identifierIterator.next();
-                }
-            }
-        }
-
-        public void removeAllRefseq(){
-
-            if (!isEmpty()){
-                Iterator<ExternalIdentifier> identifierIterator = iterator();
-                ExternalIdentifier first = identifierIterator.next();
-                // skip the standard ensembl, ensemblGenomes and entrez gene ids
-                while (identifierIterator.hasNext() &&
-                        ( XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_ID, Xref.ENSEMBL) ||
-                                XrefUtils.isXrefFromDatabase(first, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES) ||
-                                XrefUtils.isXrefFromDatabase(first, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE))){
-                    first = identifierIterator.next();
-                }
-
-                while (identifierIterator.hasNext() && XrefUtils.isXrefFromDatabase(first, Xref.REFSEQ_ID, Xref.REFSEQ)){
-                    identifierIterator.remove();
-                    first = identifierIterator.next();
-                }
-            }
         }
     }
 }

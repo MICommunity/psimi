@@ -1,15 +1,17 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefTreeSet;
-import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractIdentifierList;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.AbstractIdentifierComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Default implementation for CvTerm
@@ -134,7 +136,8 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         }
         // remove all mi if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((CvTermIdentifierList) identifiers).removeAllMiIdentifiers();
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MI_ID, CvTerm.PSI_MI);
+            this.miIdentifier = null;
         }
     }
 
@@ -152,7 +155,8 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         }
         // remove all mod if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((CvTermIdentifierList) identifiers).removeAllModIdentifiers();
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD);
+            this.modIdentifier = null;
         }
     }
 
@@ -199,133 +203,61 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : "-")) + " ("+shortName+")";
     }
 
-    /**
-     * Comparator which sorts external identifiers so chebi identifiers are always first
-     */
-    private class CvTermIdentifierComparator extends AbstractIdentifierComparator {
-
-        @Override
-        protected int compareIdentifiers(Xref xref1, Xref xref2, boolean isIdenticalObject1, boolean isIdenticalObject2) {
-            int EQUAL = 0;
-            int BEFORE = -1;
-            int AFTER = 1;
-
-            boolean isFromPsiMi1 = XrefUtils.isXrefFromDatabase(xref1, CvTerm.PSI_MI_ID, CvTerm.PSI_MI);
-            boolean isFromPsiMi2 = XrefUtils.isXrefFromDatabase(xref2, CvTerm.PSI_MI_ID, CvTerm.PSI_MI);
-
-            // psi-mi is first
-            if (isFromPsiMi1
-                    && isFromPsiMi2){
-                // identity is first, then secondary
-                if (isIdenticalObject1 && isIdenticalObject2){
-                    return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(xref1.getId(), xref2.getId(), miIdentifier != null ? miIdentifier.getId() : null);
-                }
-                else if (isIdenticalObject1){
-                    return BEFORE;
-                }
-                else if (isIdenticalObject2){
-                    return AFTER;
-                }
-                // both identifiers are secondary
-                else {
-                    return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(xref1.getId(), xref2.getId(), miIdentifier != null ? miIdentifier.getId() : null);
-                }
-            }
-            else if (isFromPsiMi1){
-                return BEFORE;
-            }
-            else if (isFromPsiMi2){
-                return AFTER;
-            }
-            // it is not a psi-mi id, checks for psi-mod
-            else {
-                boolean isFromPsiMod1 = XrefUtils.isXrefFromDatabase(xref1, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD);
-                boolean isFromPsiMod2 = XrefUtils.isXrefFromDatabase(xref2, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD);
-                // psi-mod is first
-                if (isFromPsiMod1
-                        && isFromPsiMod2){
-                    // identity is first, then secondary
-                    if (isIdenticalObject1 && isIdenticalObject2){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(xref1.getId(), xref2.getId(), modIdentifier != null ? modIdentifier.getId() : null);
-                    }
-                    else if (isIdenticalObject1){
-                        return BEFORE;
-                    }
-                    else if (isIdenticalObject2){
-                        return AFTER;
-                    }
-                    // both identifiers are secondary
-                    else {
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(xref1.getId(), xref2.getId(), modIdentifier != null ? modIdentifier.getId() : null);
-                    }
-                }
-                else if (isFromPsiMod1){
-                    return BEFORE;
-                }
-                else if (isFromPsiMod2){
-                    return AFTER;
-                }
-                // it is not a standard id, compare databases and then id and then qualifier
-                else {
-                    // compares databases first (cannot use CvTermComparator because have to break the loop)
-                    return compareDefaultXref(xref1, xref2);
-                }
-            }
-        }
-    }
-
-    private class CvTermIdentifierList extends AbstractXrefTreeSet {
+    private class CvTermIdentifierList extends AbstractIdentifierList {
         public CvTermIdentifierList(){
-            super(new CvTermIdentifierComparator());
+            super();
         }
 
         @Override
-        protected void processAddedXrefEvent() {
-            // set psi-mi if not done
-            if (miIdentifier == null){
-                Xref firstMi = first();
+        protected void processAddedXrefEvent(Xref added) {
 
-                if (XrefUtils.isXrefAnIdentifier(firstMi)
-                        && XrefUtils.isXrefFromDatabase(firstMi, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
-                    miIdentifier = firstMi;
+            // the added identifier is psi-mi and it is not the current mi identifier
+            if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
+                // the current psi-mi identifier is not identity, we may want to set miIdentifier
+                if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the miidentifier is not set, we can set the miidentifier
+                    if (miIdentifier == null){
+                         miIdentifier = added;
+                    }
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        miIdentifier = added;
+                    }
+                    // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
+                    else if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        miIdentifier = added;
+                    }
                 }
             }
-            else if (modIdentifier == null){
-                Iterator<Xref> refIterator = iterator();
-                Xref firstXref = iterator().next();
-                // go through all psi-mi before finding psi-mod
-                while (refIterator.hasNext() && XrefUtils.isXrefAnIdentifier(firstXref) &&
-                        XrefUtils.isXrefFromDatabase(firstXref, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
-                    firstXref = refIterator.next();
-                }
-
-                if (XrefUtils.isXrefAnIdentifier(firstXref)
-                        && XrefUtils.isXrefFromDatabase(firstXref, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD)){
-                    modIdentifier = firstXref;
+            // the added identifier is psi-mod and it is not the current mod identifier
+            else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD)){
+                // the current psi-mod identifier is not identity, we may want to set modIdentifier
+                if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the modIdentifier is not set, we can set the modIdentifier
+                    if (modIdentifier == null){
+                        modIdentifier = added;
+                    }
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        modIdentifier = added;
+                    }
+                    // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
+                    else if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        modIdentifier = added;
+                    }
                 }
             }
         }
 
         @Override
-        protected void processRemovedXrefEvent() {
-            Iterator<Xref> identifierIterator = iterator();
-            Xref firstIdentifier = identifierIterator.next();
-
-            // first identifier is psi-mi
-            if (XrefUtils.isXrefAnIdentifier(firstIdentifier)
-                    && XrefUtils.isXrefFromDatabase(firstIdentifier, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
-                miIdentifier = firstIdentifier;
+        protected void processRemovedXrefEvent(Xref removed) {
+            // the removed identifier is psi-mi
+            if (miIdentifier == removed){
+                miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MI_ID, CvTerm.PSI_MI);
             }
-            // process psi-mod
-            // go through all psi-mi
-            while (identifierIterator.hasNext() && XrefUtils.isXrefAnIdentifier(firstIdentifier)
-                    && XrefUtils.isXrefFromDatabase(firstIdentifier, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
-                firstIdentifier = identifierIterator.next();
-            }
-
-            if (XrefUtils.isXrefAnIdentifier(firstIdentifier)
-                    && XrefUtils.isXrefFromDatabase(firstIdentifier, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD)){
-                modIdentifier = firstIdentifier;
+            // the removed identifier is psi-mod
+            else if (modIdentifier == removed){
+                modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD);
             }
         }
 
@@ -333,37 +265,6 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         protected void clearProperties() {
             miIdentifier = null;
             modIdentifier = null;
-        }
-
-        public void removeAllMiIdentifiers(){
-
-            Xref first = first();
-            while (XrefUtils.isXrefAnIdentifier(first)
-                    && XrefUtils.isXrefFromDatabase(first, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
-                remove(first);
-                first = first();
-            }
-        }
-
-        public void removeAllModIdentifiers(){
-
-            if (!isEmpty()){
-                Iterator<Xref> identifierIterator = iterator();
-                Xref first = identifierIterator.next();
-                // skip the psi-mi
-                while (identifierIterator.hasNext()
-                        && XrefUtils.isXrefAnIdentifier(first)
-                        && XrefUtils.isXrefFromDatabase(first, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
-                    first = identifierIterator.next();
-                }
-
-                while (identifierIterator.hasNext()
-                        && XrefUtils.isXrefAnIdentifier(first)
-                        && XrefUtils.isXrefFromDatabase(first, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD)){
-                    identifierIterator.remove();
-                    first = identifierIterator.next();
-                }
-            }
         }
     }
 }

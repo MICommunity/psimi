@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Utility class for Checksums
@@ -36,50 +37,56 @@ public class ChecksumUtils {
     }
 
     /**
-     * Retrives a unique Checksum having a method that matches the method id (if set) or the method name.
-     * It will return null if it cannot find a single Checksum with a method match or if it finds more than one checksum with a method
-     * match.
-     * @param checksums
-     * @param methodId
-     * @param methodName
-     * @return the unique Xref, null if not unique
+     * This method will return the first Checksum having this methodId/method name
+     * It will return null if there are no Checksums with this method id/name
+     * @param checksums : the collection of Checksum
+     * @param methodId : the method id to look for
+     * @param methodName : the method name to look for
+     * @return the first checksum having this method name/id, null if no Checksum with this method name/id
      */
-    public static Checksum collectUniqueChecksumMethodIfExists(Collection<Checksum> checksums, String methodId, String methodName){
+    public static Checksum collectFirstChecksumWithMethod(Collection<Checksum> checksums, String methodId, String methodName){
 
         if (checksums == null || (methodName == null && methodId == null)){
             return null;
         }
 
-        Checksum uniqueChecksum = null;
         for (Checksum checksum : checksums){
             CvTerm method = checksum.getMethod();
-            // we can compare identifiers
+            // we can compare method ids
             if (methodId != null && method.getMIIdentifier() != null){
-                // we have the same database id
+                // we have the same method id
                 if (method.getMIIdentifier().equals(methodId)){
-                    // it is a unique checksum
-                    if (uniqueChecksum == null){
-                        uniqueChecksum = checksum;
-                    }
-                    // we could not find a unique checksum with this method so we return null
-                    else {
-                        return null;
-                    }
+                    return checksum;
                 }
             }
-            // we need to compare methodNames
+            // we need to compare methodName
             else if (methodName != null && methodName.toLowerCase().equals(method.getShortName().toLowerCase())) {
-                // it is a unique checksum
-                if (uniqueChecksum == null){
-                    uniqueChecksum = checksum;
-                }
-                // we could not find a unique checksum with this method so we return null
-                else {
-                    return null;
+                // we have the same method name
+                if (method.getShortName().toLowerCase().trim().equals(methodName)){
+                    return checksum;
                 }
             }
         }
 
-        return uniqueChecksum;
+        return null;
+    }
+
+    /**
+     * Remove all Checksum having this method name/method id from the collection of checksums
+     * @param checksums : the collection of Checksum
+     * @param methodId : the method id to look for
+     * @param methodName : the method name to look for
+     */
+    public static void removeAllChecksumWithMethod(Collection<Checksum> checksums, String methodId, String methodName){
+
+        if (checksums != null){
+            Iterator<Checksum> checksumIterator = checksums.iterator();
+
+            while (checksumIterator.hasNext()){
+                if (doesChecksumHaveMethod(checksumIterator.next(), methodId, methodName)){
+                    checksumIterator.remove();
+                }
+            }
+        }
     }
 }

@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.utils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Utility class for Xrefs
@@ -97,71 +97,77 @@ public class XrefUtils {
     }
 
     /**
-     * Retrives a unique Xref having a database that matches the database id (if set) or the database name.
-     * It will return null if it cannot find a single Xref with a database match or if it finds more than one xrefs with a database
-     * match.
-     * @param refs
-     * @param dbId
-     * @param dbName
-     * @return the unique Xref, null if not unique
+     * This method will return the first Xref from this database having :
+     * - identity qualifier
+     * - secondary identifier if no identity qualifier
+     * - first Xref from this database if no identity or secondary qualifier
+     * It will return null if there are no Xrefs with this database id/name
+     * @param refs : the collection of Xrefs
+     * @param dbId : the database id to look for
+     * @param dbName : the database name to look for
+     * @return the first identifier having this database name/id, null if no Xrefs with this database name/id
      */
-    public static Xref collectUniqueXrefFromDatabaseIfExists(Collection<? extends Xref> refs, String dbId, String dbName){
+    public static Xref collectFirstIdentifierWithDatabase(Collection<Xref> refs, String dbId, String dbName){
 
         if (refs == null || (dbName == null && dbId == null)){
             return null;
         }
 
-        Xref uniqueXref = null;
+        Xref firstXref = null;
+        Xref firstSecondary = null;
         for (Xref xref : refs){
             CvTerm database = xref.getDatabase();
             // we can compare identifiers
             if (dbId != null && database.getMIIdentifier() != null){
                 // we have the same database id
                 if (database.getMIIdentifier().equals(dbId)){
-                    // it is a unique xref
-                    if (uniqueXref == null){
-                        uniqueXref = xref;
+                    if (doesXrefHaveQualifier(xref, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        return xref;
                     }
-                    // we could not find a unique xref from this database so we return null
-                    else {
-                        return null;
+                    // secondary ref
+                    else if (doesXrefHaveQualifier(xref, Xref.SECONDARY_MI, Xref.SECONDARY) && firstSecondary != null){
+                        firstSecondary = xref;
+                    }
+                    else if (firstXref != null){
+                        firstXref = xref;
                     }
                 }
             }
             // we need to compare dbNames
             else if (dbName != null && dbName.toLowerCase().equals(database.getShortName().toLowerCase())) {
-                // it is a unique xref
-                if (uniqueXref == null){
-                    uniqueXref = xref;
-                }
-                // we could not find a unique xref from this database so we return null
-                else {
-                    return null;
+                // we have the same database id
+                if (database.getShortName().toLowerCase().trim().equals(dbName)){
+                    if (doesXrefHaveQualifier(xref, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        return xref;
+                    }
+                    // secondary ref
+                    else if (doesXrefHaveQualifier(xref, Xref.SECONDARY_MI, Xref.SECONDARY) && firstSecondary != null){
+                        firstSecondary = xref;
+                    }
+                    else if (firstXref != null){
+                        firstXref = xref;
+                    }
                 }
             }
         }
 
-        return uniqueXref;
+        return firstSecondary != null ? firstSecondary : firstXref;
     }
 
-    public static void removeAllXrefsFromDatabaseIfExists(Collection<? extends Xref> refs, String dbId, String dbName){
+    /**
+     * Remove all Xrefs having this database name/database id from the collection of xrefs
+     * @param refs : the collection of Xrefs
+     * @param dbId : the database id to look for
+     * @param dbName : the database name to look for
+     */
+    public static void removeAllXrefsWithDatabase(Collection<Xref> refs, String dbId, String dbName){
 
-        if (refs != null && (dbName == null && dbId == null)){
-            Collection<? extends Xref> xrefsCopy = new ArrayList<Xref>(refs);
-            for (Xref xref : xrefsCopy){
-                CvTerm database = xref.getDatabase();
-                // we can compare identifiers
-                if (dbId != null && database.getMIIdentifier() != null){
-                    // we have the same database id
-                    if (database.getMIIdentifier().equals(dbId)){
-                        // remove xref
-                        refs.remove(xref);
-                    }
-                }
-                // we need to compare dbNames
-                else if (dbName != null && dbName.toLowerCase().equals(database.getShortName().toLowerCase())) {
-                    // remove xref
-                    refs.remove(xref);
+        if (refs != null){
+            Iterator<Xref> refIterator = refs.iterator();
+
+            while (refIterator.hasNext()){
+                if (isXrefFromDatabase(refIterator.next(), dbId, dbName)){
+                    refIterator.remove();
                 }
             }
         }
