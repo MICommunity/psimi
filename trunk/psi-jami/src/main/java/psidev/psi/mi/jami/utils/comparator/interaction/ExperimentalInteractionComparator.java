@@ -11,10 +11,10 @@ import java.util.Comparator;
 /**
  * Basic ExperimentalInteractionComparator.
  *
- * It will first compares the IMEx identifiers if bothe IMEx ids are set. If at least one IMEx id is not set, it will compare
+ * It will first compare the basic interaction properties using InteractionBaseComparator<ExperimentalParticipant>.
+ * It will then compares the IMEx identifiers if bothe IMEx ids are set. If at least one IMEx id is not set, it will compare
  * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.
  * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using InteractionBaseComparator<ExperimentalParticipant>.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -64,10 +64,11 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
     }
 
     /**
-     * It will first compares the IMEx identifiers if bothe IMEx ids are set. If at least one IMEx id is not set, it will compare
+     * It will first compare the basic interaction properties using InteractionBaseComparator<ExperimentalParticipant>.
+     * It will then compares the IMEx identifiers if bothe IMEx ids are set. If at least one IMEx id is not set, it will compare
      * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.
      * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using InteractionBaseComparator<ExperimentalParticipant>.
+     *
      * @param experimentalInteraction1
      * @param experimentalInteraction2
      * @return
@@ -87,6 +88,11 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
             return BEFORE;
         }
         else {
+            int comp = interactionComparator.compare(experimentalInteraction1, experimentalInteraction2);
+            if (comp != 0){
+                return comp;
+            }
+
             // first compares the IMEx id
             String imex1 = experimentalInteraction1.getImexId();
             String imex2 = experimentalInteraction2.getImexId();
@@ -99,7 +105,7 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
             Experiment exp1 = experimentalInteraction1.getExperiment();
             Experiment exp2 = experimentalInteraction2.getExperiment();
 
-            int comp = experimentComparator.compare(exp1, exp2);
+            comp = experimentComparator.compare(exp1, exp2);
             if (comp != 0){
                 return comp;
             }
@@ -118,7 +124,7 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
             boolean inferred2 = experimentalInteraction2.isInferred();
 
             if (inferred1 == inferred2){
-                return interactionComparator.compare(experimentalInteraction1, experimentalInteraction2);
+                return EQUAL;
             }
             else if (inferred1){
                 return AFTER;
@@ -127,7 +133,7 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
                 return BEFORE;
             }
             else {
-                return interactionComparator.compare(experimentalInteraction1, experimentalInteraction2);
+                return EQUAL;
             }
         }
     }

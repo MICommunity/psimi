@@ -13,11 +13,10 @@ import java.util.Comparator;
 /**
  * Basic Allosteric interaction comparator.
  *
- * It will first compare the allosteric mechanisms using AbstractCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
+ * It will first compare the basic properties of a cooperative interaction using CooperativeInteractionComparator. It will then compare the allosteric mechanisms using AbstractCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
  * using AbsctractCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using ComponentComparator.
  * If the allosteric molecules are the same, it will compare the allosteric effectors using the ComponentComparator.
- * If the allosteric effectors are the same, it will compare the allosteric PTMs using BiologicalFeatureComparator. If the allosteric PTMs are the same,
- * it will compare the basic properties of a cooperative interaction using CooperativeInteractionComparator.
+ * If the allosteric effectors are the same, it will compare the allosteric PTMs using BiologicalFeatureComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -79,11 +78,10 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
     }
 
     /**
-     * It will first compare the allosteric mechanisms using AbstractCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
+     * It will first compare the basic properties of a cooperative interaction using CooperativeInteractionComparator. It will then compare the allosteric mechanisms using AbstractCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
      * using AbsctractCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using ComponentComparator.
      * If the allosteric molecules are the same, it will compare the allosteric effectors using the ComponentComparator.
-     * If the allosteric effectors are the same, it will compare the allosteric PTMs using BiologicalFeatureComparator. If the allosteric PTMs are the same,
-     * it will compare the basic properties of a cooperative interaction using CooperativeInteractionComparator.
+     * If the allosteric effectors are the same, it will compare the allosteric PTMs using BiologicalFeatureComparator.
      * @param allostericInteraction1
      * @param allostericInteraction2
      * @return
@@ -103,11 +101,17 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
             return BEFORE;
         }
         else {
+            // first compares basic properties
+            int comp = interactionComparator.compare(allostericInteraction1, allostericInteraction2);
+            if (comp != 0){
+                return comp;
+            }
+
             // first check allosteric mechanism
             CvTerm mechanism1 = allostericInteraction1.getAllostericMechanism();
             CvTerm mechanism2 = allostericInteraction2.getAllostericMechanism();
 
-            int comp = cvTermComparator.compare(mechanism1, mechanism2);
+            comp = cvTermComparator.compare(mechanism1, mechanism2);
             if (comp != 0){
                 return comp;
             }
@@ -143,13 +147,7 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
             BiologicalFeature feature1 = allostericInteraction1.getAllostericPtm();
             BiologicalFeature feature2 = allostericInteraction2.getAllostericPtm();
 
-            comp = ptmComparator.compare(feature1, feature2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // finally compares basic properties
-            return interactionComparator.compare(allostericInteraction1, allostericInteraction2);
+            return ptmComparator.compare(feature1, feature2);
         }
     }
 }
