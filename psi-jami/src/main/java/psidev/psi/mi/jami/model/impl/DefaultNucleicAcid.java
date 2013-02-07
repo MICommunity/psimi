@@ -1,14 +1,13 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.NucleicAcid;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractIdentifierList;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactNucleicAcidComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
-
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.TreeSet;
 
 /**
  * Default implementation for NucleicAcid.
@@ -20,8 +19,8 @@ import java.util.TreeSet;
 
 public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid{
 
-    private ExternalIdentifier ddbjEmblGenbank;
-    private ExternalIdentifier refseq;
+    private Xref ddbjEmblGenbank;
+    private Xref refseq;
     private String sequence;
 
     public DefaultNucleicAcid(String name, CvTerm type) {
@@ -40,19 +39,19 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         super(name, fullName, type, organism);
     }
 
-    public DefaultNucleicAcid(String name, CvTerm type, ExternalIdentifier uniqueId) {
+    public DefaultNucleicAcid(String name, CvTerm type, Xref uniqueId) {
         super(name, type, uniqueId);
     }
 
-    public DefaultNucleicAcid(String name, String fullName, CvTerm type, ExternalIdentifier uniqueId) {
+    public DefaultNucleicAcid(String name, String fullName, CvTerm type, Xref uniqueId) {
         super(name, fullName, type, uniqueId);
     }
 
-    public DefaultNucleicAcid(String name, CvTerm type, Organism organism, ExternalIdentifier uniqueId) {
+    public DefaultNucleicAcid(String name, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, type, organism, uniqueId);
     }
 
-    public DefaultNucleicAcid(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId) {
+    public DefaultNucleicAcid(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, fullName, type, organism, uniqueId);
     }
 
@@ -78,7 +77,8 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         }
         // remove all ddbj/embl/genbank if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((NucleicAcidIdentifierList) identifiers).removeAllDdbjEmblGenbank();
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK);
+            this.ddbjEmblGenbank = null;
         }
     }
 
@@ -99,7 +99,8 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            ((NucleicAcidIdentifierList) identifiers).removeAllRefseq();
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_ID, Xref.REFSEQ);
+            this.refseq = null;
         }
     }
 
@@ -130,216 +131,65 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         return ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : (refseq != null ? refseq.getId() : super.toString());
     }
 
-    /**
-     * Comparator which sorts external identifiers so DDBJ/EMBL/GenBank identifiers are always first, then refseq.
-     */
-    private class NucleicAcidIdentifierComparator implements Comparator<ExternalIdentifier> {
-
-        public int compare(ExternalIdentifier externalIdentifier1, ExternalIdentifier externalIdentifier2) {
-            int EQUAL = 0;
-            int BEFORE = -1;
-            int AFTER = 1;
-
-            if (externalIdentifier1 == null && externalIdentifier2 == null){
-                return EQUAL;
-            }
-            else if (externalIdentifier1 == null){
-                return AFTER;
-            }
-            else if (externalIdentifier2 == null){
-                return BEFORE;
-            }
-            else {
-                // compares databases first : ddbj/EMBL/Genbank is before, then refseq
-                CvTerm database1 = externalIdentifier1.getDatabase();
-                CvTerm database2 = externalIdentifier2.getDatabase();
-                String databaseId1 = database1.getMIIdentifier();
-                String databaseId2 = database2.getMIIdentifier();
-
-                // if external id of database is set, look at database id only otherwise look at shortname
-                int comp;
-                if (databaseId1 != null && databaseId2 != null){
-                    // both are ensembl, sort by id
-                    if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1) && Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : null);
-                    }
-                    // ddbj/embl/genbank is first
-                    else if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.DDBJ_EMBL_GENBANK_ID.equals(databaseId2)){
-                        return AFTER;
-                    }
-                    // both are refseq, sort by id
-                    else if (Xref.REFSEQ_ID.equals(databaseId1) && Xref.REFSEQ_ID.equals(databaseId2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
-                    }
-                    // refseq is first
-                    else if (Xref.REFSEQ_ID.equals(databaseId1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.REFSEQ_ID.equals(databaseId2)){
-                        return AFTER;
-                    }
-                    // both databases are not standard gene databases
-                    else {
-                        comp = databaseId1.compareTo(databaseId2);
-                    }
-                }
-                else {
-                    String databaseName1 = database1.getShortName().toLowerCase().trim();
-                    String databaseName2 = database2.getShortName().toLowerCase().trim();
-                    // both are ddbj/embl/genbank, sort by id
-                    if (Xref.DDBJ_EMBL_GENBANK.equals(databaseName1) && Xref.DDBJ_EMBL_GENBANK.equals(databaseName2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : null);
-                    }
-                    // ddbj/embl/genbank is first
-                    else if (Xref.DDBJ_EMBL_GENBANK.equals(databaseName1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.DDBJ_EMBL_GENBANK.equals(databaseName2)){
-                        return AFTER;
-                    }
-                    // both are refseq, sort by id
-                    else if (Xref.REFSEQ.equals(databaseName1) && Xref.REFSEQ.equals(databaseName2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(externalIdentifier1.getId(), externalIdentifier2.getId(), refseq != null ? refseq.getId() : null);
-                    }
-                    // refseq is first
-                    else if (Xref.REFSEQ.equals(databaseName1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.REFSEQ.equals(databaseName2)){
-                        return AFTER;
-                    }
-                    // both databases are not standard gene databases
-                    else {
-                        comp = databaseName1.compareTo(databaseName2);
-                    }
-                }
-
-                if (comp != 0){
-                    return comp;
-                }
-                // check identifiers which cannot be null
-                String id1 = externalIdentifier1.getId();
-                String id2 = externalIdentifier2.getId();
-
-                return id1.compareTo(id2);
-            }
-        }
-    }
-
-    private class NucleicAcidIdentifierList extends TreeSet<ExternalIdentifier> {
+    private class NucleicAcidIdentifierList extends AbstractIdentifierList {
         public NucleicAcidIdentifierList(){
-            super(new NucleicAcidIdentifierComparator());
+            super();
         }
 
         @Override
-        public boolean add(ExternalIdentifier externalIdentifier) {
-            boolean added = super.add(externalIdentifier);
-
-            // set DDBJ/EMBL/GenBank, refseq if not done yet
-            if (added && (ddbjEmblGenbank == null || refseq == null)){
-                Iterator<ExternalIdentifier> identifierIterator = iterator();
-                ExternalIdentifier firstIdentifier = identifierIterator.next();
-
-                // starts with ddbj embl genbank
-                if (ddbjEmblGenbank == null){
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
-                        ddbjEmblGenbank = firstIdentifier;
-                        if (identifierIterator.hasNext()){
-                            firstIdentifier = identifierIterator.next();
-                        }
-                        else {
-                            firstIdentifier = null;
-                        }
+        protected void processAddedXrefEvent(Xref added) {
+            // the added identifier is ddbj/embl/genbank and it is not the current ddbj/embl/genbank identifier
+            if (ddbjEmblGenbank != added && XrefUtils.isXrefFromDatabase(added, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
+                // the current ddbj/embl/genbank identifier is not identity, we may want to set ddbj/embl/genbank Identifier
+                if (!XrefUtils.doesXrefHaveQualifier(ddbjEmblGenbank, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the ddbj/embl/genbank identifier is not set, we can set the ddbj/embl/genbank identifier
+                    if (ddbjEmblGenbank == null){
+                        ddbjEmblGenbank = added;
                     }
-                }
-
-                // process refseq
-                if (refseq == null){
-                    // go through all ddbj embl genbank before finding refseq
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
-                        firstIdentifier = identifierIterator.next();
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        ddbjEmblGenbank = added;
                     }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.REFSEQ_ID, Xref.REFSEQ)){
-                        refseq = firstIdentifier;
+                    // the added xref is secondary object and the current ddbj/embl/genbank identifier is not a secondary object, we reset ddbj/embl/genbank identifier
+                    else if (!XrefUtils.doesXrefHaveQualifier(ddbjEmblGenbank, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        ddbjEmblGenbank = added;
                     }
                 }
             }
-
-            return added;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            if (super.remove(o)){
-                // we have nothing left in identifiers, reset standard values
-                if (isEmpty()){
-                    ddbjEmblGenbank = null;
-                    refseq = null;
-                }
-                else {
-
-                    Iterator<ExternalIdentifier> identifierIterator = iterator();
-                    ExternalIdentifier firstIdentifier = identifierIterator.next();
-
-                    // first identifier is ddbj/embl/genbank
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
-                        ddbjEmblGenbank = firstIdentifier;
+            // the added identifier is refseq id and it is not the current refseq id
+            else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_ID, Xref.REFSEQ)){
+                // the current refseq id is not identity, we may want to set refseq id
+                if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the refseq id is not set, we can set the refseq id
+                    if (refseq == null){
+                        refseq = added;
                     }
-
-                    // process refseq
-                    // go through all ddbj/embl/genbank before finding refseq
-                    while (identifierIterator.hasNext() &&
-                            XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
-                        firstIdentifier = identifierIterator.next();
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        refseq = added;
                     }
-
-                    if (XrefUtils.isXrefFromDatabase(firstIdentifier, Xref.REFSEQ_ID, Xref.REFSEQ)){
-                        refseq = firstIdentifier;
+                    // the added xref is secondary object and the current refseq id is not a secondary object, we reset refseq id
+                    else if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        refseq = added;
                     }
                 }
-
-                return true;
             }
-            return false;
         }
 
         @Override
-        public void clear() {
-            super.clear();
+        protected void processRemovedXrefEvent(Xref removed) {
+            if (ddbjEmblGenbank == removed){
+                ddbjEmblGenbank = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK);
+            }
+            else if (refseq == removed){
+                refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_ID, Xref.REFSEQ);
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
             ddbjEmblGenbank = null;
             refseq = null;
-        }
-
-        public void removeAllDdbjEmblGenbank(){
-
-            ExternalIdentifier first = first();
-            while (XrefUtils.isXrefFromDatabase(first, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
-                remove(first);
-                first = first();
-            }
-        }
-
-        public void removeAllRefseq(){
-
-            if (!isEmpty()){
-                Iterator<ExternalIdentifier> identifierIterator = iterator();
-                ExternalIdentifier first = identifierIterator.next();
-                // skip the standard ensembl, ensemblGenomes and entrez gene ids
-                while (identifierIterator.hasNext() &&
-                        ( XrefUtils.isXrefFromDatabase(first, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK))){
-                    first = identifierIterator.next();
-                }
-
-                while (identifierIterator.hasNext() && XrefUtils.isXrefFromDatabase(first, Xref.REFSEQ_ID, Xref.REFSEQ)){
-                    identifierIterator.remove();
-                    first = identifierIterator.next();
-                }
-            }
         }
     }
 }

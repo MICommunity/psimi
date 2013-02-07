@@ -1,37 +1,36 @@
 package psidev.psi.mi.jami.utils.collection;
 
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.comparator.xref.AbstractIdentifierComparator;
+import psidev.psi.mi.jami.model.Checksum;
 
-import java.util.TreeSet;
+import java.util.ArrayList;
 
 /**
- * Abstract class for
+ * Abstract checksum list
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>06/02/13</pre>
+ * @since <pre>07/02/13</pre>
  */
 
-public abstract class AbstractXrefTreeSet extends TreeSet<Xref>{
+public abstract class AbstractChecksumList extends ArrayList<Checksum>{
 
-    public AbstractXrefTreeSet(AbstractIdentifierComparator xrefComparator){
-        super(xrefComparator);
+    public AbstractChecksumList(){
+        super();
     }
 
     @Override
-    public boolean add(Xref ref) {
-        boolean added = super.add(ref);
+    public boolean add(Checksum checksum) {
+        boolean added = super.add(checksum);
 
         if (added){
-            processAddedXrefEvent();
+            processAddedChecksumEvent(checksum);
             return true;
         }
 
         return false;
     }
 
-    protected abstract void processAddedXrefEvent();
+    protected abstract void processAddedChecksumEvent(Checksum added);
 
     @Override
     public boolean remove(Object o) {
@@ -41,7 +40,7 @@ public abstract class AbstractXrefTreeSet extends TreeSet<Xref>{
                 clearProperties();
             }
             else {
-                processRemovedXrefEvent();
+                processRemovedChecksumEvent((Checksum) o);
             }
 
             return true;
@@ -49,7 +48,7 @@ public abstract class AbstractXrefTreeSet extends TreeSet<Xref>{
         return false;
     }
 
-    protected abstract void processRemovedXrefEvent();
+    protected abstract void processRemovedChecksumEvent(Checksum removed);
 
     @Override
     public void clear() {
@@ -59,3 +58,4 @@ public abstract class AbstractXrefTreeSet extends TreeSet<Xref>{
 
     protected abstract void clearProperties();
 }
+
