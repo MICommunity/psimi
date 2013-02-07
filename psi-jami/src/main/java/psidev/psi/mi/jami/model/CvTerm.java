@@ -75,14 +75,14 @@ public interface CvTerm {
     /**
      * The unique PSI-MI identifier which identifies the object in the PSI-MI ontology.
      * It is a shortcut for the first psi-mi identifier in the collection of identifiers.
-     * It will be null if the collection of identifiers does not contain any PSI-MI Xref objects with qualifier 'identity' or 'secondary-ac'
+     * It will be null if the collection of identifiers does not contain any PSI-MI Xref objects
      * @return the unique PSI-MI identifier
      */
     public String getMIIdentifier();
     /**
      * The unique PSI-MOD identifier which identifies the object in the PSI-MOD ontology.
      * It is a shortcut for the first psi-mod identifier in the collection of identifiers.
-     * It will be null if the collection of identifiers does not contain any PSI-MOD Xref objects with qualifier 'identity' or 'secondary-ac'
+     * It will be null if the collection of identifiers does not contain any PSI-MOD Xref objects
      * @return the unique PSI-MOD identifier
      */
     public String getMODIdentifier();
@@ -90,7 +90,7 @@ public interface CvTerm {
     /**
      * Sets the PSI-MI identifier.
      * It will remove the previous PSI-MI identifier from the collection of identifiers, and add the new one in the collection of identifiers
-     * with qualifier identity. If mi is null, it will remove all the psi-mi identifiers (identity and secondary-ac) from the
+     * with qualifier identity. If mi is null, it will remove all the psi-mi identifiers from the
      * collection of identifiers.
      * @param mi : mi identifier
      */
@@ -99,7 +99,7 @@ public interface CvTerm {
     /**
      * Sets the PSI-MOD identifier.
      * It will remove the previous PSI-MOD identifier from the collection of xrefs, and add the new one in the collection of identifiers
-     * with qualifier identity. If mod is null, it will remove all the psi-mod identifiers (identity and secondary-ac) from the
+     * with qualifier identity. If mod is null, it will remove all the psi-mod identifiers from the
      * collection of identifiers.
      * @param mod : mod identifier
      */

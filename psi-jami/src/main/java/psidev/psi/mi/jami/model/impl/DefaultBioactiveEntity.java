@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractChecksumList;
-import psidev.psi.mi.jami.utils.collection.AbstractIdentifierList;
+import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactBioactiveEntityComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -181,7 +181,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         return UnambiguousExactBioactiveEntityComparator.areEquals(this, (BioactiveEntity) o);
     }
 
-    private class BioctiveEntityIdentifierList extends AbstractIdentifierList {
+    private class BioctiveEntityIdentifierList extends AbstractXrefList {
         public BioctiveEntityIdentifierList(){
             super();
         }

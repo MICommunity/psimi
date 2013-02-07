@@ -1,13 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.cv;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.XrefsCollectionComparator;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Unambiguous comparator for CvTerms :
@@ -27,7 +21,6 @@ import java.util.List;
 public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
 
     private static UnambiguousCvTermComparator unambiguousCvTermComparator;
-    private XrefsCollectionComparator xrefCollectionComparator;
 
     /**
      * Creates a new CvTermComparator with UnambiguousExternalIdentifierComparator
@@ -35,16 +28,11 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
      */
     public UnambiguousCvTermComparator() {
         super(new UnambiguousExternalIdentifierComparator());
-        this.xrefCollectionComparator = new XrefsCollectionComparator(this.identifierComparator);
     }
 
     @Override
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
         return (UnambiguousExternalIdentifierComparator) identifierComparator;
-    }
-
-    public XrefsCollectionComparator getXrefCollectionComparator() {
-        return xrefCollectionComparator;
     }
 
     /**
@@ -75,17 +63,37 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
             return BEFORE;
         }
         else {
-            // first compares identifiers if one CvTerm have identifiers.
-            if (!cvTerm1.getIdentifiers().isEmpty() || !cvTerm2.getIdentifiers().isEmpty()){
+            // first compares mi identifiers.
+            String mi1 = cvTerm1.getMIIdentifier();
+            String mi2 = cvTerm2.getMIIdentifier();
+            String mod1 = cvTerm1.getMODIdentifier();
+            String mod2 = cvTerm2.getMODIdentifier();
 
-                return xrefCollectionComparator.compare(cvTerm1.getIdentifiers(), cvTerm2.getIdentifiers());
+            if (mi1 != null && mi2 != null){
+                return mi1.compareTo(mi2);
             }
+            else if (mi1 != null){
+                return BEFORE;
+            }
+            else if (mi2 != null){
+                return AFTER;
+            }
+            else if (mod1 != null && mod2 != null){
+                return mod1.compareTo(mod2);
+            }
+            else if (mod1 != null){
+                return BEFORE;
+            }
+            else if (mod2 != null){
+                return AFTER;
+            }
+            else {
+                // check names which cannot be null because we could not compare the identifiers
+                String label1 = cvTerm1.getShortName();
+                String label2 = cvTerm2.getShortName();
 
-            // check names which cannot be null because we could not compare the identifiers
-            String label1 = cvTerm1.getShortName();
-            String label2 = cvTerm2.getShortName();
-
-            return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
+                return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
+            }
         }
     }
 
@@ -119,13 +127,11 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
 
         int hashcode = 31;
 
-        if (!cv1.getIdentifiers().isEmpty()){
-            List<Xref> list1 = new ArrayList<Xref>(cv1.getIdentifiers());
-
-            Collections.sort(list1, unambiguousCvTermComparator.getIdentifierComparator());
-            for (Xref x : list1){
-                hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(x);
-            }
+        if (cv1.getMIIdentifier() != null){
+            hashcode = 31*hashcode + (cv1.getMIIdentifier() != null ? cv1.getMIIdentifier().hashCode() : 0);
+        }
+        else if (cv1.getMODIdentifier() != null){
+            hashcode = 31*hashcode + (cv1.getMODIdentifier() != null ? cv1.getMODIdentifier().hashCode() : 0);
         }
         else {
             hashcode = 31*hashcode + cv1.getShortName().toLowerCase().trim().hashCode();
