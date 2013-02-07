@@ -12,9 +12,9 @@ import java.util.ArrayList;
  * @since <pre>06/02/13</pre>
  */
 
-public abstract class AbstractIdentifierList extends ArrayList<Xref> {
+public abstract class AbstractXrefList extends ArrayList<Xref> {
 
-    public AbstractIdentifierList(){
+    public AbstractXrefList(){
         super();
     }
 

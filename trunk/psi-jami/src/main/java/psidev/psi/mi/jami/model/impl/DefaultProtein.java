@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractAliasList;
 import psidev.psi.mi.jami.utils.collection.AbstractChecksumList;
-import psidev.psi.mi.jami.utils.collection.AbstractIdentifierList;
+import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactProteinComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -187,7 +187,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         return UnambiguousExactProteinComparator.areEquals(this, (Protein) o);
     }
 
-    private class ProteinIdentifierList extends AbstractIdentifierList {
+    private class ProteinIdentifierList extends AbstractXrefList {
         public ProteinIdentifierList(){
             super();
         }

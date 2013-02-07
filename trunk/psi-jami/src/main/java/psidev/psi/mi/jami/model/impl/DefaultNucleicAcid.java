@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.NucleicAcid;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractIdentifierList;
+import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactNucleicAcidComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -131,7 +131,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         return ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : (refseq != null ? refseq.getId() : super.toString());
     }
 
-    private class NucleicAcidIdentifierList extends AbstractIdentifierList {
+    private class NucleicAcidIdentifierList extends AbstractXrefList {
         public NucleicAcidIdentifierList(){
             super();
         }

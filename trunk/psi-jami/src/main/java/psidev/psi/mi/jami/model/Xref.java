@@ -17,10 +17,6 @@ package psidev.psi.mi.jami.model;
 
 public interface Xref {
 
-    public static String IDENTITY = "identity";
-    public static String IDENTITY_MI = "MI:0356";
-    public static String SECONDARY = "secondary-ac";
-    public static String SECONDARY_MI = "MI:0360";
     public static String ENSEMBL = "ensembl";
     public static String ENSEMBL_ID = "MI:0476";
     public static String ENSEMBL_GENOMES = "ensemblgenomes";
@@ -37,9 +33,17 @@ public interface Xref {
     public static String UNIPROTKB_ID = "MI:0486";
     public static String IMEX = "imex";
     public static String IMEX_ID = "MI:0670";
+    public static String PUBMED = "pubmed";
+    public static String PUBMED_MI = "MI:0446";
+    public static String DOI = "doi";
+    public static String DOI_MI = "MI:0574";
 
     public static String IMEX_PRIMARY = "imex-primary";
     public static String IMEX_PRIMARY_ID = "MI:0662";
+    public static String IDENTITY = "identity";
+    public static String IDENTITY_MI = "MI:0356";
+    public static String SECONDARY = "secondary-ac";
+    public static String SECONDARY_MI = "MI:0360";
 
     /**
      * The database is a controlled vocabulary term. It cannot be null.

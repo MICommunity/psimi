@@ -37,8 +37,8 @@ public class UnambiguousCvTermComparatorTest {
         // chebi identifier
         CvTerm term2 = CvTermFactory.createChebiDatabase();
 
-        Assert.assertTrue(comparator.compare(term1, term2) < 0);
-        Assert.assertTrue(comparator.compare(term2, term1) > 0);
+        Assert.assertTrue(comparator.compare(term1, term2) > 0);
+        Assert.assertTrue(comparator.compare(term2, term1) < 0);
 
         Assert.assertFalse(UnambiguousCvTermComparator.areEquals(term1, term2));
         Assert.assertTrue(UnambiguousCvTermComparator.hashCode(term1) != UnambiguousCvTermComparator.hashCode(term2));

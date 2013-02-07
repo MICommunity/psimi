@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Default comparator for CvTerms.
- * If one CvTerm does not have any identifiers, it will only compare the short names (case insensitive).
+ * If one CvTerm does not have any identifiers (MOD or MI, then the all identifiers), it will only compare the short names (case insensitive).
  * If both CvTerm objects have identifiers, it will look for at least one identical identifier using DefaultExternalIdentifierComparator and ignores all the other properties.
  *
  * - Two CvTerms which are null are equals
@@ -65,8 +65,20 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
             return BEFORE;
         }
         else {
+            // first compares mi identifiers.
+            String mi1 = cvTerm1.getMIIdentifier();
+            String mi2 = cvTerm2.getMIIdentifier();
+            String mod1 = cvTerm1.getMODIdentifier();
+            String mod2 = cvTerm2.getMODIdentifier();
+
             // first compares identifiers if both CvTerms have identifiers.
-            if (!cvTerm1.getIdentifiers().isEmpty() && !cvTerm2.getIdentifiers().isEmpty()){
+            if (mi1 != null && mi2 != null){
+                return mi1.compareTo(mi2);
+            }
+            else if (mod2 != null && mod1 != null){
+                return mod1.compareTo(mod2);
+            }
+            else if (!cvTerm1.getIdentifiers().isEmpty() && !cvTerm2.getIdentifiers().isEmpty()){
                 List<Xref> ids1 = new ArrayList<Xref>(cvTerm1.getIdentifiers());
                 List<Xref> ids2 = new ArrayList<Xref>(cvTerm2.getIdentifiers());
                 // sort the collections first
@@ -109,12 +121,13 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
 
                 return comp;
             }
+            else {
+                // check names which cannot be null because we could not compare the identifiers
+                String label1 = cvTerm1.getShortName();
+                String label2 = cvTerm2.getShortName();
 
-            // check names which cannot be null because we could not compare the identifiers
-            String label1 = cvTerm1.getShortName();
-            String label2 = cvTerm2.getShortName();
-
-            return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
+                return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
+            }
         }
     }
 

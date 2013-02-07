@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractIdentifierList;
+import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactGeneComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
@@ -178,7 +178,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         return ensembl != null ? ensembl.getId() : (ensemblGenome != null ? ensemblGenome.getId() : (entrezGeneId != null ? entrezGeneId.getId() : (refseq != null ? refseq.getId() : super.toString())));
     }
 
-    private class GeneIdentifierList extends AbstractIdentifierList {
+    private class GeneIdentifierList extends AbstractXrefList {
         public GeneIdentifierList(){
             super();
         }

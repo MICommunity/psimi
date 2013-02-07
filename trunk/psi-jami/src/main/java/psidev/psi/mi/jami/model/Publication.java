@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.model;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A scientific publication which has been curated by an interaction database.
@@ -16,23 +15,52 @@ import java.util.Set;
 public interface Publication {
 
     /**
-     * The publication identifier. Usually a pubmed id or DOI number, it could also refers to a
+     * The pubmed identifier which identifies the publication.
+     * It is a shortcut for the first pubmed identifier in the collection of identifiers.
+     * It will be null if the collection of identifiers does not contain any pubmed identifiers.
+     * @return the pubmed identifier
+     */
+    public String getPubmedId();
+
+    /**
+     * Sets the pubmed identifier.
+     * It will remove the previous pubmed identifier from the collection of identifiers, and add the new one in the collection of identifiers
+     * with qualifier identity. If pubmedId is null, it will remove all the pubmed identifiers from the
+     * collection of identifiers.
+     * @param pubmedId
+     */
+    public void setPubmedId(String pubmedId);
+
+    /**
+     * The doi number which identifies the publication.
+     * It is a shortcut for the first doi in the collection of identifiers.
+     * It will be null if the collection of identifiers does not contain any doi.
+     * @return the doi number
+     */
+    public String getDoi();
+
+    /**
+     * Sets the doi.
+     * It will remove the previous doi from the collection of identifiers, and add the new one in the collection of identifiers
+     * with qualifier identity. If doi is null, it will remove all the doi from the
+     * collection of identifiers.
+     * @param doi
+     */
+    public void setDoi(String doi);
+
+    /**
+     * The publication identifiers. Usually a publication only has one pubmed id or DOI number, but it could also have a
      * database internal identifier if the publication is not published yet.
-     * The identifier could be null if the publications is not published or will not be published in a journal
+     * The Collection cannot be null. If the publication does not have any identifiers, the method should return an empty Collection
      * Ex: pubmed:14681455
      * @return the publication identifier
      */
-    public ExternalIdentifier getIdentifier();
-
-    /**
-     * Set the publication identifier
-     * @param identifier : publication identifier
-     */
-    public void setIdentifier(ExternalIdentifier identifier);
+    public Collection<Xref> getIdentifiers();
 
     /**
      * IMEx identifier of the publication if it has been registered in IMEx central as a publication curated following IMEx curation rules.
      * It can be null if the publication is not registered in IMEx central or does not follow the IMEx curation rules.
+     * It is a shortcut to the first IMEx imex-primary reference in the list of xrefs.
      * Ex: IM-123
      * @return the IMEx identifier
      */
@@ -40,10 +68,10 @@ public interface Publication {
 
     /**
      * Assign an IMEx id to a publication.
+     * It will add a Xref imex with qualifier imex-primary to the list of xrefs.
      * @param identifier : the IMEx id from IMEx central
      * @throws IllegalArgumentException if
-     * - the identifier is null, empty or not a valid IMEx identifier
-     * - the publication already has an IMEx identifier
+     * - the identifier is null or empty
      */
     public void assignImexId(String identifier);
 
@@ -94,19 +122,19 @@ public interface Publication {
 
     /**
      * Other cross references which give more information about the publication.
-     * It cannot be null. If the publication does not have any xrefs, the method should return an empty set.
+     * It cannot be null. If the publication does not have any xrefs, the method should return an empty Collection.
      * Ex: other primary references such as DOI : 10.1023/A:1005823620291
      * @return the xrefs
      */
-    public Set<Xref> getXrefs();
+    public Collection<Xref> getXrefs();
 
     /**
      * Other publication annotations which can give more information about the curated publication.
-     * It cannot be null. If the publication does not have any other annotations, the method should return an empty Set.
+     * It cannot be null. If the publication does not have any other annotations, the method should return an empty Collection.
      * Ex: topic = dataset value = Cyanobacteria - Interaction dataset based on Cyanobacteria proteins and related species
      * @return the annotations
      */
-    public Set<Annotation> getAnnotations();
+    public Collection<Annotation> getAnnotations();
 
     /**
      * The curated experiments which have been described in the publication.

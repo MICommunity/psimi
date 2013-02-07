@@ -76,6 +76,14 @@ public class CvTermFactory {
         return createMICvTerm(Xref.IMEX, Xref.IMEX_ID);
     }
 
+    public static CvTerm createPubmedDatabase(){
+        return createMICvTerm(Xref.PUBMED_MI, Xref.PUBMED);
+    }
+
+    public static CvTerm createDoiDatabase(){
+        return createMICvTerm(Xref.DOI_MI, Xref.DOI);
+    }
+
     public static CvTerm createSmile(){
         return createMICvTerm(Checksum.SMILE, Checksum.SMILE_ID);
     }
