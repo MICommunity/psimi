@@ -170,8 +170,8 @@ public class ExactXrefComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) < 0);
         Assert.assertTrue(comparator.compare(id2, id1) > 0);
-        Assert.assertFalse(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) != UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertFalse(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) != ExactXrefComparator.hashCode(id2));
 
     }
 
@@ -182,8 +182,8 @@ public class ExactXrefComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) != 0);
         Assert.assertTrue(comparator.compare(id2, id1) != 0);
-        Assert.assertFalse(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) != UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertFalse(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) != ExactXrefComparator.hashCode(id2));
 
     }
 
@@ -195,8 +195,8 @@ public class ExactXrefComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) > 0);
         Assert.assertTrue(comparator.compare(id2, id1) < 0);
 
-        Assert.assertFalse(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) != UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertFalse(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) != ExactXrefComparator.hashCode(id2));
     }
 
     @Test
@@ -207,8 +207,8 @@ public class ExactXrefComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
 
-        Assert.assertTrue(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) == UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertTrue(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) == ExactXrefComparator.hashCode(id2));
     }
 
     @Test
@@ -219,8 +219,8 @@ public class ExactXrefComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) > 0);
         Assert.assertTrue(comparator.compare(id2, id1) < 0);
 
-        Assert.assertFalse(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) != UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertFalse(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) != ExactXrefComparator.hashCode(id2));
     }
 
     @Test
@@ -231,8 +231,8 @@ public class ExactXrefComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
 
-        Assert.assertTrue(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) == UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertTrue(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) == ExactXrefComparator.hashCode(id2));
     }
 
     @Test
@@ -243,8 +243,8 @@ public class ExactXrefComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
 
-        Assert.assertTrue(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) == UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertTrue(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) == ExactXrefComparator.hashCode(id2));
     }
 
     @Test
@@ -255,8 +255,8 @@ public class ExactXrefComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) != 0);
         Assert.assertTrue(comparator.compare(id2, id1) != 0);
 
-        Assert.assertFalse(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) != UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertFalse(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) != ExactXrefComparator.hashCode(id2));
     }
 
     @Test
@@ -267,7 +267,7 @@ public class ExactXrefComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) != 0);
         Assert.assertTrue(comparator.compare(id2, id1) != 0);
 
-        Assert.assertFalse(UnambiguousXrefComparator.areEquals(id1, id2));
-        Assert.assertTrue(UnambiguousXrefComparator.hashCode(id1) != UnambiguousXrefComparator.hashCode(id2));
+        Assert.assertFalse(ExactXrefComparator.areEquals(id1, id2));
+        Assert.assertTrue(ExactXrefComparator.hashCode(id1) != ExactXrefComparator.hashCode(id2));
     }
 }
