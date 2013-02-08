@@ -28,6 +28,22 @@ public interface Interaction<P extends Participant> {
     public void setShortName(String name);
 
     /**
+     * The checksum computed from the rogids from all the proteins involved in the interaction.
+     * It is only relevant for protein-protein interactions.
+     * This is a shortcut to the first rigid in the list of checksums
+     * @return the rigid
+     */
+    public String getRigid();
+
+    /**
+     * Sets the rigid of this interaction.
+     * It will remove the previous rigid from the list of checksum and add the new one.
+     * If rigid is null, it will remove all the rigid in the list of checksum
+     * @param rigid: the rigid
+     */
+    public void setRigid(String rigid);
+
+    /**
      * The identifiers for an interaction.
      * The Collection cannot be null. If the interaction does not have any identifiers (IMEx is not among the identifiers), the method should return an emtpy Collection.
      * Ex: original interaction database accession, ...
@@ -42,6 +58,14 @@ public interface Interaction<P extends Participant> {
      * @return the xrefs
      */
     public Collection<Xref> getXrefs();
+
+    /**
+     * Set of checksums computed for this interaction..
+     * The Collection cannot be null so when an interaction does not have a checksum, the method should return an empty Collection
+     * Ex: rigid:u1FCes02jPb3CGRj1aDkzpbSiuI9606, ...
+     * @return the set of checksums
+     */
+    public Collection<Checksum> getChecksums();
 
     /**
      * The Collection of annotations describing the interaction.
