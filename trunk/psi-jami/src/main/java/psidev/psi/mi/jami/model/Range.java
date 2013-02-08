@@ -10,6 +10,14 @@ package psidev.psi.mi.jami.model;
 
 public interface Range {
 
+    public static final String POSITION_SEPARATOR = "-";
+    public static final String N_TERMINAL_POSITION_SYMBOL = "n";
+    public static final String C_TERMINAL_POSITION_SYMBOL = "c";
+    public static final String UNDETERMINED_POSITION_SYMBOL = "?";
+    public static final String FUZZY_POSITION_SYMBOL = "..";
+    public static final String GREATER_THAN_POSITION_SYMBOL = ">";
+    public static final String LESS_THAN_POSITION_SYMBOL = "<";
+
     /**
      * The start position of the feature range in the interactor sequence
      * It cannot be null

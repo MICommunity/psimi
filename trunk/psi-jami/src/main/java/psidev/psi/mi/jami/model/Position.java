@@ -40,6 +40,15 @@ public interface Position {
     public static final String RANGE_FULL = "range";
     public static final String RANGE_MI = "MI:0338";
 
+    public static final String GREATER_THAN = "greater-than";
+    public static final String GREATER_THAN_FULL = "greater-than";
+    public static final String GREATER_THAN_MI = "MI:0336";
+
+    public static final String LESS_THAN = "less-than";
+    public static final String LESS_THAN_FULL = "less-than";
+    public static final String LESS_THAN_MI = "MI:0337";
+
+
     /**
      * The range status is a controlled vocabulary term which cannot be null.
      * It gives more information about the position.

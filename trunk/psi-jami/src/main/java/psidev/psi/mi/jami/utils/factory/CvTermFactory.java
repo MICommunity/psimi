@@ -32,6 +32,15 @@ public class CvTermFactory {
         }
     }
 
+    public static CvTerm createMODCvTerm(String name, String MOD){
+        if (MOD != null){
+            return new DefaultCvTerm(name, new DefaultXref(CvTermUtils.getPsimod(), MOD, CvTermUtils.getIdentity()));
+        }
+        else {
+            return new DefaultCvTerm(name);
+        }
+    }
+
     public static CvTerm createPsiMiDatabase(){
         return createMICvTerm(CvTerm.PSI_MI, CvTerm.PSI_MI_MI);
     }
@@ -134,6 +143,14 @@ public class CvTermFactory {
 
     public static CvTerm createRaggedNTerminalStatus(){
         return createMICvTerm(Position.RAGGED_N_TERMINAL, Position.RAGGED_N_TERMINAL_MI);
+    }
+
+    public static CvTerm createGreaterThanRangeStatus(){
+        return createMICvTerm(Position.GREATER_THAN, Position.GREATER_THAN_MI);
+    }
+
+    public static CvTerm createLessThanRangeStatus(){
+        return createMICvTerm(Position.LESS_THAN, Position.LESS_THAN_MI);
     }
 
     public static CvTerm createGeneInteractorType(){
