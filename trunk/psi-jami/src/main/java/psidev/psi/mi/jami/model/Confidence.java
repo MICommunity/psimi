@@ -10,6 +10,8 @@ package psidev.psi.mi.jami.model;
 
 public interface Confidence {
 
+    public static final String AUTHOR_BASED_CONFIDENCE = "author-based confidence";
+    public static final String AUTHOR_BASED_CONFIDENCE_MI = "MI:1221";
     /**
      * Method used to compute the confidence value.
      * The confidence type is a controlled vocabulary term and it cannot be null.
