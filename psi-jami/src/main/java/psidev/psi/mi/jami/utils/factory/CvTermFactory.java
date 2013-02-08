@@ -113,6 +113,10 @@ public class CvTermFactory {
         return createMICvTerm(Checksum.ROGID, Checksum.ROGID_MI);
     }
 
+    public static CvTerm createRigid(){
+        return createMICvTerm(Checksum.RIGID, Checksum.RIGID_MI);
+    }
+
     public static CvTerm createCertainStatus(){
         return createMICvTerm(Position.CERTAIN, Position.CERTAIN_MI);
     }
