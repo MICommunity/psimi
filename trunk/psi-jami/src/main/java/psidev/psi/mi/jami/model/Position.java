@@ -32,6 +32,14 @@ public interface Position {
     public static final String C_TERMINAL_FULL = "c-terminal position";
     public static final String C_TERMINAL_MI = "MI:0334";
 
+    public static final String CERTAIN = "certain";
+    public static final String CERTAIN_FULL = "certain sequence position";
+    public static final String CERTAIN_MI = "MI:0335";
+
+    public static final String RANGE = "range";
+    public static final String RANGE_FULL = "range";
+    public static final String RANGE_MI = "MI:0338";
+
     /**
      * The range status is a controlled vocabulary term which cannot be null.
      * It gives more information about the position.

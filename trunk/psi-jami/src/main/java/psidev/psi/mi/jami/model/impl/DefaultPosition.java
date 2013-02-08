@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.logging.Logger;
@@ -25,7 +26,22 @@ public class DefaultPosition implements Position, Serializable {
 
     private static final Logger log = Logger.getLogger("DefaultPosition");
 
-    public DefaultPosition(CvTerm status, int start, int end){
+    /**
+     * Create a new Position with status = range.
+     * @param start : the fuzzy start
+     * @param end : the fuzzy end
+     */
+    public DefaultPosition(int start, int end){
+        if (start > end){
+            throw new IllegalArgumentException("The start cannot be after the end.");
+        }
+        this.start = start;
+        this.end = end;
+        this.status = CvTermFactory.createRangeStatus();
+        isPositionUndetermined = false;
+    }
+
+    public DefaultPosition(CvTerm status, int position){
         if (status == null){
             throw new IllegalArgumentException("The position status is required and cannot be null");
         }
@@ -35,20 +51,35 @@ public class DefaultPosition implements Position, Serializable {
         if (isPositionUndetermined){
             this.start = 0;
             this.end = 0;
-            if (start != 0){
-                log.warning("The exact position is undetermined so start should be 0. Will override given start " + start);
-            }
-            if (end != 0){
-                log.warning("The exact position is undetermined so end should be 0. Will override given end " + end);
-            }
-        }
-        else {
-            if (start > end){
-               throw new IllegalArgumentException("The start cannot be after the end.");
+            if (position != 0){
+                log.warning("The exact position is undetermined so start and end should be 0. Will ignore given position " + position);
             }
 
-            this.start = start;
-            this.end = end;
+        }
+        else {
+
+            this.start = position;
+            this.end = position;
+        }
+    }
+
+    /**
+     * This constructor will create an undetermined status if the position is 0 and a certain status if the position is not 0.
+     *
+     * @param position
+     */
+    public DefaultPosition(int position){
+        if (position == 0){
+            start = position;
+            end = position;
+            this.status = CvTermFactory.createUndeterminedStatus();
+            isPositionUndetermined = true;
+        }
+        else {
+            start = position;
+            end = position;
+            this.status = CvTermFactory.createCertainStatus();
+            isPositionUndetermined = false;
         }
     }
 

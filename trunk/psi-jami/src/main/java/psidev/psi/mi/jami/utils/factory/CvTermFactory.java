@@ -104,6 +104,14 @@ public class CvTermFactory {
         return createMICvTerm(Checksum.ROGID, Checksum.ROGID_MI);
     }
 
+    public static CvTerm createCertainStatus(){
+        return createMICvTerm(Position.CERTAIN, Position.CERTAIN_MI);
+    }
+
+    public static CvTerm createRangeStatus(){
+        return createMICvTerm(Position.RANGE, Position.RANGE_MI);
+    }
+
     public static CvTerm createUndeterminedStatus(){
         return createMICvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI);
     }
