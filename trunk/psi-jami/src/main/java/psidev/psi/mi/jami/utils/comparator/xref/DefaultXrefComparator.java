@@ -93,11 +93,11 @@ public class DefaultXrefComparator implements Comparator<Xref> {
             if (qualifier1 == null && qualifier2 == null){
                 return EQUAL;
             }
-            else if (qualifier1 != null){
-                return BEFORE;
-            }
-            else if (qualifier2 != null){
+            else if (qualifier1 == null){
                 return AFTER;
+            }
+            else if (qualifier2 == null){
+                return BEFORE;
             }
             else {
                 String qualifierMi1 = qualifier1.getMIIdentifier();

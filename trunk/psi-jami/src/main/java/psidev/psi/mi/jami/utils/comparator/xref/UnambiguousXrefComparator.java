@@ -99,11 +99,11 @@ public class UnambiguousXrefComparator implements Comparator<Xref> {
             if (qualifier1 == null && qualifier2 == null){
                 return EQUAL;
             }
-            else if (qualifier1 != null){
-                return BEFORE;
-            }
-            else if (qualifier2 != null){
+            else if (qualifier1 == null){
                 return AFTER;
+            }
+            else if (qualifier2 == null){
+                return BEFORE;
             }
             else {
                 String qualifierMi1 = qualifier1.getMIIdentifier();
@@ -161,7 +161,7 @@ public class UnambiguousXrefComparator implements Comparator<Xref> {
             hashcode = 31*hashcode + mi1.hashCode();
         }
         else {
-            hashcode = 31*hashcode + database1.getShortName().toLowerCase().hashCode();
+            hashcode = 31*hashcode + database1.getShortName().toLowerCase().trim().hashCode();
         }
 
         hashcode = 31 * hashcode + xref.getId().hashCode();
@@ -174,7 +174,7 @@ public class UnambiguousXrefComparator implements Comparator<Xref> {
                 hashcode = 31*hashcode + qualifierMi.hashCode();
             }
             else {
-                hashcode = 31*hashcode + qualifier.getShortName().toLowerCase().hashCode();
+                hashcode = 31*hashcode + qualifier.getShortName().toLowerCase().trim().hashCode();
             }
         }
 
