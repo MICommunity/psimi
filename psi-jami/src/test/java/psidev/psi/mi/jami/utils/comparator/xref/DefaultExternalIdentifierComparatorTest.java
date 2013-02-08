@@ -25,6 +25,8 @@ public class DefaultExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) > 0);
         Assert.assertTrue(comparator.compare(id2, id1) < 0);
+
+        Assert.assertFalse(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
 
     @Test
@@ -34,6 +36,7 @@ public class DefaultExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
+        Assert.assertTrue(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
 
     @Test
@@ -43,6 +46,8 @@ public class DefaultExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
+
+        Assert.assertTrue(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
 
     @Test
@@ -52,6 +57,8 @@ public class DefaultExternalIdentifierComparatorTest {
 
         Assert.assertEquals(comparator.compare(id1, id2), Xref.UNIPROTKB_MI.compareTo(Xref.CHEBI_MI));
         Assert.assertEquals(comparator.compare(id2, id1), Xref.CHEBI_MI.compareTo(Xref.UNIPROTKB_MI));
+
+        Assert.assertFalse(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
 
     @Test
@@ -61,6 +68,8 @@ public class DefaultExternalIdentifierComparatorTest {
 
         Assert.assertEquals(comparator.compare(id1, id2), Xref.UNIPROTKB.compareTo(Xref.CHEBI));
         Assert.assertEquals(comparator.compare(id2, id1), Xref.CHEBI.compareTo(Xref.UNIPROTKB));
+
+        Assert.assertFalse(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
 
     @Test
@@ -70,6 +79,8 @@ public class DefaultExternalIdentifierComparatorTest {
 
         Assert.assertEquals(comparator.compare(id1, id2), "CHEBI:xx1".compareTo("CHEBI:xx2"));
         Assert.assertEquals(comparator.compare(id2, id1), "CHEBI:xx2".compareTo("CHEBI:xx1"));
+
+        Assert.assertFalse(DefaultExternalIdentifierComparator.areEquals(id1, id2));
     }
 
     @Test
@@ -79,5 +90,18 @@ public class DefaultExternalIdentifierComparatorTest {
 
         Assert.assertTrue(comparator.compare(id1, id2) != 0);
         Assert.assertTrue(comparator.compare(id2, id1) != 0);
+
+        Assert.assertFalse(DefaultExternalIdentifierComparator.areEquals(id1, id2));
+    }
+
+    @Test
+    public void test_ignore_qualifier() throws Exception {
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("chebi", null), "CHEBI:xxx", CvTermFactory.createMICvTerm(Xref.IDENTITY, Xref.IDENTITY_MI));
+        Xref id2 = new DefaultXref(CvTermFactory.createMICvTerm("CheBi ", null), "CHEBI:xxx");
+
+        Assert.assertTrue(comparator.compare(id1, id2) == 0);
+        Assert.assertTrue(comparator.compare(id2, id1) == 0);
+        Assert.assertTrue(DefaultExternalIdentifierComparator.areEquals(id1, id2));
+
     }
 }
