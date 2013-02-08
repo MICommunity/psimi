@@ -41,9 +41,9 @@ public class DefaultCvTermComparatorTest {
     @Test
     public void test_cv_identifier_comparison() throws Exception {
         // uniprokb identifier
-        CvTerm term1 = CvTermFactory.createMICvTerm("chebi", Xref.UNIPROTKB_ID);
+        CvTerm term1 = CvTermFactory.createMICvTerm("chebi", Xref.UNIPROTKB_MI);
         // chebi identifier
-        CvTerm term2 = CvTermFactory.createMICvTerm("chebi", Xref.CHEBI_ID);
+        CvTerm term2 = CvTermFactory.createMICvTerm("chebi", Xref.CHEBI_MI);
 
         Assert.assertTrue(comparator.compare(term1, term2) != 0);
         Assert.assertTrue(comparator.compare(term2, term1) != 0);

@@ -118,11 +118,11 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
                 return comp;
             }
 
-            // then compares the participant identification methods
-            Collection<CvTerm> methods1 = experimentalParticipant1.getIdentificationMethods();
-            Collection<CvTerm> methods2 = experimentalParticipant2.getIdentificationMethods();
+            // then compares the participant identification method
+            CvTerm method1 = experimentalParticipant1.getIdentificationMethod();
+            CvTerm method2 = experimentalParticipant2.getIdentificationMethod();
 
-            comp = cvTermCollectionComparator.compare(methods1, methods2);
+            comp = cvTermCollectionComparator.getObjectComparator().compare(method1, method2);
             if (comp != 0){
                 return comp;
             }

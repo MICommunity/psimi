@@ -11,7 +11,7 @@ package psidev.psi.mi.jami.model;
 public interface Gene extends Interactor{
 
     public static String GENE = "gene";
-    public static String GENE_ID = "MI:0250";
+    public static String GENE_MI = "MI:0250";
 
     /**
      * The unique Ensembl accession which identifies the gene.

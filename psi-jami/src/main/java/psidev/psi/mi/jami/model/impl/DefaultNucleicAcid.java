@@ -68,16 +68,17 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         // add new ddbj/embl/genbank if not null
         if (id != null){
             CvTerm ddbjEmblGenbankDatabase = CvTermFactory.createDdbjEmblGenbankDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old ddbj/embl/genbank if not null
             if (this.ddbjEmblGenbank != null){
                 identifiers.remove(this.ddbjEmblGenbank);
             }
-            this.ddbjEmblGenbank = new DefaultExternalIdentifier(ddbjEmblGenbankDatabase, id);
+            this.ddbjEmblGenbank = new DefaultXref(ddbjEmblGenbankDatabase, id, identityQualifier);
             this.identifiers.add(this.ddbjEmblGenbank);
         }
         // remove all ddbj/embl/genbank if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK);
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
             this.ddbjEmblGenbank = null;
         }
     }
@@ -90,16 +91,17 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         // add new refseq if not null
         if (id != null){
             CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
                 identifiers.remove(this.refseq);
             }
-            this.refseq = new DefaultExternalIdentifier(refseqDatabase, id);
+            this.refseq = new DefaultXref(refseqDatabase, id, identityQualifier);
             this.identifiers.add(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_ID, Xref.REFSEQ);
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
@@ -139,7 +141,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         @Override
         protected void processAddedXrefEvent(Xref added) {
             // the added identifier is ddbj/embl/genbank and it is not the current ddbj/embl/genbank identifier
-            if (ddbjEmblGenbank != added && XrefUtils.isXrefFromDatabase(added, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK)){
+            if (ddbjEmblGenbank != added && XrefUtils.isXrefFromDatabase(added, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK)){
                 // the current ddbj/embl/genbank identifier is not identity, we may want to set ddbj/embl/genbank Identifier
                 if (!XrefUtils.doesXrefHaveQualifier(ddbjEmblGenbank, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the ddbj/embl/genbank identifier is not set, we can set the ddbj/embl/genbank identifier
@@ -157,7 +159,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
                 }
             }
             // the added identifier is refseq id and it is not the current refseq id
-            else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_ID, Xref.REFSEQ)){
+            else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_MI, Xref.REFSEQ)){
                 // the current refseq id is not identity, we may want to set refseq id
                 if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the refseq id is not set, we can set the refseq id
@@ -179,10 +181,10 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         @Override
         protected void processRemovedXrefEvent(Xref removed) {
             if (ddbjEmblGenbank == removed){
-                ddbjEmblGenbank = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.DDBJ_EMBL_GENBANK_ID, Xref.DDBJ_EMBL_GENBANK);
+                ddbjEmblGenbank = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
             }
             else if (refseq == removed){
-                refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_ID, Xref.REFSEQ);
+                refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_MI, Xref.REFSEQ);
             }
         }
 

@@ -34,12 +34,12 @@ public class DefaultPublication implements Publication, Serializable {
     private Xref doi;
     private Xref imexId;
 
-    public DefaultPublication(ExternalIdentifier identifier){
+    public DefaultPublication(Xref identifier){
         this.authors = new ArrayList<String>();
-        this.xrefs = new ArrayList<Xref>();
+        this.xrefs = new PublicationXrefList();
         this.annotations = new ArrayList<Annotation>();
         this.experiments = new ArrayList<Experiment>();
-        this.identifiers = new PublicationXrefList();
+        this.identifiers = new PublicationIdentifierList();
         this.curationDepth = CurationDepth.undefined;
 
         if (identifier != null){
@@ -47,24 +47,24 @@ public class DefaultPublication implements Publication, Serializable {
         }
     }
 
-    public DefaultPublication(ExternalIdentifier identifier, CurationDepth curationDepth){
+    public DefaultPublication(Xref identifier, CurationDepth curationDepth){
         this(identifier);
         if (curationDepth != null){
             this.curationDepth = curationDepth;
         }
     }
 
-    public DefaultPublication(ExternalIdentifier identifier, String imexId){
+    public DefaultPublication(Xref identifier, String imexId){
         this(identifier, CurationDepth.IMEx);
         assignImexId(imexId);
     }
 
     public DefaultPublication(String pubmed){
         this.authors = new ArrayList<String>();
-        this.xrefs = new ArrayList<Xref>();
+        this.xrefs = new PublicationXrefList();
         this.annotations = new ArrayList<Annotation>();
         this.experiments = new ArrayList<Experiment>();
-        this.identifiers = new PublicationXrefList();
+        this.identifiers = new PublicationIdentifierList();
         this.curationDepth = CurationDepth.undefined;
 
         if (pubmed != null){
@@ -90,10 +90,10 @@ public class DefaultPublication implements Publication, Serializable {
         this.publicationDate = publicationDate;
 
         this.authors = new ArrayList<String>();
-        this.xrefs = new ArrayList<Xref>();
+        this.xrefs = new PublicationXrefList();
         this.annotations = new ArrayList<Annotation>();
         this.experiments = new ArrayList<Experiment>();
-        this.identifiers = new PublicationXrefList();
+        this.identifiers = new PublicationIdentifierList();
         this.curationDepth = CurationDepth.undefined;
     }
 
@@ -170,10 +170,10 @@ public class DefaultPublication implements Publication, Serializable {
             CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
             // first remove old doi if not null
             if (this.imexId != null){
-                identifiers.remove(this.imexId);
+                xrefs.remove(this.imexId);
             }
             this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
-            this.identifiers.add(this.imexId);
+            this.xrefs.add(this.imexId);
         }
         else {
             throw new IllegalArgumentException("The imex id has to be non null.");
@@ -338,9 +338,9 @@ public class DefaultPublication implements Publication, Serializable {
         protected void processAddedXrefEvent(Xref added) {
 
             // the added identifier is imex and the current imex is not set
-            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_ID, Xref.IMEX)){
+            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
                 // the added xref is imex-primary
-                if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_ID, Xref.IMEX_PRIMARY)){
+                if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
                     imexId = added;
                 }
             }

@@ -12,7 +12,7 @@ package psidev.psi.mi.jami.model;
 public interface Annotation {
 
     public static String COMPLEX_PROPERTIES="complex-properties";
-    public static String COMPLEX_PROPERTIES_ID="MI:0629";
+    public static String COMPLEX_PROPERTIES_MI ="MI:0629";
     /**
      * The annotation topic is a controlled vocabulary term and it cannot be null.
      * Ex: dataset, comment, caution, ...

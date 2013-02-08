@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -55,7 +54,7 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         this.bibRef = bibRef;
     }
 
-    public DefaultSource(String shortName, String fullName, Xref ontologyId, String def, String url, String address, ExternalIdentifier bibRef) {
+    public DefaultSource(String shortName, String fullName, Xref ontologyId, String def, String url, String address, Xref bibRef) {
         super(shortName, fullName, ontologyId, def);
         this.url = url;
         this.postalAddress = address;
@@ -88,7 +87,7 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         this.bibRef = bibRef;
     }
 
-    public DefaultSource(String shortName, String fullName, String miId, String def, String url, String address, ExternalIdentifier bibRef) {
+    public DefaultSource(String shortName, String fullName, String miId, String def, String url, String address, Xref bibRef) {
         super(shortName, fullName, miId, def);
         this.url = url;
         this.postalAddress = address;

@@ -14,8 +14,8 @@ import java.util.List;
 
 /**
  * Unambiguous feature comparator.
- * It will look first at the feature types using a UnambiguousCvTermComparator. If the feature types are the same, it will look at
- * the ranges using UnambiguousRangeComparator.
+ * It will look first at the feature types using a UnambiguousCvTermComparator. If the feature types are the same, it will compare the interpro identifiers.
+ * if interpro identifiers are the same, it will look at the ranges using UnambiguousRangeComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -36,8 +36,8 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
 
     @Override
     /**
-     * It will look first at the feature types using a UnambiguousCvTermComparator. If the feature types are the same, it will look at
-     * the ranges using UnambiguousRangeComparator.
+     * It will look first at the feature types using a UnambiguousCvTermComparator. If the feature types are the same, it will compare the interpro identifiers.
+     * if interpro identifiers are the same, it will look at the ranges using UnambiguousRangeComparator.
      */
     public int compare(Feature feature1, Feature feature2) {
         int EQUAL = 0;
@@ -61,6 +61,22 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
             int comp = cvTermComparator.compare(type1, type2);
             if (comp != 0){
                 return comp;
+            }
+
+            String interpro1 = feature1.getInterpro();
+            String interpro2 = feature2.getInterpro();
+
+            if (interpro1 != null && interpro2 != null){
+                comp = interpro1.compareTo(interpro2);
+                if (comp != 0){
+                    return comp;
+                }
+            }
+            else if (interpro1 != null){
+                return BEFORE;
+            }
+            else if (interpro2 != null){
+                return AFTER;
             }
 
             // then compares the ranges
@@ -111,6 +127,7 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
 
         int hashcode = 31;
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(feature.getType());
+        hashcode = 31*hashcode + (feature.getInterpro() != null ? feature.getInterpro().hashCode() : 0);
         List<Range> list1 = new ArrayList<Range>(feature.getRanges());
 
         Collections.sort(list1, unambiguousFeatureComparator.getRangeCollectionComparator().getObjectComparator());

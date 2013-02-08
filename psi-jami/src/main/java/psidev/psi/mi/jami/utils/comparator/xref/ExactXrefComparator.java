@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.xref;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
 import psidev.psi.mi.jami.model.Xref;
 
 /**

@@ -3,9 +3,8 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousExperimentComparator;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Default implementation for Experiment
@@ -19,8 +18,8 @@ public class DefaultExperiment implements Experiment {
 
     private Publication publication;
     private String shortLabel;
-    private Set<Xref> xrefs;
-    private Set<Annotation> annotations;
+    private Collection<Xref> xrefs;
+    private Collection<Annotation> annotations;
     private CvTerm interactionDetectionMethod;
     private Organism horstOrganism;
     private Collection<ExperimentalInteraction> interactions;
@@ -35,9 +34,9 @@ public class DefaultExperiment implements Experiment {
         }
         this.interactionDetectionMethod = interactionDetectionMethod;
 
-        this.xrefs = new HashSet<Xref>();
-        this.annotations = new HashSet<Annotation>();
-        this.interactions = new HashSet<ExperimentalInteraction>();
+        this.xrefs = new ArrayList<Xref>();
+        this.annotations = new ArrayList<Annotation>();
+        this.interactions = new ArrayList<ExperimentalInteraction>();
     }
 
     public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod){
@@ -74,11 +73,11 @@ public class DefaultExperiment implements Experiment {
         this.shortLabel = name;
     }
 
-    public Set<Xref> getXrefs() {
+    public Collection<Xref> getXrefs() {
         return this.xrefs;
     }
 
-    public Set<Annotation> getAnnotations() {
+    public Collection<Annotation> getAnnotations() {
         return this.annotations;
     }
 

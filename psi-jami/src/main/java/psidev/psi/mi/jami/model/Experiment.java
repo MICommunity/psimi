@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.model;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * Experiment in which some interactions has been determined.
@@ -42,20 +41,20 @@ public interface Experiment {
     public void setShortLabel(String name);
 
     /**
-     * Set of cross references for an experiment which can give more information about the experiment.
-     * It cannot be null and if the experiment does not have any xrefs, the method should return an empty set.
+     * Collection of cross references for an experiment which can give more information about the experiment.
+     * It cannot be null and if the experiment does not have any xrefs, the method should return an empty Collection.
      * Ex: PRIDE experiment/project xrefs
      * @return the xrefs
      */
-    public Set<Xref> getXrefs();
+    public Collection<Xref> getXrefs();
 
     /**
-     * Set of annotations for an experiment.
-     * It cannot be null. If the experiment does not have any annotations, the method should return an empty set.
+     * Collection of annotations for an experiment.
+     * It cannot be null. If the experiment does not have any annotations, the method should return an empty Collection.
      * Ex: data-processing, comments, cautions, confidence-mapping annotations
      * @return the annotations
      */
-    public Set<Annotation> getAnnotations();
+    public Collection<Annotation> getAnnotations();
 
     /**
      * The experimental method to determine the interaction. It is a controlled vocabulary term and cannot not be null.

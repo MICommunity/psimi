@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.model;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Interaction involving one to several molecules supported by experiments.
@@ -26,8 +26,7 @@ public interface ExperimentalInteraction extends Interaction<ExperimentalPartici
      * It will add the new imex-primary ref to the collection of xrefs
      * @param identifier : the IMEx id from IMEx central
      * @throws IllegalArgumentException if
-     * - the identifier is null, empty or not a valid IMEx identifier for interaction
-     * - the interaction already has an IMEx identifier
+     * - the identifier is null or empty
      */
     public void assignImexId(String identifier);
 
@@ -59,12 +58,12 @@ public interface ExperimentalInteraction extends Interaction<ExperimentalPartici
     public void setAvailability(String availability);
 
     /**
-     * Set of numerical parameters for this interaction.
-     * The set cannot be null. If the interaction does not have any parameters, the method should return an empty set.
+     * Collection of numerical parameters for this interaction.
+     * The set cannot be null. If the interaction does not have any parameters, the method should return an empty Collection.
      * Ex: IC50, ...
      * @return the parameters
      */
-    public Set<Parameter> getParameters();
+    public Collection<Parameter> getParameters();
 
     /**
      * Boolean value to know if the interaction is inferred from multiple experiments which on their own would not support the interaction.

@@ -1,10 +1,9 @@
 package psidev.psi.mi.jami.model;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
- * Participant identified in an experimental interaction
+ * Participant identified in an interaction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -12,6 +11,9 @@ import java.util.Set;
  */
 
 public interface Participant<I, T extends Interactor, F extends Feature> {
+
+    public static String UNSPECIFIED_ROLE = "unspecified role";
+    public static String UNSPECIFIED_ROLE_MI = "MI:0499";
 
     /**
      * The interaction in which the participant is involved.
@@ -59,27 +61,27 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
     public void setBiologicalRole(CvTerm bioRole);
 
     /**
-     * Set of cross references which give more information about the participant.
-     * The set of xrefs cannot be null. If the participant does not have any xrefs, the method should return an empty set.
+     * Collection of cross references which give more information about the participant.
+     * The set of xrefs cannot be null. If the participant does not have any xrefs, the method should return an empty Collection.
      * Ex: author identifiers, ...
      * @return the xrefs
      */
-    public Set<Xref> getXrefs();
+    public Collection<Xref> getXrefs();
 
     /**
-     * Set of annotations describing the participant.
-     * The set cannot be null. If the participant does not have any annotations, the method should return an empty set.
+     * Collection of annotations describing the participant.
+     * The set cannot be null. If the participant does not have any annotations, the method should return an empty Collection.
      * @return the annotations
      */
-    public Set<Annotation> getAnnotations();
+    public Collection<Annotation> getAnnotations();
 
     /**
-     * Set of aliases which give more information about the participant.
-     * The set of aliases cannot be null. If the participant does not have any aliases, the method should return an empty set.
+     * Collection of aliases which give more information about the participant.
+     * The set of aliases cannot be null. If the participant does not have any aliases, the method should return an empty Collection.
      * Ex: author assigned name, ...
      * @return the xrefs
      */
-    public Set<Alias> getAliases();
+    public Collection<Alias> getAliases();
 
     /**
      * Properties for this participant which are supported by experimental evidences.
