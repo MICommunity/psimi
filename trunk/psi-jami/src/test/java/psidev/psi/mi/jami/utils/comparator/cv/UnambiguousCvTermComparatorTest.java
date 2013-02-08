@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 /**
@@ -56,6 +58,21 @@ public class UnambiguousCvTermComparatorTest {
 
         Assert.assertFalse(UnambiguousCvTermComparator.areEquals(term1, term2));
         Assert.assertTrue(UnambiguousCvTermComparator.hashCode(term1) != UnambiguousCvTermComparator.hashCode(term2));
+    }
+
+    @Test
+    public void test_ignore_identifiers_not_mi_or_mod() throws Exception {
+        CvTerm term1 = new DefaultCvTerm("cell1");
+        term1.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("cabri"), "TEST1"));
+
+        CvTerm term2 = new DefaultCvTerm("cell2");
+        term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("cabri"), "TEST1"));
+        term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("databaseTest"), "TEST2"));
+
+        Assert.assertTrue(comparator.compare(term1, term2) != 0);
+        Assert.assertTrue(comparator.compare(term2, term1) != 0);
+
+        Assert.assertFalse(UnambiguousCvTermComparator.areEquals(term1, term2));
     }
 
     @Test

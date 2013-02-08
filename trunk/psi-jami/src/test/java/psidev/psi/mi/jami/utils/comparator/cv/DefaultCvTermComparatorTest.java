@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 /**
@@ -25,6 +27,8 @@ public class DefaultCvTermComparatorTest {
 
         Assert.assertTrue(comparator.compare(term1, term2) > 0);
         Assert.assertTrue(comparator.compare(term2, term1) < 0);
+
+        Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
     }
 
     @Test
@@ -36,6 +40,8 @@ public class DefaultCvTermComparatorTest {
 
         Assert.assertTrue(comparator.compare(term1, term2) == 0);
         Assert.assertTrue(comparator.compare(term2, term1) == 0);
+
+        Assert.assertTrue(DefaultCvTermComparator.areEquals(term1, term2));
     }
 
     @Test
@@ -47,6 +53,37 @@ public class DefaultCvTermComparatorTest {
 
         Assert.assertTrue(comparator.compare(term1, term2) != 0);
         Assert.assertTrue(comparator.compare(term2, term1) != 0);
+
+        Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
+    }
+
+    @Test
+    public void test_at_least_one_matching_identifier() throws Exception {
+        CvTerm term1 = new DefaultCvTerm("cell1");
+        term1.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("cabri"), "TEST1"));
+
+        CvTerm term2 = new DefaultCvTerm("cell1");
+        term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("cabri"), "TEST1"));
+        term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("databaseTest"), "TEST2"));
+
+        Assert.assertTrue(comparator.compare(term1, term2) == 0);
+        Assert.assertTrue(comparator.compare(term2, term1) == 0);
+
+        Assert.assertTrue(DefaultCvTermComparator.areEquals(term1, term2));
+    }
+
+    @Test
+    public void test_no_matching_identifier() throws Exception {
+        CvTerm term1 = new DefaultCvTerm("cell1");
+        term1.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("cabri"), "TEST1"));
+
+        CvTerm term2 = new DefaultCvTerm("cell1");
+        term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("databaseTest"), "TEST2"));
+
+        Assert.assertTrue(comparator.compare(term1, term2) != 0);
+        Assert.assertTrue(comparator.compare(term2, term1) != 0);
+
+        Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
     }
 
     @Test
@@ -57,6 +94,8 @@ public class DefaultCvTermComparatorTest {
 
         Assert.assertTrue(comparator.compare(term1, term2) == 0);
         Assert.assertTrue(comparator.compare(term2, term1) == 0);
+
+        Assert.assertTrue(DefaultCvTermComparator.areEquals(term1, term2));
     }
 
     @Test
@@ -69,5 +108,7 @@ public class DefaultCvTermComparatorTest {
 
         Assert.assertTrue(comparator.compare(term1, term2) != 0);
         Assert.assertTrue(comparator.compare(term2, term1) != 0);
+
+        Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
     }
 }
