@@ -107,6 +107,22 @@ public class RangeFactory {
         return new DefaultRange(PositionFactory.createFuzzyPosition(fromStart, fromEnd), PositionFactory.createFuzzyPosition(toStart, toEnd), true);
     }
 
+    public static Range createRange(String statusName, String statusMi, int position){
+        return new DefaultRange(PositionFactory.createPosition(statusName, statusMi, position), PositionFactory.createPosition(statusName, statusMi, position));
+    }
+
+    public static Range createLinkedRange(String statusName, String statusMi, int position){
+        return new DefaultRange(PositionFactory.createPosition(statusName, statusMi, position), PositionFactory.createPosition(statusName, statusMi, position), true);
+    }
+
+    public static Range createRange(String statusName, String statusMi, int start, int end){
+        return new DefaultRange(PositionFactory.createPosition(statusName, statusMi, start), PositionFactory.createPosition(statusName, statusMi, end));
+    }
+
+    public static Range createLinkedRange(String statusName, String statusMi, int start, int end){
+        return new DefaultRange(PositionFactory.createPosition(statusName, statusMi, start), PositionFactory.createPosition(statusName, statusMi, end), true);
+    }
+
     public static Range createRangeFromString(String rangeString) throws IllegalRangeException {
 
         if (rangeString == null){
