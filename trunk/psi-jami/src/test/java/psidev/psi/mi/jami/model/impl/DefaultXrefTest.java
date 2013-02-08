@@ -22,8 +22,7 @@ public class DefaultXrefTest {
         Assert.assertEquals(CvTermFactory.createMICvTerm("uniprotkb", null), id1.getDatabase());
         Assert.assertEquals("P12345", id1.getId());
         Assert.assertNull(id1.getVersion());
-        Assert.assertNotNull(id1.getQualifier());
-        Assert.assertEquals(CvTermFactory.createMICvTerm("identity", null), id1.getQualifier());
+        Assert.assertNull(id1.getQualifier());
     }
 
     @Test
@@ -34,8 +33,7 @@ public class DefaultXrefTest {
         Assert.assertEquals("P12345", id1.getId());
         Assert.assertNotNull(id1.getVersion());
         Assert.assertTrue(id1.getVersion() == 2);
-        Assert.assertNotNull(id1.getQualifier());
-        Assert.assertEquals(CvTermFactory.createMICvTerm("identity", null), id1.getQualifier());
+        Assert.assertNull(id1.getQualifier());
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -46,5 +44,28 @@ public class DefaultXrefTest {
     @Test(expected=IllegalArgumentException.class)
     public void test_create_external_identifier_no_id() throws Exception {
         Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), null);
+    }
+
+    @Test
+    public void test_create_xref_with_qualifier() throws Exception {
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", CvTermFactory.createIdentityQualifier());
+
+        Assert.assertEquals(CvTermFactory.createMICvTerm("uniprotkb", null), id1.getDatabase());
+        Assert.assertEquals("P12345", id1.getId());
+        Assert.assertNull(id1.getVersion());
+        Assert.assertNotNull(id1.getQualifier());
+        Assert.assertEquals(CvTermFactory.createMICvTerm("identity", "MI:0356"), id1.getQualifier());
+    }
+
+    @Test
+    public void test_create_xref_with_qualifier_and_version() throws Exception {
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", 2, CvTermFactory.createIdentityQualifier());
+
+        Assert.assertEquals(CvTermFactory.createMICvTerm("uniprotkb", null), id1.getDatabase());
+        Assert.assertEquals("P12345", id1.getId());
+        Assert.assertNotNull(id1.getVersion());
+        Assert.assertTrue(id1.getVersion() == 2);
+        Assert.assertNotNull(id1.getQualifier());
+        Assert.assertEquals(CvTermFactory.createMICvTerm("identity", "MI:0356"), id1.getQualifier());
     }
 }
