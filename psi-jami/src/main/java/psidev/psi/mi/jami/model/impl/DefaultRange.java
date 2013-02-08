@@ -45,7 +45,7 @@ public class DefaultRange implements Range, Serializable {
             throw new IllegalArgumentException("The end position is required and cannot be null");
         }
 
-        if (start.getEnd() > end.getStart()){
+        if (start.getEnd() != 0 && end.getStart() != 0 && start.getEnd() > end.getStart()){
             throw new IllegalArgumentException("The start position cannot be ending before the end position");
         }
         this.start = start;
