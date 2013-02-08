@@ -18,7 +18,9 @@ public interface Checksum {
     public static String INCHI_KEY = "standard inchi key";
     public static String INCHI_KEY_MI = "MI:1101";
     public static String ROGID = "rogid";
-    public static String ROGID_MI = "MI:xxxx";
+    public static String ROGID_MI = "MI:xxxx1";
+    public static String RIGID = "rigid";
+    public static String RIGID_MI = "MI:xxxx2";
 
     /**
      * The method is a controlled vocabulary term and cannot be null
