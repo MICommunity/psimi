@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import org.junit.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.model.ExternalIdentifier;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 /**
@@ -13,11 +13,11 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
  * @since <pre>05/02/13</pre>
  */
 
-public class DefaultExternalIdentifierTest {
+public class DefaultXrefTest {
 
     @Test
     public void test_create_external_identifier() throws Exception {
-        ExternalIdentifier id1 = new DefaultExternalIdentifier(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345");
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345");
 
         Assert.assertEquals(CvTermFactory.createMICvTerm("uniprotkb", null), id1.getDatabase());
         Assert.assertEquals("P12345", id1.getId());
@@ -28,7 +28,7 @@ public class DefaultExternalIdentifierTest {
 
     @Test
     public void test_create_external_identifier_with_version() throws Exception {
-        ExternalIdentifier id1 = new DefaultExternalIdentifier(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", 2);
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", 2);
 
         Assert.assertEquals(CvTermFactory.createMICvTerm("uniprotkb", null), id1.getDatabase());
         Assert.assertEquals("P12345", id1.getId());
@@ -40,11 +40,11 @@ public class DefaultExternalIdentifierTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void test_create_external_identifier_no_database() throws Exception {
-        ExternalIdentifier id1 = new DefaultExternalIdentifier(null, "P12345");
+        Xref id1 = new DefaultXref(null, "P12345");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void test_create_external_identifier_no_id() throws Exception {
-        ExternalIdentifier id1 = new DefaultExternalIdentifier(CvTermFactory.createMICvTerm("uniprotkb", null), null);
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), null);
     }
 }

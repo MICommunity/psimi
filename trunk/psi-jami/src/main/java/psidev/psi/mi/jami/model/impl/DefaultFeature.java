@@ -1,14 +1,15 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureComparator;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Default implementation for feature
@@ -22,9 +23,10 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
     protected String shortName;
     protected String fullName;
-    protected Set<ExternalIdentifier> identifiers;
-    protected Set<Xref> xrefs;
-    protected Set<Annotation> annotations;
+    protected Xref interpro;
+    protected Collection<Xref> identifiers;
+    protected Collection<Xref> xrefs;
+    protected Collection<Annotation> annotations;
     protected CvTerm type;
     protected Collection<Range> ranges;
     protected Collection<T> bindingFeatures;
@@ -36,9 +38,9 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
         this.participant = participant;
 
-        this.identifiers = new HashSet<ExternalIdentifier>();
-        this.annotations = new HashSet<Annotation>();
-        this.xrefs = new HashSet<Xref>();
+        this.identifiers = new FeatureIdentifierList();
+        this.annotations = new ArrayList<Annotation>();
+        this.xrefs = new ArrayList<Xref>();
         this.ranges = new ArrayList<Range>();
         this.bindingFeatures = new ArrayList<T>();
     }
@@ -75,15 +77,38 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         this.fullName = name;
     }
 
-    public Set<ExternalIdentifier> getIdentifiers() {
+    public String getInterpro() {
+        return this.interpro != null ? this.interpro.getId() : null;
+    }
+
+    public void setInterpro(String interpro) {
+        // add new interpro if not null
+        if (interpro != null){
+            CvTerm interproDatabase = CvTermFactory.createInterproDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            // first remove old chebi if not null
+            if (this.interpro != null){
+                identifiers.remove(this.interpro);
+            }
+            this.interpro = new DefaultXref(interproDatabase, interpro, identityQualifier);
+            this.identifiers.add(this.interpro);
+        }
+        // remove all interpro if the collection is not empty
+        else if (!this.identifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(xrefs, Xref.INTERPRO_MI, Xref.INTERPRO);
+            this.interpro = null;
+        }
+    }
+
+    public Collection<Xref> getIdentifiers() {
         return this.identifiers;
     }
 
-    public Set<Xref> getXrefs() {
+    public Collection<Xref> getXrefs() {
         return this.xrefs;
     }
 
-    public Set<Annotation> getAnnotations() {
+    public Collection<Annotation> getAnnotations() {
         return this.annotations;
     }
 
@@ -138,5 +163,45 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     @Override
     public String toString() {
         return type != null ? type.toString() : (!ranges.isEmpty() ? "("+ranges.iterator().next().toString()+"...)" : " (-)");
+    }
+
+    protected class FeatureIdentifierList extends AbstractXrefList {
+        public FeatureIdentifierList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedXrefEvent(Xref added) {
+            // the added identifier is interpro and it is not the current interpro identifier
+            if (interpro != added && XrefUtils.isXrefFromDatabase(added, Xref.INTERPRO_MI, Xref.INTERPRO)){
+                // the current interpro identifier is not identity, we may want to set interpro Identifier
+                if (!XrefUtils.doesXrefHaveQualifier(interpro, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    // the interpro identifier is not set, we can set the interpro identifier
+                    if (interpro == null){
+                        interpro = added;
+                    }
+                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                        interpro = added;
+                    }
+                    // the added xref is secondary object and the current interpro identifier is not a secondary object, we reset interpro identifier
+                    else if (!XrefUtils.doesXrefHaveQualifier(interpro, Xref.SECONDARY_MI, Xref.SECONDARY)
+                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                        interpro = added;
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedXrefEvent(Xref removed) {
+            if (interpro == removed){
+                interpro = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.INTERPRO_MI, Xref.INTERPRO);
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            interpro = null;
+        }
     }
 }

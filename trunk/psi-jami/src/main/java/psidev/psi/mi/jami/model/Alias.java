@@ -12,9 +12,9 @@ package psidev.psi.mi.jami.model;
 
 public interface Alias {
 
-    public static String SYNONYM_ID = "MI:1041";
+    public static String SYNONYM_MI = "MI:1041";
     public static String SYNONYM = "synonym";
-    public static String GENE_NAME_ID = "MI:0301";
+    public static String GENE_NAME_MI = "MI:0301";
     public static String GENE_NAME = "gene name";
 
     /**

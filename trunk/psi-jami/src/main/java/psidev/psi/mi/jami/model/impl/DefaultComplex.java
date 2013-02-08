@@ -42,22 +42,22 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         initializeCollections();
     }
 
-    public DefaultComplex(String name, CvTerm type, ExternalIdentifier uniqueId) {
+    public DefaultComplex(String name, CvTerm type, Xref uniqueId) {
         super(name, type, uniqueId);
         initializeCollections();
     }
 
-    public DefaultComplex(String name, String fullName, CvTerm type, ExternalIdentifier uniqueId) {
+    public DefaultComplex(String name, String fullName, CvTerm type, Xref uniqueId) {
         super(name, fullName, type, uniqueId);
         initializeCollections();
     }
 
-    public DefaultComplex(String name, CvTerm type, Organism organism, ExternalIdentifier uniqueId) {
+    public DefaultComplex(String name, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, type, organism, uniqueId);
         initializeCollections();
     }
 
-    public DefaultComplex(String name, String fullName, CvTerm type, Organism organism, ExternalIdentifier uniqueId) {
+    public DefaultComplex(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, fullName, type, organism, uniqueId);
         initializeCollections();
     }
@@ -146,14 +146,14 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
                 int comp;
                 if (typeId1 != null && typeId2 != null){
                     // both are complex properties, sort by id
-                    if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId1) && Annotation.COMPLEX_PROPERTIES_ID.equals(typeId2)){
+                    if (Annotation.COMPLEX_PROPERTIES_MI.equals(typeId1) && Annotation.COMPLEX_PROPERTIES_MI.equals(typeId2)){
                         return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(annotation1.getValue(), annotation2.getValue(), physicalProperties != null ? physicalProperties.getValue() : null);
                     }
                     // complex properties is first
-                    else if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId1)){
+                    else if (Annotation.COMPLEX_PROPERTIES_MI.equals(typeId1)){
                         return BEFORE;
                     }
-                    else if (Annotation.COMPLEX_PROPERTIES_ID.equals(typeId2)){
+                    else if (Annotation.COMPLEX_PROPERTIES_MI.equals(typeId2)){
                         return AFTER;
                     }
                     // both databases are not complex properties
@@ -216,7 +216,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
             if (added && physicalProperties == null){
                 Annotation firstAnnotation = first();
 
-                if (AnnotationUtils.doesAnnotationHaveTopic(firstAnnotation, Annotation.COMPLEX_PROPERTIES_ID, Annotation.COMPLEX_PROPERTIES)){
+                if (AnnotationUtils.doesAnnotationHaveTopic(firstAnnotation, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
                     physicalProperties = firstAnnotation;
                 }
             }
@@ -236,7 +236,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
                     Annotation firstAnnotation = first();
 
                     // first annotation is physical properties
-                    if (AnnotationUtils.doesAnnotationHaveTopic(firstAnnotation, Annotation.COMPLEX_PROPERTIES_ID, Annotation.COMPLEX_PROPERTIES)){
+                    if (AnnotationUtils.doesAnnotationHaveTopic(firstAnnotation, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
                         physicalProperties = firstAnnotation;
                     }
                 }
@@ -255,7 +255,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         public void removeAllPhysicalProperties(){
 
             Annotation first = first();
-            while (AnnotationUtils.doesAnnotationHaveTopic(first, Annotation.COMPLEX_PROPERTIES_ID, Annotation.COMPLEX_PROPERTIES)){
+            while (AnnotationUtils.doesAnnotationHaveTopic(first, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
                 remove(first);
                 first = first();
             }

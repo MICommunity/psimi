@@ -39,19 +39,19 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         super(name, fullName, CvTermFactory.createGeneInteractorType(), organism);
     }
 
-    public DefaultGene(String name, ExternalIdentifier uniqueId) {
+    public DefaultGene(String name, Xref uniqueId) {
         super(name, CvTermFactory.createGeneInteractorType(), uniqueId);
     }
 
-    public DefaultGene(String name, String fullName, ExternalIdentifier uniqueId) {
+    public DefaultGene(String name, String fullName, Xref uniqueId) {
         super(name, fullName, CvTermFactory.createGeneInteractorType(), uniqueId);
     }
 
-    public DefaultGene(String name, Organism organism, ExternalIdentifier uniqueId) {
+    public DefaultGene(String name, Organism organism, Xref uniqueId) {
         super(name, CvTermFactory.createGeneInteractorType(), organism, uniqueId);
     }
 
-    public DefaultGene(String name, String fullName, Organism organism, ExternalIdentifier uniqueId) {
+    public DefaultGene(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, CvTermFactory.createGeneInteractorType(), organism, uniqueId);
     }
 
@@ -68,16 +68,17 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         // add new ensembl if not null
         if (ac != null){
             CvTerm ensemblDatabase = CvTermFactory.createEnsemblDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old ensembl if not null
             if (this.ensembl != null){
                 identifiers.remove(this.ensembl);
             }
-            this.ensembl = new DefaultExternalIdentifier(ensemblDatabase, ac);
+            this.ensembl = new DefaultXref(ensemblDatabase, ac, identityQualifier);
             this.identifiers.add(this.ensembl);
         }
         // remove all ensembl if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_ID, Xref.ENSEMBL);
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_MI, Xref.ENSEMBL);
             this.ensembl = null;
         }
     }
@@ -90,16 +91,17 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         // add new ensembl genomes if not null
         if (ac != null){
             CvTerm ensemblGenomesDatabase = CvTermFactory.createEnsemblGenomesDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old ensembl genome if not null
             if (this.ensemblGenome != null){
                 identifiers.remove(this.ensemblGenome);
             }
-            this.ensemblGenome = new DefaultExternalIdentifier(ensemblGenomesDatabase, ac);
+            this.ensemblGenome = new DefaultXref(ensemblGenomesDatabase, ac, identityQualifier);
             this.identifiers.add(this.ensemblGenome);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES);
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
             this.ensemblGenome = null;
         }
     }
@@ -112,16 +114,17 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         // add new entrez gene id genomes if not null
         if (id != null){
             CvTerm entrezDatabase = CvTermFactory.createEntrezGeneIdDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old entrez gene id if not null
             if (this.entrezGeneId!= null){
                 identifiers.remove(this.entrezGeneId);
             }
-            this.entrezGeneId = new DefaultExternalIdentifier(entrezDatabase, id);
+            this.entrezGeneId = new DefaultXref(entrezDatabase, id, identityQualifier);
             this.identifiers.add(this.entrezGeneId);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE);
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
             this.entrezGeneId = null;
         }
     }
@@ -134,16 +137,17 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         // add new refseq if not null
         if (ac != null){
             CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
                 identifiers.remove(this.refseq);
             }
-            this.refseq = new DefaultExternalIdentifier(refseqDatabase, ac);
+            this.refseq = new DefaultXref(refseqDatabase, ac, identityQualifier);
             this.identifiers.add(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_ID, Xref.REFSEQ);
+            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
@@ -186,7 +190,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         @Override
         protected void processAddedXrefEvent(Xref added) {
             // the added identifier is ensembl and it is not the current ensembl identifier
-            if (ensembl != added && XrefUtils.isXrefFromDatabase(added, Xref.ENSEMBL_ID, Xref.ENSEMBL)){
+            if (ensembl != added && XrefUtils.isXrefFromDatabase(added, Xref.ENSEMBL_MI, Xref.ENSEMBL)){
                 // the current ensembl identifier is not identity, we may want to set ensembl Identifier
                 if (!XrefUtils.doesXrefHaveQualifier(ensembl, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the ensembl identifier is not set, we can set the ensembl identifier
@@ -204,7 +208,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                 }
             }
             // the added identifier is ensembl genomes and it is not the current ensembl genomes identifier
-            else if (ensemblGenome != added && XrefUtils.isXrefFromDatabase(added, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES)){
+            else if (ensemblGenome != added && XrefUtils.isXrefFromDatabase(added, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES)){
                 // the current ensembl genomes identifier is not identity, we may want to set ensembl genomes Identifier
                 if (!XrefUtils.doesXrefHaveQualifier(ensemblGenome, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the ensembl genomes Identifier is not set, we can set the ensembl genomes Identifier
@@ -222,7 +226,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                 }
             }
             // the added identifier is entrez gene id and it is not the current entrez gene id
-            else if (entrezGeneId != added && XrefUtils.isXrefFromDatabase(added, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE)){
+            else if (entrezGeneId != added && XrefUtils.isXrefFromDatabase(added, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE)){
                 // the current entrez gene id is not identity, we may want to set entrez gene id
                 if (!XrefUtils.doesXrefHaveQualifier(entrezGeneId, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the entrez gene id is not set, we can set the entrez gene idr
@@ -240,7 +244,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
                 }
             }
             // the added identifier is refseq id and it is not the current refseq id
-            else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_ID, Xref.REFSEQ)){
+            else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_MI, Xref.REFSEQ)){
                 // the current refseq id is not identity, we may want to set refseq id
                 if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the refseq id is not set, we can set the refseq id
@@ -262,16 +266,16 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         @Override
         protected void processRemovedXrefEvent(Xref removed) {
             if (ensembl == removed){
-                ensembl = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_ID, Xref.ENSEMBL);
+                ensembl = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_MI, Xref.ENSEMBL);
             }
             else if (ensemblGenome == removed){
-                ensemblGenome = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_GENOMES_ID, Xref.ENSEMBL_GENOMES);
+                ensemblGenome = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
             }
             else if (entrezGeneId == removed){
-                entrezGeneId = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENTREZ_GENE_ID, Xref.ENTREZ_GENE);
+                entrezGeneId = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
             }
             else if (refseq == removed){
-                refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_ID, Xref.REFSEQ);
+                refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_MI, Xref.REFSEQ);
             }
         }
 

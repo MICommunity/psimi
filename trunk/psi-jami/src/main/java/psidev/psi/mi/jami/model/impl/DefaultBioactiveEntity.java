@@ -86,16 +86,18 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         // add new chebi if not null
         if (id != null){
             CvTerm chebiDatabase = CvTermFactory.createChebiDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.chebi != null){
                 identifiers.remove(this.chebi);
             }
-            this.chebi = new DefaultExternalIdentifier(chebiDatabase, id);
+            this.chebi = new DefaultXref(chebiDatabase, id, identityQualifier);
             this.identifiers.add(this.chebi);
         }
         // remove all chebi if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(xrefs, Xref.CHEBI_ID, Xref.CHEBI);
+            XrefUtils.removeAllXrefsWithDatabase(xrefs, Xref.CHEBI_MI, Xref.CHEBI);
+            this.chebi = null;
         }
     }
 
@@ -115,7 +117,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         }
         // remove all smiles if the collection is not empty
         else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.SMILE_ID, Checksum.SMILE);
+            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.SMILE_MI, Checksum.SMILE);
             this.smile = null;
         }
     }
@@ -136,7 +138,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         }
         // remove all standard inchi keys if the collection is not empty
         else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY);
+            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
             this.standardInchiKey = null;
         }
     }
@@ -157,7 +159,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         }
         // remove all standard inchi if the collection is not empty
         else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_ID, Checksum.INCHI);
+            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_MI, Checksum.INCHI);
             this.standardInchi = null;
         }
     }
@@ -189,7 +191,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         @Override
         protected void processAddedXrefEvent(Xref added) {
             // the added identifier is chebi and it is not the current chebi identifier
-            if (chebi != added && XrefUtils.isXrefFromDatabase(added, Xref.CHEBI_ID, Xref.CHEBI)){
+            if (chebi != added && XrefUtils.isXrefFromDatabase(added, Xref.CHEBI_MI, Xref.CHEBI)){
                 // the current chebi identifier is not identity, we may want to set chebiIdentifier
                 if (!XrefUtils.doesXrefHaveQualifier(chebi, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the chebi identifier is not set, we can set the chebi identifier
@@ -212,7 +214,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         protected void processRemovedXrefEvent(Xref removed) {
             // the removed identifier is chebi
             if (chebi == removed){
-                chebi = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.CHEBI_ID, Xref.CHEBI);
+                chebi = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.CHEBI_MI, Xref.CHEBI);
             }
         }
 
@@ -230,15 +232,15 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         @Override
         protected void processAddedChecksumEvent(Checksum added) {
             // the added checksum is standard inchi key and it is not the current standard inchi key
-            if (standardInchiKey == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY)){
+            if (standardInchiKey == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)){
                 // the standard inchi key is not set, we can set the standard inchi key
                 standardInchiKey = added;
             }
-            else if (smile == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.SMILE_ID, Checksum.SMILE)){
+            else if (smile == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.SMILE_MI, Checksum.SMILE)){
                 // the smile is not set, we can set the smile
                 smile = added;
             }
-            else if (standardInchi == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_ID, Checksum.INCHI)){
+            else if (standardInchi == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_MI, Checksum.INCHI)){
                 // the standard inchi is not set, we can set the standard inchi
                 standardInchi = added;
             }
@@ -248,13 +250,13 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         protected void processRemovedChecksumEvent(Checksum removed) {
             // the removed identifier is standard inchi key
             if (standardInchiKey == removed){
-                standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_KEY_ID, Checksum.INCHI_KEY);
+                standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
             }
             else if (smile == removed){
-                smile = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.SMILE_ID, Checksum.SMILE);
+                smile = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.SMILE_MI, Checksum.SMILE);
             }
             else if (standardInchi == removed){
-                standardInchi = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_ID, Checksum.INCHI);
+                standardInchi = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_MI, Checksum.INCHI);
             }
         }
 

@@ -136,7 +136,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         }
         // remove all mi if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MI_ID, CvTerm.PSI_MI);
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
             this.miIdentifier = null;
         }
     }
@@ -155,7 +155,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         }
         // remove all mod if the collection is not empty
         else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD);
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
             this.modIdentifier = null;
         }
     }
@@ -212,7 +212,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         protected void processAddedXrefEvent(Xref added) {
 
             // the added identifier is psi-mi and it is not the current mi identifier
-            if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_ID, CvTerm.PSI_MI)){
+            if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
                 // the current psi-mi identifier is not identity, we may want to set miIdentifier
                 if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the miidentifier is not set, we can set the miidentifier
@@ -230,7 +230,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
                 }
             }
             // the added identifier is psi-mod and it is not the current mod identifier
-            else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD)){
+            else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
                 // the current psi-mod identifier is not identity, we may want to set modIdentifier
                 if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
                     // the modIdentifier is not set, we can set the modIdentifier
@@ -253,11 +253,11 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         protected void processRemovedXrefEvent(Xref removed) {
             // the removed identifier is psi-mi
             if (miIdentifier == removed){
-                miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MI_ID, CvTerm.PSI_MI);
+                miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
             }
             // the removed identifier is psi-mod
             else if (modIdentifier == removed){
-                modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MOD_ID, CvTerm.PSI_MOD);
+                modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
             }
         }
 

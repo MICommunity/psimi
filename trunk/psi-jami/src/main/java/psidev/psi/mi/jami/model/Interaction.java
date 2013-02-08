@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.model;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * Interaction involving one to several molecules.
@@ -29,20 +28,28 @@ public interface Interaction<P extends Participant> {
     public void setShortName(String name);
 
     /**
+     * The identifiers for an interaction.
+     * The Collection cannot be null. If the interaction does not have any identifiers (IMEx is not among the identifiers), the method should return an emtpy Collection.
+     * Ex: original interaction database accession, ...
+     * @return the xrefs
+     */
+    public Collection<Xref> getIdentifiers();
+
+    /**
      * The external cross references for an interaction.
-     * The set cannot be null. If the interaction does not have any xrefs, the method should return an emtpy set.
+     * The Collection cannot be null. If the interaction does not have any xrefs, the method should return an emtpy Collection.
      * Ex: GO process xrefs, GO component xrefs, database accession that can identify the interaction, ...
      * @return the xrefs
      */
-    public Set<Xref> getXrefs();
+    public Collection<Xref> getXrefs();
 
     /**
-     * The set of annotations describing the interaction.
-     * The set cannot be null. If the interaction does not have any annotations, the method should return an empty set.
+     * The Collection of annotations describing the interaction.
+     * The Collection cannot be null. If the interaction does not have any annotations, the method should return an empty Collection.
      * Ex: figure-legend annotations, comments, cautions, ...
      * @return the annotations
      */
-    public Set<Annotation> getAnnotations();
+    public Collection<Annotation> getAnnotations();
 
     /**
      * The collection of participants involved in this interaction.
@@ -93,11 +100,11 @@ public interface Interaction<P extends Participant> {
 
     /**
      * The confidences in this interaction.
-     * The set cannot be null. If the interaction does not have any confidences, the method should return an empty set.
+     * The Collection cannot be null. If the interaction does not have any confidences, the method should return an empty Collection.
      * Ex: author based scores, statistical confidences, ...
      * @return the confidences
      */
-    public Set<Confidence> getConfidences();
+    public Collection<Confidence> getConfidences();
 
     /**
      * The interaction type is a controlled vocabulary term.

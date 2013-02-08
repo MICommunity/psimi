@@ -8,8 +8,6 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Default implementation for participant
@@ -24,9 +22,9 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     protected I interaction;
     protected T interactor;
     protected CvTerm biologicalRole;
-    protected Set<Xref> xrefs;
-    protected Set<Annotation> annotations;
-    protected Set<Alias> aliases;
+    protected Collection<Xref> xrefs;
+    protected Collection<Annotation> annotations;
+    protected Collection<Alias> aliases;
     protected Collection<F> features;
     protected Integer stoichiometry;
 
@@ -45,10 +43,10 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     }
 
     private void initializeCollections() {
-        this.xrefs = new HashSet<Xref>();
-        this.annotations = new HashSet<Annotation>();
+        this.xrefs = new ArrayList<Xref>();
+        this.annotations = new ArrayList<Annotation>();
         this.features = new ArrayList<F>();
-        this.aliases = new HashSet<Alias>();
+        this.aliases = new ArrayList<Alias>();
     }
 
     public DefaultParticipant(I interaction, T interactor, CvTerm bioRole){
@@ -110,15 +108,15 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
     }
 
-    public Set<Xref> getXrefs() {
+    public Collection<Xref> getXrefs() {
         return this.xrefs;
     }
 
-    public Set<Annotation> getAnnotations() {
+    public Collection<Annotation> getAnnotations() {
         return this.annotations;
     }
 
-    public Set<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.aliases;
     }
 

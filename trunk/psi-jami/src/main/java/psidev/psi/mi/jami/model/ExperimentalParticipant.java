@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.model;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Participant of an interaction which is supported by experimental evidences
@@ -31,22 +31,28 @@ public interface ExperimentalParticipant extends Participant<ExperimentalInterac
     public void setExperimentalRole(CvTerm expRole);
 
     /**
-     * Set of identification methods for this participant.
-     * Each identification method is a controlled vocabulary term.
-     * The set cannot be null. If the participant does not have any identification methods, it should return an empty set.
+     * The identification methods for this participant.
+     * The identification method is a controlled vocabulary term and cannot be null.
      * Ex: western blot, immunostaining, ...
-     * @return the participant identification methods
+     * @return the participant identification method
      */
-    public Set<CvTerm> getIdentificationMethods();
+    public CvTerm getIdentificationMethod();
+
+    /**
+     * Set the participant identification method
+     * @param identificationMethod : participant identification method
+     * @throws IllegalArgumentException when the participant identification method is null
+     */
+    public void setIdentificationMethod(CvTerm identificationMethod);
 
     /**
      * The experimental preparations for this participant.
      * Each experimental preparation is a controlled vocabulary term.
-     * The set cannot be null. If the participant does not have any experimental preparations, the method should return an empty set.
+     * The Collection cannot be null. If the participant does not have any experimental preparations, the method should return an empty Collection.
      * Ex: engineered, cDNA library, ...
      * @return the experimental preparations.
      */
-    public Set<CvTerm> getExperimentalPreparations();
+    public Collection<CvTerm> getExperimentalPreparations();
 
     /**
      * The organisms in which the participant has been expressed.
@@ -64,16 +70,16 @@ public interface ExperimentalParticipant extends Participant<ExperimentalInterac
 
     /**
      * The confidences for this participant.
-     * The set cannot be null. If the participant does not have any confidences, the method should return an empty set.
+     * The Collection cannot be null. If the participant does not have any confidences, the method should return an empty Collection.
      * Ex: author based scores, statistical confidences, ...
      * @return the confidences
      */
-    public Set<Confidence> getConfidences();
+    public Collection<Confidence> getConfidences();
 
     /**
      * Numerical parameters associated with this participant.
-     * The set cannot be null. If the participant does not have any parameters, the method should return an empty set.
+     * The Collection cannot be null. If the participant does not have any parameters, the method should return an empty Collection.
      * @return the parameters
      */
-    public Set<Parameter> getParameters();
+    public Collection<Parameter> getParameters();
 }

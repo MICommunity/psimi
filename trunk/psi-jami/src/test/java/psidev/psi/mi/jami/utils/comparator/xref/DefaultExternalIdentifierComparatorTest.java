@@ -50,8 +50,8 @@ public class DefaultExternalIdentifierComparatorTest {
         Xref id1 = new DefaultXref(CvTermFactory.createUniprotkbDatabase(), "P12345");
         Xref id2 = new DefaultXref(CvTermFactory.createChebiDatabase(), "CHEBI:xx2");
 
-        Assert.assertEquals(comparator.compare(id1, id2), Xref.UNIPROTKB_ID.compareTo(Xref.CHEBI_ID));
-        Assert.assertEquals(comparator.compare(id2, id1), Xref.CHEBI_ID.compareTo(Xref.UNIPROTKB_ID));
+        Assert.assertEquals(comparator.compare(id1, id2), Xref.UNIPROTKB_MI.compareTo(Xref.CHEBI_MI));
+        Assert.assertEquals(comparator.compare(id2, id1), Xref.CHEBI_MI.compareTo(Xref.UNIPROTKB_MI));
     }
 
     @Test

@@ -18,20 +18,22 @@ import java.util.*;
 public class DefaultInteraction<P extends Participant> implements Interaction<P>, Serializable {
 
     protected String shortName;
-    protected Set<Xref> xrefs;
-    protected Set<Annotation> annotations;
+    protected Collection<Xref> identifiers;
+    protected Collection<Xref> xrefs;
+    protected Collection<Annotation> annotations;
     protected Collection<P> participants;
     protected Source source;
     protected boolean isNegative;
     protected Date updatedDate;
-    protected Set<Confidence> confidences;
+    protected Collection<Confidence> confidences;
     protected CvTerm type;
 
     public DefaultInteraction(){
         initializeXrefs();
         initializeAnnotations();
         this.participants = new ArrayList<P>();
-        this.confidences = new HashSet<Confidence>();
+        this.confidences = new ArrayList<Confidence>();
+        this.identifiers = new ArrayList<Xref>();
     }
 
     public DefaultInteraction(String shortName){
@@ -55,11 +57,11 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     }
 
     protected void initializeAnnotations(){
-        this.annotations = new HashSet<Annotation>();
+        this.annotations = new ArrayList<Annotation>();
     }
 
     protected void initializeXrefs(){
-        this.xrefs = new HashSet<Xref>();
+        this.xrefs = new ArrayList<Xref>();
     }
 
 
@@ -71,11 +73,15 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.shortName = name;
     }
 
-    public Set<Xref> getXrefs() {
+    public Collection<Xref> getIdentifiers() {
+        return this.identifiers;
+    }
+
+    public Collection<Xref> getXrefs() {
         return this.xrefs;
     }
 
-    public Set<Annotation> getAnnotations() {
+    public Collection<Annotation> getAnnotations() {
         return this.annotations;
     }
 
@@ -107,7 +113,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.updatedDate = updated;
     }
 
-    public Set<Confidence> getConfidences() {
+    public Collection<Confidence> getConfidences() {
         return this.confidences;
     }
 

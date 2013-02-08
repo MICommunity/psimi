@@ -2,14 +2,12 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactExperimentalInteractionComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Default implementation for ExperimentalInteraction
@@ -24,14 +22,12 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
     private Xref imexId;
     private Experiment experiment;
     private String availability;
-    private Set<Parameter> parameters;
+    private Collection<Parameter> parameters;
     private boolean isInferred = false;
-
-    private static Pattern IMEx_INTERACTION_ID = Pattern.compile( "IM-[0-9]+-[0-9]+" );
 
     public DefaultExperimentalInteraction(Experiment experiment) {
         super();
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
 
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
@@ -41,7 +37,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName) {
         super(shortName);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -50,7 +46,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source) {
         super(shortName, source);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -59,7 +55,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName, CvTerm type) {
         super(shortName, type);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -68,7 +64,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source, CvTerm type) {
         super(shortName, source, type);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -77,7 +73,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, Xref imexId) {
         super();
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
 
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
@@ -88,7 +84,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName, Xref imexId) {
         super(shortName);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -98,7 +94,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source, Xref imexId) {
         super(shortName, source);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -108,7 +104,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();;
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -118,7 +114,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source, CvTerm type, Xref imexId) {
         super(shortName, source, type);
-        this.parameters = new HashSet<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
         }
@@ -126,32 +122,29 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
         this.xrefs.add(imexId);
     }
 
+    @Override
+    protected void initializeXrefs() {
+        this.xrefs = new ExperimentalInteractionXrefList();
+    }
+
     public String getImexId() {
         return this.imexId != null ? this.imexId.getId() : null;
     }
 
     public void assignImexId(String identifier) {
-        // add new imex id if not null
+        // add new imex if not null
         if (identifier != null){
-            if (this.imexId == null){
-                if (IMEx_INTERACTION_ID.matcher(identifier).matches()){
-                    CvTerm imexDatabase = CvTermFactory.createImexDatabase();
-                    CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
-
-                    Xref imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
-                    this.xrefs.add(imexId);
-                }
-                else {
-                    throw new IllegalArgumentException("The IMEx identifier " + identifier + " is not a valid interaction IMEx identifier. It cannot be assigned");
-                }
+            CvTerm imexDatabase = CvTermFactory.createImexDatabase();
+            CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
+            // first remove old doi if not null
+            if (this.imexId != null){
+                this.xrefs.remove(this.imexId);
             }
-            else {
-                throw new IllegalArgumentException("Cannot assign a new IMEx identifier as the current interaction already has an IMEx id.");
-            }
+            this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
+            this.xrefs.add(this.imexId);
         }
-        // cannot assign imex id of null
         else {
-            throw new IllegalArgumentException("Cannot assign a null IMEx identifier.");
+            throw new IllegalArgumentException("The imex id has to be non null.");
         }
     }
 
@@ -174,7 +167,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
         this.availability = availability;
     }
 
-    public Set<Parameter> getParameters() {
+    public Collection<Parameter> getParameters() {
         return this.parameters;
     }
 
@@ -206,216 +199,35 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
     }
 
     /**
-     * Comparator which sorts Xrefs so imex primary references are always first. Only one imex-primary ref is kept
+     * Experimental interaction Xref list
      */
-    private class ExperimentalInteractionXrefComparator implements Comparator<Xref> {
-
-        public int compare(Xref xref1, Xref xref2) {
-            int EQUAL = 0;
-            int BEFORE = -1;
-            int AFTER = 1;
-
-            if (xref1 == null && xref2 == null){
-                return EQUAL;
-            }
-            else if (xref1 == null){
-                return AFTER;
-            }
-            else if (xref2 == null){
-                return BEFORE;
-            }
-            else {
-                // compares databases first : imex is before
-                CvTerm database1 = xref1.getDatabase();
-                CvTerm database2 = xref2.getDatabase();
-                String databaseId1 = database1.getMIIdentifier();
-                String databaseId2 = database2.getMIIdentifier();
-
-                // if external id of database is set, look at database id only otherwise look at shortname
-                int comp;
-                if (databaseId1 != null && databaseId2 != null){
-                    // both are imex, sort by qualifier
-                    if (Xref.IMEX_ID.equals(databaseId1) && Xref.IMEX_ID.equals(databaseId2)){
-                        comp = compareXrefQualifiers(xref1, xref2);
-                    }
-                    // IMEX is first
-                    else if (Xref.IMEX_ID.equals(databaseId1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.IMEX_ID.equals(databaseId2)){
-                        return AFTER;
-                    }
-                    // both databases are not imex
-                    else {
-                        comp = databaseId1.compareTo(databaseId2);
-                    }
-                }
-                else {
-                    String databaseName1 = database1.getShortName().toLowerCase().trim();
-                    String databaseName2 = database2.getShortName().toLowerCase().trim();
-                    // both are imex, sort by qualifier
-                    if (Xref.IMEX.equals(databaseName1) && Xref.IMEX.equals(databaseName2)){
-                        comp = compareXrefQualifiers(xref1, xref2);
-                    }
-                    // imex is first
-                    else if (Xref.IMEX.equals(databaseName1)){
-                        return BEFORE;
-                    }
-                    else if (Xref.IMEX.equals(databaseName2)){
-                        return AFTER;
-                    }
-                    // both databases are not chebi
-                    else {
-                        comp = databaseName1.compareTo(databaseName2);
-                    }
-                }
-
-                if (comp != 0){
-                    return comp;
-                }
-                // check identifiers which cannot be null
-                String id1 = xref1.getId();
-                String id2 = xref2.getId();
-
-                comp = id1.compareTo(id2);
-                if (comp != 0){
-                    return comp;
-                }
-
-                CvTerm qualifier1 = xref1.getQualifier();
-                CvTerm qualifier2 = xref2.getQualifier();
-                if (qualifier1 == null && qualifier2 == null){
-                    return 0;
-                }
-                else if (qualifier1 != null){
-                    return -1;
-                }
-                else if (qualifier2 != null){
-                    return 1;
-                }
-                else {
-                    String qualifierId1 = qualifier1.getMIIdentifier();
-                    String qualifierId2 = qualifier2.getMIIdentifier();
-
-                    // if external id of qualifier is set, look at qualifier id only otherwise look at shortname
-                    int comp2;
-                    if (qualifierId1 != null && qualifierId2 != null){
-                        return qualifierId1.compareTo(qualifierId2);
-                    }
-                    else {
-                        return qualifier1.getShortName().toLowerCase().trim().compareTo(qualifier2.getShortName().toLowerCase().trim());
-                    }
-                }
-            }
-        }
-
-        private int compareXrefQualifiers(Xref xref1, Xref xref2){
-            int comp;
-            CvTerm qualifier1 = xref1.getQualifier();
-            CvTerm qualifier2 = xref2.getQualifier();
-            if (qualifier1 == null && qualifier2 == null){
-                return 0;
-            }
-            else if (qualifier1 != null){
-                return -1;
-            }
-            else if (qualifier2 != null){
-                return 1;
-            }
-            else {
-                String qualifierId1 = qualifier1.getMIIdentifier();
-                String qualifierId2 = qualifier2.getMIIdentifier();
-
-                if (qualifierId1 != null && qualifierId2 != null){
-                    // both are imex-primary, they are equals because we can only have one imex id
-                    if (Xref.IMEX_PRIMARY_ID.equals(qualifierId1) && Xref.IMEX_PRIMARY_ID.equals(qualifierId2)){
-                        return 0;
-                    }
-                    // IMEX-primary is first
-                    else if (Xref.IMEX_PRIMARY_ID.equals(qualifierId1)){
-                        return -1;
-                    }
-                    else if (Xref.IMEX_PRIMARY_ID.equals(qualifierId2)){
-                        return 1;
-                    }
-                    // both xrefs are not imex-primary
-                    else {
-                        comp = qualifierId1.compareTo(qualifierId2);
-                    }
-                }
-                else {
-                    String qualifierName1 = qualifier1.getShortName().toLowerCase().trim();
-                    String qualifierName2 = qualifier2.getShortName().toLowerCase().trim();
-                    // both are imex-primary, they are equals because we can only have one imex id
-                    if (Xref.IMEX.equals(qualifierName1) && Xref.IMEX.equals(qualifierName2)){
-                        return 0;
-                    }
-                    // IMEX-primary is first
-                    else if (Xref.IMEX_PRIMARY.equals(qualifierName1)){
-                        return -1;
-                    }
-                    else if (Xref.IMEX_PRIMARY.equals(qualifierName2)){
-                        return 1;
-                    }
-                    // both xrefs are not imex-primary
-                    else {
-                        comp = qualifierName1.compareTo(qualifierName2);
-                    }
-                }
-            }
-
-            return comp;
-        }
-    }
-
-    private class ExperimentalInteractionXrefList extends TreeSet<Xref> {
+    private class ExperimentalInteractionXrefList extends AbstractXrefList {
         public ExperimentalInteractionXrefList(){
-            super(new ExperimentalInteractionXrefComparator());
+            super();
         }
 
         @Override
-        public boolean add(Xref ref) {
-            boolean added = super.add(ref);
+        protected void processAddedXrefEvent(Xref added) {
 
-            // set imex if not done
-            if (imexId == null && added){
-                Xref firstImex = first();
-
-                if (XrefUtils.isXrefFromDatabase(firstImex, Xref.IMEX_ID, Xref.IMEX) &&
-                        XrefUtils.doesXrefHaveQualifier(firstImex, Xref.IMEX_PRIMARY_ID, Xref.IMEX_PRIMARY)){
-                    if (IMEx_INTERACTION_ID.matcher(imexId.getId()).matches()){
-                        imexId = firstImex;
-                    }
-                    else {
-                        remove(ref);
-                        return false;
-                    }
+            // the added identifier is imex and the current imex is not set
+            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
+                // the added xref is imex-primary
+                if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
+                    imexId = added;
                 }
             }
-
-            return added;
         }
 
         @Override
-        public boolean remove(Object o) {
-            if (super.remove(o)){
-                // check imex
-                Xref firstXref = first();
-
-                // first ref is from imex
-                if (!XrefUtils.isXrefFromDatabase(firstXref, Xref.IMEX_ID, Xref.IMEX) ||
-                        !XrefUtils.doesXrefHaveQualifier(firstXref, Xref.IMEX_PRIMARY_ID, Xref.IMEX_PRIMARY)){
-                    imexId = null;
-                }
-                return true;
+        protected void processRemovedXrefEvent(Xref removed) {
+            // the removed identifier is pubmed
+            if (imexId == removed){
+                imexId = null;
             }
-
-            return false;
         }
 
         @Override
-        public void clear() {
-            super.clear();
+        protected void clearProperties() {
             imexId = null;
         }
     }

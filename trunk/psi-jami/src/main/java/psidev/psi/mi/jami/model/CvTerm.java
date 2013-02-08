@@ -16,11 +16,9 @@ import java.util.Collection;
 public interface CvTerm {
 
     public static String PSI_MI = "psi-mi";
-    public static String PSI_MI_ID = "MI:0488";
+    public static String PSI_MI_MI = "MI:0488";
     public static String PSI_MOD = "psi-mod";
-    public static String PSI_MOD_ID = "MI:0897";
-    public static String UNSPECIFIED_ROLE = "unspecified role";
-    public static String UNSPECIFIED_ROLE_ID = "MI:0499";
+    public static String PSI_MOD_MI = "MI:0897";
 
     /**
      * Short label of a controlled vocabulary. It cannot be null or empty.

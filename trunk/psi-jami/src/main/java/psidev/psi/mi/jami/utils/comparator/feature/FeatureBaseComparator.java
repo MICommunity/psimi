@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Basic feature comparator.
  * It will look first at the feature types using an AbstractCvTermComparator. If the feature types are the same, it will look at the
- * feature identifiers using Comparator<ExternalIdentifier>. If at least one of the feature identifiers are the same, it will look at
+ * feature identifiers using Comparator<ExternalIdentifier>. If at least one of the feature identifiers are the same (compare interpro first), it will look at
  * the ranges using RangeComparator.
  *
  * This comparator will ignore all the other properties of a feature.
@@ -48,7 +48,7 @@ public class FeatureBaseComparator implements Comparator<Feature> {
 
     /**
      * It will look first at the feature types using an AbstractCvTermComparator. If the feature types are the same, it will look at the
-     * feature identifiers using Comparator<ExternalIdentifier>. If at least one of the feature identifiers are the same, it will look at
+     * feature identifiers using Comparator<ExternalIdentifier>. If at least one of the feature identifiers are the same (compare interpro first), it will look at
      * the ranges using RangeComparator.
      *
      * This comparator will ignore all the other properties of a feature.
@@ -80,47 +80,58 @@ public class FeatureBaseComparator implements Comparator<Feature> {
                 return comp;
             }
 
-            // then compares the external identifiers. At least one should match
-            List<ExternalIdentifier> ids1 = new ArrayList<ExternalIdentifier>(feature1.getIdentifiers());
-            List<ExternalIdentifier> ids2 = new ArrayList<ExternalIdentifier>(feature2.getIdentifiers());
-            // sort the collections first
-            Collections.sort(ids1, identifierComparator);
-            Collections.sort(ids2, identifierComparator);
-            // get an iterator
-            Iterator<ExternalIdentifier> iterator1 = ids1.iterator();
-            Iterator<ExternalIdentifier> iterator2 = ids2.iterator();
-            ExternalIdentifier altid1 = iterator1.next();
-            ExternalIdentifier altid2 = iterator2.next();
-            comp = identifierComparator.compare(altid1, altid2);
-            while (comp != 0 && altid1 != null && altid2 != null){
-                // altid1 is before altid2
-                if (comp < 0){
-                    // we need to get the next element from ids1
-                    if (iterator1.hasNext()){
-                        altid1 = iterator1.next();
-                        comp = identifierComparator.compare(altid1, altid2);
-                    }
-                    // ids 1 is empty, we can stop here
-                    else {
-                        altid1 = null;
-                    }
-                }
-                // altid2 is before altid1
-                else {
-                    // we need to get the next element from ids2
-                    if (iterator2.hasNext()){
-                        altid2 = iterator2.next();
-                        comp = identifierComparator.compare(altid1, altid2);
-                    }
-                    // ids 2 is empty, we can stop here
-                    else {
-                        altid2 = null;
-                    }
+            String interpro1 = feature1.getInterpro();
+            String interpro2 = feature2.getInterpro();
+
+            if (interpro1 != null && interpro2 != null){
+                comp = interpro1.compareTo(interpro2);
+                if (comp != 0){
+                    return comp;
                 }
             }
+            else if (!feature1.getIdentifiers().isEmpty() && !feature2.getIdentifiers().isEmpty()){
+                // then compares the external identifiers. At least one should match
+                List<Xref> ids1 = new ArrayList<Xref>(feature1.getIdentifiers());
+                List<Xref> ids2 = new ArrayList<Xref>(feature2.getIdentifiers());
+                // sort the collections first
+                Collections.sort(ids1, identifierComparator);
+                Collections.sort(ids2, identifierComparator);
+                // get an iterator
+                Iterator<Xref> iterator1 = ids1.iterator();
+                Iterator<Xref> iterator2 = ids2.iterator();
+                Xref altid1 = iterator1.next();
+                Xref altid2 = iterator2.next();
+                comp = identifierComparator.compare(altid1, altid2);
+                while (comp != 0 && altid1 != null && altid2 != null){
+                    // altid1 is before altid2
+                    if (comp < 0){
+                        // we need to get the next element from ids1
+                        if (iterator1.hasNext()){
+                            altid1 = iterator1.next();
+                            comp = identifierComparator.compare(altid1, altid2);
+                        }
+                        // ids 1 is empty, we can stop here
+                        else {
+                            altid1 = null;
+                        }
+                    }
+                    // altid2 is before altid1
+                    else {
+                        // we need to get the next element from ids2
+                        if (iterator2.hasNext()){
+                            altid2 = iterator2.next();
+                            comp = identifierComparator.compare(altid1, altid2);
+                        }
+                        // ids 2 is empty, we can stop here
+                        else {
+                            altid2 = null;
+                        }
+                    }
+                }
 
-            if (comp != 0){
-                return comp;
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             // then compares the ranges
