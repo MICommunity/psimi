@@ -1,8 +1,11 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractChecksumList;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionComparator;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.*;
@@ -18,6 +21,8 @@ import java.util.*;
 public class DefaultInteraction<P extends Participant> implements Interaction<P>, Serializable {
 
     protected String shortName;
+    private Checksum rigid;
+    private Collection<Checksum> checksums;
     protected Collection<Xref> identifiers;
     protected Collection<Xref> xrefs;
     protected Collection<Annotation> annotations;
@@ -34,6 +39,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.participants = new ArrayList<P>();
         this.confidences = new ArrayList<Confidence>();
         this.identifiers = new ArrayList<Xref>();
+        this.checksums = new InteractionChecksumList();
     }
 
     public DefaultInteraction(String shortName){
@@ -73,12 +79,37 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.shortName = name;
     }
 
+    public String getRigid() {
+        return this.rigid != null ? this.rigid.getValue() : null;
+    }
+
+    public void setRigid(String rigid) {
+        if (rigid != null){
+            CvTerm rigidMethod = CvTermFactory.createRigid();
+            // first remove old rigid
+            if (this.rigid != null){
+                this.checksums.remove(this.rigid);
+            }
+            this.rigid = new DefaultChecksum(rigidMethod, rigid);
+            this.checksums.add(this.rigid);
+        }
+        // remove all smiles if the collection is not empty
+        else if (!this.checksums.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(checksums, Checksum.RIGID_MI, Checksum.RIGID);
+            this.rigid = null;
+        }
+    }
+
     public Collection<Xref> getIdentifiers() {
         return this.identifiers;
     }
 
     public Collection<Xref> getXrefs() {
         return this.xrefs;
+    }
+
+    public Collection<Checksum> getChecksums() {
+        return this.checksums;
     }
 
     public Collection<Annotation> getAnnotations() {
@@ -148,5 +179,31 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     @Override
     public String toString() {
         return (shortName != null ? shortName+", " : "") + type != null ? type.toString() : "" + ", negative = " + isNegative;
+    }
+
+    private class InteractionChecksumList extends AbstractChecksumList {
+        public InteractionChecksumList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedChecksumEvent(Checksum added) {
+            if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
+                // the rigid is not set, we can set the rigid
+                rigid = added;
+            }
+        }
+
+        @Override
+        protected void processRemovedChecksumEvent(Checksum removed) {
+            if (rigid == removed){
+                rigid = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.RIGID_MI, Checksum.RIGID);
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            rigid = null;
+        }
     }
 }
