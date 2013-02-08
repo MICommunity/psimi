@@ -13,6 +13,10 @@ public interface Annotation {
 
     public static String COMPLEX_PROPERTIES="complex-properties";
     public static String COMPLEX_PROPERTIES_MI ="MI:0629";
+    public static String CAUTION="caution";
+    public static String CAUTION_MI ="MI:0618";
+    public static String COMMENT="comment";
+    public static String COMMENT_MI ="MI:0612";
     /**
      * The annotation topic is a controlled vocabulary term and it cannot be null.
      * Ex: dataset, comment, caution, ...
