@@ -55,35 +55,8 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
             return BEFORE;
         }
         else {
-            // compares databases first (cannot use CvTermComparator because have to break the loop)
-            CvTerm database1 = xref1.getDatabase();
-            CvTerm database2 = xref2.getDatabase();
-            String databaseId1 = database1.getMIIdentifier();
-            String databaseId2 = database2.getMIIdentifier();
-
-            // if external id of database is set, look at database id only otherwise look at shortname
-            int comp;
-            if (databaseId1 != null && databaseId2 != null){
-                comp = databaseId1.compareTo(databaseId2);
-            }
-            else if (databaseId1 == null && databaseId2 != null){
-                return AFTER;
-            }
-            else if (databaseId2 == null && databaseId1 != null){
-                return BEFORE;
-            }
-            else {
-                comp = database1.getShortName().toLowerCase().trim().compareTo(database2.getShortName().toLowerCase().trim());
-            }
-
-            if (comp != 0){
-                return comp;
-            }
-            // check identifiers which cannot be null
-            String id1 = xref1.getId();
-            String id2 = xref2.getId();
-
-            comp = id1.compareTo(id2);
+            // use super comparator for database, qualifier and id
+            int comp = super.compare(xref1, xref2);
             if (comp != 0){
                 return comp;
             }
@@ -93,7 +66,7 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
             Integer version2 = xref2.getVersion();
 
             if (version1 == null && version2 == null){
-                comp = EQUAL;
+                return EQUAL;
             }
             else if (version1 == null){
                 return AFTER;
@@ -102,29 +75,7 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
                 return BEFORE;
             }
             else {
-                comp = version1.compareTo(version2);
-            }
-            if (comp != 0){
-                return comp;
-            }
-
-            CvTerm qualifier1 = xref1.getQualifier();
-            CvTerm qualifier2 = xref2.getQualifier();
-            String qualifierId1 = qualifier1.getMIIdentifier();
-            String qualifierId2 = qualifier2.getMIIdentifier();
-
-            // if external id of qualifier is set, look at qualifier id only otherwise look at shortname
-            if (qualifierId1 != null && qualifierId2 != null){
-                return qualifierId1.compareTo(qualifierId2);
-            }
-            else if(qualifierId1 == null && qualifierId2 != null){
-                return AFTER;
-            }
-            else if(qualifierId1 != null && qualifierId2 == null){
-                return BEFORE;
-            }
-            else {
-                return qualifier1.getShortName().toLowerCase().trim().compareTo(qualifier2.getShortName().toLowerCase().trim());
+                return version1.compareTo(version2);
             }
         }
     }
@@ -141,5 +92,50 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
         }
 
         return exactXrefComparator.compare(xref1, xref2) == 0;
+    }
+
+    /**
+     *
+     * @param xref
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Xref xref){
+        if (exactXrefComparator == null){
+            exactXrefComparator = new ExactXrefComparator();
+        }
+        if (xref == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+        CvTerm database1 = xref.getDatabase();
+        String mi1 = database1.getMIIdentifier();
+
+        if (mi1 != null){
+            hashcode = 31*hashcode + mi1.hashCode();
+        }
+        else {
+            hashcode = 31*hashcode + database1.getShortName().toLowerCase().trim().hashCode();
+        }
+
+        hashcode = 31 * hashcode + xref.getId().hashCode();
+        hashcode = 31 * hashcode + (xref.getVersion() != null ? xref.getVersion() : 0);
+
+        CvTerm qualifier = xref.getQualifier();
+        if (qualifier != null){
+            String qualifierMi = qualifier.getMIIdentifier();
+
+            if (qualifierMi != null){
+                hashcode = 31*hashcode + qualifierMi.hashCode();
+            }
+            else {
+                hashcode = 31*hashcode + qualifier.getShortName().toLowerCase().trim().hashCode();
+            }
+        }
+        else {
+            hashcode = 31 * hashcode;
+        }
+
+        return hashcode;
     }
 }

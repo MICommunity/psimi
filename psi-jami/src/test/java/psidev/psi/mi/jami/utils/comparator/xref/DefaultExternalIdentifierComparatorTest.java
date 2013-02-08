@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.xref;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -37,6 +38,16 @@ public class DefaultExternalIdentifierComparatorTest {
         Assert.assertTrue(comparator.compare(id1, id2) == 0);
         Assert.assertTrue(comparator.compare(id2, id1) == 0);
         Assert.assertTrue(DefaultExternalIdentifierComparator.areEquals(id1, id2));
+    }
+
+    @Test
+    public void test_database_name_comparison_if_one_database_id_notMi() throws Exception {
+        Xref id1 = new DefaultXref(new DefaultCvTerm("chebi", new DefaultXref(new DefaultCvTerm("test"), "XXX")), "CHEBI:xxx");
+        Xref id2 = new DefaultXref(CvTermFactory.createChebiDatabase(), "CHEBI:xxx");
+
+        Assert.assertTrue(comparator.compare(id1, id2) == 0);
+        Assert.assertTrue(comparator.compare(id2, id1) == 0);
+        Assert.assertTrue(DefaultXrefComparator.areEquals(id1, id2));
     }
 
     @Test
