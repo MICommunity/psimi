@@ -161,6 +161,30 @@ public class CvTermFactory {
         return createMICvTerm(Alias.GENE_NAME, Alias.GENE_NAME_MI);
     }
 
+    public static CvTerm createComplexSynonym(){
+        return createMICvTerm(Alias.COMPLEX_SYNONYM, Alias.COMPLEX_SYNONYM_MI);
+    }
+
+    public static CvTerm createAuthorAssignedName(){
+        return createMICvTerm(Alias.AUTHOR_ASSIGNED_NAME, Alias.AUTHOR_ASSIGNED_NAME_MI);
+    }
+
+    public static CvTerm createGeneNameSynonym(){
+        return createMICvTerm(Alias.GENE_NAME_SYNONYM, Alias.GENE_NAME_SYNONYM_MI);
+    }
+
+    public static CvTerm createIsoformSynonym(){
+        return createMICvTerm(Alias.ISOFORM_SYNONYM, Alias.ISOFORM_SYNONYM_MI);
+    }
+
+    public static CvTerm createOrfName(){
+        return createMICvTerm(Alias.ORF_NAME, Alias.ORF_NAME_MI);
+    }
+
+    public static CvTerm createLocusName(){
+        return createMICvTerm(Alias.LOCUS_NAME, Alias.LOCUS_NAME_MI);
+    }
+
     public static CvTerm createUnspecifiedRole(){
         return createMICvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
     }
