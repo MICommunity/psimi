@@ -137,4 +137,15 @@ public class ExactExternalIdentifierComparatorTest {
         Assert.assertFalse(ExactExternalIdentifierComparator.areEquals(id1, id2));
         Assert.assertTrue(ExactExternalIdentifierComparator.hashCode(id1) != ExactExternalIdentifierComparator.hashCode(id2));
     }
+
+    @Test
+    public void test_ignore_qualifier() throws Exception {
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("chebi", null), "CHEBI:xxx", CvTermFactory.createMICvTerm(Xref.IDENTITY, Xref.IDENTITY_MI));
+        Xref id2 = new DefaultXref(CvTermFactory.createMICvTerm("CheBi ", null), "CHEBI:xxx");
+
+        Assert.assertTrue(comparator.compare(id1, id2) == 0);
+        Assert.assertTrue(comparator.compare(id2, id1) == 0);
+        Assert.assertTrue(DefaultExternalIdentifierComparator.areEquals(id1, id2));
+
+    }
 }
