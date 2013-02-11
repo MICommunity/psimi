@@ -16,8 +16,8 @@ import java.io.Serializable;
 
 public class DefaultAnnotation implements Annotation, Serializable {
 
-    private CvTerm topic;
-    private String value;
+    protected CvTerm topic;
+    protected String value;
 
     public DefaultAnnotation(CvTerm topic){
         if (topic == null){

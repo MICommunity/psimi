@@ -14,8 +14,8 @@ import psidev.psi.mi.jami.utils.comparator.checksum.UnambiguousChecksumComparato
 
 public class DefaultChecksum implements Checksum {
 
-    private CvTerm method;
-    private String value;
+    protected CvTerm method;
+    protected String value;
 
     public DefaultChecksum(CvTerm method, String value){
         if (method == null){

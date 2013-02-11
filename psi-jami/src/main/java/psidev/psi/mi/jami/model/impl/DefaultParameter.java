@@ -18,10 +18,10 @@ import java.math.BigDecimal;
 
 public class DefaultParameter implements Parameter, Serializable {
 
-    private CvTerm type;
-    private BigDecimal uncertainty;
-    private CvTerm unit;
-    private ParameterValue value;
+    protected CvTerm type;
+    protected BigDecimal uncertainty;
+    protected CvTerm unit;
+    protected ParameterValue value;
 
     public DefaultParameter(CvTerm type, ParameterValue value){
         if (type == null){
