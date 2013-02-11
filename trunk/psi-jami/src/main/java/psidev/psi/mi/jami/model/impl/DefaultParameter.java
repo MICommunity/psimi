@@ -1,9 +1,11 @@
 package psidev.psi.mi.jami.model.impl;
 
+import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
+import psidev.psi.mi.jami.utils.factory.ParameterFactory;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -47,6 +49,22 @@ public class DefaultParameter implements Parameter, Serializable {
     public DefaultParameter(CvTerm type, ParameterValue value, BigDecimal uncertainty){
         this(type, value);
         this.uncertainty = uncertainty;
+    }
+
+    public DefaultParameter(CvTerm type, String value) throws IllegalParameterException {
+        if (type == null){
+            throw new IllegalArgumentException("The parameter type is required and cannot be null");
+        }
+        this.type = type;
+
+        Parameter param = ParameterFactory.createParameterFromString(type, value);
+        this.value = param.getValue();
+        this.uncertainty = param.getUncertainty();
+    }
+
+    public DefaultParameter(CvTerm type, String value, CvTerm unit) throws IllegalParameterException {
+        this(type, value);
+        this.unit = unit;
     }
 
     public CvTerm getType() {
