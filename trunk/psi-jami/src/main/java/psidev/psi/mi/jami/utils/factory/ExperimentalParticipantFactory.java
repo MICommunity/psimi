@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.impl.DefaultExperimentalParticipant;
 
 public class ExperimentalParticipantFactory {
 
-     public ExperimentalParticipant createUnknownBasicParticipant(){
+     public static ExperimentalParticipant createUnknownBasicParticipant(){
          return new DefaultExperimentalParticipant(ExperimentalInteractionFactory.createEmptyBasicExperimentalInteraction(), InteractorFactory.createUnknownBasicInteractor(), new DefaultCvTerm("unspecified method"));
      }
 }
