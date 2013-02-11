@@ -204,11 +204,4 @@ public class ParameterFactory {
             throw new IllegalParameterException("The value of the parameter is bad formatted: " + value + " Exception: " + e);
         }
     }
-
-    public static String getParameterValueAsString(Parameter param){
-        if (param == null){
-            return null;
-        }
-        return param.getValue().toString() + (param.getUncertainty() != null ? " ~" + param.getUncertainty().toString() : "");
-    }
 }
