@@ -34,7 +34,7 @@ public class DefaultOrganism implements Organism, Serializable {
         else {
             throw new IllegalArgumentException("The taxId "+taxId+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
         }
-        this.aliases = new ArrayList<Alias>();
+        initializeAliases();
     }
 
     public DefaultOrganism(int taxId, String commonName){
@@ -66,6 +66,10 @@ public class DefaultOrganism implements Organism, Serializable {
         this.cellType = cellType;
         this.tissue = tissue;
         this.compartment = compartment;
+    }
+
+    protected void initializeAliases(){
+        this.aliases = new ArrayList<Alias>();
     }
 
     public String getCommonName() {
