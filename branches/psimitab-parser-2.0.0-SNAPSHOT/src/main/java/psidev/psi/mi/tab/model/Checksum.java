@@ -10,7 +10,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 
-public interface Checksum extends Serializable {
+public interface Checksum extends psidev.psi.mi.jami.model.Checksum, Serializable {
 
     /**
      * Getter fot property 'methodName'.

@@ -1,5 +1,8 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.ExperimentalFeature;
+import psidev.psi.mi.jami.model.ExperimentalParticipant;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * Time: 14:12
  * To change this template use File | Settings | File Templates.
  */
-public interface Feature extends Serializable {
+public interface Feature extends psidev.psi.mi.jami.model.Feature<ExperimentalFeature, ExperimentalParticipant>, Serializable {
 
     /**
      * Getter for 'featureType' property.
@@ -31,14 +34,14 @@ public interface Feature extends Serializable {
      *
      * @return a list of string with the different ranges.
      */
-    List<String> getRanges();
+    List<String> getRangesAsString();
 
     /**
      * Setter for 'ranges' property.
      *
      * @param ranges a list of string with the different ranges.
      */
-    void setRange(List<String> ranges);
+    void setRangeAsString(List<String> ranges);
 
     /**
      *  Getter for 'text' property

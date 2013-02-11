@@ -9,21 +9,21 @@ import java.io.Serializable;
  * Time: 11:22
  * To change this template use File | Settings | File Templates.
  */
-public interface Parameter extends Serializable {
+public interface Parameter extends psidev.psi.mi.jami.model.Parameter, Serializable {
 
     /**
      * Getter fot property 'type'.
      *
      * @return a String with the CVTerm name for the parameter type in the PSI-MI ontology
      */
-    public String getType();
+    public String getParameterType();
 
     /**
      * Setter for property 'type'.
      *
      * @param type a String with the CVTerm name for the parameter type in the PSI-MI ontology
      */
-    public void setType(String type);
+    public void setParameterType(String type);
 
     /**
      *  Getter fot property 'factor'.
@@ -72,35 +72,35 @@ public interface Parameter extends Serializable {
      *
      * @return a String with the representation of the parameter in scientific notation.
      */
-    public String getValue();
+    public String getValueAsString();
 
     /**
      * Setter for property 'value'.
      *
      * @param value a String with the representation of the parameter in scientific notation.
      */
-    public void setValue(String value);
+    public void setValueAsString(String value);
 
     /**
      * Getter fot property 'unit'.
      *
      * @return a String with the unit of the parameter.
      */
-    public String getUnit();
+    public String getParameterUnit();
 
     /**
      * Setter for property 'unit'.
      *
      * @param unit a String with the unit of the parameter.
      */
-    public void setUnit(String unit);
+    public void setParameterUnit(String unit);
 
     /**
      * Getter fot property 'uncertainty'.
      *
      * @return a double with the uncertainty.
      */
-    public Double getUncertainty();
+    public Double getUncertaintyAsDouble();
 
     /**
      * Setter for property 'uncertainty'.

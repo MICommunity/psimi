@@ -9,21 +9,21 @@ import java.io.Serializable;
  * Time: 16:15
  * To change this template use File | Settings | File Templates.
  */
-public interface Annotation extends Serializable {
+public interface Annotation extends psidev.psi.mi.jami.model.Annotation,Serializable {
 
     /**
      * Getter fot property 'topic'.
      *
      * @return  Getter fot property 'topic'.
      */
-    String getTopic();
+    String getAnnotationTopic();
 
     /**
      * Setter for property 'topic'.
      *
      * @param topic Value to set for property 'topic' in the annotation.
      */
-    void setTopic(String topic);
+    void setAnnotationTopic(String topic);
 
     /**
      *  Getter fot property 'text'.

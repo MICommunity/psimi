@@ -63,11 +63,11 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
         target.getConfidenceValues().addAll(source.getConfidenceValues());
         target.getSourceDatabases().addAll(source.getSourceDatabases());
         target.getInteractionAcs().addAll(source.getInteractionAcs());
-        target.getAnnotations().addAll(source.getAnnotations());
+        target.getMitabAnnotations().addAll(source.getMitabAnnotations());
         target.getChecksums().addAll(source.getChecksums());
         target.getComplexExpansion().addAll(source.getComplexExpansion());
         target.getCreationDate().addAll(source.getCreationDate());
-        target.getParameters().addAll(source.getParameters());
+        target.getMitabParameters().addAll(source.getMitabParameters());
 
         if (target.getHostOrganism() == null){
             target.setHostOrganism(source.getHostOrganism());

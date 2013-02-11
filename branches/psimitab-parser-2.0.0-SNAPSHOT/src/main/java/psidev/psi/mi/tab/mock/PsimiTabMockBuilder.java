@@ -139,7 +139,7 @@ public class PsimiTabMockBuilder{
         bi.setAuthors( createList( createAuthorRandom() ) );
         bi.setConfidenceValues( createList( createConfidenceRandom() ) );
         bi.setDetectionMethods( createList( createInteractionDetectionMethodRandom() ) );
-        bi.setInteractionAcs( createList( createCrossReference( source.getDatabase(), source.getText() + nextId() ) ) );
+        bi.setInteractionAcs( createList( createCrossReference( source.getDatabaseName(), source.getText() + nextId() ) ) );
         bi.setInteractionTypes( createList( createInteractionTypeRandom() ) );
         bi.setPublications( createList( createCrossReference( "pubmed", String.valueOf( boundRandom( 100000, 999999 ) ) ) ) );
         bi.setSourceDatabases( createList( source ) );

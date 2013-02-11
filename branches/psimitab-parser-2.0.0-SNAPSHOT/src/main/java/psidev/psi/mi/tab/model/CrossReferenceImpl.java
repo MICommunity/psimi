@@ -5,6 +5,9 @@
  */
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
+
 /**
  * Simple cross reference.
  *
@@ -12,7 +15,7 @@ package psidev.psi.mi.tab.model;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
-public class CrossReferenceImpl implements CrossReference {
+public class CrossReferenceImpl extends DefaultXref implements CrossReference {
 
 	/**
 	 * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -20,30 +23,15 @@ public class CrossReferenceImpl implements CrossReference {
 	 */
 	private static final long serialVersionUID = 3681849842863471840L;
 
-	/**
-	 * Database name.
-	 */
-	private String database;
-
-	/**
-	 * The identifier.
-	 */
-	private String identifier;
-
-	/**
-	 * Optional piece of text.
-	 */
-	private String text;
-
 	//////////////////////////
 	// Constructor
 
 	public CrossReferenceImpl() {
+        super(new DefaultCvTerm("unknown"),"unknown");
 	}
 
 	public CrossReferenceImpl(String database, String identifier) {
-		setIdentifier(identifier);
-		setDatabase(database);
+		super(new DefaultCvTerm(database), identifier);
 	}
 
 	public CrossReferenceImpl(String database, String identifier, String text) {
@@ -54,11 +42,11 @@ public class CrossReferenceImpl implements CrossReference {
 	/////////////////////////
 	// Getters and Setters
 
-	public String getDatabase() {
-		return database;
+	public String getDatabaseName() {
+		return this.database.getShortName();
 	}
 
-	public void setDatabase(String database) {
+	public void setDatabaseName(String database) {
 		if (database == null) {
 			throw new IllegalArgumentException("You must give a non null database.");
 		}
@@ -67,11 +55,11 @@ public class CrossReferenceImpl implements CrossReference {
 			throw new IllegalArgumentException("You must give a non empty database.");
 		}
 
-		this.database = database;
+		this.database = new DefaultCvTerm(database);
 	}
 
 	public String getIdentifier() {
-		return identifier;
+		return id;
 	}
 
 	public void setIdentifier(String identifier) {
@@ -83,11 +71,11 @@ public class CrossReferenceImpl implements CrossReference {
 			throw new IllegalArgumentException("You must give a non empty identifier.");
 		}
 
-		this.identifier = identifier;
+		this.id = identifier;
 	}
 
 	public String getText() {
-		return text;
+		return qualifier != null ? qualifier.getShortName() : null;
 	}
 
 	public void setText(String text) {
@@ -97,12 +85,15 @@ public class CrossReferenceImpl implements CrossReference {
 			if (text.length() == 0) {
 				text = null;
 			}
+            this.qualifier = new DefaultCvTerm(text);
 		}
-		this.text = text;
+        else {
+            this.qualifier = null;
+        }
 	}
 
 	public boolean hasText() {
-		return (text != null && text.trim().length() > 0);
+		return (qualifier != null && qualifier.getShortName().trim().length() > 0);
 	}
 
 	//////////////////////////
@@ -113,9 +104,9 @@ public class CrossReferenceImpl implements CrossReference {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("CrossReference");
 		sb.append("{database='").append(database).append('\'');
-		sb.append(", identifier='").append(identifier).append('\'');
-		if (text != null) {
-			sb.append(", text='").append(text).append('\'');
+		sb.append(", identifier='").append(id).append('\'');
+		if (qualifier != null) {
+			sb.append(", text='").append(qualifier.getShortName()).append('\'');
 		}
 		sb.append('}');
 		return sb.toString();
@@ -132,10 +123,10 @@ public class CrossReferenceImpl implements CrossReference {
 
 		final CrossReferenceImpl that = (CrossReferenceImpl) o;
 
-		if (!database.equals(that.database)) {
+		if (!database.getShortName().equals(that.database.getShortName())) {
 			return false;
 		}
-		if (!identifier.equals(that.identifier)) {
+		if (!id.equals(that.id)) {
 			return false;
 		}
 
@@ -145,8 +136,8 @@ public class CrossReferenceImpl implements CrossReference {
 	@Override
 	public int hashCode() {
 		int result;
-		result = database.hashCode();
-		result = 29 * result + identifier.hashCode();
+		result = database.getShortName().hashCode();
+		result = 29 * result + id.hashCode();
 		return result;
 	}
 }

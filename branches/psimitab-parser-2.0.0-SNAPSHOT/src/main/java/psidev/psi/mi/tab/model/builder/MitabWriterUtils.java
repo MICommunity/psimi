@@ -102,10 +102,10 @@ public class MitabWriterUtils {
 				}
 				//MITAB 2.6
 				line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()] = joinCrossReferencStyleCollection(interaction.getComplexExpansion()); // 16
-				line[PsimiTabColumns.XREFS_I.ordinal()] = joinCrossReferencStyleCollection(interaction.getXrefs());// 25
-				line[PsimiTabColumns.ANNOTATIONS_I.ordinal()] = joinAnnotationsCollection(interaction.getAnnotations());// 28
+				line[PsimiTabColumns.XREFS_I.ordinal()] = joinCrossReferencStyleCollection(interaction.getMitabXrefs());// 25
+				line[PsimiTabColumns.ANNOTATIONS_I.ordinal()] = joinAnnotationsCollection(interaction.getMitabAnnotations());// 28
 				line[PsimiTabColumns.HOST_ORGANISM.ordinal()] = joinOrganism(interaction.getHostOrganism());// 29
-				line[PsimiTabColumns.PARAMETERS_I.ordinal()] = joinParametersCollection(interaction.getParameters());// 30
+				line[PsimiTabColumns.PARAMETERS_I.ordinal()] = joinParametersCollection(interaction.getMitabParameters());// 30
 				line[PsimiTabColumns.CREATION_DATE.ordinal()] = joinDateCollection(interaction.getCreationDate());// 31
 				line[PsimiTabColumns.UPDATE_DATE.ordinal()] = joinDateCollection(interaction.getUpdateDate());// 32
 				line[PsimiTabColumns.CHECKSUM_I.ordinal()] = joinChecksumCollection(interaction.getChecksums());// 35
@@ -173,7 +173,7 @@ public class MitabWriterUtils {
 			while (iterator.hasNext()) {
 				Feature field = iterator.next();
 
-				String ranges = StringUtils.join(field.getRanges(), ",");
+				String ranges = StringUtils.join(field.getRangesAsString(), ",");
 				sb.append(joinAttributes(field.getFeatureType(), ranges, field.getText()));
 
 				if (iterator.hasNext()) {
@@ -196,7 +196,7 @@ public class MitabWriterUtils {
 			while (iterator.hasNext()) {
 				Annotation field = iterator.next();
 
-				String topic = field.getTopic();
+				String topic = field.getAnnotationTopic();
 				if (topic != null) {
 					topic = topic.replaceAll("\\p{Cntrl}", " ");
 				}
@@ -285,7 +285,7 @@ public class MitabWriterUtils {
 			while (iterator.hasNext()) {
 				Parameter field = iterator.next();
 
-				sb.append(joinAttributes(field.getType(), field.getValue(), field.getUnit()));
+				sb.append(joinAttributes(field.getParameterType(), field.getValueAsString(), field.getParameterUnit()));
 
 				if (iterator.hasNext()) {
 					sb.append(FIELD_DELIMITER);
@@ -341,7 +341,7 @@ public class MitabWriterUtils {
 			while (iterator.hasNext()) {
 				Confidence field = iterator.next();
 
-				sb.append(joinAttributes(field.getType(), field.getValue(), field.getText()));
+				sb.append(joinAttributes(field.getComfidenceType(), field.getValue(), field.getText()));
 
 				if (iterator.hasNext()) {
 					sb.append(FIELD_DELIMITER);
@@ -368,10 +368,10 @@ public class MitabWriterUtils {
 				Object field = iterator.next();
 				if (field instanceof CrossReference) {
 					CrossReference crossReference = (CrossReference) field;
-					if (crossReference.getDatabase() == null) {
-						crossReference.setDatabase(UNKNOWN);
+					if (crossReference.getDatabaseName() == null) {
+						crossReference.setDatabaseName(UNKNOWN);
 					}
-					sb.append(joinAttributes(crossReference.getDatabase(), crossReference.getIdentifier(), crossReference.getText()));
+					sb.append(joinAttributes(crossReference.getDatabaseName(), crossReference.getIdentifier(), crossReference.getText()));
 				}
 
 				if (iterator.hasNext()) {

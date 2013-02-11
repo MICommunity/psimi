@@ -1,5 +1,7 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.Xref;
+
 import java.io.Serializable;
 
 /**
@@ -9,10 +11,10 @@ import java.io.Serializable;
  * @version $Id$
  * @since specify the maven artifact version
  */
-public interface CrossReference extends Serializable {
-    String getDatabase();
+public interface CrossReference extends Xref, Serializable {
+    String getDatabaseName();
 
-    void setDatabase( String database );
+    void setDatabaseName(String database);
 
     String getIdentifier();
 

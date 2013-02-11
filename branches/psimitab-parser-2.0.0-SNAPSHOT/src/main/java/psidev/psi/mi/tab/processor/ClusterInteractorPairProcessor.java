@@ -50,7 +50,7 @@ public class ClusterInteractorPairProcessor<T extends BinaryInteraction> impleme
                 this.identifiers = interactor.getIdentifiers();
                 if ( interactor.hasOrganism() ) {
                     for ( CrossReference cr : interactor.getOrganism().getIdentifiers() ) {
-                        if ( cr.getDatabase().equals( "taxid" ) ) {
+                        if ( cr.getDatabaseName().equals( "taxid" ) ) {
                             taxid = new Integer( cr.getIdentifier() );
                         }
                     }

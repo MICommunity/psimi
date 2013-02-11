@@ -15,25 +15,25 @@ public class CrossReferenceTest {
 
     @Test public void setGetDatabase() throws Exception {
         CrossReference cr = new CrossReferenceImpl( "db", "id" );
-        assertEquals( "db", cr.getDatabase() );
+        assertEquals( "db", cr.getDatabaseName() );
 
-        cr.setDatabase( "foo" );
-        assertEquals( "foo", cr.getDatabase() );
+        cr.setDatabaseName("foo");
+        assertEquals( "foo", cr.getDatabaseName() );
 
         try {
-            cr.setDatabase( " " );
+            cr.setDatabaseName(" ");
             fail();
         } catch ( Exception e ) {
             // ok
-            assertEquals( "foo", cr.getDatabase() );
+            assertEquals( "foo", cr.getDatabaseName() );
         }
 
         try {
-            cr.setDatabase( null );
+            cr.setDatabaseName(null);
             fail();
         } catch ( Exception e ) {
             // ok
-            assertEquals( "foo", cr.getDatabase() );
+            assertEquals( "foo", cr.getDatabaseName() );
         }
     }
 

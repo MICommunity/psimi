@@ -6,6 +6,7 @@
 package psidev.psi.mi.tab.model;
 
 import org.apache.commons.collections.CollectionUtils;
+import psidev.psi.mi.jami.model.impl.DefaultExperimentalParticipant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
-public class Interactor implements Serializable {
+public class Interactor extends DefaultExperimentalParticipant implements Serializable {
 
 	/**
 	 * Generated with IntelliJ plugin generateSerialVersionUID.

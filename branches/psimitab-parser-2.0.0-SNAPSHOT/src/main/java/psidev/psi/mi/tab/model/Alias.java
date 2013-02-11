@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version $Id$
  * @since specify the maven artifact version
  */
-public interface Alias extends Serializable {
+public interface Alias extends psidev.psi.mi.jami.model.Alias, Serializable {
 
     /**
      * Getter for property 'data base'.
@@ -25,19 +25,6 @@ public interface Alias extends Serializable {
      */
     void setDbSource( String dbSource );
 
-    /**
-     * Getter for property 'name'.
-     *
-     * @return Value for property 'name'.
-     */
-    String getName();
-
-    /**
-     * Setter for property 'name'.
-     *
-     * @param name Value to set for property 'name'.
-     */
-    void setName( String name );
 
     /**
      * Getter for property 'type'.

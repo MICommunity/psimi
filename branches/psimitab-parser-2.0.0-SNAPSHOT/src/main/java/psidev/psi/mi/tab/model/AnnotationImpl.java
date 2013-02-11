@@ -1,5 +1,8 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ntoro
@@ -7,7 +10,7 @@ package psidev.psi.mi.tab.model;
  * Time: 16:38
  * To change this template use File | Settings | File Templates.
  */
-public class AnnotationImpl implements Annotation {
+public class AnnotationImpl extends DefaultAnnotation implements Annotation {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -15,29 +18,16 @@ public class AnnotationImpl implements Annotation {
      */
     private static final long serialVersionUID = 4162569906234270001L;
 
-    /////////////////////////
-    // Instance variables
-
-    /**
-     * Name of the topic in the PSI-MI CV
-     */
-    private String topic;
-
-    /**
-     * Free text for the annotation.
-     */
-    private String text;
 
     /////////////////////////////////
     // Constructor
 
     public AnnotationImpl(String topic) {
-        setTopic(topic);
+        super(new DefaultCvTerm(topic));
     }
 
     public AnnotationImpl(String topic, String text) {
-        setTopic(topic);
-        setText(text);
+        super(new DefaultCvTerm(topic), text);
     }
 
     /////////////////////////////////
@@ -46,25 +36,25 @@ public class AnnotationImpl implements Annotation {
     /**
      * {@inheritDoc}
      */
-    public String getTopic() {
-        return topic;
+    public String getAnnotationTopic() {
+        return this.topic.getShortName();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setTopic(String topic) {
+    public void setAnnotationTopic(String topic) {
         if (topic == null) {
             throw new IllegalArgumentException("Topic name cannot be null.");
         }
-        this.topic = topic;
+        this.topic = new DefaultCvTerm(topic);
     }
 
     /**
      * {@inheritDoc}
      */
     public String getText() {
-        return text;
+        return this.value != null ? this.value : null;
     }
 
     /**
@@ -73,10 +63,13 @@ public class AnnotationImpl implements Annotation {
     public void setText(String text) {
         if (text != null) {
             // ignore empty string
-            this.text = text.trim();
+            this.value = text.trim();
             if (text.length() == 0) {
-                this.text = null;
+                this.value = null;
             }
+        }
+        else {
+            this.value = null;
         }
     }
 
@@ -90,8 +83,8 @@ public class AnnotationImpl implements Annotation {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Annotation");
-        sb.append("{topic='").append(topic).append('\'');
-        sb.append(", text='").append(text).append('\'');
+        sb.append("{topic='").append(this.topic != null ? this.topic.getShortName() : "-").append('\'');
+        sb.append(", text='").append(this.value != null ? this.value : "-").append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -110,10 +103,10 @@ public class AnnotationImpl implements Annotation {
 
         final AnnotationImpl that = (AnnotationImpl) o;
 
-        if (!topic.equals(that.topic)) {
+        if (!topic.getShortName().equals(that.topic.getShortName())) {
             return false;
         }
-        if (text != null ? !text.equals(that.text) : that.text != null) {
+        if (value != null ? !value.equals(that.value) : that.value != null) {
             return false;
         }
 
@@ -123,12 +116,12 @@ public class AnnotationImpl implements Annotation {
     /**
      * {@inheritDoc}
      */
-    @Override
+    /*@Override
     public int hashCode() {
         int result;
-        result = (text != null ? text.hashCode() : 0);
+        result = (value != null ? value.hashCode() : 0);
         result = 29 * result + topic.hashCode();
         return result;
-    }
+    }*/
 
 }
