@@ -38,11 +38,11 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
         this.participant = participant;
 
-        this.identifiers = new FeatureIdentifierList();
-        this.annotations = new ArrayList<Annotation>();
-        this.xrefs = new ArrayList<Xref>();
-        this.ranges = new ArrayList<Range>();
-        this.bindingFeatures = new ArrayList<T>();
+        initializeIdentifiers();
+        initializeAnnotations();
+        initializeXrefs();
+        initializeRanges();
+        initializeBindingFeatures();
     }
 
     public DefaultFeature(P participant, String shortName, String fullName){
@@ -59,6 +59,26 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     public DefaultFeature(P participant, String shortName, String fullName, CvTerm type){
         this(participant, shortName, fullName);
         this.type =type;
+    }
+
+    protected void initializeIdentifiers(){
+        this.identifiers = new FeatureIdentifierList();
+    }
+
+    protected void initializeAnnotations(){
+        this.annotations = new ArrayList<Annotation>();
+    }
+
+    protected void initializeXrefs(){
+        this.xrefs = new ArrayList<Xref>();
+    }
+
+    protected void initializeRanges(){
+        this.ranges = new ArrayList<Range>();
+    }
+
+    protected void initializeBindingFeatures(){
+        this.bindingFeatures = new ArrayList<T>();
     }
 
     public String getShortName() {
