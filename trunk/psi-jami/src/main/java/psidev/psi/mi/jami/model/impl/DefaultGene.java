@@ -1,9 +1,12 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Gene;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactGeneComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
@@ -182,13 +185,13 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         return ensembl != null ? ensembl.getId() : (ensemblGenome != null ? ensemblGenome.getId() : (entrezGeneId != null ? entrezGeneId.getId() : (refseq != null ? refseq.getId() : super.toString())));
     }
 
-    private class GeneIdentifierList extends AbstractXrefList {
+    private class GeneIdentifierList extends AbstractListHavingPoperties<Xref> {
         public GeneIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
             // the added identifier is ensembl and it is not the current ensembl identifier
             if (ensembl != added && XrefUtils.isXrefFromDatabase(added, Xref.ENSEMBL_MI, Xref.ENSEMBL)){
                 // the current ensembl identifier is not identity, we may want to set ensembl Identifier
@@ -264,7 +267,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (ensembl == removed){
                 ensembl = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_MI, Xref.ENSEMBL);
             }

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.NucleicAcid;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactNucleicAcidComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -133,13 +133,13 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         return ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : (refseq != null ? refseq.getId() : super.toString());
     }
 
-    private class NucleicAcidIdentifierList extends AbstractXrefList {
+    private class NucleicAcidIdentifierList extends AbstractListHavingPoperties<Xref> {
         public NucleicAcidIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
             // the added identifier is ddbj/embl/genbank and it is not the current ddbj/embl/genbank identifier
             if (ddbjEmblGenbank != added && XrefUtils.isXrefFromDatabase(added, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK)){
                 // the current ddbj/embl/genbank identifier is not identity, we may want to set ddbj/embl/genbank Identifier
@@ -179,7 +179,7 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (ddbjEmblGenbank == removed){
                 ddbjEmblGenbank = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
             }
