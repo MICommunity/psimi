@@ -1,5 +1,7 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.ExperimentalInteraction;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
  * @version $Id$
  * @since specify the maven artifact version
  */
-public interface BinaryInteraction<T extends Interactor> extends Flippable, Serializable {
+public interface BinaryInteraction<T extends Interactor> extends ExperimentalInteraction, Flippable, Serializable {
 
     /**
      * Returns interactor A.
@@ -160,28 +162,28 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return cross references for the interaction.
      */
-    List<CrossReference> getXrefs();
+    List<CrossReference> getMitabXrefs();
 
     /**
      * Sets the cross references for the interaction.
      *
      * @param xrefs for the interaction.
      */
-    void setXrefs(List<CrossReference> xrefs);
+    void setMitabXrefs(List<CrossReference> xrefs);
 
     /**
      * Returns the annotations for the interaction.
      *
      * @return annotations for the interaction.
      */
-    List<Annotation> getAnnotations();
+    List<Annotation> getMitabAnnotations();
 
     /**
      * Sets the annotations for the interaction.
      *
      * @param interactionAnnotations for the interaction.
      */
-    void setAnnotations(List<Annotation> interactionAnnotations);
+    void setMitabAnnotations(List<Annotation> interactionAnnotations);
 
     /**
      * Returns the host organism for the interaction.
@@ -209,14 +211,14 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return parameters for the interaction.
      */
-    List<Parameter> getParameters();
+    List<Parameter> getMitabParameters();
 
     /**
      * Sets the parameters for the interaction.
      *
      * @param parameters for the interaction.
      */
-    void setParameters(List<Parameter> parameters);
+    void setMitabParameters(List<Parameter> parameters);
 
     /**
      * Returns the date when the curation started.
@@ -251,14 +253,14 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
      *
      * @return checksums for the interaction.
      */
-    List<Checksum> getChecksums();
+    List<Checksum> getMitabChecksums();
 
     /**
      * Sets the checksum for the interaction.
      *
      * @param interactionChecksums checksum for the interaction.
      */
-    void setChecksums(List<Checksum> interactionChecksums);
+    void setMitabChecksums(List<Checksum> interactionChecksums);
 
     /**
      * Returns if the interaction is negative (true) or

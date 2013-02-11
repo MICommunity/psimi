@@ -32,7 +32,7 @@ public class AuthorImpl implements Author {
     // Constructor
     public AuthorImpl( String name ) {
         if( name == null ) {
-            throw new IllegalArgumentException( );
+            throw new IllegalArgumentException( "The author name cannot be null." );
         }
         this.name = name;
     }

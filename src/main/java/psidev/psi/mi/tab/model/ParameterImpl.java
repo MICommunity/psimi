@@ -1,7 +1,13 @@
 package psidev.psi.mi.tab.model;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import psidev.psi.mi.jami.exception.IllegalParameterException;
+import psidev.psi.mi.jami.model.ParameterValue;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultParameter;
+import psidev.psi.mi.jami.utils.ParameterUtils;
+import psidev.psi.mi.jami.utils.factory.ParameterFactory;
+
+import java.math.BigDecimal;
 
 
 /**
@@ -11,56 +17,15 @@ import java.util.regex.Pattern;
  * Time: 11:23
  * To change this template use File | Settings | File Templates.
  */
-public class ParameterImpl implements Parameter {
+public class ParameterImpl extends DefaultParameter implements Parameter {
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
      * To keep things consistent, please use the same thing.
      */
     private static final long serialVersionUID = 8967236664673865804L;
 
-    /////////////////////////
-    // Instance variables
-
-    /**
-     * Type of the parameter.
-     */
-    private String type;
-
-    /**
-     * Factor of the value in scientific notation.
-     */
-    private Double factor = 0.0;
-
-    /**
-     * Base of the value in scientific notation. The default value is 10.
-     */
-    private Integer base = 10;
-
-    /**
-     * Exponent of the value in scientific notation. The default value is 0.
-     */
-    private Integer exponent = 0;
-
-    /**
-     * String representation of the parameter in scientific notation.
-     */
-    private String value;
-
-    /**
-     * Unit for the parameter.
-     */
-    private String unit;
-
-    /**
-     * Uncertainty for the parameter.
-     */
-    private Double uncertainty = 0.0;
-
     //////////////////////
     // Constructors
-
-
-    //TODO Review the behaviour
 
     /**
      * Builds a parameter.
@@ -68,17 +33,8 @@ public class ParameterImpl implements Parameter {
      * @param type  the type of the parameter.
      * @param value double value.
      */
-    public ParameterImpl(String type, String value) {
-        this.type = type;
-
-        setValue(value);
-
-//        // value using scientific notation
-//        try {
-//            this.factor = Double.parseDouble(value);
-//        } catch (NumberFormatException e) {
-//            this.factor = Double.NaN;
-//        }
+    public ParameterImpl(String type, String value) throws IllegalParameterException {
+        super(new DefaultCvTerm(type), value);
     }
 
     /**
@@ -89,19 +45,12 @@ public class ParameterImpl implements Parameter {
      *              factor x base ^ exponent.
      * @param unit  the unit of the parameter.
      */
-    public ParameterImpl(String type, String value, String unit) {
-        this.type = type;
-        this.unit = unit;
+    public ParameterImpl(String type, String value, String unit) throws IllegalParameterException {
+        super(new DefaultCvTerm(type), value);
 
-        setValue(value);
-
-// value using scientific notation
-//		try {
-//			this.factor = Double.parseDouble(value);
-//		} catch (NumberFormatException e) {
-//			this.factor = Double.NaN;
-//		}
-
+        if (unit != null){
+           this.unit = new DefaultCvTerm(unit);
+        }
     }
 
     /**
@@ -114,140 +63,126 @@ public class ParameterImpl implements Parameter {
      * @param unit     the unit of the parameter.
      */
     public ParameterImpl(String type, double factor, int base, int exponent, double uncertainty, String unit) {
-        this.type = type;
-        this.factor = factor;
-        this.base = base;
-        this.exponent = exponent;
-        this.unit = unit;
-        this.uncertainty = uncertainty;
+        super(new DefaultCvTerm(type), new ParameterValue(new BigDecimal(factor), (short)base, (short)exponent));
 
-        this.value = getValue();
+        if (unit != null){
+            this.unit = new DefaultCvTerm(unit);
+        }
+        this.uncertainty = new BigDecimal(uncertainty);
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getType() {
-        return type;
+    public String getParameterType() {
+        return type.getShortName();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setParameterType(String type) {
+        if (type == null){
+            type = "unknown";
+        }
+        this.type = new DefaultCvTerm(type);
     }
 
     /**
      * {@inheritDoc}
      */
     public Double getFactor() {
-        return factor;
+        return this.value.getFactor().doubleValue();
     }
 
     /**
      * {@inheritDoc}
      */
     public void setFactor(Double factor) {
-        this.factor = factor;
+        ParameterValue newValue = new ParameterValue(new BigDecimal(factor), this.value.getBase(), this.value.getExponent());
+        this.value = newValue;
     }
 
     /**
      * {@inheritDoc}
      */
     public Integer getBase() {
-        return base;
+        return (int) this.value.getBase();
     }
 
     /**
      * {@inheritDoc}
      */
     public void setBase(Integer base) {
-        this.base = base;
+        if (base == null){
+            ParameterValue newValue = new ParameterValue(this.value.getFactor(), (short)10, this.value.getExponent());
+            this.value = newValue;
+        }
+        else{
+            ParameterValue newValue = new ParameterValue(this.value.getFactor(), base.shortValue(), this.value.getExponent());
+            this.value = newValue;
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     public Integer getExponent() {
-        return exponent;
+        return (int) this.value.getExponent();
     }
 
     /**
      * {@inheritDoc}
      */
     public void setExponent(Integer exponent) {
-        this.exponent = exponent;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getValue() {
-        this.value = String.valueOf(factor);
-
-		if (exponent != 0 || base != 10) {
-			value = factor + "x" + base + "^" + exponent;
-		}
-		if (uncertainty != 0.0) {
-            value = value + " ~" + uncertainty;
+        if (exponent == null){
+            ParameterValue newValue = new ParameterValue(this.value.getFactor(), this.value.getBase(), (short)0);
+            this.value = newValue;
         }
-
-        return value;
+        else{
+            ParameterValue newValue = new ParameterValue(this.value.getFactor(), this.value.getBase(), exponent.shortValue());
+            this.value = newValue;
+        }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setValue(String value) {
-        this.value = value;
+    public String getValueAsString() {
+        return ParameterUtils.getParameterValueAsString(this);
+    }
 
-        value = value.replaceAll(" ", "");
-        Pattern pattern = Pattern.compile("([-+]?[0-9]+\\.?[0-9]*)+x?([-+]?[0-9]*\\.?[0-9]*)?\\^?([-+]?[0-9]*\\.?[0-9]*)?~?([-+]?[0-9]*\\.?[0-9]*)?");
-
-        Matcher matcher = pattern.matcher(value);
+    public void setValueAsString(String value) {
+        if (value == null){
+            throw new IllegalArgumentException("The parameter value cannot be null");
+        }
         try {
-            if (matcher.matches()) {
-//                System.out.println(matcher.groupCount());
-                switch (matcher.groupCount()) {
-                    case 4:
-                        if (!matcher.group(4).isEmpty()) {
-                            uncertainty = Double.parseDouble(matcher.group(4));
-                        }
-                    case 3:
-                        if (!matcher.group(3).isEmpty()) {
-                            exponent = Integer.parseInt(matcher.group(3));
-                        }
-                    case 2:
-                        if (!matcher.group(2).isEmpty()) {
-                            base = Integer.parseInt(matcher.group(2));
-                        }
-                    case 1:
-                        if (!matcher.group(1).isEmpty()) {
-                            factor = Double.parseDouble(matcher.group(1));
-                        }
-                    default:
-                        break;
-                }
-            }
-        } catch (Exception e) {
-            throw new IllegalArgumentException("The value of the parameter is bad formatted: " + value + " Exception: " + e);
+            psidev.psi.mi.jami.model.Parameter param = ParameterFactory.createParameterFromString(this.type, value);
+            this.value = param.getValue();
+            this.uncertainty = param.getUncertainty();
+
+        } catch (IllegalParameterException e) {
+            throw new IllegalArgumentException("The parameter value "+value+"is not valid", e);
         }
-
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getUnit() {
-        return unit;
+    public String getParameterUnit() {
+        return unit != null ? unit.getShortName() : null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setParameterUnit(String unit) {
+        if (unit != null){
+            this.unit = new DefaultCvTerm(unit);
+        }
+        else {
+            this.unit = null;
+        }
     }
 
     /**
@@ -255,8 +190,8 @@ public class ParameterImpl implements Parameter {
      *
      * @return a double with the uncertainty.
      */
-    public Double getUncertainty() {
-        return uncertainty;
+    public Double getUncertaintyAsDouble() {
+        return uncertainty != null ? uncertainty.doubleValue() : null;
     }
 
     /**
@@ -265,7 +200,12 @@ public class ParameterImpl implements Parameter {
      * @param uncertainty a double with the uncertainty
      */
     public void setUncertainty(Double uncertainty) {
-        this.uncertainty = uncertainty;
+        if (uncertainty == null){
+            this.uncertainty = null;
+        }
+        else {
+            this.uncertainty = new BigDecimal(uncertainty);
+        }
     }
 
     //////////////////////////
@@ -275,10 +215,10 @@ public class ParameterImpl implements Parameter {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Parameter");
-        sb.append("{type='").append(type).append('\'');
-        sb.append(", value='").append(value).append('\'');
+        sb.append("{type='").append(type.getShortName()).append('\'');
+        sb.append(", value='").append(ParameterUtils.getParameterValueAsString(this)).append('\'');
         if (unit != null) {
-            sb.append(", unit='").append(unit).append('\'');
+            sb.append(", unit='").append(unit.getShortName()).append('\'');
         }
         sb.append('}');
         return sb.toString();
@@ -295,7 +235,7 @@ public class ParameterImpl implements Parameter {
 
         final ParameterImpl that = (ParameterImpl) o;
 
-        if (!type.equals(that.type)) {
+        if (!type.getShortName().equals(that.type.getShortName())) {
             return false;
         }
         if (!value.equals(that.value)) {
@@ -308,7 +248,7 @@ public class ParameterImpl implements Parameter {
     @Override
     public int hashCode() {
         int result;
-        result = type.hashCode();
+        result = type.getShortName().hashCode();
         result = 29 * result + value.hashCode();
         return result;
     }

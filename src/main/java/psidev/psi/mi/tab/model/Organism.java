@@ -2,7 +2,6 @@ package psidev.psi.mi.tab.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.List;
 
 /**
  * TODO commenta that class header
@@ -12,7 +11,7 @@ import java.util.List;
  * @since specify the maven artifact version
  */
 
-public interface Organism extends Serializable {
+public interface Organism extends psidev.psi.mi.jami.model.Organism, Serializable {
     /**
      * The default database in case it is not specified.
      */

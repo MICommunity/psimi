@@ -317,28 +317,28 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<CrossReference> getXrefs() {
+	public List<CrossReference> getMitabXrefs() {
 		return interactionXrefs;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setXrefs(List<CrossReference> xrefs) {
+	public void setMitabXrefs(List<CrossReference> xrefs) {
 		this.interactionXrefs = xrefs;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Annotation> getAnnotations() {
+	public List<Annotation> getMitabAnnotations() {
 		return interactionAnnotations;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setAnnotations(List<Annotation> interactionAnnotations) {
+	public void setMitabAnnotations(List<Annotation> interactionAnnotations) {
 		this.interactionAnnotations = interactionAnnotations;
 	}
 
@@ -366,14 +366,14 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Parameter> getParameters() {
+	public List<Parameter> getMitabParameters() {
 		return interactionParameters;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setParameters(List<Parameter> parameters) {
+	public void setMitabParameters(List<Parameter> parameters) {
 		this.interactionParameters = parameters;
 	}
 
@@ -415,7 +415,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setChecksums(List<Checksum> interactionChecksums) {
+	public void setMitabChecksums(List<Checksum> interactionChecksums) {
 		this.interactionChecksums = interactionChecksums;
 	}
 

@@ -330,12 +330,12 @@ public class MitabWriterUtilsTest {
 		B.setInteractorTypes(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0326", "protein"))));
 
-//        A.setXrefs();
-//        B.setXrefs();
-//        interactionToCompare.setXrefs();
-//        A.setAnnotations();
-//        B.setAnnotations();
-//        interactionToCompare.setAnnotations();
+//        A.setMitabXrefs();
+//        B.setMitabXrefs();
+//        interactionToCompare.setMitabXrefs();
+//        A.setMitabAnnotations();
+//        B.setMitabAnnotations();
+//        interactionToCompare.setMitabAnnotations();
 
 		Organism hostOrganism = new OrganismImpl();
 		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
@@ -343,7 +343,7 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setHostOrganism(hostOrganism);
 
-//        interactionToCompare.setParameters();
+//        interactionToCompare.setMitabParameters();
 
 		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = null;
@@ -358,9 +358,9 @@ public class MitabWriterUtilsTest {
 		interactionToCompare.setUpdateDate(new ArrayList<Date>(
 				Collections.singletonList(date)));
 
-//        A.setChecksums();
-//        B.setChecksums();
-//        interactionToCompare.setChecksums();
+//        A.setMitabChecksums();
+//        B.setMitabChecksums();
+//        interactionToCompare.setMitabChecksums();
 
 		interactionToCompare.setNegativeInteraction(false);
 
@@ -433,10 +433,10 @@ public class MitabWriterUtilsTest {
 		A.setInteractorTypes(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0326", "protein"))));
 
-//        A.setXrefs();
-//        interactionToCompare.setXrefs();
-//        A.setAnnotations();
-//        interactionToCompare.setAnnotations();
+//        A.setMitabXrefs();
+//        interactionToCompare.setMitabXrefs();
+//        A.setMitabAnnotations();
+//        interactionToCompare.setMitabAnnotations();
 
 		Organism hostOrganism = new OrganismImpl();
 		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
@@ -444,7 +444,7 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setHostOrganism(hostOrganism);
 
-//        interactionToCompare.setParameters();
+//        interactionToCompare.setMitabParameters();
 
 		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = null;
@@ -459,8 +459,8 @@ public class MitabWriterUtilsTest {
 		interactionToCompare.setUpdateDate(new ArrayList<Date>(
 				Collections.singletonList(date)));
 
-//        A.setChecksums();
-//        interactionToCompare.setChecksums();
+//        A.setMitabChecksums();
+//        interactionToCompare.setMitabChecksums();
 
 		interactionToCompare.setNegativeInteraction(false);
 
@@ -531,10 +531,10 @@ public class MitabWriterUtilsTest {
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0326", "protein"))));
 
 
-//        B.setXrefs();
-//        interactionToCompare.setXrefs();
-//        B.setAnnotations();
-//        interactionToCompare.setAnnotations();
+//        B.setMitabXrefs();
+//        interactionToCompare.setMitabXrefs();
+//        B.setMitabAnnotations();
+//        interactionToCompare.setMitabAnnotations();
 
 		Organism hostOrganism = new OrganismImpl();
 		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
@@ -542,7 +542,7 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setHostOrganism(hostOrganism);
 
-//        interactionToCompare.setParameters();
+//        interactionToCompare.setMitabParameters();
 
 		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = null;
@@ -557,8 +557,8 @@ public class MitabWriterUtilsTest {
 		interactionToCompare.setUpdateDate(new ArrayList<Date>(
 				Collections.singletonList(date)));
 
-//        B.setChecksums();
-//        interactionToCompare.setChecksums();
+//        B.setMitabChecksums();
+//        interactionToCompare.setMitabChecksums();
 
 		interactionToCompare.setNegativeInteraction(false);
 

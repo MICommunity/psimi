@@ -19,7 +19,7 @@ public class OrganismTest {
     public void setGetDatabase() throws Exception {
         Organism o = new OrganismImpl( 9606 );
         assertEquals( 1, o.getIdentifiers().size() );
-        assertEquals( Organism.DEFAULT_DATABASE, o.getIdentifiers().iterator().next().getDatabase() );
+        assertEquals( Organism.DEFAULT_DATABASE, o.getIdentifiers().iterator().next().getDatabaseName() );
     }
 
     @Test

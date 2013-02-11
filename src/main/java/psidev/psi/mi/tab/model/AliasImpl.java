@@ -5,6 +5,9 @@
  */
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+
 /**
  * Interactor's alias.
  *
@@ -12,7 +15,7 @@ package psidev.psi.mi.tab.model;
  * @version $Id$
  * @since <pre>03-Oct-2006</pre>
  */
-public class AliasImpl implements Alias {
+public class AliasImpl extends DefaultAlias implements Alias {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -28,30 +31,25 @@ public class AliasImpl implements Alias {
      */
     private String dbSource;
 
-    /**
-     * The alternative name.
-     */
-    private String name;
-
-    /**
-     * Optional type of the alias.
-     */
-    private String aliasType;
-
     /////////////////////////////////
     // Constructor
 
     public AliasImpl() {
+        // create unknown alias
+        super("unknown");
     }
 
     public AliasImpl( String dbSource, String name ) {
-        this( dbSource, name, null );
+        super(name);
+        setDbSource(dbSource);
     }
 
     public AliasImpl( String dbSource, String name, String aliasType ) {
-        this.dbSource = dbSource;
-        setName( name );
-        this.aliasType = aliasType;
+        this(dbSource, name);
+
+        if (aliasType != null){
+            this.type = new DefaultCvTerm(aliasType);
+        }
     }
 
     /////////////////////////////////
@@ -68,14 +66,10 @@ public class AliasImpl implements Alias {
      * {@inheritDoc}
      */
     public void setDbSource( String dbSource ) {
+        if (dbSource == null){
+            dbSource = "unknown";
+        }
         this.dbSource = dbSource;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -92,7 +86,7 @@ public class AliasImpl implements Alias {
      * {@inheritDoc}
      */
     public String getAliasType() {
-        return aliasType;
+        return this.type != null? this.type.getShortName() : null;
     }
 
     /**
@@ -105,8 +99,11 @@ public class AliasImpl implements Alias {
             if ( aliasType.length() == 0 ) {
                 aliasType = null;
             }
+            this.type = new DefaultCvTerm(aliasType);
         }
-        this.aliasType = aliasType;
+        else {
+            this.type = null;
+        }
     }
 
     ///////////////////////////////
@@ -121,7 +118,7 @@ public class AliasImpl implements Alias {
         sb.append( "Alias" );
         sb.append( "{dbSource='" ).append( dbSource ).append( '\'' );
         sb.append( ", name='" ).append( name ).append( '\'' );
-		sb.append( ", type='" ).append( aliasType ).append( '\'' );
+		sb.append( ", type='" ).append( this.type != null ? this.type.getShortName() : "-" ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
     }

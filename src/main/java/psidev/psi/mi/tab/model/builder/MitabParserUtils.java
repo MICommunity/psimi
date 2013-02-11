@@ -205,13 +205,13 @@ public final class MitabParserUtils {
 
         //MITAB 2.6
         interaction.setComplexExpansion(splitCrossReferences(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()]));
-        interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()]));
-        interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()]));
+        interaction.setMitabXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()]));
+        interaction.setMitabAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()]));
         interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()]));
-        interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()]));
+        interaction.setMitabParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()]));
         interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()]));
         interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()]));
-        interaction.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()]));
+        interaction.setMitabChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()]));
         interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()]));
 
         //MITAB 2.7
