@@ -2,8 +2,6 @@ package psidev.psi.mi.tab;
 
 import org.junit.Assert;
 import org.junit.Test;
-import psidev.psi.mi.tab.converter.xml2tab.Xml2Tab;
-import psidev.psi.mi.tab.converter.xml2tab.Xml2TabTest;
 import psidev.psi.mi.tab.io.PsimiTabReader;
 import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.mock.PsimiTabMockBuilder;
@@ -12,7 +10,6 @@ import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.CrossReferenceImpl;
 import psidev.psi.mi.tab.model.Interactor;
 import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
-import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.*;
 import java.util.Collection;
@@ -44,7 +41,7 @@ public class PsimiTabWriterTest {
         return count;
     }
 
-    @Test
+    /*@Test
     public void writeToFile() throws Exception {
         File file = TestHelper.getFileByResources("/psi25-samples/11585365.xml", Xml2TabTest.class);
         File outputFile = new File(file.getAbsolutePath() + ".tab");
@@ -89,11 +86,11 @@ public class PsimiTabWriterTest {
         assertEquals(9, lineCount(outputFile));
 
         fileWriter.close();
-    }
+    }*/
 
     @Test
     public void appendOrWrite() throws Exception {
-        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", Xml2TabTest.class);
+        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", psidev.psi.mi.tab.PsimiTabWriter.class);
         File outputFile = new File(file.getAbsolutePath() + ".tab");
 
         //read binary interactions
@@ -118,7 +115,7 @@ public class PsimiTabWriterTest {
 
     @Test
     public void appendOrWriteCollection() throws Exception {
-        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", Xml2TabTest.class);
+        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", psidev.psi.mi.tab.PsimiTabWriter.class);
         File outputFile = new File(file.getAbsolutePath() + ".tab");
         if (outputFile.exists()) {
             outputFile.delete();
@@ -142,7 +139,7 @@ public class PsimiTabWriterTest {
 
     @Test
     public void appendCollection() throws Exception {
-        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", Xml2TabTest.class);
+        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", psidev.psi.mi.tab.PsimiTabWriter.class);
         File outputFile = new File(file.getAbsolutePath() + ".tab");
         if (outputFile.exists()) {
             outputFile.delete();
@@ -167,7 +164,7 @@ public class PsimiTabWriterTest {
 
     @Test
     public void write_single_interaction() throws Exception {
-        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", Xml2TabTest.class);
+        File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", psidev.psi.mi.tab.PsimiTabWriter.class);
         File outputFile = new File(file.getAbsolutePath() + ".tab");
         if (outputFile.exists()) {
             outputFile.delete();
@@ -237,7 +234,7 @@ public class PsimiTabWriterTest {
     }
 
     @Test
-    public void readAndWriteMitab27WithHeader() throws ConverterException, IOException {
+    public void readAndWriteMitab27WithHeader() throws IOException {
 
         File inputFile = TestHelper.getFileByResources("/mitab-samples/mitab_27_example.txt", PsimiTabReader.class);
         File outputFile = new File(inputFile.getAbsolutePath() + ".csv");
@@ -263,7 +260,7 @@ public class PsimiTabWriterTest {
     }
 
     @Test
-    public void compareTwoMITAB27() throws ConverterException, IOException {
+    public void compareTwoMITAB27() throws IOException {
 
         File inputFile = TestHelper.getFileByResources("/mitab-samples/mitab_27_example.txt", PsimiTabReader.class);
         File outputFile = new File(inputFile.getAbsolutePath() + ".csv");
