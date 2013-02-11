@@ -12,6 +12,9 @@ import java.util.Collection;
 
 public interface Experiment {
 
+    public static String UNSPECIFIED_METHOD = "unspecified method";
+    public static String UNSPECIFIED_METHOD_MI = "MI:0686";
+
     /**
      * The publication where the experiment has been described.
      * It cannot be null.

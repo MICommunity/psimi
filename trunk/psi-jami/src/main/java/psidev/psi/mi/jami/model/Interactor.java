@@ -12,6 +12,9 @@ import java.util.Collection;
 
 public interface Interactor {
 
+    public static String UNKNOWN_INTERACTOR = "unknown participant";
+    public static String UNKNOWN_INTERACTOR_MI = "MI:0329";
+
     /**
      * The short name of the interactor.
      * It cannot be null or empty.
