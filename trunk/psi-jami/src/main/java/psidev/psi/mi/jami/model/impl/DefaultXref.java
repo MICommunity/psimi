@@ -16,10 +16,10 @@ import java.io.Serializable;
 
 public class DefaultXref implements Xref, Serializable {
 
-    private CvTerm database;
-    private String id;
-    private Integer version;
-    private CvTerm qualifier;
+    protected CvTerm database;
+    protected String id;
+    protected Integer version;
+    protected CvTerm qualifier;
 
     public DefaultXref(CvTerm database, String id, CvTerm qualifier){
         this(database, id);
