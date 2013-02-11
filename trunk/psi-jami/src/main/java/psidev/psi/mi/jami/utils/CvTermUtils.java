@@ -24,6 +24,8 @@ public class CvTermUtils {
     private static CvTerm nTerminal;
     private static CvTerm cTerminal;
     private static CvTerm nTerminalRagged;
+    private static CvTerm greaterThan;
+    private static CvTerm lessThan;
 
     public static CvTerm getGene() {
         if (gene == null){
@@ -100,5 +102,19 @@ public class CvTermUtils {
             nTerminalRagged = CvTermFactory.createRaggedNTerminalStatus();
         }
         return nTerminalRagged;
+    }
+
+    public static CvTerm getGreaterThan() {
+        if (greaterThan == null){
+            greaterThan = CvTermFactory.createGreaterThanRangeStatus();
+        }
+        return greaterThan;
+    }
+
+    public static CvTerm getLessThan() {
+        if (lessThan == null){
+            lessThan = CvTermFactory.createLessThanRangeStatus();
+        }
+        return lessThan;
     }
 }
