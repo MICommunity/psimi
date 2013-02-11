@@ -1,46 +1,44 @@
 package psidev.psi.mi.jami.utils.collection;
 
-import psidev.psi.mi.jami.model.Xref;
-
 import java.util.ArrayList;
 
 /**
- * Abstract class for identifiers
+ * Abstract list which is updating some properties when adding/removing elements.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>06/02/13</pre>
+ * @since <pre>11/02/13</pre>
  */
 
-public abstract class AbstractXrefList extends ArrayList<Xref> {
+public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
 
-    public AbstractXrefList(){
+    public AbstractListHavingPoperties(){
         super();
     }
 
     @Override
-    public boolean add(Xref ref) {
-        boolean added = super.add(ref);
+    public boolean add(T object) {
+        boolean added = super.add(object);
 
         if (added){
-            processAddedXrefEvent(ref);
+            processAddedObjectEvent(object);
             return true;
         }
 
         return false;
     }
 
-    protected abstract void processAddedXrefEvent(Xref added);
+    protected abstract void processAddedObjectEvent(T added);
 
     @Override
     public boolean remove(Object o) {
         if (super.remove(o)){
-            // we have nothing left in identifiers, reset standard values
+            // we have nothing left, reset standard values
             if (isEmpty()){
                 clearProperties();
             }
             else {
-                processRemovedXrefEvent((Xref)o);
+                processRemovedObjectEvent((T) o);
             }
 
             return true;
@@ -48,7 +46,7 @@ public abstract class AbstractXrefList extends ArrayList<Xref> {
         return false;
     }
 
-    protected abstract void processRemovedXrefEvent(Xref removed);
+    protected abstract void processRemovedObjectEvent(T removed);
 
     @Override
     public void clear() {

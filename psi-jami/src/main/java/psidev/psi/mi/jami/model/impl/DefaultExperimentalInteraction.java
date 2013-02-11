@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactExperimentalInteractionComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -201,13 +201,13 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
     /**
      * Experimental interaction Xref list
      */
-    private class ExperimentalInteractionXrefList extends AbstractXrefList {
+    private class ExperimentalInteractionXrefList extends AbstractListHavingPoperties<Xref> {
         public ExperimentalInteractionXrefList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
 
             // the added identifier is imex and the current imex is not set
             if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
@@ -219,7 +219,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is pubmed
             if (imexId == removed){
                 imexId = null;

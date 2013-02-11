@@ -2,12 +2,15 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Default implementation for a Publication
@@ -264,13 +267,13 @@ public class DefaultPublication implements Publication, Serializable {
         return (imexId != null ? imexId.getId() : (pubmedId != null ? pubmedId.getId() : (doi != null ? doi.getId() : (title != null ? title : "-"))));
     }
 
-    private class PublicationIdentifierList extends AbstractXrefList {
+    private class PublicationIdentifierList extends AbstractListHavingPoperties<Xref> {
         public PublicationIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
 
             // the added identifier is pubmed and it is not the current pubmed identifier
             if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, Xref.PUBMED_MI, Xref.PUBMED)){
@@ -311,7 +314,7 @@ public class DefaultPublication implements Publication, Serializable {
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is pubmed
             if (pubmedId == removed){
                 pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.PUBMED_MI, Xref.PUBMED);
@@ -329,13 +332,13 @@ public class DefaultPublication implements Publication, Serializable {
         }
     }
 
-    private class PublicationXrefList extends AbstractXrefList {
+    private class PublicationXrefList extends AbstractListHavingPoperties<Xref> {
         public PublicationXrefList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
 
             // the added identifier is imex and the current imex is not set
             if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
@@ -347,7 +350,7 @@ public class DefaultPublication implements Publication, Serializable {
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is pubmed
             if (imexId == removed){
                 imexId = null;

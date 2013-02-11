@@ -4,9 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractAliasList;
-import psidev.psi.mi.jami.utils.collection.AbstractChecksumList;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactProteinComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -189,13 +187,13 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         return UnambiguousExactProteinComparator.areEquals(this, (Protein) o);
     }
 
-    private class ProteinIdentifierList extends AbstractXrefList {
+    private class ProteinIdentifierList extends AbstractListHavingPoperties<Xref> {
         public ProteinIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
             // the added identifier is uniprotkb and it is not the current uniprotkb identifier
             if (uniprotkb != added && XrefUtils.isXrefFromDatabase(added, Xref.UNIPROTKB_MI, Xref.UNIPROTKB)){
                 // the current uniprotkb identifier is not identity, we may want to set uniprotkb Identifier
@@ -235,7 +233,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (uniprotkb == removed){
                 uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
             }
@@ -251,13 +249,13 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         }
     }
 
-    private class ProteinChecksumList extends AbstractChecksumList{
+    private class ProteinChecksumList extends AbstractListHavingPoperties<Checksum>{
         public ProteinChecksumList(){
             super();
         }
 
         @Override
-        protected void processAddedChecksumEvent(Checksum added) {
+        protected void processAddedObjectEvent(Checksum added) {
             if (rogid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.ROGID_MI, Checksum.ROGID)){
                 // the rogid is not set, we can set the rogid
                 rogid = added;
@@ -265,7 +263,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         }
 
         @Override
-        protected void processRemovedChecksumEvent(Checksum removed) {
+        protected void processRemovedObjectEvent(Checksum removed) {
             if (rogid == removed){
                 rogid = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.ROGID_MI, Checksum.ROGID);
             }
@@ -277,13 +275,13 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         }
     }
 
-    private class ProteinAliasList extends AbstractAliasList{
+    private class ProteinAliasList extends AbstractListHavingPoperties<Alias>{
         public ProteinAliasList(){
             super();
         }
 
         @Override
-        protected void processAddedAliasEvent(Alias added) {
+        protected void processAddedObjectEvent(Alias added) {
             // the added alias is gene name and it is not the current gene name
             if (geneName == null && AliasUtils.doesAliasHaveType(added, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
                 geneName = added;
@@ -291,7 +289,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         }
 
         @Override
-        protected void processRemovedAliasEvent(Alias removed) {
+        protected void processRemovedObjectEvent(Alias removed) {
             if (geneName == removed){
                 geneName = AliasUtils.collectFirstAliasWithType(this, Alias.GENE_NAME_MI, Alias.GENE_NAME);
             }

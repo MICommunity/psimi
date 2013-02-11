@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
@@ -165,13 +165,13 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         return type != null ? type.toString() : (!ranges.isEmpty() ? "("+ranges.iterator().next().toString()+"...)" : " (-)");
     }
 
-    protected class FeatureIdentifierList extends AbstractXrefList {
+    protected class FeatureIdentifierList extends AbstractListHavingPoperties<Xref> {
         public FeatureIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
             // the added identifier is interpro and it is not the current interpro identifier
             if (interpro != added && XrefUtils.isXrefFromDatabase(added, Xref.INTERPRO_MI, Xref.INTERPRO)){
                 // the current interpro identifier is not identity, we may want to set interpro Identifier
@@ -193,7 +193,7 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             if (interpro == removed){
                 interpro = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.INTERPRO_MI, Xref.INTERPRO);
             }

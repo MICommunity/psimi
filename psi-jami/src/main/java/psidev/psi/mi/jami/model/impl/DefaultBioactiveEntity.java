@@ -3,8 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractChecksumList;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactBioactiveEntityComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -183,13 +182,13 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         return UnambiguousExactBioactiveEntityComparator.areEquals(this, (BioactiveEntity) o);
     }
 
-    private class BioctiveEntityIdentifierList extends AbstractXrefList {
+    private class BioctiveEntityIdentifierList extends AbstractListHavingPoperties<Xref> {
         public BioctiveEntityIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
             // the added identifier is chebi and it is not the current chebi identifier
             if (chebi != added && XrefUtils.isXrefFromDatabase(added, Xref.CHEBI_MI, Xref.CHEBI)){
                 // the current chebi identifier is not identity, we may want to set chebiIdentifier
@@ -211,7 +210,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is chebi
             if (chebi == removed){
                 chebi = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.CHEBI_MI, Xref.CHEBI);
@@ -224,13 +223,13 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         }
     }
 
-    private class BioctiveEntityChecksumList extends AbstractChecksumList{
+    private class BioctiveEntityChecksumList extends AbstractListHavingPoperties<Checksum>{
         public BioctiveEntityChecksumList(){
             super();
         }
 
         @Override
-        protected void processAddedChecksumEvent(Checksum added) {
+        protected void processAddedObjectEvent(Checksum added) {
             // the added checksum is standard inchi key and it is not the current standard inchi key
             if (standardInchiKey == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)){
                 // the standard inchi key is not set, we can set the standard inchi key
@@ -247,7 +246,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         }
 
         @Override
-        protected void processRemovedChecksumEvent(Checksum removed) {
+        protected void processRemovedObjectEvent(Checksum removed) {
             // the removed identifier is standard inchi key
             if (standardInchiKey == removed){
                 standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);

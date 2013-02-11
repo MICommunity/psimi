@@ -2,13 +2,15 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractChecksumList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * Default implementation for interaction
@@ -181,13 +183,13 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         return (shortName != null ? shortName+", " : "") + type != null ? type.toString() : "" + ", negative = " + isNegative;
     }
 
-    private class InteractionChecksumList extends AbstractChecksumList {
+    private class InteractionChecksumList extends AbstractListHavingPoperties<Checksum> {
         public InteractionChecksumList(){
             super();
         }
 
         @Override
-        protected void processAddedChecksumEvent(Checksum added) {
+        protected void processAddedObjectEvent(Checksum added) {
             if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
                 // the rigid is not set, we can set the rigid
                 rigid = added;
@@ -195,7 +197,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         }
 
         @Override
-        protected void processRemovedChecksumEvent(Checksum removed) {
+        protected void processRemovedObjectEvent(Checksum removed) {
             if (rigid == removed){
                 rigid = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.RIGID_MI, Checksum.RIGID);
             }

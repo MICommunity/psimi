@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.collection.AbstractXrefList;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -203,13 +203,13 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : "-")) + " ("+shortName+")";
     }
 
-    private class CvTermIdentifierList extends AbstractXrefList {
+    private class CvTermIdentifierList extends AbstractListHavingPoperties<Xref> {
         public CvTermIdentifierList(){
             super();
         }
 
         @Override
-        protected void processAddedXrefEvent(Xref added) {
+        protected void processAddedObjectEvent(Xref added) {
 
             // the added identifier is psi-mi and it is not the current mi identifier
             if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
@@ -250,7 +250,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         }
 
         @Override
-        protected void processRemovedXrefEvent(Xref removed) {
+        protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is psi-mi
             if (miIdentifier == removed){
                 miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
