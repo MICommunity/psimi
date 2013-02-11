@@ -44,6 +44,11 @@ public class DefaultParameter implements Parameter, Serializable {
         this.uncertainty = uncertainty;
     }
 
+    public DefaultParameter(CvTerm type, ParameterValue value, BigDecimal uncertainty){
+        this(type, value);
+        this.uncertainty = uncertainty;
+    }
+
     public CvTerm getType() {
         return this.type;
     }
