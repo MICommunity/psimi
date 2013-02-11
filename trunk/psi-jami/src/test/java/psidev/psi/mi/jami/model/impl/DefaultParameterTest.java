@@ -57,6 +57,6 @@ public class DefaultParameterTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void test_create_parameter_no_value() throws Exception {
-        Parameter parameter = new DefaultParameter(new DefaultCvTerm("kd"), null);
+        Parameter parameter = new DefaultParameter(new DefaultCvTerm("kd"), null, null, null);
     }
 }
