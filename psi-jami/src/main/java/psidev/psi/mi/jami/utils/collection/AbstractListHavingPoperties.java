@@ -150,4 +150,8 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
     public boolean removeOnly(Object o) {
         return super.remove(o);
     }
+
+    public void clearOnly() {
+        super.clear();
+    }
 }
