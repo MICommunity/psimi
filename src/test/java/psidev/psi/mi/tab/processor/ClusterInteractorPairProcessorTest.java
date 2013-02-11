@@ -9,7 +9,6 @@ import psidev.psi.mi.tab.mock.PsimiTabMockBuilder;
 import psidev.psi.mi.tab.model.*;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor.SimpleInteractor;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor.TwoInteractor;
-import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.File;
 import java.io.IOException;
@@ -258,7 +257,7 @@ public class ClusterInteractorPairProcessorTest {
         assertNotSame(ti3, ti4);
     }
 
-    public Collection<BinaryInteraction> parseMitab(File mitab) throws IOException, ConverterException {
+    public Collection<BinaryInteraction> parseMitab(File mitab) throws IOException {
         Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
         boolean hasFileHeader = true;
         PsimiTabReader mitabReader = new PsimiTabReader();

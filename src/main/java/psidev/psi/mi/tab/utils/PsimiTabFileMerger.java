@@ -10,11 +10,8 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.PsimiTabException;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.PsimiTabWriter;
-import psidev.psi.mi.tab.converter.txt2tab.behaviour.IgnoreAndPrintUnparseableLine;
-import psidev.psi.mi.tab.converter.txt2tab.behaviour.UnparseableLineBehaviour;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.processor.ClusterInteractorPairProcessor;
-import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -40,13 +37,9 @@ public class PsimiTabFileMerger {
      * Merges a list of input files into a Collection of binary interactions. The algorithm also applies clustering on interactor pairs.
      *
      * @param inputFiles               input files.
-     * @param unparseableLineBehaviour
-     * @throws ConverterException
      * @throws IOException
      */
-    public static Collection<BinaryInteraction> merge(Collection<File> inputFiles,
-                                                      UnparseableLineBehaviour unparseableLineBehaviour
-    ) throws PsimiTabException, IOException {
+    public static Collection<BinaryInteraction> merge(Collection<File> inputFiles) throws PsimiTabException, IOException {
 
         for (File inputFile : inputFiles) {
             if (!inputFile.exists()) {
@@ -86,27 +79,14 @@ public class PsimiTabFileMerger {
     }
 
     /**
-     * Merges a list of input files into a Collection of binary interactions. The algorithm also applies clustering on interactor pairs.
-     *
-     * @param inputFiles input files.
-     * @throws ConverterException
-     * @throws IOException
-     */
-    public static Collection<BinaryInteraction> merge(Collection<File> inputFiles) throws PsimiTabException, IOException {
-        return merge(inputFiles, new IgnoreAndPrintUnparseableLine(System.err));
-    }
-
-    /**
      * Merges a list of input files into a single one. The algorithm also applies clustering on interactor pairs.
      *
      * @param inputFiles input files.
      * @param output     output file.
-     * @throws ConverterException
      * @throws IOException
      */
     public static void merge(Collection<File> inputFiles,
-                             File output,
-                             UnparseableLineBehaviour unparseableLineBehaviour) throws PsimiTabException,
+                             File output) throws PsimiTabException,
             IOException {
         for (File inputFile : inputFiles) {
             if (!inputFile.exists()) {
@@ -151,18 +131,6 @@ public class PsimiTabFileMerger {
             long stop = System.currentTimeMillis();
             log.debug("Time elapsed: " + (stop - start) + "ms");
         }
-    }
-
-    /**
-     * Merges a list of input files into a single one. The algorithm also applies clustering on interactor pairs.
-     *
-     * @param inputFiles input files.
-     * @param output     output file.
-     * @throws psidev.psi.mi.tab.PsimiTabException
-     * @throws IOException
-     */
-    public static void merge(Collection<File> inputFiles, File output) throws PsimiTabException, IOException {
-        merge(inputFiles, output, new IgnoreAndPrintUnparseableLine(System.err));
     }
 
     public static void main(String[] args) throws PsimiTabException, IOException {
