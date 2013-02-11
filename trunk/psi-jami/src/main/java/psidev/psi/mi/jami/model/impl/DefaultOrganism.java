@@ -19,13 +19,13 @@ import java.util.Collection;
 
 public class DefaultOrganism implements Organism, Serializable {
 
-    private String commonName;
-    private String scientificName;
-    private int taxId;
-    private Collection<Alias> aliases;
-    private CvTerm cellType;
-    private CvTerm compartment;
-    private CvTerm tissue;
+    protected String commonName;
+    protected String scientificName;
+    protected int taxId;
+    protected Collection<Alias> aliases;
+    protected CvTerm cellType;
+    protected CvTerm compartment;
+    protected CvTerm tissue;
 
     public DefaultOrganism(int taxId){
         if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
