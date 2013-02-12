@@ -154,4 +154,33 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
     public void clearOnly() {
         super.clear();
     }
+
+    public boolean retainAllOnly(Collection<?> objects) {
+        return super.retainAll(objects);
+    }
+
+    public T removeOnly(int i) {
+        return super.remove(i);
+    }
+
+    public boolean removeAllOnly(Collection<?> objects) {
+        return super.removeAll(objects);
+    }
+
+    protected void removeRangeOnly(int i, int i2) {
+        super.removeRange(i, i2);
+    }
+
+    public boolean addAllOnly(int i, Collection<? extends T> ts) {
+
+        return super.addAll(i, ts);
+    }
+
+    public boolean addAllOnly(Collection<? extends T> ts) {
+        return super.addAll(ts);
+    }
+
+    public T setOnly(int i, T t) {
+        return super.set(i, t);
+    }
 }
