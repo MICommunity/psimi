@@ -52,8 +52,8 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
 
     @Override
     public void clear() {
-        clearProperties();
         super.clear();
+        clearProperties();
     }
 
     protected abstract void clearProperties();
