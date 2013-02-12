@@ -62,6 +62,45 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         initializeCollections();
     }
 
+    public DefaultComplex(String name) {
+        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI));
+        initializeCollections();
+    }
+
+    public DefaultComplex(String name, String fullName) {
+        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI));
+        initializeCollections();
+    }
+
+    public DefaultComplex(String name, Organism organism) {
+        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
+        initializeCollections();
+    }
+
+    public DefaultComplex(String name, String fullName, Organism organism) {
+        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
+        initializeCollections();
+    }
+
+    public DefaultComplex(String name, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
+        initializeCollections();
+    }
+
+    public DefaultComplex(String name, String fullName, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
+        initializeCollections();
+    }
+
+    public DefaultComplex(String name, Organism organism, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
+        initializeCollections();
+    }
+
+    public DefaultComplex(String name, String fullName, Organism organism, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
+        initializeCollections();
+    }
 
     private void initializeCollections() {
         this.experiments = new HashSet<Experiment>();

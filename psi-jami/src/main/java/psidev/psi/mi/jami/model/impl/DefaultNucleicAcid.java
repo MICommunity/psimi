@@ -55,6 +55,38 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         super(name, fullName, type, organism, uniqueId);
     }
 
+    public DefaultNucleicAcid(String name) {
+        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
+    }
+
+    public DefaultNucleicAcid(String name, String fullName) {
+        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
+    }
+
+    public DefaultNucleicAcid(String name, Organism organism) {
+        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
+    }
+
+    public DefaultNucleicAcid(String name, String fullName, Organism organism) {
+        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
+    }
+
+    public DefaultNucleicAcid(String name, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
+    }
+
+    public DefaultNucleicAcid(String name, String fullName, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
+    }
+
+    public DefaultNucleicAcid(String name, Organism organism, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
+    }
+
+    public DefaultNucleicAcid(String name, String fullName, Organism organism, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
+    }
+
     public String getDdbjEmblGenbank() {
         return this.ddbjEmblGenbank != null ? this.ddbjEmblGenbank.getId() : null;
     }

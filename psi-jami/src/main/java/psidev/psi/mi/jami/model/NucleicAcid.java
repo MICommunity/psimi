@@ -10,6 +10,9 @@ package psidev.psi.mi.jami.model;
 
 public interface NucleicAcid extends Interactor {
 
+    public static final String NULCEIC_ACID="nucleic acid";
+    public static final String NULCEIC_ACID_MI="MI:0318";
+
     /**
      * The unique DDBJ/EMBL/GemBank identifier which identifies the nucleic acid.
      * It can be null if it is not known and in such a case, the sequence should be provided.

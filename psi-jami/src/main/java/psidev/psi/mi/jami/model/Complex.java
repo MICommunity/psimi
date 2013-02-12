@@ -12,6 +12,9 @@ import java.util.Collection;
 
 public interface Complex extends Interactor {
 
+    public static final String COMPLEX="complex";
+    public static final String COMPLEX_MI="MI:0314";
+
     /**
      * The experiments that have been done to determine the complex.
      * The collection cannot be null. If the complex does not have any experimental evidences, the method should return an empty collection
