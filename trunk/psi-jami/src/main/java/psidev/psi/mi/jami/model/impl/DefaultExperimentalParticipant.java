@@ -27,9 +27,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
         super(interaction, interactor);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -37,9 +34,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -47,9 +41,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, Integer stoichiometry, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, stoichiometry);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -57,9 +48,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole, stoichiometry);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -73,9 +61,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         else {
             this.experimentalRole = expRole;
         }
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
     }
 
@@ -87,9 +72,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         }
         else {
             this.experimentalRole = expRole;
-        }
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
         }
         this.identificationMethod = participantIdentificationMethod;
     }
@@ -104,9 +86,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
             this.experimentalRole = expRole;
         }
         this.expressedIn = expressedIn;
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
     }
 
@@ -120,18 +99,12 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
             this.experimentalRole = expRole;
         }
         this.expressedIn = expressedIn;
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
     }
 
     public DefaultExperimentalParticipant(Interactor interactor, CvTerm participantIdentificationMethod) {
         super(interactor);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -139,9 +112,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     public DefaultExperimentalParticipant(Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
         super(interactor, bioRole);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -149,9 +119,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     public DefaultExperimentalParticipant(Interactor interactor, Integer stoichiometry, CvTerm participantIdentificationMethod) {
         super(interactor, stoichiometry);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -159,9 +126,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     public DefaultExperimentalParticipant(Interactor interactor, CvTerm bioRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
         super(interactor, bioRole, stoichiometry);
         initializeCollections();
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
@@ -175,9 +139,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         else {
             this.experimentalRole = expRole;
         }
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
     }
 
@@ -189,9 +150,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         }
         else {
             this.experimentalRole = expRole;
-        }
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
         }
         this.identificationMethod = participantIdentificationMethod;
     }
@@ -206,9 +164,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
             this.experimentalRole = expRole;
         }
         this.expressedIn = expressedIn;
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
     }
 
@@ -222,9 +177,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
             this.experimentalRole = expRole;
         }
         this.expressedIn = expressedIn;
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = participantIdentificationMethod;
     }
 
@@ -252,9 +204,6 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     }
 
     public void setIdentificationMethod(CvTerm identificationMethod) {
-        if (identificationMethod == null){
-            throw new IllegalArgumentException("The participant identification method is required and cannot be null");
-        }
         this.identificationMethod = identificationMethod;
     }
 
