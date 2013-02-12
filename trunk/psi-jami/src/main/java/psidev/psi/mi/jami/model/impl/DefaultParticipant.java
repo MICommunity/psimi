@@ -99,7 +99,7 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     protected void initializeCollections() {
         this.xrefs = new ArrayList<Xref>();
         this.annotations = new ArrayList<Annotation>();
-
+        initializeFeatures();
         this.aliases = new ArrayList<Alias>();
     }
 
