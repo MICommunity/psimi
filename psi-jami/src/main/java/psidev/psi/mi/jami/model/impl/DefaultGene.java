@@ -21,10 +21,10 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultGene extends DefaultInteractor implements Gene {
 
-    private Xref ensembl;
-    private Xref ensemblGenome;
-    private Xref entrezGeneId;
-    private Xref refseq;
+    protected Xref ensembl;
+    protected Xref ensemblGenome;
+    protected Xref entrezGeneId;
+    protected Xref refseq;
 
     public DefaultGene(String name) {
         super(name, CvTermFactory.createGeneInteractorType());

@@ -19,9 +19,9 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid{
 
-    private Xref ddbjEmblGenbank;
-    private Xref refseq;
-    private String sequence;
+    protected Xref ddbjEmblGenbank;
+    protected Xref refseq;
+    protected String sequence;
 
     public DefaultNucleicAcid(String name, CvTerm type) {
         super(name, type);

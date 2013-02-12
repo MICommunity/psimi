@@ -18,11 +18,11 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultProtein extends DefaultInteractor implements Protein {
 
-    private Xref uniprotkb;
-    private Xref refseq;
-    private Alias geneName;
-    private Checksum rogid;
-    private String sequence;
+    protected Xref uniprotkb;
+    protected Xref refseq;
+    protected Alias geneName;
+    protected Checksum rogid;
+    protected String sequence;
 
     public DefaultProtein(String name, CvTerm type) {
         super(name, type);
