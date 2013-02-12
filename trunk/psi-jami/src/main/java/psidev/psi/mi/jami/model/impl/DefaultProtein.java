@@ -56,6 +56,38 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         super(name, fullName, type, organism, uniqueId);
     }
 
+    public DefaultProtein(String name) {
+        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI));
+    }
+
+    public DefaultProtein(String name, String fullName) {
+        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI));
+    }
+
+    public DefaultProtein(String name, Organism organism) {
+        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
+    }
+
+    public DefaultProtein(String name, String fullName, Organism organism) {
+        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
+    }
+
+    public DefaultProtein(String name, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
+    }
+
+    public DefaultProtein(String name, String fullName, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
+    }
+
+    public DefaultProtein(String name, Organism organism, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
+    }
+
+    public DefaultProtein(String name, String fullName, Organism organism, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
+    }
+
     @Override
     protected void initializeIdentifiers() {
         this.identifiers = new ProteinIdentifierList();

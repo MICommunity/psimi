@@ -10,6 +10,9 @@ package psidev.psi.mi.jami.model;
 
 public interface Protein extends Interactor {
 
+    public static final String PROTEIN="protein";
+    public static final String PROTEIN_MI="MI:0326";
+
     /**
      * The unique uniprot Accession which identifies the protein.
      * It can be null if the protein is not in the UniprotKb database and the sequence should be provided in such a case.

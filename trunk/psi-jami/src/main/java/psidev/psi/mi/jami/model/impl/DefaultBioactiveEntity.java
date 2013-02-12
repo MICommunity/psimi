@@ -57,14 +57,77 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type, String uniqueChebi) {
         super(name, fullName, type);
+        if (uniqueChebi != null){
+            setChebi(uniqueChebi);
+        }
     }
 
     public DefaultBioactiveEntity(String name, CvTerm type, Organism organism, String uniqueChebi) {
         super(name, type, organism);
+        if (uniqueChebi != null){
+            setChebi(uniqueChebi);
+        }
     }
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type, Organism organism, String uniqueChebi) {
         super(name, fullName, type, organism);
+        if (uniqueChebi != null){
+            setChebi(uniqueChebi);
+        }
+    }
+
+    public DefaultBioactiveEntity(String name) {
+        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+    }
+
+    public DefaultBioactiveEntity(String name, String fullName) {
+        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+    }
+
+    public DefaultBioactiveEntity(String name, Organism organism) {
+        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+    }
+
+    public DefaultBioactiveEntity(String name, String fullName, Organism organism) {
+        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+    }
+
+    public DefaultBioactiveEntity(String name, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
+    }
+
+    public DefaultBioactiveEntity(String name, String fullName, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
+    }
+
+    public DefaultBioactiveEntity(String name, Organism organism, Xref uniqueId) {
+        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
+    }
+
+    public DefaultBioactiveEntity(String name, String fullName, Organism organism, Xref uniqueId) {
+        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
+
+    }
+
+    public DefaultBioactiveEntity(String name, String fullName, String uniqueChebi) {
+        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+        if (uniqueChebi != null){
+            setChebi(uniqueChebi);
+        }
+    }
+
+    public DefaultBioactiveEntity(String name, Organism organism, String uniqueChebi) {
+        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        if (uniqueChebi != null){
+            setChebi(uniqueChebi);
+        }
+    }
+
+    public DefaultBioactiveEntity(String name, String fullName, Organism organism, String uniqueChebi) {
+        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        if (uniqueChebi != null){
+            setChebi(uniqueChebi);
+        }
     }
 
     @Override

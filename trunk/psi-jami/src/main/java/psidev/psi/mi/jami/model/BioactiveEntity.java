@@ -10,6 +10,9 @@ package psidev.psi.mi.jami.model;
 
 public interface BioactiveEntity extends Interactor {
 
+    public static final String BIOACTIVE_ENTITY="bioactive entity";
+    public static final String BIOACTIVE_ENTITY_MI="MI:1100";
+
     /**
      * The CHEBI accession which identifies the bioactive entity.
      * It is a shortcut which should point to the first chebi identifier in the collection of identifiers.
