@@ -122,6 +122,61 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
         this.xrefs.add(imexId);
     }
 
+    public DefaultExperimentalInteraction() {
+        super();
+        this.parameters = new ArrayList<Parameter>();
+    }
+
+    public DefaultExperimentalInteraction(String shortName) {
+        super(shortName);
+        this.parameters = new ArrayList<Parameter>();
+    }
+
+    public DefaultExperimentalInteraction(String shortName, Source source) {
+        super(shortName, source);
+        this.parameters = new ArrayList<Parameter>();
+    }
+
+    public DefaultExperimentalInteraction(String shortName, CvTerm type) {
+        super(shortName, type);
+        this.parameters = new ArrayList<Parameter>();
+    }
+
+    public DefaultExperimentalInteraction(String shortName, Source source, CvTerm type) {
+        super(shortName, source, type);
+        this.parameters = new ArrayList<Parameter>();
+    }
+
+    public DefaultExperimentalInteraction(Xref imexId) {
+        super();
+        this.parameters = new ArrayList<Parameter>();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultExperimentalInteraction(String shortName, Xref imexId) {
+        super(shortName);
+        this.parameters = new ArrayList<Parameter>();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultExperimentalInteraction(String shortName, Source source, Xref imexId) {
+        super(shortName, source);
+        this.parameters = new ArrayList<Parameter>();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultExperimentalInteraction(String shortName, CvTerm type, Xref imexId) {
+        super(shortName, type);
+        this.parameters = new ArrayList<Parameter>();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultExperimentalInteraction(String shortName, Source source, CvTerm type, Xref imexId) {
+        super(shortName, source, type);
+        this.parameters = new ArrayList<Parameter>();
+        this.xrefs.add(imexId);
+    }
+
     @Override
     protected void initializeXrefs() {
         this.xrefs = new ExperimentalInteractionXrefList();

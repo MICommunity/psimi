@@ -29,6 +29,22 @@ public class DefaultComponent extends DefaultParticipant<Complex, Interactor, Bi
         super(interaction, interactor, bioRole, stoichiometry);
     }
 
+    public DefaultComponent(Interactor interactor) {
+        super(interactor);
+    }
+
+    public DefaultComponent(Interactor interactor, CvTerm bioRole) {
+        super(interactor, bioRole);
+    }
+
+    public DefaultComponent(Interactor interactor, Integer stoichiometry) {
+        super(interactor, stoichiometry);
+    }
+
+    public DefaultComponent(Interactor interactor, CvTerm bioRole, Integer stoichiometry) {
+        super(interactor, bioRole, stoichiometry);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){

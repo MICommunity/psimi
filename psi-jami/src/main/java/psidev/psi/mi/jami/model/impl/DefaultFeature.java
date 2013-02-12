@@ -32,6 +32,31 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     protected Collection<T> bindingFeatures;
     protected P participant;
 
+    public DefaultFeature(){
+
+        initializeIdentifiers();
+        initializeAnnotations();
+        initializeXrefs();
+        initializeRanges();
+        initializeBindingFeatures();
+    }
+
+    public DefaultFeature(String shortName, String fullName){
+        this();
+        this.shortName = shortName;
+        this.fullName = fullName;
+    }
+
+    public DefaultFeature(CvTerm type){
+        this();
+        this.type = type;
+    }
+
+    public DefaultFeature(String shortName, String fullName, CvTerm type){
+        this(shortName, fullName);
+        this.type =type;
+    }
+
     public DefaultFeature(P participant){
         if (participant == null){
             throw new IllegalArgumentException("The participant cannot be null");
