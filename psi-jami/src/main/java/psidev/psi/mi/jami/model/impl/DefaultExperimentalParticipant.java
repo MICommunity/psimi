@@ -180,7 +180,8 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         this.identificationMethod = participantIdentificationMethod;
     }
 
-    private void initializeCollections() {
+    protected void initializeCollections() {
+        super.initializeCollections();
         this.experimentalPreparations = new ArrayList<CvTerm>();
         this.confidences = new ArrayList<Confidence>();
         this.parameters = new ArrayList<Parameter>();

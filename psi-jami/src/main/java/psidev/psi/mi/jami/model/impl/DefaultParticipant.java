@@ -96,11 +96,15 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         this.stoichiometry = stoichiometry;
     }
 
-    private void initializeCollections() {
+    protected void initializeCollections() {
         this.xrefs = new ArrayList<Xref>();
         this.annotations = new ArrayList<Annotation>();
-        this.features = new ArrayList<F>();
+
         this.aliases = new ArrayList<Alias>();
+    }
+
+    protected void initializeFeatures(){
+        this.features = new ArrayList<F>();
     }
 
     public I getInteraction() {
