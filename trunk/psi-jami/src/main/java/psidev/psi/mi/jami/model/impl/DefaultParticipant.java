@@ -42,13 +42,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         this.biologicalRole = CvTermFactory.createUnspecifiedRole();
     }
 
-    private void initializeCollections() {
-        this.xrefs = new ArrayList<Xref>();
-        this.annotations = new ArrayList<Annotation>();
-        this.features = new ArrayList<F>();
-        this.aliases = new ArrayList<Alias>();
-    }
-
     public DefaultParticipant(I interaction, T interactor, CvTerm bioRole){
         if (interaction == null){
             throw new IllegalArgumentException("The interaction cannot be null.");
@@ -71,6 +64,43 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     public DefaultParticipant(I interaction, T interactor, CvTerm bioRole, Integer stoichiometry){
         this(interaction, interactor, bioRole);
         this.stoichiometry = stoichiometry;
+    }
+
+    public DefaultParticipant(T interactor){
+        if (interactor == null){
+            throw new IllegalArgumentException("The interactor cannot be null.");
+        }
+        this.interactor = interactor;
+
+        initializeCollections();
+        this.biologicalRole = CvTermFactory.createUnspecifiedRole();
+    }
+
+    public DefaultParticipant(T interactor, CvTerm bioRole){
+        if (interactor == null){
+            throw new IllegalArgumentException("The interactor cannot be null.");
+        }
+        this.interactor = interactor;
+
+        initializeCollections();
+        this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
+    }
+
+    public DefaultParticipant(T interactor, Integer stoichiometry){
+        this(interactor);
+        this.stoichiometry = stoichiometry;
+    }
+
+    public DefaultParticipant(T interactor, CvTerm bioRole, Integer stoichiometry){
+        this(interactor, bioRole);
+        this.stoichiometry = stoichiometry;
+    }
+
+    private void initializeCollections() {
+        this.xrefs = new ArrayList<Xref>();
+        this.annotations = new ArrayList<Annotation>();
+        this.features = new ArrayList<F>();
+        this.aliases = new ArrayList<Alias>();
     }
 
     public I getInteraction() {
