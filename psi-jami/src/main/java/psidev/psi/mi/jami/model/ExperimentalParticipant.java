@@ -32,7 +32,7 @@ public interface ExperimentalParticipant extends Participant<ExperimentalInterac
 
     /**
      * The identification methods for this participant.
-     * The identification method is a controlled vocabulary term and cannot be null.
+     * The identification method is a controlled vocabulary term and can be null if not specified.
      * Ex: western blot, immunostaining, ...
      * @return the participant identification method
      */
@@ -41,7 +41,6 @@ public interface ExperimentalParticipant extends Participant<ExperimentalInterac
     /**
      * Set the participant identification method
      * @param identificationMethod : participant identification method
-     * @throws IllegalArgumentException when the participant identification method is null
      */
     public void setIdentificationMethod(CvTerm identificationMethod);
 
