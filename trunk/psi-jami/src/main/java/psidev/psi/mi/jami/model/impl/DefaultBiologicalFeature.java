@@ -30,6 +30,22 @@ public class DefaultBiologicalFeature extends DefaultFeature<BiologicalFeature, 
         super(participant, shortName, fullName, type);
     }
 
+    public DefaultBiologicalFeature() {
+        super();
+    }
+
+    public DefaultBiologicalFeature(String shortName, String fullName) {
+        super(shortName, fullName);
+    }
+
+    public DefaultBiologicalFeature(CvTerm type) {
+        super(type);
+    }
+
+    public DefaultBiologicalFeature(String shortName, String fullName, CvTerm type) {
+        super(shortName, fullName, type);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){

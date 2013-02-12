@@ -37,8 +37,29 @@ public class DefaultExperimentalFeature extends DefaultFeature<ExperimentalFeatu
         this.detectionMethod = detectionMethod;
     }
 
-    public DefaultExperimentalFeature(ExperimentalParticipant participant, String shortName, String fullName, CvTerm type, CvTerm detectionMethod) {
-        super(participant, shortName, fullName, type);
+    public DefaultExperimentalFeature() {
+        super();
+    }
+
+    public DefaultExperimentalFeature(String shortName, String fullName) {
+        super(shortName, fullName);
+    }
+
+    public DefaultExperimentalFeature(CvTerm type) {
+        super(type);
+    }
+
+    public DefaultExperimentalFeature(String shortName, String fullName, CvTerm type) {
+        super(shortName, fullName, type);
+    }
+
+    public DefaultExperimentalFeature(CvTerm type, CvTerm detectionMethod) {
+        super(type);
+        this.detectionMethod = detectionMethod;
+    }
+
+    public DefaultExperimentalFeature(String shortName, String fullName, CvTerm type, CvTerm detectionMethod) {
+        super(shortName, fullName, type);
         this.detectionMethod = detectionMethod;
     }
 
