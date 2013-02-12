@@ -17,12 +17,12 @@ import java.util.Collection;
 
 public class DefaultExperimentalParticipant extends DefaultParticipant<ExperimentalInteraction, Interactor, ExperimentalFeature> implements ExperimentalParticipant {
 
-    private CvTerm experimentalRole;
-    private CvTerm identificationMethod;
-    private Collection<CvTerm> experimentalPreparations;
-    private Organism expressedIn;
-    private Collection<Confidence> confidences;
-    private Collection<Parameter> parameters;
+    protected CvTerm experimentalRole;
+    protected CvTerm identificationMethod;
+    protected Collection<CvTerm> experimentalPreparations;
+    protected Organism expressedIn;
+    protected Collection<Confidence> confidences;
+    protected Collection<Parameter> parameters;
 
     public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
         super(interaction, interactor);
