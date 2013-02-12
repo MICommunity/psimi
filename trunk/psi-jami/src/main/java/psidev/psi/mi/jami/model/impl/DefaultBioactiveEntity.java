@@ -17,10 +17,10 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultBioactiveEntity extends DefaultInteractor implements BioactiveEntity {
 
-    private Xref chebi;
-    private Checksum smile;
-    private Checksum standardInchi;
-    private Checksum standardInchiKey;
+    protected Xref chebi;
+    protected Checksum smile;
+    protected Checksum standardInchi;
+    protected Checksum standardInchiKey;
 
     public DefaultBioactiveEntity(String name, CvTerm type) {
         super(name, type);
