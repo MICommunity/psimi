@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExperimentalFeature;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.factory.ExperimentalParticipantFactory;
 import psidev.psi.mi.jami.utils.factory.RangeFactory;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class FeatureImpl extends DefaultExperimentalFeature implements Feature {
      */
     @Deprecated
     public FeatureImpl(String featureType, List<String> range) {
-        super(ExperimentalParticipantFactory.createUnknownBasicParticipant());
+        super();
 
         if (featureType != null){
             this.type = new DefaultCvTerm(featureType);
