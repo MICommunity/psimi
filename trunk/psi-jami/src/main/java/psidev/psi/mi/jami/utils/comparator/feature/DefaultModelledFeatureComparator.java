@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
-import psidev.psi.mi.jami.model.BiologicalFeature;
+import psidev.psi.mi.jami.model.ModelledFeature;
 
 /**
- * Default BiologicalFeature comparator.
+ * Default ModelledFeature comparator.
  * It will use a DefaultFeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of a biological feature.
@@ -13,14 +13,14 @@ import psidev.psi.mi.jami.model.BiologicalFeature;
  * @since <pre>16/01/13</pre>
  */
 
-public class DefaultBiologicalFeatureComparator extends BiologicalFeatureComparator {
+public class DefaultModelledFeatureComparator extends ModelledFeatureComparator {
 
-    private static DefaultBiologicalFeatureComparator defaultBiologicalFeatureComparator;
+    private static DefaultModelledFeatureComparator defaultBiologicalFeatureComparator;
 
     /**
-     * Creates a new DefaultBiologicalFeatureComparator. It will use a DefaultFeatureBaseComparator to compare basic feature properties
+     * Creates a new DefaultModelledFeatureComparator. It will use a DefaultFeatureBaseComparator to compare basic feature properties
      */
-    public DefaultBiologicalFeatureComparator() {
+    public DefaultModelledFeatureComparator() {
         super(new DefaultFeatureBaseComparator());
     }
 
@@ -35,19 +35,19 @@ public class DefaultBiologicalFeatureComparator extends BiologicalFeatureCompara
      *
      * This comparator will ignore all the other properties of a biological feature.
      */
-    public int compare(BiologicalFeature biologicalFeature1, BiologicalFeature biologicalFeature2) {
+    public int compare(ModelledFeature biologicalFeature1, ModelledFeature biologicalFeature2) {
         return super.compare(biologicalFeature1, biologicalFeature2);
     }
 
     /**
-     * Use DefaultBiologicalFeatureComparator to know if two biological features are equals.
+     * Use DefaultModelledFeatureComparator to know if two biological features are equals.
      * @param feature1
      * @param feature2
      * @return true if the two biological features are equal
      */
-    public static boolean areEquals(BiologicalFeature feature1, BiologicalFeature feature2){
+    public static boolean areEquals(ModelledFeature feature1, ModelledFeature feature2){
         if (defaultBiologicalFeatureComparator == null){
-            defaultBiologicalFeatureComparator = new DefaultBiologicalFeatureComparator();
+            defaultBiologicalFeatureComparator = new DefaultModelledFeatureComparator();
         }
 
         return defaultBiologicalFeatureComparator.compare(feature1, feature2) == 0;

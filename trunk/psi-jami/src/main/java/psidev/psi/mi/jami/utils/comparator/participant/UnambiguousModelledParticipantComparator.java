@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.BiologicalFeature;
+import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousBiologicalFeaturecomparator;
+import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
 /**
@@ -26,12 +26,12 @@ public class UnambiguousModelledParticipantComparator extends ModelledParticipan
      * the basic properties of a participant.
      */
     public UnambiguousModelledParticipantComparator() {
-        super(new ParticipantBaseComparator<BiologicalFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousBiologicalFeaturecomparator()));
+        super(new ParticipantBaseComparator<ModelledFeature>(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousModelledFeaturecomparator()));
     }
 
     @Override
-    public ParticipantBaseComparator<BiologicalFeature> getParticipantComparator() {
-        return (ParticipantBaseComparator<BiologicalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<ModelledFeature> getParticipantComparator() {
+        return (ParticipantBaseComparator<ModelledFeature>) this.participantComparator;
     }
 
     @Override

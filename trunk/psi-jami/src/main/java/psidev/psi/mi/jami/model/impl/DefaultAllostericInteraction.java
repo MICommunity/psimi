@@ -20,7 +20,7 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
     protected CvTerm allosteryType;
     protected Component allostericMolecule;
     protected Component allostericEffector;
-    protected BiologicalFeature allostericPtm;
+    protected ModelledFeature allostericPtm;
 
     public DefaultAllostericInteraction(CvTerm effectOutcome, CvTerm response, CvTerm allostericMechanism,
                                         CvTerm allosteryType, Component allostericMolecule) {
@@ -158,11 +158,11 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
         this.allostericEffector = effector;
     }
 
-    public BiologicalFeature getAllostericPtm() {
+    public ModelledFeature getAllostericPtm() {
         return this.allostericPtm;
     }
 
-    public void setAllostericPtm(BiologicalFeature feature) {
+    public void setAllostericPtm(ModelledFeature feature) {
         this.allostericPtm = feature;
     }
 

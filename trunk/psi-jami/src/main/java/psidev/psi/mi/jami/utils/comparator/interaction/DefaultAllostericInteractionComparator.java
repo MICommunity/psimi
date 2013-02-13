@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.AllostericInteraction;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultBiologicalFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentComparator;
 
 /**
@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentComparato
  * It will first compare the basic properties of a cooperative interaction using DefaultCooperativeInteractionComparator. It will then compare the allosteric mechanisms using DefaultCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
  * using DefaultCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using DefaultComponentComparator.
  * If the allosteric molecules are the same, it will compare the allosteric effectors using the DefaultComponentComparator.
- * If the allosteric effectors are the same, it will compare the allosteric PTMs using DefaultBiologicalFeatureComparator.
+ * If the allosteric effectors are the same, it will compare the allosteric PTMs using DefaultModelledFeatureComparator.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -26,10 +26,10 @@ public class DefaultAllostericInteractionComparator extends AllostericInteractio
     /**
      * Creates a new DefaultAllostericInteractionComparator. It will use a DefaultCooperativeInteractionComparator to
      * compare basic cooperative interaction properties, DefaultCvTermComparator to compare responses, outcome effects and mechanisms,
-     * DefaultComponentComparator to compare allosteric molecules and effectors and DefaultBiologicalFeatureComparator to compare allosteric PTMs
+     * DefaultComponentComparator to compare allosteric molecules and effectors and DefaultModelledFeatureComparator to compare allosteric PTMs
      */
     public DefaultAllostericInteractionComparator() {
-        super(new DefaultCooperativeInteractionComparator(), new DefaultCvTermComparator(), new DefaultComponentComparator(), new DefaultBiologicalFeatureComparator());
+        super(new DefaultCooperativeInteractionComparator(), new DefaultCvTermComparator(), new DefaultComponentComparator(), new DefaultModelledFeatureComparator());
     }
 
     @Override
@@ -48,8 +48,8 @@ public class DefaultAllostericInteractionComparator extends AllostericInteractio
     }
 
     @Override
-    public DefaultBiologicalFeatureComparator getPtmComparator() {
-        return (DefaultBiologicalFeatureComparator) ptmComparator;
+    public DefaultModelledFeatureComparator getPtmComparator() {
+        return (DefaultModelledFeatureComparator) ptmComparator;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class DefaultAllostericInteractionComparator extends AllostericInteractio
      * It will first compare the basic properties of a cooperative interaction using DefaultCooperativeInteractionComparator. It will then compare the allosteric mechanisms using DefaultCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
      * using DefaultCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using DefaultComponentComparator.
      * If the allosteric molecules are the same, it will compare the allosteric effectors using the DefaultComponentComparator.
-     * If the allosteric effectors are the same, it will compare the allosteric PTMs using DefaultBiologicalFeatureComparator.
+     * If the allosteric effectors are the same, it will compare the allosteric PTMs using DefaultModelledFeatureComparator.
      *
      *
      **/

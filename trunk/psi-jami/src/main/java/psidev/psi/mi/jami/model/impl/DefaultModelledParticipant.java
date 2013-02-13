@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledP
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultModelledParticipant extends DefaultParticipant<ModelledInteraction, Interactor, BiologicalFeature> implements ModelledParticipant {
+public class DefaultModelledParticipant extends DefaultParticipant<ModelledInteraction, Interactor, ModelledFeature> implements ModelledParticipant {
 
 
     public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor) {

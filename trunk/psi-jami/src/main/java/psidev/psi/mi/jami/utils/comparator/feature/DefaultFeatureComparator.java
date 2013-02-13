@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Interactor;
 /**
  * Generic default feature comparator.
  * Biological features come first and then experimental features.
- * - It uses DefaultBiologicalFeatureComparator to compare biological features
+ * - It uses DefaultModelledFeatureComparator to compare biological features
  * - It uses DefaultExperimentalFeatureComparator to compare experimental features
  * - It uses DefaultFeatureBaseComparator to compare basic feature properties
  *
@@ -34,7 +34,7 @@ public class DefaultFeatureComparator extends FeatureComparator {
     @Override
     /**
      * Biological features come first and then experimental features.
-     * - It uses DefaultBiologicalFeatureComparator to compare biological features
+     * - It uses DefaultModelledFeatureComparator to compare biological features
      * - It uses DefaultExperimentalFeatureComparator to compare experimental features
      * - It uses DefaultFeatureBaseComparator to compare basic feature properties
      *

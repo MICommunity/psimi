@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.BiologicalFeature;
+import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultBiologicalFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -26,12 +26,12 @@ public class DefaultModelledParticipantComparator extends ModelledParticipantCom
      * the basic properties of a participant.
      */
     public DefaultModelledParticipantComparator() {
-        super(new ParticipantBaseComparator<BiologicalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator()));
+        super(new ParticipantBaseComparator<ModelledFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultModelledFeatureComparator()));
     }
 
     @Override
-    public ParticipantBaseComparator<BiologicalFeature> getParticipantComparator() {
-        return (ParticipantBaseComparator<BiologicalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<ModelledFeature> getParticipantComparator() {
+        return (ParticipantBaseComparator<ModelledFeature>) this.participantComparator;
     }
 
     @Override
