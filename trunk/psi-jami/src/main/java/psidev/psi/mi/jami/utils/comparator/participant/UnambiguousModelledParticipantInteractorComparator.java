@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.BiologicalParticipant;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 
 /**
  * Unambiguous biological participant comparator based on the interactor only.
@@ -13,15 +13,15 @@ import psidev.psi.mi.jami.model.BiologicalParticipant;
  * @since <pre>13/02/13</pre>
  */
 
-public class UnambiguousBiologicalParticipantInteractorComparator extends BiologicalParticipantComparator {
+public class UnambiguousModelledParticipantInteractorComparator extends ModelledParticipantComparator {
 
-    private static UnambiguousBiologicalParticipantInteractorComparator unambiguousParticipantInteractorComparator;
+    private static UnambiguousModelledParticipantInteractorComparator unambiguousParticipantInteractorComparator;
 
     /**
-     * Creates a new UnambiguousBiologicalParticipantInteractorComparator. It will use a UnambiguousParticipantInteractorComparator to compare
+     * Creates a new UnambiguousModelledParticipantInteractorComparator. It will use a UnambiguousParticipantInteractorComparator to compare
      * the basic properties of a participant.
      */
-    public UnambiguousBiologicalParticipantInteractorComparator() {
+    public UnambiguousModelledParticipantInteractorComparator() {
         super(new UnambiguousParticipantInteractorComparator());
     }
 
@@ -36,19 +36,19 @@ public class UnambiguousBiologicalParticipantInteractorComparator extends Biolog
      *
      * This comparator will ignore all the other properties of a biological participant.
      */
-    public int compare(BiologicalParticipant component1, BiologicalParticipant component2) {
+    public int compare(ModelledParticipant component1, ModelledParticipant component2) {
         return super.compare(component1, component2);
     }
 
     /**
-     * Use UnambiguousBiologicalParticipantInteractorComparator to know if two biological participants are equals.
+     * Use UnambiguousModelledParticipantInteractorComparator to know if two biological participants are equals.
      * @param component1
      * @param component2
      * @return true if the two biological participants are equal
      */
-    public static boolean areEquals(BiologicalParticipant component1, BiologicalParticipant component2){
+    public static boolean areEquals(ModelledParticipant component1, ModelledParticipant component2){
         if (unambiguousParticipantInteractorComparator == null){
-            unambiguousParticipantInteractorComparator = new UnambiguousBiologicalParticipantInteractorComparator();
+            unambiguousParticipantInteractorComparator = new UnambiguousModelledParticipantInteractorComparator();
         }
 
         return unambiguousParticipantInteractorComparator.compare(component1, component2) == 0;

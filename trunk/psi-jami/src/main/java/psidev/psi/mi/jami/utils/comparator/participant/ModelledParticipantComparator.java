@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.BiologicalParticipant;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 
 import java.util.Comparator;
 
@@ -15,7 +15,7 @@ import java.util.Comparator;
  * @since <pre>13/02/13</pre>
  */
 
-public class BiologicalParticipantComparator implements Comparator<BiologicalParticipant> {
+public class ModelledParticipantComparator implements Comparator<ModelledParticipant> {
 
     protected ParticipantInteractorComparator participantComparator;
 
@@ -23,7 +23,7 @@ public class BiologicalParticipantComparator implements Comparator<BiologicalPar
      * Creates a new ComponentComparator
      * @param participantComparator : the participant comparator required to compare basic participant properties
      */
-    public BiologicalParticipantComparator(ParticipantInteractorComparator participantComparator){
+    public ModelledParticipantComparator(ParticipantInteractorComparator participantComparator){
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
         }
@@ -42,7 +42,7 @@ public class BiologicalParticipantComparator implements Comparator<BiologicalPar
      * @param bioParticipant2
      * @return
      */
-    public int compare(BiologicalParticipant bioParticipant1, BiologicalParticipant bioParticipant2) {
+    public int compare(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2) {
         return participantComparator.compare(bioParticipant1, bioParticipant2);
     }
 }
