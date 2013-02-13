@@ -38,10 +38,10 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     public DefaultInteraction(){
         initializeXrefs();
         initializeAnnotations();
-        this.participants = new ArrayList<P>();
-        this.confidences = new ArrayList<Confidence>();
-        this.identifiers = new ArrayList<Xref>();
-        this.checksums = new InteractionChecksumList();
+        initializeParticipants();
+        initializeChecksum();
+        initializeConfidences();
+        initializeIdentifiers();
     }
 
     public DefaultInteraction(String shortName){
@@ -72,6 +72,21 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.xrefs = new ArrayList<Xref>();
     }
 
+    protected void initializeParticipants(){
+        this.participants = new ArrayList<P>();
+    }
+
+    protected void initializeConfidences(){
+        this.confidences = new ArrayList<Confidence>();
+    }
+
+    protected void initializeIdentifiers(){
+        this.identifiers = new ArrayList<Xref>();
+    }
+
+    protected void initializeChecksum(){
+        this.checksums = new InteractionChecksumList();
+    }
 
     public String getShortName() {
         return this.shortName;
