@@ -7,6 +7,6 @@ package psidev.psi.mi.jami.model;
  * @version $Id$
  * @since <pre>23/11/12</pre>
  */
-public interface Component extends Participant<Complex, Interactor, BiologicalFeature>{
+public interface Component extends Participant<Complex, Interactor, ModelledFeature>{
 
 }

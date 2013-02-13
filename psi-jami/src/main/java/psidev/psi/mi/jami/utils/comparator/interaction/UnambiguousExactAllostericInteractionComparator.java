@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.AllostericInteraction;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousBiologicalFeaturecomparator;
+import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponentComparator;
 
 /**
@@ -30,7 +30,7 @@ public class UnambiguousExactAllostericInteractionComparator extends AllostericI
      * UnambiguousExactComponentComparator to compare allosteric molecules and effectors and UnambiguousBiologicalFeatureComparator to compare allosteric PTMs
      */
     public UnambiguousExactAllostericInteractionComparator() {
-        super(new UnambiguousExactCooperativeInteractionComparator(), new UnambiguousCvTermComparator(), new UnambiguousExactComponentComparator(), new UnambiguousBiologicalFeaturecomparator());
+        super(new UnambiguousExactCooperativeInteractionComparator(), new UnambiguousCvTermComparator(), new UnambiguousExactComponentComparator(), new UnambiguousModelledFeaturecomparator());
     }
 
     @Override
@@ -49,8 +49,8 @@ public class UnambiguousExactAllostericInteractionComparator extends AllostericI
     }
 
     @Override
-    public UnambiguousBiologicalFeaturecomparator getPtmComparator() {
-        return (UnambiguousBiologicalFeaturecomparator) ptmComparator;
+    public UnambiguousModelledFeaturecomparator getPtmComparator() {
+        return (UnambiguousModelledFeaturecomparator) ptmComparator;
     }
 
     @Override

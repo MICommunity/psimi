@@ -75,11 +75,11 @@ public interface AllostericInteraction extends CooperativeInteraction {
      * It can be null.
      * @return the allosteric PTM
      */
-    public BiologicalFeature getAllostericPtm();
+    public ModelledFeature getAllostericPtm();
 
     /**
      * Sets the allosteric PTM.
      * @param feature : allosteric PTM
      */
-    public void setAllostericPtm(BiologicalFeature feature);
+    public void setAllostericPtm(ModelledFeature feature);
 }

@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
-import psidev.psi.mi.jami.model.BiologicalFeature;
+import psidev.psi.mi.jami.model.ModelledFeature;
 
 import java.util.Comparator;
 
 /**
- * Basic BiologicalFeature comparator.
+ * Basic ModelledFeature comparator.
  * It will use a FeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of a biological feature.
@@ -15,15 +15,15 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class BiologicalFeatureComparator implements Comparator<BiologicalFeature> {
+public class ModelledFeatureComparator implements Comparator<ModelledFeature> {
 
     protected FeatureBaseComparator featureComparator;
 
     /**
-     * Creates a new BiologicalFeatureComparator.
+     * Creates a new ModelledFeatureComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public BiologicalFeatureComparator(FeatureBaseComparator featureComparator){
+    public ModelledFeatureComparator(FeatureBaseComparator featureComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
@@ -43,7 +43,7 @@ public class BiologicalFeatureComparator implements Comparator<BiologicalFeature
      * @param biologicalFeature2
      * @return
      */
-    public int compare(BiologicalFeature biologicalFeature1, BiologicalFeature biologicalFeature2) {
+    public int compare(ModelledFeature biologicalFeature1, ModelledFeature biologicalFeature2) {
         return featureComparator.compare(biologicalFeature1, biologicalFeature2);
     }
 }
