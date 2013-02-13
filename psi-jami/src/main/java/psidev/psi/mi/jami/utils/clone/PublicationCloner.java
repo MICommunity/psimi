@@ -21,8 +21,6 @@ public class PublicationCloner {
     public static void copyAndOverridePublicationProperties(Publication source, Publication target){
         if (source != null && target != null){
             target.setCurationDepth(source.getCurationDepth());
-            target.setDoi(source.getDoi());
-            target.setPubmedId(source.getPubmedId());
             target.setJournal(source.getJournal());
             target.setReleasedDate(source.getReleasedDate());
             target.setTitle(source.getTitle());
