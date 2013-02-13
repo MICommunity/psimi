@@ -122,6 +122,41 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         this.xrefs.add(imexId);
     }
 
+    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type) {
+        super(shortName, source, type);
+        initializeParameters();
+    }
+
+    public DefaultInteractionEvidence(Xref imexId) {
+        super();
+        initializeParameters();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultInteractionEvidence(String shortName, Xref imexId) {
+        super(shortName);
+        initializeParameters();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultInteractionEvidence(String shortName, Source source, Xref imexId) {
+        super(shortName, source);
+        initializeParameters();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultInteractionEvidence(String shortName, CvTerm type, Xref imexId) {
+        super(shortName, type);
+        initializeParameters();
+        this.xrefs.add(imexId);
+    }
+
+    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type, Xref imexId) {
+        super(shortName, source, type);
+        initializeParameters();
+        this.xrefs.add(imexId);
+    }
+
     protected void initializeParameters(){
         this.parameters = new ArrayList<Parameter>();
     }
@@ -144,41 +179,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
     public DefaultInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
         this.parameters = new ArrayList<Parameter>();
-    }
-
-    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type) {
-        super(shortName, source, type);
-        this.parameters = new ArrayList<Parameter>();
-    }
-
-    public DefaultInteractionEvidence(Xref imexId) {
-        super();
-        this.parameters = new ArrayList<Parameter>();
-        this.xrefs.add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, Xref imexId) {
-        super(shortName);
-        this.parameters = new ArrayList<Parameter>();
-        this.xrefs.add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, Source source, Xref imexId) {
-        super(shortName, source);
-        this.parameters = new ArrayList<Parameter>();
-        this.xrefs.add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, CvTerm type, Xref imexId) {
-        super(shortName, type);
-        this.parameters = new ArrayList<Parameter>();
-        this.xrefs.add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type, Xref imexId) {
-        super(shortName, source, type);
-        this.parameters = new ArrayList<Parameter>();
-        this.xrefs.add(imexId);
     }
 
     @Override
