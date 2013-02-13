@@ -41,7 +41,7 @@ public class ClusterInteractorPairProcessorTest {
 
         List<Alias> aliases = new ArrayList<Alias>();
         aliases.add(new AliasImpl("gene name", "abc"));
-        i.setAliases(aliases);
+        i.setInteractorAliases(aliases);
 
         i.setOrganism(new OrganismImpl(10032));
 
@@ -60,7 +60,7 @@ public class ClusterInteractorPairProcessorTest {
 
         List<Alias> aliases = new ArrayList<Alias>();
         aliases.add(new AliasImpl("gene name", "def"));
-        i.setAliases(aliases);
+        i.setInteractorAliases(aliases);
 
         i.setOrganism(new OrganismImpl(9606));
 
