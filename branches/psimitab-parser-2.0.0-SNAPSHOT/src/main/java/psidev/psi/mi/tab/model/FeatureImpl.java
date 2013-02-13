@@ -4,10 +4,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.utils.RangeUtils;
+import psidev.psi.mi.jami.utils.clone.ParticipantCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.factory.RangeFactory;
 
@@ -217,6 +219,22 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
 
     //////////////////////////
     // Object's override
+
+    @Override
+    public void setParticipant(ParticipantEvidence participant) {
+        if (participant == null){
+            super.setParticipant(null);
+        }
+        else if (participant instanceof Interactor){
+            super.setParticipant(participant);
+        }
+        else {
+            Interactor convertedParticipant = new Interactor();
+
+            ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
+            super.setParticipant(convertedParticipant);
+        }
+    }
 
     /**
      * {@inheritDoc}

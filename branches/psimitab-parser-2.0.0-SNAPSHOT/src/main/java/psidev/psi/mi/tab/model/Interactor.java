@@ -686,13 +686,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 		return result;
 	}
 
-    protected class InteractorFeatureList extends AbstractListHavingPoperties<ExperimentalFeature> {
+    protected class InteractorFeatureList extends AbstractListHavingPoperties<FeatureEvidence> {
         public InteractorFeatureList(){
             super();
         }
 
         @Override
-        protected void processAddedObjectEvent(ExperimentalFeature added) {
+        protected void processAddedObjectEvent(FeatureEvidence added) {
             if (added instanceof Feature){
                 Feature f = (Feature)added;
                 ((InteractorMitabFeatureList)mitabFeatures).addOnly((Feature) added);
@@ -706,7 +706,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         }
 
         @Override
-        protected void processRemovedObjectEvent(ExperimentalFeature removed) {
+        protected void processRemovedObjectEvent(FeatureEvidence removed) {
             if (removed instanceof Checksum){
                 ((InteractorMitabFeatureList)mitabFeatures).removeOnly(removed);
             }

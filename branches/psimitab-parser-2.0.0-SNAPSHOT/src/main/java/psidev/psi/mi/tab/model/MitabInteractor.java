@@ -461,6 +461,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
     }
 
     private void processNewTypeInInteractorTypesList(CvTerm type) {
+        ((InteractorTypeList)interactorTypes).clearOnly();
         if (type.getMIIdentifier() != null){
             ((InteractorTypeList)interactorTypes).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, type.getMIIdentifier(), type.getFullName() != null ? type.getFullName(): type.getShortName()));
         }

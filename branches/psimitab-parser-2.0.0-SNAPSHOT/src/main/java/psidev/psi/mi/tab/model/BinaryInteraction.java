@@ -1,6 +1,6 @@
 package psidev.psi.mi.tab.model;
 
-import psidev.psi.mi.jami.model.ExperimentalInteraction;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.List;
  * @version $Id$
  * @since specify the maven artifact version
  */
-public interface BinaryInteraction<T extends Interactor> extends ExperimentalInteraction, Flippable, Serializable {
+public interface BinaryInteraction<T extends Interactor> extends InteractionEvidence, Flippable, Serializable {
 
     /**
      * Returns interactor A.
@@ -253,14 +253,14 @@ public interface BinaryInteraction<T extends Interactor> extends ExperimentalInt
      *
      * @return checksums for the interaction.
      */
-    List<Checksum> getMitabChecksums();
+    List<Checksum> getInteractionChecksums();
 
     /**
      * Sets the checksum for the interaction.
      *
      * @param interactionChecksums checksum for the interaction.
      */
-    void setMitabChecksums(List<Checksum> interactionChecksums);
+    void setInteractionChecksums(List<Checksum> interactionChecksums);
 
     /**
      * Returns if the interaction is negative (true) or

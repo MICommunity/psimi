@@ -44,6 +44,11 @@ public class MitabPublication extends DefaultPublication{
         this.authors = new PublicationAuthorsList();
     }
 
+    @Override
+    protected void initializeXrefs() {
+        this.xrefs = new PublicationXrefList();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -211,7 +216,9 @@ public class MitabPublication extends DefaultPublication{
             doi = null;
 
             // remove imex id from xrefs
-            xrefs.remove(imexId);
+            if (imexId != null){
+                xrefs.remove(imexId);
+            }
 
             // clear all identifiers
             ((PublicationIdentifierList)identifiers).clearOnly();
@@ -259,6 +266,47 @@ public class MitabPublication extends DefaultPublication{
         @Override
         protected void clearProperties() {
             ((PublicationAuthorsList)authors).clearOnly();
+        }
+    }
+
+    private class PublicationXrefList extends AbstractListHavingPoperties<Xref> {
+        public PublicationXrefList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(Xref added) {
+
+            // the added identifier is imex and the current imex is not set
+            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
+                // the added xref is imex-primary
+                if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
+                    if (added instanceof CrossReference){
+                        imexId = added;
+                        ((PublicationMitabIdentifiersList) publications).addOnly((CrossReference)imexId);
+                    }
+                    else {
+                        CrossReference imex = new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier().getShortName());
+                        imexId = imex;
+                        ((PublicationMitabIdentifiersList) publications).addOnly((CrossReference)imexId);
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(Xref removed) {
+            // the removed identifier is pubmed
+            if (imexId == removed){
+                ((PublicationMitabIdentifiersList) publications).removeOnly(imexId);
+                imexId = null;
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            ((PublicationMitabIdentifiersList) publications).removeOnly(imexId);
+            imexId = null;
         }
     }
 }
