@@ -8,6 +8,6 @@ package psidev.psi.mi.jami.model;
  * @since <pre>23/11/12</pre>
  */
 
-public interface BiologicalFeature extends Feature<BiologicalFeature, Component>{
+public interface BiologicalFeature extends Feature<BiologicalFeature, BiologicalParticipant>{
 
 }
