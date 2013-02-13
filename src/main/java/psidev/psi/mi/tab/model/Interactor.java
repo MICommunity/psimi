@@ -6,13 +6,12 @@
 package psidev.psi.mi.tab.model;
 
 import org.apache.commons.collections.CollectionUtils;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalFeature;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultExperimentalParticipant;
+import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.FeatureCloner;
+import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
 import java.io.Serializable;
@@ -28,7 +27,7 @@ import java.util.List;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
-public class Interactor extends DefaultExperimentalParticipant implements Serializable {
+public class Interactor extends DefaultParticipantEvidence implements Serializable {
 
 	/**
 	 * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -38,6 +37,8 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 
 	///////////////////////
 	// Instance variables
+
+    private MitabInteractor mitabInteractor;
 
     /**
      * Features of the interactor.
@@ -77,6 +78,8 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
         super(new MitabInteractor(), null);
         processNewBiologicalRoleInBiologicalRoleList(biologicalRole);
         processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
+
+        mitabInteractor = (MitabInteractor) interactor;
 	}
 
 	public Interactor(List<CrossReference> identifiers) {
@@ -84,9 +87,11 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 		if (identifiers == null) {
 			throw new IllegalArgumentException("You must give a non null list of identifiers.");
 		}
-		((MitabInteractor)interactor).setUniqueIdentifiers(identifiers);
+        mitabInteractor = (MitabInteractor) interactor;
+        mitabInteractor.setUniqueIdentifiers(identifiers);
 
-	}
+
+    }
 
     public Interactor(MitabInteractor mitabInteractor, CvTerm partDetMethod) {
         super(mitabInteractor, partDetMethod);
@@ -95,6 +100,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
         if (partDetMethod != null){
             processNewMethodInIdentificationMethodList(partDetMethod);
         }
+        mitabInteractor = (MitabInteractor) interactor;
     }
 
     @Override
@@ -111,7 +117,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'identifiers'.
 	 */
 	public List<CrossReference> getIdentifiers() {
-		return ((MitabInteractor)interactor).getUniqueIdentifiers();
+		return mitabInteractor.getUniqueIdentifiers();
 	}
 
 	/**
@@ -120,7 +126,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param identifiers Value to set for property 'identifiers'.
 	 */
 	public void setIdentifiers(List<CrossReference> identifiers) {
-        ((MitabInteractor)interactor).setUniqueIdentifiers(identifiers);
+        mitabInteractor.setUniqueIdentifiers(identifiers);
 	}
 
 	/**
@@ -129,7 +135,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'alternativeIdentifiers'.
 	 */
 	public List<CrossReference> getAlternativeIdentifiers() {
-		return ((MitabInteractor)interactor).getAlternativeIdentifiers();
+		return mitabInteractor.getAlternativeIdentifiers();
 	}
 
 	/**
@@ -138,7 +144,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param alternativeIdentifiers Value to set for property 'alternativeIdentifiers'.
 	 */
 	public void setAlternativeIdentifiers(List<CrossReference> alternativeIdentifiers) {
-        ((MitabInteractor)interactor).setAlternativeIdentifiers(alternativeIdentifiers);
+        mitabInteractor.setAlternativeIdentifiers(alternativeIdentifiers);
 	}
 
 	/**
@@ -147,7 +153,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'aliases'.
 	 */
 	public List<Alias> getInteractorAliases() {
-		return ((MitabInteractor)interactor).getMitabAliases();
+		return mitabInteractor.getMitabAliases();
 	}
 
 	/**
@@ -156,7 +162,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param aliases Value to set for property 'aliases'.
 	 */
 	public void setInteractorAliases(List<Alias> aliases) {
-		((MitabInteractor)interactor).setMitabAliases(aliases);
+        mitabInteractor.setMitabAliases(aliases);
 	}
 
 	/**
@@ -165,7 +171,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'organisms'.
 	 */
 	public Organism getOrganism() {
-		return ((MitabInteractor)interactor).getOrganism();
+		return mitabInteractor.getOrganism();
 	}
 
 	/**
@@ -174,7 +180,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param organism Value to set for property 'organisms'.
 	 */
 	public void setOrganism(Organism organism) {
-        ((MitabInteractor)interactor).setOrganism(organism);
+        mitabInteractor.setOrganism(organism);
 	}
 
 	/**
@@ -183,7 +189,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return true if has a organism
 	 */
 	public boolean hasOrganism() {
-		return ((MitabInteractor)interactor).hasOrganism();
+		return mitabInteractor.hasOrganism();
 	}
 
 	/**
@@ -192,7 +198,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'interactorTypes'.
 	 */
 	public List<CrossReference> getInteractorTypes() {
-		return ((MitabInteractor)interactor).getInteractorTypes();
+		return mitabInteractor.getInteractorTypes();
 	}
 
 	/**
@@ -201,7 +207,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param interactorTypes Value to set for property 'interactorTypes'.
 	 */
 	public void setInteractorTypes(List<CrossReference> interactorTypes) {
-        ((MitabInteractor)interactor).setInteractorTypes(interactorTypes);
+        mitabInteractor.setInteractorTypes(interactorTypes);
 	}
 
 	/**
@@ -210,7 +216,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'xrefs'.
 	 */
 	public List<CrossReference> getInteractorXrefs() {
-		return ((MitabInteractor)interactor).getMitabXrefs();
+		return mitabInteractor.getMitabXrefs();
 	}
 
 	/**
@@ -219,7 +225,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param xrefs Value to set for property 'xrefs'.
 	 */
 	public void setInteractorXrefs(List<CrossReference> xrefs) {
-        ((MitabInteractor)interactor).setMitabXrefs(xrefs);
+        mitabInteractor.setMitabXrefs(xrefs);
 	}
 
 	/**
@@ -228,7 +234,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'annotations'.
 	 */
 	public List<Annotation> getInteractorAnnotations() {
-		return ((MitabInteractor)interactor).getMitabAnnotations();
+		return mitabInteractor.getMitabAnnotations();
 	}
 
 	/**
@@ -237,7 +243,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param annotations Value to set for property 'annotations'.
 	 */
 	public void setInteractorAnnotations(List<Annotation> annotations) {
-        ((MitabInteractor)interactor).setMitabAnnotations(annotations);
+        mitabInteractor.setMitabAnnotations(annotations);
 	}
 
 	/**
@@ -246,7 +252,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @return Value for property 'checksums'.
 	 */
 	public List<Checksum> getChecksums() {
-		return ((MitabInteractor)interactor).getMitabChecksums();
+		return mitabInteractor.getMitabChecksums();
 	}
 
 	/**
@@ -255,7 +261,7 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
 	 * @param checksums Value to set for property 'checksums'.
 	 */
 	public void setChecksums(List<Checksum> checksums) {
-        ((MitabInteractor)interactor).setMitabChecksums(checksums);
+        mitabInteractor.setMitabChecksums(checksums);
 	}
 
 	/**
@@ -490,6 +496,41 @@ public class Interactor extends DefaultExperimentalParticipant implements Serial
             this.stoichiometry = null;
         }
 
+    }
+
+    @Override
+    public void setInteractor(psidev.psi.mi.jami.model.Interactor interactor) {
+        if (interactor == null){
+            super.setInteractor(null);
+            this.mitabInteractor = null;
+        }
+        else if (interactor instanceof MitabInteractor){
+            super.setInteractor(interactor);
+            this.mitabInteractor = (MitabInteractor) interactor;
+        }
+        else {
+            MitabInteractor convertedInteractor = null;
+            // create a MitabInteractor for backward compatibility
+            if (interactor instanceof BioactiveEntity){
+                convertedInteractor = new MitabBioactiveEntity(interactor.getType());
+            }
+            else if (interactor instanceof Gene){
+                convertedInteractor = new MitabGene();
+            }
+            else if (interactor instanceof Protein){
+                convertedInteractor = new MitabProtein(interactor.getType());
+            }
+            else if (interactor instanceof NucleicAcid){
+                convertedInteractor = new MitabNucleicAcid(interactor.getType());
+            }
+            else {
+                convertedInteractor = new MitabInteractor(interactor.getType());
+            }
+
+            InteractorCloner.copyAndOverrideInteractorProperties(interactor, convertedInteractor);
+            mitabInteractor = convertedInteractor;
+            super.setInteractor(convertedInteractor);
+        }
     }
 
     @Override

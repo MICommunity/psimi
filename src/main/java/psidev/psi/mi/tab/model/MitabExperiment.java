@@ -1,9 +1,18 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
+import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.clone.PublicationCloner;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,16 +26,23 @@ import java.util.List;
 
 public class MitabExperiment extends DefaultExperiment{
 
+    private MitabPublication mitabPublication;
+
     /**
      * Detection method for that interaction.
      */
     private List<CrossReference> detectionMethods
-            = new ArrayList<CrossReference>();
+            = new DetectionMethodsList();
 
     /**
      * Organism where the interaction happens.
      */
     private Organism hostOrganism;
+
+    public MitabExperiment(){
+        super(new MitabPublication(), CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
+        processNewInteractionDetectionMethodsList(interactionDetectionMethod);
+    }
 
     /**
      * {@inheritDoc}
@@ -61,5 +77,153 @@ public class MitabExperiment extends DefaultExperiment{
      */
     public boolean hasHostOrganism() {
         return hostOrganism != null;
+    }
+
+    public MitabPublication getMitabPublication() {
+        return mitabPublication;
+    }
+
+    protected void resetInteractionDetectionMethodNameFromMiReferences(){
+        if (!detectionMethods.isEmpty()){
+            Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(detectionMethods), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+
+            if (ref != null){
+                String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
+                interactionDetectionMethod.setShortName(name);
+                interactionDetectionMethod.setFullName(name);
+            }
+        }
+    }
+
+    protected void resetInteractionDetectionMethodNameFromFirstReferences(){
+        if (!detectionMethods.isEmpty()){
+            Iterator<CrossReference> methodsIterator = detectionMethods.iterator();
+            String name = null;
+
+            while (name == null && methodsIterator.hasNext()){
+                CrossReference ref = methodsIterator.next();
+
+                if (ref.getText() != null){
+                    name = ref.getText();
+                }
+            }
+
+            interactionDetectionMethod.setShortName(name != null ? name : "unknown");
+            interactionDetectionMethod.setFullName(name != null ? name : "unknown");
+        }
+    }
+
+    @Override
+    public void setInteractionDetectionMethod(CvTerm method) {
+        super.setInteractionDetectionMethod(method);
+        processNewInteractionDetectionMethodsList(method);
+    }
+
+    private void processNewInteractionDetectionMethodsList(CvTerm method) {
+        if (method.getMIIdentifier() != null){
+            ((DetectionMethodsList)detectionMethods).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, method.getMIIdentifier(), method.getFullName() != null ? method.getFullName() : method.getShortName()));
+        }
+        else{
+            if (!method.getIdentifiers().isEmpty()){
+                Xref ref = method.getIdentifiers().iterator().next();
+                ((DetectionMethodsList)detectionMethods).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), method.getFullName() != null ? method.getFullName() : method.getShortName()));
+            }
+            else {
+                ((DetectionMethodsList)detectionMethods).addOnly(new CrossReferenceImpl("unknown", "-", method.getFullName() != null ? method.getFullName() : method.getShortName()));
+            }
+        }
+    }
+
+    @Override
+    public void setPublication(Publication publication) {
+        if (publication == null){
+            if (this.publication != null){
+                this.publication.getExperiments().remove(this);
+            }
+
+            super.setPublication(null);
+            this.mitabPublication = null;
+        }
+        else if (publication instanceof MitabPublication){
+            if (this.publication != null){
+                this.publication.getExperiments().remove(this);
+            }
+
+            super.setPublication(publication);
+            this.mitabPublication = (MitabPublication) publication;
+            publication.getExperiments().add(this);
+        }
+        else {
+            if (this.publication != null){
+                this.publication.getExperiments().remove(this);
+            }
+
+            MitabPublication convertedPublication = new MitabPublication();
+
+            PublicationCloner.copyAndOverridePublicationProperties(publication, convertedPublication);
+            mitabPublication = convertedPublication;
+            super.setPublication(convertedPublication);
+        }
+    }
+
+    protected class DetectionMethodsList extends AbstractListHavingPoperties<CrossReference> {
+        public DetectionMethodsList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(CrossReference added) {
+
+            if (interactionDetectionMethod == null){
+                String name = added.getText() != null ? added.getText() : "unknown";
+                interactionDetectionMethod = new DefaultCvTerm(name, name, added);
+            }
+            else {
+                interactionDetectionMethod.getXrefs().add(added);
+                // reset shortname
+                if (interactionDetectionMethod.getMIIdentifier() != null && interactionDetectionMethod.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        interactionDetectionMethod.setShortName(name);
+                    }
+                    else {
+                        resetInteractionDetectionMethodNameFromMiReferences();
+                        if (interactionDetectionMethod.getShortName().equals("unknown")){
+                            resetInteractionDetectionMethodNameFromFirstReferences();
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(CrossReference removed) {
+
+            if (interactionDetectionMethod != null){
+                interactionDetectionMethod.getXrefs().remove(removed);
+
+                if (removed.getText() != null && interactionDetectionMethod.getShortName().equals(removed.getText())){
+                    if (interactionDetectionMethod.getMIIdentifier() != null){
+                        resetInteractionDetectionMethodNameFromMiReferences();
+                        if (interactionDetectionMethod.getShortName().equals("unknown")){
+                            resetInteractionDetectionMethodNameFromFirstReferences();
+                        }
+                    }
+                    else {
+                        resetInteractionDetectionMethodNameFromFirstReferences();
+                    }
+                }
+            }
+
+            if (isEmpty()){
+                interactionDetectionMethod = null;
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            interactionDetectionMethod = null;
+        }
     }
 }
