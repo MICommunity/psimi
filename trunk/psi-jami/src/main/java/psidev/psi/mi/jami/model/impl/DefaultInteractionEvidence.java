@@ -157,27 +157,27 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         this.xrefs.add(imexId);
     }
 
-    protected void initializeParameters(){
-        this.parameters = new ArrayList<Parameter>();
-    }
-
     public DefaultInteractionEvidence() {
         super();
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
     }
 
     public DefaultInteractionEvidence(String shortName) {
         super(shortName);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
     }
 
     public DefaultInteractionEvidence(String shortName, Source source) {
         super(shortName, source);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
     }
 
     public DefaultInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
+        initializeParameters();
+    }
+
+    protected void initializeParameters(){
         this.parameters = new ArrayList<Parameter>();
     }
 
