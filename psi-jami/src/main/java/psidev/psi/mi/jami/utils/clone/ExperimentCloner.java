@@ -18,7 +18,7 @@ public class ExperimentCloner {
      * @param source
      * @param target
      */
-    public static void copyAndOverrideParticipantEvidenceProperties(Experiment source, Experiment target){
+    public static void copyAndOverrideExperimentProperties(Experiment source, Experiment target){
         if (source != null && target != null){
             target.setHostOrganism(source.getHostOrganism());
             target.setInteractionDetectionMethod(source.getInteractionDetectionMethod());
