@@ -18,7 +18,7 @@ public class PublicationCloner {
      * @param source
      * @param target
      */
-    public static void copyAndOverrideInteractorProperties(Publication source, Publication target){
+    public static void copyAndOverridePublicationProperties(Publication source, Publication target){
         if (source != null && target != null){
             target.setCurationDepth(source.getCurationDepth());
             target.setDoi(source.getDoi());
