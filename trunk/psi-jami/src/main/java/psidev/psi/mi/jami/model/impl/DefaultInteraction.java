@@ -23,8 +23,8 @@ import java.util.Date;
 public class DefaultInteraction<P extends Participant> implements Interaction<P>, Serializable {
 
     protected String shortName;
-    private Checksum rigid;
-    private Collection<Checksum> checksums;
+    protected Checksum rigid;
+    protected Collection<Checksum> checksums;
     protected Collection<Xref> identifiers;
     protected Collection<Xref> xrefs;
     protected Collection<Annotation> annotations;
