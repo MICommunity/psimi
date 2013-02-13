@@ -616,6 +616,10 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         }
     }
 
+    private Interactor getInstance(){
+        return this;
+    }
+
     //TODO Update the toString, equals and hash
 
 	/**
@@ -715,11 +719,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         protected void processAddedObjectEvent(FeatureEvidence added) {
             if (added instanceof Feature){
                 Feature f = (Feature)added;
+                f.setParticipant(getInstance());
                 ((InteractorMitabFeatureList)mitabFeatures).addOnly((Feature) added);
             }
             else {
                 Feature tabFeature = new FeatureImpl(added.getType() != null ? added.getType().getShortName() : null, Collections.EMPTY_LIST);
                 FeatureCloner.copyAndOverrideFeatureProperties(added, tabFeature);
+                tabFeature.setParticipant(getInstance());
 
                 ((InteractorMitabFeatureList) mitabFeatures).addOnly(tabFeature);
             }
@@ -753,6 +759,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processAddedObjectEvent(Feature added) {
 
+            added.setParticipant(getInstance());
             // we added a feature, needs to add it in features
             ((InteractorFeatureList)features).addOnly(added);
         }
