@@ -27,7 +27,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment) {
         super();
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
 
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
@@ -37,7 +37,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName) {
         super(shortName);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
@@ -46,7 +46,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source) {
         super(shortName, source);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
@@ -55,7 +55,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type) {
         super(shortName, type);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
@@ -64,7 +64,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, CvTerm type) {
         super(shortName, source, type);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
@@ -73,7 +73,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, Xref imexId) {
         super();
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
 
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
@@ -84,7 +84,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Xref imexId) {
         super(shortName);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
@@ -94,7 +94,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, Xref imexId) {
         super(shortName, source);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
@@ -104,7 +104,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
-        this.parameters = new ArrayList<Parameter>();;
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
@@ -114,12 +114,16 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, CvTerm type, Xref imexId) {
         super(shortName, source, type);
-        this.parameters = new ArrayList<Parameter>();
+        initializeParameters();
         if (experiment == null){
             throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
         this.xrefs.add(imexId);
+    }
+
+    protected void initializeParameters(){
+        this.parameters = new ArrayList<Parameter>();
     }
 
     public DefaultInteractionEvidence() {
