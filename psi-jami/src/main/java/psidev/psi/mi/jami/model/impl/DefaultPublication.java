@@ -22,20 +22,20 @@ import java.util.List;
 
 public class DefaultPublication implements Publication, Serializable {
 
-    private String title;
-    private String journal;
-    private Date publicationDate;
-    private List<String> authors;
-    private Collection<Xref> identifiers;
-    private Collection<Xref> xrefs;
-    private Collection<Annotation> annotations;
-    private Collection<Experiment> experiments;
-    private CurationDepth curationDepth;
-    private Date releasedDate;
+    protected String title;
+    protected String journal;
+    protected Date publicationDate;
+    protected List<String> authors;
+    protected Collection<Xref> identifiers;
+    protected Collection<Xref> xrefs;
+    protected Collection<Annotation> annotations;
+    protected Collection<Experiment> experiments;
+    protected CurationDepth curationDepth;
+    protected Date releasedDate;
 
-    private Xref pubmedId;
-    private Xref doi;
-    private Xref imexId;
+    protected Xref pubmedId;
+    protected Xref doi;
+    protected Xref imexId;
 
     public DefaultPublication(Xref identifier){
         initializeAuthors();
