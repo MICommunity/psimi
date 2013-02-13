@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.BiologicalFeature;
 import psidev.psi.mi.jami.model.Component;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultBiologicalFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
+import psidev.psi.mi.jami.model.ComponentFeature;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousComponentFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
 /**
  * unambiguous exact component comparator.
@@ -27,12 +27,12 @@ public class UnambiguousExactComponentComparator extends ComponentComparator{
      * the basic properties of a participant.
      */
     public UnambiguousExactComponentComparator() {
-        super(new ParticipantBaseComparator<BiologicalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator()));
+        super(new ParticipantBaseComparator<ComponentFeature>(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousComponentFeatureComparator()));
     }
 
     @Override
-    public ParticipantBaseComparator<BiologicalFeature> getParticipantComparator() {
-        return (ParticipantBaseComparator<BiologicalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<ComponentFeature> getParticipantComparator() {
+        return (ParticipantBaseComparator<ComponentFeature>) this.participantComparator;
     }
 
     @Override

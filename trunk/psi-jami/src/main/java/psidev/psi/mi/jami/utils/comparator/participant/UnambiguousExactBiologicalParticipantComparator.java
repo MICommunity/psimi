@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.BiologicalFeature;
 import psidev.psi.mi.jami.model.BiologicalParticipant;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultBiologicalFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousBiologicalFeaturecomparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
 /**
  * unambiguous exact biological participant comparator.
@@ -26,7 +26,7 @@ public class UnambiguousExactBiologicalParticipantComparator extends BiologicalP
      * the basic properties of a participant.
      */
     public UnambiguousExactBiologicalParticipantComparator() {
-        super(new ParticipantBaseComparator<BiologicalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator()));
+        super(new ParticipantBaseComparator<BiologicalFeature>(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousBiologicalFeaturecomparator()));
     }
 
     @Override
