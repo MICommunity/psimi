@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.BiologicalParticipant;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 
 /**
  * Default biological participant comparator based on the interactor only.
@@ -13,15 +13,15 @@ import psidev.psi.mi.jami.model.BiologicalParticipant;
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultBiologicalParticipantInteractorComparator extends BiologicalParticipantComparator {
+public class DefaultModelledParticipantInteractorComparator extends ModelledParticipantComparator {
 
-    private static DefaultBiologicalParticipantInteractorComparator defaultBiologicalParticipantInteractorComparator;
+    private static DefaultModelledParticipantInteractorComparator defaultBiologicalParticipantInteractorComparator;
 
     /**
      * Creates a new DefaultComponentInteractorComparator. It will use a DefaultParticipantInteractorComparator to compare
      * the basic properties of a participant.
      */
-    public DefaultBiologicalParticipantInteractorComparator() {
+    public DefaultModelledParticipantInteractorComparator() {
         super(new DefaultParticipantInteractorComparator());
     }
 
@@ -36,19 +36,19 @@ public class DefaultBiologicalParticipantInteractorComparator extends Biological
      *
      * This comparator will ignore all the other properties of a biological participant.
      */
-    public int compare(BiologicalParticipant component1, BiologicalParticipant component2) {
+    public int compare(ModelledParticipant component1, ModelledParticipant component2) {
         return super.compare(component1, component2);
     }
 
     /**
-     * Use DefaultBiologicalParticipantInteractorComparator to know if two biological participants are equals.
+     * Use DefaultModelledParticipantInteractorComparator to know if two biological participants are equals.
      * @param component1
      * @param component2
      * @return true if the two biological participants are equal
      */
-    public static boolean areEquals(BiologicalParticipant component1, BiologicalParticipant component2){
+    public static boolean areEquals(ModelledParticipant component1, ModelledParticipant component2){
         if (defaultBiologicalParticipantInteractorComparator == null){
-            defaultBiologicalParticipantInteractorComparator = new DefaultBiologicalParticipantInteractorComparator();
+            defaultBiologicalParticipantInteractorComparator = new DefaultModelledParticipantInteractorComparator();
         }
 
         return defaultBiologicalParticipantInteractorComparator.compare(component1, component2) == 0;

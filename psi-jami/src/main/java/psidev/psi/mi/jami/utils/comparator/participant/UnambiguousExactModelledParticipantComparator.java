@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.BiologicalFeature;
-import psidev.psi.mi.jami.model.BiologicalParticipant;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousBiologicalFeaturecomparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
@@ -17,15 +17,15 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
  * @since <pre>13/02/13</pre>
  */
 
-public class UnambiguousExactBiologicalParticipantComparator extends BiologicalParticipantComparator {
+public class UnambiguousExactModelledParticipantComparator extends ModelledParticipantComparator {
 
-    private static UnambiguousExactBiologicalParticipantComparator defaultParticipantComparator;
+    private static UnambiguousExactModelledParticipantComparator defaultParticipantComparator;
 
     /**
-     * Creates a new UnambiguousExactBiologicalParticipantComparator. It will use a UnambiguousExactParticipantBaseComparator to compare
+     * Creates a new UnambiguousExactModelledParticipantComparator. It will use a UnambiguousExactParticipantBaseComparator to compare
      * the basic properties of a participant.
      */
-    public UnambiguousExactBiologicalParticipantComparator() {
+    public UnambiguousExactModelledParticipantComparator() {
         super(new ParticipantBaseComparator<BiologicalFeature>(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousBiologicalFeaturecomparator()));
     }
 
@@ -40,19 +40,19 @@ public class UnambiguousExactBiologicalParticipantComparator extends BiologicalP
      *
      * This comparator will ignore all the other properties of a component.
      */
-    public int compare(BiologicalParticipant component1, BiologicalParticipant component2) {
+    public int compare(ModelledParticipant component1, ModelledParticipant component2) {
         return super.compare(component1, component2);
     }
 
     /**
-     * Use UnambiguousExactBiologicalParticipantComparator to know if two biological participant are equals.
+     * Use UnambiguousExactModelledParticipantComparator to know if two biological participant are equals.
      * @param component1
      * @param component2
      * @return true if the two biological participant are equal
      */
-    public static boolean areEquals(BiologicalParticipant component1, BiologicalParticipant component2){
+    public static boolean areEquals(ModelledParticipant component1, ModelledParticipant component2){
         if (defaultParticipantComparator == null){
-            defaultParticipantComparator = new UnambiguousExactBiologicalParticipantComparator();
+            defaultParticipantComparator = new UnambiguousExactModelledParticipantComparator();
         }
 
         return defaultParticipantComparator.compare(component1, component2) == 0;
