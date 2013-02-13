@@ -23,7 +23,6 @@ public class FeatureCloner {
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
             target.setType(source.getType());
-            target.setInterpro(source.getInterpro());
 
             // copy collections
             target.getAnnotations().clear();
