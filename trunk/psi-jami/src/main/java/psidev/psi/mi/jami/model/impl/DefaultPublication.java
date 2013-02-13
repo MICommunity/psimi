@@ -38,11 +38,11 @@ public class DefaultPublication implements Publication, Serializable {
     private Xref imexId;
 
     public DefaultPublication(Xref identifier){
-        this.authors = new ArrayList<String>();
-        this.xrefs = new PublicationXrefList();
-        this.annotations = new ArrayList<Annotation>();
-        this.experiments = new ArrayList<Experiment>();
-        this.identifiers = new PublicationIdentifierList();
+        initializeAuthors();
+        initializeXrefs();
+        initialiseAnnotations();
+        initialiseExperiments();
+        initialiseIdentifiers();
         this.curationDepth = CurationDepth.undefined;
 
         if (identifier != null){
@@ -63,11 +63,11 @@ public class DefaultPublication implements Publication, Serializable {
     }
 
     public DefaultPublication(String pubmed){
-        this.authors = new ArrayList<String>();
-        this.xrefs = new PublicationXrefList();
-        this.annotations = new ArrayList<Annotation>();
-        this.experiments = new ArrayList<Experiment>();
-        this.identifiers = new PublicationIdentifierList();
+        initializeAuthors();
+        initializeXrefs();
+        initialiseAnnotations();
+        initialiseExperiments();
+        initialiseIdentifiers();
         this.curationDepth = CurationDepth.undefined;
 
         if (pubmed != null){
@@ -92,11 +92,11 @@ public class DefaultPublication implements Publication, Serializable {
         this.journal = journal;
         this.publicationDate = publicationDate;
 
-        this.authors = new ArrayList<String>();
-        this.xrefs = new PublicationXrefList();
-        this.annotations = new ArrayList<Annotation>();
-        this.experiments = new ArrayList<Experiment>();
-        this.identifiers = new PublicationIdentifierList();
+        initializeAuthors();
+        initializeXrefs();
+        initialiseAnnotations();
+        initialiseExperiments();
+        initialiseIdentifiers();
         this.curationDepth = CurationDepth.undefined;
     }
 
@@ -110,6 +110,26 @@ public class DefaultPublication implements Publication, Serializable {
     public DefaultPublication(String title, String journal, Date publicationDate, String imexId){
         this(title, journal, publicationDate, CurationDepth.IMEx);
         assignImexId(imexId);
+    }
+
+    protected void initializeAuthors(){
+        this.authors = new ArrayList<String>();
+    }
+
+    protected void initializeXrefs(){
+        this.xrefs = new PublicationXrefList();
+    }
+
+    protected void initialiseAnnotations(){
+        this.annotations = new ArrayList<Annotation>();
+    }
+
+    protected void initialiseExperiments(){
+        this.experiments = new ArrayList<Experiment>();
+    }
+
+    protected void initialiseIdentifiers(){
+        this.identifiers = new PublicationIdentifierList();
     }
 
     public String getPubmedId() {
