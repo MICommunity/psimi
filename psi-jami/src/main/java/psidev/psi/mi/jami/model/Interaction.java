@@ -123,6 +123,19 @@ public interface Interaction<P extends Participant> {
     public void setUpdatedDate(Date updated);
 
     /**
+     * The creation date.
+     * It can be null if not relevant or not known.
+     * @return the last update date
+     */
+    public Date getCreatedDate();
+
+    /**
+     * Sets the created date
+     * @param created : created date
+     */
+    public void setCreatedDate(Date created);
+
+    /**
      * The confidences in this interaction.
      * The Collection cannot be null. If the interaction does not have any confidences, the method should return an empty Collection.
      * Ex: author based scores, statistical confidences, ...

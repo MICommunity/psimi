@@ -32,6 +32,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     protected Source source;
     protected boolean isNegative;
     protected Date updatedDate;
+    protected Date createdDate;
     protected Collection<Confidence> confidences;
     protected CvTerm type;
 
@@ -159,6 +160,14 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
 
     public void setUpdatedDate(Date updated) {
         this.updatedDate = updated;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date created) {
+        this.createdDate = created;
     }
 
     public Collection<Confidence> getConfidences() {
