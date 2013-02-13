@@ -1,32 +1,31 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.BiologicalFeature;
-import psidev.psi.mi.jami.model.Component;
+import psidev.psi.mi.jami.model.BiologicalParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultBiologicalFeatureComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
- * unambiguous exact component comparator.
- * It will compare the basic properties of a component using UnambiguousExactParticipantBaseComparator.
+ * unambiguous exact biological participant comparator.
+ * It will compare the basic properties of a biological participant using UnambiguousExactParticipantBaseComparator.
  *
- * This comparator will ignore all the other properties of a component.
- *
+ * This comparator will ignore all the other properties of a biological participant.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/01/13</pre>
+ * @since <pre>13/02/13</pre>
  */
 
-public class UnambiguousExactComponentComparator extends ComponentComparator{
+public class UnambiguousExactBiologicalParticipantComparator extends BiologicalParticipantComparator {
 
-    private static UnambiguousExactComponentComparator defaultParticipantComparator;
+    private static UnambiguousExactBiologicalParticipantComparator defaultParticipantComparator;
 
     /**
-     * Creates a new UnambiguousExactComponentComparator. It will use a UnambiguousExactParticipantBaseComparator to compare
+     * Creates a new UnambiguousExactBiologicalParticipantComparator. It will use a UnambiguousExactParticipantBaseComparator to compare
      * the basic properties of a participant.
      */
-    public UnambiguousExactComponentComparator() {
+    public UnambiguousExactBiologicalParticipantComparator() {
         super(new ParticipantBaseComparator<BiologicalFeature>(new DefaultExactInteractorComparator(), new DefaultCvTermComparator(), new DefaultBiologicalFeatureComparator()));
     }
 
@@ -41,19 +40,19 @@ public class UnambiguousExactComponentComparator extends ComponentComparator{
      *
      * This comparator will ignore all the other properties of a component.
      */
-    public int compare(Component component1, Component component2) {
+    public int compare(BiologicalParticipant component1, BiologicalParticipant component2) {
         return super.compare(component1, component2);
     }
 
     /**
-     * Use UnambiguousExactComponentComparator to know if two components are equals.
+     * Use UnambiguousExactBiologicalParticipantComparator to know if two biological participant are equals.
      * @param component1
      * @param component2
-     * @return true if the two components are equal
+     * @return true if the two biological participant are equal
      */
-    public static boolean areEquals(Component component1, Component component2){
+    public static boolean areEquals(BiologicalParticipant component1, BiologicalParticipant component2){
         if (defaultParticipantComparator == null){
-            defaultParticipantComparator = new UnambiguousExactComponentComparator();
+            defaultParticipantComparator = new UnambiguousExactBiologicalParticipantComparator();
         }
 
         return defaultParticipantComparator.compare(component1, component2) == 0;

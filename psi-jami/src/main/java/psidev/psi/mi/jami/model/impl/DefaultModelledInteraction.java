@@ -14,7 +14,7 @@ import java.util.Collection;
  * @since <pre>05/02/13</pre>
  */
 
-public class DefaultModelledInteraction extends DefaultInteraction<Component> implements ModelledInteraction{
+public class DefaultModelledInteraction extends DefaultInteraction<BiologicalParticipant> implements ModelledInteraction{
 
     protected Collection<Experiment> experiments;
 

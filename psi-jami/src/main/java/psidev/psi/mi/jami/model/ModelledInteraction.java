@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>11/12/12</pre>
  */
 
-public interface ModelledInteraction extends Interaction<Component>{
+public interface ModelledInteraction extends Interaction<BiologicalParticipant>{
 
     /**
      * Experiments that have been used to predict this modelled interaction.
