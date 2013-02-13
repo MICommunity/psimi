@@ -1,16 +1,18 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.feature.BiologicalFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.ExperimentalFeatureComparator;
+import psidev.psi.mi.jami.model.BiologicalParticipant;
+import psidev.psi.mi.jami.model.Component;
+import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.Participant;
 
 import java.util.Comparator;
 
 /**
  * Generic participant comparator.
- * Components come first and then experimental participants.
+ * Components come first, then biological participants and then experimental participants.
  * - It uses ComponentComparator to compare components
  * - It uses ExperimentalParticipantComparator to compare experimental participants
+ * - It uses BiologicalParticipantComparator to compare biological participants
  * - It uses ParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -23,6 +25,7 @@ public class ParticipantComparator implements Comparator<Participant> {
     protected ParticipantBaseComparator participantBaseComparator;
     protected ComponentComparator componentComparator;
     protected ExperimentalParticipantComparator experimentalParticipantComparator;
+    protected BiologicalParticipantComparator biologicalParticipantComparator;
 
     public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ExperimentalParticipantComparator experimentalParticipantComparator){
         if (participantBaseComparator == null){
@@ -34,12 +37,14 @@ public class ParticipantComparator implements Comparator<Participant> {
             throw new IllegalArgumentException("The experimentalParticipantComparator is required to compare experimental participant properties. It cannot be null");
         }
         this.experimentalParticipantComparator = experimentalParticipantComparator;
+        this.biologicalParticipantComparator = new BiologicalParticipantComparator(participantBaseComparator);
     }
 
     /**
-     *  * Components come first and then experimental participants.
+     * Components come first, then biological participants and then experimental participants.
      * - It uses ComponentComparator to compare components
      * - It uses ExperimentalParticipantComparator to compare experimental participants
+     * - It uses BiologicalParticipantComparator to compare biological participants
      * - It uses ParticipantBaseComparator to compare basic participant properties
      * @param participant1
      * @param participant2
@@ -76,21 +81,36 @@ public class ParticipantComparator implements Comparator<Participant> {
                 return AFTER;
             }
             else {
-                // both are experimental participants
-                boolean isExperimentalParticipant1 = participant1 instanceof ExperimentalParticipant;
-                boolean isExperimentalParticipant2 = participant2 instanceof ExperimentalParticipant;
-                if (isExperimentalParticipant1 && isExperimentalParticipant2){
-                    return experimentalParticipantComparator.compare((ExperimentalParticipant) participant1, (ExperimentalParticipant) participant2);
+                // both are biological participants
+                boolean isBiologicalParticipant1 = participant1 instanceof BiologicalParticipant;
+                boolean isBiologicalParticipant2 = participant2 instanceof BiologicalParticipant;
+                if (isBiologicalParticipant1 && isBiologicalParticipant2){
+                    return biologicalParticipantComparator.compare((BiologicalParticipant) participant1, (BiologicalParticipant) participant2);
                 }
-                // the experimental participant is before
-                else if (isExperimentalParticipant1){
+                // the biological participant is before
+                else if (isBiologicalParticipant1){
                     return BEFORE;
                 }
-                else if (isExperimentalParticipant2){
+                else if (isBiologicalParticipant2){
                     return AFTER;
                 }
                 else {
-                    return participantBaseComparator.compare(participant1, participant2);
+                    // both are experimental participants
+                    boolean isExperimentalParticipant1 = participant1 instanceof ExperimentalParticipant;
+                    boolean isExperimentalParticipant2 = participant2 instanceof ExperimentalParticipant;
+                    if (isExperimentalParticipant1 && isExperimentalParticipant2){
+                        return experimentalParticipantComparator.compare((ExperimentalParticipant) participant1, (ExperimentalParticipant) participant2);
+                    }
+                    // the experimental participant is before
+                    else if (isExperimentalParticipant1){
+                        return BEFORE;
+                    }
+                    else if (isExperimentalParticipant2){
+                        return AFTER;
+                    }
+                    else {
+                        return participantBaseComparator.compare(participant1, participant2);
+                    }
                 }
             }
         }
@@ -106,5 +126,9 @@ public class ParticipantComparator implements Comparator<Participant> {
 
     public ExperimentalParticipantComparator getExperimentalParticipantComparator() {
         return experimentalParticipantComparator;
+    }
+
+    public BiologicalParticipantComparator getBiologicalParticipantComparator() {
+        return biologicalParticipantComparator;
     }
 }

@@ -6,9 +6,10 @@ import java.util.Comparator;
 
 /**
  * Generic feature comparator.
- * Biological features come first and then experimental features.
+ * Component features come first, then Biological features come first and then experimental features.
  * - It uses BiologicalFeatureComparator to compare biological features
  * - It uses ExperimentalFeatureComparator to compare experimental features
+ * - It uses ComponentFeatureComparator to compare component features
  * - It uses FeatureBaseComparator to compare basic feature properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -21,6 +22,7 @@ public class FeatureComparator implements Comparator<Feature> {
     protected BiologicalFeatureComparator biologicalFeatureComparator;
     protected ExperimentalFeatureComparator experimentalFeatureComparator;
     protected FeatureBaseComparator featureBaseComparator;
+    protected ComponentFeatureComparator componentFeatureComparator;
 
     public FeatureComparator(FeatureBaseComparator featureBaseComparator){
         if (featureBaseComparator == null){
@@ -29,6 +31,7 @@ public class FeatureComparator implements Comparator<Feature> {
         this.featureBaseComparator = featureBaseComparator;
         this.biologicalFeatureComparator = new BiologicalFeatureComparator(this.featureBaseComparator);
         this.experimentalFeatureComparator = new ExperimentalFeatureComparator(this.featureBaseComparator);
+        this.componentFeatureComparator = new ComponentFeatureComparator(this.featureBaseComparator);
 
     }
 
@@ -70,37 +73,53 @@ public class FeatureComparator implements Comparator<Feature> {
         else {
             // first check if both features are from the same interface
 
-            // both are biological features
-            boolean isBiologicalFeature1 = feature1 instanceof BiologicalFeature;
-            boolean isBiologicalFeature2 = feature2 instanceof BiologicalFeature;
-            if (isBiologicalFeature1 && isBiologicalFeature2){
-                return biologicalFeatureComparator.compare((BiologicalFeature) feature1, (BiologicalFeature) feature2);
+            // both are component features
+            boolean isComponentFeature1 = feature1 instanceof ComponentFeature;
+            boolean isComponentFeature2 = feature2 instanceof ComponentFeature;
+            if (isComponentFeature1 && isComponentFeature2){
+                return componentFeatureComparator.compare((ComponentFeature) feature1, (ComponentFeature) feature2);
             }
-            // the biological feature is before
-            else if (isBiologicalFeature1){
+            // the component feature is before
+            else if (isComponentFeature1){
                 return BEFORE;
             }
-            else if (isBiologicalFeature2){
+            else if (isComponentFeature2){
                 return AFTER;
             }
             else {
-                // both are experimental features
-                boolean isExperimentalFeature1 = feature1 instanceof ExperimentalFeature;
-                boolean isExperimentalFeature2 = feature2 instanceof ExperimentalFeature;
-                if (isExperimentalFeature1 && isExperimentalFeature2){
-                    return experimentalFeatureComparator.compare((ExperimentalFeature) feature1, (ExperimentalFeature) feature2);
+                // both are biological features
+                boolean isBiologicalFeature1 = feature1 instanceof BiologicalFeature;
+                boolean isBiologicalFeature2 = feature2 instanceof BiologicalFeature;
+                if (isBiologicalFeature1 && isBiologicalFeature2){
+                    return biologicalFeatureComparator.compare((BiologicalFeature) feature1, (BiologicalFeature) feature2);
                 }
-                // the experimental feature is before
-                else if (isExperimentalFeature1){
+                // the biological feature is before
+                else if (isBiologicalFeature1){
                     return BEFORE;
                 }
-                else if (isExperimentalFeature2){
+                else if (isBiologicalFeature2){
                     return AFTER;
                 }
                 else {
-                    return featureBaseComparator.compare(feature1, feature2);
+                    // both are experimental features
+                    boolean isExperimentalFeature1 = feature1 instanceof ExperimentalFeature;
+                    boolean isExperimentalFeature2 = feature2 instanceof ExperimentalFeature;
+                    if (isExperimentalFeature1 && isExperimentalFeature2){
+                        return experimentalFeatureComparator.compare((ExperimentalFeature) feature1, (ExperimentalFeature) feature2);
+                    }
+                    // the experimental feature is before
+                    else if (isExperimentalFeature1){
+                        return BEFORE;
+                    }
+                    else if (isExperimentalFeature2){
+                        return AFTER;
+                    }
+                    else {
+                        return featureBaseComparator.compare(feature1, feature2);
+                    }
                 }
             }
+
         }
     }
 }

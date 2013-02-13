@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.BiologicalFeature;
-import psidev.psi.mi.jami.model.Component;
+import psidev.psi.mi.jami.model.BiologicalParticipant;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousBiologicalFeaturecomparator;
 
@@ -13,20 +13,20 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousBiologicalFeaturec
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultBiologicalFeature extends DefaultFeature<BiologicalFeature, Component> implements BiologicalFeature{
-    public DefaultBiologicalFeature(Component participant) {
+public class DefaultBiologicalFeature extends DefaultFeature<BiologicalFeature, BiologicalParticipant> implements BiologicalFeature{
+    public DefaultBiologicalFeature(BiologicalParticipant participant) {
         super(participant);
     }
 
-    public DefaultBiologicalFeature(Component participant, String shortName, String fullName) {
+    public DefaultBiologicalFeature(BiologicalParticipant participant, String shortName, String fullName) {
         super(participant, shortName, fullName);
     }
 
-    public DefaultBiologicalFeature(Component participant, CvTerm type) {
+    public DefaultBiologicalFeature(BiologicalParticipant participant, CvTerm type) {
         super(participant, type);
     }
 
-    public DefaultBiologicalFeature(Component participant, String shortName, String fullName, CvTerm type) {
+    public DefaultBiologicalFeature(BiologicalParticipant participant, String shortName, String fullName, CvTerm type) {
         super(participant, shortName, fullName, type);
     }
 
