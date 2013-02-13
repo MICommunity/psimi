@@ -21,7 +21,7 @@ public interface Entry {
 
     public Collection<Experiment> getExperiments();
 
-    public Collection<ExperimentalInteraction> getExperimentalInteractions();
+    public Collection<InteractionEvidence> getExperimentalInteractions();
     public Collection<ModelledInteraction> getModelledInteractions();
     public Collection<CooperativeInteraction> getCooperativeInteractions();
     public Collection<AllostericInteraction> getAllostericInteractions();

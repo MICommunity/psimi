@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 public interface StreamingInteractionSource {
 
-    public Iterator<ExperimentalInteraction> getExperimentalInteractionsIterator();
+    public Iterator<InteractionEvidence> getExperimentalInteractionsIterator();
     public Iterator<ModelledInteraction> getModelledInteractionsIterator();
     public Iterator<CooperativeInteraction> getCooperativeInteractionsIterator();
     public Iterator<AllostericInteraction> getAllostericInteractionsIterator();

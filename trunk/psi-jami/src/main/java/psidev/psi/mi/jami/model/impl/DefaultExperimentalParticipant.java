@@ -15,7 +15,7 @@ import java.util.Collection;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultExperimentalParticipant extends DefaultParticipant<ExperimentalInteraction, Interactor, ExperimentalFeature> implements ExperimentalParticipant {
+public class DefaultExperimentalParticipant extends DefaultParticipant<InteractionEvidence, Interactor, ExperimentalFeature> implements ExperimentalParticipant {
 
     protected CvTerm experimentalRole;
     protected CvTerm identificationMethod;
@@ -24,35 +24,35 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
     protected Collection<Confidence> confidences;
     protected Collection<Parameter> parameters;
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
         super(interaction, interactor);
         initializeCollections();
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole);
         initializeCollections();
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, Integer stoichiometry, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, Integer stoichiometry, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, stoichiometry);
         initializeCollections();
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole, stoichiometry);
         initializeCollections();
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole);
         initializeCollections();
         if(expRole == null){
@@ -64,7 +64,7 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         this.identificationMethod = participantIdentificationMethod;
     }
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole, stoichiometry);
         initializeCollections();
         if(expRole == null){
@@ -76,7 +76,7 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         this.identificationMethod = participantIdentificationMethod;
     }
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole);
         initializeCollections();
         if(expRole == null){
@@ -89,7 +89,7 @@ public class DefaultExperimentalParticipant extends DefaultParticipant<Experimen
         this.identificationMethod = participantIdentificationMethod;
     }
 
-    public DefaultExperimentalParticipant(ExperimentalInteraction interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
+    public DefaultExperimentalParticipant(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, bioRole, stoichiometry);
         initializeCollections();
         if(expRole == null){

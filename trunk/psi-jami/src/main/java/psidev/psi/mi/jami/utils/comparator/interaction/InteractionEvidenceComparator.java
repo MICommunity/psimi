@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Comparator;
 
 /**
- * Basic ExperimentalInteractionComparator.
+ * Basic InteractionEvidenceComparator.
  *
  * It will first compare the basic interaction properties using InteractionBaseComparator<ExperimentalParticipant>.
  * It will then compares the IMEx identifiers if bothe IMEx ids are set. If at least one IMEx id is not set, it will compare
@@ -21,20 +21,20 @@ import java.util.Comparator;
  * @since <pre>18/01/13</pre>
  */
 
-public class ExperimentalInteractionComparator implements Comparator<ExperimentalInteraction> {
+public class InteractionEvidenceComparator implements Comparator<InteractionEvidence> {
 
     protected InteractionBaseComparator<ExperimentalParticipant> interactionComparator;
     protected ExperimentComparator experimentComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
 
     /**
-     * Creates a new ExperimentalInteractionComparator.
+     * Creates a new InteractionEvidenceComparator.
      * @param interactionComparator : required to compare basic interaction properties
      * @param experimentComparator : required to compare experiments
      * @param parameterComparator : required to compare parameters
      */
-    public ExperimentalInteractionComparator(InteractionBaseComparator<ExperimentalParticipant> interactionComparator, ExperimentComparator experimentComparator,
-                                             ParameterComparator parameterComparator){
+    public InteractionEvidenceComparator(InteractionBaseComparator<ExperimentalParticipant> interactionComparator, ExperimentComparator experimentComparator,
+                                         ParameterComparator parameterComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
         }
@@ -73,7 +73,7 @@ public class ExperimentalInteractionComparator implements Comparator<Experimenta
      * @param experimentalInteraction2
      * @return
      */
-    public int compare(ExperimentalInteraction experimentalInteraction1, ExperimentalInteraction experimentalInteraction2) {
+    public int compare(InteractionEvidence experimentalInteraction1, InteractionEvidence experimentalInteraction2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

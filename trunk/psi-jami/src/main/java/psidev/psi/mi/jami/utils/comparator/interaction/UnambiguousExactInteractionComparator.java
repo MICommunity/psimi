@@ -1,18 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantBaseComparator;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Unambiguous exact Generic interaction comparator.
  * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
- * - It uses UnambiguousExactExperimentalInteractionComparator to compare experimental interactions
+ * - It uses UnambiguousExactInteractionEvidenceComparator to compare experimental interactions
  * - It uses UnambiguousExactModelledInteractionComparator to compare modelled interactions
  * - It uses UnambiguousExactCooperativeInteractionComparator to compare cooperative interactions
  * - It uses UnambiguousExactAllostericInteractionComparator to compare allosteric interactions
@@ -31,7 +24,7 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
      * Creates a new UnambiguousExactInteractionComparator.
      */
     public UnambiguousExactInteractionComparator() {
-        super(new UnambiguousExactInteractionBaseComparator(), new UnambiguousExactExperimentalInteractionComparator(), new UnambiguousExactCooperativeInteractionComparator(), new UnambiguousExactAllostericInteractionComparator());
+        super(new UnambiguousExactInteractionBaseComparator(), new UnambiguousExactInteractionEvidenceComparator(), new UnambiguousExactCooperativeInteractionComparator(), new UnambiguousExactAllostericInteractionComparator());
     }
 
     @Override
@@ -40,8 +33,8 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
     }
 
     @Override
-    public UnambiguousExactExperimentalInteractionComparator getExperimentalInteractionComparator() {
-        return (UnambiguousExactExperimentalInteractionComparator) this.experimentalInteractionComparator;
+    public UnambiguousExactInteractionEvidenceComparator getExperimentalInteractionComparator() {
+        return (UnambiguousExactInteractionEvidenceComparator) this.experimentalInteractionComparator;
     }
 
     @Override
@@ -57,7 +50,7 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
     @Override
     /**
      * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
-     * - It uses UnambiguousExactExperimentalInteractionComparator to compare experimental interactions
+     * - It uses UnambiguousExactInteractionEvidenceComparator to compare experimental interactions
      * - It uses UnambiguousExactModelledInteractionComparator to compare modelled interactions
      * - It uses UnambiguousExactCooperativeInteractionComparator to compare cooperative interactions
      * - It uses UnambiguousExactAllostericInteractionComparator to compare allosteric interactions

@@ -1,14 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.participant.ComponentComparator;
 
 import java.util.Comparator;
 
 /**
  * Generic interaction comparator.
  * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
- * - It uses ExperimentalInteractionComparator to compare experimental interactions
+ * - It uses InteractionEvidenceComparator to compare experimental interactions
  * - It uses ModelledInteractionComparator to compare modelled interactions
  * - It uses CooperativeInteractionComparator to compare cooperative interactions
  * - It uses AllostericInteractionComparator to compare allosteric interactions
@@ -22,12 +21,12 @@ import java.util.Comparator;
 public class InteractionComparator implements Comparator<Interaction> {
 
     protected InteractionBaseComparator interactionBaseComparator;
-    protected ExperimentalInteractionComparator experimentalInteractionComparator;
+    protected InteractionEvidenceComparator experimentalInteractionComparator;
     protected ModelledInteractionComparator modelledInteractionComparator;
     protected CooperativeInteractionComparator cooperativeInteractionComparator;
     protected AllostericInteractionComparator allostericInteractionComparator;
 
-    public InteractionComparator(InteractionBaseComparator interactionBaseComparator, ExperimentalInteractionComparator experimentalInteractionComparator,
+    public InteractionComparator(InteractionBaseComparator interactionBaseComparator, InteractionEvidenceComparator experimentalInteractionComparator,
                                  CooperativeInteractionComparator cooperativeInteractionComparator, AllostericInteractionComparator allostericInteractionComparator){
         if (interactionBaseComparator == null){
             throw new IllegalArgumentException("The interactionBaseComparator is required to create more specific interaction comparators and compares basic interaction properties. It cannot be null");
@@ -52,7 +51,7 @@ public class InteractionComparator implements Comparator<Interaction> {
         return interactionBaseComparator;
     }
 
-    public ExperimentalInteractionComparator getExperimentalInteractionComparator() {
+    public InteractionEvidenceComparator getExperimentalInteractionComparator() {
         return experimentalInteractionComparator;
     }
 
@@ -70,7 +69,7 @@ public class InteractionComparator implements Comparator<Interaction> {
 
     /**
      * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
-     * - It uses ExperimentalInteractionComparator to compare experimental interactions
+     * - It uses InteractionEvidenceComparator to compare experimental interactions
      * - It uses ModelledInteractionComparator to compare modelled interactions
      * - It uses CooperativeInteractionComparator to compare cooperative interactions
      * - It uses AllostericInteractionComparator to compare allosteric interactions
@@ -97,10 +96,10 @@ public class InteractionComparator implements Comparator<Interaction> {
             // first check if both interactions are from the same interface
 
             // both are experimental interactions
-            boolean isExperimentalInteraction1 = interaction1 instanceof ExperimentalInteraction;
-            boolean isExperimentalInteraction2 = interaction2 instanceof ExperimentalInteraction;
+            boolean isExperimentalInteraction1 = interaction1 instanceof InteractionEvidence;
+            boolean isExperimentalInteraction2 = interaction2 instanceof InteractionEvidence;
             if (isExperimentalInteraction1 && isExperimentalInteraction2){
-                return experimentalInteractionComparator.compare((ExperimentalInteraction) interaction1, (ExperimentalInteraction) interaction2);
+                return experimentalInteractionComparator.compare((InteractionEvidence) interaction1, (InteractionEvidence) interaction2);
             }
             // the experimental interaction is before
             else if (isExperimentalInteraction1){

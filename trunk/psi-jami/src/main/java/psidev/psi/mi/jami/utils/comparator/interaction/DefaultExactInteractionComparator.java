@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Interaction;
 /**
  * Default exact Generic interaction comparator.
  * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
- * - It uses DefaultExactExperimentalInteractionComparator to compare experimental interactions
+ * - It uses DefaultExactInteractionEvidenceComparator to compare experimental interactions
  * - It uses DefaultExactModelledInteractionComparator to compare modelled interactions
  * - It uses DefaultExactCooperativeInteractionComparator to compare cooperative interactions
  * - It uses DefaultExactAllostericInteractionComparator to compare allosteric interactions
@@ -24,7 +24,7 @@ public class DefaultExactInteractionComparator extends InteractionComparator {
      * Creates a new DefaultExactInteractionComparator.
      */
     public DefaultExactInteractionComparator() {
-        super(new DefaultExactInteractionBaseComparator(), new DefaultExactExperimentalInteractionComparator(), new DefaultCuratedCooperativeInteractionComparator(), new DefaultCuratedAllostericInteractionComparator());
+        super(new DefaultExactInteractionBaseComparator(), new DefaultExactInteractionEvidenceComparator(), new DefaultCuratedCooperativeInteractionComparator(), new DefaultCuratedAllostericInteractionComparator());
     }
 
     @Override
@@ -33,8 +33,8 @@ public class DefaultExactInteractionComparator extends InteractionComparator {
     }
 
     @Override
-    public DefaultExactExperimentalInteractionComparator getExperimentalInteractionComparator() {
-        return (DefaultExactExperimentalInteractionComparator) this.experimentalInteractionComparator;
+    public DefaultExactInteractionEvidenceComparator getExperimentalInteractionComparator() {
+        return (DefaultExactInteractionEvidenceComparator) this.experimentalInteractionComparator;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class DefaultExactInteractionComparator extends InteractionComparator {
     @Override
     /**
      * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
-     * - It uses DefaultExactExperimentalInteractionComparator to compare experimental interactions
+     * - It uses DefaultExactInteractionEvidenceComparator to compare experimental interactions
      * - It uses DefaultExactModelledInteractionComparator to compare modelled interactions
      * - It uses DefaultExactCooperativeInteractionComparator to compare cooperative interactions
      * - It uses DefaultExactAllostericInteractionComparator to compare allosteric interactions
