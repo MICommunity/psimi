@@ -550,20 +550,26 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
 
         @Override
         protected void processAddedObjectEvent(Xref added) {
+            CrossReference modified = null;
+
             if (uniqueIdentifiers.isEmpty()){
                 if (added instanceof CrossReference){
-                    ((InteractorUniqueIdentifierList)uniqueIdentifiers).addOnly((CrossReference) added);
+                    modified = (CrossReference) added;
+                    ((InteractorUniqueIdentifierList)uniqueIdentifiers).addOnly(modified);
                 }
                 else {
-                    ((InteractorUniqueIdentifierList)uniqueIdentifiers).addOnly(new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier() != null ? added.getQualifier().getShortName():null));
+                    modified = new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier() != null ? added.getQualifier().getShortName():null);
+                    ((InteractorUniqueIdentifierList)uniqueIdentifiers).addOnly(modified);
                 }
             }
             else {
                 if (added instanceof CrossReference){
-                    ((InteractorAlternativeIdentifierList)alternativeIdentifiers).addOnly((CrossReference) added);
+                    modified = (CrossReference) added;
+                    ((InteractorAlternativeIdentifierList)alternativeIdentifiers).addOnly(modified);
                 }
                 else {
-                    ((InteractorAlternativeIdentifierList)alternativeIdentifiers).addOnly(new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier() != null ? added.getQualifier().getShortName():null));
+                    modified = new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier() != null ? added.getQualifier().getShortName():null);
+                    ((InteractorAlternativeIdentifierList)alternativeIdentifiers).addOnly(modified);
                 }
             }
 
@@ -574,19 +580,23 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
                 fullName = added.getId();
             }
 
-            processAddedIdentifierEvent(added);
+            processAddedIdentifierEvent(modified);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
+
+            CrossReference modified = null;
             if (removed instanceof CrossReference){
+                modified = (CrossReference) removed;
+
                 ((InteractorUniqueIdentifierList)uniqueIdentifiers).removeOnly(removed);
                 ((InteractorAlternativeIdentifierList)alternativeIdentifiers).removeOnly(removed);
             }
             else {
-                CrossReference convertedRef = new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier() != null ? removed.getQualifier().getShortName():null);
-                ((InteractorUniqueIdentifierList)uniqueIdentifiers).removeOnly(convertedRef);
-                ((InteractorAlternativeIdentifierList)alternativeIdentifiers).removeOnly(convertedRef);
+                modified = new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier() != null ? removed.getQualifier().getShortName():null);
+                ((InteractorUniqueIdentifierList)uniqueIdentifiers).removeOnly(modified);
+                ((InteractorAlternativeIdentifierList)alternativeIdentifiers).removeOnly(modified);
             }
 
             // reset shortName/fullName using identifiers
@@ -597,7 +607,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
                 fullName = shortName;
             }
 
-            processRemovedIdentifierEvent(removed);
+            processRemovedIdentifierEvent(modified);
         }
 
         @Override
@@ -720,11 +730,14 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
 
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Alias added) {
+            Alias modified = null;
             if (added instanceof Alias){
-                ((InteractorMitabAliasList)mitabAliases).addOnly((Alias) added);
+                modified = (Alias) added;
+                ((InteractorMitabAliasList)mitabAliases).addOnly(modified);
             }
             else {
-                ((InteractorMitabAliasList)mitabAliases).addOnly(new AliasImpl("unknown", added.getName(), added.getType() != null ? added.getType().getShortName() : null));
+                modified = new AliasImpl("unknown", added.getName(), added.getType() != null ? added.getType().getShortName() : null);
+                ((InteractorMitabAliasList)mitabAliases).addOnly(modified);
             }
 
             if (shortName == null){
@@ -738,16 +751,19 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
                 shortName = added.getName();
             }
 
-            processAddedAliasEvent(added);
+            processAddedAliasEvent(modified);
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Alias removed) {
+            Alias modified = null;
             if (removed instanceof Alias){
-                ((InteractorMitabAliasList)mitabAliases).removeOnly(removed);
+                modified = (Alias) removed;
+                ((InteractorMitabAliasList)mitabAliases).removeOnly(modified);
             }
             else {
-                ((InteractorMitabAliasList)mitabAliases).removeOnly(new AliasImpl("unknown", removed.getName(), removed.getType() != null ? removed.getType().getShortName() : null));
+                modified = new AliasImpl("unknown", removed.getName(), removed.getType() != null ? removed.getType().getShortName() : null);
+                ((InteractorMitabAliasList)mitabAliases).removeOnly(modified);
             }
 
             // reset shortName/fullName using identifiers
@@ -762,7 +778,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
                 resetFullNameFromAliases();
             }
 
-            processRemovedAliasEvent(removed);
+            processRemovedAliasEvent(modified);
         }
 
         @Override
@@ -954,26 +970,32 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
 
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Checksum added) {
+            Checksum modified = null;
             if (added instanceof Checksum){
-                ((InteractorMitabChecksumList)mitabChecksums).addOnly((Checksum) added);
+                modified = (Checksum) added;
+                ((InteractorMitabChecksumList)mitabChecksums).addOnly(modified);
             }
             else {
-                ((InteractorMitabChecksumList)mitabChecksums).addOnly(new ChecksumImpl(added.getMethod().getShortName(), added.getValue()));
+                modified = new ChecksumImpl(added.getMethod().getShortName(), added.getValue());
+                ((InteractorMitabChecksumList)mitabChecksums).addOnly(modified);
             }
 
-            processAddedChecksumEvent(added);
+            processAddedChecksumEvent(modified);
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Checksum removed) {
+            Checksum modified = null;
             if (removed instanceof Checksum){
-                ((InteractorMitabChecksumList)mitabChecksums).removeOnly(removed);
+                modified = (Checksum) removed;
+                ((InteractorMitabChecksumList)mitabChecksums).removeOnly(modified);
             }
             else {
-                ((InteractorMitabChecksumList)mitabChecksums).removeOnly(new ChecksumImpl(removed.getMethod().getShortName(), removed.getValue()));
+                modified = new ChecksumImpl(removed.getMethod().getShortName(), removed.getValue());
+                ((InteractorMitabChecksumList)mitabChecksums).removeOnly(modified);
             }
 
-            processRemovedChecksumEvent(removed);
+            processRemovedChecksumEvent(modified);
         }
 
         @Override
@@ -1036,7 +1058,10 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
                         type.setShortName(name);
                     }
                     else {
-                        resetInteractorTypeNameFromFirstReferences();
+                        resetInteractorTypeNameFromMiReferences();
+                        if (type.getShortName().equals("unknown")){
+                            resetInteractorTypeNameFromFirstReferences();
+                        }
                     }
                 }
             }

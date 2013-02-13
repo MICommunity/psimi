@@ -7,10 +7,17 @@ package psidev.psi.mi.tab.model;
 
 
 import org.apache.commons.collections.CollectionUtils;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultExperimentalInteraction;
+import psidev.psi.mi.jami.model.impl.DefaultSource;
+import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Representation of a binary interaction as in the MITAB25 format.
@@ -19,7 +26,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public abstract class AbstractBinaryInteraction<T extends Interactor> implements BinaryInteraction<T> {
+public abstract class AbstractBinaryInteraction<T extends Interactor> extends DefaultExperimentalInteraction implements BinaryInteraction<T> {
 
 	private static final long serialVersionUID = 5851048278405255668L;
 
@@ -40,47 +47,29 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	 */
 	private T interactorB;
 
-	/**
-	 * Detection method for that interaction.
-	 */
-	private List<CrossReference> detectionMethods
-			= new ArrayList<CrossReference>();
+    /**
+     * Types of the interaction.
+     */
+    private List<CrossReference> interactionTypes
+            = new InteractionTypesList();
 
-	/**
-	 * Types of the interaction.
-	 */
-	private List<CrossReference> interactionTypes
-			= new ArrayList<CrossReference>();
+    /**
+     * Associated confidence value for that interaction.
+     */
+    private List<Confidence> confidenceValues
+            = new InteractionMitabConfidenceList();
 
-	/**
-	 * Associated publications of that interaction.
-	 */
-	private List<CrossReference> publications
-			= new ArrayList<CrossReference>();
+    /**
+     * Source databases.
+     */
+    private List<CrossReference> sourceDatabases
+            = new InteractionSourcesList();
 
-	/**
-	 * Associated confidence value for that interaction.
-	 */
-	private List<Confidence> confidenceValues
-			= new ArrayList<Confidence>();
-
-	/**
-	 * Source databases.
-	 */
-	private List<CrossReference> sourceDatabases
-			= new ArrayList<CrossReference>();
-
-	/**
-	 * Identifiers of the interaction that provided the data.
-	 */
-	private List<CrossReference> interactionAcs
-			= new ArrayList<CrossReference>();
-
-	/**
-	 * First author surname(s) of the publication(s).
-	 */
-	private List<Author> authors = new ArrayList<Author>();
-
+    /**
+     * Identifiers of the interaction that provided the data.
+     */
+    private List<CrossReference> interactionAcs
+            = new InteractionMitabIdentifiersList();
 
 	/**
 	 *  MITAB 2.6
@@ -104,40 +93,30 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	private List<Annotation> interactionAnnotations
 			= new ArrayList<Annotation>();
 
-	/**
-	 * Organism where the interaction happens.
-	 */
-	private Organism hostOrganism;
+    /**
+     * Parameters for the interaction.
+     */
+    private List<Parameter> interactionParameters
+            = new ArrayList<Parameter>();
 
-	/**
-	 * Parameters for the interaction.
-	 */
-	private List<Parameter> interactionParameters
-			= new ArrayList<Parameter>();
+    /**
+     * Checksum for interaction.
+     */
+    private List<Checksum> interactionChecksums
+            = new ArrayList<Checksum>();
 
-	/**
-	 * Creation Date
-	 */
-	private List<Date> creationDate
-			= new ArrayList<Date>();
+    /**
+     * Update Date
+     */
+    private List<Date> updateDate
+            = new ArrayList<Date>();
 
-	/**
-	 * Update Date
-	 */
-	private List<Date> updateDate
-			= new ArrayList<Date>();
+    /**
+     * Creation Date
+     */
+    private List<Date> creationDate
+            = new ArrayList<Date>();
 
-	/**
-	 * Checksum for interaction.
-	 */
-	private List<Checksum> interactionChecksums
-			= new ArrayList<Checksum>();
-
-	/**
-	 * Boolean value ti distinguish positive interactions and
-	 * negative interactions.
-	 */
-	private boolean negativeInteraction;
 
 	/**
 	 * MITAB 2.7
@@ -158,6 +137,15 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		setInteractorB(interactorB);
 	}
 
+    @Override
+    protected void initializeConfidences(){
+        this.confidences = new BinaryInteractionConfidenceList();
+    }
+
+    @Override
+    protected void initializeIdentifiers(){
+        this.identifiers = new BinaryInteractionIdentifiersList();
+    }
 
 	public void flip() {
 		T interactorA = getInteractorA();
@@ -198,75 +186,40 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		this.interactorB = interactorB;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<CrossReference> getDetectionMethods() {
-		return detectionMethods;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public List<CrossReference> getInteractionTypes() {
+        return interactionTypes;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setDetectionMethods(List<CrossReference> detectionMethods) {
-		this.detectionMethods = detectionMethods;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public void setInteractionTypes(List<CrossReference> interactionTypes) {
+        this.interactionTypes.clear();
+        if (interactionTypes != null) {
+            this.interactionTypes.addAll(interactionTypes);
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<CrossReference> getInteractionTypes() {
-		return interactionTypes;
-	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setInteractionTypes(List<CrossReference> interactionTypes) {
-		this.interactionTypes = interactionTypes;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public List<Confidence> getConfidenceValues() {
+        return confidenceValues;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<CrossReference> getPublications() {
-		return publications;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setPublications(List<CrossReference> publications) {
-		this.publications = publications;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Confidence> getConfidenceValues() {
-		return confidenceValues;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setConfidenceValues(List<Confidence> confidenceValues) {
-		this.confidenceValues = confidenceValues;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Author> getAuthors() {
-		return authors;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setAuthors(List<Author> authors) {
-		this.authors = authors;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public void setConfidenceValues(List<Confidence> confidenceValues) {
+        this.confidenceValues.clear();
+        if (confidenceValues != null) {
+            this.confidenceValues.addAll(confidenceValues);
+        }
+    }
 
 	/**
 	 * {@inheritDoc}
@@ -345,27 +298,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public Organism getHostOrganism() {
-		return hostOrganism;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setHostOrganism(Organism hostOrganism) {
-		this.hostOrganism = hostOrganism;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean hasHostOrganism() {
-		return hostOrganism != null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public List<Parameter> getMitabParameters() {
 		return interactionParameters;
 	}
@@ -375,20 +307,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	 */
 	public void setMitabParameters(List<Parameter> parameters) {
 		this.interactionParameters = parameters;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Date> getCreationDate() {
-		return creationDate;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setCreationDate(List<Date> creationDate) {
-		this.creationDate = creationDate;
 	}
 
 	/**
@@ -419,26 +337,229 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		this.interactionChecksums = interactionChecksums;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
+    public List<Date> getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setCreationDate(List<Date> creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    // experiment
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<CrossReference> getDetectionMethods() {
+        return detectionMethods;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDetectionMethods(List<CrossReference> detectionMethods) {
+        this.detectionMethods = detectionMethods;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Organism getHostOrganism() {
+        return hostOrganism;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setHostOrganism(Organism hostOrganism) {
+        this.hostOrganism = hostOrganism;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasHostOrganism() {
+        return hostOrganism != null;
+    }
+
+    // publication
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<CrossReference> getPublications() {
+        return publications;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setPublications(List<CrossReference> publications) {
+        this.publications = publications;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean isNegativeInteraction() {
-		return negativeInteraction;
+		return isNegative;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setNegativeInteraction(Boolean negativeInteraction) {
-		this.negativeInteraction = negativeInteraction;
+        if (negativeInteraction == null){
+           this.isNegative = false;
+        }
+        else {
+            this.isNegative = negativeInteraction;
+        }
 	}
 
+    protected void resetInteractionTypeNameFromMiReferences(){
+        if (!interactionTypes.isEmpty()){
+            Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(interactionTypes), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+
+            if (ref != null){
+                String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
+                type.setShortName(name);
+                type.setFullName(name);
+            }
+        }
+    }
+
+    protected void resetInteractionTypeNameFromFirstReferences(){
+        if (!interactionTypes.isEmpty()){
+            Iterator<CrossReference> methodsIterator = interactionTypes.iterator();
+            String name = null;
+
+            while (name == null && methodsIterator.hasNext()){
+                CrossReference ref = methodsIterator.next();
+
+                if (ref.getText() != null){
+                    name = ref.getText();
+                }
+            }
+
+            type.setShortName(name != null ? name : "unknown");
+            type.setFullName(name != null ? name : "unknown");
+        }
+    }
+
+    protected void resetSourceNameFromMiReferences(){
+        if (!sourceDatabases.isEmpty()){
+            Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(sourceDatabases), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+
+            if (ref != null){
+                String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
+                source.setShortName(name);
+                source.setFullName(name);
+            }
+        }
+    }
+
+    protected void resetSourceNameFromFirstReferences(){
+        if (!sourceDatabases.isEmpty()){
+            Iterator<CrossReference> methodsIterator = sourceDatabases.iterator();
+            String name = null;
+
+            while (name == null && methodsIterator.hasNext()){
+                CrossReference ref = methodsIterator.next();
+
+                if (ref.getText() != null){
+                    name = ref.getText();
+                }
+            }
+
+            source.setShortName(name != null ? name : "unknown");
+            source.setFullName(name != null ? name : "unknown");
+        }
+    }
 
 	/////////////////////////
 	// Object's override
 
-	//We need update the toString, equals and hash ?
+    @Override
+    public Collection<ExperimentalParticipant> getParticipants() {
+
+        if (interactorA != null && interactorB != null){
+            return Arrays.asList((ExperimentalParticipant) interactorA, (ExperimentalParticipant) interactorB);
+        }
+        else if (interactorA != null){
+            return Arrays.asList((ExperimentalParticipant) interactorA);
+        }
+        else if (interactorB != null){
+            return Arrays.asList((ExperimentalParticipant) interactorB);
+        }
+        else {
+            return Collections.EMPTY_LIST;
+        }
+    }
+
+    @Override
+    public void setType(CvTerm type) {
+        super.setType(type);
+        processNewInteractionTypesList(type);
+    }
+
+    private void processNewInteractionTypesList(CvTerm type) {
+        if (type.getMIIdentifier() != null){
+            ((InteractionTypesList)interactionTypes).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, type.getMIIdentifier(), type.getFullName() != null ? type.getFullName() : type.getShortName()));
+        }
+        else{
+            if (!type.getIdentifiers().isEmpty()){
+                Xref ref = type.getIdentifiers().iterator().next();
+                ((InteractionTypesList)interactionTypes).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), type.getFullName() != null ? type.getFullName() : type.getShortName()));
+            }
+            else {
+                ((InteractionTypesList)interactionTypes).addOnly(new CrossReferenceImpl("unknown", "-", type.getFullName() != null ? type.getFullName() : type.getShortName()));
+            }
+        }
+    }
+
+    @Override
+    public void setSource(Source source) {
+        super.setSource(source);
+        processNewSourceDatabasesList(source);
+    }
+
+    private void processNewSourceDatabasesList(Source source) {
+        if (source.getMIIdentifier() != null){
+            ((InteractionSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, source.getMIIdentifier(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
+        }
+        else{
+            if (!source.getIdentifiers().isEmpty()){
+                Xref ref = source.getIdentifiers().iterator().next();
+                ((InteractionSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
+            }
+            else {
+                ((InteractionSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl("unknown", "-", source.getFullName() != null ? source.getFullName() : source.getShortName()));
+            }
+        }
+    }
+
+    //We need update the toString, equals and hash ?
 
 	/**
 	 * {@inheritDoc}
@@ -464,7 +585,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		sb.append(", creationDate=").append(creationDate);
 		sb.append(", updateDate=").append(updateDate);
 		sb.append(", checksums=").append(interactionChecksums);
-		sb.append(", negative=").append(negativeInteraction);
+		sb.append(", negative=").append(isNegative);
 		sb.append('}');
 		return sb.toString();
 	}
@@ -585,7 +706,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 			return false;
 		}
 
-		return negativeInteraction == that.negativeInteraction;
+		return isNegative == that.isNegative;
 
 	}
 
@@ -620,5 +741,243 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		return result;
 	}
 
+    protected class InteractionTypesList extends AbstractListHavingPoperties<CrossReference> {
+        public InteractionTypesList(){
+            super();
+        }
 
+        @Override
+        protected void processAddedObjectEvent(CrossReference added) {
+
+            if (type == null){
+                String name = added.getText() != null ? added.getText() : "unknown";
+                type = new DefaultCvTerm(name, name, added);
+            }
+            else {
+                type.getXrefs().add(added);
+                // reset shortname
+                if (type.getMIIdentifier() != null && type.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        type.setShortName(name);
+                    }
+                    else {
+                        resetInteractionTypeNameFromMiReferences();
+                        if (type.getShortName().equals("unknown")){
+                            resetInteractionTypeNameFromFirstReferences();
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(CrossReference removed) {
+
+            if (type != null){
+                type.getXrefs().remove(removed);
+
+                if (removed.getText() != null && type.getShortName().equals(removed.getText())){
+                    if (type.getMIIdentifier() != null){
+                        resetInteractionTypeNameFromMiReferences();
+                        if (type.getShortName().equals("unknown")){
+                            resetInteractionTypeNameFromFirstReferences();
+                        }
+                    }
+                    else {
+                        resetInteractionTypeNameFromFirstReferences();
+                    }
+                }
+            }
+
+            if (isEmpty()){
+                type = null;
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            type = null;
+        }
+    }
+
+    protected class BinaryInteractionConfidenceList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Confidence> {
+        public BinaryInteractionConfidenceList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Confidence added) {
+            if (added instanceof Confidence){
+                ((InteractionMitabConfidenceList)confidenceValues).addOnly((Confidence) added);
+            }
+            else {
+                ((InteractionMitabConfidenceList)confidenceValues).addOnly(new ConfidenceImpl(added.getType().getShortName(), added.getValue(), added.getUnit() != null ? added.getUnit().getShortName() : null));
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Confidence removed) {
+            if (removed instanceof Confidence){
+                ((InteractionMitabConfidenceList)confidenceValues).removeOnly(removed);
+            }
+            else {
+                ((InteractionMitabConfidenceList)confidenceValues).removeOnly(new ConfidenceImpl(removed.getType().getShortName(), removed.getValue(), removed.getUnit() != null ? removed.getUnit().getShortName() : null));
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            // clear all confidences
+            ((InteractionMitabConfidenceList)confidenceValues).clearOnly();
+        }
+    }
+
+    protected class InteractionMitabConfidenceList extends AbstractListHavingPoperties<Confidence> {
+        public InteractionMitabConfidenceList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(Confidence added) {
+
+            // we added a confidence, needs to add it in confidences
+            ((BinaryInteractionConfidenceList)confidences).addOnly(added);
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(Confidence removed) {
+
+            // we removed a Confidence, needs to remove it in confidences
+            ((BinaryInteractionConfidenceList)confidences).removeOnly(removed);
+
+        }
+
+        @Override
+        protected void clearProperties() {
+            // clear all confidences
+            ((BinaryInteractionConfidenceList)confidences).clearOnly();
+        }
+    }
+
+    protected class InteractionSourcesList extends AbstractListHavingPoperties<CrossReference> {
+        public InteractionSourcesList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(CrossReference added) {
+
+            if (source == null){
+                String name = added.getText() != null ? added.getText() : "unknown";
+                source = new DefaultSource(name, name, added);
+            }
+            else {
+                source.getXrefs().add(added);
+                // reset shortname
+                if (source.getMIIdentifier() != null && source.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        source.setShortName(name);
+                    }
+                    else {
+                        resetSourceNameFromMiReferences();
+                        if (source.getShortName().equals("unknown")){
+                            resetSourceNameFromFirstReferences();
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(CrossReference removed) {
+
+            if (source != null){
+                source.getXrefs().remove(removed);
+
+                if (removed.getText() != null && source.getShortName().equals(removed.getText())){
+                    if (source.getMIIdentifier() != null){
+                        resetSourceNameFromMiReferences();
+                        if (source.getShortName().equals("unknown")){
+                            resetSourceNameFromFirstReferences();
+                        }
+                    }
+                    else {
+                        resetSourceNameFromFirstReferences();
+                    }
+                }
+            }
+
+            if (isEmpty()){
+                source = null;
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            source = null;
+        }
+    }
+
+    protected class BinaryInteractionIdentifiersList extends AbstractListHavingPoperties<Xref> {
+        public BinaryInteractionIdentifiersList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Xref added) {
+            if (added instanceof CrossReference){
+                ((InteractionMitabIdentifiersList)interactionAcs).addOnly((CrossReference) added);
+            }
+            else {
+                ((InteractionMitabIdentifiersList)interactionAcs).addOnly(new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier()!= null ? added.getQualifier().getShortName() : null));
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Xref removed) {
+            if (removed instanceof CrossReference){
+                ((InteractionMitabIdentifiersList)interactionAcs).removeOnly(removed);
+            }
+            else {
+                ((InteractionMitabIdentifiersList)interactionAcs).removeOnly(new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier()!= null ? removed.getQualifier().getShortName() : null));
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            // clear all confidences
+            ((InteractionMitabIdentifiersList)interactionAcs).clearOnly();
+        }
+    }
+
+    protected class InteractionMitabIdentifiersList extends AbstractListHavingPoperties<CrossReference> {
+        public InteractionMitabIdentifiersList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(CrossReference added) {
+
+            // we added a confidence, needs to add it in confidences
+            ((BinaryInteractionIdentifiersList)identifiers).addOnly(added);
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(CrossReference removed) {
+
+            // we removed a Confidence, needs to remove it in confidences
+            ((BinaryInteractionIdentifiersList)identifiers).removeOnly(removed);
+
+        }
+
+        @Override
+        protected void clearProperties() {
+            // clear all confidences
+            ((BinaryInteractionIdentifiersList)identifiers).clearOnly();
+        }
+    }
 }

@@ -274,7 +274,7 @@ public interface BinaryInteraction<T extends Interactor> extends ExperimentalInt
      * Sets if the interaction is negative (true) or
      * postive (false)
      *
-     * @param negativeInteraction true if it is negative or false if it is true.
+     * @param negativeInteraction true if it is negative or false if it is positive.
      */
     void setNegativeInteraction(Boolean negativeInteraction);
 
