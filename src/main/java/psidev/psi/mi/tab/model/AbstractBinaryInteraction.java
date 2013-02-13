@@ -141,18 +141,22 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	// Constructors
 	public AbstractBinaryInteraction() {
         super();
+        setExperiment(new MitabExperiment());
 	}
 
 	public AbstractBinaryInteraction(T interactor) {
         super();
 		setInteractorA(interactor);
-	}
+        setExperiment(new MitabExperiment());
+
+    }
 
 	public AbstractBinaryInteraction(T interactorA, T interactorB) {
         super();
 		setInteractorA(interactorA);
 		setInteractorB(interactorB);
-	}
+        setExperiment(new MitabExperiment());
+    }
 
     @Override
     protected void initializeConfidences(){
@@ -212,11 +216,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         if (this.interactorA != null){
             participants.remove(this.interactorA);
             participants.add(interactorA);
-            interactorA.setInteraction(this);
+            this.interactorA.setInteraction(this);
         }
         else {
             participants.add(interactorA);
-            interactorA.setInteraction(this);
+            this.interactorA.setInteraction(this);
         }
 	}
 
@@ -234,14 +238,14 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         if (interactorB == null){
             participants.remove(this.interactorB);
         }
-        if (this.interactorA != null){
+        if (this.interactorB != null){
             participants.remove(this.interactorB);
             participants.add(interactorB);
-            interactorB.setInteraction(this);
+            this.interactorB.setInteraction(this);
         }
         else {
             participants.add(interactorB);
-            interactorB.setInteraction(this);
+            this.interactorB.setInteraction(this);
         }
 	}
 

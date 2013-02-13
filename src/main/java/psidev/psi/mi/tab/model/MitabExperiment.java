@@ -44,6 +44,7 @@ public class MitabExperiment extends DefaultExperiment{
         processNewInteractionDetectionMethodsList(interactionDetectionMethod);
 
         publication.getExperiments().add(this);
+        mitabPublication = (MitabPublication) publication;
     }
 
     /**

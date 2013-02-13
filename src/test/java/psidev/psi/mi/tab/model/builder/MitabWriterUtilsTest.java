@@ -273,7 +273,7 @@ public class MitabWriterUtilsTest {
 			add(new AliasImpl("refseq", "NP_665802"));
 			add(new AliasImpl("hgnc", "TNFRSF11A", "display_short"));
 		}};
-		A.setAliases(aliasesA);
+		A.setInteractorAliases(aliasesA);
 
 		List<Alias> aliasesB = new ArrayList<Alias>() {{
 			add(new AliasImpl("uniprotkb", "Q9Y6Q6"));
@@ -282,7 +282,7 @@ public class MitabWriterUtilsTest {
 			add(new AliasImpl("refseq", "NP_003830"));
 			add(new AliasImpl("hgnc", "TNFRSF11A", "display_short"));
 		}};
-		B.setAliases(aliasesB);
+		B.setInteractorAliases(aliasesB);
 
 		interactionToCompare.setDetectionMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(
@@ -393,7 +393,7 @@ public class MitabWriterUtilsTest {
 		List<Alias> aliasesA = new ArrayList<Alias>() {{
 			add(new AliasImpl("uniprotkb", "Q9Y4K3"));
 		}};
-		A.setAliases(aliasesA);
+		A.setInteractorAliases(aliasesA);
 
 		interactionToCompare.setDetectionMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(
@@ -466,7 +466,7 @@ public class MitabWriterUtilsTest {
 
 //        A.setFeatures();
 
-		A.setStoichiometry(new ArrayList<Integer>(
+		A.setInteractorStoichiometry(new ArrayList<Integer>(
 				Collections.singletonList(new Integer("2"))));
 
 		A.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
@@ -489,7 +489,7 @@ public class MitabWriterUtilsTest {
 		List<Alias> aliasesB = new ArrayList<Alias>() {{
 			add(new AliasImpl("uniprotkb", "Q9Y6Q6"));
 		}};
-		B.setAliases(aliasesB);
+		B.setInteractorAliases(aliasesB);
 
 		interactionToCompare.setDetectionMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(
@@ -565,7 +565,7 @@ public class MitabWriterUtilsTest {
 
 //        B.setFeatures();
 
-        B.setStoichiometry(new ArrayList<Integer>(
+        B.setInteractorStoichiometry(new ArrayList<Integer>(
 				Collections.singletonList(new Integer("2"))));
 
 		B.setParticipantIdentificationMethods(new ArrayList<CrossReference>(

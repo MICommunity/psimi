@@ -198,10 +198,16 @@ public class PsimiTabWriterTest {
         final Interactor a = mockBuilder.createInteractor(9606, "uniprotkb", "P12345", "nice\tprotein");
         a.getAlternativeIdentifiers().add(new CrossReferenceImpl("uni:prot", "g(en)e", "la\tla"));
         a.getAliases().add(new AliasImpl("uniprotkb", "a:l|i(as)A"));
+        a.setExperimentalRoles(null);
+        a.setBiologicalRoles(null);
+        a.setInteractorTypes(null);
 
         final Interactor b = mockBuilder.createInteractor(9606, "uniprotkb", "P12345", "ni:ce(protein)");
         b.getAlternativeIdentifiers().add(new CrossReferenceImpl("uni:prot", "g(en)e", "la\tla"));
         b.getAliases().add(new AliasImpl("uniprotkb", "a:l|i(as)A"));
+        b.setExperimentalRoles(null);
+        b.setBiologicalRoles(null);
+        b.setInteractorTypes(null);
 
         final BinaryInteraction bi = mockBuilder.createInteraction(a, b);
 

@@ -148,7 +148,7 @@ public class MitabParserUtilsTest {
 			add(new AliasImpl("refseq", "NP_665802"));
 			add(new AliasImpl("hgnc", "TNFRSF11A", "display_short"));
 		}};
-		A.setAliases(aliasesA);
+		A.setInteractorAliases(aliasesA);
 
 		List<Alias> aliasesB = new ArrayList<Alias>() {{
 			add(new AliasImpl("uniprotkb", "Q9Y6Q6"));
@@ -157,7 +157,7 @@ public class MitabParserUtilsTest {
 			add(new AliasImpl("refseq", "NP_003830"));
 			add(new AliasImpl("hgnc", "TNFRSF11A", "display_short"));
 		}};
-		B.setAliases(aliasesB);
+		B.setInteractorAliases(aliasesB);
 
 		interactionToCompare.setDetectionMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(
