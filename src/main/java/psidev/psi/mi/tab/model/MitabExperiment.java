@@ -120,6 +120,7 @@ public class MitabExperiment extends DefaultExperiment{
     }
 
     private void processNewInteractionDetectionMethodsList(CvTerm method) {
+        ((DetectionMethodsList)detectionMethods).clearOnly();
         if (method.getMIIdentifier() != null){
             ((DetectionMethodsList)detectionMethods).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, method.getMIIdentifier(), method.getFullName() != null ? method.getFullName() : method.getShortName()));
         }
