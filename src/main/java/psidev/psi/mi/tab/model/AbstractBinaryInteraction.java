@@ -210,18 +210,10 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorA(T interactorA) {
-        if (interactorA == null){
-            participants.remove(this.interactorA);
-        }
-        if (this.interactorA != null){
-            participants.remove(this.interactorA);
-            participants.add(interactorA);
-            this.interactorA.setInteraction(this);
-        }
-        else {
-            participants.add(interactorA);
-            this.interactorA.setInteraction(this);
-        }
+        Interactor currentB = interactorB;
+        participants.clear();
+        participants.add(interactorA);
+        participants.add(currentB);
 	}
 
 	/**
@@ -235,18 +227,10 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorB(T interactorB) {
-        if (interactorB == null){
-            participants.remove(this.interactorB);
-        }
-        if (this.interactorB != null){
-            participants.remove(this.interactorB);
-            participants.add(interactorB);
-            this.interactorB.setInteraction(this);
-        }
-        else {
-            participants.add(interactorB);
-            this.interactorB.setInteraction(this);
-        }
+        Interactor currentA = interactorA;
+        participants.clear();
+        participants.add(currentA);
+        participants.add(interactorB);
 	}
 
     /**
