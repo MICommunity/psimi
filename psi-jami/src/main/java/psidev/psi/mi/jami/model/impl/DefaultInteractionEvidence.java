@@ -19,11 +19,11 @@ import java.util.Collection;
 
 public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEvidence> implements InteractionEvidence {
 
-    private Xref imexId;
-    private Experiment experiment;
-    private String availability;
-    private Collection<Parameter> parameters;
-    private boolean isInferred = false;
+    protected Xref imexId;
+    protected Experiment experiment;
+    protected String availability;
+    protected Collection<Parameter> parameters;
+    protected boolean isInferred = false;
 
     public DefaultInteractionEvidence(Experiment experiment) {
         super();
