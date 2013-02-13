@@ -6,7 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultExperimentalFeature;
+import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.factory.RangeFactory;
@@ -20,7 +20,7 @@ import java.util.List;
  * Time: 14:13
  * To change this template use File | Settings | File Templates.
  */
-public class FeatureImpl extends DefaultExperimentalFeature implements Feature {
+public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
      * To keep things consistent, please use the same thing.

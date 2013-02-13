@@ -1,6 +1,6 @@
 package psidev.psi.mi.tab.model;
 
-import psidev.psi.mi.jami.model.ExperimentalFeature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * Time: 14:12
  * To change this template use File | Settings | File Templates.
  */
-public interface Feature extends ExperimentalFeature, Serializable {
+public interface Feature extends FeatureEvidence, Serializable {
 
     /**
      * Getter for 'featureType' property.
