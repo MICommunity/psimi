@@ -22,7 +22,7 @@ public class DefaultExperiment implements Experiment {
     protected Collection<Annotation> annotations;
     protected CvTerm interactionDetectionMethod;
     protected Organism horstOrganism;
-    protected Collection<ExperimentalInteraction> interactions;
+    protected Collection<InteractionEvidence> interactions;
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod){
          if (publication == null){
@@ -36,7 +36,7 @@ public class DefaultExperiment implements Experiment {
 
         this.xrefs = new ArrayList<Xref>();
         this.annotations = new ArrayList<Annotation>();
-        this.interactions = new ArrayList<ExperimentalInteraction>();
+        this.interactions = new ArrayList<InteractionEvidence>();
     }
 
     public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod){
@@ -100,7 +100,7 @@ public class DefaultExperiment implements Experiment {
         this.horstOrganism = organism;
     }
 
-    public Collection<ExperimentalInteraction> getInteractions() {
+    public Collection<InteractionEvidence> getInteractions() {
         return this.interactions;
     }
 

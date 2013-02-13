@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>11/12/12</pre>
  */
 
-public interface ExperimentalInteraction extends Interaction<ExperimentalParticipant>{
+public interface InteractionEvidence extends Interaction<ExperimentalParticipant>{
 
     /**
      * IMEx identifier if the interaction has been curated following IMEx curation rules.

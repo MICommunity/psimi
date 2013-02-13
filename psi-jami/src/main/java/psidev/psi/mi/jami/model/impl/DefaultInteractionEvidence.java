@@ -3,21 +3,21 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactExperimentalInteractionComparator;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionEvidenceComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Default implementation for ExperimentalInteraction
+ * Default implementation for InteractionEvidence
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>05/02/13</pre>
  */
 
-public class DefaultExperimentalInteraction extends DefaultInteraction<ExperimentalParticipant> implements ExperimentalInteraction {
+public class DefaultInteractionEvidence extends DefaultInteraction<ExperimentalParticipant> implements InteractionEvidence {
 
     private Xref imexId;
     private Experiment experiment;
@@ -25,153 +25,153 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
     private Collection<Parameter> parameters;
     private boolean isInferred = false;
 
-    public DefaultExperimentalInteraction(Experiment experiment) {
+    public DefaultInteractionEvidence(Experiment experiment) {
         super();
         this.parameters = new ArrayList<Parameter>();
 
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName) {
         super(shortName);
         this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source) {
         super(shortName, source);
         this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName, CvTerm type) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type) {
         super(shortName, type);
         this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source, CvTerm type) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, CvTerm type) {
         super(shortName, source, type);
         this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, Xref imexId) {
+    public DefaultInteractionEvidence(Experiment experiment, Xref imexId) {
         super();
         this.parameters = new ArrayList<Parameter>();
 
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName, Xref imexId) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName, Xref imexId) {
         super(shortName);
         this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source, Xref imexId) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, Xref imexId) {
         super(shortName, source);
         this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName, CvTerm type, Xref imexId) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
         this.parameters = new ArrayList<Parameter>();;
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(Experiment experiment, String shortName, Source source, CvTerm type, Xref imexId) {
+    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, CvTerm type, Xref imexId) {
         super(shortName, source, type);
         this.parameters = new ArrayList<Parameter>();
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction() {
+    public DefaultInteractionEvidence() {
         super();
         this.parameters = new ArrayList<Parameter>();
     }
 
-    public DefaultExperimentalInteraction(String shortName) {
+    public DefaultInteractionEvidence(String shortName) {
         super(shortName);
         this.parameters = new ArrayList<Parameter>();
     }
 
-    public DefaultExperimentalInteraction(String shortName, Source source) {
+    public DefaultInteractionEvidence(String shortName, Source source) {
         super(shortName, source);
         this.parameters = new ArrayList<Parameter>();
     }
 
-    public DefaultExperimentalInteraction(String shortName, CvTerm type) {
+    public DefaultInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
         this.parameters = new ArrayList<Parameter>();
     }
 
-    public DefaultExperimentalInteraction(String shortName, Source source, CvTerm type) {
+    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type) {
         super(shortName, source, type);
         this.parameters = new ArrayList<Parameter>();
     }
 
-    public DefaultExperimentalInteraction(Xref imexId) {
+    public DefaultInteractionEvidence(Xref imexId) {
         super();
         this.parameters = new ArrayList<Parameter>();
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(String shortName, Xref imexId) {
+    public DefaultInteractionEvidence(String shortName, Xref imexId) {
         super(shortName);
         this.parameters = new ArrayList<Parameter>();
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(String shortName, Source source, Xref imexId) {
+    public DefaultInteractionEvidence(String shortName, Source source, Xref imexId) {
         super(shortName, source);
         this.parameters = new ArrayList<Parameter>();
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(String shortName, CvTerm type, Xref imexId) {
+    public DefaultInteractionEvidence(String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
         this.parameters = new ArrayList<Parameter>();
         this.xrefs.add(imexId);
     }
 
-    public DefaultExperimentalInteraction(String shortName, Source source, CvTerm type, Xref imexId) {
+    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type, Xref imexId) {
         super(shortName, source, type);
         this.parameters = new ArrayList<Parameter>();
         this.xrefs.add(imexId);
@@ -209,7 +209,7 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
 
     public void setExperiment(Experiment experiment) {
         if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an ExperimentalInteraction, it cannot be null.");
+            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
         }
         this.experiment = experiment;
     }
@@ -240,12 +240,12 @@ public class DefaultExperimentalInteraction extends DefaultInteraction<Experimen
             return true;
         }
 
-        if (!(o instanceof ExperimentalInteraction)){
+        if (!(o instanceof InteractionEvidence)){
             return false;
         }
 
         // use UnambiguousExactExperimentalInteraction comparator for equals
-        return UnambiguousExactExperimentalInteractionComparator.areEquals(this, (ExperimentalInteraction) o);
+        return UnambiguousExactInteractionEvidenceComparator.areEquals(this, (InteractionEvidence) o);
     }
 
     @Override

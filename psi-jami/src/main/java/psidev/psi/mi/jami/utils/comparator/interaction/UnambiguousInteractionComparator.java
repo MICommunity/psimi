@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Interaction;
 /**
  * Unambiguous Generic interaction comparator.
  * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
- * - It uses UnambiguousExperimentalInteractionComparator to compare experimental interactions
+ * - It uses UnambiguousInteractionEvidenceComparator to compare experimental interactions
  * - It uses UnambiguousModelledInteractionComparator to compare modelled interactions
  * - It uses UnambiguousCooperativeInteractionComparator to compare cooperative interactions
  * - It uses UnambiguousAllostericInteractionComparator to compare allosteric interactions
@@ -24,7 +24,7 @@ public class UnambiguousInteractionComparator extends InteractionComparator {
      * Creates a new UnambiguousInteractionComparator.
      */
     public UnambiguousInteractionComparator() {
-        super(new UnambiguousInteractionBaseComparator(), new UnambiguousExperimentalInteractionComparator(), new UnambiguousCooperativeInteractionComparator(), new UnambiguousAllostericInteractionComparator());
+        super(new UnambiguousInteractionBaseComparator(), new UnambiguousInteractionEvidenceComparator(), new UnambiguousCooperativeInteractionComparator(), new UnambiguousAllostericInteractionComparator());
     }
 
     @Override
@@ -33,8 +33,8 @@ public class UnambiguousInteractionComparator extends InteractionComparator {
     }
 
     @Override
-    public UnambiguousExperimentalInteractionComparator getExperimentalInteractionComparator() {
-        return (UnambiguousExperimentalInteractionComparator) this.experimentalInteractionComparator;
+    public UnambiguousInteractionEvidenceComparator getExperimentalInteractionComparator() {
+        return (UnambiguousInteractionEvidenceComparator) this.experimentalInteractionComparator;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UnambiguousInteractionComparator extends InteractionComparator {
     @Override
     /**
      * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
-     * - It uses UnambiguousExperimentalInteractionComparator to compare experimental interactions
+     * - It uses UnambiguousInteractionEvidenceComparator to compare experimental interactions
      * - It uses UnambiguousModelledInteractionComparator to compare modelled interactions
      * - It uses UnambiguousCooperativeInteractionComparator to compare cooperative interactions
      * - It uses UnambiguousAllostericInteractionComparator to compare allosteric interactions
