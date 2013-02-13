@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
@@ -16,15 +16,15 @@ import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExperimentalParticipantInteractorComparator extends ExperimentalParticipantComparator{
+public class DefaultParticipantEvidenceInteractorComparator extends ParticipantEvidenceComparator {
 
-    private static DefaultExperimentalParticipantInteractorComparator defaultExperimentalParticipantInteractorComparator;
+    private static DefaultParticipantEvidenceInteractorComparator defaultExperimentalParticipantInteractorComparator;
 
     /**
-     * Creates a new DefaultExperimentalParticipantInteractorComparator. It will use a DefaultParticipantInteractorComparator to compare
+     * Creates a new DefaultParticipantEvidenceInteractorComparator. It will use a DefaultParticipantInteractorComparator to compare
      * the basic properties of a participant.
      */
-    public DefaultExperimentalParticipantInteractorComparator() {
+    public DefaultParticipantEvidenceInteractorComparator() {
         super(new DefaultParticipantInteractorComparator(), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
     }
 
@@ -39,7 +39,7 @@ public class DefaultExperimentalParticipantInteractorComparator extends Experime
      *
      * This comparator will ignore all the other properties of an experimental participant.
      */
-    public int compare(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant experimentalParticipant2) {
+    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
@@ -61,14 +61,14 @@ public class DefaultExperimentalParticipantInteractorComparator extends Experime
     }
 
     /**
-     * Use DefaultExperimentalParticipantInteractorComparator to know if two experimental participants are equals.
+     * Use DefaultParticipantEvidenceInteractorComparator to know if two experimental participants are equals.
      * @param experimentalParticipant1
      * @param component2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant component2){
+    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence component2){
         if (defaultExperimentalParticipantInteractorComparator == null){
-            defaultExperimentalParticipantInteractorComparator = new DefaultExperimentalParticipantInteractorComparator();
+            defaultExperimentalParticipantInteractorComparator = new DefaultParticipantEvidenceInteractorComparator();
         }
 
         return defaultExperimentalParticipantInteractorComparator.compare(experimentalParticipant1, component2) == 0;

@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousExperimentComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactExperimentalParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantEvidenceComparator;
 
 /**
  * Unambiguous exact InteractionEvidenceComparator.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactExperimen
  * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
  * the experiment using UnambiguousExperimentComparator. If the experiments are the same, it will compare the parameters using UnambiguousParameterComparator.
  * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using UnambiguousExactInteractionBaseComparator<ExperimentalParticipant>.
+ * If the experimental interaction properties are the same, it will compare the basic interaction properties using UnambiguousExactInteractionBaseComparator<ParticipantEvidence>.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -30,7 +30,7 @@ public class UnambiguousExactInteractionEvidenceComparator extends InteractionEv
      * compare basic interaction properties, UnambiguousParameterComparator to compare parameters, UnambiguousExperimentComparator to compare experiments
      */
     public UnambiguousExactInteractionEvidenceComparator() {
-        super(new InteractionBaseComparator<ExperimentalParticipant>(new UnambiguousExactExperimentalParticipantComparator(), new UnambiguousCvTermComparator()),
+        super(new InteractionBaseComparator<ParticipantEvidence>(new UnambiguousExactParticipantEvidenceComparator(), new UnambiguousCvTermComparator()),
                 new UnambiguousExperimentComparator(), new UnambiguousParameterComparator());
     }
 
@@ -44,7 +44,7 @@ public class UnambiguousExactInteractionEvidenceComparator extends InteractionEv
      * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
      * the experiment using UnambiguousExperimentComparator. If the experiments are the same, it will compare the parameters using UnambiguousParameterComparator.
      * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using UnambiguousExactInteractionBaseComparator<ExperimentalParticipant>.
+     * If the experimental interaction properties are the same, it will compare the basic interaction properties using UnambiguousExactInteractionBaseComparator<ParticipantEvidence>.
      *
      *
      **/

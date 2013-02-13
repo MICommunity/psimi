@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.experiment.DefaultExperimentComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultExperimentalParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultParticipantEvidenceComparator;
 
 /**
  * Default InteractionEvidenceComparator.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExperimentalPartic
  * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
  * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
  * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ExperimentalParticipant>.
+ * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ParticipantEvidence>.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,7 +29,7 @@ public class DefaultInteractionEvidenceComparator extends InteractionEvidenceCom
      * compare basic interaction properties, DefaultParameterComparator to compare parameters, DefaultExperimentComparator to compare experiments
      */
     public DefaultInteractionEvidenceComparator() {
-        super(new InteractionBaseComparator<ExperimentalParticipant>(new DefaultExperimentalParticipantComparator(), new DefaultCvTermComparator()),
+        super(new InteractionBaseComparator<ParticipantEvidence>(new DefaultParticipantEvidenceComparator(), new DefaultCvTermComparator()),
                 new DefaultExperimentComparator(), new DefaultParameterComparator());
     }
 
@@ -43,7 +43,7 @@ public class DefaultInteractionEvidenceComparator extends InteractionEvidenceCom
      * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
      * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
      * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ExperimentalParticipant>.
+     * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ParticipantEvidence>.
      **/
     public int compare(InteractionEvidence interaction1, InteractionEvidence interaction2) {
         return super.compare(interaction1, interaction2);

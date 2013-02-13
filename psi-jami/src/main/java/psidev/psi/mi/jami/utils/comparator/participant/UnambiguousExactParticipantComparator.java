@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Participant;
  * Unambiguous exact generic Participant comparator
  * Components come first and then experimental participants.
  * - It uses UnambiguousExactComponentComparator to compare components
- * - It uses UnambiguousExactExperimentalParticipantComparator to compare experimental participants
+ * - It uses UnambiguousExactParticipantEvidenceComparator to compare experimental participants
  * - It uses UnambiguousExactParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -22,7 +22,7 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
      * Creates a UnambiguousExactParticipantComparator. It will use a UnambiguousExactParticipantBaseComparator to compare basic feature properties
      */
     public UnambiguousExactParticipantComparator() {
-        super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousExactExperimentalParticipantComparator());
+        super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousExactParticipantEvidenceComparator());
     }
 
     @Override
@@ -31,15 +31,15 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
     }
 
     @Override
-    public UnambiguousExactExperimentalParticipantComparator getExperimentalParticipantComparator() {
-        return (UnambiguousExactExperimentalParticipantComparator) this.experimentalParticipantComparator;
+    public UnambiguousExactParticipantEvidenceComparator getExperimentalParticipantComparator() {
+        return (UnambiguousExactParticipantEvidenceComparator) this.experimentalParticipantComparator;
     }
 
     @Override
     /**
      * Components come first and then experimental participants.
      * - It uses UnambiguousExactComponentComparator to compare components
-     * - It uses UnambiguousExactExperimentalParticipantComparator to compare experimental participants
+     * - It uses UnambiguousExactParticipantEvidenceComparator to compare experimental participants
      * - It uses UnambiguousExactParticipantBaseComparator to compare basic participant properties
      *
      */
