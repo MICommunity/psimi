@@ -95,7 +95,7 @@ public class PsimiTabMockBuilder{
 
     public Interactor createProteinInteractorRandom() {
         final Interactor interactor = buildInteractor();
-        interactor.setAliases( createAliasRandom( boundRandom( 1, 4 ), "uniprotkb" ) );
+        interactor.setInteractorAliases( createAliasRandom( boundRandom( 1, 4 ), "uniprotkb" ) );
         interactor.setAlternativeIdentifiers( createUniprotCrossReferenceList( boundRandom( 0, 4 ) ) );
         interactor.setIdentifiers( createList( createCrossReference( "uniprotkb", randomUniprotAc() ) ) );
         interactor.setOrganism( ( Organism ) pickRandom( organisms ) );

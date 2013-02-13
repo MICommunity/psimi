@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.FeatureCloner;
+import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
@@ -100,7 +101,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         if (partDetMethod != null){
             processNewMethodInIdentificationMethodList(partDetMethod);
         }
-        mitabInteractor = (MitabInteractor) interactor;
+        this.mitabInteractor = mitabInteractor;
     }
 
     @Override
@@ -499,6 +500,25 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
     }
 
     @Override
+    public void setInteraction(InteractionEvidence interaction) {
+        if (interaction == null){
+            super.setInteraction(null);
+        }
+        else if (interaction instanceof BinaryInteraction){
+            super.setInteraction(interaction);
+        }
+        else if (interaction.getParticipants().size() > 2){
+            throw new IllegalArgumentException("A MitabInteractor need a BinaryInteraction with one or two participants and not " + interaction.getParticipants().size());
+        }
+        else {
+            BinaryInteraction<Interactor> convertedInteraction = new BinaryInteractionImpl();
+
+            InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
+            super.setInteraction(convertedInteraction);
+        }
+    }
+
+    @Override
     public void setInteractor(psidev.psi.mi.jami.model.Interactor interactor) {
         if (interactor == null){
             super.setInteractor(null);
@@ -583,15 +603,15 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
     private void processNewExperimentalRoleInExperimentalRoleList(CvTerm role) {
         if (role.getMIIdentifier() != null){
-            ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, role.getMIIdentifier(), role.getFullName() != null ? role.getFullName(): role.getShortName()));
+            ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, role.getMIIdentifier(), role.getFullName() != null ? role.getFullName() : role.getShortName()));
         }
         else{
             if (!role.getIdentifiers().isEmpty()){
                 Xref ref = role.getIdentifiers().iterator().next();
-                ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), role.getFullName() != null ? role.getFullName(): role.getShortName()));
+                ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), role.getFullName() != null ? role.getFullName() : role.getShortName()));
             }
             else {
-                ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl("unknown", "-", role.getFullName() != null ? role.getFullName(): role.getShortName()));
+                ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl("unknown", "-", role.getFullName() != null ? role.getFullName() : role.getShortName()));
             }
         }
     }
