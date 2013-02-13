@@ -18,6 +18,7 @@ package psidev.psi.mi.tab.model.builder;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.tab.model.*;
 
 import java.text.ParseException;
@@ -168,13 +169,13 @@ public final class MitabParserUtils {
         //MITAB 2.5
         interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()]));
         interactorA.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()]));
-        interactorA.setAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()]));
+        interactorA.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()]));
         interactorA.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_A.ordinal()]));
 
         //MITAB 2.5
         interactorB.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()]));
         interactorB.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()]));
-        interactorB.setAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()]));
+        interactorB.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()]));
         interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()]));
 
         //MITAB 2.5
@@ -191,16 +192,16 @@ public final class MitabParserUtils {
         interactorA.setBiologicalRoles(splitCrossReferences(line[PsimiTabColumns.BIOROLE_A.ordinal()]));
         interactorA.setExperimentalRoles(splitCrossReferences(line[PsimiTabColumns.EXPROLE_A.ordinal()]));
         interactorA.setInteractorTypes(splitCrossReferences(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()]));
-        interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()]));
-        interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()]));
+        interactorA.setInteractorXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()]));
+        interactorA.setInteractorAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()]));
         interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()]));
 
         //MITAB 2.6
         interactorB.setBiologicalRoles(splitCrossReferences(line[PsimiTabColumns.BIOROLE_B.ordinal()]));
         interactorB.setExperimentalRoles(splitCrossReferences(line[PsimiTabColumns.EXPROLE_B.ordinal()]));
         interactorB.setInteractorTypes(splitCrossReferences(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()]));
-        interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()]));
-        interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()]));
+        interactorB.setInteractorXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()]));
+        interactorB.setInteractorAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()]));
         interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()]));
 
         //MITAB 2.6
@@ -211,18 +212,18 @@ public final class MitabParserUtils {
         interaction.setMitabParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()]));
         interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()]));
         interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()]));
-        interaction.setMitabChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()]));
+        interaction.setInteractionChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()]));
         interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()]));
 
         //MITAB 2.7
-        interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()]));
-        interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()]));
+        interactorA.setInteractorFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()]));
+        interactorA.setInteractorStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()]));
         interactorA.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()]));
 
 
         //MITAB 2.7
-        interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()]));
-        interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()]));
+        interactorB.setInteractorFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()]));
+        interactorB.setInteractorStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()]));
         interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()]));
 
 		//We check some consistency in the interactors
@@ -516,9 +517,17 @@ public final class MitabParserUtils {
                                 throw new IllegalFormatException("String cannot be parsed to create a parameter (check the syntax): " + Arrays.asList(result).toString());
                             }
                         } else if (length == 2) {
-                            object = new ParameterImpl(result[0], result[1]);
+                            try {
+                                object = new ParameterImpl(result[0], result[1]);
+                            } catch (IllegalParameterException e) {
+                                throw new IllegalFormatException("String cannot be parsed to create a parameter (check the syntax): " + Arrays.asList(result).toString(), e);
+                            }
                         } else if (length == 3) {
-                            object = new ParameterImpl(result[0], result[1], result[2]);
+                            try {
+                                object = new ParameterImpl(result[0], result[1], result[2]);
+                            } catch (IllegalParameterException e) {
+                                throw new IllegalFormatException("String cannot be parsed to create a parameter (check the syntax): " + Arrays.asList(result).toString(), e);
+                            }
                         }
 
                         if (object != null) {

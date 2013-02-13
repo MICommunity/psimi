@@ -48,8 +48,8 @@ public class MitabWriterUtils {
 			case v2_7:
 				// MITAB 2.7
 				if (interactorA != null) {
-					line[PsimiTabColumns.FEATURES_A.ordinal()] = joinFeatureCollection(interactorA.getFeatures());//37
-					line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()] = joinStoichiometryCollection(interactorA.getStoichiometry());//39
+					line[PsimiTabColumns.FEATURES_A.ordinal()] = joinFeatureCollection(interactorA.getInteractorFeatures());//37
+					line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()] = joinStoichiometryCollection(interactorA.getInteractorStoichiometry());//39
 					line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getParticipantIdentificationMethods());//41
 				} else {
 					line[PsimiTabColumns.FEATURES_A.ordinal()] = EMPTY_COLUMN;//37
@@ -59,8 +59,8 @@ public class MitabWriterUtils {
 
 				// MITAB 2.7
 				if (interactorB != null) {
-					line[PsimiTabColumns.FEATURES_B.ordinal()] = joinFeatureCollection(interactorB.getFeatures());//38
-					line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()] = joinStoichiometryCollection(interactorB.getStoichiometry()); //40
+					line[PsimiTabColumns.FEATURES_B.ordinal()] = joinFeatureCollection(interactorB.getInteractorFeatures());//38
+					line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()] = joinStoichiometryCollection(interactorB.getInteractorStoichiometry()); //40
 					line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getParticipantIdentificationMethods());//42
 				} else {
 					line[PsimiTabColumns.FEATURES_B.ordinal()] = EMPTY_COLUMN;//38
@@ -73,8 +73,8 @@ public class MitabWriterUtils {
 					line[PsimiTabColumns.BIOROLE_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getBiologicalRoles()); // 17
 					line[PsimiTabColumns.EXPROLE_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getExperimentalRoles());// 19
 					line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getInteractorTypes());// 21
-					line[PsimiTabColumns.XREFS_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getXrefs());// 23
-					line[PsimiTabColumns.ANNOTATIONS_A.ordinal()] = joinAnnotationsCollection(interactorA.getAnnotations());// 26
+					line[PsimiTabColumns.XREFS_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getInteractorXrefs());// 23
+					line[PsimiTabColumns.ANNOTATIONS_A.ordinal()] = joinAnnotationsCollection(interactorA.getInteractorAnnotations());// 26
 					line[PsimiTabColumns.CHECKSUM_A.ordinal()] = joinChecksumCollection(interactorA.getChecksums());// 33
 				} else {
 					line[PsimiTabColumns.BIOROLE_A.ordinal()] = EMPTY_COLUMN; // 17
@@ -89,8 +89,8 @@ public class MitabWriterUtils {
 					line[PsimiTabColumns.BIOROLE_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getBiologicalRoles());// 18
 					line[PsimiTabColumns.EXPROLE_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getExperimentalRoles());// 20
 					line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getInteractorTypes());// 22
-					line[PsimiTabColumns.XREFS_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getXrefs()); // 24
-					line[PsimiTabColumns.ANNOTATIONS_B.ordinal()] = joinAnnotationsCollection(interactorB.getAnnotations()); // 27
+					line[PsimiTabColumns.XREFS_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getInteractorXrefs()); // 24
+					line[PsimiTabColumns.ANNOTATIONS_B.ordinal()] = joinAnnotationsCollection(interactorB.getInteractorAnnotations()); // 27
 					line[PsimiTabColumns.CHECKSUM_B.ordinal()] = joinChecksumCollection(interactorB.getChecksums());// 34
 				} else {
 					line[PsimiTabColumns.BIOROLE_B.ordinal()] = EMPTY_COLUMN;// 18
@@ -108,7 +108,7 @@ public class MitabWriterUtils {
 				line[PsimiTabColumns.PARAMETERS_I.ordinal()] = joinParametersCollection(interaction.getMitabParameters());// 30
 				line[PsimiTabColumns.CREATION_DATE.ordinal()] = joinDateCollection(interaction.getCreationDate());// 31
 				line[PsimiTabColumns.UPDATE_DATE.ordinal()] = joinDateCollection(interaction.getUpdateDate());// 32
-				line[PsimiTabColumns.CHECKSUM_I.ordinal()] = joinChecksumCollection(interaction.getChecksums());// 35
+				line[PsimiTabColumns.CHECKSUM_I.ordinal()] = joinChecksumCollection(interaction.getInteractionChecksums());// 35
 				line[PsimiTabColumns.NEGATIVE.ordinal()] = createNegative(interaction.isNegativeInteraction());//36
 
 			case v2_5:
@@ -124,7 +124,7 @@ public class MitabWriterUtils {
 				if (interactorA != null) {
 					line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getIdentifiers());// 1
 					line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getAlternativeIdentifiers());// 3
-					line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()] = joinAliasCollection(interactorA.getAliases());// 5
+					line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()] = joinAliasCollection(interactorA.getInteractorAliases());// 5
 					line[PsimiTabColumns.TAXID_A.ordinal()] = joinOrganism(interactorA.getOrganism());// 10
 				}
 				else{
@@ -138,7 +138,7 @@ public class MitabWriterUtils {
 				if (interactorB != null) {
 					line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getIdentifiers()); // 2
 					line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getAlternativeIdentifiers());// 4
-					line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()] = joinAliasCollection(interactorB.getAliases());// 6
+					line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()] = joinAliasCollection(interactorB.getInteractorAliases());// 6
 					line[PsimiTabColumns.TAXID_B.ordinal()] = joinOrganism(interactorB.getOrganism()); // 11
 				} else{
 					line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()] = EMPTY_COLUMN; // 2

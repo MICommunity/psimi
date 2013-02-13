@@ -11,7 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -23,7 +22,10 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.ExperimentCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Representation of a binary interaction as in the MITAB25 format.
@@ -51,12 +53,12 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	/**
 	 * Interactor A.
 	 */
-	private T interactorA;
+	protected T interactorA;
 
 	/**
 	 * Interactor B.
 	 */
-	private T interactorB;
+	protected T interactorB;
 
     private MitabExperiment mitabExperiment;
 
@@ -204,7 +206,16 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorA(T interactorA) {
-		this.interactorA = interactorA;
+        if (interactorA == null){
+            participants.remove(this.interactorA);
+        }
+        if (this.interactorA != null){
+            participants.remove(this.interactorA);
+            participants.add(interactorA);
+        }
+        else {
+            participants.add(interactorA);
+        }
 	}
 
 	/**
@@ -218,7 +229,16 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorB(T interactorB) {
-		this.interactorB = interactorB;
+        if (interactorB == null){
+            participants.remove(this.interactorB);
+        }
+        if (this.interactorA != null){
+            participants.remove(this.interactorB);
+            participants.add(interactorB);
+        }
+        else {
+            participants.add(interactorB);
+        }
 	}
 
     /**
@@ -569,23 +589,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
 	/////////////////////////
 	// Object's override
-
-    @Override
-    public Collection<ParticipantEvidence> getParticipants() {
-
-        if (interactorA != null && interactorB != null){
-            return Arrays.asList((ParticipantEvidence) interactorA, (ParticipantEvidence) interactorB);
-        }
-        else if (interactorA != null){
-            return Arrays.asList((ParticipantEvidence) interactorA);
-        }
-        else if (interactorB != null){
-            return Arrays.asList((ParticipantEvidence) interactorB);
-        }
-        else {
-            return Collections.EMPTY_LIST;
-        }
-    }
 
     @Override
     public void setExperiment(psidev.psi.mi.jami.model.Experiment experiment) {
