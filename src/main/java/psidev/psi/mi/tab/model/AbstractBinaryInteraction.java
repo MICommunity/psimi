@@ -212,9 +212,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         if (this.interactorA != null){
             participants.remove(this.interactorA);
             participants.add(interactorA);
+            interactorA.setInteraction(this);
         }
         else {
             participants.add(interactorA);
+            interactorA.setInteraction(this);
         }
 	}
 
@@ -235,9 +237,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         if (this.interactorA != null){
             participants.remove(this.interactorB);
             participants.add(interactorB);
+            interactorB.setInteraction(this);
         }
         else {
             participants.add(interactorB);
+            interactorB.setInteraction(this);
         }
 	}
 

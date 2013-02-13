@@ -42,6 +42,8 @@ public class MitabExperiment extends DefaultExperiment{
     public MitabExperiment(){
         super(new MitabPublication(), CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
         processNewInteractionDetectionMethodsList(interactionDetectionMethod);
+
+        publication.getExperiments().add(this);
     }
 
     /**
