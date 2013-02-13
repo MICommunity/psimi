@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalFeature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 
 /**
- * Basic ExperimentalFeature comparator.
+ * Basic FeatureEvidence comparator.
  * It will first compare feature detection methods using AbstractCvTermComparator. If both feature detection methods are the same,
  * it will use a FeatureBaseComparator to compare basic properties of a feature.
  *
@@ -18,16 +18,16 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ExperimentalFeatureComparator implements Comparator<ExperimentalFeature>{
+public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
 
     protected FeatureBaseComparator featureComparator;
     protected AbstractCvTermComparator cvTermComparator;
 
     /**
-     * Creates a new ExperimentalFeatureComparator.
+     * Creates a new FeatureEvidenceComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public ExperimentalFeatureComparator(FeatureBaseComparator featureComparator){
+    public FeatureEvidenceComparator(FeatureBaseComparator featureComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
@@ -51,7 +51,7 @@ public class ExperimentalFeatureComparator implements Comparator<ExperimentalFea
      * @param experimentalFeature2
      * @return
      */
-    public int compare(ExperimentalFeature experimentalFeature1, ExperimentalFeature experimentalFeature2) {
+    public int compare(FeatureEvidence experimentalFeature1, FeatureEvidence experimentalFeature2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

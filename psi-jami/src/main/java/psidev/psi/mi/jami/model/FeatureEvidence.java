@@ -9,7 +9,7 @@ package psidev.psi.mi.jami.model;
  * @since <pre>07/12/12</pre>
  */
 
-public interface ExperimentalFeature extends Feature<ExperimentalFeature, ParticipantEvidence> {
+public interface FeatureEvidence extends Feature<FeatureEvidence, ParticipantEvidence> {
 
     /**
      * The feature detection method. It is a controlled vocabulary term and can be null.

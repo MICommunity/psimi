@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Generic feature comparator.
  * Component features come first, then Biological features come first and then experimental features.
  * - It uses ModelledFeatureComparator to compare biological features
- * - It uses ExperimentalFeatureComparator to compare experimental features
+ * - It uses FeatureEvidenceComparator to compare experimental features
  * - It uses ComponentFeatureComparator to compare component features
  * - It uses FeatureBaseComparator to compare basic feature properties
  *
@@ -20,7 +20,7 @@ import java.util.Comparator;
 public class FeatureComparator implements Comparator<Feature> {
 
     protected ModelledFeatureComparator biologicalFeatureComparator;
-    protected ExperimentalFeatureComparator experimentalFeatureComparator;
+    protected FeatureEvidenceComparator experimentalFeatureComparator;
     protected FeatureBaseComparator featureBaseComparator;
     protected ComponentFeatureComparator componentFeatureComparator;
 
@@ -30,7 +30,7 @@ public class FeatureComparator implements Comparator<Feature> {
         }
         this.featureBaseComparator = featureBaseComparator;
         this.biologicalFeatureComparator = new ModelledFeatureComparator(this.featureBaseComparator);
-        this.experimentalFeatureComparator = new ExperimentalFeatureComparator(this.featureBaseComparator);
+        this.experimentalFeatureComparator = new FeatureEvidenceComparator(this.featureBaseComparator);
         this.componentFeatureComparator = new ComponentFeatureComparator(this.featureBaseComparator);
 
     }
@@ -39,7 +39,7 @@ public class FeatureComparator implements Comparator<Feature> {
         return biologicalFeatureComparator;
     }
 
-    public ExperimentalFeatureComparator getExperimentalFeatureComparator() {
+    public FeatureEvidenceComparator getExperimentalFeatureComparator() {
         return experimentalFeatureComparator;
     }
 
@@ -50,7 +50,7 @@ public class FeatureComparator implements Comparator<Feature> {
     /**
      * Biological features come first and then experimental features.
      * - It uses ModelledFeatureComparator to compare biological features
-     * - It uses ExperimentalFeatureComparator to compare experimental features
+     * - It uses FeatureEvidenceComparator to compare experimental features
      * - It uses FeatureBaseComparator to compare basic feature properties
      * @param feature1
      * @param feature2
@@ -102,10 +102,10 @@ public class FeatureComparator implements Comparator<Feature> {
                 }
                 else {
                     // both are experimental features
-                    boolean isExperimentalFeature1 = feature1 instanceof ExperimentalFeature;
-                    boolean isExperimentalFeature2 = feature2 instanceof ExperimentalFeature;
+                    boolean isExperimentalFeature1 = feature1 instanceof FeatureEvidence;
+                    boolean isExperimentalFeature2 = feature2 instanceof FeatureEvidence;
                     if (isExperimentalFeature1 && isExperimentalFeature2){
-                        return experimentalFeatureComparator.compare((ExperimentalFeature) feature1, (ExperimentalFeature) feature2);
+                        return experimentalFeatureComparator.compare((FeatureEvidence) feature1, (FeatureEvidence) feature2);
                     }
                     // the experimental feature is before
                     else if (isExperimentalFeature1){

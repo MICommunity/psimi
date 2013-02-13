@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>07/12/12</pre>
  */
 
-public interface ParticipantEvidence extends Participant<InteractionEvidence,Interactor,ExperimentalFeature>{
+public interface ParticipantEvidence extends Participant<InteractionEvidence,Interactor,FeatureEvidence>{
 
 
      /**
