@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
@@ -16,14 +16,14 @@ import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterCompara
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExperimentalParticipantInteractorComparator extends ExperimentalParticipantComparator{
-    private static UnambiguousExperimentalParticipantInteractorComparator unambiguousExperimentalParticipantInteractorComparator;
+public class UnambiguousParticipantEvidenceInteractorComparator extends ParticipantEvidenceComparator {
+    private static UnambiguousParticipantEvidenceInteractorComparator unambiguousExperimentalParticipantInteractorComparator;
 
     /**
-     * Creates a new UnambiguousExperimentalParticipantInteractorComparator. It will use a UnambiguousParticipantInteractorComparator to compare
+     * Creates a new UnambiguousParticipantEvidenceInteractorComparator. It will use a UnambiguousParticipantInteractorComparator to compare
      * the basic properties of a participant.
      */
-    public UnambiguousExperimentalParticipantInteractorComparator() {
+    public UnambiguousParticipantEvidenceInteractorComparator() {
         super(new UnambiguousParticipantBaseComparator(), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
     }
 
@@ -38,7 +38,7 @@ public class UnambiguousExperimentalParticipantInteractorComparator extends Expe
      *
      * This comparator will ignore all the other properties of an experimental participant.
      */
-    public int compare(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant experimentalParticipant2) {
+    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
@@ -60,14 +60,14 @@ public class UnambiguousExperimentalParticipantInteractorComparator extends Expe
     }
 
     /**
-     * Use UnambiguousExperimentalParticipantInteractorComparator to know if two experimental participants are equals.
+     * Use UnambiguousParticipantEvidenceInteractorComparator to know if two experimental participants are equals.
      * @param experimentalParticipant1
      * @param component2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant component2){
+    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence component2){
         if (unambiguousExperimentalParticipantInteractorComparator == null){
-            unambiguousExperimentalParticipantInteractorComparator = new UnambiguousExperimentalParticipantInteractorComparator();
+            unambiguousExperimentalParticipantInteractorComparator = new UnambiguousParticipantEvidenceInteractorComparator();
         }
 
         return unambiguousExperimentalParticipantInteractorComparator.compare(experimentalParticipant1, component2) == 0;

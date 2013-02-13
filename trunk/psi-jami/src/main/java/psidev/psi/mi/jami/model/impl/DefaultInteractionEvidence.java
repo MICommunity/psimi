@@ -17,7 +17,7 @@ import java.util.Collection;
  * @since <pre>05/02/13</pre>
  */
 
-public class DefaultInteractionEvidence extends DefaultInteraction<ExperimentalParticipant> implements InteractionEvidence {
+public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEvidence> implements InteractionEvidence {
 
     private Xref imexId;
     private Experiment experiment;

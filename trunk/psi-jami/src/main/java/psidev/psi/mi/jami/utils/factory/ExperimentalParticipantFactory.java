@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.utils.factory;
 
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultExperimentalParticipant;
+import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 
 /**
  * Factory for participants
@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.impl.DefaultExperimentalParticipant;
 
 public class ExperimentalParticipantFactory {
 
-     public static ExperimentalParticipant createUnknownBasicParticipant(){
-         return new DefaultExperimentalParticipant(ExperimentalInteractionFactory.createEmptyBasicExperimentalInteraction(), InteractorFactory.createUnknownBasicInteractor(), new DefaultCvTerm("unspecified method"));
+     public static ParticipantEvidence createUnknownBasicParticipant(){
+         return new DefaultParticipantEvidence(ExperimentalInteractionFactory.createEmptyBasicExperimentalInteraction(), InteractorFactory.createUnknownBasicInteractor(), new DefaultCvTerm("unspecified method"));
      }
 }

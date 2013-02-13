@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.BiologicalParticipant;
 import psidev.psi.mi.jami.model.Component;
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Participant;
 
 import java.util.Comparator;
@@ -11,7 +11,7 @@ import java.util.Comparator;
  * Generic participant comparator.
  * Components come first, then biological participants and then experimental participants.
  * - It uses ComponentComparator to compare components
- * - It uses ExperimentalParticipantComparator to compare experimental participants
+ * - It uses ParticipantEvidenceComparator to compare experimental participants
  * - It uses BiologicalParticipantComparator to compare biological participants
  * - It uses ParticipantBaseComparator to compare basic participant properties
  *
@@ -24,10 +24,10 @@ public class ParticipantComparator implements Comparator<Participant> {
 
     protected ParticipantBaseComparator participantBaseComparator;
     protected ComponentComparator componentComparator;
-    protected ExperimentalParticipantComparator experimentalParticipantComparator;
+    protected ParticipantEvidenceComparator experimentalParticipantComparator;
     protected BiologicalParticipantComparator biologicalParticipantComparator;
 
-    public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ExperimentalParticipantComparator experimentalParticipantComparator){
+    public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ParticipantEvidenceComparator experimentalParticipantComparator){
         if (participantBaseComparator == null){
             throw new IllegalArgumentException("The participantBaseComparator is required to create more specific participant comparators and compares basic participant properties. It cannot be null");
         }
@@ -43,7 +43,7 @@ public class ParticipantComparator implements Comparator<Participant> {
     /**
      * Components come first, then biological participants and then experimental participants.
      * - It uses ComponentComparator to compare components
-     * - It uses ExperimentalParticipantComparator to compare experimental participants
+     * - It uses ParticipantEvidenceComparator to compare experimental participants
      * - It uses BiologicalParticipantComparator to compare biological participants
      * - It uses ParticipantBaseComparator to compare basic participant properties
      * @param participant1
@@ -96,10 +96,10 @@ public class ParticipantComparator implements Comparator<Participant> {
                 }
                 else {
                     // both are experimental participants
-                    boolean isExperimentalParticipant1 = participant1 instanceof ExperimentalParticipant;
-                    boolean isExperimentalParticipant2 = participant2 instanceof ExperimentalParticipant;
+                    boolean isExperimentalParticipant1 = participant1 instanceof ParticipantEvidence;
+                    boolean isExperimentalParticipant2 = participant2 instanceof ParticipantEvidence;
                     if (isExperimentalParticipant1 && isExperimentalParticipant2){
-                        return experimentalParticipantComparator.compare((ExperimentalParticipant) participant1, (ExperimentalParticipant) participant2);
+                        return experimentalParticipantComparator.compare((ParticipantEvidence) participant1, (ParticipantEvidence) participant2);
                     }
                     // the experimental participant is before
                     else if (isExperimentalParticipant1){
@@ -124,7 +124,7 @@ public class ParticipantComparator implements Comparator<Participant> {
         return componentComparator;
     }
 
-    public ExperimentalParticipantComparator getExperimentalParticipantComparator() {
+    public ParticipantEvidenceComparator getExperimentalParticipantComparator() {
         return experimentalParticipantComparator;
     }
 

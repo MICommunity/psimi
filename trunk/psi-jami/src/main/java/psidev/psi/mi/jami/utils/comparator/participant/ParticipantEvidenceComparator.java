@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
@@ -26,7 +26,7 @@ import java.util.Comparator;
  * @since <pre>17/01/13</pre>
  */
 
-public class ExperimentalParticipantComparator implements Comparator<ExperimentalParticipant> {
+public class ParticipantEvidenceComparator implements Comparator<ParticipantEvidence> {
 
     protected ParticipantInteractorComparator participantComparator;
     protected CvTermsCollectionComparator cvTermCollectionComparator;
@@ -34,15 +34,15 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
     protected ParameterCollectionComparator parameterCollectionComparator;
 
     /**
-     * Creates a new ExperimentalParticipantComparator
+     * Creates a new ParticipantEvidenceComparator
      * @param participantComparator : the participant comparator required to compare basic properties of a participant
      * @param cvTermComparator : the CvTerm comparator required to compare experimental roles, experimental preparations and identification methods
      * @param organismComparator : the organism comparator required to compare expressed in organisms
      * @param parameterComparator: ParameterComparator required for comparing participant features
      */
-    public ExperimentalParticipantComparator(ParticipantInteractorComparator participantComparator,
-                                             AbstractCvTermComparator cvTermComparator, OrganismComparator organismComparator,
-            ParameterComparator parameterComparator){
+    public ParticipantEvidenceComparator(ParticipantInteractorComparator participantComparator,
+                                         AbstractCvTermComparator cvTermComparator, OrganismComparator organismComparator,
+                                         ParameterComparator parameterComparator){
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
         }
@@ -87,7 +87,7 @@ public class ExperimentalParticipantComparator implements Comparator<Experimenta
      * @param experimentalParticipant2
      * @return
      */
-    public int compare(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant experimentalParticipant2) {
+    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

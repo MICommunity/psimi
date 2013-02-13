@@ -1,14 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureBaseComparator;
 
 /**
  * Generic default participant comparator.
  * Components come first and then experimental participants.
  * - It uses DefaultComponentComparator to compare components
- * - It uses DefaultExperimentalParticipantComparator to compare experimental participants
+ * - It uses DefaultParticipantEvidenceComparator to compare experimental participants
  * - It uses DefaultParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -24,7 +22,7 @@ public class DefaultParticipantComparator extends ParticipantComparator {
      * Creates a DefaultParticipantComparator. It will use a DefaultParticipantBaseComparator to compare basic feature properties
      */
     public DefaultParticipantComparator() {
-        super(new DefaultParticipantBaseComparator(), new DefaultExperimentalParticipantComparator());
+        super(new DefaultParticipantBaseComparator(), new DefaultParticipantEvidenceComparator());
     }
 
     @Override
@@ -33,15 +31,15 @@ public class DefaultParticipantComparator extends ParticipantComparator {
     }
 
     @Override
-    public DefaultExperimentalParticipantComparator getExperimentalParticipantComparator() {
-        return (DefaultExperimentalParticipantComparator) this.experimentalParticipantComparator;
+    public DefaultParticipantEvidenceComparator getExperimentalParticipantComparator() {
+        return (DefaultParticipantEvidenceComparator) this.experimentalParticipantComparator;
     }
 
     @Override
     /**
      * Components come first and then experimental participants.
      * - It uses DefaultComponentComparator to compare components
-     * - It uses DefaultExperimentalParticipantComparator to compare experimental participants
+     * - It uses DefaultParticipantEvidenceComparator to compare experimental participants
      * - It uses DefaultParticipantBaseComparator to compare basic participant properties
      *
      *

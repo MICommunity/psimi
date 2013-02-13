@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ExperimentalFeature;
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousExperimentalFeatureComparator;
 
 /**
@@ -13,26 +13,26 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousExperimentalFeatur
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultExperimentalFeature extends DefaultFeature<ExperimentalFeature, ExperimentalParticipant> implements ExperimentalFeature{
+public class DefaultExperimentalFeature extends DefaultFeature<ExperimentalFeature, ParticipantEvidence> implements ExperimentalFeature{
     private CvTerm detectionMethod;
 
-    public DefaultExperimentalFeature(ExperimentalParticipant participant) {
+    public DefaultExperimentalFeature(ParticipantEvidence participant) {
         super(participant);
     }
 
-    public DefaultExperimentalFeature(ExperimentalParticipant participant, String shortName, String fullName) {
+    public DefaultExperimentalFeature(ParticipantEvidence participant, String shortName, String fullName) {
         super(participant, shortName, fullName);
     }
 
-    public DefaultExperimentalFeature(ExperimentalParticipant participant, CvTerm type) {
+    public DefaultExperimentalFeature(ParticipantEvidence participant, CvTerm type) {
         super(participant, type);
     }
 
-    public DefaultExperimentalFeature(ExperimentalParticipant participant, String shortName, String fullName, CvTerm type) {
+    public DefaultExperimentalFeature(ParticipantEvidence participant, String shortName, String fullName, CvTerm type) {
         super(participant, shortName, fullName, type);
     }
 
-    public DefaultExperimentalFeature(ExperimentalParticipant participant, CvTerm type, CvTerm detectionMethod) {
+    public DefaultExperimentalFeature(ParticipantEvidence participant, CvTerm type, CvTerm detectionMethod) {
         super(participant, type);
         this.detectionMethod = detectionMethod;
     }

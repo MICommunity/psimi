@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Participant;
  * Generic default exact participant comparator.
  * Components come first and then experimental participants.
  * - It uses DefaultExactComponentComparator to compare components
- * - It uses DefaultExactExperimentalParticipantComparator to compare experimental participants
+ * - It uses DefaultExactParticipantEvidenceComparator to compare experimental participants
  * - It uses DefaultExactParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -22,7 +22,7 @@ public class DefaultExactParticipantComparator extends ParticipantComparator {
      * Creates a DefaultExactParticipantComparator. It will use a DefaultExactParticipantBaseComparator to compare basic feature properties
      */
     public DefaultExactParticipantComparator() {
-        super(new DefaultExactParticipantBaseComparator(), new DefaultExactExperimentalParticipantComparator());
+        super(new DefaultExactParticipantBaseComparator(), new DefaultExactParticipantEvidenceComparator());
     }
 
     @Override
@@ -31,15 +31,15 @@ public class DefaultExactParticipantComparator extends ParticipantComparator {
     }
 
     @Override
-    public DefaultExactExperimentalParticipantComparator getExperimentalParticipantComparator() {
-        return (DefaultExactExperimentalParticipantComparator) this.experimentalParticipantComparator;
+    public DefaultExactParticipantEvidenceComparator getExperimentalParticipantComparator() {
+        return (DefaultExactParticipantEvidenceComparator) this.experimentalParticipantComparator;
     }
 
     @Override
     /**
      * Components come first and then experimental participants.
      * - It uses DefaultExactComponentComparator to compare components
-     * - It uses DefaultExactExperimentalParticipantComparator to compare experimental participants
+     * - It uses DefaultExactParticipantEvidenceComparator to compare experimental participants
      * - It uses DefaultExactParticipantBaseComparator to compare basic participant properties
      *
      */

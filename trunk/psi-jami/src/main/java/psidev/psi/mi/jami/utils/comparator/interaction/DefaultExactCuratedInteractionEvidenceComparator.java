@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.experiment.DefaultExperimentComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactExperimentalParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactParticipantEvidenceComparator;
 
 /**
  * Default exact curated InteractionEvidenceComparator.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactExperimentalP
  * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
  * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
  * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultExactCuratedInteractionBaseComparator<ExperimentalParticipant>.
+ * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultExactCuratedInteractionBaseComparator<ParticipantEvidence>.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,7 +29,7 @@ public class DefaultExactCuratedInteractionEvidenceComparator extends Interactio
      * compare basic interaction properties, DefaultParameterComparator to compare parameters, DefaultExperimentComparator to compare experiments
      */
     public DefaultExactCuratedInteractionEvidenceComparator() {
-        super(new CuratedInteractionBaseComparator<ExperimentalParticipant>(new DefaultExactExperimentalParticipantComparator(), new DefaultCvTermComparator()),
+        super(new CuratedInteractionBaseComparator<ParticipantEvidence>(new DefaultExactParticipantEvidenceComparator(), new DefaultCvTermComparator()),
                 new DefaultExperimentComparator(), new DefaultParameterComparator());
     }
 
@@ -39,8 +39,8 @@ public class DefaultExactCuratedInteractionEvidenceComparator extends Interactio
     }
 
     @Override
-    public CuratedInteractionBaseComparator<ExperimentalParticipant> getInteractionComparator() {
-        return (CuratedInteractionBaseComparator<ExperimentalParticipant>) this.interactionComparator;
+    public CuratedInteractionBaseComparator<ParticipantEvidence> getInteractionComparator() {
+        return (CuratedInteractionBaseComparator<ParticipantEvidence>) this.interactionComparator;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class DefaultExactCuratedInteractionEvidenceComparator extends Interactio
      * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
      * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
      * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultExactCuratedInteractionBaseComparator<ExperimentalParticipant>.
+     * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultExactCuratedInteractionBaseComparator<ParticipantEvidence>.
      *
      **/
     public int compare(InteractionEvidence interaction1, InteractionEvidence interaction2) {

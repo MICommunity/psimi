@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ExperimentalFeature;
-import psidev.psi.mi.jami.model.ExperimentalParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousExperimentalFeatureComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
@@ -21,16 +21,16 @@ import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterCompara
  * @since <pre>18/01/13</pre>
  */
 
-public class UnambiguousExactExperimentalParticipantComparator extends ExperimentalParticipantComparator {
+public class UnambiguousExactParticipantEvidenceComparator extends ParticipantEvidenceComparator {
 
-    private static UnambiguousExactExperimentalParticipantComparator unambiguousExactExperimentalParticipantComparator;
+    private static UnambiguousExactParticipantEvidenceComparator unambiguousExactExperimentalParticipantComparator;
 
     /**
-     * Creates a new UnambiguousExactExperimentalParticipantComparator. It will use a UnambiguousExactParticipantBaseComparator to compare
+     * Creates a new UnambiguousExactParticipantEvidenceComparator. It will use a UnambiguousExactParticipantBaseComparator to compare
      * the basic properties of a participant, a UnambiguousCvTermComparator to compare experimental roles, preparations and identification methods
      * and a UnambiguousOrganismComparator to compare expressed in organisms
      */
-    public UnambiguousExactExperimentalParticipantComparator() {
+    public UnambiguousExactParticipantEvidenceComparator() {
         super(new ParticipantBaseComparator<ExperimentalFeature>(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousExperimentalFeatureComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
     }
 
@@ -51,19 +51,19 @@ public class UnambiguousExactExperimentalParticipantComparator extends Experimen
      * look at the experimental preparations using UnambiguousCvTermComparator. If both experimental preparations are equals, it will
      * look at the expressed in organisms using UnambiguousOrganismComparator.
      */
-    public int compare(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant experimentalParticipant2) {
+    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
         return super.compare(experimentalParticipant1, experimentalParticipant2);
     }
 
     /**
-     * Use UnambiguousExactExperimentalParticipantComparator to know if two experimental participants are equals.
+     * Use UnambiguousExactParticipantEvidenceComparator to know if two experimental participants are equals.
      * @param experimentalParticipant1
      * @param component2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ExperimentalParticipant experimentalParticipant1, ExperimentalParticipant component2){
+    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence component2){
         if (unambiguousExactExperimentalParticipantComparator == null){
-            unambiguousExactExperimentalParticipantComparator = new UnambiguousExactExperimentalParticipantComparator();
+            unambiguousExactExperimentalParticipantComparator = new UnambiguousExactParticipantEvidenceComparator();
         }
 
         return unambiguousExactExperimentalParticipantComparator.compare(experimentalParticipant1, component2) == 0;

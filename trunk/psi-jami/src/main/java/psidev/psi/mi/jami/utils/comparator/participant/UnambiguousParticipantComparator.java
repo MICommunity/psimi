@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Participant;
  * Unambiguous generic Participant comparator
  * Components come first and then experimental participants.
  * - It uses UnambiguousComponentComparator to compare components
- * - It uses UnambiguousExperimentalParticipantComparator to compare experimental participants
+ * - It uses UnambiguousParticipantEvidenceComparator to compare experimental participants
  * - It uses UnambiguousParticipantBaseComparator to compare basic participant properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -22,7 +22,7 @@ public class UnambiguousParticipantComparator extends ParticipantComparator {
      * Creates a UnambiguousParticipantComparator. It will use a UnambiguousParticipantBaseComparator to compare basic feature properties
      */
     public UnambiguousParticipantComparator() {
-        super(new UnambiguousParticipantBaseComparator(), new UnambiguousExperimentalParticipantComparator());
+        super(new UnambiguousParticipantBaseComparator(), new UnambiguousParticipantEvidenceComparator());
     }
 
     @Override
@@ -31,15 +31,15 @@ public class UnambiguousParticipantComparator extends ParticipantComparator {
     }
 
     @Override
-    public UnambiguousExperimentalParticipantComparator getExperimentalParticipantComparator() {
-        return (UnambiguousExperimentalParticipantComparator) this.experimentalParticipantComparator;
+    public UnambiguousParticipantEvidenceComparator getExperimentalParticipantComparator() {
+        return (UnambiguousParticipantEvidenceComparator) this.experimentalParticipantComparator;
     }
 
     @Override
     /**
      * Components come first and then experimental participants.
      * - It uses UnambiguousComponentComparator to compare components
-     * - It uses UnambiguousExperimentalParticipantComparator to compare experimental participants
+     * - It uses UnambiguousParticipantEvidenceComparator to compare experimental participants
      * - It uses UnambiguousParticipantBaseComparator to compare basic participant properties
      *
      */
