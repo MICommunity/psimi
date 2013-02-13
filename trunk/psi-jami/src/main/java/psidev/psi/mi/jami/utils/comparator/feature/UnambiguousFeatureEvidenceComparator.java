@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
-import psidev.psi.mi.jami.model.ExperimentalFeature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
- * Unambiguous ExperimentalFeature comparator.
+ * Unambiguous FeatureEvidence comparator.
  * It will first compare feature detection methods using UnambiguousCvTermComparator. If both feature detection methods are the same,
  * it will use a UnambiguousFeatureBaseComparator to compare basic properties of a feature.
  *
@@ -14,15 +14,15 @@ import psidev.psi.mi.jami.model.ExperimentalFeature;
  * @since <pre>16/01/13</pre>
  */
 
-public class UnambiguousExperimentalFeatureComparator extends ExperimentalFeatureComparator{
+public class UnambiguousFeatureEvidenceComparator extends FeatureEvidenceComparator {
 
-    private static UnambiguousExperimentalFeatureComparator unambiguousExperimentalFeatureComparator;
+    private static UnambiguousFeatureEvidenceComparator unambiguousExperimentalFeatureComparator;
 
     /**
-     * Creates a new UnambiguousExperimentalFeatureComparator. It will use a UnambiguousCvTermComparator to
+     * Creates a new UnambiguousFeatureEvidenceComparator. It will use a UnambiguousCvTermComparator to
      * compare feature detection methods and a UnambiguousFeatureBaseComparator to compare basic feature properties
      */
-    public UnambiguousExperimentalFeatureComparator() {
+    public UnambiguousFeatureEvidenceComparator() {
         super(new UnambiguousFeatureBaseComparator());
     }
 
@@ -38,19 +38,19 @@ public class UnambiguousExperimentalFeatureComparator extends ExperimentalFeatur
      *
      * This comparator will ignore all the other properties of an experimental feature.
      */
-    public int compare(ExperimentalFeature experimentalFeature1, ExperimentalFeature experimentalFeature2) {
+    public int compare(FeatureEvidence experimentalFeature1, FeatureEvidence experimentalFeature2) {
         return super.compare(experimentalFeature1, experimentalFeature2);
     }
 
     /**
-     * Use UnambiguousExperimentalFeatureComparator to know if two experimental features are equals.
+     * Use UnambiguousFeatureEvidenceComparator to know if two experimental features are equals.
      * @param feature1
      * @param feature2
      * @return true if the two experimental features are equal
      */
-    public static boolean areEquals(ExperimentalFeature feature1, ExperimentalFeature feature2){
+    public static boolean areEquals(FeatureEvidence feature1, FeatureEvidence feature2){
         if (unambiguousExperimentalFeatureComparator == null){
-            unambiguousExperimentalFeatureComparator = new UnambiguousExperimentalFeatureComparator();
+            unambiguousExperimentalFeatureComparator = new UnambiguousFeatureEvidenceComparator();
         }
 
         return unambiguousExperimentalFeatureComparator.compare(feature1, feature2) == 0;

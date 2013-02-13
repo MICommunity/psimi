@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
-import psidev.psi.mi.jami.model.ExperimentalFeature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
- * Default ExperimentalFeature comparator.
+ * Default FeatureEvidence comparator.
  * It will first compare feature detection methods using DefaultCvTermComparator. If both feature detection methods are the same,
  * it will use a DefaultFeatureBaseComparator to compare basic properties of a feature.
  *
@@ -14,15 +14,15 @@ import psidev.psi.mi.jami.model.ExperimentalFeature;
  * @since <pre>16/01/13</pre>
  */
 
-public class DefaultExperimentalFeatureComparator extends ExperimentalFeatureComparator{
+public class DefaultFeatureEvidenceComparator extends FeatureEvidenceComparator {
 
-    private static DefaultExperimentalFeatureComparator defaultExperimentalFeatureComparator;
+    private static DefaultFeatureEvidenceComparator defaultExperimentalFeatureComparator;
 
     /**
-     * Creates a new DefaultExperimentalFeatureComparator. It will use a DefaultCvTermComparator to
+     * Creates a new DefaultFeatureEvidenceComparator. It will use a DefaultCvTermComparator to
      * compare feature detection methods and a DefaultFeatureBaseComparator to compare basic feature properties
      */
-    public DefaultExperimentalFeatureComparator() {
+    public DefaultFeatureEvidenceComparator() {
         super(new DefaultFeatureBaseComparator());
     }
 
@@ -38,19 +38,19 @@ public class DefaultExperimentalFeatureComparator extends ExperimentalFeatureCom
      *
      * This comparator will ignore all the other properties of an experimental feature.
      */
-    public int compare(ExperimentalFeature experimentalFeature1, ExperimentalFeature experimentalFeature2) {
+    public int compare(FeatureEvidence experimentalFeature1, FeatureEvidence experimentalFeature2) {
         return super.compare(experimentalFeature1, experimentalFeature2);
     }
 
     /**
-     * Use DefaultExperimentalFeatureComparator to know if two experimental features are equals.
+     * Use DefaultFeatureEvidenceComparator to know if two experimental features are equals.
      * @param feature1
      * @param feature2
      * @return true if the two experimental features are equal
      */
-    public static boolean areEquals(ExperimentalFeature feature1, ExperimentalFeature feature2){
+    public static boolean areEquals(FeatureEvidence feature1, FeatureEvidence feature2){
         if (defaultExperimentalFeatureComparator == null){
-            defaultExperimentalFeatureComparator = new DefaultExperimentalFeatureComparator();
+            defaultExperimentalFeatureComparator = new DefaultFeatureEvidenceComparator();
         }
 
         return defaultExperimentalFeatureComparator.compare(feature1, feature2) == 0;

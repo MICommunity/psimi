@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.ExperimentalFeature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultExperimentalFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureEvidenceComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
@@ -31,12 +31,12 @@ public class DefaultParticipantEvidenceComparator extends ParticipantEvidenceCom
      * and a DefaultOrganismComparator to compare expressed in Organisms
      */
     public DefaultParticipantEvidenceComparator() {
-        super(new ParticipantBaseComparator<ExperimentalFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultExperimentalFeatureComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
+        super(new ParticipantBaseComparator<FeatureEvidence>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultFeatureEvidenceComparator()), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
     }
 
     @Override
-    public ParticipantBaseComparator<ExperimentalFeature> getParticipantComparator() {
-        return (ParticipantBaseComparator<ExperimentalFeature>) this.participantComparator;
+    public ParticipantBaseComparator<FeatureEvidence> getParticipantComparator() {
+        return (ParticipantBaseComparator<FeatureEvidence>) this.participantComparator;
     }
 
     @Override

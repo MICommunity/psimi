@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Feature;
  * Generic unambiguous feature comparator.
  * Biological features come first and then experimental features.
  * - It uses UnambiguousBiologicalFeatureComparator to compare biological features
- * - It uses UnambiguousExperimentalFeatureComparator to compare experimental features
+ * - It uses UnambiguousFeatureEvidenceComparator to compare experimental features
  * - It uses UnambiguousFeatureBaseComparator to compare basic feature properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -34,7 +34,7 @@ public class UnambiguousFeatureComparator extends FeatureComparator {
     /**
      * Biological features come first and then experimental features.
      * - It uses UnambiguousBiologicalFeatureComparator to compare biological features
-     * - It uses UnambiguousExperimentalFeatureComparator to compare experimental features
+     * - It uses UnambiguousFeatureEvidenceComparator to compare experimental features
      * - It uses UnambiguousFeatureBaseComparator to compare basic feature properties
      *
      */

@@ -1,64 +1,64 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ExperimentalFeature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousExperimentalFeatureComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceComparator;
 
 /**
- * Default implementation for ExperimentalFeature
+ * Default implementation for FeatureEvidence
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultExperimentalFeature extends DefaultFeature<ExperimentalFeature, ParticipantEvidence> implements ExperimentalFeature{
+public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence, ParticipantEvidence> implements FeatureEvidence {
     private CvTerm detectionMethod;
 
-    public DefaultExperimentalFeature(ParticipantEvidence participant) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant) {
         super(participant);
     }
 
-    public DefaultExperimentalFeature(ParticipantEvidence participant, String shortName, String fullName) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName) {
         super(participant, shortName, fullName);
     }
 
-    public DefaultExperimentalFeature(ParticipantEvidence participant, CvTerm type) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant, CvTerm type) {
         super(participant, type);
     }
 
-    public DefaultExperimentalFeature(ParticipantEvidence participant, String shortName, String fullName, CvTerm type) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName, CvTerm type) {
         super(participant, shortName, fullName, type);
     }
 
-    public DefaultExperimentalFeature(ParticipantEvidence participant, CvTerm type, CvTerm detectionMethod) {
+    public DefaultFeatureEvidence(ParticipantEvidence participant, CvTerm type, CvTerm detectionMethod) {
         super(participant, type);
         this.detectionMethod = detectionMethod;
     }
 
-    public DefaultExperimentalFeature() {
+    public DefaultFeatureEvidence() {
         super();
     }
 
-    public DefaultExperimentalFeature(String shortName, String fullName) {
+    public DefaultFeatureEvidence(String shortName, String fullName) {
         super(shortName, fullName);
     }
 
-    public DefaultExperimentalFeature(CvTerm type) {
+    public DefaultFeatureEvidence(CvTerm type) {
         super(type);
     }
 
-    public DefaultExperimentalFeature(String shortName, String fullName, CvTerm type) {
+    public DefaultFeatureEvidence(String shortName, String fullName, CvTerm type) {
         super(shortName, fullName, type);
     }
 
-    public DefaultExperimentalFeature(CvTerm type, CvTerm detectionMethod) {
+    public DefaultFeatureEvidence(CvTerm type, CvTerm detectionMethod) {
         super(type);
         this.detectionMethod = detectionMethod;
     }
 
-    public DefaultExperimentalFeature(String shortName, String fullName, CvTerm type, CvTerm detectionMethod) {
+    public DefaultFeatureEvidence(String shortName, String fullName, CvTerm type, CvTerm detectionMethod) {
         super(shortName, fullName, type);
         this.detectionMethod = detectionMethod;
     }
@@ -77,12 +77,12 @@ public class DefaultExperimentalFeature extends DefaultFeature<ExperimentalFeatu
             return true;
         }
 
-        if (!(o instanceof ExperimentalFeature)){
+        if (!(o instanceof FeatureEvidence)){
             return false;
         }
 
         // use UnambiguousExperimentalFeature comparator for equals
-        return UnambiguousExperimentalFeatureComparator.areEquals(this, (ExperimentalFeature) o);
+        return UnambiguousFeatureEvidenceComparator.areEquals(this, (FeatureEvidence) o);
     }
 
     @Override

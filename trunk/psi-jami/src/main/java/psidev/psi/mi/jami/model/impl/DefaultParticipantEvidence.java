@@ -15,7 +15,7 @@ import java.util.Collection;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEvidence, Interactor, ExperimentalFeature> implements ParticipantEvidence {
+public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEvidence, Interactor, FeatureEvidence> implements ParticipantEvidence {
 
     protected CvTerm experimentalRole;
     protected CvTerm identificationMethod;
