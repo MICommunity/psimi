@@ -16,13 +16,13 @@ import java.util.Collection;
 
 public class DefaultExperiment implements Experiment {
 
-    private Publication publication;
-    private String shortLabel;
-    private Collection<Xref> xrefs;
-    private Collection<Annotation> annotations;
-    private CvTerm interactionDetectionMethod;
-    private Organism horstOrganism;
-    private Collection<ExperimentalInteraction> interactions;
+    protected Publication publication;
+    protected String shortLabel;
+    protected Collection<Xref> xrefs;
+    protected Collection<Annotation> annotations;
+    protected CvTerm interactionDetectionMethod;
+    protected Organism horstOrganism;
+    protected Collection<ExperimentalInteraction> interactions;
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod){
          if (publication == null){
