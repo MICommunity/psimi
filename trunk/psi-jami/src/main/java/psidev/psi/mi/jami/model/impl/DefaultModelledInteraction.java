@@ -17,6 +17,7 @@ import java.util.Collection;
 public class DefaultModelledInteraction extends DefaultInteraction<ModelledParticipant> implements ModelledInteraction{
 
     protected Collection<Experiment> experiments;
+    protected Source source;
 
     public DefaultModelledInteraction() {
         super();
@@ -39,12 +40,21 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
     }
 
     public DefaultModelledInteraction(String shortName, Source source, CvTerm type) {
-        super(shortName, source, type);
+        this(shortName, type);
         this.experiments = new ArrayList<Experiment>();
+        this.source = source;
     }
 
     public Collection<Experiment> getExperiments() {
         return this.experiments;
+    }
+
+    public Source getSource() {
+        return this.source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     @Override

@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.AllostericInteraction;
-import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.Component;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ModelledFeature;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.ModelledFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.ComponentComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.ModelledParticipantComparator;
 
 import java.util.Comparator;
 
@@ -14,8 +14,8 @@ import java.util.Comparator;
  * Basic Allosteric interaction comparator.
  *
  * It will first compare the basic properties of a cooperative interaction using CooperativeInteractionComparator. It will then compare the allosteric mechanisms using AbstractCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
- * using AbsctractCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using ComponentComparator.
- * If the allosteric molecules are the same, it will compare the allosteric effectors using the ComponentComparator.
+ * using AbsctractCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using ModelledParticipantComparator.
+ * If the allosteric molecules are the same, it will compare the allosteric effectors using the ModelledParticipantComparator.
  * If the allosteric effectors are the same, it will compare the allosteric PTMs using ModelledFeatureComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -27,7 +27,7 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
 
     protected AbstractCvTermComparator cvTermComparator;
     protected CooperativeInteractionComparator interactionComparator;
-    protected ComponentComparator componentComparator;
+    protected ModelledParticipantComparator componentComparator;
     protected ModelledFeatureComparator ptmComparator;
 
     /**
@@ -38,7 +38,7 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
      * @param ptmComparator : required to compare allosteric PTMs
      */
     public AllostericInteractionComparator(CooperativeInteractionComparator interactionComparator,
-                                           AbstractCvTermComparator cvTermComparator, ComponentComparator componentComparator,
+                                           AbstractCvTermComparator cvTermComparator, ModelledParticipantComparator componentComparator,
                                            ModelledFeatureComparator ptmComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
@@ -69,7 +69,7 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
         return cvTermComparator;
     }
 
-    public ComponentComparator getComponentComparator() {
+    public ModelledParticipantComparator getComponentComparator() {
         return componentComparator;
     }
 
@@ -79,9 +79,10 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
 
     /**
      * It will first compare the basic properties of a cooperative interaction using CooperativeInteractionComparator. It will then compare the allosteric mechanisms using AbstractCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
-     * using AbsctractCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using ComponentComparator.
-     * If the allosteric molecules are the same, it will compare the allosteric effectors using the ComponentComparator.
+     * using AbsctractCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using ModelledParticipantComparator.
+     * If the allosteric molecules are the same, it will compare the allosteric effectors using the ModelledParticipantComparator.
      * If the allosteric effectors are the same, it will compare the allosteric PTMs using ModelledFeatureComparator.
+     *
      * @param allostericInteraction1
      * @param allostericInteraction2
      * @return
@@ -126,8 +127,8 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
             }
 
             // then compare allosteric molecule
-            Component molecule1 = allostericInteraction1.getAllostericMolecule();
-            Component molecule2 = allostericInteraction2.getAllostericMolecule();
+            ModelledParticipant molecule1 = allostericInteraction1.getAllostericMolecule();
+            ModelledParticipant molecule2 = allostericInteraction2.getAllostericMolecule();
 
             comp = componentComparator.compare(molecule1, molecule2);
             if (comp != 0){
@@ -135,8 +136,8 @@ public class AllostericInteractionComparator implements Comparator<AllostericInt
             }
 
             // then compare allosteric effector
-            Component effector1 = allostericInteraction1.getAllostericEffector();
-            Component effector2 = allostericInteraction2.getAllostericEffector();
+            ModelledParticipant effector1 = allostericInteraction1.getAllostericEffector();
+            ModelledParticipant effector2 = allostericInteraction2.getAllostericEffector();
 
             comp = componentComparator.compare(effector1, effector2);
             if (comp != 0){

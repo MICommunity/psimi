@@ -29,7 +29,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     protected Collection<Xref> xrefs;
     protected Collection<Annotation> annotations;
     protected Collection<P> participants;
-    protected Source source;
     protected boolean isNegative;
     protected Date updatedDate;
     protected Date createdDate;
@@ -50,18 +49,8 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.shortName = shortName;
     }
 
-    public DefaultInteraction(String shortName, Source source){
-        this(shortName);
-        this.source = source;
-    }
-
     public DefaultInteraction(String shortName, CvTerm type){
         this(shortName);
-        this.type = type;
-    }
-
-    public DefaultInteraction(String shortName, Source source, CvTerm type){
-        this(shortName, source);
         this.type = type;
     }
 
@@ -136,14 +125,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
 
     public Collection<P> getParticipants() {
         return this.participants;
-    }
-
-    public Source getSource() {
-        return this.source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
     }
 
     public boolean isNegative() {

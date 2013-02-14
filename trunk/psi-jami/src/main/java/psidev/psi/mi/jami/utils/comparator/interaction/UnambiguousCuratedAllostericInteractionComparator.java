@@ -3,14 +3,14 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 import psidev.psi.mi.jami.model.AllostericInteraction;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousModelledParticipantComparator;
 
 /**
  * Unambiguous curated Allosteric interaction comparator.
  *
  * It will first compare the allosteric mechanisms using UnambiguousCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
- * using UnambiguousCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using UnambiguousComponentComparator.
- * If the allosteric molecules are the same, it will compare the allosteric effectors using the UnambiguousComponentComparator.
+ * using UnambiguousCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using UnambiguousModelledParticipantComparator.
+ * If the allosteric molecules are the same, it will compare the allosteric effectors using the UnambiguousModelledParticipantComparator.
  * If the allosteric effectors are the same, it will compare the allosteric PTMs using UnambiguousBiologicalFeatureComparator. If the allosteric PTMs are the same,
  * it will compare the basic properties of a cooperative interaction using UnambiguousCuratedCooperativeInteractionComparator.
  *
@@ -26,10 +26,10 @@ public class UnambiguousCuratedAllostericInteractionComparator extends Allosteri
     /**
      * Creates a new UnambiguousCuratedAllostericInteractionComparator. It will use a UnambiguousCuratedCooperativeInteractionComparator to
      * compare basic cooperative interaction properties, UnambiguousCvTermComparator to compare responses, outcome effects and mechanisms,
-     * UnambiguousComponentComparator to compare allosteric molecules and effectors and UnambiguousBiologicalFeatureComparator to compare allosteric PTMs
+     * UnambiguousModelledParticipantComparator to compare allosteric molecules and effectors and UnambiguousBiologicalFeatureComparator to compare allosteric PTMs
      */
     public UnambiguousCuratedAllostericInteractionComparator() {
-        super(new UnambiguousCuratedCooperativeInteractionComparator(), new UnambiguousCvTermComparator(), new UnambiguousComponentComparator(), new UnambiguousModelledFeaturecomparator());
+        super(new UnambiguousCuratedCooperativeInteractionComparator(), new UnambiguousCvTermComparator(), new UnambiguousModelledParticipantComparator(), new UnambiguousModelledFeaturecomparator());
     }
 
     @Override
@@ -43,8 +43,8 @@ public class UnambiguousCuratedAllostericInteractionComparator extends Allosteri
     }
 
     @Override
-    public UnambiguousComponentComparator getComponentComparator() {
-        return (UnambiguousComponentComparator) this.componentComparator;
+    public UnambiguousModelledParticipantComparator getComponentComparator() {
+        return (UnambiguousModelledParticipantComparator) this.componentComparator;
     }
 
     @Override
@@ -55,8 +55,8 @@ public class UnambiguousCuratedAllostericInteractionComparator extends Allosteri
     @Override
     /**
      * It will first compare the allosteric mechanisms using UnambiguousCvTermComparator. If the mechanisms are the same, it will compare the allosteric types
-     * using UnambiguousCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using UnambiguousComponentComparator.
-     * If the allosteric molecules are the same, it will compare the allosteric effectors using the UnambiguousComponentComparator.
+     * using UnambiguousCvTermComparator. If the allosteric types are the same, it will compare the allosteric molecule using UnambiguousModelledParticipantComparator.
+     * If the allosteric molecules are the same, it will compare the allosteric effectors using the UnambiguousModelledParticipantComparator.
      * If the allosteric effectors are the same, it will compare the allosteric PTMs using UnambiguousBiologicalFeatureComparator. If the allosteric PTMs are the same,
      * it will compare the basic properties of a cooperative interaction using UnambiguousCooperativeInteractionComparator.
      *

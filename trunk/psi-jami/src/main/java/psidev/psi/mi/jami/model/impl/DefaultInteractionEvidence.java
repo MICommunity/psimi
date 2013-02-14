@@ -62,15 +62,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         this.experiment = experiment;
     }
 
-    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, CvTerm type) {
-        super(shortName, source, type);
-        initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
-        this.experiment = experiment;
-    }
-
     public DefaultInteractionEvidence(Experiment experiment, Xref imexId) {
         super();
         initializeParameters();
@@ -112,21 +103,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         this.xrefs.add(imexId);
     }
 
-    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, CvTerm type, Xref imexId) {
-        super(shortName, source, type);
-        initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
-        this.experiment = experiment;
-        this.xrefs.add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type) {
-        super(shortName, source, type);
-        initializeParameters();
-    }
-
     public DefaultInteractionEvidence(Xref imexId) {
         super();
         initializeParameters();
@@ -147,12 +123,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
-        initializeParameters();
-        this.xrefs.add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, Source source, CvTerm type, Xref imexId) {
-        super(shortName, source, type);
         initializeParameters();
         this.xrefs.add(imexId);
     }

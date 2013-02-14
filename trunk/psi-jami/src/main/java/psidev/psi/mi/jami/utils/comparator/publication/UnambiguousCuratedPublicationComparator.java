@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.publication;
 
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
  * Unambiguous curated publication comparator.
- * It uses a UnambiguousPublicationComparator to compares the bibliographic details and then will compare first the curation depth and then the released date.
+ * It uses a UnambiguousPublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source using UnambiguousCvTermComparator and then the released date.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,7 +20,7 @@ public class UnambiguousCuratedPublicationComparator extends CuratedPublicationC
      * Creates a new DefaultCuratedPublicationComparator based on DefaultPublicationComparator
      */
     public UnambiguousCuratedPublicationComparator() {
-        super(new UnambiguousPublicationComparator());
+        super(new UnambiguousPublicationComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
@@ -28,8 +29,13 @@ public class UnambiguousCuratedPublicationComparator extends CuratedPublicationC
     }
 
     @Override
+    public UnambiguousCvTermComparator getSourceComparator() {
+        return (UnambiguousCvTermComparator) sourceComparator;
+    }
+
+    @Override
     /**
-     * It uses a UnambiguousPublicationComparator to compares the bibliographic details and then will compare first the curation depth and then the released date.
+     * It uses a UnambiguousPublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source using UnambiguousCvTermComparator and then the released date.
      */
     public int compare(Publication publication1, Publication publication2) {
         return super.compare(publication1, publication2);

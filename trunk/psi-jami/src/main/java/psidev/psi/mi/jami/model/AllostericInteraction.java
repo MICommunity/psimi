@@ -48,27 +48,27 @@ public interface AllostericInteraction extends CooperativeInteraction {
      * 	It cannot be null.
      * @return the allosteric molecule
      */
-    public Component getAllostericMolecule();
+    public ModelledParticipant getAllostericMolecule();
 
     /**
      * Sets the allosteric molecule.
      * @param participant : allosteric molecule
      * @throws IllegalArgumentException when participant is null
      */
-    public void setAllostericMolecule(Component participant);
+    public void setAllostericMolecule(ModelledParticipant participant);
 
     /**
      * A ligand that elicits an allosteric response upon binding to a target molecule.
      * It can be null
      * @return the allosteric effector
      */
-    public Component getAllostericEffector();
+    public ModelledParticipant getAllostericEffector();
 
     /**
      * Sets the allosteric effector.
      * @param effector: allosteric effector
      */
-    public void setAllostericEffector(Component effector);
+    public void setAllostericEffector(ModelledParticipant effector);
 
     /**
      * A post-translational modification that elicits an allosteric response upon addition to a target molecule.
