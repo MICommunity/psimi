@@ -60,6 +60,14 @@ public class DefaultExperiment implements Experiment {
         this.publication = publication;
     }
 
+    public void setPublicationAndAddExperiment(Publication publication) {
+        this.publication = publication;
+
+        if (publication != null){
+            this.publication.getExperiments().add(this);
+        }
+    }
+
     public String getShortLabel() {
         return this.shortLabel;
     }
