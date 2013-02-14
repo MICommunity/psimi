@@ -300,7 +300,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
      * @param interactorTypes Value to set for property 'interactorTypes'.
      */
     public void setInteractorTypes(List<CrossReference> interactorTypes) {
-        this.interactorTypes.clear();
+        ((InteractorTypeList)this.interactorTypes).clearOnly();
         if (interactorTypes != null) {
             this.interactorTypes.addAll(interactorTypes);
         }
@@ -1088,14 +1088,16 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
             }
 
             if (isEmpty()){
-                type = null;
+                type = CvTermFactory.createMICvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
+                processNewTypeInInteractorTypesList(type);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all interactor types and reset current type
-            type = null;
+            type = CvTermFactory.createMICvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
+            processNewTypeInInteractorTypesList(type);
         }
     }
 }

@@ -58,7 +58,10 @@ public class MitabExperiment extends DefaultExperiment{
      * {@inheritDoc}
      */
     public void setDetectionMethods(List<CrossReference> detectionMethods) {
-        this.detectionMethods = detectionMethods;
+        ((DetectionMethodsList)this.detectionMethods).clearOnly();
+        if (detectionMethods != null) {
+            this.detectionMethods.addAll(detectionMethods);
+        }
     }
 
     /**
@@ -239,13 +242,15 @@ public class MitabExperiment extends DefaultExperiment{
             }
 
             if (isEmpty()){
-                interactionDetectionMethod = null;
+                interactionDetectionMethod = CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
+                processNewInteractionDetectionMethodsList(interactionDetectionMethod);
             }
         }
 
         @Override
         protected void clearProperties() {
-            interactionDetectionMethod = null;
+            interactionDetectionMethod = CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
+            processNewInteractionDetectionMethodsList(interactionDetectionMethod);
         }
     }
 }

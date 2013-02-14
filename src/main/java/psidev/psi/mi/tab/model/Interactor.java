@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.utils.clone.FeatureCloner;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -342,7 +343,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      * @param biologicalRoles Value to set for property 'biologicalRoles'.
      */
     public void setBiologicalRoles(List<CrossReference> biologicalRoles) {
-        this.biologicalRoles.clear();
+        ((BiologicalRoleList)this.biologicalRoles).clearOnly() ;
         if (biologicalRoles != null) {
             this.biologicalRoles.addAll(biologicalRoles);
         }
@@ -363,7 +364,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      * @param experimentalRoles Value to set for property 'experimentalRoles'.
      */
     public void setExperimentalRoles(List<CrossReference> experimentalRoles) {
-        this.experimentalRoles.clear();
+        ((ExperimentalRoleList)this.experimentalRoles).clearOnly();
         if (experimentalRoles != null) {
             this.experimentalRoles.addAll(experimentalRoles);
         }
@@ -945,14 +946,16 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             }
 
             if (isEmpty()){
-                biologicalRole = null;
+                biologicalRole = CvTermFactory.createUnspecifiedRole();
+                processNewBiologicalRoleInBiologicalRoleList(biologicalRole);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all interactor types and reset current type
-            biologicalRole = null;
+            biologicalRole = CvTermFactory.createUnspecifiedRole();
+            processNewBiologicalRoleInBiologicalRoleList(biologicalRole);
         }
     }
 
@@ -1007,13 +1010,15 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             }
 
             if (isEmpty()){
-                experimentalRole = null;
+                experimentalRole = CvTermFactory.createUnspecifiedRole();
+                processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
             }
         }
 
         @Override
         protected void clearProperties() {
-            experimentalRole = null;
+            experimentalRole = CvTermFactory.createUnspecifiedRole();
+            processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
         }
     }
 }
