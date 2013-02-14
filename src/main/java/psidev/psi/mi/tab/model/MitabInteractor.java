@@ -300,7 +300,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
      * @param interactorTypes Value to set for property 'interactorTypes'.
      */
     public void setInteractorTypes(List<CrossReference> interactorTypes) {
-        if (interactorTypes != null) {
+        if (interactorTypes != null && !interactorTypes.isEmpty()) {
             ((InteractorTypeList)this.interactorTypes).clearOnly();
             this.interactorTypes.addAll(interactorTypes);
         }

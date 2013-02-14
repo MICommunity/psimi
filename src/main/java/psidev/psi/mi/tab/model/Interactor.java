@@ -344,7 +344,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      */
     public void setBiologicalRoles(List<CrossReference> biologicalRoles) {
 
-        if (biologicalRoles != null) {
+        if (biologicalRoles != null && !biologicalRoles.isEmpty()) {
             ((BiologicalRoleList)this.biologicalRoles).clearOnly() ;
             this.biologicalRoles.addAll(biologicalRoles);
         }
@@ -368,7 +368,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      * @param experimentalRoles Value to set for property 'experimentalRoles'.
      */
     public void setExperimentalRoles(List<CrossReference> experimentalRoles) {
-        if (experimentalRoles != null) {
+        if (experimentalRoles != null && !experimentalRoles.isEmpty()) {
             ((ExperimentalRoleList)this.experimentalRoles).clearOnly();
             this.experimentalRoles.addAll(experimentalRoles);
         }
