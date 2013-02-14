@@ -22,7 +22,7 @@ public class DefaultExactCuratedInteractionComparator extends InteractionCompara
      * Creates a new DefaultExactCuratedInteractionComparator.
      */
     public DefaultExactCuratedInteractionComparator() {
-        super(new DefaultExactInteractionBaseComparator(), new DefaultExactCuratedInteractionEvidenceComparator(), new DefaultExactCuratedCooperativeInteractionComparator(), new DefaultExactCuratedAllostericInteractionComparator());
+        super(new DefaultExactInteractionBaseComparator(), new DefaultExactInteractionEvidenceComparator(), new DefaultExactCuratedCooperativeInteractionComparator(), new DefaultExactCuratedAllostericInteractionComparator());
     }
 
     @Override
@@ -31,8 +31,8 @@ public class DefaultExactCuratedInteractionComparator extends InteractionCompara
     }
 
     @Override
-    public DefaultExactCuratedInteractionEvidenceComparator getExperimentalInteractionComparator() {
-        return (DefaultExactCuratedInteractionEvidenceComparator) this.experimentalInteractionComparator;
+    public DefaultExactInteractionEvidenceComparator getExperimentalInteractionComparator() {
+        return (DefaultExactInteractionEvidenceComparator) this.experimentalInteractionComparator;
     }
 
     @Override
