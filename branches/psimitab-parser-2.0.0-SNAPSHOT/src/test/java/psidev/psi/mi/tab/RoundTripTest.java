@@ -26,7 +26,7 @@ public class RoundTripTest {
     public static final String MITAB_2_LINE_WITH_HEADER =
             "#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)" + NEW_LINE +
                     "uniprotkb:Q8I0U6|intact:EBI-825868\tuniprotkb:Q8I0U6|intact:EBI-825868\tuniprotkb:PFA0110w(gene name)\tuniprotkb:PFA0110w(gene name)\tintact:MAL1P1.13\tintact:MAL1P1.13\tpsi-mi:\"MI:0398\"(two hybrid pooling)\tLacount et al. (2005)\tpubmed:16267556\ttaxid:36329(plaf7)\ttaxid:36329(plaf7)\tpsi-mi:\"MI:0218\"(physical interaction)\tpsi-mi:\"MI:0469\"(intact)\tintact:EBI-840450\t-" + NEW_LINE +
-                    "uniprotkb:P23367\tuniprotkb:P06722\t-\t-\t-\t-\t-\t-\t-\ttaxid:562\ttaxid:562\t-\t-\t-\t-" + NEW_LINE;
+                    "uniprotkb:P23367\tuniprotkb:P06722\t-\t-\t-\t-\tpsi-mi:\"MI:0686\"(unspecified method)\t-\t-\ttaxid:562\ttaxid:562\t-\t-\t-\t-" + NEW_LINE;
 
 
     @Test
