@@ -25,6 +25,7 @@ public class PublicationCloner {
             target.setReleasedDate(source.getReleasedDate());
             target.setTitle(source.getTitle());
             target.setPublicationDate(source.getPublicationDate());
+            target.setSource(source.getSource());
 
             // copy collections
             target.getAnnotations().clear();

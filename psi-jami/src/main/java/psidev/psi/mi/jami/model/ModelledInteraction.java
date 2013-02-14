@@ -18,4 +18,18 @@ public interface ModelledInteraction extends Interaction<ModelledParticipant>{
      * @return the collection of experimental evidences
      */
     public Collection<Experiment> getExperiments();
+
+    /**
+     * The source which reported this modelled interaction. It can be an organization, institute, ...
+     * It can be null if the source is unknown or not relevant.
+     * Ex: IntAct, MINT, DIP, ...
+     * @return the source
+     */
+    public Source getSource();
+
+    /**
+     * Sets the source reporting the interaction.
+     * @param source: source for this interaction
+     */
+    public void setSource(Source source);
 }

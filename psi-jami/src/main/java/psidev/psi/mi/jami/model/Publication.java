@@ -171,4 +171,18 @@ public interface Publication {
      * @param released : the released date
      */
     public void setReleasedDate(Date released);
+
+    /**
+     * The source which curated this publication. It can be an organization, institute, ...
+     * It can be null if the source is unknown or not relevant.
+     * Ex: IntAct, MINT, DIP, ...
+     * @return the source
+     */
+    public Source getSource();
+
+    /**
+     * Sets the source who curated the publication.
+     * @param source: source for this publication
+     */
+    public void setSource(Source source);
 }

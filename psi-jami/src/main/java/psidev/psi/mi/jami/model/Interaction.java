@@ -83,20 +83,6 @@ public interface Interaction<P extends Participant> {
     public Collection<P> getParticipants();
 
     /**
-     * The source which curated this interaction. It can be an organization, institute, ...
-     * It can be null if the source is unknown or not relevant.
-     * Ex: IntAct, MINT, DIP, ...
-     * @return the source
-     */
-    public Source getSource();
-
-    /**
-     * Sets the source of the interaction.
-     * @param source: source for this interaction
-     */
-    public void setSource(Source source);
-
-    /**
      * Boolean value to know if an interaction is negative.
      * It is false by default (positive interaction by default)
      * @return true if the interaction is negative

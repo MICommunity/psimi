@@ -32,6 +32,7 @@ public class DefaultPublication implements Publication, Serializable {
     protected Collection<Experiment> experiments;
     protected CurationDepth curationDepth;
     protected Date releasedDate;
+    protected Source source;
 
     protected Xref pubmedId;
     protected Xref doi;
@@ -50,15 +51,16 @@ public class DefaultPublication implements Publication, Serializable {
         }
     }
 
-    public DefaultPublication(Xref identifier, CurationDepth curationDepth){
+    public DefaultPublication(Xref identifier, CurationDepth curationDepth, Source source){
         this(identifier);
         if (curationDepth != null){
             this.curationDepth = curationDepth;
         }
+        this.source = source;
     }
 
-    public DefaultPublication(Xref identifier, String imexId){
-        this(identifier, CurationDepth.IMEx);
+    public DefaultPublication(Xref identifier, String imexId, Source source){
+        this(identifier, CurationDepth.IMEx, source);
         assignImexId(imexId);
     }
 
@@ -75,15 +77,16 @@ public class DefaultPublication implements Publication, Serializable {
         }
     }
 
-    public DefaultPublication(String pubmed, CurationDepth curationDepth){
+    public DefaultPublication(String pubmed, CurationDepth curationDepth, Source source){
         this(pubmed);
         if (curationDepth != null){
             this.curationDepth = curationDepth;
         }
+        this.source = source;
     }
 
-    public DefaultPublication(String pubmed, String imexId){
-        this(pubmed, CurationDepth.IMEx);
+    public DefaultPublication(String pubmed, String imexId, Source source){
+        this(pubmed, CurationDepth.IMEx, source);
         assignImexId(imexId);
     }
 
@@ -100,15 +103,16 @@ public class DefaultPublication implements Publication, Serializable {
         this.curationDepth = CurationDepth.undefined;
     }
 
-    public DefaultPublication(String title, String journal, Date publicationDate, CurationDepth curationDepth){
+    public DefaultPublication(String title, String journal, Date publicationDate, CurationDepth curationDepth, Source source){
         this(title, journal, publicationDate);
         if (curationDepth != null){
             this.curationDepth = curationDepth;
         }
+        this.source = source;
     }
 
-    public DefaultPublication(String title, String journal, Date publicationDate, String imexId){
-        this(title, journal, publicationDate, CurationDepth.IMEx);
+    public DefaultPublication(String title, String journal, Date publicationDate, String imexId, Source source){
+        this(title, journal, publicationDate, CurationDepth.IMEx, source);
         assignImexId(imexId);
     }
 
@@ -262,6 +266,14 @@ public class DefaultPublication implements Publication, Serializable {
 
     public void setReleasedDate(Date released) {
         this.releasedDate = released;
+    }
+
+    public Source getSource() {
+        return this.source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     @Override

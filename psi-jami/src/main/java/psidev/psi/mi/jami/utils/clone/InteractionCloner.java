@@ -25,7 +25,6 @@ public class InteractionCloner {
             target.setCreatedDate(source.getCreatedDate());
             target.setNegative(source.isNegative());
             target.setShortName(source.getShortName());
-            target.setSource(source.getSource());
             target.setType(source.getType());
             target.setUpdatedDate(source.getUpdatedDate());
 

@@ -18,12 +18,12 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
 
     protected CvTerm allostericMechanism;
     protected CvTerm allosteryType;
-    protected Component allostericMolecule;
-    protected Component allostericEffector;
+    protected ModelledParticipant allostericMolecule;
+    protected ModelledParticipant allostericEffector;
     protected ModelledFeature allostericPtm;
 
     public DefaultAllostericInteraction(CvTerm effectOutcome, CvTerm response, CvTerm allostericMechanism,
-                                        CvTerm allosteryType, Component allostericMolecule) {
+                                        CvTerm allosteryType, ModelledParticipant allostericMolecule) {
         super(CvTermFactory.createAllosteryCooperativeMechanism(), effectOutcome, response);
         if (allostericMechanism == null){
             throw new IllegalArgumentException("The allosteric mechanism cannot be null.");
@@ -42,7 +42,7 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
     }
 
     public DefaultAllostericInteraction(String shortName, CvTerm effectOutcome, CvTerm response, CvTerm allostericMechanism,
-                                        CvTerm allosteryType, Component allostericMolecule) {
+                                        CvTerm allosteryType, ModelledParticipant allostericMolecule) {
         super(shortName, CvTermFactory.createAllosteryCooperativeMechanism(), effectOutcome, response);
         if (allostericMechanism == null){
             throw new IllegalArgumentException("The allosteric mechanism cannot be null.");
@@ -61,7 +61,7 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
     }
 
     public DefaultAllostericInteraction(String shortName, Source source, CvTerm effectOutcome, CvTerm response, CvTerm allostericMechanism,
-                                        CvTerm allosteryType, Component allostericMolecule) {
+                                        CvTerm allosteryType, ModelledParticipant allostericMolecule) {
         super(shortName, source, CvTermFactory.createAllosteryCooperativeMechanism(), effectOutcome, response);
         if (allostericMechanism == null){
             throw new IllegalArgumentException("The allosteric mechanism cannot be null.");
@@ -80,7 +80,7 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
     }
 
     public DefaultAllostericInteraction(String shortName, CvTerm type, CvTerm effectOutcome, CvTerm response, CvTerm allostericMechanism,
-                                        CvTerm allosteryType, Component allostericMolecule) {
+                                        CvTerm allosteryType, ModelledParticipant allostericMolecule) {
         super(shortName, type, CvTermFactory.createAllosteryCooperativeMechanism(), effectOutcome, response);
         if (allostericMechanism == null){
             throw new IllegalArgumentException("The allosteric mechanism cannot be null.");
@@ -99,7 +99,7 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
     }
 
     public DefaultAllostericInteraction(String shortName, Source source, CvTerm type, CvTerm effectOutcome, CvTerm response, CvTerm allostericMechanism,
-                                        CvTerm allosteryType, Component allostericMolecule) {
+                                        CvTerm allosteryType, ModelledParticipant allostericMolecule) {
         super(shortName, source, type, CvTermFactory.createAllosteryCooperativeMechanism(), effectOutcome, response);
         if (allostericMechanism == null){
             throw new IllegalArgumentException("The allosteric mechanism cannot be null.");
@@ -139,22 +139,22 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
         this.allosteryType = type;
     }
 
-    public Component getAllostericMolecule() {
+    public ModelledParticipant getAllostericMolecule() {
         return this.allostericMolecule;
     }
 
-    public void setAllostericMolecule(Component participant) {
+    public void setAllostericMolecule(ModelledParticipant participant) {
         if (allostericMolecule == null){
             throw new IllegalArgumentException("The allosteric molecule cannot be null.");
         }
         this.allostericMolecule = participant;
     }
 
-    public Component getAllostericEffector() {
+    public ModelledParticipant getAllostericEffector() {
         return this.allostericEffector;
     }
 
-    public void setAllostericEffector(Component effector) {
+    public void setAllostericEffector(ModelledParticipant effector) {
         this.allostericEffector = effector;
     }
 

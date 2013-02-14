@@ -3,6 +3,8 @@ package psidev.psi.mi.jami.utils.factory;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 
+import java.util.Date;
+
 /**
  * Factory for publications
  *
@@ -15,6 +17,6 @@ public class PublicationFactory {
     
     public static Publication createUnknownBasicPublication(){
 
-        return new DefaultPublication("unknown", "unknown", null);
+        return new DefaultPublication("unknown", "unknown", (Date)null);
     }
 }
