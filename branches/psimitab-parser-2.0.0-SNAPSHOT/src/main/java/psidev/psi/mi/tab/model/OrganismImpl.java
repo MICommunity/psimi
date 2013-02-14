@@ -76,6 +76,7 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
 
     public OrganismImpl( int taxid, String name ) {
         super(taxid, name);
+        addIdentifier( new CrossReferenceImpl( DEFAULT_DATABASE, String.valueOf( taxid ), name ) );
     }
 
     @Override
