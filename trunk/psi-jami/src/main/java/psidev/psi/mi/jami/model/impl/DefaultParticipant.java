@@ -29,9 +29,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     protected Integer stoichiometry;
 
     public DefaultParticipant(I interaction, T interactor){
-        if (interaction == null){
-            throw new IllegalArgumentException("The interaction cannot be null.");
-        }
         this.interaction = interaction;
         if (interactor == null){
             throw new IllegalArgumentException("The interactor cannot be null.");
@@ -43,9 +40,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     }
 
     public DefaultParticipant(I interaction, T interactor, CvTerm bioRole){
-        if (interaction == null){
-            throw new IllegalArgumentException("The interaction cannot be null.");
-        }
         this.interaction = interaction;
         if (interactor == null){
             throw new IllegalArgumentException("The interactor cannot be null.");
@@ -112,9 +106,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     }
 
     public void setInteraction(I interaction) {
-        if (interaction == null){
-            throw new IllegalArgumentException("The interaction cannot be null.");
-        }
         this.interaction = interaction;
     }
 
@@ -164,6 +155,58 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
 
     public void setStoichiometry(Integer stoichiometry) {
         this.stoichiometry = stoichiometry;
+    }
+
+    public boolean addFeature(F feature) {
+        if (feature == null){
+            return false;
+        }
+
+        if (features.add(feature)){
+            feature.setParticipant(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeFeature(F feature) {
+        if (feature == null){
+            return false;
+        }
+
+        if (features.remove(feature)){
+            feature.setParticipant(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllFeatures(Collection<? extends F> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (F feature : features){
+            if (addFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllFeatures(Collection<? extends F> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (F feature : features){
+            if (removeFeature(feature)){
+                removed = true;
+            }
+        }
+        return removed;
     }
 
     @Override

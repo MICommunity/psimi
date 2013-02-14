@@ -58,9 +58,6 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     }
 
     public DefaultFeature(P participant){
-        if (participant == null){
-            throw new IllegalArgumentException("The participant cannot be null");
-        }
         this.participant = participant;
 
         initializeIdentifiers();
@@ -178,9 +175,6 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     }
 
     public void setParticipant(P participant) {
-        if (participant == null){
-            throw new IllegalArgumentException("The participant cannot be null");
-        }
         this.participant = participant;
     }
 

@@ -163,6 +163,58 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
        this.type = term;
     }
 
+    public boolean addParticipant(P part) {
+        if (part == null){
+            return false;
+        }
+
+        if (participants.add(part)){
+            part.setInteraction(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeParticipant(P part) {
+        if (part == null){
+            return false;
+        }
+
+        if (participants.remove(part)){
+            part.setInteraction(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllParticipants(Collection<? extends P> part) {
+        if (part == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (P p : part){
+            if (addParticipant(p)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllParticipants(Collection<? extends P> part) {
+        if (part == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (P p : part){
+            if (removeParticipant(p)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
     @Override
     public int hashCode() {
         // use UnambiguousExactInteractionBase comparator for hashcode

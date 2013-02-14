@@ -17,7 +17,7 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
 
     /**
      * The interaction in which the participant is involved.
-     * It cannot be null.
+     * It can be null if the participant is not attached to any interactions. It can happen if the participant has been removed from an interaction and is now invalid.
      * @return the interaction
      */
     public I getInteraction();
@@ -25,7 +25,6 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
     /**
      * Sets the interaction.
      * @param interaction : experimental interaction
-     * @throws IllegalArgumentException when interaction is null.
      */
     public void setInteraction(I interaction);
 
@@ -102,4 +101,32 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
      * @param stoichiometry : stoichiometry
      */
     public void setStoichiometry(Integer stoichiometry);
+
+    /**
+     * This method will add the feature and set the participant of the new feature to this current participant
+     * @param feature
+     * @return true if feature is added to the list of features
+     */
+    public boolean  addFeature(F feature);
+
+    /**
+     * This method will remove the feature and set the participant of the removed feature to null.
+     * @param feature
+     * @return true if feature is removed from the list of features
+     */
+    public boolean removeFeature(F feature);
+
+    /**
+     * This method will add all features and set the participant of the new features to this current participant
+     * @param features
+     * @return true if features are added to the list of features
+     */
+    public boolean  addAllFeatures(Collection<? extends F> features);
+
+    /**
+     * This method will remove all the features and set the participant of the removed features to null.
+     * @param features
+     * @return true if features are removed from the list of features
+     */
+    public boolean removeAllFeatures(Collection<? extends F> features);
 }
