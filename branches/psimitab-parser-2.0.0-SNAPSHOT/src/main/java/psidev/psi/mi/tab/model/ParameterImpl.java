@@ -63,12 +63,12 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
      * @param unit     the unit of the parameter.
      */
     public ParameterImpl(String type, double factor, int base, int exponent, double uncertainty, String unit) {
-        super(new DefaultCvTerm(type), new ParameterValue(new BigDecimal(factor), (short)base, (short)exponent));
+        super(new DefaultCvTerm(type), new ParameterValue(new BigDecimal(Double.toString(factor)), (short)base, (short)exponent));
 
         if (unit != null){
             this.unit = new DefaultCvTerm(unit);
         }
-        this.uncertainty = new BigDecimal(uncertainty);
+        this.uncertainty = new BigDecimal(Double.toString(uncertainty));
     }
 
     /**
@@ -191,7 +191,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
      * @return a double with the uncertainty.
      */
     public Double getUncertaintyAsDouble() {
-        return uncertainty != null ? uncertainty.doubleValue() : null;
+        return uncertainty != null ? uncertainty.doubleValue() : 0.0;
     }
 
     /**
@@ -204,7 +204,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
             this.uncertainty = null;
         }
         else {
-            this.uncertainty = new BigDecimal(uncertainty);
+            this.uncertainty = new BigDecimal(Double.toString(uncertainty));
         }
     }
 
@@ -238,7 +238,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
         if (!type.getShortName().equals(that.type.getShortName())) {
             return false;
         }
-        if (!value.equals(that.value)) {
+        if (!getValueAsString().equals(that.getValueAsString())) {
             return false;
         }
 
@@ -249,7 +249,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
     public int hashCode() {
         int result;
         result = type.getShortName().hashCode();
-        result = 29 * result + value.hashCode();
+        result = 29 * result + getValueAsString().hashCode();
         return result;
     }
 }
