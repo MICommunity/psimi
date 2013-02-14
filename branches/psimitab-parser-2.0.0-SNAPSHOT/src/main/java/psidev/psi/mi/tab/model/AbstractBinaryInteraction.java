@@ -134,13 +134,13 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	// Constructors
 	public AbstractBinaryInteraction() {
         super();
-        setExperiment(new MitabExperiment());
+        setExperimentAndAddInteractionEvidence(new MitabExperiment());
 	}
 
 	public AbstractBinaryInteraction(T interactor) {
         super();
 		setInteractorA(interactor);
-        setExperiment(new MitabExperiment());
+        setExperimentAndAddInteractionEvidence(new MitabExperiment());
 
     }
 
@@ -148,7 +148,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         super();
 		setInteractorA(interactorA);
 		setInteractorB(interactorB);
-        setExperiment(new MitabExperiment());
+        setExperimentAndAddInteractionEvidence(new MitabExperiment());
     }
 
     @Override
@@ -203,8 +203,10 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorA(T interactorA) {
-        Interactor currentB = interactorB;
+        T currentB = interactorB;
         participants.clear();
+        this.interactorA = interactorA;
+        this.interactorB = currentB;
         participants.add(interactorA);
         participants.add(currentB);
 	}
@@ -220,8 +222,13 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorB(T interactorB) {
-        Interactor currentA = interactorA;
+        T currentA = interactorA;
+
         participants.clear();
+
+        this.interactorA = currentA;
+        this.interactorB = interactorB;
+
         participants.add(currentA);
         participants.add(interactorB);
 	}
