@@ -31,11 +31,11 @@ public class CrossReferenceImpl extends DefaultXref implements CrossReference {
 	}
 
 	public CrossReferenceImpl(String database, String identifier) {
-		super(new DefaultCvTerm(database), identifier);
+		super(new DefaultCvTerm(database != null ? database.trim() : null), identifier != null ? identifier.trim() : null);
 	}
 
 	public CrossReferenceImpl(String database, String identifier, String text) {
-		this(database, identifier);
+		this(database != null ? database.trim() : null, identifier != null ? identifier.trim() : null);
 		setText(text);
 	}
 
@@ -79,12 +79,9 @@ public class CrossReferenceImpl extends DefaultXref implements CrossReference {
 	}
 
 	public void setText(String text) {
-		if (text != null) {
+		if (text != null && text.trim().length() > 0) {
 			// ignore empty string
 			text = text.trim();
-			if (text.length() == 0) {
-				text = null;
-			}
             this.qualifier = new DefaultCvTerm(text);
 		}
         else {
