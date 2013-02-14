@@ -90,8 +90,6 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 		}
         mitabInteractor = (MitabInteractor) interactor;
         mitabInteractor.setUniqueIdentifiers(identifiers);
-
-
     }
 
     public Interactor(MitabInteractor mitabInteractor, CvTerm partDetMethod) {
@@ -519,6 +517,27 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
     }
 
     @Override
+    public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
+        if (interaction == null){
+            super.setInteraction(null);
+        }
+        else if (interaction instanceof BinaryInteraction){
+            super.setInteraction(interaction);
+            interaction.getParticipants().add(this);
+        }
+        else if (interaction.getParticipants().size() > 2){
+            throw new IllegalArgumentException("A MitabInteractor need a BinaryInteraction with one or two participants and not " + interaction.getParticipants().size());
+        }
+        else {
+            BinaryInteraction<Interactor> convertedInteraction = new BinaryInteractionImpl();
+
+            InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
+            super.setInteraction(convertedInteraction);
+            convertedInteraction.getParticipants().add(this);
+        }
+    }
+
+    @Override
     public void setInteractor(psidev.psi.mi.jami.model.Interactor interactor) {
         if (interactor == null){
             super.setInteractor(null);
@@ -766,13 +785,17 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
         @Override
         protected void processRemovedObjectEvent(Feature removed) {
-
+            removed.setParticipant(null);
             // we removed a feature, needs to remove it in features
             ((InteractorFeatureList)features).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
+
+            for (psidev.psi.mi.jami.model.Feature f : features){
+                f.setParticipant(null);
+            }
             // clear all features
             ((InteractorFeatureList)features).clearOnly();
         }
