@@ -57,6 +57,58 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
         this.source = source;
     }
 
+    public boolean addModelledParticipant(ModelledParticipant part) {
+        if (part == null){
+            return false;
+        }
+
+        if (participants.add(part)){
+            part.setInteraction(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeModelledParticipant(ModelledParticipant part) {
+        if (part == null){
+            return false;
+        }
+
+        if (participants.remove(part)){
+            part.setInteraction(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
+        if (participants == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledParticipant p : participants){
+            if (addParticipant(p)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
+        if (participants == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (ModelledParticipant p : participants){
+            if (removeParticipant(p)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){

@@ -59,4 +59,12 @@ public class DefaultModelledParticipant extends DefaultParticipant<ModelledInter
         // use UnambiguousExactBiologicalParticipant comparator for equals
         return UnambiguousExactModelledParticipantComparator.areEquals(this, (ModelledParticipant) o);
     }
+
+    public void setModelledInteractionAndAddModelledParticipant(ModelledInteraction interaction) {
+        this.interaction = interaction;
+
+        if (interaction != null){
+            this.interaction.getParticipants().add(this);
+        }
+    }
 }

@@ -29,46 +29,30 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         super();
         initializeParameters();
 
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName) {
         super(shortName);
         initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source) {
         super(shortName, source);
         initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type) {
         super(shortName, type);
         initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
     }
 
     public DefaultInteractionEvidence(Experiment experiment, Xref imexId) {
         super();
         initializeParameters();
-
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
@@ -76,9 +60,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Xref imexId) {
         super(shortName);
         initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
@@ -86,9 +67,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, Xref imexId) {
         super(shortName, source);
         initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
@@ -96,9 +74,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
     public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
         initializeParameters();
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
         this.xrefs.add(imexId);
     }
@@ -182,10 +157,15 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
     }
 
     public void setExperiment(Experiment experiment) {
-        if (experiment == null){
-            throw new IllegalArgumentException("The Experiment is required for an InteractionEvidence, it cannot be null.");
-        }
         this.experiment = experiment;
+    }
+
+    public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
+        this.experiment = experiment;
+
+        if (experiment != null){
+            this.experiment.getInteractions().add(this);
+        }
     }
 
     public String getAvailability() {
@@ -206,6 +186,58 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public void setInferred(boolean inferred) {
         this.isInferred = inferred;
+    }
+
+    public boolean addParticipantEvidence(ParticipantEvidence evidence) {
+        if (evidence == null){
+            return false;
+        }
+
+        if (participants.add(evidence)){
+            evidence.setInteraction(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeParticipantEvidence(ParticipantEvidence evidence) {
+        if (evidence == null){
+            return false;
+        }
+
+        if (participants.remove(evidence)){
+            evidence.setInteraction(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllParticipantEvidences(Collection<? extends ParticipantEvidence> evidences) {
+        if (evidences == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ParticipantEvidence p : evidences){
+            if (addParticipant(p)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllParticipantEvidences(Collection<? extends ParticipantEvidence> evidences) {
+        if (evidences == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (ParticipantEvidence p : evidences){
+            if (removeParticipant(p)){
+                removed = true;
+            }
+        }
+        return removed;
     }
 
     @Override

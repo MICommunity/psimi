@@ -99,4 +99,32 @@ public interface Experiment {
      * @return the interactions
      */
     public Collection<InteractionEvidence> getInteractions();
+
+    /**
+     * This method will add the interaction evidence and set the experiment of the new interaction evidence to this current experiment
+     * @param evidence
+     * @return true if interaction evidence is added to the list of interactions
+     */
+    public boolean  addInteractionEvidence(InteractionEvidence evidence);
+
+    /**
+     * This method will remove the interaction evidence and set the experiment of the new interaction evidence to null
+     * @param evidence
+     * @return true if interaction evidence is removed from the list of interactions
+     */
+    public boolean removeInteractionEvidence(InteractionEvidence evidence);
+
+    /**
+     * This method will add all the interaction evidences and set the experiment of the new interaction evidences to this current experiment
+     * @param evidences
+     * @return true if interaction evidences are added to the list of interaction evidences
+     */
+    public boolean  addAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences);
+
+    /**
+     * This method will remove the interaction evidences and set the experiment of the removed interaction evidences to null.
+     * @param evidences
+     * @return true if interaction evidences are removed from the list of interactions
+     */
+    public boolean removeAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences);
 }

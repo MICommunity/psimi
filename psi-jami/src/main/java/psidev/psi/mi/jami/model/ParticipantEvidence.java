@@ -81,4 +81,10 @@ public interface ParticipantEvidence extends Participant<InteractionEvidence,Int
      * @return the parameters
      */
     public Collection<Parameter> getParameters();
+
+    /**
+     * Sets the interaction evidence and add the new participant to its list of participant evidences
+     * @param interaction : interaction evidence
+     */
+    public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction);
 }

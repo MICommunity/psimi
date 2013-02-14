@@ -228,6 +228,14 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
         return this.parameters;
     }
 
+    public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
+        this.interaction = interaction;
+
+        if (interaction != null){
+            interaction.getParticipants().add(this);
+        }
+    }
+
     @Override
     public String toString() {
         return super.toString() + (experimentalRole != null ? ", " + experimentalRole.toString() : "") + (expressedIn != null ? ", " + expressedIn.toString() : "");
