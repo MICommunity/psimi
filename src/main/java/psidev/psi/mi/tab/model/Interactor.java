@@ -378,22 +378,52 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
     }
 
 	public boolean isEmpty() {
-		//We don not want to have a empty interactor, we prefer a null interactor
-		return
-			(this.getIdentifiers() == null || this.getIdentifiers().isEmpty()) &&
-			(this.getAlternativeIdentifiers() == null || this.getAlternativeIdentifiers().isEmpty()) &&
-			(this.getInteractorAliases() == null || this.getInteractorAliases().isEmpty()) &&
-			(!this.hasOrganism() || (this.hasOrganism()
-									&& this.getOrganism().getIdentifiers().isEmpty()
-									&& this.getOrganism().getTaxid() == null || this.getOrganism().getTaxid().isEmpty()) ) &&
-			(this.getBiologicalRoles() == null || this.getBiologicalRoles().isEmpty()) &&
-			(this.getExperimentalRoles() == null || this.getExperimentalRoles().isEmpty()) &&
-			(this.getInteractorTypes() == null || this.getInteractorTypes().isEmpty()) &&
-			(this.getInteractorXrefs() == null || this.getInteractorXrefs().isEmpty()) &&
-			(this.getChecksums() == null || this.getChecksums().isEmpty()) &&
-			(this.getInteractorFeatures() == null || this.getInteractorFeatures().isEmpty()) &&
-			(this.getInteractorStoichiometry() == null || this.getInteractorStoichiometry().isEmpty()) &&
-			(this.getParticipantIdentificationMethods() == null || this.getParticipantIdentificationMethods().isEmpty());
+        if (this.getIdentifiers() != null && !this.getIdentifiers().isEmpty()){
+             return false;
+        }
+        else if (this.getAlternativeIdentifiers() != null && !this.getAlternativeIdentifiers().isEmpty()){
+             return false;
+        }
+        else if (this.getInteractorAliases() != null && !this.getInteractorAliases().isEmpty()){
+            return false;
+        }
+        else if (this.hasOrganism() ){
+            return false;
+        }
+        else if (this.getBiologicalRoles() != null && !this.getBiologicalRoles().isEmpty()){
+            if (!Participant.UNSPECIFIED_ROLE.equals(biologicalRole.getShortName())){
+                return false;
+            }
+        }
+        else if (this.getExperimentalRoles() != null && !this.getExperimentalRoles().isEmpty()){
+            if (!Participant.UNSPECIFIED_ROLE.equals(experimentalRole.getShortName())){
+                return false;
+            }
+        }
+        else if (this.getInteractorTypes() != null && !this.getInteractorTypes().isEmpty()){
+            if (!psidev.psi.mi.jami.model.Interactor.UNKNOWN_INTERACTOR.equals(interactor.getType().getShortName())){
+                return false;
+            }
+        }
+        else if (this.getInteractorXrefs() != null && !this.getInteractorXrefs().isEmpty()){
+            return false;
+        }
+        else if (this.getChecksums() != null && !this.getChecksums().isEmpty()){
+            return false;
+        }
+        else if (this.getInteractorFeatures() != null && !this.getInteractorFeatures().isEmpty()){
+            return false;
+        }
+        else if (this.getInteractorStoichiometry() != null && !this.getInteractorStoichiometry().isEmpty()){
+            return false;
+        }
+        else if (this.getParticipantIdentificationMethods() != null && !this.getParticipantIdentificationMethods().isEmpty()){
+            return false;
+        }
+        else {
+            return true;
+        }
+        return true;
 	}
 
     protected void resetIdentificationMethodNameFromMiReferences(){
