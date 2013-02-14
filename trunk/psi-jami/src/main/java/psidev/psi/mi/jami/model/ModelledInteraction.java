@@ -32,4 +32,32 @@ public interface ModelledInteraction extends Interaction<ModelledParticipant>{
      * @param source: source for this interaction
      */
     public void setSource(Source source);
+
+    /**
+     * This method will add the participant and set the interaction of the new participant to this current interaction
+     * @param part
+     * @return true if participant is added to the list of participants
+     */
+    public boolean  addModelledParticipant(ModelledParticipant part);
+
+    /**
+     * This method will remove the participant and set the interaction of the new participant to null
+     * @param part
+     * @return true if participant is removed from the list of participants
+     */
+    public boolean removeModelledParticipant(ModelledParticipant part);
+
+    /**
+     * This method will add all the participant and set the interaction of the new participant to this current interaction
+     * @param participants
+     * @return true if participant are added to the list of participants
+     */
+    public boolean  addAllModelledParticipants(Collection<? extends ModelledParticipant> participants);
+
+    /**
+     * This method will remove the participant and set the interaction of the removed participant to null.
+     * @param participants
+     * @return true if participant are removed from the list of participants
+     */
+    public boolean removeAllModelledParticipants(Collection<? extends ModelledParticipant> participants);
 }

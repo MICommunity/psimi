@@ -58,4 +58,12 @@ public class DefaultComponent extends DefaultParticipant<Complex, Interactor, Mo
         // use UnambiguousExactComponent comparator for equals
         return UnambiguousExactComponentComparator.areEquals(this, (Component) o);
     }
+
+    public void setComplexAndAddComponent(Complex interaction) {
+        this.interaction = interaction;
+
+        if (interaction != null){
+            this.interaction.getComponents().add(this);
+        }
+    }
 }

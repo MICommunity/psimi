@@ -32,7 +32,7 @@ public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
 
     /**
      * The experiment which determined the interaction.
-     * It cannot be null.
+     * It can be null if the interaction evidence is detached from experiment.
      * @return the experiment
      */
     public Experiment getExperiment();
@@ -40,9 +40,14 @@ public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
     /**
      * Sets the experiment for this interaction.
      * @param experiment : experiment
-     * @throws IllegalArgumentException if the experiment is null
      */
     public void setExperiment(Experiment experiment);
+
+    /**
+     * Sets the experiment for this interaction and add the interaction to the list of interaction evidences
+     * @param experiment : experiment
+     */
+    public void setExperimentAndAddInteractionEvidence(Experiment experiment);
 
     /**
      * The availability for this interaction. By default it is null because freely available.
@@ -77,4 +82,32 @@ public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
      * @param inferred : inferred boolean value
      */
     public void setInferred(boolean inferred);
+
+    /**
+     * This method will add the participant evidence and set the interaction evidence of the new participant evidence to this current interaction
+     * @param evidence
+     * @return true if participant evidence is added to the list of participants
+     */
+    public boolean  addParticipantEvidence(ParticipantEvidence evidence);
+
+    /**
+     * This method will remove the participant evidence and set the interaction of the new participant evidence to null
+     * @param evidence
+     * @return true if participant evidence is removed from the list of participants
+     */
+    public boolean removeParticipantEvidence(ParticipantEvidence evidence);
+
+    /**
+     * This method will add all the participant evidences and set the interaction of the new participant evidences to this current interaction
+     * @param evidences
+     * @return true if participant evidences are added to the list of participant evidences
+     */
+    public boolean  addAllParticipantEvidences(Collection<? extends ParticipantEvidence> evidences);
+
+    /**
+     * This method will remove the participant evidences and set the interaction of the removed participant evidences to null.
+     * @param evidences
+     * @return true if participant evidences are removed from the list of participant evidences
+     */
+    public boolean removeAllParticipantEvidences(Collection<? extends ParticipantEvidence> evidences);
 }

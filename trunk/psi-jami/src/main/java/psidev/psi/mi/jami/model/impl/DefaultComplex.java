@@ -124,6 +124,58 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         return this.physicalProperties != null ? this.physicalProperties.getValue() : null;
     }
 
+    public boolean addComponent(Component part) {
+        if (part == null){
+            return false;
+        }
+
+        if (components.add(part)){
+            part.setInteraction(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeComponent(Component part) {
+        if (part == null){
+            return false;
+        }
+
+        if (components.remove(part)){
+            part.setInteraction(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllComponents(Collection<? extends Component> part) {
+        if (part == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (Component p : part){
+            if (addComponent(p)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllComponents(Collection<? extends Component> part) {
+        if (part == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (Component p : part){
+            if (removeComponent(p)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
     public void setPhysicalProperties(String properties) {
         // add new physical properties if not null
         if (properties != null){

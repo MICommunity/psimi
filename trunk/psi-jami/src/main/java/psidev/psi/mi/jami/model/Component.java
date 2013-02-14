@@ -9,4 +9,9 @@ package psidev.psi.mi.jami.model;
  */
 public interface Component extends Participant<Complex, Interactor, ModelledFeature>{
 
+    /**
+     * Sets the complex and add the new component to its list of components
+     * @param interaction : complex
+     */
+    public void setComplexAndAddComponent(Complex interaction);
 }

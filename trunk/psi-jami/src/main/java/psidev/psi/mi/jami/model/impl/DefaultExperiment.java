@@ -107,6 +107,58 @@ public class DefaultExperiment implements Experiment {
         return this.interactions;
     }
 
+    public boolean addInteractionEvidence(InteractionEvidence evidence) {
+        if (evidence == null){
+            return false;
+        }
+
+        if (interactions.add(evidence)){
+            evidence.setExperiment(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeInteractionEvidence(InteractionEvidence evidence) {
+        if (evidence == null){
+            return false;
+        }
+
+        if (interactions.remove(evidence)){
+            evidence.setExperiment(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
+        if (evidences == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (InteractionEvidence ev : evidences){
+            if (addInteractionEvidence(ev)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences) {
+        if (evidences == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (InteractionEvidence ev : evidences){
+            if (removeInteractionEvidence(ev)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
