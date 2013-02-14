@@ -282,7 +282,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
      * @return true if has a organism
      */
     public boolean hasOrganism() {
-        return organism != null;
+        return organism != null && organism.getIdentifiers() != null && !organism.getIdentifiers().isEmpty();
     }
 
     /**
@@ -1051,6 +1051,28 @@ public class MitabInteractor extends DefaultInteractor implements Serializable {
             if (type == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
                 type = new DefaultCvTerm(name, name, added);
+            }
+            // it was a UNSPECIFIED type, needs to clear it
+            else if (size() > 1 && Interactor.UNKNOWN_INTERACTOR.equalsIgnoreCase(type.getShortName().trim())){
+                // remove unspecified method
+                CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Interactor.UNKNOWN_INTERACTOR_MI, Interactor.UNKNOWN_INTERACTOR);
+                removeOnly(old);
+                type.getXrefs().remove(old);
+
+                // reset shortname
+                if (type.getMIIdentifier() != null && type.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        type.setShortName(name);
+                    }
+                    else {
+                        resetInteractorTypeNameFromMiReferences();
+                        if (type.getShortName().equals("unknown")){
+                            resetInteractorTypeNameFromFirstReferences();
+                        }
+                    }
+                }
             }
             else {
                 type.getXrefs().add(added);

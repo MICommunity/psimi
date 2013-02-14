@@ -56,24 +56,24 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
     }
 
     protected void populateBinaryInteraction(T source, T target) {
-        target.getPublications().addAll(source.getPublications());
-        target.getAuthors().addAll(source.getAuthors());
-        target.getInteractionTypes().addAll(source.getInteractionTypes());
-        target.getDetectionMethods().addAll(source.getDetectionMethods());
-        target.getConfidenceValues().addAll(source.getConfidenceValues());
-        target.getSourceDatabases().addAll(source.getSourceDatabases());
-        target.getInteractionAcs().addAll(source.getInteractionAcs());
-        target.getMitabAnnotations().addAll(source.getMitabAnnotations());
-        target.getChecksums().addAll(source.getChecksums());
-        target.getComplexExpansion().addAll(source.getComplexExpansion());
-        target.getCreationDate().addAll(source.getCreationDate());
-        target.getMitabParameters().addAll(source.getMitabParameters());
+        target.setPublications(source.getPublications());
+        target.setAuthors(source.getAuthors());
+        target.setInteractionTypes(source.getInteractionTypes());
+        target.setDetectionMethods(source.getDetectionMethods());
+        target.setConfidenceValues(source.getConfidenceValues());
+        target.setSourceDatabases(source.getSourceDatabases());
+        target.setInteractionAcs(source.getInteractionAcs());
+        target.setMitabAnnotations(source.getMitabAnnotations());
+        target.setInteractionChecksums(source.getInteractionChecksums());
+        target.setComplexExpansion(source.getComplexExpansion());
+        target.setCreationDate(source.getCreationDate());
+        target.setMitabParameters(source.getMitabParameters());
 
         if (target.getHostOrganism() == null){
             target.setHostOrganism(source.getHostOrganism());
         }
-        else if (source.getHostOrganism() != null){
-            target.getHostOrganism().getIdentifiers().addAll(source.getHostOrganism().getIdentifiers());
+        else if (source.hasHostOrganism()){
+            target.getHostOrganism().setIdentifiers(source.getHostOrganism().getIdentifiers());
         }
     }
 
@@ -126,14 +126,14 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
                 target.getOrganism().getIdentifiers().addAll(source.getOrganism().getIdentifiers());
             }
 
-            target.getAnnotations().addAll(source.getAnnotations());
-            target.getBiologicalRoles().addAll(source.getBiologicalRoles());
-            target.getChecksums().addAll(source.getChecksums());
-            target.getFeatures().addAll(source.getFeatures());
-            target.getInteractorTypes().addAll(source.getInteractorTypes());
-            target.getParticipantIdentificationMethods().addAll(source.getParticipantIdentificationMethods());
-            target.getInteractorStoichiometry().addAll(source.getInteractorStoichiometry());
-            target.getXrefs().addAll(source.getXrefs());
+            target.setInteractorAnnotations(source.getInteractorAnnotations());
+            target.setBiologicalRoles(source.getBiologicalRoles());
+            target.setChecksums(source.getChecksums());
+            target.setInteractorFeatures(source.getInteractorFeatures());
+            target.setInteractorTypes(source.getInteractorTypes());
+            target.setParticipantIdentificationMethods(source.getParticipantIdentificationMethods());
+            target.setInteractorStoichiometry(source.getInteractorStoichiometry());
+            target.setInteractorXrefs(source.getInteractorXrefs());
         }
     }
 }
