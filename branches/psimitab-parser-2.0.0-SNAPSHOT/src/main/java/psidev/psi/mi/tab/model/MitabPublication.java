@@ -1,10 +1,15 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
+import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,6 +33,12 @@ public class MitabPublication extends DefaultPublication{
      * First author surname(s) of the publication(s).
      */
     private List<Author> mitabAuthors = new PublicationMitabAuthorsList();
+
+    /**
+     * Source databases.
+     */
+    private List<CrossReference> sourceDatabases
+            = new PublicationSourcesList();
 
 
     public MitabPublication(){
@@ -83,6 +94,23 @@ public class MitabPublication extends DefaultPublication{
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public List<CrossReference> getSourceDatabases() {
+        return sourceDatabases;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setSourceDatabases(List<CrossReference> sourceDatabases) {
+        this.sourceDatabases.clear();
+        if (sourceDatabases != null) {
+            this.sourceDatabases.addAll(sourceDatabases);
+        }
+    }
+
     protected void processAddedIdentifier(Xref added){
         // the added identifier is pubmed and it is not the current pubmed identifier
         if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, Xref.PUBMED_MI, Xref.PUBMED)){
@@ -130,6 +158,58 @@ public class MitabPublication extends DefaultPublication{
         // the removed identifier is doi
         else if (doi == removed){
             doi = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.DOI_MI, Xref.DOI);
+        }
+    }
+
+    protected void resetSourceNameFromMiReferences(){
+        if (!sourceDatabases.isEmpty()){
+            Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(sourceDatabases), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+
+            if (ref != null){
+                String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
+                source.setShortName(name);
+                source.setFullName(name);
+            }
+        }
+    }
+
+    protected void resetSourceNameFromFirstReferences(){
+        if (!sourceDatabases.isEmpty()){
+            Iterator<CrossReference> methodsIterator = sourceDatabases.iterator();
+            String name = null;
+
+            while (name == null && methodsIterator.hasNext()){
+                CrossReference ref = methodsIterator.next();
+
+                if (ref.getText() != null){
+                    name = ref.getText();
+                }
+            }
+
+            source.setShortName(name != null ? name : "unknown");
+            source.setFullName(name != null ? name : "unknown");
+        }
+    }
+
+    @Override
+    public void setSource(Source source) {
+        super.setSource(source);
+        processNewSourceDatabasesList(source);
+    }
+
+    private void processNewSourceDatabasesList(Source source) {
+        ((PublicationSourcesList)sourceDatabases).clearOnly();
+        if (source.getMIIdentifier() != null){
+            ((PublicationSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, source.getMIIdentifier(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
+        }
+        else{
+            if (!source.getIdentifiers().isEmpty()){
+                Xref ref = source.getIdentifiers().iterator().next();
+                ((PublicationSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
+            }
+            else {
+                ((PublicationSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl("unknown", "-", source.getFullName() != null ? source.getFullName() : source.getShortName()));
+            }
         }
     }
 
@@ -283,7 +363,7 @@ public class MitabPublication extends DefaultPublication{
                 if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
                     if (added instanceof CrossReference){
                         imexId = added;
-                        ((PublicationMitabIdentifiersList) publications).addOnly((CrossReference)imexId);
+                        ((PublicationMitabIdentifiersList) publications).addOnly((CrossReference) imexId);
                     }
                     else {
                         CrossReference imex = new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier().getShortName());
@@ -307,6 +387,67 @@ public class MitabPublication extends DefaultPublication{
         protected void clearProperties() {
             ((PublicationMitabIdentifiersList) publications).removeOnly(imexId);
             imexId = null;
+        }
+    }
+
+    protected class PublicationSourcesList extends AbstractListHavingPoperties<CrossReference> {
+        public PublicationSourcesList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(CrossReference added) {
+
+            if (source == null){
+                String name = added.getText() != null ? added.getText() : "unknown";
+                source = new DefaultSource(name, name, added);
+            }
+            else {
+                source.getXrefs().add(added);
+                // reset shortname
+                if (source.getMIIdentifier() != null && source.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        source.setShortName(name);
+                    }
+                    else {
+                        resetSourceNameFromMiReferences();
+                        if (source.getShortName().equals("unknown")){
+                            resetSourceNameFromFirstReferences();
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(CrossReference removed) {
+
+            if (source != null){
+                source.getXrefs().remove(removed);
+
+                if (removed.getText() != null && source.getShortName().equals(removed.getText())){
+                    if (source.getMIIdentifier() != null){
+                        resetSourceNameFromMiReferences();
+                        if (source.getShortName().equals("unknown")){
+                            resetSourceNameFromFirstReferences();
+                        }
+                    }
+                    else {
+                        resetSourceNameFromFirstReferences();
+                    }
+                }
+            }
+
+            if (isEmpty()){
+                source = null;
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            source = null;
         }
     }
 }

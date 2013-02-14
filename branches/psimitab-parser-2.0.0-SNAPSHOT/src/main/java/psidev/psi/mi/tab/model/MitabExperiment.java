@@ -149,24 +149,42 @@ public class MitabExperiment extends DefaultExperiment{
             this.mitabPublication = null;
         }
         else if (publication instanceof MitabPublication){
-            if (this.publication != null){
-                this.publication.getExperiments().remove(this);
-            }
 
             super.setPublication(publication);
             this.mitabPublication = (MitabPublication) publication;
-            publication.getExperiments().add(this);
         }
         else {
-            if (this.publication != null){
-                this.publication.getExperiments().remove(this);
-            }
 
             MitabPublication convertedPublication = new MitabPublication();
 
             PublicationCloner.copyAndOverridePublicationProperties(publication, convertedPublication);
             mitabPublication = convertedPublication;
             super.setPublication(convertedPublication);
+        }
+    }
+
+    @Override
+    public void setPublicationAndAddExperiment(Publication publication) {
+        if (publication == null){
+
+            super.setPublication(null);
+            this.mitabPublication = null;
+        }
+        else if (publication instanceof MitabPublication){
+
+            super.setPublication(publication);
+            this.mitabPublication = (MitabPublication) publication;
+            publication.getExperiments().add(this);
+        }
+        else {
+
+            MitabPublication convertedPublication = new MitabPublication();
+
+            PublicationCloner.copyAndOverridePublicationProperties(publication, convertedPublication);
+            mitabPublication = convertedPublication;
+            super.setPublication(convertedPublication);
+
+            publication.getExperiments().add(this);
         }
     }
 

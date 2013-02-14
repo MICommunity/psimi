@@ -11,11 +11,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Source;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
-import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.ParameterUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -73,12 +72,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      */
     private List<Confidence> confidenceValues
             = new InteractionMitabConfidenceList();
-
-    /**
-     * Source databases.
-     */
-    private List<CrossReference> sourceDatabases
-            = new InteractionSourcesList();
 
     /**
      * Identifiers of the interaction that provided the data.
@@ -272,17 +265,14 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public List<CrossReference> getSourceDatabases() {
-		return sourceDatabases;
+		return mitabExperiment.getMitabPublication().getSourceDatabases();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setSourceDatabases(List<CrossReference> sourceDatabases) {
-        this.sourceDatabases.clear();
-        if (sourceDatabases != null) {
-            this.sourceDatabases.addAll(sourceDatabases);
-        }
+        mitabExperiment.getMitabPublication().setSourceDatabases(sourceDatabases);
 	}
 
 	/**
@@ -532,36 +522,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         }
     }
 
-    protected void resetSourceNameFromMiReferences(){
-        if (!sourceDatabases.isEmpty()){
-            Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(sourceDatabases), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
-
-            if (ref != null){
-                String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
-                source.setShortName(name);
-                source.setFullName(name);
-            }
-        }
-    }
-
-    protected void resetSourceNameFromFirstReferences(){
-        if (!sourceDatabases.isEmpty()){
-            Iterator<CrossReference> methodsIterator = sourceDatabases.iterator();
-            String name = null;
-
-            while (name == null && methodsIterator.hasNext()){
-                CrossReference ref = methodsIterator.next();
-
-                if (ref.getText() != null){
-                    name = ref.getText();
-                }
-            }
-
-            source.setShortName(name != null ? name : "unknown");
-            source.setFullName(name != null ? name : "unknown");
-        }
-    }
-
     protected void processAddedChecksumEvent(psidev.psi.mi.jami.model.Checksum added){
         if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, psidev.psi.mi.jami.model.Checksum.RIGID_MI, psidev.psi.mi.jami.model.Checksum.RIGID)){
             rigid = added;
@@ -602,6 +562,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
     }
 
     @Override
+    public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
+        if (experiment == null){
+            super.setExperiment(null);
+            this.mitabExperiment = null;
+        }
+        else if (experiment instanceof MitabExperiment){
+            super.setExperiment(experiment);
+            this.mitabExperiment = (MitabExperiment) experiment;
+            experiment.getInteractions().add(this);
+        }
+        else {
+            MitabExperiment convertedExperiment = new MitabExperiment();
+
+            ExperimentCloner.copyAndOverrideExperimentProperties(experiment, convertedExperiment);
+            mitabExperiment = convertedExperiment;
+            super.setExperiment(experiment);
+            experiment.getInteractions().add(this);
+        }
+    }
+
+    @Override
     public void setCreatedDate(Date created) {
         ((MitabCreationDateList)creationDate).clearOnly();
         super.setCreatedDate(created);
@@ -637,28 +618,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         }
     }
 
-    @Override
-    public void setSource(Source source) {
-        super.setSource(source);
-        processNewSourceDatabasesList(source);
-    }
-
-    private void processNewSourceDatabasesList(Source source) {
-        ((InteractionSourcesList)sourceDatabases).clearOnly();
-        if (source.getMIIdentifier() != null){
-            ((InteractionSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, source.getMIIdentifier(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
-        }
-        else{
-            if (!source.getIdentifiers().isEmpty()){
-                Xref ref = source.getIdentifiers().iterator().next();
-                ((InteractionSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
-            }
-            else {
-                ((InteractionSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl("unknown", "-", source.getFullName() != null ? source.getFullName() : source.getShortName()));
-            }
-        }
-    }
-
     //We need update the toString, equals and hash ?
 
 	/**
@@ -675,7 +634,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 		sb.append(", authors=").append(getAuthors());
 		sb.append(", publications=").append(getPublications());
 		sb.append(", confidenceValues=").append(confidenceValues);
-		sb.append(", sourceDatabases=").append(sourceDatabases);
+		sb.append(", sourceDatabases=").append(getSourceDatabases());
 		sb.append(", interactionAcs=").append(interactionAcs);
 		sb.append(", complexExpansion=").append(complexExpansion);
 		sb.append(", xrefs=").append(interactionXrefs);
@@ -762,7 +721,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 			return false;
 		}
 
-		if (sourceDatabases != null ? !CollectionUtils.isEqualCollection(sourceDatabases, that.sourceDatabases) : that.sourceDatabases != null) {
+		if (getSourceDatabases() != null ? !CollectionUtils.isEqualCollection(getSourceDatabases(), that.getSourceDatabases()) : that.getSourceDatabases() != null) {
 			return false;
 		}
 
@@ -824,10 +783,10 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 		result = 31 * result + (interactionTypes != null ? interactionTypes.hashCode() : 0);
 		result = 31 * result + (getPublications() != null ? getPublications().hashCode() : 0);
 		result = 31 * result + (confidenceValues != null ? confidenceValues.hashCode() : 0);
-		result = 31 * result + (sourceDatabases != null ? sourceDatabases.hashCode() : 0);
+		result = 31 * result + (getSourceDatabases() != null ? getSourceDatabases().hashCode() : 0);
 		result = 31 * result + (interactionAcs != null ? interactionAcs.hashCode() : 0);
 		result = 31 * result + (getAuthors() != null ? getAuthors().hashCode() : 0);
-		result = 31 * result + (sourceDatabases != null ? sourceDatabases.hashCode() : 0);
+		result = 31 * result + (getSourceDatabases() != null ? getSourceDatabases().hashCode() : 0);
 		result = 31 * result + (complexExpansion != null ? complexExpansion.hashCode() : 0);
 		result = 31 * result + (interactionXrefs != null ? interactionXrefs.hashCode() : 0);
 		result = 31 * result + (interactionAnnotations != null ? interactionAnnotations.hashCode() : 0);
@@ -958,67 +917,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void clearProperties() {
             // clear all confidences
             ((BinaryInteractionConfidenceList)confidences).clearOnly();
-        }
-    }
-
-    protected class InteractionSourcesList extends AbstractListHavingPoperties<CrossReference> {
-        public InteractionSourcesList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(CrossReference added) {
-
-            if (source == null){
-                String name = added.getText() != null ? added.getText() : "unknown";
-                source = new DefaultSource(name, name, added);
-            }
-            else {
-                source.getXrefs().add(added);
-                // reset shortname
-                if (source.getMIIdentifier() != null && source.getMIIdentifier().equals(added.getId())){
-                    String name = added.getText();
-
-                    if (name != null){
-                        source.setShortName(name);
-                    }
-                    else {
-                        resetSourceNameFromMiReferences();
-                        if (source.getShortName().equals("unknown")){
-                            resetSourceNameFromFirstReferences();
-                        }
-                    }
-                }
-            }
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(CrossReference removed) {
-
-            if (source != null){
-                source.getXrefs().remove(removed);
-
-                if (removed.getText() != null && source.getShortName().equals(removed.getText())){
-                    if (source.getMIIdentifier() != null){
-                        resetSourceNameFromMiReferences();
-                        if (source.getShortName().equals("unknown")){
-                            resetSourceNameFromFirstReferences();
-                        }
-                    }
-                    else {
-                        resetSourceNameFromFirstReferences();
-                    }
-                }
-            }
-
-            if (isEmpty()){
-                source = null;
-            }
-        }
-
-        @Override
-        protected void clearProperties() {
-            source = null;
         }
     }
 
