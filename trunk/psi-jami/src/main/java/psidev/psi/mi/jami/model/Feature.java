@@ -119,4 +119,10 @@ public interface Feature<T extends Feature, P extends Participant> {
      * @param participant : participant
      */
     public void setParticipant(P participant);
+
+    /**
+     * Sets the participant and add this feature to its list of features
+     * @param participant : participant
+     */
+    public void setParticipantAndAddFeature(P participant);
 }

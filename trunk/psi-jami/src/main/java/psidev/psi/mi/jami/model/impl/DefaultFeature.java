@@ -178,6 +178,14 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         this.participant = participant;
     }
 
+    public void setParticipantAndAddFeature(P participant) {
+        this.participant = participant;
+
+        if (participant != null){
+            this.participant.getFeatures().add(this);
+        }
+    }
+
     @Override
     public int hashCode() {
         // use UnambiguousFeatureBase comparator for hashcode to avoid instance of calls. It is possible that

@@ -30,6 +30,12 @@ public interface Experiment {
     public void setPublication(Publication publication);
 
     /**
+     * Set the publication where the experiment has been described and add the experiment to the list of experiments for this publication
+     * @param publication : the publication
+     */
+    public void setPublicationAndAddExperiment(Publication publication);
+
+    /**
      * The short label of experiment.
      * It can be null.
      * Ex: brehme-2009-1
