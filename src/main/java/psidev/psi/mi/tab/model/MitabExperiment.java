@@ -58,9 +58,13 @@ public class MitabExperiment extends DefaultExperiment{
      * {@inheritDoc}
      */
     public void setDetectionMethods(List<CrossReference> detectionMethods) {
-        ((DetectionMethodsList)this.detectionMethods).clearOnly();
+
         if (detectionMethods != null) {
+            ((DetectionMethodsList)this.detectionMethods).clearOnly();
             this.detectionMethods.addAll(detectionMethods);
+        }
+        else {
+            this.detectionMethods.clear();
         }
     }
 
