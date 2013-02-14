@@ -82,6 +82,8 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
 
         mitabInteractor = (MitabInteractor) interactor;
+        aliases = mitabInteractor.getAliases();
+        xrefs = mitabInteractor.getXrefs();
 	}
 
 	public Interactor(List<CrossReference> identifiers) {
@@ -89,7 +91,6 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 		if (identifiers == null) {
 			throw new IllegalArgumentException("You must give a non null list of identifiers.");
 		}
-        mitabInteractor = (MitabInteractor) interactor;
         mitabInteractor.setUniqueIdentifiers(identifiers);
     }
 
@@ -101,6 +102,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             processNewMethodInIdentificationMethodList(partDetMethod);
         }
         this.mitabInteractor = mitabInteractor;
+        aliases = mitabInteractor.getAliases();
+        xrefs = mitabInteractor.getXrefs();
+        annotations = mitabInteractor.getAnnotations();
     }
 
     @Override
@@ -108,7 +112,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         this.features = new InteractorFeatureList();
     }
 
-	///////////////////////////
+    ///////////////////////////
 	// Getters and Setters
 
 	/**
@@ -388,7 +392,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             return false;
         }
         else if (this.hasOrganism() ){
-            return false;
+            if (this.getOrganism().getTaxId() != -3){
+                return false;
+            }
         }
         else if (this.getBiologicalRoles() != null && !this.getBiologicalRoles().isEmpty()){
             if (!Participant.UNSPECIFIED_ROLE.equals(biologicalRole.getShortName())){
@@ -944,6 +950,28 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 String name = added.getText() != null ? added.getText() : "unknown";
                 biologicalRole = new DefaultCvTerm(name, name, added);
             }
+            // it was a UNSPECIFIED role, needs to clear it
+            else if (size() > 1 && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(biologicalRole.getShortName().trim())){
+                // remove unspecified method
+                CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Participant.UNSPECIFIED_ROLE_MI, Participant.UNSPECIFIED_ROLE);
+                removeOnly(old);
+                biologicalRole.getXrefs().remove(old);
+
+                // reset shortname
+                if (biologicalRole.getMIIdentifier() != null && biologicalRole.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        biologicalRole.setShortName(name);
+                    }
+                    else {
+                        resetBiologicalRoleNameFromMiReferences();
+                        if (biologicalRole.getShortName().equals("unknown")){
+                            resetBiologicalRoleNameFromFirstReferences();
+                        }
+                    }
+                }
+            }
             else {
                 biologicalRole.getXrefs().add(added);
                 // reset shortname
@@ -1007,6 +1035,28 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             if (experimentalRole == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
                 experimentalRole = new DefaultCvTerm(name, name, added);
+            }
+            // it was a UNSPECIFIED role, needs to clear it
+            else if (size() > 1 && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(experimentalRole.getShortName().trim())){
+                // remove unspecified method
+                CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Participant.UNSPECIFIED_ROLE_MI, Participant.UNSPECIFIED_ROLE);
+                removeOnly(old);
+                experimentalRole.getXrefs().remove(old);
+
+                // reset shortname
+                if (experimentalRole.getMIIdentifier() != null && experimentalRole.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        experimentalRole.setShortName(name);
+                    }
+                    else {
+                        resetExperimentalRoleNameFromMiReferences();
+                        if (experimentalRole.getShortName().equals("unknown")){
+                            resetExperimentalRoleNameFromFirstReferences();
+                        }
+                    }
+                }
             }
             else {
                 experimentalRole.getXrefs().add(added);

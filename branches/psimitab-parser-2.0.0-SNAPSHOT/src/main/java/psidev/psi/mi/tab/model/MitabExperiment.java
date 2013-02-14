@@ -59,7 +59,7 @@ public class MitabExperiment extends DefaultExperiment{
      */
     public void setDetectionMethods(List<CrossReference> detectionMethods) {
 
-        if (detectionMethods != null && !detectionMethods.isEmpty()) {
+        if (detectionMethods != null) {
             ((DetectionMethodsList)this.detectionMethods).clearOnly();
             this.detectionMethods.addAll(detectionMethods);
         }
@@ -206,6 +206,28 @@ public class MitabExperiment extends DefaultExperiment{
             if (interactionDetectionMethod == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
                 interactionDetectionMethod = new DefaultCvTerm(name, name, added);
+            }
+            // it was a UNSPECIFIED method, needs to clear it
+            else if (size() > 1 && Experiment.UNSPECIFIED_METHOD.equalsIgnoreCase(interactionDetectionMethod.getShortName().trim())){
+                // remove unspecified method
+                CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Experiment.UNSPECIFIED_METHOD_MI, Experiment.UNSPECIFIED_METHOD);
+                removeOnly(old);
+                interactionDetectionMethod.getXrefs().remove(old);
+
+                // reset shortname
+                if (interactionDetectionMethod.getMIIdentifier() != null && interactionDetectionMethod.getMIIdentifier().equals(added.getId())){
+                    String name = added.getText();
+
+                    if (name != null){
+                        interactionDetectionMethod.setShortName(name);
+                    }
+                    else {
+                        resetInteractionDetectionMethodNameFromMiReferences();
+                        if (interactionDetectionMethod.getShortName().equals("unknown")){
+                            resetInteractionDetectionMethodNameFromFirstReferences();
+                        }
+                    }
+                }
             }
             else {
                 interactionDetectionMethod.getXrefs().add(added);
