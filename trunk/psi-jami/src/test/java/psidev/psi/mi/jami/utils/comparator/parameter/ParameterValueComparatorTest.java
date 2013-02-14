@@ -21,7 +21,7 @@ public class ParameterValueComparatorTest {
     @Test
     public void test_parameter_value_null_after() throws Exception {
         ParameterValue parameter1 = null;
-        ParameterValue parameter2 = new ParameterValue(new BigDecimal(5));
+        ParameterValue parameter2 = new ParameterValue(new BigDecimal("5"));
 
         Assert.assertTrue(comparator.compare(parameter1, parameter2) > 0);
         Assert.assertTrue(comparator.compare(parameter2, parameter1) < 0);
@@ -32,8 +32,8 @@ public class ParameterValueComparatorTest {
 
     @Test
     public void test_parameter_value_comparison() throws Exception {
-        ParameterValue parameter1 = new ParameterValue(new BigDecimal(5), (short)10, (short)0);
-        ParameterValue parameter2 = new ParameterValue(new BigDecimal(5));
+        ParameterValue parameter1 = new ParameterValue(new BigDecimal("5"), (short)10, (short)0);
+        ParameterValue parameter2 = new ParameterValue(new BigDecimal("5"));
 
         Assert.assertTrue(comparator.compare(parameter1, parameter2) == 0);
         Assert.assertTrue(comparator.compare(parameter2, parameter1) == 0);
@@ -44,8 +44,8 @@ public class ParameterValueComparatorTest {
 
     @Test
     public void test_parameter_value_different_exponent() throws Exception {
-        ParameterValue parameter1 = new ParameterValue(new BigDecimal(5), (short)10, (short)-1);
-        ParameterValue parameter2 = new ParameterValue(new BigDecimal(5));
+        ParameterValue parameter1 = new ParameterValue(new BigDecimal("5"), (short)10, (short)-1);
+        ParameterValue parameter2 = new ParameterValue(new BigDecimal("5"));
 
         Assert.assertTrue(comparator.compare(parameter1, parameter2) < 0);
         Assert.assertTrue(comparator.compare(parameter2, parameter1) > 0);

@@ -17,11 +17,11 @@ public class ParameterValueTest {
 
     @Test
     public void test_default_parameter_value() throws Exception {
-        ParameterValue parameterValue = new ParameterValue(new BigDecimal(5));
+        ParameterValue parameterValue = new ParameterValue(new BigDecimal("5"));
 
         Assert.assertTrue(parameterValue.getBase() == 10);
         Assert.assertTrue(parameterValue.getExponent() == 0);
-        Assert.assertTrue(parameterValue.getFactor().equals(new BigDecimal(5)));
+        Assert.assertTrue(parameterValue.getFactor().equals(new BigDecimal("5")));
         Assert.assertTrue(parameterValue.doubleValue() == 5d);
         Assert.assertTrue(parameterValue.floatValue() == 5f);
         Assert.assertTrue(parameterValue.intValue() == 5);
