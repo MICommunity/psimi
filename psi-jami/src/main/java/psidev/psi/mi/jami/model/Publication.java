@@ -185,4 +185,32 @@ public interface Publication {
      * @param source: source for this publication
      */
     public void setSource(Source source);
+
+    /**
+     * This method will add the experiment and set the publication of the new experiment to this current publication
+     * @param exp
+     * @return true if experiment is added to the list of experiments
+     */
+    public boolean  addExperiment(Experiment exp);
+
+    /**
+     * This method will remove the experiment and set the publication of the removed experiment to null.
+     * @param exp
+     * @return true if experiment is removed from the list of experiments
+     */
+    public boolean removeExperiment(Experiment exp);
+
+    /**
+     * This method will add all the experiments and set the publication of the new experiments to this current publication
+     * @param exp
+     * @return true if experiments are added to the list of experiments
+     */
+    public boolean  addAllExperiments(Collection<? extends Experiment> exp);
+
+    /**
+     * This method will remove the experiments and set the publication of the removed experiments to null.
+     * @param exp
+     * @return true if experiments are removed from the list of experiments
+     */
+    public boolean removeAllExperiments(Collection<? extends Experiment> exp);
 }

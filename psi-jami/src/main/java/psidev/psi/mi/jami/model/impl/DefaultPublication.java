@@ -276,6 +276,64 @@ public class DefaultPublication implements Publication, Serializable {
         this.source = source;
     }
 
+    public boolean addExperiment(Experiment exp) {
+        if (exp == null){
+            return false;
+        }
+        else {
+            if (experiments.add(exp)){
+                exp.setPublication(this);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public boolean removeExperiment(Experiment exp) {
+        if (exp == null){
+            return false;
+        }
+        else {
+            if (experiments.remove(exp)){
+                exp.setPublication(null);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public boolean addAllExperiments(Collection<? extends Experiment> exps) {
+        if (exps == null){
+            return false;
+        }
+        else {
+            boolean added = false;
+
+            for (Experiment exp : exps){
+                if (addExperiment(exp)){
+                    added = true;
+                }
+            }
+            return added;
+        }
+    }
+
+    public boolean removeAllExperiments(Collection<? extends Experiment> exps) {
+        if (exps == null){
+            return false;
+        }
+        else {
+            boolean removed = false;
+
+            for (Experiment exp : exps){
+                if (removeExperiment(exp)){
+                    removed = true;
+                }
+            }
+            return removed;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){

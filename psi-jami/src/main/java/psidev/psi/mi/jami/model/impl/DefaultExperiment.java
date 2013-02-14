@@ -25,9 +25,7 @@ public class DefaultExperiment implements Experiment {
     protected Collection<InteractionEvidence> interactions;
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod){
-         if (publication == null){
-             throw new IllegalArgumentException("The publication is required and cannot be null");
-         }
+
         this.publication = publication;
         if (interactionDetectionMethod == null){
             throw new IllegalArgumentException("The interaction detection method is required and cannot be null");
@@ -59,9 +57,6 @@ public class DefaultExperiment implements Experiment {
     }
 
     public void setPublication(Publication publication) {
-        if (publication == null){
-            throw new IllegalArgumentException("The publication cannot be null");
-        }
         this.publication = publication;
     }
 

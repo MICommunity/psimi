@@ -109,7 +109,7 @@ public interface Feature<T extends Feature, P extends Participant> {
 
     /**
      * The participant to which the feature is attached.
-     * It cannot be null.
+     * It can be null if the feature is not attached to any participants.
      * @return the participant
      */
     public P getParticipant();
@@ -117,7 +117,6 @@ public interface Feature<T extends Feature, P extends Participant> {
     /**
      * Sets the participant.
      * @param participant : participant
-     * @throws IllegalArgumentException when participant is null
      */
     public void setParticipant(P participant);
 }

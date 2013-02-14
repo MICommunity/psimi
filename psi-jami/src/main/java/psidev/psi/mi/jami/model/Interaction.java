@@ -142,4 +142,32 @@ public interface Interaction<P extends Participant> {
      * @param term : interaction type
      */
     public void setType(CvTerm term);
+
+    /**
+     * This method will add the participant and set the interaction of the new participant to this current interaction
+     * @param part
+     * @return true if participant is added to the list of participants
+     */
+    public boolean  addParticipant(P part);
+
+    /**
+     * This method will remove the participant and set the interaction of the removed participant to null.
+     * @param part
+     * @return true if participant is removed from the list of participants
+     */
+    public boolean removeParticipant(P part);
+
+    /**
+     * This method will add all participants and set the interaction of the new participants to this current interaction
+     * @param part
+     * @return true if participants are added to the list of participants
+     */
+    public boolean  addAllParticipants(Collection<? extends P> part);
+
+    /**
+     * This method will remove all the participant and set the interaction of the removed participants to null.
+     * @param part
+     * @return true if participants are removed from the list of participants
+     */
+    public boolean removeAllParticipants(Collection<? extends P> part);
 }

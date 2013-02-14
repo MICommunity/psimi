@@ -17,7 +17,8 @@ public interface Experiment {
 
     /**
      * The publication where the experiment has been described.
-     * It cannot be null.
+     * It can be null if the experiment is not attached to any publications.
+     * This can happen when an experiment has been removed from a publication and is not valid anymore.
      * @return the publication
      */
     public Publication getPublication();
@@ -25,7 +26,6 @@ public interface Experiment {
     /**
      * Set the publication where the experiment has been described.
      * @param publication : the publication
-     * @throws IllegalArgumentException if the publication is null
      */
     public void setPublication(Publication publication);
 
