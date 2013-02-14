@@ -20,7 +20,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(10));
         assertEquals(parameter.getExponent(), Integer.valueOf(0));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(0.0));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -35,7 +35,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(2));
         assertEquals(parameter.getExponent(), Integer.valueOf(0));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(0.0));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -50,7 +50,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(3));
         assertEquals(parameter.getExponent(), Integer.valueOf(2));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(0.0));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -64,7 +64,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(2));
         assertEquals(parameter.getExponent(), Integer.valueOf(5));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(0.3));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(0.3));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -78,7 +78,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(10));
         assertEquals(parameter.getExponent(), Integer.valueOf(0));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(0.0));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -93,7 +93,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(-2));
         assertEquals(parameter.getExponent(), Integer.valueOf(0));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(0.0));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -108,7 +108,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(-12));
         assertEquals(parameter.getExponent(), Integer.valueOf(-2));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(0.0));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(0.0));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -122,7 +122,7 @@ public class ParameterImplTest {
         assertEquals(parameter.getFactor(), Double.valueOf(-4.0));
         assertEquals(parameter.getBase(), Integer.valueOf(-12));
         assertEquals(parameter.getExponent(), Integer.valueOf(-2));
-        assertEquals(parameter.getUncertainty(), Double.valueOf(-0.3));
+        assertEquals(parameter.getUncertaintyAsDouble(), Double.valueOf(-0.3));
         assertEquals(parameter.getParameterUnit(), "molar");
         assertEquals(parameter.getParameterType(), "Kd");
 
@@ -137,7 +137,7 @@ public class ParameterImplTest {
 		assertEquals(parameterOne.getFactor(), Double.valueOf(1.62));
 		assertEquals(parameterOne.getBase(), Integer.valueOf(10));
 		assertEquals(parameterOne.getExponent(), Integer.valueOf(-8));
-		assertEquals(parameterOne.getUncertainty(), Double.valueOf(0.01));
+		assertEquals(parameterOne.getUncertaintyAsDouble(), Double.valueOf(0.01));
 		assertEquals(parameterOne.getParameterUnit(), "molar");
 		assertEquals(parameterOne.getParameterType(), "Kd");
 		assertEquals(parameterOne.getValueAsString(),"1.62x10^-8 ~0.01");
@@ -145,7 +145,7 @@ public class ParameterImplTest {
 		assertEquals(parameterTwo.getFactor(), Double.valueOf(1.62));
 		assertEquals(parameterTwo.getBase(), Integer.valueOf(10));
 		assertEquals(parameterTwo.getExponent(), Integer.valueOf(-8));
-		assertEquals(parameterTwo.getUncertainty(), Double.valueOf(0.01));
+		assertEquals(parameterTwo.getUncertaintyAsDouble(), Double.valueOf(0.01));
 		assertEquals(parameterTwo.getParameterUnit(), "molar");
 		assertEquals(parameterTwo.getParameterType(), "Kd");
 		assertEquals(parameterTwo.getValueAsString(),"1.62x10^-8 ~0.01");
