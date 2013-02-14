@@ -343,9 +343,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      * @param biologicalRoles Value to set for property 'biologicalRoles'.
      */
     public void setBiologicalRoles(List<CrossReference> biologicalRoles) {
-        ((BiologicalRoleList)this.biologicalRoles).clearOnly() ;
+
         if (biologicalRoles != null) {
+            ((BiologicalRoleList)this.biologicalRoles).clearOnly() ;
             this.biologicalRoles.addAll(biologicalRoles);
+        }
+        else {
+            this.biologicalRoles.clear();
         }
     }
 
@@ -364,9 +368,12 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      * @param experimentalRoles Value to set for property 'experimentalRoles'.
      */
     public void setExperimentalRoles(List<CrossReference> experimentalRoles) {
-        ((ExperimentalRoleList)this.experimentalRoles).clearOnly();
         if (experimentalRoles != null) {
+            ((ExperimentalRoleList)this.experimentalRoles).clearOnly();
             this.experimentalRoles.addAll(experimentalRoles);
+        }
+        else {
+            this.experimentalRoles.clear();
         }
     }
 
