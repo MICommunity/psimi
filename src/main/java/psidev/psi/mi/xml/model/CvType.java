@@ -40,7 +40,7 @@ import java.util.Collections;
 
 public abstract class CvType extends DefaultCvTerm implements NamesContainer, XrefContainer {
 
-    private Names names;
+    private Names names = new CvTermNames();
 
     private Xref xref;
 
@@ -58,9 +58,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         setNames( names );
 
         // set xrefs
-        if (xref != null){
-            this.xref = new CvTermXref(xref.getPrimaryRef(), xref.getSecondaryRef());
-        }
+        setXref(xref);
     }
 
     @Override
@@ -103,7 +101,17 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
      * @param value allowed object is {@link Names }
      */
     public void setNames( Names value ) {
-        this.names = value;
+        if (value != null){
+            this.names.setShortLabel(value.getShortLabel());
+            this.names.setFullName(value.getFullName());
+            this.names.getAliases().addAll(value.getAliases());
+        }
+        else {
+            synonyms.clear();
+            this.shortName = UNSPECIFIED;
+            this.fullName = null;
+            this.names = null;
+        }
     }
 
     /**
@@ -234,9 +242,6 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         protected boolean isPrimaryAnIdentity = false;
         protected SecondaryRefList extendedSecondaryRefList = new SecondaryRefList();
 
-        ///////////////////////////
-        // Constructors
-
         public CvTermXref() {
             super();
         }
@@ -253,14 +258,6 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             }
         }
 
-        ///////////////////////////
-        // Getters and Setters
-
-        /**
-         * Sets the value of the primaryRef property.
-         *
-         * @param value allowed object is {@link DbReference }
-         */
         public void setPrimaryRef( DbReference value ) {
             if (getPrimaryRef() == null){
                 super.setPrimaryRef(value);
@@ -311,33 +308,10 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             }
         }
 
-        /**
-         * Check if the optional secondaryRef is defined.
-         *
-         * @return true if defined, false otherwise.
-         */
         public boolean hasSecondaryRef() {
             return ( extendedSecondaryRefList != null ) && ( !extendedSecondaryRefList.isEmpty() );
         }
 
-        /**
-         * Gets the value of the secondaryRef property.
-         * <p/>
-         * <p/>
-         * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
-         * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
-         * the secondaryRef property.
-         * <p/>
-         * <p/>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getSecondaryRef().add(newItem);
-         * </pre>
-         * <p/>
-         * <p/>
-         * <p/>
-         * Objects of the following type(s) are allowed in the list {@link DbReference }
-         */
         public Collection<DbReference> getSecondaryRef() {
             return this.extendedSecondaryRefList;
         }
@@ -352,9 +326,6 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             }
             return refs;
         }
-
-        //////////////////////
-        // Object override
 
         @Override
         public String toString() {
@@ -438,6 +409,19 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                     }
                 }
             }
+            else {
+                if (added instanceof DbReference){
+                    xref = new Xref((DbReference) added);
+                    processAddedIdentifier(added);
+                }
+                else {
+                    DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
+                            added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
+
+                    xref = new Xref(fixedRef);
+                    processAddedIdentifier(fixedRef);
+                }
+            }
         }
 
         @Override
@@ -516,6 +500,17 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                     }
                 }
             }
+            else {
+                if (added instanceof DbReference){
+                    xref = new Xref((DbReference) added);
+                }
+                else {
+                    DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
+                            added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
+
+                    xref = new Xref(fixedRef);
+                }
+            }
         }
 
         @Override
@@ -551,6 +546,164 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                 if (!reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
                 }
+            }
+        }
+    }
+
+    protected class CvTermNames extends Names{
+
+        protected AliasList extendedAliases = new AliasList();
+
+        public String getShortLabel() {
+            return shortName;
+        }
+
+        public boolean hasShortLabel() {
+            return shortName != null;
+        }
+
+        public void setShortLabel( String value ) {
+            if (value != null){
+                shortName = value;
+            }
+            else {
+                shortName = UNSPECIFIED;
+            }
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public boolean hasFullName() {
+            return fullName != null;
+        }
+
+        public void setFullName( String value ) {
+            fullName = value;
+        }
+
+        public Collection<Alias> getAliases() {
+            return this.extendedAliases;
+        }
+
+        public boolean hasAliases() {
+            return ( extendedAliases != null ) && ( !extendedAliases.isEmpty() );
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder();
+            sb.append( "Names" );
+            sb.append( "{shortLabel='" ).append( shortName ).append( '\'' );
+            sb.append( ", fullName='" ).append( fullName ).append( '\'' );
+            sb.append( ", aliases=" ).append( extendedAliases );
+            sb.append( '}' );
+            return sb.toString();
+        }
+
+        @Override
+        public boolean equals( Object o ) {
+            if ( this == o ) return true;
+            if ( o == null || getClass() != o.getClass() ) return false;
+
+            Names names = ( Names ) o;
+
+            if ( extendedAliases != null ? !extendedAliases.equals( names.getAliases() ) : names.getAliases() != null ) return false;
+            if ( fullName != null ? !fullName.equals( names.getFullName() ) : names.getFullName() != null ) return false;
+            if ( shortName != null ? !shortName.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            result = ( shortName != null ? shortName.hashCode() : 0 );
+            result = 31 * result + ( fullName != null ? fullName.hashCode() : 0 );
+            result = 31 * result + ( extendedAliases != null ? extendedAliases.hashCode() : 0 );
+            return result;
+        }
+
+        protected class AliasList extends AbstractListHavingPoperties<Alias>{
+
+            @Override
+            protected void processAddedObjectEvent(Alias added) {
+                ((CvTermAliasList) synonyms).addOnly(added);
+            }
+
+            @Override
+            protected void processRemovedObjectEvent(Alias removed) {
+                ((CvTermAliasList)synonyms).removeOnly(removed);
+            }
+
+            @Override
+            protected void clearProperties() {
+                ((CvTermAliasList)synonyms).clearOnly();
+            }
+        }
+    }
+
+    private class CvTermAliasList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Alias> {
+        public CvTermAliasList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Alias added) {
+
+            if (names != null){
+                CvTermNames name = (CvTermNames) names;
+
+                if (added instanceof Alias){
+                    ((CvTermNames.AliasList) name.getAliases()).addOnly((Alias) added);
+                }
+                else {
+                    Alias fixedAlias = new Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
+
+                    ((CvTermNames.AliasList) name.getAliases()).addOnly(fixedAlias);
+                }
+            }
+            else {
+                if (added instanceof Alias){
+                    names = new Names();
+                    names.setShortLabel(UNSPECIFIED);
+                    ((CvTermNames.AliasList) names.getAliases()).addOnly((Alias)added);
+                }
+                else {
+                    Alias fixedAlias = new Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
+
+                    names = new Names();
+                    names.setShortLabel(UNSPECIFIED);
+                    ((CvTermNames.AliasList) names.getAliases()).addOnly((Alias)fixedAlias);
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Alias removed) {
+
+            if (names != null){
+                CvTermNames name = (CvTermNames) names;
+
+                if (removed instanceof Alias){
+                    name.extendedAliases.removeOnly((Alias) removed);
+
+                }
+                else {
+                    Alias fixedAlias = new Alias(removed.getName(), removed.getType() != null ? removed.getType().getShortName() : null, removed.getType() != null ? removed.getType().getMIIdentifier() : null);
+
+                    name.extendedAliases.removeOnly(fixedAlias);
+                }
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+
+            if (names != null){
+                CvTermNames name = (CvTermNames) names;
+                name.extendedAliases.clearOnly();
             }
         }
     }
