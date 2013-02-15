@@ -7,6 +7,12 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.ParameterValue;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultParameter;
+
+import java.math.BigDecimal;
+
 /**
  * <p>Java class for anonymous complex type.
  * <p/>
@@ -26,37 +32,23 @@ package psidev.psi.mi.xml.model;
  * </pre>
  */
 
-public class Parameter {
+public class Parameter extends DefaultParameter{
 
     private ExperimentRef experimentRef;
 
     private ExperimentDescription experiment;
 
-    private Double uncertainty;
-
-    private Integer base;
-
-    private Integer exponent;
-
-    private double factor;
-
-    private String term;
-
-    private String termAc;
-
-    private String unit;
-
-    private String unitAc;
+    private static final String UNSPECIFIED="unspecified";
 
     ///////////////////////////
     // Constructors
 
     public Parameter() {
+        super(new DefaultCvTerm(UNSPECIFIED), new ParameterValue(new BigDecimal("0")));
     }
 
     public Parameter( String term, double factor ) {
-        this.term = term;
-        this.factor = factor;
+        super(new DefaultCvTerm(term != null ? term : UNSPECIFIED), new ParameterValue(new BigDecimal(Double.toString(factor))));
     }
 
     ///////////////////////////
@@ -68,7 +60,7 @@ public class Parameter {
      * @return true if defined, false otherwise.
      */
     public boolean hasBase() {
-        return base != null;
+        return !(value.getExponent() == 0 && value.getBase() == 10);
     }
 
     /**
@@ -77,11 +69,7 @@ public class Parameter {
      * @return possible object is {@link Short }
      */
     public int getBase() {
-        if ( base == null ) {
-            return 10;
-        } else {
-            return base;
-        }
+        return value.getBase();
     }
 
     /**
@@ -90,7 +78,7 @@ public class Parameter {
      * @param value allowed object is {@link Short }
      */
     public void setBase( int value ) {
-        this.base = value;
+        this.value = new ParameterValue(this.value.getFactor(), (short)value, this.value.getExponent());
     }
 
     /**
@@ -99,7 +87,7 @@ public class Parameter {
      * @return true if defined, false otherwise.
      */
     public boolean hasExponent() {
-        return exponent != null;
+        return value.getExponent() != 0;
     }
 
     /**
@@ -108,11 +96,7 @@ public class Parameter {
      * @return possible object is {@link Short }
      */
     public int getExponent() {
-        if ( exponent == null ) {
-            return 0;
-        } else {
-            return exponent;
-        }
+        return (int)value.getExponent();
     }
 
     /**
@@ -121,7 +105,7 @@ public class Parameter {
      * @param value allowed object is {@link Short }
      */
     public void setExponent( int value ) {
-        this.exponent = value;
+        this.value = new ParameterValue(this.value.getFactor(), this.value.getBase(), (short) value);
     }
 
     /**
@@ -130,7 +114,7 @@ public class Parameter {
      * @return possible object is {@link Double }
      */
     public double getFactor() {
-        return factor;
+        return this.value.getFactor().doubleValue();
     }
 
     /**
@@ -139,7 +123,7 @@ public class Parameter {
      * @param value allowed object is {@link Double }
      */
     public void setFactor( double value ) {
-        this.factor = value;
+        this.value = new ParameterValue(new BigDecimal(Double.toString(value)), this.value.getBase(), this.value.getExponent());
     }
 
     /**
@@ -148,7 +132,7 @@ public class Parameter {
      * @return true if defined, false otherwise.
      */
     public boolean hasTerm() {
-        return term != null;
+        return type != null && type.getShortName() != null;
     }
 
     /**
@@ -157,7 +141,7 @@ public class Parameter {
      * @return possible object is {@link String }
      */
     public String getTerm() {
-        return term;
+        return type != null ? type.getShortName() : null;
     }
 
     /**
@@ -166,7 +150,12 @@ public class Parameter {
      * @param value allowed object is {@link String }
      */
     public void setTerm( String value ) {
-        this.term = value;
+        if (type != null){
+            type.setShortName(value != null ? value : UNSPECIFIED);
+        }
+        else {
+            type = new DefaultCvTerm(value != null ? value : UNSPECIFIED);
+        }
     }
 
     /**
@@ -175,7 +164,7 @@ public class Parameter {
      * @return true if defined, false otherwise.
      */
     public boolean hasTermAc() {
-        return termAc != null;
+        return type != null && type.getMIIdentifier() != null;
     }
 
     /**
@@ -184,7 +173,7 @@ public class Parameter {
      * @return possible object is {@link String }
      */
     public String getTermAc() {
-        return termAc;
+        return type != null ? type.getMIIdentifier() : null;
     }
 
     /**
@@ -193,7 +182,12 @@ public class Parameter {
      * @param value allowed object is {@link String }
      */
     public void setTermAc( String value ) {
-        this.termAc = value;
+        if (type != null){
+            type.setMIIdentifier(value);
+        }
+        else {
+            type = new DefaultCvTerm(UNSPECIFIED, value);
+        }
     }
 
     /**
@@ -210,8 +204,8 @@ public class Parameter {
      *
      * @return possible object is {@link String }
      */
-    public String getUnit() {
-        return unit;
+    public String getUnitName() {
+        return unit != null ? unit.getShortName() : null;
     }
 
     /**
@@ -220,7 +214,20 @@ public class Parameter {
      * @param value allowed object is {@link String }
      */
     public void setUnit( String value ) {
-        this.unit = value;
+        if (value == null){
+            if (this.unit != null && this.unit.getMIIdentifier() != null){
+                unit.setShortName(UNSPECIFIED);
+            }
+            else {
+                this.unit = null;
+            }
+        }
+        else if (this.unit == null){
+            this.unit = new DefaultCvTerm(value);
+        }
+        else {
+            this.unit.setShortName(value);
+        }
     }
 
     /**
@@ -229,7 +236,7 @@ public class Parameter {
      * @return true if defined, false otherwise.
      */
     public boolean hasUnitAc() {
-        return unitAc != null;
+        return unit != null && unit.getMIIdentifier() != null;
     }
 
     /**
@@ -238,7 +245,7 @@ public class Parameter {
      * @return possible object is {@link String }
      */
     public String getUnitAc() {
-        return unitAc;
+        return unit != null ? unit.getMIIdentifier() : null;
     }
 
     /**
@@ -247,7 +254,20 @@ public class Parameter {
      * @param value allowed object is {@link String }
      */
     public void setUnitAc( String value ) {
-        this.unitAc = value;
+        if (value == null){
+            if (this.unit != null){
+                unit.setMIIdentifier(null);
+            }
+            else {
+                this.unit = null;
+            }
+        }
+        else if (this.unit == null){
+            this.unit = new DefaultCvTerm(UNSPECIFIED, value);
+        }
+        else {
+            this.unit.setMIIdentifier(value);
+        }
     }
 
     /**
@@ -304,11 +324,8 @@ public class Parameter {
      *
      * @return possible object is {@link java.math.BigDecimal }
      */
-    public double getUncertainty() {
-        if ( uncertainty == null ) {
-            uncertainty = new Double( 0 );
-        }
-        return uncertainty;
+    public double getUncertaintyAsDouble() {
+        return uncertainty != null ? uncertainty.doubleValue() : new Double( 0 );
     }
 
     /**
@@ -317,7 +334,7 @@ public class Parameter {
      * @param value allowed object is {@link java.math.BigDecimal }
      */
     public void setUncertainty( double value ) {
-        this.uncertainty = value;
+        this.uncertainty = new BigDecimal(Double.toString(value));
     }
 
     //////////////////////////////
@@ -330,13 +347,13 @@ public class Parameter {
         sb.append( "{experiment=" ).append( experiment );
         sb.append( ", experimentRef=" ).append( experimentRef );
         sb.append( ", uncertainty=" ).append( uncertainty );
-        sb.append( ", base=" ).append( base );
-        sb.append( ", exponent=" ).append( exponent );
-        sb.append( ", factor=" ).append( factor );
-        sb.append( ", term='" ).append( term ).append( '\'' );
-        sb.append( ", termAc='" ).append( termAc ).append( '\'' );
-        sb.append( ", unit='" ).append( unit ).append( '\'' );
-        sb.append( ", unitAc='" ).append( unitAc ).append( '\'' );
+        sb.append( ", base=" ).append( value.getBase() );
+        sb.append( ", exponent=" ).append( value.getExponent() );
+        sb.append( ", factor=" ).append( value.getFactor() );
+        sb.append( ", term='" ).append( getTerm() ).append( '\'' );
+        sb.append( ", termAc='" ).append( getTermAc() ).append( '\'' );
+        sb.append( ", unit='" ).append( getUnit() ).append( '\'' );
+        sb.append( ", unitAc='" ).append( getUnitAc() ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
     }
@@ -352,31 +369,31 @@ public class Parameter {
 
         final Parameter parameter = ( Parameter ) o;
 
-        if ( Double.compare( parameter.factor, factor ) != 0 ) {
+        if ( Double.compare( parameter.getFactor(), getFactor() ) != 0 ) {
             return false;
         }
-        if ( base != null ? !base.equals( parameter.base ) : parameter.base != null ) {
+        if ( value.getBase() != parameter.getBase() ) {
             return false;
         }
         if ( experiment != null ? !experiment.equals( parameter.experiment ) : parameter.experiment != null ) {
             return false;
         }
-        if ( exponent != null ? !exponent.equals( parameter.exponent ) : parameter.exponent != null ) {
+        if ( value.getExponent() != parameter.getValue().getExponent() ) {
             return false;
         }
-        if ( !term.equals( parameter.term ) ) {
+        if ( !getTerm().equals( parameter.getTerm() ) ) {
             return false;
         }
-        if ( termAc != null ? !termAc.equals( parameter.termAc ) : parameter.termAc != null ) {
+        if ( getTermAc() != null ? !getTermAc().equals( parameter.getTermAc() ) : parameter.getTermAc() != null ) {
             return false;
         }
-        if ( uncertainty != null ? !uncertainty.equals( parameter.uncertainty ) : parameter.uncertainty != null ) {
+        if ( uncertainty != null ? getUncertaintyAsDouble() != parameter.getUncertaintyAsDouble() : false) {
             return false;
         }
-        if ( unit != null ? !unit.equals( parameter.unit ) : parameter.unit != null ) {
+        if ( getUnit() != null ? !getUnit().equals( getUnit() ) : getUnit() != null ) {
             return false;
         }
-        if ( unitAc != null ? !unitAc.equals( parameter.unitAc ) : parameter.unitAc != null ) {
+        if ( getUnitAc() != null ? !getUnitAc().equals( parameter.getUnitAc() ) : parameter.getUnitAc() != null ) {
             return false;
         }
 
@@ -389,14 +406,14 @@ public class Parameter {
         long temp;
         result = ( experiment != null ? experiment.hashCode() : 0 );
         result = 29 * result + ( uncertainty != null ? uncertainty.hashCode() : 0 );
-        result = 29 * result + ( base != null ? base.hashCode() : 0 );
-        result = 29 * result + ( exponent != null ? exponent.hashCode() : 0 );
-        temp = factor != +0.0d ? Double.doubleToLongBits( factor ) : 0L;
+        result = 29 * result + value.getBase();
+        result = 29 * result + value.getExponent();
+        temp = getFactor() != +0.0d ? Double.doubleToLongBits( getFactor() ) : 0L;
         result = 29 * result + ( int ) ( temp ^ ( temp >>> 32 ) );
-        result = 29 * result + term.hashCode();
-        result = 29 * result + ( termAc != null ? termAc.hashCode() : 0 );
+        result = 29 * result + getTerm().hashCode();
+        result = 29 * result + ( getTermAc() != null ? getTermAc().hashCode() : 0 );
         result = 29 * result + ( unit != null ? unit.hashCode() : 0 );
-        result = 29 * result + ( unitAc != null ? unitAc.hashCode() : 0 );
+        result = 29 * result + ( getUnitAc() != null ? getUnitAc().hashCode() : 0 );
         return result;
     }
 

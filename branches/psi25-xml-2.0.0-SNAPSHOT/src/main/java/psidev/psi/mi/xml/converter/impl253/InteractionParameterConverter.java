@@ -163,10 +163,10 @@ public class InteractionParameterConverter {
         jParameter.setTermAc( mParameter.getTermAc() );
 
         if ( mParameter.hasUncertainty() ) {
-            jParameter.setUncertainty( new Double( mParameter.getUncertainty() ) );
+            jParameter.setUncertainty( new Double( mParameter.getUncertaintyAsDouble() ) );
         }
 
-        jParameter.setUnit( mParameter.getUnit() );
+        jParameter.setUnit( mParameter.getUnitName() );
         jParameter.setUnitAc( mParameter.getUnitAc() );
 
         // 2. set encapsulated objects

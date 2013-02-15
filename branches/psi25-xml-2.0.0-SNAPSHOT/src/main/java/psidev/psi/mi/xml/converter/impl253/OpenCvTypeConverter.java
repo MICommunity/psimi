@@ -51,7 +51,7 @@ public class OpenCvTypeConverter {
      * Example:
      *          ConfidenceType confidence = ...;
      *          psidev.psi.mi.xml.model.Unit mUnit = null;
-     *          psidev.psi.mi.xml253.jaxb.OpenCvType jUnit = confidence.getUnit();
+     *          psidev.psi.mi.xml253.jaxb.OpenCvType jUnit = confidence.getUnitName();
      *          mUnit = fromJaxb( jUnit, psidev.psi.mi.xml.model.Unit.class );
      * </pre>
      *
