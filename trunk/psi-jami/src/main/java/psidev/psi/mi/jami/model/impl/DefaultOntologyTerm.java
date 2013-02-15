@@ -29,10 +29,14 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
 
     public DefaultOntologyTerm(String shortName, String miIdentifier) {
         super(shortName, miIdentifier);
+        this.parents = new ArrayList<CvTerm>();
+        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, String miIdentifier) {
         super(shortName, fullName, miIdentifier);
+        this.parents = new ArrayList<CvTerm>();
+        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, String miIdentifier, String def){
@@ -42,10 +46,14 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
 
     public DefaultOntologyTerm(String shortName, Xref ontologyId) {
         super(shortName, ontologyId);
+        this.parents = new ArrayList<CvTerm>();
+        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, Xref ontologyId) {
         super(shortName, fullName, ontologyId);
+        this.parents = new ArrayList<CvTerm>();
+        this.children = new ArrayList<CvTerm>();
     }
 
     public DefaultOntologyTerm(String shortName, String fullName, Xref ontologyId, String def){

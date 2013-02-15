@@ -142,7 +142,7 @@ public class ExactXrefComparatorTest {
     @Test
     public void test_version_null_after() throws Exception {
         Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("chebi", null), "CHEBI:xxx");
-        Xref id2 = new DefaultXref(CvTermFactory.createMICvTerm("CheBi ", null), "CHEBI:xxx", 2);
+        Xref id2 = new DefaultXref(CvTermFactory.createMICvTerm("CheBi ", null), "CHEBI:xxx", "2");
 
         Assert.assertTrue(comparator.compare(id1, id2) > 0);
         Assert.assertTrue(comparator.compare(id2, id1) < 0);
@@ -153,8 +153,8 @@ public class ExactXrefComparatorTest {
 
     @Test
     public void test_version_comparison() throws Exception {
-        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("chebi", null), "CHEBI:xxx", 2);
-        Xref id2 = new DefaultXref(CvTermFactory.createMICvTerm("CheBi ", null), "CHEBI:xxx", 1);
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("chebi", null), "CHEBI:xxx", "2");
+        Xref id2 = new DefaultXref(CvTermFactory.createMICvTerm("CheBi ", null), "CHEBI:xxx", "1");
 
         Assert.assertTrue(comparator.compare(id1, id2) > 0);
         Assert.assertTrue(comparator.compare(id2, id1) < 0);

@@ -64,7 +64,7 @@ public interface Xref {
      * It can be null if no versions have been specified
      * @return the version
      */
-    public Integer getVersion();
+    public String getVersion();
 
     /**
      * The qualifier of the xref is the reference type and is a controlled vocabulary term.
