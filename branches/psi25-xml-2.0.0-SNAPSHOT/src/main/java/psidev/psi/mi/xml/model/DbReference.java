@@ -7,6 +7,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -80,41 +83,38 @@ import java.util.Collection;
  * </pre>
  */
 
-public class DbReference {
+public class DbReference extends DefaultXref{
 
     private Collection<Attribute> attributes;
 
-    private String db;
-
-    private String dbAc;
-
-    private String id;
-
-    private String refType;
-
-    private String refTypeAc;
-
     private String secondary;
 
-    private String version;
+    private static String UNKNOWN = "unknown";
+    private static String UNSPECIFIED_ID = "-";
 
     ///////////////////////////
     // Constructors
 
     public DbReference() {
+        super(new DefaultCvTerm(UNKNOWN), UNSPECIFIED_ID);
     }
 
     public DbReference( String id, String db ) {
-        setId( id );
-        setDb( db );
+        super(new DefaultCvTerm(db != null ? db : UNKNOWN), id != null && id.length() > 0 ? id : UNSPECIFIED_ID);
     }
 
     public DbReference( String db, String dbAc, String id, String refType, String refTypeAc ) {
-        this.db = db;
-        this.dbAc = dbAc;
-        this.id = id;
-        this.refType = refType;
-        this.refTypeAc = refTypeAc;
+        super(new DefaultCvTerm(db != null ? db : UNKNOWN, dbAc), id != null && id.length() > 0 ? id : UNSPECIFIED_ID);
+
+        if (refType != null && refTypeAc != null){
+            this.qualifier = new DefaultCvTerm(refType, refTypeAc);
+        }
+        else if (refType != null){
+            this.qualifier = new DefaultCvTerm(refType);
+        }
+        else if (refTypeAc != null){
+            this.qualifier = new DefaultCvTerm(UNKNOWN, refTypeAc);
+        }
     }
 
     ///////////////////////////
@@ -148,7 +148,7 @@ public class DbReference {
      * @return possible object is {@link String }
      */
     public String getDb() {
-        return db;
+        return database != null ? database.getShortName() : null;
     }
 
     /**
@@ -157,7 +157,20 @@ public class DbReference {
      * @param value allowed object is {@link String }
      */
     public void setDb( String value ) {
-        this.db = value;
+        if (value == null){
+            if (this.database != null && this.database.getMIIdentifier() != null){
+                database.setShortName(UNKNOWN);
+            }
+            else {
+                this.database = new DefaultCvTerm(UNKNOWN);
+            }
+        }
+        else if (this.database == null){
+            this.database = new DefaultCvTerm(value);
+        }
+        else {
+            this.database.setShortName(value);
+        }
     }
 
     /**
@@ -166,7 +179,7 @@ public class DbReference {
      * @return true if defined, false otherwise.
      */
     public boolean hasDbAc() {
-        return dbAc != null;
+        return database != null && database.getMIIdentifier() != null;
     }
 
 
@@ -176,7 +189,7 @@ public class DbReference {
      * @return possible object is {@link String }
      */
     public String getDbAc() {
-        return dbAc;
+        return database != null ? database.getMIIdentifier() : null;
     }
 
     /**
@@ -185,7 +198,20 @@ public class DbReference {
      * @param value allowed object is {@link String }
      */
     public void setDbAc( String value ) {
-        this.dbAc = value;
+        if (value == null){
+            if (this.database != null){
+                database.setMIIdentifier(null);
+            }
+            else {
+                this.database = new DefaultCvTerm(UNKNOWN);
+            }
+        }
+        else if (this.database == null){
+            this.database = new DefaultCvTerm(UNKNOWN, value);
+        }
+        else {
+            this.database.setMIIdentifier(value);
+        }
     }
 
     /**
@@ -203,7 +229,12 @@ public class DbReference {
      * @param value allowed object is {@link String }
      */
     public void setId( String value ) {
-        this.id = value;
+        if (value == null || value.length() == 0){
+           this.id = UNSPECIFIED_ID;
+        }
+        else {
+            this.id = value;
+        }
     }
 
     /**
@@ -212,7 +243,7 @@ public class DbReference {
      * @return true if defined, false otherwise.
      */
     public boolean hasRefType() {
-        return refType != null;
+        return qualifier != null && !UNKNOWN.equals(qualifier.getShortName());
     }
 
     /**
@@ -221,7 +252,7 @@ public class DbReference {
      * @return possible object is {@link String }
      */
     public String getRefType() {
-        return refType;
+        return qualifier != null ? qualifier.getShortName() : null;
     }
 
     /**
@@ -230,7 +261,20 @@ public class DbReference {
      * @param value allowed object is {@link String }
      */
     public void setRefType( String value ) {
-        this.refType = value;
+        if (value == null){
+            if (this.qualifier != null && this.qualifier.getMIIdentifier() != null){
+                qualifier.setShortName(UNKNOWN);
+            }
+            else {
+                this.qualifier = null;
+            }
+        }
+        else if (this.database == null){
+            this.qualifier = new DefaultCvTerm(value);
+        }
+        else {
+            this.qualifier.setShortName(value);
+        }
     }
 
     /**
@@ -239,7 +283,7 @@ public class DbReference {
      * @return true if defined, false otherwise.
      */
     public boolean hasRefTypeAc() {
-        return refTypeAc != null;
+        return qualifier != null && qualifier.getMIIdentifier() != null;
     }
 
     /**
@@ -248,7 +292,7 @@ public class DbReference {
      * @return possible object is {@link String }
      */
     public String getRefTypeAc() {
-        return refTypeAc;
+        return qualifier != null ? qualifier.getMIIdentifier() : null;
     }
 
     /**
@@ -257,7 +301,20 @@ public class DbReference {
      * @param value allowed object is {@link String }
      */
     public void setRefTypeAc( String value ) {
-        this.refTypeAc = value;
+        if (value == null){
+            if (this.qualifier != null){
+                qualifier.setMIIdentifier(null);
+            }
+            else {
+                this.qualifier = null;
+            }
+        }
+        else if (this.qualifier == null){
+            this.qualifier = new DefaultCvTerm(UNKNOWN, value);
+        }
+        else {
+            this.qualifier.setMIIdentifier(value);
+        }
     }
 
     /**
@@ -323,11 +380,11 @@ public class DbReference {
         final StringBuilder sb = new StringBuilder();
         sb.append( "DbReference" );
         sb.append( "{attributes=" ).append( attributes );
-        sb.append( ", db='" ).append( db ).append( '\'' );
-        sb.append( ", dbAc='" ).append( dbAc ).append( '\'' );
+        sb.append( ", db='" ).append( getDb() ).append( '\'' );
+        sb.append( ", dbAc='" ).append( getDbAc() ).append( '\'' );
         sb.append( ", id='" ).append( id ).append( '\'' );
-        sb.append( ", refType='" ).append( refType ).append( '\'' );
-        sb.append( ", refTypeAc='" ).append( refTypeAc ).append( '\'' );
+        sb.append( ", refType='" ).append( getRefType() ).append( '\'' );
+        sb.append( ", refTypeAc='" ).append( getRefTypeAc() ).append( '\'' );
         sb.append( ", secondary='" ).append( secondary ).append( '\'' );
         sb.append( ", version='" ).append( version ).append( '\'' );
         sb.append( '}' );
@@ -342,11 +399,11 @@ public class DbReference {
         DbReference that = ( DbReference ) o;
 
         if ( attributes != null ? !attributes.equals( that.attributes ) : that.attributes != null ) return false;
-        if ( db != null ? !db.equals( that.db ) : that.db != null ) return false;
-        if ( dbAc != null ? !dbAc.equals( that.dbAc ) : that.dbAc != null ) return false;
+        if ( getDb() != null ? !getDb().equals( that.getDb() ) : that.getDb() != null ) return false;
+        if ( getDbAc() != null ? !getDbAc().equals( that.getDbAc() ) : that.getDbAc() != null ) return false;
         if ( id != null ? !id.equals( that.id ) : that.id != null ) return false;
-        if ( refType != null ? !refType.equals( that.refType ) : that.refType != null ) return false;
-        if ( refTypeAc != null ? !refTypeAc.equals( that.refTypeAc ) : that.refTypeAc != null ) return false;
+        if ( getRefType() != null ? !getRefType().equals( that.getRefType() ) : that.getRefType() != null ) return false;
+        if ( getRefTypeAc() != null ? !getRefTypeAc().equals( that.getRefTypeAc() ) : that.getRefTypeAc() != null ) return false;
         if ( secondary != null ? !secondary.equals( that.secondary ) : that.secondary != null ) return false;
         if ( version != null ? !version.equals( that.version ) : that.version != null ) return false;
 
@@ -357,11 +414,11 @@ public class DbReference {
     public int hashCode() {
         int result;
         result = ( attributes != null ? attributes.hashCode() : 0 );
-        result = 31 * result + ( db != null ? db.hashCode() : 0 );
-        result = 31 * result + ( dbAc != null ? dbAc.hashCode() : 0 );
+        result = 31 * result + ( getDb() != null ? getDb().hashCode() : 0 );
+        result = 31 * result + ( getDbAc() != null ? getDbAc().hashCode() : 0 );
         result = 31 * result + ( id != null ? id.hashCode() : 0 );
-        result = 31 * result + ( refType != null ? refType.hashCode() : 0 );
-        result = 31 * result + ( refTypeAc != null ? refTypeAc.hashCode() : 0 );
+        result = 31 * result + ( getRefType() != null ? getRefType().hashCode() : 0 );
+        result = 31 * result + ( getRefTypeAc() != null ? getRefTypeAc().hashCode() : 0 );
         result = 31 * result + ( secondary != null ? secondary.hashCode() : 0 );
         result = 31 * result + ( version != null ? version.hashCode() : 0 );
         return result;

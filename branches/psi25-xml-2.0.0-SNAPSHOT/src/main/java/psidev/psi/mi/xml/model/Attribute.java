@@ -113,7 +113,7 @@ public class Attribute extends DefaultAnnotation implements Serializable {
                 topic.setShortName(UNSPECIFIED);
             }
             else {
-                this.topic = null;
+                this.topic = new DefaultCvTerm(UNSPECIFIED);
             }
         }
         else if (this.topic == null){
@@ -153,7 +153,7 @@ public class Attribute extends DefaultAnnotation implements Serializable {
                 topic.setMIIdentifier(null);
             }
             else {
-                this.topic = null;
+                this.topic = new DefaultCvTerm(UNSPECIFIED);
             }
         }
         else if (this.topic == null){
@@ -189,10 +189,10 @@ public class Attribute extends DefaultAnnotation implements Serializable {
         final Attribute attribute = ( Attribute ) o;
 
         // TODO name is not null
-        if ( getName() != null && !getName().equals( attribute.getName() ) ) {
+        if ( getName() != null && !getName().equals(attribute.getName()) ) {
             return false;
         }
-        if ( getNameAc() != null ? !getNameAc().equals( attribute.getNameAc() ) : attribute.getNameAc() != null ) {
+        if ( getNameAc() != null ? !getNameAc().equals(attribute.getNameAc()) : attribute.getNameAc() != null ) {
             return false;
         }
         if ( value != null ? !value.equals( attribute.value ) : attribute.value != null ) {
