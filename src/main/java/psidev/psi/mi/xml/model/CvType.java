@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Reference to an external controlled vocabulary.
@@ -70,6 +71,11 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
     @Override
     protected void initializeIdentifiers() {
         this.identifiers = new CvTermIdentifierList();
+    }
+
+    @Override
+    protected void initializeAnnotations(){
+        this.annotations = Collections.EMPTY_LIST;
     }
 
     /**
