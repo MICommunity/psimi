@@ -266,10 +266,10 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (uniprotkb == removed){
+            if (uniprotkb != null && uniprotkb.equals(removed)){
                 uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
             }
-            else if (refseq == removed){
+            else if (refseq != null && refseq.equals(removed)){
                 refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_MI, Xref.REFSEQ);
             }
         }
@@ -296,7 +296,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         @Override
         protected void processRemovedObjectEvent(Checksum removed) {
-            if (rogid == removed){
+            if (rogid != null && rogid.equals(removed)){
                 rogid = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.ROGID_MI, Checksum.ROGID);
             }
         }
@@ -322,7 +322,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         @Override
         protected void processRemovedObjectEvent(Alias removed) {
-            if (geneName == removed){
+            if (geneName != null && geneName.equals(removed)){
                 geneName = AliasUtils.collectFirstAliasWithType(this, Alias.GENE_NAME_MI, Alias.GENE_NAME);
             }
         }

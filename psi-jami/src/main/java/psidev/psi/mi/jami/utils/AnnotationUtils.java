@@ -3,6 +3,9 @@ package psidev.psi.mi.jami.utils;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * Utility class for Annotation
  *
@@ -31,5 +34,24 @@ public class AnnotationUtils {
         }
 
         return false;
+    }
+
+    /**
+     * Remove all annotations having this topic name/database id from the collection of annotations
+     * @param annotations : the collection of annotations
+     * @param topicId : the topic id to look for
+     * @param topicName : the topic name to look for
+     */
+    public static void removeAllAnnotationsWithTopic(Collection<? extends Annotation> annotations, String topicId, String topicName){
+
+        if (annotations != null){
+            Iterator<? extends Annotation> annotIterator = annotations.iterator();
+
+            while (annotIterator.hasNext()){
+                if (doesAnnotationHaveTopic(annotIterator.next(), topicId, topicName)){
+                    annotIterator.remove();
+                }
+            }
+        }
     }
 }

@@ -275,7 +275,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is chebi
-            if (chebi == removed){
+            if (chebi != null && chebi.equals(removed)){
                 chebi = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.CHEBI_MI, Xref.CHEBI);
             }
         }
@@ -311,13 +311,13 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         @Override
         protected void processRemovedObjectEvent(Checksum removed) {
             // the removed identifier is standard inchi key
-            if (standardInchiKey == removed){
+            if (standardInchiKey != null && standardInchiKey.equals(removed)){
                 standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
             }
-            else if (smile == removed){
+            else if (smile != null && smile.equals(removed)){
                 smile = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.SMILE_MI, Checksum.SMILE);
             }
-            else if (standardInchi == removed){
+            else if (standardInchi != null && standardInchi.equals(removed)){
                 standardInchi = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_MI, Checksum.INCHI);
             }
         }

@@ -406,11 +406,11 @@ public class DefaultPublication implements Publication, Serializable {
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is pubmed
-            if (pubmedId == removed){
+            if (pubmedId != null && pubmedId.equals(removed)){
                 pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.PUBMED_MI, Xref.PUBMED);
             }
             // the removed identifier is doi
-            else if (doi == removed){
+            else if (doi != null && doi.equals(removed)){
                 doi = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.DOI_MI, Xref.DOI);
             }
         }
@@ -442,7 +442,7 @@ public class DefaultPublication implements Publication, Serializable {
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is pubmed
-            if (imexId == removed){
+            if (imexId != null && imexId.equals(removed)){
                 imexId = null;
             }
         }

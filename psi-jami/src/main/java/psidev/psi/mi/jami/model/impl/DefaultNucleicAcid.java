@@ -212,10 +212,10 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (ddbjEmblGenbank == removed){
+            if (ddbjEmblGenbank != null && ddbjEmblGenbank.equals(removed)){
                 ddbjEmblGenbank = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
             }
-            else if (refseq == removed){
+            else if (refseq != null && refseq.equals(removed)){
                 refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_MI, Xref.REFSEQ);
             }
         }

@@ -268,16 +268,16 @@ public class DefaultGene extends DefaultInteractor implements Gene {
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (ensembl == removed){
+            if (ensembl != null && ensemblGenome.equals(removed)){
                 ensembl = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_MI, Xref.ENSEMBL);
             }
-            else if (ensemblGenome == removed){
+            else if (ensemblGenome != null && ensemblGenome.equals(removed)){
                 ensemblGenome = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
             }
-            else if (entrezGeneId == removed){
+            else if (entrezGeneId != null && entrezGeneId.equals(removed)){
                 entrezGeneId = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
             }
-            else if (refseq == removed){
+            else if (refseq != null &&refseq.equals(removed)){
                 refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_MI, Xref.REFSEQ);
             }
         }

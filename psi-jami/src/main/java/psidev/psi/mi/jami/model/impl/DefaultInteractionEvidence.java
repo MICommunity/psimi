@@ -282,7 +282,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is pubmed
-            if (imexId == removed){
+            if (imexId != null && imexId.equals(removed)){
                 imexId = null;
             }
         }

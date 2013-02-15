@@ -241,7 +241,7 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (interpro == removed){
+            if (interpro != null && interpro.equals(removed)){
                 interpro = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.INTERPRO_MI, Xref.INTERPRO);
             }
         }
