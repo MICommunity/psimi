@@ -40,10 +40,10 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         }
         this.shortName = shortName;
 
-        this.xrefs = new ArrayList<Xref>();
-        this.annotations = new ArrayList<Annotation>();
-        this.synonyms = new ArrayList<Alias>();
-        this.identifiers = new CvTermIdentifierList();
+        initializeAnnotations();
+        initializeIdentifiers();
+        initializeSynonyms();
+        initializeXrefs();
     }
 
     public DefaultCvTerm(String shortName, String miIdentifier){
@@ -85,6 +85,22 @@ public class DefaultCvTerm implements CvTerm, Serializable {
 
     public void setFullName(String name) {
         this.fullName = name;
+    }
+
+    protected void initializeXrefs(){
+        this.xrefs = new ArrayList<Xref>();
+    }
+
+    protected void initializeAnnotations(){
+        this.annotations = new ArrayList<Annotation>();
+    }
+
+    protected void initializeSynonyms(){
+        this.synonyms = new ArrayList<Alias>();
+    }
+
+    protected void initializeIdentifiers(){
+        this.identifiers = new CvTermIdentifierList();
     }
 
     public Collection<Xref> getIdentifiers() {
