@@ -17,6 +17,16 @@ public interface Annotation {
     public static String CAUTION_MI ="MI:0618";
     public static String COMMENT="comment";
     public static String COMMENT_MI ="MI:0612";
+    public static String COMPLEX_EXPANSION="complex expansion";
+    public static String COMPLEX_EXPANSION_MI ="MI:1059";
+    public static String SPOKE_EXPANSION="spoke expansion";
+    public static String SPOKE_EXPANSION_MI ="MI:1060";
+    public static String MATRIX_EXPANSION="matrix expansion";
+    public static String MATRIX_EXPANSION_MI ="MI:1061";
+    public static String BIPARTITE_EXPANSION="bipartite expansion";
+    public static String BIPARTITE_EXPANSION_MI ="MI:1062";
+
+
     /**
      * The annotation topic is a controlled vocabulary term and it cannot be null.
      * Ex: dataset, comment, caution, ...
