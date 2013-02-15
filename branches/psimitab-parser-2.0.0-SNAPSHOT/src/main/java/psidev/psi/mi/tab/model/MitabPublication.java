@@ -152,11 +152,11 @@ public class MitabPublication extends DefaultPublication{
 
     protected void processRemovedIdentifier(Xref removed){
         // the removed identifier is pubmed
-        if (pubmedId == removed){
+        if (pubmedId != null && pubmedId.equals(removed)){
             pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.PUBMED_MI, Xref.PUBMED);
         }
         // the removed identifier is doi
-        else if (doi == removed){
+        else if (doi != null && doi.equals(removed)){
             doi = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.DOI_MI, Xref.DOI);
         }
     }
