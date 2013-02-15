@@ -25,13 +25,10 @@ public class DefaultCvTerm implements CvTerm, Serializable {
 
     private String shortName;
     private String fullName;
-    private String definition;
     private Collection<Xref> xrefs;
     private Collection<Xref> identifiers;
     private Collection<Annotation> annotations;
     private Collection<Alias> synonyms;
-    private Collection<CvTerm> parents;
-    private Collection<CvTerm> children;
 
     private Xref miIdentifier;
     private Xref modIdentifier;
@@ -46,8 +43,6 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         this.xrefs = new ArrayList<Xref>();
         this.annotations = new ArrayList<Annotation>();
         this.synonyms = new ArrayList<Alias>();
-        this.parents = new ArrayList<CvTerm>();
-        this.children = new ArrayList<CvTerm>();
         this.identifiers = new CvTermIdentifierList();
     }
 
@@ -61,11 +56,6 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         this.fullName = fullName;
     }
 
-    public DefaultCvTerm(String shortName, String fullName, String miIdentifier, String def){
-        this(shortName, fullName, miIdentifier);
-        this.definition = def;
-    }
-
     public DefaultCvTerm(String shortName, Xref ontologyId){
         this(shortName);
         if (ontologyId != null){
@@ -76,11 +66,6 @@ public class DefaultCvTerm implements CvTerm, Serializable {
     public DefaultCvTerm(String shortName, String fullName, Xref ontologyId){
         this(shortName, ontologyId);
         this.fullName = fullName;
-    }
-
-    public DefaultCvTerm(String shortName, String fullName, Xref ontologyId, String def){
-        this(shortName, fullName, ontologyId);
-        this.definition = def;
     }
 
     public String getShortName() {
@@ -100,14 +85,6 @@ public class DefaultCvTerm implements CvTerm, Serializable {
 
     public void setFullName(String name) {
         this.fullName = name;
-    }
-
-    public String getDefinition() {
-        return this.definition;
-    }
-
-    public void setDefinition(String def) {
-        this.definition = def;
     }
 
     public Collection<Xref> getIdentifiers() {
@@ -170,14 +147,6 @@ public class DefaultCvTerm implements CvTerm, Serializable {
 
     public Collection<Alias> getSynonyms() {
         return this.synonyms;
-    }
-
-    public Collection<CvTerm> getParents() {
-        return this.parents;
-    }
-
-    public Collection<CvTerm> getChildren() {
-        return this.children;
     }
 
     @Override

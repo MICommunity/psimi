@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.OntologyTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
@@ -22,8 +23,6 @@ public class DefaultCvTermTest {
 
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertNotNull(uniprotkb.getAnnotations());
-        Assert.assertNotNull(uniprotkb.getParents());
-        Assert.assertNotNull(uniprotkb.getChildren());
         Assert.assertNotNull(uniprotkb.getSynonyms());
         Assert.assertNotNull(uniprotkb.getXrefs());
     }
@@ -46,8 +45,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals(Xref.UNIPROTKB_MI, uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
-        Assert.assertNotNull(uniprotkb.getParents());
-        Assert.assertNotNull(uniprotkb.getChildren());
         Assert.assertNotNull(uniprotkb.getSynonyms());
         Assert.assertNotNull(uniprotkb.getXrefs());
     }
@@ -60,15 +57,13 @@ public class DefaultCvTermTest {
         Assert.assertEquals("uniprot knowledge database", uniprotkb.getFullName());
         Assert.assertEquals(Xref.UNIPROTKB_MI, uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
-        Assert.assertNotNull(uniprotkb.getParents());
-        Assert.assertNotNull(uniprotkb.getChildren());
         Assert.assertNotNull(uniprotkb.getSynonyms());
         Assert.assertNotNull(uniprotkb.getXrefs());
     }
 
     @Test
     public void test_create_cvTerm_definition() throws Exception {
-        CvTerm uniprotkb = new DefaultCvTerm("uniprotkb", "uniprot knowledge database", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI),
+        OntologyTerm uniprotkb = new DefaultOntologyTerm("uniprotkb", "uniprot knowledge database", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI),
                 "sequence database for proteins");
 
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
@@ -89,8 +84,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals(Xref.UNIPROTKB_MI, uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
-        Assert.assertNotNull(uniprotkb.getParents());
-        Assert.assertNotNull(uniprotkb.getChildren());
         Assert.assertNotNull(uniprotkb.getSynonyms());
         Assert.assertNotNull(uniprotkb.getXrefs());
 
@@ -108,8 +101,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("MOD:xxx", term.getMODIdentifier());
         Assert.assertNull(term.getMIIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
@@ -127,8 +118,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals(Xref.UNIPROTKB_MI, uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
-        Assert.assertNotNull(uniprotkb.getParents());
-        Assert.assertNotNull(uniprotkb.getChildren());
         Assert.assertNotNull(uniprotkb.getSynonyms());
         Assert.assertNotNull(uniprotkb.getXrefs());
 
@@ -147,8 +136,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("MOD:xxx", term.getMODIdentifier());
         Assert.assertNull(term.getMIIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
@@ -166,8 +153,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals("MI:xxx", uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
-        Assert.assertNotNull(uniprotkb.getParents());
-        Assert.assertNotNull(uniprotkb.getChildren());
         Assert.assertNotNull(uniprotkb.getSynonyms());
         Assert.assertNotNull(uniprotkb.getXrefs());
 
@@ -186,8 +171,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("MOD:xxx3", term.getMODIdentifier());
         Assert.assertNull(term.getMIIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
@@ -206,8 +189,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("MOD:xxx3", term.getMODIdentifier());
         Assert.assertNull(term.getMIIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
@@ -223,8 +204,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("MI:xxx3", term.getMIIdentifier());
         Assert.assertNull(term.getMODIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
@@ -241,8 +220,6 @@ public class DefaultCvTermTest {
         Assert.assertNull(term.getMODIdentifier());
         Assert.assertNull(term.getMIIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
@@ -259,8 +236,6 @@ public class DefaultCvTermTest {
         Assert.assertNull(term.getMIIdentifier());
         Assert.assertNull(term.getMODIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
@@ -275,8 +250,6 @@ public class DefaultCvTermTest {
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertNull(uniprotkb.getMIIdentifier());
         Assert.assertNotNull(uniprotkb.getAnnotations());
-        Assert.assertNotNull(uniprotkb.getParents());
-        Assert.assertNotNull(uniprotkb.getChildren());
         Assert.assertNotNull(uniprotkb.getSynonyms());
         Assert.assertNotNull(uniprotkb.getXrefs());
 
@@ -292,8 +265,6 @@ public class DefaultCvTermTest {
         Assert.assertNull(term.getMODIdentifier());
         Assert.assertNull(term.getMIIdentifier());
         Assert.assertNotNull(term.getAnnotations());
-        Assert.assertNotNull(term.getParents());
-        Assert.assertNotNull(term.getChildren());
         Assert.assertNotNull(term.getSynonyms());
         Assert.assertNotNull(term.getXrefs());
 
