@@ -6,6 +6,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultConfidence;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -27,24 +29,25 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Confidence {
-
-    private Unit unit;
-
-    private String value;
+public class Confidence extends DefaultConfidence{
 
     private Collection<ExperimentDescription> experiments;
     private Collection<ExperimentRef> experimentRefs;
+
+    private static final String UNKNOWN = "unknown";
+    private static final String UNSPECIFIED_VALUE = "unspecified";
 
     ///////////////////////////
     // Constructors
 
     public Confidence() {
+        super(new Unit(), UNSPECIFIED_VALUE);
+        this.unit = type;
     }
 
     public Confidence( Unit unit, String value ) {
-        setUnit( unit );
-        setValue( value );
+        super(unit != null ? unit : new Unit(), value != null ? value : UNSPECIFIED_VALUE);
+        this.unit = type;
     }
 
     ///////////////////////////
@@ -56,7 +59,7 @@ public class Confidence {
      * @return possible object is {@link OpenCvType }
      */
     public Unit getUnit() {
-        return unit;
+        return (Unit) type;
     }
 
     /**
@@ -65,6 +68,7 @@ public class Confidence {
      * @param value allowed object is {@link OpenCvType }
      */
     public void setUnit( Unit value ) {
+        this.type = value;
         this.unit = value;
     }
 
