@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.utils;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -37,6 +39,27 @@ public class XrefUtils {
 
             return (Xref.IDENTITY.equals(qualifier) || Xref.SECONDARY.equals(qualifier));
         }
+    }
+
+    /**
+     * Method to return a sub collection of identifiers (qualifier identity or secondary) in a list of Xrefs
+     * @param refs
+     * @return the sublist of identifiers (qualifier identity or secondary) from the list of Xrefs
+     */
+    public Collection<Xref> collectAllIdentifiersFrom(Collection<? extends Xref> refs){
+
+        if (refs == null || refs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs);
+
+        for (Xref ref : refs){
+            if (isXrefAnIdentifier(ref)){
+                identifiers.add(ref);
+            }
+        }
+
+        return identifiers;
     }
 
     /**
@@ -107,7 +130,7 @@ public class XrefUtils {
      * @param dbName : the database name to look for
      * @return the first identifier having this database name/id, null if no Xrefs with this database name/id
      */
-    public static Xref collectFirstIdentifierWithDatabase(Collection<Xref> refs, String dbId, String dbName){
+    public static Xref collectFirstIdentifierWithDatabase(Collection<? extends Xref> refs, String dbId, String dbName){
 
         if (refs == null || (dbName == null && dbId == null)){
             return null;
@@ -160,10 +183,10 @@ public class XrefUtils {
      * @param dbId : the database id to look for
      * @param dbName : the database name to look for
      */
-    public static void removeAllXrefsWithDatabase(Collection<Xref> refs, String dbId, String dbName){
+    public static void removeAllXrefsWithDatabase(Collection<? extends Xref> refs, String dbId, String dbName){
 
         if (refs != null){
-            Iterator<Xref> refIterator = refs.iterator();
+            Iterator<? extends Xref> refIterator = refs.iterator();
 
             while (refIterator.hasNext()){
                 if (isXrefFromDatabase(refIterator.next(), dbId, dbName)){
