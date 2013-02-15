@@ -48,20 +48,6 @@ public interface CvTerm {
     public void setFullName(String name);
 
     /**
-     * The definition of the controlled vocabulary as it appears in the ontology.
-     * It can be null
-     * Ex: electrophoresis is Any method which relies on the motion of particles relative to a matrix under the influence of an electrical field.
-     * @return the definition
-     */
-    public String getDefinition();
-
-    /**
-     * Set the definition
-     * @param def : definition of the term
-     */
-    public void setDefinition(String def);
-
-    /**
      * The collection of identifiers which identifies this CvTerm. It is aimed at returning all existing identifiers from one to several external databases and
      * including secondary identifiers or former identifiers.
      * The collection cannot be null so if the term does not exist in any ontologies/databases, the method should return an empty collection.
@@ -126,18 +112,4 @@ public interface CvTerm {
      * @return the se of synonyms
      */
     public Collection<Alias> getSynonyms();
-
-    /**
-     * The parent terms of this controlled vocabulary term.
-     * The Collection cannot be null. If the term does not have any parents, the method should return an empty Collection.
-     * @return the parents
-     */
-    public Collection<CvTerm> getParents();
-
-    /**
-     * The children terms of this controlled vocabulary term.
-     * The Collection cannot be null. If the term does not have any children, the method should return an empty Collection.
-     * @return the children
-     */
-    public Collection<CvTerm> getChildren();
 }

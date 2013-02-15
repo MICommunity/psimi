@@ -21,8 +21,6 @@ public class DefaultSourceTest {
 
         Assert.assertEquals("intact", intact.getShortName());
         Assert.assertNotNull(intact.getAnnotations());
-        Assert.assertNotNull(intact.getParents());
-        Assert.assertNotNull(intact.getChildren());
         Assert.assertNotNull(intact.getSynonyms());
         Assert.assertNotNull(intact.getXrefs());
 
@@ -37,8 +35,6 @@ public class DefaultSourceTest {
 
         Assert.assertEquals("intact", intact.getShortName());
         Assert.assertNotNull(intact.getAnnotations());
-        Assert.assertNotNull(intact.getParents());
-        Assert.assertNotNull(intact.getChildren());
         Assert.assertNotNull(intact.getSynonyms());
         Assert.assertNotNull(intact.getXrefs());
 
@@ -65,8 +61,6 @@ public class DefaultSourceTest {
         Assert.assertEquals("intact", intact.getShortName());
         Assert.assertEquals("MI:0469", intact.getMIIdentifier());
         Assert.assertNotNull(intact.getAnnotations());
-        Assert.assertNotNull(intact.getParents());
-        Assert.assertNotNull(intact.getChildren());
         Assert.assertNotNull(intact.getSynonyms());
         Assert.assertNotNull(intact.getXrefs());
 
@@ -83,29 +77,8 @@ public class DefaultSourceTest {
         Assert.assertEquals("intact database", intact.getFullName());
         Assert.assertEquals("MI:0469", intact.getMIIdentifier());
         Assert.assertNotNull(intact.getAnnotations());
-        Assert.assertNotNull(intact.getParents());
-        Assert.assertNotNull(intact.getChildren());
         Assert.assertNotNull(intact.getSynonyms());
         Assert.assertNotNull(intact.getXrefs());
-
-        Assert.assertNull(intact.getUrl());
-        Assert.assertNull(intact.getBibRef());
-        Assert.assertNull(intact.getPostalAddress());
-    }
-
-    @Test
-    public void test_create_source_definition() throws Exception {
-        Source intact = new DefaultSource("intact", "intact database", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), "MI:0469"), "molecular interaction database");
-
-        Assert.assertEquals("intact", intact.getShortName());
-        Assert.assertEquals("intact database", intact.getFullName());
-        Assert.assertEquals("MI:0469", intact.getMIIdentifier());
-        Assert.assertNotNull(intact.getAnnotations());
-        Assert.assertNotNull(intact.getParents());
-        Assert.assertNotNull(intact.getChildren());
-        Assert.assertNotNull(intact.getSynonyms());
-        Assert.assertNotNull(intact.getXrefs());
-        Assert.assertEquals("molecular interaction database", intact.getDefinition());
 
         Assert.assertNull(intact.getUrl());
         Assert.assertNull(intact.getBibRef());

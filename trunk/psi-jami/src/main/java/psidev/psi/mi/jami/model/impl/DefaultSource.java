@@ -29,10 +29,6 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         super(shortName, fullName, ontologyId);
     }
 
-    public DefaultSource(String shortName, String fullName, Xref ontologyId, String def) {
-        super(shortName, fullName, ontologyId, def);
-    }
-
     public DefaultSource(String shortName, String url, String address, Xref bibRef) {
         super(shortName);
         this.url = url;
@@ -54,23 +50,12 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         this.bibRef = bibRef;
     }
 
-    public DefaultSource(String shortName, String fullName, Xref ontologyId, String def, String url, String address, Xref bibRef) {
-        super(shortName, fullName, ontologyId, def);
-        this.url = url;
-        this.postalAddress = address;
-        this.bibRef = bibRef;
-    }
-
     public DefaultSource(String shortName, String miId) {
         super(shortName, miId);
     }
 
     public DefaultSource(String shortName, String fullName, String miId) {
         super(shortName, fullName, miId);
-    }
-
-    public DefaultSource(String shortName, String fullName, String miId, String def) {
-        super(shortName, fullName, miId, def);
     }
 
     public DefaultSource(String shortName, String miId, String url, String address, Xref bibRef) {
@@ -82,13 +67,6 @@ public class DefaultSource extends DefaultCvTerm implements Source {
 
     public DefaultSource(String shortName, String fullName, String miId, String url, String address, Xref bibRef) {
         super(shortName, fullName, miId);
-        this.url = url;
-        this.postalAddress = address;
-        this.bibRef = bibRef;
-    }
-
-    public DefaultSource(String shortName, String fullName, String miId, String def, String url, String address, Xref bibRef) {
-        super(shortName, fullName, miId, def);
         this.url = url;
         this.postalAddress = address;
         this.bibRef = bibRef;
