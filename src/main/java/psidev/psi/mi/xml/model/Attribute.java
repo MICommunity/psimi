@@ -6,6 +6,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+
 import java.io.Serializable;
 
 /**
@@ -37,42 +40,27 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Attribute implements Serializable {
+public class Attribute extends DefaultAnnotation implements Serializable {
 
-    /**
-     * Valued held by the attribute.
-     */
-    private String value;
-
-    /**
-     * Name of the attribute. required in the PSI-MI 2.5 schema.
-     */
-    private String name;
-
-    /**
-     * MI reference of the name.
-     */
-    private String nameAc;
+    private static String UNSPECIFIED = "unspecified";
 
     //////////////////////////////
     // Constructors
 
     public Attribute() {
+        super(new DefaultCvTerm(UNSPECIFIED));
     }
 
     public Attribute( String name ) {
-        setName( name );
+        super(new DefaultCvTerm(name != null ? name : UNSPECIFIED));
     }
 
     public Attribute( String name, String value ) {
-        setName( name );
-        setValue( value );
+        super(new DefaultCvTerm(name != null ? name : UNSPECIFIED), value);
     }
 
     public Attribute( String nameAc, String name, String value ) {
-        setNameAc( nameAc );
-        setName( name );
-        setValue( value );
+        super(new DefaultCvTerm(name != null ? name : UNSPECIFIED, nameAc), value);
     }
 
     //////////////////////////////
@@ -111,7 +99,7 @@ public class Attribute implements Serializable {
      * @return possible object is {@link String }
      */
     public String getName() {
-        return name;
+        return this.topic != null ? this.topic.getShortName() : null;
     }
 
     /**
@@ -120,7 +108,20 @@ public class Attribute implements Serializable {
      * @param value allowed object is {@link String }
      */
     public void setName( String value ) {
-        this.name = value;
+        if (value == null){
+            if (this.topic != null && this.topic.getMIIdentifier() != null){
+                topic.setShortName(UNSPECIFIED);
+            }
+            else {
+                this.topic = null;
+            }
+        }
+        else if (this.topic == null){
+            this.topic = new DefaultCvTerm(value);
+        }
+        else {
+            this.topic.setShortName(value);
+        }
     }
 
     /**
@@ -129,7 +130,7 @@ public class Attribute implements Serializable {
      * @return true if defined, false otherwise.
      */
     public boolean hasNameAc() {
-        return nameAc != null;
+        return this.topic != null && this.topic.getMIIdentifier() != null;
     }
 
     /**
@@ -138,7 +139,7 @@ public class Attribute implements Serializable {
      * @return possible object is {@link String }
      */
     public String getNameAc() {
-        return nameAc;
+        return this.topic != null ? this.topic.getMIIdentifier() : null;
     }
 
     /**
@@ -147,7 +148,20 @@ public class Attribute implements Serializable {
      * @param value allowed object is {@link String }
      */
     public void setNameAc( String value ) {
-        this.nameAc = value;
+        if (value == null){
+            if (this.topic != null){
+                topic.setMIIdentifier(null);
+            }
+            else {
+                this.topic = null;
+            }
+        }
+        else if (this.topic == null){
+            this.topic = new DefaultCvTerm(UNSPECIFIED, value);
+        }
+        else {
+            this.topic.setMIIdentifier(value);
+        }
     }
 
     //////////////////////////
@@ -158,8 +172,8 @@ public class Attribute implements Serializable {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Attribute" );
         sb.append( "{value='" ).append( value ).append( '\'' );
-        sb.append( ", name='" ).append( name ).append( '\'' );
-        sb.append( ", nameAc='" ).append( nameAc ).append( '\'' );
+        sb.append( ", name='" ).append( getName() ).append( '\'' );
+        sb.append( ", nameAc='" ).append( getNameAc() ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
     }
@@ -175,10 +189,10 @@ public class Attribute implements Serializable {
         final Attribute attribute = ( Attribute ) o;
 
         // TODO name is not null
-        if ( name != null && !name.equals( attribute.name ) ) {
+        if ( getName() != null && !getName().equals( attribute.getName() ) ) {
             return false;
         }
-        if ( nameAc != null ? !nameAc.equals( attribute.nameAc ) : attribute.nameAc != null ) {
+        if ( getNameAc() != null ? !getNameAc().equals( attribute.getNameAc() ) : attribute.getNameAc() != null ) {
             return false;
         }
         if ( value != null ? !value.equals( attribute.value ) : attribute.value != null ) {
@@ -191,8 +205,8 @@ public class Attribute implements Serializable {
     public int hashCode() {
         int result;
         result = ( value != null ? value.hashCode() : 0 );
-        result = 29 * result + name.hashCode();
-        result = 29 * result + ( nameAc != null ? nameAc.hashCode() : 0 );
+        result = 29 * result + getName().hashCode();
+        result = 29 * result + ( getNameAc() != null ? getNameAc().hashCode() : 0 );
         return result;
     }
 }
