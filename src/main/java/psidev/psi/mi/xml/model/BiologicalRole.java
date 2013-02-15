@@ -16,7 +16,4 @@ package psidev.psi.mi.xml.model;
 
 public class BiologicalRole extends CvType {
 
-
-    private Names names;
-
 }
