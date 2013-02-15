@@ -46,7 +46,7 @@ public class XrefUtils {
      * @param refs
      * @return the sublist of identifiers (qualifier identity or secondary) from the list of Xrefs
      */
-    public Collection<Xref> collectAllIdentifiersFrom(Collection<? extends Xref> refs){
+    public static Collection<Xref> collectAllIdentifiersFrom(Collection<? extends Xref> refs){
 
         if (refs == null || refs.isEmpty()){
             return Collections.EMPTY_LIST;
