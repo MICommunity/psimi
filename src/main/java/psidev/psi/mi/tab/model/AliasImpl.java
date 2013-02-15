@@ -31,12 +31,14 @@ public class AliasImpl extends DefaultAlias implements Alias {
      */
     private String dbSource;
 
+    private static String UNSPECIFIED;
+
     /////////////////////////////////
     // Constructor
 
     public AliasImpl() {
         // create unknown alias
-        super("unknown");
+        super(UNSPECIFIED);
     }
 
     public AliasImpl( String dbSource, String name ) {
