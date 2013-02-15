@@ -40,8 +40,6 @@ public class ExperimentalRole extends CvType {
     private Collection<ExperimentDescription> experiments;
     private Collection<ExperimentRef> experimentRefs;
 
-    private Names names;
-
     ///////////////////////////
     // Constructors
 
