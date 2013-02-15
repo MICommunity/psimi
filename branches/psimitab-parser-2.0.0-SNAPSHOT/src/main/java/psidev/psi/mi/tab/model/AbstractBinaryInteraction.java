@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
@@ -20,6 +21,7 @@ import psidev.psi.mi.jami.utils.ParameterUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.ExperimentCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1091,21 +1093,95 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
-            if (added instanceof Annotation){
-                ((InteractionMitabAnnotationList)interactionAnnotations).addOnly((Annotation) added);
+            String shortTopic = added.getTopic().getShortName();
+
+            // we have a complex expansion added as a annotation
+            if (psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION.equals(shortTopic)){
+                CrossReference matchingXref = null;
+                if (added.getValue() == null){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION);
+                }
+                else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(added.getValue().trim())){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION);
+                }
+                else if (psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION.equalsIgnoreCase(added.getValue().trim())){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION);
+                }
+                else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(added.getValue().trim())){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION);
+                }
+                else {
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION_MI, added.getValue());
+                }
+                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
             }
+            else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(shortTopic)){
+                CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION);
+                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
+            }
+            else if (psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION.equalsIgnoreCase(shortTopic)){
+                CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION);
+                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
+            }
+            else if (psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION.equalsIgnoreCase(shortTopic)){
+                CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION);
+                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
+            }
+            // we have a simple xref
             else {
-                ((InteractionMitabAnnotationList)interactionAnnotations).addOnly(new AnnotationImpl(added.getTopic().getShortName(), added.getValue()));
+                if (added instanceof Annotation){
+                    ((InteractionMitabAnnotationList)interactionAnnotations).addOnly((Annotation) added);
+                }
+                else {
+                    ((InteractionMitabAnnotationList)interactionAnnotations).addOnly(new AnnotationImpl(added.getTopic().getShortName(), added.getValue()));
+                }
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
-            if (removed instanceof Annotation){
-                ((InteractionMitabAnnotationList)interactionAnnotations).removeOnly(removed);
+            String shortTopic = removed.getTopic().getShortName();
+
+            // we have a complex expansion added as a annotation
+            if (psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION.equals(shortTopic)){
+                CrossReference matchingXref = null;
+                if (removed.getValue() == null){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION);
+                }
+                else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(removed.getValue().trim())){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION);
+                }
+                else if (psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION.equalsIgnoreCase(removed.getValue().trim())){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION);
+                }
+                else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(removed.getValue().trim())){
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION);
+                }
+                else {
+                    matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION_MI, removed.getValue());
+                }
+                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
             }
+            else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(shortTopic)){
+                CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION);
+                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
+            }
+            else if (psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION.equalsIgnoreCase(shortTopic)){
+                CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION);
+                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
+            }
+            else if (psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION.equalsIgnoreCase(shortTopic)){
+                CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION);
+                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
+            }
+            // remove normal annotation
             else {
-                ((InteractionMitabAnnotationList)interactionAnnotations).removeOnly(new AnnotationImpl(removed.getTopic().getShortName(), removed.getValue()));
+                if (removed instanceof Annotation){
+                    ((InteractionMitabAnnotationList)interactionAnnotations).removeOnly(removed);
+                }
+                else {
+                    ((InteractionMitabAnnotationList)interactionAnnotations).removeOnly(new AnnotationImpl(removed.getTopic().getShortName(), removed.getValue()));
+                }
             }
         }
 
@@ -1113,6 +1189,31 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void clearProperties() {
             // clear all annotations
             ((InteractionMitabAnnotationList)interactionAnnotations).clearOnly();
+            ((ComplexExpansionList)complexExpansion).clearOnly();
+        }
+    }
+
+    protected class ComplexExpansionList extends AbstractListHavingPoperties<CrossReference> {
+        public ComplexExpansionList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(CrossReference added) {
+            ((BinaryInteractionAnnotationList)annotations).addOnly(
+                    new DefaultAnnotation(CvTermFactory.createMICvTerm(Annotation.COMPLEX_EXPANSION, Annotation.COMPLEX_EXPANSION_MI), added.getText() != null ? added.getText() : added.getId()));
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(CrossReference removed) {
+            ((BinaryInteractionAnnotationList)annotations).removeOnly(
+                    new DefaultAnnotation(CvTermFactory.createMICvTerm(Annotation.COMPLEX_EXPANSION, Annotation.COMPLEX_EXPANSION_MI), removed.getText() != null ? removed.getText() : removed.getId()));
+        }
+
+        @Override
+        protected void clearProperties() {
+            // clear all annotations
+            ((BinaryInteractionAnnotationList)annotations).retainAllOnly(interactionAnnotations);
         }
     }
 
