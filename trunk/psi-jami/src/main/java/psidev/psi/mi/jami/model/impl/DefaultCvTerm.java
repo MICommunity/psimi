@@ -237,11 +237,11 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is psi-mi
-            if (miIdentifier == removed){
+            if (miIdentifier != null && miIdentifier.equals(removed)){
                 miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
             }
             // the removed identifier is psi-mod
-            else if (modIdentifier == removed){
+            else if (modIdentifier != null && modIdentifier.equals(removed)){
                 modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
             }
         }

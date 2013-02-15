@@ -2,11 +2,13 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Default implementation for complexes
@@ -189,7 +191,8 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         }
         // remove all physical properties if the collection is not empty
         else if (!this.annotations.isEmpty()) {
-            ((ComplexAnnotationList) annotations).removeAllPhysicalProperties();
+            AnnotationUtils.removeAllAnnotationsWithTopic(annotations, COMPLEX_MI, COMPLEX);
+            physicalProperties = null;
         }
     }
 
@@ -207,149 +210,28 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         return UnambiguousExactComplexComparator.areEquals(this, (Complex) o);
     }
 
-    /**
-     * Comparator which sorts annotations so complex-properties are always first
-     */
-    private class ComplexAnnotationComparator implements Comparator<Annotation> {
-
-        public int compare(Annotation annotation1, Annotation annotation2) {
-            int EQUAL = 0;
-            int BEFORE = -1;
-            int AFTER = 1;
-
-            if (annotation1 == null && annotation2 == null){
-                return EQUAL;
-            }
-            else if (annotation1 == null){
-                return AFTER;
-            }
-            else if (annotation2 == null){
-                return BEFORE;
-            }
-            else {
-                // compares annotation topics first
-                CvTerm topic1 = annotation1.getTopic();
-                CvTerm topic2 = annotation2.getTopic();
-                String typeId1 = topic1.getMIIdentifier();
-                String typeId2 = topic2.getMIIdentifier();
-
-                // if external id of topic is set, look at type id only otherwise look at shortname
-                int comp;
-                if (typeId1 != null && typeId2 != null){
-                    // both are complex properties, sort by id
-                    if (Annotation.COMPLEX_PROPERTIES_MI.equals(typeId1) && Annotation.COMPLEX_PROPERTIES_MI.equals(typeId2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(annotation1.getValue(), annotation2.getValue(), physicalProperties != null ? physicalProperties.getValue() : null);
-                    }
-                    // complex properties is first
-                    else if (Annotation.COMPLEX_PROPERTIES_MI.equals(typeId1)){
-                        return BEFORE;
-                    }
-                    else if (Annotation.COMPLEX_PROPERTIES_MI.equals(typeId2)){
-                        return AFTER;
-                    }
-                    // both databases are not complex properties
-                    else {
-                        comp = typeId1.compareTo(typeId2);
-                    }
-                }
-                else {
-                    String typeName1 = topic1.getShortName().toLowerCase().trim();
-                    String typeName2 = topic2.getShortName().toLowerCase().trim();
-                    // both are complex-properties, sort by id
-                    if (Annotation.COMPLEX_PROPERTIES.equals(typeName1) && Annotation.COMPLEX_PROPERTIES.equals(typeName2)){
-                        return ComparatorUtils.compareIdentifiersWithDefaultIdentifier(annotation1.getValue(), annotation2.getValue(), physicalProperties != null ? physicalProperties.getValue() : null);
-                    }
-                    // complex properties is first
-                    else if (Annotation.COMPLEX_PROPERTIES.equals(typeName1)){
-                        return BEFORE;
-                    }
-                    else if (Annotation.COMPLEX_PROPERTIES.equals(typeName2)){
-                        return AFTER;
-                    }
-                    // both types are not alias names
-                    else {
-                        comp = typeName1.compareTo(typeName2);
-                    }
-                }
-
-                if (comp != 0){
-                    return comp;
-                }
-                // check values which can be null
-                String id1 = annotation1.getValue();
-                String id2 = annotation2.getValue();
-                if (id1 == null && id2 == null){
-                    return EQUAL;
-                }
-                else if (id1 == null){
-                    return AFTER;
-                }
-                else if (id2 == null){
-                    return BEFORE;
-                }
-                else {
-                    return id1.compareTo(id2);
-                }
-            }
-        }
-    }
-
-    private class ComplexAnnotationList extends TreeSet<Annotation> {
+    private class ComplexAnnotationList extends AbstractListHavingPoperties<Annotation> {
         public ComplexAnnotationList(){
-            super(new ComplexAnnotationComparator());
+            super();
         }
 
         @Override
-        public boolean add(Annotation annotation) {
-            boolean added = super.add(annotation);
-
-            // set complex-properties if not done
-            if (added && physicalProperties == null){
-                Annotation firstAnnotation = first();
-
-                if (AnnotationUtils.doesAnnotationHaveTopic(firstAnnotation, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
-                    physicalProperties = firstAnnotation;
-                }
+        protected void processAddedObjectEvent(Annotation added) {
+            if (physicalProperties == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
+                physicalProperties = added;
             }
-
-            return added;
         }
 
         @Override
-        public boolean remove(Object o) {
-            if (super.remove(o)){
-                // we have nothing left in annotations, reset standard values
-                if (isEmpty()){
-                    physicalProperties = null;
-                }
-                else {
-
-                    Annotation firstAnnotation = first();
-
-                    // first annotation is physical properties
-                    if (AnnotationUtils.doesAnnotationHaveTopic(firstAnnotation, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
-                        physicalProperties = firstAnnotation;
-                    }
-                }
-
-                return true;
+        protected void processRemovedObjectEvent(Annotation removed) {
+            if (physicalProperties != null && physicalProperties.equals(removed)){
+                physicalProperties = null;
             }
-            return false;
         }
 
         @Override
-        public void clear() {
-            super.clear();
+        protected void clearProperties() {
             physicalProperties = null;
-        }
-
-        public void removeAllPhysicalProperties(){
-
-            Annotation first = first();
-            while (AnnotationUtils.doesAnnotationHaveTopic(first, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
-                remove(first);
-                first = first();
-            }
         }
     }
 }
