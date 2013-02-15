@@ -126,8 +126,8 @@ public class ParticipantParameterConverter {
         jParameter.setFactor( BigDecimal.valueOf( mParameter.getFactor() ) );
         jParameter.setTerm( mParameter.getTerm() );
         jParameter.setTermAc( mParameter.getTermAc() );
-        jParameter.setUncertainty( new BigDecimal( mParameter.getUncertainty() ) );
-        jParameter.setUnit( mParameter.getUnit() );
+        jParameter.setUncertainty( new BigDecimal( mParameter.getUncertaintyAsDouble() ) );
+        jParameter.setUnit( mParameter.getUnitName() );
         jParameter.setUnitAc( mParameter.getUnitAc() );
 
         // 2. set encapsulated objects
