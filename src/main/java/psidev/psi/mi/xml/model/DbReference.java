@@ -269,7 +269,7 @@ public class DbReference extends DefaultXref{
                 this.qualifier = null;
             }
         }
-        else if (this.database == null){
+        else if (this.qualifier == null){
             this.qualifier = new DefaultCvTerm(value);
         }
         else {

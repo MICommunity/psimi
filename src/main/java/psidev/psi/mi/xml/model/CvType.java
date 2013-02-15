@@ -76,6 +76,11 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         this.annotations = Collections.EMPTY_LIST;
     }
 
+    @Override
+    protected void initializeSynonyms() {
+        this.synonyms = new CvTermAliasList();
+    }
+
     /**
      * Check if the optional names is defined.
      *
