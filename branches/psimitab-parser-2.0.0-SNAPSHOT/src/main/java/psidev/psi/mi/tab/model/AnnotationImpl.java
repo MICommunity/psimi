@@ -43,7 +43,7 @@ public class AnnotationImpl extends DefaultAnnotation implements Annotation {
     /**
      * {@inheritDoc}
      */
-    public void setAnnotationTopic(String topic) {
+    public void setTopic(String topic) {
         if (topic == null) {
             throw new IllegalArgumentException("Topic name cannot be null.");
         }

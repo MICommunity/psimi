@@ -23,7 +23,7 @@ public interface Annotation extends psidev.psi.mi.jami.model.Annotation,Serializ
      *
      * @param topic Value to set for property 'topic' in the annotation.
      */
-    void setAnnotationTopic(String topic);
+    void setTopic(String topic);
 
     /**
      *  Getter fot property 'text'.
