@@ -59,8 +59,8 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
             }
 
             // compare version
-            Integer version1 = externalIdentifier1.getVersion();
-            Integer version2 = externalIdentifier2.getVersion();
+            String version1 = externalIdentifier1.getVersion();
+            String version2 = externalIdentifier2.getVersion();
 
             if (version1 == version2){
                 return EQUAL;
@@ -71,11 +71,8 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
             else if (version2 == null){
                 return BEFORE;
             }
-            else if (version1 < version2) {
-                return BEFORE;
-            }
             else {
-                return AFTER;
+                return version1.compareTo(version2);
             }
         }
     }

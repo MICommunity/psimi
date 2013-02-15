@@ -18,7 +18,7 @@ public class DefaultXref implements Xref, Serializable {
 
     protected CvTerm database;
     protected String id;
-    protected Integer version;
+    protected String version;
     protected CvTerm qualifier;
 
     public DefaultXref(CvTerm database, String id, CvTerm qualifier){
@@ -26,12 +26,12 @@ public class DefaultXref implements Xref, Serializable {
         this.qualifier = qualifier;
     }
 
-    public DefaultXref(CvTerm database, String id, Integer version, CvTerm qualifier){
+    public DefaultXref(CvTerm database, String id, String version, CvTerm qualifier){
         this(database, id, version);
         this.qualifier = qualifier;
     }
 
-    public DefaultXref(CvTerm database, String id, Integer version){
+    public DefaultXref(CvTerm database, String id, String version){
         this(database, id);
         this.version = version;
     }
@@ -56,7 +56,7 @@ public class DefaultXref implements Xref, Serializable {
         return id;
     }
 
-    public Integer getVersion() {
+    public String getVersion() {
         return version;
     }
 

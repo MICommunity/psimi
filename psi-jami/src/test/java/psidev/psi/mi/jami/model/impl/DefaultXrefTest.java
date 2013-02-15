@@ -27,12 +27,12 @@ public class DefaultXrefTest {
 
     @Test
     public void test_create_external_identifier_with_version() throws Exception {
-        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", 2);
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", "2");
 
         Assert.assertEquals(CvTermFactory.createMICvTerm("uniprotkb", null), id1.getDatabase());
         Assert.assertEquals("P12345", id1.getId());
         Assert.assertNotNull(id1.getVersion());
-        Assert.assertTrue(id1.getVersion() == 2);
+        Assert.assertEquals(id1.getVersion(),"2");
         Assert.assertNull(id1.getQualifier());
     }
 
@@ -59,12 +59,12 @@ public class DefaultXrefTest {
 
     @Test
     public void test_create_xref_with_qualifier_and_version() throws Exception {
-        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", 2, CvTermFactory.createIdentityQualifier());
+        Xref id1 = new DefaultXref(CvTermFactory.createMICvTerm("uniprotkb", null), "P12345", "2", CvTermFactory.createIdentityQualifier());
 
         Assert.assertEquals(CvTermFactory.createMICvTerm("uniprotkb", null), id1.getDatabase());
         Assert.assertEquals("P12345", id1.getId());
         Assert.assertNotNull(id1.getVersion());
-        Assert.assertTrue(id1.getVersion() == 2);
+        Assert.assertEquals(id1.getVersion() , "2");
         Assert.assertNotNull(id1.getQualifier());
         Assert.assertEquals(CvTermFactory.createMICvTerm("identity", "MI:0356"), id1.getQualifier());
     }

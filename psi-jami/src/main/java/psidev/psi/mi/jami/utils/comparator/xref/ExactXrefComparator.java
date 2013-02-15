@@ -62,8 +62,8 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
             }
 
             // compare version
-            Integer version1 = xref1.getVersion();
-            Integer version2 = xref2.getVersion();
+            String version1 = xref1.getVersion();
+            String version2 = xref2.getVersion();
 
             if (version1 == null && version2 == null){
                 return EQUAL;
@@ -119,7 +119,7 @@ public class ExactXrefComparator extends UnambiguousXrefComparator {
         }
 
         hashcode = 31 * hashcode + xref.getId().hashCode();
-        hashcode = 31 * hashcode + (xref.getVersion() != null ? xref.getVersion() : 0);
+        hashcode = 31 * hashcode + (xref.getVersion() != null ? xref.getVersion().hashCode():0);
 
         CvTerm qualifier = xref.getQualifier();
         if (qualifier != null){
