@@ -23,15 +23,15 @@ import java.util.Collection;
 
 public class DefaultCvTerm implements CvTerm, Serializable {
 
-    private String shortName;
-    private String fullName;
-    private Collection<Xref> xrefs;
-    private Collection<Xref> identifiers;
-    private Collection<Annotation> annotations;
-    private Collection<Alias> synonyms;
+    protected String shortName;
+    protected String fullName;
+    protected Collection<Xref> xrefs;
+    protected Collection<Xref> identifiers;
+    protected Collection<Annotation> annotations;
+    protected Collection<Alias> synonyms;
 
-    private Xref miIdentifier;
-    private Xref modIdentifier;
+    protected Xref miIdentifier;
+    protected Xref modIdentifier;
 
 
     public DefaultCvTerm(String shortName){
