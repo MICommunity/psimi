@@ -6,6 +6,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+
 import java.io.Serializable;
 
 /**
@@ -37,28 +40,33 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Alias implements Serializable {
-
-    private String value;
-
-    private String type;
-
-    private String typeAc;
+public class Alias extends DefaultAlias implements Serializable {
 
     ///////////////////////////
     // Constructors
 
+    private static String UNSPECIFIED = "unspecified";
+
     public Alias() {
+        super(UNSPECIFIED);
     }
 
     public Alias( String value ) {
-        setValue( value );
+        super(value != null && value.length() > 0 ? value : UNSPECIFIED);
     }
 
     public Alias( String value, String type, String typeAc ) {
-        setValue( value );
-        setType( type );
-        setTypeAc( typeAc );
+        super(value != null && value.length() > 0  ? value : UNSPECIFIED);
+
+        if (type != null && typeAc != null){
+            this.type = new DefaultCvTerm(type, typeAc);
+        }
+        else if (type != null){
+            this.type = new DefaultCvTerm(type);
+        }
+        else if (typeAc != null){
+            this.type = new DefaultCvTerm(UNSPECIFIED, typeAc);
+        }
     }
 
     ///////////////////////////
@@ -70,7 +78,7 @@ public class Alias implements Serializable {
      * @return possible object is {@link String }
      */
     public String getValue() {
-        return value;
+        return name;
     }
 
     /**
@@ -79,7 +87,7 @@ public class Alias implements Serializable {
      * @param value allowed object is {@link String }
      */
     public void setValue( String value ) {
-        this.value = value;
+        this.name = value != null && value.length() > 0  ? value : UNSPECIFIED;
     }
 
     /**
@@ -88,7 +96,7 @@ public class Alias implements Serializable {
      * @return true if defined, false otherwise.
      */
     public boolean hasValue() {
-        return value != null && value.length() > 0;
+        return !UNSPECIFIED.equals(this.name);
     }
 
     /**
@@ -96,8 +104,8 @@ public class Alias implements Serializable {
      *
      * @return possible object is {@link String }
      */
-    public String getType() {
-        return type;
+    public String getAliasType() {
+        return type != null ? type.getShortName() : null;
     }
 
     /**
@@ -106,7 +114,20 @@ public class Alias implements Serializable {
      * @param value allowed object is {@link String }
      */
     public void setType( String value ) {
-        this.type = value;
+        if (value == null){
+            if (this.type != null && this.type.getMIIdentifier() != null){
+                type.setShortName(UNSPECIFIED);
+            }
+            else {
+                this.type = null;
+            }
+        }
+        else if (this.type == null){
+            this.type = new DefaultCvTerm(value);
+        }
+        else {
+            this.type.setShortName(value);
+        }
     }
 
     /**
@@ -115,7 +136,7 @@ public class Alias implements Serializable {
      * @return true if defined, false otherwise.
      */
     public boolean hasType() {
-        return type != null;
+        return this.type != null && !UNSPECIFIED.equals(type.getShortName());
     }
 
     /**
@@ -124,7 +145,7 @@ public class Alias implements Serializable {
      * @return possible object is {@link String }
      */
     public String getTypeAc() {
-        return typeAc;
+        return this.type != null ? this.type.getMIIdentifier() : null;
     }
 
     /**
@@ -133,7 +154,20 @@ public class Alias implements Serializable {
      * @param value allowed object is {@link String }
      */
     public void setTypeAc( String value ) {
-        this.typeAc = value;
+        if (value == null){
+            if (this.type != null){
+                type.setMIIdentifier(null);
+            }
+            else {
+                this.type = null;
+            }
+        }
+        else if (this.type == null){
+            this.type = new DefaultCvTerm(UNSPECIFIED, value);
+        }
+        else {
+            this.type.setMIIdentifier(value);
+        }
     }
 
     /**
@@ -142,7 +176,7 @@ public class Alias implements Serializable {
      * @return true if defined, false otherwise.
      */
     public boolean hasTypeAc() {
-        return typeAc != null;
+        return this.type != null && this.type.getMIIdentifier() != null;
     }
 
     //////////////////////////
@@ -152,9 +186,9 @@ public class Alias implements Serializable {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Alias" );
-        sb.append( "{value='" ).append( value ).append( '\'' );
-        sb.append( ", type='" ).append( type ).append( '\'' );
-        sb.append( ", typeAc='" ).append( typeAc ).append( '\'' );
+        sb.append( "{value='" ).append( name ).append( '\'' );
+        sb.append( ", type='" ).append( type != null ? type.getShortName() : null ).append( '\'' );
+        sb.append( ", typeAc='" ).append( type != null ? type.getMIIdentifier() : null ).append( '\'' );
         sb.append( '}' );
         return sb.toString();
     }
@@ -170,13 +204,13 @@ public class Alias implements Serializable {
 
         final Alias alias = ( Alias ) o;
 
-        if ( type != null ? !type.equals( alias.type ) : alias.type != null ) {
+        if ( getType() != null ? !getType().equals( alias.getType() ) : alias.getType() != null ) {
             return false;
         }
-        if ( typeAc != null ? !typeAc.equals( alias.typeAc ) : alias.typeAc != null ) {
+        if ( getTypeAc() != null ? !getTypeAc().equals( alias.getTypeAc() ) : alias.getTypeAc() != null ) {
             return false;
         }
-        if ( value != null ? !value.equals( alias.value ) : alias.value != null ) {
+        if ( name != null ? !name.equals( alias.name ) : alias.name != null ) {
             return false;
         }
 
@@ -186,9 +220,9 @@ public class Alias implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = ( value != null ? value.hashCode() : 0 );
-        result = 29 * result + ( type != null ? type.hashCode() : 0 );
-        result = 29 * result + ( typeAc != null ? typeAc.hashCode() : 0 );
+        result = ( name != null ? name.hashCode() : 0 );
+        result = 29 * result + ( getType() != null ? getType().hashCode() : 0 );
+        result = 29 * result + ( getTypeAc() != null ? getTypeAc().hashCode() : 0 );
         return result;
     }
 }

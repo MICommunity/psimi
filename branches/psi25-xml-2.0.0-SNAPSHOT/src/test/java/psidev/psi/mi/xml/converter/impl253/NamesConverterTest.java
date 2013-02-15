@@ -55,7 +55,7 @@ public class NamesConverterTest {
         // check on alias
         assertEquals( 1, mNames.getAliases().size() );
         Alias alias = mNames.getAliases().iterator().next();
-        assertEquals( "type1", alias.getType() );
+        assertEquals( "type1", alias.getAliasType() );
         assertEquals( "MI:xxxx", alias.getTypeAc() );
         assertEquals( "1234", alias.getValue() );
     }

@@ -41,7 +41,7 @@ public class AliasTest {
     @Test
     public void getType() {
         Alias alias = buildAlias();
-        assertEquals( "gene-name", alias.getType() );
+        assertEquals( "gene-name", alias.getAliasType() );
     }
 
     @Test

@@ -55,7 +55,7 @@ public class AliasConverter {
 
         // 1. set attributes
 
-        jAlias.setType( mAlias.getType() );
+        jAlias.setType( mAlias.getAliasType() );
         jAlias.setTypeAc( mAlias.getTypeAc() );
         jAlias.setValue( mAlias.getValue() );
 

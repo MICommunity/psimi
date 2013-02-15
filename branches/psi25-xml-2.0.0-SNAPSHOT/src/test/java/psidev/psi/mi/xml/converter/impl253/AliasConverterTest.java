@@ -43,7 +43,7 @@ public class AliasConverterTest {
         Assert.assertNotNull( mAlias );
 
         Assert.assertTrue( mAlias.hasType() );
-        Assert.assertEquals( "comment", mAlias.getType() );
+        Assert.assertEquals( "comment", mAlias.getAliasType() );
 
         Assert.assertTrue( mAlias.hasTypeAc() );
         Assert.assertEquals( "MI:xxxx", mAlias.getTypeAc() );
