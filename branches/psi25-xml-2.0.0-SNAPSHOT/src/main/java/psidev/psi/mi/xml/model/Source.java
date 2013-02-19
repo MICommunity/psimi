@@ -9,6 +9,7 @@ package psidev.psi.mi.xml.model;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -326,6 +327,20 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             names = new SourceNames();
             names.setShortLabel(name);
             names.setFullName(name);
+        }
+    }
+
+    @Override
+    public void setPublication(Publication ref) {
+        if (ref == null){
+            this.bibRef = null;
+        }
+        else if (this.bibRef != null){
+            PublicationCloner.copyAndOverridePublicationProperties(ref, bibRef);
+        }
+        else {
+            this.bibRef = new Bibref();
+            PublicationCloner.copyAndOverridePublicationProperties(ref, bibRef);
         }
     }
 
