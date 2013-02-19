@@ -41,6 +41,19 @@ public class DefaultPosition implements Position, Serializable {
         isPositionUndetermined = false;
     }
 
+    public DefaultPosition(CvTerm status, long start, long end){
+        if (start > end){
+            throw new IllegalArgumentException("The start cannot be after the end.");
+        }
+        this.start = start;
+        this.end = end;
+        if (status == null){
+            throw new IllegalArgumentException("The position status is required and cannot be null");
+        }
+        this.status = status;
+        isPositionUndetermined = (PositionUtils.isUndetermined(this) || PositionUtils.isCTerminalRange(this) || PositionUtils.isNTerminalRange(this));
+    }
+
     public DefaultPosition(CvTerm status, long position){
         if (status == null){
             throw new IllegalArgumentException("The position status is required and cannot be null");
