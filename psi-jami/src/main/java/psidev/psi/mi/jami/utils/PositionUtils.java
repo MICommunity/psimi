@@ -119,7 +119,7 @@ public class PositionUtils {
             return position.getStart()+Range.FUZZY_POSITION_SYMBOL+position.getEnd();
         }
         else {
-            return Integer.toString(position.getStart());
+            return Long.toString(position.getStart());
         }
     }
 }

@@ -82,8 +82,8 @@ public class UnambiguousPositionComparator extends PositionComparator {
         CvTerm status = pos.getStatus();
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(status);
         hashcode = 31 * hashcode + (pos.isPositionUndetermined() ? 0 : 1);
-        hashcode = 31*hashcode + pos.getStart();
-        hashcode = 31*hashcode + pos.getEnd();
+        hashcode = 31*hashcode + Long.toString(pos.getStart()).hashCode();
+        hashcode = 31*hashcode + Long.toString(pos.getEnd()).hashCode();
 
         return hashcode;
     }

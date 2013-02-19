@@ -63,7 +63,7 @@ public interface Position {
      * an interval and in this case, start <= end.
      * @return start position. 0 if the position is undetermined, n-terminal range or c-terminal range
      */
-    public int getStart();
+    public long getStart();
 
     /**
      * The end position in the molecule sequence.
@@ -71,7 +71,7 @@ public interface Position {
      * an interval and in this case, start <= end.
      * @return end position. 0 if the position is undetermined, n-terminal range or c-terminal range
      */
-    public int getEnd();
+    public long getEnd();
 
     /**
      *
