@@ -44,7 +44,7 @@ public class ChecksumUtils {
      * @param methodName : the method name to look for
      * @return the first checksum having this method name/id, null if no Checksum with this method name/id
      */
-    public static Checksum collectFirstChecksumWithMethod(Collection<Checksum> checksums, String methodId, String methodName){
+    public static Checksum collectFirstChecksumWithMethod(Collection<? extends Checksum> checksums, String methodId, String methodName){
 
         if (checksums == null || (methodName == null && methodId == null)){
             return null;
@@ -77,10 +77,10 @@ public class ChecksumUtils {
      * @param methodId : the method id to look for
      * @param methodName : the method name to look for
      */
-    public static void removeAllChecksumWithMethod(Collection<Checksum> checksums, String methodId, String methodName){
+    public static void removeAllChecksumWithMethod(Collection<? extends Checksum> checksums, String methodId, String methodName){
 
         if (checksums != null){
-            Iterator<Checksum> checksumIterator = checksums.iterator();
+            Iterator<? extends Checksum> checksumIterator = checksums.iterator();
 
             while (checksumIterator.hasNext()){
                 if (doesChecksumHaveMethod(checksumIterator.next(), methodId, methodName)){
