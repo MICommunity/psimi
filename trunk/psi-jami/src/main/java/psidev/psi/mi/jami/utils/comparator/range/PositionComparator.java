@@ -88,8 +88,8 @@ public class PositionComparator implements Comparator<Position>{
             else {
                 // compare start and then end
 
-                int start1 = position1.getStart();
-                int start2 = position2.getStart();
+                long start1 = position1.getStart();
+                long start2 = position2.getStart();
 
                 if (start1 < start2){
                     return BEFORE;
@@ -98,8 +98,8 @@ public class PositionComparator implements Comparator<Position>{
                     return AFTER;
                 }
                 else {
-                    int end1 = position1.getEnd();
-                    int end2 = position2.getEnd();
+                    long end1 = position1.getEnd();
+                    long end2 = position2.getEnd();
 
                     if (end1 < end2){
                         return BEFORE;

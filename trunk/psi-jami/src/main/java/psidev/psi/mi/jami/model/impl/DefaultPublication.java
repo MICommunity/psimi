@@ -48,7 +48,7 @@ public class DefaultPublication implements Publication, Serializable {
     }
 
     public DefaultPublication(Xref identifier){
-        super();
+        this();
 
         if (identifier != null){
             this.identifiers.add(identifier);

@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 public class DefaultPosition implements Position, Serializable {
 
     private CvTerm status;
-    private int start;
-    private int end;
+    private long start;
+    private long end;
     private boolean isPositionUndetermined;
 
     private static final Logger log = Logger.getLogger("DefaultPosition");
@@ -31,7 +31,7 @@ public class DefaultPosition implements Position, Serializable {
      * @param start : the fuzzy start
      * @param end : the fuzzy end
      */
-    public DefaultPosition(int start, int end){
+    public DefaultPosition(long start, long end){
         if (start > end){
             throw new IllegalArgumentException("The start cannot be after the end.");
         }
@@ -41,7 +41,7 @@ public class DefaultPosition implements Position, Serializable {
         isPositionUndetermined = false;
     }
 
-    public DefaultPosition(CvTerm status, int position){
+    public DefaultPosition(CvTerm status, long position){
         if (status == null){
             throw new IllegalArgumentException("The position status is required and cannot be null");
         }
@@ -68,7 +68,7 @@ public class DefaultPosition implements Position, Serializable {
      *
      * @param position
      */
-    public DefaultPosition(int position){
+    public DefaultPosition(long position){
         if (position == 0){
             start = position;
             end = position;
@@ -87,11 +87,11 @@ public class DefaultPosition implements Position, Serializable {
         return this.status;
     }
 
-    public int getStart() {
+    public long getStart() {
         return this.start;
     }
 
-    public int getEnd() {
+    public long getEnd() {
         return this.end;
     }
 
