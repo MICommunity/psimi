@@ -63,7 +63,7 @@ public class AnnotationUtils {
      * @param topicName : the topic name to look for
      * @return the first annotation having this topic name/id, null if no Annotation with this topic name/id
      */
-    public static Annotation collectFirstAnnotationWithTopic(Collection<Annotation> annotations, String topicId, String topicName){
+    public static Annotation collectFirstAnnotationWithTopic(Collection<? extends Annotation> annotations, String topicId, String topicName){
 
         if (annotations == null || (topicName == null && topicId == null)){
             return null;
