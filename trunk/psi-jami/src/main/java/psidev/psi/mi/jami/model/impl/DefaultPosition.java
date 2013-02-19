@@ -19,10 +19,10 @@ import java.util.logging.Logger;
 
 public class DefaultPosition implements Position, Serializable {
 
-    private CvTerm status;
-    private long start;
-    private long end;
-    private boolean isPositionUndetermined;
+    protected CvTerm status;
+    protected long start;
+    protected long end;
+    protected boolean isPositionUndetermined;
 
     private static final Logger log = Logger.getLogger("DefaultPosition");
 
