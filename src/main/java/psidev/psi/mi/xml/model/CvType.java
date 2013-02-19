@@ -204,6 +204,68 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
 
 
     @Override
+    public void setShortName(String name) {
+        if (names != null){
+            names.setShortLabel(name);
+        }
+        else {
+            names = new CvTermNames();
+            names.setShortLabel(name);
+        }
+    }
+
+    @Override
+    public void setFullName(String name) {
+        if (names != null){
+            if (names.getShortLabel().equals(UNSPECIFIED)){
+                names.setShortLabel(name);
+            }
+            names.setFullName(name);
+        }
+        else {
+            names = new CvTermNames();
+            names.setShortLabel(name);
+            names.setFullName(name);
+        }
+    }
+
+    @Override
+    public void setMIIdentifier(String mi) {
+        // add new mi if not null
+        if (mi != null){
+            // first remove old psi mi if not null
+            if (this.miIdentifier != null){
+                identifiers.remove(this.miIdentifier);
+            }
+            this.miIdentifier = new DbReference(CvTerm.PSI_MI, CvTerm.PSI_MI_MI, mi, psidev.psi.mi.jami.model.Xref.IDENTITY, psidev.psi.mi.jami.model.Xref.IDENTITY_MI);
+            this.identifiers.add(this.miIdentifier);
+        }
+        // remove all mi if the collection is not empty
+        else if (!this.identifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+            this.miIdentifier = null;
+        }
+    }
+
+    @Override
+    public void setMODIdentifier(String mod) {
+        // add new mod if not null
+        if (mod != null){
+            // first remove old psi mod if not null
+            if (this.modIdentifier != null){
+                identifiers.remove(this.modIdentifier);
+            }
+            this.modIdentifier = new DbReference(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI, mod, psidev.psi.mi.jami.model.Xref.IDENTITY, psidev.psi.mi.jami.model.Xref.IDENTITY_MI);
+            this.identifiers.add(this.modIdentifier);
+        }
+        // remove all mod if the collection is not empty
+        else if (!this.identifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
+            this.modIdentifier = null;
+        }
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "CvType" );
