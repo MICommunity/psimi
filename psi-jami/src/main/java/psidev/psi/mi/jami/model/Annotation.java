@@ -25,6 +25,8 @@ public interface Annotation {
     public static String MATRIX_EXPANSION_MI ="MI:1061";
     public static String BIPARTITE_EXPANSION="bipartite expansion";
     public static String BIPARTITE_EXPANSION_MI ="MI:1062";
+    public static String URL="url";
+    public static String URL_MI ="MI:0614";
 
 
     /**
