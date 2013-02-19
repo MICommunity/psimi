@@ -27,6 +27,14 @@ public interface Annotation {
     public static String BIPARTITE_EXPANSION_MI ="MI:1062";
     public static String URL="url";
     public static String URL_MI ="MI:0614";
+    public static String PUBLICATION_TITLE="publication title";
+    public static String PUBLICATION_TITLE_MI ="MI:1091";
+    public static String PUBLICATION_JOURNAL="journal";
+    public static String PUBLICATION_JOURNAL_MI ="MI:0885";
+    public static String PUBLICATION_YEAR="publication year";
+    public static String PUBLICATION_YEAR_MI ="MI:0886";
+    public static String AUTHOR="author list";
+    public static String AUTHOR_MI ="MI:0636";
 
 
     /**
