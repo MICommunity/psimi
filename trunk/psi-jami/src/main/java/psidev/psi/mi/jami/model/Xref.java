@@ -46,6 +46,8 @@ public interface Xref {
     public static String IDENTITY_MI = "MI:0356";
     public static String SECONDARY = "secondary-ac";
     public static String SECONDARY_MI = "MI:0360";
+    public static String PRIMARY = "primary-reference";
+    public static String PRIMARY_MI = "MI:0358";
 
     /**
      * The database is a controlled vocabulary term. It cannot be null.
