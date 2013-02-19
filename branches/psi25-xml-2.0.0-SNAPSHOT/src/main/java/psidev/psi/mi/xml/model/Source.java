@@ -558,14 +558,14 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             }
             else {
                 if (added instanceof Alias){
-                    names = new Names();
+                    names = new SourceNames();
                     names.setShortLabel(UNKNOWN);
                     ((SourceNames.AliasList) names.getAliases()).addOnly((Alias) added);
                 }
                 else {
                     Alias fixedAlias = new Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
 
-                    names = new Names();
+                    names = new SourceNames();
                     names.setShortLabel(UNKNOWN);
                     ((SourceNames.AliasList) names.getAliases()).addOnly((Alias) fixedAlias);
                 }
@@ -624,6 +624,16 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         public void setPrimaryRef( DbReference value ) {
             if (getPrimaryRef() == null){
                 super.setPrimaryRef(value);
+                if (value != null){
+                    if (XrefUtils.isXrefAnIdentifier(value)){
+                        ((SourceIdentifierList)identifiers).addOnly(value);
+                        processAddedIdentifier(value);
+                        isPrimaryAnIdentity = true;
+                    }
+                    else {
+                        ((SourceXrefList)xrefs).addOnly(value);
+                    }
+                }
             }
             else if (isPrimaryAnIdentity){
                 ((SourceIdentifierList)identifiers).removeOnly(getPrimaryRef());
@@ -661,7 +671,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         public void setPrimaryRefOnly( DbReference value ) {
             if (value == null && !extendedSecondaryRefList.isEmpty()){
                 super.setPrimaryRef(extendedSecondaryRefList.get(0));
-                extendedSecondaryRefList.remove(0);
+                extendedSecondaryRefList.removeOnly(0);
             }
             else {
                 super.setPrimaryRef(value);
@@ -774,14 +784,16 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             }
             else {
                 if (added instanceof DbReference){
-                    xref = new Xref((DbReference) added);
+                    xref = new SourceXref();
+                    ((SourceXref) xref).setPrimaryRefOnly((DbReference) added);
                     processAddedIdentifier(added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                             added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
-                    xref = new Xref(fixedRef);
+                    xref = new SourceXref();
+                    ((SourceXref) xref).setPrimaryRefOnly(fixedRef);
                     processAddedIdentifier(fixedRef);
                 }
             }
@@ -865,13 +877,15 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             }
             else {
                 if (added instanceof DbReference){
-                    xref = new Xref((DbReference) added);
+                    xref = new SourceXref();
+                    ((SourceXref) xref).setPrimaryRefOnly((DbReference) added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                             added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
-                    xref = new Xref(fixedRef);
+                    xref = new SourceXref();
+                    ((SourceXref) xref).setPrimaryRefOnly(fixedRef);
                 }
             }
         }
