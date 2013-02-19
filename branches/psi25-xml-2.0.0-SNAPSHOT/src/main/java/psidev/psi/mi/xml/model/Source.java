@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.clone.PublicationCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
 import java.util.ArrayList;
@@ -51,8 +52,6 @@ import java.util.Date;
 public class Source extends DefaultSource implements NamesContainer, XrefContainer, AttributeContainer {
 
     private Names names = new SourceNames();
-
-    private Bibref bibref;
 
     private Xref xref;
 
@@ -138,7 +137,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      * @return true if defined, false otherwise.
      */
     public boolean hasBibref() {
-        return bibref != null;
+        return bibRef != null;
     }
 
     /**
@@ -147,7 +146,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      * @return possible object is {@link Bibref }
      */
     public Bibref getBibref() {
-        return bibref;
+        return (Bibref)bibRef;
     }
 
     /**
@@ -156,7 +155,16 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      * @param value allowed object is {@link Bibref }
      */
     public void setBibref( Bibref value ) {
-        this.bibref = value;
+        if (value == null){
+            this.bibRef = null;
+        }
+        else if (this.bibRef != null){
+            PublicationCloner.copyAndOverridePublicationProperties(value, bibRef);
+        }
+        else {
+            this.bibRef = new Bibref();
+            PublicationCloner.copyAndOverridePublicationProperties(value, bibRef);
+        }
     }
 
     /**
@@ -432,7 +440,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         final StringBuilder sb = new StringBuilder();
         sb.append( "Source" );
         sb.append( "{names=" ).append( names );
-        sb.append( ", bibref=" ).append( bibref );
+        sb.append( ", bibref=" ).append( bibRef );
         sb.append( ", xref=" ).append( xref );
         sb.append( ", attributes=" ).append( attributes );
         sb.append( ", release='" ).append( release ).append( '\'' );
