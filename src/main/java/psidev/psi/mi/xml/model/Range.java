@@ -7,6 +7,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultRange;
+import psidev.psi.mi.jami.utils.clone.CvTermCloner;
+
 /**
  * A location on a sequence. Both begin and end can be a defined position, a fuzzy position, or undetermined.
  * <p/>
@@ -41,54 +44,44 @@ package psidev.psi.mi.xml.model;
  * </pre>
  */
 
-public class Range {
-
-    private RangeStatus startStatus;
-
-    private Position begin;
-
-    private Interval beginInterval;
-
-    private RangeStatus endStatus;
-
-    private Position end;
-
-    private Interval endInterval;
-
-    private Boolean isLink;
+public class Range extends DefaultRange{
 
     ///////////////////////////
     // Constructors
 
+    private boolean isBeginInterval=false;
+    private boolean isEndInterval=false;
+
     public Range() {
+        super(new Position(), new Position());
     }
 
     public Range( RangeStatus startStatus, Position begin, RangeStatus endStatus, Position end ) {
-        setStartStatus( startStatus );
-        setBegin( begin );
-        setEndStatus( endStatus );
-        setEnd( end );
+        super(begin, end);
+        getBegin().setStatus(startStatus);
+        getEnd().setStatus(endStatus);
     }
 
     public Range( RangeStatus startStatus, Interval beginInterval, RangeStatus endStatus, Position end ) {
-        this.startStatus = startStatus;
-        this.beginInterval = beginInterval;
-        this.endStatus = endStatus;
-        this.end = end;
+        super(beginInterval, end);
+        getBeginInterval().setStatus(startStatus);
+        getEndInterval().setStatus(endStatus);
+        isBeginInterval = true;
     }
 
     public Range( RangeStatus startStatus, RangeStatus endStatus, Position begin, Interval endInterval ) {
-        this.startStatus = startStatus;
-        this.endStatus = endStatus;
-        this.begin = begin;
-        this.endInterval = endInterval;
+        super(begin, endInterval);
+        getBegin().setStatus(startStatus);
+        getEndInterval().setStatus(endStatus);
+        isEndInterval = true;
     }
 
     public Range( Interval endInterval, Interval beginInterval, RangeStatus startStatus, RangeStatus endStatus ) {
-        this.endInterval = endInterval;
-        this.beginInterval = beginInterval;
-        this.startStatus = startStatus;
-        this.endStatus = endStatus;
+        super(beginInterval, endInterval);
+        getBeginInterval().setStatus(startStatus);
+        getEndInterval().setStatus(endStatus);
+        isBeginInterval = true;
+        isEndInterval = true;
     }
 
     ///////////////////////////
@@ -100,7 +93,7 @@ public class Range {
      * @return possible object is {@link RangeStatus }
      */
     public RangeStatus getStartStatus() {
-        return startStatus;
+        return (RangeStatus) start.getStatus();
     }
 
     /**
@@ -109,7 +102,12 @@ public class Range {
      * @param start allowed object is {@link RangeStatus }
      */
     public void setStartStatus( RangeStatus start ) {
-        this.startStatus = start;
+        if (isBeginInterval){
+            getBeginInterval().setStatus(start);
+        }
+        else {
+            getBegin().setStatus(start);
+        }
     }
 
     /**
@@ -118,7 +116,7 @@ public class Range {
      * @return true if defined, false otherwise.
      */
     public boolean hasBegin() {
-        return begin != null;
+        return !isBeginInterval;
     }
 
     /**
@@ -127,7 +125,7 @@ public class Range {
      * @return possible object is {@link Position }
      */
     public Position getBegin() {
-        return begin;
+        return isBeginInterval ? null : (Position) start;
     }
 
     /**
@@ -136,7 +134,13 @@ public class Range {
      * @param value allowed object is {@link Position }
      */
     public void setBegin( Position value ) {
-        this.begin = value;
+        if (value == null && !isBeginInterval){
+            this.start = new Position();
+        }
+        else if (value != null) {
+            this.start = value;
+            isBeginInterval = false;
+        }
     }
 
     /**
@@ -145,7 +149,7 @@ public class Range {
      * @return true if defined, false otherwise.
      */
     public boolean hasBeginInterval() {
-        return beginInterval != null;
+        return isBeginInterval;
     }
 
     /**
@@ -154,7 +158,7 @@ public class Range {
      * @return possible object is {@link Interval }
      */
     public Interval getBeginInterval() {
-        return beginInterval;
+        return isBeginInterval? (Interval) start : null;
     }
 
     /**
@@ -163,7 +167,13 @@ public class Range {
      * @param value allowed object is {@link Interval }
      */
     public void setBeginInterval( Interval value ) {
-        this.beginInterval = value;
+        if (value == null && isBeginInterval){
+            this.start = new Interval();
+        }
+        else if (value != null) {
+            this.start = value;
+            isBeginInterval = true;
+        }
     }
 
     /**
@@ -172,7 +182,7 @@ public class Range {
      * @return possible object is {@link RangeStatus }
      */
     public RangeStatus getEndStatus() {
-        return endStatus;
+        return (RangeStatus) end.getStatus();
     }
 
     /**
@@ -181,7 +191,12 @@ public class Range {
      * @param end allowed object is {@link RangeStatus }
      */
     public void setEndStatus( RangeStatus end ) {
-        this.endStatus = end;
+        if (isEndInterval){
+            getEndInterval().setStatus(end);
+        }
+        else {
+            getEnd().setStatus(end);
+        }
     }
 
     /**
@@ -190,7 +205,7 @@ public class Range {
      * @return true if defined, false otherwise.
      */
     public boolean hasEnd() {
-        return end != null;
+        return !isEndInterval;
     }
 
     /**
@@ -199,7 +214,7 @@ public class Range {
      * @return possible object is {@link Position }
      */
     public Position getEnd() {
-        return end;
+        return isEndInterval ? null : (Position) this.end;
     }
 
     /**
@@ -208,7 +223,13 @@ public class Range {
      * @param value allowed object is {@link Position }
      */
     public void setEnd( Position value ) {
-        this.end = value;
+        if (value == null && !isEndInterval){
+            this.end = new Position();
+        }
+        else if (value != null) {
+            this.end = value;
+            isEndInterval = false;
+        }
     }
 
     /**
@@ -217,7 +238,7 @@ public class Range {
      * @return true if defined, false otherwise.
      */
     public boolean hasEndInterval() {
-        return endInterval != null;
+        return isEndInterval;
     }
 
     /**
@@ -226,7 +247,7 @@ public class Range {
      * @return possible object is {@link Interval }
      */
     public Interval getEndInterval() {
-        return endInterval;
+        return isEndInterval ? (Interval) this.end : null;
     }
 
     /**
@@ -235,7 +256,13 @@ public class Range {
      * @param value allowed object is {@link Interval }
      */
     public void setEndInterval( Interval value ) {
-        this.endInterval = value;
+        if (value == null && isEndInterval){
+            this.end = new Interval();
+        }
+        else if (value != null) {
+            this.end = value;
+            isEndInterval = true;
+        }
     }
 
     /**
@@ -244,9 +271,6 @@ public class Range {
      * @return possible object is {@link Boolean }
      */
     public boolean isLink() {
-        if ( isLink == null ) {
-            return false;
-        }
         return isLink;
     }
 
@@ -264,15 +288,44 @@ public class Range {
 
 
     @Override
+    public void setPositions(psidev.psi.mi.jami.model.Position start, psidev.psi.mi.jami.model.Position end) {
+        psidev.psi.mi.jami.model.Position newStart = start;
+        psidev.psi.mi.jami.model.Position newEnd = end;
+
+        if (!(start instanceof Position) && !(start instanceof Interval)){
+            if (start.getStart() != start.getEnd()){
+                newStart = new Interval(start.getStart(), start.getEnd());
+                CvTermCloner.copyAndOverrideCvTermProperties(start.getStatus(), newStart.getStatus());
+            }
+            else {
+                newStart = new Position(start.getStart());
+                CvTermCloner.copyAndOverrideCvTermProperties(start.getStatus(), newStart.getStatus());
+            }
+        }
+        if (!(end instanceof Position) && !(end instanceof Interval)){
+            if (end.getStart() != end.getEnd()){
+                newEnd = new Interval(end.getStart(), end.getEnd());
+                CvTermCloner.copyAndOverrideCvTermProperties(end.getStatus(), newEnd.getStatus());
+            }
+            else {
+                newEnd = new Position(end.getStart());
+                CvTermCloner.copyAndOverrideCvTermProperties(end.getStatus(), newEnd.getStatus());
+            }
+        }
+
+        super.setPositions(newStart, newEnd);
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Range" );
-        sb.append( "{startStatus=" ).append( startStatus );
-        sb.append( ", begin=" ).append( begin );
-        sb.append( ", beginInterval=" ).append( beginInterval );
-        sb.append( ", endStatus=" ).append( endStatus );
-        sb.append( ", end=" ).append( end );
-        sb.append( ", endInterval=" ).append( endInterval );
+        sb.append( "{startStatus=" ).append( getStartStatus() );
+        sb.append( ", begin=" ).append( getBegin() );
+        sb.append( ", beginInterval=" ).append( getBeginInterval() );
+        sb.append( ", endStatus=" ).append( getEndStatus() );
+        sb.append( ", end=" ).append( getEnd() );
+        sb.append( ", endInterval=" ).append( getEndInterval() );
         sb.append( ", isLink=" ).append( isLink );
         sb.append( '}' );
         return sb.toString();
@@ -285,14 +338,14 @@ public class Range {
 
         final Range range = ( Range ) o;
 
-        if ( begin != null ? !begin.equals( range.begin ) : range.begin != null ) return false;
-        if ( beginInterval != null ? !beginInterval.equals( range.beginInterval ) : range.beginInterval != null )
+        if ( getBegin() != null ? !getBegin().equals(range.getBegin()) : range.getBegin() != null ) return false;
+        if ( getBeginInterval() != null ? !getBeginInterval().equals(range.getBeginInterval()) : range.getBeginInterval() != null )
             return false;
-        if ( end != null ? !end.equals( range.end ) : range.end != null ) return false;
-        if ( endInterval != null ? !endInterval.equals( range.endInterval ) : range.endInterval != null ) return false;
-        if ( !endStatus.equals( range.endStatus ) ) return false;
-        if ( isLink != null ? !isLink.equals( range.isLink ) : range.isLink != null ) return false;
-        if ( !startStatus.equals( range.startStatus ) ) return false;
+        if ( getEnd() != null ? !getEnd().equals(range.getEnd()) : range.getEnd() != null ) return false;
+        if ( getEndInterval() != null ? !getEndInterval().equals(range.getEndInterval()) : range.getEndInterval() != null ) return false;
+        if ( !getEndStatus().equals(range.getEndStatus()) ) return false;
+        if ( isLink != range.isLink ) return false;
+        if ( !getStartStatus().equals(range.getStartStatus()) ) return false;
 
         return true;
     }
@@ -300,13 +353,13 @@ public class Range {
     @Override
     public int hashCode() {
         int result;
-        result = startStatus.hashCode();
-        result = 29 * result + ( begin != null ? begin.hashCode() : 0 );
-        result = 29 * result + ( beginInterval != null ? beginInterval.hashCode() : 0 );
-        result = 29 * result + endStatus.hashCode();
-        result = 29 * result + ( end != null ? end.hashCode() : 0 );
-        result = 29 * result + ( endInterval != null ? endInterval.hashCode() : 0 );
-        result = 29 * result + ( isLink != null ? isLink.hashCode() : 0 );
+        result = getStartStatus().hashCode();
+        result = 29 * result + ( getBegin() != null ? getBegin().hashCode() : 0 );
+        result = 29 * result + ( getBeginInterval() != null ? getBeginInterval().hashCode() : 0 );
+        result = 29 * result + getEndStatus().hashCode();
+        result = 29 * result + ( getEnd() != null ? getEnd().hashCode() : 0 );
+        result = 29 * result + ( getEndInterval() != null ? getEndInterval().hashCode() : 0 );
+        result = 29 * result + ( isLink ? 1 : 0 );
         return result;
     }
 }
