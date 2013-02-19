@@ -38,13 +38,17 @@ public class DefaultPublication implements Publication, Serializable {
     protected Xref doi;
     protected Xref imexId;
 
-    public DefaultPublication(Xref identifier){
+    public DefaultPublication(){
         initializeAuthors();
         initializeXrefs();
         initialiseAnnotations();
         initialiseExperiments();
         initialiseIdentifiers();
         this.curationDepth = CurationDepth.undefined;
+    }
+
+    public DefaultPublication(Xref identifier){
+        super();
 
         if (identifier != null){
             this.identifiers.add(identifier);
