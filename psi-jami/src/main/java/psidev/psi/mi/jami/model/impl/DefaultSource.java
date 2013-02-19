@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Source;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
@@ -20,7 +17,7 @@ public class DefaultSource extends DefaultCvTerm implements Source {
 
     protected Annotation url;
     protected String postalAddress;
-    protected Xref bibRef;
+    protected Publication bibRef;
 
     public DefaultSource(String shortName) {
         super(shortName);
@@ -34,21 +31,21 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         super(shortName, fullName, ontologyId);
     }
 
-    public DefaultSource(String shortName, String url, String address, Xref bibRef) {
+    public DefaultSource(String shortName, String url, String address, Publication bibRef) {
         super(shortName);
         setUrl(url);
         this.postalAddress = address;
         this.bibRef = bibRef;
     }
 
-    public DefaultSource(String shortName, Xref ontologyId, String url, String address, Xref bibRef) {
+    public DefaultSource(String shortName, Xref ontologyId, String url, String address, Publication bibRef) {
         super(shortName, ontologyId);
         setUrl(url);
         this.postalAddress = address;
         this.bibRef = bibRef;
     }
 
-    public DefaultSource(String shortName, String fullName, Xref ontologyId, String url, String address, Xref bibRef) {
+    public DefaultSource(String shortName, String fullName, Xref ontologyId, String url, String address, Publication bibRef) {
         super(shortName, fullName, ontologyId);
         setUrl(url);
         this.postalAddress = address;
@@ -63,14 +60,14 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         super(shortName, fullName, miId);
     }
 
-    public DefaultSource(String shortName, String miId, String url, String address, Xref bibRef) {
+    public DefaultSource(String shortName, String miId, String url, String address, Publication bibRef) {
         super(shortName, miId);
         setUrl(url);
         this.postalAddress = address;
         this.bibRef = bibRef;
     }
 
-    public DefaultSource(String shortName, String fullName, String miId, String url, String address, Xref bibRef) {
+    public DefaultSource(String shortName, String fullName, String miId, String url, String address, Publication bibRef) {
         super(shortName, fullName, miId);
         setUrl(url);
         this.postalAddress = address;
@@ -112,11 +109,11 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         this.postalAddress = address;
     }
 
-    public Xref getBibRef() {
+    public Publication getPublication() {
         return this.bibRef;
     }
 
-    public void setBibRef(Xref ref) {
+    public void setPublication(Publication ref) {
         this.bibRef = ref;
     }
 

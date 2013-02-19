@@ -25,13 +25,13 @@ public class DefaultSourceTest {
         Assert.assertNotNull(intact.getXrefs());
 
         Assert.assertNull(intact.getUrl());
-        Assert.assertNull(intact.getBibRef());
+        Assert.assertNull(intact.getPublication());
         Assert.assertNull(intact.getPostalAddress());
     }
 
     @Test
     public void test_create_source_details() throws Exception {
-        Source intact = new DefaultSource("intact", "http://ww.ebi.ac.uk/intact/", "hinxton", new DefaultXref(CvTermFactory.createPubmedDatabase(), "12345"));
+        Source intact = new DefaultSource("intact", "http://ww.ebi.ac.uk/intact/", "hinxton", new DefaultPublication(new DefaultXref(CvTermFactory.createPubmedDatabase(), "12345")));
 
         Assert.assertEquals("intact", intact.getShortName());
         Assert.assertNotNull(intact.getAnnotations());
@@ -40,7 +40,7 @@ public class DefaultSourceTest {
 
         Assert.assertEquals("http://ww.ebi.ac.uk/intact/", intact.getUrl());
         Assert.assertEquals("hinxton", intact.getPostalAddress());
-        Assert.assertEquals(new DefaultXref(CvTermFactory.createPubmedDatabase(), "12345"), intact.getBibRef());
+        Assert.assertEquals(new DefaultPublication(new DefaultXref(CvTermFactory.createPubmedDatabase(), "12345")), intact.getPublication());
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -65,7 +65,7 @@ public class DefaultSourceTest {
         Assert.assertNotNull(intact.getXrefs());
 
         Assert.assertNull(intact.getUrl());
-        Assert.assertNull(intact.getBibRef());
+        Assert.assertNull(intact.getPublication());
         Assert.assertNull(intact.getPostalAddress());
     }
 
@@ -81,7 +81,7 @@ public class DefaultSourceTest {
         Assert.assertNotNull(intact.getXrefs());
 
         Assert.assertNull(intact.getUrl());
-        Assert.assertNull(intact.getBibRef());
+        Assert.assertNull(intact.getPublication());
         Assert.assertNull(intact.getPostalAddress());
     }
 }
