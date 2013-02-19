@@ -18,9 +18,9 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultSource extends DefaultCvTerm implements Source {
 
-    private Annotation url;
-    private String postalAddress;
-    private Xref bibRef;
+    protected Annotation url;
+    protected String postalAddress;
+    protected Xref bibRef;
 
     public DefaultSource(String shortName) {
         super(shortName);
