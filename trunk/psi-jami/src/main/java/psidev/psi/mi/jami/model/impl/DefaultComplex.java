@@ -225,7 +225,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         @Override
         protected void processRemovedObjectEvent(Annotation removed) {
             if (physicalProperties != null && physicalProperties.equals(removed)){
-                physicalProperties = null;
+                physicalProperties = AnnotationUtils.collectFirstAnnotationWithTopic(this, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
             }
         }
 

@@ -54,4 +54,39 @@ public class AnnotationUtils {
             }
         }
     }
+
+    /**
+     * This method will return the first Annotation having this topicId/topic name
+     * It will return null if there are no Annotations with this topic id/name
+     * @param annotations : the collection of Annotation
+     * @param topicId : the topic id to look for
+     * @param topicName : the topic name to look for
+     * @return the first annotation having this topic name/id, null if no Annotation with this topic name/id
+     */
+    public static Annotation collectFirstAnnotationWithTopic(Collection<Annotation> annotations, String topicId, String topicName){
+
+        if (annotations == null || (topicName == null && topicId == null)){
+            return null;
+        }
+
+        for (Annotation annot : annotations){
+            CvTerm method = annot.getTopic();
+            // we can compare method ids
+            if (topicId != null && method.getMIIdentifier() != null){
+                // we have the same method id
+                if (method.getMIIdentifier().equals(topicId)){
+                    return annot;
+                }
+            }
+            // we need to compare methodName
+            else if (topicName != null && topicName.toLowerCase().equals(method.getShortName().toLowerCase())) {
+                // we have the same method name
+                if (method.getShortName().toLowerCase().trim().equals(topicName)){
+                    return annot;
+                }
+            }
+        }
+
+        return null;
+    }
 }
