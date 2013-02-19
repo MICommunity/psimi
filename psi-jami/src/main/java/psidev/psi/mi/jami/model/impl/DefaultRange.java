@@ -16,9 +16,9 @@ import java.io.Serializable;
 
 public class DefaultRange implements Range, Serializable {
 
-    private Position start;
-    private Position end;
-    private boolean isLink;
+    protected Position start;
+    protected Position end;
+    protected boolean isLink;
 
     public DefaultRange(Position start, Position end){
         setPositions(start, end);
