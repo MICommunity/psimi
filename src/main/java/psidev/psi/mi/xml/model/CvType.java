@@ -328,6 +328,16 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         public void setPrimaryRef( DbReference value ) {
             if (getPrimaryRef() == null){
                 super.setPrimaryRef(value);
+                if (value != null){
+                    if (XrefUtils.isXrefAnIdentifier(value)){
+                        ((CvTermIdentifierList)identifiers).addOnly(value);
+                        processAddedIdentifier(value);
+                        isPrimaryAnIdentity = true;
+                    }
+                    else {
+                        ((CvTermXrefList)xrefs).addOnly(value);
+                    }
+                }
             }
             else if (isPrimaryAnIdentity){
                 ((CvTermIdentifierList)identifiers).removeOnly(getPrimaryRef());
@@ -365,7 +375,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         public void setPrimaryRefOnly( DbReference value ) {
             if (value == null && !extendedSecondaryRefList.isEmpty()){
                 super.setPrimaryRef(extendedSecondaryRefList.get(0));
-                extendedSecondaryRefList.remove(0);
+                extendedSecondaryRefList.removeOnly(0);
             }
             else {
                 super.setPrimaryRef(value);
@@ -478,14 +488,16 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             }
             else {
                 if (added instanceof DbReference){
-                    xref = new Xref((DbReference) added);
+                    xref = new CvTermXref();
+                    ((CvTermXref) xref).setPrimaryRefOnly((DbReference) added);
                     processAddedIdentifier(added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                             added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
-                    xref = new Xref(fixedRef);
+                    xref = new CvTermXref();
+                    ((CvTermXref) xref).setPrimaryRefOnly(fixedRef);
                     processAddedIdentifier(fixedRef);
                 }
             }
@@ -569,13 +581,15 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             }
             else {
                 if (added instanceof DbReference){
-                    xref = new Xref((DbReference) added);
+                    xref = new CvTermXref();
+                    ((CvTermXref) xref).setPrimaryRefOnly((DbReference) added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                             added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
-                    xref = new Xref(fixedRef);
+                    xref = new CvTermXref(fixedRef);
+                    ((CvTermXref) xref).setPrimaryRefOnly(fixedRef);
                 }
             }
         }
@@ -733,14 +747,14 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             }
             else {
                 if (added instanceof Alias){
-                    names = new Names();
+                    names = new CvTermNames();
                     names.setShortLabel(UNSPECIFIED);
                     ((CvTermNames.AliasList) names.getAliases()).addOnly((Alias)added);
                 }
                 else {
                     Alias fixedAlias = new Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
 
-                    names = new Names();
+                    names = new CvTermNames();
                     names.setShortLabel(UNSPECIFIED);
                     ((CvTermNames.AliasList) names.getAliases()).addOnly((Alias)fixedAlias);
                 }
