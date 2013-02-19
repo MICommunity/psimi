@@ -7,6 +7,10 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultPosition;
+import psidev.psi.mi.jami.utils.PositionUtils;
+import psidev.psi.mi.jami.utils.clone.CvTermCloner;
+
 /**
  * <p>Java class for positionType complex type.
  * <p/>
@@ -23,18 +27,19 @@ package psidev.psi.mi.xml.model;
  * </pre>
  */
 
-public class Position {
-
-    private long position;
+public class Position extends DefaultPosition{
 
     ///////////////////////////
     // Constructors
 
     public Position() {
+        super(new RangeStatus(), 0);
+        this.isPositionUndetermined = true;
     }
 
     public Position( long position ) {
-        setPosition( position );
+        super(new RangeStatus(), position);
+        this.isPositionUndetermined = true;
     }
 
     ///////////////////////////
@@ -46,7 +51,7 @@ public class Position {
      * @return the position
      */
     public long getPosition() {
-        return position;
+        return start;
     }
 
     /**
@@ -58,7 +63,22 @@ public class Position {
         if ( position < 0 ) {
             throw new IllegalArgumentException( "position cannot be negative." );
         }
-        this.position = position;
+        this.start = position;
+        this.end = position;
+    }
+
+    public void setStatus(RangeStatus status){
+        if (status != null){
+            if (this.status == null){
+                this.status = new RangeStatus();
+                CvTermCloner.copyAndOverrideCvTermProperties(status, this.status);
+            }
+            isPositionUndetermined = (PositionUtils.isUndetermined(this) || PositionUtils.isCTerminalRange(this) || PositionUtils.isNTerminalRange(this));
+        }
+        else {
+            this.status = new RangeStatus();
+            this.isPositionUndetermined = true;
+        }
     }
 
     /////////////////////////
@@ -68,7 +88,7 @@ public class Position {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Position" );
-        sb.append( "{position=" ).append( position );
+        sb.append( "{position=" ).append( start );
         sb.append( '}' );
         return sb.toString();
     }
@@ -84,7 +104,7 @@ public class Position {
 
         final Position position1 = ( Position ) o;
 
-        if ( position != position1.position ) {
+        if ( start != position1.start ) {
             return false;
         }
 
@@ -93,6 +113,6 @@ public class Position {
 
     @Override
     public int hashCode() {
-        return ( int ) ( position ^ ( position >>> 32 ) );
+        return ( int ) ( start ^ ( start >>> 32 ) );
     }
 }

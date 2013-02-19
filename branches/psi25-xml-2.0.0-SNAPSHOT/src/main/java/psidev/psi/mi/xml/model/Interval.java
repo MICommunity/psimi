@@ -7,6 +7,10 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultPosition;
+import psidev.psi.mi.jami.utils.PositionUtils;
+import psidev.psi.mi.jami.utils.clone.CvTermCloner;
+
 import java.io.Serializable;
 
 /**
@@ -28,21 +32,19 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Interval implements Serializable {
-
-    private long begin;
-
-    private long end;
+public class Interval extends DefaultPosition implements Serializable {
 
     ///////////////////////////
     // Constructors
 
     public Interval() {
+        super(new RangeStatus(), 0);
+        this.isPositionUndetermined = true;
     }
 
     public Interval( long begin, long end ) {
-        this.begin = begin;
-        this.end = end;
+        super(new RangeStatus(), begin, end);
+        this.isPositionUndetermined = true;
     }
 
     ///////////////////////////
@@ -54,7 +56,7 @@ public class Interval implements Serializable {
      * @return possible object is {@link long }
      */
     public long getBegin() {
-        return begin;
+        return start;
     }
 
     /**
@@ -63,7 +65,7 @@ public class Interval implements Serializable {
      * @param value allowed object is {@link long }
      */
     public void setBegin( long value ) {
-        this.begin = value;
+        this.start = value;
     }
 
     /**
@@ -84,13 +86,27 @@ public class Interval implements Serializable {
         this.end = value;
     }
 
+    public void setStatus(RangeStatus status){
+        if (status != null){
+            if (this.status == null){
+                this.status = new RangeStatus();
+                CvTermCloner.copyAndOverrideCvTermProperties(status, this.status);
+            }
+            isPositionUndetermined = (PositionUtils.isUndetermined(this) || PositionUtils.isCTerminalRange(this) || PositionUtils.isNTerminalRange(this));
+        }
+        else {
+            this.status = new RangeStatus();
+            this.isPositionUndetermined = true;
+        }
+    }
+
     ////////////////////////
     // Object override
 
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Interval" );
-        sb.append( "{begin=" ).append( begin );
+        sb.append( "{begin=" ).append( start );
         sb.append( ", end=" ).append( end );
         sb.append( '}' );
         return sb.toString();
@@ -106,7 +122,7 @@ public class Interval implements Serializable {
 
         final Interval interval = ( Interval ) o;
 
-        if ( begin != interval.begin ) {
+        if ( start != interval.start ) {
             return false;
         }
         if ( end != interval.end ) {
@@ -118,7 +134,7 @@ public class Interval implements Serializable {
 
     public int hashCode() {
         int result;
-        result = ( int ) ( begin ^ ( begin >>> 32 ) );
+        result = ( int ) ( start ^ ( start >>> 32 ) );
         result = 29 * result + ( int ) ( end ^ ( end >>> 32 ) );
         return result;
     }
