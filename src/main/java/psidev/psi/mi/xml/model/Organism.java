@@ -6,6 +6,11 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+
+import java.util.Collection;
+
 /**
  * Describes the biological source of an object, in simple form only the NCBI taxid.
  * <p/>
@@ -30,17 +35,9 @@ package psidev.psi.mi.xml.model;
  * </pre>
  */
 
-public class Organism implements NamesContainer {
+public class Organism extends DefaultOrganism implements NamesContainer {
 
     private Names names;
-
-    private CellType cellType;
-
-    private Compartment compartment;
-
-    private Tissue tissue;
-
-    private int ncbiTaxId;
 
     ///////////////////////////
     // Constructors
@@ -48,6 +45,12 @@ public class Organism implements NamesContainer {
     //TODO Constructors
 
     public Organism() {
+        super(-3);
+    }
+
+    @Override
+    protected void initializeAliases() {
+        this.aliases = new OrganismAliasList();
     }
 
     ///////////////////////////
@@ -77,7 +80,17 @@ public class Organism implements NamesContainer {
      * @param value allowed object is {@link Names }
      */
     public void setNames( Names value ) {
-        this.names = value;
+        if (value != null){
+            this.names.setShortLabel(value.getShortLabel());
+            this.names.setFullName(value.getFullName());
+            this.names.getAliases().addAll(value.getAliases());
+        }
+        else {
+            aliases.clear();
+            this.commonName = null;
+            this.scientificName = null;
+            this.names = null;
+        }
     }
 
     /**
@@ -95,7 +108,7 @@ public class Organism implements NamesContainer {
      * @return possible object is {@link OpenCvType }
      */
     public CellType getCellType() {
-        return cellType;
+        return (CellType) cellType;
     }
 
     /**
@@ -122,7 +135,7 @@ public class Organism implements NamesContainer {
      * @return possible object is {@link OpenCvType }
      */
     public Compartment getCompartment() {
-        return compartment;
+        return (Compartment) compartment;
     }
 
     /**
@@ -149,7 +162,7 @@ public class Organism implements NamesContainer {
      * @return possible object is {@link OpenCvType }
      */
     public Tissue getTissue() {
-        return tissue;
+        return (Tissue)tissue;
     }
 
     /**
@@ -165,14 +178,14 @@ public class Organism implements NamesContainer {
      * Gets the value of the ncbiTaxId property.
      */
     public int getNcbiTaxId() {
-        return ncbiTaxId;
+        return taxId;
     }
 
     /**
      * Sets the value of the ncbiTaxId property.
      */
     public void setNcbiTaxId( int value ) {
-        this.ncbiTaxId = value;
+        this.taxId = value;
     }
 
     //////////////////////////
@@ -186,7 +199,7 @@ public class Organism implements NamesContainer {
         sb.append( ", cellType=" ).append( cellType );
         sb.append( ", compartment=" ).append( compartment );
         sb.append( ", tissue=" ).append( tissue );
-        sb.append( ", ncbiTaxId=" ).append( ncbiTaxId );
+        sb.append( ", ncbiTaxId=" ).append( taxId );
         sb.append( '}' );
         return sb.toString();
     }
@@ -198,7 +211,7 @@ public class Organism implements NamesContainer {
 
         Organism organism = ( Organism ) o;
 
-        if ( ncbiTaxId != organism.ncbiTaxId ) return false;
+        if ( taxId != organism.taxId ) return false;
         //if (cellType != null ? !cellType.equals(organism.cellType) : organism.cellType != null) return false;
         //if (compartment != null ? !compartment.equals(organism.compartment) : organism.compartment != null)
         //    return false;
@@ -215,7 +228,163 @@ public class Organism implements NamesContainer {
         //result = 31 * result + (cellType != null ? cellType.hashCode() : 0);
         //result = 31 * result + (compartment != null ? compartment.hashCode() : 0);
         //result = 31 * result + (tissue != null ? tissue.hashCode() : 0);
-        result = 31 * result + ncbiTaxId;
+        result = 31 * result + taxId;
         return result;
+    }
+
+    protected class OrganismNames extends Names{
+
+        protected AliasList extendedAliases = new AliasList();
+
+        public String getShortLabel() {
+            return commonName;
+        }
+
+        public boolean hasShortLabel() {
+            return commonName != null;
+        }
+
+        public void setShortLabel( String value ) {
+            if (value != null){
+                commonName = value;
+            }
+            else {
+                commonName = null;
+            }
+        }
+
+        public String getFullName() {
+            return scientificName;
+        }
+
+        public boolean hasFullName() {
+            return scientificName != null;
+        }
+
+        public void setFullName( String value ) {
+            scientificName = value;
+        }
+
+        public Collection<Alias> getAliases() {
+            return this.extendedAliases;
+        }
+
+        public boolean hasAliases() {
+            return ( extendedAliases != null ) && ( !extendedAliases.isEmpty() );
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder();
+            sb.append( "Names" );
+            sb.append( "{shortLabel='" ).append( commonName ).append( '\'' );
+            sb.append( ", fullName='" ).append( scientificName ).append( '\'' );
+            sb.append( ", aliases=" ).append( extendedAliases );
+            sb.append( '}' );
+            return sb.toString();
+        }
+
+        @Override
+        public boolean equals( Object o ) {
+            if ( this == o ) return true;
+            if ( o == null || getClass() != o.getClass() ) return false;
+
+            Names names = ( Names ) o;
+
+            if ( extendedAliases != null ? !extendedAliases.equals( names.getAliases() ) : names.getAliases() != null ) return false;
+            if ( scientificName != null ? !scientificName.equals( names.getFullName() ) : names.getFullName() != null ) return false;
+            if ( commonName != null ? !commonName.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            result = ( commonName != null ? commonName.hashCode() : 0 );
+            result = 31 * result + ( scientificName != null ? scientificName.hashCode() : 0 );
+            result = 31 * result + ( extendedAliases != null ? extendedAliases.hashCode() : 0 );
+            return result;
+        }
+
+        protected class AliasList extends AbstractListHavingPoperties<Alias> {
+
+            @Override
+            protected void processAddedObjectEvent(Alias added) {
+                ((OrganismAliasList) aliases).addOnly(added);
+            }
+
+            @Override
+            protected void processRemovedObjectEvent(Alias removed) {
+                ((OrganismAliasList)aliases).removeOnly(removed);
+            }
+
+            @Override
+            protected void clearProperties() {
+                ((OrganismAliasList)aliases).clearOnly();
+            }
+        }
+    }
+
+    private class OrganismAliasList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Alias> {
+        public OrganismAliasList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Alias added) {
+
+            if (names != null){
+                OrganismNames name = (OrganismNames) names;
+
+                if (added instanceof Alias){
+                    ((OrganismNames.AliasList) name.getAliases()).addOnly((Alias) added);
+                }
+                else {
+                    Alias fixedAlias = new Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
+
+                    ((OrganismNames.AliasList) name.getAliases()).addOnly(fixedAlias);
+                }
+            }
+            else {
+                if (added instanceof Alias){
+                    names = new OrganismNames();
+                    ((OrganismNames.AliasList) names.getAliases()).addOnly((Alias) added);
+                }
+                else {
+                    Alias fixedAlias = new Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
+
+                    names = new OrganismNames();
+                    ((OrganismNames.AliasList) names.getAliases()).addOnly((Alias) fixedAlias);
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Alias removed) {
+
+            if (names != null){
+                OrganismNames name = (OrganismNames) names;
+
+                if (removed instanceof Alias){
+                    name.extendedAliases.removeOnly((Alias) removed);
+
+                }
+                else {
+                    Alias fixedAlias = new Alias(removed.getName(), removed.getType() != null ? removed.getType().getShortName() : null, removed.getType() != null ? removed.getType().getMIIdentifier() : null);
+
+                    name.extendedAliases.removeOnly(fixedAlias);
+                }
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+
+            if (names != null){
+                OrganismNames name = (OrganismNames) names;
+                name.extendedAliases.clearOnly();
+            }
+        }
     }
 }
