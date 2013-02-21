@@ -6,6 +6,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -17,7 +20,7 @@ import java.util.Collection;
  * @since <pre>21-Jun-2006</pre>
  */
 
-public class HostOrganism implements NamesContainer {
+public class HostOrganism implements NamesContainer, psidev.psi.mi.jami.model.Organism {
 
     private Organism organism = new Organism();
 
@@ -25,6 +28,7 @@ public class HostOrganism implements NamesContainer {
     private Collection<ExperimentRef> experimentRefs;
 
     public HostOrganism() {
+         organism = new Organism();
     }
 
     ///////////////////////////////////
@@ -36,7 +40,7 @@ public class HostOrganism implements NamesContainer {
      * @return true if defined, false otherwise.
      */
     public boolean hasNames() {
-        return getNames() != null;
+        return organism.hasNames();
     }
 
     public Names getNames() {
@@ -53,11 +57,39 @@ public class HostOrganism implements NamesContainer {
      * @return true if defined, false otherwise.
      */
     public boolean hasCellType() {
-        return organism.getCellType() != null;
+        return organism.hasCellType();
+    }
+
+    public String getCommonName() {
+        return organism.getCommonName();
+    }
+
+    public void setCommonName(String name) {
+        organism.setCommonName(name);
+    }
+
+    public String getScientificName() {
+        return organism.getScientificName();
+    }
+
+    public void setScientificName(String name) {
+        organism.setScientificName(name);
+    }
+
+    public int getTaxId() {
+        return organism.getTaxId();
+    }
+
+    public Collection<Alias> getAliases() {
+        return organism.getAliases();
     }
 
     public CellType getCellType() {
         return organism.getCellType();
+    }
+
+    public void setCellType(CvTerm cellType) {
+       organism.setCellType(cellType);
     }
 
     public void setCellType( CellType value ) {
@@ -70,11 +102,15 @@ public class HostOrganism implements NamesContainer {
      * @return true if defined, false otherwise.
      */
     public boolean hasCompartment() {
-        return organism.getCompartment() != null;
+        return organism.hasCompartment();
     }
 
     public Compartment getCompartment() {
         return organism.getCompartment();
+    }
+
+    public void setCompartment(CvTerm compartment) {
+        organism.setCompartment(compartment);
     }
 
     public void setCompartment( Compartment value ) {
@@ -87,11 +123,15 @@ public class HostOrganism implements NamesContainer {
      * @return true if defined, false otherwise.
      */
     public boolean hasTissue() {
-        return organism.getTissue() != null;
+        return organism.hasTissue();
     }
 
     public Tissue getTissue() {
         return organism.getTissue();
+    }
+
+    public void setTissue(CvTerm tissue) {
+        organism.setTissue(tissue);
     }
 
     public void setTissue( Tissue value ) {
