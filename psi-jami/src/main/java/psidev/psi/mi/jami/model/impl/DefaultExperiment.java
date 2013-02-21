@@ -21,7 +21,7 @@ public class DefaultExperiment implements Experiment {
     protected Collection<Xref> xrefs;
     protected Collection<Annotation> annotations;
     protected CvTerm interactionDetectionMethod;
-    protected Organism horstOrganism;
+    protected Organism hostOrganism;
     protected Collection<InteractionEvidence> interactions;
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod){
@@ -44,12 +44,12 @@ public class DefaultExperiment implements Experiment {
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod, Organism organism){
         this(publication, interactionDetectionMethod);
-        this.horstOrganism = organism;
+        this.hostOrganism = organism;
     }
 
     public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod, Organism organism){
         this(shortLabel, publication, interactionDetectionMethod);
-        this.horstOrganism = organism;
+        this.hostOrganism = organism;
     }
 
     protected void initializeXrefs(){
@@ -108,11 +108,11 @@ public class DefaultExperiment implements Experiment {
     }
 
     public Organism getHostOrganism() {
-        return this.horstOrganism;
+        return this.hostOrganism;
     }
 
     public void setHostOrganism(Organism organism) {
-        this.horstOrganism = organism;
+        this.hostOrganism = organism;
     }
 
     public Collection<InteractionEvidence> getInteractions() {
@@ -191,6 +191,6 @@ public class DefaultExperiment implements Experiment {
 
     @Override
     public String toString() {
-        return publication.toString() + "( " + interactionDetectionMethod.toString() + (horstOrganism != null ? ", " + horstOrganism.toString():"") + " )";
+        return publication.toString() + "( " + interactionDetectionMethod.toString() + (hostOrganism != null ? ", " + hostOrganism.toString():"") + " )";
     }
 }
