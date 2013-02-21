@@ -192,6 +192,32 @@ public class Organism extends DefaultOrganism implements NamesContainer {
     // Object override
 
     @Override
+    public void setCommonName(String name) {
+        if (names != null){
+            names.setShortLabel(name);
+        }
+        else {
+            names = new OrganismNames();
+            names.setShortLabel(name);
+        }
+    }
+
+    @Override
+    public void setScientificName(String name) {
+        if (names != null){
+            if (names.getShortLabel() == null){
+                names.setShortLabel(name);
+            }
+            names.setFullName(name);
+        }
+        else {
+            names = new OrganismNames();
+            names.setShortLabel(name);
+            names.setFullName(name);
+        }
+    }
+
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Organism" );
