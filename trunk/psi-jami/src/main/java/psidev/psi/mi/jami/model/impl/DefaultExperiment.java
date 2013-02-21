@@ -32,9 +32,9 @@ public class DefaultExperiment implements Experiment {
         }
         this.interactionDetectionMethod = interactionDetectionMethod;
 
-        this.xrefs = new ArrayList<Xref>();
-        this.annotations = new ArrayList<Annotation>();
-        this.interactions = new ArrayList<InteractionEvidence>();
+        initializeAnnotations();
+        initializeXrefs();
+        initializeInteractions();
     }
 
     public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod){
@@ -50,6 +50,18 @@ public class DefaultExperiment implements Experiment {
     public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod, Organism organism){
         this(shortLabel, publication, interactionDetectionMethod);
         this.horstOrganism = organism;
+    }
+
+    protected void initializeXrefs(){
+        this.xrefs = new ArrayList<Xref>();
+    }
+
+    protected void initializeAnnotations(){
+        this.annotations = new ArrayList<Annotation>();
+    }
+
+    protected void initializeInteractions(){
+        this.interactions = new ArrayList<InteractionEvidence>();
     }
 
     public Publication getPublication() {
