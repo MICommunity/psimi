@@ -6,7 +6,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
 import java.util.Collection;
@@ -81,6 +83,9 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      */
     public void setNames( Names value ) {
         if (value != null){
+            if (this.names == null){
+                this.names = new OrganismNames();
+            }
             this.names.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
@@ -214,6 +219,48 @@ public class Organism extends DefaultOrganism implements NamesContainer {
             names = new OrganismNames();
             names.setShortLabel(name);
             names.setFullName(name);
+        }
+    }
+
+    @Override
+    public void setTissue(CvTerm tissue) {
+        if (tissue == null){
+            this.tissue = null;
+        }
+        else if (tissue instanceof Tissue){
+            this.tissue = tissue;
+        }
+        else {
+            this.tissue = new Tissue();
+            CvTermCloner.copyAndOverrideCvTermProperties(tissue, this.tissue);
+        }
+    }
+
+    @Override
+    public void setCompartment(CvTerm compartment) {
+        if (compartment == null){
+            this.compartment = null;
+        }
+        else if (compartment instanceof Compartment){
+            this.compartment = compartment;
+        }
+        else {
+            this.compartment = new Compartment();
+            CvTermCloner.copyAndOverrideCvTermProperties(compartment, this.compartment);
+        }
+    }
+
+    @Override
+    public void setCellType(CvTerm cellType) {
+        if (cellType == null){
+            this.cellType = null;
+        }
+        else if (cellType instanceof CellType){
+            this.cellType = cellType;
+        }
+        else {
+            this.cellType = new CellType();
+            CvTermCloner.copyAndOverrideCvTermProperties(cellType, this.cellType);
         }
     }
 

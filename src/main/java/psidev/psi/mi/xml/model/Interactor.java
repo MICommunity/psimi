@@ -10,10 +10,12 @@ package psidev.psi.mi.xml.model;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultInteractor;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
 import java.util.ArrayList;
@@ -310,6 +312,22 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
             names = new InteractorNames();
             names.setShortLabel(name);
             names.setFullName(name);
+        }
+    }
+
+    @Override
+    public void setType(CvTerm type) {
+        if (type == null){
+            this.type = new InteractorType();
+            type.setShortName(Interactor.UNKNOWN_INTERACTOR);
+            type.setMIIdentifier(Interactor.UNKNOWN_INTERACTOR_MI);
+        }
+        else if (type instanceof InteractorType){
+            this.type = type;
+        }
+        else {
+            this.type = new InteractorType();
+            CvTermCloner.copyAndOverrideCvTermProperties(type, this.type);
         }
     }
 
