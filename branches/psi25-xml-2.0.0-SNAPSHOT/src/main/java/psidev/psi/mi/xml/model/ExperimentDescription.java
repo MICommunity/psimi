@@ -93,6 +93,8 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
         super(new Bibref(), new InteractionDetectionMethod());
         interactionDetectionMethod.setShortName(UNSPECIFIED_METHOD);
         interactionDetectionMethod.setMIIdentifier(UNSPECIFIED_METHOD_MI);
+
+        publication.getExperiments().add(this);
     }
 
     public ExperimentDescription( Bibref bibref, InteractionDetectionMethod interactionDetectionMethod ) {
@@ -101,6 +103,8 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             interactionDetectionMethod.setShortName(UNSPECIFIED_METHOD);
             interactionDetectionMethod.setMIIdentifier(UNSPECIFIED_METHOD_MI);
         }
+
+        publication.getExperiments().add(this);
     }
 
     @Override
