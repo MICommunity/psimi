@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.clone;
 
+import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Interactor;
 
 /**
@@ -35,6 +36,20 @@ public class InteractorCloner {
             target.getXrefs().addAll(source.getXrefs());
             target.getChecksums().clear();
             target.getChecksums().addAll(source.getChecksums());
+        }
+    }
+
+    public static void copyAndOverrideComplexProperties(Complex source, Complex target){
+        if (source != null && target != null){
+            copyAndOverrideInteractorProperties(source, target);
+
+            target.setPhysicalProperties(source.getPhysicalProperties());
+
+            // copy collections
+            target.getExperiments().clear();
+            target.getExperiments().addAll(source.getExperiments());
+            target.getComponents().clear();
+            target.getComponents().addAll(source.getComponents());
         }
     }
 }
