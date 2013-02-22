@@ -205,11 +205,11 @@ public class PsimiXmlExtractor {
                             " all the interactions then use references to pre-declared experiments or all the experiments are only described at the level of the interactions and no experiment reference can be used.");
                 }
                 itex.remove();
-                interaction.getExperiments().add( ed );
+                interaction.getExperimentDescriptions().add( ed );
             }
         }
 
-        for ( Participant p : interaction.getParticipants() ) {
+        for ( Participant p : interaction.getInteractionParticipants() ) {
             resolveReferences( file, p , interaction);
         }
 
@@ -219,7 +219,7 @@ public class PsimiXmlExtractor {
                 if ( ii.hasExperimentRefs() ) {
                     for ( Iterator<ExperimentRef> itex = ii.getExperimentRefs().iterator(); itex.hasNext(); ) {
                         ExperimentRef eref = itex.next();
-                        if( ! interaction.getExperiments().isEmpty() ) {
+                        if( ! interaction.getExperimentDescriptions().isEmpty() ) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
 
                             if( ed != null ) {
@@ -289,10 +289,10 @@ public class PsimiXmlExtractor {
 
         //confidence
         if (interaction.hasConfidences()){
-            for (Confidence conf : interaction.getConfidences()){
+            for (Confidence conf : interaction.getConfidencesList()){
                 if (conf.hasExperimentRefs()){
                     for (ExperimentRef eref : conf.getExperimentRefs()){
-                        if( !interaction.getExperiments().isEmpty() ) {
+                        if( !interaction.getExperimentDescriptions().isEmpty() ) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
 
                             if( ed != null) {
@@ -323,11 +323,11 @@ public class PsimiXmlExtractor {
 
         // parameters
         if ( interaction.hasParameters() ) {
-            for ( Parameter pm : interaction.getParameters() ) {
+            for ( Parameter pm : interaction.getParametersList() ) {
                 if ( pm.hasExperimentRef() ) {
                     ExperimentRef eref = pm.getExperimentRef();
 
-                    if( ! interaction.getExperiments().isEmpty() ) {
+                    if( ! interaction.getExperimentDescriptions().isEmpty() ) {
                         ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, interaction);
 
                         if( ed != null ) {
@@ -364,7 +364,7 @@ public class PsimiXmlExtractor {
      * @return the experiment which has been found
      */
     private ExperimentDescription findExperimentDescriptionInInteraction(ExperimentRef eref, Interaction i){
-        for ( ExperimentDescription ed : i.getExperiments() ) {
+        for ( ExperimentDescription ed : i.getExperimentDescriptions() ) {
             if( ed.getId() == eref.getRef() ) {
                 return ed;
             }
@@ -409,7 +409,7 @@ public class PsimiXmlExtractor {
 
         boolean hasInteractionExperimentDescription = false;
 
-        if( parentInteraction != null && !parentInteraction.getExperiments().isEmpty() ) {
+        if( parentInteraction != null && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
             hasInteractionExperimentDescription = true;
         }
 
@@ -439,7 +439,7 @@ public class PsimiXmlExtractor {
             for ( ParticipantIdentificationMethod pim : participant.getParticipantIdentificationMethods() ) {
                 if ( pim.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : pim.getExperimentRefs()) {
 
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
@@ -477,7 +477,7 @@ public class PsimiXmlExtractor {
             for ( ExperimentalRole er : participant.getExperimentalRoles() ) {
                 if ( er.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : er.getExperimentRefs()) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
                             if( ed != null ) {
@@ -515,7 +515,7 @@ public class PsimiXmlExtractor {
             for ( ExperimentalPreparation ep : participant.getParticipantExperimentalPreparations() ) {
                 if ( ep.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : ep.getExperimentRefs()) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
@@ -553,7 +553,7 @@ public class PsimiXmlExtractor {
             for ( ExperimentalInteractor ei : participant.getExperimentalInteractors() ) {
                 if ( ei.hasExperimentRefs() ) {
 
-                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : ei.getExperimentRefs()) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
@@ -610,7 +610,7 @@ public class PsimiXmlExtractor {
         if ( participant.hasHostOrganisms() ) {
             for ( HostOrganism ho : participant.getHostOrganisms() ) {
                 if ( ho.hasExperimentRefs() ) {
-                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : ho.getExperimentRefs()) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
@@ -648,7 +648,7 @@ public class PsimiXmlExtractor {
         if ( participant.hasConfidences() ) {
             for ( Confidence c : participant.getConfidenceList() ) {
                 if ( c.hasExperimentRefs() ) {
-                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : c.getExperimentRefs()) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
@@ -686,7 +686,7 @@ public class PsimiXmlExtractor {
             for ( Parameter pm : participant.getParametersList() ) {
                 if ( pm.hasExperimentRef() ) {
                     ExperimentRef eref = pm.getExperimentRef();
-                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 
                         if( ed != null ) {
@@ -719,7 +719,7 @@ public class PsimiXmlExtractor {
         if ( participant.hasFeatures() ) {
             for ( Feature feature : participant.getParticipantFeatures() ) {
                 if ( feature.hasExperimentRefs() ) {
-                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
+                    if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : feature.getExperimentRefs()) {
                             ExperimentDescription ed = findExperimentDescriptionInInteraction(eref, parentInteraction);
 

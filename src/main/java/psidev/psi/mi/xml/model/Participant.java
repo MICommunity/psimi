@@ -818,7 +818,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
 
             InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
             super.setInteraction(convertedInteraction);
-            convertedInteraction.getParticipants().add(this);
+            convertedInteraction.getInteractionParticipants().add(this);
         }
     }
 
@@ -1209,7 +1209,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantAnnotationList extends AbstractListHavingPoperties<Annotation> {
+    private class ParticipantAnnotationList extends AbstractListHavingPoperties<Annotation> {
         public ParticipantAnnotationList(){
             super();
         }
@@ -1243,7 +1243,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
+    private class ParticipantXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
         public ParticipantXmlAnnotationList(){
             super();
         }
@@ -1338,7 +1338,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ExperimentalPreparationsList extends AbstractListHavingPoperties<CvTerm> {
+    private class ExperimentalPreparationsList extends AbstractListHavingPoperties<CvTerm> {
         public ExperimentalPreparationsList(){
             super();
         }
@@ -1374,7 +1374,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ExperimentalPreparationsXmlList extends AbstractListHavingPoperties<ExperimentalPreparation> {
+    private class ExperimentalPreparationsXmlList extends AbstractListHavingPoperties<ExperimentalPreparation> {
         public ExperimentalPreparationsXmlList(){
             super();
         }
@@ -1397,7 +1397,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantFeaturesList extends AbstractListHavingPoperties<FeatureEvidence> {
+    private class ParticipantFeaturesList extends AbstractListHavingPoperties<FeatureEvidence> {
         public ParticipantFeaturesList(){
             super();
         }
@@ -1440,7 +1440,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantXmlFeaturesList extends AbstractListHavingPoperties<Feature> {
+    private class ParticipantXmlFeaturesList extends AbstractListHavingPoperties<Feature> {
         public ParticipantXmlFeaturesList(){
             super();
         }
@@ -1498,7 +1498,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantConfidencesList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Confidence> {
+    private class ParticipantConfidencesList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Confidence> {
         public ParticipantConfidencesList(){
             super();
         }
@@ -1542,7 +1542,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantXmlConfidencesList extends AbstractListHavingPoperties<Confidence> {
+    private class ParticipantXmlConfidencesList extends AbstractListHavingPoperties<Confidence> {
         public ParticipantXmlConfidencesList(){
             super();
         }
@@ -1565,7 +1565,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantParametersList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Parameter> {
+    private class ParticipantParametersList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Parameter> {
         public ParticipantParametersList(){
             super();
         }
@@ -1617,7 +1617,7 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
-    protected class ParticipantXmlParametersList extends AbstractListHavingPoperties<Parameter> {
+    private class ParticipantXmlParametersList extends AbstractListHavingPoperties<Parameter> {
         public ParticipantXmlParametersList(){
             super();
         }

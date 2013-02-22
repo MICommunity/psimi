@@ -17,7 +17,6 @@ import psidev.psi.mi.xml253.jaxb.*;
 import psidev.psi.mi.xml253.jaxb.CvType;
 
 import java.util.List;
-import java.io.Serializable;
 
 /**
  * Converter to and from JAXB of the class Interaction.
@@ -176,7 +175,7 @@ public class InteractionConverter {
                     // the DAO doesn't know about it, then keep the reference for potential later resolution
                     mInteraction.getExperimentRefs().add( experimentRef );
                 } else {
-                    mInteraction.getExperiments().add( mExperiment );
+                    mInteraction.getExperimentDescriptions().add( mExperiment );
                 }
             }
         }
@@ -185,7 +184,7 @@ public class InteractionConverter {
         if ( jInteraction.getParticipantList() != null ) {
             for ( ParticipantType jParticipant : jInteraction.getParticipantList().getParticipants() ) {
                 Participant participant = participantConverter.fromJaxb( jParticipant );
-                mInteraction.getParticipants().add( participant );
+                mInteraction.getInteractionParticipants().add( participant );
             }
         }
 
@@ -229,14 +228,14 @@ public class InteractionConverter {
         // confidences
         if ( jInteraction.getConfidenceList() != null ) {
             for ( ConfidenceListType.Confidence jConfidence : jInteraction.getConfidenceList().getConfidences() ) {
-                mInteraction.getConfidences().add( confidenceConverter.fromJaxb( jConfidence ) );
+                mInteraction.getConfidencesList().add( confidenceConverter.fromJaxb( jConfidence ) );
             }
         }
 
         // parameters
         if ( jInteraction.getParameterList() != null ) {
             for ( InteractionElementType.ParameterList.Parameter jParameter : jInteraction.getParameterList().getParameters() ) {
-                mInteraction.getParameters().add( parameterConverter.fromJaxb( jParameter ) );
+                mInteraction.getParametersList().add( parameterConverter.fromJaxb( jParameter ) );
             }
         }
 
@@ -286,7 +285,7 @@ public class InteractionConverter {
         // availibility
         // TODO do we export an availability or a reference.
         if ( mInteraction.hasAvailability() ) {
-            jInteraction.setAvailability( availabilityConverter.toJaxb( mInteraction.getAvailability() ) );
+            jInteraction.setAvailability( availabilityConverter.toJaxb( mInteraction.getInteractionAvailability() ) );
         }
 
         // experiments
@@ -310,7 +309,7 @@ public class InteractionConverter {
                 jInteraction.setExperimentList( new InteractionElementType.ExperimentList() );
            }
 
-           for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
+           for ( ExperimentDescription mExperiment : mInteraction.getExperimentDescriptions() ) {
                final ExperimentType exp = experimentDescriptionConverter.toJaxb( mExperiment );
 
                final List ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();
@@ -327,11 +326,11 @@ public class InteractionConverter {
         }
 
         // participants
-        if ( mInteraction.getParticipants() != null ) {
+        if ( mInteraction.getInteractionParticipants() != null ) {
             if ( jInteraction.getParticipantList() == null ) {
                 jInteraction.setParticipantList( new InteractionElementType.ParticipantList() );
             }
-            for ( Participant mParticipant : mInteraction.getParticipants() ) {
+            for ( Participant mParticipant : mInteraction.getInteractionParticipants() ) {
                 jInteraction.getParticipantList().getParticipants().add( participantConverter.toJaxb( mParticipant ) );
             }
         }
@@ -361,7 +360,7 @@ public class InteractionConverter {
                 jInteraction.setParameterList( new InteractionElementType.ParameterList() );
             }
 
-            for ( Parameter mParameter : mInteraction.getParameters() ) {
+            for ( Parameter mParameter : mInteraction.getParametersList() ) {
                 jInteraction.getParameterList().getParameters().add( parameterConverter.toJaxb( mParameter ) );
             }
         }
@@ -381,7 +380,7 @@ public class InteractionConverter {
                 jInteraction.setConfidenceList( new ConfidenceListType() );
             }
 
-            for ( Confidence mConfidence : mInteraction.getConfidences() ) {
+            for ( Confidence mConfidence : mInteraction.getConfidencesList() ) {
                 jInteraction.getConfidenceList().getConfidences().add( confidenceConverter.toJaxb( mConfidence ) );
             }
         }
