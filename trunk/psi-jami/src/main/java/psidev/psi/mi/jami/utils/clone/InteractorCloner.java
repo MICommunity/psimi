@@ -39,6 +39,11 @@ public class InteractorCloner {
         }
     }
 
+    /***
+     * This method will copy properties of complex source in complex target and will override all the other properties of Target complex.
+     * @param source
+     * @param target
+     */
     public static void copyAndOverrideComplexProperties(Complex source, Complex target){
         if (source != null && target != null){
             copyAndOverrideInteractorProperties(source, target);
