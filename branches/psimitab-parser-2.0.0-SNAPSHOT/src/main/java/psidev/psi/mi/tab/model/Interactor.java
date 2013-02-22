@@ -112,6 +112,21 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         this.features = new InteractorFeatureList();
     }
 
+    @Override
+    protected void initializeAnnotations() {
+        aliases = interactor.getAliases();
+    }
+
+    @Override
+    protected void initializeXrefs() {
+        xrefs = interactor.getXrefs();
+    }
+
+    @Override
+    protected void initialiseAliases() {
+        annotations = interactor.getAnnotations();
+    }
+
     ///////////////////////////
 	// Getters and Setters
 
@@ -613,6 +628,10 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             InteractorCloner.copyAndOverrideInteractorProperties(interactor, convertedInteractor);
             mitabInteractor = convertedInteractor;
             super.setInteractor(convertedInteractor);
+
+            initialiseAliases();
+            initializeAnnotations();
+            initializeXrefs();
         }
     }
 
