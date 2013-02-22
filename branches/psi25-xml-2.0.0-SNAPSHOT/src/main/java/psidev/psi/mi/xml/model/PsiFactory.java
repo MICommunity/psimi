@@ -52,11 +52,11 @@ public final class PsiFactory {
         for (Interaction interaction : interactions) {
             entry.getInteractions().add(interaction);
 
-            for (ExperimentDescription expDesc : interaction.getExperiments()) {
+            for (ExperimentDescription expDesc : interaction.getExperimentDescriptions()) {
                 entry.getExperiments().add(expDesc);
             }
 
-            for (Participant part : interaction.getParticipants()) {
+            for (Participant part : interaction.getInteractionParticipants()) {
                 entry.getInteractors().add(part.getInteractor());
             }
         }
@@ -118,11 +118,11 @@ public final class PsiFactory {
         interaction.setNames(createNames(name, null));
 
         for (Participant participant : participants) {
-            interaction.getParticipants().add(participant);
+            interaction.getInteractionParticipants().add(participant);
         }
 
         interaction.getInteractionTypes().add(interactionType);
-        interaction.getExperiments().add(experiment);
+        interaction.getExperimentDescriptions().add(experiment);
 
         return interaction;
     }

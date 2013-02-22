@@ -137,12 +137,12 @@ public class EntryConverter {
 
         if (mEntry.getExperiments().isEmpty()) {
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                mEntry.getExperiments().addAll(mInteraction.getExperiments());
+                mEntry.getExperiments().addAll(mInteraction.getExperimentDescriptions());
             }
         }
         if (mEntry.getInteractors().isEmpty()) {
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
+                for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getInteractionParticipants()) {
                     mEntry.getInteractors().add(mParticipant.getInteractor());
                 }
             }
@@ -245,7 +245,7 @@ public class EntryConverter {
                 List<Integer> experimentIds = new ArrayList<Integer>();
 
                 for (psidev.psi.mi.xml.model.Interaction jInteraction : mEntry.getInteractions()) {
-                    for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : jInteraction.getExperiments()) {
+                    for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : jInteraction.getExperimentDescriptions()) {
                         if (!experimentIds.contains(jExperiment.getId())) {
                             jEntry.getExperimentList().getExperimentDescriptions().add(experimentDescriptionConverter.toJaxb(jExperiment));
                             experimentIds.add(jExperiment.getId());
@@ -259,7 +259,7 @@ public class EntryConverter {
                 List<Integer> participantIds = new ArrayList<Integer>();
 
                 for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                    for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
+                    for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getInteractionParticipants()) {
                         if (!participantIds.contains(mParticipant.getId())) {
                             jEntry.getInteractorList().getInteractors().add(interactorConverter.toJaxb(mParticipant.getInteractor()));
                             participantIds.add(mParticipant.getId());

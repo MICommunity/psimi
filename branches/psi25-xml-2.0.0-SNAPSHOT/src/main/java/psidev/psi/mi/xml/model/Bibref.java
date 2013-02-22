@@ -476,6 +476,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             }
             else {
                 ((PublicationXrefList)xrefs).removeOnly(getPrimaryRef());
+                processRemovedXrefEvent(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){

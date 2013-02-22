@@ -61,7 +61,7 @@ public class PsimiXmlWriter implements psidev.psi.mi.xml.io.PsimiXmlWriter {
 				Map<Interactor, Interactor> uniqueInteractors = new HashMap<Interactor, Interactor>();
 
 				for ( Interaction interaction : entry.getInteractions() ) {
-                    for ( Participant participant : interaction.getParticipants() ) {
+                    for ( Participant participant : interaction.getInteractionParticipants() ) {
                         if( participant.getInteractor() != null ) {
                             final Interactor myInteractor = participant.getInteractor();
                             if( uniqueInteractors.containsKey( myInteractor ) ) {

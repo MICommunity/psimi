@@ -962,7 +962,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         }
     }
 
-    protected class InteractorChecksumList extends AbstractListHavingPoperties<Checksum> {
+    private class InteractorChecksumList extends AbstractListHavingPoperties<Checksum> {
         public InteractorChecksumList(){
             super();
         }
@@ -975,12 +975,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Checksum removed) {
-            if (removed instanceof Annotation){
-                ((InteractorXmlAnnotationList)attributes).removeOnly(removed);
-            }
-            else {
-                ((InteractorXmlAnnotationList)attributes).removeOnly(new Attribute(removed.getMethod().getMIIdentifier(), removed.getMethod().getShortName(), removed.getValue()));
-            }
+            ((InteractorXmlAnnotationList)attributes).removeOnly(new Attribute(removed.getMethod().getMIIdentifier(), removed.getMethod().getShortName(), removed.getValue()));
         }
 
         @Override

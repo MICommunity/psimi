@@ -359,10 +359,13 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
     @Override
     public void setShortName(String name) {
-        if (names != null){
+        if (name == null){
+            this.names = null;
+        }
+        else if (names != null){
             names.setShortLabel(name);
         }
-        else if (name != null) {
+        else  {
             names = new FeatureNames();
             names.setShortLabel(name);
         }
@@ -371,7 +374,9 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
     @Override
     public void setFullName(String name) {
         if (names != null){
-            names.setShortLabel(name);
+            if (names.getShortLabel() == null){
+                names.setShortLabel(name);
+            }
             names.setFullName(name);
         }
         else if (name != null) {
