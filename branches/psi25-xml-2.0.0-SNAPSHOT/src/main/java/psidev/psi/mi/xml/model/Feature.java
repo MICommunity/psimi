@@ -9,9 +9,11 @@ package psidev.psi.mi.xml.model;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
+import psidev.psi.mi.jami.utils.clone.ParticipantCloner;
 import psidev.psi.mi.jami.utils.clone.RangeCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
@@ -400,6 +402,40 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         else {
             this.detectionMethod = new FeatureDetectionMethod();
             CvTermCloner.copyAndOverrideCvTermProperties(method, this.detectionMethod);
+        }
+    }
+
+    @Override
+    public void setParticipant(ParticipantEvidence participant) {
+        if (participant == null){
+            super.setParticipant(null);
+        }
+        else if (participant instanceof Participant){
+            super.setParticipant(participant);
+        }
+        else {
+            Participant convertedParticipant = new Participant();
+
+            ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
+            super.setParticipant(participant);
+        }
+    }
+
+    @Override
+    public void setParticipantAndAddFeature(ParticipantEvidence participant) {
+        if (participant == null){
+            super.setParticipant(null);
+        }
+        else if (participant instanceof Participant){
+            super.setParticipant(participant);
+            participant.getFeatures().add(this);
+        }
+        else {
+            Participant convertedParticipant = new Participant();
+
+            ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
+            super.setParticipant(convertedParticipant);
+            convertedParticipant.getFeatures().add(this);
         }
     }
 

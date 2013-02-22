@@ -6,6 +6,8 @@
 
 package psidev.psi.mi.xml.model;
 
+import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -186,7 +188,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Participant implements HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Participant extends DefaultParticipantEvidence implements HasId, NamesContainer, XrefContainer, AttributeContainer {
 
     private int id;
 
