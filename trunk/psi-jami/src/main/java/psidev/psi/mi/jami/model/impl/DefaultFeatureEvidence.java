@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceCom
  */
 
 public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence, ParticipantEvidence> implements FeatureEvidence {
-    private CvTerm detectionMethod;
+    protected CvTerm detectionMethod;
 
     public DefaultFeatureEvidence(ParticipantEvidence participant) {
         super(participant);
