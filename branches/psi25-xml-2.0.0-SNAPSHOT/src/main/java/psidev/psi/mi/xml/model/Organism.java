@@ -201,7 +201,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
         if (names != null){
             names.setShortLabel(name);
         }
-        else {
+        else if (name != null) {
             names = new OrganismNames();
             names.setShortLabel(name);
         }
@@ -210,12 +210,10 @@ public class Organism extends DefaultOrganism implements NamesContainer {
     @Override
     public void setScientificName(String name) {
         if (names != null){
-            if (names.getShortLabel() == null){
-                names.setShortLabel(name);
-            }
+            names.setShortLabel(name);
             names.setFullName(name);
         }
-        else {
+        else if (name != null) {
             names = new OrganismNames();
             names.setShortLabel(name);
             names.setFullName(name);

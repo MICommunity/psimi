@@ -294,9 +294,13 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         if (names != null){
             names.setShortLabel(name);
         }
-        else {
+        else if (name != null) {
             names = new InteractorNames();
             names.setShortLabel(name);
+        }
+        else {
+            names = new InteractorNames();
+            names.setShortLabel(UNSPECIFIED);
         }
     }
 
@@ -308,9 +312,14 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
             }
             names.setFullName(name);
         }
-        else {
+        else if (name != null) {
             names = new InteractorNames();
             names.setShortLabel(name);
+            names.setFullName(name);
+        }
+        else {
+            names = new InteractorNames();
+            names.setShortLabel(UNSPECIFIED);
             names.setFullName(name);
         }
     }
