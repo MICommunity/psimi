@@ -8,10 +8,7 @@ package psidev.psi.mi.xml.model;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
-import psidev.psi.mi.jami.utils.clone.CvTermCloner;
-import psidev.psi.mi.jami.utils.clone.FeatureCloner;
-import psidev.psi.mi.jami.utils.clone.InteractorCloner;
-import psidev.psi.mi.jami.utils.clone.OrganismCloner;
+import psidev.psi.mi.jami.utils.clone.*;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
 import java.util.ArrayList;
@@ -788,6 +785,40 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         else if (!this.hostOrganisms.isEmpty()) {
             this.expressedIn = null;
             ((HostOrganismsList)hostOrganisms).clearOnly();
+        }
+    }
+
+    @Override
+    public void setInteraction(InteractionEvidence interaction) {
+        if (interaction == null){
+            super.setInteraction(null);
+        }
+        else if (interaction instanceof Interaction){
+            super.setInteraction(interaction);
+        }
+        else {
+            Interaction convertedInteraction = new Interaction();
+
+            InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
+            super.setInteraction(convertedInteraction);
+        }
+    }
+
+    @Override
+    public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
+        if (interaction == null){
+            super.setInteraction(null);
+        }
+        else if (interaction instanceof Interaction){
+            super.setInteraction(interaction);
+            interaction.getParticipants().add(this);
+        }
+        else {
+            Interaction convertedInteraction = new Interaction();
+
+            InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
+            super.setInteraction(convertedInteraction);
+            convertedInteraction.getParticipants().add(this);
         }
     }
 
