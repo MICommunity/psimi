@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponent
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultComponent extends DefaultParticipant<Complex, Interactor, ModelledFeature> implements Component {
+public class DefaultComponent extends DefaultParticipant<Complex, Interactor, ComponentFeature> implements Component {
 
     public DefaultComponent(Complex interaction, Interactor interactor) {
         super(interaction, interactor);
