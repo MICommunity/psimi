@@ -5,17 +5,18 @@
  */
 package psidev.psi.mi.xml.model;
 
-import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class Interaction implements Complex, HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Interaction extends DefaultInteractionEvidence implements Complex, HasId, NamesContainer, XrefContainer, AttributeContainer {
 
     private int id;
-
-    private String imexId;     
 
     private Names names;
 
@@ -23,13 +24,11 @@ public class Interaction implements Complex, HasId, NamesContainer, XrefContaine
 
     private Availability availability;
 
-
     private Collection<ExperimentDescription> experiments;
 
     private Collection<ExperimentRef> experimentRefs;
 
     private Collection<Participant> participants;
-
 
     private Collection<InferredInteraction> inferredInteractions;
 
@@ -39,10 +38,7 @@ public class Interaction implements Complex, HasId, NamesContainer, XrefContaine
 
     private Boolean intraMolecular;
 
-    private Boolean negative;
-
     private Collection<Confidence> confidences;
-
 
     private Collection<Parameter> parameters;
 
@@ -52,6 +48,7 @@ public class Interaction implements Complex, HasId, NamesContainer, XrefContaine
     // Constructors
 
     public Interaction() {
+        super();
     }
 
     ///////////////////////////
@@ -193,6 +190,34 @@ public class Interaction implements Complex, HasId, NamesContainer, XrefContaine
             experiments = new ArrayList<ExperimentDescription>();
         }
         return experiments;
+    }
+
+    public Collection<Component> getComponents() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String getPhysicalProperties() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setPhysicalProperties(String properties) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean addComponent(Component part) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean removeComponent(Component part) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean addAllComponents(Collection<? extends Component> part) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean removeAllComponents(Collection<? extends Component> part) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public boolean hasExperimentRefs() {
@@ -499,5 +524,25 @@ public class Interaction implements Complex, HasId, NamesContainer, XrefContaine
         result = 31 * result + ( parameters != null ? parameters.hashCode() : 0 );
         result = 31 * result + ( attributeList != null ? attributeList.hashCode() : 0 );
         return result;
+    }
+
+    public String getFullName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setFullName(String name) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Collection<Alias> getAliases() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public Organism getOrganism() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setOrganism(Organism organism) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
