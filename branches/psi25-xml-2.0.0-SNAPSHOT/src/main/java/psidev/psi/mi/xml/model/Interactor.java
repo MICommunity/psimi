@@ -143,15 +143,25 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      */
     public void setNames( Names value ) {
         if (value != null){
+            if (names == null){
+                names = new InteractorNames();
+            }
+            else {
+                this.aliases.clear();
+            }
             this.names.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
         }
-        else {
+        else if (names != null) {
             aliases.clear();
             this.shortName = UNSPECIFIED;
             this.fullName = null;
             this.names = null;
+        }
+        else {
+            this.names = new InteractorNames();
+            this.shortName = UNSPECIFIED;
         }
     }
 
@@ -180,9 +190,13 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      */
     public void setXref( Xref value ) {
         if (value != null){
+            if (this.xref != null){
+                identifiers.clear();
+                this.xrefs.clear();
+            }
             this.xref = new InteractorXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
-        else {
+        else if (this.xref != null){
             identifiers.clear();
             xrefs.clear();
             this.xref = null;

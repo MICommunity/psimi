@@ -512,7 +512,7 @@ public class PsimiXmlExtractor {
         }
 
         if ( participant.hasExperimentalPreparations() ) {
-            for ( ExperimentalPreparation ep : participant.getExperimentalPreparations() ) {
+            for ( ExperimentalPreparation ep : participant.getParticipantExperimentalPreparations() ) {
                 if ( ep.hasExperimentRefs() ) {
 
                     if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
@@ -683,7 +683,7 @@ public class PsimiXmlExtractor {
         }
 
         if ( participant.hasParameters() ) {
-            for ( Parameter pm : participant.getParameters() ) {
+            for ( Parameter pm : participant.getParametersList() ) {
                 if ( pm.hasExperimentRef() ) {
                     ExperimentRef eref = pm.getExperimentRef();
                     if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
@@ -717,7 +717,7 @@ public class PsimiXmlExtractor {
         }
 
         if ( participant.hasFeatures() ) {
-            for ( Feature feature : participant.getFeatures() ) {
+            for ( Feature feature : participant.getParticipantFeatures() ) {
                 if ( feature.hasExperimentRefs() ) {
                     if( hasInteractionExperimentDescription  && !parentInteraction.getExperiments().isEmpty() ) {
                         for ( ExperimentRef eref : feature.getExperimentRefs()) {

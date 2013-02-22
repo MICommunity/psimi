@@ -105,9 +105,13 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
      */
     public void setXref( Xref value ) {
         if (value != null){
+            if (this.xref != null){
+                identifiers.clear();
+                this.xrefs.clear();
+            }
             this.xref = new PublicationXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
-        else {
+        else if (this.xref != null){
             identifiers.clear();
             xrefs.clear();
             this.xref = null;

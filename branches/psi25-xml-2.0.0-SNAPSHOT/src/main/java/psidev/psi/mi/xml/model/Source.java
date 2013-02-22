@@ -120,11 +120,17 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      */
     public void setNames( Names value ) {
         if (value != null){
+            if (names == null){
+                names = new SourceNames();
+            }
+            else {
+                synonyms.clear();
+            }
             this.names.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
         }
-        else {
+        else if (this.names != null) {
             synonyms.clear();
             this.shortName = UNKNOWN;
             this.fullName = null;
@@ -156,16 +162,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      * @param value allowed object is {@link Bibref }
      */
     public void setBibref( Bibref value ) {
-        if (value == null){
-            this.bibRef = null;
-        }
-        else if (this.bibRef != null){
-            PublicationCloner.copyAndOverridePublicationProperties(value, bibRef);
-        }
-        else {
-            this.bibRef = new Bibref();
-            PublicationCloner.copyAndOverridePublicationProperties(value, bibRef);
-        }
+        this.bibRef = value;
     }
 
     /**
@@ -193,9 +190,13 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      */
     public void setXref( Xref value ) {
         if (value != null){
+            if (this.xref != null){
+                identifiers.clear();
+                this.xrefs.clear();
+            }
             this.xref = new SourceXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
-        else {
+        else if (this.xref != null){
             identifiers.clear();
             xrefs.clear();
             this.xref = null;
@@ -344,8 +345,8 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         if (ref == null){
             this.bibRef = null;
         }
-        else if (this.bibRef != null){
-            PublicationCloner.copyAndOverridePublicationProperties(ref, bibRef);
+        else if (ref instanceof Bibref){
+            this.bibRef = ref;
         }
         else {
             this.bibRef = new Bibref();

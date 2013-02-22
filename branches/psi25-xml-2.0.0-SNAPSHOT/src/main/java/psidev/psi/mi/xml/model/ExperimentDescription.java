@@ -145,14 +145,14 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      */
     public void setNames( Names value ) {
         if (value != null){
-            if (this.names == null){
-                this.names = new ExperimentNames();
+            if (names == null){
+                names = new ExperimentNames();
             }
             this.names.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
         }
-        else {
+        else if (this.names != null) {
             this.shortLabel = null;
             this.names = null;
         }
@@ -173,7 +173,11 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      * @param value allowed object is {@link Bibref }
      */
     public void setBibref( Bibref value ) {
+        if (this.publication != null){
+            this.publication.getExperiments().remove(this);
+        }
         this.publication = value;
+        this.publication.getExperiments().add(this);
     }
 
     /**
@@ -201,9 +205,12 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      */
     public void setXref( Xref value ) {
         if (value != null){
+            if (this.xref != null){
+                this.xrefs.clear();
+            }
             this.xref = new ExperimentXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
-        else {
+        else if (this.xref != null){
             xrefs.clear();
             this.xref = null;
         }
@@ -387,7 +394,6 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             super.setPublication(null);
         }
         else if (publication instanceof Bibref){
-
             super.setPublication(publication);
         }
         else {

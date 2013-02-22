@@ -107,15 +107,26 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
      */
     public void setNames( Names value ) {
         if (value != null){
+            if (this.names == null){
+                this.names = new CvTermNames();
+            }
+            else {
+                synonyms.clear();
+            }
             this.names.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
+            this.names.getAliases().clear();
             this.names.getAliases().addAll(value.getAliases());
         }
-        else {
+        else if (this.names != null) {
             synonyms.clear();
             this.shortName = UNSPECIFIED;
             this.fullName = null;
             this.names = null;
+        }
+        else {
+            this.names = new CvTermNames();
+            this.shortName = UNSPECIFIED;
         }
     }
 
@@ -135,9 +146,13 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
      */
     public void setXref( Xref value ) {
         if (value != null){
+            if (this.xref != null){
+                identifiers.clear();
+                this.xrefs.clear();
+            }
             this.xref = new CvTermXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
-        else {
+        else if (this.xref != null){
             identifiers.clear();
             xrefs.clear();
             this.xref = null;

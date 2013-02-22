@@ -5,11 +5,13 @@
  */
 package psidev.psi.mi.xml.model;
 
+import psidev.psi.mi.jami.model.Complex;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class Interaction implements HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Interaction implements Complex, HasId, NamesContainer, XrefContainer, AttributeContainer {
 
     private int id;
 

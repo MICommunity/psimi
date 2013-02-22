@@ -86,11 +86,14 @@ public class Organism extends DefaultOrganism implements NamesContainer {
             if (this.names == null){
                 this.names = new OrganismNames();
             }
+            else {
+                aliases.clear();
+            }
             this.names.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
         }
-        else {
+        else if (this.names != null){
             aliases.clear();
             this.commonName = null;
             this.scientificName = null;
