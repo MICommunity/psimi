@@ -309,9 +309,13 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         if (names != null){
             names.setShortLabel(name);
         }
-        else {
+        else if (name != null) {
             names = new SourceNames();
             names.setShortLabel(name);
+        }
+        else {
+            names = new SourceNames();
+            names.setShortLabel(UNKNOWN);
         }
     }
 
@@ -323,9 +327,14 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             }
             names.setFullName(name);
         }
-        else {
+        else if (name != null) {
             names = new SourceNames();
             names.setShortLabel(name);
+            names.setFullName(name);
+        }
+        else {
+            names = new SourceNames();
+            names.setShortLabel(UNKNOWN);
             names.setFullName(name);
         }
     }

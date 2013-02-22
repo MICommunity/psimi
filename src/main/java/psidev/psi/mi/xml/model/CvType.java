@@ -208,9 +208,13 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         if (names != null){
             names.setShortLabel(name);
         }
-        else {
+        else if (name != null) {
             names = new CvTermNames();
             names.setShortLabel(name);
+        }
+        else {
+            names = new CvTermNames();
+            names.setShortLabel(UNSPECIFIED);
         }
     }
 
@@ -222,9 +226,14 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             }
             names.setFullName(name);
         }
-        else {
+        else if (name != null) {
             names = new CvTermNames();
             names.setShortLabel(name);
+            names.setFullName(name);
+        }
+        else {
+            names = new CvTermNames();
+            names.setShortLabel(UNSPECIFIED);
             names.setFullName(name);
         }
     }

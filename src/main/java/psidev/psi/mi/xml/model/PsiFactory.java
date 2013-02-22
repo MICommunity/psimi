@@ -350,7 +350,7 @@ public final class PsiFactory {
         Feature feature = new Feature();
         assignNextId(feature);
         feature.setNames(createNames(name, name));
-        feature.getRanges().addAll(ranges);
+        feature.getFeatureRanges().addAll(ranges);
         feature.setFeatureType(featureType);
         return feature;
     }

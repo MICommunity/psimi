@@ -124,7 +124,7 @@ public class FeatureConverter {
         // ranges
         if ( jFeature.getFeatureRangeList() != null ) {
             for ( BaseLocation jBaseLocation : jFeature.getFeatureRangeList().getFeatureRanges() ) {
-                mFeature.getRanges().add( rangeConverter.fromJaxb( jBaseLocation ) );
+                mFeature.getFeatureRanges().add( rangeConverter.fromJaxb( jBaseLocation ) );
             }
         }
 
@@ -186,12 +186,12 @@ public class FeatureConverter {
         }
 
         //ranges
-        if ( mFeature.getRanges() != null ) {
+        if ( mFeature.getFeatureRanges() != null ) {
             if ( jFeature.getFeatureRangeList() == null ) {
                 jFeature.setFeatureRangeList( new psidev.psi.mi.xml254.jaxb.Feature.FeatureRangeList() );
             }
 
-            for ( Range mRange : mFeature.getRanges() ) {
+            for ( Range mRange : mFeature.getFeatureRanges() ) {
                 jFeature.getFeatureRangeList().getFeatureRanges().add( rangeConverter.toJaxb( mRange ) );
             }
         }
