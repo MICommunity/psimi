@@ -620,7 +620,27 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
     @Override
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
-        super.setExperimentAndAddInteractionEvidence(experiment);    //To change body of overridden methods use File | Settings | File Templates.
+        if (experiment != null){
+            if (this.experiment != null){
+                experimentDescriptions.remove(this.experiment);
+            }
+            if(experiment instanceof ExperimentDescription){
+                this.experiment = experiment;
+                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) this.experiment);
+                this.experiment.addInteractionEvidence(this);
+            }
+            else {
+                this.experiment = new ExperimentDescription();
+
+                ExperimentCloner.copyAndOverrideExperimentProperties(experiment, this.experiment);
+                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) this.experiment);
+                this.experiment.addInteractionEvidence(this);
+            }
+        }
+        else if (!this.experimentDescriptions.isEmpty()) {
+            this.experiment = null;
+            ((InteractionExperimentsList)experimentDescriptions).clearOnly();
+        }
     }
 
     @Override
