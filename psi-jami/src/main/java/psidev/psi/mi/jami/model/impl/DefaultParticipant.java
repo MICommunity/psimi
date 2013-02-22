@@ -35,7 +35,10 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
         this.interactor = interactor;
 
-        initializeCollections();
+        initializeFeatures();
+        initialiseAliases();
+        initializeAnnotations();
+        initializeXrefs();
         this.biologicalRole = CvTermFactory.createUnspecifiedRole();
     }
 
@@ -46,7 +49,10 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
         this.interactor = interactor;
 
-        initializeCollections();
+        initializeFeatures();
+        initialiseAliases();
+        initializeAnnotations();
+        initializeXrefs();
         this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
     }
 
@@ -66,7 +72,10 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
         this.interactor = interactor;
 
-        initializeCollections();
+        initializeFeatures();
+        initialiseAliases();
+        initializeAnnotations();
+        initializeXrefs();
         this.biologicalRole = CvTermFactory.createUnspecifiedRole();
     }
 
@@ -76,7 +85,10 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
         this.interactor = interactor;
 
-        initializeCollections();
+        initializeFeatures();
+        initialiseAliases();
+        initializeAnnotations();
+        initializeXrefs();
         this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
     }
 
@@ -90,10 +102,15 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         this.stoichiometry = stoichiometry;
     }
 
-    protected void initializeCollections() {
+    protected void initializeXrefs() {
         this.xrefs = new ArrayList<Xref>();
+    }
+
+    protected void initializeAnnotations() {
         this.annotations = new ArrayList<Annotation>();
-        initializeFeatures();
+    }
+
+    protected void initialiseAliases(){
         this.aliases = new ArrayList<Alias>();
     }
 
