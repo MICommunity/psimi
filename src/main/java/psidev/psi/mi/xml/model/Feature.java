@@ -156,7 +156,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             this.names.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
         }
-        else {
+        else if (this.names != null){
             this.shortName = null;
             this.fullName = null;
             this.names = null;
@@ -188,9 +188,13 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      */
     public void setXref( Xref value ) {
         if (value != null){
+            if (this.xref != null){
+                identifiers.clear();
+                this.xrefs.clear();
+            }
             this.xref = new FeatureXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
-        else {
+        else if (this.xref != null){
             identifiers.clear();
             xrefs.clear();
             this.xref = null;
@@ -435,7 +439,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
             super.setParticipant(convertedParticipant);
-            convertedParticipant.getFeatures().add(this);
+            convertedParticipant.getParticipantFeatures().add(this);
         }
     }
 

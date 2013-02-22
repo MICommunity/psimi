@@ -194,7 +194,7 @@ public class ParticipantConverter {
         if ( jParticipant.getExperimentalPreparationList() != null ) {
             for ( psidev.psi.mi.xml254.jaxb.ExperimentalPreparation jExperimentalPreparation :
                     jParticipant.getExperimentalPreparationList().getExperimentalPreparations() ) {
-                mParticipant.getExperimentalPreparations().add( experimentalPreparationConverter.fromJaxb( jExperimentalPreparation ) );
+                mParticipant.getParticipantExperimentalPreparations().add( experimentalPreparationConverter.fromJaxb( jExperimentalPreparation ) );
             }
         }
 
@@ -210,7 +210,7 @@ public class ParticipantConverter {
         // Features
         if ( jParticipant.getFeatureList() != null ) {
             for ( psidev.psi.mi.xml254.jaxb.Feature jFeature : jParticipant.getFeatureList().getFeatures() ) {
-                mParticipant.getFeatures().add( featureConverter.fromJaxb( jFeature ) );
+                mParticipant.getParticipantFeatures().add( featureConverter.fromJaxb( jFeature ) );
             }
         }
 
@@ -230,7 +230,7 @@ public class ParticipantConverter {
         if ( jParticipant.getParameterList() != null ) {
             for ( psidev.psi.mi.xml254.jaxb.Parameter jParameter :
                     jParticipant.getParameterList().getParameters() ) {
-                mParticipant.getParameters().add( parameterConverter.fromJaxb( jParameter ) );
+                mParticipant.getParametersList().add( parameterConverter.fromJaxb( jParameter ) );
             }
         }
 
@@ -293,7 +293,7 @@ public class ParticipantConverter {
                 jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
             }
         } else if ( mParticipant.hasInteraction() ) {
-            jParticipant.setInteractionRef( mParticipant.getInteraction().getId() );
+            jParticipant.setInteractionRef( mParticipant.getInteractionComplex().getId() );
         } else {
             throw new ConverterException( "Neither an interactor or an interaction was present in participant " + mParticipant.getId() );
         }
@@ -342,7 +342,7 @@ public class ParticipantConverter {
                 jParticipant.setExperimentalPreparationList( new psidev.psi.mi.xml254.jaxb.ExperimentalPreparationList() );
             }
 
-            for ( ExperimentalPreparation mExperimentalPreparation : mParticipant.getExperimentalPreparations() ) {
+            for ( ExperimentalPreparation mExperimentalPreparation : mParticipant.getParticipantExperimentalPreparations() ) {
                 jParticipant.getExperimentalPreparationList().getExperimentalPreparations().add(
                         experimentalPreparationConverter.toJaxb( mExperimentalPreparation ) );
             }
@@ -365,7 +365,7 @@ public class ParticipantConverter {
                 jParticipant.setFeatureList( new psidev.psi.mi.xml254.jaxb.FeatureList() );
             }
 
-            for ( Feature mFeature : mParticipant.getFeatures() ) {
+            for ( Feature mFeature : mParticipant.getParticipantFeatures() ) {
                 jParticipant.getFeatureList().getFeatures().add( featureConverter.toJaxb( mFeature ) );
             }
         }
@@ -387,7 +387,7 @@ public class ParticipantConverter {
                 jParticipant.setParameterList( new ParameterList() );
             }
 
-            for ( Parameter mParameter : mParticipant.getParameters() ) {
+            for ( Parameter mParameter : mParticipant.getParametersList() ) {
                 jParticipant.getParameterList().getParameters().add( parameterConverter.toJaxb( mParameter ) );
             }
         }
