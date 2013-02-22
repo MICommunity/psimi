@@ -815,7 +815,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
         @Override
         protected void processRemovedObjectEvent(FeatureEvidence removed) {
-            if (removed instanceof Checksum){
+            if (removed instanceof Feature){
                 ((InteractorMitabFeatureList)mitabFeatures).removeOnly(removed);
             }
             else {
@@ -824,10 +824,14 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
                 ((InteractorMitabFeatureList)mitabFeatures).removeOnly(tabFeature);
             }
+            removed.setParticipant(null);
         }
 
         @Override
         protected void clearProperties() {
+            for (Feature f : mitabFeatures){
+                f.setParticipant(null);
+            }
             // clear all mitab features
             ((InteractorMitabFeatureList)mitabFeatures).clearOnly();
         }
@@ -848,9 +852,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
         @Override
         protected void processRemovedObjectEvent(Feature removed) {
-            removed.setParticipant(null);
             // we removed a feature, needs to remove it in features
             ((InteractorFeatureList)features).removeOnly(removed);
+            removed.setParticipant(null);
         }
 
         @Override
