@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactBioactiveEntityComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
+import java.util.Collection;
+
 /**
  * Default implementation for bioactive entity
  *
@@ -145,21 +147,22 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setChebi(String id) {
+        Collection<Xref> bioactiveEntityIdentifiers = getIdentifiers();
+
         // add new chebi if not null
         if (id != null){
-            BioctiveEntityIdentifierList bioactiveEntityIdentifiers = (BioctiveEntityIdentifierList)getIdentifiers();
             CvTerm chebiDatabase = CvTermFactory.createChebiDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.chebi != null){
-                bioactiveEntityIdentifiers.removeOnly(this.chebi);
+                bioactiveEntityIdentifiers.remove(this.chebi);
             }
             this.chebi = new DefaultXref(chebiDatabase, id, identityQualifier);
-            bioactiveEntityIdentifiers.addOnly(this.chebi);
+            bioactiveEntityIdentifiers.add(this.chebi);
         }
         // remove all chebi if the collection is not empty
-        else if (!getIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.CHEBI_MI, Xref.CHEBI);
+        else if (!bioactiveEntityIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(bioactiveEntityIdentifiers, Xref.CHEBI_MI, Xref.CHEBI);
             this.chebi = null;
         }
     }
@@ -169,19 +172,20 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setSmile(String smile) {
+        Collection<Checksum> bioactiveEntityChecksums = getChecksums();
+
         if (smile != null){
-            BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
             CvTerm smileMethod = CvTermFactory.createSmile();
             // first remove old smile
             if (this.smile != null){
-                bioactiveEntityChecksums.removeOnly(this.smile);
+                bioactiveEntityChecksums.remove(this.smile);
             }
             this.smile = new DefaultChecksum(smileMethod, smile);
-            bioactiveEntityChecksums.addOnly(this.smile);
+            bioactiveEntityChecksums.add(this.smile);
         }
         // remove all smiles if the collection is not empty
-        else if (!getChecksums().isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.SMILE_MI, Checksum.SMILE);
+        else if (!bioactiveEntityChecksums.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(bioactiveEntityChecksums, Checksum.SMILE_MI, Checksum.SMILE);
             this.smile = null;
         }
     }
@@ -191,19 +195,20 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setStandardInchiKey(String key) {
+        Collection<Checksum> bioactiveEntityChecksums = getChecksums();
+
         if (standardInchiKey != null){
-            BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
             CvTerm inchiKeyMethod = CvTermFactory.createStandardInchiKey();
             // first remove old standard inchi key
             if (this.standardInchiKey != null){
-                bioactiveEntityChecksums.removeOnly(this.standardInchiKey);
+                bioactiveEntityChecksums.remove(this.standardInchiKey);
             }
             this.standardInchiKey = new DefaultChecksum(inchiKeyMethod, key);
-            bioactiveEntityChecksums.addOnly(this.standardInchiKey);
+            bioactiveEntityChecksums.add(this.standardInchiKey);
         }
         // remove all standard inchi keys if the collection is not empty
-        else if (!getChecksums().isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
+        else if (!bioactiveEntityChecksums.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(bioactiveEntityChecksums, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
             this.standardInchiKey = null;
         }
     }
@@ -213,21 +218,89 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public void setStandardInchi(String inchi) {
+        Collection<Checksum> bioactiveEntityChecksums = getChecksums();
+
         if (standardInchi != null){
-            BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
             CvTerm inchiMethod = CvTermFactory.createStandardInchi();
             // first remove standard inchi
             if (this.standardInchi != null){
-                bioactiveEntityChecksums.removeOnly(this.standardInchi);
+                bioactiveEntityChecksums.remove(this.standardInchi);
             }
             this.standardInchi = new DefaultChecksum(inchiMethod, inchi);
-            bioactiveEntityChecksums.addOnly(this.standardInchi);
+            bioactiveEntityChecksums.add(this.standardInchi);
         }
         // remove all standard inchi if the collection is not empty
-        else if (!getChecksums().isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.INCHI_MI, Checksum.INCHI);
+        else if (!bioactiveEntityChecksums.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(bioactiveEntityChecksums, Checksum.INCHI_MI, Checksum.INCHI);
             this.standardInchi = null;
         }
+    }
+
+    protected void processAddedChecksumEvent(Checksum added) {
+        // the added checksum is standard inchi key and it is not the current standard inchi key
+        if (standardInchiKey == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)){
+            // the standard inchi key is not set, we can set the standard inchi key
+            standardInchiKey = added;
+        }
+        else if (smile == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.SMILE_MI, Checksum.SMILE)){
+            // the smile is not set, we can set the smile
+            smile = added;
+        }
+        else if (standardInchi == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_MI, Checksum.INCHI)){
+            // the standard inchi is not set, we can set the standard inchi
+            standardInchi = added;
+        }
+    }
+
+    protected void processRemovedChecksumEvent(Checksum removed) {
+        // the removed identifier is standard inchi key
+        if (standardInchiKey != null && standardInchiKey.equals(removed)){
+            standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
+        }
+        else if (smile != null && smile.equals(removed)){
+            smile = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.SMILE_MI, Checksum.SMILE);
+        }
+        else if (standardInchi != null && standardInchi.equals(removed)){
+            standardInchi = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.INCHI_MI, Checksum.INCHI);
+        }
+    }
+
+    protected void clearPropertiesLinkedToChecksums() {
+        standardInchiKey = null;
+        standardInchi = null;
+        smile = null;
+    }
+
+    protected void processAddedIdentifierEvent(Xref added) {
+        // the added identifier is chebi and it is not the current chebi identifier
+        if (chebi != added && XrefUtils.isXrefFromDatabase(added, Xref.CHEBI_MI, Xref.CHEBI)){
+            // the current chebi identifier is not identity, we may want to set chebiIdentifier
+            if (!XrefUtils.doesXrefHaveQualifier(chebi, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the chebi identifier is not set, we can set the chebi identifier
+                if (chebi == null){
+                    chebi = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    chebi = added;
+                }
+                // the added xref is secondary object and the current chebi is not a secondary object, we reset chebi identifier
+                else if (!XrefUtils.doesXrefHaveQualifier(chebi, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    chebi = added;
+                }
+            }
+        }
+    }
+
+    protected void processRemovedIdentifierEvent(Xref removed) {
+        // the removed identifier is chebi
+        if (chebi != null && chebi.equals(removed)){
+            chebi = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.CHEBI_MI, Xref.CHEBI);
+        }
+    }
+
+    protected void clearPropertiesLinkedToIdentifiers() {
+        chebi = null;
     }
 
     @Override
@@ -256,37 +329,17 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
         @Override
         protected void processAddedObjectEvent(Xref added) {
-            // the added identifier is chebi and it is not the current chebi identifier
-            if (chebi != added && XrefUtils.isXrefFromDatabase(added, Xref.CHEBI_MI, Xref.CHEBI)){
-                // the current chebi identifier is not identity, we may want to set chebiIdentifier
-                if (!XrefUtils.doesXrefHaveQualifier(chebi, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the chebi identifier is not set, we can set the chebi identifier
-                    if (chebi == null){
-                        chebi = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        chebi = added;
-                    }
-                    // the added xref is secondary object and the current chebi is not a secondary object, we reset chebi identifier
-                    else if (!XrefUtils.doesXrefHaveQualifier(chebi, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        chebi = added;
-                    }
-                }
-            }
+            processAddedIdentifierEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            // the removed identifier is chebi
-            if (chebi != null && chebi.equals(removed)){
-                chebi = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.CHEBI_MI, Xref.CHEBI);
-            }
+            processRemovedIdentifierEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            chebi = null;
+            clearPropertiesLinkedToIdentifiers();
         }
     }
 
@@ -297,40 +350,17 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
         @Override
         protected void processAddedObjectEvent(Checksum added) {
-            // the added checksum is standard inchi key and it is not the current standard inchi key
-            if (standardInchiKey == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)){
-                // the standard inchi key is not set, we can set the standard inchi key
-                standardInchiKey = added;
-            }
-            else if (smile == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.SMILE_MI, Checksum.SMILE)){
-                // the smile is not set, we can set the smile
-                smile = added;
-            }
-            else if (standardInchi == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_MI, Checksum.INCHI)){
-                // the standard inchi is not set, we can set the standard inchi
-                standardInchi = added;
-            }
+            processAddedChecksumEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Checksum removed) {
-            // the removed identifier is standard inchi key
-            if (standardInchiKey != null && standardInchiKey.equals(removed)){
-                standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
-            }
-            else if (smile != null && smile.equals(removed)){
-                smile = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.SMILE_MI, Checksum.SMILE);
-            }
-            else if (standardInchi != null && standardInchi.equals(removed)){
-                standardInchi = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.INCHI_MI, Checksum.INCHI);
-            }
+            processRemovedChecksumEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            standardInchiKey = null;
-            standardInchi = null;
-            smile = null;
+            clearPropertiesLinkedToChecksums();
         }
     }
 }

@@ -124,21 +124,22 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     }
 
     public void setInterpro(String interpro) {
+        Collection<Xref> featureIdentifiers = getIdentifiers();
+
         // add new interpro if not null
         if (interpro != null){
-            FeatureIdentifierList featureIdentifiers = (FeatureIdentifierList) getIdentifiers();
             CvTerm interproDatabase = CvTermFactory.createInterproDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.interpro != null){
-                featureIdentifiers.removeOnly(this.interpro);
+                featureIdentifiers.remove(this.interpro);
             }
             this.interpro = new DefaultXref(interproDatabase, interpro, identityQualifier);
-            featureIdentifiers.addOnly(this.interpro);
+            featureIdentifiers.add(this.interpro);
         }
         // remove all interpro if the collection is not empty
-        else if (!getIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.INTERPRO_MI, Xref.INTERPRO);
+        else if (!featureIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(featureIdentifiers, Xref.INTERPRO_MI, Xref.INTERPRO);
             this.interpro = null;
         }
     }
@@ -187,6 +188,37 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
     }
 
+    protected void processAddedIdentifierEvent(Xref added) {
+        // the added identifier is interpro and it is not the current interpro identifier
+        if (interpro != added && XrefUtils.isXrefFromDatabase(added, Xref.INTERPRO_MI, Xref.INTERPRO)){
+            // the current interpro identifier is not identity, we may want to set interpro Identifier
+            if (!XrefUtils.doesXrefHaveQualifier(interpro, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the interpro identifier is not set, we can set the interpro identifier
+                if (interpro == null){
+                    interpro = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    interpro = added;
+                }
+                // the added xref is secondary object and the current interpro identifier is not a secondary object, we reset interpro identifier
+                else if (!XrefUtils.doesXrefHaveQualifier(interpro, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    interpro = added;
+                }
+            }
+        }
+    }
+
+    protected void processRemovedIdentifierEvent(Xref removed) {
+        if (interpro != null && interpro.equals(removed)){
+            interpro = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.INTERPRO_MI, Xref.INTERPRO);
+        }
+    }
+
+    protected void clearPropertiesLinkedToIdentifiers() {
+        interpro = null;
+    }
+
     @Override
     public int hashCode() {
         // use UnambiguousFeatureBase comparator for hashcode to avoid instance of calls. It is possible that
@@ -220,36 +252,17 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
         @Override
         protected void processAddedObjectEvent(Xref added) {
-            // the added identifier is interpro and it is not the current interpro identifier
-            if (interpro != added && XrefUtils.isXrefFromDatabase(added, Xref.INTERPRO_MI, Xref.INTERPRO)){
-                // the current interpro identifier is not identity, we may want to set interpro Identifier
-                if (!XrefUtils.doesXrefHaveQualifier(interpro, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the interpro identifier is not set, we can set the interpro identifier
-                    if (interpro == null){
-                        interpro = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        interpro = added;
-                    }
-                    // the added xref is secondary object and the current interpro identifier is not a secondary object, we reset interpro identifier
-                    else if (!XrefUtils.doesXrefHaveQualifier(interpro, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        interpro = added;
-                    }
-                }
-            }
+           processAddedIdentifierEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (interpro != null && interpro.equals(removed)){
-                interpro = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.INTERPRO_MI, Xref.INTERPRO);
-            }
+            processRemovedIdentifierEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            interpro = null;
+            clearPropertiesLinkedToIdentifiers();
         }
     }
 }

@@ -5,6 +5,8 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
+import java.util.Collection;
+
 /**
  * Default implementation for Source
  *
@@ -84,20 +86,21 @@ public class DefaultSource extends DefaultCvTerm implements Source {
     }
 
     public void setUrl(String url) {
+        Collection<Annotation> sourceAnnotationList = getAnnotations();
+
         // add new url if not null
         if (url != null){
-            SourceAnnotationList sourceAnnotationList = (SourceAnnotationList) getAnnotations();
             CvTerm complexPhysicalProperties = CvTermFactory.createMICvTerm(Annotation.URL, Annotation.URL_MI);
             // first remove old url if not null
             if (this.url != null){
-                sourceAnnotationList.removeOnly(this.url);
+                sourceAnnotationList.remove(this.url);
             }
             this.url = new DefaultAnnotation(complexPhysicalProperties, url);
-            sourceAnnotationList.addOnly(this.url);
+            sourceAnnotationList.add(this.url);
         }
         // remove all url if the collection is not empty
-        else if (!getAnnotations().isEmpty()) {
-            AnnotationUtils.removeAllAnnotationsWithTopic(getAnnotations(), Annotation.URL_MI, Annotation.URL);
+        else if (!sourceAnnotationList.isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(sourceAnnotationList, Annotation.URL_MI, Annotation.URL);
             this.url = null;
         }
     }
@@ -118,6 +121,22 @@ public class DefaultSource extends DefaultCvTerm implements Source {
         this.bibRef = ref;
     }
 
+    protected void processAddedAnnotationEvent(Annotation added) {
+        if (url == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.URL_MI, Annotation.URL)){
+            url = added;
+        }
+    }
+
+    protected void processRemovedAnnotationEvent(Annotation removed) {
+        if (url != null && url.equals(removed)){
+            url = null;
+        }
+    }
+
+    protected void clearPropertiesLinkedToAnnotations() {
+        url = null;
+    }
+
     private class SourceAnnotationList extends AbstractListHavingPoperties<Annotation> {
         public SourceAnnotationList(){
             super();
@@ -125,21 +144,17 @@ public class DefaultSource extends DefaultCvTerm implements Source {
 
         @Override
         protected void processAddedObjectEvent(Annotation added) {
-            if (url == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.URL_MI, Annotation.URL)){
-                url = added;
-            }
+            processAddedAnnotationEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Annotation removed) {
-            if (url != null && url.equals(removed)){
-                url = null;
-            }
+            processRemovedAnnotationEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            url = null;
+            clearPropertiesLinkedToAnnotations();
         }
     }
 }
