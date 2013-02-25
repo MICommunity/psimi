@@ -190,23 +190,40 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     }
 
     public void setPhysicalProperties(String properties) {
+        Collection<Annotation> complexAnnotationList = getAnnotations();
+
         // add new physical properties if not null
         if (properties != null){
-            ComplexAnnotationList complexAnnotationList = (ComplexAnnotationList) getAnnotations();
 
             CvTerm complexPhysicalProperties = CvTermFactory.createComplexPhysicalProperties();
             // first remove old physical property if not null
             if (this.physicalProperties != null){
-                complexAnnotationList.removeOnly(this.physicalProperties);
+                complexAnnotationList.remove(this.physicalProperties);
             }
             this.physicalProperties = new DefaultAnnotation(complexPhysicalProperties, properties);
-            complexAnnotationList.addOnly(this.physicalProperties);
+            complexAnnotationList.add(this.physicalProperties);
         }
         // remove all physical properties if the collection is not empty
-        else if (!getAnnotations().isEmpty()) {
-            AnnotationUtils.removeAllAnnotationsWithTopic(getAnnotations(), COMPLEX_MI, COMPLEX);
+        else if (!complexAnnotationList.isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, COMPLEX_MI, COMPLEX);
             physicalProperties = null;
         }
+    }
+
+    protected void processAddedAnnotationEvent(Annotation added) {
+        if (physicalProperties == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
+            physicalProperties = added;
+        }
+    }
+
+    protected void processRemovedAnnotationEvent(Annotation removed) {
+        if (physicalProperties != null && physicalProperties.equals(removed)){
+            physicalProperties = AnnotationUtils.collectFirstAnnotationWithTopic(getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
+        }
+    }
+
+    protected void clearPropertiesLinkedToAnnotations() {
+        physicalProperties = null;
     }
 
     @Override
@@ -230,21 +247,17 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
 
         @Override
         protected void processAddedObjectEvent(Annotation added) {
-            if (physicalProperties == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
-                physicalProperties = added;
-            }
+            processAddedAnnotationEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Annotation removed) {
-            if (physicalProperties != null && physicalProperties.equals(removed)){
-                physicalProperties = AnnotationUtils.collectFirstAnnotationWithTopic(this, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
-            }
+            processRemovedAnnotationEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            physicalProperties = null;
+            clearPropertiesLinkedToAnnotations();
         }
     }
 }

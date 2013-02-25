@@ -383,6 +383,84 @@ public class DefaultPublication implements Publication, Serializable {
         }
     }
 
+    protected void processAddedIdentifierEvent(Xref added) {
+
+        // the added identifier is pubmed and it is not the current pubmed identifier
+        if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, Xref.PUBMED_MI, Xref.PUBMED)){
+            // the current pubmed identifier is not identity, we may want to set pubmed Identifier
+            if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the pubmed identifier is not set, we can set the pubmed
+                if (pubmedId == null){
+                    pubmedId = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    pubmedId = added;
+                }
+                // the added xref is secondary object and the current pubmed is not a secondary object, we reset pubmed identifier
+                else if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    pubmedId = added;
+                }
+            }
+        }
+        // the added identifier is doi and it is not the current doi identifier
+        else if (doi != added && XrefUtils.isXrefFromDatabase(added, Xref.DOI_MI, Xref.DOI)){
+            // the current doi identifier is not identity, we may want to set doi
+            if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the doi is not set, we can set the doi
+                if (doi == null){
+                    doi = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    doi = added;
+                }
+                // the added xref is secondary object and the current doi is not a secondary object, we reset doi
+                else if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    doi = added;
+                }
+            }
+        }
+    }
+
+    protected void processRemovedIdentifierEvent(Xref removed) {
+        // the removed identifier is pubmed
+        if (pubmedId != null && pubmedId.equals(removed)){
+            pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.PUBMED_MI, Xref.PUBMED);
+        }
+        // the removed identifier is doi
+        else if (doi != null && doi.equals(removed)){
+            doi = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.DOI_MI, Xref.DOI);
+        }
+    }
+
+    protected void clearPropertiesLinkedToIdentifiers() {
+        pubmedId = null;
+        doi = null;
+    }
+
+    protected void processAddedXrefEvent(Xref added) {
+
+        // the added identifier is imex and the current imex is not set
+        if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
+            // the added xref is imex-primary
+            if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
+                imexId = added;
+            }
+        }
+    }
+
+    protected void processRemovedXrefEvent(Xref removed) {
+        // the removed identifier is pubmed
+        if (imexId != null && imexId.equals(removed)){
+            imexId = null;
+        }
+    }
+
+    protected void clearPropertiesLinkedToXrefs() {
+        imexId = null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
@@ -414,60 +492,17 @@ public class DefaultPublication implements Publication, Serializable {
         @Override
         protected void processAddedObjectEvent(Xref added) {
 
-            // the added identifier is pubmed and it is not the current pubmed identifier
-            if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, Xref.PUBMED_MI, Xref.PUBMED)){
-                // the current pubmed identifier is not identity, we may want to set pubmed Identifier
-                if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the pubmed identifier is not set, we can set the pubmed
-                    if (pubmedId == null){
-                        pubmedId = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        pubmedId = added;
-                    }
-                    // the added xref is secondary object and the current pubmed is not a secondary object, we reset pubmed identifier
-                    else if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        pubmedId = added;
-                    }
-                }
-            }
-            // the added identifier is doi and it is not the current doi identifier
-            else if (doi != added && XrefUtils.isXrefFromDatabase(added, Xref.DOI_MI, Xref.DOI)){
-                // the current doi identifier is not identity, we may want to set doi
-                if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the doi is not set, we can set the doi
-                    if (doi == null){
-                        doi = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        doi = added;
-                    }
-                    // the added xref is secondary object and the current doi is not a secondary object, we reset doi
-                    else if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        doi = added;
-                    }
-                }
-            }
+            processAddedIdentifierEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            // the removed identifier is pubmed
-            if (pubmedId != null && pubmedId.equals(removed)){
-                pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.PUBMED_MI, Xref.PUBMED);
-            }
-            // the removed identifier is doi
-            else if (doi != null && doi.equals(removed)){
-                doi = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.DOI_MI, Xref.DOI);
-            }
+            processRemovedIdentifierEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            pubmedId = null;
-            doi = null;
+            clearPropertiesLinkedToIdentifiers();
         }
     }
 
@@ -479,26 +514,17 @@ public class DefaultPublication implements Publication, Serializable {
         @Override
         protected void processAddedObjectEvent(Xref added) {
 
-            // the added identifier is imex and the current imex is not set
-            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
-                // the added xref is imex-primary
-                if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
-                    imexId = added;
-                }
-            }
+            processAddedXrefEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            // the removed identifier is pubmed
-            if (imexId != null && imexId.equals(removed)){
-                imexId = null;
-            }
+            processRemovedXrefEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            imexId = null;
+            clearPropertiesLinkedToXrefs();
         }
     }
 }

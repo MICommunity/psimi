@@ -8,6 +8,8 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactProteinComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
+import java.util.Collection;
+
 /**
  * Default implementation for proteins and peptides
  *
@@ -108,21 +110,22 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     }
 
     public void setUniprotkb(String ac) {
+        Collection<Xref> proteinIdentifiers = getIdentifiers();
+
         // add new uniprotkb if not null
         if (ac != null){
-            ProteinIdentifierList proteinIdentifiers = (ProteinIdentifierList) getIdentifiers();
             CvTerm uniprotkbDatabase = CvTermFactory.createUniprotkbDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old uniprotkb if not null
             if (this.uniprotkb != null){
-                proteinIdentifiers.removeOnly(this.uniprotkb);
+                proteinIdentifiers.remove(this.uniprotkb);
             }
             this.uniprotkb = new DefaultXref(uniprotkbDatabase, ac, identityQualifier);
-            proteinIdentifiers.addOnly(this.uniprotkb);
+            proteinIdentifiers.add(this.uniprotkb);
         }
         // remove all uniprotkb if the collection is not empty
-        else if (!getIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
+        else if (!proteinIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(proteinIdentifiers, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
             this.uniprotkb = null;
         }
     }
@@ -132,21 +135,22 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     }
 
     public void setRefseq(String ac) {
+        Collection<Xref> proteinIdentifiers = getIdentifiers();
+
         // add new refseq if not null
         if (ac != null){
-            ProteinIdentifierList proteinIdentifiers = (ProteinIdentifierList) getIdentifiers();
             CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old refseq if not null
             if (this.refseq != null){
-                proteinIdentifiers.removeOnly(this.refseq);
+                proteinIdentifiers.remove(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, ac, identityQualifier);
-            proteinIdentifiers.addOnly(this.refseq);
+            proteinIdentifiers.add(this.refseq);
         }
         // remove all refseq if the collection is not empty
-        else if (!getIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
+        else if (!proteinIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(proteinIdentifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
@@ -156,20 +160,21 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     }
 
     public void setGeneName(String name) {
+        Collection<Alias> proteinAliases = getAliases();
+
         // add new gene name if not null
         if (name != null){
-            ProteinAliasList proteinAliases = (ProteinAliasList) getAliases();
             CvTerm geneNameType = CvTermFactory.createGeneNameAliasType();
             // first remove old gene name if not null
             if (this.geneName != null){
-                proteinAliases.removeOnly(this.geneName);
+                proteinAliases.remove(this.geneName);
             }
             this.geneName = new DefaultAlias(geneNameType, name);
-            proteinAliases.addOnly(this.geneName);
+            proteinAliases.add(this.geneName);
         }
         // remove all gene names if the collection is not empty
-        else if (!getAliases().isEmpty()) {
-            AliasUtils.removeAllAliasesWithType(getAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
+        else if (!proteinAliases.isEmpty()) {
+            AliasUtils.removeAllAliasesWithType(proteinAliases, Alias.GENE_NAME_MI, Alias.GENE_NAME);
             this.geneName = null;
         }
     }
@@ -179,19 +184,20 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     }
 
     public void setRogid(String rogid) {
+        Collection<Checksum> proteinChecksums = getChecksums();
+
         if (rogid != null){
-            ProteinChecksumList proteinChecksums = (ProteinChecksumList) getChecksums();
             CvTerm rogidMethod = CvTermFactory.createRogid();
             // first remove old rogid
             if (this.rogid != null){
-                proteinChecksums.removeOnly(this.rogid);
+                proteinChecksums.remove(this.rogid);
             }
             this.rogid = new DefaultChecksum(rogidMethod, rogid);
-            proteinChecksums.addOnly(this.rogid);
+            proteinChecksums.add(this.rogid);
         }
         // remove all smiles if the collection is not empty
-        else if (!getChecksums().isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.ROGID_MI, Checksum.ROGID);
+        else if (!proteinChecksums.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(proteinChecksums, Checksum.ROGID_MI, Checksum.ROGID);
             this.rogid = null;
         }
     }
@@ -202,6 +208,93 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
     public void setSequence(String sequence) {
         this.sequence = sequence;
+    }
+
+    protected void processAddedAliasEvent(Alias added) {
+        // the added alias is gene name and it is not the current gene name
+        if (geneName == null && AliasUtils.doesAliasHaveType(added, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
+            geneName = added;
+        }
+    }
+
+    protected void processRemovedAliasEvent(Alias removed) {
+        if (geneName != null && geneName.equals(removed)){
+            geneName = AliasUtils.collectFirstAliasWithType(getAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
+        }
+    }
+
+    protected void clearPropertiesLinkedToAliases() {
+        geneName = null;
+    }
+
+    protected void processAddedChecksumEvent(Checksum added) {
+        if (rogid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.ROGID_MI, Checksum.ROGID)){
+            // the rogid is not set, we can set the rogid
+            rogid = added;
+        }
+    }
+
+    protected void processRemovedChecksumEvent(Checksum removed) {
+        if (rogid != null && rogid.equals(removed)){
+            rogid = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.ROGID_MI, Checksum.ROGID);
+        }
+    }
+
+    protected void clearPropertiesLinkedToChecksums() {
+        rogid = null;
+    }
+
+    protected void processAddedIdentifierEvent(Xref added) {
+        // the added identifier is uniprotkb and it is not the current uniprotkb identifier
+        if (uniprotkb != added && XrefUtils.isXrefFromDatabase(added, Xref.UNIPROTKB_MI, Xref.UNIPROTKB)){
+            // the current uniprotkb identifier is not identity, we may want to set uniprotkb Identifier
+            if (!XrefUtils.doesXrefHaveQualifier(uniprotkb, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the uniprotkb identifier is not set, we can set the uniprotkb identifier
+                if (uniprotkb == null){
+                    uniprotkb = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    uniprotkb = added;
+                }
+                // the added xref is secondary object and the current uniprotkb identifier is not a secondary object, we reset uniprotkb identifier
+                else if (!XrefUtils.doesXrefHaveQualifier(uniprotkb, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    uniprotkb = added;
+                }
+            }
+        }
+        // the added identifier is refseq id and it is not the current refseq id
+        else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_MI, Xref.REFSEQ)){
+            // the current refseq id is not identity, we may want to set refseq id
+            if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the refseq id is not set, we can set the refseq id
+                if (refseq == null){
+                    refseq = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    refseq = added;
+                }
+                // the added xref is secondary object and the current refseq id is not a secondary object, we reset refseq id
+                else if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    refseq = added;
+                }
+            }
+        }
+    }
+
+    protected void processRemovedIdentifierEvent(Xref removed) {
+        if (uniprotkb != null && uniprotkb.equals(removed)){
+            uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
+        }
+        else if (refseq != null && refseq.equals(removed)){
+            refseq = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
+        }
+    }
+
+    protected void clearPropertiesLinkedToIdentifiers() {
+        uniprotkb = null;
+        refseq = null;
     }
 
     @Override
@@ -230,58 +323,17 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         @Override
         protected void processAddedObjectEvent(Xref added) {
-            // the added identifier is uniprotkb and it is not the current uniprotkb identifier
-            if (uniprotkb != added && XrefUtils.isXrefFromDatabase(added, Xref.UNIPROTKB_MI, Xref.UNIPROTKB)){
-                // the current uniprotkb identifier is not identity, we may want to set uniprotkb Identifier
-                if (!XrefUtils.doesXrefHaveQualifier(uniprotkb, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the uniprotkb identifier is not set, we can set the uniprotkb identifier
-                    if (uniprotkb == null){
-                        uniprotkb = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        uniprotkb = added;
-                    }
-                    // the added xref is secondary object and the current uniprotkb identifier is not a secondary object, we reset uniprotkb identifier
-                    else if (!XrefUtils.doesXrefHaveQualifier(uniprotkb, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        uniprotkb = added;
-                    }
-                }
-            }
-            // the added identifier is refseq id and it is not the current refseq id
-            else if (refseq != added && XrefUtils.isXrefFromDatabase(added, Xref.REFSEQ_MI, Xref.REFSEQ)){
-                // the current refseq id is not identity, we may want to set refseq id
-                if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the refseq id is not set, we can set the refseq id
-                    if (refseq == null){
-                        refseq = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        refseq = added;
-                    }
-                    // the added xref is secondary object and the current refseq id is not a secondary object, we reset refseq id
-                    else if (!XrefUtils.doesXrefHaveQualifier(refseq, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        refseq = added;
-                    }
-                }
-            }
+            processAddedIdentifierEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            if (uniprotkb != null && uniprotkb.equals(removed)){
-                uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
-            }
-            else if (refseq != null && refseq.equals(removed)){
-                refseq = XrefUtils.collectFirstIdentifierWithDatabase(this, Xref.REFSEQ_MI, Xref.REFSEQ);
-            }
+            processRemovedIdentifierEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            uniprotkb = null;
-            refseq = null;
+            clearPropertiesLinkedToIdentifiers();
         }
     }
 
@@ -292,22 +344,17 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         @Override
         protected void processAddedObjectEvent(Checksum added) {
-            if (rogid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.ROGID_MI, Checksum.ROGID)){
-                // the rogid is not set, we can set the rogid
-                rogid = added;
-            }
+            processAddedChecksumEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Checksum removed) {
-            if (rogid != null && rogid.equals(removed)){
-                rogid = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.ROGID_MI, Checksum.ROGID);
-            }
+            processRemovedChecksumEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            rogid = null;
+            clearPropertiesLinkedToChecksums();
         }
     }
 
@@ -318,22 +365,17 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         @Override
         protected void processAddedObjectEvent(Alias added) {
-            // the added alias is gene name and it is not the current gene name
-            if (geneName == null && AliasUtils.doesAliasHaveType(added, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
-                geneName = added;
-            }
+            processAddedAliasEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Alias removed) {
-            if (geneName != null && geneName.equals(removed)){
-                geneName = AliasUtils.collectFirstAliasWithType(this, Alias.GENE_NAME_MI, Alias.GENE_NAME);
-            }
+            processRemovedAliasEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            geneName = null;
+            clearPropertiesLinkedToAliases();
         }
     }
 }

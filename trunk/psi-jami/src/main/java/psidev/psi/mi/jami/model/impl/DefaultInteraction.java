@@ -140,17 +140,18 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     }
 
     public void setRigid(String rigid) {
+        Collection<Checksum> checksums = getChecksums();
         if (rigid != null){
             CvTerm rigidMethod = CvTermFactory.createRigid();
             // first remove old rigid
             if (this.rigid != null){
-                this.checksums.remove(this.rigid);
+                checksums.remove(this.rigid);
             }
             this.rigid = new DefaultChecksum(rigidMethod, rigid);
-            this.checksums.add(this.rigid);
+            checksums.add(this.rigid);
         }
         // remove all smiles if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
+        else if (!checksums.isEmpty()) {
             ChecksumUtils.removeAllChecksumWithMethod(checksums, Checksum.RIGID_MI, Checksum.RIGID);
             this.rigid = null;
         }
@@ -279,6 +280,23 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         return removed;
     }
 
+    protected void processAddedChecksumEvent(Checksum added) {
+        if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
+            // the rigid is not set, we can set the rigid
+            rigid = added;
+        }
+    }
+
+    protected void processRemovedChecksumEvent(Checksum removed) {
+        if (rigid == removed){
+            rigid = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.RIGID_MI, Checksum.RIGID);
+        }
+    }
+
+    protected void clearPropertiesLinkedToChecksums() {
+        rigid = null;
+    }
+
     @Override
     public int hashCode() {
         // use UnambiguousExactInteractionBase comparator for hashcode
@@ -311,22 +329,17 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
 
         @Override
         protected void processAddedObjectEvent(Checksum added) {
-            if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
-                // the rigid is not set, we can set the rigid
-                rigid = added;
-            }
+            processAddedChecksumEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Checksum removed) {
-            if (rigid == removed){
-                rigid = ChecksumUtils.collectFirstChecksumWithMethod(this, Checksum.RIGID_MI, Checksum.RIGID);
-            }
+            processRemovedChecksumEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            rigid = null;
+            clearPropertiesLinkedToChecksums();
         }
     }
 }
