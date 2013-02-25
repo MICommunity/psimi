@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactCooperati
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for CooperativeInteraction
@@ -19,14 +20,13 @@ import java.util.Collection;
 
 public class DefaultCooperativeInteraction extends DefaultModelledInteraction implements CooperativeInteraction {
 
-    protected CvTerm cooperativeMechanism;
-    protected CvTerm effectOutCome;
-    protected CvTerm response;
-    protected Collection<ModelledInteraction> affectedInteractions;
+    private CvTerm cooperativeMechanism;
+    private CvTerm effectOutCome;
+    private CvTerm response;
+    private Collection<ModelledInteraction> affectedInteractions;
 
     public DefaultCooperativeInteraction(CvTerm cooperativeMechanism, CvTerm effectOutcome, CvTerm response) {
         super();
-        this.affectedInteractions = new ArrayList<ModelledInteraction>();
 
         if (cooperativeMechanism == null){
            throw new IllegalArgumentException("The cooperative mechanism is required and cannot be null.");
@@ -44,7 +44,6 @@ public class DefaultCooperativeInteraction extends DefaultModelledInteraction im
 
     public DefaultCooperativeInteraction(String shortName, CvTerm cooperativeMechanism, CvTerm effectOutcome, CvTerm response) {
         super(shortName);
-        this.affectedInteractions = new ArrayList<ModelledInteraction>();
         if (cooperativeMechanism == null){
             throw new IllegalArgumentException("The cooperative mechanism is required and cannot be null.");
         }
@@ -61,7 +60,6 @@ public class DefaultCooperativeInteraction extends DefaultModelledInteraction im
 
     public DefaultCooperativeInteraction(String shortName, Source source, CvTerm cooperativeMechanism, CvTerm effectOutcome, CvTerm response) {
         super(shortName, source);
-        this.affectedInteractions = new ArrayList<ModelledInteraction>();
         if (cooperativeMechanism == null){
             throw new IllegalArgumentException("The cooperative mechanism is required and cannot be null.");
         }
@@ -78,7 +76,6 @@ public class DefaultCooperativeInteraction extends DefaultModelledInteraction im
 
     public DefaultCooperativeInteraction(String shortName, CvTerm type, CvTerm cooperativeMechanism, CvTerm effectOutcome, CvTerm response) {
         super(shortName, type);
-        this.affectedInteractions = new ArrayList<ModelledInteraction>();
         if (cooperativeMechanism == null){
             throw new IllegalArgumentException("The cooperative mechanism is required and cannot be null.");
         }
@@ -95,7 +92,6 @@ public class DefaultCooperativeInteraction extends DefaultModelledInteraction im
 
     public DefaultCooperativeInteraction(String shortName, Source source, CvTerm type, CvTerm cooperativeMechanism, CvTerm effectOutcome, CvTerm response) {
         super(shortName, source, type);
-        this.affectedInteractions = new ArrayList<ModelledInteraction>();
         if (cooperativeMechanism == null){
             throw new IllegalArgumentException("The cooperative mechanism is required and cannot be null.");
         }
@@ -108,6 +104,19 @@ public class DefaultCooperativeInteraction extends DefaultModelledInteraction im
             throw new IllegalArgumentException("The response is required and cannot be null.");
         }
         this.response = response;
+    }
+
+    protected void initialiseAffectedInteractions(){
+        this.affectedInteractions = new ArrayList<ModelledInteraction>();
+    }
+
+    protected void initialiseAffectedInteractionsWith(Collection<ModelledInteraction> affectedInteractions){
+        if (affectedInteractions == null){
+            this.affectedInteractions = Collections.EMPTY_LIST;
+        }
+        else {
+            this.affectedInteractions = affectedInteractions;
+        }
     }
 
     public CvTerm getCooperativeMechanism() {
@@ -144,6 +153,9 @@ public class DefaultCooperativeInteraction extends DefaultModelledInteraction im
     }
 
     public Collection<ModelledInteraction> getAffectedInteractions() {
+        if (affectedInteractions == null){
+            initialiseAffectedInteractions();
+        }
         return this.affectedInteractions;
     }
 

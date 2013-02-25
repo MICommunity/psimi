@@ -21,10 +21,10 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultGene extends DefaultInteractor implements Gene {
 
-    protected Xref ensembl;
-    protected Xref ensemblGenome;
-    protected Xref entrezGeneId;
-    protected Xref refseq;
+    private Xref ensembl;
+    private Xref ensemblGenome;
+    private Xref entrezGeneId;
+    private Xref refseq;
 
     public DefaultGene(String name) {
         super(name, CvTermFactory.createGeneInteractorType());
@@ -59,8 +59,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new GeneIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new GeneIdentifierList());
     }
 
     public String getEnsembl() {
@@ -70,18 +70,19 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     public void setEnsembl(String ac) {
         // add new ensembl if not null
         if (ac != null){
+            GeneIdentifierList geneIdentifiers = (GeneIdentifierList) getIdentifiers();
             CvTerm ensemblDatabase = CvTermFactory.createEnsemblDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old ensembl if not null
             if (this.ensembl != null){
-                identifiers.remove(this.ensembl);
+                geneIdentifiers.removeOnly(this.ensembl);
             }
             this.ensembl = new DefaultXref(ensemblDatabase, ac, identityQualifier);
-            this.identifiers.add(this.ensembl);
+            geneIdentifiers.addOnly(this.ensembl);
         }
         // remove all ensembl if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_MI, Xref.ENSEMBL);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.ENSEMBL_MI, Xref.ENSEMBL);
             this.ensembl = null;
         }
     }
@@ -93,18 +94,19 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     public void setEnsemblGenome(String ac) {
         // add new ensembl genomes if not null
         if (ac != null){
+            GeneIdentifierList geneIdentifiers = (GeneIdentifierList) getIdentifiers();
             CvTerm ensemblGenomesDatabase = CvTermFactory.createEnsemblGenomesDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old ensembl genome if not null
             if (this.ensemblGenome != null){
-                identifiers.remove(this.ensemblGenome);
+                geneIdentifiers.removeOnly(this.ensemblGenome);
             }
             this.ensemblGenome = new DefaultXref(ensemblGenomesDatabase, ac, identityQualifier);
-            this.identifiers.add(this.ensemblGenome);
+            geneIdentifiers.addOnly(this.ensemblGenome);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
             this.ensemblGenome = null;
         }
     }
@@ -116,18 +118,19 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     public void setEntrezGeneId(String id) {
         // add new entrez gene id genomes if not null
         if (id != null){
+            GeneIdentifierList geneIdentifiers = (GeneIdentifierList) getIdentifiers();
             CvTerm entrezDatabase = CvTermFactory.createEntrezGeneIdDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old entrez gene id if not null
             if (this.entrezGeneId!= null){
-                identifiers.remove(this.entrezGeneId);
+                geneIdentifiers.removeOnly(this.entrezGeneId);
             }
             this.entrezGeneId = new DefaultXref(entrezDatabase, id, identityQualifier);
-            this.identifiers.add(this.entrezGeneId);
+            geneIdentifiers.addOnly(this.entrezGeneId);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
             this.entrezGeneId = null;
         }
     }
@@ -139,31 +142,29 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     public void setRefseq(String ac) {
         // add new refseq if not null
         if (ac != null){
+            GeneIdentifierList geneIdentifiers = (GeneIdentifierList) getIdentifiers();
             CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
-                identifiers.remove(this.refseq);
+                geneIdentifiers.removeOnly(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, ac, identityQualifier);
-            this.identifiers.add(this.refseq);
+            geneIdentifiers.addOnly(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
 
     @Override
     public void setType(CvTerm type) {
-        if (type == null){
-            throw new IllegalArgumentException("The interactor type cannot be null.");
-        }
-        else if (!DefaultCvTermComparator.areEquals(type, CvTermUtils.getGene())){
+        if (!DefaultCvTermComparator.areEquals(type, CvTermUtils.getGene())){
             throw new IllegalArgumentException("This interactor is a Gene and the only available interactor type is gene (MI:0301)");
         }
-        this.type = type;
+        super.setType(type);
     }
 
     @Override

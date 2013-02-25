@@ -14,9 +14,9 @@ import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceCompa
 
 public class DefaultConfidence implements Confidence {
 
-    protected CvTerm type;
-    protected String value;
-    protected CvTerm unit;
+    private CvTerm type;
+    private String value;
+    private CvTerm unit;
 
     public DefaultConfidence(CvTerm type, String value){
         if (type == null){

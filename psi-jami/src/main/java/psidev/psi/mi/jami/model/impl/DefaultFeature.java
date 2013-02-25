@@ -21,16 +21,16 @@ import java.util.Collection;
 
 public class DefaultFeature<T extends Feature, P extends Participant> implements Feature<T, P>, Serializable{
 
-    protected String shortName;
-    protected String fullName;
-    protected Xref interpro;
-    protected Collection<Xref> identifiers;
-    protected Collection<Xref> xrefs;
-    protected Collection<Annotation> annotations;
-    protected CvTerm type;
-    protected Collection<Range> ranges;
-    protected Collection<T> bindingFeatures;
-    protected P participant;
+    private String shortName;
+    private String fullName;
+    private Xref interpro;
+    private Collection<Xref> identifiers;
+    private Collection<Xref> xrefs;
+    private Collection<Annotation> annotations;
+    private CvTerm type;
+    private Collection<Range> ranges;
+    private Collection<T> bindingFeatures;
+    private P participant;
 
     public DefaultFeature(){
 
@@ -126,18 +126,19 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     public void setInterpro(String interpro) {
         // add new interpro if not null
         if (interpro != null){
+            FeatureIdentifierList featureIdentifiers = (FeatureIdentifierList) getIdentifiers();
             CvTerm interproDatabase = CvTermFactory.createInterproDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.interpro != null){
-                identifiers.remove(this.interpro);
+                featureIdentifiers.removeOnly(this.interpro);
             }
             this.interpro = new DefaultXref(interproDatabase, interpro, identityQualifier);
-            this.identifiers.add(this.interpro);
+            featureIdentifiers.addOnly(this.interpro);
         }
         // remove all interpro if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(xrefs, Xref.INTERPRO_MI, Xref.INTERPRO);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.INTERPRO_MI, Xref.INTERPRO);
             this.interpro = null;
         }
     }

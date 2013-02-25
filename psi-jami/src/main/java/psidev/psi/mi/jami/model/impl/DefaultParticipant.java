@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for participant
@@ -19,14 +20,14 @@ import java.util.Collection;
 
 public class DefaultParticipant<I, T extends Interactor, F extends Feature> implements Participant<I, T, F>, Serializable {
 
-    protected I interaction;
-    protected T interactor;
-    protected CvTerm biologicalRole;
-    protected Collection<Xref> xrefs;
-    protected Collection<Annotation> annotations;
-    protected Collection<Alias> aliases;
-    protected Collection<F> features;
-    protected Integer stoichiometry;
+    private I interaction;
+    private T interactor;
+    private CvTerm biologicalRole;
+    private Collection<Xref> xrefs;
+    private Collection<Annotation> annotations;
+    private Collection<Alias> aliases;
+    private Collection<F> features;
+    private Integer stoichiometry;
 
     public DefaultParticipant(I interaction, T interactor){
         this.interaction = interaction;
@@ -34,11 +35,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-
-        initializeFeatures();
-        initialiseAliases();
-        initializeAnnotations();
-        initializeXrefs();
         this.biologicalRole = CvTermFactory.createUnspecifiedRole();
     }
 
@@ -48,11 +44,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-
-        initializeFeatures();
-        initialiseAliases();
-        initializeAnnotations();
-        initializeXrefs();
         this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
     }
 
@@ -71,11 +62,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-
-        initializeFeatures();
-        initialiseAliases();
-        initializeAnnotations();
-        initializeXrefs();
         this.biologicalRole = CvTermFactory.createUnspecifiedRole();
     }
 
@@ -84,11 +70,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-
-        initializeFeatures();
-        initialiseAliases();
-        initializeAnnotations();
-        initializeXrefs();
         this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
     }
 
@@ -102,11 +83,11 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         this.stoichiometry = stoichiometry;
     }
 
-    protected void initializeXrefs() {
+    protected void initialiseXrefs() {
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initializeAnnotations() {
+    protected void initialiseAnnotations() {
         this.annotations = new ArrayList<Annotation>();
     }
 
@@ -114,8 +95,44 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         this.aliases = new ArrayList<Alias>();
     }
 
-    protected void initializeFeatures(){
+    protected void initialiseFeatures(){
         this.features = new ArrayList<F>();
+    }
+
+    protected void initialiseXrefsWith(Collection<Xref> xrefs) {
+        if (xrefs == null){
+            this.xrefs = Collections.EMPTY_LIST;
+        }
+        else {
+            this.xrefs = xrefs;
+        }
+    }
+
+    protected void initialiseAnnotationsWith(Collection<Annotation> annotations) {
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
+        }
+    }
+
+    protected void initialiseAliasesWith(Collection<Alias> aliases){
+        if (aliases == null){
+            this.aliases = Collections.EMPTY_LIST;
+        }
+        else {
+            this.aliases = aliases;
+        }
+    }
+
+    protected void initialiseFeaturesWith(Collection<F> features){
+        if (features == null){
+            this.features = Collections.EMPTY_LIST;
+        }
+        else {
+            this.features = features;
+        }
     }
 
     public I getInteraction() {
@@ -151,18 +168,30 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     }
 
     public Collection<Xref> getXrefs() {
+        if (xrefs == null){
+            initialiseXrefs();
+        }
         return this.xrefs;
     }
 
     public Collection<Annotation> getAnnotations() {
+        if (annotations == null){
+            initialiseAnnotations();
+        }
         return this.annotations;
     }
 
     public Collection<Alias> getAliases() {
+        if (aliases == null){
+            initialiseAliases();
+        }
         return this.aliases;
     }
 
     public Collection<? extends F> getFeatures() {
+        if (features == null){
+            initialiseFeatures();
+        }
         return this.features;
     }
 

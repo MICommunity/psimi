@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for Interactor
@@ -18,15 +19,15 @@ import java.util.Collection;
 
 public class DefaultInteractor implements Interactor, Serializable {
 
-    protected String shortName;
-    protected String fullName;
-    protected Collection<Xref> identifiers;
-    protected Collection<Checksum> checksums;
-    protected Collection<Xref> xrefs;
-    protected Collection<Annotation> annotations;
-    protected Collection<Alias> aliases;
-    protected Organism organism;
-    protected CvTerm type;
+    private String shortName;
+    private String fullName;
+    private Collection<Xref> identifiers;
+    private Collection<Checksum> checksums;
+    private Collection<Xref> xrefs;
+    private Collection<Annotation> annotations;
+    private Collection<Alias> aliases;
+    private Organism organism;
+    private CvTerm type;
 
     public DefaultInteractor(String name, CvTerm type){
         if (name == null || (name != null && name.length() == 0)){
@@ -37,12 +38,6 @@ public class DefaultInteractor implements Interactor, Serializable {
             throw new IllegalArgumentException("The interactor type cannot be null.");
         }
         this.type = type;
-
-        initializeChecksums();
-        initializeXrefs();
-        initializeAnnotations();
-        initializeAliases();
-        initializeIdentifiers();
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type){
@@ -80,24 +75,69 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.identifiers.add(uniqueId);
     }
 
-    protected void initializeAnnotations(){
+    protected void initialiseAnnotations(){
         this.annotations = new ArrayList<Annotation>();
     }
 
-    protected void initializeXrefs(){
+    protected void initialiseXrefs(){
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initializeAliases(){
+    protected void initialiseAliases(){
         this.aliases = new ArrayList<Alias>();
     }
 
-    protected void initializeIdentifiers(){
+    protected void initialiseIdentifiers(){
         this.identifiers = new ArrayList<Xref>();
     }
 
-    protected void initializeChecksums(){
+    protected void initialiseChecksums(){
         this.checksums = new ArrayList<Checksum>();
+    }
+
+    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
+        if (annotations == null){
+           this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
+        }
+    }
+
+    protected void initialiseXrefsWith(Collection<Xref> xrefs){
+        if (xrefs == null){
+            this.xrefs = Collections.EMPTY_LIST;
+        }
+        else {
+            this.xrefs = xrefs;
+        }
+    }
+
+    protected void initialiseAliasesWith(Collection<Alias> aliases){
+        if (aliases == null){
+            this.aliases = Collections.EMPTY_LIST;
+        }
+        else {
+            this.aliases = aliases;
+        }
+    }
+
+    protected void initialiseIdentifiersWith(Collection<Xref> identifiers){
+        if (identifiers == null){
+            this.identifiers = Collections.EMPTY_LIST;
+        }
+        else {
+            this.identifiers = identifiers;
+        }
+    }
+
+    protected void initialiseChecksumsWith(Collection<Checksum> checksums){
+        if (checksums == null){
+            this.checksums = Collections.EMPTY_LIST;
+        }
+        else {
+            this.checksums = checksums;
+        }
     }
 
     public String getShortName() {
@@ -120,22 +160,37 @@ public class DefaultInteractor implements Interactor, Serializable {
     }
 
     public Collection<Xref> getIdentifiers() {
+        if (identifiers == null){
+           initialiseIdentifiers();
+        }
         return this.identifiers;
     }
 
     public Collection<Checksum> getChecksums() {
+        if (checksums == null){
+            initialiseChecksums();
+        }
         return this.checksums;
     }
 
     public Collection<Xref> getXrefs() {
+        if (xrefs == null){
+            initialiseXrefs();
+        }
         return this.xrefs;
     }
 
     public Collection<Annotation> getAnnotations() {
+        if (annotations == null){
+            initialiseAnnotations();
+        }
         return this.annotations;
     }
 
     public Collection<Alias> getAliases() {
+        if (aliases == null){
+            initialiseAliases();
+        }
         return this.aliases;
     }
 

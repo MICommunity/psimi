@@ -19,9 +19,9 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid{
 
-    protected Xref ddbjEmblGenbank;
-    protected Xref refseq;
-    protected String sequence;
+    private Xref ddbjEmblGenbank;
+    private Xref refseq;
+    private String sequence;
 
     public DefaultNucleicAcid(String name, CvTerm type) {
         super(name, type);
@@ -92,25 +92,26 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new NucleicAcidIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new NucleicAcidIdentifierList());
     }
 
     public void setDdbjEmblGenbank(String id) {
         // add new ddbj/embl/genbank if not null
         if (id != null){
+            NucleicAcidIdentifierList nucleicAcidIdentifiers = (NucleicAcidIdentifierList) getIdentifiers();
             CvTerm ddbjEmblGenbankDatabase = CvTermFactory.createDdbjEmblGenbankDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old ddbj/embl/genbank if not null
             if (this.ddbjEmblGenbank != null){
-                identifiers.remove(this.ddbjEmblGenbank);
+                nucleicAcidIdentifiers.removeOnly(this.ddbjEmblGenbank);
             }
             this.ddbjEmblGenbank = new DefaultXref(ddbjEmblGenbankDatabase, id, identityQualifier);
-            this.identifiers.add(this.ddbjEmblGenbank);
+            nucleicAcidIdentifiers.addOnly(this.ddbjEmblGenbank);
         }
         // remove all ddbj/embl/genbank if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
             this.ddbjEmblGenbank = null;
         }
     }
@@ -122,18 +123,19 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
     public void setRefseq(String id) {
         // add new refseq if not null
         if (id != null){
+            NucleicAcidIdentifierList nucleicAcidIdentifiers = (NucleicAcidIdentifierList) getIdentifiers();
             CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
-                identifiers.remove(this.refseq);
+                nucleicAcidIdentifiers.removeOnly(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, id, identityQualifier);
-            this.identifiers.add(this.refseq);
+            nucleicAcidIdentifiers.addOnly(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }

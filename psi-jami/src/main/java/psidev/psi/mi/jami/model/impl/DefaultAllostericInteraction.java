@@ -16,11 +16,11 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultAllostericInteraction extends DefaultCooperativeInteraction implements AllostericInteraction {
 
-    protected CvTerm allostericMechanism;
-    protected CvTerm allosteryType;
-    protected ModelledParticipant allostericMolecule;
-    protected ModelledParticipant allostericEffector;
-    protected ModelledFeature allostericPtm;
+    private CvTerm allostericMechanism;
+    private CvTerm allosteryType;
+    private ModelledParticipant allostericMolecule;
+    private ModelledParticipant allostericEffector;
+    private ModelledFeature allostericPtm;
 
     public DefaultAllostericInteraction(CvTerm effectOutcome, CvTerm response, CvTerm allostericMechanism,
                                         CvTerm allosteryType, ModelledParticipant allostericMolecule) {
@@ -174,7 +174,7 @@ public class DefaultAllostericInteraction extends DefaultCooperativeInteraction 
         else if (!DefaultCvTermComparator.areEquals(mechanism, CvTermUtils.getAllosteryMechanism())){
             throw new IllegalArgumentException("This interaction is an allosteric interaction and the cooperative mechanism can only by allostery (MI:1157)");
         }
-        this.cooperativeMechanism = mechanism;
+        super.setCooperativeMechanism(mechanism);
     }
 
     @Override

@@ -60,10 +60,12 @@ public class DefaultComponent extends DefaultParticipant<Complex, Interactor, Co
     }
 
     public void setComplexAndAddComponent(Complex interaction) {
-        this.interaction = interaction;
 
         if (interaction != null){
-            this.interaction.getComponents().add(this);
+            getInteraction().addComponent(this);
+        }
+        else {
+            setInteraction(null);
         }
     }
 }

@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousExperimentCompa
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for Experiment
@@ -16,13 +17,13 @@ import java.util.Collection;
 
 public class DefaultExperiment implements Experiment {
 
-    protected Publication publication;
-    protected String shortLabel;
-    protected Collection<Xref> xrefs;
-    protected Collection<Annotation> annotations;
-    protected CvTerm interactionDetectionMethod;
-    protected Organism hostOrganism;
-    protected Collection<InteractionEvidence> interactions;
+    private Publication publication;
+    private String shortLabel;
+    private Collection<Xref> xrefs;
+    private Collection<Annotation> annotations;
+    private CvTerm interactionDetectionMethod;
+    private Organism hostOrganism;
+    private Collection<InteractionEvidence> interactions;
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod){
 
@@ -31,10 +32,6 @@ public class DefaultExperiment implements Experiment {
             throw new IllegalArgumentException("The interaction detection method is required and cannot be null");
         }
         this.interactionDetectionMethod = interactionDetectionMethod;
-
-        initializeAnnotations();
-        initializeXrefs();
-        initializeInteractions();
     }
 
     public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod){
@@ -52,16 +49,43 @@ public class DefaultExperiment implements Experiment {
         this.hostOrganism = organism;
     }
 
-    protected void initializeXrefs(){
+    protected void initialiseXrefs(){
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initializeAnnotations(){
+    protected void initialiseAnnotations(){
         this.annotations = new ArrayList<Annotation>();
     }
 
-    protected void initializeInteractions(){
+    protected void initialiseInteractions(){
         this.interactions = new ArrayList<InteractionEvidence>();
+    }
+
+    protected void initialiseXrefsWith(Collection<Xref> xrefs){
+        if (xrefs == null){
+            this.xrefs = Collections.EMPTY_LIST;
+        }
+        else{
+            this.xrefs = xrefs;
+        }
+    }
+
+    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else{
+            this.annotations = annotations;
+        }
+    }
+
+    protected void initialiseInteractionsWith(Collection<InteractionEvidence> interactionEvidences){
+        if (interactionEvidences == null){
+            this.interactions = Collections.EMPTY_LIST;
+        }
+        else{
+            this.interactions = interactionEvidences;
+        }
     }
 
     public Publication getPublication() {

@@ -15,9 +15,9 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultSource extends DefaultCvTerm implements Source {
 
-    protected Annotation url;
-    protected String postalAddress;
-    protected Publication bibRef;
+    private Annotation url;
+    private String postalAddress;
+    private Publication bibRef;
 
     public DefaultSource(String shortName) {
         super(shortName);
@@ -75,8 +75,8 @@ public class DefaultSource extends DefaultCvTerm implements Source {
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new SourceAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new SourceAnnotationList());
     }
 
     public String getUrl() {
@@ -86,17 +86,18 @@ public class DefaultSource extends DefaultCvTerm implements Source {
     public void setUrl(String url) {
         // add new url if not null
         if (url != null){
+            SourceAnnotationList sourceAnnotationList = (SourceAnnotationList) getAnnotations();
             CvTerm complexPhysicalProperties = CvTermFactory.createMICvTerm(Annotation.URL, Annotation.URL_MI);
             // first remove old url if not null
             if (this.url != null){
-                annotations.remove(this.url);
+                sourceAnnotationList.removeOnly(this.url);
             }
             this.url = new DefaultAnnotation(complexPhysicalProperties, url);
-            this.annotations.add(this.url);
+            sourceAnnotationList.addOnly(this.url);
         }
         // remove all url if the collection is not empty
-        else if (!this.annotations.isEmpty()) {
-            AnnotationUtils.removeAllAnnotationsWithTopic(annotations, Annotation.URL_MI, Annotation.URL);
+        else if (!getAnnotations().isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(getAnnotations(), Annotation.URL_MI, Annotation.URL);
             this.url = null;
         }
     }

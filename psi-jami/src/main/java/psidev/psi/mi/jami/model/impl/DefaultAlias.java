@@ -16,8 +16,8 @@ import java.io.Serializable;
 
 public class DefaultAlias implements Alias, Serializable {
 
-    protected CvTerm type;
-    protected String name;
+    private CvTerm type;
+    private String name;
 
     public DefaultAlias(CvTerm type, String name) {
         this(name);
