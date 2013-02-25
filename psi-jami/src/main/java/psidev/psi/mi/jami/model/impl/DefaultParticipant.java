@@ -162,7 +162,7 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         return this.aliases;
     }
 
-    public Collection<F> getFeatures() {
+    public Collection<? extends F> getFeatures() {
         return this.features;
     }
 

@@ -40,7 +40,7 @@ public class InteractionCloner {
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
             target.getParticipants().clear();
-            target.getParticipants().addAll(source.getParticipants());
+            target.addAllParticipantEvidences(source.getParticipants());
             target.getParameters().clear();
             target.getParameters().addAll(source.getParameters());
         }

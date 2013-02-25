@@ -76,8 +76,8 @@ public class InteractionBaseComparator<T extends Participant> implements Compara
         }
         else {
             // first compares participants of an interaction
-            Collection<T> participants1 = (Collection<T>) interaction1.getParticipants();
-            Collection<T> participants2 = (Collection<T>) interaction2.getParticipants();
+            Collection<? extends T> participants1 = (Collection<? extends T>) interaction1.getParticipants();
+            Collection<? extends T> participants2 = (Collection<? extends T>) interaction2.getParticipants();
 
             int comp = participantCollectionComparator.compare(participants1, participants2);
             if (comp != 0){

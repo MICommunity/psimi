@@ -92,7 +92,7 @@ public class UnambiguousExactParticipantBaseComparator extends ParticipantBaseCo
         hashcode = 31*hashcode + UnambiguousExactInteractorBaseComparator.hashCode(participant.getInteractor());
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(participant.getBiologicalRole());
         hashcode = 31*hashcode + (participant.getStoichiometry() != null ? participant.getStoichiometry() : 0);
-        List<Feature> list1 = new ArrayList<Feature>((Collection<Feature>)participant.getFeatures());
+        List<Feature> list1 = new ArrayList<Feature>((Collection<? extends Feature>)participant.getFeatures());
 
         Collections.sort(list1, unambiguousExactParticipantComparator.getFeatureCollectionComparator().getObjectComparator());
         for (Feature f : list1){

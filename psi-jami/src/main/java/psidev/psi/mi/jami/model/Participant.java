@@ -87,7 +87,7 @@ public interface Participant<I, T extends Interactor, F extends Feature> {
      * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
      * @return the features
      */
-    public Collection<F> getFeatures();
+    public Collection<? extends F> getFeatures();
 
     /**
      * The stoichiometry for this participant.
