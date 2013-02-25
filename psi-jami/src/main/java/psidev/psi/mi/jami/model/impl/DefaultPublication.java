@@ -171,21 +171,22 @@ public class DefaultPublication implements Publication, Serializable {
     }
 
     public void setPubmedId(String pubmedId) {
+        Collection<Xref> identifiers = getIdentifiers();
+
         // add new pubmed if not null
         if (pubmedId != null){
-            PublicationIdentifierList publicationIdentifier = (PublicationIdentifierList) getIdentifiers();
             CvTerm pubmedDatabase = CvTermFactory.createPubmedDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old pubmed if not null
             if (this.pubmedId != null){
-                publicationIdentifier.removeOnly(this.pubmedId);
+                identifiers.remove(this.pubmedId);
             }
             this.pubmedId = new DefaultXref(pubmedDatabase, pubmedId, identityQualifier);
-            publicationIdentifier.addOnly(this.pubmedId);
+            identifiers.add(this.pubmedId);
         }
         // remove all pubmed if the collection is not empty
-        else if (!getIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.PUBMED_MI, Xref.PUBMED);
+        else if (!identifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.PUBMED_MI, Xref.PUBMED);
             this.pubmedId = null;
         }
     }
@@ -195,21 +196,21 @@ public class DefaultPublication implements Publication, Serializable {
     }
 
     public void setDoi(String doi) {
+        Collection<Xref> identifiers = getIdentifiers();
         // add new doi if not null
         if (doi != null){
-            PublicationIdentifierList publicationIdentifier = (PublicationIdentifierList) getIdentifiers();
             CvTerm doiDatabase = CvTermFactory.createDoiDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old doi if not null
             if (this.doi != null){
-                publicationIdentifier.removeOnly(this.doi);
+                identifiers.remove(this.doi);
             }
             this.doi = new DefaultXref(doiDatabase, doi, identityQualifier);
-            publicationIdentifier.addOnly(this.doi);
+            identifiers.add(this.doi);
         }
         // remove all doi if the collection is not empty
-        else if (!getIdentifiers().isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.DOI_MI, Xref.DOI);
+        else if (!identifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.DOI_MI, Xref.DOI);
             this.doi = null;
         }
     }
@@ -226,17 +227,17 @@ public class DefaultPublication implements Publication, Serializable {
     }
 
     public void assignImexId(String identifier) {
+        Collection<Xref> xrefs = getXrefs();
         // add new imex if not null
         if (identifier != null){
-            PublicationXrefList pubXrefList = (PublicationXrefList) getXrefs();
             CvTerm imexDatabase = CvTermFactory.createImexDatabase();
             CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
             // first remove old doi if not null
             if (this.imexId != null){
-                pubXrefList.removeOnly(this.imexId);
+                xrefs.remove(this.imexId);
             }
             this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
-            pubXrefList.addOnly(this.imexId);
+            xrefs.add(this.imexId);
         }
         else {
             throw new IllegalArgumentException("The imex id has to be non null.");
