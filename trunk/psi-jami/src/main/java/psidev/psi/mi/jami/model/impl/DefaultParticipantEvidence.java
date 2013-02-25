@@ -269,7 +269,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
         this.interaction = interaction;
 
         if (interaction != null){
-            interaction.getParticipants().add(this);
+            interaction.addParticipant(this);
         }
     }
 

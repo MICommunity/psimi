@@ -80,7 +80,7 @@ public interface Interaction<P extends Participant> {
      * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
      * @return the particiants
      */
-    public Collection<P> getParticipants();
+    public Collection<? extends P> getParticipants();
 
     /**
      * Boolean value to know if an interaction is negative.

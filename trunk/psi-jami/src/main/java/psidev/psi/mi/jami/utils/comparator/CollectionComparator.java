@@ -13,7 +13,7 @@ import java.util.*;
  * @since <pre>20/12/12</pre>
  */
 
-public class CollectionComparator<T> implements Comparator<Collection<T>> {
+public class CollectionComparator<T> implements Comparator<Collection<? extends T>> {
 
     protected Comparator<T> objectComparator;
 
@@ -39,7 +39,7 @@ public class CollectionComparator<T> implements Comparator<Collection<T>> {
      * @param ts2
      * @return
      */
-    public int compare(Collection<T> ts1, Collection<T> ts2) {
+    public int compare(Collection<? extends T> ts1, Collection<? extends T> ts2) {
 
         int EQUAL = 0;
         int BEFORE = -1;

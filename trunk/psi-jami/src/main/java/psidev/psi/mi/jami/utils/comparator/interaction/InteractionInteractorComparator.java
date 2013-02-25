@@ -64,8 +64,8 @@ public class InteractionInteractorComparator implements Comparator<Interaction> 
         }
         else {
             // first compares participants of an interaction
-            Collection<Participant> participants1 = interaction1.getParticipants();
-            Collection<Participant> participants2 = interaction2.getParticipants();
+            Collection<? extends Participant> participants1 = interaction1.getParticipants();
+            Collection<? extends Participant> participants2 = interaction2.getParticipants();
 
             return participantCollectionComparator.compare(participants1, participants2);
         }

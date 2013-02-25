@@ -31,7 +31,7 @@ public class ParticipantCloner {
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
             target.getFeatures().clear();
-            target.getFeatures().addAll(source.getFeatures());
+            target.addAllFeatures(source.getFeatures());
             target.getConfidences().clear();
             target.getConfidences().addAll(source.getConfidences());
             target.getXrefs().clear();
