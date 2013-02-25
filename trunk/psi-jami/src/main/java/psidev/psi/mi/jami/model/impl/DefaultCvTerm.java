@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for CvTerm
@@ -23,15 +24,15 @@ import java.util.Collection;
 
 public class DefaultCvTerm implements CvTerm, Serializable {
 
-    protected String shortName;
-    protected String fullName;
-    protected Collection<Xref> xrefs;
-    protected Collection<Xref> identifiers;
-    protected Collection<Annotation> annotations;
-    protected Collection<Alias> synonyms;
+    private String shortName;
+    private String fullName;
+    private Collection<Xref> xrefs;
+    private Collection<Xref> identifiers;
+    private Collection<Annotation> annotations;
+    private Collection<Alias> synonyms;
 
-    protected Xref miIdentifier;
-    protected Xref modIdentifier;
+    private Xref miIdentifier;
+    private Xref modIdentifier;
 
 
     public DefaultCvTerm(String shortName){
@@ -39,11 +40,6 @@ public class DefaultCvTerm implements CvTerm, Serializable {
             throw new IllegalArgumentException("The short name is required and cannot be null");
         }
         this.shortName = shortName;
-
-        initializeAnnotations();
-        initializeIdentifiers();
-        initializeSynonyms();
-        initializeXrefs();
     }
 
     public DefaultCvTerm(String shortName, String miIdentifier){
@@ -59,7 +55,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
     public DefaultCvTerm(String shortName, Xref ontologyId){
         this(shortName);
         if (ontologyId != null){
-            this.identifiers.add(ontologyId);
+            getIdentifiers().add(ontologyId);
         }
     }
 
@@ -87,23 +83,62 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         this.fullName = name;
     }
 
-    protected void initializeXrefs(){
+    protected void initialiseXrefs(){
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initializeAnnotations(){
+    protected void initialiseAnnotations(){
         this.annotations = new ArrayList<Annotation>();
     }
 
-    protected void initializeSynonyms(){
+    protected void initialiseSynonyms(){
         this.synonyms = new ArrayList<Alias>();
     }
 
-    protected void initializeIdentifiers(){
+    protected void initialiseIdentifiers(){
         this.identifiers = new CvTermIdentifierList();
     }
 
+    protected void initialiseXrefsWith(Collection<Xref> xrefs){
+        if (xrefs == null){
+            this.xrefs = Collections.EMPTY_LIST;
+        }
+        else {
+            this.xrefs = xrefs;
+        }
+    }
+
+    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
+        }
+    }
+
+    protected void initialiseSynonymsWith(Collection<Alias> aliases){
+        if (aliases == null){
+            this.synonyms = Collections.EMPTY_LIST;
+        }
+        else {
+            this.synonyms = aliases;
+        }
+    }
+
+    protected void initialiseIdentifiersWith(Collection<Xref> identifiers){
+        if (identifiers == null){
+            this.identifiers = Collections.EMPTY_LIST;
+        }
+        else {
+            this.identifiers = identifiers;
+        }
+    }
+
     public Collection<Xref> getIdentifiers() {
+        if (identifiers == null){
+            initialiseIdentifiers();
+        }
         return identifiers;
     }
 
@@ -118,18 +153,19 @@ public class DefaultCvTerm implements CvTerm, Serializable {
     public void setMIIdentifier(String mi) {
         // add new mi if not null
         if (mi != null){
+            CvTermIdentifierList cvTermIdentifiers = (CvTermIdentifierList) getIdentifiers();
             CvTerm psiMiDatabase = CvTermFactory.createPsiMiDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old psi mi if not null
             if (this.miIdentifier != null){
-                identifiers.remove(this.miIdentifier);
+                cvTermIdentifiers.removeOnly(this.miIdentifier);
             }
             this.miIdentifier = new DefaultXref(psiMiDatabase, mi, identityQualifier);
-            this.identifiers.add(this.miIdentifier);
+            cvTermIdentifiers.addOnly(this.miIdentifier);
         }
         // remove all mi if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
             this.miIdentifier = null;
         }
     }
@@ -137,31 +173,42 @@ public class DefaultCvTerm implements CvTerm, Serializable {
     public void setMODIdentifier(String mod) {
         // add new mod if not null
         if (mod != null){
+            CvTermIdentifierList cvTermIdentifiers = (CvTermIdentifierList) getIdentifiers();
+
             CvTerm psiModDatabase = CvTermFactory.createPsiModDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old psi mod if not null
             if (this.modIdentifier != null){
-                identifiers.remove(this.modIdentifier);
+                cvTermIdentifiers.removeOnly(this.modIdentifier);
             }
             this.modIdentifier = new DefaultXref(psiModDatabase, mod, identityQualifier);
-            this.identifiers.add(this.modIdentifier);
+            cvTermIdentifiers.addOnly(this.modIdentifier);
         }
         // remove all mod if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
             this.modIdentifier = null;
         }
     }
 
     public Collection<Xref> getXrefs() {
+        if (xrefs == null){
+            initialiseXrefs();
+        }
         return this.xrefs;
     }
 
     public Collection<Annotation> getAnnotations() {
+        if (annotations == null){
+            initialiseAnnotations();
+        }
         return this.annotations;
     }
 
     public Collection<Alias> getSynonyms() {
+        if (synonyms == null){
+            initialiseSynonyms();
+        }
         return this.synonyms;
     }
 

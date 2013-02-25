@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -22,26 +23,20 @@ import java.util.Date;
 
 public class DefaultInteraction<P extends Participant> implements Interaction<P>, Serializable {
 
-    protected String shortName;
-    protected Checksum rigid;
-    protected Collection<Checksum> checksums;
-    protected Collection<Xref> identifiers;
-    protected Collection<Xref> xrefs;
-    protected Collection<Annotation> annotations;
-    protected Collection<P> participants;
-    protected boolean isNegative;
-    protected Date updatedDate;
-    protected Date createdDate;
-    protected Collection<Confidence> confidences;
-    protected CvTerm type;
+    private String shortName;
+    private Checksum rigid;
+    private Collection<Checksum> checksums;
+    private Collection<Xref> identifiers;
+    private Collection<Xref> xrefs;
+    private Collection<Annotation> annotations;
+    private Collection<P> participants;
+    private boolean isNegative;
+    private Date updatedDate;
+    private Date createdDate;
+    private Collection<Confidence> confidences;
+    private CvTerm type;
 
     public DefaultInteraction(){
-        initializeXrefs();
-        initializeAnnotations();
-        initializeParticipants();
-        initializeChecksum();
-        initializeConfidences();
-        initializeIdentifiers();
     }
 
     public DefaultInteraction(String shortName){
@@ -54,28 +49,82 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.type = type;
     }
 
-    protected void initializeAnnotations(){
+    protected void initialiseAnnotations(){
         this.annotations = new ArrayList<Annotation>();
     }
 
-    protected void initializeXrefs(){
+    protected void initialiseXrefs(){
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initializeParticipants(){
+    protected void initialiseParticipants(){
         this.participants = new ArrayList<P>();
     }
 
-    protected void initializeConfidences(){
+    protected void initialiseConfidences(){
         this.confidences = new ArrayList<Confidence>();
     }
 
-    protected void initializeIdentifiers(){
+    protected void initialiseIdentifiers(){
         this.identifiers = new ArrayList<Xref>();
     }
 
-    protected void initializeChecksum(){
+    protected void initialiseChecksum(){
         this.checksums = new InteractionChecksumList();
+    }
+
+    protected void initialiseXrefsWith(Collection<Xref> xrefs){
+        if (xrefs == null){
+            this.xrefs = Collections.EMPTY_LIST;
+        }
+        else {
+            this.xrefs = xrefs;
+        }
+    }
+
+    protected void initialiseParticipantsWith(Collection<P> participants){
+        if (participants == null){
+            this.participants = Collections.EMPTY_LIST;
+        }
+        else {
+            this.participants = participants;
+        }
+    }
+
+    protected void initialiseConfidencesWith(Collection<Confidence> confidences){
+        if (confidences == null){
+            this.confidences = Collections.EMPTY_LIST;
+        }
+        else {
+            this.confidences = confidences;
+        }
+    }
+
+    protected void initialiseIdentifiersWith(Collection<Xref> identifiers){
+        if (identifiers == null){
+            this.identifiers = Collections.EMPTY_LIST;
+        }
+        else {
+            this.identifiers = identifiers;
+        }
+    }
+
+    protected void initialiseChecksumWith(Collection<Checksum> checksums){
+        if (checksums == null){
+            this.checksums = Collections.EMPTY_LIST;
+        }
+        else {
+            this.checksums = checksums;
+        }
+    }
+
+    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
+        }
     }
 
     public String getShortName() {
@@ -108,22 +157,37 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     }
 
     public Collection<Xref> getIdentifiers() {
+        if (identifiers == null){
+            initialiseIdentifiers();
+        }
         return this.identifiers;
     }
 
     public Collection<Xref> getXrefs() {
+        if (xrefs == null){
+            initialiseXrefs();
+        }
         return this.xrefs;
     }
 
     public Collection<Checksum> getChecksums() {
+        if (checksums == null){
+           initialiseChecksum();
+        }
         return this.checksums;
     }
 
     public Collection<Annotation> getAnnotations() {
+        if (annotations == null){
+            initialiseAnnotations();
+        }
         return this.annotations;
     }
 
     public Collection<P> getParticipants() {
+        if (participants == null){
+            initialiseParticipants();
+        }
         return this.participants;
     }
 

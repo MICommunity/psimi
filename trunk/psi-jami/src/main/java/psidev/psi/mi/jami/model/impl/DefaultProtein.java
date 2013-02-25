@@ -18,11 +18,11 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultProtein extends DefaultInteractor implements Protein {
 
-    protected Xref uniprotkb;
-    protected Xref refseq;
-    protected Alias geneName;
-    protected Checksum rogid;
-    protected String sequence;
+    private Xref uniprotkb;
+    private Xref refseq;
+    private Alias geneName;
+    private Checksum rogid;
+    private String sequence;
 
     public DefaultProtein(String name, CvTerm type) {
         super(name, type);
@@ -89,18 +89,18 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new ProteinIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new ProteinIdentifierList());
     }
 
     @Override
-    protected void initializeChecksums() {
-        this.checksums = new ProteinChecksumList();
+    protected void initialiseChecksums() {
+        initialiseChecksumsWith(new ProteinChecksumList());
     }
 
     @Override
-    protected void initializeAliases() {
-        this.aliases = new ProteinAliasList();
+    protected void initialiseAliases() {
+        initialiseAliasesWith(new ProteinAliasList());
     }
 
     public String getUniprotkb() {
@@ -110,18 +110,19 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     public void setUniprotkb(String ac) {
         // add new uniprotkb if not null
         if (ac != null){
+            ProteinIdentifierList proteinIdentifiers = (ProteinIdentifierList) getIdentifiers();
             CvTerm uniprotkbDatabase = CvTermFactory.createUniprotkbDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old uniprotkb if not null
             if (this.uniprotkb != null){
-                identifiers.remove(this.uniprotkb);
+                proteinIdentifiers.removeOnly(this.uniprotkb);
             }
             this.uniprotkb = new DefaultXref(uniprotkbDatabase, ac, identityQualifier);
-            this.identifiers.add(this.uniprotkb);
+            proteinIdentifiers.addOnly(this.uniprotkb);
         }
         // remove all uniprotkb if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
             this.uniprotkb = null;
         }
     }
@@ -133,18 +134,19 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     public void setRefseq(String ac) {
         // add new refseq if not null
         if (ac != null){
+            ProteinIdentifierList proteinIdentifiers = (ProteinIdentifierList) getIdentifiers();
             CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old refseq if not null
             if (this.refseq != null){
-                identifiers.remove(this.refseq);
+                proteinIdentifiers.removeOnly(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, ac, identityQualifier);
-            this.identifiers.add(this.refseq);
+            proteinIdentifiers.addOnly(this.refseq);
         }
         // remove all refseq if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
@@ -156,17 +158,18 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     public void setGeneName(String name) {
         // add new gene name if not null
         if (name != null){
+            ProteinAliasList proteinAliases = (ProteinAliasList) getAliases();
             CvTerm geneNameType = CvTermFactory.createGeneNameAliasType();
             // first remove old gene name if not null
             if (this.geneName != null){
-                aliases.remove(this.geneName);
+                proteinAliases.removeOnly(this.geneName);
             }
             this.geneName = new DefaultAlias(geneNameType, name);
-            this.aliases.add(this.geneName);
+            proteinAliases.addOnly(this.geneName);
         }
         // remove all gene names if the collection is not empty
-        else if (!this.aliases.isEmpty()) {
-            AliasUtils.removeAllAliasesWithType(aliases, Alias.GENE_NAME_MI, Alias.GENE_NAME);
+        else if (!getAliases().isEmpty()) {
+            AliasUtils.removeAllAliasesWithType(getAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
             this.geneName = null;
         }
     }
@@ -177,17 +180,18 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
     public void setRogid(String rogid) {
         if (rogid != null){
+            ProteinChecksumList proteinChecksums = (ProteinChecksumList) getChecksums();
             CvTerm rogidMethod = CvTermFactory.createRogid();
             // first remove old rogid
             if (this.rogid != null){
-                this.checksums.remove(this.rogid);
+                proteinChecksums.removeOnly(this.rogid);
             }
             this.rogid = new DefaultChecksum(rogidMethod, rogid);
-            this.checksums.add(this.rogid);
+            proteinChecksums.addOnly(this.rogid);
         }
         // remove all smiles if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(checksums, Checksum.ROGID_MI, Checksum.ROGID);
+        else if (!getChecksums().isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.ROGID_MI, Checksum.ROGID);
             this.rogid = null;
         }
     }

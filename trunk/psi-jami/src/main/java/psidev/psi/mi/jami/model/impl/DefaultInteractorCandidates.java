@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.model.InteractorCandidates;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorCandidatesComparator;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * TDefault implementation for interactor candidates
@@ -25,22 +22,32 @@ public class DefaultInteractorCandidates extends DefaultInteractor implements In
 
     public DefaultInteractorCandidates(String name, CvTerm type) {
         super(name, type);
-        this.interactors = new HashSet<Interactor>();
+        initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorCandidates(String name, String fullName, CvTerm type) {
         super(name, fullName, type);
-        this.interactors = new HashSet<Interactor>();
     }
 
     public DefaultInteractorCandidates(String name, CvTerm type, Organism organism) {
         super(name, type, organism);
-        this.interactors = new HashSet<Interactor>();
     }
 
     public DefaultInteractorCandidates(String name, String fullName, CvTerm type, Organism organism) {
         super(name, fullName, type, organism);
+    }
+
+    protected void initialiseInteractorCandidatesSet(){
         this.interactors = new HashSet<Interactor>();
+    }
+
+    protected void initialiseInteractorCandidatesSetWith(Set<Interactor> interactorCandidates){
+        if (interactorCandidates == null){
+            this.interactors = Collections.EMPTY_SET;
+        }
+        else {
+            this.interactors = interactorCandidates;
+        }
     }
 
     public int size() {

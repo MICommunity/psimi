@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparato
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for organism
@@ -19,13 +20,13 @@ import java.util.Collection;
 
 public class DefaultOrganism implements Organism, Serializable {
 
-    protected String commonName;
-    protected String scientificName;
-    protected int taxId;
-    protected Collection<Alias> aliases;
-    protected CvTerm cellType;
-    protected CvTerm compartment;
-    protected CvTerm tissue;
+    private String commonName;
+    private String scientificName;
+    private int taxId;
+    private Collection<Alias> aliases;
+    private CvTerm cellType;
+    private CvTerm compartment;
+    private CvTerm tissue;
 
     public DefaultOrganism(int taxId){
         if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
@@ -34,7 +35,6 @@ public class DefaultOrganism implements Organism, Serializable {
         else {
             throw new IllegalArgumentException("The taxId "+taxId+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
         }
-        initializeAliases();
     }
 
     public DefaultOrganism(int taxId, String commonName){
@@ -68,8 +68,17 @@ public class DefaultOrganism implements Organism, Serializable {
         this.compartment = compartment;
     }
 
-    protected void initializeAliases(){
+    protected void initialiseAliases(){
         this.aliases = new ArrayList<Alias>();
+    }
+
+    protected void initialiseAliasesWith(Collection<Alias> aliases){
+        if (aliases == null){
+            this.aliases = Collections.EMPTY_LIST;
+        }
+        else {
+            this.aliases = aliases;
+        }
     }
 
     public String getCommonName() {
@@ -93,6 +102,9 @@ public class DefaultOrganism implements Organism, Serializable {
     }
 
     public Collection<Alias> getAliases() {
+        if (aliases == null){
+            initialiseAliases();
+        }
         return this.aliases;
     }
 

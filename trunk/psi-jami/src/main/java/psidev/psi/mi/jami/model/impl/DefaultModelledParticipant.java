@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledParticipantComparator;
 
 /**
- * TODO comment this
+ * Default implementation for ModelledParticipant
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -61,10 +61,13 @@ public class DefaultModelledParticipant extends DefaultParticipant<ModelledInter
     }
 
     public void setModelledInteractionAndAddModelledParticipant(ModelledInteraction interaction) {
-        this.interaction = interaction;
+        setInteraction(interaction);
 
         if (interaction != null){
-            this.interaction.addParticipant(this);
+            getInteraction().addParticipant(this);
+        }
+        else {
+            setInteraction(null);
         }
     }
 }

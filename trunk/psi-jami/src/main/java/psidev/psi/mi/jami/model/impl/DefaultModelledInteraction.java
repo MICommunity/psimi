@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactModelledI
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implemntation for ModelledInteraction
@@ -16,36 +17,47 @@ import java.util.Collection;
 
 public class DefaultModelledInteraction extends DefaultInteraction<ModelledParticipant> implements ModelledInteraction{
 
-    protected Collection<Experiment> experiments;
-    protected Source source;
+    private Collection<Experiment> experiments;
+    private Source source;
 
     public DefaultModelledInteraction() {
         super();
-        this.experiments = new ArrayList<Experiment>();
     }
 
     public DefaultModelledInteraction(String shortName) {
         super(shortName);
-        this.experiments = new ArrayList<Experiment>();
     }
 
     public DefaultModelledInteraction(String shortName, Source source) {
         super(shortName, source);
-        this.experiments = new ArrayList<Experiment>();
     }
 
     public DefaultModelledInteraction(String shortName, CvTerm type) {
         super(shortName, type);
-        this.experiments = new ArrayList<Experiment>();
     }
 
     public DefaultModelledInteraction(String shortName, Source source, CvTerm type) {
         this(shortName, type);
-        this.experiments = new ArrayList<Experiment>();
         this.source = source;
     }
 
+    protected void initialiseExperiments(){
+        this.experiments = new ArrayList<Experiment>();
+    }
+
+    protected void initialiseExperimentsWith(Collection<Experiment> experiments){
+        if (experiments == null){
+            this.experiments = Collections.EMPTY_LIST;
+        }
+        else {
+            this.experiments = experiments;
+        }
+    }
+
     public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            initialiseExperiments();
+        }
         return this.experiments;
     }
 
@@ -62,7 +74,7 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
             return false;
         }
 
-        if (participants.add(part)){
+        if (getParticipants().add(part)){
             part.setInteraction(this);
             return true;
         }
@@ -74,7 +86,7 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
             return false;
         }
 
-        if (participants.remove(part)){
+        if (getParticipants().remove(part)){
             part.setInteraction(null);
             return true;
         }

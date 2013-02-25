@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for InteractionEvidence
@@ -19,11 +20,11 @@ import java.util.Collection;
 
 public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEvidence> implements InteractionEvidence {
 
-    protected Xref imexId;
-    protected Experiment experiment;
-    protected String availability;
-    protected Collection<Parameter> parameters;
-    protected boolean isInferred = false;
+    private Xref imexId;
+    private Experiment experiment;
+    private String availability;
+    private Collection<Parameter> parameters;
+    private boolean isInferred = false;
 
     public DefaultInteractionEvidence(Experiment experiment) {
         super();
@@ -34,101 +35,95 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName) {
         super(shortName);
-        initializeParameters();
         this.experiment = experiment;
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source) {
         super(shortName, source);
-        initializeParameters();
         this.experiment = experiment;
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type) {
         super(shortName, type);
-        initializeParameters();
         this.experiment = experiment;
     }
 
     public DefaultInteractionEvidence(Experiment experiment, Xref imexId) {
         super();
-        initializeParameters();
         this.experiment = experiment;
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Xref imexId) {
         super(shortName);
-        initializeParameters();
         this.experiment = experiment;
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, Xref imexId) {
         super(shortName, source);
-        initializeParameters();
         this.experiment = experiment;
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
-        initializeParameters();
         this.experiment = experiment;
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence(Xref imexId) {
         super();
-        initializeParameters();
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence(String shortName, Xref imexId) {
         super(shortName);
-        initializeParameters();
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence(String shortName, Source source, Xref imexId) {
         super(shortName, source);
-        initializeParameters();
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence(String shortName, CvTerm type, Xref imexId) {
         super(shortName, type);
-        initializeParameters();
-        this.xrefs.add(imexId);
+        getXrefs().add(imexId);
     }
 
     public DefaultInteractionEvidence() {
         super();
-        initializeParameters();
     }
 
     public DefaultInteractionEvidence(String shortName) {
         super(shortName);
-        initializeParameters();
     }
 
     public DefaultInteractionEvidence(String shortName, Source source) {
         super(shortName, source);
-        initializeParameters();
     }
 
     public DefaultInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
-        initializeParameters();
     }
 
     protected void initializeParameters(){
         this.parameters = new ArrayList<Parameter>();
     }
 
+    protected void initializeParametersWith(Collection<Parameter> parameters){
+        if (parameters == null){
+            this.parameters = Collections.EMPTY_LIST;
+        }
+        else {
+            this.parameters = parameters;
+        }
+    }
+
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new ExperimentalInteractionXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new ExperimentalInteractionXrefList());
     }
 
     public String getImexId() {
@@ -138,14 +133,15 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
     public void assignImexId(String identifier) {
         // add new imex if not null
         if (identifier != null){
+            ExperimentalInteractionXrefList interactionXrefs = (ExperimentalInteractionXrefList) getXrefs();
             CvTerm imexDatabase = CvTermFactory.createImexDatabase();
             CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
             // first remove old doi if not null
             if (this.imexId != null){
-                this.xrefs.remove(this.imexId);
+                interactionXrefs.removeOnly(this.imexId);
             }
             this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
-            this.xrefs.add(this.imexId);
+            interactionXrefs.addOnly(this.imexId);
         }
         else {
             throw new IllegalArgumentException("The imex id has to be non null.");
@@ -193,7 +189,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
             return false;
         }
 
-        if (participants.add(evidence)){
+        if (getParticipants().add(evidence)){
             evidence.setInteraction(this);
             return true;
         }
@@ -205,7 +201,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
             return false;
         }
 
-        if (participants.remove(evidence)){
+        if (getParticipants().remove(evidence)){
             evidence.setInteraction(null);
             return true;
         }

@@ -17,10 +17,10 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 public class DefaultBioactiveEntity extends DefaultInteractor implements BioactiveEntity {
 
-    protected Xref chebi;
-    protected Checksum smile;
-    protected Checksum standardInchi;
-    protected Checksum standardInchiKey;
+    private Xref chebi;
+    private Checksum smile;
+    private Checksum standardInchi;
+    private Checksum standardInchiKey;
 
     public DefaultBioactiveEntity(String name, CvTerm type) {
         super(name, type);
@@ -131,13 +131,13 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new BioctiveEntityIdentifierList();
+    protected void initialiseIdentifiers() {
+        super.initialiseIdentifiersWith(new BioctiveEntityIdentifierList());
     }
 
     @Override
-    protected void initializeChecksums() {
-        this.checksums = new BioctiveEntityChecksumList();
+    protected void initialiseChecksums() {
+        super.initialiseChecksumsWith(new BioctiveEntityChecksumList());
     }
 
     public String getChebi() {
@@ -147,18 +147,19 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     public void setChebi(String id) {
         // add new chebi if not null
         if (id != null){
+            BioctiveEntityIdentifierList bioactiveEntityIdentifiers = (BioctiveEntityIdentifierList)getIdentifiers();
             CvTerm chebiDatabase = CvTermFactory.createChebiDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.chebi != null){
-                identifiers.remove(this.chebi);
+                bioactiveEntityIdentifiers.removeOnly(this.chebi);
             }
             this.chebi = new DefaultXref(chebiDatabase, id, identityQualifier);
-            this.identifiers.add(this.chebi);
+            bioactiveEntityIdentifiers.addOnly(this.chebi);
         }
         // remove all chebi if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(xrefs, Xref.CHEBI_MI, Xref.CHEBI);
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), Xref.CHEBI_MI, Xref.CHEBI);
             this.chebi = null;
         }
     }
@@ -169,17 +170,18 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
     public void setSmile(String smile) {
         if (smile != null){
+            BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
             CvTerm smileMethod = CvTermFactory.createSmile();
             // first remove old smile
             if (this.smile != null){
-                this.checksums.remove(this.smile);
+                bioactiveEntityChecksums.removeOnly(this.smile);
             }
             this.smile = new DefaultChecksum(smileMethod, smile);
-            this.checksums.add(this.smile);
+            bioactiveEntityChecksums.addOnly(this.smile);
         }
         // remove all smiles if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.SMILE_MI, Checksum.SMILE);
+        else if (!getChecksums().isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.SMILE_MI, Checksum.SMILE);
             this.smile = null;
         }
     }
@@ -190,17 +192,18 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
     public void setStandardInchiKey(String key) {
         if (standardInchiKey != null){
+            BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
             CvTerm inchiKeyMethod = CvTermFactory.createStandardInchiKey();
             // first remove old standard inchi key
             if (this.standardInchiKey != null){
-                this.checksums.remove(this.standardInchiKey);
+                bioactiveEntityChecksums.removeOnly(this.standardInchiKey);
             }
             this.standardInchiKey = new DefaultChecksum(inchiKeyMethod, key);
-            this.checksums.add(this.standardInchiKey);
+            bioactiveEntityChecksums.addOnly(this.standardInchiKey);
         }
         // remove all standard inchi keys if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
+        else if (!getChecksums().isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
             this.standardInchiKey = null;
         }
     }
@@ -211,17 +214,18 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
     public void setStandardInchi(String inchi) {
         if (standardInchi != null){
+            BioctiveEntityChecksumList bioactiveEntityChecksums = (BioctiveEntityChecksumList)getChecksums();
             CvTerm inchiMethod = CvTermFactory.createStandardInchi();
             // first remove standard inchi
             if (this.standardInchi != null){
-                this.checksums.remove(this.standardInchi);
+                bioactiveEntityChecksums.removeOnly(this.standardInchi);
             }
             this.standardInchi = new DefaultChecksum(inchiMethod, inchi);
-            this.checksums.add(this.standardInchi);
+            bioactiveEntityChecksums.addOnly(this.standardInchi);
         }
         // remove all standard inchi if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_MI, Checksum.INCHI);
+        else if (!getChecksums().isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(getChecksums(), Checksum.INCHI_MI, Checksum.INCHI);
             this.standardInchi = null;
         }
     }

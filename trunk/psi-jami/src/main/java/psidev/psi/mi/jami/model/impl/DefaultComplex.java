@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Collections;
 
 /**
  * Default implementation for complexes
@@ -26,99 +26,110 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
 
     public DefaultComplex(String name, CvTerm type) {
         super(name, type);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, CvTerm type) {
         super(name, fullName, type);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, CvTerm type, Organism organism) {
         super(name, type, organism);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, CvTerm type, Organism organism) {
         super(name, fullName, type, organism);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, CvTerm type, Xref uniqueId) {
         super(name, type, uniqueId);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, CvTerm type, Xref uniqueId) {
         super(name, fullName, type, uniqueId);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, type, organism, uniqueId);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, fullName, type, organism, uniqueId);
-        initializeCollections();
     }
 
     public DefaultComplex(String name) {
         super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI));
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName) {
         super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI));
-        initializeCollections();
     }
 
     public DefaultComplex(String name, Organism organism) {
         super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, Organism organism) {
         super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, Xref uniqueId) {
         super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, Xref uniqueId) {
         super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, Organism organism, Xref uniqueId) {
         super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
-        initializeCollections();
     }
 
     public DefaultComplex(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
-        initializeCollections();
     }
 
-    private void initializeCollections() {
-        this.experiments = new HashSet<Experiment>();
+    protected void initialiseExperiments(){
+        this.experiments = new ArrayList<Experiment>();
+    }
+
+    protected void initialiseExperimentsWith(Collection<Experiment> experiments){
+        if (experiments == null){
+            this.experiments = Collections.EMPTY_LIST;
+        }
+        else{
+            this.experiments = experiments;
+        }
+    }
+
+    protected void initialiseComponents(){
         this.components = new ArrayList<Component>();
     }
 
+    protected void initialiseComponentsWith(Collection<Component> components){
+        if (components == null){
+            this.components = Collections.EMPTY_LIST;
+        }
+        else{
+            this.components = components;
+        }
+    }
+
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new ComplexAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new ComplexAnnotationList());
     }
 
     public Collection<Experiment> getExperiments() {
+        if (experiments == null){
+            initialiseExperiments();
+        }
         return this.experiments;
     }
 
     public Collection<Component> getComponents() {
+        if (components == null){
+           initialiseComponents();
+        }
         return this.components;
     }
 
@@ -181,17 +192,19 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     public void setPhysicalProperties(String properties) {
         // add new physical properties if not null
         if (properties != null){
+            ComplexAnnotationList complexAnnotationList = (ComplexAnnotationList) getAnnotations();
+
             CvTerm complexPhysicalProperties = CvTermFactory.createComplexPhysicalProperties();
             // first remove old physical property if not null
             if (this.physicalProperties != null){
-                annotations.remove(this.physicalProperties);
+                complexAnnotationList.removeOnly(this.physicalProperties);
             }
             this.physicalProperties = new DefaultAnnotation(complexPhysicalProperties, properties);
-            this.annotations.add(this.physicalProperties);
+            complexAnnotationList.addOnly(this.physicalProperties);
         }
         // remove all physical properties if the collection is not empty
-        else if (!this.annotations.isEmpty()) {
-            AnnotationUtils.removeAllAnnotationsWithTopic(annotations, COMPLEX_MI, COMPLEX);
+        else if (!getAnnotations().isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(getAnnotations(), COMPLEX_MI, COMPLEX);
             physicalProperties = null;
         }
     }

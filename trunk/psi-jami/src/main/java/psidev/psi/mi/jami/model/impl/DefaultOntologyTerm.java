@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Xref;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for ontology term
@@ -61,6 +62,32 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
         this.definition = def;
     }
 
+    protected void initialiseParents(){
+        this.parents = new ArrayList<CvTerm>();
+    }
+
+    protected void initialiseParentsWith(Collection<CvTerm> parents){
+        if (parents == null){
+            this.parents = Collections.EMPTY_LIST;
+        }
+        else {
+            this.parents = parents;
+        }
+    }
+
+    protected void initialiseChildren(){
+        this.children = new ArrayList<CvTerm>();
+    }
+
+    protected void initialiseChildrenWith(Collection<CvTerm> children){
+        if (children == null){
+            this.children = Collections.EMPTY_LIST;
+        }
+        else {
+            this.children = children;
+        }
+    }
+
     public String getDefinition() {
         return this.definition;
     }
@@ -70,10 +97,16 @@ public class DefaultOntologyTerm extends DefaultCvTerm implements OntologyTerm{
     }
 
     public Collection<CvTerm> getParents() {
+        if (parents == null){
+            initialiseParents();
+        }
         return this.parents;
     }
 
     public Collection<CvTerm> getChildren() {
+        if (children == null){
+            initialiseChildren();
+        }
         return this.children;
     }
 }
