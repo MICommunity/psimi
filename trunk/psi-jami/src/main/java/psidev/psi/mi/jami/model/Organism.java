@@ -54,6 +54,18 @@ public interface Organism {
     public int getTaxId();
 
     /**
+     * Sets the taxonomy identifier of the organism. It should be :
+     * - '-1' for 'in vitro'
+     * - '-2' for 'chemical synthesis'
+     * - '-3' for unknown
+     * - '-4' for in vivo
+     * - valid NCBI taxonomy identifier (Ex: 9606 for human)
+     * @throws IllegalArgumentException if taxid is not valid
+     *
+     */
+    public void setTaxId(int id);
+
+    /**
      * The other names of the organism.
      * It cannot be null and should return an emtpy Collection if no aliases are attached to this organism
      * Ex: Mus muscaris, transgenic mice and house mouse are mouse synonyms/aliases.
