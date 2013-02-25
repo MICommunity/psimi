@@ -101,6 +101,15 @@ public class DefaultOrganism implements Organism, Serializable {
         return this.taxId;
     }
 
+    public void setTaxId(int id) {
+        if (taxId == -1 || taxId == -2 || taxId == -3 || taxId == -4 || taxId > 0){
+            this.taxId = id;
+        }
+        else {
+            throw new IllegalArgumentException("The taxId "+id+" is not a valid taxid. Only NCBI taxid or -1, -2, -3, -4 are valid taxids.");
+        }
+    }
+
     public Collection<Alias> getAliases() {
         if (aliases == null){
             initialiseAliases();
