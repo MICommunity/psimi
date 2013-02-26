@@ -212,6 +212,62 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         return this.synonyms;
     }
 
+    protected void processAddedIdentifierEvent(Xref added) {
+
+        // the added identifier is psi-mi and it is not the current mi identifier
+        if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
+            // the current psi-mi identifier is not identity, we may want to set miIdentifier
+            if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the miidentifier is not set, we can set the miidentifier
+                if (miIdentifier == null){
+                    miIdentifier = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    miIdentifier = added;
+                }
+                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
+                else if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    miIdentifier = added;
+                }
+            }
+        }
+        // the added identifier is psi-mod and it is not the current mod identifier
+        else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
+            // the current psi-mod identifier is not identity, we may want to set modIdentifier
+            if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the modIdentifier is not set, we can set the modIdentifier
+                if (modIdentifier == null){
+                    modIdentifier = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    modIdentifier = added;
+                }
+                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
+                else if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    modIdentifier = added;
+                }
+            }
+        }
+    }
+
+    protected void processRemovedIdentifierEvent(Xref removed) {
+        // the removed identifier is psi-mi
+        if (miIdentifier != null && miIdentifier.equals(removed)){
+            miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
+        }
+        // the removed identifier is psi-mod
+        else if (modIdentifier != null && modIdentifier.equals(removed)){
+            modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
+        }
+    }
+
+    protected void clearPropertiesLinkedToIdentifiers() {
+        miIdentifier = null;
+        modIdentifier = null;
+    }
+
     @Override
     public int hashCode() {
         return UnambiguousCvTermComparator.hashCode(this);
@@ -243,60 +299,17 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         @Override
         protected void processAddedObjectEvent(Xref added) {
 
-            // the added identifier is psi-mi and it is not the current mi identifier
-            if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
-                // the current psi-mi identifier is not identity, we may want to set miIdentifier
-                if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the miidentifier is not set, we can set the miidentifier
-                    if (miIdentifier == null){
-                         miIdentifier = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        miIdentifier = added;
-                    }
-                    // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                    else if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        miIdentifier = added;
-                    }
-                }
-            }
-            // the added identifier is psi-mod and it is not the current mod identifier
-            else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
-                // the current psi-mod identifier is not identity, we may want to set modIdentifier
-                if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    // the modIdentifier is not set, we can set the modIdentifier
-                    if (modIdentifier == null){
-                        modIdentifier = added;
-                    }
-                    else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                        modIdentifier = added;
-                    }
-                    // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                    else if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
-                            && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                        modIdentifier = added;
-                    }
-                }
-            }
+            processAddedIdentifierEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            // the removed identifier is psi-mi
-            if (miIdentifier != null && miIdentifier.equals(removed)){
-                miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
-            }
-            // the removed identifier is psi-mod
-            else if (modIdentifier != null && modIdentifier.equals(removed)){
-                modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(this, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
-            }
+            processRemovedIdentifierEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            miIdentifier = null;
-            modIdentifier = null;
+            clearPropertiesLinkedToIdentifiers();
         }
     }
 }
