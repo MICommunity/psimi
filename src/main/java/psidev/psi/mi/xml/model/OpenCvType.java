@@ -36,7 +36,7 @@ import java.util.Collection;
  */
 public abstract class OpenCvType extends CvType {
 
-    private Collection<Attribute> attributes=new CvTermXmlAnnotationList();
+    private Collection<Attribute> attributes;
 
     ///////////////////////////
     // Constructors
@@ -46,20 +46,20 @@ public abstract class OpenCvType extends CvType {
 
     protected OpenCvType( Collection<Attribute> attributes ) {
         if (attributes != null){
-            this.attributes.addAll(attributes);
+             getAttributes().addAll(attributes);
         }
     }
 
     protected OpenCvType( Names names, Xref xref, Collection<Attribute> attributes ) {
         super( names, xref );
         if (attributes != null){
-            this.attributes.addAll(attributes);
+            getAttributes().addAll(attributes);
         }
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new CvTermAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new CvTermAnnotationList());
     }
 
     ///////////////////////////
@@ -80,6 +80,9 @@ public abstract class OpenCvType extends CvType {
      * @return possible object is {@link Attribute }
      */
     public Collection<Attribute> getAttributes() {
+        if (attributes == null){
+            this.attributes=new CvTermXmlAnnotationList();
+        }
         return attributes;
     }
 
@@ -106,7 +109,7 @@ public abstract class OpenCvType extends CvType {
 
         final OpenCvType that = ( OpenCvType ) o;
 
-        if ( attributes != null ? !attributes.equals( that.attributes ) : that.attributes != null ) {
+        if ( attributes != null ? !attributes.equals( that.attributes ) : (that.attributes != null && !that.attributes.isEmpty()) ) {
             return false;
         }
 
@@ -118,7 +121,7 @@ public abstract class OpenCvType extends CvType {
         return ( attributes != null ? attributes.hashCode() : 0 );
     }
 
-    protected class CvTermAnnotationList extends AbstractListHavingPoperties<Annotation> {
+    private class CvTermAnnotationList extends AbstractListHavingPoperties<Annotation> {
         public CvTermAnnotationList(){
             super();
         }
@@ -126,31 +129,31 @@ public abstract class OpenCvType extends CvType {
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
             if (added instanceof Attribute){
-                ((CvTermXmlAnnotationList)attributes).addOnly((Attribute) added);
+                ((CvTermXmlAnnotationList)getAttributes()).addOnly((Attribute) added);
             }
             else {
-                ((CvTermXmlAnnotationList)attributes).addOnly(new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue()));
+                ((CvTermXmlAnnotationList)getAttributes()).addOnly(new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue()));
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
-                ((CvTermXmlAnnotationList)attributes).removeOnly(removed);
+                ((CvTermXmlAnnotationList)getAttributes()).removeOnly(removed);
             }
             else {
-                ((CvTermXmlAnnotationList)attributes).removeOnly(new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue()));
+                ((CvTermXmlAnnotationList)getAttributes()).removeOnly(new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue()));
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((CvTermXmlAnnotationList)attributes).clearOnly();
+            ((CvTermXmlAnnotationList)getAttributes()).clearOnly();
         }
     }
 
-    protected class CvTermXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
+    private class CvTermXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
         public CvTermXmlAnnotationList(){
             super();
         }
@@ -159,20 +162,20 @@ public abstract class OpenCvType extends CvType {
         protected void processAddedObjectEvent(Attribute added) {
 
             // we added a annotation, needs to add it in annotations
-            ((CvTermAnnotationList)annotations).addOnly(added);
+            ((CvTermAnnotationList)getAnnotations()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Attribute removed) {
 
             // we removed a annotation, needs to remove it in annotations
-            ((CvTermAnnotationList)annotations).removeOnly(removed);
+            ((CvTermAnnotationList)getAnnotations()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((CvTermAnnotationList)annotations).clearOnly();
+            ((CvTermAnnotationList)getAnnotations()).clearOnly();
         }
     }
 }

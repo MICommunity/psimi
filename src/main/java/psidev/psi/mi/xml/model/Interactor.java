@@ -70,7 +70,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
 
     private String sequence;
 
-    private Collection<Attribute> attributes = new InteractorXmlAnnotationList();
+    private Collection<Attribute> attributes;
 
     private int id;
 
@@ -81,33 +81,33 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
 
     public Interactor() {
         super(UNSPECIFIED, new InteractorType());
-        type.setShortName(Interactor.UNKNOWN_INTERACTOR);
-        type.setMIIdentifier(Interactor.UNKNOWN_INTERACTOR_MI);
+        getType().setShortName(Interactor.UNKNOWN_INTERACTOR);
+        getType().setMIIdentifier(Interactor.UNKNOWN_INTERACTOR_MI);
     }
 
     @Override
-    protected void initializeAliases() {
-        this.aliases = new InteractorAliasList();
+    protected void initialiseAliases() {
+        initialiseAliasesWith(new InteractorAliasList());
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new InteractorXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new InteractorXrefList());
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new InteractorIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new InteractorIdentifierList());
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new InteractorAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new InteractorAnnotationList());
     }
 
     @Override
-    protected void initializeChecksums() {
-        this.checksums = new InteractorChecksumList();
+    protected void initialiseChecksums() {
+        initialiseChecksumsWith(new InteractorChecksumList());
     }
 
     ///////////////////////////
@@ -147,21 +147,21 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
                 names = new InteractorNames();
             }
             else {
-                this.aliases.clear();
+                getAliases().clear();
             }
-            this.names.setShortLabel(value.getShortLabel());
-            this.names.setFullName(value.getFullName());
-            this.names.getAliases().addAll(value.getAliases());
+            super.setShortName(value.getShortLabel() != null ? value.getShortLabel() : UNSPECIFIED);
+            super.setFullName(value.getFullName());
+            getAliases().addAll(value.getAliases());
         }
         else if (names != null) {
-            aliases.clear();
-            this.shortName = UNSPECIFIED;
-            this.fullName = null;
+            getAliases().clear();
+            super.setShortName(UNSPECIFIED);
+            super.setFullName(null);
             this.names = null;
         }
         else {
             this.names = new InteractorNames();
-            this.shortName = UNSPECIFIED;
+            super.setShortName(UNSPECIFIED);
         }
     }
 
@@ -191,14 +191,14 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                identifiers.clear();
-                this.xrefs.clear();
+                getIdentifiers().clear();
+                getXrefs().clear();
             }
             this.xref = new InteractorXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            identifiers.clear();
-            xrefs.clear();
+            getIdentifiers().clear();
+            getXrefs().clear();
             this.xref = null;
         }
     }
@@ -209,7 +209,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      * @return possible object is {@link CvType }
      */
     public InteractorType getInteractorType() {
-        return (InteractorType) type;
+        return (InteractorType) getType();
     }
 
     /**
@@ -219,12 +219,12 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      */
     public void setInteractorType( InteractorType value ) {
         if (value == null){
-            this.type = new InteractorType();
-            this.type.setShortName(UNKNOWN_INTERACTOR);
-            this.type.setMIIdentifier(UNKNOWN_INTERACTOR_MI);
+            super.setType(new InteractorType());
+            getType().setShortName(UNKNOWN_INTERACTOR);
+            getType().setMIIdentifier(UNKNOWN_INTERACTOR_MI);
         }
         else {
-            this.type = value;
+            super.setType(value);
         }
     }
 
@@ -234,7 +234,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      * @return true if defined, false otherwise.
      */
     public boolean hasOrganism() {
-        return organism != null;
+        return getOrganism() != null;
     }
 
     /**
@@ -243,7 +243,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      * @return possible object is {@link Organism }
      */
     public Organism getOrganism() {
-        return (Organism) organism;
+        return (Organism) super.getOrganism();
     }
 
     /**
@@ -252,7 +252,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      * @param value allowed object is {@link Organism }
      */
     public void setOrganism( Organism value ) {
-        this.organism = value;
+        super.setOrganism(value);
     }
 
     /**
@@ -297,6 +297,9 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      * @return possible object is {@link Attribute }
      */
     public Collection<Attribute> getAttributes() {
+        if (attributes == null){
+           attributes = new InteractorXmlAnnotationList();
+        }
         return attributes;
     }
 
@@ -306,15 +309,15 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
     @Override
     public void setShortName(String name) {
         if (names != null){
-            names.setShortLabel(name);
+            super.setShortName(name != null ? name : UNSPECIFIED);
         }
         else if (name != null) {
             names = new InteractorNames();
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
         else {
             names = new InteractorNames();
-            names.setShortLabel(UNSPECIFIED);
+            super.setShortName(UNSPECIFIED);
         }
     }
 
@@ -322,35 +325,51 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
     public void setFullName(String name) {
         if (names != null){
             if (names.getShortLabel().equals(UNSPECIFIED)){
-                names.setShortLabel(name);
+                super.setShortName(name != null ? name : UNSPECIFIED);
             }
-            names.setFullName(name);
+            super.setFullName(name);
         }
         else if (name != null) {
             names = new InteractorNames();
-            names.setShortLabel(name);
-            names.setFullName(name);
+            super.setShortName(name);
+            super.setFullName(name);
         }
         else {
             names = new InteractorNames();
-            names.setShortLabel(UNSPECIFIED);
-            names.setFullName(name);
+            super.setShortName(UNSPECIFIED);
+            super.setFullName(name);
         }
+    }
+
+    protected void setShortNameOnly(String name) {
+        super.setShortName(name != null ? name : UNSPECIFIED);
+    }
+
+    protected void setFullNameOnly(String name) {
+        super.setFullName(name);
+    }
+
+    protected String getInteractorFullName(){
+        return super.getFullName();
+    }
+
+    protected Collection<psidev.psi.mi.jami.model.Alias> getInteractorAliases(){
+        return super.getAliases();
     }
 
     @Override
     public void setType(CvTerm type) {
         if (type == null){
-            this.type = new InteractorType();
-            type.setShortName(Interactor.UNKNOWN_INTERACTOR);
-            type.setMIIdentifier(Interactor.UNKNOWN_INTERACTOR_MI);
+            super.setType(new InteractorType());
+            getType().setShortName(Interactor.UNKNOWN_INTERACTOR);
+            getType().setMIIdentifier(Interactor.UNKNOWN_INTERACTOR_MI);
         }
         else if (type instanceof InteractorType){
-            this.type = type;
+            super.setType(type);
         }
         else {
-            this.type = new InteractorType();
-            CvTermCloner.copyAndOverrideCvTermProperties(type, this.type);
+            super.setType(new InteractorType());
+            CvTermCloner.copyAndOverrideCvTermProperties(type, getType());
         }
     }
 
@@ -361,8 +380,8 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         sb.append( "{ id=" ).append( id );
         sb.append( ", names=" ).append( names );
         sb.append( ", xref=" ).append( xref );
-        sb.append( ", interactorType=" ).append( type );
-        sb.append( ", organism=" ).append( organism );
+        sb.append( ", interactorType=" ).append( getType() );
+        sb.append( ", organism=" ).append( getOrganism() );
         sb.append( ", sequence='" ).append( sequence ).append( '\'' );
         sb.append( ", attributes=" ).append( attributes );
         sb.append( '}' );
@@ -376,9 +395,9 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
 
         Interactor that = ( Interactor ) o;
 
-        if ( type != null ? !type.equals( that.type ) : that.type != null )
+        if ( getType() != null ? !getType().equals(that.getType()) : that.getType() != null )
             return false;
-        if ( organism != null ? !organism.equals( that.organism ) : that.organism != null ) return false;
+        if ( getOrganism() != null ? !getOrganism().equals(that.getOrganism()) : that.getOrganism() != null ) return false;
         //if (names != null ? !names.equals(that.names) : that.names != null) return false;
         if ( xref != null ? !xref.equals( that.xref ) : that.xref != null ) return false;
         if ( sequence != null ? !sequence.equals( that.sequence ) : that.sequence != null ) return false;
@@ -391,8 +410,8 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         int result = 31;
         //result = (names != null ? names.hashCode() : 0);
         result = 31 * result + ( xref != null ? xref.hashCode() : 0 );
-        result = 31 * result + ( type != null ? type.hashCode() : 0 );
-        result = 31 * result + ( organism != null ? organism.hashCode() : 0 );
+        result = 31 * result + ( getType() != null ? getType().hashCode() : 0 );
+        result = 31 * result + ( getOrganism() != null ? getOrganism().hashCode() : 0 );
         result = 31 * result + ( sequence != null ? sequence.hashCode() : 0 );
         return result;
     }
@@ -402,32 +421,27 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         protected AliasList extendedAliases = new AliasList();
 
         public String getShortLabel() {
-            return shortName;
+            return getShortName();
         }
 
         public boolean hasShortLabel() {
-            return shortName != null;
+            return getShortName() != null;
         }
 
         public void setShortLabel( String value ) {
-            if (value != null){
-                shortName = value;
-            }
-            else {
-                shortName = UNSPECIFIED;
-            }
+            setShortNameOnly(value);
         }
 
         public String getFullName() {
-            return fullName;
+            return getInteractorFullName();
         }
 
         public boolean hasFullName() {
-            return fullName != null;
+            return getInteractorFullName() != null;
         }
 
         public void setFullName( String value ) {
-            fullName = value;
+            setFullNameOnly(value);
         }
 
         public Collection<Alias> getAliases() {
@@ -442,8 +456,8 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Names" );
-            sb.append( "{shortLabel='" ).append( shortName ).append( '\'' );
-            sb.append( ", fullName='" ).append( fullName ).append( '\'' );
+            sb.append( "{shortLabel='" ).append( getShortName() ).append( '\'' );
+            sb.append( ", fullName='" ).append( getInteractorFullName() ).append( '\'' );
             sb.append( ", aliases=" ).append( extendedAliases );
             sb.append( '}' );
             return sb.toString();
@@ -457,8 +471,8 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
             Names names = ( Names ) o;
 
             if ( extendedAliases != null ? !extendedAliases.equals( names.getAliases() ) : names.getAliases() != null ) return false;
-            if ( fullName != null ? !fullName.equals( names.getFullName() ) : names.getFullName() != null ) return false;
-            if ( shortName != null ? !shortName.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+            if ( getInteractorFullName() != null ? !getInteractorFullName().equals(names.getFullName()) : names.getFullName() != null ) return false;
+            if ( getShortName() != null ? !getShortName().equals(names.getShortLabel()) : names.getShortLabel() != null ) return false;
 
             return true;
         }
@@ -466,8 +480,8 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         @Override
         public int hashCode() {
             int result;
-            result = ( shortName != null ? shortName.hashCode() : 0 );
-            result = 31 * result + ( fullName != null ? fullName.hashCode() : 0 );
+            result = ( getShortName() != null ? getShortName().hashCode() : 0 );
+            result = 31 * result + ( getFullName() != null ? getFullName().hashCode() : 0 );
             result = 31 * result + ( extendedAliases != null ? extendedAliases.hashCode() : 0 );
             return result;
         }
@@ -476,17 +490,17 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
 
             @Override
             protected void processAddedObjectEvent(Alias added) {
-                ((InteractorAliasList) aliases).addOnly(added);
+                ((InteractorAliasList) getInteractorAliases()).addOnly(added);
             }
 
             @Override
             protected void processRemovedObjectEvent(Alias removed) {
-                ((InteractorAliasList)aliases).removeOnly(removed);
+                ((InteractorAliasList)getInteractorAliases()).removeOnly(removed);
             }
 
             @Override
             protected void clearProperties() {
-                ((InteractorAliasList)aliases).clearOnly();
+                ((InteractorAliasList)getInteractorAliases()).clearOnly();
             }
         }
     }
@@ -581,39 +595,39 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
                 super.setPrimaryRef(value);
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((InteractorIdentifierList)identifiers).addOnly(value);
+                        ((InteractorIdentifierList)getIdentifiers()).addOnly(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((InteractorXrefList)xrefs).addOnly(value);
+                        ((InteractorXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else if (isPrimaryAnIdentity){
-                ((InteractorIdentifierList)identifiers).removeOnly(getPrimaryRef());
+                ((InteractorIdentifierList)getIdentifiers()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((InteractorIdentifierList)identifiers).addOnly(value);
+                        ((InteractorIdentifierList)getIdentifiers()).addOnly(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((InteractorXrefList)xrefs).addOnly(value);
+                        ((InteractorXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else {
-                ((InteractorXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((InteractorXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((InteractorIdentifierList)identifiers).addOnly(value);
+                        ((InteractorIdentifierList)getIdentifiers()).addOnly(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((InteractorXrefList)xrefs).addOnly(value);
+                        ((InteractorXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
@@ -666,28 +680,28 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
             @Override
             protected void processAddedObjectEvent(DbReference added) {
                 if (XrefUtils.isXrefAnIdentifier(added)){
-                    ((InteractorIdentifierList)identifiers).addOnly(added);
+                    ((InteractorIdentifierList)getIdentifiers()).addOnly(added);
                 }
                 else {
-                    ((InteractorXrefList)xrefs).addOnly(added);
+                    ((InteractorXrefList)getXrefs()).addOnly(added);
                 }
             }
 
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
                 if (XrefUtils.isXrefAnIdentifier(removed)){
-                    ((InteractorIdentifierList)identifiers).removeOnly(removed);
+                    ((InteractorIdentifierList)getIdentifiers()).removeOnly(removed);
                 }
                 else {
-                    ((InteractorXrefList)xrefs).removeOnly(removed);
+                    ((InteractorXrefList)getXrefs()).removeOnly(removed);
                 }
             }
 
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((InteractorIdentifierList)identifiers).retainAllOnly(primary);
-                ((InteractorXrefList)xrefs).retainAllOnly(primary);
+                ((InteractorIdentifierList)getIdentifiers()).retainAllOnly(primary);
+                ((InteractorXrefList)getXrefs()).retainAllOnly(primary);
             }
         }
     }
@@ -769,7 +783,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         protected void clearProperties() {
             if (xref != null){
                 InteractorXref reference = (InteractorXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(xrefs);
+                reference.extendedSecondaryRefList.retainAllOnly(getXrefs());
 
                 if (reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -855,7 +869,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
 
             if (xref != null){
                 InteractorXref reference = (InteractorXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(identifiers);
+                reference.extendedSecondaryRefList.retainAllOnly(getIdentifiers());
 
                 if (!reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -872,27 +886,27 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
             if (added instanceof Attribute){
-                ((InteractorXmlAnnotationList)attributes).addOnly((Attribute) added);
+                ((InteractorXmlAnnotationList)getAttributes()).addOnly((Attribute) added);
             }
             else {
-                ((InteractorXmlAnnotationList)attributes).addOnly(new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue()));
+                ((InteractorXmlAnnotationList)getAttributes()).addOnly(new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue()));
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
-                ((InteractorXmlAnnotationList)attributes).removeOnly(removed);
+                ((InteractorXmlAnnotationList)getAttributes()).removeOnly(removed);
             }
             else {
-                ((InteractorXmlAnnotationList)attributes).removeOnly(new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue()));
+                ((InteractorXmlAnnotationList)getAttributes()).removeOnly(new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue()));
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractorXmlAnnotationList)attributes).clearOnly();
+            ((InteractorXmlAnnotationList)getAttributes()).clearOnly();
         }
     }
 
@@ -911,7 +925,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
                     || added.getNameAc().equals(Checksum.SMILE_MI)
                     || added.getNameAc().equals("MI:1212")
                     || added.getNameAc().equals("MI:0970")){
-                 ((InteractorChecksumList) checksums).addOnly(new DefaultChecksum(new DefaultCvTerm(added.getName(), added.getNameAc()), added.getValue()));
+                 ((InteractorChecksumList) getChecksums()).addOnly(new DefaultChecksum(new DefaultCvTerm(added.getName(), added.getNameAc()), added.getValue()));
             }
             else if (added.getNameAc() == null
                     && (added.getName().equals(Checksum.ROGID)
@@ -920,11 +934,11 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
                     || added.getName().equals(Checksum.SMILE)
                     || added.getName().equals("checksum")
                     || added.getName().equals("inchi key")){
-                ((InteractorChecksumList) checksums).addOnly(new DefaultChecksum(new DefaultCvTerm(added.getName()), added.getValue()));
+                ((InteractorChecksumList) getChecksums()).addOnly(new DefaultChecksum(new DefaultCvTerm(added.getName()), added.getValue()));
             }
             else {
                 // we added a annotation, needs to add it in annotations
-                ((InteractorAnnotationList)annotations).addOnly(added);
+                ((InteractorAnnotationList)getAnnotations()).addOnly(added);
             }
         }
 
@@ -938,7 +952,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
                     || removed.getNameAc().equals(Checksum.SMILE_MI)
                     || removed.getNameAc().equals("MI:1212")
                     || removed.getNameAc().equals("MI:0970")){
-                ((InteractorChecksumList) checksums).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName(), removed.getNameAc()), removed.getValue()));
+                ((InteractorChecksumList) getChecksums()).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName(), removed.getNameAc()), removed.getValue()));
             }
             else if (removed.getNameAc() == null
                     && (removed.getName().equals(Checksum.ROGID)
@@ -947,18 +961,19 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
                     || removed.getName().equals(Checksum.SMILE)
                     || removed.getName().equals("checksum")
                     || removed.getName().equals("inchi key")){
-                ((InteractorChecksumList) checksums).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName()), removed.getValue()));
+                ((InteractorChecksumList) getChecksums()).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName()), removed.getValue()));
             }
             else {
                 // we removed a annotation, needs to remove it in annotations
-                ((InteractorAnnotationList)annotations).removeOnly(removed);
+                ((InteractorAnnotationList)getAnnotations()).removeOnly(removed);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractorAnnotationList)annotations).clearOnly();
+            ((InteractorAnnotationList)getAnnotations()).clearOnly();
+            ((InteractorChecksumList)getChecksums()).clearOnly();
         }
     }
 
@@ -970,18 +985,18 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Checksum added) {
 
-            ((InteractorXmlAnnotationList)attributes).addOnly(new Attribute(added.getMethod().getMIIdentifier(), added.getMethod().getShortName(), added.getValue()));
+            ((InteractorXmlAnnotationList)getAttributes()).addOnly(new Attribute(added.getMethod().getMIIdentifier(), added.getMethod().getShortName(), added.getValue()));
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Checksum removed) {
-            ((InteractorXmlAnnotationList)attributes).removeOnly(new Attribute(removed.getMethod().getMIIdentifier(), removed.getMethod().getShortName(), removed.getValue()));
+            ((InteractorXmlAnnotationList)getAttributes()).removeOnly(new Attribute(removed.getMethod().getMIIdentifier(), removed.getMethod().getShortName(), removed.getValue()));
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractorXmlAnnotationList)attributes).clearOnly();
+            ((InteractorXmlAnnotationList)getAttributes()).clearOnly();
         }
     }
 }

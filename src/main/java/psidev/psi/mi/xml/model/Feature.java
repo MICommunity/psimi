@@ -7,9 +7,7 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
@@ -58,7 +56,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Feature extends DefaultFeatureEvidence implements HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Feature extends DefaultFeatureEvidence implements ComponentFeature, HasId, NamesContainer, XrefContainer, AttributeContainer {
 
     private int id;
 
@@ -70,9 +68,9 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
     private Collection<ExperimentRef> experimentRefs;
 
-    private Collection<Range> xmlRanges = new FeatureXmlRangeList();
+    private Collection<Range> xmlRanges;
 
-    private Collection<Attribute> attributes = new FeatureXmlAnnotationList();
+    private Collection<Attribute> attributes;
 
     ///////////////////////////
     // Constructors
@@ -83,28 +81,30 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
     public Feature( int id, Collection<Range> ranges ) {
         super();
-        this.xmlRanges = ranges;
+        if (ranges != null){
+            getFeatureRanges().addAll(ranges);
+        }
         setId( id );
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new FeatureIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new FeatureIdentifierList());
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new FeatureXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new FeatureXrefList());
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new FeatureAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new FeatureAnnotationList());
     }
 
     @Override
-    protected void initializeRanges() {
-        this.ranges = new FeatureRangeList();
+    protected void initialiseRanges() {
+        initialiseRangesWith(new FeatureRangeList());
     }
 
     ///////////////////////////
@@ -152,13 +152,16 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             if (this.names == null){
                this.names = new FeatureNames();
             }
-            this.names.setShortLabel(value.getShortLabel());
-            this.names.setFullName(value.getFullName());
+            else {
+                this.names.getAliases().clear();
+            }
+            super.setShortName(value.getShortLabel());
+            super.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
         }
         else if (this.names != null){
-            this.shortName = null;
-            this.fullName = null;
+            super.setShortName(null);
+            super.setFullName(null);
             this.names = null;
         }
     }
@@ -189,14 +192,14 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                identifiers.clear();
-                this.xrefs.clear();
+                getIdentifiers().clear();
+                getXrefs().clear();
             }
             this.xref = new FeatureXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            identifiers.clear();
-            xrefs.clear();
+            getIdentifiers().clear();
+            getXrefs().clear();
             this.xref = null;
         }
     }
@@ -207,7 +210,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @return true if defined, false otherwise.
      */
     public boolean hasFeatureType() {
-        return type != null;
+        return getType() != null;
     }
 
     /**
@@ -216,7 +219,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @return possible object is {@link CvType }
      */
     public FeatureType getFeatureType() {
-        return (FeatureType) type;
+        return (FeatureType) getType();
     }
 
     /**
@@ -225,7 +228,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @param value allowed object is {@link CvType }
      */
     public void setFeatureType( FeatureType value ) {
-        this.type = value;
+        super.setType(value);
     }
 
     /**
@@ -234,7 +237,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @return true if defined, false otherwise.
      */
     public boolean hasFeatureDetectionMethod() {
-        return detectionMethod != null;
+        return getDetectionMethod() != null;
     }
 
     /**
@@ -243,7 +246,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @return possible object is {@link CvType }
      */
     public FeatureDetectionMethod getFeatureDetectionMethod() {
-        return (FeatureDetectionMethod) detectionMethod;
+        return (FeatureDetectionMethod) getDetectionMethod();
     }
 
     /**
@@ -252,7 +255,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @param value allowed object is {@link CvType }
      */
     public void setFeatureDetectionMethod( FeatureDetectionMethod value ) {
-        this.detectionMethod = value;
+        super.setDetectionMethod(value);
     }
 
     /**
@@ -303,6 +306,9 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @return possible object is {@link Range }
      */
     public Collection<Range> getFeatureRanges() {
+        if (xmlRanges == null){
+            xmlRanges = new FeatureXmlRangeList();
+        }
         return xmlRanges;
     }
 
@@ -321,37 +327,10 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
      * @return possible object is {@link Attribute }
      */
     public Collection<Attribute> getAttributes() {
+        if (attributes == null){
+            attributes = new FeatureXmlAnnotationList();
+        }
         return attributes;
-    }
-
-    protected void processAddedIdentifier(psidev.psi.mi.jami.model.Xref added){
-        if (interpro != added && XrefUtils.isXrefFromDatabase(added, psidev.psi.mi.jami.model.Xref.INTERPRO_MI, psidev.psi.mi.jami.model.Xref.INTERPRO)){
-            // the current interpro identifier is not identity, we may want to set interpro Identifier
-            if (!XrefUtils.doesXrefHaveQualifier(interpro, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                // the interpro identifier is not set, we can set the interpro identifier
-                if (interpro == null){
-                    interpro = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                    interpro = added;
-                }
-                // the added xref is secondary object and the current interpro identifier is not a secondary object, we reset interpro identifier
-                else if (!XrefUtils.doesXrefHaveQualifier(interpro, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)){
-                    interpro = added;
-                }
-            }
-        }
-    }
-
-    protected void processRemovedIdentifier(psidev.psi.mi.jami.model.Xref removed){
-        if (interpro != null && interpro.equals(removed)){
-            interpro = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, psidev.psi.mi.jami.model.Xref.INTERPRO_MI, psidev.psi.mi.jami.model.Xref.INTERPRO);
-        }
-    }
-
-    protected void clearPropertiesLinkedToIdentifiers(){
-        interpro = null;
     }
 
     /////////////////////////////////
@@ -363,11 +342,11 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             this.names = null;
         }
         else if (names != null){
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
         else  {
             names = new FeatureNames();
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
     }
 
@@ -375,16 +354,30 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
     public void setFullName(String name) {
         if (names != null){
             if (names.getShortLabel() == null){
-                names.setShortLabel(name);
+                super.setShortName(name);
             }
-            names.setFullName(name);
+            super.setFullName(name);
         }
         else if (name != null) {
             names = new FeatureNames();
-            names.setShortLabel(name);
-            names.setFullName(name);
+            super.setShortName(name);
+            super.setFullName(name);
         }
     }
+
+    protected void setShortNameOnly(String name) {
+        super.setShortName(name);
+
+    }
+
+    protected void setFullNameOnly(String name) {
+        super.setFullName(name);
+    }
+
+    protected String getFeatureFullName(){
+        return super.getFullName();
+    }
+
 
     @Override
     public void setType(CvTerm type) {
@@ -392,11 +385,12 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             super.setType(null);
         }
         else if (type instanceof FeatureType){
-            this.type = type;
+            super.setType(type);
         }
         else {
-            this.type = new FeatureType();
-            CvTermCloner.copyAndOverrideCvTermProperties(type, this.type);
+            FeatureType t = new FeatureType();
+            CvTermCloner.copyAndOverrideCvTermProperties(type, t);
+            super.setType(t);
         }
     }
 
@@ -406,45 +400,44 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             super.setType(null);
         }
         else if (method instanceof FeatureDetectionMethod){
-            this.detectionMethod = method;
+            super.setDetectionMethod(method);
         }
         else {
-            this.detectionMethod = new FeatureDetectionMethod();
-            CvTermCloner.copyAndOverrideCvTermProperties(method, this.detectionMethod);
+            FeatureDetectionMethod detectionMethod = new FeatureDetectionMethod();
+            CvTermCloner.copyAndOverrideCvTermProperties(method, detectionMethod);
+            super.setDetectionMethod(detectionMethod);
         }
     }
 
     @Override
-    public void setParticipant(ParticipantEvidence participant) {
+    public void setParticipantEvidence(ParticipantEvidence participant) {
         if (participant == null){
-            super.setParticipant(null);
+            super.setParticipantEvidence(null);
         }
         else if (participant instanceof Participant){
-            super.setParticipant(participant);
+            super.setParticipantEvidence(participant);
         }
         else {
             Participant convertedParticipant = new Participant();
 
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
-            super.setParticipant(participant);
+            super.setParticipantEvidence(convertedParticipant);
         }
     }
 
     @Override
-    public void setParticipantAndAddFeature(ParticipantEvidence participant) {
+    public void setParticipantEvidenceAndAddFeature(ParticipantEvidence participant) {
         if (participant == null){
-            super.setParticipant(null);
+            super.setParticipantEvidence(null);
         }
         else if (participant instanceof Participant){
-            super.setParticipant(participant);
-            participant.getFeatures().add(this);
+            participant.addFeatureEvidence(this);
         }
         else {
             Participant convertedParticipant = new Participant();
 
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
-            super.setParticipant(convertedParticipant);
-            convertedParticipant.getParticipantFeatures().add(this);
+            convertedParticipant.addFeatureEvidence(this);
         }
     }
 
@@ -455,8 +448,8 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         sb.append( "{id=" ).append( id );
         sb.append( ", names=" ).append( names );
         sb.append( ", xref=" ).append( xref );
-        sb.append( ", featureType=" ).append( type );
-        sb.append( ", featureDetectionMethod=" ).append( detectionMethod );
+        sb.append( ", featureType=" ).append( getType() );
+        sb.append( ", featureDetectionMethod=" ).append( getDetectionMethod() );
         sb.append( ", experiments=" ).append( experiments );
         sb.append( ", experimentRefs=" ).append( experimentRefs );
         sb.append( ", xmlRanges=" ).append(xmlRanges);
@@ -478,9 +471,9 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             return false;
         if ( experiments != null ? !experiments.equals( feature.experiments ) : feature.experiments != null )
             return false;
-        if ( detectionMethod != null ? !detectionMethod.equals( feature.detectionMethod ) : feature.detectionMethod != null )
+        if ( getDetectionMethod() != null ? !getDetectionMethod().equals( feature.getDetectionMethod() ) : feature.getDetectionMethod() != null )
             return false;
-        if ( type != null ? !type.equals( feature.type ) : feature.type != null )
+        if ( getType() != null ? !getType().equals( feature.getType() ) : feature.getType() != null )
             return false;
         if ( names != null ? !names.equals( feature.names ) : feature.names != null ) return false;
         if ( xmlRanges != null ? !xmlRanges.equals( feature.xmlRanges) : feature.xmlRanges != null ) return false;
@@ -495,8 +488,8 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         result = id;
         result = 31 * result + ( names != null ? names.hashCode() : 0 );
         result = 31 * result + ( xref != null ? xref.hashCode() : 0 );
-        result = 31 * result + ( type != null ? type.hashCode() : 0 );
-        result = 31 * result + ( detectionMethod != null ? detectionMethod.hashCode() : 0 );
+        result = 31 * result + ( getType() != null ? getType().hashCode() : 0 );
+        result = 31 * result + ( getDetectionMethod() != null ? getDetectionMethod().hashCode() : 0 );
         result = 31 * result + ( experiments != null ? experiments.hashCode() : 0 );
         result = 31 * result + ( experimentRefs != null ? experimentRefs.hashCode() : 0 );
         result = 31 * result + ( xmlRanges != null ? xmlRanges.hashCode() : 0 );
@@ -504,38 +497,72 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         return result;
     }
 
-    protected class FeatureNames extends Names{
+    public Component getComponent() {
+        return (Participant) getParticipantEvidence();
+    }
+
+    public void setComponent(Component participant) {
+        if (participant == null){
+            super.setParticipantEvidence(null);
+        }
+        else if (participant instanceof Participant){
+            super.setParticipantEvidence((Participant)participant);
+        }
+        else {
+            Participant convertedParticipant = new Participant();
+
+            ParticipantCloner.copyAndOverrideComponentProperties(participant, convertedParticipant);
+            super.setParticipantEvidence(convertedParticipant);
+        }
+    }
+
+    public void setComponentAndAddFeature(Component participant) {
+        if (participant == null){
+            super.setParticipantEvidence(null);
+        }
+        else if (participant instanceof Participant){
+            super.setParticipantEvidenceAndAddFeature((Participant)participant);
+        }
+        else {
+            Participant convertedParticipant = new Participant();
+
+            ParticipantCloner.copyAndOverrideComponentProperties(participant, convertedParticipant);
+            super.setParticipantEvidenceAndAddFeature(convertedParticipant);
+        }
+    }
+
+    private class FeatureNames extends Names{
 
         public String getShortLabel() {
-            return shortName;
+            return getShortName();
         }
 
         public boolean hasShortLabel() {
-            return shortName != null;
+            return getShortName() != null;
         }
 
         public void setShortLabel( String value ) {
-            shortName = value;
+            setShortNameOnly(value);
         }
 
         public String getFullName() {
-            return fullName;
+            return getFeatureFullName();
         }
 
         public boolean hasFullName() {
-            return fullName != null;
+            return getFeatureFullName() != null;
         }
 
         public void setFullName( String value ) {
-            fullName = value;
+            setFullNameOnly(value);
         }
 
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Names" );
-            sb.append( "{shortLabel='" ).append( shortName ).append( '\'' );
-            sb.append( ", fullName='" ).append( fullName ).append( '\'' );
+            sb.append( "{shortLabel='" ).append( getShortName() ).append( '\'' );
+            sb.append( ", fullName='" ).append( getFeatureFullName() ).append( '\'' );
             sb.append( ", aliases=" ).append( getAliases() );
             sb.append( '}' );
             return sb.toString();
@@ -549,8 +576,8 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             Names names = ( Names ) o;
 
             if ( getAliases() != null ? !getAliases().equals(names.getAliases()) : names.getAliases() != null ) return false;
-            if ( fullName != null ? !fullName.equals( names.getFullName() ) : names.getFullName() != null ) return false;
-            if ( shortName != null ? !shortName.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+            if ( getFeatureFullName() != null ? !getFeatureFullName().equals( names.getFullName() ) : names.getFullName() != null ) return false;
+            if ( getShortName() != null ? !getShortName().equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
 
             return true;
         }
@@ -558,14 +585,14 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         @Override
         public int hashCode() {
             int result;
-            result = ( shortName != null ? shortName.hashCode() : 0 );
-            result = 31 * result + ( fullName != null ? fullName.hashCode() : 0 );
+            result = ( getShortName() != null ? getShortName().hashCode() : 0 );
+            result = 31 * result + ( getFeatureFullName() != null ? getFeatureFullName().hashCode() : 0 );
             result = 31 * result + ( getAliases() != null ? getAliases().hashCode() : 0 );
             return result;
         }
     }
 
-    protected class FeatureXref extends Xref{
+    private class FeatureXref extends Xref{
 
         protected boolean isPrimaryAnIdentity = false;
         protected SecondaryRefList extendedSecondaryRefList = new SecondaryRefList();
@@ -591,43 +618,43 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
                 super.setPrimaryRef(value);
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((FeatureIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((FeatureIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((FeatureXrefList)xrefs).addOnly(value);
+                        ((FeatureXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else if (isPrimaryAnIdentity){
-                ((FeatureIdentifierList)identifiers).removeOnly(getPrimaryRef());
-                processRemovedIdentifier(getPrimaryRef());
+                ((FeatureIdentifierList)getIdentifiers()).removeOnly(getPrimaryRef());
+                processRemovedIdentifierEvent(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((FeatureIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((FeatureIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((FeatureXrefList)xrefs).addOnly(value);
+                        ((FeatureXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else {
-                ((FeatureXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((FeatureXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((FeatureIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((FeatureIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((FeatureXrefList)xrefs).addOnly(value);
+                        ((FeatureXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
@@ -680,31 +707,31 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
             @Override
             protected void processAddedObjectEvent(DbReference added) {
                 if (XrefUtils.isXrefAnIdentifier(added)){
-                    ((FeatureIdentifierList)identifiers).addOnly(added);
-                    processAddedIdentifier(added);
+                    ((FeatureIdentifierList)getIdentifiers()).addOnly(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
-                    ((FeatureXrefList)xrefs).addOnly(added);
+                    ((FeatureXrefList)getXrefs()).addOnly(added);
                 }
             }
 
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
                 if (XrefUtils.isXrefAnIdentifier(removed)){
-                    ((FeatureIdentifierList)identifiers).removeOnly(removed);
-                    processRemovedIdentifier(removed);
+                    ((FeatureIdentifierList)getIdentifiers()).removeOnly(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
-                    ((FeatureXrefList)xrefs).removeOnly(removed);
+                    ((FeatureXrefList)getXrefs()).removeOnly(removed);
                 }
             }
 
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((FeatureIdentifierList)identifiers).retainAllOnly(primary);
+                ((FeatureIdentifierList)getIdentifiers()).retainAllOnly(primary);
                 clearPropertiesLinkedToIdentifiers();
-                ((FeatureXrefList)xrefs).retainAllOnly(primary);
+                ((FeatureXrefList)getXrefs()).retainAllOnly(primary);
             }
         }
     }
@@ -723,27 +750,27 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
                 if (xref.getPrimaryRef() == null){
                     if (added instanceof DbReference){
                         reference.setPrimaryRefOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.setPrimaryRefOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
                 else {
                     if (added instanceof DbReference){
                         reference.extendedSecondaryRefList.addOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.addOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
             }
@@ -751,7 +778,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
                 if (added instanceof DbReference){
                     xref = new FeatureXref();
                     ((FeatureXref) xref).setPrimaryRefOnly((DbReference) added);
-                    processAddedIdentifier(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
@@ -759,7 +786,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
                     xref = new FeatureXref();
                     ((FeatureXref) xref).setPrimaryRefOnly(fixedRef);
-                    processAddedIdentifier(fixedRef);
+                    processAddedIdentifierEvent(fixedRef);
                 }
             }
         }
@@ -772,12 +799,12 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
                 if (reference.getPrimaryRef() == removed){
                     reference.setPrimaryRefOnly(null);
-                    processRemovedIdentifier(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
                     if (removed instanceof DbReference){
                         reference.extendedSecondaryRefList.removeOnly((DbReference) removed);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
 
                     }
                     else {
@@ -785,7 +812,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
                                 removed.getQualifier() != null ? removed.getQualifier().getShortName() : null, removed.getQualifier() != null ? removed.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.removeOnly(fixedRef);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
                     }
                 }
             }
@@ -797,7 +824,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
             if (xref != null){
                 FeatureXref reference = (FeatureXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(xrefs);
+                reference.extendedSecondaryRefList.retainAllOnly(getXrefs());
 
                 if (reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -883,7 +910,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
 
             if (xref != null){
                 FeatureXref reference = (FeatureXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(identifiers);
+                reference.extendedSecondaryRefList.retainAllOnly(getIdentifiers());
 
                 if (!reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -892,7 +919,7 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         }
     }
 
-    protected class FeatureAnnotationList extends AbstractListHavingPoperties<Annotation> {
+    private class FeatureAnnotationList extends AbstractListHavingPoperties<Annotation> {
         public FeatureAnnotationList(){
             super();
         }
@@ -911,22 +938,22 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
-                ((FeatureXmlAnnotationList)attributes).removeOnly(removed);
+                ((FeatureXmlAnnotationList)getAttributes()).removeOnly(removed);
             }
             else {
                 Attribute att = new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue());
-                ((FeatureXmlAnnotationList)attributes).removeOnly(att);
+                ((FeatureXmlAnnotationList)getAttributes()).removeOnly(att);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((FeatureXmlAnnotationList)attributes).clearOnly();
+            ((FeatureXmlAnnotationList)getAttributes()).clearOnly();
         }
     }
 
-    protected class FeatureXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
+    private class FeatureXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
         public FeatureXmlAnnotationList(){
             super();
         }
@@ -935,24 +962,24 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         protected void processAddedObjectEvent(Attribute added) {
 
             // we added a annotation, needs to add it in annotations
-            ((FeatureAnnotationList)annotations).addOnly(added);
+            ((FeatureAnnotationList)getAnnotations()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Attribute removed) {
 
             // we removed a annotation, needs to remove it in annotations
-            ((FeatureAnnotationList)annotations).removeOnly(removed);
+            ((FeatureAnnotationList)getAnnotations()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((FeatureAnnotationList)annotations).clearOnly();
+            ((FeatureAnnotationList)getAnnotations()).clearOnly();
         }
     }
 
-    protected class FeatureRangeList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Range> {
+    private class FeatureRangeList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Range> {
         public FeatureRangeList(){
             super();
         }
@@ -960,37 +987,37 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Range added) {
             if (added instanceof Range){
-                ((FeatureXmlRangeList)xmlRanges).addOnly((Range) added);
+                ((FeatureXmlRangeList)getFeatureRanges()).addOnly((Range) added);
             }
             else {
                 Range range = new Range();
 
                 RangeCloner.copyAndOverrideRangeProperties(added, range);
-                ((FeatureXmlRangeList)xmlRanges).addOnly(range);
+                ((FeatureXmlRangeList)getFeatureRanges()).addOnly(range);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Range removed) {
             if (removed instanceof Range){
-                ((FeatureXmlRangeList)xmlRanges).removeOnly(removed);
+                ((FeatureXmlRangeList)getFeatureRanges()).removeOnly(removed);
             }
             else {
                 Range range = new Range();
 
                 RangeCloner.copyAndOverrideRangeProperties(removed, range);
-                ((FeatureXmlRangeList) xmlRanges).removeOnly(range);
+                ((FeatureXmlRangeList) getFeatureRanges()).removeOnly(range);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((FeatureXmlRangeList) xmlRanges).clearOnly();
+            ((FeatureXmlRangeList) getFeatureRanges()).clearOnly();
         }
     }
 
-    protected class FeatureXmlRangeList extends AbstractListHavingPoperties<Range> {
+    private class FeatureXmlRangeList extends AbstractListHavingPoperties<Range> {
         public FeatureXmlRangeList(){
             super();
         }
@@ -999,20 +1026,20 @@ public class Feature extends DefaultFeatureEvidence implements HasId, NamesConta
         protected void processAddedObjectEvent(Range added) {
 
             // we added a annotation, needs to add it in annotations
-            ((FeatureRangeList) ranges).addOnly(added);
+            ((FeatureRangeList) getRanges()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Range removed) {
 
             // we removed a annotation, needs to remove it in annotations
-            ((FeatureRangeList) ranges).removeOnly(removed);
+            ((FeatureRangeList) getRanges()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((FeatureRangeList)ranges).clearOnly();
+            ((FeatureRangeList)getRanges()).clearOnly();
         }
     }
 }

@@ -192,7 +192,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Participant extends DefaultParticipantEvidence implements HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Participant extends DefaultParticipantEvidence implements Component, HasId, NamesContainer, XrefContainer, AttributeContainer {
 
     private int id;
 
@@ -400,6 +400,10 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
      */
     public boolean hasInteractor() {
         return interactor != null && !isInteractorAComplex;
+    }
+
+    public void setInteraction(Complex interaction) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
@@ -743,6 +747,22 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         }
     }
 
+    public boolean addFeature(ComponentFeature feature) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean removeFeature(ComponentFeature feature) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean addAllFeatures(Collection<? extends ComponentFeature> features) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean removeAllFeatures(Collection<? extends ComponentFeature> features) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @Override
     public void setExperimentalRole(CvTerm expRole) {
         if (expRole != null){
@@ -900,6 +920,10 @@ public class Participant extends DefaultParticipantEvidence implements HasId, Na
         result = 31 * result + ( parametersList != null ? parametersList.hashCode() : 0 );
         result = 31 * result + ( attributes != null ? attributes.hashCode() : 0 );
         return result;
+    }
+
+    public void setComplexAndAddComponent(Complex interaction) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     protected class ParticipantNames extends Names{

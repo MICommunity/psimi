@@ -59,7 +59,7 @@ public class Range extends DefaultRange{
     public Range( RangeStatus startStatus, Position begin, RangeStatus endStatus, Position end ) {
         super(begin, end);
         getBegin().setStatus(startStatus);
-        getEnd().setStatus(endStatus);
+        getEndPosition().setStatus(endStatus);
     }
 
     public Range( RangeStatus startStatus, Interval beginInterval, RangeStatus endStatus, Position end ) {
@@ -93,7 +93,7 @@ public class Range extends DefaultRange{
      * @return possible object is {@link RangeStatus }
      */
     public RangeStatus getStartStatus() {
-        return (RangeStatus) start.getStatus();
+        return (RangeStatus) getStart().getStatus();
     }
 
     /**
@@ -125,7 +125,7 @@ public class Range extends DefaultRange{
      * @return possible object is {@link Position }
      */
     public Position getBegin() {
-        return isBeginInterval ? null : (Position) start;
+        return isBeginInterval ? null : (Position) getStart();
     }
 
     /**
@@ -135,10 +135,10 @@ public class Range extends DefaultRange{
      */
     public void setBegin( Position value ) {
         if (value == null && !isBeginInterval){
-            this.start = new Position();
+            super.setPositions(new Position(), getEnd());
         }
         else if (value != null) {
-            this.start = value;
+            super.setPositions(value, getEnd());
             isBeginInterval = false;
         }
     }
@@ -158,7 +158,7 @@ public class Range extends DefaultRange{
      * @return possible object is {@link Interval }
      */
     public Interval getBeginInterval() {
-        return isBeginInterval? (Interval) start : null;
+        return isBeginInterval? (Interval) getStart() : null;
     }
 
     /**
@@ -168,10 +168,10 @@ public class Range extends DefaultRange{
      */
     public void setBeginInterval( Interval value ) {
         if (value == null && isBeginInterval){
-            this.start = new Interval();
+            super.setPositions(new Interval(), getEnd());
         }
         else if (value != null) {
-            this.start = value;
+            super.setPositions(value, getEnd());
             isBeginInterval = true;
         }
     }
@@ -182,7 +182,7 @@ public class Range extends DefaultRange{
      * @return possible object is {@link RangeStatus }
      */
     public RangeStatus getEndStatus() {
-        return (RangeStatus) end.getStatus();
+        return (RangeStatus) getEnd().getStatus();
     }
 
     /**
@@ -195,7 +195,7 @@ public class Range extends DefaultRange{
             getEndInterval().setStatus(end);
         }
         else {
-            getEnd().setStatus(end);
+            getEndPosition().setStatus(end);
         }
     }
 
@@ -213,8 +213,8 @@ public class Range extends DefaultRange{
      *
      * @return possible object is {@link Position }
      */
-    public Position getEnd() {
-        return isEndInterval ? null : (Position) this.end;
+    public Position getEndPosition() {
+        return isEndInterval ? null : (Position) this.getEnd();
     }
 
     /**
@@ -224,10 +224,10 @@ public class Range extends DefaultRange{
      */
     public void setEnd( Position value ) {
         if (value == null && !isEndInterval){
-            this.end = new Position();
+            super.setPositions(getStart(), new Position());
         }
         else if (value != null) {
-            this.end = value;
+            super.setPositions(getStart(), value);
             isEndInterval = false;
         }
     }
@@ -247,7 +247,7 @@ public class Range extends DefaultRange{
      * @return possible object is {@link Interval }
      */
     public Interval getEndInterval() {
-        return isEndInterval ? (Interval) this.end : null;
+        return isEndInterval ? (Interval) getEnd() : null;
     }
 
     /**
@@ -257,21 +257,12 @@ public class Range extends DefaultRange{
      */
     public void setEndInterval( Interval value ) {
         if (value == null && isEndInterval){
-            this.end = new Interval();
+            super.setPositions(getStart(),new Interval());
         }
         else if (value != null) {
-            this.end = value;
+            super.setPositions(getStart(),value);
             isEndInterval = true;
         }
-    }
-
-    /**
-     * Gets the value of the isLink property.
-     *
-     * @return possible object is {@link Boolean }
-     */
-    public boolean isLink() {
-        return isLink;
     }
 
     /**
@@ -280,7 +271,7 @@ public class Range extends DefaultRange{
      * @param value allowed object is {@link Boolean }
      */
     public void setIsLink( boolean value ) {
-        this.isLink = value;
+        super.setLink(value);
     }
 
     //////////////////////
@@ -326,7 +317,7 @@ public class Range extends DefaultRange{
         sb.append( ", endStatus=" ).append( getEndStatus() );
         sb.append( ", end=" ).append( getEnd() );
         sb.append( ", endInterval=" ).append( getEndInterval() );
-        sb.append( ", isLink=" ).append( isLink );
+        sb.append( ", isLink=" ).append( isLink() );
         sb.append( '}' );
         return sb.toString();
     }
@@ -344,7 +335,7 @@ public class Range extends DefaultRange{
         if ( getEnd() != null ? !getEnd().equals(range.getEnd()) : range.getEnd() != null ) return false;
         if ( getEndInterval() != null ? !getEndInterval().equals(range.getEndInterval()) : range.getEndInterval() != null ) return false;
         if ( !getEndStatus().equals(range.getEndStatus()) ) return false;
-        if ( isLink != range.isLink ) return false;
+        if ( isLink() != range.isLink() ) return false;
         if ( !getStartStatus().equals(range.getStartStatus()) ) return false;
 
         return true;
@@ -359,7 +350,7 @@ public class Range extends DefaultRange{
         result = 29 * result + getEndStatus().hashCode();
         result = 29 * result + ( getEnd() != null ? getEnd().hashCode() : 0 );
         result = 29 * result + ( getEndInterval() != null ? getEndInterval().hashCode() : 0 );
-        result = 29 * result + ( isLink ? 1 : 0 );
+        result = 29 * result + ( isLink() ? 1 : 0 );
         return result;
     }
 }

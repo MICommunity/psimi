@@ -6,7 +6,7 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
 import java.io.Serializable;
@@ -40,23 +40,26 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Alias extends DefaultAlias implements Serializable {
+public class Alias implements psidev.psi.mi.jami.model.Alias, Serializable {
 
     ///////////////////////////
     // Constructors
 
     private static String UNSPECIFIED = "unspecified";
 
+    private CvTerm type;
+    private String name;
+
     public Alias() {
-        super(UNSPECIFIED);
+        this.name = UNSPECIFIED;
     }
 
     public Alias( String value ) {
-        super(value != null && value.length() > 0 ? value : UNSPECIFIED);
+        this.name = value != null && value.length() > 0 ? value : UNSPECIFIED;
     }
 
     public Alias( String value, String type, String typeAc ) {
-        super(value != null && value.length() > 0  ? value : UNSPECIFIED);
+        this.name = value != null && value.length() > 0  ? value : UNSPECIFIED;
 
         if (type != null && typeAc != null){
             this.type = new DefaultCvTerm(type, typeAc);
@@ -204,7 +207,7 @@ public class Alias extends DefaultAlias implements Serializable {
 
         final Alias alias = ( Alias ) o;
 
-        if ( getType() != null ? !getType().equals( alias.getType() ) : alias.getType() != null ) {
+        if ( getAliasType() != null ? !getAliasType().equals( alias.getAliasType() ) : alias.getAliasType() != null ) {
             return false;
         }
         if ( getTypeAc() != null ? !getTypeAc().equals( alias.getTypeAc() ) : alias.getTypeAc() != null ) {
@@ -221,8 +224,16 @@ public class Alias extends DefaultAlias implements Serializable {
     public int hashCode() {
         int result;
         result = ( name != null ? name.hashCode() : 0 );
-        result = 29 * result + ( getType() != null ? getType().hashCode() : 0 );
+        result = 29 * result + ( getAliasType() != null ? getAliasType().hashCode() : 0 );
         result = 29 * result + ( getTypeAc() != null ? getTypeAc().hashCode() : 0 );
         return result;
+    }
+
+    public CvTerm getType() {
+        return this.type;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

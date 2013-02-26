@@ -8,7 +8,6 @@ package psidev.psi.mi.xml.model;
 
 
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -56,7 +55,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
     private Xref xref;
 
-    private Collection<Attribute> attributes=new SourceXmlAnnotationList();
+    private Collection<Attribute> attributes;
 
     private String release;
 
@@ -73,23 +72,23 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
     }
 
     @Override
-    protected void initializeSynonyms() {
-        this.synonyms = new SourceAliasList();
+    protected void initialiseSynonyms() {
+        initialiseSynonymsWith(new SourceAliasList());
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new SourceXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new SourceXrefList());
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new SourceIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new SourceIdentifierList());
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new SourceAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new SourceAnnotationList());
     }
 
     ///////////////////////////
@@ -124,16 +123,16 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
                 names = new SourceNames();
             }
             else {
-                synonyms.clear();
+                getSynonyms().clear();
             }
-            this.names.setShortLabel(value.getShortLabel());
-            this.names.setFullName(value.getFullName());
-            this.names.getAliases().addAll(value.getAliases());
+            super.setShortName(value.getShortLabel() != null ? value.getShortLabel() : UNKNOWN);
+            super.setFullName(value.getFullName());
+            getSynonyms().addAll(value.getAliases());
         }
         else if (this.names != null) {
-            synonyms.clear();
-            this.shortName = UNKNOWN;
-            this.fullName = null;
+            getSynonyms().clear();
+            super.setShortName(UNKNOWN);
+            super.setFullName(null);
             this.names = null;
         }
     }
@@ -144,7 +143,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      * @return true if defined, false otherwise.
      */
     public boolean hasBibref() {
-        return bibRef != null;
+        return getPublication() != null;
     }
 
     /**
@@ -153,7 +152,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      * @return possible object is {@link Bibref }
      */
     public Bibref getBibref() {
-        return (Bibref)bibRef;
+        return (Bibref)getPublication();
     }
 
     /**
@@ -162,7 +161,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      * @param value allowed object is {@link Bibref }
      */
     public void setBibref( Bibref value ) {
-        this.bibRef = value;
+        super.setPublication(value);
     }
 
     /**
@@ -191,14 +190,14 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                identifiers.clear();
-                this.xrefs.clear();
+                getIdentifiers().clear();
+                getXrefs().clear();
             }
             this.xref = new SourceXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            identifiers.clear();
-            xrefs.clear();
+            getIdentifiers().clear();
+            getXrefs().clear();
             this.xref = null;
         }
     }
@@ -219,7 +218,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
      */
     public Collection<Attribute> getAttributes() {
         if ( attributes == null ) {
-            attributes = new ArrayList<Attribute>();
+            attributes=new SourceXmlAnnotationList();
         }
         return attributes;
     }
@@ -278,186 +277,85 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         this.releaseDate = value;
     }
 
-    protected void processAddedAnnotationEvent(Annotation added) {
-        if (url == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.URL_MI, Annotation.URL)){
-            url = added;
-        }
-        else if (postalAddress == null && added.getValue() != null && AnnotationUtils.doesAnnotationHaveTopic(added, null, POSTAL_ADDRESS)){
-            postalAddress = added.getValue();
-        }
-    }
-
-    protected void processRemovedAnnotationEvent(Annotation removed) {
-        if (url != null && url.equals(removed)){
-            url = null;
-        }
-        else if (postalAddress != null && removed.getValue() != null && POSTAL_ADDRESS.equalsIgnoreCase(removed.getTopic().getShortName().toLowerCase())
-                && postalAddress.equals(removed.getValue())){
-            postalAddress = null;
-        }
-    }
-
-    protected void clearPropertiesLinkedToAnnotations() {
-        this.url = null;
-        this.postalAddress=null;
-    }
-
     /////////////////////
     // Object override
 
     @Override
     public void setShortName(String name) {
         if (names != null){
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
         else if (name != null) {
             names = new SourceNames();
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
         else {
             names = new SourceNames();
-            names.setShortLabel(UNKNOWN);
+            super.setShortName(UNKNOWN);
         }
     }
 
     @Override
     public void setFullName(String name) {
         if (names != null){
-            if (names.getShortLabel().equals(UNKNOWN)){
-                names.setShortLabel(name);
+            if (getShortName().equals(UNKNOWN)){
+                super.setShortName(name != null ? name : UNKNOWN);
             }
-            names.setFullName(name);
+            super.setFullName(name);
         }
         else if (name != null) {
             names = new SourceNames();
-            names.setShortLabel(name);
-            names.setFullName(name);
+            super.setShortName(name);
+            super.setFullName(name);
         }
         else {
             names = new SourceNames();
-            names.setShortLabel(UNKNOWN);
-            names.setFullName(name);
+            super.setShortName(UNKNOWN);
+            super.setFullName(name);
         }
+    }
+
+    protected void setShortNameOnly(String name) {
+        super.setShortName(name != null ? name : UNKNOWN);
+
+    }
+
+    protected void setFullNameOnly(String name) {
+        super.setFullName(name);
+    }
+
+    protected String getSourceFullName(){
+        return super.getFullName();
     }
 
     @Override
     public void setPublication(Publication ref) {
         if (ref == null){
-            this.bibRef = null;
+            super.setPublication(null);
         }
         else if (ref instanceof Bibref){
-            this.bibRef = ref;
+            super.setPublication(ref);
         }
         else {
-            this.bibRef = new Bibref();
+            Bibref bibRef = new Bibref();
             PublicationCloner.copyAndOverridePublicationProperties(ref, bibRef);
-        }
-    }
-
-    @Override
-    public void setMIIdentifier(String mi) {
-        // add new mi if not null
-        if (mi != null){
-            // first remove old psi mi if not null
-            if (this.miIdentifier != null){
-                identifiers.remove(this.miIdentifier);
-            }
-            this.miIdentifier = new DbReference(CvTerm.PSI_MI, CvTerm.PSI_MI_MI, mi, psidev.psi.mi.jami.model.Xref.IDENTITY, psidev.psi.mi.jami.model.Xref.IDENTITY_MI);
-            this.identifiers.add(this.miIdentifier);
-        }
-        // remove all mi if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
-            this.miIdentifier = null;
-        }
-    }
-
-    @Override
-    public void setMODIdentifier(String mod) {
-        // add new mod if not null
-        if (mod != null){
-            // first remove old psi mod if not null
-            if (this.modIdentifier != null){
-                identifiers.remove(this.modIdentifier);
-            }
-            this.modIdentifier = new DbReference(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI, mod, psidev.psi.mi.jami.model.Xref.IDENTITY, psidev.psi.mi.jami.model.Xref.IDENTITY_MI);
-            this.identifiers.add(this.modIdentifier);
-        }
-        // remove all mod if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
-            this.modIdentifier = null;
+            super.setPublication(bibRef);
         }
     }
 
     @Override
     public void setPostalAddress(String address) {
-        if (postalAddress != null){
-            if (this.postalAddress != null){
-                annotations.remove(this.url);
+        if (getPostalAddress() != null){
+            if (getPostalAddress() != null){
+                getAnnotations().remove(new Attribute(POSTAL_ADDRESS, address));
             }
-            this.postalAddress = address;
-            this.annotations.add(new Attribute(POSTAL_ADDRESS, address));
+            super.setPostalAddress(address);
+            getAnnotations().add(new Attribute(POSTAL_ADDRESS, address));
         }
-        else if (!this.annotations.isEmpty()) {
-            AnnotationUtils.removeAllAnnotationsWithTopic(annotations, null, POSTAL_ADDRESS);
-            this.postalAddress = null;
+        else if (!getAnnotations().isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(getAnnotations(), null, POSTAL_ADDRESS);
+            super.setPostalAddress(null);
         }
-    }
-
-    protected void processAddedIdentifier(psidev.psi.mi.jami.model.Xref added){
-        // the added identifier is psi-mi and it is not the current mi identifier
-        if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
-            // the current psi-mi identifier is not identity, we may want to set miIdentifier
-            if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                // the miidentifier is not set, we can set the miidentifier
-                if (miIdentifier == null){
-                    miIdentifier = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                    miIdentifier = added;
-                }
-                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                else if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)){
-                    miIdentifier = added;
-                }
-            }
-        }
-        // the added identifier is psi-mod and it is not the current mod identifier
-        else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
-            // the current psi-mod identifier is not identity, we may want to set modIdentifier
-            if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                // the modIdentifier is not set, we can set the modIdentifier
-                if (modIdentifier == null){
-                    modIdentifier = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                    modIdentifier = added;
-                }
-                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                else if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)){
-                    modIdentifier = added;
-                }
-            }
-        }
-    }
-
-    protected void processRemovedIdentifier(psidev.psi.mi.jami.model.Xref removed){
-        // the removed identifier is psi-mi
-        if (miIdentifier != null && miIdentifier.equals(removed)){
-            miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
-        }
-        // the removed identifier is psi-mod
-        else if (modIdentifier != null && modIdentifier.equals(removed)){
-            modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
-        }
-    }
-
-    protected void clearPropertiesLinkedToIdentifiers(){
-        miIdentifier = null;
-        modIdentifier = null;
     }
 
     @Override
@@ -465,7 +363,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         final StringBuilder sb = new StringBuilder();
         sb.append( "Source" );
         sb.append( "{names=" ).append( names );
-        sb.append( ", bibref=" ).append( bibRef );
+        sb.append( ", bibref=" ).append( getPublication() );
         sb.append( ", xref=" ).append( xref );
         sb.append( ", attributes=" ).append( attributes );
         sb.append( ", release='" ).append( release ).append( '\'' );
@@ -475,37 +373,37 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
     }
 
     //TODO equals and hashCode
-    protected class SourceNames extends Names{
+    private class SourceNames extends Names{
 
         protected AliasList extendedAliases = new AliasList();
 
         public String getShortLabel() {
-            return shortName;
+            return getShortName();
         }
 
         public boolean hasShortLabel() {
-            return shortName != null;
+            return getShortName() != null;
         }
 
         public void setShortLabel( String value ) {
             if (value != null){
-                shortName = value;
+                setShortNameOnly(value);
             }
             else {
-                shortName = UNKNOWN;
+                setShortNameOnly(UNKNOWN);
             }
         }
 
         public String getFullName() {
-            return fullName;
+            return getSourceFullName();
         }
 
         public boolean hasFullName() {
-            return fullName != null;
+            return getSourceFullName() != null;
         }
 
         public void setFullName( String value ) {
-            fullName = value;
+            setFullNameOnly(value);
         }
 
         public Collection<Alias> getAliases() {
@@ -520,8 +418,8 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Names" );
-            sb.append( "{shortLabel='" ).append( shortName ).append( '\'' );
-            sb.append( ", fullName='" ).append( fullName ).append( '\'' );
+            sb.append( "{shortLabel='" ).append( getShortName() ).append( '\'' );
+            sb.append( ", fullName='" ).append( getSourceFullName() ).append( '\'' );
             sb.append( ", aliases=" ).append( extendedAliases );
             sb.append( '}' );
             return sb.toString();
@@ -535,8 +433,8 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             Names names = ( Names ) o;
 
             if ( extendedAliases != null ? !extendedAliases.equals( names.getAliases() ) : names.getAliases() != null ) return false;
-            if ( fullName != null ? !fullName.equals( names.getFullName() ) : names.getFullName() != null ) return false;
-            if ( shortName != null ? !shortName.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+            if ( getSourceFullName() != null ? !getSourceFullName().equals( names.getFullName() ) : names.getFullName() != null ) return false;
+            if ( getShortName() != null ? !getShortName() .equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
 
             return true;
         }
@@ -544,8 +442,8 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         @Override
         public int hashCode() {
             int result;
-            result = ( shortName != null ? shortName.hashCode() : 0 );
-            result = 31 * result + ( fullName != null ? fullName.hashCode() : 0 );
+            result = ( getShortName()  != null ? getShortName() .hashCode() : 0 );
+            result = 31 * result + ( getSourceFullName() != null ? getSourceFullName().hashCode() : 0 );
             result = 31 * result + ( extendedAliases != null ? extendedAliases.hashCode() : 0 );
             return result;
         }
@@ -554,17 +452,17 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
             @Override
             protected void processAddedObjectEvent(Alias added) {
-                ((SourceAliasList) synonyms).addOnly(added);
+                ((SourceAliasList) getSynonyms()).addOnly(added);
             }
 
             @Override
             protected void processRemovedObjectEvent(Alias removed) {
-                ((SourceAliasList)synonyms).removeOnly(removed);
+                ((SourceAliasList)getSynonyms()).removeOnly(removed);
             }
 
             @Override
             protected void clearProperties() {
-                ((SourceAliasList)synonyms).clearOnly();
+                ((SourceAliasList)getSynonyms()).clearOnly();
             }
         }
     }
@@ -633,7 +531,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         }
     }
 
-    protected class SourceXref extends Xref{
+    private class SourceXref extends Xref{
 
         protected boolean isPrimaryAnIdentity = false;
         protected SecondaryRefList extendedSecondaryRefList = new SecondaryRefList();
@@ -659,43 +557,43 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
                 super.setPrimaryRef(value);
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((SourceIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((SourceIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((SourceXrefList)xrefs).addOnly(value);
+                        ((SourceXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else if (isPrimaryAnIdentity){
-                ((SourceIdentifierList)identifiers).removeOnly(getPrimaryRef());
-                processRemovedIdentifier(getPrimaryRef());
+                ((SourceIdentifierList)getIdentifiers()).removeOnly(getPrimaryRef());
+                processRemovedIdentifierEvent(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((SourceIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((SourceIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((SourceXrefList)xrefs).addOnly(value);
+                        ((SourceXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else {
-                ((SourceXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((SourceXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((SourceIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((SourceIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((SourceXrefList)xrefs).addOnly(value);
+                        ((SourceXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
@@ -748,31 +646,31 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             @Override
             protected void processAddedObjectEvent(DbReference added) {
                 if (XrefUtils.isXrefAnIdentifier(added)){
-                    ((SourceIdentifierList)identifiers).addOnly(added);
-                    processAddedIdentifier(added);
+                    ((SourceIdentifierList)getIdentifiers()).addOnly(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
-                    ((SourceXrefList)xrefs).addOnly(added);
+                    ((SourceXrefList)getXrefs()).addOnly(added);
                 }
             }
 
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
                 if (XrefUtils.isXrefAnIdentifier(removed)){
-                    ((SourceIdentifierList)identifiers).removeOnly(removed);
-                    processRemovedIdentifier(removed);
+                    ((SourceIdentifierList)getIdentifiers()).removeOnly(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
-                    ((SourceXrefList)xrefs).removeOnly(removed);
+                    ((SourceXrefList)getXrefs()).removeOnly(removed);
                 }
             }
 
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((SourceIdentifierList)identifiers).retainAllOnly(primary);
+                ((SourceIdentifierList)getIdentifiers()).retainAllOnly(primary);
                 clearPropertiesLinkedToIdentifiers();
-                ((SourceXrefList)xrefs).retainAllOnly(primary);
+                ((SourceXrefList)getXrefs()).retainAllOnly(primary);
             }
         }
     }
@@ -791,27 +689,27 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
                 if (xref.getPrimaryRef() == null){
                     if (added instanceof DbReference){
                         reference.setPrimaryRefOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.setPrimaryRefOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
                 else {
                     if (added instanceof DbReference){
                         reference.extendedSecondaryRefList.addOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.addOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
             }
@@ -819,7 +717,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
                 if (added instanceof DbReference){
                     xref = new SourceXref();
                     ((SourceXref) xref).setPrimaryRefOnly((DbReference) added);
-                    processAddedIdentifier(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
@@ -827,7 +725,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
                     xref = new SourceXref();
                     ((SourceXref) xref).setPrimaryRefOnly(fixedRef);
-                    processAddedIdentifier(fixedRef);
+                    processAddedIdentifierEvent(fixedRef);
                 }
             }
         }
@@ -840,12 +738,12 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
                 if (reference.getPrimaryRef() == removed){
                     reference.setPrimaryRefOnly(null);
-                    processRemovedIdentifier(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
                     if (removed instanceof DbReference){
                         reference.extendedSecondaryRefList.removeOnly((DbReference) removed);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
 
                     }
                     else {
@@ -853,7 +751,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
                                 removed.getQualifier() != null ? removed.getQualifier().getShortName() : null, removed.getQualifier() != null ? removed.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.removeOnly(fixedRef);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
                     }
                 }
             }
@@ -865,7 +763,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
             if (xref != null){
                 SourceXref reference = (SourceXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(xrefs);
+                reference.extendedSecondaryRefList.retainAllOnly(getXrefs());
 
                 if (reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -951,7 +849,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
             if (xref != null){
                 SourceXref reference = (SourceXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(identifiers);
+                reference.extendedSecondaryRefList.retainAllOnly(getIdentifiers());
 
                 if (!reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -960,7 +858,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         }
     }
 
-    protected class SourceAnnotationList extends AbstractListHavingPoperties<Annotation> {
+    private class SourceAnnotationList extends AbstractListHavingPoperties<Annotation> {
         public SourceAnnotationList(){
             super();
         }
@@ -968,12 +866,12 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
             if (added instanceof Attribute){
-                ((SourceXmlAnnotationList)attributes).addOnly((Attribute) added);
+                ((SourceXmlAnnotationList)getAttributes()).addOnly((Attribute) added);
                 processAddedAnnotationEvent(added);
             }
             else {
                 Attribute att = new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue());
-                ((SourceXmlAnnotationList)attributes).addOnly(att);
+                ((SourceXmlAnnotationList)getAttributes()).addOnly(att);
                 processAddedAnnotationEvent(att);
             }
         }
@@ -981,12 +879,12 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
-                ((SourceXmlAnnotationList)attributes).removeOnly(removed);
+                ((SourceXmlAnnotationList)getAttributes()).removeOnly(removed);
                 processRemovedAnnotationEvent(removed);
             }
             else {
                 Attribute att = new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue());
-                ((SourceXmlAnnotationList)attributes).removeOnly(att);
+                ((SourceXmlAnnotationList)getAttributes()).removeOnly(att);
                 processRemovedAnnotationEvent(att);
             }
         }
@@ -994,12 +892,12 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((SourceXmlAnnotationList)attributes).clearOnly();
+            ((SourceXmlAnnotationList)getAttributes()).clearOnly();
             clearPropertiesLinkedToAnnotations();
         }
     }
 
-    protected class SourceXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
+    private class SourceXmlAnnotationList extends AbstractListHavingPoperties<Attribute> {
         public SourceXmlAnnotationList(){
             super();
         }
@@ -1008,7 +906,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         protected void processAddedObjectEvent(Attribute added) {
 
             // we added a annotation, needs to add it in annotations
-            ((SourceAnnotationList)annotations).addOnly(added);
+            ((SourceAnnotationList)getAnnotations()).addOnly(added);
             processAddedAnnotationEvent(added);
         }
 
@@ -1016,14 +914,14 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
         protected void processRemovedObjectEvent(Attribute removed) {
 
             // we removed a annotation, needs to remove it in annotations
-            ((SourceAnnotationList)annotations).removeOnly(removed);
+            ((SourceAnnotationList)getAnnotations()).removeOnly(removed);
             processRemovedAnnotationEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((SourceAnnotationList)annotations).clearOnly();
+            ((SourceAnnotationList)getAnnotations()).clearOnly();
             clearPropertiesLinkedToAnnotations();
         }
     }

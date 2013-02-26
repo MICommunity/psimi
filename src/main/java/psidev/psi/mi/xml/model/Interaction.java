@@ -52,6 +52,8 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
     private Collection<Attribute> attributeList = new InteractionXmlAnnotationList();
 
+    private Collection<Experiment> experiments = new ComplexExperimentsList();
+
     ///////////////////////////
     // Constructors
 
@@ -261,7 +263,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     }
 
     public Collection<Experiment> getExperiments() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return experiments;
     }
 
     public Collection<Component> getComponents() {
@@ -540,6 +542,28 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
     protected void clearPropertiesLinkedToChecksums() {
         rigid = null;
+    }
+
+    protected void processAddedExperimentEvent(ExperimentDescription added) {
+
+        if (experiment == null){
+            experiment = added;
+        }
+    }
+
+    protected void processRemovedExperimentEvent(ExperimentDescription removed) {
+
+        if (experimentDescriptions.isEmpty()){
+            experiment = null;
+        }
+        else if (experiment != null && removed.equals(experiment)){
+            experiment = experimentDescriptions.iterator().next();
+        }
+    }
+
+    protected void clearPropertiesLinkedToExperiments() {
+
+        experiment = null;
     }
 
     ///////////////////////////
@@ -1208,6 +1232,50 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         }
     }
 
+    private class ComplexExperimentsList extends AbstractListHavingPoperties<Experiment> {
+        public ComplexExperimentsList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(Experiment added) {
+
+            if (added instanceof ExperimentDescription){
+                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) added);
+                processAddedExperimentEvent((ExperimentDescription)added);
+            }
+            else {
+                ExperimentDescription exp = new ExperimentDescription();
+                ExperimentCloner.copyAndOverrideExperimentProperties(added, exp);
+
+                ((InteractionExperimentsList)experimentDescriptions).addOnly(exp);
+                processAddedExperimentEvent(exp);
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(Experiment removed) {
+
+            if (removed instanceof ExperimentDescription){
+                ((InteractionExperimentsList)experimentDescriptions).removeOnly((ExperimentDescription) removed);
+                processRemovedExperimentEvent((ExperimentDescription) removed);
+            }
+            else {
+                ExperimentDescription exp = new ExperimentDescription();
+                ExperimentCloner.copyAndOverrideExperimentProperties(removed, exp);
+
+                ((InteractionExperimentsList)experimentDescriptions).addOnly(exp);
+                processRemovedExperimentEvent(exp);
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            clearPropertiesLinkedToExperiments();
+            ((InteractionExperimentsList)experimentDescriptions).clearOnly();
+        }
+    }
+
     private class InteractionExperimentsList extends AbstractListHavingPoperties<ExperimentDescription> {
         public InteractionExperimentsList(){
             super();
@@ -1216,26 +1284,22 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void processAddedObjectEvent(ExperimentDescription added) {
 
-            if (experiment == null){
-                experiment = added;
-            }
+            processAddedExperimentEvent(added);
+            ((ComplexExperimentsList) experiments).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(ExperimentDescription removed) {
 
-            if (isEmpty()){
-                experiment = null;
-            }
-            else if (experiment != null && removed.equals(experiment)){
-                experiment = iterator().next();
-            }
+            processRemovedExperimentEvent(removed);
+            ((ComplexExperimentsList) experiments).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
 
-            experiment = null;
+            clearPropertiesLinkedToExperiments();
+            ((ComplexExperimentsList) experiments).clearOnly();
         }
     }
 

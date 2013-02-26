@@ -7,7 +7,7 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.impl.DefaultPosition;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 
@@ -27,18 +27,27 @@ import psidev.psi.mi.jami.utils.clone.CvTermCloner;
  * </pre>
  */
 
-public class Position extends DefaultPosition{
+public class Position implements psidev.psi.mi.jami.model.Position{
+
+    private RangeStatus status;
+    private long start;
+    private long end;
+    private boolean isPositionUndetermined;
 
     ///////////////////////////
     // Constructors
 
     public Position() {
-        super(new RangeStatus(), 0);
+        this.status = new RangeStatus();
+        this.start = 0;
+        this.end = 0;
         this.isPositionUndetermined = true;
     }
 
     public Position( long position ) {
-        super(new RangeStatus(), position);
+        this.status = new RangeStatus();
+        this.start = position;
+        this.end = position;
         this.isPositionUndetermined = true;
     }
 
@@ -114,5 +123,21 @@ public class Position extends DefaultPosition{
     @Override
     public int hashCode() {
         return ( int ) ( start ^ ( start >>> 32 ) );
+    }
+
+    public CvTerm getStatus() {
+        return status;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public long getEnd() {
+        return end;
+    }
+
+    public boolean isPositionUndetermined() {
+        return isPositionUndetermined;
     }
 }
