@@ -28,7 +28,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
 
     public DefaultInteractionEvidence(Experiment experiment) {
         super();
-        initializeParameters();
 
         this.experiment = experiment;
     }
@@ -108,11 +107,11 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         super(shortName, type);
     }
 
-    protected void initializeParameters(){
+    protected void initialiseParameters(){
         this.parameters = new ArrayList<Parameter>();
     }
 
-    protected void initializeParametersWith(Collection<Parameter> parameters){
+    protected void initialiseParametersWith(Collection<Parameter> parameters){
         if (parameters == null){
             this.parameters = Collections.EMPTY_LIST;
         }
@@ -173,6 +172,9 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
     }
 
     public Collection<Parameter> getParameters() {
+        if (parameters == null){
+            initialiseParameters();
+        }
         return this.parameters;
     }
 

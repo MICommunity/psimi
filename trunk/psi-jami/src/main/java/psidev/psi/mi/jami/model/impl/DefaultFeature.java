@@ -72,27 +72,27 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         this.type =type;
     }
 
-    protected void initializeIdentifiers(){
+    protected void initialiseIdentifiers(){
         this.identifiers = new FeatureIdentifierList();
     }
 
-    protected void initializeAnnotations(){
+    protected void initialiseAnnotations(){
         this.annotations = new ArrayList<Annotation>();
     }
 
-    protected void initializeXrefs(){
+    protected void initialiseXrefs(){
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initializeRanges(){
+    protected void initialiseRanges(){
         this.ranges = new ArrayList<Range>();
     }
 
-    protected void initializeBindingFeatures(){
+    protected void initialiseBindingFeatures(){
         this.bindingFeatures = new ArrayList<T>();
     }
 
-    protected void initializeIdentifiersWith(Collection<Xref> identifiers){
+    protected void initialiseIdentifiersWith(Collection<Xref> identifiers){
         if (identifiers == null){
             this.identifiers = Collections.EMPTY_LIST;
         }
@@ -101,7 +101,7 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
     }
 
-    protected void initializeAnnotationsWith(Collection<Annotation> annotations){
+    protected void initialiseAnnotationsWith(Collection<Annotation> annotations){
         if (annotations == null){
             this.annotations = Collections.EMPTY_LIST;
         }
@@ -110,7 +110,7 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
     }
 
-    protected void initializeXrefsWith(Collection<Xref> xrefs){
+    protected void initialiseXrefsWith(Collection<Xref> xrefs){
         if (xrefs == null){
             this.xrefs = Collections.EMPTY_LIST;
         }
@@ -119,7 +119,7 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
     }
 
-    protected void initializeRangesWith(Collection<Range> ranges){
+    protected void initialiseRangesWith(Collection<Range> ranges){
         if (ranges == null){
             this.ranges = Collections.EMPTY_LIST;
         }
@@ -128,7 +128,7 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         }
     }
 
-    protected void initializeBindingFeaturesWith(Collection<T> features){
+    protected void initialiseBindingFeaturesWith(Collection<T> features){
         if (features == null){
             this.bindingFeatures = Collections.EMPTY_LIST;
         }
@@ -180,21 +180,21 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
     public Collection<Xref> getIdentifiers() {
         if (identifiers == null){
-            initializeIdentifiers();
+            initialiseIdentifiers();
         }
         return this.identifiers;
     }
 
     public Collection<Xref> getXrefs() {
         if (xrefs == null){
-            initializeXrefs();
+            initialiseXrefs();
         }
         return this.xrefs;
     }
 
     public Collection<Annotation> getAnnotations() {
         if (annotations == null){
-            initializeAnnotations();
+            initialiseAnnotations();
         }
         return this.annotations;
     }
@@ -209,14 +209,14 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
     public Collection<Range> getRanges() {
         if (ranges == null){
-            initializeRanges();
+            initialiseRanges();
         }
         return this.ranges;
     }
 
     public Collection<T> getBindingFeatures() {
         if(bindingFeatures == null){
-           initializeBindingFeatures();
+           initialiseBindingFeatures();
         }
         return this.bindingFeatures;
     }
