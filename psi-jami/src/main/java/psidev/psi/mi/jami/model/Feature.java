@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Feature<T extends Feature, P extends Participant> {
+public interface Feature<T extends Feature> {
 
     /**
      * The short name of a feature.
@@ -105,24 +105,5 @@ public interface Feature<T extends Feature, P extends Participant> {
      * The collection cannot be null. If the feature does not bind with any other features, the method should return an empty collection
      * @return the binding features
      */
-    public Collection<T> getBindingFeatures();
-
-    /**
-     * The participant to which the feature is attached.
-     * It can be null if the feature is not attached to any participants.
-     * @return the participant
-     */
-    public P getParticipant();
-
-    /**
-     * Sets the participant.
-     * @param participant : participant
-     */
-    public void setParticipant(P participant);
-
-    /**
-     * Sets the participant and add this feature to its list of features
-     * @param participant : participant
-     */
-    public void setParticipantAndAddFeature(P participant);
+    public Collection<? extends T> getBindingFeatures();
 }

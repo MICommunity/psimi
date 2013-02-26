@@ -20,7 +20,7 @@ import java.util.Collections;
  * @since <pre>01/02/13</pre>
  */
 
-public class DefaultFeature<T extends Feature, P extends Participant> implements Feature<T, P>, Serializable{
+public class DefaultFeature<T extends Feature> implements Feature<T>, Serializable{
 
     private String shortName;
     private String fullName;
@@ -31,7 +31,6 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     private CvTerm type;
     private Collection<Range> ranges;
     private Collection<T> bindingFeatures;
-    private P participant;
 
     public DefaultFeature(){
     }
@@ -49,26 +48,6 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
     public DefaultFeature(String shortName, String fullName, CvTerm type){
         this(shortName, fullName);
-        this.type =type;
-    }
-
-    public DefaultFeature(P participant){
-        this.participant = participant;
-    }
-
-    public DefaultFeature(P participant, String shortName, String fullName){
-        this(participant);
-        this.shortName = shortName;
-        this.fullName = fullName;
-    }
-
-    public DefaultFeature(P participant, CvTerm type){
-        this(participant);
-        this.type = type;
-    }
-
-    public DefaultFeature(P participant, String shortName, String fullName, CvTerm type){
-        this(participant, shortName, fullName);
         this.type =type;
     }
 
@@ -214,27 +193,11 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
         return this.ranges;
     }
 
-    public Collection<T> getBindingFeatures() {
+    public Collection<? extends T> getBindingFeatures() {
         if(bindingFeatures == null){
            initialiseBindingFeatures();
         }
         return this.bindingFeatures;
-    }
-
-    public P getParticipant() {
-        return this.participant;
-    }
-
-    public void setParticipant(P participant) {
-        this.participant = participant;
-    }
-
-    public void setParticipantAndAddFeature(P participant) {
-        this.participant = participant;
-
-        if (participant != null){
-            this.participant.getFeatures().add(this);
-        }
     }
 
     protected void processAddedIdentifierEvent(Xref added) {

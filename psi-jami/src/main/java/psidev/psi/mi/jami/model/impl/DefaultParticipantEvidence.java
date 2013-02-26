@@ -16,7 +16,7 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEvidence, Interactor, FeatureEvidence> implements ParticipantEvidence {
+public class DefaultParticipantEvidence extends DefaultParticipant<Interactor, FeatureEvidence> implements ParticipantEvidence {
 
     private CvTerm experimentalRole;
     private CvTerm identificationMethod;
@@ -24,33 +24,38 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
     private Organism expressedIn;
     private Collection<Confidence> confidences;
     private Collection<Parameter> parameters;
+    private InteractionEvidence interactionEvidence;
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor);
+        super(interactor);
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor, bioRole);
+        super(interactor, bioRole);
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, Integer stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor, stoichiometry);
+        super(interactor, stoichiometry);
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor, bioRole, stoichiometry);
+        super(interactor, bioRole, stoichiometry);
         this.identificationMethod = participantIdentificationMethod;
         this.experimentalRole = CvTermFactory.createUnspecifiedRole();
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor, bioRole);
+        super(interactor, bioRole);
         if(expRole == null){
            this.experimentalRole = CvTermFactory.createUnspecifiedRole();
         }
@@ -58,10 +63,11 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
             this.experimentalRole = expRole;
         }
         this.identificationMethod = participantIdentificationMethod;
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor, bioRole, stoichiometry);
+        super(interactor, bioRole, stoichiometry);
         if(expRole == null){
             this.experimentalRole = CvTermFactory.createUnspecifiedRole();
         }
@@ -69,10 +75,11 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
             this.experimentalRole = expRole;
         }
         this.identificationMethod = participantIdentificationMethod;
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor, bioRole);
+        super(interactor, bioRole);
         if(expRole == null){
             this.experimentalRole = CvTermFactory.createUnspecifiedRole();
         }
@@ -81,10 +88,11 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
         }
         this.expressedIn = expressedIn;
         this.identificationMethod = participantIdentificationMethod;
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Integer stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
-        super(interaction, interactor, bioRole, stoichiometry);
+        super(interactor, bioRole, stoichiometry);
         if(expRole == null){
             this.experimentalRole = CvTermFactory.createUnspecifiedRole();
         }
@@ -93,6 +101,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
         }
         this.expressedIn = expressedIn;
         this.identificationMethod = participantIdentificationMethod;
+        this.interactionEvidence = interaction;
     }
 
     public DefaultParticipantEvidence(Interactor interactor, CvTerm participantIdentificationMethod) {
@@ -255,13 +264,40 @@ public class DefaultParticipantEvidence extends DefaultParticipant<InteractionEv
     }
 
     public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
-
         if (interaction != null){
             interaction.addParticipant(this);
         }
         else {
-            setInteraction(null);
+            this.interactionEvidence = null;
         }
+    }
+
+    public InteractionEvidence getInteractionEvidence() {
+        return this.interactionEvidence;
+    }
+
+    public void setInteractionEvidence(InteractionEvidence interaction) {
+        this.interactionEvidence = interaction;
+    }
+
+    @Override
+    public boolean addFeature(FeatureEvidence feature) {
+
+        if (super.addFeature(feature)){
+            feature.setParticipantEvidence(this);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeFeature(FeatureEvidence feature) {
+
+        if (super.removeFeature(feature)){
+            feature.setParticipantEvidence(null);
+            return true;
+        }
+        return false;
     }
 
     @Override

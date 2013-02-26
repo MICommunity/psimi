@@ -75,7 +75,7 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
         }
 
         if (getParticipants().add(part)){
-            part.setInteraction(this);
+            part.setModelledInteraction(this);
             return true;
         }
         return false;
@@ -87,7 +87,7 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
         }
 
         if (getParticipants().remove(part)){
-            part.setInteraction(null);
+            part.setModelledInteraction(null);
             return true;
         }
         return false;

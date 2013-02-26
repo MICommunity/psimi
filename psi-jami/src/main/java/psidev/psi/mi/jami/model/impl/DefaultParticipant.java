@@ -18,9 +18,8 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultParticipant<I, T extends Interactor, F extends Feature> implements Participant<I, T, F>, Serializable {
+public class DefaultParticipant<T extends Interactor, F extends Feature> implements Participant<T, F>, Serializable {
 
-    private I interaction;
     private T interactor;
     private CvTerm biologicalRole;
     private Collection<Xref> xrefs;
@@ -28,34 +27,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
     private Collection<Alias> aliases;
     private Collection<F> features;
     private Integer stoichiometry;
-
-    public DefaultParticipant(I interaction, T interactor){
-        this.interaction = interaction;
-        if (interactor == null){
-            throw new IllegalArgumentException("The interactor cannot be null.");
-        }
-        this.interactor = interactor;
-        this.biologicalRole = CvTermFactory.createUnspecifiedRole();
-    }
-
-    public DefaultParticipant(I interaction, T interactor, CvTerm bioRole){
-        this.interaction = interaction;
-        if (interactor == null){
-            throw new IllegalArgumentException("The interactor cannot be null.");
-        }
-        this.interactor = interactor;
-        this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
-    }
-
-    public DefaultParticipant(I interaction, T interactor, Integer stoichiometry){
-        this(interaction, interactor);
-        this.stoichiometry = stoichiometry;
-    }
-
-    public DefaultParticipant(I interaction, T interactor, CvTerm bioRole, Integer stoichiometry){
-        this(interaction, interactor, bioRole);
-        this.stoichiometry = stoichiometry;
-    }
 
     public DefaultParticipant(T interactor){
         if (interactor == null){
@@ -135,14 +106,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
     }
 
-    public I getInteraction() {
-        return this.interaction;
-    }
-
-    public void setInteraction(I interaction) {
-        this.interaction = interaction;
-    }
-
     public T getInteractor() {
         return this.interactor;
     }
@@ -209,7 +172,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
 
         if (features.add(feature)){
-            feature.setParticipant(this);
             return true;
         }
         return false;
@@ -221,7 +183,6 @@ public class DefaultParticipant<I, T extends Interactor, F extends Feature> impl
         }
 
         if (features.remove(feature)){
-            feature.setParticipant(null);
             return true;
         }
         return false;

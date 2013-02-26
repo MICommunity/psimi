@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.model.impl;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 
 /**
@@ -13,21 +13,28 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecom
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultModelledFeature extends DefaultFeature<ModelledFeature, ModelledParticipant> implements ModelledFeature {
+public class DefaultModelledFeature extends DefaultFeature<ModelledFeature> implements ModelledFeature {
+
+    private ModelledParticipant modelledParticipant;
+
     public DefaultModelledFeature(ModelledParticipant participant) {
-        super(participant);
+        super();
+        this.modelledParticipant = participant;
     }
 
     public DefaultModelledFeature(ModelledParticipant participant, String shortName, String fullName) {
-        super(participant, shortName, fullName);
+        super(shortName, fullName);
+        this.modelledParticipant = participant;
     }
 
     public DefaultModelledFeature(ModelledParticipant participant, CvTerm type) {
-        super(participant, type);
+        super(type);
+        this.modelledParticipant = participant;
     }
 
     public DefaultModelledFeature(ModelledParticipant participant, String shortName, String fullName, CvTerm type) {
-        super(participant, shortName, fullName, type);
+        super(shortName, fullName, type);
+        this.modelledParticipant = participant;
     }
 
     public DefaultModelledFeature() {
@@ -44,6 +51,23 @@ public class DefaultModelledFeature extends DefaultFeature<ModelledFeature, Mode
 
     public DefaultModelledFeature(String shortName, String fullName, CvTerm type) {
         super(shortName, fullName, type);
+    }
+
+    public ModelledParticipant getModelledParticipant() {
+        return this.modelledParticipant;
+    }
+
+    public void setModelledParticipant(ModelledParticipant participant) {
+        this.modelledParticipant = participant;
+    }
+
+    public void setModelledParticipantAndAddFeature(ModelledParticipant participant) {
+        if (participant != null){
+            this.modelledParticipant.addFeature(this);
+        }
+        else {
+            this.modelledParticipant = null;
+        }
     }
 
     @Override

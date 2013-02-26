@@ -13,7 +13,9 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousComponentFeatureCo
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultComponentFeature extends DefaultFeature<ComponentFeature, Component> implements ComponentFeature {
+public class DefaultComponentFeature extends DefaultFeature<ComponentFeature> implements ComponentFeature {
+
+    private Component component;
 
     public DefaultComponentFeature() {
         super();
@@ -27,24 +29,41 @@ public class DefaultComponentFeature extends DefaultFeature<ComponentFeature, Co
         super(type);
     }
 
-    public DefaultComponentFeature(String shortName, String fullName, CvTerm type) {
+    public DefaultComponentFeature(Component participant){
+        super();
+        this.component = participant;
+    }
+
+    public DefaultComponentFeature(Component participant, String shortName, String fullName){
+        super(shortName, fullName);
+        this.component = participant;
+    }
+
+    public DefaultComponentFeature(Component participant, CvTerm type){
+        super(type);
+        this.component = participant;
+    }
+
+    public DefaultComponentFeature(Component participant, String shortName, String fullName, CvTerm type){
         super(shortName, fullName, type);
+        this.component =participant;
     }
 
-    public DefaultComponentFeature(Component participant) {
-        super(participant);
+    public Component getComponent() {
+        return this.component;
     }
 
-    public DefaultComponentFeature(Component participant, String shortName, String fullName) {
-        super(participant, shortName, fullName);
+    public void setComponent(Component participant) {
+        this.component = participant;
     }
 
-    public DefaultComponentFeature(Component participant, CvTerm type) {
-        super(participant, type);
-    }
-
-    public DefaultComponentFeature(Component participant, String shortName, String fullName, CvTerm type) {
-        super(participant, shortName, fullName, type);
+    public void setComponentAndAddFeature(Component participant) {
+        if (participant != null){
+            this.component.addFeature(this);
+        }
+        else {
+            this.component = null;
+        }
     }
 
     @Override

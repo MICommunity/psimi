@@ -11,22 +11,28 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponent
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultComponent extends DefaultParticipant<Complex, Interactor, ComponentFeature> implements Component {
+public class DefaultComponent extends DefaultParticipant<Interactor, ComponentFeature> implements Component {
+
+    private Complex complex;
 
     public DefaultComponent(Complex interaction, Interactor interactor) {
-        super(interaction, interactor);
+        super(interactor);
+        this.complex = interaction;
     }
 
     public DefaultComponent(Complex interaction, Interactor interactor, CvTerm bioRole) {
-        super(interaction, interactor, bioRole);
+        super(interactor, bioRole);
+        this.complex = interaction;
     }
 
     public DefaultComponent(Complex interaction, Interactor interactor, Integer stoichiometry) {
-        super(interaction, interactor, stoichiometry);
+        super(interactor, stoichiometry);
+        this.complex = interaction;
     }
 
     public DefaultComponent(Complex interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry) {
-        super(interaction, interactor, bioRole, stoichiometry);
+        super(interactor, bioRole, stoichiometry);
+        this.complex = interaction;
     }
 
     public DefaultComponent(Interactor interactor) {
@@ -62,10 +68,38 @@ public class DefaultComponent extends DefaultParticipant<Complex, Interactor, Co
     public void setComplexAndAddComponent(Complex interaction) {
 
         if (interaction != null){
-            getInteraction().addComponent(this);
+            complex.addComponent(this);
         }
         else {
-            setInteraction(null);
+            complex = null;
         }
+    }
+
+    public Complex getComplex() {
+        return this.complex;
+    }
+
+    public void setComplex(Complex interaction) {
+        this.complex = interaction;
+    }
+
+    @Override
+    public boolean addFeature(ComponentFeature feature) {
+
+        if (super.addFeature(feature)){
+            feature.setComponent(this);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeFeature(ComponentFeature feature) {
+
+        if (super.removeFeature(feature)){
+            feature.setComponent(null);
+            return true;
+        }
+        return false;
     }
 }
