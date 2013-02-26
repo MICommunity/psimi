@@ -217,6 +217,9 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     }
 
     public Collection<Confidence> getConfidences() {
+        if (confidences == null){
+            initialiseConfidences();
+        }
         return this.confidences;
     }
 
