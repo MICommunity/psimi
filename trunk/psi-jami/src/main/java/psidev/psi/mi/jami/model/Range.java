@@ -47,4 +47,11 @@ public interface Range {
      * @return true if two amino acids/nucleic acids are linked together (does not form a linear feature).
      */
     public boolean isLink();
+
+    /**
+     * Sets the link boolean for this Range
+     * @param link
+     * @return
+     */
+    public void setLink(boolean link);
 }

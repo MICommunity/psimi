@@ -56,6 +56,10 @@ public class DefaultRange implements Range, Serializable {
         return this.isLink;
     }
 
+    public void setLink(boolean link) {
+        this.isLink = link;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
