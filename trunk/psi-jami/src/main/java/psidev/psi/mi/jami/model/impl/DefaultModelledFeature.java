@@ -63,7 +63,7 @@ public class DefaultModelledFeature extends DefaultFeature<ModelledFeature> impl
 
     public void setModelledParticipantAndAddFeature(ModelledParticipant participant) {
         if (participant != null){
-            this.modelledParticipant.addFeature(this);
+            this.modelledParticipant.addModelledFeature(this);
         }
         else {
             this.modelledParticipant = null;

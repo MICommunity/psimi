@@ -83,6 +83,14 @@ public class DefaultComponent extends DefaultParticipant<Interactor, ComponentFe
         this.complex = interaction;
     }
 
+    public boolean addComponentFeature(ComponentFeature feature) {
+        return addFeature(feature);
+    }
+
+    public boolean removeComponentFeature(ComponentFeature feature) {
+        return removeFeature(feature);
+    }
+
     @Override
     public boolean addFeature(ComponentFeature feature) {
 

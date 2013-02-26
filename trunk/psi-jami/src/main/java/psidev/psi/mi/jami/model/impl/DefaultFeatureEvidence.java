@@ -88,7 +88,7 @@ public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> impl
     public void setParticipantEvidenceAndAddFeature(ParticipantEvidence participant) {
 
         if (participant != null){
-            this.participantEvidence.addFeature(this);
+            this.participantEvidence.addFeatureEvidence(this);
         }
         else{
             this.participantEvidence = null;

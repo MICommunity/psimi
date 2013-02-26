@@ -280,6 +280,14 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor, F
         this.interactionEvidence = interaction;
     }
 
+    public boolean addFeatureEvidence(FeatureEvidence feature) {
+        return addFeature(feature);
+    }
+
+    public boolean removeFeatureEvidence(FeatureEvidence feature) {
+        return removeFeature(feature);
+    }
+
     @Override
     public boolean addFeature(FeatureEvidence feature) {
 
