@@ -10,8 +10,7 @@ import java.util.Collection;
  * @since <pre>07/12/12</pre>
  */
 
-public interface ParticipantEvidence extends Participant<InteractionEvidence,Interactor,FeatureEvidence>{
-
+public interface ParticipantEvidence extends Participant<Interactor,FeatureEvidence>{
 
      /**
      * The experimental role of the participant.
@@ -87,4 +86,17 @@ public interface ParticipantEvidence extends Participant<InteractionEvidence,Int
      * @param interaction : interaction evidence
      */
     public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction);
+
+    /**
+     * The interaction in which the participant is involved.
+     * It can be null if the participant is not attached to any interactions. It can happen if the participant has been removed from an interaction and is now invalid.
+     * @return the interaction
+     */
+    public InteractionEvidence getInteractionEvidence();
+
+    /**
+     * Sets the interaction.
+     * @param interaction : interaction evidence
+     */
+    public void setInteractionEvidence(InteractionEvidence interaction);
 }

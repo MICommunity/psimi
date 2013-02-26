@@ -142,11 +142,8 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
             return false;
         }
 
-        if (components.add(part)){
-            part.setInteraction(this);
-            return true;
-        }
-        return false;
+        part.setComplex(this);
+        return components.add(part);
     }
 
     public boolean removeComponent(Component part) {
@@ -154,8 +151,8 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
             return false;
         }
 
+        part.setComplex(null);
         if (components.remove(part)){
-            part.setInteraction(null);
             return true;
         }
         return false;

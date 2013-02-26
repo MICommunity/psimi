@@ -10,23 +10,10 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Participant<I, T extends Interactor, F extends Feature> {
+public interface Participant<T extends Interactor, F extends Feature> {
 
     public static String UNSPECIFIED_ROLE = "unspecified role";
     public static String UNSPECIFIED_ROLE_MI = "MI:0499";
-
-    /**
-     * The interaction in which the participant is involved.
-     * It can be null if the participant is not attached to any interactions. It can happen if the participant has been removed from an interaction and is now invalid.
-     * @return the interaction
-     */
-    public I getInteraction();
-
-    /**
-     * Sets the interaction.
-     * @param interaction : experimental interaction
-     */
-    public void setInteraction(I interaction);
 
     /**
      * The molecule/complex of molecules which interacts.

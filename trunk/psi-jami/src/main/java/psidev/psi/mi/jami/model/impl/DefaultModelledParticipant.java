@@ -11,23 +11,28 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledP
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultModelledParticipant extends DefaultParticipant<ModelledInteraction, Interactor, ModelledFeature> implements ModelledParticipant {
+public class DefaultModelledParticipant extends DefaultParticipant<Interactor, ModelledFeature> implements ModelledParticipant {
 
+    private ModelledInteraction modelledInteraction;
 
     public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor) {
-        super(interaction, interactor);
+        super(interactor);
+        this.modelledInteraction = interaction;
     }
 
     public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor, CvTerm bioRole) {
-        super(interaction, interactor, bioRole);
+        super(interactor, bioRole);
+        this.modelledInteraction = interaction;
     }
 
     public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor, Integer stoichiometry) {
-        super(interaction, interactor, stoichiometry);
+        super(interactor, stoichiometry);
+        this.modelledInteraction = interaction;
     }
 
     public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry) {
-        super(interaction, interactor, bioRole, stoichiometry);
+        super(interactor, bioRole, stoichiometry);
+        this.modelledInteraction = interaction;
     }
 
     public DefaultModelledParticipant(Interactor interactor) {
@@ -61,13 +66,40 @@ public class DefaultModelledParticipant extends DefaultParticipant<ModelledInter
     }
 
     public void setModelledInteractionAndAddModelledParticipant(ModelledInteraction interaction) {
-        setInteraction(interaction);
 
         if (interaction != null){
-            getInteraction().addParticipant(this);
+            modelledInteraction.addParticipant(this);
         }
         else {
-            setInteraction(null);
+            this.modelledInteraction =null;
         }
+    }
+
+    public ModelledInteraction getModelledInteraction() {
+        return this.modelledInteraction;
+    }
+
+    public void setModelledInteraction(ModelledInteraction interaction) {
+        this.modelledInteraction = interaction;
+    }
+
+    @Override
+    public boolean addFeature(ModelledFeature feature) {
+
+        if (super.addFeature(feature)){
+            feature.setModelledParticipant(this);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeFeature(ModelledFeature feature) {
+
+        if (super.removeFeature(feature)){
+            feature.setModelledParticipant(null);
+            return true;
+        }
+        return false;
     }
 }

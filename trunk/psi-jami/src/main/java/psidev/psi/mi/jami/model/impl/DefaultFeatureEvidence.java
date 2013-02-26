@@ -13,28 +13,34 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceCom
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence, ParticipantEvidence> implements FeatureEvidence {
+public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> implements FeatureEvidence {
     private CvTerm detectionMethod;
+    private ParticipantEvidence participantEvidence;
 
     public DefaultFeatureEvidence(ParticipantEvidence participant) {
-        super(participant);
+        super();
+        this.participantEvidence = participant;
     }
 
     public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName) {
-        super(participant, shortName, fullName);
+        super(shortName, fullName);
+        this.participantEvidence = participant;
     }
 
     public DefaultFeatureEvidence(ParticipantEvidence participant, CvTerm type) {
-        super(participant, type);
+        super(type);
+        this.participantEvidence = participant;
     }
 
     public DefaultFeatureEvidence(ParticipantEvidence participant, String shortName, String fullName, CvTerm type) {
-        super(participant, shortName, fullName, type);
+        super(shortName, fullName, type);
+        this.participantEvidence = participant;
     }
 
     public DefaultFeatureEvidence(ParticipantEvidence participant, CvTerm type, CvTerm detectionMethod) {
-        super(participant, type);
+        super(type);
         this.detectionMethod = detectionMethod;
+        this.participantEvidence = participant;
     }
 
     public DefaultFeatureEvidence() {
@@ -69,6 +75,24 @@ public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence, Part
 
     public void setDetectionMethod(CvTerm method) {
         this.detectionMethod = method;
+    }
+
+    public ParticipantEvidence getParticipantEvidence() {
+        return this.participantEvidence;
+    }
+
+    public void setParticipantEvidence(ParticipantEvidence participant) {
+        this.participantEvidence = participant;
+    }
+
+    public void setParticipantEvidenceAndAddFeature(ParticipantEvidence participant) {
+
+        if (participant != null){
+            this.participantEvidence.addFeature(this);
+        }
+        else{
+            this.participantEvidence = null;
+        }
     }
 
     @Override

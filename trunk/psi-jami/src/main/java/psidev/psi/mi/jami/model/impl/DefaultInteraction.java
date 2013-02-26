@@ -236,11 +236,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
             return false;
         }
 
-        if (participants.add(part)){
-            part.setInteraction(this);
-            return true;
-        }
-        return false;
+        return participants.add(part);
     }
 
     public boolean removeParticipant(P part) {
@@ -249,7 +245,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         }
 
         if (participants.remove(part)){
-            part.setInteraction(null);
             return true;
         }
         return false;

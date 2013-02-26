@@ -192,7 +192,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         }
 
         if (getParticipants().add(evidence)){
-            evidence.setInteraction(this);
+            evidence.setInteractionEvidence(this);
             return true;
         }
         return false;
@@ -204,7 +204,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         }
 
         if (getParticipants().remove(evidence)){
-            evidence.setInteraction(null);
+            evidence.setInteractionEvidence(null);
             return true;
         }
         return false;
