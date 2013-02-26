@@ -5,8 +5,10 @@ import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,19 +28,19 @@ public class MitabPublication extends DefaultPublication{
     /**
      * Associated publications of that interaction.
      */
-    private List<CrossReference> publications
-            = new PublicationMitabIdentifiersList();
+    private List<CrossReference> publications;
+
 
     /**
      * First author surname(s) of the publication(s).
      */
-    private List<Author> mitabAuthors = new PublicationMitabAuthorsList();
+    private List<Author> mitabAuthors ;
 
     /**
      * Source databases.
      */
-    private List<CrossReference> sourceDatabases
-            = new PublicationSourcesList();
+    private List<CrossReference> sourceDatabases;
+
 
 
     public MitabPublication(){
@@ -47,23 +49,26 @@ public class MitabPublication extends DefaultPublication{
 
     @Override
     protected void initialiseIdentifiers() {
-        this.identifiers = new PublicationIdentifierList();
+        initialiseIdentifiersWith(new PublicationIdentifierList());
     }
 
     @Override
-    protected void initializeAuthors() {
-        this.authors = new PublicationAuthorsList();
+    protected void initialiseAuthors() {
+        initialiseAuthorsWith(new PublicationAuthorsList());
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new PublicationXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new PublicationXrefList());
     }
 
     /**
      * {@inheritDoc}
      */
     public List<CrossReference> getPublications() {
+        if (publications == null){
+            publications = new PublicationMitabIdentifiersList();
+        }
         return publications;
     }
 
@@ -71,7 +76,7 @@ public class MitabPublication extends DefaultPublication{
      * {@inheritDoc}
      */
     public void setPublications(List<CrossReference> publications) {
-        this.publications.clear();
+        getPublications().clear();
         if (publications != null) {
             this.publications.addAll(publications);
         }
@@ -81,6 +86,9 @@ public class MitabPublication extends DefaultPublication{
      * {@inheritDoc}
      */
     public List<Author> getMitabAuthors() {
+        if (mitabAuthors == null){
+           mitabAuthors = new PublicationMitabAuthorsList();
+        }
         return mitabAuthors;
     }
 
@@ -88,7 +96,7 @@ public class MitabPublication extends DefaultPublication{
      * {@inheritDoc}
      */
     public void setMitabAuthors(List<Author> authors) {
-        this.mitabAuthors.clear();
+        getMitabAuthors().clear();
         if (authors != null) {
             this.mitabAuthors.addAll(authors);
         }
@@ -98,6 +106,9 @@ public class MitabPublication extends DefaultPublication{
      * {@inheritDoc}
      */
     public List<CrossReference> getSourceDatabases() {
+        if (sourceDatabases == null){
+           sourceDatabases = new PublicationSourcesList();
+        }
         return sourceDatabases;
     }
 
@@ -105,76 +116,26 @@ public class MitabPublication extends DefaultPublication{
      * {@inheritDoc}
      */
     public void setSourceDatabases(List<CrossReference> sourceDatabases) {
-        this.sourceDatabases.clear();
+        getSourceDatabases().clear();
         if (sourceDatabases != null) {
             this.sourceDatabases.addAll(sourceDatabases);
         }
     }
 
-    protected void processAddedIdentifier(Xref added){
-        // the added identifier is pubmed and it is not the current pubmed identifier
-        if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, Xref.PUBMED_MI, Xref.PUBMED)){
-            // the current pubmed identifier is not identity, we may want to set pubmed Identifier
-            if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                // the pubmed identifier is not set, we can set the pubmed
-                if (pubmedId == null){
-                    pubmedId = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    pubmedId = added;
-                }
-                // the added xref is secondary object and the current pubmed is not a secondary object, we reset pubmed identifier
-                else if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.SECONDARY_MI, Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                    pubmedId = added;
-                }
-            }
-        }
-        // the added identifier is doi and it is not the current doi identifier
-        else if (doi != added && XrefUtils.isXrefFromDatabase(added, Xref.DOI_MI, Xref.DOI)){
-            // the current doi identifier is not identity, we may want to set doi
-            if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                // the doi is not set, we can set the doi
-                if (doi == null){
-                    doi = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
-                    doi = added;
-                }
-                // the added xref is secondary object and the current doi is not a secondary object, we reset doi
-                else if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.SECONDARY_MI, Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
-                    doi = added;
-                }
-            }
-        }
-    }
-
-    protected void processRemovedIdentifier(Xref removed){
-        // the removed identifier is pubmed
-        if (pubmedId != null && pubmedId.equals(removed)){
-            pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.PUBMED_MI, Xref.PUBMED);
-        }
-        // the removed identifier is doi
-        else if (doi != null && doi.equals(removed)){
-            doi = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.DOI_MI, Xref.DOI);
-        }
-    }
-
     protected void resetSourceNameFromMiReferences(){
-        if (!sourceDatabases.isEmpty()){
+        if (!getSourceDatabases().isEmpty()){
             Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(sourceDatabases), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
 
             if (ref != null){
                 String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
-                source.setShortName(name);
-                source.setFullName(name);
+                getSource().setShortName(name);
+                getSource().setFullName(name);
             }
         }
     }
 
     protected void resetSourceNameFromFirstReferences(){
-        if (!sourceDatabases.isEmpty()){
+        if (!getSourceDatabases().isEmpty()){
             Iterator<CrossReference> methodsIterator = sourceDatabases.iterator();
             String name = null;
 
@@ -186,8 +147,8 @@ public class MitabPublication extends DefaultPublication{
                 }
             }
 
-            source.setShortName(name != null ? name : "unknown");
-            source.setFullName(name != null ? name : "unknown");
+            getSource().setShortName(name != null ? name : "unknown");
+            getSource().setFullName(name != null ? name : "unknown");
         }
     }
 
@@ -198,17 +159,19 @@ public class MitabPublication extends DefaultPublication{
     }
 
     private void processNewSourceDatabasesList(Source source) {
-        ((PublicationSourcesList)sourceDatabases).clearOnly();
-        if (source.getMIIdentifier() != null){
-            ((PublicationSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, source.getMIIdentifier(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
-        }
-        else{
-            if (!source.getIdentifiers().isEmpty()){
-                Xref ref = source.getIdentifiers().iterator().next();
-                ((PublicationSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
+        ((PublicationSourcesList)getSourceDatabases()).clearOnly();
+        if (source != null){
+            if (source.getMIIdentifier() != null){
+                ((PublicationSourcesList)getSourceDatabases()).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, source.getMIIdentifier(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
             }
-            else {
-                ((PublicationSourcesList)sourceDatabases).addOnly(new CrossReferenceImpl("unknown", "-", source.getFullName() != null ? source.getFullName() : source.getShortName()));
+            else{
+                if (!source.getIdentifiers().isEmpty()){
+                    Xref ref = source.getIdentifiers().iterator().next();
+                    ((PublicationSourcesList)getSourceDatabases()).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), source.getFullName() != null ? source.getFullName() : source.getShortName()));
+                }
+                else {
+                    ((PublicationSourcesList)getSourceDatabases()).addOnly(new CrossReferenceImpl("unknown", "-", source.getFullName() != null ? source.getFullName() : source.getShortName()));
+                }
             }
         }
     }
@@ -224,14 +187,14 @@ public class MitabPublication extends DefaultPublication{
             CrossReference modified = null;
             if (added instanceof CrossReference){
                 modified = (CrossReference) added;
-                ((PublicationMitabIdentifiersList)publications).addOnly(modified);
+                ((PublicationMitabIdentifiersList)getPublications()).addOnly(modified);
             }
             else {
                 modified = new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier() != null ? added.getQualifier().getShortName() : null);
-                ((PublicationMitabIdentifiersList)publications).addOnly(modified);
+                ((PublicationMitabIdentifiersList)getPublications()).addOnly(modified);
             }
 
-            processAddedIdentifier(modified);
+            processAddedIdentifierEvent(modified);
         }
 
         @Override
@@ -240,23 +203,22 @@ public class MitabPublication extends DefaultPublication{
             CrossReference modified = null;
             if (removed instanceof CrossReference){
                 modified = (CrossReference) removed;
-                ((PublicationMitabIdentifiersList)publications).removeOnly(modified);
+                ((PublicationMitabIdentifiersList)getPublications()).removeOnly(modified);
             }
             else {
                 modified = new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier()!= null ? removed.getQualifier().getShortName() : null);
-                ((PublicationMitabIdentifiersList)publications).removeOnly(modified);
+                ((PublicationMitabIdentifiersList)getPublications()).removeOnly(modified);
             }
 
-            processRemovedIdentifier(removed);
+            processRemovedIdentifierEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            pubmedId = null;
-            doi = null;
+            clearPropertiesLinkedToIdentifiers();
 
             // clear all excepted imex which is in xref
-            retainAllOnly(xrefs);
+            retainAllOnly(getXrefs());
         }
     }
 
@@ -269,22 +231,22 @@ public class MitabPublication extends DefaultPublication{
         protected void processAddedObjectEvent(CrossReference added) {
 
             // imex
-            if (added.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && imexId == null){
-                assignImexId(imexId.getId());
+            if (added.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && getImexId() == null){
+                assignImexId(added.getId());
             }
             else {
-                ((PublicationIdentifierList)identifiers).addOnly(added);
+                ((PublicationIdentifierList)getIdentifiers()).addOnly(added);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
             // imex
-            if (removed.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && imexId != null && imexId.equals(removed.getId())){
-                xrefs.remove(removed);
+            if (removed.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && getImexId() != null && getImexId().equals(removed.getId())){
+                getXrefs().remove(removed);
             }
             else {
-                ((PublicationIdentifierList)identifiers).removeOnly(removed);
+                ((PublicationIdentifierList)getIdentifiers()).removeOnly(removed);
             }
 
         }
@@ -292,16 +254,13 @@ public class MitabPublication extends DefaultPublication{
         @Override
         protected void clearProperties() {
             // clear properties
-            pubmedId = null;
-            doi = null;
+            clearPropertiesLinkedToIdentifiers();
 
             // remove imex id from xrefs
-            if (imexId != null){
-                xrefs.remove(imexId);
-            }
+            clearPropertiesLinkedToXrefs();
 
             // clear all identifiers
-            ((PublicationIdentifierList)identifiers).clearOnly();
+            ((PublicationIdentifierList)getIdentifiers()).clearOnly();
         }
     }
 
@@ -312,17 +271,17 @@ public class MitabPublication extends DefaultPublication{
 
         @Override
         protected void processAddedObjectEvent(String added) {
-            ((PublicationMitabAuthorsList)mitabAuthors).addOnly(new AuthorImpl(added));
+            ((PublicationMitabAuthorsList)getMitabAuthors()).addOnly(new AuthorImpl(added));
         }
 
         @Override
         protected void processRemovedObjectEvent(String removed) {
-            ((PublicationMitabAuthorsList)mitabAuthors).removeOnly(new AuthorImpl(removed));
+            ((PublicationMitabAuthorsList)getMitabAuthors()).removeOnly(new AuthorImpl(removed));
         }
 
         @Override
         protected void clearProperties() {
-            ((PublicationMitabAuthorsList)mitabAuthors).clearOnly();
+            ((PublicationMitabAuthorsList)getMitabAuthors()).clearOnly();
         }
     }
 
@@ -334,18 +293,18 @@ public class MitabPublication extends DefaultPublication{
         @Override
         protected void processAddedObjectEvent(Author added) {
 
-            ((PublicationAuthorsList)authors).addOnly(added.getName());
+            ((PublicationAuthorsList)getAuthors()).addOnly(added.getName());
         }
 
         @Override
         protected void processRemovedObjectEvent(Author removed) {
 
-            ((PublicationAuthorsList)authors).removeOnly(removed.getName());
+            ((PublicationAuthorsList)getAuthors()).removeOnly(removed.getName());
         }
 
         @Override
         protected void clearProperties() {
-            ((PublicationAuthorsList)authors).clearOnly();
+            ((PublicationAuthorsList)getAuthors()).clearOnly();
         }
     }
 
@@ -358,17 +317,17 @@ public class MitabPublication extends DefaultPublication{
         protected void processAddedObjectEvent(Xref added) {
 
             // the added identifier is imex and the current imex is not set
-            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
+            if (getImexId() == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
                 // the added xref is imex-primary
                 if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
                     if (added instanceof CrossReference){
-                        imexId = added;
-                        ((PublicationMitabIdentifiersList) publications).addOnly((CrossReference) imexId);
+                        assignImexId(added.getId());
+                        ((PublicationMitabIdentifiersList) getPublications()).addOnly((CrossReference)added);
                     }
                     else {
                         CrossReference imex = new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier().getShortName());
-                        imexId = imex;
-                        ((PublicationMitabIdentifiersList) publications).addOnly((CrossReference)imexId);
+                        assignImexId(added.getId());
+                        ((PublicationMitabIdentifiersList) getPublications()).addOnly(imex);
                     }
                 }
             }
@@ -376,17 +335,29 @@ public class MitabPublication extends DefaultPublication{
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            // the removed identifier is pubmed
-            if (imexId == removed){
-                ((PublicationMitabIdentifiersList) publications).removeOnly(imexId);
-                imexId = null;
+            if (getImexId() != null && getImexId().equals(removed.getId())){
+                if (removed instanceof CrossReference){
+                    ((PublicationMitabIdentifiersList) getPublications()).removeOnly(removed);
+                }
+                else {
+                    CrossReference imex = new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier().getShortName());
+                    ((PublicationMitabIdentifiersList) getPublications()).removeOnly(imex);
+                }
             }
+            // the removed identifier is pubmed
+            processRemovedXrefEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((PublicationMitabIdentifiersList) publications).removeOnly(imexId);
-            imexId = null;
+            if (getImexId() != null){
+                CvTerm imexDatabase = CvTermFactory.createImexDatabase();
+                CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
+                Xref imex = new DefaultXref(imexDatabase, getImexId(), imexPrimaryQualifier);
+                ((PublicationMitabIdentifiersList) getPublications()).removeOnly(imex);
+            }
+
+            ((PublicationMitabIdentifiersList) getPublications()).retainAllOnly(getIdentifiers());
         }
     }
 
@@ -398,22 +369,22 @@ public class MitabPublication extends DefaultPublication{
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
-            if (source == null){
+            if (getSource() == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
-                source = new DefaultSource(name, name, added);
+                setSource(new DefaultSource(name, name, added));
             }
             else {
-                source.getXrefs().add(added);
+                getSource().getXrefs().add(added);
                 // reset shortname
-                if (source.getMIIdentifier() != null && source.getMIIdentifier().equals(added.getId())){
+                if (getSource().getMIIdentifier() != null && getSource().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        source.setShortName(name);
+                        getSource().setShortName(name);
                     }
                     else {
                         resetSourceNameFromMiReferences();
-                        if (source.getShortName().equals("unknown")){
+                        if (getSource().getShortName().equals("unknown")){
                             resetSourceNameFromFirstReferences();
                         }
                     }
@@ -424,13 +395,13 @@ public class MitabPublication extends DefaultPublication{
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
 
-            if (source != null){
-                source.getXrefs().remove(removed);
+            if (getSource() != null){
+                getSource().getXrefs().remove(removed);
 
-                if (removed.getText() != null && source.getShortName().equals(removed.getText())){
-                    if (source.getMIIdentifier() != null){
+                if (removed.getText() != null && getSource().getShortName().equals(removed.getText())){
+                    if (getSource().getMIIdentifier() != null){
                         resetSourceNameFromMiReferences();
-                        if (source.getShortName().equals("unknown")){
+                        if (getSource().getShortName().equals("unknown")){
                             resetSourceNameFromFirstReferences();
                         }
                     }
@@ -441,13 +412,13 @@ public class MitabPublication extends DefaultPublication{
             }
 
             if (isEmpty()){
-                source = null;
+                setSource(null);
             }
         }
 
         @Override
         protected void clearProperties() {
-            source = null;
+            setSource(null);
         }
     }
 }

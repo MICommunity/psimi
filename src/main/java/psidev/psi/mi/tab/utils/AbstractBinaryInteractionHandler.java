@@ -63,11 +63,11 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
         target.setConfidenceValues(source.getConfidenceValues());
         target.setSourceDatabases(source.getSourceDatabases());
         target.setInteractionAcs(source.getInteractionAcs());
-        target.setMitabAnnotations(source.getMitabAnnotations());
-        target.setInteractionChecksums(source.getInteractionChecksums());
+        target.setAnnotations(source.getInteractionAnnotations());
+        target.setChecksums(source.getInteractionChecksums());
         target.setComplexExpansion(source.getComplexExpansion());
         target.setCreationDate(source.getCreationDate());
-        target.setMitabParameters(source.getMitabParameters());
+        target.setParameters(source.getInteractionParameters());
 
         if (target.getHostOrganism() == null){
             target.setHostOrganism(source.getHostOrganism());
@@ -126,14 +126,14 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
                 target.getOrganism().getIdentifiers().addAll(source.getOrganism().getIdentifiers());
             }
 
-            target.setInteractorAnnotations(source.getInteractorAnnotations());
+            target.setAnnotations(source.getInteractorAnnotations());
             target.setBiologicalRoles(source.getBiologicalRoles());
             target.setChecksums(source.getChecksums());
-            target.setInteractorFeatures(source.getInteractorFeatures());
+            target.setFeatures(source.getInteractorFeatures());
             target.setInteractorTypes(source.getInteractorTypes());
             target.setParticipantIdentificationMethods(source.getParticipantIdentificationMethods());
-            target.setInteractorStoichiometry(source.getInteractorStoichiometry());
-            target.setInteractorXrefs(source.getInteractorXrefs());
+            target.setStoichiometry(source.getInteractorStoichiometry());
+            target.setXrefs(source.getInteractorXrefs());
         }
     }
 }

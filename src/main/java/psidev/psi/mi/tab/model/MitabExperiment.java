@@ -31,8 +31,7 @@ public class MitabExperiment extends DefaultExperiment{
     /**
      * Detection method for that interaction.
      */
-    private List<CrossReference> detectionMethods
-            = new DetectionMethodsList();
+    private List<CrossReference> detectionMethods;
 
     /**
      * Organism where the interaction happens.
@@ -41,16 +40,19 @@ public class MitabExperiment extends DefaultExperiment{
 
     public MitabExperiment(){
         super(new MitabPublication(), CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
-        processNewInteractionDetectionMethodsList(interactionDetectionMethod);
+        processNewInteractionDetectionMethodsList(getInteractionDetectionMethod());
 
-        publication.getExperiments().add(this);
-        mitabPublication = (MitabPublication) publication;
+        getPublication().getExperiments().add(this);
+        mitabPublication = (MitabPublication) getPublication();
     }
 
     /**
      * {@inheritDoc}
      */
     public List<CrossReference> getDetectionMethods() {
+        if (detectionMethods == null){
+           detectionMethods = new DetectionMethodsList();
+        }
         return detectionMethods;
     }
 
@@ -58,13 +60,9 @@ public class MitabExperiment extends DefaultExperiment{
      * {@inheritDoc}
      */
     public void setDetectionMethods(List<CrossReference> detectionMethods) {
-
+        getDetectionMethods().clear();
         if (detectionMethods != null) {
-            ((DetectionMethodsList)this.detectionMethods).clearOnly();
             this.detectionMethods.addAll(detectionMethods);
-        }
-        else {
-            this.detectionMethods.clear();
         }
     }
 
@@ -94,19 +92,19 @@ public class MitabExperiment extends DefaultExperiment{
     }
 
     protected void resetInteractionDetectionMethodNameFromMiReferences(){
-        if (!detectionMethods.isEmpty()){
+        if (!getDetectionMethods().isEmpty()){
             Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(detectionMethods), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
 
             if (ref != null){
                 String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
-                interactionDetectionMethod.setShortName(name);
-                interactionDetectionMethod.setFullName(name);
+                getInteractionDetectionMethod().setShortName(name);
+                getInteractionDetectionMethod().setFullName(name);
             }
         }
     }
 
     protected void resetInteractionDetectionMethodNameFromFirstReferences(){
-        if (!detectionMethods.isEmpty()){
+        if (!getDetectionMethods().isEmpty()){
             Iterator<CrossReference> methodsIterator = detectionMethods.iterator();
             String name = null;
 
@@ -118,8 +116,8 @@ public class MitabExperiment extends DefaultExperiment{
                 }
             }
 
-            interactionDetectionMethod.setShortName(name != null ? name : "unknown");
-            interactionDetectionMethod.setFullName(name != null ? name : "unknown");
+            getInteractionDetectionMethod().setShortName(name != null ? name : "unknown");
+            getInteractionDetectionMethod().setFullName(name != null ? name : "unknown");
         }
     }
 
@@ -129,8 +127,12 @@ public class MitabExperiment extends DefaultExperiment{
         processNewInteractionDetectionMethodsList(method);
     }
 
+    protected void setInteractionDetectionMethodOnly(CvTerm method) {
+        super.setInteractionDetectionMethod(method);
+    }
+
     private void processNewInteractionDetectionMethodsList(CvTerm method) {
-        ((DetectionMethodsList)detectionMethods).clearOnly();
+        ((DetectionMethodsList)getDetectionMethods()).clearOnly();
         if (method.getMIIdentifier() != null){
             ((DetectionMethodsList)detectionMethods).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, method.getMIIdentifier(), method.getFullName() != null ? method.getFullName() : method.getShortName()));
         }
@@ -148,8 +150,8 @@ public class MitabExperiment extends DefaultExperiment{
     @Override
     public void setPublication(Publication publication) {
         if (publication == null){
-            if (this.publication != null){
-                this.publication.getExperiments().remove(this);
+            if (getPublication() != null){
+                getPublication().getExperiments().remove(this);
             }
 
             super.setPublication(null);
@@ -203,44 +205,44 @@ public class MitabExperiment extends DefaultExperiment{
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
-            if (interactionDetectionMethod == null){
+            if (getInteractionDetectionMethod() == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
-                interactionDetectionMethod = new DefaultCvTerm(name, name, added);
+                setInteractionDetectionMethodOnly(new DefaultCvTerm(name, name, added));
             }
             // it was a UNSPECIFIED method, needs to clear it
-            else if (size() > 1 && Experiment.UNSPECIFIED_METHOD.equalsIgnoreCase(interactionDetectionMethod.getShortName().trim())){
+            else if (size() > 1 && Experiment.UNSPECIFIED_METHOD.equalsIgnoreCase(getInteractionDetectionMethod().getShortName().trim())){
                 // remove unspecified method
                 CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Experiment.UNSPECIFIED_METHOD_MI, Experiment.UNSPECIFIED_METHOD);
                 removeOnly(old);
-                interactionDetectionMethod.getXrefs().remove(old);
+                getInteractionDetectionMethod().getXrefs().remove(old);
 
                 // reset shortname
-                if (interactionDetectionMethod.getMIIdentifier() != null && interactionDetectionMethod.getMIIdentifier().equals(added.getId())){
+                if (getInteractionDetectionMethod().getMIIdentifier() != null && getInteractionDetectionMethod().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        interactionDetectionMethod.setShortName(name);
+                        getInteractionDetectionMethod().setShortName(name);
                     }
                     else {
                         resetInteractionDetectionMethodNameFromMiReferences();
-                        if (interactionDetectionMethod.getShortName().equals("unknown")){
+                        if (getInteractionDetectionMethod().getShortName().equals("unknown")){
                             resetInteractionDetectionMethodNameFromFirstReferences();
                         }
                     }
                 }
             }
             else {
-                interactionDetectionMethod.getXrefs().add(added);
+                getInteractionDetectionMethod().getXrefs().add(added);
                 // reset shortname
-                if (interactionDetectionMethod.getMIIdentifier() != null && interactionDetectionMethod.getMIIdentifier().equals(added.getId())){
+                if (getInteractionDetectionMethod().getMIIdentifier() != null && getInteractionDetectionMethod().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        interactionDetectionMethod.setShortName(name);
+                        getInteractionDetectionMethod().setShortName(name);
                     }
                     else {
                         resetInteractionDetectionMethodNameFromMiReferences();
-                        if (interactionDetectionMethod.getShortName().equals("unknown")){
+                        if (getInteractionDetectionMethod().getShortName().equals("unknown")){
                             resetInteractionDetectionMethodNameFromFirstReferences();
                         }
                     }
@@ -251,13 +253,13 @@ public class MitabExperiment extends DefaultExperiment{
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
 
-            if (interactionDetectionMethod != null){
-                interactionDetectionMethod.getXrefs().remove(removed);
+            if (getInteractionDetectionMethod() != null){
+                getInteractionDetectionMethod().getXrefs().remove(removed);
 
-                if (removed.getText() != null && interactionDetectionMethod.getShortName().equals(removed.getText())){
-                    if (interactionDetectionMethod.getMIIdentifier() != null){
+                if (removed.getText() != null && getInteractionDetectionMethod().getShortName().equals(removed.getText())){
+                    if (getInteractionDetectionMethod().getMIIdentifier() != null){
                         resetInteractionDetectionMethodNameFromMiReferences();
-                        if (interactionDetectionMethod.getShortName().equals("unknown")){
+                        if (getInteractionDetectionMethod().getShortName().equals("unknown")){
                             resetInteractionDetectionMethodNameFromFirstReferences();
                         }
                     }
@@ -268,15 +270,15 @@ public class MitabExperiment extends DefaultExperiment{
             }
 
             if (isEmpty()){
-                interactionDetectionMethod = CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
-                processNewInteractionDetectionMethodsList(interactionDetectionMethod);
+                setInteractionDetectionMethodOnly(CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
+                processNewInteractionDetectionMethodsList(getInteractionDetectionMethod());
             }
         }
 
         @Override
         protected void clearProperties() {
-            interactionDetectionMethod = CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
-            processNewInteractionDetectionMethodsList(interactionDetectionMethod);
+            setInteractionDetectionMethodOnly(CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
+            processNewInteractionDetectionMethodsList(getInteractionDetectionMethod());
         }
     }
 }

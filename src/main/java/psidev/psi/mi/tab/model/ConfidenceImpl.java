@@ -5,7 +5,7 @@
  */
 package psidev.psi.mi.tab.model;
 
-import psidev.psi.mi.jami.model.impl.DefaultConfidence;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
 /**
@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
-public class ConfidenceImpl extends DefaultConfidence implements Confidence {
+public class ConfidenceImpl implements Confidence, psidev.psi.mi.jami.model.Confidence {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -23,15 +23,21 @@ public class ConfidenceImpl extends DefaultConfidence implements Confidence {
      */
     private static final long serialVersionUID = 7009701156529411485L;
 
+    private CvTerm type;
+    private String value;
+    private CvTerm unit;
+
     //////////////////////
     // Constructor
 
     public ConfidenceImpl() {
-        super(new DefaultCvTerm("unknown"), "unknown");
+        this.type = new DefaultCvTerm("unknown");
+        this.value = "unknown";
     }
 
     public ConfidenceImpl( String type, String value ) {
-        super(new DefaultCvTerm(type != null ? type : "unknown"), value);
+        this.type = new DefaultCvTerm(type != null ? type : "unknown");
+        this.value = value != null ? value : "unknown";
     }
 
     public ConfidenceImpl( String type, String value, String text ) {
@@ -44,19 +50,27 @@ public class ConfidenceImpl extends DefaultConfidence implements Confidence {
     //////////////////////
     // Getters and Setters
 
-    public String getComfidenceType() {
+    public String getConfidenceType() {
         return type.getShortName();
     }
 
-    public void setConfidenceType(String type) {
+    public void setType(String type) {
         if (type == null){
             type = "unknown";
         }
         this.type = new DefaultCvTerm(type);
     }
 
+    public CvTerm getType() {
+        return type;
+    }
+
     public String getValue() {
         return value;
+    }
+
+    public CvTerm getUnit() {
+        return unit;
     }
 
     public void setValue( String value ) {

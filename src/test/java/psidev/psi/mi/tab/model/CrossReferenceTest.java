@@ -17,11 +17,11 @@ public class CrossReferenceTest {
         CrossReference cr = new CrossReferenceImpl( "db", "id" );
         assertEquals( "db", cr.getDatabaseName() );
 
-        cr.setDatabaseName("foo");
+        cr.setDatabase("foo");
         assertEquals( "foo", cr.getDatabaseName() );
 
         try {
-            cr.setDatabaseName(" ");
+            cr.setDatabase(" ");
             fail();
         } catch ( Exception e ) {
             // ok
@@ -29,7 +29,7 @@ public class CrossReferenceTest {
         }
 
         try {
-            cr.setDatabaseName(null);
+            cr.setDatabase(null);
             fail();
         } catch ( Exception e ) {
             // ok

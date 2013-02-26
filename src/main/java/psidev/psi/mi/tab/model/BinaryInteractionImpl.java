@@ -36,8 +36,8 @@ public class BinaryInteractionImpl extends AbstractBinaryInteraction<Interactor>
     }
 
     @Override
-    protected void initializeParticipants(){
-        this.participants = new ParticipantList();
+    protected void initialiseParticipants(){
+        initialiseParticipantsWith(new ParticipantList());
     }
 
     protected class ParticipantList extends AbstractListHavingPoperties<ParticipantEvidence> {

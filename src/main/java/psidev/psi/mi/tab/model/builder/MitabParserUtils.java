@@ -192,38 +192,38 @@ public final class MitabParserUtils {
         interactorA.setBiologicalRoles(splitCrossReferences(line[PsimiTabColumns.BIOROLE_A.ordinal()]));
         interactorA.setExperimentalRoles(splitCrossReferences(line[PsimiTabColumns.EXPROLE_A.ordinal()]));
         interactorA.setInteractorTypes(splitCrossReferences(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()]));
-        interactorA.setInteractorXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()]));
-        interactorA.setInteractorAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()]));
+        interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()]));
+        interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()]));
         interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()]));
 
         //MITAB 2.6
         interactorB.setBiologicalRoles(splitCrossReferences(line[PsimiTabColumns.BIOROLE_B.ordinal()]));
         interactorB.setExperimentalRoles(splitCrossReferences(line[PsimiTabColumns.EXPROLE_B.ordinal()]));
         interactorB.setInteractorTypes(splitCrossReferences(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()]));
-        interactorB.setInteractorXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()]));
-        interactorB.setInteractorAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()]));
+        interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()]));
+        interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()]));
         interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()]));
 
         //MITAB 2.6
         interaction.setComplexExpansion(splitCrossReferences(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()]));
-        interaction.setMitabXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()]));
-        interaction.setMitabAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()]));
+        interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()]));
+        interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()]));
         interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()]));
-        interaction.setMitabParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()]));
+        interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()]));
         interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()]));
         interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()]));
-        interaction.setInteractionChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()]));
+        interaction.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()]));
         interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()]));
 
         //MITAB 2.7
-        interactorA.setInteractorFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()]));
-        interactorA.setInteractorStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()]));
+        interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()]));
+        interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()]));
         interactorA.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()]));
 
 
         //MITAB 2.7
-        interactorB.setInteractorFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()]));
-        interactorB.setInteractorStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()]));
+        interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()]));
+        interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()]));
         interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()]));
 
 		//We check some consistency in the interactors

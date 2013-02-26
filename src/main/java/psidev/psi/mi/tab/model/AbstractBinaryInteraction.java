@@ -16,7 +16,6 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
-import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.ParameterUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.ExperimentCloner;
@@ -66,20 +65,20 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
     /**
      * Types of the interaction.
      */
-    private List<CrossReference> interactionTypes
-            = new InteractionTypesList();
+    private List<CrossReference> interactionTypes;
+
 
     /**
      * Associated confidence value for that interaction.
      */
-    private List<Confidence> confidenceValues
-            = new InteractionMitabConfidenceList();
+    private List<Confidence> confidenceValues;
+
 
     /**
      * Identifiers of the interaction that provided the data.
      */
-    private List<CrossReference> interactionAcs
-            = new InteractionMitabIdentifiersList();
+    private List<CrossReference> interactionAcs;
+
 
 	/**
 	 *  MITAB 2.6
@@ -88,44 +87,44 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	/**
 	 * Model used to convert n-ary interactions into binary.
 	 */
-	private List<CrossReference> complexExpansion
-			= new ArrayList<CrossReference>();
+	private List<CrossReference> complexExpansion;
+
 
 	/**
 	 * Cross references associated to the interaction.
 	 */
-	private List<CrossReference> interactionXrefs
-			= new InteractionMitabXrefsList();
+	private List<CrossReference> interactionXrefs;
+
 
 	/**
 	 * Annotations for the interaction.
 	 */
-	private List<Annotation> interactionAnnotations
-			= new InteractionMitabAnnotationList();
+	private List<Annotation> interactionAnnotations;
+
 
     /**
      * Parameters for the interaction.
      */
-    private List<Parameter> interactionParameters
-            = new InteractionMitabParametersList();
+    private List<Parameter> interactionParameters;
+
 
     /**
      * Checksum for interaction.
      */
-    private List<Checksum> interactionChecksums
-            = new InteractionMitabChecksumList();
+    private List<Checksum> interactionChecksums;
+
 
     /**
      * Update Date
      */
-    private List<Date> updateDate
-            = new MitabUpdateDateList();
+    private List<Date> updateDate;
+
 
     /**
      * Creation Date
      */
-    private List<Date> creationDate
-            = new MitabCreationDateList();
+    private List<Date> creationDate;
+
 
 
 	/**
@@ -154,33 +153,33 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
     }
 
     @Override
-    protected void initializeConfidences(){
-        this.confidences = new BinaryInteractionConfidenceList();
+    protected void initialiseConfidences(){
+        initialiseConfidencesWith(new BinaryInteractionConfidenceList());
     }
 
     @Override
-    protected void initializeIdentifiers(){
-        this.identifiers = new BinaryInteractionIdentifiersList();
+    protected void initialiseIdentifiers(){
+        initialiseIdentifiersWith(new BinaryInteractionIdentifiersList());
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new BinaryInteractionXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new BinaryInteractionXrefList());
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new BinaryInteractionAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new BinaryInteractionAnnotationList());
     }
 
     @Override
-    protected void initializeParameters(){
-        this.parameters = new BinaryInteractionParametersList();
+    protected void initialiseParameters(){
+        initialiseParametersWith(new BinaryInteractionParametersList());
     }
 
     @Override
-    protected void initializeChecksum(){
-        this.checksums = new BinaryInteractionChecksumList();
+    protected void initialiseChecksum(){
+        initialiseChecksumWith(new BinaryInteractionChecksumList());
     }
 
     public void flip() {
@@ -206,11 +205,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 */
 	public void setInteractorA(T interactorA) {
         T currentB = interactorB;
-        participants.clear();
+        getParticipants().clear();
         this.interactorA = interactorA;
         this.interactorB = currentB;
-        participants.add(interactorA);
-        participants.add(currentB);
+        getParticipants().add(interactorA);
+        getParticipants().add(currentB);
 	}
 
 	/**
@@ -226,19 +225,22 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	public void setInteractorB(T interactorB) {
         T currentA = interactorA;
 
-        participants.clear();
+        getParticipants().clear();
 
         this.interactorA = currentA;
         this.interactorB = interactorB;
 
-        participants.add(currentA);
-        participants.add(interactorB);
+        getParticipants().add(currentA);
+        getParticipants().add(interactorB);
 	}
 
     /**
      * {@inheritDoc}
      */
     public List<CrossReference> getInteractionTypes() {
+        if (interactionTypes == null){
+            interactionTypes = new InteractionTypesList();
+        }
         return interactionTypes;
     }
 
@@ -246,7 +248,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      * {@inheritDoc}
      */
     public void setInteractionTypes(List<CrossReference> interactionTypes) {
-        this.interactionTypes.clear();
+        getInteractionTypes().clear();
         if (interactionTypes != null) {
             this.interactionTypes.addAll(interactionTypes);
         }
@@ -257,6 +259,9 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      * {@inheritDoc}
      */
     public List<Confidence> getConfidenceValues() {
+        if (confidenceValues == null){
+            confidenceValues = new InteractionMitabConfidenceList();
+        }
         return confidenceValues;
     }
 
@@ -264,7 +269,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      * {@inheritDoc}
      */
     public void setConfidenceValues(List<Confidence> confidenceValues) {
-        this.confidenceValues.clear();
+        getConfidenceValues().clear();
         if (confidenceValues != null) {
             this.confidenceValues.addAll(confidenceValues);
         }
@@ -288,6 +293,9 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public List<CrossReference> getInteractionAcs() {
+        if (interactionAcs == null){
+            interactionAcs = new InteractionMitabIdentifiersList();
+        }
 		return interactionAcs;
 	}
 
@@ -295,7 +303,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractionAcs(List<CrossReference> interactionAcs) {
-        this.interactionAcs.clear();
+        getInteractionAcs().clear();
         if (interactionAcs != null) {
             this.interactionAcs.addAll(interactionAcs);
         }
@@ -309,6 +317,9 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public List<CrossReference> getComplexExpansion() {
+        if (complexExpansion == null){
+            complexExpansion = new ComplexExpansionList();
+        }
 		return complexExpansion;
 	}
 
@@ -316,21 +327,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setComplexExpansion(List<CrossReference> complexExpansion) {
-		this.complexExpansion = complexExpansion;
+        getComplexExpansion().clear();
+        if (complexExpansion != null && !complexExpansion.isEmpty()){
+            this.complexExpansion.addAll(complexExpansion);
+        }
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<CrossReference> getMitabXrefs() {
+	public List<CrossReference> getInteractionXrefs() {
+        if (interactionXrefs == null){
+            interactionXrefs = new InteractionMitabXrefsList();
+        }
 		return interactionXrefs;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setMitabXrefs(List<CrossReference> xrefs) {
-        this.interactionXrefs.clear();
+	public void setXrefs(List<CrossReference> xrefs) {
+        getInteractionXrefs().clear();
         if (xrefs != null) {
             this.interactionXrefs.addAll(xrefs);
         }
@@ -339,15 +356,18 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Annotation> getMitabAnnotations() {
+	public List<Annotation> getInteractionAnnotations() {
+        if (interactionAnnotations == null){
+            interactionAnnotations = new InteractionMitabAnnotationList();
+        }
 		return interactionAnnotations;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setMitabAnnotations(List<Annotation> interactionAnnotations) {
-        this.interactionAnnotations.clear();
+	public void setAnnotations(List<Annotation> interactionAnnotations) {
+        getInteractionAnnotations().clear();
         if (interactionAnnotations != null) {
             this.interactionAnnotations.addAll(interactionAnnotations);
         }
@@ -356,15 +376,18 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Parameter> getMitabParameters() {
+	public List<Parameter> getInteractionParameters() {
+        if (interactionParameters == null){
+            interactionParameters = new InteractionMitabParametersList();
+        }
 		return interactionParameters;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setMitabParameters(List<Parameter> parameters) {
-        this.interactionParameters.clear();
+	public void setParameters(List<Parameter> parameters) {
+        getInteractionParameters().clear();
         if (parameters != null) {
             this.interactionParameters.addAll(parameters);
         }
@@ -374,14 +397,17 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      * {@inheritDoc}
      */
     public List<Checksum> getInteractionChecksums() {
+        if (interactionChecksums == null){
+            interactionChecksums = new InteractionMitabChecksumList();
+        }
         return interactionChecksums;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setInteractionChecksums(List<Checksum> interactionChecksums) {
-        this.interactionChecksums.clear();
+    public void setChecksums(List<Checksum> interactionChecksums) {
+        getInteractionChecksums().clear();
         if (interactionChecksums != null) {
             this.interactionChecksums.addAll(interactionChecksums);
         }
@@ -391,6 +417,9 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public List<Date> getUpdateDate() {
+        if (updateDate == null){
+            updateDate = new MitabUpdateDateList();
+        }
 		return updateDate;
 	}
 
@@ -398,13 +427,19 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setUpdateDate(List<Date> updateDate) {
-		this.updateDate = updateDate;
+        getUpdateDate().clear();
+        if (updateDate != null) {
+            this.updateDate.addAll(updateDate);
+        }
 	}
 
     /**
      * {@inheritDoc}
      */
     public List<Date> getCreationDate() {
+        if (creationDate == null){
+            creationDate = new MitabCreationDateList();
+        }
         return creationDate;
     }
 
@@ -412,7 +447,10 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      * {@inheritDoc}
      */
     public void setCreationDate(List<Date> creationDate) {
-        this.creationDate = creationDate;
+        getCreationDate().clear();
+        if (creationDate != null) {
+            this.creationDate.addAll(creationDate);
+        }
     }
 
     // experiment
@@ -486,7 +524,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public boolean isNegativeInteraction() {
-		return isNegative;
+		return isNegative();
 	}
 
 	/**
@@ -494,27 +532,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 */
 	public void setNegativeInteraction(Boolean negativeInteraction) {
         if (negativeInteraction == null){
-           this.isNegative = false;
+           setNegative(false);
         }
         else {
-            this.isNegative = negativeInteraction;
+            setNegative(negativeInteraction);
         }
 	}
 
     protected void resetInteractionTypeNameFromMiReferences(){
-        if (!interactionTypes.isEmpty()){
+        if (!getInteractionTypes().isEmpty()){
             Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(interactionTypes), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
 
             if (ref != null){
                 String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
-                type.setShortName(name);
-                type.setFullName(name);
+                getType().setShortName(name);
+                getType().setFullName(name);
             }
         }
     }
 
     protected void resetInteractionTypeNameFromFirstReferences(){
-        if (!interactionTypes.isEmpty()){
+        if (!getInteractionTypes().isEmpty()){
             Iterator<CrossReference> methodsIterator = interactionTypes.iterator();
             String name = null;
 
@@ -526,26 +564,9 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
                 }
             }
 
-            type.setShortName(name != null ? name : "unknown");
-            type.setFullName(name != null ? name : "unknown");
+            getType().setShortName(name != null ? name : "unknown");
+            getType().setFullName(name != null ? name : "unknown");
         }
-    }
-
-    protected void processAddedChecksumEvent(psidev.psi.mi.jami.model.Checksum added){
-        if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, psidev.psi.mi.jami.model.Checksum.RIGID_MI, psidev.psi.mi.jami.model.Checksum.RIGID)){
-            rigid = added;
-        }
-    }
-
-    protected void processRemovedChecksumEvent(psidev.psi.mi.jami.model.Checksum removed){
-        if (rigid != null && rigid.getValue().equals(removed.getValue())
-                && ChecksumUtils.doesChecksumHaveMethod(removed, psidev.psi.mi.jami.model.Checksum.RIGID_MI, psidev.psi.mi.jami.model.Checksum.RIGID)){
-            rigid = ChecksumUtils.collectFirstChecksumWithMethod(checksums, psidev.psi.mi.jami.model.Checksum.RIGID_MI, psidev.psi.mi.jami.model.Checksum.RIGID);
-        }
-    }
-
-    protected void clearPropertiesLinkedToChecksum(){
-        rigid = null;
     }
 
 	/////////////////////////
@@ -593,16 +614,24 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
     @Override
     public void setCreatedDate(Date created) {
-        ((MitabCreationDateList)creationDate).clearOnly();
+        ((MitabCreationDateList)getCreationDate()).clearOnly();
         super.setCreatedDate(created);
         creationDate.add(created);
     }
 
+    protected void setCreatedDateOnly(Date created) {
+        super.setCreatedDate(created);
+    }
+
     @Override
     public void setUpdatedDate(Date updated) {
-        ((MitabUpdateDateList)updateDate).clearOnly();
+        ((MitabUpdateDateList)getUpdateDate()).clearOnly();
         super.setUpdatedDate(updated);
         updateDate.add(updated);
+    }
+
+    public void setUpdatedDateOnly(Date updated) {
+        super.setUpdatedDate(updated);
     }
 
     @Override
@@ -611,8 +640,12 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         processNewInteractionTypesList(type);
     }
 
+    protected void setTypeOnly(CvTerm type) {
+        super.setType(type);
+    }
+
     private void processNewInteractionTypesList(CvTerm type) {
-        ((InteractionTypesList)interactionTypes).clearOnly();
+        ((InteractionTypesList)getInteractionTypes()).clearOnly();
         if (type.getMIIdentifier() != null){
             ((InteractionTypesList)interactionTypes).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, type.getMIIdentifier(), type.getFullName() != null ? type.getFullName() : type.getShortName()));
         }
@@ -653,7 +686,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 		sb.append(", creationDate=").append(creationDate);
 		sb.append(", updateDate=").append(updateDate);
 		sb.append(", checksums=").append(interactionChecksums);
-		sb.append(", negative=").append(isNegative);
+		sb.append(", negative=").append(isNegative());
 		sb.append('}');
 		return sb.toString();
 	}
@@ -678,7 +711,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 		if (getDetectionMethods() != null ? !getDetectionMethods().equals(that.getDetectionMethods()) : that.getDetectionMethods() != null) {
 			return false;
 		}
-		if (interactionTypes != null ? !interactionTypes.equals(that.interactionTypes) : that.interactionTypes != null) {
+		if (interactionTypes != null ? !interactionTypes.equals(that.interactionTypes) : (that.interactionTypes != null && !that.interactionTypes.isEmpty())) {
 			return false;
 		}
 
@@ -726,7 +759,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 			return false;
 		}
 
-		if (confidenceValues != null ? !CollectionUtils.isEqualCollection(confidenceValues, that.confidenceValues) : that.confidenceValues != null) {
+		if (confidenceValues != null ? !CollectionUtils.isEqualCollection(confidenceValues, that.getConfidenceValues()) : (that.confidenceValues != null && !that.confidenceValues.isEmpty())) {
 			return false;
 		}
 
@@ -734,7 +767,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 			return false;
 		}
 
-		if (interactionAcs != null ? !CollectionUtils.isEqualCollection(interactionAcs, that.interactionAcs) : that.interactionAcs != null) {
+		if (interactionAcs != null ? !CollectionUtils.isEqualCollection(interactionAcs, that.getInteractionAcs()) : (that.interactionAcs != null && !that.interactionAcs.isEmpty())) {
 			return false;
 		}
 
@@ -742,15 +775,15 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 			return false;
 		}
 
-		if (complexExpansion != null ? !CollectionUtils.isEqualCollection(complexExpansion, that.complexExpansion) : that.complexExpansion != null) {
+		if (complexExpansion != null ? !CollectionUtils.isEqualCollection(complexExpansion, that.getComplexExpansion()) : (that.complexExpansion != null && !that.complexExpansion.isEmpty())) {
 			return false;
 		}
 
-		if (interactionXrefs != null ? !CollectionUtils.isEqualCollection(interactionXrefs, that.interactionXrefs) : that.interactionXrefs != null) {
+		if (interactionXrefs != null ? !CollectionUtils.isEqualCollection(interactionXrefs, that.getInteractionXrefs()) : (that.interactionXrefs != null && !that.interactionXrefs.isEmpty())) {
 			return false;
 		}
 
-		if (interactionAnnotations != null ? !CollectionUtils.isEqualCollection(interactionAnnotations, that.interactionAnnotations) : that.interactionAnnotations != null) {
+		if (interactionAnnotations != null ? !CollectionUtils.isEqualCollection(interactionAnnotations, that.getInteractionAnnotations()) : (that.interactionAnnotations != null && !that.interactionAnnotations.isEmpty())) {
 			return false;
 		}
 
@@ -758,23 +791,23 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 			return false;
 		}
 
-		if (interactionParameters != null ? !CollectionUtils.isEqualCollection(interactionParameters, that.interactionParameters) : that.interactionParameters != null) {
+		if (interactionParameters != null ? !CollectionUtils.isEqualCollection(interactionParameters, that.getInteractionParameters()) : (that.interactionParameters != null && !that.interactionParameters.isEmpty())) {
 			return false;
 		}
 
-		if (creationDate != null ? !CollectionUtils.isEqualCollection(creationDate, that.creationDate) : that.creationDate != null) {
+		if (creationDate != null ? !CollectionUtils.isEqualCollection(creationDate, that.getCreationDate()) : (that.creationDate != null && !that.creationDate.isEmpty())) {
 			return false;
 		}
 
-		if (updateDate != null ? !CollectionUtils.isEqualCollection(updateDate, that.updateDate) : that.updateDate != null) {
+		if (updateDate != null ? !CollectionUtils.isEqualCollection(updateDate, that.getUpdateDate()) : (that.updateDate != null && !that.updateDate.isEmpty())) {
 			return false;
 		}
 
-		if (interactionChecksums != null ? !CollectionUtils.isEqualCollection(interactionChecksums, that.interactionChecksums) : that.interactionChecksums != null) {
+		if (interactionChecksums != null ? !CollectionUtils.isEqualCollection(interactionChecksums, that.getInteractionChecksums()) : (that.interactionChecksums != null && !that.interactionChecksums.isEmpty())) {
 			return false;
 		}
 
-		return isNegative == that.isNegative;
+		return isNegative() == that.isNegative();
 
 	}
 
@@ -817,22 +850,22 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
-            if (type == null){
+            if (getType() == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
-                type = new DefaultCvTerm(name, name, added);
+                setTypeOnly(new DefaultCvTerm(name, name, added));
             }
             else {
-                type.getXrefs().add(added);
+                getType().getXrefs().add(added);
                 // reset shortname
-                if (type.getMIIdentifier() != null && type.getMIIdentifier().equals(added.getId())){
+                if (getType().getMIIdentifier() != null && getType().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        type.setShortName(name);
+                        getType().setShortName(name);
                     }
                     else {
                         resetInteractionTypeNameFromMiReferences();
-                        if (type.getShortName().equals("unknown")){
+                        if (getType().getShortName().equals("unknown")){
                             resetInteractionTypeNameFromFirstReferences();
                         }
                     }
@@ -843,13 +876,13 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
 
-            if (type != null){
-                type.getXrefs().remove(removed);
+            if (getType() != null){
+                getType().getXrefs().remove(removed);
 
-                if (removed.getText() != null && type.getShortName().equals(removed.getText())){
-                    if (type.getMIIdentifier() != null){
+                if (removed.getText() != null && getType().getShortName().equals(removed.getText())){
+                    if (getType().getMIIdentifier() != null){
                         resetInteractionTypeNameFromMiReferences();
-                        if (type.getShortName().equals("unknown")){
+                        if (getType().getShortName().equals("unknown")){
                             resetInteractionTypeNameFromFirstReferences();
                         }
                     }
@@ -860,13 +893,13 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
             }
 
             if (isEmpty()){
-                type = null;
+                setTypeOnly(null);
             }
         }
 
         @Override
         protected void clearProperties() {
-            type = null;
+            setTypeOnly(null);
         }
     }
 
@@ -878,27 +911,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Confidence added) {
             if (added instanceof Confidence){
-                ((InteractionMitabConfidenceList)confidenceValues).addOnly((Confidence) added);
+                ((InteractionMitabConfidenceList)getConfidenceValues()).addOnly((Confidence) added);
             }
             else {
-                ((InteractionMitabConfidenceList)confidenceValues).addOnly(new ConfidenceImpl(added.getType().getShortName(), added.getValue(), added.getUnit() != null ? added.getUnit().getShortName() : null));
+                ((InteractionMitabConfidenceList)getConfidenceValues()).addOnly(new ConfidenceImpl(added.getType().getShortName(), added.getValue(), added.getUnit() != null ? added.getUnit().getShortName() : null));
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Confidence removed) {
             if (removed instanceof Confidence){
-                ((InteractionMitabConfidenceList)confidenceValues).removeOnly(removed);
+                ((InteractionMitabConfidenceList)getConfidenceValues()).removeOnly(removed);
             }
             else {
-                ((InteractionMitabConfidenceList)confidenceValues).removeOnly(new ConfidenceImpl(removed.getType().getShortName(), removed.getValue(), removed.getUnit() != null ? removed.getUnit().getShortName() : null));
+                ((InteractionMitabConfidenceList)getConfidenceValues()).removeOnly(new ConfidenceImpl(removed.getType().getShortName(), removed.getValue(), removed.getUnit() != null ? removed.getUnit().getShortName() : null));
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all confidences
-            ((InteractionMitabConfidenceList)confidenceValues).clearOnly();
+            ((InteractionMitabConfidenceList)getConfidenceValues()).clearOnly();
         }
     }
 
@@ -911,21 +944,21 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void processAddedObjectEvent(Confidence added) {
 
             // we added a confidence, needs to add it in confidences
-            ((BinaryInteractionConfidenceList)confidences).addOnly(added);
+            ((BinaryInteractionConfidenceList)getConfidences()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Confidence removed) {
 
             // we removed a Confidence, needs to remove it in confidences
-            ((BinaryInteractionConfidenceList)confidences).removeOnly(removed);
+            ((BinaryInteractionConfidenceList)getConfidences()).removeOnly(removed);
 
         }
 
         @Override
         protected void clearProperties() {
             // clear all confidences
-            ((BinaryInteractionConfidenceList)confidences).clearOnly();
+            ((BinaryInteractionConfidenceList)getConfidences()).clearOnly();
         }
     }
 
@@ -937,27 +970,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Xref added) {
             if (added instanceof CrossReference){
-                ((InteractionMitabIdentifiersList)interactionAcs).addOnly((CrossReference) added);
+                ((InteractionMitabIdentifiersList)getInteractionAcs()).addOnly((CrossReference) added);
             }
             else {
-                ((InteractionMitabIdentifiersList)interactionAcs).addOnly(new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier()!= null ? added.getQualifier().getShortName() : null));
+                ((InteractionMitabIdentifiersList)getInteractionAcs()).addOnly(new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier()!= null ? added.getQualifier().getShortName() : null));
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Xref removed) {
             if (removed instanceof CrossReference){
-                ((InteractionMitabIdentifiersList)interactionAcs).removeOnly(removed);
+                ((InteractionMitabIdentifiersList)getInteractionAcs()).removeOnly(removed);
             }
             else {
-                ((InteractionMitabIdentifiersList)interactionAcs).removeOnly(new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier()!= null ? removed.getQualifier().getShortName() : null));
+                ((InteractionMitabIdentifiersList)getInteractionAcs()).removeOnly(new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier()!= null ? removed.getQualifier().getShortName() : null));
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all confidences
-            ((InteractionMitabIdentifiersList)interactionAcs).clearOnly();
+            ((InteractionMitabIdentifiersList)getInteractionAcs()).clearOnly();
         }
     }
 
@@ -970,11 +1003,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void processAddedObjectEvent(CrossReference added) {
 
             // imex
-            if (added.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && imexId == null){
-                assignImexId(imexId.getId());
+            if (added.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && getImexId() == null){
+                assignImexId(added.getId());
             }
             else {
-                ((BinaryInteractionIdentifiersList)identifiers).addOnly(added);
+                ((BinaryInteractionIdentifiersList)getIdentifiers()).addOnly(added);
             }
         }
 
@@ -982,11 +1015,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void processRemovedObjectEvent(CrossReference removed) {
 
             // imex
-            if (removed.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && imexId != null && imexId.equals(removed.getId())){
-                xrefs.remove(removed);
+            if (removed.getDatabase().getShortName().toLowerCase().trim().equals(Xref.IMEX) && getImexId() != null && getImexId().equals(removed.getId())){
+                getXrefs().remove(removed);
             }
             else {
-                ((BinaryInteractionIdentifiersList)identifiers).removeOnly(removed);
+                ((BinaryInteractionIdentifiersList)getIdentifiers()).removeOnly(removed);
             }
         }
 
@@ -994,12 +1027,10 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void clearProperties() {
 
             // remove imex id from xrefs
-            if (imexId != null){
-                xrefs.remove(imexId);
-            }
+            clearPropertiesLinkedToXrefs();
 
             // clear all confidences
-            ((BinaryInteractionIdentifiersList)identifiers).clearOnly();
+            ((BinaryInteractionIdentifiersList)getIdentifiers()).clearOnly();
         }
     }
 
@@ -1010,28 +1041,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
         @Override
         protected void processAddedObjectEvent(Xref added) {
+            processAddedXrefEvent(added);
 
             // the added identifier is imex and the current imex is not set
-            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
+            if (getImexId() == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
                 // the added xref is imex-primary
                 if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
                     if (added instanceof CrossReference){
-                        imexId = added;
-                        ((InteractionMitabIdentifiersList) interactionAcs).addOnly((CrossReference)imexId);
+                        ((InteractionMitabIdentifiersList) getInteractionAcs()).addOnly((CrossReference)added);
                     }
                     else {
                         CrossReference imex = new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier().getShortName());
-                        imexId = imex;
-                        ((InteractionMitabIdentifiersList) interactionAcs).addOnly((CrossReference)imexId);
+                        ((InteractionMitabIdentifiersList) getInteractionAcs()).addOnly(imex);
                     }
                 }
             }
             else{
                 if (added instanceof CrossReference){
-                    ((InteractionMitabXrefsList)interactionXrefs).addOnly((CrossReference) added);
+                    ((InteractionMitabXrefsList)getInteractionXrefs()).addOnly((CrossReference) added);
                 }
                 else {
-                    ((InteractionMitabXrefsList)interactionXrefs).addOnly(new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier()!= null ? added.getQualifier().getShortName() : null));
+                    ((InteractionMitabXrefsList)getInteractionXrefs()).addOnly(new CrossReferenceImpl(added.getDatabase().getShortName(), added.getId(), added.getQualifier()!= null ? added.getQualifier().getShortName() : null));
                 }
             }
         }
@@ -1039,25 +1069,24 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
             // the removed identifier is pubmed
-            if (imexId == removed){
-                ((InteractionMitabIdentifiersList) interactionAcs).removeOnly(imexId);
-                imexId = null;
-            }
-            else {
+            if (getImexId() != null && getImexId().equals(removed.getId())){
                 if (removed instanceof CrossReference){
-                    ((InteractionMitabXrefsList)interactionXrefs).removeOnly(removed);
+                    ((InteractionMitabIdentifiersList) getInteractionAcs()).removeOnly(removed);
                 }
                 else {
-                    ((InteractionMitabXrefsList)interactionXrefs).removeOnly(new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier()!= null ? removed.getQualifier().getShortName() : null));
+                    CrossReference imex = new CrossReferenceImpl(removed.getDatabase().getShortName(), removed.getId(), removed.getQualifier().getShortName());
+                    ((InteractionMitabIdentifiersList) getInteractionAcs()).removeOnly(imex);
                 }
             }
+            // the removed identifier is pubmed
+            processRemovedXrefEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((InteractionMitabIdentifiersList) interactionAcs).removeOnly(imexId);
+            ((InteractionMitabIdentifiersList) interactionAcs).retainAllOnly(getIdentifiers());
             ((InteractionMitabXrefsList)interactionXrefs).clearOnly();
-            imexId = null;
+            clearPropertiesLinkedToXrefs();
         }
     }
 
@@ -1069,20 +1098,20 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
-            ((BinaryInteractionXrefList)xrefs).addOnly(added);
+            ((BinaryInteractionXrefList)getXrefs()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
 
-            ((BinaryInteractionXrefList)xrefs).removeOnly(removed);
+            ((BinaryInteractionXrefList)getXrefs()).removeOnly(removed);
 
         }
 
         @Override
         protected void clearProperties() {
             // clear all xrefs excepted imex
-            ((BinaryInteractionXrefList)xrefs).retainAllOnly(interactionAcs);
+            ((BinaryInteractionXrefList)getXrefs()).retainAllOnly(interactionAcs);
         }
     }
 
@@ -1113,27 +1142,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
                 else {
                     matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION_MI, added.getValue());
                 }
-                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).addOnly(matchingXref);
             }
             else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(shortTopic)){
                 CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION);
-                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).addOnly(matchingXref);
             }
             else if (psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION.equalsIgnoreCase(shortTopic)){
                 CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION);
-                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).addOnly(matchingXref);
             }
             else if (psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION.equalsIgnoreCase(shortTopic)){
                 CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION);
-                ((ComplexExpansionList)complexExpansion).addOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).addOnly(matchingXref);
             }
             // we have a simple xref
             else {
                 if (added instanceof Annotation){
-                    ((InteractionMitabAnnotationList)interactionAnnotations).addOnly((Annotation) added);
+                    ((InteractionMitabAnnotationList)getInteractionAnnotations()).addOnly((Annotation) added);
                 }
                 else {
-                    ((InteractionMitabAnnotationList)interactionAnnotations).addOnly(new AnnotationImpl(added.getTopic().getShortName(), added.getValue()));
+                    ((InteractionMitabAnnotationList)getInteractionAnnotations()).addOnly(new AnnotationImpl(added.getTopic().getShortName(), added.getValue()));
                 }
             }
         }
@@ -1160,27 +1189,27 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
                 else {
                     matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.COMPLEX_EXPANSION_MI, removed.getValue());
                 }
-                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).removeOnly(matchingXref);
             }
             else if (psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION.equalsIgnoreCase(shortTopic)){
                 CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.SPOKE_EXPANSION);
-                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).removeOnly(matchingXref);
             }
             else if (psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION.equalsIgnoreCase(shortTopic)){
                 CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.MATRIX_EXPANSION);
-                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).removeOnly(matchingXref);
             }
             else if (psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION.equalsIgnoreCase(shortTopic)){
                 CrossReference matchingXref = new CrossReferenceImpl(CvTerm.PSI_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION_MI, psidev.psi.mi.jami.model.Annotation.BIPARTITE_EXPANSION);
-                ((ComplexExpansionList)complexExpansion).removeOnly(matchingXref);
+                ((ComplexExpansionList)getComplexExpansion()).removeOnly(matchingXref);
             }
             // remove normal annotation
             else {
                 if (removed instanceof Annotation){
-                    ((InteractionMitabAnnotationList)interactionAnnotations).removeOnly(removed);
+                    ((InteractionMitabAnnotationList)getInteractionAnnotations()).removeOnly(removed);
                 }
                 else {
-                    ((InteractionMitabAnnotationList)interactionAnnotations).removeOnly(new AnnotationImpl(removed.getTopic().getShortName(), removed.getValue()));
+                    ((InteractionMitabAnnotationList)getInteractionAnnotations()).removeOnly(new AnnotationImpl(removed.getTopic().getShortName(), removed.getValue()));
                 }
             }
         }
@@ -1188,8 +1217,8 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractionMitabAnnotationList)interactionAnnotations).clearOnly();
-            ((ComplexExpansionList)complexExpansion).clearOnly();
+            ((InteractionMitabAnnotationList)getInteractionAnnotations()).clearOnly();
+            ((ComplexExpansionList)getComplexExpansion()).clearOnly();
         }
     }
 
@@ -1200,20 +1229,20 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
-            ((BinaryInteractionAnnotationList)annotations).addOnly(
+            ((BinaryInteractionAnnotationList)getAnnotations()).addOnly(
                     new DefaultAnnotation(CvTermFactory.createMICvTerm(Annotation.COMPLEX_EXPANSION, Annotation.COMPLEX_EXPANSION_MI), added.getText() != null ? added.getText() : added.getId()));
         }
 
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
-            ((BinaryInteractionAnnotationList)annotations).removeOnly(
+            ((BinaryInteractionAnnotationList)getAnnotations()).removeOnly(
                     new DefaultAnnotation(CvTermFactory.createMICvTerm(Annotation.COMPLEX_EXPANSION, Annotation.COMPLEX_EXPANSION_MI), removed.getText() != null ? removed.getText() : removed.getId()));
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((BinaryInteractionAnnotationList)annotations).retainAllOnly(interactionAnnotations);
+            ((BinaryInteractionAnnotationList)getAnnotations()).retainAllOnly(getAnnotations());
         }
     }
 
@@ -1226,20 +1255,20 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void processAddedObjectEvent(Annotation added) {
 
             // we added a annotation, needs to add it in annotations
-            ((BinaryInteractionAnnotationList)annotations).addOnly(added);
+            ((BinaryInteractionAnnotationList)getAnnotations()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Annotation removed) {
 
             // we removed a annotation, needs to remove it in annotations
-            ((BinaryInteractionAnnotationList)annotations).removeOnly(removed);
+            ((BinaryInteractionAnnotationList)getAnnotations()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((BinaryInteractionAnnotationList)annotations).clearOnly();
+            ((BinaryInteractionAnnotationList)getAnnotations()).retainAllOnly(getComplexExpansion());
         }
     }
 
@@ -1251,11 +1280,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Parameter added) {
             if (added instanceof Parameter){
-                ((InteractionMitabParametersList)interactionParameters).addOnly((Parameter) added);
+                ((InteractionMitabParametersList)getInteractionParameters()).addOnly((Parameter) added);
             }
             else {
                 try {
-                    ((InteractionMitabParametersList)interactionParameters).addOnly(new ParameterImpl(added.getType().getShortName(), ParameterUtils.getParameterValueAsString(added)));
+                    ((InteractionMitabParametersList)getInteractionParameters()).addOnly(new ParameterImpl(added.getType().getShortName(), ParameterUtils.getParameterValueAsString(added)));
                 } catch (IllegalParameterException e) {
                     removeOnly(added);
                     log.error("Impossible to add this parameter because not well formatted", e);
@@ -1266,11 +1295,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Parameter removed) {
             if (removed instanceof Parameter){
-                ((InteractionMitabParametersList)interactionParameters).removeOnly(removed);
+                ((InteractionMitabParametersList)getInteractionParameters()).removeOnly(removed);
             }
             else {
                 try {
-                    ((InteractionMitabParametersList)interactionParameters).removeOnly(new ParameterImpl(removed.getType().getShortName(), ParameterUtils.getParameterValueAsString(removed)));
+                    ((InteractionMitabParametersList)getInteractionParameters()).removeOnly(new ParameterImpl(removed.getType().getShortName(), ParameterUtils.getParameterValueAsString(removed)));
                 } catch (IllegalParameterException e) {
                     log.error("Impossible to remove entirely this parameter because not well formatted", e);
                 }
@@ -1279,7 +1308,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
         @Override
         protected void clearProperties() {
-            ((InteractionMitabParametersList)interactionParameters).clearOnly();
+            ((InteractionMitabParametersList)getInteractionParameters()).clearOnly();
         }
     }
 
@@ -1291,18 +1320,18 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(Parameter added) {
 
-            ((BinaryInteractionParametersList)parameters).addOnly(added);
+            ((BinaryInteractionParametersList)getParameters()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Parameter removed) {
 
-            ((BinaryInteractionParametersList)parameters).removeOnly(removed);
+            ((BinaryInteractionParametersList)getParameters()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((BinaryInteractionParametersList)parameters).clearOnly();
+            ((BinaryInteractionParametersList)getParameters()).clearOnly();
         }
     }
 
@@ -1316,11 +1345,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
             Checksum modified = null;
             if (added instanceof Checksum){
                 modified = (Checksum) added;
-                ((InteractionMitabChecksumList)interactionChecksums).addOnly(modified);
+                ((InteractionMitabChecksumList)getInteractionChecksums()).addOnly(modified);
             }
             else {
                 modified = new ChecksumImpl(added.getMethod().getShortName(), added.getValue());
-                ((InteractionMitabChecksumList)interactionChecksums).addOnly(modified);
+                ((InteractionMitabChecksumList)getInteractionChecksums()).addOnly(modified);
             }
 
             processAddedChecksumEvent(modified);
@@ -1331,11 +1360,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
             Checksum modified = null;
             if (removed instanceof Checksum){
                 modified = (Checksum) removed;
-                ((InteractionMitabChecksumList)interactionChecksums).removeOnly(modified);
+                ((InteractionMitabChecksumList)getInteractionChecksums()).removeOnly(modified);
             }
             else {
                 modified = new ChecksumImpl(removed.getMethod().getShortName(), removed.getValue());
-                ((InteractionMitabChecksumList)interactionChecksums).removeOnly(modified);
+                ((InteractionMitabChecksumList)getInteractionChecksums()).removeOnly(modified);
             }
 
             processRemovedChecksumEvent(modified);
@@ -1344,8 +1373,8 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void clearProperties() {
             // clear all checksums
-            ((InteractionMitabChecksumList)interactionChecksums).clearOnly();
-            clearPropertiesLinkedToChecksum();
+            ((InteractionMitabChecksumList)getInteractionChecksums()).clearOnly();
+            clearPropertiesLinkedToChecksums();
         }
     }
 
@@ -1358,7 +1387,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void processAddedObjectEvent(Checksum added) {
 
             // we added a checksum, needs to add it in checksums
-            ((BinaryInteractionChecksumList)checksums).addOnly(added);
+            ((BinaryInteractionChecksumList)getChecksums()).addOnly(added);
             processRemovedChecksumEvent(added);
         }
 
@@ -1366,15 +1395,15 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void processRemovedObjectEvent(Checksum removed) {
 
             // we removed a checksum, needs to remove it in checksums
-            ((BinaryInteractionChecksumList)checksums).removeOnly(removed);
+            ((BinaryInteractionChecksumList)getChecksums()).removeOnly(removed);
             processRemovedChecksumEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
             // clear all checksums
-            ((BinaryInteractionChecksumList)checksums).clearOnly();
-            clearPropertiesLinkedToChecksum();
+            ((BinaryInteractionChecksumList)getChecksums()).clearOnly();
+            clearPropertiesLinkedToChecksums();
         }
     }
 
@@ -1386,26 +1415,26 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(Date added) {
 
-            if (createdDate == null){
-                createdDate = added;
+            if (getCreatedDate() == null){
+                setCreatedDateOnly(added);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(Date removed) {
 
-            if (createdDate != null && createdDate == removed && !isEmpty()){
-                createdDate = creationDate.iterator().next();
+            if (getCreatedDate() != null && getCreatedDate() == removed && !isEmpty()){
+                setCreatedDateOnly(creationDate.iterator().next());
             }
 
             if (isEmpty()){
-                createdDate = null;
+                setCreatedDateOnly(null);
             }
         }
 
         @Override
         protected void clearProperties() {
-            createdDate = null;
+            setCreatedDateOnly(null);
         }
     }
 
@@ -1417,26 +1446,26 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(Date added) {
 
-            if (updatedDate == null){
-                updatedDate = added;
+            if (getUpdatedDate() == null){
+                setUpdatedDateOnly(added);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(Date removed) {
 
-            if (updatedDate != null && updatedDate == removed && !isEmpty()){
-                updatedDate = updateDate.iterator().next();
+            if (getUpdatedDate() != null && getUpdatedDate() == removed && !isEmpty()){
+                setUpdatedDateOnly(updateDate.iterator().next());
             }
 
             if (isEmpty()){
-                updatedDate = null;
+                setUpdatedDateOnly(null);
             }
         }
 
         @Override
         protected void clearProperties() {
-            updatedDate = null;
+            setUpdatedDateOnly(null);
         }
     }
 }

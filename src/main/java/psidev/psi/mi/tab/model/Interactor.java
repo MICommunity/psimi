@@ -45,32 +45,30 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
     /**
      * Features of the interactor.
      */
-    private List<Feature> mitabFeatures
-            = new InteractorMitabFeatureList();
+    private List<Feature> mitabFeatures;
 
     /**
      * Stoichiometry of the interactor.
      */
-    private List<Integer> mitabStoichiometry
-            = new InteractorMitabStoichiometryList();
+    private List<Integer> mitabStoichiometry;
 
 	/**
 	 * Interactor's biological role.
 	 */
-	private List<CrossReference> biologicalRoles
-			= new BiologicalRoleList();
+	private List<CrossReference> biologicalRoles;
+
 
 	/**
 	 * Interactor's experimental role.
 	 */
-	private List<CrossReference> experimentalRoles
-			= new ExperimentalRoleList();
+	private List<CrossReference> experimentalRoles;
+
 
 	/**
 	 * Participant identification method.
 	 */
-	private List<CrossReference> participantIdentificationMethods
-			= new ParticipantIdentificationMethodList();
+	private List<CrossReference> participantIdentificationMethods;
+
 
 
 	///////////////////////////
@@ -78,12 +76,10 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
 	public Interactor() {
         super(new MitabInteractor(), null);
-        processNewBiologicalRoleInBiologicalRoleList(biologicalRole);
-        processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
+        processNewBiologicalRoleInBiologicalRoleList(getBiologicalRole());
+        processNewExperimentalRoleInExperimentalRoleList(getExperimentalRole());
 
-        mitabInteractor = (MitabInteractor) interactor;
-        aliases = mitabInteractor.getAliases();
-        xrefs = mitabInteractor.getXrefs();
+        mitabInteractor = (MitabInteractor) getInteractor();
 	}
 
 	public Interactor(List<CrossReference> identifiers) {
@@ -96,35 +92,32 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
     public Interactor(MitabInteractor mitabInteractor, CvTerm partDetMethod) {
         super(mitabInteractor, partDetMethod);
-        processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
-        processNewBiologicalRoleInBiologicalRoleList(biologicalRole);
+        processNewExperimentalRoleInExperimentalRoleList(getExperimentalRole());
+        processNewBiologicalRoleInBiologicalRoleList(getBiologicalRole());
         if (partDetMethod != null){
             processNewMethodInIdentificationMethodList(partDetMethod);
         }
         this.mitabInteractor = mitabInteractor;
-        aliases = mitabInteractor.getAliases();
-        xrefs = mitabInteractor.getXrefs();
-        annotations = mitabInteractor.getAnnotations();
     }
 
     @Override
-    protected void initializeFeatures(){
-        this.features = new InteractorFeatureList();
+    protected void initialiseFeatures(){
+        initialiseFeaturesWith(new InteractorFeatureList());
     }
 
     @Override
-    protected void initializeAnnotations() {
-        aliases = interactor.getAliases();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(getInteractor().getAnnotations());
     }
 
     @Override
-    protected void initializeXrefs() {
-        xrefs = interactor.getXrefs();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(getInteractor().getXrefs());
     }
 
     @Override
     protected void initialiseAliases() {
-        annotations = interactor.getAnnotations();
+        initialiseAliasesWith(getInteractor().getAliases());
     }
 
     ///////////////////////////
@@ -243,7 +236,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 *
 	 * @param xrefs Value to set for property 'xrefs'.
 	 */
-	public void setInteractorXrefs(List<CrossReference> xrefs) {
+	public void setXrefs(List<CrossReference> xrefs) {
         mitabInteractor.setMitabXrefs(xrefs);
 	}
 
@@ -261,7 +254,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 *
 	 * @param annotations Value to set for property 'annotations'.
 	 */
-	public void setInteractorAnnotations(List<Annotation> annotations) {
+	public void setAnnotations(List<Annotation> annotations) {
         mitabInteractor.setMitabAnnotations(annotations);
 	}
 
@@ -289,6 +282,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 * @return Value for property 'features'.
 	 */
 	public List<Feature> getInteractorFeatures() {
+        if (mitabFeatures == null){
+            mitabFeatures = new InteractorMitabFeatureList();
+        }
 		return mitabFeatures;
 	}
 
@@ -297,8 +293,8 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 *
 	 * @param features Value to set for property 'features'.
 	 */
-	public void setInteractorFeatures(List<Feature> features) {
-        this.mitabFeatures.clear();
+	public void setFeatures(List<Feature> features) {
+        getInteractorFeatures().clear();
         if (features != null) {
             this.mitabFeatures.addAll(features);
         }
@@ -310,6 +306,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 * @return Value for property 'stoichiometry'.
 	 */
 	public List<Integer> getInteractorStoichiometry() {
+        if (mitabStoichiometry == null){
+            mitabStoichiometry = new InteractorMitabStoichiometryList();
+        }
 		return this.mitabStoichiometry;
 	}
 
@@ -318,8 +317,8 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 *
 	 * @param stoichiometry Value to set for property 'stoichiometry'.
 	 */
-	public void setInteractorStoichiometry(List<Integer> stoichiometry) {
-        this.mitabStoichiometry.clear();
+	public void setStoichiometry(List<Integer> stoichiometry) {
+        getInteractorStoichiometry().clear();
         if (stoichiometry != null) {
             this.mitabStoichiometry.addAll(stoichiometry);
         }
@@ -331,6 +330,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 * @return Value for property 'participants'.
 	 */
 	public List<CrossReference> getParticipantIdentificationMethods() {
+        if (participantIdentificationMethods == null){
+            participantIdentificationMethods = new ParticipantIdentificationMethodList();
+        }
 		return participantIdentificationMethods;
 	}
 
@@ -341,7 +343,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 *         Value to set for property 'participant'.
 	 */
 	public void setParticipantIdentificationMethods(List<CrossReference> participantIdentificationMethods) {
-        this.participantIdentificationMethods.clear();
+        getParticipantIdentificationMethods().clear();
         if (participantIdentificationMethods != null) {
             this.participantIdentificationMethods.addAll(participantIdentificationMethods);
         }
@@ -353,6 +355,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      * @return Value for property 'biologicalRoles'.
      */
     public List<CrossReference> getBiologicalRoles() {
+        if (biologicalRoles == null){
+            biologicalRoles = new BiologicalRoleList();
+        }
         return biologicalRoles;
     }
 
@@ -364,11 +369,11 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
     public void setBiologicalRoles(List<CrossReference> biologicalRoles) {
 
         if (biologicalRoles != null && !biologicalRoles.isEmpty()) {
-            ((BiologicalRoleList)this.biologicalRoles).clearOnly() ;
+            ((BiologicalRoleList)getBiologicalRoles()).clearOnly() ;
             this.biologicalRoles.addAll(biologicalRoles);
         }
         else {
-            this.biologicalRoles.clear();
+            getBiologicalRoles().clear();
         }
     }
 
@@ -378,6 +383,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      * @return Value for property 'experimentalRoles'.
      */
     public List<CrossReference> getExperimentalRoles() {
+        if (experimentalRoles == null){
+           experimentalRoles = new ExperimentalRoleList();
+        }
         return experimentalRoles;
     }
 
@@ -388,11 +396,11 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
      */
     public void setExperimentalRoles(List<CrossReference> experimentalRoles) {
         if (experimentalRoles != null && !experimentalRoles.isEmpty()) {
-            ((ExperimentalRoleList)this.experimentalRoles).clearOnly();
+            ((ExperimentalRoleList)getExperimentalRoles()).clearOnly();
             this.experimentalRoles.addAll(experimentalRoles);
         }
         else {
-            this.experimentalRoles.clear();
+            getExperimentalRoles().clear();
         }
     }
 
@@ -412,17 +420,17 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             }
         }
         else if (this.getBiologicalRoles() != null && !this.getBiologicalRoles().isEmpty()){
-            if (!Participant.UNSPECIFIED_ROLE.equals(biologicalRole.getShortName())){
+            if (!Participant.UNSPECIFIED_ROLE.equals(getBiologicalRole().getShortName())){
                 return false;
             }
         }
         else if (this.getExperimentalRoles() != null && !this.getExperimentalRoles().isEmpty()){
-            if (!Participant.UNSPECIFIED_ROLE.equals(experimentalRole.getShortName())){
+            if (!Participant.UNSPECIFIED_ROLE.equals(getExperimentalRole().getShortName())){
                 return false;
             }
         }
         else if (this.getInteractorTypes() != null && !this.getInteractorTypes().isEmpty()){
-            if (!psidev.psi.mi.jami.model.Interactor.UNKNOWN_INTERACTOR.equals(interactor.getType().getShortName())){
+            if (!psidev.psi.mi.jami.model.Interactor.UNKNOWN_INTERACTOR.equals(getInteractor().getType().getShortName())){
                 return false;
             }
         }
@@ -448,19 +456,19 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	}
 
     protected void resetIdentificationMethodNameFromMiReferences(){
-        if (!participantIdentificationMethods.isEmpty()){
+        if (!getParticipantIdentificationMethods().isEmpty()){
             Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(participantIdentificationMethods), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
 
             if (ref != null){
                 String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
-                identificationMethod.setShortName(name);
-                identificationMethod.setFullName(name);
+                getIdentificationMethod().setShortName(name);
+                getIdentificationMethod().setFullName(name);
             }
         }
     }
 
     protected void resetIdentificationMethodNameFromFirstReferences(){
-        if (!participantIdentificationMethods.isEmpty()){
+        if (!getParticipantIdentificationMethods().isEmpty()){
             Iterator<CrossReference> methodsIterator = participantIdentificationMethods.iterator();
             String name = null;
 
@@ -472,25 +480,25 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 }
             }
 
-            identificationMethod.setShortName(name != null ? name : "unknown");
-            identificationMethod.setFullName(name != null ? name : "unknown");
+            getIdentificationMethod().setShortName(name != null ? name : "unknown");
+            getIdentificationMethod().setFullName(name != null ? name : "unknown");
         }
     }
 
     protected void resetBiologicalRoleNameFromMiReferences(){
-        if (!biologicalRoles.isEmpty()){
+        if (!getBiologicalRoles().isEmpty()){
             Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(biologicalRoles), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
 
             if (ref != null){
                 String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
-                biologicalRole.setShortName(name);
-                biologicalRole.setFullName(name);
+                getBiologicalRole().setShortName(name);
+                getBiologicalRole().setFullName(name);
             }
         }
     }
 
     protected void resetBiologicalRoleNameFromFirstReferences(){
-        if (!biologicalRoles.isEmpty()){
+        if (!getBiologicalRoles().isEmpty()){
             Iterator<CrossReference> methodsIterator = biologicalRoles.iterator();
             String name = null;
 
@@ -502,25 +510,25 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 }
             }
 
-            biologicalRole.setShortName(name != null ? name : "unknown");
-            biologicalRole.setFullName(name != null ? name : "unknown");
+            getBiologicalRole().setShortName(name != null ? name : "unknown");
+            getBiologicalRole().setFullName(name != null ? name : "unknown");
         }
     }
 
     protected void resetExperimentalRoleNameFromMiReferences(){
-        if (!experimentalRoles.isEmpty()){
+        if (!getExperimentalRoles().isEmpty()){
             Xref ref = XrefUtils.collectFirstIdentifierWithDatabase(new ArrayList<Xref>(experimentalRoles), CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
 
             if (ref != null){
                 String name = ref.getQualifier() != null ? ref.getQualifier().getShortName() : "unknown";
-                experimentalRole.setShortName(name);
-                experimentalRole.setFullName(name);
+                getExperimentalRole().setShortName(name);
+                getExperimentalRole().setFullName(name);
             }
         }
     }
 
     protected void resetExperimentalRoleNameFromFirstReferences(){
-        if (!experimentalRoles.isEmpty()){
+        if (!getExperimentalRoles().isEmpty()){
             Iterator<CrossReference> methodsIterator = experimentalRoles.iterator();
             String name = null;
 
@@ -532,8 +540,8 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 }
             }
 
-            experimentalRole.setShortName(name != null ? name : "unknown");
-            experimentalRole.setFullName(name != null ? name : "unknown");
+            getExperimentalRole().setShortName(name != null ? name : "unknown");
+            getExperimentalRole().setFullName(name != null ? name : "unknown");
         }
     }
 	/////////////////////////////
@@ -543,16 +551,22 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
     public void setStoichiometry(Integer stoichiometry) {
 
         if (stoichiometry != null){
-            if (this.stoichiometry != null){
-                this.mitabStoichiometry.remove(this.stoichiometry);
+            if (getStoichiometry() != null){
+                getInteractorStoichiometry().remove(getStoichiometry());
             }
-            this.stoichiometry = stoichiometry;
-            this.mitabStoichiometry.add(this.stoichiometry);
+            super.setStoichiometry(stoichiometry);
+            getInteractorStoichiometry().add(getStoichiometry());
         }
-        else if (!this.mitabStoichiometry.isEmpty()) {
+        else if (!getInteractorStoichiometry().isEmpty()) {
             this.mitabStoichiometry.clear();
-            this.stoichiometry = null;
+            super.setStoichiometry(null);
         }
+
+    }
+
+    public void setStoichiometryOnly(Integer stoichiometry) {
+
+        super.setStoichiometry(stoichiometry);
 
     }
 
@@ -581,8 +595,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             super.setInteraction(null);
         }
         else if (interaction instanceof BinaryInteraction){
-            super.setInteraction(interaction);
-            interaction.getParticipants().add(this);
+            interaction.addParticipant(this);
         }
         else if (interaction.getParticipants().size() > 2){
             throw new IllegalArgumentException("A MitabInteractor need a BinaryInteraction with one or two participants and not " + interaction.getParticipants().size());
@@ -591,8 +604,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             BinaryInteraction<Interactor> convertedInteraction = new BinaryInteractionImpl();
 
             InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
-            super.setInteraction(convertedInteraction);
-            convertedInteraction.getParticipants().add(this);
+            convertedInteraction.addParticipant(this);
         }
     }
 
@@ -630,8 +642,8 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             super.setInteractor(convertedInteractor);
 
             initialiseAliases();
-            initializeAnnotations();
-            initializeXrefs();
+            initialiseAnnotations();
+            initialiseXrefs();
         }
     }
 
@@ -641,10 +653,18 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         processNewMethodInIdentificationMethodList(identificationMethod);
     }
 
+    protected void setIdentificationMethodOnly(CvTerm identificationMethod) {
+        super.setIdentificationMethod(identificationMethod);
+    }
+
     @Override
     public void setBiologicalRole(CvTerm bioRole) {
         super.setBiologicalRole(bioRole);
         processNewBiologicalRoleInBiologicalRoleList(bioRole);
+    }
+
+    protected void setBiologicalRoleOnly(CvTerm bioRole) {
+        super.setBiologicalRole(bioRole);
     }
 
     @Override
@@ -653,47 +673,51 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         processNewExperimentalRoleInExperimentalRoleList(expRole);
     }
 
+    protected void setExperimentalRoleOnly(CvTerm expRole) {
+        super.setExperimentalRole(expRole);
+    }
+
     private void processNewMethodInIdentificationMethodList(CvTerm identification) {
         if (identification.getMIIdentifier() != null){
-            ((ParticipantIdentificationMethodList)participantIdentificationMethods).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, identification.getMIIdentifier(), identification.getFullName() != null ? identification.getFullName(): identification.getShortName()));
+            ((ParticipantIdentificationMethodList)getParticipantIdentificationMethods()).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, identification.getMIIdentifier(), identification.getFullName() != null ? identification.getFullName(): identification.getShortName()));
         }
         else{
             if (!identification.getIdentifiers().isEmpty()){
                 Xref ref = identification.getIdentifiers().iterator().next();
-                ((ParticipantIdentificationMethodList)participantIdentificationMethods).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), identification.getFullName() != null ? identification.getFullName(): identification.getShortName()));
+                ((ParticipantIdentificationMethodList)getParticipantIdentificationMethods()).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), identification.getFullName() != null ? identification.getFullName(): identification.getShortName()));
             }
             else {
-                ((ParticipantIdentificationMethodList)participantIdentificationMethods).addOnly(new CrossReferenceImpl("unknown", "-", identification.getFullName() != null ? identification.getFullName(): identification.getShortName()));
+                ((ParticipantIdentificationMethodList)getParticipantIdentificationMethods()).addOnly(new CrossReferenceImpl("unknown", "-", identification.getFullName() != null ? identification.getFullName(): identification.getShortName()));
             }
         }
     }
 
     private void processNewBiologicalRoleInBiologicalRoleList(CvTerm role) {
         if (role.getMIIdentifier() != null){
-            ((BiologicalRoleList)biologicalRoles).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, role.getMIIdentifier(), role.getFullName() != null ? role.getFullName(): role.getShortName()));
+            ((BiologicalRoleList)getBiologicalRoles()).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, role.getMIIdentifier(), role.getFullName() != null ? role.getFullName(): role.getShortName()));
         }
         else{
             if (!role.getIdentifiers().isEmpty()){
                 Xref ref = role.getIdentifiers().iterator().next();
-                ((BiologicalRoleList)biologicalRoles).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), role.getFullName() != null ? role.getFullName(): role.getShortName()));
+                ((BiologicalRoleList)getBiologicalRoles()).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), role.getFullName() != null ? role.getFullName(): role.getShortName()));
             }
             else {
-                ((BiologicalRoleList)biologicalRoles).addOnly(new CrossReferenceImpl("unknown", "-", role.getFullName() != null ? role.getFullName(): role.getShortName()));
+                ((BiologicalRoleList)getBiologicalRoles()).addOnly(new CrossReferenceImpl("unknown", "-", role.getFullName() != null ? role.getFullName(): role.getShortName()));
             }
         }
     }
 
     private void processNewExperimentalRoleInExperimentalRoleList(CvTerm role) {
         if (role.getMIIdentifier() != null){
-            ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, role.getMIIdentifier(), role.getFullName() != null ? role.getFullName() : role.getShortName()));
+            ((ExperimentalRoleList)getExperimentalRoles()).addOnly(new CrossReferenceImpl(CvTerm.PSI_MI, role.getMIIdentifier(), role.getFullName() != null ? role.getFullName() : role.getShortName()));
         }
         else{
             if (!role.getIdentifiers().isEmpty()){
                 Xref ref = role.getIdentifiers().iterator().next();
-                ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), role.getFullName() != null ? role.getFullName() : role.getShortName()));
+                ((ExperimentalRoleList)getExperimentalRoles()).addOnly(new CrossReferenceImpl(ref.getDatabase().getShortName(), ref.getId(), role.getFullName() != null ? role.getFullName() : role.getShortName()));
             }
             else {
-                ((ExperimentalRoleList)experimentalRoles).addOnly(new CrossReferenceImpl("unknown", "-", role.getFullName() != null ? role.getFullName() : role.getShortName()));
+                ((ExperimentalRoleList)getExperimentalRoles()).addOnly(new CrossReferenceImpl("unknown", "-", role.getFullName() != null ? role.getFullName() : role.getShortName()));
             }
         }
     }
@@ -715,15 +739,15 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 		sb.append(", alternativeIdentifiers=").append(getAlternativeIdentifiers());
 		sb.append(", aliases=").append(getInteractorAliases());
 		sb.append(", organism=").append(getOrganism() != null ? getOrganism() : "-");
-		sb.append(", biologicalRoles=").append(biologicalRoles);
-		sb.append(", experimentalRoles=").append(experimentalRoles);
+		sb.append(", biologicalRoles=").append(getBiologicalRoles());
+		sb.append(", experimentalRoles=").append(getExperimentalRoles());
 		sb.append(", interactorTypes=").append(getInteractorTypes());
 		sb.append(", xrefs=").append(getInteractorXrefs());
 		sb.append(", annotations=").append(getInteractorAnnotations());
 		sb.append(", checksums=").append(getChecksums());
-		sb.append(", features=").append(mitabFeatures);
-		sb.append(", stoichiometry=").append(mitabStoichiometry);
-		sb.append(", participantIdentificationMethods=").append(participantIdentificationMethods);
+		sb.append(", features=").append(getInteractorFeatures());
+		sb.append(", stoichiometry=").append(getInteractorStoichiometry());
+		sb.append(", participantIdentificationMethods=").append(getParticipantIdentificationMethods());
 		sb.append('}');
 		return sb.toString();
 	}
@@ -747,9 +771,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 			return false;
 		if (getInteractorAliases() != null ? !CollectionUtils.isEqualCollection(getInteractorAliases(), that.getInteractorAliases()) : that.getInteractorAliases() != null)
 			return false;
-		if (biologicalRoles != null ? !CollectionUtils.isEqualCollection(biologicalRoles, that.biologicalRoles) : that.biologicalRoles != null)
+		if (biologicalRoles != null ? !CollectionUtils.isEqualCollection(biologicalRoles, that.getBiologicalRoles()) : (that.biologicalRoles != null && !that.biologicalRoles.isEmpty()))
 			return false;
-		if (experimentalRoles != null ? !CollectionUtils.isEqualCollection(experimentalRoles, that.experimentalRoles) : that.experimentalRoles != null)
+		if (experimentalRoles != null ? !CollectionUtils.isEqualCollection(experimentalRoles, that.getExperimentalRoles()) : (that.experimentalRoles != null && !that.experimentalRoles.isEmpty()))
 			return false;
 		if (getInteractorTypes() != null ? !CollectionUtils.isEqualCollection(getInteractorTypes(), that.getInteractorTypes()) : that.getInteractorTypes() != null)
 			return false;
@@ -758,11 +782,11 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 			return false;
 		if (getChecksums() != null ? !CollectionUtils.isEqualCollection(getChecksums(), that.getChecksums()) : that.getChecksums() != null)
 			return false;
-		if (mitabFeatures != null ? !CollectionUtils.isEqualCollection(mitabFeatures, that.mitabFeatures) : that.mitabFeatures != null)
+		if (mitabFeatures != null ? !CollectionUtils.isEqualCollection(mitabFeatures, that.getInteractorFeatures()) : (that.mitabFeatures != null && !that.mitabFeatures.isEmpty()))
 			return false;
-		if (mitabStoichiometry != null ? !CollectionUtils.isEqualCollection(mitabStoichiometry, that.mitabStoichiometry) : that.mitabStoichiometry != null)
+		if (mitabStoichiometry != null ? !CollectionUtils.isEqualCollection(mitabStoichiometry, that.getInteractorStoichiometry()) : (that.mitabStoichiometry != null && !that.mitabStoichiometry.isEmpty()))
 			return false;
-		if (participantIdentificationMethods != null ? !CollectionUtils.isEqualCollection(participantIdentificationMethods, that.participantIdentificationMethods) : that.participantIdentificationMethods != null)
+		if (participantIdentificationMethods != null ? !CollectionUtils.isEqualCollection(participantIdentificationMethods, that.getParticipantIdentificationMethods()) : (that.participantIdentificationMethods != null && !that.participantIdentificationMethods.isEmpty()))
 			return false;
 
 		return true;
@@ -802,34 +826,34 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             if (added instanceof Feature){
                 Feature f = (Feature)added;
                 f.setParticipant(getInstance());
-                ((InteractorMitabFeatureList)mitabFeatures).addOnly((Feature) added);
+                ((InteractorMitabFeatureList)getInteractorFeatures()).addOnly((Feature) added);
             }
             else {
                 Feature tabFeature = new FeatureImpl(added.getType() != null ? added.getType().getShortName() : null, Collections.EMPTY_LIST);
                 FeatureCloner.copyAndOverrideFeatureProperties(added, tabFeature);
                 tabFeature.setParticipant(getInstance());
 
-                ((InteractorMitabFeatureList) mitabFeatures).addOnly(tabFeature);
+                ((InteractorMitabFeatureList) getInteractorFeatures()).addOnly(tabFeature);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(FeatureEvidence removed) {
             if (removed instanceof Feature){
-                ((InteractorMitabFeatureList)mitabFeatures).removeOnly(removed);
+                ((InteractorMitabFeatureList)getInteractorFeatures()).removeOnly(removed);
             }
             else {
                 Feature tabFeature = new FeatureImpl(removed.getType() != null ? removed.getType().getShortName() : null, Collections.EMPTY_LIST);
                 FeatureCloner.copyAndOverrideFeatureProperties(removed, tabFeature);
 
-                ((InteractorMitabFeatureList)mitabFeatures).removeOnly(tabFeature);
+                ((InteractorMitabFeatureList)getInteractorFeatures()).removeOnly(tabFeature);
             }
             removed.setParticipant(null);
         }
 
         @Override
         protected void clearProperties() {
-            for (Feature f : mitabFeatures){
+            for (Feature f : getInteractorFeatures()){
                 f.setParticipant(null);
             }
             // clear all mitab features
@@ -847,24 +871,24 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
             added.setParticipant(getInstance());
             // we added a feature, needs to add it in features
-            ((InteractorFeatureList)features).addOnly(added);
+            ((InteractorFeatureList)getFeatures()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Feature removed) {
             // we removed a feature, needs to remove it in features
-            ((InteractorFeatureList)features).removeOnly(removed);
+            ((InteractorFeatureList)getFeatures()).removeOnly(removed);
             removed.setParticipant(null);
         }
 
         @Override
         protected void clearProperties() {
 
-            for (psidev.psi.mi.jami.model.Feature f : features){
+            for (psidev.psi.mi.jami.model.Feature f : getFeatures()){
                 f.setParticipant(null);
             }
             // clear all features
-            ((InteractorFeatureList)features).clearOnly();
+            ((InteractorFeatureList)getFeatures()).clearOnly();
         }
     }
 
@@ -876,8 +900,8 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processAddedObjectEvent(Integer added) {
 
-            if (stoichiometry == null){
-                stoichiometry = added;
+            if (getStoichiometry() == null){
+                setStoichiometryOnly(added);
             }
         }
 
@@ -885,16 +909,16 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         protected void processRemovedObjectEvent(Integer removed) {
 
             if (isEmpty()){
-                stoichiometry = null;
+                setStoichiometryOnly(null);
             }
-            else if (stoichiometry == removed){
-                stoichiometry = mitabStoichiometry.iterator().next();
+            else if (getStoichiometry() == removed){
+                setStoichiometryOnly(getInteractorStoichiometry().iterator().next());
             }
         }
 
         @Override
         protected void clearProperties() {
-            stoichiometry = null;
+            setStoichiometryOnly(null);
         }
     }
 
@@ -907,22 +931,22 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         protected void processAddedObjectEvent(CrossReference added) {
 
             // the method is not set yet
-            if (identificationMethod == null){
+            if (getIdentificationMethod() == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
-                identificationMethod = new DefaultCvTerm(name, name, added);
+                setIdentificationMethodOnly(new DefaultCvTerm(name, name, added));
             }
             else {
-                identificationMethod.getXrefs().add(added);
+                getIdentificationMethod().getXrefs().add(added);
                 // reset shortname
-                if (identificationMethod.getMIIdentifier() != null && identificationMethod.getMIIdentifier().equals(added.getId())){
+                if (getIdentificationMethod().getMIIdentifier() != null && getIdentificationMethod().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        identificationMethod.setShortName(name);
+                        getIdentificationMethod().setShortName(name);
                     }
                     else {
                         resetIdentificationMethodNameFromMiReferences();
-                        if (identificationMethod.getShortName().equals("unknown")){
+                        if (getIdentificationMethod().getShortName().equals("unknown")){
                             resetIdentificationMethodNameFromFirstReferences();
                         }
                     }
@@ -933,13 +957,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
 
-            if (identificationMethod != null){
-                identificationMethod.getXrefs().remove(removed);
+            if (getIdentificationMethod() != null){
+                getIdentificationMethod().getXrefs().remove(removed);
 
-                if (removed.getText() != null && identificationMethod.getShortName().equals(removed.getText())){
-                    if (identificationMethod.getMIIdentifier() != null){
+                if (removed.getText() != null && getIdentificationMethod().getShortName().equals(removed.getText())){
+                    if (getIdentificationMethod().getMIIdentifier() != null){
                         resetIdentificationMethodNameFromMiReferences();
-                        if (identificationMethod.getShortName().equals("unknown")){
+                        if (getIdentificationMethod().getShortName().equals("unknown")){
                             resetIdentificationMethodNameFromFirstReferences();
                         }
                     }
@@ -950,14 +974,14 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             }
 
             if (isEmpty()){
-                identificationMethod = null;
+                setIdentificationMethodOnly(null);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all interactor types and reset current type
-            identificationMethod = null;
+            setIdentificationMethodOnly(null);
         }
     }
 
@@ -969,44 +993,44 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
-            if (biologicalRole == null){
+            if (getBiologicalRole() == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
-                biologicalRole = new DefaultCvTerm(name, name, added);
+                setBiologicalRoleOnly(new DefaultCvTerm(name, name, added));
             }
             // it was a UNSPECIFIED role, needs to clear it
-            else if (size() > 1 && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(biologicalRole.getShortName().trim())){
+            else if (size() > 1 && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getBiologicalRole().getShortName().trim())){
                 // remove unspecified method
                 CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Participant.UNSPECIFIED_ROLE_MI, Participant.UNSPECIFIED_ROLE);
                 removeOnly(old);
-                biologicalRole.getXrefs().remove(old);
+                getBiologicalRole().getXrefs().remove(old);
 
                 // reset shortname
-                if (biologicalRole.getMIIdentifier() != null && biologicalRole.getMIIdentifier().equals(added.getId())){
+                if (getBiologicalRole().getMIIdentifier() != null && getBiologicalRole().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        biologicalRole.setShortName(name);
+                        getBiologicalRole().setShortName(name);
                     }
                     else {
                         resetBiologicalRoleNameFromMiReferences();
-                        if (biologicalRole.getShortName().equals("unknown")){
+                        if (getBiologicalRole().getShortName().equals("unknown")){
                             resetBiologicalRoleNameFromFirstReferences();
                         }
                     }
                 }
             }
             else {
-                biologicalRole.getXrefs().add(added);
+                getBiologicalRole().getXrefs().add(added);
                 // reset shortname
-                if (biologicalRole.getMIIdentifier() != null && biologicalRole.getMIIdentifier().equals(added.getId())){
+                if (getBiologicalRole().getMIIdentifier() != null && getBiologicalRole().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        biologicalRole.setShortName(name);
+                        getBiologicalRole().setShortName(name);
                     }
                     else {
                         resetBiologicalRoleNameFromMiReferences();
-                        if (biologicalRole.getShortName().equals("unknown")){
+                        if (getBiologicalRole().getShortName().equals("unknown")){
                             resetBiologicalRoleNameFromFirstReferences();
                         }
                     }
@@ -1017,13 +1041,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
 
-            if (biologicalRole != null){
-                biologicalRole.getXrefs().remove(removed);
+            if (getBiologicalRole() != null){
+                getBiologicalRole().getXrefs().remove(removed);
 
-                if (removed.getText() != null && biologicalRole.getShortName().equals(removed.getText())){
-                    if (biologicalRole.getMIIdentifier() != null){
+                if (removed.getText() != null && getBiologicalRole().getShortName().equals(removed.getText())){
+                    if (getBiologicalRole().getMIIdentifier() != null){
                         resetBiologicalRoleNameFromMiReferences();
-                        if (biologicalRole.getShortName().equals("unknown")){
+                        if (getBiologicalRole().getShortName().equals("unknown")){
                             resetBiologicalRoleNameFromFirstReferences();
                         }
                     }
@@ -1034,16 +1058,16 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             }
 
             if (isEmpty()){
-                biologicalRole = CvTermFactory.createUnspecifiedRole();
-                processNewBiologicalRoleInBiologicalRoleList(biologicalRole);
+                setBiologicalRoleOnly(CvTermFactory.createUnspecifiedRole());
+                processNewBiologicalRoleInBiologicalRoleList(getBiologicalRole());
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all interactor types and reset current type
-            biologicalRole = CvTermFactory.createUnspecifiedRole();
-            processNewBiologicalRoleInBiologicalRoleList(biologicalRole);
+            setBiologicalRoleOnly(CvTermFactory.createUnspecifiedRole());
+            processNewBiologicalRoleInBiologicalRoleList(getBiologicalRole());
         }
     }
 
@@ -1055,44 +1079,44 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
-            if (experimentalRole == null){
+            if (getExperimentalRole() == null){
                 String name = added.getText() != null ? added.getText() : "unknown";
-                experimentalRole = new DefaultCvTerm(name, name, added);
+                setExperimentalRoleOnly(new DefaultCvTerm(name, name, added));
             }
             // it was a UNSPECIFIED role, needs to clear it
-            else if (size() > 1 && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(experimentalRole.getShortName().trim())){
+            else if (size() > 1 && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getExperimentalRole().getShortName().trim())){
                 // remove unspecified method
                 CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Participant.UNSPECIFIED_ROLE_MI, Participant.UNSPECIFIED_ROLE);
                 removeOnly(old);
-                experimentalRole.getXrefs().remove(old);
+                getExperimentalRole().getXrefs().remove(old);
 
                 // reset shortname
-                if (experimentalRole.getMIIdentifier() != null && experimentalRole.getMIIdentifier().equals(added.getId())){
+                if (getExperimentalRole().getMIIdentifier() != null && getExperimentalRole().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        experimentalRole.setShortName(name);
+                        getExperimentalRole().setShortName(name);
                     }
                     else {
                         resetExperimentalRoleNameFromMiReferences();
-                        if (experimentalRole.getShortName().equals("unknown")){
+                        if (getExperimentalRole().getShortName().equals("unknown")){
                             resetExperimentalRoleNameFromFirstReferences();
                         }
                     }
                 }
             }
             else {
-                experimentalRole.getXrefs().add(added);
+                getExperimentalRole().getXrefs().add(added);
                 // reset shortname
-                if (experimentalRole.getMIIdentifier() != null && experimentalRole.getMIIdentifier().equals(added.getId())){
+                if (getExperimentalRole().getMIIdentifier() != null && getExperimentalRole().getMIIdentifier().equals(added.getId())){
                     String name = added.getText();
 
                     if (name != null){
-                        experimentalRole.setShortName(name);
+                        getExperimentalRole().setShortName(name);
                     }
                     else {
                         resetExperimentalRoleNameFromMiReferences();
-                        if (experimentalRole.getShortName().equals("unknown")){
+                        if (getExperimentalRole().getShortName().equals("unknown")){
                             resetExperimentalRoleNameFromFirstReferences();
                         }
                     }
@@ -1103,13 +1127,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processRemovedObjectEvent(CrossReference removed) {
 
-            if (experimentalRole != null){
-                experimentalRole.getXrefs().remove(removed);
+            if (getExperimentalRole() != null){
+                getExperimentalRole().getXrefs().remove(removed);
 
-                if (removed.getText() != null && experimentalRole.getShortName().equals(removed.getText())){
-                    if (experimentalRole.getMIIdentifier() != null){
+                if (removed.getText() != null && getExperimentalRole().getShortName().equals(removed.getText())){
+                    if (getExperimentalRole().getMIIdentifier() != null){
                         resetExperimentalRoleNameFromMiReferences();
-                        if (experimentalRole.getShortName().equals("unknown")){
+                        if (getExperimentalRole().getShortName().equals("unknown")){
                             resetExperimentalRoleNameFromFirstReferences();
                         }
                     }
@@ -1120,15 +1144,15 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             }
 
             if (isEmpty()){
-                experimentalRole = CvTermFactory.createUnspecifiedRole();
-                processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
+                setExperimentalRoleOnly(CvTermFactory.createUnspecifiedRole());
+                processNewExperimentalRoleInExperimentalRoleList(getExperimentalRole());
             }
         }
 
         @Override
         protected void clearProperties() {
-            experimentalRole = CvTermFactory.createUnspecifiedRole();
-            processNewExperimentalRoleInExperimentalRoleList(experimentalRole);
+            setExperimentalRoleOnly(CvTermFactory.createUnspecifiedRole());
+            processNewExperimentalRoleInExperimentalRoleList(getExperimentalRole());
         }
     }
 }

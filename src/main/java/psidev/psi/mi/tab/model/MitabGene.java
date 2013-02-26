@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,18 +36,19 @@ public class MitabGene extends MitabInteractor implements Gene {
     }
 
     public void setEnsembl(String ac) {
+        Collection<Xref> geneIdentifiers = getIdentifiers();
         // add new ensembl if not null
         if (ac != null){
             // first remove old ensembl if not null
             if (this.ensembl != null){
-                identifiers.remove(this.ensembl);
+                geneIdentifiers.remove(this.ensembl);
             }
             this.ensembl = new CrossReferenceImpl(Xref.ENSEMBL, ac);
-            this.identifiers.add(this.ensembl);
+            geneIdentifiers.add(this.ensembl);
         }
         // remove all ensembl if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_MI, Xref.ENSEMBL);
+        else if (!geneIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(geneIdentifiers, Xref.ENSEMBL_MI, Xref.ENSEMBL);
             this.ensembl = null;
         }
     }
@@ -56,18 +58,19 @@ public class MitabGene extends MitabInteractor implements Gene {
     }
 
     public void setEnsemblGenome(String ac) {
+        Collection<Xref> geneIdentifiers = getIdentifiers();
         // add new ensembl genomes if not null
         if (ac != null){
             // first remove old ensembl genome if not null
             if (this.ensemblGenome != null){
-                identifiers.remove(this.ensemblGenome);
+                geneIdentifiers.remove(this.ensemblGenome);
             }
             this.ensemblGenome = new CrossReferenceImpl(Xref.ENSEMBL_GENOMES, ac);
-            this.identifiers.add(this.ensemblGenome);
+            geneIdentifiers.add(this.ensemblGenome);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
+        else if (!geneIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(geneIdentifiers, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
             this.ensemblGenome = null;
         }
     }
@@ -77,18 +80,20 @@ public class MitabGene extends MitabInteractor implements Gene {
     }
 
     public void setEntrezGeneId(String id) {
+        Collection<Xref> geneIdentifiers = getIdentifiers();
+
         // add new entrez gene id genomes if not null
         if (id != null){
             // first remove old entrez gene id if not null
             if (this.entrezGeneId!= null){
-                identifiers.remove(this.entrezGeneId);
+                geneIdentifiers.remove(this.entrezGeneId);
             }
             this.entrezGeneId = new CrossReferenceImpl(Xref.ENTREZ_GENE, id);
-            this.identifiers.add(this.entrezGeneId);
+            geneIdentifiers.add(this.entrezGeneId);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
+        else if (!geneIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(geneIdentifiers, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
             this.entrezGeneId = null;
         }
     }
@@ -98,18 +103,20 @@ public class MitabGene extends MitabInteractor implements Gene {
     }
 
     public void setRefseq(String ac) {
+        Collection<Xref> geneIdentifiers = getIdentifiers();
+
         // add new refseq if not null
         if (ac != null){
             // first remove refseq if not null
             if (this.refseq!= null){
-                identifiers.remove(this.refseq);
+                geneIdentifiers.remove(this.refseq);
             }
             this.refseq = new CrossReferenceImpl(Xref.REFSEQ, ac);
-            this.identifiers.add(this.refseq);
+            geneIdentifiers.add(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+        else if (!geneIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(geneIdentifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
@@ -142,19 +149,19 @@ public class MitabGene extends MitabInteractor implements Gene {
     protected void processRemovedIdentifierEvent(Xref removed) {
         if (ensembl != null && XrefUtils.isXrefFromDatabase(removed, Xref.ENSEMBL_MI, Xref.ENSEMBL)
                 && removed.getId().equals(ensembl.getId())){
-            ensembl = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.ENSEMBL_MI, Xref.ENSEMBL);
+            ensembl = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.ENSEMBL_MI, Xref.ENSEMBL);
         }
         else if (ensemblGenome != null && XrefUtils.isXrefFromDatabase(removed, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES)
                 && removed.getId().equals(ensemblGenome.getId())){
-            ensemblGenome = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
+            ensemblGenome = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES);
         }
         else if (entrezGeneId != null && XrefUtils.isXrefFromDatabase(removed, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE)
                 && removed.getId().equals(entrezGeneId.getId())){
-            entrezGeneId = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
+            entrezGeneId = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE);
         }
         else if (refseq != null && XrefUtils.isXrefFromDatabase(removed, Xref.REFSEQ_MI, Xref.REFSEQ)
                 && removed.getId().equals(refseq.getId())){
-            refseq = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+            refseq = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
         }
     }
 

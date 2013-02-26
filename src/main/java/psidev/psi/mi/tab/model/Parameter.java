@@ -23,7 +23,7 @@ public interface Parameter extends psidev.psi.mi.jami.model.Parameter, Serializa
      *
      * @param type a String with the CVTerm name for the parameter type in the PSI-MI ontology
      */
-    public void setParameterType(String type);
+    public void setType(String type);
 
     /**
      *  Getter fot property 'factor'.
@@ -79,7 +79,7 @@ public interface Parameter extends psidev.psi.mi.jami.model.Parameter, Serializa
      *
      * @param value a String with the representation of the parameter in scientific notation.
      */
-    public void setValueAsString(String value);
+    public void setValue(String value);
 
     /**
      * Getter fot property 'unit'.
@@ -93,7 +93,7 @@ public interface Parameter extends psidev.psi.mi.jami.model.Parameter, Serializa
      *
      * @param unit a String with the unit of the parameter.
      */
-    public void setParameterUnit(String unit);
+    public void setUnit(String unit);
 
     /**
      * Getter fot property 'uncertainty'.

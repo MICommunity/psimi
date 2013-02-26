@@ -10,11 +10,13 @@ import java.io.Serializable;
  * @since specify the maven artifact version
  */
 public interface Confidence extends psidev.psi.mi.jami.model.Confidence, Serializable {
-    String getComfidenceType();
+    String getConfidenceType();
 
-    void setConfidenceType(String type);
+    void setType(String type);
 
     String getText();
 
     void setText( String text );
+
+    void setValue( String value );
 }
