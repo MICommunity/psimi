@@ -6,7 +6,8 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
 import java.io.Serializable;
@@ -40,31 +41,40 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Attribute extends DefaultAnnotation implements Serializable {
+public class Attribute implements Annotation, Serializable {
 
     private static String UNSPECIFIED = "unspecified";
+
+    private CvTerm topic;
+    private String value;
 
     //////////////////////////////
     // Constructors
 
     public Attribute() {
-        super(new DefaultCvTerm(UNSPECIFIED));
+        this.topic = new DefaultCvTerm(UNSPECIFIED);
     }
 
     public Attribute( String name ) {
-        super(new DefaultCvTerm(name != null ? name : UNSPECIFIED));
+        this.topic = new DefaultCvTerm(name != null ? name : UNSPECIFIED);
     }
 
     public Attribute( String name, String value ) {
-        super(new DefaultCvTerm(name != null ? name : UNSPECIFIED), value);
+        this.topic = new DefaultCvTerm(name != null ? name : UNSPECIFIED);
+        this.value = value;
     }
 
     public Attribute( String nameAc, String name, String value ) {
-        super(new DefaultCvTerm(name != null ? name : UNSPECIFIED, nameAc), value);
+        this.topic = new DefaultCvTerm(name != null ? name : UNSPECIFIED, nameAc);
+        this.value = value;
     }
 
     //////////////////////////////
     // Getters and Setters
+
+    public CvTerm getTopic() {
+        return topic;
+    }
 
     /**
      * Gets the value of the value property.

@@ -7,7 +7,7 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.impl.DefaultPosition;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 
@@ -32,18 +32,27 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Interval extends DefaultPosition implements Serializable {
+public class Interval implements psidev.psi.mi.jami.model.Position, Serializable {
+
+    private RangeStatus status;
+    private long start;
+    private long end;
+    private boolean isPositionUndetermined;
 
     ///////////////////////////
     // Constructors
 
     public Interval() {
-        super(new RangeStatus(), 0);
+        this.status = new RangeStatus();
+        this.start = 0;
+        this.end = 0;
         this.isPositionUndetermined = true;
     }
 
     public Interval( long begin, long end ) {
-        super(new RangeStatus(), begin, end);
+        this.status = new RangeStatus();
+        this.start = begin;
+        this.end = end;
         this.isPositionUndetermined = true;
     }
 
@@ -68,6 +77,14 @@ public class Interval extends DefaultPosition implements Serializable {
         this.start = value;
     }
 
+    public CvTerm getStatus() {
+        return status;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
     /**
      * Gets the value of the end property.
      *
@@ -75,6 +92,10 @@ public class Interval extends DefaultPosition implements Serializable {
      */
     public long getEnd() {
         return end;
+    }
+
+    public boolean isPositionUndetermined() {
+        return isPositionUndetermined;
     }
 
     /**

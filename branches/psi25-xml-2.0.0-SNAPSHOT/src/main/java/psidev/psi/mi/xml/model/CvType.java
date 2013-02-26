@@ -7,7 +7,6 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
@@ -62,23 +61,23 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new CvTermXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new CvTermXrefList());
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new CvTermIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new CvTermIdentifierList());
     }
 
     @Override
-    protected void initializeAnnotations(){
-        this.annotations = Collections.EMPTY_LIST;
+    protected void initialiseAnnotations(){
+        initialiseAnnotationsWith(Collections.EMPTY_LIST);
     }
 
     @Override
-    protected void initializeSynonyms() {
-        this.synonyms = new CvTermAliasList();
+    protected void initialiseSynonyms() {
+        initialiseSynonymsWith(new CvTermAliasList());
     }
 
     /**
@@ -111,22 +110,21 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                 this.names = new CvTermNames();
             }
             else {
-                synonyms.clear();
+                getSynonyms().clear();
             }
-            this.names.setShortLabel(value.getShortLabel());
-            this.names.setFullName(value.getFullName());
-            this.names.getAliases().clear();
-            this.names.getAliases().addAll(value.getAliases());
+            super.setShortName(value.getShortLabel());
+            super.setFullName(value.getFullName());
+            getSynonyms().addAll(value.getAliases());
         }
         else if (this.names != null) {
-            synonyms.clear();
-            this.shortName = UNSPECIFIED;
-            this.fullName = null;
+            getSynonyms().clear();
+            super.setShortName(UNSPECIFIED);
+            super.setFullName(null);
             this.names = null;
         }
         else {
             this.names = new CvTermNames();
-            this.shortName = UNSPECIFIED;
+            super.setShortName(UNSPECIFIED);
         }
     }
 
@@ -147,71 +145,16 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                identifiers.clear();
-                this.xrefs.clear();
+                getIdentifiers().clear();
+                getXrefs().clear();
             }
             this.xref = new CvTermXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            identifiers.clear();
-            xrefs.clear();
+            getIdentifiers().clear();
+            getXrefs().clear();
             this.xref = null;
         }
-    }
-
-    protected void processAddedIdentifier(psidev.psi.mi.jami.model.Xref added){
-        // the added identifier is psi-mi and it is not the current mi identifier
-        if (miIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MI_MI, CvTerm.PSI_MI)){
-            // the current psi-mi identifier is not identity, we may want to set miIdentifier
-            if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                // the miidentifier is not set, we can set the miidentifier
-                if (miIdentifier == null){
-                    miIdentifier = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                    miIdentifier = added;
-                }
-                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                else if (!XrefUtils.doesXrefHaveQualifier(miIdentifier, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)){
-                    miIdentifier = added;
-                }
-            }
-        }
-        // the added identifier is psi-mod and it is not the current mod identifier
-        else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
-            // the current psi-mod identifier is not identity, we may want to set modIdentifier
-            if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                // the modIdentifier is not set, we can set the modIdentifier
-                if (modIdentifier == null){
-                    modIdentifier = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                    modIdentifier = added;
-                }
-                // the added xref is secondary object and the current mi is not a secondary object, we reset miidentifier
-                else if (!XrefUtils.doesXrefHaveQualifier(modIdentifier, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)){
-                    modIdentifier = added;
-                }
-            }
-        }
-    }
-
-    protected void processRemovedIdentifier(psidev.psi.mi.jami.model.Xref removed){
-        // the removed identifier is psi-mi
-        if (miIdentifier != null && miIdentifier.equals(removed)){
-            miIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
-        }
-        // the removed identifier is psi-mod
-        else if (modIdentifier != null && modIdentifier.equals(removed)){
-            modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
-        }
-    }
-
-    protected void clearPropertiesLinkedToIdentifiers(){
-        miIdentifier = null;
-        modIdentifier = null;
     }
 
     //////////////////////////
@@ -221,72 +164,48 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
     @Override
     public void setShortName(String name) {
         if (names != null){
-            names.setShortLabel(name);
+            super.setShortName(name != null ? name : UNSPECIFIED);
         }
         else if (name != null) {
             names = new CvTermNames();
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
         else {
             names = new CvTermNames();
-            names.setShortLabel(UNSPECIFIED);
+            super.setShortName(UNSPECIFIED);
         }
     }
 
     @Override
     public void setFullName(String name) {
         if (names != null){
-            if (names.getShortLabel().equals(UNSPECIFIED)){
-                names.setShortLabel(name);
+            if (getShortName().equals(UNSPECIFIED)){
+                super.setShortName(name != null ? name : UNSPECIFIED);
             }
-            names.setFullName(name);
+            super.setFullName(name);
         }
         else if (name != null) {
             names = new CvTermNames();
-            names.setShortLabel(name);
-            names.setFullName(name);
+            super.setShortName(name);
+            super.setFullName(name);
         }
         else {
             names = new CvTermNames();
-            names.setShortLabel(UNSPECIFIED);
-            names.setFullName(name);
+            super.setShortName(UNSPECIFIED);
+            super.setFullName(name);
         }
     }
 
-    @Override
-    public void setMIIdentifier(String mi) {
-        // add new mi if not null
-        if (mi != null){
-            // first remove old psi mi if not null
-            if (this.miIdentifier != null){
-                identifiers.remove(this.miIdentifier);
-            }
-            this.miIdentifier = new DbReference(CvTerm.PSI_MI, CvTerm.PSI_MI_MI, mi, psidev.psi.mi.jami.model.Xref.IDENTITY, psidev.psi.mi.jami.model.Xref.IDENTITY_MI);
-            this.identifiers.add(this.miIdentifier);
-        }
-        // remove all mi if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
-            this.miIdentifier = null;
-        }
+    protected String getCvTermFullName(){
+        return super.getFullName();
     }
 
-    @Override
-    public void setMODIdentifier(String mod) {
-        // add new mod if not null
-        if (mod != null){
-            // first remove old psi mod if not null
-            if (this.modIdentifier != null){
-                identifiers.remove(this.modIdentifier);
-            }
-            this.modIdentifier = new DbReference(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI, mod, psidev.psi.mi.jami.model.Xref.IDENTITY, psidev.psi.mi.jami.model.Xref.IDENTITY_MI);
-            this.identifiers.add(this.modIdentifier);
-        }
-        // remove all mod if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
-            this.modIdentifier = null;
-        }
+    protected void setShortNameOnly(String name) {
+        super.setShortName(name != null ? name : UNSPECIFIED);
+    }
+
+    protected void setFullNameOnly(String name) {
+        super.setFullName(name);
     }
 
     @Override
@@ -328,7 +247,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         return result;
     }
 
-    protected class CvTermXref extends Xref{
+    private class CvTermXref extends Xref{
 
         protected boolean isPrimaryAnIdentity = false;
         protected SecondaryRefList extendedSecondaryRefList = new SecondaryRefList();
@@ -354,43 +273,43 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                 super.setPrimaryRef(value);
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((CvTermIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((CvTermIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((CvTermXrefList)xrefs).addOnly(value);
+                        ((CvTermXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else if (isPrimaryAnIdentity){
-                ((CvTermIdentifierList)identifiers).removeOnly(getPrimaryRef());
-                processRemovedIdentifier(getPrimaryRef());
+                ((CvTermIdentifierList)getIdentifiers()).removeOnly(getPrimaryRef());
+                processRemovedIdentifierEvent(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((CvTermIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((CvTermIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((CvTermXrefList)xrefs).addOnly(value);
+                        ((CvTermXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else {
-                ((CvTermXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((CvTermXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((CvTermIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((CvTermIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((CvTermXrefList)xrefs).addOnly(value);
+                        ((CvTermXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
@@ -443,31 +362,31 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             @Override
             protected void processAddedObjectEvent(DbReference added) {
                 if (XrefUtils.isXrefAnIdentifier(added)){
-                    ((CvTermIdentifierList)identifiers).addOnly(added);
-                    processAddedIdentifier(added);
+                    ((CvTermIdentifierList)getIdentifiers()).addOnly(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
-                    ((CvTermXrefList)xrefs).addOnly(added);
+                    ((CvTermXrefList)getXrefs()).addOnly(added);
                 }
             }
 
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
                 if (XrefUtils.isXrefAnIdentifier(removed)){
-                    ((CvTermIdentifierList)identifiers).removeOnly(removed);
-                    processRemovedIdentifier(removed);
+                    ((CvTermIdentifierList)getIdentifiers()).removeOnly(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
-                    ((CvTermXrefList)xrefs).removeOnly(removed);
+                    ((CvTermXrefList)getXrefs()).removeOnly(removed);
                 }
             }
 
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((CvTermIdentifierList)identifiers).retainAllOnly(primary);
+                ((CvTermIdentifierList)getIdentifiers()).retainAllOnly(primary);
                 clearPropertiesLinkedToIdentifiers();
-                ((CvTermXrefList)xrefs).retainAllOnly(primary);
+                ((CvTermXrefList)getXrefs()).retainAllOnly(primary);
             }
         }
     }
@@ -486,27 +405,27 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                 if (xref.getPrimaryRef() == null){
                     if (added instanceof DbReference){
                         reference.setPrimaryRefOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.setPrimaryRefOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
                 else {
                     if (added instanceof DbReference){
                         reference.extendedSecondaryRefList.addOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.addOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
             }
@@ -514,7 +433,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                 if (added instanceof DbReference){
                     xref = new CvTermXref();
                     ((CvTermXref) xref).setPrimaryRefOnly((DbReference) added);
-                    processAddedIdentifier(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
@@ -522,7 +441,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
 
                     xref = new CvTermXref();
                     ((CvTermXref) xref).setPrimaryRefOnly(fixedRef);
-                    processAddedIdentifier(fixedRef);
+                    processAddedIdentifierEvent(fixedRef);
                 }
             }
         }
@@ -535,12 +454,12 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
 
                 if (reference.getPrimaryRef() == removed){
                     reference.setPrimaryRefOnly(null);
-                    processRemovedIdentifier(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
                     if (removed instanceof DbReference){
                         reference.extendedSecondaryRefList.removeOnly((DbReference) removed);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
 
                     }
                     else {
@@ -548,7 +467,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
                                 removed.getQualifier() != null ? removed.getQualifier().getShortName() : null, removed.getQualifier() != null ? removed.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.removeOnly(fixedRef);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
                     }
                 }
             }
@@ -560,7 +479,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
 
             if (xref != null){
                 CvTermXref reference = (CvTermXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(xrefs);
+                reference.extendedSecondaryRefList.retainAllOnly(getXrefs());
 
                 if (reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -646,7 +565,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
 
             if (xref != null){
                 CvTermXref reference = (CvTermXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(identifiers);
+                reference.extendedSecondaryRefList.retainAllOnly(getIdentifiers());
 
                 if (!reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -655,37 +574,37 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         }
     }
 
-    protected class CvTermNames extends Names{
+    private class CvTermNames extends Names{
 
         protected AliasList extendedAliases = new AliasList();
 
         public String getShortLabel() {
-            return shortName;
+            return getShortName();
         }
 
         public boolean hasShortLabel() {
-            return shortName != null;
+            return getShortName() != null;
         }
 
         public void setShortLabel( String value ) {
             if (value != null){
-                shortName = value;
+                setShortNameOnly(value);
             }
             else {
-                shortName = UNSPECIFIED;
+                setShortNameOnly(UNSPECIFIED);
             }
         }
 
         public String getFullName() {
-            return fullName;
+            return getCvTermFullName();
         }
 
         public boolean hasFullName() {
-            return fullName != null;
+            return getCvTermFullName() != null;
         }
 
         public void setFullName( String value ) {
-            fullName = value;
+            setFullNameOnly(value);
         }
 
         public Collection<Alias> getAliases() {
@@ -700,8 +619,8 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Names" );
-            sb.append( "{shortLabel='" ).append( shortName ).append( '\'' );
-            sb.append( ", fullName='" ).append( fullName ).append( '\'' );
+            sb.append( "{shortLabel='" ).append( getShortName() ).append( '\'' );
+            sb.append( ", fullName='" ).append( getCvTermFullName() ).append( '\'' );
             sb.append( ", aliases=" ).append( extendedAliases );
             sb.append( '}' );
             return sb.toString();
@@ -715,8 +634,8 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             Names names = ( Names ) o;
 
             if ( extendedAliases != null ? !extendedAliases.equals( names.getAliases() ) : names.getAliases() != null ) return false;
-            if ( fullName != null ? !fullName.equals( names.getFullName() ) : names.getFullName() != null ) return false;
-            if ( shortName != null ? !shortName.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+            if ( getCvTermFullName() != null ? !getCvTermFullName().equals( names.getFullName() ) : names.getFullName() != null ) return false;
+            if ( getShortName() != null ? !getShortName().equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
 
             return true;
         }
@@ -724,8 +643,8 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
         @Override
         public int hashCode() {
             int result;
-            result = ( shortName != null ? shortName.hashCode() : 0 );
-            result = 31 * result + ( fullName != null ? fullName.hashCode() : 0 );
+            result = ( getShortName() != null ? getShortName().hashCode() : 0 );
+            result = 31 * result + ( getCvTermFullName() != null ? getCvTermFullName().hashCode() : 0 );
             result = 31 * result + ( extendedAliases != null ? extendedAliases.hashCode() : 0 );
             return result;
         }
@@ -734,17 +653,17 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
 
             @Override
             protected void processAddedObjectEvent(Alias added) {
-                ((CvTermAliasList) synonyms).addOnly(added);
+                ((CvTermAliasList) getSynonyms()).addOnly(added);
             }
 
             @Override
             protected void processRemovedObjectEvent(Alias removed) {
-                ((CvTermAliasList)synonyms).removeOnly(removed);
+                ((CvTermAliasList)getSynonyms()).removeOnly(removed);
             }
 
             @Override
             protected void clearProperties() {
-                ((CvTermAliasList)synonyms).clearOnly();
+                ((CvTermAliasList)getSynonyms()).clearOnly();
             }
         }
     }

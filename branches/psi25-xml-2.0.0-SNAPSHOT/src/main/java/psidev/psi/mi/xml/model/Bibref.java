@@ -45,7 +45,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
     private Xref xref;
 
-    private Collection<Attribute> attributes=new BibRefXmlAnnotationList();
+    private Collection<Attribute> attributes;
 
     ///////////////////////////
     // Constructors
@@ -62,28 +62,28 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
     public Bibref( Collection<Attribute> attributes ) {
         super();
         if (attributes != null){
-            this.attributes.addAll(attributes);
+            getAttributes().addAll(attributes);
         }
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new PublicationXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith( new PublicationXrefList());
     }
 
     @Override
     protected void initialiseIdentifiers() {
-        this.identifiers = new PublicationIdentifierList();
+        initialiseIdentifiersWith(new PublicationIdentifierList());
     }
 
     @Override
     protected void initialiseAnnotations() {
-        this.annotations = new PublicationAnnotationList();
+        initialiseAnnotationsWith(new PublicationAnnotationList());
     }
 
     @Override
-    protected void initializeAuthors() {
-        this.authors = new PublicationAuthorList();
+    protected void initialiseAuthors() {
+        initialiseAuthorsWith(new PublicationAuthorList());
     }
 
     ///////////////////////////
@@ -106,14 +106,14 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                identifiers.clear();
-                this.xrefs.clear();
+                getIdentifiers().clear();
+                getXrefs().clear();
             }
             this.xref = new PublicationXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            identifiers.clear();
-            xrefs.clear();
+            getIdentifiers().clear();
+            getXrefs().clear();
             this.xref = null;
         }
     }
@@ -128,246 +128,120 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
      * @return possible object is {@link Attribute }
      */
     public Collection<Attribute> getAttributes() {
+        if (attributes == null){
+            attributes =new BibRefXmlAnnotationList();
+        }
         return attributes;
     }
 
-    protected void processAddedIdentifier(psidev.psi.mi.jami.model.Xref added){
-        // the added identifier is pubmed and it is not the current pubmed identifier
-        if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED)){
-            // the current pubmed identifier is not identity, we may want to set pubmed Identifier
-            if (!XrefUtils.doesXrefHaveQualifier(pubmedId, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                // the pubmed identifier is not set, we can set the pubmed
-                if (pubmedId == null){
-                    pubmedId = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                    pubmedId = added;
-                }
-                // the added xref is secondary object and the current pubmed is not a secondary object, we reset pubmed identifier
-                else if (!XrefUtils.doesXrefHaveQualifier(pubmedId, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)){
-                    pubmedId = added;
-                }
-            }
-        }
-        // the added identifier is doi and it is not the current doi identifier
-        else if (doi != added && XrefUtils.isXrefFromDatabase(added, psidev.psi.mi.jami.model.Xref.DOI_MI, psidev.psi.mi.jami.model.Xref.DOI)){
-            // the current doi identifier is not identity, we may want to set doi
-            if (!XrefUtils.doesXrefHaveQualifier(doi, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                // the doi is not set, we can set the doi
-                if (doi == null){
-                    doi = added;
-                }
-                else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY)){
-                    doi = added;
-                }
-                // the added xref is secondary object and the current doi is not a secondary object, we reset doi
-                else if (!XrefUtils.doesXrefHaveQualifier(doi, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)
-                        && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.SECONDARY_MI, psidev.psi.mi.jami.model.Xref.SECONDARY)){
-                    doi = added;
-                }
-            }
-        }
-    }
-
-    protected void processRemovedIdentifier(psidev.psi.mi.jami.model.Xref removed){
-        // the removed identifier is pubmed
-        if (pubmedId != null && pubmedId.equals(removed)){
-            pubmedId = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED);
-        }
-        // the removed identifier is doi
-        else if (doi != null && doi.equals(removed)){
-            doi = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, psidev.psi.mi.jami.model.Xref.DOI_MI, psidev.psi.mi.jami.model.Xref.DOI);
-        }
-    }
-
-    protected void clearPropertiesLinkedToIdentifiers(){
-        pubmedId = null;
-        doi = null;
-    }
-
-    protected void processAddedXrefEvent(psidev.psi.mi.jami.model.Xref added) {
-
-        // the added identifier is imex and the current imex is not set
-        if (imexId == null && XrefUtils.isXrefFromDatabase(added, psidev.psi.mi.jami.model.Xref.IMEX_MI, psidev.psi.mi.jami.model.Xref.IMEX)){
-            // the added xref is imex-primary
-            if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY)){
-                imexId = added;
-            }
-        }
-    }
-
-    protected void processRemovedXrefEvent(psidev.psi.mi.jami.model.Xref removed) {
-        // the removed identifier is pubmed
-        if (imexId != null && imexId.equals(removed)){
-            imexId = null;
-        }
-    }
-
-    protected void clearPropertiesLinkedToXrefs() {
-        imexId = null;
-    }
-
     protected void processAddedAnnotationEvent(Annotation added) {
-        if (title == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
-            title = added.getValue();
+        if (getTitle() == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
+            super.setTitle(added.getValue());
         }
-        else if (journal == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
-            journal = added.getValue();
+        else if (getJournal() == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
+            super.setJournal(added.getValue());
         }
-        else if (publicationDate == null && added.getValue() != null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
+        else if (getPublicationDate() == null && added.getValue() != null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
             SimpleDateFormat format = new SimpleDateFormat("yyyy");
             try {
-                publicationDate = format.parse(added.getValue());
+                super.setPublicationDate(format.parse(added.getValue()));
             } catch (ParseException e) {
                 e.printStackTrace();
-                publicationDate = null;
+                super.setPublicationDate(null);
             }
         }
-        else if (authors.isEmpty() && added.getValue() != null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+        else if (getAuthors().isEmpty() && added.getValue() != null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
             if (added.getValue().contains(",")){
-                authors.addAll(Arrays.asList(added.getValue().split(",")));
+                getAuthors().addAll(Arrays.asList(added.getValue().split(",")));
             }
             else {
-                authors.add(added.getValue());
+                getAuthors().add(added.getValue());
             }
         }
         else {
-            ((PublicationAnnotationList)annotations).addOnly(added);
+            ((PublicationAnnotationList)getAnnotations()).addOnly(added);
         }
     }
 
     protected void processRemovedAnnotationEvent(Annotation removed) {
-        if (title != null && title.equals(removed.getValue()) && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
+        if (getTitle() != null && getTitle().equals(removed.getValue()) && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE)){
             Annotation titleAnnot = AnnotationUtils.collectFirstAnnotationWithTopic(attributes, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
-            title = titleAnnot != null ? titleAnnot.getValue() : null;
+            super.setTitle(titleAnnot != null ? titleAnnot.getValue() : null);
         }
-        else if (journal != null && journal.equals(removed.getValue()) && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
+        else if (getJournal() != null && getJournal().equals(removed.getValue()) && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL)){
             Annotation journalAnnot = AnnotationUtils.collectFirstAnnotationWithTopic(attributes, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL);
-            journal = journalAnnot != null ? journalAnnot.getValue() : null;
+            super.setJournal(journalAnnot != null ? journalAnnot.getValue() : null);
         }
-        else if (publicationDate != null && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
+        else if (getPublicationDate() != null && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR)){
             SimpleDateFormat format = new SimpleDateFormat("yyyy");
 
-            if (format.format(publicationDate).equals(removed.getValue())){
+            if (format.format(getPublicationDate()).equals(removed.getValue())){
                 Annotation dateAnnot = AnnotationUtils.collectFirstAnnotationWithTopic(attributes, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR);
                 try {
-                    publicationDate = dateAnnot != null ? format.parse(dateAnnot.getValue()) : null;
+                    super.setPublicationDate(dateAnnot != null ? format.parse(dateAnnot.getValue()) : null);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    publicationDate = null;
+                    super.setPublicationDate(null);
                 }
             }
         }
-        else if (!authors.isEmpty() && removed.getValue() != null && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+        else if (!getAuthors().isEmpty() && removed.getValue() != null && AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
 
-            if (removed.getValue().equals(org.apache.commons.lang.StringUtils.join(authors, ","))){
+            if (removed.getValue().equals(org.apache.commons.lang.StringUtils.join(getAuthors(), ","))){
                 Annotation authorAnnot = AnnotationUtils.collectFirstAnnotationWithTopic(attributes, Annotation.AUTHOR_MI, Annotation.AUTHOR);
                 if (authorAnnot != null){
-                    ((PublicationAuthorList)authors).addAllOnly(Arrays.asList(authorAnnot.getValue().split(",")));
+                    ((PublicationAuthorList)getAuthors()).addAllOnly(Arrays.asList(authorAnnot.getValue().split(",")));
                 }
                 else {
-                    ((PublicationAuthorList)authors).clearOnly();
+                    ((PublicationAuthorList)getAuthors()).clearOnly();
                 }
             }
         }
         else {
-            ((PublicationAnnotationList)annotations).removeOnly(removed);
+            ((PublicationAnnotationList)getAnnotations()).removeOnly(removed);
         }
     }
 
     protected void clearPropertiesLinkedToAnnotations() {
-        this.title = null;
-        this.journal=null;
-        this.publicationDate=null;
-        ((PublicationAuthorList)authors).clearOnly();
-        ((PublicationAnnotationList)annotations).clearOnly();
+        super.setTitle(null);
+        super.setJournal(null);
+        super.setPublicationDate(null);
+        ((PublicationAuthorList)getAuthors()).clearOnly();
+        ((PublicationAnnotationList)getAnnotations()).clearOnly();
     }
 
     /////////////////////////
     // Object override
 
     @Override
-    public void setPubmedId(String pubmedId) {
-        // add new pubmed if not null
-        if (pubmedId != null){
-            // first remove old pubmed if not null
-            if (this.pubmedId != null){
-                identifiers.remove(this.pubmedId);
-            }
-            this.pubmedId = new DbReference(psidev.psi.mi.jami.model.Xref.PUBMED, psidev.psi.mi.jami.model.Xref.PUBMED_MI, pubmedId, psidev.psi.mi.jami.model.Xref.PRIMARY, psidev.psi.mi.jami.model.Xref.PRIMARY_MI);
-            this.identifiers.add(this.pubmedId);
-        }
-        // remove all pubmed if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED);
-            this.pubmedId = null;
-        }
-    }
-
-    @Override
-    public void setDoi(String doi) {
-        // add new doi if not null
-        if (doi != null){
-            // first remove old doi if not null
-            if (this.doi != null){
-                identifiers.remove(this.doi);
-            }
-            this.doi = new DbReference(psidev.psi.mi.jami.model.Xref.DOI, psidev.psi.mi.jami.model.Xref.DOI_MI, doi, psidev.psi.mi.jami.model.Xref.PRIMARY, psidev.psi.mi.jami.model.Xref.PRIMARY_MI);
-            this.identifiers.add(this.doi);
-        }
-        // remove all doi if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, psidev.psi.mi.jami.model.Xref.DOI_MI, psidev.psi.mi.jami.model.Xref.DOI);
-            this.doi = null;
-        }
-    }
-
-    @Override
-    public void assignImexId(String identifier) {
-        // add new imex if not null
-        if (identifier != null){
-            // first remove old doi if not null
-            if (this.imexId != null){
-                xrefs.remove(this.imexId);
-            }
-            this.imexId = new DbReference(psidev.psi.mi.jami.model.Xref.IMEX, psidev.psi.mi.jami.model.Xref.IMEX_MI, identifier, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI);
-            this.xrefs.add(this.imexId);
-        }
-        else {
-            throw new IllegalArgumentException("The imex id has to be non null.");
-        }
-    }
-
-    @Override
     public void setTitle(String title) {
         if (title != null){
-            if (this.title != null){
-                attributes.remove(new Attribute(Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE, this.title));
+            if (this.getTitle() != null){
+                getAttributes().remove(new Attribute(Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE, this.getTitle()));
             }
-            this.title = title;
-            Attribute titleAtt = new Attribute(Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE, this.title);
-            this.attributes.add(titleAtt);
+            super.setTitle(title);
+            Attribute titleAtt = new Attribute(Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE, getTitle());
+            getAttributes().add(titleAtt);
         }
-        else if (!this.identifiers.isEmpty()) {
+        else if (!getAttributes().isEmpty()) {
             AnnotationUtils.removeAllAnnotationsWithTopic(attributes, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
-            this.title = null;
+            super.setTitle(null);
         }
     }
 
     @Override
     public void setJournal(String journal) {
         if (journal != null){
-            if (this.journal != null){
-                attributes.remove(new Attribute(Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL, this.journal));
+            if (getJournal() != null){
+                getAttributes().remove(new Attribute(Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL, getJournal()));
             }
-            this.journal = journal;
-            Attribute journalAtt = new Attribute(Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL, this.journal);
-            this.attributes.add(journalAtt);
+            super.setJournal(journal);
+            Attribute journalAtt = new Attribute(Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL, getJournal());
+            getAttributes().add(journalAtt);
         }
-        else if (!this.identifiers.isEmpty()) {
+        else if (!getAttributes().isEmpty()) {
             AnnotationUtils.removeAllAnnotationsWithTopic(attributes, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL);
-            this.journal = null;
+            super.setJournal(null);
         }
     }
 
@@ -377,16 +251,16 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             SimpleDateFormat format = new SimpleDateFormat("yyyy");
             String formattedDate = format.format(date);
 
-            if (this.publicationDate != null){
-                attributes.remove(new Attribute(Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR, formattedDate));
+            if (getPublicationDate() != null){
+                getAttributes().remove(new Attribute(Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR, formattedDate));
             }
-            this.publicationDate = date;
+            super.setPublicationDate(date);
             Attribute pubDateAtt = new Attribute(Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR, formattedDate);
-            this.attributes.add(pubDateAtt);
+            getAttributes().add(pubDateAtt);
         }
-        else if (!this.identifiers.isEmpty()) {
+        else if (!getAttributes().isEmpty()) {
             AnnotationUtils.removeAllAnnotationsWithTopic(attributes, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR);
-            this.publicationDate = null;
+            super.setPublicationDate(null);
         }
     }
 
@@ -407,7 +281,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
         final Bibref bibref = ( Bibref ) o;
 
-        if ( attributes != null ? !attributes.equals( bibref.attributes ) : bibref.attributes != null ) return false;
+        if ( attributes != null ? !attributes.equals( bibref.attributes ) : (bibref.attributes != null && !bibref.attributes.isEmpty()) ) return false;
         if ( xref != null ? !xref.equals( bibref.xref ) : bibref.xref != null ) return false;
 
         return true;
@@ -447,46 +321,46 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
                 super.setPrimaryRef(value);
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((PublicationIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((PublicationIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((PublicationXrefList)xrefs).addOnly(value);
+                        ((PublicationXrefList)getXrefs()).addOnly(value);
                         processAddedXrefEvent(value);
                     }
                 }
             }
             else if (isPrimaryAnIdentity){
-                ((PublicationIdentifierList)identifiers).removeOnly(getPrimaryRef());
-                processRemovedIdentifier(getPrimaryRef());
+                ((PublicationIdentifierList)getIdentifiers()).removeOnly(getPrimaryRef());
+                processRemovedIdentifierEvent(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((PublicationIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((PublicationIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((PublicationXrefList)xrefs).addOnly(value);
+                        ((PublicationXrefList)getXrefs()).addOnly(value);
                         processAddedXrefEvent(value);
                     }
                 }
             }
             else {
-                ((PublicationXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((PublicationXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 processRemovedXrefEvent(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((PublicationIdentifierList)identifiers).addOnly(value);
-                        processAddedIdentifier(value);
+                        ((PublicationIdentifierList)getIdentifiers()).addOnly(value);
+                        processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((PublicationXrefList)xrefs).addOnly(value);
+                        ((PublicationXrefList)getXrefs()).addOnly(value);
                         processAddedXrefEvent(value);
                     }
                 }
@@ -540,11 +414,11 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             @Override
             protected void processAddedObjectEvent(DbReference added) {
                 if (XrefUtils.isXrefAnIdentifier(added)){
-                    ((PublicationIdentifierList)identifiers).addOnly(added);
-                    processAddedIdentifier(added);
+                    ((PublicationIdentifierList)getIdentifiers()).addOnly(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
-                    ((PublicationXrefList)xrefs).addOnly(added);
+                    ((PublicationXrefList)getXrefs()).addOnly(added);
                     processAddedXrefEvent(added);
                 }
             }
@@ -552,11 +426,11 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
                 if (XrefUtils.isXrefAnIdentifier(removed)){
-                    ((PublicationIdentifierList)identifiers).removeOnly(removed);
-                    processRemovedIdentifier(removed);
+                    ((PublicationIdentifierList)getIdentifiers()).removeOnly(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
-                    ((PublicationXrefList)xrefs).removeOnly(removed);
+                    ((PublicationXrefList)getXrefs()).removeOnly(removed);
                     processRemovedXrefEvent(removed);
                 }
             }
@@ -564,9 +438,9 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((PublicationIdentifierList)identifiers).retainAllOnly(primary);
+                ((PublicationIdentifierList)getIdentifiers()).retainAllOnly(primary);
                 clearPropertiesLinkedToIdentifiers();
-                ((PublicationXrefList)xrefs).retainAllOnly(primary);
+                ((PublicationXrefList)getXrefs()).retainAllOnly(primary);
                 clearPropertiesLinkedToXrefs();
             }
         }
@@ -586,27 +460,27 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
                 if (xref.getPrimaryRef() == null){
                     if (added instanceof DbReference){
                         reference.setPrimaryRefOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.setPrimaryRefOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
                 else {
                     if (added instanceof DbReference){
                         reference.extendedSecondaryRefList.addOnly((DbReference) added);
-                        processAddedIdentifier(added);
+                        processAddedIdentifierEvent(added);
                     }
                     else {
                         DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
                                 added.getQualifier() != null ? added.getQualifier().getShortName() : null, added.getQualifier() != null ? added.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.addOnly(fixedRef);
-                        processAddedIdentifier(fixedRef);
+                        processAddedIdentifierEvent(fixedRef);
                     }
                 }
             }
@@ -614,7 +488,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
                 if (added instanceof DbReference){
                     xref = new PublicationXref();
                     ((PublicationXref)xref).setPrimaryRefOnly((DbReference) added);
-                    processAddedIdentifier(added);
+                    processAddedIdentifierEvent(added);
                 }
                 else {
                     DbReference fixedRef = new DbReference(added.getDatabase().getShortName(), added.getDatabase().getMIIdentifier(), added.getId(),
@@ -622,7 +496,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
                     xref = new Xref();
                     ((PublicationXref)xref).setPrimaryRefOnly(fixedRef);
-                    processAddedIdentifier(fixedRef);
+                    processAddedIdentifierEvent(fixedRef);
                 }
             }
         }
@@ -635,12 +509,12 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
                 if (reference.getPrimaryRef() == removed){
                     reference.setPrimaryRefOnly(null);
-                    processRemovedIdentifier(removed);
+                    processRemovedIdentifierEvent(removed);
                 }
                 else {
                     if (removed instanceof DbReference){
                         reference.extendedSecondaryRefList.removeOnly((DbReference) removed);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
 
                     }
                     else {
@@ -648,7 +522,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
                                 removed.getQualifier() != null ? removed.getQualifier().getShortName() : null, removed.getQualifier() != null ? removed.getQualifier().getMIIdentifier() : null);
 
                         reference.extendedSecondaryRefList.removeOnly(fixedRef);
-                        processRemovedIdentifier(removed);
+                        processRemovedIdentifierEvent(removed);
                     }
                 }
             }
@@ -660,7 +534,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
             if (xref != null){
                 PublicationXref reference = (PublicationXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(xrefs);
+                reference.extendedSecondaryRefList.retainAllOnly(getXrefs());
 
                 if (reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -755,7 +629,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             clearPropertiesLinkedToXrefs();
             if (xref != null){
                 PublicationXref reference = (PublicationXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(identifiers);
+                reference.extendedSecondaryRefList.retainAllOnly(getIdentifiers());
 
                 if (!reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -772,29 +646,29 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
             if (added instanceof Attribute){
-                ((BibRefXmlAnnotationList)attributes).addOnly((Attribute) added);
+                ((BibRefXmlAnnotationList)getAttributes()).addOnly((Attribute) added);
             }
             else {
                 Attribute att = new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue());
-                ((BibRefXmlAnnotationList)attributes).addOnly(att);
+                ((BibRefXmlAnnotationList)getAttributes()).addOnly(att);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
-                ((BibRefXmlAnnotationList)attributes).removeOnly(removed);
+                ((BibRefXmlAnnotationList)getAttributes()).removeOnly(removed);
             }
             else {
                 Attribute att = new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue());
-                ((BibRefXmlAnnotationList)attributes).removeOnly(att);
+                ((BibRefXmlAnnotationList)getAttributes()).removeOnly(att);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((BibRefXmlAnnotationList)attributes).clearOnly();
+            ((BibRefXmlAnnotationList)getAttributes()).clearOnly();
         }
     }
 
@@ -832,10 +706,10 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
         @Override
         protected void processAddedObjectEvent(String added) {
 
-            BibRefXmlAnnotationList attributeList = (BibRefXmlAnnotationList) attributes;
+            BibRefXmlAnnotationList attributeList = (BibRefXmlAnnotationList) getAttributes();
 
-            String newAuthor = StringUtils.join(authors, ",");
-            Collection<Attribute> authorsCopy = new ArrayList<Attribute>(attributes);
+            String newAuthor = StringUtils.join(getAuthors(), ",");
+            Collection<Attribute> authorsCopy = new ArrayList<Attribute>(getAttributes());
 
             for (Attribute att : authorsCopy){
                 if (AnnotationUtils.doesAnnotationHaveTopic(att, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
@@ -849,10 +723,10 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
         @Override
         protected void processRemovedObjectEvent(String removed) {
 
-            BibRefXmlAnnotationList attributeList = (BibRefXmlAnnotationList) attributes;
+            BibRefXmlAnnotationList attributeList = (BibRefXmlAnnotationList) getAttributes();
 
-            String newAuthor = StringUtils.join(authors, ",");
-            Collection<Attribute> authorsCopy = new ArrayList<Attribute>(attributes);
+            String newAuthor = StringUtils.join(getAuthors(), ",");
+            Collection<Attribute> authorsCopy = new ArrayList<Attribute>(getAttributes());
 
             for (Attribute att : authorsCopy){
                 if (AnnotationUtils.doesAnnotationHaveTopic(att, Annotation.AUTHOR_MI, Annotation.AUTHOR)){

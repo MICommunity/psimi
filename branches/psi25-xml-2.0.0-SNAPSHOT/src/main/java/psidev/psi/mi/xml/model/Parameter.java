@@ -7,9 +7,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultParameter;
 
 import java.math.BigDecimal;
 
@@ -32,7 +32,7 @@ import java.math.BigDecimal;
  * </pre>
  */
 
-public class Parameter extends DefaultParameter{
+public class Parameter implements psidev.psi.mi.jami.model.Parameter{
 
     private ExperimentRef experimentRef;
 
@@ -40,15 +40,22 @@ public class Parameter extends DefaultParameter{
 
     private static final String UNSPECIFIED="unspecified";
 
+    private CvTerm type;
+    private BigDecimal uncertainty;
+    private CvTerm unit;
+    private ParameterValue value;
+
     ///////////////////////////
     // Constructors
 
     public Parameter() {
-        super(new DefaultCvTerm(UNSPECIFIED), new ParameterValue(new BigDecimal("0")));
+        this.type = new DefaultCvTerm(UNSPECIFIED);
+        this.value = new ParameterValue(new BigDecimal("0"));
     }
 
     public Parameter( String term, double factor ) {
-        super(new DefaultCvTerm(term != null ? term : UNSPECIFIED), new ParameterValue(new BigDecimal(Double.toString(factor))));
+        this.type = new DefaultCvTerm(term != null ? term : UNSPECIFIED);
+        this.value = new ParameterValue(new BigDecimal(Double.toString(factor)));
     }
 
     ///////////////////////////
@@ -417,4 +424,19 @@ public class Parameter extends DefaultParameter{
         return result;
     }
 
+    public CvTerm getType() {
+        return type;
+    }
+
+    public BigDecimal getUncertainty() {
+        return uncertainty;
+    }
+
+    public CvTerm getUnit() {
+        return unit;
+    }
+
+    public ParameterValue getValue() {
+        return value;
+    }
 }

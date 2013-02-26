@@ -7,8 +7,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,7 +83,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class DbReference extends DefaultXref{
+public class DbReference implements psidev.psi.mi.jami.model.Xref{
 
     private Collection<Attribute> attributes;
 
@@ -92,19 +92,27 @@ public class DbReference extends DefaultXref{
     private static String UNKNOWN = "unknown";
     private static String UNSPECIFIED_ID = "-";
 
+    private CvTerm database;
+    private String id;
+    private String version;
+    private CvTerm qualifier;
+
     ///////////////////////////
     // Constructors
 
     public DbReference() {
-        super(new DefaultCvTerm(UNKNOWN), UNSPECIFIED_ID);
+        this.database = new DefaultCvTerm(UNKNOWN);
+        this.id = UNSPECIFIED_ID;
     }
 
     public DbReference( String id, String db ) {
-        super(new DefaultCvTerm(db != null ? db : UNKNOWN), id != null && id.length() > 0 ? id : UNSPECIFIED_ID);
+        this.database = new DefaultCvTerm(db != null ? db : UNKNOWN);
+        this.id = id != null && id.length() > 0 ? id : UNSPECIFIED_ID;
     }
 
     public DbReference( String db, String dbAc, String id, String refType, String refTypeAc ) {
-        super(new DefaultCvTerm(db != null ? db : UNKNOWN, dbAc), id != null && id.length() > 0 ? id : UNSPECIFIED_ID);
+        this.database = new DefaultCvTerm(db != null ? db : UNKNOWN, dbAc);
+        this.id = id != null && id.length() > 0 ? id : UNSPECIFIED_ID;
 
         if (refType != null && refTypeAc != null){
             this.qualifier = new DefaultCvTerm(refType, refTypeAc);
@@ -212,6 +220,10 @@ public class DbReference extends DefaultXref{
         else {
             this.database.setMIIdentifier(value);
         }
+    }
+
+    public CvTerm getDatabase() {
+        return database;
     }
 
     /**
@@ -360,6 +372,10 @@ public class DbReference extends DefaultXref{
      */
     public String getVersion() {
         return version;
+    }
+
+    public CvTerm getQualifier() {
+        return qualifier;
     }
 
     /**

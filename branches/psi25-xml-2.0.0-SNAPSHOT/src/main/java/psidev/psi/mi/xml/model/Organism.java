@@ -51,8 +51,8 @@ public class Organism extends DefaultOrganism implements NamesContainer {
     }
 
     @Override
-    protected void initializeAliases() {
-        this.aliases = new OrganismAliasList();
+    protected void initialiseAliases() {
+        initialiseAliasesWith(new OrganismAliasList());
     }
 
     ///////////////////////////
@@ -87,16 +87,16 @@ public class Organism extends DefaultOrganism implements NamesContainer {
                 this.names = new OrganismNames();
             }
             else {
-                aliases.clear();
+                getAliases().clear();
             }
-            this.names.setShortLabel(value.getShortLabel());
-            this.names.setFullName(value.getFullName());
-            this.names.getAliases().addAll(value.getAliases());
+            super.setCommonName(value.getShortLabel());
+            super.setScientificName(value.getFullName());
+            getAliases().addAll(value.getAliases());
         }
         else if (this.names != null){
-            aliases.clear();
-            this.commonName = null;
-            this.scientificName = null;
+            getAliases().clear();
+            super.setCommonName(null);
+            super.setScientificName(null);
             this.names = null;
         }
     }
@@ -107,7 +107,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @return true if defined, false otherwise.
      */
     public boolean hasCellType() {
-        return cellType != null;
+        return getCellType() != null;
     }
 
     /**
@@ -116,7 +116,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @return possible object is {@link OpenCvType }
      */
     public CellType getCellType() {
-        return (CellType) cellType;
+        return (CellType) super.getCellType();
     }
 
     /**
@@ -125,7 +125,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @param value allowed object is {@link OpenCvType }
      */
     public void setCellType( CellType value ) {
-        this.cellType = value;
+        super.setCellType(value);
     }
 
     /**
@@ -134,7 +134,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @return true if defined, false otherwise.
      */
     public boolean hasCompartment() {
-        return compartment != null;
+        return getCompartment() != null;
     }
 
     /**
@@ -143,7 +143,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @return possible object is {@link OpenCvType }
      */
     public Compartment getCompartment() {
-        return (Compartment) compartment;
+        return (Compartment) super.getCompartment();
     }
 
     /**
@@ -152,7 +152,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @param value allowed object is {@link OpenCvType }
      */
     public void setCompartment( Compartment value ) {
-        this.compartment = value;
+        super.setCompartment(value);
     }
 
     /**
@@ -161,7 +161,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @return true if defined, false otherwise.
      */
     public boolean hasTissue() {
-        return tissue != null;
+        return getTissue() != null;
     }
 
     /**
@@ -170,7 +170,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @return possible object is {@link OpenCvType }
      */
     public Tissue getTissue() {
-        return (Tissue)tissue;
+        return (Tissue)super.getTissue();
     }
 
     /**
@@ -179,21 +179,21 @@ public class Organism extends DefaultOrganism implements NamesContainer {
      * @param value allowed object is {@link OpenCvType }
      */
     public void setTissue( Tissue value ) {
-        this.tissue = value;
+        super.setTissue(value);
     }
 
     /**
      * Gets the value of the ncbiTaxId property.
      */
     public int getNcbiTaxId() {
-        return taxId;
+        return super.getTaxId();
     }
 
     /**
      * Sets the value of the ncbiTaxId property.
      */
     public void setNcbiTaxId( int value ) {
-        this.taxId = value;
+        super.setTaxId(value);
     }
 
     //////////////////////////
@@ -202,66 +202,81 @@ public class Organism extends DefaultOrganism implements NamesContainer {
     @Override
     public void setCommonName(String name) {
         if (names != null){
-            names.setShortLabel(name);
+            super.setCommonName(name);
         }
         else if (name != null) {
             names = new OrganismNames();
-            names.setShortLabel(name);
+            super.setCommonName(name);
         }
     }
 
     @Override
     public void setScientificName(String name) {
         if (names != null){
-            names.setShortLabel(name);
-            names.setFullName(name);
+            super.setCommonName(name);
+            super.setScientificName(name);
         }
         else if (name != null) {
             names = new OrganismNames();
-            names.setShortLabel(name);
-            names.setFullName(name);
+            super.setCommonName(name);
+            super.setScientificName(name);
         }
+    }
+
+    protected void setCommonNameOnly(String name) {
+        super.setCommonName(name);
+    }
+
+    protected void setScientificNameOnly(String name) {
+        super.setScientificName(name);
+    }
+
+    protected Collection<psidev.psi.mi.jami.model.Alias> getOrganismAliases(){
+        return super.getAliases();
     }
 
     @Override
     public void setTissue(CvTerm tissue) {
         if (tissue == null){
-            this.tissue = null;
+            super.setTissue(null);
         }
         else if (tissue instanceof Tissue){
-            this.tissue = tissue;
+            super.setTissue(tissue);
         }
         else {
-            this.tissue = new Tissue();
-            CvTermCloner.copyAndOverrideCvTermProperties(tissue, this.tissue);
+            Tissue t = new Tissue();
+            CvTermCloner.copyAndOverrideCvTermProperties(tissue, t);
+            super.setTissue(t);
         }
     }
 
     @Override
     public void setCompartment(CvTerm compartment) {
         if (compartment == null){
-            this.compartment = null;
+            super.setCompartment(null);
         }
         else if (compartment instanceof Compartment){
-            this.compartment = compartment;
+            super.setCompartment(compartment);
         }
         else {
-            this.compartment = new Compartment();
-            CvTermCloner.copyAndOverrideCvTermProperties(compartment, this.compartment);
+            Compartment t = new Compartment();
+            CvTermCloner.copyAndOverrideCvTermProperties(compartment, t);
+            super.setCompartment(t);
         }
     }
 
     @Override
     public void setCellType(CvTerm cellType) {
         if (cellType == null){
-            this.cellType = null;
+            super.setCellType(null);
         }
         else if (cellType instanceof CellType){
-            this.cellType = cellType;
+            super.setCellType(cellType);
         }
         else {
-            this.cellType = new CellType();
-            CvTermCloner.copyAndOverrideCvTermProperties(cellType, this.cellType);
+            CellType t = new CellType();
+            CvTermCloner.copyAndOverrideCvTermProperties(cellType, t);
+            super.setCellType(t);
         }
     }
 
@@ -270,10 +285,10 @@ public class Organism extends DefaultOrganism implements NamesContainer {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Organism" );
         sb.append( "{names=" ).append( names );
-        sb.append( ", cellType=" ).append( cellType );
-        sb.append( ", compartment=" ).append( compartment );
-        sb.append( ", tissue=" ).append( tissue );
-        sb.append( ", ncbiTaxId=" ).append( taxId );
+        sb.append( ", cellType=" ).append( getCellType() );
+        sb.append( ", compartment=" ).append( getCompartment() );
+        sb.append( ", tissue=" ).append( getTissue() );
+        sb.append( ", ncbiTaxId=" ).append( getTaxId() );
         sb.append( '}' );
         return sb.toString();
     }
@@ -285,12 +300,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
 
         Organism organism = ( Organism ) o;
 
-        if ( taxId != organism.taxId ) return false;
-        //if (cellType != null ? !cellType.equals(organism.cellType) : organism.cellType != null) return false;
-        //if (compartment != null ? !compartment.equals(organism.compartment) : organism.compartment != null)
-        //    return false;
-        //if (names != null ? !names.equals(organism.names) : organism.names != null) return false;
-        //if (tissue != null ? !tissue.equals(organism.tissue) : organism.tissue != null) return false;
+        if ( getTaxId() != organism.getTaxId() ) return false;
 
         return true;
     }
@@ -302,7 +312,7 @@ public class Organism extends DefaultOrganism implements NamesContainer {
         //result = 31 * result + (cellType != null ? cellType.hashCode() : 0);
         //result = 31 * result + (compartment != null ? compartment.hashCode() : 0);
         //result = 31 * result + (tissue != null ? tissue.hashCode() : 0);
-        result = 31 * result + taxId;
+        result = 31 * result + getTaxId();
         return result;
     }
 
@@ -311,32 +321,27 @@ public class Organism extends DefaultOrganism implements NamesContainer {
         protected AliasList extendedAliases = new AliasList();
 
         public String getShortLabel() {
-            return commonName;
+            return getCommonName();
         }
 
         public boolean hasShortLabel() {
-            return commonName != null;
+            return getCommonName() != null;
         }
 
         public void setShortLabel( String value ) {
-            if (value != null){
-                commonName = value;
-            }
-            else {
-                commonName = null;
-            }
+            setCommonNameOnly(value);
         }
 
         public String getFullName() {
-            return scientificName;
+            return getScientificName();
         }
 
         public boolean hasFullName() {
-            return scientificName != null;
+            return getScientificName() != null;
         }
 
         public void setFullName( String value ) {
-            scientificName = value;
+            setScientificNameOnly(value);
         }
 
         public Collection<Alias> getAliases() {
@@ -351,8 +356,8 @@ public class Organism extends DefaultOrganism implements NamesContainer {
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Names" );
-            sb.append( "{shortLabel='" ).append( commonName ).append( '\'' );
-            sb.append( ", fullName='" ).append( scientificName ).append( '\'' );
+            sb.append( "{shortLabel='" ).append(getCommonName()).append( '\'' );
+            sb.append( ", fullName='" ).append( getScientificName() ).append( '\'' );
             sb.append( ", aliases=" ).append( extendedAliases );
             sb.append( '}' );
             return sb.toString();
@@ -366,8 +371,8 @@ public class Organism extends DefaultOrganism implements NamesContainer {
             Names names = ( Names ) o;
 
             if ( extendedAliases != null ? !extendedAliases.equals( names.getAliases() ) : names.getAliases() != null ) return false;
-            if ( scientificName != null ? !scientificName.equals( names.getFullName() ) : names.getFullName() != null ) return false;
-            if ( commonName != null ? !commonName.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+            if ( getScientificName() != null ? !getScientificName().equals(names.getFullName()) : names.getFullName() != null ) return false;
+            if ( getCommonName() != null ? !getCommonName().equals(names.getShortLabel()) : names.getShortLabel() != null ) return false;
 
             return true;
         }
@@ -375,8 +380,8 @@ public class Organism extends DefaultOrganism implements NamesContainer {
         @Override
         public int hashCode() {
             int result;
-            result = ( commonName != null ? commonName.hashCode() : 0 );
-            result = 31 * result + ( scientificName != null ? scientificName.hashCode() : 0 );
+            result = ( getCommonName() != null ? getCommonName().hashCode() : 0 );
+            result = 31 * result + ( getScientificName() != null ? getScientificName().hashCode() : 0 );
             result = 31 * result + ( extendedAliases != null ? extendedAliases.hashCode() : 0 );
             return result;
         }
@@ -385,17 +390,17 @@ public class Organism extends DefaultOrganism implements NamesContainer {
 
             @Override
             protected void processAddedObjectEvent(Alias added) {
-                ((OrganismAliasList) aliases).addOnly(added);
+                ((OrganismAliasList) getOrganismAliases()).addOnly(added);
             }
 
             @Override
             protected void processRemovedObjectEvent(Alias removed) {
-                ((OrganismAliasList)aliases).removeOnly(removed);
+                ((OrganismAliasList)getOrganismAliases()).removeOnly(removed);
             }
 
             @Override
             protected void clearProperties() {
-                ((OrganismAliasList)aliases).clearOnly();
+                ((OrganismAliasList)getOrganismAliases()).clearOnly();
             }
         }
     }

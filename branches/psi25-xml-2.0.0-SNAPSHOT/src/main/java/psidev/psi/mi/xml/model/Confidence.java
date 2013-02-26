@@ -6,7 +6,7 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.impl.DefaultConfidence;
+import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +29,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Confidence extends DefaultConfidence{
+public class Confidence implements psidev.psi.mi.jami.model.Confidence{
 
     private Collection<ExperimentDescription> experiments;
     private Collection<ExperimentRef> experimentRefs;
@@ -37,17 +37,25 @@ public class Confidence extends DefaultConfidence{
     private static final String UNKNOWN = "unknown";
     private static final String UNSPECIFIED_VALUE = "unspecified";
 
+    private String value;
+    private Unit unit;
+
     ///////////////////////////
     // Constructors
 
     public Confidence() {
-        super(new Unit(), UNSPECIFIED_VALUE);
-        this.unit = type;
+        this.unit = new Unit();
+        this.value = UNSPECIFIED_VALUE;
     }
 
     public Confidence( Unit unit, String value ) {
-        super(unit != null ? unit : new Unit(), value != null ? value : UNSPECIFIED_VALUE);
-        this.unit = type;
+        if (unit == null){
+           this.unit = new Unit();
+        }
+        else {
+            this.unit = unit;
+        }
+        this.value = value != null ? value : UNSPECIFIED_VALUE;
     }
 
     ///////////////////////////
@@ -59,7 +67,7 @@ public class Confidence extends DefaultConfidence{
      * @return possible object is {@link OpenCvType }
      */
     public Unit getUnit() {
-        return (Unit) type;
+        return unit;
     }
 
     /**
@@ -68,8 +76,11 @@ public class Confidence extends DefaultConfidence{
      * @param value allowed object is {@link OpenCvType }
      */
     public void setUnit( Unit value ) {
-        this.type = value;
         this.unit = value;
+    }
+
+    public CvTerm getType() {
+        return unit;
     }
 
     /**
@@ -87,7 +98,7 @@ public class Confidence extends DefaultConfidence{
      * @param value allowed object is {@link String }
      */
     public void setValue( String value ) {
-        this.value = value;
+        this.value = value != null ? value : UNSPECIFIED_VALUE;
     }
 
     /**
