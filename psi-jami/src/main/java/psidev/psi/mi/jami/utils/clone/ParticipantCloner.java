@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.clone;
 
+import psidev.psi.mi.jami.model.Component;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
@@ -42,6 +43,30 @@ public class ParticipantCloner {
             target.getExperimentalPreparations().addAll(source.getExperimentalPreparations());
             target.getParameters().clear();
             target.getParameters().addAll(source.getParameters());
+        }
+    }
+
+    /***
+     * This method will copy properties of component source in component target and will override all the other properties of Target component.
+     * This method will ignore interaction
+     * @param source
+     * @param target
+     */
+    public static void copyAndOverrideComponentProperties(Component source, Component target){
+        if (source != null && target != null){
+            target.setBiologicalRole(source.getBiologicalRole());
+            target.setInteractor(source.getInteractor());
+            target.setStoichiometry(source.getStoichiometry());
+
+            // copy collections
+            target.getAnnotations().clear();
+            target.getAnnotations().addAll(source.getAnnotations());
+            target.getFeatures().clear();
+            target.addAllFeatures(source.getFeatures());
+            target.getXrefs().clear();
+            target.getXrefs().addAll(source.getXrefs());
+            target.getAliases().clear();
+            target.getAliases().addAll(source.getAliases());
         }
     }
 }
