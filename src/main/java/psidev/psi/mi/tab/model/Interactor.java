@@ -571,12 +571,12 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
     }
 
     @Override
-    public void setInteraction(InteractionEvidence interaction) {
+    public void setInteractionEvidence(InteractionEvidence interaction) {
         if (interaction == null){
-            super.setInteraction(null);
+            super.setInteractionEvidence(null);
         }
         else if (interaction instanceof BinaryInteraction){
-            super.setInteraction(interaction);
+            super.setInteractionEvidence(interaction);
         }
         else if (interaction.getParticipants().size() > 2){
             throw new IllegalArgumentException("A MitabInteractor need a BinaryInteraction with one or two participants and not " + interaction.getParticipants().size());
@@ -585,14 +585,14 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
             BinaryInteraction<Interactor> convertedInteraction = new BinaryInteractionImpl();
 
             InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
-            super.setInteraction(convertedInteraction);
+            super.setInteractionEvidence(convertedInteraction);
         }
     }
 
     @Override
     public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
         if (interaction == null){
-            super.setInteraction(null);
+            super.setInteractionEvidence(null);
         }
         else if (interaction instanceof BinaryInteraction){
             interaction.addParticipant(this);
@@ -825,13 +825,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         protected void processAddedObjectEvent(FeatureEvidence added) {
             if (added instanceof Feature){
                 Feature f = (Feature)added;
-                f.setParticipant(getInstance());
+                f.setParticipantEvidence(getInstance());
                 ((InteractorMitabFeatureList)getInteractorFeatures()).addOnly((Feature) added);
             }
             else {
                 Feature tabFeature = new FeatureImpl(added.getType() != null ? added.getType().getShortName() : null, Collections.EMPTY_LIST);
                 FeatureCloner.copyAndOverrideFeatureProperties(added, tabFeature);
-                tabFeature.setParticipant(getInstance());
+                tabFeature.setParticipantEvidence(getInstance());
 
                 ((InteractorMitabFeatureList) getInteractorFeatures()).addOnly(tabFeature);
             }
@@ -848,13 +848,13 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 
                 ((InteractorMitabFeatureList)getInteractorFeatures()).removeOnly(tabFeature);
             }
-            removed.setParticipant(null);
+            removed.setParticipantEvidence(null);
         }
 
         @Override
         protected void clearProperties() {
             for (Feature f : getInteractorFeatures()){
-                f.setParticipant(null);
+                f.setParticipantEvidence(null);
             }
             // clear all mitab features
             ((InteractorMitabFeatureList)mitabFeatures).clearOnly();
@@ -869,7 +869,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         @Override
         protected void processAddedObjectEvent(Feature added) {
 
-            added.setParticipant(getInstance());
+            added.setParticipantEvidence(getInstance());
             // we added a feature, needs to add it in features
             ((InteractorFeatureList)getFeatures()).addOnly(added);
         }
@@ -878,14 +878,14 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         protected void processRemovedObjectEvent(Feature removed) {
             // we removed a feature, needs to remove it in features
             ((InteractorFeatureList)getFeatures()).removeOnly(removed);
-            removed.setParticipant(null);
+            removed.setParticipantEvidence(null);
         }
 
         @Override
         protected void clearProperties() {
 
-            for (psidev.psi.mi.jami.model.Feature f : getFeatures()){
-                f.setParticipant(null);
+            for (FeatureEvidence f : getFeatures()){
+                f.setParticipantEvidence(null);
             }
             // clear all features
             ((InteractorFeatureList)getFeatures()).clearOnly();
