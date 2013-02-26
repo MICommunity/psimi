@@ -223,25 +223,25 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     // Object's override
 
     @Override
-    public void setParticipant(ParticipantEvidence participant) {
+    public void setParticipantEvidence(ParticipantEvidence participant) {
         if (participant == null){
-            super.setParticipant(null);
+            super.setParticipantEvidence(null);
         }
         else if (participant instanceof Interactor){
-            super.setParticipant(participant);
+            super.setParticipantEvidence(participant);
         }
         else {
             Interactor convertedParticipant = new Interactor();
 
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
-            super.setParticipant(convertedParticipant);
+            super.setParticipantEvidence(convertedParticipant);
         }
     }
 
     @Override
-    public void setParticipantAndAddFeature(ParticipantEvidence participant) {
+    public void setParticipantEvidenceAndAddFeature(ParticipantEvidence participant) {
         if (participant == null){
-            super.setParticipant(null);
+            super.setParticipantEvidence(null);
         }
         else if (participant instanceof Interactor){
             participant.addFeature(this);

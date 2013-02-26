@@ -60,11 +60,11 @@ public class BinaryInteractionImpl extends AbstractBinaryInteraction<Interactor>
                     interactorA = mitab;
                     addOnly(interactorA);
 
-                    interactorA.setInteraction(getInstance());
+                    interactorA.setInteractionEvidence(getInstance());
                 }
                 else {
                     interactorA = (Interactor) added;
-                    interactorA.setInteraction(getInstance());
+                    interactorA.setInteractionEvidence(getInstance());
                 }
             }
             else {
@@ -75,18 +75,18 @@ public class BinaryInteractionImpl extends AbstractBinaryInteraction<Interactor>
                     ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(added, mitab);
                     interactorB = mitab;
                     addOnly(interactorB);
-                    interactorB.setInteraction(getInstance());
+                    interactorB.setInteractionEvidence(getInstance());
                 }
                 else {
                     interactorB = (Interactor) added;
-                    interactorB.setInteraction(getInstance());
+                    interactorB.setInteractionEvidence(getInstance());
                 }
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(ParticipantEvidence removed) {
-            removed.setInteraction(null);
+            removed.setInteractionEvidence(null);
             if (removed == interactorA){
                 interactorA = null;
             }
