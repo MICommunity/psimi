@@ -244,7 +244,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
             super.setParticipantEvidence(null);
         }
         else if (participant instanceof Interactor){
-            participant.addFeature(this);
+            participant.addFeatureEvidence(this);
         }
         else {
             Interactor convertedParticipant = new Interactor();
