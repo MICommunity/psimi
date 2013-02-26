@@ -83,6 +83,14 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor, M
         this.modelledInteraction = interaction;
     }
 
+    public boolean addModelledFeature(ModelledFeature feature) {
+        return addFeature(feature);
+    }
+
+    public boolean removeModelledFeature(ModelledFeature feature) {
+        return removeFeature(feature);
+    }
+
     @Override
     public boolean addFeature(ModelledFeature feature) {
 

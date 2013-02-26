@@ -28,4 +28,18 @@ public interface ModelledParticipant extends Participant<Interactor, ModelledFea
      * @param interaction : modelled interaction
      */
     public void setModelledInteraction(ModelledInteraction interaction);
+
+    /**
+     * This method will add the feature and set the participant of the new feature to this current participant
+     * @param feature
+     * @return true if feature is added to the list of features
+     */
+    public boolean  addModelledFeature(ModelledFeature feature);
+
+    /**
+     * This method will remove the feature and set the participant of the removed feature to null.
+     * @param feature
+     * @return true if feature is removed from the list of features
+     */
+    public boolean removeModelledFeature(ModelledFeature feature);
 }

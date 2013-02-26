@@ -59,7 +59,7 @@ public class DefaultComponentFeature extends DefaultFeature<ComponentFeature> im
 
     public void setComponentAndAddFeature(Component participant) {
         if (participant != null){
-            this.component.addFeature(this);
+            this.component.addComponentFeature(this);
         }
         else {
             this.component = null;
