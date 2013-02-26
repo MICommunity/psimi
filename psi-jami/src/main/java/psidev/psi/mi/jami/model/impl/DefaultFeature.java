@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Default implementation for feature
@@ -33,12 +34,6 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     private P participant;
 
     public DefaultFeature(){
-
-        initializeIdentifiers();
-        initializeAnnotations();
-        initializeXrefs();
-        initializeRanges();
-        initializeBindingFeatures();
     }
 
     public DefaultFeature(String shortName, String fullName){
@@ -59,12 +54,6 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
     public DefaultFeature(P participant){
         this.participant = participant;
-
-        initializeIdentifiers();
-        initializeAnnotations();
-        initializeXrefs();
-        initializeRanges();
-        initializeBindingFeatures();
     }
 
     public DefaultFeature(P participant, String shortName, String fullName){
@@ -101,6 +90,51 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
 
     protected void initializeBindingFeatures(){
         this.bindingFeatures = new ArrayList<T>();
+    }
+
+    protected void initializeIdentifiersWith(Collection<Xref> identifiers){
+        if (identifiers == null){
+            this.identifiers = Collections.EMPTY_LIST;
+        }
+        else {
+            this.identifiers = identifiers;
+        }
+    }
+
+    protected void initializeAnnotationsWith(Collection<Annotation> annotations){
+        if (annotations == null){
+            this.annotations = Collections.EMPTY_LIST;
+        }
+        else {
+            this.annotations = annotations;
+        }
+    }
+
+    protected void initializeXrefsWith(Collection<Xref> xrefs){
+        if (xrefs == null){
+            this.xrefs = Collections.EMPTY_LIST;
+        }
+        else {
+            this.xrefs = xrefs;
+        }
+    }
+
+    protected void initializeRangesWith(Collection<Range> ranges){
+        if (ranges == null){
+            this.ranges = Collections.EMPTY_LIST;
+        }
+        else {
+            this.ranges = ranges;
+        }
+    }
+
+    protected void initializeBindingFeaturesWith(Collection<T> features){
+        if (features == null){
+            this.bindingFeatures = Collections.EMPTY_LIST;
+        }
+        else {
+            this.bindingFeatures = features;
+        }
     }
 
     public String getShortName() {
@@ -145,14 +179,23 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     }
 
     public Collection<Xref> getIdentifiers() {
+        if (identifiers == null){
+            initializeIdentifiers();
+        }
         return this.identifiers;
     }
 
     public Collection<Xref> getXrefs() {
+        if (xrefs == null){
+            initializeXrefs();
+        }
         return this.xrefs;
     }
 
     public Collection<Annotation> getAnnotations() {
+        if (annotations == null){
+            initializeAnnotations();
+        }
         return this.annotations;
     }
 
@@ -165,10 +208,16 @@ public class DefaultFeature<T extends Feature, P extends Participant> implements
     }
 
     public Collection<Range> getRanges() {
+        if (ranges == null){
+            initializeRanges();
+        }
         return this.ranges;
     }
 
     public Collection<T> getBindingFeatures() {
+        if(bindingFeatures == null){
+           initializeBindingFeatures();
+        }
         return this.bindingFeatures;
     }
 
