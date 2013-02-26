@@ -238,6 +238,28 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         return removed;
     }
 
+    protected void processAddedXrefEvent(Xref added) {
+
+        // the added identifier is imex and the current imex is not set
+        if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
+            // the added xref is imex-primary
+            if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
+                imexId = added;
+            }
+        }
+    }
+
+    protected void processRemovedXrefEvent(Xref removed) {
+        // the removed identifier is pubmed
+        if (imexId != null && imexId.equals(removed)){
+            imexId = null;
+        }
+    }
+
+    protected void clearPropertiesLinkedToXrefs() {
+        imexId = null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
@@ -268,26 +290,17 @@ public class DefaultInteractionEvidence extends DefaultInteraction<ParticipantEv
         @Override
         protected void processAddedObjectEvent(Xref added) {
 
-            // the added identifier is imex and the current imex is not set
-            if (imexId == null && XrefUtils.isXrefFromDatabase(added, Xref.IMEX_MI, Xref.IMEX)){
-                // the added xref is imex-primary
-                if (XrefUtils.doesXrefHaveQualifier(added, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
-                    imexId = added;
-                }
-            }
+            processAddedXrefEvent(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Xref removed) {
-            // the removed identifier is pubmed
-            if (imexId != null && imexId.equals(removed)){
-                imexId = null;
-            }
+            processRemovedXrefEvent(removed);
         }
 
         @Override
         protected void clearProperties() {
-            imexId = null;
+            clearPropertiesLinkedToXrefs();
         }
     }
 }
