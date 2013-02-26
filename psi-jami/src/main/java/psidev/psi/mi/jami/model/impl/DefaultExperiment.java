@@ -140,6 +140,9 @@ public class DefaultExperiment implements Experiment {
     }
 
     public Collection<InteractionEvidence> getInteractions() {
+        if (interactions == null){
+            initialiseInteractions();
+        }
         return this.interactions;
     }
 
@@ -148,7 +151,7 @@ public class DefaultExperiment implements Experiment {
             return false;
         }
 
-        if (interactions.add(evidence)){
+        if (getInteractions().add(evidence)){
             evidence.setExperiment(this);
             return true;
         }
@@ -160,7 +163,7 @@ public class DefaultExperiment implements Experiment {
             return false;
         }
 
-        if (interactions.remove(evidence)){
+        if (getInteractions().remove(evidence)){
             evidence.setExperiment(null);
             return true;
         }
