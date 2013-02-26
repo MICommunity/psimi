@@ -30,7 +30,7 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
      */
     private static final long serialVersionUID = 5647365864375422507L;
 
-    List<CrossReference> identifiers = new OrganismIdentifierList();
+    List<CrossReference> identifiers;
 
     ///////////////////////
     // Cosntructor
@@ -51,6 +51,8 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
         String shortestName=null;
         String longestName=null;
 
+        OrganismAliasList organismAliases = (OrganismAliasList) getAliases();
+
         for (CrossReference ref : identifiers){
             if (ref.getText() != null){
                 if (shortestName == null || ref.getText().length() < shortestName.length()){
@@ -60,12 +62,12 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
                     longestName = ref.getText();
                 }
                 else if (ref.getText() != null){
-                    aliases.add(new DefaultAlias(CvTermFactory.createMICvTerm(Alias.SYNONYM, Alias.SYNONYM_MI), ref.getText()));
+                    organismAliases.addOnly(new DefaultAlias(CvTermFactory.createMICvTerm(Alias.SYNONYM, Alias.SYNONYM_MI), ref.getText()));
                 }
             }
         }
-        this.commonName = shortestName;
-        this.scientificName = longestName;
+        super.setCommonName(shortestName);
+        super.setScientificName(longestName);
         setIdentifiers( identifiers );
     }
 
@@ -80,15 +82,15 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
     }
 
     @Override
-    protected void initializeAliases() {
-        aliases = new OrganismAliasList();
+    protected void initialiseAliases() {
+        initialiseAliasesWith(new OrganismAliasList());
     }
 
     ////////////////
     //
 
     public void addIdentifier( CrossReference ref ) {
-        identifiers.add( ref );
+        getIdentifiers().add( ref );
     }
 
     ////////////////////////
@@ -96,6 +98,9 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
 
 
     public List<CrossReference> getIdentifiers() {
+        if (identifiers == null){
+           identifiers = new OrganismIdentifierList();
+        }
         return identifiers;
     }
 
@@ -103,14 +108,14 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
         if ( identifiers == null ) {
             throw new IllegalArgumentException( "Identifiers cannot be null." );
         }
-        this.identifiers.addAll(identifiers);
+        getIdentifiers().addAll(identifiers);
     }
 
     ///////////////////
     // Utility
 
     public String getTaxid() {
-        return Integer.toString(taxId);
+        return Integer.toString(getTaxId());
     }
 
     /////////////////////////
@@ -120,7 +125,7 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append( "Organism" );
-        sb.append( "{identifiers=" ).append( identifiers );
+        sb.append( "{identifiers=" ).append( getIdentifiers() );
         sb.append( '}' );
         return sb.toString();
     }
@@ -132,42 +137,42 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
 
         OrganismImpl organism = ( OrganismImpl ) o;
 
-        if ( !CollectionUtils.isEqualCollection(identifiers, organism.getIdentifiers()) ) return false;
+        if ( !CollectionUtils.isEqualCollection(getIdentifiers(), organism.getIdentifiers()) ) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return identifiers.hashCode();
+        return getIdentifiers().hashCode();
     }
 
     private void resetCommonNameFromIdentifiers(){
-        if (identifiers.isEmpty()){
-            this.commonName = null;
-            this.taxId = -3;
+        if (getIdentifiers().isEmpty()){
+            super.setCommonName(null);
+            super.setTaxId(-3);
         }
         else {
             String newCommonName=null;
-            for (CrossReference ref : identifiers){
+            for (CrossReference ref : getIdentifiers()){
                 if (ref.getText() != null){
                     if (newCommonName == null){
                         newCommonName = ref.getText();
-                        this.taxId = Integer.parseInt(ref.getId());
+                        super.setTaxId(Integer.parseInt(ref.getId()));
                     }
                     else if (newCommonName.length() > ref.getText().length()){
                         newCommonName = ref.getText();
-                        this.taxId = Integer.parseInt(ref.getId());
+                        super.setTaxId(Integer.parseInt(ref.getId()));
                     }
                 }
             }
-            this.commonName = newCommonName;
+            super.setCommonName(newCommonName);
         }
     }
 
     private void resetScientificNameFromIdentifiers(){
         String newScientificName=null;
-        for (CrossReference ref : identifiers){
+        for (CrossReference ref : getIdentifiers()){
             if (ref.getText() != null){
                 if (newScientificName == null){
                     newScientificName = ref.getText();
@@ -177,27 +182,48 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
                 }
             }
         }
-        this.scientificName = newScientificName;
+        super.setScientificName(newScientificName);
     }
 
     @Override
     public void setCommonName(String name) {
         super.setCommonName(name);
 
-        CrossReference newIdentifier = new CrossReferenceImpl( DEFAULT_DATABASE, String.valueOf( taxId ), name );
-        if (!identifiers.contains(newIdentifier)){
-            identifiers.add(newIdentifier);
+        CrossReference newIdentifier = new CrossReferenceImpl( DEFAULT_DATABASE, String.valueOf( getTaxId() ), name );
+        if (!getIdentifiers().contains(newIdentifier)){
+            getIdentifiers().add(newIdentifier);
         }
+    }
+
+    protected void setCommonNameOnly(String name) {
+        super.setCommonName(name);
     }
 
     @Override
     public void setScientificName(String name) {
         super.setScientificName(name);
 
-        CrossReference newIdentifier = new CrossReferenceImpl( DEFAULT_DATABASE, String.valueOf( taxId ), name );
-        if (!identifiers.contains(newIdentifier)){
-            identifiers.add(newIdentifier);
+        CrossReference newIdentifier = new CrossReferenceImpl( DEFAULT_DATABASE, String.valueOf( getTaxId() ), name );
+        if (!getIdentifiers().contains(newIdentifier)){
+            getIdentifiers().add(newIdentifier);
         }
+    }
+
+    protected void setScientificNameOnly(String name) {
+        super.setScientificName(name);
+    }
+
+    @Override
+    public void setTaxId(int id) {
+        super.setTaxId(id);
+
+        getIdentifiers().clear();
+        CrossReference ref = new CrossReferenceImpl("taxid", Integer.toString(id));
+        ((OrganismIdentifierList)getIdentifiers()).addOnly(ref);
+    }
+
+    public void setTaxIdOnly(int id) {
+        super.setTaxId(id);
     }
 
     private class OrganismAliasList extends AbstractListHavingPoperties<Alias> {
@@ -207,11 +233,11 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
 
         @Override
         protected void processAddedObjectEvent(Alias added) {
-            CrossReference matchingId = new CrossReferenceImpl(DEFAULT_DATABASE, String.valueOf(taxId), added.getName());
+            CrossReference matchingId = new CrossReferenceImpl(DEFAULT_DATABASE, String.valueOf(getTaxId()), added.getName());
 
-            if (!identifiers.contains(matchingId)){
+            if (!getIdentifiers().contains(matchingId)){
                 // add the matching identifier xref
-                ((OrganismIdentifierList) identifiers).addOnly(matchingId);
+                ((OrganismIdentifierList) getIdentifiers()).addOnly(matchingId);
             }
         }
 
@@ -219,35 +245,35 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
         protected void processRemovedObjectEvent(Alias removed) {
 
             // remove the matching identifier xref
-            ((OrganismIdentifierList) identifiers).removeOnly(new CrossReferenceImpl(DEFAULT_DATABASE, String.valueOf(taxId), removed.getName()));
+            ((OrganismIdentifierList) getIdentifiers()).removeOnly(new CrossReferenceImpl(DEFAULT_DATABASE, String.valueOf(getTaxId()), removed.getName()));
         }
 
         @Override
         protected void clearProperties() {
-            List<CrossReference> identifiersCopy = new ArrayList<CrossReference>(identifiers);
+            List<CrossReference> identifiersCopy = new ArrayList<CrossReference>(getIdentifiers());
             for (CrossReference ref : identifiersCopy){
                 if (ref.getText() != null){
                     // ignore shortname and fullname
-                    if (commonName == null && scientificName == null){
+                    if (getCommonName() == null && getScientificName() == null){
                         // remove the matching identifier xref
-                        ((OrganismIdentifierList) identifiers).removeOnly(ref);
+                        ((OrganismIdentifierList) getIdentifiers()).removeOnly(ref);
                     }
-                    else if (commonName == null){
-                        if (!scientificName.equals(ref.getText())){
+                    else if (getCommonName() == null){
+                        if (!getScientificName().equals(ref.getText())){
                             // remove the matching identifier xref
-                            ((OrganismIdentifierList) identifiers).removeOnly(ref);
+                            ((OrganismIdentifierList) getIdentifiers()).removeOnly(ref);
                         }
                     }
-                    else if (scientificName == null){
-                        if (!commonName.equals(ref.getText())){
+                    else if (getScientificName() == null){
+                        if (!getCommonName().equals(ref.getText())){
                             // remove the matching identifier xref
-                            ((OrganismIdentifierList) identifiers).removeOnly(ref);
+                            ((OrganismIdentifierList) getIdentifiers()).removeOnly(ref);
                         }
                     }
                     else {
-                        if (!commonName.equals(ref.getText()) && !scientificName.equals(ref.getText())){
+                        if (!getCommonName().equals(ref.getText()) && !getScientificName().equals(ref.getText())){
                             // remove the matching identifier xref
-                            ((OrganismIdentifierList) identifiers).removeOnly(ref);
+                            ((OrganismIdentifierList) getIdentifiers()).removeOnly(ref);
                         }
                     }
                 }
@@ -263,18 +289,18 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
-            if (added.getText() != null && commonName != null && scientificName != null && !added.getText().equals(commonName) && !added.getText().equals(scientificName)){
+            if (added.getText() != null && getCommonName() != null && getScientificName() != null && !added.getText().equals(getCommonName()) && !added.getText().equals(getScientificName())){
                 Alias matchingAlias = new DefaultAlias(CvTermFactory.createMICvTerm(Alias.SYNONYM, Alias.SYNONYM_MI), added.getText());
 
-                if (!aliases.contains(matchingAlias)){
-                    ((OrganismAliasList) aliases).addOnly(matchingAlias);
+                if (!getAliases().contains(matchingAlias)){
+                    ((OrganismAliasList) getAliases()).addOnly(matchingAlias);
                 }
             }
-            else if (added.getText() != null && commonName == null){
-                commonName = added.getText();
+            else if (added.getText() != null && getCommonName() == null){
+                setCommonNameOnly(added.getText());
             }
-            else if (added.getText() != null && scientificName == null){
-                scientificName = added.getText();
+            else if (added.getText() != null && getScientificName() == null){
+                setScientificNameOnly(added.getText());
             }
         }
 
@@ -285,14 +311,14 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
                    clearProperties();
                 }
                 else {
-                    if (commonName != null && commonName.equals(removed.getText())){
+                    if (getCommonName() != null && getCommonName().equals(removed.getText())){
                         resetCommonNameFromIdentifiers();
                     }
-                    else if (scientificName != null && scientificName.equals(removed.getText())){
+                    else if (getScientificName() != null && getScientificName().equals(removed.getText())){
                         resetScientificNameFromIdentifiers();
                     }
                     else {
-                        ((OrganismAliasList) aliases).removeOnly(new DefaultAlias(CvTermFactory.createMICvTerm(Alias.SYNONYM, Alias.SYNONYM_MI), removed.getText()));
+                        ((OrganismAliasList) getAliases()).removeOnly(new DefaultAlias(CvTermFactory.createMICvTerm(Alias.SYNONYM, Alias.SYNONYM_MI), removed.getText()));
                     }
                 }
             }
@@ -300,10 +326,10 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
 
         @Override
         protected void clearProperties() {
-            ((OrganismAliasList) aliases).clearOnly();
-            commonName = null;
-            scientificName = null;
-            taxId = -3;
+            ((OrganismAliasList) getAliases()).clearOnly();
+            setCommonNameOnly(null);
+            setScientificNameOnly(null);
+            setTaxIdOnly(-3);
         }
     }
 }

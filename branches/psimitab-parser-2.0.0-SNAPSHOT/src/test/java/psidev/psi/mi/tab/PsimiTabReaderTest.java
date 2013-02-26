@@ -144,7 +144,7 @@ public class PsimiTabReaderTest {
 		Assert.assertEquals(4, binaryInteraction.getConfidenceValues().size());
 
 		ConfidenceImpl confidence = (ConfidenceImpl) binaryInteraction.getConfidenceValues().get(3);
-		Assert.assertEquals("not-defined", confidence.getComfidenceType());
+		Assert.assertEquals("not-defined", confidence.getConfidenceType());
 		Assert.assertEquals("PSICQUIC entries are truncated here.  Seeirefindex.uio.no", confidence.getValue());
 		Assert.assertEquals("free-text", confidence.getText());
 	}

@@ -1,9 +1,9 @@
 package psidev.psi.mi.tab.model;
 
 import psidev.psi.mi.jami.exception.IllegalParameterException;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultParameter;
 import psidev.psi.mi.jami.utils.ParameterUtils;
 import psidev.psi.mi.jami.utils.factory.ParameterFactory;
 
@@ -17,12 +17,17 @@ import java.math.BigDecimal;
  * Time: 11:23
  * To change this template use File | Settings | File Templates.
  */
-public class ParameterImpl extends DefaultParameter implements Parameter {
+public class ParameterImpl implements Parameter, psidev.psi.mi.jami.model.Parameter {
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
      * To keep things consistent, please use the same thing.
      */
     private static final long serialVersionUID = 8967236664673865804L;
+
+    private CvTerm type;
+    private BigDecimal uncertainty;
+    private CvTerm unit;
+    private ParameterValue value;
 
     //////////////////////
     // Constructors
@@ -34,7 +39,16 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
      * @param value double value.
      */
     public ParameterImpl(String type, String value) throws IllegalParameterException {
-        super(new DefaultCvTerm(type), value);
+        this.type = new DefaultCvTerm(type != null ? type : "unknown");
+
+        if (value == null){
+           this.value = new ParameterValue(new BigDecimal("0"));
+        }
+        else {
+            psidev.psi.mi.jami.model.Parameter param = ParameterFactory.createParameterFromString(type, value);
+            this.value = param.getValue();
+            this.uncertainty = param.getUncertainty();
+        }
     }
 
     /**
@@ -46,7 +60,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
      * @param unit  the unit of the parameter.
      */
     public ParameterImpl(String type, String value, String unit) throws IllegalParameterException {
-        super(new DefaultCvTerm(type), value);
+        this(type, value);
 
         if (unit != null){
            this.unit = new DefaultCvTerm(unit);
@@ -63,7 +77,8 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
      * @param unit     the unit of the parameter.
      */
     public ParameterImpl(String type, double factor, int base, int exponent, double uncertainty, String unit) {
-        super(new DefaultCvTerm(type), new ParameterValue(new BigDecimal(Double.toString(factor)), (short)base, (short)exponent));
+        this.type = new DefaultCvTerm(type != null ? type : "unknown");
+        this.value = new ParameterValue(new BigDecimal(Double.toString(factor)), (short)base, (short)exponent);
 
         if (unit != null){
             this.unit = new DefaultCvTerm(unit);
@@ -81,7 +96,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
     /**
      * {@inheritDoc}
      */
-    public void setParameterType(String type) {
+    public void setType(String type) {
         if (type == null){
             type = "unknown";
         }
@@ -152,7 +167,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
         return ParameterUtils.getParameterValueAsString(this);
     }
 
-    public void setValueAsString(String value) {
+    public void setValue(String value) {
         if (value == null){
             throw new IllegalArgumentException("The parameter value cannot be null");
         }
@@ -176,7 +191,7 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
     /**
      * {@inheritDoc}
      */
-    public void setParameterUnit(String unit) {
+    public void setUnit(String unit) {
         if (unit != null){
             this.unit = new DefaultCvTerm(unit);
         }
@@ -251,6 +266,22 @@ public class ParameterImpl extends DefaultParameter implements Parameter {
         result = type.getShortName().hashCode();
         result = 29 * result + getValueAsString().hashCode();
         return result;
+    }
+
+    public CvTerm getType() {
+        return type;
+    }
+
+    public BigDecimal getUncertainty() {
+        return uncertainty;
+    }
+
+    public CvTerm getUnit() {
+        return unit;
+    }
+
+    public ParameterValue getValue() {
+        return value;
     }
 }
 

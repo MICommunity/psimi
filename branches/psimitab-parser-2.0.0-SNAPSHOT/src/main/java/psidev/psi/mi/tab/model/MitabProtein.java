@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -50,20 +51,22 @@ public class MitabProtein extends MitabInteractor implements Protein {
     }
 
     public void setUniprotkb(String ac) {
+        Collection<Xref> proteinIdentifiers = getIdentifiers();
+
         // add new uniprotkb if not null
         if (ac != null){
             CvTerm uniprotkbDatabase = CvTermFactory.createUniprotkbDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old uniprotkb if not null
             if (this.uniprotkb != null){
-                identifiers.remove(this.uniprotkb);
+                proteinIdentifiers.remove(this.uniprotkb);
             }
             this.uniprotkb = new DefaultXref(uniprotkbDatabase, ac, identityQualifier);
-            this.identifiers.add(this.uniprotkb);
+            proteinIdentifiers.add(this.uniprotkb);
         }
         // remove all uniprotkb if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
+        else if (!proteinIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(proteinIdentifiers, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
             this.uniprotkb = null;
         }
     }
@@ -73,20 +76,22 @@ public class MitabProtein extends MitabInteractor implements Protein {
     }
 
     public void setRefseq(String ac) {
+        Collection<Xref> proteinIdentifiers = getIdentifiers();
+
         // add new refseq if not null
         if (ac != null){
             CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old refseq if not null
             if (this.refseq != null){
-                identifiers.remove(this.refseq);
+                proteinIdentifiers.remove(this.refseq);
             }
             this.refseq = new DefaultXref(refseqDatabase, ac, identityQualifier);
-            this.identifiers.add(this.refseq);
+            proteinIdentifiers.add(this.refseq);
         }
         // remove all refseq if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+        else if (!proteinIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(proteinIdentifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
@@ -96,19 +101,21 @@ public class MitabProtein extends MitabInteractor implements Protein {
     }
 
     public void setGeneName(String name) {
+        Collection<Alias> proteinAliases = getAliases();
+
         // add new gene name if not null
         if (name != null){
             CvTerm geneNameType = CvTermFactory.createGeneNameAliasType();
             // first remove old gene name if not null
             if (this.geneName != null){
-                aliases.remove(this.geneName);
+                proteinAliases.remove(this.geneName);
             }
             this.geneName = new DefaultAlias(geneNameType, name);
-            this.aliases.add(this.geneName);
+            proteinAliases.add(this.geneName);
         }
         // remove all gene names if the collection is not empty
-        else if (!this.aliases.isEmpty()) {
-            AliasUtils.removeAllAliasesWithType(aliases, psidev.psi.mi.jami.model.Alias.GENE_NAME_MI, Alias.GENE_NAME);
+        else if (!proteinAliases.isEmpty()) {
+            AliasUtils.removeAllAliasesWithType(proteinAliases, psidev.psi.mi.jami.model.Alias.GENE_NAME_MI, Alias.GENE_NAME);
             this.geneName = null;
         }
     }
@@ -118,17 +125,19 @@ public class MitabProtein extends MitabInteractor implements Protein {
     }
 
     public void setRogid(String rogid) {
+        Collection<Checksum> checksums = getChecksums();
+
         if (rogid != null){
             CvTerm rogidMethod = CvTermFactory.createRogid();
             // first remove old rogid
             if (this.rogid != null){
-                this.checksums.remove(this.rogid);
+                checksums.remove(this.rogid);
             }
             this.rogid = new DefaultChecksum(rogidMethod, rogid);
-            this.checksums.add(this.rogid);
+            checksums.add(this.rogid);
         }
         // remove all smiles if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
+        else if (!checksums.isEmpty()) {
             ChecksumUtils.removeAllChecksumWithMethod(checksums, Checksum.ROGID_MI, Checksum.ROGID);
             this.rogid = null;
         }
@@ -154,10 +163,10 @@ public class MitabProtein extends MitabInteractor implements Protein {
     @Override
     protected void processRemovedIdentifierEvent(Xref removed) {
         if (uniprotkb != null && XrefUtils.isXrefFromDatabase(removed, Xref.UNIPROTKB_MI, Xref.UNIPROTKB) && removed.getId().equals(uniprotkb.getId())){
-            uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
+            uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
         }
         else if (refseq != null && XrefUtils.isXrefFromDatabase(removed, Xref.REFSEQ_MI, Xref.REFSEQ) && removed.getId().equals(refseq.getId())){
-            refseq = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+            refseq = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
         }
     }
 
@@ -178,7 +187,7 @@ public class MitabProtein extends MitabInteractor implements Protein {
     protected void processRemovedChecksumEvent(psidev.psi.mi.jami.model.Checksum removed) {
         if (rogid != null && rogid.getValue().equals(removed.getValue())
                 && ChecksumUtils.doesChecksumHaveMethod(removed, Checksum.ROGID_MI, Checksum.ROGID)){
-            rogid = ChecksumUtils.collectFirstChecksumWithMethod(checksums, Checksum.ROGID_MI, Checksum.ROGID);
+            rogid = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.ROGID_MI, Checksum.ROGID);
         }
     }
 
@@ -198,7 +207,7 @@ public class MitabProtein extends MitabInteractor implements Protein {
     protected void processRemovedAliasEvent(psidev.psi.mi.jami.model.Alias removed) {
         if (geneName != null && geneName.getName().equals(removed.getName())
                 && AliasUtils.doesAliasHaveType(removed, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
-            geneName = AliasUtils.collectFirstAliasWithType(aliases, Alias.GENE_NAME_MI, Alias.GENE_NAME);
+            geneName = AliasUtils.collectFirstAliasWithType(getAliases(), Alias.GENE_NAME_MI, Alias.GENE_NAME);
         }
     }
 

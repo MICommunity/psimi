@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,6 +48,8 @@ public class MitabBioactiveEntity extends MitabInteractor implements BioactiveEn
     }
 
     public void setChebi(String id) {
+        Collection<Xref> identifiers = getIdentifiers();
+
         // add new chebi if not null
         if (id != null){
             // first remove old chebi if not null
@@ -54,11 +57,11 @@ public class MitabBioactiveEntity extends MitabInteractor implements BioactiveEn
                 identifiers.remove(this.chebi);
             }
             this.chebi = new CrossReferenceImpl(Xref.CHEBI, id);
-            this.identifiers.add(chebi);
+            identifiers.add(chebi);
         }
         // remove all chebi if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(xrefs, Xref.CHEBI_MI, Xref.CHEBI);
+        else if (!identifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(identifiers, Xref.CHEBI_MI, Xref.CHEBI);
             this.chebi = null;
         }
     }
@@ -68,17 +71,18 @@ public class MitabBioactiveEntity extends MitabInteractor implements BioactiveEn
     }
 
     public void setSmile(String smile) {
+        Collection<Checksum> checksum = getChecksums();
         if (smile != null){
             // first remove old smile
             if (this.smile != null){
-                this.checksums.remove(this.smile);
+                checksum.remove(this.smile);
             }
             this.smile = new ChecksumImpl(Checksum.SMILE, smile);
-            this.checksums.add(this.smile);
+            checksum.add(this.smile);
         }
         // remove all smiles if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.SMILE_MI, Checksum.SMILE);
+        else if (!checksum.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(checksum, Checksum.SMILE_MI, Checksum.SMILE);
             this.smile = null;
         }
     }
@@ -88,17 +92,18 @@ public class MitabBioactiveEntity extends MitabInteractor implements BioactiveEn
     }
 
     public void setStandardInchiKey(String key) {
+        Collection<Checksum> checksum = getChecksums();
         if (standardInchiKey != null){
             // first remove old standard inchi key
             if (this.standardInchiKey != null){
-                this.checksums.remove(this.standardInchiKey);
+                checksum.remove(this.standardInchiKey);
             }
             this.standardInchiKey = new ChecksumImpl(Checksum.INCHI_KEY, key);
-            this.checksums.add(this.standardInchiKey);
+            checksum.add(this.standardInchiKey);
         }
         // remove all standard inchi keys if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
+        else if (!checksum.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(checksum, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
             this.standardInchiKey = null;
         }
     }
@@ -108,17 +113,18 @@ public class MitabBioactiveEntity extends MitabInteractor implements BioactiveEn
     }
 
     public void setStandardInchi(String inchi) {
+        Collection<Checksum> checksum = getChecksums();
         if (standardInchi != null){
             // first remove standard inchi
             if (this.standardInchi != null){
-                this.checksums.remove(this.standardInchi);
+                checksum.remove(this.standardInchi);
             }
             this.standardInchi = new ChecksumImpl(Checksum.INCHI, inchi);
-            this.checksums.add(this.standardInchi);
+            checksum.add(this.standardInchi);
         }
         // remove all standard inchi if the collection is not empty
-        else if (!this.checksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(this.checksums, Checksum.INCHI_MI, Checksum.INCHI);
+        else if (!checksum.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(checksum, Checksum.INCHI_MI, Checksum.INCHI);
             this.standardInchi = null;
         }
     }
@@ -133,7 +139,7 @@ public class MitabBioactiveEntity extends MitabInteractor implements BioactiveEn
     protected void processRemovedIdentifierEvent(Xref removed) {
         // the removed identifier is chebi
         if (chebi != null && XrefUtils.isXrefFromDatabase(removed, Xref.CHEBI_MI, Xref.CHEBI) && removed.getId().equals(chebi.getId())){
-            chebi = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.CHEBI_MI, Xref.CHEBI);
+            chebi = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.CHEBI_MI, Xref.CHEBI);
         }
     }
 
@@ -164,15 +170,15 @@ public class MitabBioactiveEntity extends MitabInteractor implements BioactiveEn
         // the removed identifier is standard inchi key
         if (standardInchiKey != null && standardInchiKey.getValue().equals(removed.getValue())
                 && ChecksumUtils.doesChecksumHaveMethod(removed, psidev.psi.mi.jami.model.Checksum.INCHI_KEY_MI, psidev.psi.mi.jami.model.Checksum.INCHI_KEY)){
-            standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(checksums, psidev.psi.mi.jami.model.Checksum.INCHI_KEY_MI, psidev.psi.mi.jami.model.Checksum.INCHI_KEY);
+            standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), psidev.psi.mi.jami.model.Checksum.INCHI_KEY_MI, psidev.psi.mi.jami.model.Checksum.INCHI_KEY);
         }
         else if (smile != null && smile.getValue().equals(removed.getValue())
                 && ChecksumUtils.doesChecksumHaveMethod(removed, Checksum.SMILE_MI, Checksum.SMILE)){
-            smile = ChecksumUtils.collectFirstChecksumWithMethod(checksums, Checksum.SMILE_MI, Checksum.SMILE);
+            smile = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.SMILE_MI, Checksum.SMILE);
         }
         else if (standardInchi != null && standardInchi.getValue().equals(removed.getValue())
                 && ChecksumUtils.doesChecksumHaveMethod(removed, Checksum.INCHI_MI, Checksum.INCHI)){
-            standardInchi = ChecksumUtils.collectFirstChecksumWithMethod(checksums, Checksum.INCHI_MI, Checksum.INCHI);
+            standardInchi = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.INCHI_MI, Checksum.INCHI);
         }
     }
 

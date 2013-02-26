@@ -14,7 +14,7 @@ import java.io.Serializable;
 public interface CrossReference extends Xref, Serializable {
     String getDatabaseName();
 
-    void setDatabaseName(String database);
+    void setDatabase(String database);
 
     String getIdentifier();
 

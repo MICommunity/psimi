@@ -162,28 +162,28 @@ public interface BinaryInteraction<T extends Interactor> extends InteractionEvid
      *
      * @return cross references for the interaction.
      */
-    List<CrossReference> getMitabXrefs();
+    List<CrossReference> getInteractionXrefs();
 
     /**
      * Sets the cross references for the interaction.
      *
      * @param xrefs for the interaction.
      */
-    void setMitabXrefs(List<CrossReference> xrefs);
+    void setXrefs(List<CrossReference> xrefs);
 
     /**
      * Returns the annotations for the interaction.
      *
      * @return annotations for the interaction.
      */
-    List<Annotation> getMitabAnnotations();
+    List<Annotation> getInteractionAnnotations();
 
     /**
      * Sets the annotations for the interaction.
      *
      * @param interactionAnnotations for the interaction.
      */
-    void setMitabAnnotations(List<Annotation> interactionAnnotations);
+    void setAnnotations(List<Annotation> interactionAnnotations);
 
     /**
      * Returns the host organism for the interaction.
@@ -211,14 +211,14 @@ public interface BinaryInteraction<T extends Interactor> extends InteractionEvid
      *
      * @return parameters for the interaction.
      */
-    List<Parameter> getMitabParameters();
+    List<Parameter> getInteractionParameters();
 
     /**
      * Sets the parameters for the interaction.
      *
      * @param parameters for the interaction.
      */
-    void setMitabParameters(List<Parameter> parameters);
+    void setParameters(List<Parameter> parameters);
 
     /**
      * Returns the date when the curation started.
@@ -260,7 +260,7 @@ public interface BinaryInteraction<T extends Interactor> extends InteractionEvid
      *
      * @param interactionChecksums checksum for the interaction.
      */
-    void setInteractionChecksums(List<Checksum> interactionChecksums);
+    void setChecksums(List<Checksum> interactionChecksums);
 
     /**
      * Returns if the interaction is negative (true) or

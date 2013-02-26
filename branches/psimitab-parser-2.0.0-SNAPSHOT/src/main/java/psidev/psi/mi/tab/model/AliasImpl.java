@@ -5,7 +5,7 @@
  */
 package psidev.psi.mi.tab.model;
 
-import psidev.psi.mi.jami.model.impl.DefaultAlias;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
 /**
@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * @version $Id$
  * @since <pre>03-Oct-2006</pre>
  */
-public class AliasImpl extends DefaultAlias implements Alias {
+public class AliasImpl implements Alias, psidev.psi.mi.jami.model.Alias {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -33,17 +33,26 @@ public class AliasImpl extends DefaultAlias implements Alias {
 
     private static String UNSPECIFIED;
 
+    private CvTerm type;
+    private String name;
+
     /////////////////////////////////
     // Constructor
 
     public AliasImpl() {
         // create unknown alias
-        super(UNSPECIFIED);
+        this.name = UNSPECIFIED;
     }
 
     public AliasImpl( String dbSource, String name ) {
-        super(name);
         setDbSource(dbSource);
+
+        if (name == null){
+            this.name = UNSPECIFIED;
+        }
+        else {
+            this.name = name;
+        }
     }
 
     public AliasImpl( String dbSource, String name, String aliasType ) {
@@ -159,5 +168,13 @@ public class AliasImpl extends DefaultAlias implements Alias {
         result = ( dbSource != null ? dbSource.hashCode() : 0 );
         result = 29 * result + name.hashCode();
         return result;
+    }
+
+    public CvTerm getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
     }
 }

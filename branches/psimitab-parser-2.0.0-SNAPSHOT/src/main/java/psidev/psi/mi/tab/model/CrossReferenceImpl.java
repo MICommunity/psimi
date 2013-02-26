@@ -5,8 +5,9 @@
  */
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
 
 /**
  * Simple cross reference.
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.impl.DefaultXref;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
-public class CrossReferenceImpl extends DefaultXref implements CrossReference {
+public class CrossReferenceImpl implements CrossReference, Xref {
 
 	/**
 	 * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -23,15 +24,22 @@ public class CrossReferenceImpl extends DefaultXref implements CrossReference {
 	 */
 	private static final long serialVersionUID = 3681849842863471840L;
 
+    private CvTerm database;
+    private String id;
+    private String version;
+    private CvTerm qualifier;
+
 	//////////////////////////
 	// Constructor
 
 	public CrossReferenceImpl() {
-        super(new DefaultCvTerm("unknown"),"unknown");
+        database = new DefaultCvTerm("unknown");
+        id = "unknown";
 	}
 
 	public CrossReferenceImpl(String database, String identifier) {
-		super(new DefaultCvTerm(database != null ? database.trim() : null), identifier != null ? identifier.trim() : null);
+		this.database = new DefaultCvTerm(database != null ? database.trim() : null);
+        id = identifier != null ? identifier.trim() : null;
 	}
 
 	public CrossReferenceImpl(String database, String identifier, String text) {
@@ -46,7 +54,7 @@ public class CrossReferenceImpl extends DefaultXref implements CrossReference {
 		return this.database.getShortName();
 	}
 
-	public void setDatabaseName(String database) {
+	public void setDatabase(String database) {
 		if (database == null) {
 			throw new IllegalArgumentException("You must give a non null database.");
 		}
@@ -137,4 +145,20 @@ public class CrossReferenceImpl extends DefaultXref implements CrossReference {
 		result = 29 * result + id.hashCode();
 		return result;
 	}
+
+    public CvTerm getDatabase() {
+        return this.database;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getVersion() {
+        return this.version;
+    }
+
+    public CvTerm getQualifier() {
+        return this.qualifier;
+    }
 }

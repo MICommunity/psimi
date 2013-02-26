@@ -45,7 +45,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     /**
      * List of Range where appears of the feature.
      */
-    private List<String> rangesAsString = new FeatureRangeAsStringList();
+    private List<String> rangesAsString;
 
     /**
      * Construct a FeatureImpl object
@@ -61,7 +61,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
         super();
 
         if (featureType != null){
-            this.type = new DefaultCvTerm(featureType);
+            setType(new DefaultCvTerm(featureType));
         }
         else {
             throw new IllegalArgumentException("You must give a non null feature type.");
@@ -70,7 +70,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
         if (range != null && range.isEmpty()){
             for (String r : range){
                 try{
-                    rangesAsString.add(r);
+                    getRangesAsString().add(r);
                 }
                 catch (IllegalStateException e){
                     log.error("The range " + r + " will be ignored because not valid", e);
@@ -110,7 +110,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     public FeatureImpl(Interactor interactor, String featureType, List<String> range) {
         super(interactor);
         if (featureType != null){
-            this.type = new DefaultCvTerm(featureType);
+            setType(new DefaultCvTerm(featureType));
         }
         else {
             throw new IllegalArgumentException("You must give a non null feature type.");
@@ -119,7 +119,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
         if (range != null && range.isEmpty()){
             for (String r : range){
                 try{
-                    rangesAsString.add(r);
+                    getRangesAsString().add(r);
                 }
                 catch (IllegalStateException e){
                     log.error("The range " + r + " will be ignored because not valid", e);
@@ -147,8 +147,8 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     }
 
     @Override
-    protected void initializeRanges() {
-        this.ranges = new FeatureRangeList();
+    protected void initialiseRanges() {
+        initialiseRangesWith(new FeatureRangeList());
     }
 
     /**
@@ -177,6 +177,9 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
      * {@inheritDoc}
      */
     public List<String> getRangesAsString() {
+        if (rangesAsString == null){
+           rangesAsString = new FeatureRangeAsStringList();
+        }
         return rangesAsString;
     }
 
@@ -184,14 +187,13 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
      * {@inheritDoc}
      */
     public void setRangeAsString(List<String> ranges) {
-        if (ranges != null && !ranges.isEmpty()) {
-            for (String r : ranges){
-                try{
-                    rangesAsString.add(r);
-                }
-                catch (IllegalStateException e){
-                    log.error("The range " + r + " will be ignored because not valid", e);
-                }
+        getRangesAsString().clear();
+        for (String r : ranges){
+            try{
+                rangesAsString.add(r);
+            }
+            catch (IllegalStateException e){
+                log.error("The range " + r + " will be ignored because not valid", e);
             }
         }
     }
@@ -242,15 +244,13 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
             super.setParticipant(null);
         }
         else if (participant instanceof Interactor){
-            super.setParticipant(participant);
-            participant.getFeatures().add(this);
+            participant.addFeature(this);
         }
         else {
             Interactor convertedParticipant = new Interactor();
 
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
-            super.setParticipant(convertedParticipant);
-            convertedParticipant.getFeatures().add(this);
+            convertedParticipant.addFeature(this);
         }
     }
 
@@ -261,7 +261,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Feature");
-        sb.append("{featureType='").append(type.getShortName()).append('\'');
+        sb.append("{featureType='").append(getType().getShortName()).append('\'');
         if (text != null) {
             sb.append(", text='").append(text).append('\'');
         }
@@ -283,10 +283,10 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
 
         final FeatureImpl that = (FeatureImpl) o;
 
-        if (!type.getShortName().equals(that.type.getShortName())) {
+        if (!getType().getShortName().equals(that.getType().getShortName())) {
             return false;
         }
-        if (!CollectionUtils.isEqualCollection(rangesAsString, that.getRangesAsString())) {
+        if (!CollectionUtils.isEqualCollection(getRangesAsString(), that.getRangesAsString())) {
             return false;
         }
 
@@ -299,8 +299,8 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     @Override
     public int hashCode() {
         int result;
-        result = type.getShortName().hashCode();
-        result = 29 * result + rangesAsString.hashCode();
+        result = getType().getShortName().hashCode();
+        result = 29 * result + getRangesAsString().hashCode();
         return result;
     }
 
@@ -313,7 +313,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
         protected void processAddedObjectEvent(Range added) {
 
             String rangeString = RangeUtils.convertRangeToString(added);
-            ((FeatureRangeAsStringList) rangesAsString).addOnly(rangeString);
+            ((FeatureRangeAsStringList) getRangesAsString()).addOnly(rangeString);
         }
 
         @Override
@@ -323,13 +323,13 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
             }
             else {
                  String rangeString = RangeUtils.convertRangeToString(removed);
-                ((FeatureRangeAsStringList) rangesAsString).removeOnly(rangeString);
+                ((FeatureRangeAsStringList) getRangesAsString()).removeOnly(rangeString);
             }
         }
 
         @Override
         protected void clearProperties() {
-            ((FeatureRangeAsStringList) rangesAsString).clearOnly();
+            ((FeatureRangeAsStringList) getRangesAsString()).clearOnly();
         }
     }
 
@@ -343,7 +343,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
 
             try {
                 Range range = RangeFactory.createRangeFromString(added);
-                ((FeatureRangeList) ranges).addOnly(range);
+                ((FeatureRangeList) getRanges()).addOnly(range);
             } catch (IllegalRangeException e) {
                 removeOnly(added);
                 throw new IllegalStateException("The range " + added + " is not a valid range and cannot be added to the list of ranges");
@@ -358,7 +358,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
             else {
                 try {
                     Range range = RangeFactory.createRangeFromString(removed);
-                    ((FeatureRangeList) ranges).removeOnly(range);
+                    ((FeatureRangeList) getRanges()).removeOnly(range);
                 } catch (IllegalRangeException e) {
                     log.error("The range " + removed + " is not a valid range.");
                 }
@@ -367,7 +367,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
 
         @Override
         protected void clearProperties() {
-            ((FeatureRangeList) ranges).clearOnly();
+            ((FeatureRangeList) getRanges()).clearOnly();
         }
     }
 }

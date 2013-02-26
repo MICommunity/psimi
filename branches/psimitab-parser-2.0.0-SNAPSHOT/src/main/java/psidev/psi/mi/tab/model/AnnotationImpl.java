@@ -1,6 +1,6 @@
 package psidev.psi.mi.tab.model;
 
-import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
 /**
@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * Time: 16:38
  * To change this template use File | Settings | File Templates.
  */
-public class AnnotationImpl extends DefaultAnnotation implements Annotation {
+public class AnnotationImpl implements Annotation, psidev.psi.mi.jami.model.Annotation {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -18,16 +18,20 @@ public class AnnotationImpl extends DefaultAnnotation implements Annotation {
      */
     private static final long serialVersionUID = 4162569906234270001L;
 
+    private CvTerm topic;
+    private String value;
 
+    private static final String UNSPECIFIED = "unspecified";
     /////////////////////////////////
     // Constructor
 
     public AnnotationImpl(String topic) {
-        super(new DefaultCvTerm(topic));
+        this.topic = new DefaultCvTerm(topic != null ? topic : UNSPECIFIED);
     }
 
     public AnnotationImpl(String topic, String text) {
-        super(new DefaultCvTerm(topic), text);
+        this.topic = new DefaultCvTerm(topic != null ? topic : UNSPECIFIED);
+        this.value = text;
     }
 
     /////////////////////////////////
@@ -113,15 +117,27 @@ public class AnnotationImpl extends DefaultAnnotation implements Annotation {
         return true;
     }
 
+    public CvTerm getTopic() {
+        return topic;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     /**
      * {@inheritDoc}
      */
-    /*@Override
+    @Override
     public int hashCode() {
         int result;
         result = (value != null ? value.hashCode() : 0);
-        result = 29 * result + topic.hashCode();
+        result = 29 * result + topic.getShortName().hashCode();
         return result;
-    }*/
+    }
 
 }

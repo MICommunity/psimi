@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -44,18 +45,20 @@ public class MitabNucleicAcid extends MitabInteractor implements NucleicAcid {
     }
 
     public void setDdbjEmblGenbank(String id) {
+        Collection<Xref> nucleicAcidIdentifiers = getIdentifiers();
+
         // add new ddbj/embl/genbank if not null
         if (id != null){
             // first remove old ddbj/embl/genbank if not null
             if (this.ddbjEmblGenbank != null){
-                identifiers.remove(this.ddbjEmblGenbank);
+                nucleicAcidIdentifiers.remove(this.ddbjEmblGenbank);
             }
             this.ddbjEmblGenbank = new CrossReferenceImpl(Xref.DDBJ_EMBL_GENBANK, id);
-            this.identifiers.add(this.ddbjEmblGenbank);
+            nucleicAcidIdentifiers.add(this.ddbjEmblGenbank);
         }
         // remove all ddbj/embl/genbank if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
+        else if (!nucleicAcidIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(nucleicAcidIdentifiers, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
             this.ddbjEmblGenbank = null;
         }
     }
@@ -65,18 +68,20 @@ public class MitabNucleicAcid extends MitabInteractor implements NucleicAcid {
     }
 
     public void setRefseq(String id) {
+        Collection<Xref> nucleicAcidIdentifiers = getIdentifiers();
+
         // add new refseq if not null
         if (id != null){
             // first remove refseq if not null
             if (this.refseq!= null){
-                identifiers.remove(this.refseq);
+                nucleicAcidIdentifiers.remove(this.refseq);
             }
             this.refseq = new CrossReferenceImpl(Xref.REFSEQ, id);
-            this.identifiers.add(this.refseq);
+            nucleicAcidIdentifiers.add(this.refseq);
         }
         // remove all ensembl genomes if the collection is not empty
-        else if (!this.identifiers.isEmpty()) {
-            XrefUtils.removeAllXrefsWithDatabase(this.identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+        else if (!nucleicAcidIdentifiers.isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(nucleicAcidIdentifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
             this.refseq = null;
         }
     }
@@ -106,11 +111,11 @@ public class MitabNucleicAcid extends MitabInteractor implements NucleicAcid {
     protected void processRemovedIdentifierEvent(Xref removed) {
         if (ddbjEmblGenbank != null && XrefUtils.isXrefFromDatabase(removed, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK)
                 && removed.getId().equals(ddbjEmblGenbank.getId())){
-            ddbjEmblGenbank = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
+            ddbjEmblGenbank = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK);
         }
         else if (refseq != null && XrefUtils.isXrefFromDatabase(removed, Xref.REFSEQ_MI, Xref.REFSEQ)
                 && removed.getId().equals(refseq.getId())){
-            refseq = XrefUtils.collectFirstIdentifierWithDatabase(identifiers, Xref.REFSEQ_MI, Xref.REFSEQ);
+            refseq = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
         }
     }
 

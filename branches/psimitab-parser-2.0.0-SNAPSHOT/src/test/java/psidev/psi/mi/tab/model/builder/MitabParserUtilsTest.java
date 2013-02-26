@@ -205,12 +205,12 @@ public class MitabParserUtilsTest {
 		B.setInteractorTypes(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0326", "protein"))));
 
-//        A.setMitabXrefs();
-//        B.setMitabXrefs();
-//        interactionToCompare.setMitabXrefs();
-//        A.setMitabAnnotations();
-//        B.setMitabAnnotations();
-//        interactionToCompare.setMitabAnnotations();
+//        A.setXrefs();
+//        B.setXrefs();
+//        interactionToCompare.setXrefs();
+//        A.setAnnotations();
+//        B.setAnnotations();
+//        interactionToCompare.setAnnotations();
 
 		Organism hostOrganism = new OrganismImpl();
 		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
@@ -218,7 +218,7 @@ public class MitabParserUtilsTest {
 
 		interactionToCompare.setHostOrganism(hostOrganism);
 
-//        interactionToCompare.setMitabParameters();
+//        interactionToCompare.setParameters();
 
 		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = formatter.parse("2008/03/30");
