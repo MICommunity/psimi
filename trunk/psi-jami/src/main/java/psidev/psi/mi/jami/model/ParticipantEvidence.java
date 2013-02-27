@@ -133,5 +133,5 @@ public interface ParticipantEvidence extends Participant<Interactor>{
      * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
      * @return the features
      */
-    public Collection<FeatureEvidence> getFeatureEvidences();
+    public Collection<? extends FeatureEvidence> getFeatureEvidences();
 }

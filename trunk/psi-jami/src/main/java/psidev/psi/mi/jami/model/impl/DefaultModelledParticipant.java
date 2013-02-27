@@ -101,7 +101,7 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         this.modelledInteraction = interaction;
     }
 
-    public Collection<ModelledFeature> getModelledFeatures() {
+    public Collection<? extends ModelledFeature> getModelledFeatures() {
         if (modelledFeatures == null){
             initialiseModelledFeatures();
         }
