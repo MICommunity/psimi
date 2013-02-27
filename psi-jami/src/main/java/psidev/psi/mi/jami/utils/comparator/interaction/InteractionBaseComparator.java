@@ -2,11 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComparator;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 /**
@@ -21,30 +18,20 @@ import java.util.Comparator;
  * @since <pre>18/01/13</pre>
  */
 
-public class InteractionBaseComparator<T extends Participant> implements Comparator<Interaction> {
+public class InteractionBaseComparator implements Comparator<Interaction> {
 
-    protected ParticipantCollectionComparator participantCollectionComparator;
     protected AbstractCvTermComparator cvTermComparator;
 
     /**
      * Creates a new InteractionBaseComparator.
-     * @param participantComparator : required to compare participants
      * @param cvTermComparator : required to compare interaction type
      */
-    public InteractionBaseComparator(Comparator<T> participantComparator, AbstractCvTermComparator cvTermComparator){
-        if (participantComparator == null){
-            throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
-        }
-        this.participantCollectionComparator = new ParticipantCollectionComparator<T>(participantComparator);
+    public InteractionBaseComparator(AbstractCvTermComparator cvTermComparator){
 
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare interaction types. It cannot be null");
         }
         this.cvTermComparator = cvTermComparator;
-    }
-
-    public ParticipantCollectionComparator getParticipantCollectionComparator() {
-        return participantCollectionComparator;
     }
 
     public AbstractCvTermComparator getCvTermComparator() {
@@ -75,20 +62,12 @@ public class InteractionBaseComparator<T extends Participant> implements Compara
             return BEFORE;
         }
         else {
-            // first compares participants of an interaction
-            Collection<? extends T> participants1 = (Collection<? extends T>) interaction1.getParticipants();
-            Collection<? extends T> participants2 = (Collection<? extends T>) interaction2.getParticipants();
-
-            int comp = participantCollectionComparator.compare(participants1, participants2);
-            if (comp != 0){
-                return comp;
-            }
 
             // then compares interaction type
             CvTerm type1 = interaction1.getType();
             CvTerm type2 = interaction2.getType();
 
-            comp = cvTermComparator.compare(type1, type2);
+            int comp = cvTermComparator.compare(type1, type2);
             if (comp != 0){
                 return comp;
             }

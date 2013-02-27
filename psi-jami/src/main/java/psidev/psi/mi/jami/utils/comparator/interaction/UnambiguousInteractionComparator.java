@@ -24,7 +24,7 @@ public class UnambiguousInteractionComparator extends InteractionComparator {
      * Creates a new UnambiguousInteractionComparator.
      */
     public UnambiguousInteractionComparator() {
-        super(new UnambiguousInteractionBaseComparator(), new UnambiguousInteractionEvidenceComparator(), new UnambiguousCooperativeInteractionComparator(), new UnambiguousAllostericInteractionComparator());
+        super(new UnambiguousInteractionBaseComparator(), new UnambiguousModelledInteractionComparator(), new UnambiguousInteractionEvidenceComparator(), new UnambiguousCooperativeInteractionComparator(), new UnambiguousAllostericInteractionComparator());
     }
 
     @Override

@@ -1,16 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Unambiguous participant comparator
@@ -93,12 +87,7 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
         hashcode = 31*hashcode + UnambiguousInteractorBaseComparator.hashCode(participant.getInteractor());
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(participant.getBiologicalRole());
         hashcode = 31*hashcode + (participant.getStoichiometry() != null ? participant.getStoichiometry() : 0);
-        List<Feature> list1 = new ArrayList<Feature>((Collection<? extends Feature>)participant.getFeatures());
 
-        Collections.sort(list1, unambiguousParticipantComparator.getFeatureCollectionComparator().getObjectComparator());
-        for (Feature f : list1){
-            hashcode = 31*hashcode + UnambiguousFeatureBaseComparator.hashCode(f);
-        }
         return hashcode;
     }
 }

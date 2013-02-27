@@ -26,7 +26,7 @@ public class InteractionComparator implements Comparator<Interaction> {
     protected CooperativeInteractionComparator cooperativeInteractionComparator;
     protected AllostericInteractionComparator allostericInteractionComparator;
 
-    public InteractionComparator(InteractionBaseComparator interactionBaseComparator, InteractionEvidenceComparator experimentalInteractionComparator,
+    public InteractionComparator(InteractionBaseComparator interactionBaseComparator, ModelledInteractionComparator modelledInteractionComparator, InteractionEvidenceComparator experimentalInteractionComparator,
                                  CooperativeInteractionComparator cooperativeInteractionComparator, AllostericInteractionComparator allostericInteractionComparator){
         if (interactionBaseComparator == null){
             throw new IllegalArgumentException("The interactionBaseComparator is required to create more specific interaction comparators and compares basic interaction properties. It cannot be null");
@@ -36,7 +36,10 @@ public class InteractionComparator implements Comparator<Interaction> {
             throw new IllegalArgumentException("The experimentalInteractionComparator is required to compare experimental interactions. It cannot be null");
         }
         this.experimentalInteractionComparator = experimentalInteractionComparator;
-        this.modelledInteractionComparator = new ModelledInteractionComparator(this.interactionBaseComparator);
+        if (experimentalInteractionComparator == null){
+            throw new IllegalArgumentException("The modlledInteractionComparator is required to compare modelled interactions. It cannot be null");
+        }
+        this.modelledInteractionComparator = modelledInteractionComparator;
         if (cooperativeInteractionComparator == null){
             throw new IllegalArgumentException("The cooperativeInteraction is required to compare cooperative interactions. It cannot be null");
         }

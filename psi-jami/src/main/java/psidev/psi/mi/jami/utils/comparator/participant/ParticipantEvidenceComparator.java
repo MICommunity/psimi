@@ -1,11 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Parameter;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterComparator;
@@ -32,6 +30,7 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
     protected CvTermsCollectionComparator cvTermCollectionComparator;
     protected OrganismComparator organismComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
+    protected FeatureCollectionComparator featureCollectionComparator;
 
     /**
      * Creates a new ParticipantEvidenceComparator
@@ -59,6 +58,7 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
             throw new IllegalArgumentException("The parameter comparator is required to compare participant parameters. It cannot be null");
         }
         this.parameterCollectionComparator = new ParameterCollectionComparator(parameterComparator);
+        this.featureCollectionComparator = new FeatureCollectionComparator(participantComparator);
     }
 
     public ParameterCollectionComparator getParameterCollectionComparator() {
@@ -75,6 +75,10 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
 
     public OrganismComparator getOrganismComparator() {
         return organismComparator;
+    }
+
+    public FeatureCollectionComparator getFeatureCollectionComparator() {
+        return featureCollectionComparator;
     }
 
     /**
@@ -145,15 +149,20 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
                 return comp;
             }
 
-            if (comp != 0){
-                return comp;
-            }
-
             // then compares the parameters
             Collection<Parameter> param1 = experimentalParticipant1.getParameters();
             Collection<Parameter> param2 = experimentalParticipant2.getParameters();
 
-            return parameterCollectionComparator.compare(param1, param2);
+            comp = parameterCollectionComparator.compare(param1, param2);
+            if (comp != 0){
+               return comp;
+            }
+
+            // then compares the features
+            Collection<? extends FeatureEvidence> features1 = experimentalParticipant1.getFeatureEvidences();
+            Collection<? extends FeatureEvidence> features2 = experimentalParticipant2.getFeatureEvidences();
+
+            return featureCollectionComparator.compare(features1, features2);
         }
     }
 }

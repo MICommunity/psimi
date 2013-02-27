@@ -70,8 +70,8 @@ public class ComplexComparator implements Comparator<Complex> {
             }
 
             // then compares collection of components
-            Collection<Component> components1 = complex1.getComponents();
-            Collection<Component> components2 = complex2.getComponents();
+            Collection<? extends Component> components1 = complex1.getComponents();
+            Collection<? extends Component> components2 = complex2.getComponents();
 
             return componentCollectionComparator.compare(components1, components2);
         }

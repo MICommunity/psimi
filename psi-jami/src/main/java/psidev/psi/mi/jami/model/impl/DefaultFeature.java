@@ -20,7 +20,7 @@ import java.util.Collections;
  * @since <pre>01/02/13</pre>
  */
 
-public class DefaultFeature<T extends Feature> implements Feature<T>, Serializable{
+public class DefaultFeature<T extends Feature> implements Feature, Serializable{
 
     private String shortName;
     private String fullName;
@@ -30,7 +30,6 @@ public class DefaultFeature<T extends Feature> implements Feature<T>, Serializab
     private Collection<Annotation> annotations;
     private CvTerm type;
     private Collection<Range> ranges;
-    private Collection<T> bindingFeatures;
 
     public DefaultFeature(){
     }
@@ -67,10 +66,6 @@ public class DefaultFeature<T extends Feature> implements Feature<T>, Serializab
         this.ranges = new ArrayList<Range>();
     }
 
-    protected void initialiseBindingFeatures(){
-        this.bindingFeatures = new ArrayList<T>();
-    }
-
     protected void initialiseIdentifiersWith(Collection<Xref> identifiers){
         if (identifiers == null){
             this.identifiers = Collections.EMPTY_LIST;
@@ -104,15 +99,6 @@ public class DefaultFeature<T extends Feature> implements Feature<T>, Serializab
         }
         else {
             this.ranges = ranges;
-        }
-    }
-
-    protected void initialiseBindingFeaturesWith(Collection<T> features){
-        if (features == null){
-            this.bindingFeatures = Collections.EMPTY_LIST;
-        }
-        else {
-            this.bindingFeatures = features;
         }
     }
 
@@ -191,13 +177,6 @@ public class DefaultFeature<T extends Feature> implements Feature<T>, Serializab
             initialiseRanges();
         }
         return this.ranges;
-    }
-
-    public Collection<? extends T> getBindingFeatures() {
-        if(bindingFeatures == null){
-           initialiseBindingFeatures();
-        }
-        return this.bindingFeatures;
     }
 
     protected void processAddedIdentifierEvent(Xref added) {

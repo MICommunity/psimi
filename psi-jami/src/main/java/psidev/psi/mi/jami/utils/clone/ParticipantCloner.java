@@ -31,8 +31,8 @@ public class ParticipantCloner {
             // copy collections
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
-            target.getFeatures().clear();
-            target.addAllFeatures(source.getFeatures());
+            target.getFeatureEvidences().clear();
+            target.addAllFeatureEvidences(source.getFeatureEvidences());
             target.getConfidences().clear();
             target.getConfidences().addAll(source.getConfidences());
             target.getXrefs().clear();
@@ -61,8 +61,8 @@ public class ParticipantCloner {
             // copy collections
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
-            target.getFeatures().clear();
-            target.addAllFeatures(source.getFeatures());
+            target.getComponentFeatures().clear();
+            target.addAllComponentFeatures(source.getComponentFeatures());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getAliases().clear();

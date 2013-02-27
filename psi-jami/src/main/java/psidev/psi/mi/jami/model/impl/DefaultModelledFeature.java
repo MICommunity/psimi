@@ -5,6 +5,10 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Default implementation for ModelledFeature
  *
@@ -16,6 +20,7 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecom
 public class DefaultModelledFeature extends DefaultFeature<ModelledFeature> implements ModelledFeature {
 
     private ModelledParticipant modelledParticipant;
+    private Collection<ModelledFeature> bindingFeatures;
 
     public DefaultModelledFeature(ModelledParticipant participant) {
         super();
@@ -53,6 +58,19 @@ public class DefaultModelledFeature extends DefaultFeature<ModelledFeature> impl
         super(shortName, fullName, type);
     }
 
+    protected void initialiseBindingFeatures(){
+        this.bindingFeatures = new ArrayList<ModelledFeature>();
+    }
+
+    protected void initialiseBindingFeaturesWith(Collection<ModelledFeature> features){
+        if (features == null){
+            this.bindingFeatures = Collections.EMPTY_LIST;
+        }
+        else {
+            this.bindingFeatures = features;
+        }
+    }
+
     public ModelledParticipant getModelledParticipant() {
         return this.modelledParticipant;
     }
@@ -68,6 +86,61 @@ public class DefaultModelledFeature extends DefaultFeature<ModelledFeature> impl
         else {
             this.modelledParticipant = null;
         }
+    }
+
+    public Collection<? extends ModelledFeature> getModelledBindingSites() {
+        if(bindingFeatures == null){
+            initialiseBindingFeatures();
+        }
+        return this.bindingFeatures;
+    }
+
+    public boolean addModelledBindingSite(ModelledFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if(bindingFeatures == null){
+            initialiseBindingFeatures();
+        }
+        return bindingFeatures.add(feature);
+    }
+
+    public boolean removeModelledBindingSite(ModelledFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if(bindingFeatures == null){
+            initialiseBindingFeatures();
+        }
+        return bindingFeatures.add(feature);
+    }
+
+    public boolean addAllModelledBindingSites(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (addModelledBindingSite(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllModelledBindingSites(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (removeModelledBindingSite(feature)){
+                added = true;
+            }
+        }
+        return added;
     }
 
     @Override

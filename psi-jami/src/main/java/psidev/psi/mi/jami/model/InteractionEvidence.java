@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>11/12/12</pre>
  */
 
-public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
+public interface InteractionEvidence extends Interaction{
 
     /**
      * IMEx identifier if the interaction has been curated following IMEx curation rules.
@@ -82,6 +82,13 @@ public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
      * @param inferred : inferred boolean value
      */
     public void setInferred(boolean inferred);
+
+    /**
+     * The collection of participants involved in this interaction.
+     * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
+     * @return the particiants
+     */
+    public Collection<? extends ParticipantEvidence> getParticipantEvidences();
 
     /**
      * This method will add the participant evidence and set the interaction evidence of the new participant evidence to this current interaction

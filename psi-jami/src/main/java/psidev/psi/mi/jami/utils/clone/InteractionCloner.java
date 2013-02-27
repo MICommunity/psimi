@@ -39,8 +39,8 @@ public class InteractionCloner {
             target.getXrefs().addAll(source.getXrefs());
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
-            target.getParticipants().clear();
-            target.addAllParticipantEvidences(source.getParticipants());
+            target.getParticipantEvidences().clear();
+            target.addAllParticipantEvidences(source.getParticipantEvidences());
             target.getParameters().clear();
             target.getParameters().addAll(source.getParameters());
         }

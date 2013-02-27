@@ -22,7 +22,7 @@ public class DefaultExactCuratedInteractionComparator extends InteractionCompara
      * Creates a new DefaultExactCuratedInteractionComparator.
      */
     public DefaultExactCuratedInteractionComparator() {
-        super(new DefaultExactInteractionBaseComparator(), new DefaultExactInteractionEvidenceComparator(), new DefaultExactCuratedCooperativeInteractionComparator(), new DefaultExactCuratedAllostericInteractionComparator());
+        super(new DefaultExactInteractionBaseComparator(), new DefaultExactCuratedModelledInteractionComparator(), new DefaultExactInteractionEvidenceComparator(), new DefaultExactCuratedCooperativeInteractionComparator(), new DefaultExactCuratedAllostericInteractionComparator());
     }
 
     @Override

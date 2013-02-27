@@ -5,10 +5,8 @@ import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 /**
@@ -28,7 +26,6 @@ import java.util.Comparator;
 public class ParticipantBaseComparator<T extends Feature> extends ParticipantInteractorComparator {
 
     protected AbstractCvTermComparator cvTermComparator;
-    protected FeatureCollectionComparator featureCollectionComparator;
 
     /**
      * Creates a new ParticipantBaseComparator
@@ -48,15 +45,10 @@ public class ParticipantBaseComparator<T extends Feature> extends ParticipantInt
         if (featureComparator == null){
             throw new IllegalArgumentException("The feature comparator is required to compare participant features. It cannot be null");
         }
-        this.featureCollectionComparator = new FeatureCollectionComparator(featureComparator);
     }
 
     public AbstractCvTermComparator getCvTermComparator() {
         return cvTermComparator;
-    }
-
-    public FeatureCollectionComparator getFeatureCollectionComparator() {
-        return featureCollectionComparator;
     }
 
     /**
@@ -122,11 +114,7 @@ public class ParticipantBaseComparator<T extends Feature> extends ParticipantInt
                 return BEFORE;
             }
 
-            // then compares the features
-            Collection<? extends T> features1 = (Collection<? extends T>) participant1.getFeatures();
-            Collection<? extends T> features2 = (Collection<? extends T>) participant2.getFeatures();
-
-            return featureCollectionComparator.compare(features1, features2);
+            return EQUAL;
         }
     }
 }

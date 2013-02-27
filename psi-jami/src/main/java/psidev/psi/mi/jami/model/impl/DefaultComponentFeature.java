@@ -5,6 +5,10 @@ import psidev.psi.mi.jami.model.ComponentFeature;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousComponentFeatureComparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Default implementation for ComponentFeature
  *
@@ -13,9 +17,10 @@ import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousComponentFeatureCo
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultComponentFeature extends DefaultFeature<ComponentFeature> implements ComponentFeature {
+public class DefaultComponentFeature extends DefaultFeature implements ComponentFeature {
 
     private Component component;
+    private Collection<ComponentFeature> bindingSites;
 
     public DefaultComponentFeature() {
         super();
@@ -49,6 +54,19 @@ public class DefaultComponentFeature extends DefaultFeature<ComponentFeature> im
         this.component =participant;
     }
 
+    protected void initialiseBindingSites(){
+        this.bindingSites = new ArrayList<ComponentFeature>();
+    }
+
+    protected void initialiseBindingSitesWith(Collection<ComponentFeature> features){
+        if (features == null){
+            this.bindingSites = Collections.EMPTY_LIST;
+        }
+        else {
+            this.bindingSites = features;
+        }
+    }
+
     public Component getComponent() {
         return this.component;
     }
@@ -64,6 +82,69 @@ public class DefaultComponentFeature extends DefaultFeature<ComponentFeature> im
         else {
             this.component = null;
         }
+    }
+
+    public Collection<? extends ComponentFeature> getBindingSites() {
+        if(bindingSites == null){
+            initialiseBindingSites();
+        }
+        return this.bindingSites;
+    }
+
+    public boolean addBindingSite(ComponentFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if(bindingSites == null){
+            initialiseBindingSites();
+        }
+
+        return bindingSites.add(feature);
+    }
+
+    public boolean removeBindingSite(ComponentFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if(bindingSites == null){
+            initialiseBindingSites();
+        }
+
+        return bindingSites.add(feature);
+    }
+
+    public boolean addAllBindingSites(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+        if(bindingSites == null){
+            initialiseBindingSites();
+        }
+
+        boolean added = false;
+        for (ComponentFeature feature : features){
+            if (addBindingSite(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllBindingSites(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+        if(bindingSites == null){
+            initialiseBindingSites();
+        }
+
+        boolean added = false;
+        for (ComponentFeature feature : features){
+            if (removeBindingSite(feature)){
+                added = true;
+            }
+        }
+        return added;
     }
 
     @Override
