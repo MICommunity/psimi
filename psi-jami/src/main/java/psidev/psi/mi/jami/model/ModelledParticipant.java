@@ -36,7 +36,7 @@ public interface ModelledParticipant extends Participant<Interactor>{
      * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
      * @return the features
      */
-    public Collection<ModelledFeature> getModelledFeatures();
+    public Collection<? extends ModelledFeature> getModelledFeatures();
 
     /**
      * This method will add the feature and set the participant of the new feature to this current participant

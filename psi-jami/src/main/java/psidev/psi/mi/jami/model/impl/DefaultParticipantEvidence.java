@@ -294,7 +294,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         this.interactionEvidence = interaction;
     }
 
-    public Collection<FeatureEvidence> getFeatureEvidences() {
+    public Collection<? extends FeatureEvidence> getFeatureEvidences() {
         if (featureEvidences == null){
             initialiseFeatureEvidences();
         }
