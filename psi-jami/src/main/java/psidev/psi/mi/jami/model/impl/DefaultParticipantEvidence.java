@@ -175,15 +175,15 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         this.identificationMethod = participantIdentificationMethod;
     }
 
-    protected void initializeExperimentalPreparations() {
+    protected void initialiseExperimentalPreparations() {
         this.experimentalPreparations = new ArrayList<CvTerm>();
     }
 
-    protected void initializeConfidences() {
+    protected void initialiseConfidences() {
         this.confidences = new ArrayList<Confidence>();
     }
 
-    protected void initializeParameters() {
+    protected void initialiseParameters() {
         this.parameters = new ArrayList<Parameter>();
     }
 
@@ -200,7 +200,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         }
     }
 
-    protected void initializeExperimentalPreparationsWith(Collection<CvTerm> expPreparations) {
+    protected void initialiseExperimentalPreparationsWith(Collection<CvTerm> expPreparations) {
         if (expPreparations == null){
             this.experimentalPreparations = Collections.EMPTY_LIST;
         }
@@ -209,7 +209,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         }
     }
 
-    protected void initializeConfidencesWith(Collection<Confidence> confidences) {
+    protected void initialiseConfidencesWith(Collection<Confidence> confidences) {
         if (confidences == null){
             this.confidences = Collections.EMPTY_LIST;
         }
@@ -218,7 +218,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         }
     }
 
-    protected void initializeParametersWith(Collection<Parameter> parameters) {
+    protected void initialiseParametersWith(Collection<Parameter> parameters) {
         if (parameters == null){
             this.parameters = Collections.EMPTY_LIST;
         }
@@ -250,7 +250,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
 
     public Collection<CvTerm> getExperimentalPreparations() {
         if (experimentalPreparations == null){
-            initializeExperimentalPreparations();
+            initialiseExperimentalPreparations();
         }
         return this.experimentalPreparations;
     }
@@ -265,14 +265,14 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
 
     public Collection<Confidence> getConfidences() {
         if (confidences == null){
-            initializeConfidences();
+            initialiseConfidences();
         }
         return this.confidences;
     }
 
     public Collection<Parameter> getParameters() {
         if (parameters == null){
-            initializeParameters();
+            initialiseParameters();
         }
         return this.parameters;
     }
