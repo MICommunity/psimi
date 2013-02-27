@@ -250,7 +250,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
             Interactor convertedParticipant = new Interactor();
 
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(participant, convertedParticipant);
-            convertedParticipant.addFeature(this);
+            convertedParticipant.addFeatureEvidence(this);
         }
     }
 

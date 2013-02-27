@@ -129,7 +129,7 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
             target.setAnnotations(source.getInteractorAnnotations());
             target.setBiologicalRoles(source.getBiologicalRoles());
             target.setChecksums(source.getChecksums());
-            target.setFeatures(source.getInteractorFeatures());
+            target.setFeatures(source.getFeatures());
             target.setInteractorTypes(source.getInteractorTypes());
             target.setParticipantIdentificationMethods(source.getParticipantIdentificationMethods());
             target.setStoichiometry(source.getInteractorStoichiometry());
