@@ -15,10 +15,11 @@ import java.util.Collections;
  * @since <pre>05/02/13</pre>
  */
 
-public class DefaultModelledInteraction extends DefaultInteraction<ModelledParticipant> implements ModelledInteraction{
+public class DefaultModelledInteraction extends DefaultInteraction implements ModelledInteraction{
 
     private Collection<Experiment> experiments;
     private Source source;
+    private Collection<ModelledParticipant> modelledParticipants;
 
     public DefaultModelledInteraction() {
         super();
@@ -41,6 +42,10 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
         this.source = source;
     }
 
+    protected void initialiseModelledParticipants(){
+        this.modelledParticipants = new ArrayList<ModelledParticipant>();
+    }
+
     protected void initialiseExperiments(){
         this.experiments = new ArrayList<Experiment>();
     }
@@ -54,11 +59,27 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
         }
     }
 
+    protected void initialiseModelledParticipantsWith(Collection<ModelledParticipant> participants){
+        if (participants == null){
+            this.modelledParticipants = Collections.EMPTY_LIST;
+        }
+        else {
+            this.modelledParticipants = participants;
+        }
+    }
+
     public Collection<Experiment> getExperiments() {
         if (experiments == null){
             initialiseExperiments();
         }
         return this.experiments;
+    }
+
+    public Collection<? extends ModelledParticipant> getModelledParticipants() {
+        if (modelledParticipants == null){
+            initialiseModelledParticipants();
+        }
+        return this.modelledParticipants;
     }
 
     public Source getSource() {
@@ -73,8 +94,10 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
         if (part == null){
             return false;
         }
-
-        if (getParticipants().add(part)){
+        if (modelledParticipants == null){
+            initialiseModelledParticipants();
+        }
+        if (modelledParticipants.add(part)){
             part.setModelledInteraction(this);
             return true;
         }
@@ -85,8 +108,10 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
         if (part == null){
             return false;
         }
-
-        if (getParticipants().remove(part)){
+        if (modelledParticipants == null){
+            initialiseModelledParticipants();
+        }
+        if (modelledParticipants.remove(part)){
             part.setModelledInteraction(null);
             return true;
         }
@@ -100,7 +125,7 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
 
         boolean added = false;
         for (ModelledParticipant p : participants){
-            if (addParticipant(p)){
+            if (addModelledParticipant(p)){
                 added = true;
             }
         }
@@ -114,7 +139,7 @@ public class DefaultModelledInteraction extends DefaultInteraction<ModelledParti
 
         boolean removed = false;
         for (ModelledParticipant p : participants){
-            if (removeParticipant(p)){
+            if (removeModelledParticipant(p)){
                 removed = true;
             }
         }

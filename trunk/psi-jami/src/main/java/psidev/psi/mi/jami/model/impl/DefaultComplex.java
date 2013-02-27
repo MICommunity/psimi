@@ -126,7 +126,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         return this.experiments;
     }
 
-    public Collection<Component> getComponents() {
+    public Collection<? extends Component> getComponents() {
         if (components == null){
            initialiseComponents();
         }
@@ -141,7 +141,9 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         if (part == null){
             return false;
         }
-
+        if (components == null){
+            initialiseComponents();
+        }
         part.setComplex(this);
         return components.add(part);
     }
@@ -150,7 +152,9 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         if (part == null){
             return false;
         }
-
+        if (components == null){
+            initialiseComponents();
+        }
         part.setComplex(null);
         if (components.remove(part)){
             return true;

@@ -2,10 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.CooperativeInteraction;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 /**
@@ -26,11 +24,10 @@ public class CooperativeInteractionComparator implements Comparator<CooperativeI
 
     protected ModelledInteractionComparator interactionComparator;
     protected AbstractCvTermComparator cvTermComparator;
-    protected ModelledInteractionCollectionComparator modelledInteractionCollectionComparator;
 
     /**
      * Creates a new CooperativeInteractionComparator.
-     * @param interactionComparator : required to compare basic properties of a modelled interaction and to compare affected interactions
+     * @param interactionComparator : required to compare basic properties of a modelled interaction
      * @param cvTermComparator : required to compare response, mechanism and effect outcome
      */
     public CooperativeInteractionComparator(ModelledInteractionComparator interactionComparator, AbstractCvTermComparator cvTermComparator){
@@ -43,7 +40,6 @@ public class CooperativeInteractionComparator implements Comparator<CooperativeI
             throw new IllegalArgumentException("The CvTerm comparator is required to compare cooperative mechanism, effect outcome and response. It cannot be null");
         }
         this.cvTermComparator = cvTermComparator;
-        this.modelledInteractionCollectionComparator = new ModelledInteractionCollectionComparator(interactionComparator);
     }
 
     public ModelledInteractionComparator getInteractionComparator() {
@@ -52,10 +48,6 @@ public class CooperativeInteractionComparator implements Comparator<CooperativeI
 
     public AbstractCvTermComparator getCvTermComparator() {
         return cvTermComparator;
-    }
-
-    public ModelledInteractionCollectionComparator getModelledInteractionCollectionComparator() {
-        return modelledInteractionCollectionComparator;
     }
 
     /**
@@ -111,16 +103,7 @@ public class CooperativeInteractionComparator implements Comparator<CooperativeI
             CvTerm response1 = cooperativeInteraction1.getResponse();
             CvTerm response2 = cooperativeInteraction2.getResponse();
 
-            comp = cvTermComparator.compare(response1, response2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares affected interactions
-            Collection<ModelledInteraction> affected1 = cooperativeInteraction1.getAffectedInteractions();
-            Collection<ModelledInteraction> affected2 = cooperativeInteraction2.getAffectedInteractions();
-
-            return modelledInteractionCollectionComparator.compare(affected1, affected2);
+            return cvTermComparator.compare(response1, response2);
         }
     }
 }

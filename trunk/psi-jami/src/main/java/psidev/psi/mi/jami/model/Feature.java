@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Feature<T extends Feature> {
+public interface Feature {
 
     /**
      * The short name of a feature.
@@ -99,11 +99,4 @@ public interface Feature<T extends Feature> {
      * @return a collection of ranges
      */
     public Collection<Range> getRanges();
-
-    /**
-     * The other features that can bind to this feature.
-     * The collection cannot be null. If the feature does not bind with any other features, the method should return an empty collection
-     * @return the binding features
-     */
-    public Collection<? extends T> getBindingFeatures();
 }

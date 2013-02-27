@@ -16,7 +16,7 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultParticipantEvidence extends DefaultParticipant<Interactor, FeatureEvidence> implements ParticipantEvidence {
+public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> implements ParticipantEvidence {
 
     private CvTerm experimentalRole;
     private CvTerm identificationMethod;
@@ -25,6 +25,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor, F
     private Collection<Confidence> confidences;
     private Collection<Parameter> parameters;
     private InteractionEvidence interactionEvidence;
+    private Collection<FeatureEvidence> featureEvidences;
 
     public DefaultParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
         super(interactor);
@@ -186,6 +187,19 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor, F
         this.parameters = new ArrayList<Parameter>();
     }
 
+    protected void initialiseFeatureEvidences(){
+        this.featureEvidences = new ArrayList<FeatureEvidence>();
+    }
+
+    protected void initialiseFeatureEvidencesWith(Collection<FeatureEvidence> features){
+        if (features == null){
+            this.featureEvidences = Collections.EMPTY_LIST;
+        }
+        else {
+            this.featureEvidences = features;
+        }
+    }
+
     protected void initializeExperimentalPreparationsWith(Collection<CvTerm> expPreparations) {
         if (expPreparations == null){
             this.experimentalPreparations = Collections.EMPTY_LIST;
@@ -265,7 +279,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor, F
 
     public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
         if (interaction != null){
-            interaction.addParticipant(this);
+            interaction.addParticipantEvidence(this);
         }
         else {
             this.interactionEvidence = null;
@@ -280,32 +294,69 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor, F
         this.interactionEvidence = interaction;
     }
 
+    public Collection<FeatureEvidence> getFeatureEvidences() {
+        if (featureEvidences == null){
+            initialiseFeatureEvidences();
+        }
+        return featureEvidences;
+    }
+
     public boolean addFeatureEvidence(FeatureEvidence feature) {
-        return addFeature(feature);
-    }
 
-    public boolean removeFeatureEvidence(FeatureEvidence feature) {
-        return removeFeature(feature);
-    }
+        if (feature == null){
+            return false;
+        }
 
-    @Override
-    public boolean addFeature(FeatureEvidence feature) {
-
-        if (super.addFeature(feature)){
+        if (featureEvidences.add(feature)){
             feature.setParticipantEvidence(this);
             return true;
         }
         return false;
     }
 
-    @Override
-    public boolean removeFeature(FeatureEvidence feature) {
+    public boolean removeFeatureEvidence(FeatureEvidence feature) {
 
-        if (super.removeFeature(feature)){
+        if (feature == null){
+            return false;
+        }
+        if (featureEvidences == null){
+            initialiseFeatureEvidences();
+        }
+        if (featureEvidences.remove(feature)){
             feature.setParticipantEvidence(null);
             return true;
         }
         return false;
+    }
+
+    public boolean addAllFeatureEvidences(Collection<? extends FeatureEvidence> features) {
+        if (features == null){
+            return false;
+        }
+        if (featureEvidences == null){
+            initialiseFeatureEvidences();
+        }
+        boolean added = false;
+        for (FeatureEvidence feature : features){
+            if (addFeatureEvidence(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllFeatureEvidences(Collection<? extends FeatureEvidence> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (FeatureEvidence feature : features){
+            if (removeFeatureEvidence(feature)){
+                added = true;
+            }
+        }
+        return added;
     }
 
     @Override

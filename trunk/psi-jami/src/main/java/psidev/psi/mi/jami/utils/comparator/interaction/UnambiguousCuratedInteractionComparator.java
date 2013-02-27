@@ -22,7 +22,7 @@ public class UnambiguousCuratedInteractionComparator extends InteractionComparat
      * Creates a new UnambiguousCuratedInteractionComparator.
      */
     public UnambiguousCuratedInteractionComparator() {
-        super(new UnambiguousInteractionBaseComparator(), new UnambiguousInteractionEvidenceComparator(), new UnambiguousCuratedCooperativeInteractionComparator(), new UnambiguousCuratedAllostericInteractionComparator());
+        super(new UnambiguousInteractionBaseComparator(), new UnambiguousCuratedModelledInteractionComparator(), new UnambiguousInteractionEvidenceComparator(), new UnambiguousCuratedCooperativeInteractionComparator(), new UnambiguousCuratedAllostericInteractionComparator());
     }
 
     @Override

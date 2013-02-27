@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>11/12/12</pre>
  */
 
-public interface ModelledInteraction extends Interaction<ModelledParticipant>{
+public interface ModelledInteraction extends Interaction{
 
     /**
      * Experiments that have been used to predict this modelled interaction.
@@ -32,6 +32,13 @@ public interface ModelledInteraction extends Interaction<ModelledParticipant>{
      * @param source: source for this interaction
      */
     public void setSource(Source source);
+
+    /**
+     * The collection of participants involved in this interaction.
+     * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
+     * @return the particiants
+     */
+    public Collection<? extends ModelledParticipant> getModelledParticipants();
 
     /**
      * This method will add the participant and set the interaction of the new participant to this current interaction

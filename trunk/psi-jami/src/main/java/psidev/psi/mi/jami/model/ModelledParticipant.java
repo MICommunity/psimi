@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.model;
 
+import java.util.Collection;
+
 /**
  *  Participant of a modelled interaction.
  *
@@ -8,7 +10,7 @@ package psidev.psi.mi.jami.model;
  * @since <pre>13/02/13</pre>
  */
 
-public interface ModelledParticipant extends Participant<Interactor, ModelledFeature>{
+public interface ModelledParticipant extends Participant<Interactor>{
 
     /**
      * Sets the complex and add the new component to its list of components
@@ -30,6 +32,13 @@ public interface ModelledParticipant extends Participant<Interactor, ModelledFea
     public void setModelledInteraction(ModelledInteraction interaction);
 
     /**
+     * Properties for this participant coming from multiple experimental evidences and that are now modelled.
+     * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
+     * @return the features
+     */
+    public Collection<ModelledFeature> getModelledFeatures();
+
+    /**
      * This method will add the feature and set the participant of the new feature to this current participant
      * @param feature
      * @return true if feature is added to the list of features
@@ -42,4 +51,18 @@ public interface ModelledParticipant extends Participant<Interactor, ModelledFea
      * @return true if feature is removed from the list of features
      */
     public boolean removeModelledFeature(ModelledFeature feature);
+
+    /**
+     * This method will add all features and set the participant of the new features to this current participant
+     * @param features
+     * @return true if features are added to the list of features
+     */
+    public boolean  addAllModelledFeatures(Collection<? extends ModelledFeature> features);
+
+    /**
+     * This method will remove all the features and set the participant of the removed features to null.
+     * @param features
+     * @return true if features are removed from the list of features
+     */
+    public boolean removeAllModelledFeatures(Collection<? extends ModelledFeature> features);
 }

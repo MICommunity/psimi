@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComp
 import psidev.psi.mi.jami.utils.comparator.participant.ParticipantInteractorComparator;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 
 /**
@@ -63,9 +64,24 @@ public class InteractionInteractorComparator implements Comparator<Interaction> 
             return BEFORE;
         }
         else {
+
             // first compares participants of an interaction
-            Collection<? extends Participant> participants1 = interaction1.getParticipants();
-            Collection<? extends Participant> participants2 = interaction2.getParticipants();
+            Collection<? extends Participant> participants1 = Collections.EMPTY_LIST;
+            Collection<? extends Participant> participants2 = Collections.EMPTY_LIST;
+
+            if (interaction1 instanceof InteractionEvidence){
+                 participants1 = ((InteractionEvidence)interaction1).getParticipantEvidences();
+            }
+            else if (interaction1 instanceof ModelledInteraction){
+                participants1 = ((ModelledInteraction)interaction1).getModelledParticipants();
+            }
+
+            if (interaction2 instanceof InteractionEvidence){
+                participants2 = ((InteractionEvidence)interaction2).getParticipantEvidences();
+            }
+            else if (interaction2 instanceof ModelledInteraction){
+                participants2 = ((ModelledInteraction)interaction2).getModelledParticipants();
+            }
 
             return participantCollectionComparator.compare(participants1, participants2);
         }

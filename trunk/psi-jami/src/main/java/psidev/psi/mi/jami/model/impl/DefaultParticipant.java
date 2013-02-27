@@ -18,14 +18,13 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultParticipant<T extends Interactor, F extends Feature> implements Participant<T, F>, Serializable {
+public class DefaultParticipant<T extends Interactor> implements Participant<T>, Serializable {
 
     private T interactor;
     private CvTerm biologicalRole;
     private Collection<Xref> xrefs;
     private Collection<Annotation> annotations;
     private Collection<Alias> aliases;
-    private Collection<F> features;
     private Integer stoichiometry;
 
     public DefaultParticipant(T interactor){
@@ -66,10 +65,6 @@ public class DefaultParticipant<T extends Interactor, F extends Feature> impleme
         this.aliases = new ArrayList<Alias>();
     }
 
-    protected void initialiseFeatures(){
-        this.features = new ArrayList<F>();
-    }
-
     protected void initialiseXrefsWith(Collection<Xref> xrefs) {
         if (xrefs == null){
             this.xrefs = Collections.EMPTY_LIST;
@@ -94,15 +89,6 @@ public class DefaultParticipant<T extends Interactor, F extends Feature> impleme
         }
         else {
             this.aliases = aliases;
-        }
-    }
-
-    protected void initialiseFeaturesWith(Collection<F> features){
-        if (features == null){
-            this.features = Collections.EMPTY_LIST;
-        }
-        else {
-            this.features = features;
         }
     }
 
@@ -151,69 +137,12 @@ public class DefaultParticipant<T extends Interactor, F extends Feature> impleme
         return this.aliases;
     }
 
-    public Collection<? extends F> getFeatures() {
-        if (features == null){
-            initialiseFeatures();
-        }
-        return this.features;
-    }
-
     public Integer getStoichiometry() {
         return this.stoichiometry;
     }
 
     public void setStoichiometry(Integer stoichiometry) {
         this.stoichiometry = stoichiometry;
-    }
-
-    public boolean addFeature(F feature) {
-        if (feature == null){
-            return false;
-        }
-
-        if (features.add(feature)){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeFeature(F feature) {
-        if (feature == null){
-            return false;
-        }
-
-        if (features.remove(feature)){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllFeatures(Collection<? extends F> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (F feature : features){
-            if (addFeature(feature)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllFeatures(Collection<? extends F> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (F feature : features){
-            if (removeFeature(feature)){
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     @Override

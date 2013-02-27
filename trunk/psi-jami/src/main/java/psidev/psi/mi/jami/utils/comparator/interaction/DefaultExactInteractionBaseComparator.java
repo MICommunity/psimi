@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactParticipantBaseComparator;
 
 /**
  * Default exact Interaction comparator.
@@ -25,7 +24,7 @@ public class DefaultExactInteractionBaseComparator extends InteractionBaseCompar
      * compare participants and DefaultCvTermcomparator to compare interaction types
      */
     public DefaultExactInteractionBaseComparator() {
-        super(new DefaultExactParticipantBaseComparator(), new DefaultCvTermComparator());
+        super(new DefaultCvTermComparator());
     }
 
     @Override

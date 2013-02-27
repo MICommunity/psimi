@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.clone;
 
-import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.ComponentFeature;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 
 /**
  * This class will clone/copy properties of a feature
@@ -18,7 +19,7 @@ public class FeatureCloner {
      * @param source
      * @param target
      */
-    public static void copyAndOverrideFeatureProperties(Feature source, Feature target){
+    public static void copyAndOverrideFeatureEvidenceProperties(FeatureEvidence source, FeatureEvidence target){
         if (source != null && target != null){
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
@@ -29,8 +30,28 @@ public class FeatureCloner {
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
-            target.getBindingFeatures().clear();
-            target.getBindingFeatures().addAll(source.getBindingFeatures());
+            target.getBindingSiteEvidences().clear();
+            target.addAllBindingSiteEvidences(source.getBindingSiteEvidences());
+            target.getXrefs().clear();
+            target.getXrefs().addAll(source.getXrefs());
+            target.getRanges().clear();
+            target.getRanges().addAll(source.getRanges());
+        }
+    }
+
+    public static void copyAndOverrideComponentFeaturesProperties(ComponentFeature source, ComponentFeature target){
+        if (source != null && target != null){
+            target.setShortName(source.getShortName());
+            target.setFullName(source.getFullName());
+            target.setType(source.getType());
+
+            // copy collections
+            target.getAnnotations().clear();
+            target.getAnnotations().addAll(source.getAnnotations());
+            target.getIdentifiers().clear();
+            target.getIdentifiers().addAll(source.getIdentifiers());
+            target.getBindingSites().clear();
+            target.addAllBindingSites(source.getBindingSites());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getRanges().clear();

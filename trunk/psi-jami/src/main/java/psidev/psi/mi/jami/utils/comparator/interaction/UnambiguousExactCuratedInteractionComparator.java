@@ -24,7 +24,7 @@ public class UnambiguousExactCuratedInteractionComparator extends InteractionCom
      * Creates a new UnambiguousExactCuratedInteractionComparator.
      */
     public UnambiguousExactCuratedInteractionComparator() {
-        super(new UnambiguousExactInteractionBaseComparator(), new UnambiguousExactInteractionEvidenceComparator(), new UnambiguousExactCuratedCooperativeInteractionComparator(), new UnambiguousExactCuratedAllostericInteractionComparator());
+        super(new UnambiguousExactInteractionBaseComparator(), new UnambiguousExactCuratedModelledInteractionComparator(), new UnambiguousExactInteractionEvidenceComparator(), new UnambiguousExactCuratedCooperativeInteractionComparator(), new UnambiguousExactCuratedAllostericInteractionComparator());
     }
 
     @Override

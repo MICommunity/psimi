@@ -1,13 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantBaseComparator;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Unambiguous Interaction comparator.
@@ -30,7 +24,7 @@ public class UnambiguousInteractionBaseComparator extends InteractionBaseCompara
      * compare participants and UnambiguousCvTermcomparator to compare interaction types
      */
     public UnambiguousInteractionBaseComparator() {
-        super(new UnambiguousParticipantBaseComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousCvTermComparator());
     }
 
     @Override
@@ -78,12 +72,7 @@ public class UnambiguousInteractionBaseComparator extends InteractionBaseCompara
         }
 
         int hashcode = 31;
-        List<Participant> list1 = new ArrayList<Participant>(interaction.getParticipants());
 
-        Collections.sort(list1, unambiguousInteractionComparator.getParticipantCollectionComparator().getObjectComparator());
-        for (Participant participant : list1){
-            hashcode = 31*hashcode + UnambiguousParticipantBaseComparator.hashCode(participant);
-        }
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(interaction.getType());
         hashcode = 31 * hashcode + (interaction.isNegative() ? 0 : 1);
 

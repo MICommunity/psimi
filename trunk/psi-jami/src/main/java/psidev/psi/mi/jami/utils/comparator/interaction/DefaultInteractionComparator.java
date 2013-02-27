@@ -24,7 +24,7 @@ public class DefaultInteractionComparator extends InteractionComparator {
      * Creates a new DefaultInteractionComparator.
      */
     public DefaultInteractionComparator() {
-        super(new DefaultInteractionBaseComparator(), new DefaultInteractionEvidenceComparator(), new DefaultCooperativeInteractionComparator(), new DefaultAllostericInteractionComparator());
+        super(new DefaultInteractionBaseComparator(), new DefaultModelledInteractionComparator(), new DefaultInteractionEvidenceComparator(), new DefaultCooperativeInteractionComparator(), new DefaultAllostericInteractionComparator());
     }
 
     @Override

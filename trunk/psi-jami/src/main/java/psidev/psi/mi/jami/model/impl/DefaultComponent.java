@@ -3,6 +3,10 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponentComparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Default implementation for Component
  *
@@ -11,9 +15,10 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponent
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultComponent extends DefaultParticipant<Interactor, ComponentFeature> implements Component {
+public class DefaultComponent extends DefaultParticipant<Interactor> implements Component {
 
     private Complex complex;
+    private Collection<ComponentFeature> componentFeatures;
 
     public DefaultComponent(Complex interaction, Interactor interactor) {
         super(interactor);
@@ -51,6 +56,26 @@ public class DefaultComponent extends DefaultParticipant<Interactor, ComponentFe
         super(interactor, bioRole, stoichiometry);
     }
 
+    protected void initialiseComponentFeatures(){
+        this.componentFeatures = new ArrayList<ComponentFeature>();
+    }
+
+    protected void initialiseComponentFeaturesWith(Collection<ComponentFeature> features){
+        if (features == null){
+            this.componentFeatures = Collections.EMPTY_LIST;
+        }
+        else {
+            this.componentFeatures = features;
+        }
+    }
+
+    public Collection<? extends ComponentFeature> getComponentFeatures() {
+        if (componentFeatures == null){
+            initialiseComponentFeatures();
+        }
+        return this.componentFeatures;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
@@ -84,30 +109,60 @@ public class DefaultComponent extends DefaultParticipant<Interactor, ComponentFe
     }
 
     public boolean addComponentFeature(ComponentFeature feature) {
-        return addFeature(feature);
-    }
 
-    public boolean removeComponentFeature(ComponentFeature feature) {
-        return removeFeature(feature);
-    }
-
-    @Override
-    public boolean addFeature(ComponentFeature feature) {
-
-        if (super.addFeature(feature)){
+        if (feature == null){
+            return false;
+        }
+        if (componentFeatures == null){
+            initialiseComponentFeatures();
+        }
+        if (componentFeatures.add(feature)){
             feature.setComponent(this);
             return true;
         }
         return false;
     }
 
-    @Override
-    public boolean removeFeature(ComponentFeature feature) {
+    public boolean removeComponentFeature(ComponentFeature feature) {
 
-        if (super.removeFeature(feature)){
+        if (feature == null){
+            return false;
+        }
+        if (componentFeatures == null){
+            initialiseComponentFeatures();
+        }
+        if (componentFeatures.remove(feature)){
             feature.setComponent(null);
             return true;
         }
         return false;
+    }
+
+    public boolean addAllComponentFeatures(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ComponentFeature feature : features){
+            if (addComponentFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllComponentFeatures(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ComponentFeature feature : features){
+            if (removeComponentFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
     }
 }

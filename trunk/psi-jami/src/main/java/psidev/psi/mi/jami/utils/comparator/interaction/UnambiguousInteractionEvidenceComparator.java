@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousExperimentComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
@@ -30,7 +29,7 @@ public class UnambiguousInteractionEvidenceComparator extends InteractionEvidenc
      * compare basic interaction properties, UnambiguousParameterComparator to compare parameters, UnambiguousExperimentComparator to compare experiments
      */
     public UnambiguousInteractionEvidenceComparator() {
-        super(new InteractionBaseComparator<ParticipantEvidence>(new UnambiguousParticipantEvidenceComparator(), new UnambiguousCvTermComparator()),
+        super(new UnambiguousParticipantEvidenceComparator(), new InteractionBaseComparator(new UnambiguousCvTermComparator()),
                 new UnambiguousExperimentComparator(), new UnambiguousParameterComparator());
     }
 

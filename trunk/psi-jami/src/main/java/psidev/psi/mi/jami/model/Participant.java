@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Participant<T extends Interactor, F extends Feature> {
+public interface Participant<T extends Interactor> {
 
     public static String UNSPECIFIED_ROLE = "unspecified role";
     public static String UNSPECIFIED_ROLE_MI = "MI:0499";
@@ -70,13 +70,6 @@ public interface Participant<T extends Interactor, F extends Feature> {
     public Collection<Alias> getAliases();
 
     /**
-     * Properties for this participant which are supported by experimental evidences.
-     * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
-     * @return the features
-     */
-    public Collection<? extends F> getFeatures();
-
-    /**
      * The stoichiometry for this participant.
      * If the stoichiometry for this participant is unknown, the method should return null.
      * @return the stoichiometry
@@ -88,18 +81,4 @@ public interface Participant<T extends Interactor, F extends Feature> {
      * @param stoichiometry : stoichiometry
      */
     public void setStoichiometry(Integer stoichiometry);
-
-    /**
-     * This method will add all features and set the participant of the new features to this current participant
-     * @param features
-     * @return true if features are added to the list of features
-     */
-    public boolean  addAllFeatures(Collection<? extends F> features);
-
-    /**
-     * This method will remove all the features and set the participant of the removed features to null.
-     * @param features
-     * @return true if features are removed from the list of features
-     */
-    public boolean removeAllFeatures(Collection<? extends F> features);
 }

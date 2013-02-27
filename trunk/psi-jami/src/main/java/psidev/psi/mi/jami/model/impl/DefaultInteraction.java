@@ -21,7 +21,7 @@ import java.util.Date;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultInteraction<P extends Participant> implements Interaction<P>, Serializable {
+public class DefaultInteraction<P extends Participant> implements Interaction, Serializable {
 
     private String shortName;
     private Checksum rigid;
@@ -29,7 +29,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
     private Collection<Xref> identifiers;
     private Collection<Xref> xrefs;
     private Collection<Annotation> annotations;
-    private Collection<P> participants;
     private boolean isNegative;
     private Date updatedDate;
     private Date createdDate;
@@ -57,10 +56,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initialiseParticipants(){
-        this.participants = new ArrayList<P>();
-    }
-
     protected void initialiseConfidences(){
         this.confidences = new ArrayList<Confidence>();
     }
@@ -79,15 +74,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         }
         else {
             this.xrefs = xrefs;
-        }
-    }
-
-    protected void initialiseParticipantsWith(Collection<P> participants){
-        if (participants == null){
-            this.participants = Collections.EMPTY_LIST;
-        }
-        else {
-            this.participants = participants;
         }
     }
 
@@ -185,13 +171,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
         return this.annotations;
     }
 
-    public Collection<P> getParticipants() {
-        if (participants == null){
-            initialiseParticipants();
-        }
-        return this.participants;
-    }
-
     public boolean isNegative() {
         return this.isNegative;
     }
@@ -229,53 +208,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction<P>
 
     public void setType(CvTerm term) {
        this.type = term;
-    }
-
-    public boolean addParticipant(P part) {
-        if (part == null){
-            return false;
-        }
-
-        return participants.add(part);
-    }
-
-    public boolean removeParticipant(P part) {
-        if (part == null){
-            return false;
-        }
-
-        if (participants.remove(part)){
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllParticipants(Collection<? extends P> part) {
-        if (part == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (P p : part){
-            if (addParticipant(p)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllParticipants(Collection<? extends P> part) {
-        if (part == null){
-            return false;
-        }
-
-        boolean removed = false;
-        for (P p : part){
-            if (removeParticipant(p)){
-                removed = true;
-            }
-        }
-        return removed;
     }
 
     protected void processAddedChecksumEvent(Checksum added) {

@@ -3,6 +3,10 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledParticipantComparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Default implementation for ModelledParticipant
  *
@@ -11,9 +15,10 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledP
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultModelledParticipant extends DefaultParticipant<Interactor, ModelledFeature> implements ModelledParticipant {
+public class DefaultModelledParticipant extends DefaultParticipant<Interactor> implements ModelledParticipant {
 
     private ModelledInteraction modelledInteraction;
+    private Collection<ModelledFeature> modelledFeatures;
 
     public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor) {
         super(interactor);
@@ -51,6 +56,19 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor, M
         super(interactor, bioRole, stoichiometry);
     }
 
+    protected void initialiseModelledFeatures(){
+        this.modelledFeatures = new ArrayList<ModelledFeature>();
+    }
+
+    protected void initialiseModelledFeaturesWith(Collection<ModelledFeature> features){
+        if (features == null){
+            this.modelledFeatures = Collections.EMPTY_LIST;
+        }
+        else {
+            this.modelledFeatures = features;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
@@ -68,7 +86,7 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor, M
     public void setModelledInteractionAndAddModelledParticipant(ModelledInteraction interaction) {
 
         if (interaction != null){
-            modelledInteraction.addParticipant(this);
+            modelledInteraction.addModelledParticipant(this);
         }
         else {
             this.modelledInteraction =null;
@@ -83,31 +101,68 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor, M
         this.modelledInteraction = interaction;
     }
 
+    public Collection<ModelledFeature> getModelledFeatures() {
+        if (modelledFeatures == null){
+            initialiseModelledFeatures();
+        }
+        return modelledFeatures;
+    }
+
     public boolean addModelledFeature(ModelledFeature feature) {
-        return addFeature(feature);
-    }
 
-    public boolean removeModelledFeature(ModelledFeature feature) {
-        return removeFeature(feature);
-    }
-
-    @Override
-    public boolean addFeature(ModelledFeature feature) {
-
-        if (super.addFeature(feature)){
+        if (feature == null){
+            return false;
+        }
+        if (modelledFeatures == null){
+            initialiseModelledFeatures();
+        }
+        if (modelledFeatures.add(feature)){
             feature.setModelledParticipant(this);
             return true;
         }
         return false;
     }
 
-    @Override
-    public boolean removeFeature(ModelledFeature feature) {
+    public boolean removeModelledFeature(ModelledFeature feature) {
 
-        if (super.removeFeature(feature)){
+        if (feature == null){
+            return false;
+        }
+        if (modelledFeatures == null){
+            initialiseModelledFeatures();
+        }
+        if (modelledFeatures.remove(feature)){
             feature.setModelledParticipant(null);
             return true;
         }
         return false;
+    }
+
+    public boolean addAllModelledFeatures(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (addModelledFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllModelledFeatures(Collection<? extends ModelledFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ModelledFeature feature : features){
+            if (removeModelledFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
     }
 }

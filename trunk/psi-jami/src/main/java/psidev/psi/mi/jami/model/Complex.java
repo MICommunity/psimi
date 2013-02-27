@@ -27,7 +27,7 @@ public interface Complex extends Interactor {
      * The collection cannot be null. If the complex does not have any components, the method should return an empty collection.
      * @return the components of a complex
      */
-    public Collection<Component> getComponents();
+    public Collection<? extends Component> getComponents();
 
     /**
      * The physical properties for this complex.

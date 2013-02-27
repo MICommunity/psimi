@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.experiment.ExperimentComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -23,9 +24,10 @@ import java.util.Comparator;
 
 public class InteractionEvidenceComparator implements Comparator<InteractionEvidence> {
 
-    protected InteractionBaseComparator<ParticipantEvidence> interactionComparator;
+    protected InteractionBaseComparator interactionComparator;
     protected ExperimentComparator experimentComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
+    protected ParticipantCollectionComparator participantCollectionComparator;
 
     /**
      * Creates a new InteractionEvidenceComparator.
@@ -33,7 +35,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
      * @param experimentComparator : required to compare experiments
      * @param parameterComparator : required to compare parameters
      */
-    public InteractionEvidenceComparator(InteractionBaseComparator<ParticipantEvidence> interactionComparator, ExperimentComparator experimentComparator,
+    public InteractionEvidenceComparator(Comparator<ParticipantEvidence> participantComparator, InteractionBaseComparator interactionComparator, ExperimentComparator experimentComparator,
                                          ParameterComparator parameterComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
@@ -49,18 +51,26 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
             throw new IllegalArgumentException("The Parameter comparator is required to compare parameters of the interaction. It cannot be null");
         }
         this.parameterCollectionComparator = new ParameterCollectionComparator(parameterComparator);
+        if (participantComparator == null){
+            throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
+        }
+        this.participantCollectionComparator = new ParticipantCollectionComparator<ParticipantEvidence>(participantComparator);
     }
 
     public ParameterCollectionComparator getParameterCollectionComparator() {
         return parameterCollectionComparator;
     }
 
-    public InteractionBaseComparator<ParticipantEvidence> getInteractionComparator() {
+    public InteractionBaseComparator getInteractionComparator() {
         return interactionComparator;
     }
 
     public ExperimentComparator getExperimentComparator() {
         return experimentComparator;
+    }
+
+    public ParticipantCollectionComparator getParticipantCollectionComparator() {
+        return participantCollectionComparator;
     }
 
     /**
@@ -106,6 +116,15 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
             Experiment exp2 = experimentalInteraction2.getExperiment();
 
             comp = experimentComparator.compare(exp1, exp2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // first compares participants of an interaction
+            Collection<? extends ParticipantEvidence> participants1 = experimentalInteraction1.getParticipantEvidences();
+            Collection<? extends ParticipantEvidence> participants2 = experimentalInteraction2.getParticipantEvidences();
+
+            comp = participantCollectionComparator.compare(participants1, participants2);
             if (comp != 0){
                 return comp;
             }

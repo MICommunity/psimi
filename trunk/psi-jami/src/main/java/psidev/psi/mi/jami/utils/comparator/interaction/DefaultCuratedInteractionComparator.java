@@ -23,7 +23,7 @@ public class DefaultCuratedInteractionComparator extends InteractionComparator {
      * Creates a new DefaultCuratedInteractionComparator.
      */
     public DefaultCuratedInteractionComparator() {
-        super(new DefaultInteractionBaseComparator(), new DefaultInteractionEvidenceComparator(), new DefaultCuratedCooperativeInteractionComparator(), new DefaultCuratedAllostericInteractionComparator());
+        super(new DefaultInteractionBaseComparator(), new DefaultCuratedModelledInteractionComparator(), new DefaultInteractionEvidenceComparator(), new DefaultCuratedCooperativeInteractionComparator(), new DefaultCuratedAllostericInteractionComparator());
     }
 
     @Override

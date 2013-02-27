@@ -54,7 +54,7 @@ public class InteractorCloner {
             target.getExperiments().clear();
             target.getExperiments().addAll(source.getExperiments());
             target.getComponents().clear();
-            target.getComponents().addAll(source.getComponents());
+            target.addAllComponents(source.getComponents());
         }
     }
 }
