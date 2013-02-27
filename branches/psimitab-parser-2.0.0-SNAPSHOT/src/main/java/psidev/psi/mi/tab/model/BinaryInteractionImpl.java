@@ -8,7 +8,10 @@ package psidev.psi.mi.tab.model;
 
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.clone.ParticipantCloner;
-import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Representation of a binary interaction as in the MITAB25 format.
@@ -36,69 +39,77 @@ public class BinaryInteractionImpl extends AbstractBinaryInteraction<Interactor>
     }
 
     @Override
-    protected void initialiseParticipants(){
-        initialiseParticipantsWith(new ParticipantList());
+    protected void initialiseParticipantEvidences(){
+        super.initialiseParticipantEvidencesWith(Collections.EMPTY_LIST);
     }
 
-    protected class ParticipantList extends AbstractListHavingPoperties<ParticipantEvidence> {
-        public ParticipantList(){
-            super();
+    @Override
+    protected void initialiseParticipantEvidencesWith(Collection<ParticipantEvidence> participants) {
+        if (participants == null){
+            super.initialiseParticipantEvidencesWith(Collections.EMPTY_LIST);
         }
-
-        @Override
-        protected void processAddedObjectEvent(ParticipantEvidence added) {
-
-            if (size() > 2){
-                throw new IllegalArgumentException("A BinaryInteraction cannot have more that two participants");
+        else{
+            for (ParticipantEvidence p : participants){
+                addParticipantEvidence(p);
             }
-            else if (interactorA == null){
-                if (! (added instanceof Interactor)){
-                    removeOnly(added);
+        }
+    }
 
-                    Interactor mitab = new Interactor();
-                    ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(added, mitab);
-                    interactorA = mitab;
-                    addOnly(interactorA);
+    @Override
+    public Collection<? extends ParticipantEvidence> getParticipantEvidences() {
+        return Arrays.asList(interactorA, interactorB);
+    }
 
-                    interactorA.setInteractionEvidence(getInstance());
-                }
-                else {
-                    interactorA = (Interactor) added;
-                    interactorA.setInteractionEvidence(getInstance());
-                }
+    @Override
+    public boolean addParticipantEvidence(ParticipantEvidence part) {
+        if (part == null){
+            return false;
+        }
+        if (interactorA != null && interactorB != null){
+            throw new IllegalArgumentException("A BinaryInteraction cannot have more that two participants");
+        }
+        else if (interactorA == null){
+            if (! (part instanceof Interactor)){
+
+                Interactor mitab = new Interactor();
+                ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(part, mitab);
+                interactorA = mitab;
+                interactorA.setInteractionEvidence(getInstance());
             }
             else {
-                if (! (added instanceof Interactor)){
-                    removeOnly(added);
-
-                    Interactor mitab = new Interactor();
-                    ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(added, mitab);
-                    interactorB = mitab;
-                    addOnly(interactorB);
-                    interactorB.setInteractionEvidence(getInstance());
-                }
-                else {
-                    interactorB = (Interactor) added;
-                    interactorB.setInteractionEvidence(getInstance());
-                }
+                interactorA = (Interactor) part;
+                interactorA.setInteractionEvidence(getInstance());
             }
         }
-
-        @Override
-        protected void processRemovedObjectEvent(ParticipantEvidence removed) {
-            removed.setInteractionEvidence(null);
-            if (removed == interactorA){
-                interactorA = null;
+        else {
+            if (! (part instanceof Interactor)){
+                Interactor mitab = new Interactor();
+                ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(part, mitab);
+                interactorB = mitab;
+                interactorB.setInteractionEvidence(getInstance());
             }
-            else if (removed == interactorB){
-                interactorB = null;
+            else {
+                interactorB = (Interactor) part;
+                interactorB.setInteractionEvidence(getInstance());
             }
         }
+        return true;
+    }
 
-        @Override
-        protected void clearProperties() {
+    @Override
+    public boolean removeParticipantEvidence(ParticipantEvidence part) {
+        if (part == null){
+            return false;
+        }
+        if (part.equals(interactorA)){
             interactorA = null;
-            interactorB = null;
+            return true;
         }
+        else if (part.equals(interactorB)){
+            interactorB = null;
+            return true;
+        }
+
+        return false;
     }
 }

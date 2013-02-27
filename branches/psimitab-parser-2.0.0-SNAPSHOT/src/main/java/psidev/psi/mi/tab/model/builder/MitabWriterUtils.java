@@ -48,7 +48,7 @@ public class MitabWriterUtils {
 			case v2_7:
 				// MITAB 2.7
 				if (interactorA != null) {
-					line[PsimiTabColumns.FEATURES_A.ordinal()] = joinFeatureCollection(interactorA.getInteractorFeatures());//37
+					line[PsimiTabColumns.FEATURES_A.ordinal()] = joinFeatureCollection(interactorA.getFeatures());//37
 					line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()] = joinStoichiometryCollection(interactorA.getInteractorStoichiometry());//39
 					line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()] = joinCrossReferencStyleCollection(interactorA.getParticipantIdentificationMethods());//41
 				} else {
@@ -59,7 +59,7 @@ public class MitabWriterUtils {
 
 				// MITAB 2.7
 				if (interactorB != null) {
-					line[PsimiTabColumns.FEATURES_B.ordinal()] = joinFeatureCollection(interactorB.getInteractorFeatures());//38
+					line[PsimiTabColumns.FEATURES_B.ordinal()] = joinFeatureCollection(interactorB.getFeatures());//38
 					line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()] = joinStoichiometryCollection(interactorB.getInteractorStoichiometry()); //40
 					line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()] = joinCrossReferencStyleCollection(interactorB.getParticipantIdentificationMethods());//42
 				} else {

@@ -204,12 +204,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorA(T interactorA) {
-        T currentB = interactorB;
-        getParticipants().clear();
         this.interactorA = interactorA;
-        this.interactorB = currentB;
-        getParticipants().add(interactorA);
-        getParticipants().add(currentB);
 	}
 
 	/**
@@ -223,15 +218,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setInteractorB(T interactorB) {
-        T currentA = interactorA;
-
-        getParticipants().clear();
-
-        this.interactorA = currentA;
         this.interactorB = interactorB;
-
-        getParticipants().add(currentA);
-        getParticipants().add(interactorB);
 	}
 
     /**
