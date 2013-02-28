@@ -264,7 +264,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             super( primaryRef );
 
             if (secondaryRef != null && !secondaryRef.isEmpty()){
-                secondaryRef.addAll(secondaryRef);
+                extendedSecondaryRefList.addAll(secondaryRef);
             }
         }
 

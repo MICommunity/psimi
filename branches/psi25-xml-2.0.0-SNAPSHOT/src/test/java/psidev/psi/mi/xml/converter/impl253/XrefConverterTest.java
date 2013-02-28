@@ -6,13 +6,14 @@
 
 package psidev.psi.mi.xml.converter.impl253;
 
-import static junit.framework.Assert.*;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.mi.xml253.jaxb.DbReferenceType;
 import psidev.psi.mi.xml253.jaxb.XrefType;
+
+import static junit.framework.Assert.*;
 
 /**
  * XrefConverter Tester.
@@ -134,7 +135,7 @@ public class XrefConverterTest {
         assertEquals( "P23456", jSecondaryRef.getId() );
         assertEquals( "MI:2222", jSecondaryRef.getRefTypeAc() );
         assertNull( jSecondaryRef.getVersion() );
-        assertNull( jSecondaryRef.getRefType() );
+        assertEquals( "unknown", jSecondaryRef.getRefType() );
         assertNull( jSecondaryRef.getSecondary() );
     }
 }

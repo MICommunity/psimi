@@ -548,7 +548,7 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
             super(primaryRef);
 
             if (secondaryRef != null && !secondaryRef.isEmpty()){
-                secondaryRef.addAll(secondaryRef);
+                extendedSecondaryRefList.addAll(secondaryRef);
             }
         }
 

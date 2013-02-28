@@ -586,7 +586,7 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
             super( primaryRef );
 
             if (secondaryRef != null && !secondaryRef.isEmpty()){
-                secondaryRef.addAll(secondaryRef);
+                extendedSecondaryRefList.addAll(secondaryRef);
             }
         }
 
