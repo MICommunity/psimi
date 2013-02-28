@@ -312,7 +312,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             super( primaryRef );
 
             if (secondaryRef != null && !secondaryRef.isEmpty()){
-                secondaryRef.addAll(secondaryRef);
+                extendedSecondaryRefList.addAll(secondaryRef);
             }
         }
 

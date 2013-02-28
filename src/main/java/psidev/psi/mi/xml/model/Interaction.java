@@ -1114,7 +1114,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             super( primaryRef );
 
             if (secondaryRef != null && !secondaryRef.isEmpty()){
-                secondaryRef.addAll(secondaryRef);
+                extendedSecondaryRefList.addAll(secondaryRef);
             }
         }
 

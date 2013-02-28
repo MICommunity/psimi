@@ -767,7 +767,7 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
             super( primaryRef );
 
             if (secondaryRef != null && !secondaryRef.isEmpty()){
-                secondaryRef.addAll(secondaryRef);
+                extendedSecondaryRefList.addAll(secondaryRef);
             }
         }
 

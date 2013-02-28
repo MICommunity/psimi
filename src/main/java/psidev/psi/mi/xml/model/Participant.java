@@ -1301,7 +1301,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
             super( primaryRef );
 
             if (secondaryRef != null && !secondaryRef.isEmpty()){
-                secondaryRef.addAll(secondaryRef);
+                extendedSecondaryRefList.addAll(secondaryRef);
             }
         }
 
