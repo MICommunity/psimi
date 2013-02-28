@@ -115,14 +115,6 @@ public interface Interaction {
     public void setCreatedDate(Date created);
 
     /**
-     * The confidences in this interaction.
-     * The Collection cannot be null. If the interaction does not have any confidences, the method should return an empty Collection.
-     * Ex: author based scores, statistical confidences, ...
-     * @return the confidences
-     */
-    public Collection<Confidence> getConfidences();
-
-    /**
      * The interaction type is a controlled vocabulary term.
      * It can be null.
      * Ex: direct interaction, association, ...

@@ -23,9 +23,10 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     private Xref imexId;
     private Experiment experiment;
     private String availability;
-    private Collection<Parameter> parameters;
+    private Collection<Parameter> experimentalParameters;
     private boolean isInferred = false;
     private Collection<ParticipantEvidence> participantEvidences;
+    private Collection<Confidence> experimentalConfidences;
 
     public DefaultInteractionEvidence(Experiment experiment) {
         super();
@@ -108,20 +109,33 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         super(shortName, type);
     }
 
+    protected void initialiseExperimentalConfidences(){
+        this.experimentalConfidences = new ArrayList<Confidence>();
+    }
+
+    protected void initialiseExperimentalConfidencesWith(Collection<Confidence> confidences){
+        if (confidences == null){
+            this.experimentalConfidences = Collections.EMPTY_LIST;
+        }
+        else {
+            this.experimentalConfidences = confidences;
+        }
+    }
+
     protected void initialiseParticipantEvidences(){
         this.participantEvidences = new ArrayList<ParticipantEvidence>();
     }
 
-    protected void initialiseParameters(){
-        this.parameters = new ArrayList<Parameter>();
+    protected void initialiseExperimentalParameters(){
+        this.experimentalParameters = new ArrayList<Parameter>();
     }
 
-    protected void initialiseParametersWith(Collection<Parameter> parameters){
+    protected void initialiseExperimentalParametersWith(Collection<Parameter> parameters){
         if (parameters == null){
-            this.parameters = Collections.EMPTY_LIST;
+            this.experimentalParameters = Collections.EMPTY_LIST;
         }
         else {
-            this.parameters = parameters;
+            this.experimentalParameters = parameters;
         }
     }
 
@@ -173,8 +187,15 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         this.experiment = experiment;
 
         if (experiment != null){
-            this.experiment.getInteractions().add(this);
+            this.experiment.getInteractionEvidences().add(this);
         }
+    }
+
+    public Collection<Confidence> getExperimentalConfidences() {
+        if (experimentalConfidences == null){
+            initialiseExperimentalConfidences();
+        }
+        return this.experimentalConfidences;
     }
 
     public String getAvailability() {
@@ -185,11 +206,11 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         this.availability = availability;
     }
 
-    public Collection<Parameter> getParameters() {
-        if (parameters == null){
-            initialiseParameters();
+    public Collection<Parameter> getExperimentalParameters() {
+        if (experimentalParameters == null){
+            initialiseExperimentalParameters();
         }
-        return this.parameters;
+        return this.experimentalParameters;
     }
 
     public boolean isInferred() {

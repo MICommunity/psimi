@@ -32,7 +32,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
     private boolean isNegative;
     private Date updatedDate;
     private Date createdDate;
-    private Collection<Confidence> confidences;
     private CvTerm type;
 
     public DefaultInteraction(){
@@ -56,10 +55,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
         this.xrefs = new ArrayList<Xref>();
     }
 
-    protected void initialiseConfidences(){
-        this.confidences = new ArrayList<Confidence>();
-    }
-
     protected void initialiseIdentifiers(){
         this.identifiers = new ArrayList<Xref>();
     }
@@ -74,15 +69,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
         }
         else {
             this.xrefs = xrefs;
-        }
-    }
-
-    protected void initialiseConfidencesWith(Collection<Confidence> confidences){
-        if (confidences == null){
-            this.confidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.confidences = confidences;
         }
     }
 
@@ -193,13 +179,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
 
     public void setCreatedDate(Date created) {
         this.createdDate = created;
-    }
-
-    public Collection<Confidence> getConfidences() {
-        if (confidences == null){
-            initialiseConfidences();
-        }
-        return this.confidences;
     }
 
     public CvTerm getType() {
