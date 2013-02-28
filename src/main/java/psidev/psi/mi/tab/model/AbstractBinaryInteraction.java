@@ -153,8 +153,8 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
     }
 
     @Override
-    protected void initialiseConfidences(){
-        initialiseConfidencesWith(new BinaryInteractionConfidenceList());
+    protected void initialiseExperimentalConfidences(){
+        initialiseExperimentalConfidencesWith(new BinaryInteractionConfidenceList());
     }
 
     @Override
@@ -173,8 +173,8 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
     }
 
     @Override
-    protected void initialiseParameters(){
-        initialiseParametersWith(new BinaryInteractionParametersList());
+    protected void initialiseExperimentalParameters(){
+        initialiseExperimentalParametersWith(new BinaryInteractionParametersList());
     }
 
     @Override
@@ -363,7 +363,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Parameter> getInteractionParameters() {
+	public List<Parameter> getParameters() {
         if (interactionParameters == null){
             interactionParameters = new InteractionMitabParametersList();
         }
@@ -374,7 +374,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 	 * {@inheritDoc}
 	 */
 	public void setParameters(List<Parameter> parameters) {
-        getInteractionParameters().clear();
+        getParameters().clear();
         if (parameters != null) {
             this.interactionParameters.addAll(parameters);
         }
@@ -587,7 +587,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         else if (experiment instanceof MitabExperiment){
             super.setExperiment(experiment);
             this.mitabExperiment = (MitabExperiment) experiment;
-            experiment.getInteractions().add(this);
+            experiment.getInteractionEvidences().add(this);
         }
         else {
             MitabExperiment convertedExperiment = new MitabExperiment();
@@ -595,7 +595,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
             ExperimentCloner.copyAndOverrideExperimentProperties(experiment, convertedExperiment);
             mitabExperiment = convertedExperiment;
             super.setExperiment(experiment);
-            experiment.getInteractions().add(this);
+            experiment.getInteractionEvidences().add(this);
         }
     }
 
@@ -778,7 +778,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 			return false;
 		}
 
-		if (interactionParameters != null ? !CollectionUtils.isEqualCollection(interactionParameters, that.getInteractionParameters()) : (that.interactionParameters != null && !that.interactionParameters.isEmpty())) {
+		if (interactionParameters != null ? !CollectionUtils.isEqualCollection(interactionParameters, that.getParameters()) : (that.interactionParameters != null && !that.interactionParameters.isEmpty())) {
 			return false;
 		}
 
@@ -931,21 +931,21 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         protected void processAddedObjectEvent(Confidence added) {
 
             // we added a confidence, needs to add it in confidences
-            ((BinaryInteractionConfidenceList)getConfidences()).addOnly(added);
+            ((BinaryInteractionConfidenceList)getExperimentalConfidences()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Confidence removed) {
 
             // we removed a Confidence, needs to remove it in confidences
-            ((BinaryInteractionConfidenceList)getConfidences()).removeOnly(removed);
+            ((BinaryInteractionConfidenceList)getExperimentalConfidences()).removeOnly(removed);
 
         }
 
         @Override
         protected void clearProperties() {
             // clear all confidences
-            ((BinaryInteractionConfidenceList)getConfidences()).clearOnly();
+            ((BinaryInteractionConfidenceList)getExperimentalConfidences()).clearOnly();
         }
     }
 
@@ -1267,11 +1267,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Parameter added) {
             if (added instanceof Parameter){
-                ((InteractionMitabParametersList)getInteractionParameters()).addOnly((Parameter) added);
+                ((InteractionMitabParametersList) getParameters()).addOnly((Parameter) added);
             }
             else {
                 try {
-                    ((InteractionMitabParametersList)getInteractionParameters()).addOnly(new ParameterImpl(added.getType().getShortName(), ParameterUtils.getParameterValueAsString(added)));
+                    ((InteractionMitabParametersList) getParameters()).addOnly(new ParameterImpl(added.getType().getShortName(), ParameterUtils.getParameterValueAsString(added)));
                 } catch (IllegalParameterException e) {
                     removeOnly(added);
                     log.error("Impossible to add this parameter because not well formatted", e);
@@ -1282,11 +1282,11 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Parameter removed) {
             if (removed instanceof Parameter){
-                ((InteractionMitabParametersList)getInteractionParameters()).removeOnly(removed);
+                ((InteractionMitabParametersList) getParameters()).removeOnly(removed);
             }
             else {
                 try {
-                    ((InteractionMitabParametersList)getInteractionParameters()).removeOnly(new ParameterImpl(removed.getType().getShortName(), ParameterUtils.getParameterValueAsString(removed)));
+                    ((InteractionMitabParametersList) getParameters()).removeOnly(new ParameterImpl(removed.getType().getShortName(), ParameterUtils.getParameterValueAsString(removed)));
                 } catch (IllegalParameterException e) {
                     log.error("Impossible to remove entirely this parameter because not well formatted", e);
                 }
@@ -1295,7 +1295,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
         @Override
         protected void clearProperties() {
-            ((InteractionMitabParametersList)getInteractionParameters()).clearOnly();
+            ((InteractionMitabParametersList) getParameters()).clearOnly();
         }
     }
 
@@ -1307,18 +1307,18 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         @Override
         protected void processAddedObjectEvent(Parameter added) {
 
-            ((BinaryInteractionParametersList)getParameters()).addOnly(added);
+            ((BinaryInteractionParametersList)getExperimentalParameters()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Parameter removed) {
 
-            ((BinaryInteractionParametersList)getParameters()).removeOnly(removed);
+            ((BinaryInteractionParametersList)getExperimentalParameters()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((BinaryInteractionParametersList)getParameters()).clearOnly();
+            ((BinaryInteractionParametersList)getExperimentalParameters()).clearOnly();
         }
     }
 

@@ -105,7 +105,7 @@ public class MitabWriterUtils {
 				line[PsimiTabColumns.XREFS_I.ordinal()] = joinCrossReferencStyleCollection(interaction.getInteractionXrefs());// 25
 				line[PsimiTabColumns.ANNOTATIONS_I.ordinal()] = joinAnnotationsCollection(interaction.getInteractionAnnotations());// 28
 				line[PsimiTabColumns.HOST_ORGANISM.ordinal()] = joinOrganism(interaction.getHostOrganism());// 29
-				line[PsimiTabColumns.PARAMETERS_I.ordinal()] = joinParametersCollection(interaction.getInteractionParameters());// 30
+				line[PsimiTabColumns.PARAMETERS_I.ordinal()] = joinParametersCollection(interaction.getParameters());// 30
 				line[PsimiTabColumns.CREATION_DATE.ordinal()] = joinDateCollection(interaction.getCreationDate());// 31
 				line[PsimiTabColumns.UPDATE_DATE.ordinal()] = joinDateCollection(interaction.getUpdateDate());// 32
 				line[PsimiTabColumns.CHECKSUM_I.ordinal()] = joinChecksumCollection(interaction.getInteractionChecksums());// 35
