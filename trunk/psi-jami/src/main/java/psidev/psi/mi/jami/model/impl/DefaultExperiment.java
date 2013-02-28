@@ -113,10 +113,16 @@ public class DefaultExperiment implements Experiment {
     }
 
     public Collection<Xref> getXrefs() {
+        if (xrefs == null){
+            initialiseXrefs();
+        }
         return this.xrefs;
     }
 
     public Collection<Annotation> getAnnotations() {
+        if (annotations == null){
+           initialiseAnnotations();
+        }
         return this.annotations;
     }
 
