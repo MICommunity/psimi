@@ -153,10 +153,10 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @param value allowed object is {@link String }
      */
     public void setImexId( String value ) {
-        if (value == null){
+        if (value == null && getImexId() != null){
             getXrefs().remove(new DefaultXref(CvTermFactory.createImexDatabase(), getImexId(), CvTermFactory.createMICvTerm(psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI)));
         }
-        else{
+        else if (value != null){
             assignImexId(value);
         }
     }

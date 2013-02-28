@@ -8,7 +8,6 @@ package psidev.psi.mi.xml.model;
 
 
 import psidev.psi.mi.jami.utils.PositionUtils;
-import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 
 /**
  * <p>Java class for positionType complex type.
@@ -77,10 +76,7 @@ public class Position implements psidev.psi.mi.jami.model.Position{
 
     public void setStatus(RangeStatus status){
         if (status != null){
-            if (this.status == null){
-                this.status = new RangeStatus();
-                CvTermCloner.copyAndOverrideCvTermProperties(status, this.status);
-            }
+            this.status = status;
             isPositionUndetermined = (PositionUtils.isUndetermined(this) || PositionUtils.isCTerminalRange(this) || PositionUtils.isNTerminalRange(this));
         }
         else {
