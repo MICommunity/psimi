@@ -16,11 +16,11 @@ public interface Complex extends Interactor {
     public static final String COMPLEX_MI="MI:0314";
 
     /**
-     * The experiments that have been done to determine the complex.
-     * The collection cannot be null. If the complex does not have any experimental evidences, the method should return an empty collection
+     * The interaction evidences used to determine the complex.
+     * The collection cannot be null. If the complex does not have any interaction evidences, the method should return an empty collection
      * @return the collection of experiments
      */
-    public Collection<Experiment> getExperiments();
+    public Collection<InteractionEvidence> getInteractionEvidences();
 
     /**
      * The components for this complex.
@@ -73,4 +73,27 @@ public interface Complex extends Interactor {
      * @return true if participants are removed from the list of participants
      */
     public boolean removeAllComponents(Collection<? extends Component> part);
+
+    /**
+     * The confidences in this interaction.
+     * The Collection cannot be null. If the interaction does not have any confidences, the method should return an empty Collection.
+     * Ex: author based scores, statistical confidences, ...
+     * @return the confidences
+     */
+    public Collection<ModelledConfidence> getConfidences();
+
+    /**
+     * Collection of numerical parameters for this interaction.
+     * The set cannot be null. If the interaction does not have any parameters, the method should return an empty Collection.
+     * Ex: IC50, ...
+     * @return the parameters
+     */
+    public Collection<ModelledParameter> getParameters();
+
+    /**
+     * The collection of publications/reviews associated with this complex.
+     * The collection cannot be null. If the complex does not refer to any publications, this method shoudl return an empty collection.
+     * @return
+     */
+    public Collection<Xref> getPublications();
 }

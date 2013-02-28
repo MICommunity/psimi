@@ -51,8 +51,8 @@ public class InteractorCloner {
             target.setPhysicalProperties(source.getPhysicalProperties());
 
             // copy collections
-            target.getExperiments().clear();
-            target.getExperiments().addAll(source.getExperiments());
+            target.getInteractionEvidences().clear();
+            target.getInteractionEvidences().addAll(source.getInteractionEvidences());
             target.getComponents().clear();
             target.addAllComponents(source.getComponents());
         }

@@ -139,7 +139,7 @@ public class DefaultExperiment implements Experiment {
         this.hostOrganism = organism;
     }
 
-    public Collection<InteractionEvidence> getInteractions() {
+    public Collection<InteractionEvidence> getInteractionEvidences() {
         if (interactions == null){
             initialiseInteractions();
         }
@@ -151,7 +151,7 @@ public class DefaultExperiment implements Experiment {
             return false;
         }
 
-        if (getInteractions().add(evidence)){
+        if (getInteractionEvidences().add(evidence)){
             evidence.setExperiment(this);
             return true;
         }
@@ -163,7 +163,7 @@ public class DefaultExperiment implements Experiment {
             return false;
         }
 
-        if (getInteractions().remove(evidence)){
+        if (getInteractionEvidences().remove(evidence)){
             evidence.setExperiment(null);
             return true;
         }

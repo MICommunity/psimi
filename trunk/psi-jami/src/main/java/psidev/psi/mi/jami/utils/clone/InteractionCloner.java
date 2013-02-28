@@ -33,16 +33,16 @@ public class InteractionCloner {
             target.getAnnotations().addAll(source.getAnnotations());
             target.getChecksums().clear();
             target.getChecksums().addAll(source.getChecksums());
-            target.getConfidences().clear();
-            target.getConfidences().addAll(source.getConfidences());
+            target.getExperimentalConfidences().clear();
+            target.getExperimentalConfidences().addAll(source.getExperimentalConfidences());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
             target.getParticipantEvidences().clear();
             target.addAllParticipantEvidences(source.getParticipantEvidences());
-            target.getParameters().clear();
-            target.getParameters().addAll(source.getParameters());
+            target.getExperimentalParameters().clear();
+            target.getExperimentalParameters().addAll(source.getExperimentalParameters());
         }
     }
 }

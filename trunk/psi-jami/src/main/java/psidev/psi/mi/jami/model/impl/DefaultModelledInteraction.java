@@ -20,6 +20,8 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
     private Collection<Experiment> experiments;
     private Source source;
     private Collection<ModelledParticipant> modelledParticipants;
+    private Collection<ModelledConfidence> modelledConfidences;
+    private Collection<ModelledParameter> modelledParameters;
 
     public DefaultModelledInteraction() {
         super();
@@ -50,12 +52,38 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         this.experiments = new ArrayList<Experiment>();
     }
 
+    protected void initialiseModelledConfidences(){
+        this.modelledConfidences = new ArrayList<ModelledConfidence>();
+    }
+
+    protected void initialiseModelledConfidencesWith(Collection<ModelledConfidence> confidences){
+        if (confidences == null){
+            this.modelledConfidences = Collections.EMPTY_LIST;
+        }
+        else {
+            this.modelledConfidences = confidences;
+        }
+    }
+
     protected void initialiseExperimentsWith(Collection<Experiment> experiments){
         if (experiments == null){
             this.experiments = Collections.EMPTY_LIST;
         }
         else {
             this.experiments = experiments;
+        }
+    }
+
+    protected void initialiseModelledParameters(){
+        this.modelledParameters = new ArrayList<ModelledParameter>();
+    }
+
+    protected void initialiseModelledParametersWith(Collection<ModelledParameter> parameters){
+        if (parameters == null){
+            this.modelledParameters = Collections.EMPTY_LIST;
+        }
+        else {
+            this.modelledParameters = parameters;
         }
     }
 
@@ -144,6 +172,20 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
             }
         }
         return removed;
+    }
+
+    public Collection<ModelledConfidence> getModelledConfidences() {
+        if (modelledConfidences == null){
+            initialiseModelledConfidences();
+        }
+        return this.modelledConfidences;
+    }
+
+    public Collection<ModelledParameter> getModelledParameters() {
+        if (modelledParameters == null){
+            initialiseModelledParameters();
+        }
+        return this.modelledParameters;
     }
 
     @Override

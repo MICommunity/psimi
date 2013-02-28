@@ -20,9 +20,12 @@ import java.util.Collections;
 
 public class DefaultComplex extends DefaultInteractor implements Complex {
 
-    private Collection<Experiment> experiments;
+    private Collection<InteractionEvidence> interactionEvidences;
     private Collection<Component> components;
     private Annotation physicalProperties;
+    private Collection<ModelledConfidence> confidences;
+    private Collection<ModelledParameter> parameters;
+    private Collection<Xref> publications;
 
     public DefaultComplex(String name, CvTerm type) {
         super(name, type);
@@ -88,16 +91,54 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
     }
 
-    protected void initialiseExperiments(){
-        this.experiments = new ArrayList<Experiment>();
+    protected void initialisePublications(){
+        this.publications = new ArrayList<Xref>();
     }
 
-    protected void initialiseExperimentsWith(Collection<Experiment> experiments){
-        if (experiments == null){
-            this.experiments = Collections.EMPTY_LIST;
+    protected void initialisePublicationsWith(Collection<Xref> xrefs){
+        if (xrefs == null){
+            this.publications = Collections.EMPTY_LIST;
+        }
+        else {
+            this.publications = xrefs;
+        }
+    }
+    protected void initialiseInteractionEvidences(){
+        this.interactionEvidences = new ArrayList<InteractionEvidence>();
+    }
+
+    protected void initialiseInteractionEvidencesWith(Collection<InteractionEvidence> interactionEvidences){
+        if (interactionEvidences == null){
+            this.interactionEvidences = Collections.EMPTY_LIST;
         }
         else{
-            this.experiments = experiments;
+            this.interactionEvidences = interactionEvidences;
+        }
+    }
+
+    protected void initialiseConfidences(){
+        this.confidences = new ArrayList<ModelledConfidence>();
+    }
+
+    protected void initialiseConfidencesWith(Collection<ModelledConfidence> confidences){
+        if (confidences == null){
+            this.confidences = Collections.EMPTY_LIST;
+        }
+        else {
+            this.confidences = confidences;
+        }
+    }
+
+    protected void initialiseParameters(){
+        this.parameters = new ArrayList<ModelledParameter>();
+    }
+
+    protected void initialiseParametersWith(Collection<ModelledParameter> parameters){
+        if (parameters == null){
+            this.parameters = Collections.EMPTY_LIST;
+        }
+        else {
+            this.parameters = parameters;
         }
     }
 
@@ -119,11 +160,11 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         initialiseAnnotationsWith(new ComplexAnnotationList());
     }
 
-    public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            initialiseExperiments();
+    public Collection<InteractionEvidence> getInteractionEvidences() {
+        if (interactionEvidences == null){
+            initialiseInteractionEvidences();
         }
-        return this.experiments;
+        return this.interactionEvidences;
     }
 
     public Collection<? extends Component> getComponents() {
@@ -131,6 +172,20 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
            initialiseComponents();
         }
         return this.components;
+    }
+
+    public Collection<ModelledConfidence> getConfidences() {
+        if (confidences == null){
+            initialiseConfidences();
+        }
+        return this.confidences;
+    }
+
+    public Collection<ModelledParameter> getParameters() {
+        if (parameters == null){
+            initialiseParameters();
+        }
+        return this.parameters;
     }
 
     public String getPhysicalProperties() {
@@ -209,6 +264,13 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
             AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, COMPLEX_MI, COMPLEX);
             physicalProperties = null;
         }
+    }
+
+    public Collection<Xref> getPublications() {
+        if (publications == null){
+            initialisePublications();
+        }
+        return this.publications;
     }
 
     protected void processAddedAnnotationEvent(Annotation added) {

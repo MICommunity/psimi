@@ -98,7 +98,7 @@ public interface Experiment {
      * The collection cannot be null. If the experiment did not show any interactions, the method should return an empty collection
      * @return the interactions
      */
-    public Collection<InteractionEvidence> getInteractions();
+    public Collection<InteractionEvidence> getInteractionEvidences();
 
     /**
      * This method will add the interaction evidence and set the experiment of the new interaction evidence to this current experiment

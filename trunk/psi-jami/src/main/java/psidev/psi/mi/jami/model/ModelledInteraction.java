@@ -67,4 +67,20 @@ public interface ModelledInteraction extends Interaction{
      * @return true if participant are removed from the list of participants
      */
     public boolean removeAllModelledParticipants(Collection<? extends ModelledParticipant> participants);
+
+    /**
+     * The confidences in this interaction.
+     * The Collection cannot be null. If the interaction does not have any confidences, the method should return an empty Collection.
+     * Ex: author based scores, statistical confidences, ...
+     * @return the confidences
+     */
+    public Collection<ModelledConfidence> getModelledConfidences();
+
+    /**
+     * Collection of numerical parameters for this interaction.
+     * The set cannot be null. If the interaction does not have any parameters, the method should return an empty Collection.
+     * Ex: IC50, ...
+     * @return the parameters
+     */
+    public Collection<ModelledParameter> getModelledParameters();
 }

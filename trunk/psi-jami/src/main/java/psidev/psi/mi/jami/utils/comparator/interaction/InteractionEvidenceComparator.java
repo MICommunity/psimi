@@ -130,8 +130,8 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
             }
 
             // If experiments are the same, compare parameters
-            Collection<Parameter> parameters1 = experimentalInteraction1.getParameters();
-            Collection<Parameter> parameters2 = experimentalInteraction2.getParameters();
+            Collection<Parameter> parameters1 = experimentalInteraction1.getExperimentalParameters();
+            Collection<Parameter> parameters2 = experimentalInteraction2.getExperimentalParameters();
 
             comp = parameterCollectionComparator.compare(parameters1, parameters2);
             if (comp != 0){

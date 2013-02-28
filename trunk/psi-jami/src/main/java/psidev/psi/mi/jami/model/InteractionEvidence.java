@@ -68,7 +68,7 @@ public interface InteractionEvidence extends Interaction{
      * Ex: IC50, ...
      * @return the parameters
      */
-    public Collection<Parameter> getParameters();
+    public Collection<Parameter> getExperimentalParameters();
 
     /**
      * Boolean value to know if the interaction is inferred from multiple experiments which on their own would not support the interaction.
@@ -117,4 +117,12 @@ public interface InteractionEvidence extends Interaction{
      * @return true if participant evidences are removed from the list of participant evidences
      */
     public boolean removeAllParticipantEvidences(Collection<? extends ParticipantEvidence> evidences);
+
+    /**
+     * The confidences in this interaction.
+     * The Collection cannot be null. If the interaction does not have any confidences, the method should return an empty Collection.
+     * Ex: author based scores, statistical confidences, ...
+     * @return the confidences
+     */
+    public Collection<Confidence> getExperimentalConfidences();
 }
