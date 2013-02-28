@@ -211,7 +211,7 @@ public interface BinaryInteraction<T extends Interactor> extends InteractionEvid
      *
      * @return parameters for the interaction.
      */
-    List<Parameter> getInteractionParameters();
+    List<Parameter> getParameters();
 
     /**
      * Sets the parameters for the interaction.

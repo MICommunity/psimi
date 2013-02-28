@@ -67,7 +67,7 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
         target.setChecksums(source.getInteractionChecksums());
         target.setComplexExpansion(source.getComplexExpansion());
         target.setCreationDate(source.getCreationDate());
-        target.setParameters(source.getInteractionParameters());
+        target.setParameters(source.getParameters());
 
         if (target.getHostOrganism() == null){
             target.setHostOrganism(source.getHostOrganism());
