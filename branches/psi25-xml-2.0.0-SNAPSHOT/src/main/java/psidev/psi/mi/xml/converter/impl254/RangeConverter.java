@@ -124,7 +124,7 @@ public class RangeConverter {
 
         // end
         if ( mRange.hasEnd() ) {
-            jRange.setEnd( positionConverter.toJaxb( mRange.getEnd() ) );
+            jRange.setEnd( positionConverter.toJaxb( mRange.getEndPosition() ) );
         }
 
         // end interval

@@ -8,7 +8,6 @@ package psidev.psi.mi.xml.model;
 
 
 import psidev.psi.mi.jami.utils.PositionUtils;
-import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 
 import java.io.Serializable;
 
@@ -108,10 +107,7 @@ public class Interval implements psidev.psi.mi.jami.model.Position, Serializable
 
     public void setStatus(RangeStatus status){
         if (status != null){
-            if (this.status == null){
-                this.status = new RangeStatus();
-                CvTermCloner.copyAndOverrideCvTermProperties(status, this.status);
-            }
+            this.status = status;
             isPositionUndetermined = (PositionUtils.isUndetermined(this) || PositionUtils.isCTerminalRange(this) || PositionUtils.isNTerminalRange(this));
         }
         else {

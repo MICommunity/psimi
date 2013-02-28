@@ -80,6 +80,10 @@ public class HostOrganism implements NamesContainer, psidev.psi.mi.jami.model.Or
         return organism.getTaxId();
     }
 
+    public void setTaxId(int id) {
+        organism.setTaxId(id);
+    }
+
     public Collection<Alias> getAliases() {
         return organism.getAliases();
     }
