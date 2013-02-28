@@ -151,17 +151,18 @@ public class DefaultCvTerm implements CvTerm, Serializable {
     }
 
     public void setMIIdentifier(String mi) {
+        Collection<Xref> cvTermIdentifiers = getIdentifiers();
+
         // add new mi if not null
         if (mi != null){
-            CvTermIdentifierList cvTermIdentifiers = (CvTermIdentifierList) getIdentifiers();
             CvTerm psiMiDatabase = CvTermFactory.createPsiMiDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old psi mi if not null
             if (this.miIdentifier != null){
-                cvTermIdentifiers.removeOnly(this.miIdentifier);
+                cvTermIdentifiers.remove(this.miIdentifier);
             }
             this.miIdentifier = new DefaultXref(psiMiDatabase, mi, identityQualifier);
-            cvTermIdentifiers.addOnly(this.miIdentifier);
+            cvTermIdentifiers.add(this.miIdentifier);
         }
         // remove all mi if the collection is not empty
         else if (!getIdentifiers().isEmpty()) {
@@ -171,18 +172,19 @@ public class DefaultCvTerm implements CvTerm, Serializable {
     }
 
     public void setMODIdentifier(String mod) {
+        Collection<Xref> cvTermIdentifiers = getIdentifiers();
+
         // add new mod if not null
         if (mod != null){
-            CvTermIdentifierList cvTermIdentifiers = (CvTermIdentifierList) getIdentifiers();
 
             CvTerm psiModDatabase = CvTermFactory.createPsiModDatabase();
             CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
             // first remove old psi mod if not null
             if (this.modIdentifier != null){
-                cvTermIdentifiers.removeOnly(this.modIdentifier);
+                cvTermIdentifiers.remove(this.modIdentifier);
             }
             this.modIdentifier = new DefaultXref(psiModDatabase, mod, identityQualifier);
-            cvTermIdentifiers.addOnly(this.modIdentifier);
+            cvTermIdentifiers.add(this.modIdentifier);
         }
         // remove all mod if the collection is not empty
         else if (!getIdentifiers().isEmpty()) {
