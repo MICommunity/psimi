@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
+import psidev.psi.mi.jami.utils.clone.FeatureCloner;
 import psidev.psi.mi.jami.utils.clone.ParticipantCloner;
 import psidev.psi.mi.jami.utils.clone.RangeCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
@@ -18,6 +19,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * A feature, e.g. domain, on a sequence.
@@ -72,6 +74,8 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
 
     private Collection<Attribute> attributes;
 
+    private Collection<Feature> bindingFeatures;
+
     ///////////////////////////
     // Constructors
 
@@ -106,6 +110,8 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
     protected void initialiseRanges() {
         initialiseRangesWith(new FeatureRangeList());
     }
+
+
 
     ///////////////////////////
     // Getters and Setters
@@ -378,6 +384,20 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
         return super.getFullName();
     }
 
+    @Override
+    public FeatureDetectionMethod getDetectionMethod() {
+        return (FeatureDetectionMethod) super.getDetectionMethod();
+    }
+
+    @Override
+    public Participant getParticipantEvidence() {
+        return (Participant) super.getParticipantEvidence();
+    }
+
+    @Override
+    public FeatureType getType() {
+        return (FeatureType) super.getType();
+    }
 
     @Override
     public void setType(CvTerm type) {
@@ -528,6 +548,144 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
 
             ParticipantCloner.copyAndOverrideComponentProperties(participant, convertedParticipant);
             super.setParticipantEvidenceAndAddFeature(convertedParticipant);
+        }
+    }
+
+    public Collection<? extends ComponentFeature> getBindingSites() {
+        if (bindingFeatures == null){
+            bindingFeatures = new ArrayList<Feature>();
+        }
+        return bindingFeatures;
+    }
+
+    public boolean addBindingSite(ComponentFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (bindingFeatures == null){
+            bindingFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            return bindingFeatures.add((Feature)feature);
+        }
+        else {
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideComponentFeaturesProperties(feature, f);
+
+            return bindingFeatures.add(f);
+        }
+    }
+
+    public boolean removeBindingSite(ComponentFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (bindingFeatures == null){
+            bindingFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            return bindingFeatures.remove(feature);
+        }
+        else {
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideComponentFeaturesProperties(feature, f);
+
+            return bindingFeatures.remove(f);
+        }
+    }
+
+    public boolean addAllBindingSites(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ComponentFeature feature : features){
+            if (addBindingSite(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllBindingSites(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (ComponentFeature feature : features){
+            if (removeBindingSite(feature)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
+    @Override
+    protected void initialiseBindingSiteEvidences() {
+        super.initialiseBindingSiteEvidencesWith(Collections.EMPTY_LIST);
+    }
+
+    @Override
+    protected void initialiseBindingSiteEvidencesWith(Collection<FeatureEvidence> features) {
+        if (features == null){
+            initialiseBindingSiteEvidencesWith(Collections.EMPTY_LIST);
+        }
+        else {
+            for (FeatureEvidence f : features){
+                addBindingSiteEvidence(f);
+            }
+        }
+    }
+
+    @Override
+    public Collection<? extends FeatureEvidence> getBindingSiteEvidences() {
+        if (bindingFeatures == null){
+            bindingFeatures = new ArrayList<Feature>();
+        }
+        return bindingFeatures;
+    }
+
+    @Override
+    public boolean addBindingSiteEvidence(FeatureEvidence feature) {
+        if (feature == null){
+            return false;
+        }
+        if (bindingFeatures == null){
+            bindingFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            return bindingFeatures.add((Feature)feature);
+        }
+        else {
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideFeatureEvidenceProperties(feature, f);
+
+            return bindingFeatures.add(f);
+        }
+    }
+
+    @Override
+    public boolean removeBindingSiteEvidence(FeatureEvidence feature) {
+        if (feature == null){
+            return false;
+        }
+        if (bindingFeatures == null){
+            bindingFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            return bindingFeatures.remove(feature);
+        }
+        else {
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideFeatureEvidenceProperties(feature, f);
+
+            return bindingFeatures.remove(f);
         }
     }
 

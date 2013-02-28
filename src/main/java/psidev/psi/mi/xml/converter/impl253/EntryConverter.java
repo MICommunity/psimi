@@ -142,7 +142,7 @@ public class EntryConverter {
         }
         if (mEntry.getInteractors().isEmpty()) {
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getInteractionParticipants()) {
+                for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
                     mEntry.getInteractors().add(mParticipant.getInteractor());
                 }
             }
@@ -259,7 +259,7 @@ public class EntryConverter {
                 List<Integer> participantIds = new ArrayList<Integer>();
 
                 for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                    for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getInteractionParticipants()) {
+                    for (psidev.psi.mi.xml.model.Participant mParticipant : mInteraction.getParticipants()) {
                         if (!participantIds.contains(mParticipant.getId())) {
                             jEntry.getInteractorList().getInteractors().add(interactorConverter.toJaxb(mParticipant.getInteractor()));
                             participantIds.add(mParticipant.getId());

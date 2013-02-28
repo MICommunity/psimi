@@ -5,21 +5,19 @@
  */
 package psidev.psi.mi.xml.model;
 
-import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.impl.DefaultChecksum;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
-import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.clone.*;
+import psidev.psi.mi.jami.utils.clone.CvTermCloner;
+import psidev.psi.mi.jami.utils.clone.ExperimentCloner;
+import psidev.psi.mi.jami.utils.clone.ParticipantCloner;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 
 public class Interaction extends DefaultInteractionEvidence implements Complex, HasId, NamesContainer, XrefContainer, AttributeContainer {
@@ -32,27 +30,36 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
     private Availability xmlAvailability;
 
-    private Collection<ExperimentDescription> experimentDescriptions = new InteractionExperimentsList();
+    private Collection<ExperimentDescription> experimentDescriptions;
 
     private Collection<ExperimentRef> experimentRefs;
 
-    private Collection<Participant> xmlParticipants = new InteractionXmlParticipantsList();
+    private Collection<Participant> xmlParticipants;
 
-    private Collection<InferredInteraction> inferredInteractions = new InferredInteractionsList();
+    private Collection<InferredInteraction> inferredInteractions;
 
-    private Collection<InteractionType> interactionTypes = new InteractionTypesList();
+    private Collection<InteractionType> interactionTypes;
 
     private Boolean modelled;
 
     private Boolean intraMolecular;
 
-    private Collection<Confidence> confidencesList = new InteractionXmlConfidencesList();
+    private Collection<Confidence> confidencesList;
 
-    private Collection<Parameter> parametersList = new InteractionXmlParametersList();
+    private Collection<Parameter> parametersList;
 
-    private Collection<Attribute> attributeList = new InteractionXmlAnnotationList();
+    private Collection<Attribute> attributeList;
 
-    private Collection<Experiment> experiments = new ComplexExperimentsList();
+    private Annotation physicalProperties;
+
+    private Collection<psidev.psi.mi.jami.model.Xref> publications;
+
+    private Collection<Alias> aliases;
+
+    private Organism organism;
+
+    private Collection<ModelledConfidence> modelledConfidences;
+    private Collection<ModelledParameter> modelledParameters;
 
     ///////////////////////////
     // Constructors
@@ -62,38 +69,56 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     }
 
     @Override
-    protected void initializeIdentifiers() {
-        this.identifiers = new InteractionIdentifierList();
+    protected void initialiseIdentifiers() {
+        initialiseIdentifiersWith(new InteractionIdentifierList());
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new InteractionXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new InteractionXrefList());
     }
 
     @Override
-    protected void initializeParticipants() {
-        this.participants = new InteractionParticipantsList();
+    protected void initialiseParticipantEvidences() {
+        initialiseParticipantEvidencesWith(Collections.EMPTY_LIST);
     }
 
     @Override
-    protected void initializeConfidences() {
-        this.confidences = new InteractionConfidencesList();
+    protected void initialiseParticipantEvidencesWith(Collection<ParticipantEvidence> participants) {
+        if (participants == null){
+            initialiseParticipantEvidencesWith(Collections.EMPTY_LIST);
+        }
+        else {
+            if (xmlParticipants == null){
+               xmlParticipants = new ArrayList<Participant>();
+            }
+            else {
+                xmlParticipants.clear();
+            }
+            for (ParticipantEvidence p : participants){
+                addParticipantEvidence(p);
+            }
+        }
     }
 
     @Override
-    protected void initializeParameters() {
-        this.parameters = new InteractionParametersList();
+    protected void initialiseExperimentalConfidences() {
+        initialiseExperimentalConfidencesWith(new InteractionConfidencesList());
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new InteractionAnnotationList();
+    protected void initialiseExperimentalParameters() {
+        initialiseExperimentalParametersWith(new InteractionParametersList());
     }
 
     @Override
-    protected void initializeChecksum() {
-        this.checksums = new InteractionChecksumList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new InteractionAnnotationList());
+    }
+
+    @Override
+    protected void initialiseChecksum() {
+        initialiseChecksumWith(new InteractionChecksumList());
     }
 
     ///////////////////////////
@@ -119,7 +144,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @return true if defined, false otherwise.
      */
     public boolean hasImexId() {
-        return imexId != null;
+        return getImexId() != null;
     }
 
     /**
@@ -129,7 +154,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      */
     public void setImexId( String value ) {
         if (value == null){
-            xrefs.remove(imexId);
+            getXrefs().remove(new DefaultXref(CvTermFactory.createImexDatabase(), getImexId(), CvTermFactory.createMICvTerm(psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI)));
         }
         else{
             assignImexId(value);
@@ -164,10 +189,10 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             if (this.names == null){
                 this.names = new InteractionNames();
             }
-            this.names.setShortLabel(value.getShortLabel());
+            super.setShortName(value.getShortLabel());
             this.names.setFullName(value.getFullName());
-            this.names.getAliases().clear();
-            this.names.getAliases().addAll(value.getAliases());
+            getAliases().clear();
+            getAliases().addAll(value.getAliases());
         }
         else if (this.names != null) {
             this.names = null;
@@ -200,14 +225,14 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                identifiers.clear();
-                this.xrefs.clear();
+                getIdentifiers().clear();
+                getXrefs().clear();
             }
             this.xref = new InteractionXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            identifiers.clear();
-            xrefs.clear();
+            getIdentifiers().clear();
+            getXrefs().clear();
             this.xref = null;
         }
     }
@@ -237,11 +262,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      */
     public void setAvailability( Availability value ) {
         if (value == null){
-            availability = null;
+            super.setAvailability(null);
             xmlAvailability = null;
         }
         else if (this.xmlAvailability != null){
-            this.xmlAvailability.setValue(value.getValue());
+            super.setAvailability(value.getValue());
             this.xmlAvailability.setId(value.getId());
         }
         else {
@@ -259,39 +284,140 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @return possible object is {@link ExperimentDescription }
      */
     public Collection<ExperimentDescription> getExperimentDescriptions() {
+        if (experimentDescriptions == null){
+            experimentDescriptions = new InteractionExperimentsList();
+        }
         return experimentDescriptions;
     }
 
-    public Collection<Experiment> getExperiments() {
-        return experiments;
-    }
-
-    public Collection<Component> getComponents() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Collection<? extends Component> getComponents() {
+        return getParticipants();
     }
 
     public String getPhysicalProperties() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return physicalProperties != null ? physicalProperties.getValue() : null;
     }
 
     public void setPhysicalProperties(String properties) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Collection<Annotation> complexAnnotationList = getAnnotations();
+
+        // add new physical properties if not null
+        if (properties != null){
+
+            CvTerm complexPhysicalProperties = CvTermFactory.createComplexPhysicalProperties();
+            // first remove old physical property if not null
+            if (this.physicalProperties != null){
+                complexAnnotationList.remove(this.physicalProperties);
+            }
+            this.physicalProperties = new DefaultAnnotation(complexPhysicalProperties, properties);
+            complexAnnotationList.add(this.physicalProperties);
+        }
+        // remove all physical properties if the collection is not empty
+        else if (!complexAnnotationList.isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, COMPLEX_MI, COMPLEX);
+            physicalProperties = null;
+        }
+    }
+
+    public Collection<psidev.psi.mi.jami.model.Xref> getPublications() {
+        if (publications == null){
+            this.publications = new ArrayList<psidev.psi.mi.jami.model.Xref>();
+        }
+        return this.publications;
+    }
+
+    protected void processAddedAnnotationEvent(Annotation added) {
+        if (physicalProperties == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
+            physicalProperties = added;
+        }
+    }
+
+    protected void processRemovedAnnotationEvent(Annotation removed) {
+        if (physicalProperties != null && physicalProperties.equals(removed)){
+            physicalProperties = AnnotationUtils.collectFirstAnnotationWithTopic(getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
+        }
+    }
+
+    protected void clearPropertiesLinkedToAnnotations() {
+        physicalProperties = null;
     }
 
     public boolean addComponent(Component part) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        if (part == null){
+            return false;
+        }
+        if (xmlParticipants == null){
+            xmlParticipants = new ArrayList<Participant>();
+        }
+        if (part instanceof Participant){
+            if (xmlParticipants.add((Participant)part)){
+                part.setComplex(this);
+                return true;
+            }
+            return false;
+        }
+        else {
+            Participant p = new Participant();
+            ParticipantCloner.copyAndOverrideComponentProperties(part, p);
+            if (xmlParticipants.add(p)){
+                p.setComplex(this);
+                return true;
+            }
+            return false;
+        }
     }
 
     public boolean removeComponent(Component part) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        if (part == null){
+            return false;
+        }
+        if (xmlParticipants == null){
+            xmlParticipants = new ArrayList<Participant>();
+        }
+        if (part instanceof Participant){
+            if (xmlParticipants.remove(part)){
+                part.setComplex(null);
+                return true;
+            }
+            return false;
+        }
+        else {
+            Participant p = new Participant();
+            ParticipantCloner.copyAndOverrideComponentProperties(part, p);
+            if (xmlParticipants.remove(p)){
+                p.setComplex(null);
+                return true;
+            }
+            return false;
+        }
     }
 
     public boolean addAllComponents(Collection<? extends Component> part) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        if (part == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (Component p : part){
+            if (addComponent(p)){
+                added = true;
+            }
+        }
+        return added;
     }
 
     public boolean removeAllComponents(Collection<? extends Component> part) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        if (part == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (Component p : part){
+            if (removeComponent(p)){
+                removed = true;
+            }
+        }
+        return removed;
     }
 
     public boolean hasExperimentRefs() {
@@ -315,7 +441,10 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      *
      * @return possible object is {@link Participant }
      */
-    public Collection<Participant> getInteractionParticipants() {
+    public Collection<Participant> getParticipants() {
+        if (xmlParticipants == null){
+            xmlParticipants = new ArrayList<Participant>();
+        }
         return xmlParticipants;
     }
 
@@ -334,6 +463,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @return possible object is {@link InferredInteraction }
      */
     public Collection<InferredInteraction> getInferredInteractions() {
+        if (inferredInteractions == null){
+            inferredInteractions = new InferredInteractionsList();
+        }
         return inferredInteractions;
     }
 
@@ -365,6 +497,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * Objects of the following type(s) are allowed in the list {@link CvType }
      */
     public Collection<InteractionType> getInteractionTypes() {
+        if (interactionTypes == null){
+            interactionTypes = new InteractionTypesList();
+        }
         return interactionTypes;
     }
 
@@ -420,24 +555,6 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     }
 
     /**
-     * Gets the value of the negative property.
-     *
-     * @return possible object is {@link Boolean }
-     */
-    public boolean isNegative() {
-        return isNegative;
-    }
-
-    /**
-     * Sets the value of the negative property.
-     *
-     * @param value allowed object is {@link Boolean }
-     */
-    public void setNegative( boolean value ) {
-        this.isNegative = value;
-    }
-
-    /**
      * Check if the optional confidencesList is defined.
      *
      * @return true if defined, false otherwise.
@@ -452,6 +569,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @return possible object is {@link Confidence }
      */
     public Collection<Confidence> getConfidencesList() {
+        if (confidencesList == null){
+            confidencesList = new InteractionXmlConfidencesList();
+        }
         return confidencesList;
     }
 
@@ -470,6 +590,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @return possible object is {@link Parameter }
      */
     public Collection<Parameter> getParametersList() {
+        if (parametersList == null){
+            parametersList = new InteractionXmlParametersList();
+        }
         return parametersList;
     }
 
@@ -488,6 +611,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @return possible object is {@link Attribute }
      */
     public Collection<Attribute> getAttributes() {
+        if (attributeList == null){
+            attributeList = new InteractionXmlAnnotationList();
+        }
         return attributeList;
     }
 
@@ -501,73 +627,38 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         return getAttributes();
     }
 
-    protected void processAddedXrefEvent(psidev.psi.mi.jami.model.Xref added) {
-
-        // the added identifier is imex and the current imex is not set
-        if (imexId == null && XrefUtils.isXrefFromDatabase(added, psidev.psi.mi.jami.model.Xref.IMEX_MI, psidev.psi.mi.jami.model.Xref.IMEX)){
-            // the added xref is imex-primary
-            if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY)){
-                imexId = added;
-            }
-        }
-    }
-
-    protected void processRemovedXrefEvent(psidev.psi.mi.jami.model.Xref removed) {
-        // the removed identifier is pubmed
-        if (imexId != null && imexId.equals(removed)){
-            imexId = null;
-        }
-    }
-
-    protected void clearPropertiesLinkedToXrefs() {
-        imexId = null;
-    }
-
     protected Interaction getInstance(){
         return this;
     }
 
-    protected void processAddedChecksumEvent(Checksum added) {
-
-        if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
-            rigid = added;
-        }
-    }
-
-    protected void processRemovedChecksumEvent(Checksum removed) {
-        if (rigid != null && rigid.equals(removed)){
-            rigid = null;
-        }
-    }
-
-    protected void clearPropertiesLinkedToChecksums() {
-        rigid = null;
-    }
-
     protected void processAddedExperimentEvent(ExperimentDescription added) {
 
-        if (experiment == null){
-            experiment = added;
+        if (getExperiment() == null){
+            super.setExperiment(added);
         }
     }
 
     protected void processRemovedExperimentEvent(ExperimentDescription removed) {
 
-        if (experimentDescriptions.isEmpty()){
-            experiment = null;
+        if (getExperimentDescriptions().isEmpty()){
+            super.setExperiment(null);
         }
-        else if (experiment != null && removed.equals(experiment)){
-            experiment = experimentDescriptions.iterator().next();
+        else if (getExperiment() != null && removed.equals(getExperiment())){
+            super.setExperiment(experimentDescriptions.iterator().next());
         }
     }
 
     protected void clearPropertiesLinkedToExperiments() {
 
-        experiment = null;
+        super.setExperiment(null);
     }
 
     ///////////////////////////
     // Object override
+
+    protected Collection<Alias> getComplexAliases(){
+        return getAliases();
+    }
 
     @Override
     public void setShortName(String name) {
@@ -575,12 +666,16 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
            this.names = null;
         }
         else if (names != null){
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
         else  {
             names = new InteractionNames();
-            names.setShortLabel(name);
+            super.setShortName(name);
         }
+    }
+
+    protected void setShortNameOnly(String name) {
+        super.setShortName(name);
     }
 
     @Override
@@ -592,78 +687,86 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             this.xmlAvailability = new InteractionAvailability(availability);
         }
         else {
-            this.xmlAvailability.setValue(availability);
+            super.setAvailability(availability);
         }
+    }
+
+    protected void setAvailabilityOnly(String availability) {
+        super.setAvailability(availability);
     }
 
     @Override
     public void setExperiment(Experiment experiment) {
         if (experiment != null){
-            if (this.experiment != null){
-                experimentDescriptions.remove(this.experiment);
+            if (getExperiment() != null){
+                getExperimentDescriptions().remove(getExperiment());
             }
             if(experiment instanceof ExperimentDescription){
-                this.experiment = experiment;
-                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) this.experiment);
+                super.setExperiment(experiment);
+                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
             }
             else {
-                this.experiment = new ExperimentDescription();
+                super.setExperiment(new ExperimentDescription());
 
-                ExperimentCloner.copyAndOverrideExperimentProperties(experiment, this.experiment);
-                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) this.experiment);
+                ExperimentCloner.copyAndOverrideExperimentProperties(experiment, getExperiment());
+                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
             }
         }
-        else if (!this.experimentDescriptions.isEmpty()) {
-            this.experiment = null;
-            ((InteractionExperimentsList)experimentDescriptions).clearOnly();
+        else if (!getExperimentDescriptions().isEmpty()) {
+            super.setExperiment(null);
+            ((InteractionExperimentsList)getExperimentDescriptions()).clearOnly();
         }
     }
 
     @Override
     public void setType(CvTerm term) {
         if (term != null){
-            if (this.type != null){
-                interactionTypes.remove(this.type);
+            if (getType() != null){
+                getInteractionTypes().remove(getType());
             }
             if(term instanceof InteractionType){
-                this.type = term;
-                ((InteractionTypesList)interactionTypes).addOnly((InteractionType) this.type);
+                super.setType(term);
+                ((InteractionTypesList)getInteractionTypes()).addOnly(getType());
             }
             else {
-                this.type = new InteractionType();
+                super.setType(new InteractionType());
 
-                CvTermCloner.copyAndOverrideCvTermProperties(term, this.type);
-                ((InteractionTypesList)interactionTypes).addOnly((InteractionType) this.type);
+                CvTermCloner.copyAndOverrideCvTermProperties(term, getType());
+                ((InteractionTypesList)getInteractionTypes()).addOnly(getType());
             }
         }
-        else if (!this.interactionTypes.isEmpty()) {
-            this.type = null;
-            ((InteractionTypesList)interactionTypes).clearOnly();
+        else if (!getInteractionTypes().isEmpty()) {
+            super.setType(null);
+            ((InteractionTypesList)getInteractionTypes()).clearOnly();
         }
+    }
+
+    protected void setTypeOnly(CvTerm term) {
+        super.setType(term);
     }
 
     @Override
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
         if (experiment != null){
-            if (this.experiment != null){
-                experimentDescriptions.remove(this.experiment);
+            if (getExperiment() != null){
+                getExperimentDescriptions().remove(getExperiment());
             }
             if(experiment instanceof ExperimentDescription){
-                this.experiment = experiment;
-                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) this.experiment);
-                this.experiment.addInteractionEvidence(this);
+                super.setExperiment(experiment);
+                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
+                getExperiment().addInteractionEvidence(this);
             }
             else {
-                this.experiment = new ExperimentDescription();
+                super.setExperiment(new ExperimentDescription());
 
-                ExperimentCloner.copyAndOverrideExperimentProperties(experiment, this.experiment);
-                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) this.experiment);
-                this.experiment.addInteractionEvidence(this);
+                ExperimentCloner.copyAndOverrideExperimentProperties(experiment, getExperiment());
+                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
+                getExperiment().addInteractionEvidence(this);
             }
         }
-        else if (!this.experimentDescriptions.isEmpty()) {
-            this.experiment = null;
-            ((InteractionExperimentsList)experimentDescriptions).clearOnly();
+        else if (!getExperimentDescriptions().isEmpty()) {
+            super.setExperiment(null);
+            ((InteractionExperimentsList)getExperimentDescriptions()).clearOnly();
         }
     }
 
@@ -672,7 +775,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         final StringBuilder sb = new StringBuilder();
         sb.append( "Interaction" );
         sb.append( "{id=" ).append( id );
-        sb.append( ", imexId='" ).append( imexId ).append( '\'' );
+        sb.append( ", imexId='" ).append( getImexId() ).append( '\'' );
         sb.append( ", names=" ).append( names );
         sb.append( ", xref=" ).append( xref );
         sb.append( ", xmlAvailability=" ).append(xmlAvailability);
@@ -682,7 +785,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         sb.append( ", interactionTypes=" ).append( interactionTypes );
         sb.append( ", modelled=" ).append( modelled );
         sb.append( ", intraMolecular=" ).append( intraMolecular );
-        sb.append( ", negative=" ).append( isNegative );
+        sb.append( ", negative=" ).append( isNegative() );
         sb.append( ", confidencesList=" ).append(confidencesList);
         sb.append( ", parametersList=" ).append(parametersList);
         sb.append( ", attributes=" ).append( attributeList );
@@ -703,7 +806,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             return false;
         if ( confidencesList != null ? !confidencesList.equals( that.confidencesList) : that.confidencesList != null ) return false;
         if ( experimentDescriptions != null ? !experimentDescriptions.equals( that.experimentDescriptions) : that.experimentDescriptions != null ) return false;
-        if ( imexId != null ? !imexId.equals( that.imexId ) : that.imexId != null ) return false;
+        if ( getImexId() != null ? !getImexId().equals(that.getImexId()) : that.getImexId() != null ) return false;
         if ( inferredInteractions != null ? !inferredInteractions.equals( that.inferredInteractions ) : that.inferredInteractions != null )
             return false;
         if ( interactionTypes != null ? !interactionTypes.equals( that.interactionTypes ) : that.interactionTypes != null )
@@ -712,7 +815,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             return false;
         if ( modelled != null ? !modelled.equals( that.modelled ) : that.modelled != null ) return false;
         if ( names != null ? !names.equals( that.names ) : that.names != null ) return false;
-        if ( isNegative != that.isNegative ) return false;
+        if ( isNegative() != that.isNegative() ) return false;
         if ( parametersList != null ? !parametersList.equals( that.parametersList) : that.parametersList != null ) return false;
         if ( xmlParticipants != null ? !xmlParticipants.equals( that.xmlParticipants) : that.xmlParticipants != null )
             return false;
@@ -724,7 +827,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     public int hashCode() {
         int result;
         result = id;
-        result = 31 * result + ( imexId != null ? imexId.hashCode() : 0 );
+        result = 31 * result + ( getImexId() != null ? getImexId().hashCode() : 0 );
         result = 31 * result + ( names != null ? names.hashCode() : 0 );
         result = 31 * result + ( xref != null ? xref.hashCode() : 0 );
         result = 31 * result + ( xmlAvailability != null ? xmlAvailability.hashCode() : 0 );
@@ -734,7 +837,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         result = 31 * result + ( interactionTypes != null ? interactionTypes.hashCode() : 0 );
         result = 31 * result + ( modelled != null ? modelled.hashCode() : 0 );
         result = 31 * result + ( intraMolecular != null ? intraMolecular.hashCode() : 0 );
-        result = 31 * result + ( isNegative ? 0 : 1 );
+        result = 31 * result + ( isNegative() ? 0 : 1 );
         result = 31 * result + ( confidencesList != null ? confidencesList.hashCode() : 0 );
         result = 31 * result + ( parametersList != null ? parametersList.hashCode() : 0 );
         result = 31 * result + ( attributeList != null ? attributeList.hashCode() : 0 );
@@ -742,44 +845,148 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     }
 
     public String getFullName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.names != null ? this.names.getFullName() : null;
     }
 
     public void setFullName(String name) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (this.names != null){
+            this.names.setFullName(name);
+        }
+        else if (name != null){
+            this.names = new InteractionNames();
+            this.names.setShortLabel(name);
+            this.names.setFullName(name);
+        }
     }
 
     public Collection<Alias> getAliases() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if (aliases == null){
+            aliases = new ArrayList<Alias>();
+        }
+        return aliases;
     }
 
     public Organism getOrganism() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.organism;
     }
 
     public void setOrganism(Organism organism) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.organism = organism;
+    }
+
+    @Override
+    public ExperimentDescription getExperiment() {
+        return (ExperimentDescription) super.getExperiment();
+    }
+
+    @Override
+    public Collection<? extends ParticipantEvidence> getParticipantEvidences() {
+        return getParticipants();
+    }
+
+    @Override
+    public boolean addParticipantEvidence(ParticipantEvidence part) {
+        if (part == null){
+            return false;
+        }
+        if (xmlParticipants == null){
+            xmlParticipants = new ArrayList<Participant>();
+        }
+        if (part instanceof Participant){
+            if (xmlParticipants.add((Participant)part)){
+                part.setInteractionEvidence(this);
+                return true;
+            }
+            return false;
+        }
+        else {
+            Participant p = new Participant();
+            ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(part, p);
+            if (xmlParticipants.add(p)){
+                p.setInteractionEvidence(this);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    @Override
+    public boolean removeParticipantEvidence(ParticipantEvidence part) {
+        if (part == null){
+            return false;
+        }
+        if (xmlParticipants == null){
+            xmlParticipants = new ArrayList<Participant>();
+        }
+        if (part instanceof Participant){
+            if (xmlParticipants.remove(part)){
+                part.setInteractionEvidence(null);
+                return true;
+            }
+            return false;
+        }
+        else {
+            Participant p = new Participant();
+            ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(part, p);
+            if (xmlParticipants.remove(p)){
+                p.setInteractionEvidence(null);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    @Override
+    public InteractionType getType() {
+        return (InteractionType) super.getType();
+    }
+
+    public Collection<InteractionEvidence> getInteractionEvidences() {
+        return getExperiment() != null ? getExperiment().getInteractionEvidences() : Collections.EMPTY_LIST;
+    }
+
+    public Collection<ModelledConfidence> getConfidences() {
+        if (modelledConfidences == null){
+            modelledConfidences = new ComplexConfidencesList();
+        }
+        return modelledConfidences;
+    }
+
+    public Collection<ModelledParameter> getParameters() {
+        if (modelledParameters == null){
+            modelledParameters = new ComplexParametersList();
+        }
+        return modelledParameters;
     }
 
     protected class InteractionNames extends Names{
+        protected AliasList extendedAliases = new AliasList();
 
         public String getShortLabel() {
-            return shortName;
+            return getShortName();
         }
 
         public boolean hasShortLabel() {
-            return shortName != null;
+            return getShortName() != null;
         }
 
         public void setShortLabel( String value ) {
-            shortName = value;
+           setShortNameOnly(value);
+        }
+
+        public Collection<psidev.psi.mi.xml.model.Alias> getAliases() {
+            return this.extendedAliases;
+        }
+
+        public boolean hasAliases() {
+            return ( extendedAliases != null ) && ( !extendedAliases.isEmpty() );
         }
 
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Names" );
-            sb.append( "{shortLabel='" ).append( shortName ).append( '\'' );
+            sb.append( "{shortLabel='" ).append( getShortName() ).append( '\'' );
             sb.append( ", fullName='" ).append( getFullName() ).append( '\'' );
             sb.append( ", aliases=" ).append( getAliases()  );
             sb.append( '}' );
@@ -793,9 +1000,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
             Names names = ( Names ) o;
 
-            if ( getAliases()  != null ? !getAliases() .equals(names.getAliases()) : names.getAliases() != null ) return false;
+            if ( extendedAliases  != null ? !extendedAliases .equals(names.getAliases()) : names.getAliases() != null ) return false;
             if ( getFullName() != null ? !getFullName().equals( names.getFullName() ) : names.getFullName() != null ) return false;
-            if ( shortName != null ? !shortName.equals(names.getShortLabel()) : shortName != null ) return false;
+            if ( getShortName() != null ? !getShortName().equals(names.getShortLabel()) : getShortName() != null ) return false;
 
             return true;
         }
@@ -803,10 +1010,90 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         public int hashCode() {
             int result;
-            result = ( shortName != null ? shortName.hashCode() : 0 );
+            result = ( getShortName() != null ? getShortName().hashCode() : 0 );
             result = 31 * result + ( getFullName() != null ? getFullName().hashCode() : 0 );
-            result = 31 * result + ( getAliases() != null ? getAliases() .hashCode() : 0 );
+            result = 31 * result + ( extendedAliases != null ? extendedAliases .hashCode() : 0 );
             return result;
+        }
+
+        protected class AliasList extends AbstractListHavingPoperties<psidev.psi.mi.xml.model.Alias> {
+
+            @Override
+            protected void processAddedObjectEvent(psidev.psi.mi.xml.model.Alias added) {
+                ((InteractionAliasList) getComplexAliases()).addOnly(added);
+            }
+
+            @Override
+            protected void processRemovedObjectEvent(psidev.psi.mi.xml.model.Alias removed) {
+                ((InteractionAliasList)getComplexAliases()).removeOnly(removed);
+            }
+
+            @Override
+            protected void clearProperties() {
+                ((InteractionAliasList)getComplexAliases()).clearOnly();
+            }
+        }
+    }
+
+    private class InteractionAliasList extends AbstractListHavingPoperties<psidev.psi.mi.jami.model.Alias> {
+        public InteractionAliasList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Alias added) {
+
+            if (names != null){
+                InteractionNames name = (InteractionNames) names;
+
+                if (added instanceof psidev.psi.mi.xml.model.Alias){
+                    ((InteractionNames.AliasList) name.getAliases()).addOnly((psidev.psi.mi.xml.model.Alias) added);
+                }
+                else {
+                    psidev.psi.mi.xml.model.Alias fixedAlias = new psidev.psi.mi.xml.model.Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
+
+                    ((InteractionNames.AliasList) name.getAliases()).addOnly(fixedAlias);
+                }
+            }
+            else {
+                if (added instanceof psidev.psi.mi.xml.model.Alias){
+                    names = new InteractionNames();
+                    ((InteractionNames.AliasList) names.getAliases()).addOnly((psidev.psi.mi.xml.model.Alias) added);
+                }
+                else {
+                    psidev.psi.mi.xml.model.Alias fixedAlias = new psidev.psi.mi.xml.model.Alias(added.getName(), added.getType() != null ? added.getType().getShortName() : null, added.getType() != null ? added.getType().getMIIdentifier() : null);
+
+                    names = new InteractionNames();
+                    ((InteractionNames.AliasList) names.getAliases()).addOnly((psidev.psi.mi.xml.model.Alias) fixedAlias);
+                }
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Alias removed) {
+
+            if (names != null){
+                InteractionNames name = (InteractionNames) names;
+
+                if (removed instanceof psidev.psi.mi.xml.model.Alias){
+                    name.extendedAliases.removeOnly((psidev.psi.mi.xml.model.Alias) removed);
+
+                }
+                else {
+                    psidev.psi.mi.xml.model.Alias fixedAlias = new psidev.psi.mi.xml.model.Alias(removed.getName(), removed.getType() != null ? removed.getType().getShortName() : null, removed.getType() != null ? removed.getType().getMIIdentifier() : null);
+
+                    name.extendedAliases.removeOnly(fixedAlias);
+                }
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+
+            if (names != null){
+                InteractionNames name = (InteractionNames) names;
+                name.extendedAliases.clearOnly();
+            }
         }
     }
 
@@ -836,42 +1123,42 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
                 super.setPrimaryRef(value);
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((InteractionIdentifierList)identifiers).addOnly(value);
+                        ((InteractionIdentifierList)getIdentifiers()).addOnly(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((InteractionXrefList)xrefs).addOnly(value);
+                        ((InteractionXrefList)getXrefs()).addOnly(value);
                         processAddedXrefEvent(value);
                     }
                 }
             }
             else if (isPrimaryAnIdentity){
-                ((InteractionIdentifierList)identifiers).removeOnly(getPrimaryRef());
+                ((InteractionIdentifierList)getIdentifiers()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((InteractionIdentifierList)identifiers).addOnly(value);
+                        ((InteractionIdentifierList)getIdentifiers()).addOnly(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((InteractionXrefList)xrefs).addOnly(value);
+                        ((InteractionXrefList)getXrefs()).addOnly(value);
                         processAddedXrefEvent(value);
                     }
                 }
             }
             else {
-                ((InteractionXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((InteractionXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 processRemovedXrefEvent(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     if (XrefUtils.isXrefAnIdentifier(value)){
-                        ((InteractionIdentifierList)identifiers).addOnly(value);
+                        ((InteractionIdentifierList)getIdentifiers()).addOnly(value);
                         isPrimaryAnIdentity = true;
                     }
                     else {
-                        ((InteractionXrefList)xrefs).addOnly(value);
+                        ((InteractionXrefList)getXrefs()).addOnly(value);
                         processAddedXrefEvent(value);
                     }
                 }
@@ -925,10 +1212,10 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             @Override
             protected void processAddedObjectEvent(DbReference added) {
                 if (XrefUtils.isXrefAnIdentifier(added)){
-                    ((InteractionIdentifierList)identifiers).addOnly(added);
+                    ((InteractionIdentifierList)getIdentifiers()).addOnly(added);
                 }
                 else {
-                    ((InteractionXrefList)xrefs).addOnly(added);
+                    ((InteractionXrefList)getXrefs()).addOnly(added);
                     processAddedXrefEvent(added);
                 }
             }
@@ -936,10 +1223,10 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
                 if (XrefUtils.isXrefAnIdentifier(removed)){
-                    ((InteractionIdentifierList)identifiers).removeOnly(removed);
+                    ((InteractionIdentifierList)getIdentifiers()).removeOnly(removed);
                 }
                 else {
-                    ((InteractionXrefList)xrefs).removeOnly(removed);
+                    ((InteractionXrefList)getXrefs()).removeOnly(removed);
                     processRemovedXrefEvent(removed);
                 }
             }
@@ -947,9 +1234,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((InteractionIdentifierList)identifiers).retainAllOnly(primary);
+                ((InteractionIdentifierList)getIdentifiers()).retainAllOnly(primary);
                 clearPropertiesLinkedToXrefs();
-                ((InteractionXrefList)xrefs).retainAllOnly(primary);
+                ((InteractionXrefList)getXrefs()).retainAllOnly(primary);
             }
         }
     }
@@ -1031,7 +1318,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         protected void clearProperties() {
             if (xref != null){
                 InteractionXref reference = (InteractionXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(xrefs);
+                reference.extendedSecondaryRefList.retainAllOnly(getXrefs());
 
                 if (reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -1125,7 +1412,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             clearPropertiesLinkedToXrefs();
             if (xref != null){
                 InteractionXref reference = (InteractionXref) xref;
-                reference.extendedSecondaryRefList.retainAllOnly(identifiers);
+                reference.extendedSecondaryRefList.retainAllOnly(getIdentifiers());
 
                 if (!reference.isPrimaryAnIdentity){
                     reference.setPrimaryRefOnly(null);
@@ -1146,11 +1433,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
         public InteractionAvailability(int id, String value) {
             setId( id );
-            availability = value;
+            setAvailabilityOnly(value);
         }
 
         public InteractionAvailability(String value) {
-            availability = value;
+            setAvailabilityOnly(value);
         }
 
         ///////////////////////////
@@ -1162,7 +1449,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
          * @return possible object is {@link String }
          */
         public String getValue() {
-            return availability;
+            return getAvailability();
         }
 
         /**
@@ -1171,7 +1458,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
          * @param value allowed object is {@link String }
          */
         public void setValue( String value ) {
-            availability = value;
+            setAvailabilityOnly(value);
         }
 
         /**
@@ -1180,7 +1467,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
          * @return true if defined, false otherwise.
          */
         public boolean hasValue() {
-            return !( availability == null || availability.trim().length() == 0 );
+            return !( getAvailability() == null || getAvailability().trim().length() == 0 );
         }
 
         /**
@@ -1204,7 +1491,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Availability" );
-            sb.append( "{value='" ).append( availability ).append( '\'' );
+            sb.append( "{value='" ).append( getAvailability() ).append( '\'' );
             sb.append( ", id=" ).append( id );
             sb.append( '}' );
             return sb.toString();
@@ -1218,7 +1505,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             final Availability that = ( Availability ) o;
 
             if ( id != that.getId() ) return false;
-            if ( availability != null ? !availability.equals( that.getValue() ) : that.getValue() != null ) return false;
+            if ( getAvailability() != null ? !getAvailability().equals(that.getValue()) : that.getValue() != null ) return false;
 
             return true;
         }
@@ -1226,53 +1513,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         public int hashCode() {
             int result;
-            result = ( availability != null ? availability.hashCode() : 0 );
+            result = ( getAvailability() != null ? getAvailability().hashCode() : 0 );
             result = 29 * result + id;
             return result;
-        }
-    }
-
-    private class ComplexExperimentsList extends AbstractListHavingPoperties<Experiment> {
-        public ComplexExperimentsList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(Experiment added) {
-
-            if (added instanceof ExperimentDescription){
-                ((InteractionExperimentsList)experimentDescriptions).addOnly((ExperimentDescription) added);
-                processAddedExperimentEvent((ExperimentDescription)added);
-            }
-            else {
-                ExperimentDescription exp = new ExperimentDescription();
-                ExperimentCloner.copyAndOverrideExperimentProperties(added, exp);
-
-                ((InteractionExperimentsList)experimentDescriptions).addOnly(exp);
-                processAddedExperimentEvent(exp);
-            }
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Experiment removed) {
-
-            if (removed instanceof ExperimentDescription){
-                ((InteractionExperimentsList)experimentDescriptions).removeOnly((ExperimentDescription) removed);
-                processRemovedExperimentEvent((ExperimentDescription) removed);
-            }
-            else {
-                ExperimentDescription exp = new ExperimentDescription();
-                ExperimentCloner.copyAndOverrideExperimentProperties(removed, exp);
-
-                ((InteractionExperimentsList)experimentDescriptions).addOnly(exp);
-                processRemovedExperimentEvent(exp);
-            }
-        }
-
-        @Override
-        protected void clearProperties() {
-            clearPropertiesLinkedToExperiments();
-            ((InteractionExperimentsList)experimentDescriptions).clearOnly();
         }
     }
 
@@ -1285,91 +1528,18 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         protected void processAddedObjectEvent(ExperimentDescription added) {
 
             processAddedExperimentEvent(added);
-            ((ComplexExperimentsList) experiments).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(ExperimentDescription removed) {
 
             processRemovedExperimentEvent(removed);
-            ((ComplexExperimentsList) experiments).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
 
             clearPropertiesLinkedToExperiments();
-            ((ComplexExperimentsList) experiments).clearOnly();
-        }
-    }
-
-    private class InteractionParticipantsList extends AbstractListHavingPoperties<ParticipantEvidence> {
-        public InteractionParticipantsList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.ParticipantEvidence added) {
-            if (added instanceof Participant){
-                added.setInteraction(getInstance());
-                ((InteractionXmlParticipantsList)xmlParticipants).addOnly((Participant) added);
-            }
-            else {
-                Participant f = new Participant();
-                ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(added, f);
-                f.setInteraction(getInstance());
-                ((InteractionXmlParticipantsList)xmlParticipants).addOnly(f);
-            }
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.ParticipantEvidence removed) {
-
-            if (removed instanceof Feature){
-                ((InteractionXmlParticipantsList)xmlParticipants).removeOnly(removed);
-            }
-            else {
-                Participant f = new Participant();
-                ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(removed, f);
-                ((InteractionXmlParticipantsList)xmlParticipants).removeOnly(f);
-            }
-            removed.setInteraction(null);
-        }
-
-        @Override
-        protected void clearProperties() {
-            for (Participant f : xmlParticipants){
-                f.setInteraction(null);
-            }
-            // clear all annotations
-            ((InteractionXmlParticipantsList)xmlParticipants).clearOnly();
-        }
-    }
-
-    private class InteractionXmlParticipantsList extends AbstractListHavingPoperties<Participant> {
-        public InteractionXmlParticipantsList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(Participant added) {
-
-            added.setInteraction(getInstance());
-            ((InteractionParticipantsList) participants).addOnly(added);
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Participant removed) {
-            ((InteractionParticipantsList) participants).removeOnly(removed);
-            removed.setInteraction(null);
-        }
-
-        @Override
-        protected void clearProperties() {
-            for (ParticipantEvidence f : participants){
-                f.setInteraction(null);
-            }
-            ((InteractionParticipantsList) participants).clearOnly();
         }
     }
 
@@ -1393,7 +1563,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
                     for (InferredInteractionParticipant p2 : bindingFeatures){
                         if (i != index){
                             if (p2.hasFeature()){
-                                f.getBindingFeatures().add(p2.getFeature());
+                                f.addBindingSiteEvidence(p2.getFeature());
                             }
                         }
                         i++;
@@ -1418,7 +1588,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
                     for (InferredInteractionParticipant p2 : bindingFeatures){
                         if (i != index){
                             if (p2.hasFeature()){
-                                f.getBindingFeatures().remove(p2.getFeature());
+                                f.removeBindingSiteEvidence(p2.getFeature());
                             }
                         }
                         i++;
@@ -1431,9 +1601,9 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void clearProperties() {
 
-            for (ParticipantEvidence p : participants){
-                for (psidev.psi.mi.jami.model.Feature f : p.getFeatures()){
-                    f.getBindingFeatures().clear();
+            for (Participant p : getParticipants()){
+                for (Feature f : p.getFeatures()){
+                    f.getBindingSiteEvidences().clear();
                 }
             }
         }
@@ -1447,8 +1617,8 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void processAddedObjectEvent(InteractionType added) {
 
-            if (type == null){
-                type = added;
+            if (getType() == null){
+                setTypeOnly(added);
             }
         }
 
@@ -1456,17 +1626,61 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         protected void processRemovedObjectEvent(InteractionType removed) {
 
             if (isEmpty()){
-                type = null;
+                setTypeOnly(null);
             }
-            else if (type != null && removed.equals(type)){
-                type = iterator().next();
+            else if (getType() != null && removed.equals(getType())){
+                setTypeOnly(iterator().next());
             }
         }
 
         @Override
         protected void clearProperties() {
 
-            type = null;
+            setTypeOnly(null);
+        }
+    }
+
+    private class ComplexConfidencesList extends AbstractListHavingPoperties<ModelledConfidence> {
+        public ComplexConfidencesList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.ModelledConfidence added) {
+            if (added instanceof Confidence){
+                ((InteractionXmlConfidencesList)getConfidencesList()).addOnly((Confidence) added);
+            }
+            else {
+                Confidence conf = cloneConfidence(added);
+                ((InteractionXmlConfidencesList)getConfidencesList()).addOnly(conf);
+            }
+        }
+
+        private Confidence cloneConfidence(psidev.psi.mi.jami.model.ModelledConfidence added) {
+            Confidence conf = new Confidence();
+            Unit unit = new Unit();
+            unit.setShortName(added.getType().getShortName());
+            unit.setMIIdentifier(added.getType().getMIIdentifier());
+            conf.setUnit(unit);
+            conf.setValue(added.getValue());
+            return conf;
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(ModelledConfidence removed) {
+            if (removed instanceof Confidence){
+                ((InteractionXmlConfidencesList)getConfidencesList()).removeOnly(removed);
+            }
+            else {
+                Confidence conf = cloneConfidence(removed);
+                ((InteractionXmlConfidencesList)getConfidencesList()).removeOnly(conf);
+            }
+        }
+
+        @Override
+        protected void clearProperties() {
+            // clear all annotations
+            ((InteractionXmlConfidencesList)getConfidencesList()).retainAllOnly(getExperimentalConfidences());
         }
     }
 
@@ -1478,11 +1692,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Confidence added) {
             if (added instanceof Confidence){
-                ((InteractionXmlConfidencesList)confidencesList).addOnly((Confidence) added);
+                ((InteractionXmlConfidencesList)getConfidencesList()).addOnly((Confidence) added);
             }
             else {
                 Confidence conf = cloneConfidence(added);
-                ((InteractionXmlConfidencesList)confidencesList).addOnly(conf);
+                ((InteractionXmlConfidencesList)getConfidencesList()).addOnly(conf);
             }
         }
 
@@ -1499,18 +1713,18 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Confidence removed) {
             if (removed instanceof Confidence){
-                ((InteractionXmlConfidencesList)confidencesList).removeOnly(removed);
+                ((InteractionXmlConfidencesList)getConfidencesList()).removeOnly(removed);
             }
             else {
                 Confidence conf = cloneConfidence(removed);
-                ((InteractionXmlConfidencesList)confidencesList).removeOnly(conf);
+                ((InteractionXmlConfidencesList)getConfidencesList()).removeOnly(conf);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractionXmlConfidencesList)confidencesList).clearOnly();
+            ((InteractionXmlConfidencesList)getConfidencesList()).clearOnly();
         }
     }
 
@@ -1521,19 +1735,71 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
         @Override
         protected void processAddedObjectEvent(Confidence added) {
-
-            ((InteractionConfidencesList) confidences).addOnly(added);
+            ((InteractionConfidencesList) getExperimentalConfidences()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Confidence removed) {
 
-            ((InteractionConfidencesList) confidences).removeOnly(removed);
+            ((InteractionConfidencesList) getExperimentalConfidences()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((InteractionConfidencesList) confidences).clearOnly();
+            ((InteractionConfidencesList) getExperimentalConfidences()).clearOnly();
+            ((ComplexConfidencesList) getConfidences()).clearOnly();
+        }
+    }
+
+    private class ComplexParametersList extends AbstractListHavingPoperties<ModelledParameter> {
+        public ComplexParametersList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.ModelledParameter added) {
+            if (added instanceof Parameter){
+                ((InteractionXmlParametersList)getParametersList()).addOnly((Parameter) added);
+            }
+            else {
+                Parameter param = cloneParameter(added);
+
+                ((InteractionXmlParametersList)getParametersList()).addOnly(param);
+            }
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.ModelledParameter removed) {
+            if (removed instanceof ExperimentalPreparation){
+                ((InteractionXmlParametersList)getParametersList()).removeOnly(removed);
+            }
+            else {
+                Parameter param = cloneParameter(removed);
+                ((InteractionXmlParametersList)getParametersList()).removeOnly(param);
+            }
+        }
+
+        private Parameter cloneParameter(psidev.psi.mi.jami.model.ModelledParameter removed) {
+            Parameter param = new Parameter();
+            param.setTerm(removed.getType().getShortName());
+            param.setTermAc(removed.getType().getMIIdentifier());
+            if (removed.getUnit() != null){
+                param.setUnit(removed.getType().getShortName());
+                param.setUnitAc(removed.getType().getMIIdentifier());
+            }
+            param.setBase(removed.getValue().getBase());
+            param.setExponent(removed.getValue().getExponent());
+            param.setFactor(removed.getValue().getFactor().doubleValue());
+            if (removed.getUncertainty() != null){
+                param.setUncertainty(removed.getUncertainty().doubleValue());
+            }
+            return param;
+        }
+
+        @Override
+        protected void clearProperties() {
+            // clear all annotations
+            ((InteractionXmlParametersList)getParametersList()).retainAllOnly(getExperimentalParameters());
         }
     }
 
@@ -1545,23 +1811,23 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Parameter added) {
             if (added instanceof Parameter){
-                ((InteractionXmlParametersList)parametersList).addOnly((Parameter) added);
+                ((InteractionXmlParametersList)getParametersList()).addOnly((Parameter) added);
             }
             else {
                 Parameter param = cloneParameter(added);
 
-                ((InteractionXmlParametersList)parametersList).addOnly(param);
+                ((InteractionXmlParametersList)getParametersList()).addOnly(param);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Parameter removed) {
             if (removed instanceof ExperimentalPreparation){
-                ((InteractionXmlParametersList)parametersList).removeOnly(removed);
+                ((InteractionXmlParametersList)getParametersList()).removeOnly(removed);
             }
             else {
                 Parameter param = cloneParameter(removed);
-                ((InteractionXmlParametersList)parametersList).removeOnly(param);
+                ((InteractionXmlParametersList)getParametersList()).removeOnly(param);
             }
         }
 
@@ -1585,7 +1851,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractionXmlParametersList)parametersList).clearOnly();
+            ((InteractionXmlParametersList)parametersList).retainAllOnly(getParameters());
         }
     }
 
@@ -1597,18 +1863,19 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void processAddedObjectEvent(Parameter added) {
 
-            ((InteractionParametersList) parameters).addOnly(added);
+            ((InteractionParametersList) getExperimentalParameters()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Parameter removed) {
 
-            ((InteractionParametersList) parameters).removeOnly(removed);
+            ((InteractionParametersList) getExperimentalParameters()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((InteractionParametersList) parameters).clearOnly();
+            ((InteractionParametersList) getExperimentalParameters()).clearOnly();
+            ((ComplexParametersList) getParameters()).clearOnly();
         }
     }
 
@@ -1621,10 +1888,12 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
             if (added instanceof Attribute){
                 ((InteractionXmlAnnotationList)attributeList).addOnly((Attribute) added);
+                processAddedAnnotationEvent(added);
             }
             else {
                 Attribute att = new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue());
                 ((InteractionXmlAnnotationList)attributeList).addOnly(att);
+                processAddedAnnotationEvent(att);
             }
         }
 
@@ -1632,15 +1901,18 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
                 ((InteractionXmlAnnotationList)attributeList).removeOnly(removed);
+                processRemovedAnnotationEvent(removed);
             }
             else {
                 Attribute att = new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue());
                 ((InteractionXmlAnnotationList)attributeList).removeOnly(att);
+                processRemovedAnnotationEvent(att);
             }
         }
 
         @Override
         protected void clearProperties() {
+            clearPropertiesLinkedToAnnotations();
             // clear all annotations
             ((InteractionXmlAnnotationList)attributeList).clearOnly();
         }
@@ -1658,7 +1930,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
                     && (added.getNameAc().equals(Checksum.RIGID_MI)
                     || added.getNameAc().equals("MI:1212"))){
                 Checksum check = new DefaultChecksum(new DefaultCvTerm(added.getName(), added.getNameAc()), added.getValue());
-                ((InteractionChecksumList) checksums).addOnly(check);
+                ((InteractionChecksumList) getChecksums()).addOnly(check);
 
                 processAddedChecksumEvent(check);
             }
@@ -1667,12 +1939,12 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
                     || added.getName().equals("checksum"))){
                 Checksum check = new DefaultChecksum(new DefaultCvTerm(added.getName(), added.getNameAc()), added.getValue());
 
-                ((InteractionChecksumList) checksums).addOnly(check);
+                ((InteractionChecksumList) getChecksums()).addOnly(check);
                 processAddedChecksumEvent(check);
             }
             else {
                 // we added a annotation, needs to add it in annotations
-                ((InteractionAnnotationList)annotations).addOnly(added);
+                ((InteractionAnnotationList)getAnnotations()).addOnly(added);
             }
         }
 
@@ -1682,27 +1954,28 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
                     && (removed.getNameAc().equals(Checksum.RIGID_MI)
                     || removed.getNameAc().equals("MI:1212"))){
                 Checksum check = new DefaultChecksum(new DefaultCvTerm(removed.getName(), removed.getNameAc()), removed.getValue());
-                ((InteractionChecksumList) checksums).removeOnly(check);
+                ((InteractionChecksumList) getChecksums()).removeOnly(check);
                 processRemovedChecksumEvent(check);
             }
             else if (removed.getNameAc() == null
                     && (removed.getName().equals(Checksum.RIGID)
                     || removed.getName().equals("checksum"))){
                 Checksum check = new DefaultChecksum(new DefaultCvTerm(removed.getName(), removed.getNameAc()), removed.getValue());
-                ((InteractionChecksumList) checksums).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName()), removed.getValue()));
+                ((InteractionChecksumList) getChecksums()).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName()), removed.getValue()));
                 processRemovedChecksumEvent(check);
             }
             else{
                 // we removed a annotation, needs to remove it in annotations
-                ((InteractionAnnotationList)annotations).removeOnly(removed);
+                ((InteractionAnnotationList)getAnnotations()).removeOnly(removed);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractionAnnotationList)annotations).clearOnly();
+            ((InteractionAnnotationList)getAnnotations()).clearOnly();
             clearPropertiesLinkedToChecksums();
+            clearPropertiesLinkedToAnnotations();
         }
     }
 
@@ -1714,12 +1987,12 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Checksum added) {
             processAddedChecksumEvent(added);
-            ((InteractionXmlAnnotationList)attributeList).addOnly(new Attribute(added.getMethod().getMIIdentifier(), added.getMethod().getShortName(), added.getValue()));
+            ((InteractionXmlAnnotationList)getAttributes()).addOnly(new Attribute(added.getMethod().getMIIdentifier(), added.getMethod().getShortName(), added.getValue()));
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Checksum removed) {
-            ((InteractionXmlAnnotationList)attributeList).removeOnly(new Attribute(removed.getMethod().getMIIdentifier(), removed.getMethod().getShortName(), removed.getValue()));
+            ((InteractionXmlAnnotationList)getAttributes()).removeOnly(new Attribute(removed.getMethod().getMIIdentifier(), removed.getMethod().getShortName(), removed.getValue()));
             processRemovedChecksumEvent(removed);
 
         }
@@ -1727,7 +2000,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((InteractionXmlAnnotationList)attributeList).clearOnly();
+            ((InteractionXmlAnnotationList)getAttributes()).clearOnly();
             clearPropertiesLinkedToChecksums();
         }
     }

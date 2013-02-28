@@ -31,7 +31,7 @@ public class PsimiXmlReaderExample {
                 System.out.println( interaction.getNames().getShortLabel() );
 
                 // browse all participants
-                for ( Participant participant : interaction.getInteractionParticipants() ) {
+                for ( Participant participant : interaction.getParticipants() ) {
 
                     Interactor interactor = participant.getInteractor();
                     String name = interactor.getNames().getShortLabel();

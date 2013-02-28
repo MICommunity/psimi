@@ -209,7 +209,7 @@ public class PsimiXmlExtractor {
             }
         }
 
-        for ( Participant p : interaction.getInteractionParticipants() ) {
+        for ( Participant p : interaction.getParticipants() ) {
             resolveReferences( file, p , interaction);
         }
 
@@ -717,7 +717,7 @@ public class PsimiXmlExtractor {
         }
 
         if ( participant.hasFeatures() ) {
-            for ( Feature feature : participant.getParticipantFeatures() ) {
+            for ( Feature feature : participant.getFeatures() ) {
                 if ( feature.hasExperimentRefs() ) {
                     if( hasInteractionExperimentDescription  && !parentInteraction.getExperimentDescriptions().isEmpty() ) {
                         for ( ExperimentRef eref : feature.getExperimentRefs()) {

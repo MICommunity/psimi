@@ -76,7 +76,7 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
 
     private Xref xref;
 
-    private Collection<Organism> hostOrganisms = new ExperimentHostOrganismList();
+    private Collection<Organism> hostOrganisms;
 
     private ParticipantIdentificationMethod participantIdentificationMethod;
 
@@ -84,37 +84,37 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
 
     private Collection<Confidence> confidences;
 
-    private Collection<Attribute> attributes=new ExperimentXmlAnnotationList();
+    private Collection<Attribute> attributes;
 
     ///////////////////////////
     // Constructors
 
     public ExperimentDescription() {
         super(new Bibref(), new InteractionDetectionMethod());
-        interactionDetectionMethod.setShortName(UNSPECIFIED_METHOD);
-        interactionDetectionMethod.setMIIdentifier(UNSPECIFIED_METHOD_MI);
+        getInteractionDetectionMethod().setShortName(UNSPECIFIED_METHOD);
+        getInteractionDetectionMethod().setMIIdentifier(UNSPECIFIED_METHOD_MI);
 
-        publication.getExperiments().add(this);
+        getPublication().getExperiments().add(this);
     }
 
     public ExperimentDescription( Bibref bibref, InteractionDetectionMethod interactionDetectionMethod ) {
         super(bibref, interactionDetectionMethod != null ? interactionDetectionMethod : new InteractionDetectionMethod());
         if (interactionDetectionMethod == null){
-            interactionDetectionMethod.setShortName(UNSPECIFIED_METHOD);
-            interactionDetectionMethod.setMIIdentifier(UNSPECIFIED_METHOD_MI);
+            getInteractionDetectionMethod().setShortName(UNSPECIFIED_METHOD);
+            getInteractionDetectionMethod().setMIIdentifier(UNSPECIFIED_METHOD_MI);
         }
 
-        publication.getExperiments().add(this);
+        getPublication().getExperiments().add(this);
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new ExperimentXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new ExperimentXrefList());
     }
 
     @Override
-    protected void initializeAnnotations() {
-        this.annotations = new ExperimentAnnotationList();
+    protected void initialiseAnnotations() {
+        initialiseAnnotationsWith(new ExperimentAnnotationList());
     }
 
     ///////////////////////////
@@ -148,12 +148,12 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             if (names == null){
                 names = new ExperimentNames();
             }
-            this.names.setShortLabel(value.getShortLabel());
+            super.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
             this.names.getAliases().addAll(value.getAliases());
         }
         else if (this.names != null) {
-            this.shortLabel = null;
+            super.setShortLabel(null);
             this.names = null;
         }
     }
@@ -164,7 +164,12 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      * @return possible object is {@link Bibref }
      */
     public Bibref getBibref() {
-        return (Bibref) publication;
+        return getPublication();
+    }
+
+    @Override
+    public Bibref getPublication() {
+        return (Bibref)super.getPublication();
     }
 
     /**
@@ -173,11 +178,11 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      * @param value allowed object is {@link Bibref }
      */
     public void setBibref( Bibref value ) {
-        if (this.publication != null){
-            this.publication.getExperiments().remove(this);
+        if (getPublication() != null){
+            getPublication().getExperiments().remove(this);
         }
-        this.publication = value;
-        this.publication.getExperiments().add(this);
+        super.setPublication(value);
+        getPublication().getExperiments().add(this);
     }
 
     /**
@@ -206,12 +211,12 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                this.xrefs.clear();
+                getXrefs().clear();
             }
             this.xref = new ExperimentXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            xrefs.clear();
+            getXrefs().clear();
             this.xref = null;
         }
     }
@@ -231,6 +236,9 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      * @return possible object is {@link Organism }
      */
     public Collection<Organism> getHostOrganisms() {
+        if (hostOrganisms == null){
+           hostOrganisms  = new ExperimentHostOrganismList();
+        }
         return hostOrganisms;
     }
 
@@ -240,7 +248,7 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      * @return possible object is {@link CvType }
      */
     public InteractionDetectionMethod getInteractionDetectionMethod() {
-        return (InteractionDetectionMethod) interactionDetectionMethod;
+        return (InteractionDetectionMethod) super.getInteractionDetectionMethod();
     }
 
     /**
@@ -250,12 +258,13 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      */
     public void setInteractionDetectionMethod( InteractionDetectionMethod value ) {
         if (value != null){
-            this.interactionDetectionMethod = value;
+            super.setInteractionDetectionMethod(value);
         }
         else {
-            this.interactionDetectionMethod = new InteractionDetectionMethod();
+            InteractionDetectionMethod interactionDetectionMethod = new InteractionDetectionMethod();
             interactionDetectionMethod.setShortName(UNSPECIFIED_METHOD);
             interactionDetectionMethod.setMIIdentifier(UNSPECIFIED_METHOD_MI);
+            super.setInteractionDetectionMethod(interactionDetectionMethod);
         }
     }
 
@@ -349,6 +358,9 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      * @return possible object is {@link Attribute }
      */
     public Collection<Attribute> getAttributes() {
+        if (attributes == null){
+            attributes =new ExperimentXmlAnnotationList();
+        }
         return attributes;
     }
 
@@ -369,26 +381,36 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
     ///////////////////////////
     // Object override
 
+
+    @Override
+    public Organism getHostOrganism() {
+        return (Organism) super.getHostOrganism();
+    }
+
     @Override
     public void setShortLabel(String name) {
         if (names != null){
-            names.setShortLabel(name);
+            super.setShortLabel(name);
         }
         else if (name == null){
-            shortLabel = null;
+            super.setShortLabel(null);
             names = null;
         }
         else {
             names = new ExperimentNames();
-            names.setShortLabel(name);
+            super.setShortLabel(name);
         }
+    }
+
+    protected void setShortLabelOnly(String name) {
+        super.setShortLabel(name);
     }
 
     @Override
     public void setPublication(Publication publication) {
         if (publication == null){
-            if (this.publication != null){
-                this.publication.getExperiments().remove(this);
+            if (getPublication() != null){
+                getPublication().getExperiments().remove(this);
             }
 
             super.setPublication(null);
@@ -431,33 +453,41 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
     public void setHostOrganism(psidev.psi.mi.jami.model.Organism organism) {
         if (organism != null){
             // first remove old psi mi if not null
-            if (this.hostOrganism != null){
-                hostOrganisms.remove(this.hostOrganism);
+            if (getHostOrganism() != null){
+                getHostOrganisms().remove(getHostOrganism());
             }
-            this.hostOrganism = organism;
-            ((ExperimentHostOrganismList)hostOrganisms).addOnly((Organism) this.hostOrganism);
+            super.setHostOrganism(organism);
+            ((ExperimentHostOrganismList)getHostOrganisms()).addOnly(getHostOrganism());
         }
         // remove all organisms if the collection is not empty
-        else if (!this.hostOrganisms.isEmpty()) {
-            this.hostOrganism = null;
-            ((ExperimentHostOrganismList)hostOrganisms).clearOnly();
+        else if (!getHostOrganisms().isEmpty()) {
+            super.setHostOrganism(null);
+            ((ExperimentHostOrganismList)getHostOrganisms()).clearOnly();
         }
+    }
+
+    protected void setHostOrganismOnly(psidev.psi.mi.jami.model.Organism organism) {
+        super.setHostOrganism(organism);
     }
 
     @Override
     public void setInteractionDetectionMethod(CvTerm term) {
-        if (interactionDetectionMethod == null){
-            this.interactionDetectionMethod = new InteractionDetectionMethod();
-            interactionDetectionMethod.setShortName(UNSPECIFIED_METHOD);
-            interactionDetectionMethod.setMIIdentifier(UNSPECIFIED_METHOD_MI);
+        if (getInteractionDetectionMethod() == null){
+            super.setInteractionDetectionMethod(new InteractionDetectionMethod());
+            getInteractionDetectionMethod().setShortName(UNSPECIFIED_METHOD);
+            getInteractionDetectionMethod().setMIIdentifier(UNSPECIFIED_METHOD_MI);
         }
-        else if (interactionDetectionMethod instanceof InteractionDetectionMethod){
-            this.interactionDetectionMethod = term;
+        else if (term instanceof InteractionDetectionMethod){
+            super.setInteractionDetectionMethod(term);
         }
         else {
-            this.interactionDetectionMethod = new InteractionDetectionMethod();
-            CvTermCloner.copyAndOverrideCvTermProperties(term, this.interactionDetectionMethod);
+            super.setInteractionDetectionMethod(new InteractionDetectionMethod());
+            CvTermCloner.copyAndOverrideCvTermProperties(term, getInteractionDetectionMethod());
         }
+    }
+
+    protected String getExperimentShortLabel(){
+        return super.getShortLabel();
     }
 
     @Override
@@ -466,10 +496,10 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
         sb.append( "ExperimentDescription" );
         sb.append( "{id=" ).append( id );
         sb.append( ", names=" ).append( names );
-        sb.append( ", bibref=" ).append( publication );
+        sb.append( ", bibref=" ).append( getPublication() );
         sb.append( ", xref=" ).append( xref );
         sb.append( ", hostOrganisms=" ).append( hostOrganisms );
-        sb.append( ", interactionDetectionMethod=" ).append( interactionDetectionMethod );
+        sb.append( ", interactionDetectionMethod=" ).append( getInteractionDetectionMethod() );
         sb.append( ", participantIdentificationMethod=" ).append( participantIdentificationMethod );
         sb.append( ", featureDetectionMethod=" ).append( featureDetectionMethod );
         sb.append( ", confidences=" ).append( confidences );
@@ -496,10 +526,10 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
         if ( id != that.id ) {
             return false;
         }
-        if ( publication != null ? !publication.equals( that.publication ) : that.publication != null ) {
+        if ( getPublication() != null ? !getPublication().equals( that.getPublication() ) : that.getPublication() != null ) {
             return false;
         }
-        if ( interactionDetectionMethod != null ? !interactionDetectionMethod.equals( that.interactionDetectionMethod ) : that.interactionDetectionMethod != null ) {
+        if ( getInteractionDetectionMethod() != null ? !getInteractionDetectionMethod().equals( that.getInteractionDetectionMethod() ) : that.getInteractionDetectionMethod() != null ) {
             return false;
         }
 
@@ -510,30 +540,30 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
     public int hashCode() {
         int result;
         result = id;
-        result = 29 * result + ( publication != null ? publication.hashCode() : 0 );
-        result = 29 * result + ( interactionDetectionMethod != null ? interactionDetectionMethod.hashCode() : 0 );
+        result = 29 * result + ( getPublication() != null ? getPublication().hashCode() : 0 );
+        result = 29 * result + ( getInteractionDetectionMethod() != null ? getInteractionDetectionMethod().hashCode() : 0 );
         return result;
     }
 
     protected class ExperimentNames extends Names{
 
         public String getShortLabel() {
-            return shortLabel;
+            return getExperimentShortLabel();
         }
 
         public boolean hasShortLabel() {
-            return shortLabel != null;
+            return getShortLabel() != null;
         }
 
         public void setShortLabel( String value ) {
-            shortLabel = value;
+            setShortLabelOnly(value);
         }
 
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
             sb.append( "Names" );
-            sb.append( "{shortLabel='" ).append( shortLabel ).append( '\'' );
+            sb.append( "{shortLabel='" ).append( getShortLabel() ).append( '\'' );
             sb.append( ", fullName='" ).append( super.getFullName() ).append( '\'' );
             sb.append( ", aliases=" ).append( super.getAliases() );
             sb.append( '}' );
@@ -549,7 +579,7 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
 
             if ( super.getAliases() != null ? !super.getAliases().equals( names.getAliases() ) : names.getAliases() != null ) return false;
             if ( super.getFullName() != null ? !super.getFullName().equals( names.getFullName() ) : names.getFullName() != null ) return false;
-            if ( shortLabel != null ? !shortLabel.equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
+            if ( getExperimentShortLabel() != null ? !getExperimentShortLabel().equals( names.getShortLabel() ) : names.getShortLabel() != null ) return false;
 
             return true;
         }
@@ -557,7 +587,7 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
         @Override
         public int hashCode() {
             int result;
-            result = ( shortLabel != null ? shortLabel.hashCode() : 0 );
+            result = ( getExperimentShortLabel() != null ? getExperimentShortLabel().hashCode() : 0 );
             result = 31 * result + ( super.getFullName() != null ? super.getFullName().hashCode() : 0 );
             result = 31 * result + ( super.getAliases() != null ? super.getAliases().hashCode() : 0 );
             return result;
@@ -591,45 +621,45 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
                     // patch for imex primary
                     if (XrefUtils.isXrefFromDatabase(value, psidev.psi.mi.jami.model.Xref.IMEX_MI, psidev.psi.mi.jami.model.Xref.IMEX)
                             && XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY)){
-                        if (publication == null){
-                            publication = new Bibref();
+                        if (getPublication() == null){
+                            setBibref(new Bibref());
                         }
-                        publication.getXrefs().add(value);
+                        getPublication().getXrefs().add(value);
                     }
                     // patch for primary-reference
                     else if (XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
-                        if (publication == null){
-                            publication = new Bibref();
+                        if (getPublication() == null){
+                            setBibref(new Bibref());
                         }
-                        publication.getIdentifiers().add(value);
+                        getPublication().getIdentifiers().add(value);
                     }
                     else {
-                        ((ExperimentXrefList)xrefs).addOnly(value);
+                        ((ExperimentXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
             else {
-                ((ExperimentXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((ExperimentXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
                     // patch for imex primary
                     if (XrefUtils.isXrefFromDatabase(value, psidev.psi.mi.jami.model.Xref.IMEX_MI, psidev.psi.mi.jami.model.Xref.IMEX)
                             && XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY)){
-                        if (publication == null){
-                            publication = new Bibref();
+                        if (getPublication() == null){
+                            setBibref(new Bibref());
                         }
-                        publication.getXrefs().add(value);
+                        getPublication().getXrefs().add(value);
                     }
                     // patch for primary-reference
                     else if (XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
-                        if (publication == null){
-                            publication = new Bibref();
+                        if (getPublication() == null){
+                            setBibref(new Bibref());
                         }
-                        publication.getIdentifiers().add(value);
+                        getPublication().getIdentifiers().add(value);
                     }
                     else {
-                        ((ExperimentXrefList)xrefs).addOnly(value);
+                        ((ExperimentXrefList)getXrefs()).addOnly(value);
                     }
                 }
             }
@@ -681,20 +711,20 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
                 // patch for imex primary
                 if (XrefUtils.isXrefFromDatabase(added, psidev.psi.mi.jami.model.Xref.IMEX_MI, psidev.psi.mi.jami.model.Xref.IMEX)
                         && XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY)){
-                    if (publication == null){
-                        publication = new Bibref();
+                    if (getPublication() == null){
+                        setBibref(new Bibref());
                     }
-                    publication.getXrefs().add(added);
+                    getPublication().getXrefs().add(added);
                 }
                 // patch for primary-reference
                 else if (XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
-                    if (publication == null){
-                        publication = new Bibref();
+                    if (getPublication() == null){
+                        setBibref(new Bibref());
                     }
-                    publication.getIdentifiers().add(added);
+                    getPublication().getIdentifiers().add(added);
                 }
                 else {
-                    ((ExperimentXrefList)xrefs).addOnly(added);
+                    ((ExperimentXrefList)getXrefs()).addOnly(added);
                 }
             }
 
@@ -703,31 +733,31 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
                 // patch for imex primary
                 if (XrefUtils.isXrefFromDatabase(removed, psidev.psi.mi.jami.model.Xref.IMEX_MI, psidev.psi.mi.jami.model.Xref.IMEX)
                         && XrefUtils.doesXrefHaveQualifier(removed, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY_MI, psidev.psi.mi.jami.model.Xref.IMEX_PRIMARY)){
-                    if (publication != null){
-                        publication.getXrefs().remove(removed);
+                    if (getPublication() != null){
+                        getPublication().getXrefs().remove(removed);
                     }
                     else {
-                        ((ExperimentXrefList)xrefs).removeOnly(removed);
+                        ((ExperimentXrefList)getXrefs()).removeOnly(removed);
                     }
                 }
                 // patch for primary-reference
                 else if (XrefUtils.doesXrefHaveQualifier(removed, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
-                    if (publication != null){
-                        publication.getIdentifiers().remove(removed);
+                    if (getPublication() != null){
+                        getPublication().getIdentifiers().remove(removed);
                     }
                     else {
-                        ((ExperimentXrefList)xrefs).removeOnly(removed);
+                        ((ExperimentXrefList)getXrefs()).removeOnly(removed);
                     }
                 }
                 else {
-                    ((ExperimentXrefList)xrefs).removeOnly(removed);
+                    ((ExperimentXrefList)getXrefs()).removeOnly(removed);
                 }
             }
 
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((ExperimentXrefList)xrefs).retainAllOnly(primary);
+                ((ExperimentXrefList)getXrefs()).retainAllOnly(primary);
             }
         }
     }
@@ -823,8 +853,8 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
         @Override
         protected void processAddedObjectEvent(Organism added) {
 
-            if (hostOrganism == null){
-                hostOrganism = added;
+            if (getHostOrganism() == null){
+                setHostOrganismOnly(added);
             }
         }
 
@@ -832,17 +862,17 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
         protected void processRemovedObjectEvent(Organism removed) {
 
             if (isEmpty()){
-                hostOrganism = null;
+                setHostOrganismOnly(null);
             }
-            else if (hostOrganism != null && removed.equals(hostOrganism)){
-                hostOrganism = iterator().next();
+            else if (getHostOrganism() != null && removed.equals(getHostOrganism())){
+                setHostOrganism(iterator().next());
             }
         }
 
         @Override
         protected void clearProperties() {
 
-            hostOrganism = null;
+            setHostOrganism(null);
         }
     }
 
@@ -854,27 +884,27 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
             if (added instanceof Attribute){
-                ((ExperimentXmlAnnotationList)attributes).addOnly((Attribute) added);
+                ((ExperimentXmlAnnotationList)getAttributes()).addOnly((Attribute) added);
             }
             else {
-                ((ExperimentXmlAnnotationList)attributes).addOnly(new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue()));
+                ((ExperimentXmlAnnotationList)getAttributes()).addOnly(new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue()));
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
-                ((ExperimentXmlAnnotationList)attributes).removeOnly(removed);
+                ((ExperimentXmlAnnotationList)getAttributes()).removeOnly(removed);
             }
             else {
-                ((ExperimentXmlAnnotationList)attributes).removeOnly(new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue()));
+                ((ExperimentXmlAnnotationList)getAttributes()).removeOnly(new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue()));
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((ExperimentXmlAnnotationList)attributes).clearOnly();
+            ((ExperimentXmlAnnotationList)getAttributes()).clearOnly();
         }
     }
 
@@ -889,11 +919,11 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
                     AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL) ||
                     AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR) ||
                     AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                ((Bibref) publication).getAttributes().add(added);
+                getPublication().getAttributes().add(added);
             }
             else {
                 // we added a annotation, needs to add it in annotations
-                ((ExperimentAnnotationList)annotations).addOnly(added);
+                ((ExperimentAnnotationList)getAnnotations()).addOnly(added);
             }
         }
 
@@ -904,18 +934,18 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
                     AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL) ||
                     AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR) ||
                     AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
-                ((Bibref) publication).getAttributes().remove(removed);
+                getPublication().getAttributes().remove(removed);
             }
             else {
                 // we removed a annotation, needs to remove it in annotations
-                ((ExperimentAnnotationList)annotations).removeOnly(removed);
+                ((ExperimentAnnotationList)getAnnotations()).removeOnly(removed);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((ExperimentAnnotationList)annotations).clearOnly();
+            ((ExperimentAnnotationList)getAnnotations()).clearOnly();
         }
     }
 }

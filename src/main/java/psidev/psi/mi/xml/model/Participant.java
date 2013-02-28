@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * A molecule participating in an interaction.
@@ -204,23 +205,23 @@ public class Participant extends DefaultParticipantEvidence implements Component
 
     private InteractionRef interactionRef;
 
-    private Collection<ParticipantIdentificationMethod> participantIdentificationMethods = new ParticipantIdentificationMethodsList();
+    private Collection<ParticipantIdentificationMethod> participantIdentificationMethods;
 
-    private Collection<ExperimentalRole> experimentalRoles = new ExperimentalRolesList();
+    private Collection<ExperimentalRole> experimentalRoles;
 
-    private Collection<ExperimentalPreparation> xmlExperimentalPreparations = new ExperimentalPreparationsXmlList();
+    private Collection<ExperimentalPreparation> xmlExperimentalPreparations;
 
     private Collection<ExperimentalInteractor> experimentalInteractors;
 
-    private Collection<Feature> xmlFeatures = new ParticipantXmlFeaturesList();
+    private Collection<Feature> xmlFeatures;
 
-    private Collection<HostOrganism> hostOrganisms = new HostOrganismsList();
+    private Collection<HostOrganism> hostOrganisms;
 
-    private Collection<Confidence> confidenceList = new ParticipantXmlConfidencesList();
+    private Collection<Confidence> confidenceList;
 
-    private Collection<Parameter> parametersList = new ParticipantXmlParametersList();
+    private Collection<Parameter> parametersList;
 
-    private Collection<Attribute> attributes = new ParticipantXmlAnnotationList();
+    private Collection<Attribute> attributes;
 
     private boolean isInteractorAComplex = false;
 
@@ -230,45 +231,63 @@ public class Participant extends DefaultParticipantEvidence implements Component
     public Participant() {
         super(new Interactor(), new BiologicalRole(), new ExperimentalRole(), new ParticipantIdentificationMethod());
 
-        experimentalRole.setShortName(UNSPECIFIED_ROLE);
-        experimentalRole.setMIIdentifier(UNSPECIFIED_ROLE_MI);
-        biologicalRole.setShortName(UNSPECIFIED_ROLE);
-        biologicalRole.setMIIdentifier(UNSPECIFIED_ROLE_MI);
+        getExperimentalRole().setShortName(UNSPECIFIED_ROLE);
+        getExperimentalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
+        getBiologicalRole().setShortName(UNSPECIFIED_ROLE);
+        getBiologicalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
     }
 
     @Override
     protected void initialiseAliases() {
-        this.aliases = new ParticipantAliasList();
+        initialiseAliasesWith(new ParticipantAliasList());
     }
 
     @Override
-    protected void initializeXrefs() {
-        this.xrefs = new ParticipantXrefList();
+    protected void initialiseXrefs() {
+        initialiseXrefsWith(new ParticipantXrefList());
     }
 
     @Override
-    public void initializeAnnotations() {
-        this.annotations = new ParticipantAnnotationList();
+    public void initialiseAnnotations() {
+        initialiseAnnotationsWith(new ParticipantAnnotationList());
     }
 
     @Override
-    protected void initializeExperimentalPreparations() {
-        this.experimentalPreparations = new ExperimentalPreparationsList();
+    protected void initialiseExperimentalPreparations() {
+        initialiseExperimentalPreparationsWith(new ExperimentalPreparationsList());
     }
 
     @Override
-    protected void initializeFeatures() {
-        this.features = new ParticipantFeaturesList();
+    protected void initialiseFeatureEvidences() {
+        super.initialiseFeatureEvidencesWith(Collections.EMPTY_LIST);
     }
 
     @Override
-    protected void initializeConfidences() {
-        this.confidences = new ParticipantConfidencesList();
+    protected void initialiseFeatureEvidencesWith(Collection<FeatureEvidence> features) {
+        if (features == null){
+            super.initialiseFeatureEvidencesWith(Collections.EMPTY_LIST);
+        }
+        else {
+            if (xmlFeatures == null){
+                xmlFeatures = new ArrayList<Feature>();
+            }
+            else {
+                xmlFeatures.clear();
+                for (FeatureEvidence f : features){
+                    addFeatureEvidence(f);
+                }
+            }
+        }
     }
 
     @Override
-    protected void initializeParameters() {
-        this.parameters = new ParticipantParametersList();
+    protected void initialiseConfidences() {
+        initialiseConfidencesWith(new ParticipantConfidencesList());
+    }
+
+    @Override
+    protected void initialiseParameters() {
+        initialiseParametersWith(new ParticipantParametersList());
     }
 
     ///////////////////////////
@@ -317,15 +336,14 @@ public class Participant extends DefaultParticipantEvidence implements Component
                 this.names = new ParticipantNames();
             }
             else {
-                aliases.clear();
+                getAliases().clear();
             }
             this.names.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
-            this.names.getAliases().clear();
-            this.names.getAliases().addAll(value.getAliases());
+            getAliases().addAll(value.getAliases());
         }
         else if (this.names != null) {
-            aliases.clear();
+            getAliases().clear();
             this.names = null;
         }
     }
@@ -356,12 +374,12 @@ public class Participant extends DefaultParticipantEvidence implements Component
     public void setXref( Xref value ) {
         if (value != null){
             if (this.xref != null){
-                this.xrefs.clear();
+                getXrefs().clear();
             }
             this.xref = new ParticipantXref(value.getPrimaryRef(), value.getSecondaryRef());
         }
         else if (this.xref != null){
-            xrefs.clear();
+            getXrefs().clear();
             this.xref = null;
         }
     }
@@ -391,6 +409,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      */
     public void setInteractorRef( InteractorRef interactorRef ) {
         this.interactorRef = interactorRef;
+        if (interactorRef != null){
+           isInteractorAComplex = false;
+        }
     }
 
     /**
@@ -399,11 +420,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return true if defined, false otherwise.
      */
     public boolean hasInteractor() {
-        return interactor != null && !isInteractorAComplex;
-    }
-
-    public void setInteraction(Complex interaction) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        return getInteractor() != null && !isInteractorAComplex;
     }
 
     /**
@@ -412,7 +429,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link Interactor }
      */
     public Interactor getInteractor() {
-        return (Interactor) interactor;
+        return isInteractorAComplex ? null : (Interactor) super.getInteractor();
     }
 
     /**
@@ -421,11 +438,14 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @param value allowed object is {@link Interactor }
      */
     public void setInteractor( Interactor value ) {
-        this.interactor = value;
-        if (value == null){
-            this.interactor = new Interactor();
+
+        if (value != null){
+            super.setInteractor(value);
+            isInteractorAComplex = false;
         }
-        isInteractorAComplex = false;
+        else if (!isInteractorAComplex) {
+            super.setInteractor(new Interactor());
+        }
     }
 
     /**
@@ -453,6 +473,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      */
     public void setInteractionRef( InteractionRef interactionRef ) {
         this.interactionRef = interactionRef;
+        if (interactionRef != null){
+             isInteractorAComplex = true;
+        }
     }
 
     /**
@@ -461,19 +484,21 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return true if defined, false otherwise.
      */
     public boolean hasInteraction() {
-        return isInteractorAComplex && interactor != null;
+        return getInteraction() != null;
     }
 
-    public Interaction getInteractionComplex() {
-        return (Interaction) interactor;
+    public Interaction getInteraction() {
+        return isInteractorAComplex ? (Interaction) super.getInteractor() : null;
     }
 
     public void setInteraction( Interaction interaction ) {
-        this.interactor = interaction;
-        if (interaction == null){
-            this.interactor = new Interaction();
+        if (interaction != null){
+            isInteractorAComplex = true;
+            super.setInteractor(interaction);
         }
-        isInteractorAComplex = true;
+        else if (isInteractorAComplex){
+           super.setInteractor(new Interaction());
+        }
     }
 
     /**
@@ -491,6 +516,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link OpenCvType }
      */
     public Collection<ParticipantIdentificationMethod> getParticipantIdentificationMethods() {
+        if (participantIdentificationMethods == null){
+            participantIdentificationMethods = new ParticipantIdentificationMethodsList();
+        }
         return participantIdentificationMethods;
     }
 
@@ -500,16 +528,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return true if defined, false otherwise.
      */
     public boolean hasBiologicalRole() {
-        return biologicalRole != null;
-    }
-
-    /**
-     * Gets the value of the biologicalRole property.
-     *
-     * @return possible object is {@link CvType }
-     */
-    public BiologicalRole getBiologicalRole() {
-        return (BiologicalRole) biologicalRole;
+        return getBiologicalRole() != null;
     }
 
     /**
@@ -519,12 +538,12 @@ public class Participant extends DefaultParticipantEvidence implements Component
      */
     public void setBiologicalRole( BiologicalRole value ) {
         if (value == null){
-            this.biologicalRole = new BiologicalRole();
-            this.biologicalRole.setShortName(UNSPECIFIED_ROLE);
-            this.biologicalRole.setMIIdentifier(UNSPECIFIED_ROLE_MI);
+            super.setBiologicalRole(new BiologicalRole());
+            getBiologicalRole().setShortName(UNSPECIFIED_ROLE);
+            getBiologicalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
         }
         else {
-            this.biologicalRole = value;
+            super.setBiologicalRole(value);
         }
     }
 
@@ -543,6 +562,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link ExperimentalRole }
      */
     public Collection<ExperimentalRole> getExperimentalRoles() {
+        if (experimentalRoles == null){
+            experimentalRoles = new ExperimentalRolesList();
+        }
         return experimentalRoles;
     }
 
@@ -561,6 +583,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link ExperimentalPreparation }
      */
     public Collection<ExperimentalPreparation> getParticipantExperimentalPreparations() {
+        if (xmlExperimentalPreparations == null){
+            xmlExperimentalPreparations = new ExperimentalPreparationsXmlList();
+        }
         return xmlExperimentalPreparations;
     }
 
@@ -599,7 +624,10 @@ public class Participant extends DefaultParticipantEvidence implements Component
      *
      * @return possible object is {@link Feature }
      */
-    public Collection<Feature> getParticipantFeatures() {
+    public Collection<Feature> getFeatures() {
+        if (xmlFeatures == null){
+            xmlFeatures = new ArrayList<Feature>();
+        }
         return xmlFeatures;
     }
 
@@ -618,6 +646,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link Organism }
      */
     public Collection<HostOrganism> getHostOrganisms() {
+        if (hostOrganisms == null){
+            hostOrganisms  = new HostOrganismsList();
+        }
         return hostOrganisms;
     }
 
@@ -636,6 +667,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link Confidence }
      */
     public Collection<Confidence> getConfidenceList() {
+        if (confidenceList == null){
+            confidenceList = new ParticipantXmlConfidencesList();
+        }
         return confidenceList;
     }
 
@@ -654,6 +688,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link Parameter }
      */
     public Collection<Parameter> getParametersList() {
+        if (parametersList == null){
+            parametersList = new ParticipantXmlParametersList();
+        }
         return parametersList;
     }
 
@@ -672,6 +709,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
      * @return possible object is {@link Attribute }
      */
     public Collection<Attribute> getAttributes() {
+        if (attributes == null){
+            attributes = new ParticipantXmlAnnotationList();
+        }
         return attributes;
     }
 
@@ -682,11 +722,30 @@ public class Participant extends DefaultParticipantEvidence implements Component
     ////////////////////////
     // Object override
 
+    @Override
+    public HostOrganism getExpressedInOrganism() {
+        return (HostOrganism) super.getExpressedInOrganism();
+    }
+
+    @Override
+    public ParticipantIdentificationMethod getIdentificationMethod() {
+        return (ParticipantIdentificationMethod) super.getIdentificationMethod();
+    }
+
+    @Override
+    public ExperimentalRole getExperimentalRole() {
+        return (ExperimentalRole) super.getExperimentalRole();
+    }
+
+    @Override
+    public BiologicalRole getBiologicalRole() {
+        return (BiologicalRole) super.getBiologicalRole();
+    }
 
     @Override
     public void setInteractor(psidev.psi.mi.jami.model.Interactor interactor) {
         if (interactor == null){
-            this.interactor = new Interactor();
+            super.setInteractor(null);
         }
         else if (interactor instanceof Interactor){
             super.setInteractor(interactor);
@@ -696,7 +755,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
 
             if (interactor instanceof Complex){
                 convertedInteractor = new Interaction();
-                InteractorCloner.copyAndOverrideComplexProperties((Complex) interactor, (Complex) convertedInteractor);
+                InteractorCloner.copyAndOverrideComplexProperties((Complex) interactor, (Interaction)convertedInteractor);
                 isInteractorAComplex = true;
             }
             else {
@@ -711,134 +770,128 @@ public class Participant extends DefaultParticipantEvidence implements Component
     @Override
     public void setIdentificationMethod(CvTerm identificationMethod) {
         if (identificationMethod != null){
-            if (this.identificationMethod != null){
-                participantIdentificationMethods.remove(this.identificationMethod);
+            if (getIdentificationMethod() != null){
+                getParticipantIdentificationMethods().remove(getIdentificationMethod());
             }
             if(identificationMethod instanceof ParticipantIdentificationMethod){
-                this.identificationMethod = identificationMethod;
-                ((ParticipantIdentificationMethodsList)participantIdentificationMethods).addOnly((ParticipantIdentificationMethod) this.identificationMethod);
+                super.setIdentificationMethod(identificationMethod);
+                ((ParticipantIdentificationMethodsList)getParticipantIdentificationMethods()).addOnly(getIdentificationMethod());
             }
             else {
-                this.identificationMethod = new ParticipantIdentificationMethod();
+                super.setIdentificationMethod(new ParticipantIdentificationMethod());
 
-                CvTermCloner.copyAndOverrideCvTermProperties(identificationMethod, this.identificationMethod);
-                ((ParticipantIdentificationMethodsList) participantIdentificationMethods).addOnly((ParticipantIdentificationMethod) this.identificationMethod);
+                CvTermCloner.copyAndOverrideCvTermProperties(identificationMethod, getIdentificationMethod());
+                ((ParticipantIdentificationMethodsList) getParticipantIdentificationMethods()).addOnly(getIdentificationMethod());
             }
         }
-        else if (!this.participantIdentificationMethods.isEmpty()) {
-            this.identificationMethod = null;
-            ((ParticipantIdentificationMethodsList)participantIdentificationMethods).clearOnly();
+        else if (!getParticipantIdentificationMethods().isEmpty()) {
+            super.setIdentificationMethod(null);
+            ((ParticipantIdentificationMethodsList)getParticipantIdentificationMethods()).clearOnly();
         }
+    }
+
+    protected void setIdentificationMethodOnly(CvTerm identificationMethod) {
+        super.setIdentificationMethod(identificationMethod);
     }
 
     @Override
     public void setBiologicalRole(CvTerm bioRole) {
         if (bioRole == null){
-            this.biologicalRole = new BiologicalRole();
-            biologicalRole.setShortName(UNSPECIFIED_ROLE);
-            biologicalRole.setMIIdentifier(UNSPECIFIED_ROLE_MI);
+            super.setBiologicalRole(new BiologicalRole());
+            getBiologicalRole().setShortName(UNSPECIFIED_ROLE);
+            getBiologicalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
         }
         else if (bioRole instanceof BiologicalRole){
-            this.biologicalRole = bioRole;
+            super.setBiologicalRole(bioRole);
         }
         else {
-            this.biologicalRole = new BiologicalRole();
-            CvTermCloner.copyAndOverrideCvTermProperties(bioRole, this.biologicalRole);
+            super.setBiologicalRole(new BiologicalRole());
+            CvTermCloner.copyAndOverrideCvTermProperties(bioRole, getBiologicalRole());
         }
-    }
-
-    public boolean addFeature(ComponentFeature feature) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public boolean removeFeature(ComponentFeature feature) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public boolean addAllFeatures(Collection<? extends ComponentFeature> features) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public boolean removeAllFeatures(Collection<? extends ComponentFeature> features) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     public void setExperimentalRole(CvTerm expRole) {
         if (expRole != null){
-            if (this.experimentalRole != null){
-                experimentalRoles.remove(this.experimentalRole);
+            if (getExperimentalRole() != null){
+                getExperimentalRoles().remove(getExperimentalRole());
             }
-            if(experimentalRole instanceof ExperimentalRole){
-                this.experimentalRole = expRole;
-                ((ExperimentalRolesList)experimentalRoles).addOnly((ExperimentalRole) this.experimentalRole);
+            if(expRole instanceof ExperimentalRole){
+                super.setExperimentalRole(expRole);
+                ((ExperimentalRolesList)getExperimentalRoles()).addOnly(getExperimentalRole());
             }
             else {
-                this.experimentalRole = new ExperimentalRole();
+                super.setExperimentalRole(new ExperimentalRole());
 
-                CvTermCloner.copyAndOverrideCvTermProperties(expRole, this.experimentalRole);
-                ((ExperimentalRolesList) experimentalRoles).addOnly((ExperimentalRole) this.experimentalRole);
+                CvTermCloner.copyAndOverrideCvTermProperties(expRole, getExperimentalRole());
+                ((ExperimentalRolesList) getExperimentalRoles()).addOnly(getExperimentalRole());
             }
         }
-        else if (!this.experimentalRoles.isEmpty()) {
+        else if (!getExperimentalRoles().isEmpty()) {
             experimentalRoles.clear();
         }
+    }
+
+    protected void setExperimentalRoleOnly(CvTerm expRole) {
+        super.setExperimentalRole(expRole);
     }
 
     @Override
     public void setExpressedInOrganism(psidev.psi.mi.jami.model.Organism organism) {
         if (organism != null){
-            if (this.expressedIn != null){
-                hostOrganisms.remove(this.expressedIn);
+            if (getExpressedInOrganism() != null){
+                getHostOrganisms().remove(getExpressedInOrganism());
             }
-            if(expressedIn instanceof HostOrganism){
-                this.expressedIn = organism;
-                ((HostOrganismsList)hostOrganisms).addOnly((HostOrganism) this.expressedIn);
+            if(organism instanceof HostOrganism){
+                super.setExpressedInOrganism(organism);
+                ((HostOrganismsList)getHostOrganisms()).addOnly(getExpressedInOrganism());
             }
             else {
-                this.expressedIn = new HostOrganism();
+                super.setExpressedInOrganism(new HostOrganism());
 
-                OrganismCloner.copyAndOverrideOrganismProperties(organism, this.expressedIn);
-                ((HostOrganismsList)hostOrganisms).addOnly((HostOrganism) this.expressedIn);
+                OrganismCloner.copyAndOverrideOrganismProperties(organism, getExpressedInOrganism());
+                ((HostOrganismsList)getHostOrganisms()).addOnly(getExpressedInOrganism());
             }
         }
-        else if (!this.hostOrganisms.isEmpty()) {
-            this.expressedIn = null;
-            ((HostOrganismsList)hostOrganisms).clearOnly();
+        else if (!getHostOrganisms().isEmpty()) {
+            super.setExpressedInOrganism(null);
+            ((HostOrganismsList)getHostOrganisms()).clearOnly();
         }
     }
 
+    protected void setExpressedInOrganismOnly(psidev.psi.mi.jami.model.Organism organism) {
+        super.setExpressedInOrganism(organism);
+    }
+
     @Override
-    public void setInteraction(InteractionEvidence interaction) {
+    public void setInteractionEvidence(InteractionEvidence interaction) {
         if (interaction == null){
-            super.setInteraction(null);
+            super.setInteractionEvidence(null);
         }
         else if (interaction instanceof Interaction){
-            super.setInteraction(interaction);
+            super.setInteractionEvidence(interaction);
         }
         else {
             Interaction convertedInteraction = new Interaction();
 
             InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
-            super.setInteraction(convertedInteraction);
+            super.setInteractionEvidence(convertedInteraction);
         }
     }
 
     @Override
     public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction) {
         if (interaction == null){
-            super.setInteraction(null);
+            super.setInteractionEvidence(null);
         }
         else if (interaction instanceof Interaction){
-            super.setInteraction(interaction);
-            interaction.getParticipants().add(this);
+            interaction.addParticipantEvidence(this);
         }
         else {
             Interaction convertedInteraction = new Interaction();
 
             InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, convertedInteraction);
-            super.setInteraction(convertedInteraction);
-            convertedInteraction.getInteractionParticipants().add(this);
+            convertedInteraction.addParticipantEvidence(this);
         }
     }
 
@@ -849,9 +902,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
         sb.append( "{id=" ).append( id );
         sb.append( ", names=" ).append( names );
         sb.append( ", xref=" ).append( xref );
-        sb.append( ", interactor=" ).append( interactor );
+        sb.append( ", interactor=" ).append( getInteractor() );
         sb.append( ", participantIdentificationMethods=" ).append( participantIdentificationMethods );
-        sb.append( ", biologicalRole=" ).append( biologicalRole );
+        sb.append( ", biologicalRole=" ).append( getBiologicalRole() );
         sb.append( ", experimentalRoles=" ).append( experimentalRoles );
         sb.append( ", xmlExperimentalPreparations=" ).append(xmlExperimentalPreparations);
         sb.append( ", experimentalInteractors=" ).append( experimentalInteractors );
@@ -872,7 +925,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
 
         if ( id != that.id ) return false;
         if ( attributes != null ? !attributes.equals( that.attributes ) : that.attributes != null ) return false;
-        if ( biologicalRole != null ? !biologicalRole.equals( that.biologicalRole ) : that.biologicalRole != null )
+        if ( getBiologicalRole() != null ? !getBiologicalRole().equals(that.getBiologicalRole()) : that.getBiologicalRole() != null )
             return false;
         if ( confidenceList != null ? !confidenceList.equals( that.confidenceList ) : that.confidenceList != null )
             return false;
@@ -888,7 +941,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
         //if (interaction != null ? !interaction.equals(that.interaction) : that.interaction != null) return false;
         if ( interactionRef != null ? !interactionRef.equals( that.interactionRef ) : that.interactionRef != null )
             return false;
-        if ( interactor != null ? !interactor.equals( that.interactor ) : that.interactor != null ) return false;
+        if ( getInteractor() != null ? !getInteractor().equals(that.getInteractor()) : that.getInteractor() != null ) return false;
         if ( interactorRef != null ? !interactorRef.equals( that.interactorRef ) : that.interactorRef != null )
             return false;
         if ( names != null ? !names.equals( that.names ) : that.names != null ) return false;
@@ -906,11 +959,11 @@ public class Participant extends DefaultParticipantEvidence implements Component
         result = 31 * result + ( names != null ? names.hashCode() : 0 );
         result = 31 * result + ( xref != null ? xref.hashCode() : 0 );
         result = 31 * result + ( interactorRef != null ? interactorRef.hashCode() : 0 );
-        result = 31 * result + ( interactor != null ? interactor.hashCode() : 0 );
+        result = 31 * result + ( getInteractor() != null ? getInteractor().hashCode() : 0 );
         //result = 31 * result + (interaction != null ? interaction.hashCode() : 0);
         result = 31 * result + ( interactionRef != null ? interactionRef.hashCode() : 0 );
         result = 31 * result + ( participantIdentificationMethods != null ? participantIdentificationMethods.hashCode() : 0 );
-        result = 31 * result + ( biologicalRole != null ? biologicalRole.hashCode() : 0 );
+        result = 31 * result + ( getBiologicalRole() != null ? getBiologicalRole().hashCode() : 0 );
         result = 31 * result + ( experimentalRoles != null ? experimentalRoles.hashCode() : 0 );
         result = 31 * result + ( xmlExperimentalPreparations != null ? xmlExperimentalPreparations.hashCode() : 0 );
         result = 31 * result + ( experimentalInteractors != null ? experimentalInteractors.hashCode() : 0 );
@@ -923,7 +976,186 @@ public class Participant extends DefaultParticipantEvidence implements Component
     }
 
     public void setComplexAndAddComponent(Complex interaction) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (interaction == null){
+            super.setInteractionEvidence(null);
+        }
+        else if (interaction instanceof Interaction){
+            interaction.addComponent(this);
+        }
+        else {
+            Interaction convertedInteraction = new Interaction();
+
+            InteractorCloner.copyAndOverrideComplexProperties(interaction, convertedInteraction);
+            convertedInteraction.addComponent(this);
+        }
+    }
+
+    public Interaction getComplex() {
+        return getInteractionEvidence();
+    }
+
+    public void setComplex(Complex interaction) {
+
+        if (interaction == null){
+            setInteraction(null);
+        }
+        else if (interaction instanceof Interaction){
+            setInteraction((Interaction)interaction);
+        }
+        else {
+            Interaction convertedInteraction = new Interaction();
+
+            InteractorCloner.copyAndOverrideComplexProperties(interaction, convertedInteraction);
+            setInteraction(convertedInteraction);
+        }
+    }
+
+    public Collection<? extends ComponentFeature> getComponentFeatures() {
+        return getFeatures();
+    }
+
+    public boolean addComponentFeature(ComponentFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (xmlFeatures == null){
+            xmlFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            if (xmlFeatures.add((Feature)feature)){
+                feature.setComponent(this);
+                return true;
+            }
+        }
+        else{
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideComponentFeaturesProperties(feature, f);
+            if (xmlFeatures.add(f)){
+                f.setComponent(this);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removeComponentFeature(ComponentFeature feature) {
+        if (feature == null){
+            return false;
+        }
+        if (xmlFeatures == null){
+            xmlFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            if (xmlFeatures.remove(feature)){
+                feature.setComponent(null);
+                return true;
+            }
+        }
+        else{
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideComponentFeaturesProperties(feature, f);
+            if (xmlFeatures.remove(f)){
+                f.setComponent(null);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addAllComponentFeatures(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (ComponentFeature feature : features){
+            if (addComponentFeature(feature)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllComponentFeatures(Collection<? extends ComponentFeature> features) {
+        if (features == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (ComponentFeature feature : features){
+            if (removeComponentFeature(feature)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
+    @Override
+    public Interaction getInteractionEvidence() {
+        return (Interaction) super.getInteractionEvidence();
+    }
+
+    @Override
+    public Collection<? extends FeatureEvidence> getFeatureEvidences() {
+        return getFeatures();
+    }
+
+    @Override
+    public boolean addFeatureEvidence(FeatureEvidence feature) {
+        if (feature == null){
+            return false;
+        }
+        if (xmlFeatures == null){
+            xmlFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            if (xmlFeatures.add((Feature)feature)){
+                feature.setParticipantEvidence(this);
+                return true;
+            }
+        }
+        else{
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideFeatureEvidenceProperties(feature, f);
+            if (xmlFeatures.add(f)){
+                f.setParticipantEvidence(this);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeFeatureEvidence(FeatureEvidence feature) {
+        if (feature == null){
+            return false;
+        }
+        if (xmlFeatures == null){
+            xmlFeatures = new ArrayList<Feature>();
+        }
+
+        if (feature instanceof Feature){
+            if (xmlFeatures.remove(feature)){
+                feature.setParticipantEvidence(null);
+                return true;
+            }
+        }
+        else{
+            Feature f = new Feature();
+            FeatureCloner.copyAndOverrideFeatureEvidenceProperties(feature, f);
+            if (xmlFeatures.remove(f)){
+                f.setParticipantEvidence(null);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected Collection<psidev.psi.mi.jami.model.Alias> getParticipantAliases(){
+        return super.getAliases();
     }
 
     protected class ParticipantNames extends Names{
@@ -976,17 +1208,17 @@ public class Participant extends DefaultParticipantEvidence implements Component
 
             @Override
             protected void processAddedObjectEvent(Alias added) {
-                ((ParticipantAliasList) aliases).addOnly(added);
+                ((ParticipantAliasList) getParticipantAliases()).addOnly(added);
             }
 
             @Override
             protected void processRemovedObjectEvent(Alias removed) {
-                ((ParticipantAliasList)aliases).removeOnly(removed);
+                ((ParticipantAliasList)getParticipantAliases()).removeOnly(removed);
             }
 
             @Override
             protected void clearProperties() {
-                ((ParticipantAliasList)aliases).clearOnly();
+                ((ParticipantAliasList)getParticipantAliases()).clearOnly();
             }
         }
     }
@@ -1077,15 +1309,15 @@ public class Participant extends DefaultParticipantEvidence implements Component
             if (getPrimaryRef() == null){
                 super.setPrimaryRef(value);
                 if (value != null){
-                    ((ParticipantXrefList)xrefs).addOnly(value);
+                    ((ParticipantXrefList)getXrefs()).addOnly(value);
                 }
             }
             else {
-                ((ParticipantXrefList)xrefs).removeOnly(getPrimaryRef());
+                ((ParticipantXrefList)getXrefs()).removeOnly(getPrimaryRef());
                 super.setPrimaryRef(value);
 
                 if (value != null){
-                    ((ParticipantXrefList)xrefs).addOnly(value);
+                    ((ParticipantXrefList)getXrefs()).addOnly(value);
                 }
             }
         }
@@ -1133,18 +1365,18 @@ public class Participant extends DefaultParticipantEvidence implements Component
 
             @Override
             protected void processAddedObjectEvent(DbReference added) {
-                ((ParticipantXrefList)xrefs).addOnly(added);
+                ((ParticipantXrefList)getXrefs()).addOnly(added);
             }
 
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
-                ((ParticipantXrefList)xrefs).removeOnly(removed);
+                ((ParticipantXrefList)getXrefs()).removeOnly(removed);
             }
 
             @Override
             protected void clearProperties() {
                 Collection<DbReference> primary = Arrays.asList(getPrimaryRef());
-                ((ParticipantXrefList)xrefs).retainAllOnly(primary);
+                ((ParticipantXrefList)getXrefs()).retainAllOnly(primary);
             }
         }
     }
@@ -1241,29 +1473,29 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Annotation added) {
             if (added instanceof Attribute){
-                ((ParticipantXmlAnnotationList)attributes).addOnly((Attribute) added);
+                ((ParticipantXmlAnnotationList)getAttributes()).addOnly((Attribute) added);
             }
             else {
                 Attribute att = new Attribute(added.getTopic().getMIIdentifier(), added.getTopic().getShortName(), added.getValue());
-                ((ParticipantXmlAnnotationList)attributes).addOnly(att);
+                ((ParticipantXmlAnnotationList)getAttributes()).addOnly(att);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Annotation removed) {
             if (removed instanceof Annotation){
-                ((ParticipantXmlAnnotationList)attributes).removeOnly(removed);
+                ((ParticipantXmlAnnotationList)getAttributes()).removeOnly(removed);
             }
             else {
                 Attribute att = new Attribute(removed.getTopic().getMIIdentifier(), removed.getTopic().getShortName(), removed.getValue());
-                ((ParticipantXmlAnnotationList)attributes).removeOnly(att);
+                ((ParticipantXmlAnnotationList)getAttributes()).removeOnly(att);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((ParticipantXmlAnnotationList)attributes).clearOnly();
+            ((ParticipantXmlAnnotationList)getAttributes()).clearOnly();
         }
     }
 
@@ -1276,20 +1508,20 @@ public class Participant extends DefaultParticipantEvidence implements Component
         protected void processAddedObjectEvent(Attribute added) {
 
             // we added a annotation, needs to add it in annotations
-            ((ParticipantAnnotationList)annotations).addOnly(added);
+            ((ParticipantAnnotationList)getAnnotations()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Attribute removed) {
 
             // we removed a annotation, needs to remove it in annotations
-            ((ParticipantAnnotationList)annotations).removeOnly(removed);
+            ((ParticipantAnnotationList)getAnnotations()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((ParticipantAnnotationList)annotations).clearOnly();
+            ((ParticipantAnnotationList)getAnnotations()).clearOnly();
         }
     }
 
@@ -1301,8 +1533,8 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(ParticipantIdentificationMethod added) {
 
-            if (identificationMethod == null){
-                identificationMethod = added;
+            if (getIdentificationMethod() == null){
+                setIdentificationMethodOnly(added);
             }
         }
 
@@ -1310,17 +1542,17 @@ public class Participant extends DefaultParticipantEvidence implements Component
         protected void processRemovedObjectEvent(ParticipantIdentificationMethod removed) {
 
             if (isEmpty()){
-                identificationMethod = null;
+                setIdentificationMethodOnly(null);
             }
-            else if (identificationMethod != null && removed.equals(identificationMethod)){
-                identificationMethod = iterator().next();
+            else if (getIdentificationMethod() != null && removed.equals(getIdentificationMethod())){
+                setIdentificationMethodOnly(iterator().next());
             }
         }
 
         @Override
         protected void clearProperties() {
 
-            identificationMethod = null;
+            setIdentificationMethodOnly(null);
         }
     }
 
@@ -1332,10 +1564,10 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(ExperimentalRole added) {
 
-            if (experimentalRole == null){
-                experimentalRole = added;
+            if (getExperimentalRole() == null){
+                setExperimentalRoleOnly(added);
             }
-            else if (size() > 1 && psidev.psi.mi.jami.model.Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(experimentalRole.getShortName().trim())){
+            else if (size() > 1 && psidev.psi.mi.jami.model.Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getExperimentalRole().getShortName().trim())){
                 remove(added);
             }
         }
@@ -1344,21 +1576,21 @@ public class Participant extends DefaultParticipantEvidence implements Component
         protected void processRemovedObjectEvent(ExperimentalRole removed) {
 
             if (isEmpty()){
-                experimentalRole = new ExperimentalRole();
-                experimentalRole.setShortName(UNSPECIFIED_ROLE);
-                experimentalRole.setMIIdentifier(UNSPECIFIED_ROLE_MI);
+                setExperimentalRoleOnly(new ExperimentalRole());
+                getExperimentalRole().setShortName(UNSPECIFIED_ROLE);
+                getExperimentalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
             }
-            else if (experimentalRole != null && removed.equals(experimentalRole)){
-                experimentalRole = iterator().next();
+            else if (getExperimentalRole() != null && removed.equals(getExperimentalRole())){
+                setExperimentalRoleOnly(iterator().next());
             }
         }
 
         @Override
         protected void clearProperties() {
 
-            experimentalRole = new ExperimentalRole();
-            experimentalRole.setShortName(UNSPECIFIED_ROLE);
-            experimentalRole.setMIIdentifier(UNSPECIFIED_ROLE_MI);
+            setExperimentalRoleOnly(new ExperimentalRole());
+            getExperimentalRole().setShortName(UNSPECIFIED_ROLE);
+            getExperimentalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
         }
     }
 
@@ -1370,31 +1602,31 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.CvTerm added) {
             if (added instanceof ExperimentalPreparation){
-                ((ExperimentalPreparationsXmlList)xmlExperimentalPreparations).addOnly((ExperimentalPreparation) added);
+                ((ExperimentalPreparationsXmlList)getParticipantExperimentalPreparations()).addOnly((ExperimentalPreparation) added);
             }
             else {
                 ExperimentalPreparation exp = new ExperimentalPreparation();
                 CvTermCloner.copyAndOverrideCvTermProperties(added, exp);
-                ((ExperimentalPreparationsXmlList)xmlExperimentalPreparations).addOnly(exp);
+                ((ExperimentalPreparationsXmlList)getParticipantExperimentalPreparations()).addOnly(exp);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.CvTerm removed) {
             if (removed instanceof ExperimentalPreparation){
-                ((ExperimentalPreparationsXmlList)xmlExperimentalPreparations).removeOnly(removed);
+                ((ExperimentalPreparationsXmlList)getParticipantExperimentalPreparations()).removeOnly(removed);
             }
             else {
                 ExperimentalPreparation exp = new ExperimentalPreparation();
                 CvTermCloner.copyAndOverrideCvTermProperties(removed, exp);
-                ((ExperimentalPreparationsXmlList)xmlExperimentalPreparations).removeOnly(exp);
+                ((ExperimentalPreparationsXmlList)getParticipantExperimentalPreparations()).removeOnly(exp);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((ExperimentalPreparationsXmlList)xmlExperimentalPreparations).clearOnly();
+            ((ExperimentalPreparationsXmlList)getParticipantExperimentalPreparations()).clearOnly();
         }
     }
 
@@ -1406,88 +1638,18 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(ExperimentalPreparation added) {
 
-            ((ExperimentalPreparationsList) experimentalPreparations).addOnly(added);
+            ((ExperimentalPreparationsList) getExperimentalPreparations()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(ExperimentalPreparation removed) {
 
-            ((ExperimentalPreparationsList) experimentalPreparations).removeOnly(removed);
+            ((ExperimentalPreparationsList) getExperimentalPreparations()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((ExperimentalPreparationsList) experimentalPreparations).clearOnly();
-        }
-    }
-
-    private class ParticipantFeaturesList extends AbstractListHavingPoperties<FeatureEvidence> {
-        public ParticipantFeaturesList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(psidev.psi.mi.jami.model.FeatureEvidence added) {
-            if (added instanceof Feature){
-                added.setParticipant(getInstance());
-                ((ParticipantXmlFeaturesList)xmlFeatures).addOnly((Feature) added);
-            }
-            else {
-                Feature f = new Feature();
-                FeatureCloner.copyAndOverrideFeatureProperties(added, f);
-                f.setParticipant(getInstance());
-                ((ParticipantXmlFeaturesList)xmlFeatures).addOnly(f);
-            }
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.FeatureEvidence removed) {
-
-            if (removed instanceof Feature){
-                ((ParticipantXmlFeaturesList)xmlFeatures).removeOnly(removed);
-            }
-            else {
-                Feature f = new Feature();
-                FeatureCloner.copyAndOverrideFeatureProperties(removed, f);
-                ((ParticipantXmlFeaturesList)xmlFeatures).removeOnly(f);
-            }
-            removed.setParticipant(null);
-        }
-
-        @Override
-        protected void clearProperties() {
-            for (Feature f : xmlFeatures){
-                f.setParticipant(null);
-            }
-            // clear all annotations
-            ((ParticipantXmlFeaturesList)xmlFeatures).clearOnly();
-        }
-    }
-
-    private class ParticipantXmlFeaturesList extends AbstractListHavingPoperties<Feature> {
-        public ParticipantXmlFeaturesList(){
-            super();
-        }
-
-        @Override
-        protected void processAddedObjectEvent(Feature added) {
-
-            added.setParticipant(getInstance());
-            ((ParticipantFeaturesList) features).addOnly(added);
-        }
-
-        @Override
-        protected void processRemovedObjectEvent(Feature removed) {
-            ((ParticipantFeaturesList) features).removeOnly(removed);
-            removed.setParticipant(null);
-        }
-
-        @Override
-        protected void clearProperties() {
-            for (psidev.psi.mi.jami.model.Feature f : features){
-                f.setParticipant(null);
-            }
-            ((ParticipantFeaturesList) features).clearOnly();
+            ((ExperimentalPreparationsList) getExperimentalPreparations()).clearOnly();
         }
     }
 
@@ -1499,8 +1661,8 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(HostOrganism added) {
 
-            if (expressedIn == null){
-                expressedIn = added;
+            if (getExpressedInOrganism() == null){
+                setExpressedInOrganismOnly(added);
             }
         }
 
@@ -1508,17 +1670,17 @@ public class Participant extends DefaultParticipantEvidence implements Component
         protected void processRemovedObjectEvent(HostOrganism removed) {
 
             if (isEmpty()){
-                expressedIn = null;
+                setExpressedInOrganismOnly(null);
             }
-            else if (expressedIn != null && removed.equals(expressedIn)){
-                expressedIn = iterator().next();
+            else if (getExpressedInOrganism() != null && removed.equals(getExpressedInOrganism())){
+                setExpressedInOrganismOnly(iterator().next());
             }
         }
 
         @Override
         protected void clearProperties() {
 
-            expressedIn = null;
+            setExpressedInOrganismOnly(null);
         }
     }
 
@@ -1530,11 +1692,11 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Confidence added) {
             if (added instanceof Confidence){
-                ((ParticipantXmlConfidencesList)confidenceList).addOnly((Confidence) added);
+                ((ParticipantXmlConfidencesList)getConfidenceList()).addOnly((Confidence) added);
             }
             else {
                 Confidence conf = cloneConfidence(added);
-                ((ParticipantXmlConfidencesList)confidenceList).addOnly(conf);
+                ((ParticipantXmlConfidencesList)getConfidenceList()).addOnly(conf);
             }
         }
 
@@ -1551,18 +1713,18 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Confidence removed) {
             if (removed instanceof Confidence){
-                ((ParticipantXmlConfidencesList)confidenceList).removeOnly(removed);
+                ((ParticipantXmlConfidencesList)getConfidenceList()).removeOnly(removed);
             }
             else {
                 Confidence conf = cloneConfidence(removed);
-                ((ParticipantXmlConfidencesList)confidenceList).removeOnly(conf);
+                ((ParticipantXmlConfidencesList)getConfidenceList()).removeOnly(conf);
             }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((ParticipantXmlConfidencesList)confidenceList).clearOnly();
+            ((ParticipantXmlConfidencesList)getConfidenceList()).clearOnly();
         }
     }
 
@@ -1574,18 +1736,18 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(Confidence added) {
 
-            ((ParticipantConfidencesList) confidences).addOnly(added);
+            ((ParticipantConfidencesList) getConfidences()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Confidence removed) {
 
-            ((ParticipantConfidencesList) confidences).removeOnly(removed);
+            ((ParticipantConfidencesList) getConfidences()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((ParticipantConfidencesList) confidences).clearOnly();
+            ((ParticipantConfidencesList) getConfidences()).clearOnly();
         }
     }
 
@@ -1597,23 +1759,23 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(psidev.psi.mi.jami.model.Parameter added) {
             if (added instanceof Parameter){
-                ((ParticipantXmlParametersList)parametersList).addOnly((Parameter) added);
+                ((ParticipantXmlParametersList)getParametersList()).addOnly((Parameter) added);
             }
             else {
                 Parameter param = cloneParameter(added);
 
-                ((ParticipantXmlParametersList)parametersList).addOnly(param);
+                ((ParticipantXmlParametersList)getParametersList()).addOnly(param);
             }
         }
 
         @Override
         protected void processRemovedObjectEvent(psidev.psi.mi.jami.model.Parameter removed) {
             if (removed instanceof ExperimentalPreparation){
-                ((ParticipantXmlParametersList)parametersList).removeOnly(removed);
+                ((ParticipantXmlParametersList)getParametersList()).removeOnly(removed);
             }
             else {
                 Parameter param = cloneParameter(removed);
-                ((ParticipantXmlParametersList)parametersList).removeOnly(param);
+                ((ParticipantXmlParametersList)getParametersList()).removeOnly(param);
             }
         }
 
@@ -1637,7 +1799,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void clearProperties() {
             // clear all annotations
-            ((ParticipantXmlParametersList)parametersList).clearOnly();
+            ((ParticipantXmlParametersList)getParametersList()).clearOnly();
         }
     }
 
@@ -1649,18 +1811,18 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(Parameter added) {
 
-            ((ParticipantParametersList) parameters).addOnly(added);
+            ((ParticipantParametersList) getParameters()).addOnly(added);
         }
 
         @Override
         protected void processRemovedObjectEvent(Parameter removed) {
 
-            ((ParticipantParametersList) parameters).removeOnly(removed);
+            ((ParticipantParametersList) getParameters()).removeOnly(removed);
         }
 
         @Override
         protected void clearProperties() {
-            ((ParticipantParametersList) parameters).clearOnly();
+            ((ParticipantParametersList) getParameters()).clearOnly();
         }
     }
 }
