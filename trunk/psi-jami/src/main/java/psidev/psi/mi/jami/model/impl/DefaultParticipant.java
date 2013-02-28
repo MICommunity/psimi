@@ -40,7 +40,7 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-        this.biologicalRole = bioRole != null ? CvTermFactory.createUnspecifiedRole() : bioRole;
+        this.biologicalRole = bioRole != null ? bioRole : CvTermFactory.createUnspecifiedRole();
     }
 
     public DefaultParticipant(T interactor, Integer stoichiometry){
