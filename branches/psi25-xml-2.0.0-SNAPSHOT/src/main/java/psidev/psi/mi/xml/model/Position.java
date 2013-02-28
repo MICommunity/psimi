@@ -7,7 +7,6 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 
@@ -125,7 +124,7 @@ public class Position implements psidev.psi.mi.jami.model.Position{
         return ( int ) ( start ^ ( start >>> 32 ) );
     }
 
-    public CvTerm getStatus() {
+    public RangeStatus getStatus() {
         return status;
     }
 

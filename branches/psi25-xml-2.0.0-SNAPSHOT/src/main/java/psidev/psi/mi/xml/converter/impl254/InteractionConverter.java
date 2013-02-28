@@ -196,7 +196,7 @@ public class InteractionConverter {
         if ( jInteraction.getParticipantList() != null ) {
             for ( psidev.psi.mi.xml254.jaxb.Participant jParticipant : jInteraction.getParticipantList().getParticipants() ) {
                 Participant participant = participantConverter.fromJaxb( jParticipant );
-                mInteraction.getInteractionParticipants().add( participant );
+                mInteraction.getParticipants().add( participant );
             }
         }
 
@@ -336,12 +336,12 @@ public class InteractionConverter {
         }
 
         // participants
-        if ( mInteraction.getInteractionParticipants() != null ) {
+        if ( mInteraction.getParticipants() != null ) {
             if ( jInteraction.getParticipantList() == null ) {
                 jInteraction.setParticipantList( new ParticipantList() );
             }
 
-            for ( Participant mParticipant : mInteraction.getInteractionParticipants() ) {
+            for ( Participant mParticipant : mInteraction.getParticipants() ) {
                 jInteraction.getParticipantList().getParticipants().add( participantConverter.toJaxb( mParticipant ) );
             }
         }

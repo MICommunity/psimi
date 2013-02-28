@@ -68,7 +68,7 @@ public class PsiFactoryTest {
         Range range = PsiFactory.createRangeCertain(118, 118);
         Feature featurePhosphoTyr = PsiFactory.createFeature("tyr-118 ", featureType, range);
 
-        participantA.getParticipantFeatures().add(featurePhosphoTyr);
+        participantA.getFeatures().add(featurePhosphoTyr);
 
         // protein B
         Interactor proteinB = PsiFactory.createInteractorUniprotProtein("P49023", human);

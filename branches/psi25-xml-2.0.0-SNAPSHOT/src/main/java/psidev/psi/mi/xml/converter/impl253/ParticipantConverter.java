@@ -209,7 +209,7 @@ public class ParticipantConverter {
         // Features
         if ( jParticipant.getFeatureList() != null ) {
             for ( FeatureElementType jFeature : jParticipant.getFeatureList().getFeatures() ) {
-                mParticipant.getParticipantFeatures().add( featureConverter.fromJaxb( jFeature ) );
+                mParticipant.getFeatures().add( featureConverter.fromJaxb( jFeature ) );
             }
         }
 
@@ -290,7 +290,7 @@ public class ParticipantConverter {
                 jParticipant.setInteractor( interactorConverter.toJaxb( mParticipant.getInteractor() ) );
             }
         } else if ( mParticipant.hasInteraction() ) {
-            jParticipant.setInteractionRef( mParticipant.getInteractionComplex().getId() );
+            jParticipant.setInteractionRef( mParticipant.getInteraction().getId() );
         } else {
             throw new ConverterException( "Neither an interactor or an interaction was present in participant " + mParticipant.getId() );
         }
@@ -362,7 +362,7 @@ public class ParticipantConverter {
                 jParticipant.setFeatureList( new ParticipantType.FeatureList() );
             }
 
-            for ( Feature mFeature : mParticipant.getParticipantFeatures() ) {
+            for ( Feature mFeature : mParticipant.getFeatures() ) {
                 jParticipant.getFeatureList().getFeatures().add( featureConverter.toJaxb( mFeature ) );
             }
         }

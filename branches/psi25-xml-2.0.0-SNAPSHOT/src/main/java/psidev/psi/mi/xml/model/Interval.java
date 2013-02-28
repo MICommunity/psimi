@@ -7,7 +7,6 @@
 package psidev.psi.mi.xml.model;
 
 
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
 
@@ -77,7 +76,7 @@ public class Interval implements psidev.psi.mi.jami.model.Position, Serializable
         this.start = value;
     }
 
-    public CvTerm getStatus() {
+    public RangeStatus getStatus() {
         return status;
     }
 
@@ -123,6 +122,7 @@ public class Interval implements psidev.psi.mi.jami.model.Position, Serializable
 
     ////////////////////////
     // Object override
+
 
     public String toString() {
         final StringBuilder sb = new StringBuilder();
