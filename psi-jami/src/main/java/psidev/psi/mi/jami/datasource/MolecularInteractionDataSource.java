@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,4 +14,5 @@ import java.util.Map;
 public interface MolecularInteractionDataSource {
 
     public void initialiseContext(Map<String, Object> options);
+    public Map<DataSourceError, List<FileSourceContext>>  getDataSourceErrors();
 }
