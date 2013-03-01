@@ -148,7 +148,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 	}
 
 
-	private void closeStreamReader() {
+	public void closeStreamReader() {
 		if (interactionStreamReader != null) {
 			try {
 				interactionStreamReader.close();

@@ -20,7 +20,7 @@ import java.util.Collections;
  * @version $Id$
  * @since 1.0
  */
-public class BinaryInteractionImpl extends AbstractBinaryInteraction<Interactor> {
+public class BinaryInteractionImpl extends AbstractBinaryInteraction<Interactor>{
 
     public BinaryInteractionImpl() {
         super();

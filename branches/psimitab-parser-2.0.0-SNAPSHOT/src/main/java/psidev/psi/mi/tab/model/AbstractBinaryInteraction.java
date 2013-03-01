@@ -9,6 +9,7 @@ package psidev.psi.mi.tab.model;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
@@ -34,7 +35,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public abstract class AbstractBinaryInteraction<T extends Interactor> extends DefaultInteractionEvidence implements BinaryInteraction<T> {
+public abstract class AbstractBinaryInteraction<T extends Interactor> extends DefaultInteractionEvidence implements BinaryInteraction<T>, FileSourceContext {
 
 	private static final long serialVersionUID = 5851048278405255668L;
 
@@ -125,7 +126,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      */
     private List<Date> creationDate;
 
-
+    private int lineNumber;
 
 	/**
 	 * MITAB 2.7
@@ -645,6 +646,18 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
                 ((InteractionTypesList)interactionTypes).addOnly(new CrossReferenceImpl("unknown", "-", type.getFullName() != null ? type.getFullName() : type.getShortName()));
             }
         }
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public int getColumnNumber() {
+        return 0;
     }
 
     //We need update the toString, equals and hash ?
