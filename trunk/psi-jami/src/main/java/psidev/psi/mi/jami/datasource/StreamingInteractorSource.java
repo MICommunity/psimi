@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface StreamingInteractorSource {
+public interface StreamingInteractorSource extends MolecularInteractionDataSource{
 
     /**
      * The interactors iterator for this datasource.
