@@ -18,11 +18,11 @@ public interface StreamingInteractorSource extends MolecularInteractionDataSourc
      * The interactors iterator for this datasource.
      * @return iterator of interactors for a given datasource
      */
-    public Iterator<Interactor> getInteractorsIterator();
+    public Iterator<? extends Interactor> getInteractorsIterator();
 
-    public Iterator<Protein> getProteinsIterator();
-    public Iterator<NucleicAcid> getNucleicAcidsIterator();
-    public Iterator<Gene> getGenesIterator();
-    public Iterator<BioactiveEntity> getBioactiveEntitiesIterator();
-    public Iterator<Complex> getComplexesIterator();
+    public Iterator<? extends Protein> getProteinsIterator();
+    public Iterator<? extends NucleicAcid> getNucleicAcidsIterator();
+    public Iterator<? extends Gene> getGenesIterator();
+    public Iterator<? extends BioactiveEntity> getBioactiveEntitiesIterator();
+    public Iterator<? extends Complex> getComplexesIterator();
 }

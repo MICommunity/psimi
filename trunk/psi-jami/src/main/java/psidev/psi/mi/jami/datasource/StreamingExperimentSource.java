@@ -18,5 +18,5 @@ public interface StreamingExperimentSource extends MolecularInteractionDataSourc
      * The experiments iterator for this datasource.
      * @return iterator of experiments for a given datasource
      */
-    public Iterator<Experiment> getExperimentsIterator();
+    public Iterator<? extends Experiment> getExperimentsIterator();
 }

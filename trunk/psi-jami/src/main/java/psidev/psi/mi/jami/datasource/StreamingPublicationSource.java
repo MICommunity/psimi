@@ -18,5 +18,5 @@ public interface StreamingPublicationSource extends MolecularInteractionDataSour
      * The publications iterator for this datasource.
      * @return iterator of publications for a given datasource
      */
-     public Iterator<Publication> getPublicationsIterator();
+     public Iterator<? extends Publication> getPublicationsIterator();
 }
