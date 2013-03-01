@@ -109,7 +109,11 @@ public class EntryConverter {
         // experiments
         if ( jEntry.getExperimentList() != null ) {
             for ( ExperimentType jExperiment : jEntry.getExperimentList().getExperimentDescriptions() ) {
-                mEntry.getExperiments().add( experimentDescriptionConverter.fromJaxb( jExperiment ) );
+                ExperimentDescription exp = experimentDescriptionConverter.fromJaxb( jExperiment );
+                if (exp.getPublication() != null){
+                    exp.getPublication().setSource(mEntry.getSource());
+                }
+                mEntry.getExperiments().add( exp);
             }
         }
 
@@ -137,7 +141,12 @@ public class EntryConverter {
 
         if (mEntry.getExperiments().isEmpty()) {
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                mEntry.getExperiments().addAll(mInteraction.getExperimentDescriptions());
+                for (ExperimentDescription exp : mInteraction.getExperimentDescriptions()){
+                    if (exp.getPublication() != null){
+                        exp.getPublication().setSource(mEntry.getSource());
+                    }
+                    mEntry.getExperiments().add(exp);
+                }
             }
         }
         if (mEntry.getInteractors().isEmpty()) {

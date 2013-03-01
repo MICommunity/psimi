@@ -11,8 +11,8 @@ import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml254.jaxb.*;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Converts an entry between Jaxb and the model.
@@ -108,7 +108,11 @@ public class EntryConverter {
         // experiments
         if ( jEntry.getExperimentList() != null ) {
             for ( ExperimentDescription jExperiment : jEntry.getExperimentList().getExperimentDescriptions() ) {
-                mEntry.getExperiments().add( experimentDescriptionConverter.fromJaxb( jExperiment ) );
+                psidev.psi.mi.xml.model.ExperimentDescription exp = experimentDescriptionConverter.fromJaxb( jExperiment );
+                if (exp.getPublication() != null){
+                    exp.getPublication().setSource(mEntry.getSource());
+                }
+                mEntry.getExperiments().add( exp);
             }
         }
 
@@ -140,6 +144,9 @@ public class EntryConverter {
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
                 for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : mInteraction.getExperimentDescriptions()) {
                     if (!experimentIds.contains(jExperiment.getId())) {
+                        if (jExperiment.getPublication() != null){
+                            jExperiment.getPublication().setSource(mEntry.getSource());
+                        }
                         mEntry.getExperiments().add(jExperiment);
                         experimentIds.add(jExperiment.getId());
                     }
