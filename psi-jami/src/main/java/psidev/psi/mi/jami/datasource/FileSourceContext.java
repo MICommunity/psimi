@@ -8,5 +8,24 @@ package psidev.psi.mi.jami.datasource;
  * @since <pre>01/03/13</pre>
  */
 
-public interface FileSourceContext {
+public class FileSourceContext {
+
+    private int lineNumber;
+    private int columnNumber;
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public int getColumnNumber() {
+        return columnNumber;
+    }
+
+    public void setColumnNumber(int columnNumber) {
+        this.columnNumber = columnNumber;
+    }
 }
