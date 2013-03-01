@@ -9,4 +9,7 @@ package psidev.psi.mi.jami.datasource;
  */
 
 public interface FileSourceContext {
+
+    public int getLineNumber();
+    public int getColumnNumber();
 }
