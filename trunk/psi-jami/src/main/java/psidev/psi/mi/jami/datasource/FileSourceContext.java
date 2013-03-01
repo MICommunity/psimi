@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.datasource;
  * @since <pre>01/03/13</pre>
  */
 
-public class FileSourceContext {
+public class FileSourceContext implements DataSourceContext{
 
     private int lineNumber;
     private int columnNumber;

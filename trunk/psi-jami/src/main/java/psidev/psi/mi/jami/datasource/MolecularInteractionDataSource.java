@@ -14,7 +14,7 @@ import java.util.Map;
 public interface MolecularInteractionDataSource {
 
     public void initialiseContext(Map<String, Object> options);
-    public Map<DataSourceError, List<FileSourceContext>>  getDataSourceErrors();
+    public Map<DataSourceError, List<DataSourceContext>>  getDataSourceErrors();
 
     public void open();
     public void close();
