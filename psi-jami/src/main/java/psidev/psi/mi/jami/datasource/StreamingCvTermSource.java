@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface StreamingCvTermSource {
+public interface StreamingCvTermSource extends MolecularInteractionDataSource{
 
     /**
      * The CV terms iterator for this datasource.

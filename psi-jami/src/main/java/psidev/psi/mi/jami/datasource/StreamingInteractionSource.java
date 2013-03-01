@@ -12,9 +12,9 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface StreamingInteractionSource {
+public interface StreamingInteractionSource extends MolecularInteractionDataSource{
 
-    public Iterator<InteractionEvidence> getExperimentalInteractionsIterator();
+    public Iterator<InteractionEvidence> getInteractionEvidencesIterator();
     public Iterator<ModelledInteraction> getModelledInteractionsIterator();
     public Iterator<CooperativeInteraction> getCooperativeInteractionsIterator();
     public Iterator<AllostericInteraction> getAllostericInteractionsIterator();
