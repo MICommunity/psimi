@@ -18,5 +18,5 @@ public interface StreamingOrganismSource extends MolecularInteractionDataSource{
      * The organisms iterator for this datasource.
      * @return iterator of organisms for a given datasource
      */
-    public Iterator<Organism> getOrganismsIterator();
+    public Iterator<? extends Organism> getOrganismsIterator();
 }

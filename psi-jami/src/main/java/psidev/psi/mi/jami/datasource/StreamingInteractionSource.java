@@ -14,9 +14,9 @@ import java.util.Iterator;
 
 public interface StreamingInteractionSource extends MolecularInteractionDataSource{
 
-    public Iterator<InteractionEvidence> getInteractionEvidencesIterator();
-    public Iterator<ModelledInteraction> getModelledInteractionsIterator();
-    public Iterator<CooperativeInteraction> getCooperativeInteractionsIterator();
-    public Iterator<AllostericInteraction> getAllostericInteractionsIterator();
+    public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator();
+    public Iterator<? extends ModelledInteraction> getModelledInteractionsIterator();
+    public Iterator<? extends CooperativeInteraction> getCooperativeInteractionsIterator();
+    public Iterator<? extends AllostericInteraction> getAllostericInteractionsIterator();
     public Iterator<? extends Interaction> getInteractionsIterator();
 }
