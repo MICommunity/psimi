@@ -242,7 +242,7 @@ public class XgmmlStreamingGrapBuilder {
         try{
             String line = reader.readLine();
 
-            while (line != null) {
+            while (line != null && line.trim().length() > 0) {
                 try {
                     Row row = calimochoReader.readLine(line);
 
