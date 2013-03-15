@@ -57,6 +57,9 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
     }
 
     public Iterator<? extends InteractionEvidence> getExperimentalInteractionsIterator() {
+        if (mitabIterator == null){
+           open();
+        }
         return mitabIterator;
     }
 
