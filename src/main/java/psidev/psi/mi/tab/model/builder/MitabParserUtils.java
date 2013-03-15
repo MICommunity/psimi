@@ -15,10 +15,13 @@
  */
 package psidev.psi.mi.tab.model.builder;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
+import psidev.psi.mi.tab.events.ClusteredColumnEvent;
+import psidev.psi.mi.tab.events.InvalidFormatEvent;
+import psidev.psi.mi.tab.listeners.MitabParserListener;
+import psidev.psi.mi.tab.listeners.MitabParsingLogger;
 import psidev.psi.mi.tab.model.*;
 
 import java.text.ParseException;
@@ -146,8 +149,7 @@ public final class MitabParserUtils {
         return false;
     }
 
-
-    public static BinaryInteraction<Interactor> buildBinaryInteraction(String[] line) throws IllegalFormatException {
+    public static BinaryInteraction<Interactor> buildBinaryInteraction(String[] line, int lineIndex, List<MitabParserListener> listenerList) {
 
         if (line == null) {
             throw new NullPointerException("Null line to create to create a BinaryInteraction");
@@ -164,97 +166,103 @@ public final class MitabParserUtils {
         Interactor interactorA = new Interactor();
         Interactor interactorB = new Interactor();
 
-		BinaryInteraction<Interactor> interaction = new BinaryInteractionImpl(interactorA, interactorB);
+        BinaryInteractionImpl interaction = new BinaryInteractionImpl(interactorA, interactorB);
+        interaction.setLineNumber(lineIndex);
 
         //MITAB 2.5
-        interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()]));
-        interactorA.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()]));
-        interactorA.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()]));
-        interactorA.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_A.ordinal()]));
+        interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.ID_INTERACTOR_A.ordinal()));
+        interactorA.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()));
+        interactorA.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()));
+        interactorA.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.TAXID_A.ordinal()));
 
         //MITAB 2.5
-        interactorB.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()]));
-        interactorB.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()]));
-        interactorB.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()]));
-        interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()]));
+        interactorB.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.ID_INTERACTOR_B.ordinal()));
+        interactorB.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()));
+        interactorB.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()));
+        interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.TAXID_B.ordinal()));
 
         //MITAB 2.5
-        interaction.setDetectionMethods(splitCrossReferences(line[PsimiTabColumns.INT_DET_METHOD.ordinal()]));
-        interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()]));
-        interaction.setPublications(splitCrossReferences(line[PsimiTabColumns.PUB_ID.ordinal()]));
-        interaction.setInteractionTypes(splitCrossReferences(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()]));
-        interaction.setSourceDatabases(splitCrossReferences(line[PsimiTabColumns.SOURCE.ordinal()]));
-        interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()]));
-        interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()]));
+        interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, PsimiTabColumns.INT_DET_METHOD.ordinal()));
+        interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal()));
+        interaction.setPublications(splitCrossReferences(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal()));
+        interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTION_TYPE.ordinal()));
+        interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, PsimiTabColumns.SOURCE.ordinal()));
+        interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTION_ID.ordinal()));
+        interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()], listenerList, lineIndex, PsimiTabColumns.CONFIDENCE.ordinal()));
 
 
         //MITAB 2.6
-        interactorA.setBiologicalRoles(splitCrossReferences(line[PsimiTabColumns.BIOROLE_A.ordinal()]));
-        interactorA.setExperimentalRoles(splitCrossReferences(line[PsimiTabColumns.EXPROLE_A.ordinal()]));
-        interactorA.setInteractorTypes(splitCrossReferences(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()]));
-        interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()]));
-        interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()]));
-        interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()]));
+        interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.BIOROLE_A.ordinal()));
+        interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.EXPROLE_A.ordinal()));
+        interactorA.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()));
+        interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.XREFS_A.ordinal()));
+        interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.ANNOTATIONS_A.ordinal()));
+        interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.CHECKSUM_A.ordinal()));
 
         //MITAB 2.6
-        interactorB.setBiologicalRoles(splitCrossReferences(line[PsimiTabColumns.BIOROLE_B.ordinal()]));
-        interactorB.setExperimentalRoles(splitCrossReferences(line[PsimiTabColumns.EXPROLE_B.ordinal()]));
-        interactorB.setInteractorTypes(splitCrossReferences(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()]));
-        interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()]));
-        interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()]));
-        interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()]));
+        interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.BIOROLE_B.ordinal()));
+        interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.EXPROLE_B.ordinal()));
+        interactorB.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()));
+        interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.XREFS_B.ordinal()));
+        interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.ANNOTATIONS_B.ordinal()));
+        interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.CHECKSUM_B.ordinal()));
 
         //MITAB 2.6
-        interaction.setComplexExpansion(splitCrossReferences(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()]));
-        interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()]));
-        interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()]));
-        interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()]));
-        interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()]));
-        interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()]));
-        interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()]));
-        interaction.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()]));
-        interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()]));
+        interaction.setComplexExpansion(splitControlledVocabulary(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()], listenerList, lineIndex, PsimiTabColumns.COMPLEX_EXPANSION.ordinal()));
+        interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.XREFS_I.ordinal()));
+        interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.ANNOTATIONS_I.ordinal()));
+        interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()], listenerList, lineIndex, PsimiTabColumns.HOST_ORGANISM.ordinal()));
+        interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARAMETERS_I.ordinal()));
+        interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()], listenerList, lineIndex, PsimiTabColumns.CREATION_DATE.ordinal()));
+        interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()], listenerList, lineIndex, PsimiTabColumns.UPDATE_DATE.ordinal()));
+        interaction.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.CHECKSUM_I.ordinal()));
+        interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()], listenerList, lineIndex, PsimiTabColumns.NEGATIVE.ordinal()));
 
         //MITAB 2.7
-        interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()]));
-        interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()]));
-        interactorA.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()]));
+        interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.FEATURES_A.ordinal()));
+        interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_A.ordinal()));
+        interactorA.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()));
 
 
         //MITAB 2.7
-        interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()]));
-        interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()]));
-        interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()]));
+        interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.FEATURES_B.ordinal()));
+        interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_B.ordinal()));
+        interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()));
 
-		//We check some consistency in the interactors
+        //We check some consistency in the interactors
 
-		if(!interactorA.isEmpty() && (interactorA.getIdentifiers() == null || interactorA.getIdentifiers().isEmpty())){
-			//We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
-			throw new IllegalFormatException("The interactor A has not an identifier but contains information in other attributes." +
-					"Please, add an identifier: " + interactorA.toString());
-		}
+        if(!interactorA.isEmpty() && (interactorA.getIdentifiers() == null || interactorA.getIdentifiers().isEmpty())){
+            //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
+            throw new IllegalFormatException("The interactor A has not an identifier but contains information in other attributes." +
+                    "Please, add an identifier: " + interactorA.toString());
+        }
 
-		if(!interactorB.isEmpty() && (interactorB.getIdentifiers() == null || interactorB.getIdentifiers().isEmpty())){
-			//We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
-			throw new IllegalFormatException("The interactor B has not an identifier but contains information in other attributes. " +
-					"Please, add an identifier: " + interactorB.toString());
-		}
+        if(!interactorB.isEmpty() && (interactorB.getIdentifiers() == null || interactorB.getIdentifiers().isEmpty())){
+            //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
+            throw new IllegalFormatException("The interactor B has not an identifier but contains information in other attributes. " +
+                    "Please, add an identifier: " + interactorB.toString());
+        }
 
-		if(interactorA.isEmpty() && interactorB.isEmpty()){
-			//We don't have interactor, so we throw an exception
-			throw new IllegalFormatException("Both interactors are null or empety. We can have a interaction without interactors");
-		}
+        if(interactorA.isEmpty() && interactorB.isEmpty()){
+            //We don't have interactor, so we throw an exception
+            throw new IllegalFormatException("Both interactors are null or empety. We can have a interaction without interactors");
+        }
 
-		//We check if it is a intra-inter interaction. In that case one of the interactors can be null
-		if(interactorA.isEmpty() && !interactorB.isEmpty()){
-			interaction.setInteractorA(null);
-		}
+        //We check if it is a intra-inter interaction. In that case one of the interactors can be null
+        if(interactorA.isEmpty() && !interactorB.isEmpty()){
+            interaction.setInteractorA(null);
+        }
 
-		if(interactorB.isEmpty() && !interactorA.isEmpty()){
-			interaction.setInteractorB(null);
-		}
+        if(interactorB.isEmpty() && !interactorA.isEmpty()){
+            interaction.setInteractorB(null);
+        }
 
         return interaction;
+    }
+
+    public static BinaryInteraction<Interactor> buildBinaryInteraction(String[] line) {
+
+        return buildBinaryInteraction(line, 0, new ArrayList<MitabParserListener>(Arrays.asList(new MitabParsingLogger())));
     }
 
     /**
@@ -283,7 +291,7 @@ public final class MitabParserUtils {
 
     // TODO delegate the creation of the objects
 
-    public static Organism splitOrganism(String column) throws IllegalFormatException {
+    public static Organism splitOrganism(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) throws IllegalFormatException {
 
         Organism organism = null;
 
@@ -291,6 +299,8 @@ public final class MitabParserUtils {
             organism = new OrganismImpl();
 
             String[] result = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+
+            Set<String> taxids = new HashSet<String>(result.length);
 
             for (String r : result) {
 
@@ -301,27 +311,50 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create a organism (check the syntax): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid organism (check the syntax taxid:value(name)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
 
-                        if (length == 1) {
+                        else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create a organism (check the syntax): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid organism (check the syntax taxid:value(name)): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
                             }
                         } else if (length == 2) {
+                            taxids.add(fields[1]);
                             organism.addIdentifier(new CrossReferenceImpl(fields[0], fields[1]));
                         } else if (length == 3) {
+                            taxids.add(fields[1]);
                             organism.addIdentifier(new CrossReferenceImpl(fields[0], fields[1], fields[2]));
                         }
                     }
+                }
+            }
+
+            if (taxids.size() > 1){
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(taxids, "We have several organisms for a same interactor");
+                evt.setColumnNumber(columnNumber);
+                evt.setLineNumber(lineNumber);
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnClusteredColumnEvent(evt);
                 }
             }
         }
         return organism;
     }
 
-
-    public static List<CrossReference> splitCrossReferences(String column) throws IllegalFormatException {
+    public static List<CrossReference> splitCrossReferences(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
 
         List<CrossReference> objects = new ArrayList<CrossReference>();
         CrossReference object = null;
@@ -339,10 +372,15 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create a cross reference (check the syntax): " + Arrays.asList(result).toString());
-                        }
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
 
-                        if (length == 1) {
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
+                        }
+                        else if (length == 1) {
                             //Backward compatibility
                             if (field.equalsIgnoreCase("spoke")) {
                                 object = new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion");
@@ -351,7 +389,13 @@ public final class MitabParserUtils {
                             } else if (field.equalsIgnoreCase("bipartite")) {
                                 object = new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion");
 							} else if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create a cross reference (check the syntax): " + ArrayUtils.toString(result));
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
                             }
                         } else if (length == 2) {
                             object = new CrossReferenceImpl(result[0], result[1]);
@@ -369,7 +413,144 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Alias> splitAliases(String column) throws IllegalFormatException {
+    public static List<CrossReference> splitControlledVocabulary(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
+
+        List<CrossReference> objects = new ArrayList<CrossReference>();
+        CrossReference object = null;
+
+        if (column != null && !column.isEmpty()) {
+
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            for (String field : fields) {
+                if (field != null) {
+
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    if (result != null) {
+
+                        int length = result.length;
+
+                        // some exception handling
+                        if (length == 0 || length > 3) {
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
+                        }
+                        else if (length == 1) {
+                            //Backward compatibility
+                            if (field.equalsIgnoreCase("spoke")) {
+                                object = new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion");
+                            } else if (field.equalsIgnoreCase("matrix")) {
+                                object = new CrossReferenceImpl("psi-mi", "MI:1061", "matrix expansion");
+                            } else if (field.equalsIgnoreCase("bipartite")) {
+                                object = new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion");
+                            } else if (!result[0].equalsIgnoreCase("-")) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                        } else if (length == 2) {
+                            object = new CrossReferenceImpl(result[0], result[1]);
+                        } else if (length == 3) {
+                            object = new CrossReferenceImpl(result[0], result[1], result[2]);
+                        }
+
+                        if (object != null) {
+                            objects.add(object);
+                        }
+                    }
+                }
+            }
+
+            if (fields.length > 1){
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), "We have several controlled vocabulary terms where we expect only one term");
+                evt.setColumnNumber(columnNumber);
+                evt.setLineNumber(lineNumber);
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnClusteredColumnEvent(evt);
+                }
+            }
+        }
+        return objects;
+    }
+
+    public static List<CrossReference> splitPublications(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
+
+        List<CrossReference> objects = new ArrayList<CrossReference>();
+        CrossReference object = null;
+
+        if (column != null && !column.isEmpty()) {
+
+            String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
+            List<String> dbNames = new ArrayList<String>(fields.length);
+
+            for (String field : fields) {
+                if (field != null) {
+
+                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    if (result != null) {
+
+                        int length = result.length;
+
+                        // some exception handling
+                        if (length == 0 || length > 3) {
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
+                        }
+                        else if (length == 1) {
+                            //Backward compatibility
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
+                        } else if (length == 2) {
+                            dbNames.add(result[0]);
+                            object = new CrossReferenceImpl(result[0], result[1]);
+                        } else if (length == 3) {
+                            dbNames.add(result[0]);
+                            object = new CrossReferenceImpl(result[0], result[1], result[2]);
+                        }
+
+                        if (object != null) {
+                            objects.add(object);
+                        }
+                    }
+                }
+            }
+
+            if (fields.length > 1){
+                for (String field : fields){
+
+                }
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), "We have several controlled vocabulary terms where we expect only one term");
+                evt.setColumnNumber(columnNumber);
+                evt.setLineNumber(lineNumber);
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnClusteredColumnEvent(evt);
+                }
+            }
+        }
+        return objects;
+    }
+
+    public static List<Alias> splitAliases(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
         List<Alias> objects = new ArrayList<Alias>();
         Alias object = null;
 
@@ -386,12 +567,22 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create an alias (check the syntax): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
 
-                        if (length == 1) {
+                        else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create an alias (check the syntax): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
                             }
                         } else if (length == 2) {
                             object = new AliasImpl(result[0], result[1]);
@@ -409,7 +600,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Confidence> splitConfidences(String column) throws IllegalFormatException {
+    public static List<Confidence> splitConfidences(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
         List<Confidence> objects = new ArrayList<Confidence>();
         Confidence object = null;
 
@@ -427,10 +618,15 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create the confidence (check the syntax): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid confidence (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
 
-                        if (length == 1) {
+                        else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
                                 object = new ConfidenceImpl("not-defined", result[0], "free-text");
                             }
@@ -450,7 +646,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Annotation> splitAnnotations(String column) throws IllegalFormatException {
+    public static List<Annotation> splitAnnotations(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
         List<Annotation> objects = new ArrayList<Annotation>();
         Annotation object = null;
 
@@ -467,10 +663,14 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create an annotation (check the syntax): " + Arrays.asList(result).toString());
-                        }
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid annotation (check the syntax topic:value): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }                        }
 
-                        if (length == 1) {
+                        else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
 
                                 //We allow annotations only with free text.
@@ -479,8 +679,14 @@ public final class MitabParserUtils {
 
                         } else if (length == 2) {
                             object = new AnnotationImpl(result[0], result[1]);
-                        } else
-                            throw new IllegalFormatException("String cannot be parsed to create an annotation (check the syntax): " + Arrays.asList(result).toString());
+                        } else  {
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid annotation (check the syntax topic:value): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
+                        }
 
                         if (object != null) {
                             objects.add(object);
@@ -493,7 +699,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Parameter> splitParameters(String column) throws IllegalFormatException {
+    public static List<Parameter> splitParameters(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber){
         List<Parameter> objects = new ArrayList<Parameter>();
         Parameter object = null;
 
@@ -509,25 +715,41 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create a parameter (check the syntax): " + Arrays.asList(result).toString());
-                        }
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }                         }
 
-                        if (length == 1) {
+                        else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create a parameter (check the syntax): " + Arrays.asList(result).toString());
-                            }
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }                             }
                         } else if (length == 2) {
                             try {
                                 object = new ParameterImpl(result[0], result[1]);
                             } catch (IllegalParameterException e) {
-                                throw new IllegalFormatException("String cannot be parsed to create a parameter (check the syntax): " + Arrays.asList(result).toString(), e);
-                            }
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }                             }
                         } else if (length == 3) {
                             try {
                                 object = new ParameterImpl(result[0], result[1], result[2]);
                             } catch (IllegalParameterException e) {
-                                throw new IllegalFormatException("String cannot be parsed to create a parameter (check the syntax): " + Arrays.asList(result).toString(), e);
-                            }
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }                             }
                         }
 
                         if (object != null) {
@@ -540,7 +762,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Checksum> splitChecksums(String column) throws IllegalFormatException {
+    public static List<Checksum> splitChecksums(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
 
         List<Checksum> objects = new ArrayList<Checksum>();
         Checksum object = null;
@@ -559,13 +781,21 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create a checksum (check the syntax): " + Arrays.asList(result).toString());
-                        }
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid checksum (check the syntax method:value): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }                         }
 
-                        if (length == 1) {
+                        else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                throw new IllegalFormatException("String cannot be parsed to create a checksum (check the syntax): " + Arrays.asList(result).toString());
-                            }
+                                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid checksum (check the syntax method:value): " + Arrays.asList(result).toString());
+                                evt.setColumnNumber(columnNumber);
+                                evt.setLineNumber(lineNumber);
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }                            }
                         } else if (length == 2) {
                             object = new ChecksumImpl(result[0], result[1]);
                         } else
@@ -581,8 +811,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-
-    public static List<Integer> splitStoichiometries(String column) throws IllegalFormatException {
+    public static List<Integer> splitStoichiometries(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
         List<Integer> objects = new ArrayList<Integer>();
         Integer object = null;
 
@@ -600,13 +829,21 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create a stoichiometry (check the syntax): " + Arrays.asList(result).toString());
-                        }
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid stoichiometry (check the syntax. It has to be a Integer): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }                        }
 
-                        if (length != 1) {
-                            throw new IllegalFormatException("String cannot be parsed to create a stoichiometry (check the syntax): " + Arrays.asList(result).toString());
-                        }
-                        if (!result[0].equalsIgnoreCase("-"))
+                        else if (length != 1) {
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid stoichiometry (check the syntax. It has to be a Integer): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }                        }
+                        else if (!result[0].equalsIgnoreCase("-"))
                             object = new Integer(result[0]);
 
                         if (object != null) {
@@ -619,7 +856,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Feature> splitFeatures(String column) throws IllegalFormatException {
+    public static List<Feature> splitFeatures(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
         List<Feature> objects = new ArrayList<Feature>();
         Feature object = null;
 
@@ -636,10 +873,15 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create a feature (check the syntax): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid feature (check the syntax. featureType:range1;range2(free text)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
 
-                        if (length == 1) {
+                        else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
 
                                 //We have a feature without ranges {?-?}
@@ -662,7 +904,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Author> splitAuthor(String column) throws IllegalFormatException {
+    public static List<Author> splitAuthor(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
 
         //TODO in the future add the year as a new field in the author
         //Now all is a string and we don not need split the author
@@ -684,10 +926,15 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create an author (check the syntax): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid author (check the syntax first author et al. (date)): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
 
-                        if (!field.equalsIgnoreCase("-")) {
+                        else if (!field.equalsIgnoreCase("-")) {
                             object = new AuthorImpl(field);
                         }
 
@@ -701,7 +948,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Date> splitDates(String column) throws IllegalFormatException {
+    public static List<Date> splitDates(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
         List<Date> objects = new ArrayList<Date>();
         Date object = null;
 
@@ -719,18 +966,32 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            throw new IllegalFormatException("String cannot be parsed to create a date (check the syntax): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid date (check the syntax. yyyy/MM/dd): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
 
                         if (length != 1) {
-                            throw new IllegalFormatException("String cannot be parsed to create a date (check the syntax): " + result[0]);
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid date (check the syntax. yyyy/MM/dd): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
                         try {
                             if (!result[0].equalsIgnoreCase("-"))
                                 object = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH).parse(result[0]);
                         } catch (ParseException e) {
-                            throw new IllegalFormatException("The date cannot be parsed to create a date (check the syntax): " + result[0]);
-                        }
+                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid date (check the syntax. yyyy/MM/dd): " + Arrays.asList(result).toString());
+                            evt.setColumnNumber(columnNumber);
+                            evt.setLineNumber(lineNumber);
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }                             }
 
                         if (object != null) {
                             objects.add(object);
@@ -742,7 +1003,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static Boolean splitNegative(String column) throws IllegalFormatException {
+    public static Boolean splitNegative(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
         boolean object = false;
 
         if (column != null && !column.isEmpty()) {
@@ -754,14 +1015,22 @@ public final class MitabParserUtils {
 
                 // some exception handling
                 if (length == 0 || length > 3) {
-                    throw new IllegalFormatException("String cannot be parsed to create a negative field (check the syntax): " + Arrays.asList(result).toString());
-                }
+                    InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid negative boolean value (check the syntax. true, false or -): " + Arrays.asList(result).toString());
+                    evt.setColumnNumber(columnNumber);
+                    evt.setLineNumber(lineNumber);
+                    for (MitabParserListener l : listenerList){
+                        l.fireOnInvalidFormat(evt);
+                    }                  }
 
-                if (length != 1) {
-                    throw new IllegalFormatException("String cannot be parsed to create a negative field (check the syntax): " + Arrays.asList(result).toString());
-                }
+                else if (length != 1) {
+                    InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid negative boolean value (check the syntax. true, false or -): " + Arrays.asList(result).toString());
+                    evt.setColumnNumber(columnNumber);
+                    evt.setLineNumber(lineNumber);
+                    for (MitabParserListener l : listenerList){
+                        l.fireOnInvalidFormat(evt);
+                    }                 }
 
-                if (!result[0].equalsIgnoreCase("-"))
+                else if (!result[0].equalsIgnoreCase("-"))
                     object = Boolean.valueOf(result[0]);
             }
 

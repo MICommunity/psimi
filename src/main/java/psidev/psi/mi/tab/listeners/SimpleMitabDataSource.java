@@ -1,13 +1,17 @@
-package psidev.psi.mi.tab.model;
+package psidev.psi.mi.tab.listeners;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.datasource.DataSourceError;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceParsingError;
 import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.tab.PsimiTabIterator;
 import psidev.psi.mi.tab.PsimiTabReader;
+import psidev.psi.mi.tab.events.ClusteredColumnEvent;
+import psidev.psi.mi.tab.events.InvalidFormatEvent;
+import psidev.psi.mi.tab.model.BinaryInteraction;import psidev.psi.mi.tab.model.MitabFileSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +26,7 @@ import java.util.*;
  * @since <pre>01/03/13</pre>
  */
 
-public class SimpleMitabDataSource implements StreamingInteractionSource{
+public class SimpleMitabDataSource implements StreamingInteractionSource, MitabParserListener{
 
     private PsimiTabReader reader;
     private Iterator<BinaryInteraction> mitabIterator;
@@ -34,6 +38,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource{
 
     public SimpleMitabDataSource(File file){
         this.reader = new PsimiTabReader();
+        this.reader.addMitabParserListener(this);
         this.file = file;
         if (file == null){
            throw new IllegalArgumentException("File is mandatory for a MITAb datasource");
@@ -43,6 +48,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource{
 
     public SimpleMitabDataSource(InputStream stream){
         this.reader = new PsimiTabReader();
+        this.reader.addMitabParserListener(this);
         this.stream = stream;
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a MITAb datasource");
@@ -109,4 +115,30 @@ public class SimpleMitabDataSource implements StreamingInteractionSource{
             mitabIterator = null;
         }
     }
+
+    public void fireOnInvalidFormat(InvalidFormatEvent event){
+        DataSourceError error = new DataSourceError(FileSourceParsingError.invalid_syntax.toString(), event.getMessage());
+        if (errors.containsKey(error)){
+           errors.get(error).add(event);
+        }
+        else{
+            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
+            contexts.add(event);
+            errors.put(error, contexts);
+        }
+    }
+
+    public void fireOnClusteredColumnEvent(ClusteredColumnEvent event) {
+        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        if (errors.containsKey(error)){
+            errors.get(error).add(event);
+        }
+        else{
+            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
+            contexts.add(event);
+            errors.put(error, contexts);
+        }
+    }
+
+
 }
