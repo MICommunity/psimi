@@ -56,15 +56,11 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
         errors = new HashMap<DataSourceError, List<FileSourceContext>>();
     }
 
-    public Iterator<? extends InteractionEvidence> getExperimentalInteractionsIterator() {
+    public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
         if (mitabIterator == null){
-           open();
+            open();
         }
         return mitabIterator;
-    }
-
-    public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
-        return null;
     }
 
     public Iterator<? extends ModelledInteraction> getModelledInteractionsIterator() {
