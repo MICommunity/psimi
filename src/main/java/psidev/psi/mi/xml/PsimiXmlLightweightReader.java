@@ -2,11 +2,14 @@ package psidev.psi.mi.xml;
 
 import psidev.psi.mi.xml.io.impl.PsimiXmlLightweightReader253;
 import psidev.psi.mi.xml.io.impl.PsimiXmlLightweightReader254;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.util.PsimiXmlVersionDetector;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 
+import javax.swing.event.EventListenerList;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +25,8 @@ import java.util.List;
 public class PsimiXmlLightweightReader implements psidev.psi.mi.xml.io.PsimiXmlLightweightReader {
 
     private psidev.psi.mi.xml.io.PsimiXmlLightweightReader readerPsimiXml;
+
+    protected EventListenerList listenerList = new EventListenerList();
 
     public PsimiXmlLightweightReader(File xmlDataFile) throws PsimiXmlReaderException {
         this(xmlDataFile, null);
@@ -166,5 +171,28 @@ public class PsimiXmlLightweightReader implements psidev.psi.mi.xml.io.PsimiXmlL
         }
 
         return version;
+    }
+
+    public void addXmlParserListener(PsiXml25ParserListener l) {
+        listenerList.add(PsiXml25ParserListener.class, l);
+    }
+
+    public void removeXmlParserListener(PsiXml25ParserListener l) {
+        listenerList.remove(PsiXml25ParserListener.class, l);
+    }
+
+    protected <T> List<T> getListeners(Class<T> listenerClass) {
+        List list = new ArrayList();
+
+        Object[] listeners = listenerList.getListenerList();
+
+        for (int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == PsiXml25ParserListener.class) {
+                if (listenerClass.isAssignableFrom(listeners[i+1].getClass())) {
+                    list.add(listeners[i+1]);
+                }
+            }
+        }
+        return list;
     }
 }

@@ -364,4 +364,8 @@ public class IndexedEntry {
         }
         return inputStreamRanges;
     }
+
+    public IndexElement getEntryIndexElement() {
+        return entryIndexElement;
+    }
 }
