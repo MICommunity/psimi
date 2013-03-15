@@ -562,7 +562,7 @@ public class XgmmlStreamingGrapBuilder {
 
         final Collection<Field> idFields = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
 
-        if (!idFields.isEmpty()) {
+        if (idFields != null && !idFields.isEmpty()) {
             edge.setLabel(nodeA.getKey()+" ("+idFields.iterator().next().get(CalimochoKeys.VALUE)+") "+nodeB.getKey());
         } else {
             edge.setLabel(nodeA.getKey() + "(interaction)" + nodeB.getKey());
@@ -611,42 +611,46 @@ public class XgmmlStreamingGrapBuilder {
     }
 
     private void addFieldsAsAtts(Collection<Field> idFields, Multimap<String, calimocho.internal.xgmml.Att> multimap, String prefix) {
-        for (Field field : idFields) {
+        if (idFields != null){
+            for (Field field : idFields) {
 
-            String prefixAndDot = "";
+                String prefixAndDot = "";
 
-            if (prefix != null && !prefix.isEmpty()) {
-                prefixAndDot = prefix + ".";
+                if (prefix != null && !prefix.isEmpty()) {
+                    prefixAndDot = prefix + ".";
+                }
+
+                calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), field.get(CalimochoKeys.VALUE));
+                att.setType(calimocho.internal.xgmml.ObjectType.STRING);
+
+                addToMultimap(multimap, att);
             }
-
-            calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), field.get(CalimochoKeys.VALUE));
-            att.setType(calimocho.internal.xgmml.ObjectType.STRING);
-
-            addToMultimap(multimap, att);
         }
     }
     private void addFieldsWithNameAsAtts(Collection<Field> idFields, Multimap<String, calimocho.internal.xgmml.Att> multimap, String prefix) {
-        for (Field field : idFields) {
+        if (idFields != null){
+            for (Field field : idFields) {
 
-            String prefixAndDot = "";
+                String prefixAndDot = "";
 
-            if (prefix != null && !prefix.isEmpty()) {
-                prefixAndDot = prefix + ".";
-            }
+                if (prefix != null && !prefix.isEmpty()) {
+                    prefixAndDot = prefix + ".";
+                }
 
-            String text = field.get(CalimochoKeys.TEXT);
-            if(text != null){
-                calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY) + "_identifier", field.get(CalimochoKeys.VALUE));
-                att.setType(calimocho.internal.xgmml.ObjectType.STRING);
-                calimocho.internal.xgmml.Att att2 = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), text);
-                att2.setType(calimocho.internal.xgmml.ObjectType.STRING);
-                addToMultimap(multimap, att);
-                addToMultimap(multimap, att2);
-            }
-            else{
-                calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), field.get(CalimochoKeys.VALUE));
-                att.setType(calimocho.internal.xgmml.ObjectType.STRING);
-                addToMultimap(multimap, att);
+                String text = field.get(CalimochoKeys.TEXT);
+                if(text != null){
+                    calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY) + "_identifier", field.get(CalimochoKeys.VALUE));
+                    att.setType(calimocho.internal.xgmml.ObjectType.STRING);
+                    calimocho.internal.xgmml.Att att2 = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), text);
+                    att2.setType(calimocho.internal.xgmml.ObjectType.STRING);
+                    addToMultimap(multimap, att);
+                    addToMultimap(multimap, att2);
+                }
+                else{
+                    calimocho.internal.xgmml.Att att = createAtt(prefixAndDot + field.get(CalimochoKeys.KEY), field.get(CalimochoKeys.VALUE));
+                    att.setType(calimocho.internal.xgmml.ObjectType.STRING);
+                    addToMultimap(multimap, att);
+                }
             }
         }
     }
