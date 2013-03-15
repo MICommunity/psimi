@@ -15,6 +15,10 @@
  */
 package psidev.psi.mi.tab;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import psidev.psi.mi.tab.events.InvalidFormatEvent;
+import psidev.psi.mi.tab.listeners.MitabParserListener;
+import psidev.psi.mi.tab.listeners.MitabParsingLogger;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 
 import java.io.BufferedReader;
@@ -75,7 +79,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             this.interactionStreamReader = new BufferedReader(psiMiTabInteractionsReader);
         }
         this.mReader = new PsimiTabReader();
-
+        mReader.addMitabParserListener(new MitabParsingLogger());
 
         try {
             do {
@@ -94,8 +98,55 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             } while (isHeader);
 
         } catch (Exception e) {
+            InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
+            evt.setColumnNumber(0);
+            evt.setLineNumber(lineIndex);
+            for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
+                l.fireOnInvalidFormat(evt);
+            }
             closeStreamReader();
-            throw new RuntimeException("Error while reading the header line.", e);
+        }
+    }
+
+    public PsimiTabIterator(Reader psiMiTabInteractionsReader, PsimiTabReader mitabParser) {
+
+        boolean isHeader = true;
+
+        if (psiMiTabInteractionsReader == null) {
+            throw new IllegalArgumentException("You must give a non null input stream.");
+        }
+        if (psiMiTabInteractionsReader instanceof BufferedReader) {
+            this.interactionStreamReader = (BufferedReader) psiMiTabInteractionsReader;
+        } else {
+            this.interactionStreamReader = new BufferedReader(psiMiTabInteractionsReader);
+        }
+        this.mReader = mitabParser;
+
+
+        try {
+            do {
+                String firstLine = interactionStreamReader.readLine();
+                if(firstLine == null){
+                    nextLine = null;
+                    isHeader = false;
+                }
+                else if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
+                    //This line is not a comment, we read
+                    nextLine = mReader.readLine(firstLine);
+                    lineIndex++;
+                    isHeader = false;
+                }
+
+            } while (isHeader);
+
+        } catch (Exception e) {
+            InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
+            evt.setColumnNumber(0);
+            evt.setLineNumber(lineIndex);
+            for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
+                l.fireOnInvalidFormat(evt);
+            }
+            closeStreamReader();
         }
     }
 
@@ -115,8 +166,13 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 				}
 			}
 		} catch (Exception e) {
-			closeStreamReader();
-			return false;
+            InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the line. " + ExceptionUtils.getFullStackTrace(e));
+            evt.setColumnNumber(0);
+            evt.setLineNumber(lineIndex);
+            for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
+                l.fireOnInvalidFormat(evt);
+            }
+            closeStreamReader();
 		}
 
 		return (nextLine != null);
