@@ -1,40 +1,32 @@
 package psidev.psi.mi.xml.io;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import psidev.psi.mi.xml.PsimiXmlReaderException;
-import psidev.psi.mi.xml.events.InvalidXmlEvent;
-import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
+import psidev.psi.mi.xml.model.Entry;
+import psidev.psi.mi.xml.model.EntrySet;
+import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml.model.Interactor;
-import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Iterator for interactor within the xml
+ * Xml iterator for interactors
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>15/03/13</pre>
+ * @since <pre>18/03/13</pre>
  */
 
 public class XmlInteractorIterator implements Iterator<Interactor> {
 
-    private Iterator<IndexedEntry> indexedEntriesIterator;
+    private Iterator<Entry> entriesIterator;
     private Iterator<Interactor> interactorIterator;
     private Interactor nextInteractor;
-    private List<PsiXml25ParserListener> listeners;
 
-    public XmlInteractorIterator(List<IndexedEntry> indexedEntries, List<PsiXml25ParserListener> listeners){
-        if (indexedEntries == null){
-            throw new IllegalArgumentException("The indexed entries is mandatory and cannot be null");
+    public XmlInteractorIterator(EntrySet entrySet){
+        if (entrySet == null){
+            throw new IllegalArgumentException("The entrySet is mandatory and cannot be null");
         }
-        this.indexedEntriesIterator = indexedEntries.iterator();
-        if (listeners == null){
-            this.listeners = Collections.EMPTY_LIST;
-        }
+        this.entriesIterator = entrySet.getEntries().iterator();
 
         processNextInteractor();
     }
@@ -44,22 +36,12 @@ public class XmlInteractorIterator implements Iterator<Interactor> {
         while (this.interactorIterator.hasNext() && desc == null){
             desc = this.interactorIterator.next();
         }
-        while (this.indexedEntriesIterator.hasNext() && desc == null){
-            IndexedEntry entry = indexedEntriesIterator.next();
-            try {
-                interactorIterator = entry.unmarshallInteractorIterator();
+        while (this.entriesIterator.hasNext() && desc == null){
+            Entry entry = entriesIterator.next();
+            interactorIterator = entry.getInteractors().iterator();
 
-                while (interactorIterator.hasNext() && desc == null){
-                    desc = interactorIterator.next();
-                }
-
-            } catch (PsimiXmlReaderException e) {
-                InvalidXmlEvent evt = new InvalidXmlEvent("Error while reading the next entry. " + ExceptionUtils.getFullStackTrace(e));
-                evt.setColumnNumber(0);
-                evt.setLineNumber((int) entry.getEntryIndexElement().getLineNumber());
-                for (PsiXml25ParserListener l : listeners){
-                    l.fireOnInvalidXmlSyntax(evt);
-                }
+            while (interactorIterator.hasNext() && desc == null){
+                desc = interactorIterator.next();
             }
         }
 
