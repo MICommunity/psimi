@@ -1,6 +1,7 @@
 package psidev.psi.mi.tab.events;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceParsingError;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -15,10 +16,11 @@ import java.util.Set;
 
 public class ClusteredColumnEvent extends DefaultFileSourceContext implements Serializable {
 
+    private FileSourceParsingError errorType;
     private Set<String> values;
     private String message;
 
-    public ClusteredColumnEvent(Set<String> values, String message){
+    public ClusteredColumnEvent(Set<String> values, FileSourceParsingError errorType, String message){
         this.values = values;
         this.message = message;
     }
@@ -29,5 +31,9 @@ public class ClusteredColumnEvent extends DefaultFileSourceContext implements Se
 
     public String getMessage() {
         return message;
+    }
+
+    public FileSourceParsingError getErrorType() {
+        return errorType;
     }
 }
