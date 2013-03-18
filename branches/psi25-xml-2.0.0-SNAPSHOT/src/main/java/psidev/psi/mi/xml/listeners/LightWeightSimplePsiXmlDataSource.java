@@ -10,9 +10,9 @@ import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlVersion;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.events.*;
-import psidev.psi.mi.xml.io.XmlExperimentIterator;
-import psidev.psi.mi.xml.io.XmlInteractionIterator;
-import psidev.psi.mi.xml.io.XmlInteractorIterator;
+import psidev.psi.mi.xml.io.LightWeightXmlExperimentIterator;
+import psidev.psi.mi.xml.io.LightWeightXmlInteractionIterator;
+import psidev.psi.mi.xml.io.LightWeightXmlInteractorIterator;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 
 import java.io.File;
@@ -20,14 +20,14 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * A simple PSI-XML datasource
+ * A simple PSI-XML datasource based on light weight parser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>15/03/13</pre>
  */
 
-public class LightWeightPsiXmlDataSource implements StreamingExperimentSource, StreamingInteractorSource, StreamingInteractionSource, PsiXml25ParserListener {
+public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSource, StreamingInteractorSource, StreamingInteractionSource, PsiXml25ParserListener {
 
     private PsimiXmlLightweightReader reader;
     private List<IndexedEntry> indexedEntries;
@@ -35,9 +35,9 @@ public class LightWeightPsiXmlDataSource implements StreamingExperimentSource, S
     private InputStream stream;
     private Map<DataSourceError, List<FileSourceContext>> errors;
 
-    private Log log = LogFactory.getLog(LightWeightPsiXmlDataSource.class);
+    private Log log = LogFactory.getLog(LightWeightSimplePsiXmlDataSource.class);
 
-    public LightWeightPsiXmlDataSource(File file){
+    public LightWeightSimplePsiXmlDataSource(File file){
         try {
             this.reader = new PsimiXmlLightweightReader(file);
         } catch (PsimiXmlReaderException e) {
@@ -52,7 +52,7 @@ public class LightWeightPsiXmlDataSource implements StreamingExperimentSource, S
         errors = new HashMap<DataSourceError, List<FileSourceContext>>();
     }
 
-    public LightWeightPsiXmlDataSource(InputStream stream){
+    public LightWeightSimplePsiXmlDataSource(InputStream stream){
         try {
             this.reader = new PsimiXmlLightweightReader(stream);
         } catch (PsimiXmlReaderException e) {
@@ -67,7 +67,7 @@ public class LightWeightPsiXmlDataSource implements StreamingExperimentSource, S
         errors = new HashMap<DataSourceError, List<FileSourceContext>>();
     }
 
-    public LightWeightPsiXmlDataSource(File file, PsimiXmlVersion version){
+    public LightWeightSimplePsiXmlDataSource(File file, PsimiXmlVersion version){
         try {
             this.reader = new PsimiXmlLightweightReader(file, version);
         } catch (PsimiXmlReaderException e) {
@@ -82,7 +82,7 @@ public class LightWeightPsiXmlDataSource implements StreamingExperimentSource, S
         errors = new HashMap<DataSourceError, List<FileSourceContext>>();
     }
 
-    public LightWeightPsiXmlDataSource(InputStream stream, PsimiXmlVersion version){
+    public LightWeightSimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version){
         try {
             this.reader = new PsimiXmlLightweightReader(stream, version);
         } catch (PsimiXmlReaderException e) {
@@ -203,7 +203,7 @@ public class LightWeightPsiXmlDataSource implements StreamingExperimentSource, S
     }
 
     public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
-        return new XmlInteractionIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
+        return new LightWeightXmlInteractionIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
     public Iterator<? extends ModelledInteraction> getModelledInteractionsIterator() {
@@ -219,15 +219,15 @@ public class LightWeightPsiXmlDataSource implements StreamingExperimentSource, S
     }
 
     public Iterator<? extends Interaction> getInteractionsIterator() {
-        return new XmlInteractionIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
+        return new LightWeightXmlInteractionIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
     public Iterator<? extends Experiment> getExperimentsIterator() {
-        return new XmlExperimentIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
+        return new LightWeightXmlExperimentIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
     public Iterator<? extends Interactor> getInteractorsIterator() {
-        return new XmlInteractorIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
+        return new LightWeightXmlInteractorIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
     public Iterator<? extends Protein> getProteinsIterator() {
