@@ -3,14 +3,13 @@ package psidev.psi.mi.xml.io;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.events.InvalidXmlEvent;
+import psidev.psi.mi.xml.events.MultipleHostOrganismsPerExperiment;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.ExperimentDescription;
+import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Light weight Iterator for Experiments within the xml
@@ -25,6 +24,7 @@ public class LightWeightXmlExperimentIterator implements Iterator<ExperimentDesc
     private Iterator<IndexedEntry> indexedEntriesIterator;
     private Iterator<ExperimentDescription> experimentIterator;
     private ExperimentDescription nextExperiment;
+    private IndexedEntry entry;
     private List<PsiXml25ParserListener> listeners;
 
     public LightWeightXmlExperimentIterator(List<IndexedEntry> indexedEntries, List<PsiXml25ParserListener> listeners){
@@ -45,7 +45,7 @@ public class LightWeightXmlExperimentIterator implements Iterator<ExperimentDesc
             desc = this.experimentIterator.next();
         }
         while (this.indexedEntriesIterator.hasNext() && desc == null){
-            IndexedEntry entry = indexedEntriesIterator.next();
+            entry = indexedEntriesIterator.next();
             try {
                 experimentIterator = entry.unmarshallExperimentIterator();
 
@@ -92,6 +92,16 @@ public class LightWeightXmlExperimentIterator implements Iterator<ExperimentDesc
         }
 
         this.nextExperiment = desc;
+
+        // we have more than one host organism
+        if (this.nextExperiment.getHostOrganisms().size() > 1){
+            MultipleHostOrganismsPerExperiment evt = new MultipleHostOrganismsPerExperiment(desc, new HashSet<Organism>(desc.getHostOrganisms()), "Experiment " +desc.getId() + " contains more than one host organism.");
+            evt.setColumnNumber(0);
+            evt.setLineNumber((int) entry.getExperimentLineNumber(desc.getId()));
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnMultipleHostOrganismsPerExperimentEvent(evt);
+            }
+        }
     }
 
     public boolean hasNext() {

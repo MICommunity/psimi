@@ -1,18 +1,13 @@
 package psidev.psi.mi.xml.io;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import psidev.psi.mi.xml.PsimiXmlReaderException;
-import psidev.psi.mi.xml.events.InvalidXmlEvent;
+import psidev.psi.mi.xml.events.MultipleHostOrganismsPerExperiment;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.xmlindex.IndexedEntry;
+import psidev.psi.mi.xml.model.Organism;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Xml experiment iterator
@@ -27,13 +22,16 @@ public class XmlExperimentIterator implements Iterator<ExperimentDescription> {
     private Iterator<Entry> entriesIterator;
     private Iterator<ExperimentDescription> experimentIterator;
     private ExperimentDescription nextExperiment;
+    private List<PsiXml25ParserListener> listeners;
 
-    public XmlExperimentIterator(EntrySet entrySet){
+    public XmlExperimentIterator(EntrySet entrySet, List<PsiXml25ParserListener> listeners){
         if (entrySet == null){
             throw new IllegalArgumentException("The entrySet is mandatory and cannot be null");
         }
         this.entriesIterator = entrySet.getEntries().iterator();
-
+        if (listeners == null){
+            this.listeners = Collections.EMPTY_LIST;
+        }
         processNextExperiment();
     }
 
@@ -52,6 +50,16 @@ public class XmlExperimentIterator implements Iterator<ExperimentDescription> {
         }
 
         this.nextExperiment = desc;
+
+        // we have more than one host organism
+        if (this.nextExperiment.getHostOrganisms().size() > 1){
+            MultipleHostOrganismsPerExperiment evt = new MultipleHostOrganismsPerExperiment(desc, new HashSet<Organism>(desc.getHostOrganisms()), "Experiment " +desc.getId() + " contains more than one host organism.");
+            evt.setColumnNumber(0);
+            evt.setLineNumber(0);
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnMultipleHostOrganismsPerExperimentEvent(evt);
+            }
+        }
     }
 
     public boolean hasNext() {

@@ -195,7 +195,7 @@ public class SimplePsiXmlDataSource implements StreamingExperimentSource, Stream
     }
 
     public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
-        return new XmlInteractionIterator(this.entrySet);
+        return new XmlInteractionIterator(this.entrySet, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
     public Iterator<? extends ModelledInteraction> getModelledInteractionsIterator() {
@@ -211,10 +211,10 @@ public class SimplePsiXmlDataSource implements StreamingExperimentSource, Stream
     }
 
     public Iterator<? extends Interaction> getInteractionsIterator() {
-        return new XmlInteractionIterator(this.entrySet);    }
+        return new XmlInteractionIterator(this.entrySet, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));    }
 
     public Iterator<? extends Experiment> getExperimentsIterator() {
-        return new XmlExperimentIterator(this.entrySet);    }
+        return new XmlExperimentIterator(this.entrySet, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));    }
 
     public Iterator<? extends Interactor> getInteractorsIterator() {
         return new XmlInteractorIterator(this.entrySet);
