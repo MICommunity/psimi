@@ -10,5 +10,7 @@ package psidev.psi.mi.jami.datasource;
 
 public enum FileSourceParsingError {
 
-    invalid_syntax, clustered_content
+    invalid_syntax, multiple_experimental_roles, multiple_host_organisms, multiple_experiments, multiple_expressed_in,
+    multiple_participant_identification_methods, multiple_interaction_types, clustered_content
+
 }
