@@ -90,7 +90,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                 }
                 else if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
                     //This line is not a comment, we read
-                    nextLine = mReader.readLine(firstLine);
+                    nextLine = mReader.readLine(firstLine, lineIndex);
                     lineIndex++;
                     isHeader = false;
                 }
@@ -115,7 +115,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     }
                     else if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
                         //This line is not a comment, we read
-                        nextLine = mReader.readLine(firstLine);
+                        nextLine = mReader.readLine(firstLine, lineIndex);
                         lineIndex++;
                         isHeader = false;
                     }
@@ -163,7 +163,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                 }
                 else if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
                     //This line is not a comment, we read
-                    nextLine = mReader.readLine(firstLine);
+                    nextLine = mReader.readLine(firstLine, lineIndex);
                     lineIndex++;
                     isHeader = false;
                 }
@@ -189,7 +189,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     }
                     else if (!firstLine.isEmpty() && !firstLine.startsWith("#")) {
                         //This line is not a comment, we read
-                        nextLine = mReader.readLine(firstLine);
+                        nextLine = mReader.readLine(firstLine, lineIndex);
                         lineIndex++;
                         isHeader = false;
                     }
@@ -225,7 +225,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     interactionStreamReader = null;
                 }
                 else {
-                    nextLine = mReader.readLine(line);
+                    nextLine = mReader.readLine(line, lineIndex);
                     if (nextLine == null) {
                         closeStreamReader();
                         interactionStreamReader = null;
@@ -253,7 +253,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                         interactionStreamReader = null;
                     }
                     else {
-                        nextLine = mReader.readLine(line);
+                        nextLine = mReader.readLine(line, lineIndex);
                         if (nextLine == null) {
                             closeStreamReader();
                             interactionStreamReader = null;

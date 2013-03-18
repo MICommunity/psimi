@@ -143,4 +143,15 @@ public class PsimiTabIteratorTest {
 		}
 		assertEquals(interactions.size(),0);
 	}
+
+    @Test
+    public void read_fix_errors() throws Exception {
+        //read binary interactions
+        psidev.psi.mi.tab.io.PsimiTabReader reader = new psidev.psi.mi.tab.PsimiTabReader();
+        File file = new File("/home/marine/Desktop/psicquic_mitab.txt");
+        Iterator<BinaryInteraction> iterator = reader.iterate(file);
+        while (iterator.hasNext()) {
+            iterator.next();
+        }
+    }
 }
