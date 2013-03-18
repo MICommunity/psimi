@@ -5,11 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -18,17 +15,16 @@ import psidev.psi.mi.xml.dao.PsiDAO;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.Confidence;
 import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.ExperimentRef;
+import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Feature;
 import psidev.psi.mi.xml.model.InferredInteraction;
 import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.InteractionType;
 import psidev.psi.mi.xml.model.Parameter;
 import psidev.psi.mi.xml.model.Participant;
-import psidev.psi.mi.xml254.jaxb.AttributeList;
-import psidev.psi.mi.xml254.jaxb.ConfidenceList;
+import psidev.psi.mi.xml254.jaxb.*;
 import psidev.psi.mi.xml254.jaxb.CvType;
-import psidev.psi.mi.xml254.jaxb.ExperimentList;
-import psidev.psi.mi.xml254.jaxb.ParticipantList;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Interaction.
@@ -197,6 +193,31 @@ public class InteractionConverter {
             for ( psidev.psi.mi.xml254.jaxb.Participant jParticipant : jInteraction.getParticipantList().getParticipants() ) {
                 Participant participant = participantConverter.fromJaxb( jParticipant );
                 mInteraction.getParticipants().add( participant );
+
+                if (participant.getParticipantIdentificationMethods().isEmpty()){
+                    for (ExperimentDescription desc : mInteraction.getExperimentDescriptions()){
+                        participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                        if (desc.getFeatureDetectionMethod() != null){
+                            for (Feature f : participant.getFeatures()){
+                                if (f.getFeatureDetectionMethod() == null){
+                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    for (ExperimentDescription desc : mInteraction.getExperimentDescriptions()){
+                        if (desc.getFeatureDetectionMethod() != null){
+                            for (Feature f : participant.getFeatures()){
+                                if (f.getFeatureDetectionMethod() == null){
+                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

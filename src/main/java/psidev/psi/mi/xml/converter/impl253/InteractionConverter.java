@@ -185,6 +185,31 @@ public class InteractionConverter {
             for ( ParticipantType jParticipant : jInteraction.getParticipantList().getParticipants() ) {
                 Participant participant = participantConverter.fromJaxb( jParticipant );
                 mInteraction.getParticipants().add( participant );
+
+                if (participant.getParticipantIdentificationMethods().isEmpty()){
+                    for (ExperimentDescription desc : mInteraction.getExperimentDescriptions()){
+                        participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                        if (desc.getFeatureDetectionMethod() != null){
+                            for (Feature f : participant.getFeatures()){
+                                if (f.getFeatureDetectionMethod() == null){
+                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    for (ExperimentDescription desc : mInteraction.getExperimentDescriptions()){
+                        if (desc.getFeatureDetectionMethod() != null){
+                            for (Feature f : participant.getFeatures()){
+                                if (f.getFeatureDetectionMethod() == null){
+                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
