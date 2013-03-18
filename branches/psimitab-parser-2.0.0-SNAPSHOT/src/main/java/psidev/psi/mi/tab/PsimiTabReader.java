@@ -19,7 +19,7 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
 
     protected EventListenerList listenerList = new EventListenerList();
 
-    protected Collection<BinaryInteraction> read(BufferedReader reader) throws IOException, PsimiTabException {
+    protected Collection<BinaryInteraction> read(BufferedReader reader) throws IOException {
 
         Collection<BinaryInteraction> interactions = new ArrayList<BinaryInteraction>();
 
@@ -41,13 +41,8 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
             // line[] is an array of values from the line
             // Avoid the problem of the size with the different formats
 
+            interactions.add(MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class)));
 
-            try {
-                interactions.add(MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class)));
-
-            } catch (Throwable e) {
-                handleError("Exception parsing line " + lineIndex + ": " + Arrays.toString(line), e);
-            }
             lineIndex++;
         }
 
@@ -57,7 +52,7 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
     /**
      * {@inheritDoc}
      */
-    public Collection<BinaryInteraction> read(Reader reader) throws IOException, PsimiTabException {
+    public Collection<BinaryInteraction> read(Reader reader) throws IOException {
 
         BufferedReader bufferedReader = null;
 
@@ -86,7 +81,7 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
     /**
      * {@inheritDoc}
      */
-    public Collection<BinaryInteraction> read(String s) throws IOException, PsimiTabException {
+    public Collection<BinaryInteraction> read(String s) throws IOException {
 
         ByteArrayInputStream is = null;
         BufferedReader bufferedReader = null;
@@ -121,7 +116,7 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
     /**
      * {@inheritDoc}
      */
-    public Collection<BinaryInteraction> read(InputStream is) throws IOException, PsimiTabException {
+    public Collection<BinaryInteraction> read(InputStream is) throws IOException {
 
         BufferedReader bufferedReader = null;
 
@@ -148,7 +143,7 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
     /**
      * {@inheritDoc}
      */
-    public Collection<BinaryInteraction> read(File file) throws IOException, PsimiTabException {
+    public Collection<BinaryInteraction> read(File file) throws IOException {
 
         FileReader reader = null;
         BufferedReader bufferedReader = null;
@@ -182,7 +177,7 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
     /**
      * {@inheritDoc}
      */
-    public Collection<BinaryInteraction> read(URL url) throws IOException, PsimiTabException {
+    public Collection<BinaryInteraction> read(URL url) throws IOException {
 
         InputStream is = null;
         BufferedReader bufferedReader = null;
@@ -213,9 +208,8 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
         return interactions;
     }
 
-    public BinaryInteraction readLine(String str) throws PsimiTabException {
+    public BinaryInteraction readLine(String str)  {
 
-        BinaryInteraction interaction = null;
         String[] line;
 
         line = MitabParserUtils.quoteAwareSplit(str, new char[]{'\t'}, false);
@@ -227,17 +221,10 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
         // line[] is an array of values from the line
         // Avoid the problem of the size with the different formats
 
-        try {
-            interaction = MitabParserUtils.buildBinaryInteraction(line, 0, getListeners(MitabParserListener.class));
-
-        } catch (Throwable e) {
-            handleError("Exception parsing line :" + Arrays.toString(line), e);
-        }
-
-        return interaction;
+        return MitabParserUtils.buildBinaryInteraction(line, 0, getListeners(MitabParserListener.class));
     }
 
-    public BinaryInteraction readLine(String str, int lineIndex) throws PsimiTabException {
+    public BinaryInteraction readLine(String str, int lineIndex) {
 
         BinaryInteraction interaction = null;
         String[] line;
@@ -251,14 +238,7 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
         // line[] is an array of values from the line
         // Avoid the problem of the size with the different formats
 
-        try {
-            interaction = MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class));
-
-        } catch (Throwable e) {
-            handleError("Exception parsing line :" + Arrays.toString(line), e);
-        }
-
-        return interaction;
+        return MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class));
     }
 
 
