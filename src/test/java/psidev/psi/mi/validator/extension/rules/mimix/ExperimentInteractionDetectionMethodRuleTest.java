@@ -1,6 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.xml.model.*;
@@ -80,6 +81,7 @@ public class ExperimentInteractionDetectionMethodRuleTest extends AbstractRuleTe
     }*/
 
     @Test
+    @Ignore
     public void validate_NoInteractionDetectionMethod() throws Exception {
 
         final Bibref bibref = new Bibref();

@@ -65,7 +65,7 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
         Mi25Context context = new Mi25Context();
         context.setInteractionId( interaction.getId() );
 
-        for ( ExperimentDescription experiment : interaction.getExperimentDescriptions() ) {
+        for ( ExperimentDescription experiment : interaction.getExperiments() ) {
 
             context.setExperimentId( experiment.getId() );
 

@@ -80,7 +80,7 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
             } else {
 
                 boolean foundOne = false;
-                for ( ExperimentDescription experiment : interaction.getExperimentDescriptions() ) {
+                for ( ExperimentDescription experiment : interaction.getExperiments() ) {
                     final Collection<Attribute> expAtts = searchAttributes( experiment.getAttributes(),
                             CONFIDENCE_MAPPING,
                             CONFIDENCE_MAPPING_MI_REF,
@@ -94,12 +94,12 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
 
                 if( ! foundOne ) {
 
-                    final int expCount = interaction.getExperimentDescriptions().size();
+                    final int expCount = interaction.getExperiments().size();
 
                     String msg = null;
                     if( expCount <= 1 ) {
                         msg = "Could not find a confidence mapping on the experiment attached to this interaction.";
-                        context.setExperimentId( interaction.getExperimentDescriptions().iterator().next().getId() );
+                        context.setExperimentId( interaction.getExperiments().iterator().next().getId() );
                     } else {
                         msg = "Could not find a confidence mapping on any of the "+ expCount +
                                 " experiments attached to this interaction.";

@@ -291,7 +291,7 @@ public class Mi25Validator extends Validator {
                     for ( ExperimentDescription experiment : entry.getExperiments() ) {
 
                         // cv mapping
-                        Collection<ValidatorMessage> messages = checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
+                        Collection<ValidatorMessage> messages = checkCvMapping( experiment, "/experiment/" );
 
                         if( ! messages.isEmpty() ){
                             checkExperiment(messages, experiment);
@@ -308,7 +308,7 @@ public class Mi25Validator extends Validator {
                     hasInteractorList = true;
                     for ( Interactor interactor : entry.getInteractors() ) {
                         // cv mapping
-                        Collection<ValidatorMessage> messages = checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
+                        Collection<ValidatorMessage> messages = checkCvMapping( interactor, "/interactor/" );
 
                         if( ! messages.isEmpty() ){
                             checkInteractor(messages, interactor);
@@ -324,7 +324,7 @@ public class Mi25Validator extends Validator {
                 for ( Interaction interaction : entry.getInteractions() ) {
 
                     // cv mapping
-                    Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
+                    Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/interactionEvidence/" );
                     if( ! messages.isEmpty() )
                         messages = convertToMi25Messages( messages, interaction );
 
@@ -444,9 +444,7 @@ public class Mi25Validator extends Validator {
         for ( IndexedEntry entry : entries ) {
             boolean hasExperimentList = false;
             boolean hasInteractorList = false;
-
             final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
-
             if (experimentIterator.hasNext()){
                 hasExperimentList = true;
 
@@ -455,7 +453,7 @@ public class Mi25Validator extends Validator {
 
                     // check using cv mapping rules
                     Collection<ValidatorMessage> validatorMessages =
-                            super.checkCvMapping( experiment, "/entrySet/entry/experimentList/experimentDescription/" );
+                            super.checkCvMapping( experiment, "/experiment/" );
 
                     if (validatorMessages != null){
                         validatorMessages = convertToMi25Messages( validatorMessages, experiment );
@@ -487,7 +485,7 @@ public class Mi25Validator extends Validator {
 
                     // check using cv mapping rules
                     Collection<ValidatorMessage> validatorMessages =
-                            super.checkCvMapping( interactor, "/entrySet/entry/interactorList/interactor/" );
+                            super.checkCvMapping( interactor, "/interactor/" );
 
                     if (validatorMessages != null){
                         validatorMessages = convertToMi25Messages( validatorMessages, interactor );
@@ -515,7 +513,7 @@ public class Mi25Validator extends Validator {
 
                 // check using cv mapping rules
                 Collection<ValidatorMessage> interactionMessages =
-                        super.checkCvMapping( interaction, "/entrySet/entry/interactionList/interaction/" );
+                        super.checkCvMapping( interaction, "/interactionEvidence/" );
 
                 if (interactionMessages != null){
                     interactionMessages = convertToMi25Messages( interactionMessages, interaction );
