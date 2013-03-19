@@ -89,7 +89,11 @@ public class InteractionConverter {
         experimentDescriptionConverter.setDAOFactory( factory );
     }
 
-
+    public void setExperimentDescriptionConverter(ExperimentDescriptionConverter experimentDescriptionConverter) {
+        if (experimentDescriptionConverter != null){
+            this.experimentDescriptionConverter = experimentDescriptionConverter;
+        }
+    }
 
     /**
      * Checks that the dependencies of that object are fulfilled.
