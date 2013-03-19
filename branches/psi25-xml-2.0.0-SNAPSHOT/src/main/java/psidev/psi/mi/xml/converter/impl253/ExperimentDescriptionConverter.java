@@ -56,6 +56,11 @@ public class ExperimentDescriptionConverter {
     ///////////////////////////////
     // DAO factory stategy
 
+
+    public DAOFactory getFactory() {
+        return factory;
+    }
+
     /**
      * Set the DAO Factory that holds required DAOs for resolving ids.
      *
