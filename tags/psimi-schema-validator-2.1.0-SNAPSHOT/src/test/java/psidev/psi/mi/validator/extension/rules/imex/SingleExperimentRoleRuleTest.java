@@ -70,7 +70,7 @@ public class SingleExperimentRoleRuleTest extends AbstractRuleTest {
         final Names names = new Names();
         names.setShortLabel( "extra role" );
         final Xref xref = new Xref();
-        xref.setPrimaryRef( new DbReference( "MI:xxxx", "database" ) );
+        xref.setPrimaryRef( new DbReference( "MI:xxxx", "psi-mi" ) );
         roles.add( new ExperimentalRole( names, xref ) );
 
         SingleExperimentRoleRule rule = new SingleExperimentRoleRule( ontologyMaganer );

@@ -32,10 +32,11 @@ public class BiologicalRoleRuleTest extends AbstractRuleTest {
     }
 
     @Test
-    public void check_fail_0_role() throws ValidatorException {
+    public void check_fail_bad_role() throws ValidatorException {
         final Participant p = buildParticipantDeterministic();
         Assert.assertTrue(p.getBiologicalRole() != null);
-        p.setBiologicalRole(null);
+        p.getBiologicalRole().setMIIdentifier(null);
+        p.getBiologicalRole().setMODIdentifier("MI:0xxx");
         BiologicalRoleRule rule = new BiologicalRoleRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( p );
         Assert.assertNotNull( messages );

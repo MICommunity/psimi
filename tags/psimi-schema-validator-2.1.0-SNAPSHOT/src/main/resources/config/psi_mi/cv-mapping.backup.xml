@@ -11,55 +11,47 @@
     <CvMappingRuleList>
 
         <CvMappingRule id="R1" name="Interaction Detection Method"
-                       cvElementPath="/interactionEvidence/experiment/interactionDetectionMethod/@MIIdentifier"
+                       cvElementPath="/entrySet/entry/interactionList/interaction/experiments/interactionDetectionMethod/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/experiment/interactionDetectionMethod"
+                       scopePath="/entrySet/entry/interactionList/interaction/experiments/interactionDetectionMethod"
                        requirementLevel="MUST">
             <CvTerm termAccession="MI:0001" allowChildren="true" termName="interaction detection method" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
         <CvMappingRule id="R2" name="Participant Detection Method"
-                       cvElementPath="/interactionEvidence/participantEvidences/identificationMethod/@MIIdentifier"
+                       cvElementPath="/entrySet/entry/interactionList/interaction/experiments/participantIdentificationMethod/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/identificationMethod"
+                       scopePath="/entrySet/entry/interactionList/interaction/experiments/participantIdentificationMethod"
                        requirementLevel="MUST">
             <CvTerm termAccession="MI:0002" allowChildren="true" termName="participant identification method" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
-        <!--<CvMappingRule id="R3" name="Participant's Feature Type having MI identifier"
-                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/type/@MIIdentifier"
+        <CvMappingRule id="R3" name="Participant's Feature Type"
+                       cvElementPath="/entrySet/entry/interactionList/interaction/participants/features/featureType/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/type"
+                       scopePath="/entrySet/entry/interactionList/interaction/participants/features/featureType"
                        requirementLevel="SHOULD">
-            feature type from MI like binding domain, mutations
+            <!--feature type from MI like binding domain, mutations-->
             <CvTerm termAccession="MI:0116" allowChildren="true" termName="feature type" useTerm="false" cvIdentifierRef="MI" />
-        </CvMappingRule>-->
-
-        <!--<CvMappingRule id="R4" name="Participant's Feature Type having MOD identifier"
-                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/type/@MODIdentifier"
-                       cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/type"
-                       requirementLevel="SHOULD">
-            feature type from MOD full list of ptm
+            <!--feature type from MOD full list of ptm-->
             <CvTerm termAccession="MOD:00000" allowChildren="true" termName="protein modification" useTerm="false" cvIdentifierRef="MOD" />
-        </CvMappingRule>-->
+        </CvMappingRule>
 
-        <CvMappingRule id="R3" name="Participant's Feature Detection Method"
-                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/detectionMethod/@MIIdentifier"
+        <CvMappingRule id="R4" name="Participant's Feature Detection Method"
+                       cvElementPath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/detectionMethod"
+                       scopePath="/entrySet/entry/interactionList/interaction/participants/features/featureDetectionMethod"
                        requirementLevel="SHOULD">
             <CvTerm termAccession="MI:0003" allowChildren="true" termName="feature detection method" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
-        <!-- The old rule R5 is not necessary as psi-jami is moving the feature detection method at the feature level only
         <CvMappingRule id="R5" name="Experiment's Feature Detection Method"
                        cvElementPath="/entrySet/entry/interactionList/interaction/experiments/featureDetectionMethod/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
                        scopePath="/entrySet/entry/interactionList/interaction/experiments/featureDetectionMethod"
                        requirementLevel="SHOULD">
             <CvTerm termAccession="MI:0003" allowChildren="true" termName="feature detection method" useTerm="false" cvIdentifierRef="MI"/>
-        </CvMappingRule> -->
+        </CvMappingRule>
 
         <!-- the rule R6 has been replaced by an object rule BibRefRule
         <CvMappingRule id="R6" name="Experiment's Bibliographical References"
@@ -71,62 +63,45 @@
             <CvTerm termAccession="MI:0574" allowChildren="false" termName="digital object identifier" useTerm="true" cvIdentifierRef="MI"/>
         </CvMappingRule>-->
 
-        <CvMappingRule id="R4" name="Interactor Type"
-                       cvElementPath="/interactionEvidence/participantEvidences/interactor/type/@MIIdentifier"
+        <CvMappingRule id="R7" name="Interactor Type"
+                       cvElementPath="/entrySet/entry/interactionList/interaction/participants/interactor/interactorType/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/interactor/type"
+                       scopePath="/entrySet/entry/interactionList/interaction/participants/interactor/interactorType"
                        requirementLevel="MUST">
             <CvTerm termAccession="MI:0313" allowChildren="true" termName="interactor type" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
-        <CvMappingRule id="R5" name="Participant's Biological Role"
-                       cvElementPath="/interactionEvidence/participantEvidences/biologicalRole/@MIIdentifier"
+        <CvMappingRule id="R8" name="Participant's Biological Role"
+                       cvElementPath="/entrySet/entry/interactionList/interaction/participants/biologicalRole/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/biologicalRole"
+                       scopePath="/entrySet/entry/interactionList/interaction/participants/biologicalRole"
                        requirementLevel="MAY">
             <CvTerm termAccession="MI:0500" allowChildren="true" termName="biological role" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
-        <CvMappingRule id="R6" name="Participant's Experimental Role"
-                       cvElementPath="/interactionEvidence/participantEvidences/experimentalRole/@MIIdentifier"
+        <CvMappingRule id="R9" name="Participant's Experimental Role"
+                       cvElementPath="/entrySet/entry/interactionList/interaction/participants/experimentalRoles/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/experimentalRole"
+                       scopePath="/entrySet/entry/interactionList/interaction/participants/experimentalRoles"
                        requirementLevel="MAY">
             <CvTerm termAccession="MI:0495" allowChildren="true" termName="experimental role" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
-        <CvMappingRule id="R7" name="Interaction Detection Method (experiment is validated alone)"
-                       cvElementPath="/experiment/interactionDetectionMethod/@MIIdentifier"
-                       cvTermsCombinationLogic="OR"
-                       scopePath="/experiment/interactionDetectionMethod"
-                       requirementLevel="MUST">
-            <CvTerm termAccession="MI:0001" allowChildren="true" termName="interaction detection method" useTerm="false" cvIdentifierRef="MI"/>
-        </CvMappingRule>
-
-        <CvMappingRule id="R8" name="Interactor Type (interactor is validated alone)"
-                       cvElementPath="/interactor/type/@MIIdentifier"
-                       cvTermsCombinationLogic="OR"
-                       scopePath="/interactor/type"
-                       requirementLevel="MUST">
-            <CvTerm termAccession="MI:0313" allowChildren="true" termName="interactor type" useTerm="false" cvIdentifierRef="MI"/>
-        </CvMappingRule>
-
-        <!-- Not necessary anymore as with psi-jami only the participant has participant identification method
         <CvMappingRule id="R10" name="Participant Detection Method"
                        cvElementPath="/entrySet/entry/interactionList/interaction/participants/participantIdentificationMethods/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
                        scopePath="/entrySet/entry/interactionList/interaction/participants/participantIdentificationMethods"
                        requirementLevel="MUST">
             <CvTerm termAccession="MI:0002" allowChildren="true" termName="participant identification method" useTerm="false" cvIdentifierRef="MI"/>
-        </CvMappingRule> -->
-        <!-- experimental interactor are ignored for the moment as with psi-jami, it will be a normal interactor
+        </CvMappingRule>
+
         <CvMappingRule id="R11" name="Experimental Interactor Type"
                        cvElementPath="/entrySet/entry/interactionList/interaction/participants/experimentalInteractors/interactor/interactorType/xref/primaryRef/@id"
                        cvTermsCombinationLogic="OR"
                        scopePath="/entrySet/entry/interactionList/interaction/participants/experimentalInteractors/interactor/interactorType"
                        requirementLevel="MUST">
             <CvTerm termAccession="MI:0313" allowChildren="true" termName="interactor type" useTerm="false" cvIdentifierRef="MI"/>
-        </CvMappingRule> -->
+        </CvMappingRule>
 
     </CvMappingRuleList>
 </CvMapping>
