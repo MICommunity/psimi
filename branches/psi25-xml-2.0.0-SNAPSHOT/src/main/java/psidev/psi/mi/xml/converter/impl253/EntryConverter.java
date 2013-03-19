@@ -48,6 +48,7 @@ public class EntryConverter {
         attributeConverter = new AttributeConverter();
         availabilityConverter = new AvailabilityConverter();
         interactionConverter = new InteractionConverter();
+        interactionConverter.setExperimentDescriptionConverter(experimentDescriptionConverter);
         interactorConverter = new InteractorConverter();
     }
 
