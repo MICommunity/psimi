@@ -69,7 +69,7 @@ public class FeatureRangeRule extends ObjectRule<Participant> {
 
             for (Feature feature : features){
                 int featureId = feature.getId();
-                Collection<Range> ranges = feature .getRanges();
+                Collection<Range> ranges = feature .getFeatureRanges();
 
                 Mi25Context context = new Mi25Context();
                 context.setParticipantId( participantId );

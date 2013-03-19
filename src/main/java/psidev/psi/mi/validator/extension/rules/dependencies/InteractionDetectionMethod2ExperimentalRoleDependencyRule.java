@@ -48,7 +48,7 @@ public class InteractionDetectionMethod2ExperimentalRoleDependencyRule extends M
         context.setInteractionId( interaction.getId() );
 
 
-        for ( ExperimentDescription experiment : interaction.getExperiments() ) {
+        for ( ExperimentDescription experiment : interaction.getExperimentDescriptions() ) {
 
             context.setExperimentId( experiment.getId() );
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();

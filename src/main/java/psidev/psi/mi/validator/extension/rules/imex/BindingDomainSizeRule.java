@@ -65,7 +65,7 @@ public class BindingDomainSizeRule extends ObjectRule<Feature> {
                 endPos = range.getEndInterval().getEnd();
             }
             else if (range.getEnd() != null){
-                endPos = range.getEnd().getPosition();
+                endPos = range.getEndPosition().getPosition();
             }
         }
 
@@ -105,7 +105,7 @@ public class BindingDomainSizeRule extends ObjectRule<Feature> {
                 endPos = range.getEndInterval().getBegin();
             }
             else if (range.getEnd() != null){
-                endPos = range.getEnd().getPosition();
+                endPos = range.getEndPosition().getPosition();
             }
         }
 
@@ -142,7 +142,7 @@ public class BindingDomainSizeRule extends ObjectRule<Feature> {
 
         if (feature.hasFeatureType()){
             if (RuleUtils.isBindingSite(ontologyManager, feature)){
-                Collection<Range> ranges = feature.getRanges();
+                Collection<Range> ranges = feature.getFeatureRanges();
 
                 int minSize = 0;
                 int maxSize = 0;

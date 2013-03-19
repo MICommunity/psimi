@@ -86,7 +86,7 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
         context.setFeatureId( feature.getId());
 
         if (feature.hasFeatureType()){
-            Collection<Range> featureRange = feature.getRanges();
+            Collection<Range> featureRange = feature.getFeatureRanges();
             FeatureType featureType = feature.getFeatureType();
 
             for (Range r : featureRange){

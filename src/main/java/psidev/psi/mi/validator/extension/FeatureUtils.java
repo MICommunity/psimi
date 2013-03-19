@@ -74,8 +74,8 @@ public class FeatureUtils {
             }
 
             if (range.getEnd() != null){
-                toIntervalStart = range.getEnd().getPosition();
-                toIntervalEnd = range.getEnd().getPosition();
+                toIntervalStart = range.getEndPosition().getPosition();
+                toIntervalEnd = range.getEndPosition().getPosition();
             }
             else if (range.getEndInterval() != null){
                 toIntervalStart = range.getEndInterval().getBegin();
