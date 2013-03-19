@@ -209,17 +209,18 @@ public class InteractionConverter {
                         }
                     }
                     else if (!mInteraction.getExperimentRefs().isEmpty()){
-                        PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
+                        PsiDAO<ExperimentDescription> experimentDAO = experimentDescriptionConverter.getFactory().getExperimentDAO();
 
                         for (ExperimentRef ref : mInteraction.getExperimentRefs()){
                             ExperimentDescription desc = experimentDAO.retreive( ref.getRef() );
+                            if (desc != null){
+                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
 
-                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
-                            if (desc.getFeatureDetectionMethod() != null){
-                                for (Feature f : participant.getFeatures()){
-                                    if (f.getFeatureDetectionMethod() == null){
-                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                if (desc.getFeatureDetectionMethod() != null){
+                                    for (Feature f : participant.getFeatures()){
+                                        if (f.getFeatureDetectionMethod() == null){
+                                            f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                        }
                                     }
                                 }
                             }
@@ -239,12 +240,12 @@ public class InteractionConverter {
                         }
                     }
                     else if (!mInteraction.getExperimentRefs().isEmpty()){
-                        PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
+                        PsiDAO<ExperimentDescription> experimentDAO = experimentDescriptionConverter.getFactory().getExperimentDAO();
 
                         for (ExperimentRef ref : mInteraction.getExperimentRefs()){
                             ExperimentDescription desc = experimentDAO.retreive( ref.getRef() );
 
-                            if (desc.getFeatureDetectionMethod() != null){
+                            if (desc != null && desc.getFeatureDetectionMethod() != null){
                                 for (Feature f : participant.getFeatures()){
                                     if (f.getFeatureDetectionMethod() == null){
                                         f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
