@@ -235,7 +235,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
         getExperimentalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
         getBiologicalRole().setShortName(UNSPECIFIED_ROLE);
         getBiologicalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
-        ((ExperimentalRolesList)experimentalRoles).addOnly(getExperimentalRole());
+        ((ExperimentalRolesList)getExperimentalRoles()).addOnly(getExperimentalRole());
     }
 
     @Override
