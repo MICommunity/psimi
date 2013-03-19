@@ -52,7 +52,7 @@ public final class PsiFactory {
         for (Interaction interaction : interactions) {
             entry.getInteractions().add(interaction);
 
-            for (ExperimentDescription expDesc : interaction.getExperimentDescriptions()) {
+            for (ExperimentDescription expDesc : interaction.getExperiments()) {
                 entry.getExperiments().add(expDesc);
             }
 
@@ -122,7 +122,7 @@ public final class PsiFactory {
         }
 
         interaction.getInteractionTypes().add(interactionType);
-        interaction.getExperimentDescriptions().add(experiment);
+        interaction.getExperiments().add(experiment);
 
         return interaction;
     }

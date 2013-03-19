@@ -30,11 +30,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
     private Availability xmlAvailability;
 
-    private Collection<ExperimentDescription> experimentDescriptions;
+    private Collection<ExperimentDescription> experiments;
 
     private Collection<ExperimentRef> experimentRefs;
 
-    private Collection<Participant> xmlParticipants;
+    private Collection<Participant> participants;
 
     private Collection<InferredInteraction> inferredInteractions;
 
@@ -89,11 +89,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
             initialiseParticipantEvidencesWith(Collections.EMPTY_LIST);
         }
         else {
-            if (xmlParticipants == null){
-               xmlParticipants = new ArrayList<Participant>();
+            if (this.participants == null){
+               this.participants = new ArrayList<Participant>();
             }
             else {
-                xmlParticipants.clear();
+                this.participants.clear();
             }
             for (ParticipantEvidence p : participants){
                 addParticipantEvidence(p);
@@ -275,7 +275,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     }
 
     public boolean hasExperiments() {
-        return experimentDescriptions != null && !experimentDescriptions.isEmpty();
+        return experiments != null && !experiments.isEmpty();
     }
 
     /**
@@ -283,11 +283,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      *
      * @return possible object is {@link ExperimentDescription }
      */
-    public Collection<ExperimentDescription> getExperimentDescriptions() {
-        if (experimentDescriptions == null){
-            experimentDescriptions = new InteractionExperimentsList();
+    public Collection<ExperimentDescription> getExperiments() {
+        if (experiments == null){
+            experiments = new InteractionExperimentsList();
         }
-        return experimentDescriptions;
+        return experiments;
     }
 
     public Collection<? extends Component> getComponents() {
@@ -346,11 +346,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         if (part == null){
             return false;
         }
-        if (xmlParticipants == null){
-            xmlParticipants = new ArrayList<Participant>();
+        if (participants == null){
+            participants = new ArrayList<Participant>();
         }
         if (part instanceof Participant){
-            if (xmlParticipants.add((Participant)part)){
+            if (participants.add((Participant)part)){
                 part.setComplex(this);
                 return true;
             }
@@ -359,7 +359,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         else {
             Participant p = new Participant();
             ParticipantCloner.copyAndOverrideComponentProperties(part, p);
-            if (xmlParticipants.add(p)){
+            if (participants.add(p)){
                 p.setComplex(this);
                 return true;
             }
@@ -371,11 +371,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         if (part == null){
             return false;
         }
-        if (xmlParticipants == null){
-            xmlParticipants = new ArrayList<Participant>();
+        if (participants == null){
+            participants = new ArrayList<Participant>();
         }
         if (part instanceof Participant){
-            if (xmlParticipants.remove(part)){
+            if (participants.remove(part)){
                 part.setComplex(null);
                 return true;
             }
@@ -384,7 +384,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         else {
             Participant p = new Participant();
             ParticipantCloner.copyAndOverrideComponentProperties(part, p);
-            if (xmlParticipants.remove(p)){
+            if (participants.remove(p)){
                 p.setComplex(null);
                 return true;
             }
@@ -442,10 +442,10 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
      * @return possible object is {@link Participant }
      */
     public Collection<Participant> getParticipants() {
-        if (xmlParticipants == null){
-            xmlParticipants = new ArrayList<Participant>();
+        if (participants == null){
+            participants = new ArrayList<Participant>();
         }
-        return xmlParticipants;
+        return participants;
     }
 
     /**
@@ -640,11 +640,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
 
     protected void processRemovedExperimentEvent(ExperimentDescription removed) {
 
-        if (getExperimentDescriptions().isEmpty()){
+        if (getExperiments().isEmpty()){
             super.setExperiment(null);
         }
         else if (getExperiment() != null && removed.equals(getExperiment())){
-            super.setExperiment(experimentDescriptions.iterator().next());
+            super.setExperiment(experiments.iterator().next());
         }
     }
 
@@ -699,22 +699,22 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     public void setExperiment(Experiment experiment) {
         if (experiment != null){
             if (getExperiment() != null){
-                getExperimentDescriptions().remove(getExperiment());
+                getExperiments().remove(getExperiment());
             }
             if(experiment instanceof ExperimentDescription){
                 super.setExperiment(experiment);
-                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
+                ((InteractionExperimentsList) getExperiments()).addOnly(getExperiment());
             }
             else {
                 super.setExperiment(new ExperimentDescription());
 
                 ExperimentCloner.copyAndOverrideExperimentProperties(experiment, getExperiment());
-                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
+                ((InteractionExperimentsList) getExperiments()).addOnly(getExperiment());
             }
         }
-        else if (!getExperimentDescriptions().isEmpty()) {
+        else if (!getExperiments().isEmpty()) {
             super.setExperiment(null);
-            ((InteractionExperimentsList)getExperimentDescriptions()).clearOnly();
+            ((InteractionExperimentsList) getExperiments()).clearOnly();
         }
     }
 
@@ -749,24 +749,24 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
         if (experiment != null){
             if (getExperiment() != null){
-                getExperimentDescriptions().remove(getExperiment());
+                getExperiments().remove(getExperiment());
             }
             if(experiment instanceof ExperimentDescription){
                 super.setExperiment(experiment);
-                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
+                ((InteractionExperimentsList) getExperiments()).addOnly(getExperiment());
                 getExperiment().addInteractionEvidence(this);
             }
             else {
                 super.setExperiment(new ExperimentDescription());
 
                 ExperimentCloner.copyAndOverrideExperimentProperties(experiment, getExperiment());
-                ((InteractionExperimentsList)getExperimentDescriptions()).addOnly(getExperiment());
+                ((InteractionExperimentsList) getExperiments()).addOnly(getExperiment());
                 getExperiment().addInteractionEvidence(this);
             }
         }
-        else if (!getExperimentDescriptions().isEmpty()) {
+        else if (!getExperiments().isEmpty()) {
             super.setExperiment(null);
-            ((InteractionExperimentsList)getExperimentDescriptions()).clearOnly();
+            ((InteractionExperimentsList) getExperiments()).clearOnly();
         }
     }
 
@@ -779,8 +779,8 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         sb.append( ", names=" ).append( names );
         sb.append( ", xref=" ).append( xref );
         sb.append( ", xmlAvailability=" ).append(xmlAvailability);
-        sb.append( ", experimentDescriptions=" ).append(experimentDescriptions);
-        sb.append( ", xmlParticipants=" ).append(xmlParticipants);
+        sb.append( ", experiments=" ).append(experiments);
+        sb.append( ", participants=" ).append(participants);
         sb.append( ", inferredInteractions=" ).append( inferredInteractions );
         sb.append( ", interactionTypes=" ).append( interactionTypes );
         sb.append( ", modelled=" ).append( modelled );
@@ -805,7 +805,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         if ( xmlAvailability != null ? !xmlAvailability.equals( that.xmlAvailability) : that.xmlAvailability != null )
             return false;
         if ( confidencesList != null ? !confidencesList.equals( that.confidencesList) : that.confidencesList != null ) return false;
-        if ( experimentDescriptions != null ? !experimentDescriptions.equals( that.experimentDescriptions) : that.experimentDescriptions != null ) return false;
+        if ( experiments != null ? !experiments.equals( that.experiments) : that.experiments != null ) return false;
         if ( getImexId() != null ? !getImexId().equals(that.getImexId()) : that.getImexId() != null ) return false;
         if ( inferredInteractions != null ? !inferredInteractions.equals( that.inferredInteractions ) : that.inferredInteractions != null )
             return false;
@@ -817,7 +817,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         if ( names != null ? !names.equals( that.names ) : that.names != null ) return false;
         if ( isNegative() != that.isNegative() ) return false;
         if ( parametersList != null ? !parametersList.equals( that.parametersList) : that.parametersList != null ) return false;
-        if ( xmlParticipants != null ? !xmlParticipants.equals( that.xmlParticipants) : that.xmlParticipants != null )
+        if ( participants != null ? !participants.equals( that.participants) : that.participants != null )
             return false;
         if ( xref != null ? !xref.equals( that.xref ) : that.xref != null ) return false;
 
@@ -831,8 +831,8 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         result = 31 * result + ( names != null ? names.hashCode() : 0 );
         result = 31 * result + ( xref != null ? xref.hashCode() : 0 );
         result = 31 * result + ( xmlAvailability != null ? xmlAvailability.hashCode() : 0 );
-        result = 31 * result + ( experimentDescriptions != null ? experimentDescriptions.hashCode() : 0 );
-        result = 31 * result + ( xmlParticipants != null ? xmlParticipants.hashCode() : 0 );
+        result = 31 * result + ( experiments != null ? experiments.hashCode() : 0 );
+        result = 31 * result + ( participants != null ? participants.hashCode() : 0 );
         result = 31 * result + ( inferredInteractions != null ? inferredInteractions.hashCode() : 0 );
         result = 31 * result + ( interactionTypes != null ? interactionTypes.hashCode() : 0 );
         result = 31 * result + ( modelled != null ? modelled.hashCode() : 0 );
@@ -889,11 +889,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         if (part == null){
             return false;
         }
-        if (xmlParticipants == null){
-            xmlParticipants = new ArrayList<Participant>();
+        if (participants == null){
+            participants = new ArrayList<Participant>();
         }
         if (part instanceof Participant){
-            if (xmlParticipants.add((Participant)part)){
+            if (participants.add((Participant)part)){
                 part.setInteractionEvidence(this);
                 return true;
             }
@@ -902,7 +902,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         else {
             Participant p = new Participant();
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(part, p);
-            if (xmlParticipants.add(p)){
+            if (participants.add(p)){
                 p.setInteractionEvidence(this);
                 return true;
             }
@@ -915,11 +915,11 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         if (part == null){
             return false;
         }
-        if (xmlParticipants == null){
-            xmlParticipants = new ArrayList<Participant>();
+        if (participants == null){
+            participants = new ArrayList<Participant>();
         }
         if (part instanceof Participant){
-            if (xmlParticipants.remove(part)){
+            if (participants.remove(part)){
                 part.setInteractionEvidence(null);
                 return true;
             }
@@ -928,7 +928,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
         else {
             Participant p = new Participant();
             ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(part, p);
-            if (xmlParticipants.remove(p)){
+            if (participants.remove(p)){
                 p.setInteractionEvidence(null);
                 return true;
             }
