@@ -195,24 +195,60 @@ public class InteractionConverter {
                 mInteraction.getParticipants().add( participant );
 
                 if (participant.getParticipantIdentificationMethods().isEmpty()){
-                    for (ExperimentDescription desc : mInteraction.getExperiments()){
-                        participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                    if (!mInteraction.getExperiments().isEmpty()){
+                        for (ExperimentDescription desc : mInteraction.getExperiments()){
+                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
 
-                        if (desc.getFeatureDetectionMethod() != null){
-                            for (Feature f : participant.getFeatures()){
-                                if (f.getFeatureDetectionMethod() == null){
-                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!mInteraction.getExperimentRefs().isEmpty()){
+                        PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
+
+                        for (ExperimentRef ref : mInteraction.getExperimentRefs()){
+                            ExperimentDescription desc = experimentDAO.retreive( ref.getRef() );
+
+                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 else {
-                    for (ExperimentDescription desc : mInteraction.getExperiments()){
-                        if (desc.getFeatureDetectionMethod() != null){
-                            for (Feature f : participant.getFeatures()){
-                                if (f.getFeatureDetectionMethod() == null){
-                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                    if (!mInteraction.getExperiments().isEmpty()){
+                        for (ExperimentDescription desc : mInteraction.getExperiments()){
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!mInteraction.getExperimentRefs().isEmpty()){
+                        PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
+
+                        for (ExperimentRef ref : mInteraction.getExperimentRefs()){
+                            ExperimentDescription desc = experimentDAO.retreive( ref.getRef() );
+
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
                                 }
                             }
                         }
