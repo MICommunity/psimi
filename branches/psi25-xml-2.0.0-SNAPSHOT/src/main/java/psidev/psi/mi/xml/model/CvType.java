@@ -112,7 +112,7 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
             else {
                 getSynonyms().clear();
             }
-            super.setShortName(value.getShortLabel());
+            super.setShortName(value.getShortLabel() != null ? value.getShortLabel() : UNSPECIFIED);
             super.setFullName(value.getFullName());
             getSynonyms().addAll(value.getAliases());
         }
