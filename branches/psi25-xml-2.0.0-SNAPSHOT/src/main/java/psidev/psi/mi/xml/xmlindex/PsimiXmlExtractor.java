@@ -211,6 +211,65 @@ public class PsimiXmlExtractor {
 
         for ( Participant p : interaction.getParticipants() ) {
             resolveReferences( file, p , interaction);
+            if (p.getParticipantIdentificationMethods().isEmpty()){
+                if (!interaction.getExperiments().isEmpty()){
+                    for (ExperimentDescription desc : interaction.getExperiments()){
+                        p.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                        if (desc.getFeatureDetectionMethod() != null){
+                            for (Feature f : p.getFeatures()){
+                                if (f.getFeatureDetectionMethod() == null){
+                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (!interaction.getExperimentRefs().isEmpty()){
+
+                    for (ExperimentRef ref : interaction.getExperimentRefs()){
+                        ExperimentDescription desc = getExperimentById( file, ref.getRef() );
+                        if (desc != null){
+                            p.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : p.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                if (!interaction.getExperiments().isEmpty()){
+                    for (ExperimentDescription desc : interaction.getExperiments()){
+                        if (desc.getFeatureDetectionMethod() != null){
+                            for (Feature f : p.getFeatures()){
+                                if (f.getFeatureDetectionMethod() == null){
+                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (!interaction.getExperimentRefs().isEmpty()){
+
+                    for (ExperimentRef ref : interaction.getExperimentRefs()){
+                        ExperimentDescription desc = getExperimentById(file,  ref.getRef() );
+
+                        if (desc != null && desc.getFeatureDetectionMethod() != null){
+                            for (Feature f : p.getFeatures()){
+                                if (f.getFeatureDetectionMethod() == null){
+                                    f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // inferred interaction's experiments
