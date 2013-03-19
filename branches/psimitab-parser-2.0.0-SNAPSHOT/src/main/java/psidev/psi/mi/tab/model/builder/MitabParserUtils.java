@@ -184,8 +184,8 @@ public final class MitabParserUtils {
 
         //MITAB 2.5
         interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileSourceParsingError.clustered_content));
-        interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal()));
-        interaction.setPublications(splitCrossReferences(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal()));
+        interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal(), FileSourceParsingError.clustered_content));
+        interaction.setPublications(splitPublications(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal(), FileSourceParsingError.clustered_content));
         interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileSourceParsingError.multiple_interaction_types));
         interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, PsimiTabColumns.SOURCE.ordinal(), FileSourceParsingError.clustered_content));
         interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTION_ID.ordinal()));
@@ -214,20 +214,20 @@ public final class MitabParserUtils {
         interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.ANNOTATIONS_I.ordinal()));
         interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()], listenerList, lineIndex, PsimiTabColumns.HOST_ORGANISM.ordinal(), FileSourceParsingError.multiple_host_organisms));
         interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARAMETERS_I.ordinal()));
-        interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()], listenerList, lineIndex, PsimiTabColumns.CREATION_DATE.ordinal()));
-        interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()], listenerList, lineIndex, PsimiTabColumns.UPDATE_DATE.ordinal()));
+        interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()], listenerList, lineIndex, PsimiTabColumns.CREATION_DATE.ordinal(), FileSourceParsingError.clustered_content));
+        interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()], listenerList, lineIndex, PsimiTabColumns.UPDATE_DATE.ordinal(), FileSourceParsingError.clustered_content));
         interaction.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.CHECKSUM_I.ordinal()));
         interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()], listenerList, lineIndex, PsimiTabColumns.NEGATIVE.ordinal()));
 
         //MITAB 2.7
         interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.FEATURES_A.ordinal()));
-        interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_A.ordinal()));
+        interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_A.ordinal(), FileSourceParsingError.clustered_content));
         interactorA.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()));
 
 
         //MITAB 2.7
         interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.FEATURES_B.ordinal()));
-        interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_B.ordinal()));
+        interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_B.ordinal(), FileSourceParsingError.clustered_content));
         interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()));
 
         //We check some consistency in the interactors
@@ -343,7 +343,7 @@ public final class MitabParserUtils {
             }
 
             if (taxids.size() > 1){
-                ClusteredColumnEvent evt = new ClusteredColumnEvent(taxids, errorType, "We have several organisms for a same interactor");
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(taxids, errorType, "We have "+taxids.size()+" organisms for a same interactor");
                 evt.setColumnNumber(columnNumber);
                 evt.setLineNumber(lineNumber);
 
@@ -471,7 +471,7 @@ public final class MitabParserUtils {
             }
 
             if (fields.length > 1){
-                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have several controlled vocabulary terms where we expect only one term");
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have several "+fields.length+" controlled vocabulary terms where we expect only one term");
                 evt.setColumnNumber(columnNumber);
                 evt.setLineNumber(lineNumber);
 
@@ -536,7 +536,7 @@ public final class MitabParserUtils {
             }
 
             if (fields.length > 1){
-                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have several controlled vocabulary terms where we expect only one term");
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have "+fields.length+" controlled vocabulary terms where we expect only one term");
                 evt.setColumnNumber(columnNumber);
                 evt.setLineNumber(lineNumber);
 
@@ -809,7 +809,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Integer> splitStoichiometries(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
+    public static List<Integer> splitStoichiometries(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber, FileSourceParsingError errorType) {
         List<Integer> objects = new ArrayList<Integer>();
         Integer object = null;
 
@@ -847,6 +847,16 @@ public final class MitabParserUtils {
                         if (object != null) {
                             objects.add(object);
                         }
+                    }
+                }
+
+                if (fields.length > 1){
+                    ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have "+fields.length+" stoichiometry values where we expect only one stoichiometry");
+                    evt.setColumnNumber(columnNumber);
+                    evt.setLineNumber(lineNumber);
+
+                    for (MitabParserListener l : listenerList){
+                        l.fireOnClusteredColumnEvent(evt);
                     }
                 }
             }
@@ -902,7 +912,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<Author> splitAuthor(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
+    public static List<Author> splitAuthor(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber, FileSourceParsingError errorType) {
 
         //TODO in the future add the year as a new field in the author
         //Now all is a string and we don not need split the author
@@ -942,11 +952,21 @@ public final class MitabParserUtils {
                     }
                 }
             }
+
+            if (fields.length > 1){
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have "+fields.length+" first authors where we expect only one first author");
+                evt.setColumnNumber(columnNumber);
+                evt.setLineNumber(lineNumber);
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnClusteredColumnEvent(evt);
+                }
+            }
         }
         return objects;
     }
 
-    public static List<Date> splitDates(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber) {
+    public static List<Date> splitDates(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber, FileSourceParsingError errorType) {
         List<Date> objects = new ArrayList<Date>();
         Date object = null;
 
@@ -995,6 +1015,16 @@ public final class MitabParserUtils {
                             objects.add(object);
                         }
                     }
+                }
+            }
+
+            if (fields.length > 1){
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have "+fields.length+" dates where we expect only one date");
+                evt.setColumnNumber(columnNumber);
+                evt.setLineNumber(lineNumber);
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnClusteredColumnEvent(evt);
                 }
             }
         }
