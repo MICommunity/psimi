@@ -1567,7 +1567,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
             if (getExperimentalRole() == null){
                 setExperimentalRoleOnly(added);
             }
-            else if (size() > 1 && psidev.psi.mi.jami.model.Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getExperimentalRole().getShortName().trim())){
+            else if (size() == 2 && psidev.psi.mi.jami.model.Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getExperimentalRole().getShortName().trim())){
                 clearOnly();
                 setExperimentalRoleOnly(added);
             }
