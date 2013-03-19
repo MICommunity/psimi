@@ -229,7 +229,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
     // Constructors
 
     public Participant() {
-        super(new Interactor(), new BiologicalRole(), new ExperimentalRole());
+        super(new Interactor(), new BiologicalRole(), new ExperimentalRole(), null);
 
         getExperimentalRole().setShortName(UNSPECIFIED_ROLE);
         getExperimentalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
