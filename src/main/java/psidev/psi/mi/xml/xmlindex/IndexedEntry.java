@@ -264,7 +264,70 @@ public class IndexedEntry {
         List<Interaction> interactions = new ArrayList<Interaction>( ranges.size() );
         final PsimiXmlPullParser parser = psimiXmlPullParser;
         for ( IndexElement range : ranges ) {
-            interactions.add( parser.parseInteraction( getXmlSnippet( range ) ) );
+            Interaction inter = parser.parseInteraction( getXmlSnippet( range ) );
+            interactions.add( inter );
+
+            for ( Participant participant : inter.getParticipants() ) {
+                if (participant.getParticipantIdentificationMethods().isEmpty()){
+                    if (!inter.getExperiments().isEmpty()){
+                        for (ExperimentDescription desc : inter.getExperiments()){
+                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!inter.getExperimentRefs().isEmpty()){
+
+                        for (ExperimentRef ref : inter.getExperimentRefs()){
+                            ExperimentDescription desc = unmarshallExperimentById( ref.getRef() );
+                            if (desc != null){
+                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                                if (desc.getFeatureDetectionMethod() != null){
+                                    for (Feature f : participant.getFeatures()){
+                                        if (f.getFeatureDetectionMethod() == null){
+                                            f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (!inter.getExperiments().isEmpty()){
+                        for (ExperimentDescription desc : inter.getExperiments()){
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!inter.getExperimentRefs().isEmpty()){
+
+                        for (ExperimentRef ref : inter.getExperimentRefs()){
+                            ExperimentDescription desc = unmarshallExperimentById( ref.getRef() );
+
+                            if (desc != null && desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         return interactions;
     }
@@ -282,6 +345,68 @@ public class IndexedEntry {
             final IndexElementAdapter indexElement = new IndexElementAdapter( isr );
             final PsimiXmlPullParser parser = psimiXmlPullParser;
             interaction = parser.parseInteraction( getXmlSnippet( indexElement ) );
+
+            for ( Participant participant : interaction.getParticipants() ) {
+                if (participant.getParticipantIdentificationMethods().isEmpty()){
+                    if (!interaction.getExperiments().isEmpty()){
+                        for (ExperimentDescription desc : interaction.getExperiments()){
+                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!interaction.getExperimentRefs().isEmpty()){
+
+                        for (ExperimentRef ref : interaction.getExperimentRefs()){
+                            ExperimentDescription desc = unmarshallExperimentById( ref.getRef() );
+                            if (desc != null){
+                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+
+                                if (desc.getFeatureDetectionMethod() != null){
+                                    for (Feature f : participant.getFeatures()){
+                                        if (f.getFeatureDetectionMethod() == null){
+                                            f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (!interaction.getExperiments().isEmpty()){
+                        for (ExperimentDescription desc : interaction.getExperiments()){
+                            if (desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!interaction.getExperimentRefs().isEmpty()){
+
+                        for (ExperimentRef ref : interaction.getExperimentRefs()){
+                            ExperimentDescription desc = unmarshallExperimentById( ref.getRef() );
+
+                            if (desc != null && desc.getFeatureDetectionMethod() != null){
+                                for (Feature f : participant.getFeatures()){
+                                    if (f.getFeatureDetectionMethod() == null){
+                                        f.setFeatureDetectionMethod(desc.getFeatureDetectionMethod());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         return interaction;
     }
