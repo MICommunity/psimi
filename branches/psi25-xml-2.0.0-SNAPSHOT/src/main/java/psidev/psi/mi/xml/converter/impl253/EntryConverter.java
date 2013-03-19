@@ -141,7 +141,7 @@ public class EntryConverter {
 
         if (mEntry.getExperiments().isEmpty()) {
             for (psidev.psi.mi.xml.model.Interaction mInteraction : mEntry.getInteractions()) {
-                for (ExperimentDescription exp : mInteraction.getExperimentDescriptions()){
+                for (ExperimentDescription exp : mInteraction.getExperiments()){
                     if (exp.getPublication() != null){
                         exp.getPublication().setSource(mEntry.getSource());
                     }
@@ -254,7 +254,7 @@ public class EntryConverter {
                 List<Integer> experimentIds = new ArrayList<Integer>();
 
                 for (psidev.psi.mi.xml.model.Interaction jInteraction : mEntry.getInteractions()) {
-                    for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : jInteraction.getExperimentDescriptions()) {
+                    for (psidev.psi.mi.xml.model.ExperimentDescription jExperiment : jInteraction.getExperiments()) {
                         if (!experimentIds.contains(jExperiment.getId())) {
                             jEntry.getExperimentList().getExperimentDescriptions().add(experimentDescriptionConverter.toJaxb(jExperiment));
                             experimentIds.add(jExperiment.getId());

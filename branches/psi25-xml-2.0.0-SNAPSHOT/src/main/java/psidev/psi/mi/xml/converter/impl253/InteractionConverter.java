@@ -175,7 +175,7 @@ public class InteractionConverter {
                     // the DAO doesn't know about it, then keep the reference for potential later resolution
                     mInteraction.getExperimentRefs().add( experimentRef );
                 } else {
-                    mInteraction.getExperimentDescriptions().add( mExperiment );
+                    mInteraction.getExperiments().add( mExperiment );
                 }
             }
         }
@@ -187,7 +187,7 @@ public class InteractionConverter {
                 mInteraction.getParticipants().add( participant );
 
                 if (participant.getParticipantIdentificationMethods().isEmpty()){
-                    for (ExperimentDescription desc : mInteraction.getExperimentDescriptions()){
+                    for (ExperimentDescription desc : mInteraction.getExperiments()){
                         participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
 
                         if (desc.getFeatureDetectionMethod() != null){
@@ -200,7 +200,7 @@ public class InteractionConverter {
                     }
                 }
                 else {
-                    for (ExperimentDescription desc : mInteraction.getExperimentDescriptions()){
+                    for (ExperimentDescription desc : mInteraction.getExperiments()){
                         if (desc.getFeatureDetectionMethod() != null){
                             for (Feature f : participant.getFeatures()){
                                 if (f.getFeatureDetectionMethod() == null){
@@ -334,7 +334,7 @@ public class InteractionConverter {
                 jInteraction.setExperimentList( new InteractionElementType.ExperimentList() );
            }
 
-           for ( ExperimentDescription mExperiment : mInteraction.getExperimentDescriptions() ) {
+           for ( ExperimentDescription mExperiment : mInteraction.getExperiments() ) {
                final ExperimentType exp = experimentDescriptionConverter.toJaxb( mExperiment );
 
                final List ids = jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions();

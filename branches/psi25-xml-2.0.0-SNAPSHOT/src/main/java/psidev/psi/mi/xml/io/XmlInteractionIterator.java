@@ -49,8 +49,8 @@ public class XmlInteractionIterator implements Iterator<Interaction> {
         this.nextInteraction = desc;
 
         // we have more than one experiment
-        if (this.nextInteraction.getExperimentDescriptions().size() > 1){
-            MultipleExperimentsPerInteractionEvent evt = new MultipleExperimentsPerInteractionEvent(desc, new HashSet<ExperimentDescription>(desc.getExperimentDescriptions()), "Interaction " +desc.getId() + " contains more than one experiments.");
+        if (this.nextInteraction.getExperiments().size() > 1){
+            MultipleExperimentsPerInteractionEvent evt = new MultipleExperimentsPerInteractionEvent(desc, new HashSet<ExperimentDescription>(desc.getExperiments()), "Interaction " +desc.getId() + " contains more than one experiments.");
             evt.setColumnNumber(0);
             evt.setLineNumber(0);
             for (PsiXml25ParserListener l : listeners){
