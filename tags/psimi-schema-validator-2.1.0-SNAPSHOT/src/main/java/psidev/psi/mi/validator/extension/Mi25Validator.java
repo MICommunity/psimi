@@ -552,7 +552,7 @@ public class Mi25Validator extends Validator {
             }
         }
 
-        for (Confidence c : interaction.getConfidences()){
+        for (Confidence c : interaction.getConfidencesList()){
             checkConfidence(interactionMessages, c);
         }
 
@@ -647,7 +647,7 @@ public class Mi25Validator extends Validator {
             validatorMessages.addAll(super.validate( c ));
         }
 
-        for (ExperimentalPreparation ep : p.getExperimentalPreparations()){
+        for (ExperimentalPreparation ep : p.getParticipantExperimentalPreparations()){
             // run the experimental preparation specialized rules
             validatorMessages.addAll(super.validate( ep ));
         }
@@ -674,7 +674,7 @@ public class Mi25Validator extends Validator {
         // run the feature type specialized rules
         validatorMessages.addAll(super.validate( f.getFeatureType() ));
 
-        for (Range r : f.getRanges()){
+        for (Range r : f.getFeatureRanges()){
             // run the start status specialized rules
             validatorMessages.addAll(super.validate( r.getStartStatus() ));
 

@@ -735,14 +735,14 @@ public final class RuleUtils {
 
         if( experimentRefs != null && !experimentRefs.isEmpty() ) {
             for (ExperimentRef ref : experimentRefs) {
-                for (ExperimentDescription ed : interaction.getExperiments()) {
+                for (ExperimentDescription ed : interaction.getExperimentDescriptions()) {
                     if( ed.getId() == ref.getRef() ) {
                         collectedExps.add( ed );
                     }
                 }
             }
         } else {
-            collectedExps.addAll( interaction.getExperiments() );
+            collectedExps.addAll( interaction.getExperimentDescriptions() );
         }
 
         return collectedExps;

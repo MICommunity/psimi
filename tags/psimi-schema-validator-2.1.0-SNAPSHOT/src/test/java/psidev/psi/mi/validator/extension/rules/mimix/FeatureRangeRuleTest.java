@@ -130,7 +130,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
         Feature feature = buildUndeterminedFeature();
         p1.getFeatures().add(feature);
 
-        Range range = feature.getRanges().iterator().next();
+        Range range = feature.getFeatureRanges().iterator().next();
         range.setBegin(new psidev.psi.mi.xml.model.Position(0));
         range.setEnd(new psidev.psi.mi.xml.model.Position(3));
 
