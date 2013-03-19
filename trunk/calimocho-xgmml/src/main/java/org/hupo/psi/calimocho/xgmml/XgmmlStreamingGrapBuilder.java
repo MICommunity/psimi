@@ -145,7 +145,7 @@ public class XgmmlStreamingGrapBuilder {
     }
 
     public void open(OutputStream outputStream, int numberOfResults) throws XMLStreamException, IOException, JAXBException {
-        xmlOut = new IndentingXMLStreamWriter(XMLOutputFactory.newFactory().createXMLStreamWriter(outputStream));
+        xmlOut = new IndentingXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream));
         xmlOut.setDefaultNamespace("http://www.cs.rpi.edu/XGMML");
         xmlOut.setNamespaceContext(new NamespaceContext() {
             public Iterator getPrefixes(String namespaceURI) {
