@@ -27,6 +27,10 @@ public class MitabFileSource implements FileSourceContext {
         return columnNumber;
     }
 
+    public int getId() {
+        return 0;
+    }
+
     public void setColumnNumber(int columnNumber) {
         this.columnNumber = columnNumber;
     }
