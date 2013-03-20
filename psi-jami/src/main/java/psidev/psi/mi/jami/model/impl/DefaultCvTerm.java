@@ -316,6 +316,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
     protected void clearPropertiesLinkedToIdentifiers() {
         miIdentifier = null;
         modIdentifier = null;
+        parIdentifier = null;
     }
 
     @Override
