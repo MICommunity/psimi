@@ -16,6 +16,8 @@ import psidev.psi.mi.xml253.jaxb.ConfidenceListType;
 import psidev.psi.mi.xml253.jaxb.FeatureElementType;
 import psidev.psi.mi.xml253.jaxb.ParticipantType;
 
+import java.util.Collection;
+
 /**
  * Converter to and from JAXB of the class Participant.
  *
@@ -391,15 +393,48 @@ public class ParticipantConverter {
 
         // ParticipantIdentificationMethod
         if ( mParticipant.hasParticipantIdentificationMethods() ) {
-            if ( jParticipant.getParticipantIdentificationMethodList() == null ) {
-                jParticipant.setParticipantIdentificationMethodList( new ParticipantType.ParticipantIdentificationMethodList() );
+            boolean hasNewParticipantIdentificationMethods = true;
+            if (mParticipant.getInteractionEvidence() != null){
+                hasNewParticipantIdentificationMethods = false;
+                Collection<ExperimentDescription> experiments = mParticipant.getInteractionEvidence().getExperiments();
+                Collection<ExperimentRef> experimentRefs = mParticipant.getInteractionEvidence().getExperimentRefs();
+                if (!experiments.isEmpty()){
+                    for (ExperimentDescription desc : experiments){
+
+                        if (desc.getParticipantIdentificationMethod() != null && !mParticipant.getParticipantIdentificationMethods().contains(desc.getParticipantIdentificationMethod())){
+                            hasNewParticipantIdentificationMethods = true;
+                            break;
+                        }
+                    }
+                }
+                else if (!experimentRefs.isEmpty()){
+                    PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
+
+                    for (ExperimentRef ref : experimentRefs){
+                        ExperimentDescription desc = experimentDAO.retreive( ref.getRef() );
+                        if (desc != null){
+                            if (desc.getParticipantIdentificationMethod() != null && !mParticipant.getParticipantIdentificationMethods().contains(desc.getParticipantIdentificationMethod())){
+                                hasNewParticipantIdentificationMethods = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    hasNewParticipantIdentificationMethods = true;
+                }
             }
+            if (hasNewParticipantIdentificationMethods){
+                if ( jParticipant.getParticipantIdentificationMethodList() == null ) {
+                    jParticipant.setParticipantIdentificationMethodList( new ParticipantType.ParticipantIdentificationMethodList() );
+                }
 
-            for ( ParticipantIdentificationMethod mParticipantIdentificationMethod :
-                    mParticipant.getParticipantIdentificationMethods() ) {
+                for ( ParticipantIdentificationMethod mParticipantIdentificationMethod :
+                        mParticipant.getParticipantIdentificationMethods() ) {
 
-                jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods()
-                        .add( participantIdentificationMethodConverter.toJaxb( mParticipantIdentificationMethod ) );
+                    jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods()
+                            .add( participantIdentificationMethodConverter.toJaxb( mParticipantIdentificationMethod ) );
+                }
             }
         }
 

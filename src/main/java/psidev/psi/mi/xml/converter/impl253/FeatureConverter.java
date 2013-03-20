@@ -14,6 +14,8 @@ import psidev.psi.mi.xml253.jaxb.BaseLocationType;
 import psidev.psi.mi.xml253.jaxb.ExperimentRefListType;
 import psidev.psi.mi.xml253.jaxb.FeatureElementType;
 
+import java.util.Collection;
+
 /**
  * Converter to and from JAXB of the class Feature.
  *
@@ -183,7 +185,43 @@ public class FeatureConverter {
 
         // feature detection method
         if ( mFeature.hasFeatureDetectionMethod() ) {
-            jFeature.setFeatureDetectionMethod( cvTypeConverter.toJaxb( mFeature.getFeatureDetectionMethod() ) );
+            boolean hasNewFeatureIdentificationMethods = true;
+            if (mFeature.getParticipantEvidence() != null){
+                Participant parent = mFeature.getParticipantEvidence();
+                if (parent.getInteractionEvidence() != null){
+                    hasNewFeatureIdentificationMethods = false;
+                    Collection<ExperimentDescription> experiments = parent.getInteractionEvidence().getExperiments();
+                    Collection<ExperimentRef> experimentRefs = parent.getInteractionEvidence().getExperimentRefs();
+                    if (!experiments.isEmpty()){
+                        for (ExperimentDescription desc : experiments){
+
+                            if (desc.getFeatureDetectionMethod() != null && !mFeature.getFeatureDetectionMethod().equals(desc.getFeatureDetectionMethod())){
+                                hasNewFeatureIdentificationMethods = true;
+                                break;
+                            }
+                        }
+                    }
+                    else if (!experimentRefs.isEmpty()){
+                        PsiDAO<ExperimentDescription> experimentDAO = factory.getExperimentDAO();
+
+                        for (ExperimentRef ref : experimentRefs){
+                            ExperimentDescription desc = experimentDAO.retreive( ref.getRef() );
+                            if (desc != null){
+                                if (desc.getFeatureDetectionMethod() != null && !mFeature.getFeatureDetectionMethod().equals(desc.getFeatureDetectionMethod())){
+                                    hasNewFeatureIdentificationMethods = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        hasNewFeatureIdentificationMethods = true;
+                    }
+                }
+            }
+            if (hasNewFeatureIdentificationMethods){
+                jFeature.setFeatureDetectionMethod( cvTypeConverter.toJaxb( mFeature.getFeatureDetectionMethod() ) );
+            }
         }
 
         //ranges
