@@ -7,6 +7,7 @@
 
 package psidev.psi.mi.xml.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
@@ -68,7 +69,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class ExperimentDescription extends DefaultExperiment implements HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class ExperimentDescription extends DefaultExperiment implements HasId, NamesContainer, XrefContainer, AttributeContainer, FileSourceContext {
 
     private int id;
 
@@ -85,6 +86,10 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
     private Collection<Confidence> confidences;
 
     private Collection<Attribute> attributes;
+
+    private int lineNumber;
+
+    private int columnNumber;
 
     ///////////////////////////
     // Constructors
@@ -362,6 +367,22 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             attributes =new ExperimentXmlAnnotationList();
         }
         return attributes;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public int getColumnNumber() {
+        return columnNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public void setColumnNumber(int columnNumber) {
+        this.columnNumber = columnNumber;
     }
 
     /**

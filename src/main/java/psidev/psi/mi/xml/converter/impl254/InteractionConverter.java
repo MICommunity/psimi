@@ -126,6 +126,8 @@ public class InteractionConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Interaction mInteraction = new psidev.psi.mi.xml.model.Interaction();
+        mInteraction.setLineNumber(jInteraction.sourceLocation().getLineNumber());
+        mInteraction.setColumnNumber(jInteraction.sourceLocation().getColumnNumber());
 
         // Initialise the model reading the Jaxb object
 

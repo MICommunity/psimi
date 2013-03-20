@@ -116,6 +116,8 @@ public class ParticipantConverter {
         checkDependencies();
 
         Participant mParticipant = new Participant();
+        mParticipant.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+        mParticipant.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
 
         // Initialise the model reading the Jaxb object
 

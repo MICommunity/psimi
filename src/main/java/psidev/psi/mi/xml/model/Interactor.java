@@ -8,6 +8,7 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -62,7 +63,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Interactor extends DefaultInteractor implements HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Interactor extends DefaultInteractor implements HasId, NamesContainer, XrefContainer, AttributeContainer, FileSourceContext {
 
     private Names names = new InteractorNames();
 
@@ -75,6 +76,9 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
     private int id;
 
     private final static String UNSPECIFIED = "unspecified";
+
+    private int lineNumber;
+    private int columnNumber;
 
     ///////////////////////////
     // Constructors
@@ -125,6 +129,22 @@ public class Interactor extends DefaultInteractor implements HasId, NamesContain
      */
     public void setId( int value ) {
         this.id = value;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public int getColumnNumber() {
+        return columnNumber;
+    }
+
+    public void setColumnNumber(int columnNumber) {
+        this.columnNumber = columnNumber;
     }
 
     /**

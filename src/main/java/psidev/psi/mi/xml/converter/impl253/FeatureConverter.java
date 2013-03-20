@@ -89,6 +89,8 @@ public class FeatureConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Feature mFeature = new psidev.psi.mi.xml.model.Feature();
+        mFeature.setLineNumber(jFeature.sourceLocation().getLineNumber());
+        mFeature.setColumnNumber(jFeature.sourceLocation().getColumnNumber());
 
         // Initialise the model reading the Jaxb object
 
