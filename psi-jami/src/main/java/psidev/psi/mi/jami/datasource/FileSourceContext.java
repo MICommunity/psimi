@@ -28,5 +28,5 @@ public interface FileSourceContext {
      * The id of the object if it has one
      * @return
      */
-    public String getId();
+    public int getId();
 }

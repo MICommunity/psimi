@@ -12,7 +12,7 @@ public class DefaultFileSourceContext implements FileSourceContext {
 
     private int lineNumber;
     private int columnNumber;
-    private String id;
+    private int id;
 
     public int getLineNumber() {
         return lineNumber;
@@ -30,11 +30,11 @@ public class DefaultFileSourceContext implements FileSourceContext {
         this.columnNumber = columnNumber;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 }
