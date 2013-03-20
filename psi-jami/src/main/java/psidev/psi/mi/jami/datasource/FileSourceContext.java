@@ -23,10 +23,4 @@ public interface FileSourceContext {
      * @return
      */
     public int getColumnNumber();
-
-    /**
-     * The id of the object if it has one
-     * @return
-     */
-    public int getId();
 }

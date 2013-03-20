@@ -29,12 +29,4 @@ public class DefaultFileSourceContext implements FileSourceContext {
     public void setColumnNumber(int columnNumber) {
         this.columnNumber = columnNumber;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }
