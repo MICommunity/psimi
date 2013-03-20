@@ -11,18 +11,18 @@
    <CvMappingRuleList>
 
        <CvMappingRule id="R1" name="Interaction Detection Method"
-                      cvElementPath="/entrySet/entry/interactionList/interaction/experiments/interactionDetectionMethod/xref/primaryRef/@id"
+                      cvElementPath="/interactionEvidence/experiment/interactionDetectionMethod/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
-                      scopePath="/entrySet/entry/interactionList/interaction/experiments/interactionDetectionMethod"
+                      scopePath="/interactionEvidence/experiment/interactionDetectionMethod"
                       requirementLevel="MUST">
            <CvTerm termAccession="PAR:0001" allowChildren="true" termName="interaction detection method" useTerm="false" cvIdentifierRef="PAR"/>
            <CvTerm termAccession="PAR:1328" allowChildren="true" termName="molecule production method" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
        <CvMappingRule id="R2" name="Participant Detection Method"
-                      cvElementPath="/entrySet/entry/interactionList/interaction/experiments/participantIdentificationMethod/xref/primaryRef/@id"
+                      cvElementPath="/interactionEvidence/participantEvidences/identificationMethod/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
-                      scopePath="/entrySet/entry/interactionList/interaction/experiments/participantIdentificationMethod"
+                      scopePath="/interactionEvidence/participantEvidences/identificationMethod"
                       requirementLevel="MUST">
            <CvTerm termAccession="PAR:0002" allowChildren="true" termName="participant identification method" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
