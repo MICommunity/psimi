@@ -112,9 +112,20 @@
                 <artifactId>maven-jaxb2-plugin</artifactId>
                 <version>0.7.4</version>
                 <configuration>
+                    <args>
+                        <arg>-Xlocator</arg>
+                        <arg>-mark-generated</arg>
+                    </args>
                     <schemaDirectory>${project.basedir}/src/main/resources/META-INF</schemaDirectory>
                     <bindingDirectory>${project.basedir}/src/main/resources/META-INF</bindingDirectory>
                     <extension>true</extension>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics</artifactId>
+                            <version>0.6.0</version>
+                        </plugin>
+                    </plugins>
                 </configuration>
                 <executions>
                     <execution>

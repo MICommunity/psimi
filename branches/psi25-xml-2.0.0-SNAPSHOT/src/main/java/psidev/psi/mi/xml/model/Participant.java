@@ -6,6 +6,7 @@
 
 package psidev.psi.mi.xml.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.utils.clone.*;
@@ -193,7 +194,7 @@ import java.util.Collections;
  * </pre>
  */
 
-public class Participant extends DefaultParticipantEvidence implements Component, HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Participant extends DefaultParticipantEvidence implements Component, HasId, NamesContainer, XrefContainer, AttributeContainer, FileSourceContext{
 
     private int id;
 
@@ -224,6 +225,9 @@ public class Participant extends DefaultParticipantEvidence implements Component
     private Collection<Attribute> attributes;
 
     private boolean isInteractorAComplex = false;
+
+    private int lineNumber;
+    private int columnNumber;
 
     ///////////////////////////
     // Constructors
@@ -293,6 +297,23 @@ public class Participant extends DefaultParticipantEvidence implements Component
 
     ///////////////////////////
     // Getters and Setters
+
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public int getColumnNumber() {
+        return columnNumber;
+    }
+
+    public void setColumnNumber(int columnNumber) {
+        this.columnNumber = columnNumber;
+    }
 
     /**
      * Gets the value of the id property.

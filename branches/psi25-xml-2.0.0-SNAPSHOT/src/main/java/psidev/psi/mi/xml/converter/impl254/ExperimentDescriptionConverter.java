@@ -97,7 +97,8 @@ public class ExperimentDescriptionConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.ExperimentDescription mExperimentDescription = new psidev.psi.mi.xml.model.ExperimentDescription();
-
+        mExperimentDescription.setLineNumber(jExperimentDescription.sourceLocation().getLineNumber());
+        mExperimentDescription.setColumnNumber(jExperimentDescription.sourceLocation().getColumnNumber());
         // 1. set attributes
 
         mExperimentDescription.setId( jExperimentDescription.getId() );

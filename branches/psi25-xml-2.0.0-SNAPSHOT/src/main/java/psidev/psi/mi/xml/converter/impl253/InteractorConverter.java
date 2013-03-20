@@ -85,6 +85,8 @@ public class InteractorConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Interactor mInteractor = new psidev.psi.mi.xml.model.Interactor();
+        mInteractor.setLineNumber(jInteractor.sourceLocation().getLineNumber());
+        mInteractor.setColumnNumber(jInteractor.sourceLocation().getColumnNumber());
 
         // Initialise the model reading the Jaxb object
 

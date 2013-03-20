@@ -7,6 +7,7 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -58,7 +59,7 @@ import java.util.Collections;
  * </pre>
  */
 
-public class Feature extends DefaultFeatureEvidence implements ComponentFeature, HasId, NamesContainer, XrefContainer, AttributeContainer {
+public class Feature extends DefaultFeatureEvidence implements ComponentFeature, HasId, NamesContainer, XrefContainer, AttributeContainer, FileSourceContext {
 
     private int id;
 
@@ -75,6 +76,10 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
     private Collection<Attribute> attributes;
 
     private Collection<Feature> bindingFeatures;
+
+    private int lineNumber;
+
+    private int columnNumber;
 
     ///////////////////////////
     // Constructors
@@ -115,6 +120,23 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
 
     ///////////////////////////
     // Getters and Setters
+
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public int getColumnNumber() {
+        return columnNumber;
+    }
+
+    public void setColumnNumber(int columnNumber) {
+        this.columnNumber = columnNumber;
+    }
 
     /**
      * Gets the value of the id property.
