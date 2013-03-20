@@ -660,8 +660,8 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         return 0;
     }
 
-    public String getId(){
-        return null;
+    public int getId(){
+        return 0;
     }
 
     //We need update the toString, equals and hash ?
