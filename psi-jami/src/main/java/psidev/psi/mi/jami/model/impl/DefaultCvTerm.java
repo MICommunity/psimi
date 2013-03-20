@@ -33,7 +33,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
 
     private Xref miIdentifier;
     private Xref modIdentifier;
-
+    private Xref parIdentifier;
 
     public DefaultCvTerm(String shortName){
         if (shortName == null){
@@ -150,6 +150,10 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         return this.modIdentifier != null ? this.modIdentifier.getId() : null;
     }
 
+    public String getPARIdentifier() {
+        return this.parIdentifier != null ? this.parIdentifier.getId() : null;
+    }
+
     public void setMIIdentifier(String mi) {
         Collection<Xref> cvTermIdentifiers = getIdentifiers();
 
@@ -190,6 +194,28 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         else if (!getIdentifiers().isEmpty()) {
             XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
             this.modIdentifier = null;
+        }
+    }
+
+    public void setPARIdentifier(String par) {
+        Collection<Xref> cvTermIdentifiers = getIdentifiers();
+
+        // add new mod if not null
+        if (par != null){
+
+            CvTerm psiModDatabase = CvTermFactory.createPsiParDatabase();
+            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            // first remove old psi mod if not null
+            if (this.parIdentifier != null){
+                cvTermIdentifiers.remove(this.parIdentifier);
+            }
+            this.parIdentifier = new DefaultXref(psiModDatabase, par, identityQualifier);
+            cvTermIdentifiers.add(this.parIdentifier);
+        }
+        // remove all mod if the collection is not empty
+        else if (!getIdentifiers().isEmpty()) {
+            XrefUtils.removeAllXrefsWithDatabase(getIdentifiers(), null, CvTerm.PSI_PAR);
+            this.parIdentifier = null;
         }
     }
 
@@ -252,6 +278,24 @@ public class DefaultCvTerm implements CvTerm, Serializable {
                 }
             }
         }
+        // the added identifier is psi-par and it is not the current par identifier
+        else if (parIdentifier != added && XrefUtils.isXrefFromDatabase(added, null, CvTerm.PSI_PAR)){
+            // the current psi-par identifier is not identity, we may want to set parIdentifier
+            if (!XrefUtils.doesXrefHaveQualifier(parIdentifier, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                // the parIdentifier is not set, we can set the parIdentifier
+                if (parIdentifier == null){
+                    parIdentifier = added;
+                }
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                    parIdentifier = added;
+                }
+                // the added xref is secondary object and the current par is not a secondary object, we reset paridentifier
+                else if (!XrefUtils.doesXrefHaveQualifier(parIdentifier, Xref.SECONDARY_MI, Xref.SECONDARY)
+                        && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
+                    parIdentifier = added;
+                }
+            }
+        }
     }
 
     protected void processRemovedIdentifierEvent(Xref removed) {
@@ -262,6 +306,10 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         // the removed identifier is psi-mod
         else if (modIdentifier != null && modIdentifier.equals(removed)){
             modIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
+        }
+        // the removed identifier is psi-par
+        else if (parIdentifier != null && parIdentifier.equals(removed)){
+            parIdentifier = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), null, CvTerm.PSI_PAR);
         }
     }
 
@@ -290,7 +338,7 @@ public class DefaultCvTerm implements CvTerm, Serializable {
 
     @Override
     public String toString() {
-        return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : "-")) + " ("+shortName+")";
+        return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : (parIdentifier != null ? parIdentifier.getId() : "-"))) + " ("+shortName+")";
     }
 
     private class CvTermIdentifierList extends AbstractListHavingPoperties<Xref> {

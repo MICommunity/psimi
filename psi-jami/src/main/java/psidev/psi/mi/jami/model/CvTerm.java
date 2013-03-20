@@ -19,6 +19,7 @@ public interface CvTerm {
     public static String PSI_MI_MI = "MI:0488";
     public static String PSI_MOD = "psi-mod";
     public static String PSI_MOD_MI = "MI:0897";
+    public static String PSI_PAR = "psi-par";
 
     /**
      * Short label of a controlled vocabulary. It cannot be null or empty.
@@ -63,6 +64,7 @@ public interface CvTerm {
      * @return the unique PSI-MI identifier
      */
     public String getMIIdentifier();
+
     /**
      * The unique PSI-MOD identifier which identifies the object in the PSI-MOD ontology.
      * It is a shortcut for the first psi-mod identifier in the collection of identifiers.
@@ -70,6 +72,14 @@ public interface CvTerm {
      * @return the unique PSI-MOD identifier
      */
     public String getMODIdentifier();
+
+    /**
+     * The unique PSI-PAR identifier which identifies the object in the PSI-PAR ontology.
+     * It is a shortcut for the first psi-par identifier in the collection of identifiers.
+     * It will be null if the collection of identifiers does not contain any PSI-PAR Xref objects
+     * @return the unique PSI-PAR identifier
+     */
+    public String getPARIdentifier();
 
     /**
      * Sets the PSI-MI identifier.
@@ -88,6 +98,15 @@ public interface CvTerm {
      * @param mod : mod identifier
      */
     public void setMODIdentifier(String mod);
+
+    /**
+     * Sets the PSI-PAR identifier.
+     * It will remove the previous PSI-PAR identifier from the collection of xrefs, and add the new one in the collection of identifiers
+     * with qualifier identity. If par is null, it will remove all the psi-par identifiers from the
+     * collection of identifiers.
+     * @param par : par identifier
+     */
+    public void setPARIdentifier(String par);
 
     /**
      * Collection of cross references describing the CvTerm.

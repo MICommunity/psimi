@@ -70,6 +70,8 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
             String mi2 = cvTerm2.getMIIdentifier();
             String mod1 = cvTerm1.getMODIdentifier();
             String mod2 = cvTerm2.getMODIdentifier();
+            String par1 = cvTerm1.getPARIdentifier();
+            String par2 = cvTerm2.getPARIdentifier();
 
             // first compares identifiers if both CvTerms have identifiers.
             if (mi1 != null && mi2 != null){
@@ -77,6 +79,9 @@ public class DefaultCvTermComparator extends AbstractCvTermComparator {
             }
             else if (mod2 != null && mod1 != null){
                 return mod1.compareTo(mod2);
+            }
+            else if (par2 != null && par1 != null){
+                return par1.compareTo(par2);
             }
             else if (!cvTerm1.getIdentifiers().isEmpty() && !cvTerm2.getIdentifiers().isEmpty()){
                 List<Xref> ids1 = new ArrayList<Xref>(cvTerm1.getIdentifiers());
