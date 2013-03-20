@@ -68,6 +68,8 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
             String mi2 = cvTerm2.getMIIdentifier();
             String mod1 = cvTerm1.getMODIdentifier();
             String mod2 = cvTerm2.getMODIdentifier();
+            String par1 = cvTerm1.getPARIdentifier();
+            String par2 = cvTerm2.getPARIdentifier();
 
             if (mi1 != null && mi2 != null){
                 return mi1.compareTo(mi2);
@@ -85,6 +87,15 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
                 return BEFORE;
             }
             else if (mod2 != null){
+                return AFTER;
+            }
+            else if (par1 != null && par2 != null){
+                return par1.compareTo(par2);
+            }
+            else if (par1 != null){
+                return BEFORE;
+            }
+            else if (par2 != null){
                 return AFTER;
             }
             else {
@@ -128,10 +139,13 @@ public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
         int hashcode = 31;
 
         if (cv1.getMIIdentifier() != null){
-            hashcode = 31*hashcode + (cv1.getMIIdentifier() != null ? cv1.getMIIdentifier().hashCode() : 0);
+            hashcode = 31*hashcode + cv1.getMIIdentifier().hashCode();
         }
         else if (cv1.getMODIdentifier() != null){
-            hashcode = 31*hashcode + (cv1.getMODIdentifier() != null ? cv1.getMODIdentifier().hashCode() : 0);
+            hashcode = 31*hashcode + cv1.getMODIdentifier().hashCode();
+        }
+        else if (cv1.getPARIdentifier() != null){
+            hashcode = 31*hashcode + cv1.getPARIdentifier().hashCode();
         }
         else {
             hashcode = 31*hashcode + cv1.getShortName().toLowerCase().trim().hashCode();

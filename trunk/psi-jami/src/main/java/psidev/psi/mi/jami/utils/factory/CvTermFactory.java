@@ -41,12 +41,25 @@ public class CvTermFactory {
         }
     }
 
+    public static CvTerm createPARCvTerm(String name, String PAR){
+        if (PAR != null){
+            return new DefaultCvTerm(name, new DefaultXref(CvTermUtils.getPsipar(), PAR, CvTermUtils.getIdentity()));
+        }
+        else {
+            return new DefaultCvTerm(name);
+        }
+    }
+
     public static CvTerm createPsiMiDatabase(){
         return createMICvTerm(CvTerm.PSI_MI, CvTerm.PSI_MI_MI);
     }
 
     public static CvTerm createPsiModDatabase(){
         return createMICvTerm(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI);
+    }
+
+    public static CvTerm createPsiParDatabase(){
+        return createMICvTerm(CvTerm.PSI_PAR, null);
     }
 
     public static CvTerm createIdentityQualifier(){
