@@ -70,7 +70,8 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
         
         if( identities == null || identities.isEmpty() ) {
             Mi25Context context = new Mi25Context();
-            context.setInteractionId( interactionId );
+            context.setId( interactionId );
+            context.setObjectLabel("interaction");
             messages.add( new ValidatorMessage( "An interaction requires an identity cross reference to an interaction database (child term of "+ INTERACTION_DATABASE_MI_REF +")." ,
                                                 MessageLevel.ERROR,
                                                 context,
@@ -88,7 +89,8 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
                                                                      null );
             if( dbRefs.isEmpty() ) {
                 Mi25Context context = new Mi25Context();
-                context.setInteractionId( interactionId );
+                context.setId( interactionId );
+                context.setObjectLabel("interaction");
                 String dbList = buildDbList( identities );
                 String msg = null;
                 if( dbList.length() > 0 ) {

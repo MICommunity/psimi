@@ -44,7 +44,8 @@ public class InteractionTypeRule extends Mi25InteractionRule{
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         Mi25Context context = new Mi25Context();
-        context.setInteractionId(interaction.getId());
+        context.setId(interaction.getId());
+        context.setObjectLabel( "interaction" );
 
         if (interaction.hasInteractionTypes()){
             Collection<InteractionType> interactionTypes = interaction.getInteractionTypes();

@@ -53,7 +53,8 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         Mi25Context context = new Mi25Context();
-        context.setInteractionId( interactionId );
+        context.setId( interactionId );
+        context.setObjectLabel("interaction");
 
         // write the rule here ...
 
@@ -99,7 +100,6 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
                     String msg = null;
                     if( expCount <= 1 ) {
                         msg = "Could not find a confidence mapping on the experiment attached to this interaction.";
-                        context.setExperimentId( interaction.getExperiments().iterator().next().getId() );
                     } else {
                         msg = "Could not find a confidence mapping on any of the "+ expCount +
                                 " experiments attached to this interaction.";

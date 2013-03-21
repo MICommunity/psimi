@@ -91,8 +91,8 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
 
             // build a context in case of error
             Mi25Context context = new Mi25Context();
-            context.setInteractionId( interaction.getId() );
-            context.setExperimentId( experiment.getId());
+            context.setId( interaction.getId() );
+            context.setObjectLabel( "interaction");
 
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
             final Collection<Organism> hostOrganisms = experiment.getHostOrganisms();

@@ -51,7 +51,8 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         Mi25Context context = new Mi25Context();
-        context.setFeatureId(feature.getId());
+        context.setId(feature.getId());
+        context.setObjectLabel("feature");
 
         if (feature.hasFeatureType()){
 

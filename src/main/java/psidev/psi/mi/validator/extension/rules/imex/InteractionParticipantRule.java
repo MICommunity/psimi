@@ -39,7 +39,8 @@ public class InteractionParticipantRule extends Mi25InteractionRule {
         int interactionId = interaction.getId();
 
         Mi25Context context = new Mi25Context();
-        context.setInteractionId( interactionId );
+        context.setId( interactionId );
+        context.setObjectLabel("interaction");
 
         // Check participants
         if (interaction.getParticipants().isEmpty()){

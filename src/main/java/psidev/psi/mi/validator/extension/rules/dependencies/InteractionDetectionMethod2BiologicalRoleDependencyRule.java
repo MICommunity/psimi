@@ -85,9 +85,8 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
 
                     // build a context in case of error
                     Mi25Context context = new Mi25Context();
-                    context.setInteractionId( interaction.getId() );
-                    context.setExperimentId( experiment.getId());
-                    context.setParticipantId( p.getId() );
+                    context.setId( p.getId() );
+                    context.setObjectLabel("participant");
 
                     BiologicalRole biolRole = p.getBiologicalRole();
 

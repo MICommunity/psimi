@@ -4,6 +4,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.dependencies.ValidatorRuleException;
 import psidev.psi.mi.xml.model.*;
@@ -327,7 +328,12 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
     public Collection<ValidatorMessage> check(XrefContainer xrefContainer) throws ValidatorException {
         // sets up the context
         Mi25Context context = new Mi25Context();
-        context.setId(xrefContainer);
+        if (xrefContainer instanceof FileSourceContext){
+            context.extractObjectIdAndLabelFrom((FileSourceContext)xrefContainer);
+        }
+        else if (xrefContainer instanceof HasId){
+            context.setId(((HasId)xrefContainer).getId());
+        }
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();

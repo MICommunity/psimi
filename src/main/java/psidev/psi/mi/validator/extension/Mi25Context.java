@@ -1,6 +1,11 @@
 package psidev.psi.mi.validator.extension;
 
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.xml.model.HasId;
 import psidev.psi.tools.validator.Context;
 
 /**
@@ -16,13 +21,12 @@ public class Mi25Context extends Context {
     //////////////////////////
     // Instance variable
 
-    private long lineNumber = -1;
+    private int lineNumber = -1;
+    private int columnNumber = -1;
 
-    private int interactionId = -1;
-    private int experimentId = -1;
-    private int participantId = -1;
-    private int interactorId = -1;
-    private int featureId = -1;
+    private String objectLabel;
+
+    private int id = -1;
 
     //////////////////
     // Constructors
@@ -38,82 +42,80 @@ public class Mi25Context extends Context {
     ///////////////////////////
     // Getters and Setters
 
-    public long getLineNumber() {
+    public int getLineNumber() {
         return lineNumber;
     }
 
-    public void setLineNumber( long lineNumber ) {
+    public void setLineNumber( int lineNumber ) {
         this.lineNumber = lineNumber;
     }
 
-    public int getInteractionId() {
-        return interactionId;
+    public int getId() {
+        return id;
     }
 
-    public void setInteractionId( int interactionId ) {
-        this.interactionId = interactionId;
+    public String getObjectLabel() {
+        return objectLabel;
     }
 
-    public int getExperimentId() {
-        return experimentId;
+    public void setColumnNumber(int columnNumber) {
+        this.columnNumber = columnNumber;
     }
 
-    public void setExperimentId( int experimentId ) {
-        this.experimentId = experimentId;
+    public void setObjectLabel(String objectLabel) {
+        this.objectLabel = objectLabel;
     }
 
-    public int getParticipantId() {
-        return participantId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setParticipantId( int participantId ) {
-        this.participantId = participantId;
+    public int getColumnNumber() {
+        return columnNumber;
     }
 
-    public int getInteractorId() {
-        return interactorId;
-    }
-
-    public void setInteractorId( int interactorId ) {
-        this.interactorId = interactorId;
-    }
-
-    public int getFeatureId() {
-        return featureId;
-    }
-
-    public void setFeatureId( int featureId ) {
-        this.featureId = featureId;
-    }
-
-    public void setId( Object element ) {
-        if ( element instanceof Interaction ) {
-            Interaction i = ( Interaction ) element;
-            this.setInteractionId( i.getId() );
-        } else if ( element instanceof Interactor ) {
-            Interactor i = ( Interactor ) element;
-            this.setInteractorId( i.getId() );
-        } else if ( element instanceof Participant ) {
-            Participant p = ( Participant ) element;
-            this.setParticipantId( p.getId() );
-        } else if ( element instanceof ExperimentDescription ) {
-            ExperimentDescription e = ( ExperimentDescription ) element;
-            this.setExperimentId( e.getId() );
-        } else if ( element instanceof Feature ) {
-            Feature f = ( Feature ) element;
-            this.setFeatureId( f.getId() );
+    public void extractObjectIdAndLabelFrom(FileSourceContext element) {
+        if (element instanceof HasId){
+            HasId hasId = (HasId) element;
+            if ( element instanceof InteractionEvidence) {
+                this.id = hasId.getId();
+                this.objectLabel = "interaction";
+            } else if ( element instanceof psidev.psi.mi.jami.model.Interactor) {
+                this.id = hasId.getId();
+                this.objectLabel = "interactor";
+            } else if ( element instanceof ParticipantEvidence) {
+                this.id = hasId.getId();
+                this.objectLabel = "participant";
+            } else if ( element instanceof Experiment) {
+                this.id = hasId.getId();
+                this.objectLabel = "experiment";
+            } else if ( element instanceof FeatureEvidence) {
+                this.id = hasId.getId();
+                this.objectLabel = "feature";
+            }
+        }
+        else{
+            if ( element instanceof InteractionEvidence) {
+                this.objectLabel = "interaction";
+            } else if ( element instanceof psidev.psi.mi.jami.model.Interactor) {
+                this.objectLabel = "interactor";
+            } else if ( element instanceof ParticipantEvidence) {
+                this.objectLabel = "participant";
+            } else if ( element instanceof Experiment) {
+                this.objectLabel = "experiment";
+            } else if ( element instanceof FeatureEvidence) {
+                this.objectLabel = "feature";
+            }
         }
     }
 
     public Mi25Context copy() {
         Mi25Context clone = new Mi25Context( this.getContext() );
 
-        clone.setExperimentId( this.getExperimentId() );
-        clone.setInteractionId( this.getInteractionId() );
-        clone.setInteractorId( this.getInteractorId() );
-        clone.setParticipantId( this.getParticipantId() );
-        clone.setFeatureId( this.getFeatureId() );
-        clone.setLineNumber( this.getLineNumber() );
+        clone.setId(this.getId());
+        clone.setObjectLabel(this.getObjectLabel());
+        clone.setColumnNumber(this.getColumnNumber());
+        clone.setLineNumber(this.getLineNumber());
 
         return clone;
     }
@@ -127,27 +129,18 @@ public class Mi25Context extends Context {
         sb.append( "Context(" );
 
         if ( lineNumber != -1 ) {
-            sb.append( " line:" ).append( lineNumber );
+            sb.append( " line: " ).append( lineNumber );
+        }
+        if ( columnNumber != -1 ) {
+            sb.append( " column: " ).append( lineNumber );
         }
 
-        if ( interactionId != -1 ) {
-            sb.append( " interaction[id='" ).append( interactionId ).append( "']" );
+        if ( objectLabel != null ) {
+            sb.append( " "+objectLabel );
         }
 
-        if ( experimentId != -1 ) {
-            sb.append( " experimentDescription[id='" ).append( experimentId ).append( "']" );
-        }
-
-        if ( participantId != -1 ) {
-            sb.append( " participant[id='" ).append( participantId ).append( "']" );
-        }
-
-        if ( interactorId != -1 ) {
-            sb.append( " interactor[id='" ).append( interactorId ).append( "']" );
-        }
-
-        if ( featureId != -1 ) {
-            sb.append( " feature[id='" ).append( featureId ).append( "']" );
+        if ( id != -1 ) {
+            sb.append( "[id='" ).append( id ).append( "']" );
         }
 
         sb.append( " )" );

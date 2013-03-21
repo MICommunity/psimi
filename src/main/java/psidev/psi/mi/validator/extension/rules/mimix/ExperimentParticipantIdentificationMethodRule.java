@@ -63,9 +63,8 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
                 int participantId = participant.getId();
 
                 Mi25Context context = new Mi25Context();
-                context.setInteractionId( interactionId );
-                context.setExperimentId(experimentId);
-                context.setParticipantId(participantId);
+                context.setId(participantId);
+                context.setObjectLabel("participant");
 
                 if (experiment.getParticipantIdentificationMethod() != null){
                     hasToCheckPartDetMetInExperiment = true;
@@ -89,8 +88,8 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
 
             if (hasToCheckPartDetMetInExperiment){
                 Mi25Context context = new Mi25Context();
-                context.setInteractionId( interactionId );
-                context.setExperimentId(experimentId);
+                context.setId(experimentId);
+                context.setObjectLabel("experiment");
 
                 RuleUtils.checkPsiMIXRef(experiment.getParticipantIdentificationMethod(), messages, context, this, "MI:0002");
             }

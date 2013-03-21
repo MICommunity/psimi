@@ -94,9 +94,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
 
                     if (feature.hasFeatureDetectionMethod()){
                         Mi25Context context = new Mi25Context();
-                        context.setInteractionId( interaction.getId() );
-                        context.setParticipantId( participant.getId());
-                        context.setFeatureId( feature.getId());
+                        context.setId( feature.getId());
+                        context.setObjectLabel( "feature" );
 
                         method = feature.getFeatureDetectionMethod();
                         messages.addAll( mapping.check( featureType, method, context, this ) );
@@ -112,10 +111,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
                         for (ExperimentDescription experiment : experiments){
 
                             Mi25Context context = new Mi25Context();
-                            context.setInteractionId( interaction.getId() );
-                            context.setParticipantId( participant.getId());
-                            context.setFeatureId( feature.getId());
-                            context.setExperimentId(experiment.getId());
+                            context.setId( feature.getId());
+                            context.setObjectLabel("feature");
 
                             if (experiment.hasFeatureDetectionMethod()){
                                 method = experiment.getFeatureDetectionMethod();

@@ -2,9 +2,10 @@ package psidev.psi.mi.validator.extension.xpath;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.xml.model.HasId;
 import psidev.psi.tools.validator.Context;
-import psidev.psi.tools.validator.xpath.XPathResult;
 import psidev.psi.tools.validator.xpath.XPathResult;
 
 /**
@@ -27,11 +28,16 @@ public class Mi25XPathResult extends XPathResult {
         Pointer root = rootContext.getPointer( "self::node()" );
         Pointer currentPointer = pointer;
         while ( !currentPointer.equals( root ) ) {
-            context.setId( currentPointer.getNode() );
+            Object o = currentPointer.getNode();
+            if (o instanceof FileSourceContext){
+                context.extractObjectIdAndLabelFrom((FileSourceContext) o);
+            }
+            else if (o instanceof HasId){
+                context.setId(((HasId)o).getId());
+            }
             JXPathContext relCTX = rootContext.getRelativeContext( currentPointer );
             currentPointer = relCTX.getPointer( "parent::node()" );
         }
-        context.setId( currentPointer.getNode() );
         return context;
     }
 

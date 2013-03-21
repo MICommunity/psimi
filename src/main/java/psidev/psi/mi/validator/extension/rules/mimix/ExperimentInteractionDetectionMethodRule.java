@@ -52,7 +52,8 @@ public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule
         int experimentId = experiment.getId();
 
         Mi25Context context = new Mi25Context();
-        context.setExperimentId( experimentId );
+        context.setId( experimentId );
+        context.setObjectLabel("experiment");
 
         if (experiment.getInteractionDetectionMethod() == null){
              messages.add( new ValidatorMessage( " The experiment does not have an Interaction Detection Method ( can be any children of MI:0001) and it is required for MIMIx",

@@ -45,17 +45,15 @@ public class InteractionDetectionMethod2ExperimentalRoleDependencyRule extends M
 
         // build a context in case of error
         Mi25Context context = new Mi25Context();
-        context.setInteractionId( interaction.getId() );
-
 
         for ( ExperimentDescription experiment : interaction.getExperiments() ) {
 
-            context.setExperimentId( experiment.getId() );
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
 
             final Collection<ExperimentalRole> participants = new ArrayList<ExperimentalRole>();
             for ( Participant participant : interaction.getParticipants() ) {
-                context.setParticipantId( participant.getId() );
+                context.setId( participant.getId() );
+                context.setObjectLabel("participant");
                 for ( ExperimentalRole role : participant.getExperimentalRoles() ) {
                     if ( role.hasExperimentRefs() ) {
 

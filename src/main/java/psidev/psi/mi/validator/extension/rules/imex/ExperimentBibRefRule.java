@@ -54,7 +54,8 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
         int experimentId = experiment.getId();
 
         Mi25Context context = new Mi25Context();
-        context.setExperimentId( experimentId );
+        context.setId( experimentId );
+        context.setObjectLabel("experiment");
 
         final Bibref bibref = experiment.getBibref();
 
