@@ -99,7 +99,7 @@ public class AnnotationUtils {
      * @param topicName
      * @return
      */
-    public static Collection<Annotation> collectAllXrefsHavingDatabaseAndQualifier(Collection<? extends Annotation> annots, String topicId, String topicName){
+    public static Collection<Annotation> collectAllAnnotationsHavingTopic(Collection<? extends Annotation> annots, String topicId, String topicName){
 
         if (annots == null || annots.isEmpty()){
             return Collections.EMPTY_LIST;
