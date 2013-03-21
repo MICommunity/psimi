@@ -1,8 +1,10 @@
 package psidev.psi.mi.validator.extension.rules;
 
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.Polymer;
+import psidev.psi.mi.jami.utils.FeatureUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.FeatureUtils;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -21,7 +23,7 @@ import java.util.List;
  * @since <pre>25-Aug-2010</pre>
  */
 
-public class FeatureRangeRule extends ObjectRule<Participant> {
+public class FeatureRangeRule extends ObjectRule<FeatureEvidence> {
 
     public FeatureRangeRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -46,7 +48,7 @@ public class FeatureRangeRule extends ObjectRule<Participant> {
     @Override
     public boolean canCheck(Object t) {
 
-        if (t instanceof Participant){
+        if (t instanceof FeatureEvidence){
             return true;
         }
 
@@ -54,37 +56,44 @@ public class FeatureRangeRule extends ObjectRule<Participant> {
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Participant participant) throws ValidatorException {
+    public Collection<ValidatorMessage> check(FeatureEvidence feature) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int participantId = participant.getId();
-        Collection<Feature> features = participant.getFeatures();
+        Mi25Context context = RuleUtils.buildContext(feature);
+        
+        ParticipantEvidence participant = feature.getParticipantEvidence();
+        psidev.psi.mi.jami.model.Interactor interactor = null;
+        String sequence = null;
+        
+        if (participant != null){
+            interactor = participant.getInteractor();
+            context.addAssociatedContext(RuleUtils.buildContext(participant));
+            
+            if (interactor != null){
+                sequence = interactor instanceof Polymer ? ((Polymer) interactor).getSequence() : null;
+                context.addAssociatedContext(RuleUtils.buildContext(interactor));
+            }
+        }
 
-        Interactor interactor = participant.getInteractor();
+        Collection<psidev.psi.mi.jami.model.Range> ranges = feature .getRanges();
 
-        if (interactor != null){
-            String sequence = interactor.getSequence();
+        if (ranges.isEmpty()){
+            messages.add( new ValidatorMessage( "Feature must have at least one range.'",
+                    MessageLevel.ERROR,
+                    context,
+                    this ) );
+        }
 
-            for (Feature feature : features){
-                int featureId = feature.getId();
-                Collection<Range> ranges = feature .getFeatureRanges();
+        for (psidev.psi.mi.jami.model.Range range : ranges){
+            List<String>  errorMessages = FeatureUtils.validateRange(range, sequence);
 
-                Mi25Context context = new Mi25Context();
-                context.setId( featureId );
-                context.setObjectLabel("feature");
-
-                if (ranges.isEmpty()){
-                    messages.add( new ValidatorMessage( "Feature must have at least one range.'",
-                            MessageLevel.ERROR,
-                            context,
-                            this ) );
-                }
-
-                for (Range range : ranges){
-                    FeatureUtils.checkBadRange(range, sequence, context, messages, this);
-                }
+            for (String error : errorMessages){
+                messages.add( new ValidatorMessage( error,
+                        MessageLevel.ERROR,
+                        context,
+                        this ) );
             }
         }
 

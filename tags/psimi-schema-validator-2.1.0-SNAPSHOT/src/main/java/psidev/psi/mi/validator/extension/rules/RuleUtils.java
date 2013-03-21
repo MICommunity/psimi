@@ -15,6 +15,8 @@
  */
 package psidev.psi.mi.validator.extension.rules;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.xml.model.*;
@@ -267,7 +269,7 @@ public final class RuleUtils {
         }
     }
 
-    public static boolean isOfType( OntologyManager ontologyManager, final InteractorType type, final String miRef, final boolean includeChildren ) {
+    public static boolean isOfType( OntologyManager ontologyManager, final CvTerm type, final String miRef, final boolean includeChildren ) {
 
         if ( type == null ) {
             throw new IllegalArgumentException( "You must give a non null type" );
@@ -277,11 +279,7 @@ public final class RuleUtils {
             throw new IllegalArgumentException( "You must give a non null miRef" );
         }
 
-        String typeId = null;
-
-        if( type.getXref() != null ) {
-            typeId = type.getXref().getPrimaryRef().getId();
-        }
+        String typeId = type.getMIIdentifier();
 
         if( typeId != null ) {
             if ( includeChildren ) {
@@ -339,36 +337,36 @@ public final class RuleUtils {
         return false;
     }
 
-    public static boolean isBiopolymer( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.BIOPOLYMER_MI_REF, true );
+    public static boolean isBiopolymer( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.BIOPOLYMER_MI_REF, true );
     }
 
-    public static boolean isPolysaccharide( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.POLYSACCHARIDE_MI_REF, true );
+    public static boolean isPolysaccharide( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.POLYSACCHARIDE_MI_REF, true );
     }
 
-    public static boolean isDNA( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.DNA_MI_REF, true );
+    public static boolean isDNA( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.DNA_MI_REF, true );
     }
 
-    public static boolean isRNA( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.RNA_MI_REF, true );
+    public static boolean isRNA( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.RNA_MI_REF, true );
     }
 
-    public static boolean isSmallMolecule( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.SMALL_MOLECULE_MI_REF, false );
+    public static boolean isSmallMolecule( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.SMALL_MOLECULE_MI_REF, false );
     }
 
-    public static boolean isNucleicAcid( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.NUCLEIC_ACID_MI_REF, true );
+    public static boolean isNucleicAcid( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.NUCLEIC_ACID_MI_REF, true );
     }
 
-    public static boolean isProtein( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.PROTEIN_MI_REF, false );
+    public static boolean isProtein( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.PROTEIN_MI_REF, false );
     }
 
-    public static boolean isPeptide( OntologyManager ontologyManager, Interactor interactor ) {
-        return isOfType( ontologyManager, interactor.getInteractorType(), RuleUtils.PEPTIDE_MI_REF, false );
+    public static boolean isPeptide( OntologyManager ontologyManager, psidev.psi.mi.jami.model.Interactor interactor ) {
+        return isOfType( ontologyManager, interactor.getType(), RuleUtils.PEPTIDE_MI_REF, false );
     }
 
     public static boolean isBindingSite( OntologyManager ontologyManager, Feature feature ) {
@@ -746,5 +744,27 @@ public final class RuleUtils {
         }
 
         return collectedExps;
+    }
+
+    public static Mi25Context buildContext( Object object ) {
+        Mi25Context context;
+        context = new Mi25Context();
+        if (object instanceof FileSourceContext){
+            context.extractFileContextFrom((FileSourceContext)object);
+        }
+        else if (object instanceof HasId){
+            context.extractIdAndLabelFrom((HasId)object);
+        }
+        return context;
+    }
+
+    public static Mi25Context buildContext( int id, int lineNumber, int columnNumber, String objectLabel ) {
+        Mi25Context context;
+        context = new Mi25Context();
+        context.setId(id);
+        context.setObjectLabel(objectLabel);
+        context.setLineNumber(lineNumber);
+        context.setColumnNumber(columnNumber);
+        return context;
     }
 }

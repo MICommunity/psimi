@@ -15,8 +15,8 @@
  */
 package psidev.psi.mi.validator.extension.rules;
 
+import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 2.0
  */
-public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
+public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
 
     public static final String AMINO_ACID_1_LETTER_CODES = "ARNDCEQGHILKMFPSTWYV";
     // source: http://searchlauncher.bcm.tmc.edu/multi-align/Help/pima.html
@@ -87,18 +87,18 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Interactor){
+        if (t instanceof Polymer){
             return true;
         }
 
         return false;
     }
 
-    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Polymer interactor ) throws ValidatorException {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        if ( interactor.hasSequence() ) {
+        if ( interactor.getSequence() != null) {
 
             final String seq = interactor.getSequence();
 
@@ -120,7 +120,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = buildContext( interactor );
+                    Mi25Context context = RuleUtils.buildContext( interactor );
                     messages.add( new ValidatorMessage( message,
                             MessageLevel.WARN,
                             context,
@@ -144,7 +144,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = buildContext( interactor );
+                    Mi25Context context = RuleUtils.buildContext( interactor );
                     messages.add( new ValidatorMessage( message,
                             MessageLevel.WARN,
                             context,
@@ -168,7 +168,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = buildContext( interactor );
+                    Mi25Context context = RuleUtils.buildContext( interactor );
                     messages.add( new ValidatorMessage(message,
                             MessageLevel.WARN,
                             context,
@@ -177,25 +177,9 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
             } else {
                 // unknown interactor type, keep quiet.
             }
-        } /*else {
-            if( RuleUtils.isBiopolymer( ontologyManager, interactor ) ) {
-                Mi25Context context = buildContext( interactor );
-                messages.add( new ValidatorMessage( "Biopolymer without a sequence",
-                        MessageLevel.INFO,
-                        context,
-                        this ) );
-            }
-        }*/
+        }
 
         return messages;
-    }
-
-    private Mi25Context buildContext( Interactor interactor ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setId( interactor.getId() );
-        context.setObjectLabel("interactor");
-        return context;
     }
 
 

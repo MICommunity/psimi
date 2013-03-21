@@ -4,10 +4,8 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.dependencies.ValidatorRuleException;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -32,7 +30,7 @@ import java.util.regex.Pattern;
  * @since <pre>27-Aug-2010</pre>
  */
 
-public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
+public class DatabaseAccessionRule extends ObjectRule<psidev.psi.mi.jami.model.Xref> {
 
     public static final Log log = LogFactory.getLog( DatabaseAccessionRule.class );
 
@@ -321,116 +319,99 @@ public class DatabaseAccessionRule extends ObjectRule<XrefContainer> {
 
     @Override
     public boolean canCheck(Object o) {
-        return ( o != null && o instanceof XrefContainer);
+        return ( o != null && o instanceof psidev.psi.mi.jami.model.Xref);
     }
 
     @Override
-    public Collection<ValidatorMessage> check(XrefContainer xrefContainer) throws ValidatorException {
+    public Collection<ValidatorMessage> check(psidev.psi.mi.jami.model.Xref xref) throws ValidatorException {
         // sets up the context
         Mi25Context context = new Mi25Context();
-        if (xrefContainer instanceof FileSourceContext){
-            context.extractObjectIdAndLabelFrom((FileSourceContext)xrefContainer);
-        }
-        else if (xrefContainer instanceof HasId){
-            context.setId(((HasId)xrefContainer).getId());
-        }
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // the cross reference of the object
-        Xref xRef = xrefContainer.getXref();
-
-        checkCrossReference(xrefContainer, xRef, messages, context);
+        checkCrossReference(xref, messages, context);
 
         return messages;
     }
 
     /**
      * Checks that the cross references in the object XRef are valid
-     * @param container
      * @param xRef
      * @param messages
      * @param context
      */
-    private void  checkCrossReference(XrefContainer container, Xref xRef, List<ValidatorMessage> messages, Mi25Context context){
+    private void  checkCrossReference(psidev.psi.mi.jami.model.Xref xRef, List<ValidatorMessage> messages, Mi25Context context){
         // if the XRef object is not null
         if (xRef != null){
-            Collection<DbReference> dbReferences = xRef.getAllDbReferences();
 
             OntologyAccess access = this.ontologyManager.getOntologyAccess("MI");
 
             // if the ontology access for MI is not null
             if (access != null){
-                for (DbReference dbRef : dbReferences){
+                // name of the database
+                String dbName = xRef.getDatabase().getShortName();
+                // MI identifier of the database
+                String dbAc = xRef.getDatabase().getMIIdentifier();
+                // accession
+                String accession = xRef.getId();
 
-                    // if the cross reference is not null
-                    if (dbRef != null){
-                        // name of the database
-                        String dbName = dbRef.getDb();
-                        // MI identifier of the database
-                        String dbAc = dbRef.getDbAc();
-                        // accession
-                        String accession = dbRef.getId();
+                if (accession == null){
+                    messages.add( new ValidatorMessage( "The cross reference is invalid because the database accession is null or empty.",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+                }
+                else {
+                    if (dbAc != null){
+                        checkDatabaseCrossReference(access, dbAc, accession, messages, context);
+                    }
+                    else if (dbName != null){
+                        try {
+                            Map results = query.getTermsByName(dbName, ontologyId, false);
 
-                        if (accession == null){
-                            messages.add( new ValidatorMessage( "One of the cross references of this "+container.getClass().getSimpleName()+" has a database accession which is null.",
-                                    MessageLevel.ERROR,
-                                    context,
-                                    this ) );
-                        }
-                        else {
-                            if (dbAc != null){
-                                checkDatabaseCrossReference(access, dbAc, accession, messages, context);
-                            }
-                            else if (dbName != null){
-                                try {
-                                    Map results = query.getTermsByName(dbName, ontologyId, false);
-
-                                    if (results == null || results.isEmpty()){
-                                        messages.add( new ValidatorMessage( "The database "+dbName+" is not recognized in the PSI-MI ontology.",
-                                                MessageLevel.INFO,
-                                                context,
-                                                this ) );
-                                    }
-                                    else if (results.size() == 1){
-                                        String MI = (String) results.keySet().iterator().next();
-                                        checkDatabaseCrossReference(access, MI, accession, messages, context);
-                                    }
-                                    else {
-                                        if (results.containsValue(dbName)){
-                                            Set<String> MISet = results.keySet();
-
-                                            for (String MI : MISet){
-                                                String exactName = (String) results.get(MI);
-
-                                                if (dbName.equalsIgnoreCase(exactName)){
-                                                    checkDatabaseCrossReference(access, MI, accession, messages, context);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        else {
-                                            messages.add( new ValidatorMessage( "Several different databases can match the name "+dbName+". Therefore, it is not possible to check if the database accession is valid.",
-                                                    MessageLevel.WARN,
-                                                    context,
-                                                    this ) );
-                                        }
-                                    }
-
-                                } catch (RemoteException e) {
-                                    if ( log.isWarnEnabled() ) {
-                                        log.warn( "Error while loading term synonyms from OLS for term: " + dbName, e );
-                                    }
-                                }
-                            }
-                            else {
-                                messages.add( new ValidatorMessage( "There is no database specified for the cross reference identifier "+accession+" and it is mandatory.",
-                                        MessageLevel.ERROR,
+                            if (results == null || results.isEmpty()){
+                                messages.add( new ValidatorMessage( "The database "+dbName+" is not recognized in the PSI-MI ontology.",
+                                        MessageLevel.INFO,
                                         context,
                                         this ) );
                             }
+                            else if (results.size() == 1){
+                                String MI = (String) results.keySet().iterator().next();
+                                checkDatabaseCrossReference(access, MI, accession, messages, context);
+                            }
+                            else {
+                                if (results.containsValue(dbName)){
+                                    Set<String> MISet = results.keySet();
+
+                                    for (String MI : MISet){
+                                        String exactName = (String) results.get(MI);
+
+                                        if (dbName.equalsIgnoreCase(exactName)){
+                                            checkDatabaseCrossReference(access, MI, accession, messages, context);
+                                            break;
+                                        }
+                                    }
+                                }
+                                else {
+                                    messages.add( new ValidatorMessage( "Several different databases can match the name "+dbName+". Therefore, it is not possible to check if the database accession is valid.",
+                                            MessageLevel.INFO,
+                                            context,
+                                            this ) );
+                                }
+                            }
+
+                        } catch (RemoteException e) {
+                            if ( log.isWarnEnabled() ) {
+                                log.warn( "Error while loading term synonyms from OLS for term: " + dbName, e );
+                            }
                         }
+                    }
+                    else {
+                        messages.add( new ValidatorMessage( "There is no database specified for the cross reference identifier "+accession+" and it is mandatory.",
+                                MessageLevel.ERROR,
+                                context,
+                                this ) );
                     }
                 }
             }

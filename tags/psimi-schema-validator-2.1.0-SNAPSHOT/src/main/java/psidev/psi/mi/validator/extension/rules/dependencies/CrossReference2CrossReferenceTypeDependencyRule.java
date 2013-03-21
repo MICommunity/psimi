@@ -108,7 +108,7 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
 
         Mi25Context context = new Mi25Context();
         if (container instanceof FileSourceContext){
-            context.extractObjectIdAndLabelFrom((FileSourceContext)container);
+            context.extractFileContextFrom((FileSourceContext) container);
         }
         else if (container instanceof HasId){
             context.setId(((HasId)container).getId());
