@@ -75,7 +75,8 @@ public class SingleExperimentRoleRule extends ObjectRule<Participant> {
     private Mi25Context buildContext( int participantId ) {
         Mi25Context context;
         context = new Mi25Context();
-        context.setParticipantId( participantId );
+        context.setId( participantId );
+        context.setObjectLabel("participant");
         return context;
     }
 

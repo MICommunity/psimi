@@ -83,7 +83,8 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
 
         // build a context in case of error
         Mi25Context context = new Mi25Context();
-        context.setFeatureId( feature.getId());
+        context.setId( feature.getId());
+        context.setObjectLabel("feature");
 
         if (feature.hasFeatureType()){
             Collection<Range> featureRange = feature.getFeatureRanges();

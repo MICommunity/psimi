@@ -36,7 +36,8 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         Mi25Context context = new Mi25Context();
-        context.setInteractionId(interaction.getId());
+        context.setId(interaction.getId());
+        context.setObjectLabel("interaction");
 
         if (interaction.hasAttributes()){
             Collection<Attribute> attributes = interaction.getAttributes();

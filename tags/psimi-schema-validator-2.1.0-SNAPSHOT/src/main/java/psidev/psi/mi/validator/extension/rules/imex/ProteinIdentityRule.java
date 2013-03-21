@@ -125,7 +125,8 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
     private Mi25Context buildContext( int interactorId ) {
         Mi25Context context;
         context = new Mi25Context();
-        context.setInteractorId( interactorId );
+        context.setId( interactorId );
+        context.setObjectLabel("interactor");
         return context;
     }
 

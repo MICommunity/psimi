@@ -68,7 +68,8 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
         if (experiment.hasAttributes()){
             Collection<Attribute> attributes = experiment.getAttributes();
             Mi25Context context = new Mi25Context();
-            context.setExperimentId(experiment.getId());
+            context.setId(experiment.getId());
+            context.setObjectLabel("experiment");
 
             for (Attribute attribute : attributes){
                 if (!attribute.hasNameAc()){

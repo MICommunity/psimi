@@ -49,7 +49,8 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
         int interactionId = interaction.getId();
 
         Mi25Context context = new Mi25Context();
-        context.setInteractionId( interactionId );
+        context.setObjectLabel("interaction");
+        context.setId( interactionId );
 
         // Check xRef
         if (interaction.hasXref()){

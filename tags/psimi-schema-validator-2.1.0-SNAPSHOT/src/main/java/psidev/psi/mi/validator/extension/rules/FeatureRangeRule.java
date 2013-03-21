@@ -72,8 +72,8 @@ public class FeatureRangeRule extends ObjectRule<Participant> {
                 Collection<Range> ranges = feature .getFeatureRanges();
 
                 Mi25Context context = new Mi25Context();
-                context.setParticipantId( participantId );
-                context.setFeatureId( featureId );
+                context.setId( featureId );
+                context.setObjectLabel("feature");
 
                 if (ranges.isEmpty()){
                     messages.add( new ValidatorMessage( "Feature must have at least one range.'",

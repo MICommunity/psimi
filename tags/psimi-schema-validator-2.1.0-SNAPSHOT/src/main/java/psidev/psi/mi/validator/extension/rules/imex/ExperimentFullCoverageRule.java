@@ -47,7 +47,8 @@ public class ExperimentFullCoverageRule extends Mi25ExperimentRule {
         int experimentId = experiment.getId();
 
         Mi25Context context = new Mi25Context();
-        context.setExperimentId( experimentId );
+        context.setId( experimentId );
+        context.setObjectLabel( "experiment" );
 
         // An experiment must have at least one attribute 'full coverage'
         RuleUtils.checkPresenceOfAttributeInExperiment(experiment, messages, context, this, "MI:0957", "full coverage");

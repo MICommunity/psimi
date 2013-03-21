@@ -80,9 +80,8 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
             for ( Participant p : participants ) {
                 // build a context in case of error
                 Mi25Context context = new Mi25Context();
-                context.setInteractionId( interaction.getId() );
-                context.setExperimentId( experiment.getId());
-                context.setParticipantId( p.getId());
+                context.setObjectLabel( "participant" );
+                context.setId( p.getId());
 
                 if (p.hasParticipantIdentificationMethods()){
                     Collection<ParticipantIdentificationMethod> participantIdentification = p.getParticipantIdentificationMethods();

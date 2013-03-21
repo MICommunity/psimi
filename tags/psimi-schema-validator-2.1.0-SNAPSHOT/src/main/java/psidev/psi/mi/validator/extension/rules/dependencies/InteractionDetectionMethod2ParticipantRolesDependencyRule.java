@@ -63,17 +63,15 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
 
         // build a context in case of error
         Mi25Context context = new Mi25Context();
-        context.setInteractionId( interaction.getId() );
 
         for ( ExperimentDescription experiment : interaction.getExperiments() ) {
-
-            context.setExperimentId( experiment.getId() );
 
             final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
 
             for ( Participant participant : interaction.getParticipants() ) {
 
-                context.setParticipantId( participant.getId() );
+                context.setId( participant.getId() );
+                context.setObjectLabel("participant");
 
                 final BiologicalRole biologicalRole = participant.getBiologicalRole();
 
@@ -96,12 +94,10 @@ public class InteractionDetectionMethod2ParticipantRolesDependencyRule extends M
                                 // that's ok, keep our local experiment
                             } else {
                                 // override local experiment and fire check
-                                context.setExperimentId( e.getId() );
                                 messages.addAll( check( method, biologicalRole, experimentalRole, context ) );
                             }
                         }
                     } else {
-                        context.setExperimentId( experiment.getId() );
                         messages.addAll( check( method, biologicalRole, experimentalRole, context ) );
                     }
 

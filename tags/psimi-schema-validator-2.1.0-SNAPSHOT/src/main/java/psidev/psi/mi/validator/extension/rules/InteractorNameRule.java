@@ -65,7 +65,8 @@ public class InteractorNameRule extends ObjectRule<Interactor> {
         if ( StringUtils.isEmpty( fullname ) && StringUtils.isEmpty( shortlabel ) ) {
 
             Mi25Context context = new Mi25Context();
-            context.setInteractorId( interactorId );
+            context.setId( interactorId );
+            context.setObjectLabel("interactor");
 
             messages.add( new ValidatorMessage( "Interactor should have either a shortlabel and/or a fullname ",
                     MessageLevel.WARN,

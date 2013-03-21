@@ -193,7 +193,8 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Interactor> {
     private Mi25Context buildContext( Interactor interactor ) {
         Mi25Context context;
         context = new Mi25Context();
-        context.setInteractorId( interactor.getId() );
+        context.setId( interactor.getId() );
+        context.setObjectLabel("interactor");
         return context;
     }
 

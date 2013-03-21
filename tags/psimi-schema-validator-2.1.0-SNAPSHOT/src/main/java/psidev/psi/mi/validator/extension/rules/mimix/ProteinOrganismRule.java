@@ -52,7 +52,8 @@ public class ProteinOrganismRule extends ObjectRule<Interactor> {
         int interactorId = interactor.getId();
 
         Mi25Context context = new Mi25Context();
-        context.setInteractorId(interactorId);
+        context.setId(interactorId);
+        context.setObjectLabel("interactor");
 
         if (RuleUtils.isProtein(ontologyManager, interactor) && !interactor.hasOrganism()){
             messages.add( new ValidatorMessage( "The protein does not have an organism and it is required for MIMIx.",

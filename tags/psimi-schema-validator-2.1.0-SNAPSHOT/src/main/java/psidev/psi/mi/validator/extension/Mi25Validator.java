@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.ValidatorReport;
 import psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule;
 import psidev.psi.mi.validator.extension.rules.PsimiXmlSchemaRule;
+import psidev.psi.mi.validator.extension.rules.cvmapping.MICvRuleManager;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.model.*;
@@ -86,6 +87,11 @@ public class Mi25Validator extends Validator {
 
     public UserPreferences getUserPreferences() {
         return userPreferences;
+    }
+
+    @Override
+    protected void instantiateCvRuleManager(OntologyManager manager, CvMapping cvMappingRules) {
+        super.setCvRuleManager(new MICvRuleManager(manager, cvMappingRules));
     }
 
     //////////////////////////
@@ -465,8 +471,7 @@ public class Mi25Validator extends Validator {
                     }
 
                     if( !validatorMessages.isEmpty() ) {
-                        long lineNumber = entry.getExperimentLineNumber( experiment.getId() );
-                        updateLineNumber( validatorMessages, lineNumber );
+                        updateLineNumber( validatorMessages, experiment.getLineNumber() );
                     }
 
                     // append messages to the global collection
@@ -497,8 +502,7 @@ public class Mi25Validator extends Validator {
                     }
 
                     if( !validatorMessages.isEmpty() ) {
-                        long lineNumber = entry.getInteractorLineNumber( interactor.getId() );
-                        updateLineNumber( validatorMessages, lineNumber );
+                        updateLineNumber( validatorMessages, interactor.getLineNumber() );
                     }
 
                     // append messages to the global collection
@@ -527,7 +531,7 @@ public class Mi25Validator extends Validator {
                 // add line number
                 if( !interactionMessages.isEmpty() ) {
                     long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
-                    updateLineNumber( interactionMessages, lineNumber );
+                    updateLineNumber( interactionMessages, interaction.getLineNumber() );
                 }
 
                 // append messages to the global collection
@@ -806,7 +810,8 @@ public class Mi25Validator extends Validator {
                 context = new Mi25Context();
             }
 
-            context.setInteractionId( interaction.getId() );
+            context.setId( interaction.getId() );
+            context.setObjectLabel("interaction");
             convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
 
@@ -826,7 +831,8 @@ public class Mi25Validator extends Validator {
                 context = new Mi25Context();
             }
 
-            context.setExperimentId( experiment.getId() );
+            context.setId( experiment.getId() );
+            context.setObjectLabel("experiment");
             convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
 
@@ -846,14 +852,15 @@ public class Mi25Validator extends Validator {
                 context = new Mi25Context();
             }
 
-            context.setInteractorId( interactor.getId() );
+            context.setId( interactor.getId() );
+            context.setObjectLabel("interactor");
             convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
 
         return convertedMessages;
     }
 
-    private void updateLineNumber( Collection<ValidatorMessage> validatorMessages, long lineNumber ) {
+    private void updateLineNumber( Collection<ValidatorMessage> validatorMessages, int lineNumber ) {
         if( lineNumber > 0 ) {
             for ( ValidatorMessage msg : validatorMessages ) {
                 if( msg.getContext() instanceof Mi25Context ) {

@@ -2,6 +2,7 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
 import psidev.psi.mi.xml.model.*;
@@ -106,7 +107,12 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
         Xref xRef = container.getXref();
 
         Mi25Context context = new Mi25Context();
-        context.setId(container);
+        if (container instanceof FileSourceContext){
+            context.extractObjectIdAndLabelFrom((FileSourceContext)container);
+        }
+        else if (container instanceof HasId){
+            context.setId(((HasId)container).getId());
+        }
 
         if (xRef != null){
             // Collect the db references
@@ -128,8 +134,6 @@ public class CrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<
                     Collection<DbReference> databaseReferences = exp.getBibref().getXref().getAllDbReferences();
 
                     for ( DbReference reference : databaseReferences) {
-
-                        context.setId( reference.getId());
                         messages.addAll( mapping.check( reference, container, context, this ) );
                     }
                 }
