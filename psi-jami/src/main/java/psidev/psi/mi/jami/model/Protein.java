@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.model;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Protein extends Interactor {
+public interface Protein extends Polymer {
 
     public static final String PROTEIN="protein";
     public static final String PROTEIN_MI="MI:0326";

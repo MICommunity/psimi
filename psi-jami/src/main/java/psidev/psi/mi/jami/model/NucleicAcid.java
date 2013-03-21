@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.model;
  * @since <pre>23/11/12</pre>
  */
 
-public interface NucleicAcid extends Interactor {
+public interface NucleicAcid extends Polymer {
 
     public static final String NULCEIC_ACID="nucleic acid";
     public static final String NULCEIC_ACID_MI="MI:0318";
