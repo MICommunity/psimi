@@ -11,6 +11,7 @@ import psidev.psi.mi.tab.PsimiTabIterator;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
 import psidev.psi.mi.tab.events.InvalidFormatEvent;
+import psidev.psi.mi.tab.events.MissingCvEvent;
 import psidev.psi.mi.tab.model.BinaryInteraction;import psidev.psi.mi.tab.model.MitabFileSource;
 
 import java.io.File;
@@ -139,5 +140,16 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
         }
     }
 
+    public void fireOnMissingCvEvent(MissingCvEvent event) {
+        DataSourceError error = new DataSourceError(FileSourceParsingError.missing_cv.toString(), event.getMessage());
+        if (errors.containsKey(error)){
+            errors.get(error).add(event);
+        }
+        else{
+            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
+            contexts.add(event);
+            errors.put(error, contexts);
+        }
+    }
 
 }
