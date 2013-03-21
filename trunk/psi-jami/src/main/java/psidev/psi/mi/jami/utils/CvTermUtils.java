@@ -27,6 +27,7 @@ public class CvTermUtils {
     private static CvTerm nTerminalRagged;
     private static CvTerm greaterThan;
     private static CvTerm lessThan;
+    private static CvTerm certain;
 
     public static CvTerm getGene() {
         if (gene == null){
@@ -124,5 +125,12 @@ public class CvTermUtils {
             lessThan = CvTermFactory.createLessThanRangeStatus();
         }
         return lessThan;
+    }
+
+    public static CvTerm getCertain() {
+        if (certain == null){
+            certain = CvTermFactory.createCertainStatus();
+        }
+        return certain;
     }
 }

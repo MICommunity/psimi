@@ -95,6 +95,16 @@ public class PositionUtils {
         return DefaultCvTermComparator.areEquals(CvTermUtils.getLessThan(), status);
     }
 
+    public static boolean isCertain(Position position){
+        if (position == null){
+            return false;
+        }
+
+        CvTerm status = position.getStatus();
+
+        return DefaultCvTermComparator.areEquals(CvTermUtils.getCertain(), status);
+    }
+
     public static String convertPositionToString(Position position){
         if (position == null){
             return Range.UNDETERMINED_POSITION_SYMBOL;
