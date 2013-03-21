@@ -47,7 +47,7 @@
        </CvMappingRule>
 
        <CvMappingRule id="R6" name="Experiment's Bibliographical References"
-                      cvElementPath="/interactionEvidence/experiment/publication/identifiers[1]/database/@PARIdentifier"
+                      cvElementPath="/interactionEvidence/experiment/publication/identifiers[1]/database/@PARIdentifier" bibref/xref/primaryRef/@dbAc
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/experiment"
                       requirementLevel="SHOULD">
@@ -77,23 +77,6 @@
                       scopePath="/interactionEvidence/participantEvidences/experimentalRole"
                       requirementLevel="MAY">
            <CvTerm termAccession="PAR:0495" allowChildren="true" termName="experimental role" useTerm="false" cvIdentifierRef="PAR"/>
-       </CvMappingRule>
-
-       <CvMappingRule id="R10" name="(interactor is validated alone)"
-                      cvElementPath="/interactor/type/@MIIdentifier"
-                      cvTermsCombinationLogic="OR"
-                      scopePath="/interactor/type"
-                      requirementLevel="MUST">
-           <CvTerm termAccession="PAR:0313" allowChildren="true" termName="interactor type" useTerm="false" cvIdentifierRef="PAR"/>
-       </CvMappingRule>
-
-       <CvMappingRule id="R11" name="Interaction Detection Method (experiment is validated alone)"
-                      cvElementPath="/experiment/interactionDetectionMethod/@PARIdentifier"
-                      cvTermsCombinationLogic="OR"
-                      scopePath="/experiment/interactionDetectionMethod"
-                      requirementLevel="MUST">
-           <CvTerm termAccession="PAR:0001" allowChildren="true" termName="interaction detection method" useTerm="false" cvIdentifierRef="PAR"/>
-           <CvTerm termAccession="PAR:1328" allowChildren="true" termName="molecule production method" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
    </CvMappingRuleList>

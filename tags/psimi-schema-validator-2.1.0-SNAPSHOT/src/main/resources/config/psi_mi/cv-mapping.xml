@@ -69,21 +69,5 @@
             <CvTerm termAccession="MI:0495" allowChildren="true" termName="experimental role" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
-        <CvMappingRule id="R8" name="Interaction Detection Method (experiment is validated alone)"
-                       cvElementPath="/experiment/interactionDetectionMethod/@MIIdentifier"
-                       cvTermsCombinationLogic="OR"
-                       scopePath="/experiment/interactionDetectionMethod"
-                       requirementLevel="MUST">
-            <CvTerm termAccession="MI:0001" allowChildren="true" termName="interaction detection method" useTerm="false" cvIdentifierRef="MI"/>
-        </CvMappingRule>
-
-        <CvMappingRule id="R9" name="Interactor Type (interactor is validated alone)"
-                       cvElementPath="/interactor/type/@MIIdentifier"
-                       cvTermsCombinationLogic="OR"
-                       scopePath="/interactor/type"
-                       requirementLevel="MUST">
-            <CvTerm termAccession="MI:0313" allowChildren="true" termName="interactor type" useTerm="false" cvIdentifierRef="MI"/>
-        </CvMappingRule>
-
     </CvMappingRuleList>
 </CvMapping>
