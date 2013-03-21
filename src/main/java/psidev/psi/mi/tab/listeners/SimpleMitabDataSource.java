@@ -129,7 +129,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
     }
 
     public void fireOnClusteredColumnEvent(ClusteredColumnEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(event.getErrorType().toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }
@@ -141,7 +141,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
     }
 
     public void fireOnMissingCvEvent(MissingCvEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.missing_cv.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(event.getErrorType().toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }
