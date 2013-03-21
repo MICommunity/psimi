@@ -16,6 +16,7 @@
 package psidev.psi.mi.xml.io;
 
 import psidev.psi.mi.xml.PsimiXmlReaderException;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 
 import java.util.List;
@@ -29,4 +30,6 @@ import java.util.List;
 public interface PsimiXmlLightweightReader {
     
     List<IndexedEntry> getIndexedEntries() throws PsimiXmlReaderException;
+
+    public void registerListener(List<PsiXml25ParserListener> listeners);
 }

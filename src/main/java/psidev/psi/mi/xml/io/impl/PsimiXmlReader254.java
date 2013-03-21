@@ -5,31 +5,23 @@
  */
 package psidev.psi.mi.xml.io.impl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.URL;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.converter.impl254.EntrySetConverter;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.inMemory.InMemoryDAOFactory;
 import psidev.psi.mi.xml.io.PsimiXmlReader;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml254.jaxb.EntrySet;
 import psidev.psi.mi.xml254.jaxb.ObjectFactory;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.*;
+import java.net.URL;
+import java.util.List;
 
 /**
  * Read PSI MI data from various sources.
@@ -47,6 +39,8 @@ public class PsimiXmlReader254 implements PsimiXmlReader {
     
     // Custom buffer size for buffered readers.  This is for performance tuning.
     private static final int BUFFER_SIZE = 100000;
+
+    private List<PsiXml25ParserListener> listeners;
 
     //////////////////////////
     // Public methods
@@ -83,6 +77,10 @@ public class PsimiXmlReader254 implements PsimiXmlReader {
         return convertInMemory( jEntrySet );
     }
 
+    public void registerListener(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+    }
+
     ////////////////////////
     // Private methods
 
@@ -105,7 +103,6 @@ public class PsimiXmlReader254 implements PsimiXmlReader {
         }
     }
 
-
     private Unmarshaller getUnmarshaller() throws PsimiXmlReaderException {
 
         try {
@@ -126,6 +123,7 @@ public class PsimiXmlReader254 implements PsimiXmlReader {
 
         // create a converter
         EntrySetConverter converter = new EntrySetConverter();
+        converter.setListeners(listeners);
 
         // initialise DAO
         DAOFactory dao = new InMemoryDAOFactory();

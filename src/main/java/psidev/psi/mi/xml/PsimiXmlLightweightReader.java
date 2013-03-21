@@ -152,10 +152,22 @@ public class PsimiXmlLightweightReader implements psidev.psi.mi.xml.io.PsimiXmlL
                 this.readerPsimiXml = new PsimiXmlLightweightReader253(f);
                 break;
         }
+
+        if (this.readerPsimiXml != null){
+            this.readerPsimiXml.registerListener(getListeners(PsiXml25ParserListener.class));
+        }
     }
 
     public List<IndexedEntry> getIndexedEntries() throws PsimiXmlReaderException {
         return readerPsimiXml.getIndexedEntries();
+    }
+
+    public void registerListener(List<PsiXml25ParserListener> listeners) {
+        if (listeners != null && listeners.isEmpty()){
+            for (PsiXml25ParserListener l : listeners){
+                listenerList.add(PsiXml25ParserListener.class, l);
+            }
+        }
     }
 
     private PsimiXmlVersion detectVersion(PushbackReader reader) throws PsimiXmlReaderException {

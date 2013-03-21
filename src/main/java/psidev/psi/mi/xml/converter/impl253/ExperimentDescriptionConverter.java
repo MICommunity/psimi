@@ -8,10 +8,15 @@ package psidev.psi.mi.xml.converter.impl253;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.MultipleHostOrganismsPerExperiment;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
 import psidev.psi.mi.xml253.jaxb.ConfidenceListType;
 import psidev.psi.mi.xml253.jaxb.ExperimentType;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class ExperimentDescription.
@@ -34,6 +39,8 @@ public class ExperimentDescriptionConverter {
     private ConfidenceConverter confidenceConverter;
     private OrganismConverter organismConverter;
     private XrefConverter xrefConverter;
+
+    private List<PsiXml25ParserListener> listeners;
 
     /**
      * Handles DAOs.
@@ -59,6 +66,10 @@ public class ExperimentDescriptionConverter {
 
     public DAOFactory getFactory() {
         return factory;
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
     }
 
     /**
@@ -125,6 +136,16 @@ public class ExperimentDescriptionConverter {
             for ( ExperimentType.HostOrganismList.HostOrganism jHostOrganism :
                     jExperimentDescription.getHostOrganismList().getHostOrganisms() ) {
                 mExperimentDescription.getHostOrganisms().add( organismConverter.fromJaxb( jHostOrganism ) );
+
+                // we have more than one host organism
+                if (listeners != null && !listeners.isEmpty() && jExperimentDescription.getHostOrganismList() != null && jExperimentDescription.getHostOrganismList().getHostOrganisms().size() > 1){
+                    MultipleHostOrganismsPerExperiment evt = new MultipleHostOrganismsPerExperiment(mExperimentDescription, new HashSet<Organism>(mExperimentDescription.getHostOrganisms()), "Experiment " +mExperimentDescription.getId() + " contains "+jExperimentDescription.getHostOrganismList().getHostOrganisms().size()+" host organism.");
+                    evt.setColumnNumber(jExperimentDescription.sourceLocation().getColumnNumber());
+                    evt.setLineNumber(jExperimentDescription.sourceLocation().getLineNumber());
+                    for (PsiXml25ParserListener l : listeners){
+                        l.fireOnMultipleHostOrganismsPerExperimentEvent(evt);
+                    }
+                }
             }
         }
 

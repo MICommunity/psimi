@@ -16,11 +16,13 @@
 package psidev.psi.mi.xml.io;
 
 import psidev.psi.mi.xml.PsimiXmlReaderException;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.util.List;
 
 /**
  * TODO comment this
@@ -38,4 +40,6 @@ public interface PsimiXmlReader {
     psidev.psi.mi.xml.model.EntrySet read( URL url ) throws PsimiXmlReaderException;
 
     psidev.psi.mi.xml.model.EntrySet read( Reader reader ) throws PsimiXmlReaderException;
+
+    public void registerListener(List<PsiXml25ParserListener> listeners);
 }

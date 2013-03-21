@@ -5,11 +5,17 @@
  */
 package psidev.psi.mi.xml.converter.impl253;
 
+import psidev.psi.mi.jami.datasource.FileSourceParsingError;
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.MissingCvEvent;
+import psidev.psi.mi.xml.events.MultipleExperimentalRolesEvent;
+import psidev.psi.mi.xml.events.MultipleExpressedInOrganisms;
+import psidev.psi.mi.xml.events.MultipleParticipantIdentificationMethodsPerParticipant;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
 import psidev.psi.mi.xml253.jaxb.ConfidenceListType;
@@ -17,6 +23,8 @@ import psidev.psi.mi.xml253.jaxb.FeatureElementType;
 import psidev.psi.mi.xml253.jaxb.ParticipantType;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Participant.
@@ -46,6 +54,8 @@ public class ParticipantConverter {
     private ParticipantIdentificationMethodConverter participantIdentificationMethodConverter;
     private AttributeConverter attributeConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /**
      * Handles DAOs.
      */
@@ -72,6 +82,11 @@ public class ParticipantConverter {
 
     ///////////////////////////////
     // DAO factory stategy
+
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+    }
 
     /**
      * Set the DAO Factory that holds required DAOs for resolving ids.
@@ -167,6 +182,16 @@ public class ParticipantConverter {
         if ( jParticipant.getBiologicalRole() != null ) {
             mParticipant.setBiologicalRole( cvTypeConverter.fromJaxb( jParticipant.getBiologicalRole(), BiologicalRole.class ) );
         }
+        // we have more than one identification methods
+        else if (listeners != null && !listeners.isEmpty()){
+            MissingCvEvent evt = new MissingCvEvent("The biological role is missing for participant " + mParticipant.getId(), FileSourceParsingError.missing_biological_role);
+            evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
+            evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnMissingCvEvent(evt);
+            }
+        }
 
         // Names
         if ( jParticipant.getNames() != null ) {
@@ -208,6 +233,16 @@ public class ParticipantConverter {
 
                 mParticipant.getExperimentalRoles().add( experimentalRoleConverter.fromJaxb( jExperimentalRole ) );
             }
+
+            // we have more than one experimental role
+            if (listeners != null && !listeners.isEmpty() && jParticipant.getExperimentalRoleList().getExperimentalRoles().size() > 1){
+                MultipleExperimentalRolesEvent evt = new MultipleExperimentalRolesEvent(null, mParticipant, new HashSet<ExperimentalRole>(mParticipant.getExperimentalRoles()), "Participant "+mParticipant.getId()+" contains "+jParticipant.getExperimentalRoleList().getExperimentalRoles().size()+" experimental roles.");
+                evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
+                evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMultipleExperimentalRolesEvent(evt);
+                }
+            }
         }
 
         // Features
@@ -222,6 +257,16 @@ public class ParticipantConverter {
             for ( ParticipantType.HostOrganismList.HostOrganism jOrganism :
                     jParticipant.getHostOrganismList().getHostOrganisms() ) {
                 mParticipant.getHostOrganisms().add( hostOrganismConverter.fromJaxb( jOrganism ) );
+            }
+
+            // we have more than one expressed in
+            if (listeners != null && !listeners.isEmpty() && jParticipant.getHostOrganismList().getHostOrganisms().size() > 1){
+                MultipleExpressedInOrganisms evt = new MultipleExpressedInOrganisms(null, mParticipant, new HashSet<HostOrganism>(mParticipant.getHostOrganisms()), "Participant "+mParticipant.getId()+" has been expressed in "+jParticipant.getHostOrganismList().getHostOrganisms().size()+" host organisms.");
+                evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
+                evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMultipleExpressedInOrganismsEvent(evt);
+                }
             }
         }
 
@@ -244,6 +289,16 @@ public class ParticipantConverter {
 
                 mParticipant.getParticipantIdentificationMethods()
                         .add( participantIdentificationMethodConverter.fromJaxb( jParticipantIdentificationMethod ) );
+            }
+
+            // we have more than one identification methods
+            if (listeners != null && !listeners.isEmpty() && jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods().size() > 1){
+                MultipleParticipantIdentificationMethodsPerParticipant evt = new MultipleParticipantIdentificationMethodsPerParticipant(null, mParticipant, new HashSet<ParticipantIdentificationMethod>(mParticipant.getParticipantIdentificationMethods()), "Participant "+mParticipant.getId()+" contains "+jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods().size()+" participant identification methods.");
+                evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
+                evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMultipleParticipantIdentificationMethodsEvent(evt);
+                }
             }
         }
 
