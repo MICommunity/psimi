@@ -21,6 +21,7 @@ import psidev.psi.mi.jami.datasource.FileSourceParsingError;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
 import psidev.psi.mi.tab.events.InvalidFormatEvent;
+import psidev.psi.mi.tab.events.MissingCvEvent;
 import psidev.psi.mi.tab.listeners.MitabParserListener;
 import psidev.psi.mi.tab.listeners.MitabParsingLogger;
 import psidev.psi.mi.tab.model.*;
@@ -183,33 +184,33 @@ public final class MitabParserUtils {
         interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.TAXID_B.ordinal(), FileSourceParsingError.clustered_content));
 
         //MITAB 2.5
-        interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileSourceParsingError.clustered_content));
+        interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_cv, "error"));
         interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal(), FileSourceParsingError.clustered_content));
         interaction.setPublications(splitPublications(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, PsimiTabColumns.PUB_AUTH.ordinal(), FileSourceParsingError.clustered_content));
-        interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileSourceParsingError.multiple_interaction_types));
-        interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, PsimiTabColumns.SOURCE.ordinal(), FileSourceParsingError.clustered_content));
+        interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileSourceParsingError.multiple_interaction_types, FileSourceParsingError.missing_cv, "info"));
+        interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, PsimiTabColumns.SOURCE.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_cv, "error"));
         interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTION_ID.ordinal()));
         interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()], listenerList, lineIndex, PsimiTabColumns.CONFIDENCE.ordinal()));
 
 
         //MITAB 2.6
-        interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.BIOROLE_A.ordinal(), FileSourceParsingError.clustered_content));
-        interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.EXPROLE_A.ordinal(), FileSourceParsingError.multiple_experimental_roles));
-        interactorA.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileSourceParsingError.clustered_content));
+        interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.BIOROLE_A.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_biological_role, "info"));
+        interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.EXPROLE_A.ordinal(), FileSourceParsingError.multiple_experimental_roles, FileSourceParsingError.missing_cv, "info"));
+        interactorA.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_cv, "error"));
         interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.XREFS_A.ordinal()));
         interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.ANNOTATIONS_A.ordinal()));
         interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.CHECKSUM_A.ordinal()));
 
         //MITAB 2.6
-        interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.BIOROLE_B.ordinal(), FileSourceParsingError.clustered_content));
-        interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.EXPROLE_B.ordinal(), FileSourceParsingError.multiple_experimental_roles));
-        interactorB.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileSourceParsingError.clustered_content));
+        interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.BIOROLE_B.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_biological_role, "info"));
+        interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.EXPROLE_B.ordinal(), FileSourceParsingError.multiple_experimental_roles, FileSourceParsingError.missing_cv, "info"));
+        interactorB.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_cv, "info"));
         interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.XREFS_B.ordinal()));
         interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.ANNOTATIONS_B.ordinal()));
         interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.CHECKSUM_B.ordinal()));
 
         //MITAB 2.6
-        interaction.setComplexExpansion(splitControlledVocabulary(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()], listenerList, lineIndex, PsimiTabColumns.COMPLEX_EXPANSION.ordinal(), FileSourceParsingError.clustered_content));
+        interaction.setComplexExpansion(splitControlledVocabulary(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()], listenerList, lineIndex, PsimiTabColumns.COMPLEX_EXPANSION.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_cv, ""));
         interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.XREFS_I.ordinal()));
         interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()], listenerList, lineIndex, PsimiTabColumns.ANNOTATIONS_I.ordinal()));
         interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()], listenerList, lineIndex, PsimiTabColumns.HOST_ORGANISM.ordinal(), FileSourceParsingError.multiple_host_organisms));
@@ -222,13 +223,13 @@ public final class MitabParserUtils {
         //MITAB 2.7
         interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.FEATURES_A.ordinal()));
         interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_A.ordinal(), FileSourceParsingError.clustered_content));
-        interactorA.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()));
+        interactorA.setParticipantIdentificationMethods(splitControlledVocabulary(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_cv, "info"));
 
 
         //MITAB 2.7
         interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.FEATURES_B.ordinal()));
         interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.STOICHIOMETRY_B.ordinal(), FileSourceParsingError.clustered_content));
-        interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()));
+        interactorB.setParticipantIdentificationMethods(splitControlledVocabulary(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()], listenerList, lineIndex, PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal(), FileSourceParsingError.clustered_content, FileSourceParsingError.missing_cv, "info"));
 
         //We check some consistency in the interactors
 
@@ -414,7 +415,7 @@ public final class MitabParserUtils {
         return objects;
     }
 
-    public static List<CrossReference> splitControlledVocabulary(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber, FileSourceParsingError errorType) {
+    public static List<CrossReference> splitControlledVocabulary(String column, List<MitabParserListener> listenerList, int lineNumber, int columnNumber, FileSourceParsingError clusteredErrorType, FileSourceParsingError missingCvErrorType, String levelOfImportanceIfMissing) {
 
         List<CrossReference> objects = new ArrayList<CrossReference>();
         CrossReference object = null;
@@ -471,7 +472,7 @@ public final class MitabParserUtils {
             }
 
             if (fields.length > 1){
-                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), errorType, "We have several "+fields.length+" controlled vocabulary terms where we expect only one term");
+                ClusteredColumnEvent evt = new ClusteredColumnEvent(new HashSet<String>(Arrays.asList(fields)), clusteredErrorType, "We have several "+fields.length+" controlled vocabulary terms where we expect only one term");
                 evt.setColumnNumber(columnNumber);
                 evt.setLineNumber(lineNumber);
 
@@ -479,7 +480,17 @@ public final class MitabParserUtils {
                     l.fireOnClusteredColumnEvent(evt);
                 }
             }
+            if (objects.isEmpty()){
+                MissingCvEvent evt = new MissingCvEvent(levelOfImportanceIfMissing, "No cv term has been specified for this column.", missingCvErrorType);
+                evt.setColumnNumber(columnNumber);
+                evt.setLineNumber(lineNumber);
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnMissingCvEvent(evt);
+                }
+            }
         }
+
         return objects;
     }
 
