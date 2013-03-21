@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultInteractor;
@@ -63,7 +64,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Interactor extends DefaultInteractor implements HasId, NamesContainer, XrefContainer, AttributeContainer, FileSourceContext {
+public class Interactor extends DefaultInteractor implements Polymer, HasId, NamesContainer, XrefContainer, AttributeContainer, FileSourceContext {
 
     private Names names = new InteractorNames();
 
