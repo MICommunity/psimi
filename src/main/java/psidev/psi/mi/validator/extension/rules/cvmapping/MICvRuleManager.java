@@ -3,7 +3,6 @@ package psidev.psi.mi.validator.extension.rules.cvmapping;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMappingRule;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.validator.rules.cvmapping.CvRuleImpl;
 import psidev.psi.tools.validator.rules.cvmapping.CvRuleManager;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class MICvRuleManager extends CvRuleManager {
     protected void addRules(List<CvMappingRule> cvMappingRules) {
 
         for (CvMappingRule cvMappingRule : cvMappingRules) {
-            CvRuleImpl rule = new CvRuleImpl(getOntologyMngr());
+            MICvRule rule = new MICvRule(getOntologyMngr());
             rule.setCvMappingRule(cvMappingRule);
             addCvRule(rule);
         }
