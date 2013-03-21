@@ -8,6 +8,9 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.xml.model.HasId;
 import psidev.psi.tools.validator.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <b> PSI-MI 2.5 Specific Context </b>.
  * <p/>
@@ -28,6 +31,8 @@ public class Mi25Context extends Context {
 
     private int id = -1;
 
+    private List<Mi25Context> associatedContexts;
+
     //////////////////
     // Constructors
 
@@ -41,6 +46,20 @@ public class Mi25Context extends Context {
 
     ///////////////////////////
     // Getters and Setters
+
+
+    public List<Mi25Context> getAssociatedContexts() {
+        if (associatedContexts == null){
+            associatedContexts = new ArrayList<Mi25Context>();
+        }
+        return associatedContexts;
+    }
+
+    public void addAssociatedContext(Mi25Context context) {
+        if (context != null){
+            getAssociatedContexts().add(context);
+        }
+    }
 
     public int getLineNumber() {
         return lineNumber;
@@ -74,7 +93,7 @@ public class Mi25Context extends Context {
         return columnNumber;
     }
 
-    public void extractObjectIdAndLabelFrom(FileSourceContext element) {
+    public void extractFileContextFrom(FileSourceContext element) {
         if (element instanceof HasId){
             HasId hasId = (HasId) element;
             if ( element instanceof InteractionEvidence) {
@@ -106,6 +125,27 @@ public class Mi25Context extends Context {
             } else if ( element instanceof FeatureEvidence) {
                 this.objectLabel = "feature";
             }
+        }
+        setLineNumber(element.getLineNumber());
+        setColumnNumber(element.getColumnNumber());
+    }
+
+    public void extractIdAndLabelFrom(HasId element) {
+        if ( element instanceof InteractionEvidence) {
+            this.id = element.getId();
+            this.objectLabel = "interaction";
+        } else if ( element instanceof psidev.psi.mi.jami.model.Interactor) {
+            this.id = element.getId();
+            this.objectLabel = "interactor";
+        } else if ( element instanceof ParticipantEvidence) {
+            this.id = element.getId();
+            this.objectLabel = "participant";
+        } else if ( element instanceof Experiment) {
+            this.id = element.getId();
+            this.objectLabel = "experiment";
+        } else if ( element instanceof FeatureEvidence) {
+            this.id = element.getId();
+            this.objectLabel = "feature";
         }
     }
 

@@ -30,7 +30,7 @@ public class Mi25XPathResult extends XPathResult {
         while ( !currentPointer.equals( root ) ) {
             Object o = currentPointer.getNode();
             if (o instanceof FileSourceContext){
-                context.extractObjectIdAndLabelFrom((FileSourceContext) o);
+                context.extractFileContextFrom((FileSourceContext) o);
             }
             else if (o instanceof HasId){
                 context.setId(((HasId)o).getId());

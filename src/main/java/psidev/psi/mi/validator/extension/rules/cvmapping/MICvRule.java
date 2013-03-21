@@ -64,20 +64,20 @@ public class MICvRule extends CvRuleImpl{
             Object rootParent = firstResult.getRootNode();
             if (rootParent instanceof FileSourceContext){
                 FileSourceContext fileSourceContext = (FileSourceContext) rootParent;
-                context.extractObjectIdAndLabelFrom(fileSourceContext);
+                context.extractFileContextFrom(fileSourceContext);
                 context.setLineNumber(fileSourceContext.getLineNumber());
                 context.setColumnNumber(fileSourceContext.getColumnNumber());
             }
             else if (o instanceof FileSourceContext){
                 FileSourceContext fileSourceContext = (FileSourceContext) o;
-                context.extractObjectIdAndLabelFrom(fileSourceContext);
+                context.extractFileContextFrom(fileSourceContext);
                 context.setLineNumber(fileSourceContext.getLineNumber());
                 context.setColumnNumber(fileSourceContext.getColumnNumber());
             }
         }
         else if (o instanceof FileSourceContext){
             FileSourceContext fileSourceContext = (FileSourceContext) o;
-            context.extractObjectIdAndLabelFrom(fileSourceContext);
+            context.extractFileContextFrom(fileSourceContext);
             context.setLineNumber(fileSourceContext.getLineNumber());
             context.setColumnNumber(fileSourceContext.getColumnNumber());
         }
