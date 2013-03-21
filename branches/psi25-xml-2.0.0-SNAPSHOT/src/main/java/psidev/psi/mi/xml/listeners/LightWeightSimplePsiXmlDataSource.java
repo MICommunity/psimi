@@ -131,7 +131,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public void fireOnMultipleExperimentalRolesEvent(MultipleExperimentalRolesEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_experimental_roles.toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }
@@ -143,7 +143,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public void fireOnMultipleExperimentsPerInteractionEvent(MultipleExperimentsPerInteractionEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_experiments.toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }
@@ -155,7 +155,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public void fireOnMultipleExpressedInOrganismsEvent(MultipleExpressedInOrganisms event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_expressed_in.toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }
@@ -167,7 +167,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public void fireOnMultipleHostOrganismsPerExperimentEvent(MultipleHostOrganismsPerExperiment event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_host_organisms.toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }
@@ -179,7 +179,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public void fireOnMultipleInteractionTypesEvent(MultipleInteractionTypesEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_interaction_types.toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }
@@ -191,7 +191,19 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public void fireOnMultipleParticipantIdentificationMethodsEvent(MultipleParticipantIdentificationMethodsPerParticipant event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.clustered_content.toString(), event.getMessage());
+        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_participant_identification_methods.toString(), event.getMessage());
+        if (errors.containsKey(error)){
+            errors.get(error).add(event);
+        }
+        else{
+            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
+            contexts.add(event);
+            errors.put(error, contexts);
+        }
+    }
+
+    public void fireOnMissingCvEvent(MissingCvEvent event) {
+        DataSourceError error = new DataSourceError(event.getErrorType().toString(), event.getMessage());
         if (errors.containsKey(error)){
             errors.get(error).add(event);
         }

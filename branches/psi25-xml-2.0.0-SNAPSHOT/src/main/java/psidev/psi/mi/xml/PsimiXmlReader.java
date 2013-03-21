@@ -71,6 +71,14 @@ public class PsimiXmlReader implements psidev.psi.mi.xml.io.PsimiXmlReader {
         return reader.read(pReader);
     }
 
+    public void registerListener(List<PsiXml25ParserListener> listeners) {
+        if (listeners != null && listeners.isEmpty()){
+            for (PsiXml25ParserListener l : listeners){
+                listenerList.add(PsiXml25ParserListener.class, l);
+            }
+        }
+    }
+
     private void initReader(PushbackReader reader) throws PsimiXmlReaderException {
         if (version == null) {
             PsimiXmlVersionDetector detector = new PsimiXmlVersionDetector();
@@ -91,6 +99,10 @@ public class PsimiXmlReader implements psidev.psi.mi.xml.io.PsimiXmlReader {
             case VERSION_25_UNDEFINED:
                 this.reader = new PsimiXmlReader253();
                 break;
+        }
+
+        if (this.reader != null){
+            this.reader.registerListener(getListeners(PsiXml25ParserListener.class));
         }
     }
 

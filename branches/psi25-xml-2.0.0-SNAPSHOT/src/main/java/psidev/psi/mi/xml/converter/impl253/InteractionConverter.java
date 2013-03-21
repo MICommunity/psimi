@@ -12,10 +12,14 @@ import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.MultipleExperimentsPerInteractionEvent;
+import psidev.psi.mi.xml.events.MultipleInteractionTypesEvent;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.*;
 import psidev.psi.mi.xml253.jaxb.CvType;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -48,6 +52,8 @@ public class InteractionConverter {
     private InteractionParameterConverter parameterConverter;
     private InferredInteractionConverter inferredInteractionConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /**
      * Handles DAOs.
      */
@@ -71,6 +77,12 @@ public class InteractionConverter {
 
     ///////////////////////////////
     // DAO factory stategy
+
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.participantConverter.setListeners(listeners);
+    }
 
     /**
      * Set the DAO Factory that holds required DAOs for resolving ids.
@@ -186,6 +198,16 @@ public class InteractionConverter {
                     mInteraction.getExperiments().add( mExperiment );
                 }
             }
+
+            // we have more than one experiment
+            if (listeners != null && !listeners.isEmpty() && jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().size() > 1){
+                MultipleExperimentsPerInteractionEvent evt = new MultipleExperimentsPerInteractionEvent(mInteraction, new HashSet<ExperimentDescription>(mInteraction.getExperiments()), "Interaction " +mInteraction.getId() + " contains "+jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().size()+" experiments.");
+                evt.setColumnNumber(jInteraction.sourceLocation().getColumnNumber());
+                evt.setLineNumber(jInteraction.sourceLocation().getLineNumber());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMultipleExperimentsPerInteractionEvent(evt);
+                }
+            }
         }
 
         // participants
@@ -269,6 +291,15 @@ public class InteractionConverter {
         // interaction types
         for ( CvType jIntereractionType : jInteraction.getInteractionTypes() ) {
             mInteraction.getInteractionTypes().add( cvTypeConverter.fromJaxb( jIntereractionType, InteractionType.class ) );
+        }
+        // we have more than one interaction types
+        if (listeners != null && !listeners.isEmpty() && jInteraction.getInteractionTypes().size() > 1){
+            MultipleInteractionTypesEvent evt = new MultipleInteractionTypesEvent(mInteraction, new HashSet<InteractionType>(mInteraction.getInteractionTypes()), "Interaction " +mInteraction.getId() + " contains "+jInteraction.getInteractionTypes().size()+" interaction types.");
+            evt.setColumnNumber(jInteraction.sourceLocation().getColumnNumber());
+            evt.setLineNumber(jInteraction.sourceLocation().getLineNumber());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnMultipleInteractionTypesEvent(evt);
+            }
         }
 
         // modelled

@@ -13,6 +13,7 @@ import psidev.psi.mi.xml.converter.impl253.EntrySetConverter;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.inMemory.InMemoryDAOFactory;
 import psidev.psi.mi.xml.io.PsimiXmlReader;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml253.jaxb.EntrySet;
 import psidev.psi.mi.xml253.jaxb.ObjectFactory;
 
@@ -20,6 +21,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Read PSI MI data from various sources.
@@ -37,6 +39,8 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
 
     // Custom buffer size for buffered readers.  This is for performance tuning.
     private static final int BUFFER_SIZE = 100000;
+
+    private List<PsiXml25ParserListener> listeners;
     
     //////////////////////////
     // Public methods
@@ -73,6 +77,10 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
         return convertInMemory( jEntrySet );
     }
 
+    public void registerListener(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+    }
+
     ////////////////////////
     // Private methods
 
@@ -95,7 +103,6 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
         }
     }
 
-
     private Unmarshaller getUnmarshaller() throws PsimiXmlReaderException {
 
         try {
@@ -114,6 +121,7 @@ public class PsimiXmlReader253 implements PsimiXmlReader {
 
         // create a converter
         EntrySetConverter converter = new EntrySetConverter();
+        converter.setListeners(listeners);
 
         // initialise DAO
         DAOFactory dao = new InMemoryDAOFactory();

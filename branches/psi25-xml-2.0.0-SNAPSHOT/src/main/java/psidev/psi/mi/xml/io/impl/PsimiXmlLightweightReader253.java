@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.io.PsimiXmlLightweightReader;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml.xmlindex.*;
 import psidev.psi.mi.xml.xmlindex.impl.PsimiXmlPullParser253;
@@ -43,6 +44,8 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
     private StandardXpathIndex xpathIndex;
 
     private static final Set<String> psimixmlXpathIncludes = new HashSet<String>();
+
+    private List<PsiXml25ParserListener> listeners;
 
     static {
         // we add the list of tags to be indexed, this should keep the memory usage as low as possible.
@@ -161,6 +164,7 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
 
         // XML snippet parser
         parser = new PsimiXmlPullParser253();
+        parser.registerListener(listeners);
 
         // process experiments
         List<IndexElement> experimentRanges = index.getElements( PsiMi25ElementXpath.EXPERIMENT );
@@ -307,6 +311,7 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
 
         if (parser == null) {
             parser = new PsimiXmlPullParser253();
+            parser.registerListener(listeners);
         }
 
         List<IndexElement> ranges = xpathIndex.getElements( "/entrySet/entry" );
@@ -317,5 +322,12 @@ public class PsimiXmlLightweightReader253 implements PsimiXmlLightweightReader {
         }
 
         return entries;
+    }
+
+    public void registerListener(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        if (parser != null){
+            parser.registerListener(listeners);
+        }
     }
 }

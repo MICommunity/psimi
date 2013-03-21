@@ -27,4 +27,6 @@ public interface PsiXml25ParserListener extends EventListener {
     public void fireOnMultipleInteractionTypesEvent(MultipleInteractionTypesEvent event);
 
     public void fireOnMultipleParticipantIdentificationMethodsEvent(MultipleParticipantIdentificationMethodsPerParticipant event);
+
+    public void fireOnMissingCvEvent(MissingCvEvent event);
 }

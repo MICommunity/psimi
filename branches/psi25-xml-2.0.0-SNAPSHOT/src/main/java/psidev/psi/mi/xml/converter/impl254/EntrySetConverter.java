@@ -7,6 +7,9 @@ package psidev.psi.mi.xml.converter.impl254;
 
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class EntrySet.
@@ -23,6 +26,8 @@ public class EntrySetConverter {
     // Instance variable
 
     private EntryConverter entryConverter;
+
+    private List<PsiXml25ParserListener> listeners;
 
     //////////////////////
     // Constructor
@@ -49,6 +54,11 @@ public class EntrySetConverter {
 
         // initialise the factory in sub-converters
         entryConverter.setDAOFactory( factory );
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        entryConverter.setListeners(this.listeners);
     }
 
     /**

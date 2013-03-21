@@ -8,11 +8,14 @@ package psidev.psi.mi.xml.converter.impl253;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.InteractorType;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
 import psidev.psi.mi.xml253.jaxb.InteractorElementType;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Interactor.
@@ -34,6 +37,7 @@ public class InteractorConverter {
     private OrganismConverter organismConverter;
     private AttributeConverter attributeConverter;
 
+    private List<PsiXml25ParserListener> listeners;
     /**
      * Handles DAOs.
      */
@@ -52,6 +56,11 @@ public class InteractorConverter {
 
     ///////////////////////////////
     // DAO factory stategy
+
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+    }
 
     /**
      * Set the DAO Factory that holds required DAOs for resolving ids.

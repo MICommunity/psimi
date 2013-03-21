@@ -9,6 +9,7 @@ import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.*;
 
@@ -34,6 +35,8 @@ public class EntryConverter {
     private InteractionConverter interactionConverter;
     private InteractorConverter interactorConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /**
      * Handles DAOs.
      */
@@ -50,6 +53,14 @@ public class EntryConverter {
         interactionConverter = new InteractionConverter();
         interactionConverter.setExperimentDescriptionConverter(experimentDescriptionConverter);
         interactorConverter = new InteractorConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+
+        this.experimentDescriptionConverter.setListeners(listeners);
+        this.interactionConverter.setListeners(listeners);
+        this.interactorConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

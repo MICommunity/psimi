@@ -1,13 +1,14 @@
 package psidev.psi.mi.xml.io;
 
-import psidev.psi.mi.xml.events.MultipleHostOrganismsPerExperiment;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.Organism;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Xml experiment iterator
@@ -50,16 +51,6 @@ public class XmlExperimentIterator implements Iterator<ExperimentDescription> {
         }
 
         this.nextExperiment = desc;
-
-        // we have more than one host organism
-        if (this.nextExperiment.getHostOrganisms().size() > 1){
-            MultipleHostOrganismsPerExperiment evt = new MultipleHostOrganismsPerExperiment(desc, new HashSet<Organism>(desc.getHostOrganisms()), "Experiment " +desc.getId() + " contains more than one host organism.");
-            evt.setColumnNumber(0);
-            evt.setLineNumber(0);
-            for (PsiXml25ParserListener l : listeners){
-                l.fireOnMultipleHostOrganismsPerExperimentEvent(evt);
-            }
-        }
     }
 
     public boolean hasNext() {

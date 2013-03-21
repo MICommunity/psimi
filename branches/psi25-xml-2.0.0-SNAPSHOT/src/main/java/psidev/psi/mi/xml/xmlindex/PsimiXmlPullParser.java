@@ -16,6 +16,7 @@
 package psidev.psi.mi.xml.xmlindex;
 
 import psidev.psi.mi.xml.PsimiXmlReaderException;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 
 import java.io.InputStream;
@@ -45,4 +46,6 @@ public interface PsimiXmlPullParser {
     Feature parseFeature( InputStream is ) throws PsimiXmlReaderException;
 
     Attribute parseAttribute( InputStream is ) throws PsimiXmlReaderException;
+
+    public void registerListener(List<PsiXml25ParserListener> listeners);
 }

@@ -6,6 +6,7 @@ import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlReaderRuntimeException;
 import psidev.psi.mi.xml.converter.impl254.*;
 import psidev.psi.mi.xml.dao.lazy.LazyDAOFactory;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml.xmlindex.PsimiXmlNamespaceFilter254;
 import psidev.psi.mi.xml.xmlindex.PsimiXmlPullParser;
@@ -35,6 +36,8 @@ public class PsimiXmlPullParser254 implements PsimiXmlPullParser {
     private PsimiXmlNamespaceFilter254 xmlFilter;
 
     private Unmarshaller um;
+
+    private List<PsiXml25ParserListener> listeners;
 
     //////////////////
     // Constructors
@@ -226,6 +229,10 @@ public class PsimiXmlPullParser254 implements PsimiXmlPullParser {
         } catch ( Exception e ) {
             throw new PsimiXmlReaderException( "An error occured while parsing an attribute.", e );
         }
+    }
+
+    public void registerListener(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
     }
 
     ////////////////////
