@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.utils;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -88,5 +90,28 @@ public class AnnotationUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Collect all annotations having a specific topic
+     * @param annots
+     * @param topicId
+     * @param topicName
+     * @return
+     */
+    public static Collection<Annotation> collectAllXrefsHavingDatabaseAndQualifier(Collection<? extends Annotation> annots, String topicId, String topicName){
+
+        if (annots == null || annots.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Annotation> annotations = new ArrayList<Annotation>(annots);
+
+        for (Annotation annot : annotations){
+            if (doesAnnotationHaveTopic(annot, topicId, topicName)){
+                annotations.add(annot);
+            }
+        }
+
+        return annotations;
     }
 }
