@@ -1,7 +1,7 @@
 package psidev.psi.mi.tab.events;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
-import psidev.psi.mi.jami.datasource.FileSourceParsingError;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 
 import java.io.Serializable;
 
@@ -17,9 +17,9 @@ public class MissingCvEvent extends DefaultFileSourceContext implements Serializ
 
     private String message;
     private String level;
-    private FileSourceParsingError errorType;
+    private FileParsingErrorType errorType;
 
-    public MissingCvEvent(String level, String message, FileSourceParsingError type){
+    public MissingCvEvent(String level, String message, FileParsingErrorType type){
         this.message = message;
         this.level = level;
         this.errorType = type;
@@ -33,7 +33,7 @@ public class MissingCvEvent extends DefaultFileSourceContext implements Serializ
         return level;
     }
 
-    public FileSourceParsingError getErrorType() {
+    public FileParsingErrorType getErrorType() {
         return errorType;
     }
 }
