@@ -7,6 +7,7 @@ package psidev.psi.mi.tab.model;
 
 import org.apache.commons.collections.CollectionUtils;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
@@ -67,7 +68,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
 	 */
 	private List<CrossReference> participantIdentificationMethods;
 
-    private MitabSourceLocator locator;
+    private FileSourceLocator locator;
 
 	///////////////////////////
 	// Constructor
@@ -121,11 +122,11 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
         }
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return locator;
     }
 
-    public void setLocator(MitabSourceLocator locator) {
+    public void setLocator(FileSourceLocator locator) {
         this.locator = locator;
     }
 

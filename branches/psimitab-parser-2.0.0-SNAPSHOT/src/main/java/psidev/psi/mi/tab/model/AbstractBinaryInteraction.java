@@ -655,6 +655,13 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 
     public void setLocator(FileSourceLocator locator){
         this.locator = locator;
+        if (this.interactorA != null){
+            this.interactorA.setLocator(this.locator);
+        }
+        if (this.interactorB != null){
+            this.interactorB.setLocator(this.locator);
+        }
+        mitabExperiment.setLocator(this.locator);
     }
 
     //We need update the toString, equals and hash ?

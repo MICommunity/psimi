@@ -2,6 +2,7 @@ package psidev.psi.mi.tab.model;
 
 import org.apache.commons.collections.CollectionUtils;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
@@ -30,7 +31,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable, 
     ///////////////////////
     // Instance variables
 
-    private MitabSourceLocator locator;
+    private FileSourceLocator locator;
 
     /**
      * Primary uniqueIdentifiers of the interactor.
@@ -152,11 +153,11 @@ public class MitabInteractor extends DefaultInteractor implements Serializable, 
         }
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return locator;
     }
 
-    public void setLocator(MitabSourceLocator locator) {
+    public void setLocator(FileSourceLocator locator) {
         this.locator = locator;
     }
 
