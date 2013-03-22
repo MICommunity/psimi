@@ -1,5 +1,8 @@
 package psidev.psi.mi.xml.converter.impl253;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 import java.math.BigInteger;
 
 
@@ -28,6 +31,8 @@ public class PositionConverter {
 
         psidev.psi.mi.xml.model.Position mPosition = new psidev.psi.mi.xml.model.Position();
 
+        Locator locator = jPosition.sourceLocation();
+        mPosition.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
         //Initialise the model reading the Jaxb object
 
         //position

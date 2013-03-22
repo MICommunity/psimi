@@ -5,6 +5,9 @@
  */
 package psidev.psi.mi.xml.converter.impl253;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 /**
  * Converter to and from JAXB of the class Bibref.
  *
@@ -40,6 +43,8 @@ public class BibrefConverter {
         }
 
         psidev.psi.mi.xml.model.Bibref mBibref = new psidev.psi.mi.xml.model.Bibref();
+        Locator locator = jBibref.sourceLocation();
+        mBibref.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // 1. set attributes
 

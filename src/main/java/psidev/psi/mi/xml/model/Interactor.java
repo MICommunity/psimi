@@ -9,6 +9,7 @@ package psidev.psi.mi.xml.model;
 
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -78,8 +79,7 @@ public class Interactor extends DefaultInteractor implements Polymer, HasId, Nam
 
     private final static String UNSPECIFIED = "unspecified";
 
-    private int lineNumber;
-    private int columnNumber;
+    private PsiXmlFileLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -132,20 +132,12 @@ public class Interactor extends DefaultInteractor implements Polymer, HasId, Nam
         this.id = value;
     }
 
-    public int getLineNumber() {
-        return lineNumber;
+    public PsiXmlFileLocator getSourceLocator() {
+        return this.locator;
     }
 
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public int getColumnNumber() {
-        return columnNumber;
-    }
-
-    public void setColumnNumber(int columnNumber) {
-        this.columnNumber = columnNumber;
+    public void setSourceLocator(PsiXmlFileLocator locator) {
+        this.locator = locator;
     }
 
     /**

@@ -7,6 +7,8 @@ package psidev.psi.mi.xml.converter.impl253;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.model.ExperimentDescription;
@@ -84,6 +86,8 @@ public class InteractionParameterConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Parameter mParameter = new psidev.psi.mi.xml.model.Parameter();
+        Locator locator = jParameter.sourceLocation();
+        mParameter.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // Initialise the model reading the Jaxb object
 

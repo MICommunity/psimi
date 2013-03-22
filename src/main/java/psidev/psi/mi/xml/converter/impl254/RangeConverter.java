@@ -6,6 +6,8 @@
 package psidev.psi.mi.xml.converter.impl254;
 
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.model.RangeStatus;
 
@@ -46,6 +48,8 @@ public class RangeConverter {
         }
 
         psidev.psi.mi.xml.model.Range mRange = new psidev.psi.mi.xml.model.Range();
+        Locator locator = jRange.sourceLocation();
+        mRange.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         //Initialise the model reading the Jaxb object
 

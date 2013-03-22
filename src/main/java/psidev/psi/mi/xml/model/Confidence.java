@@ -6,6 +6,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Confidence implements psidev.psi.mi.jami.model.Confidence{
+public class Confidence implements psidev.psi.mi.jami.model.Confidence, FileSourceContext{
 
     private Collection<ExperimentDescription> experiments;
     private Collection<ExperimentRef> experimentRefs;
@@ -39,6 +41,8 @@ public class Confidence implements psidev.psi.mi.jami.model.Confidence{
 
     private String value;
     private Unit unit;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -60,6 +64,14 @@ public class Confidence implements psidev.psi.mi.jami.model.Confidence{
 
     ///////////////////////////
     // Getters and Setters
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 
     /**
      * Gets the value of the unit property.

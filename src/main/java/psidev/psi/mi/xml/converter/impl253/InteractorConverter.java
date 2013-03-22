@@ -5,6 +5,7 @@
  */
 package psidev.psi.mi.xml.converter.impl253;
 
+import org.xml.sax.Locator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
@@ -12,6 +13,7 @@ import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.mi.xml.model.InteractorType;
+import psidev.psi.mi.xml.model.PsiXmlFileLocator;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
 import psidev.psi.mi.xml253.jaxb.InteractorElementType;
 
@@ -94,8 +96,8 @@ public class InteractorConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Interactor mInteractor = new psidev.psi.mi.xml.model.Interactor();
-        mInteractor.setLineNumber(jInteractor.sourceLocation().getLineNumber());
-        mInteractor.setColumnNumber(jInteractor.sourceLocation().getColumnNumber());
+        Locator locator = jInteractor.sourceLocation();
+        mInteractor.setSourceLocator(new PsiXmlFileLocator(locator.getLineNumber(), locator.getColumnNumber(), jInteractor.getId()));
 
         // Initialise the model reading the Jaxb object
 

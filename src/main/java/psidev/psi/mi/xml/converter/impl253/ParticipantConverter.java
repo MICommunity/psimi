@@ -5,7 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl253;
 
-import psidev.psi.mi.jami.datasource.FileSourceParsingError;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -131,8 +132,8 @@ public class ParticipantConverter {
         checkDependencies();
 
         Participant mParticipant = new Participant();
-        mParticipant.setLineNumber(jParticipant.sourceLocation().getLineNumber());
-        mParticipant.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
+        Locator locator = jParticipant.sourceLocation();
+        mParticipant.setSourceLocator(new PsiXmlFileLocator(locator.getLineNumber(), locator.getColumnNumber(), jParticipant.getId()));
 
         // Initialise the model reading the Jaxb object
 
@@ -184,9 +185,8 @@ public class ParticipantConverter {
         }
         // we have more than one identification methods
         else if (listeners != null && !listeners.isEmpty()){
-            MissingCvEvent evt = new MissingCvEvent("The biological role is missing for participant " + mParticipant.getId(), FileSourceParsingError.missing_biological_role);
-            evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
-            evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+            MissingCvEvent evt = new MissingCvEvent("The biological role is missing for participant " + mParticipant.getId(), FileParsingErrorType.missing_biological_role);
+            evt.setSourceLocator(mParticipant.getSourceLocator());
 
             for (PsiXml25ParserListener l : listeners){
                 l.fireOnMissingCvEvent(evt);
@@ -237,8 +237,7 @@ public class ParticipantConverter {
             // we have more than one experimental role
             if (listeners != null && !listeners.isEmpty() && jParticipant.getExperimentalRoleList().getExperimentalRoles().size() > 1){
                 MultipleExperimentalRolesEvent evt = new MultipleExperimentalRolesEvent(null, mParticipant, new HashSet<ExperimentalRole>(mParticipant.getExperimentalRoles()), "Participant "+mParticipant.getId()+" contains "+jParticipant.getExperimentalRoleList().getExperimentalRoles().size()+" experimental roles.");
-                evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
-                evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+                evt.setSourceLocator(mParticipant.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnMultipleExperimentalRolesEvent(evt);
                 }
@@ -262,8 +261,7 @@ public class ParticipantConverter {
             // we have more than one expressed in
             if (listeners != null && !listeners.isEmpty() && jParticipant.getHostOrganismList().getHostOrganisms().size() > 1){
                 MultipleExpressedInOrganisms evt = new MultipleExpressedInOrganisms(null, mParticipant, new HashSet<HostOrganism>(mParticipant.getHostOrganisms()), "Participant "+mParticipant.getId()+" has been expressed in "+jParticipant.getHostOrganismList().getHostOrganisms().size()+" host organisms.");
-                evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
-                evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+                evt.setSourceLocator(mParticipant.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnMultipleExpressedInOrganismsEvent(evt);
                 }
@@ -294,8 +292,7 @@ public class ParticipantConverter {
             // we have more than one identification methods
             if (listeners != null && !listeners.isEmpty() && jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods().size() > 1){
                 MultipleParticipantIdentificationMethodsPerParticipant evt = new MultipleParticipantIdentificationMethodsPerParticipant(null, mParticipant, new HashSet<ParticipantIdentificationMethod>(mParticipant.getParticipantIdentificationMethods()), "Participant "+mParticipant.getId()+" contains "+jParticipant.getParticipantIdentificationMethodList().getParticipantIdentificationMethods().size()+" participant identification methods.");
-                evt.setColumnNumber(jParticipant.sourceLocation().getColumnNumber());
-                evt.setLineNumber(jParticipant.sourceLocation().getLineNumber());
+                evt.setSourceLocator(mParticipant.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnMultipleParticipantIdentificationMethodsEvent(evt);
                 }

@@ -6,6 +6,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 
@@ -20,12 +22,14 @@ import java.util.Collection;
  * @since <pre>21-Jun-2006</pre>
  */
 
-public class HostOrganism implements NamesContainer, psidev.psi.mi.jami.model.Organism {
+public class HostOrganism implements NamesContainer, psidev.psi.mi.jami.model.Organism, FileSourceContext {
 
     private Organism organism = new Organism();
 
     private Collection<ExperimentDescription> experiments;
     private Collection<ExperimentRef> experimentRefs;
+
+    private FileSourceLocator locator;
 
     public HostOrganism() {
          organism = new Organism();
@@ -49,6 +53,14 @@ public class HostOrganism implements NamesContainer, psidev.psi.mi.jami.model.Or
 
     public void setNames( Names value ) {
         organism.setNames( value );
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

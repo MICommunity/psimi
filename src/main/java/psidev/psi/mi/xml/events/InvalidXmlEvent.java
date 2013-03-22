@@ -1,6 +1,7 @@
 package psidev.psi.mi.xml.events;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.xml.PsimiXmlReaderException;
 
 import java.io.Serializable;
 
@@ -16,11 +17,22 @@ public class InvalidXmlEvent extends DefaultFileSourceContext implements Seriali
 
     private String message;
 
+    private PsimiXmlReaderException exception;
+
     public InvalidXmlEvent(String message){
         this.message = message;
     }
 
+    public InvalidXmlEvent(String message, PsimiXmlReaderException exception){
+        this.message = message;
+        this.exception = exception;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public PsimiXmlReaderException getException() {
+        return exception;
     }
 }

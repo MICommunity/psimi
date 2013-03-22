@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.model.ExperimentDescription;
@@ -102,6 +104,9 @@ public class ParticipantParameterConverter {
         } else {
             mParameter.setExperiment( experimentDescription );
         }
+
+        Locator locator = jParameter.sourceLocation();
+        mParameter.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         return mParameter;
     }

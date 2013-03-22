@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 
 import java.lang.reflect.Constructor;
@@ -73,6 +75,8 @@ public class CvTypeConverter {
 
             // instanciate object
             mOpenCvType = constructor.newInstance( new Object[]{} );
+            Locator locator = jCvType.sourceLocation();
+            mOpenCvType.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         } catch ( Exception e ) {
             throw new ConverterException( "An exception was thrown while instanciating an model.CvType via reflection. " +

@@ -1,6 +1,7 @@
 package psidev.psi.mi.xml.io;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
@@ -60,8 +61,10 @@ public class LightWeightXmlInteractionIterator implements Iterator<Interaction> 
 
                     try {
                         InvalidXmlEvent evt = new InvalidXmlEvent("Error while reading the next entry. " + ExceptionUtils.getFullStackTrace(e));
-                        evt.setColumnNumber(0);
-                        evt.setLineNumber((int) entry.getEntryIndexElement().getLineNumber());
+                        if (e.getCurrentObject() instanceof FileSourceContext){
+                            FileSourceContext context = (FileSourceContext) e.getCurrentObject();
+                            evt.setSourceLocator(context.getSourceLocator());
+                        }
                         for (PsiXml25ParserListener l : listeners){
                             l.fireOnInvalidXmlSyntax(evt);
                         }
@@ -82,8 +85,10 @@ public class LightWeightXmlInteractionIterator implements Iterator<Interaction> 
 
                 if (errorInLine && desc == null){
                     InvalidXmlEvent evt = new InvalidXmlEvent("Error while reading the next entry. " + ExceptionUtils.getFullStackTrace(e));
-                    evt.setColumnNumber(0);
-                    evt.setLineNumber((int) entry.getEntryIndexElement().getLineNumber());
+                    if (e.getCurrentObject() instanceof FileSourceContext){
+                        FileSourceContext context = (FileSourceContext) e.getCurrentObject();
+                        evt.setSourceLocator(context.getSourceLocator());
+                    }
                     for (PsiXml25ParserListener l : listeners){
                         l.fireOnInvalidXmlSyntax(evt);
                     }

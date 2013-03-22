@@ -6,6 +6,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -41,12 +43,14 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Attribute implements Annotation, Serializable {
+public class Attribute implements Annotation, Serializable, FileSourceContext {
 
     private static String UNSPECIFIED = "unspecified";
 
     private CvTerm topic;
     private String value;
+
+    private FileSourceLocator locator;
 
     //////////////////////////////
     // Constructors
@@ -218,5 +222,13 @@ public class Attribute implements Annotation, Serializable {
         result = 29 * result + getName().hashCode();
         result = 29 * result + ( getNameAc() != null ? getNameAc().hashCode() : 0 );
         return result;
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
     }
 }

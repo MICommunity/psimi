@@ -87,9 +87,7 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
 
     private Collection<Attribute> attributes;
 
-    private int lineNumber;
-
-    private int columnNumber;
+    private PsiXmlFileLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -206,6 +204,14 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
      */
     public Xref getXref() {
         return xref;
+    }
+
+    public PsiXmlFileLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(PsiXmlFileLocator locator) {
+        this.locator = locator;
     }
 
     /**
@@ -367,22 +373,6 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             attributes =new ExperimentXmlAnnotationList();
         }
         return attributes;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
-    public int getColumnNumber() {
-        return columnNumber;
-    }
-
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public void setColumnNumber(int columnNumber) {
-        this.columnNumber = columnNumber;
     }
 
     /**

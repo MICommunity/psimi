@@ -9,6 +9,8 @@ package psidev.psi.mi.xml;
  */
 public class PsimiXmlReaderException extends Exception {
 
+    private Object currentObject;
+
     public PsimiXmlReaderException() {
     }
 
@@ -22,5 +24,9 @@ public class PsimiXmlReaderException extends Exception {
 
     public PsimiXmlReaderException( Throwable cause ) {
         super( cause );
+    }
+
+    public Object getCurrentObject() {
+        return currentObject;
     }
 }

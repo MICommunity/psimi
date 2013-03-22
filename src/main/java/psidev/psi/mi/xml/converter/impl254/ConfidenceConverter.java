@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
@@ -72,6 +74,8 @@ public class ConfidenceConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Confidence mConfidence = new psidev.psi.mi.xml.model.Confidence();
+        Locator locator = jConfidence.sourceLocation();
+        mConfidence.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // Initialise the model reading the Jaxb object
 

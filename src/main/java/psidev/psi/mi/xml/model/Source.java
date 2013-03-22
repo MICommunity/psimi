@@ -7,6 +7,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
@@ -49,7 +51,7 @@ import java.util.Date;
  * </pre>
  */
 
-public class Source extends DefaultSource implements NamesContainer, XrefContainer, AttributeContainer {
+public class Source extends DefaultSource implements NamesContainer, XrefContainer, AttributeContainer, FileSourceContext {
 
     private Names names = new SourceNames();
 
@@ -63,6 +65,8 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
     private final static String UNKNOWN="unknown";
     private final static String POSTAL_ADDRESS="postalAddress";
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -93,6 +97,14 @@ public class Source extends DefaultSource implements NamesContainer, XrefContain
 
     ///////////////////////////
     // Getters and Setters
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 
     /**
      * Check if the optional names is defined.

@@ -7,6 +7,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -104,7 +107,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Entry implements AttributeContainer {
+public class Entry implements AttributeContainer, FileSourceContext {
 
     private Source source;
 
@@ -117,6 +120,8 @@ public class Entry implements AttributeContainer {
     private Collection<Interaction> interactions;
 
     private Collection<Attribute> attributes;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -252,6 +257,14 @@ public class Entry implements AttributeContainer {
             attributes = new ArrayList<Attribute>();
         }
         return attributes;
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
     }
 
     //////////////////////////////

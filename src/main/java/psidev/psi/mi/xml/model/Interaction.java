@@ -6,6 +6,7 @@
 package psidev.psi.mi.xml.model;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.Organism;
@@ -62,8 +63,7 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
 
-    private int columnNumber;
-    private int lineNumber;
+    private PsiXmlFileLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -129,20 +129,12 @@ public class Interaction extends DefaultInteractionEvidence implements Complex, 
     // Getters and Setters
 
 
-    public int getColumnNumber() {
-        return columnNumber;
+    public PsiXmlFileLocator getSourceLocator() {
+        return this.locator;
     }
 
-    public void setColumnNumber(int columnNumber) {
-        this.columnNumber = columnNumber;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
+    public void setSourceLocator(PsiXmlFileLocator locator) {
+        this.locator = locator;
     }
 
     /**
