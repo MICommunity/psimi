@@ -20,6 +20,7 @@ import psidev.psi.mi.tab.events.InvalidFormatEvent;
 import psidev.psi.mi.tab.listeners.MitabParserListener;
 import psidev.psi.mi.tab.listeners.MitabParsingLogger;
 import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.MitabSourceLocator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -102,8 +103,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             do {
                 try {
                     InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
-                    evt.setColumnNumber(0);
-                    evt.setLineNumber(lineIndex);
+                    evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                     for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                         l.fireOnInvalidFormat(evt);
                     }
@@ -129,8 +129,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 
             if (errorInLine && nextLine == null){
                 InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
-                evt.setColumnNumber(0);
-                evt.setLineNumber(lineIndex);
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                 for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                     l.fireOnInvalidFormat(evt);
                 }
@@ -176,8 +175,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             do {
                 try {
                     InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
-                    evt.setColumnNumber(0);
-                    evt.setLineNumber(lineIndex);
+                    evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                     for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                         l.fireOnInvalidFormat(evt);
                     }
@@ -203,8 +201,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 
             if (errorInLine && nextLine == null){
                 InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header. " + ExceptionUtils.getFullStackTrace(e));
-                evt.setColumnNumber(0);
-                evt.setLineNumber(lineIndex);
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                 for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                     l.fireOnInvalidFormat(evt);
                 }
@@ -241,8 +238,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             do {
                 try {
                     InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the line. " + ExceptionUtils.getFullStackTrace(e));
-                    evt.setColumnNumber(0);
-                    evt.setLineNumber(lineIndex);
+                    evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                     for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                         l.fireOnInvalidFormat(evt);
                     }
@@ -272,8 +268,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 
             if (errorInLine && nextLine == null){
                 InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the line. " + ExceptionUtils.getFullStackTrace(e));
-                evt.setColumnNumber(0);
-                evt.setLineNumber(lineIndex);
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                 for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                     l.fireOnInvalidFormat(evt);
                 }

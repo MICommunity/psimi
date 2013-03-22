@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
@@ -126,7 +127,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
      */
     private List<Date> creationDate;
 
-    private int lineNumber;
+    private FileSourceLocator locator;
 
 	/**
 	 * MITAB 2.7
@@ -648,16 +649,12 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         }
     }
 
-    public int getLineNumber() {
-        return lineNumber;
+    public FileSourceLocator getSourceLocator() {
+        return locator;
     }
 
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public int getColumnNumber() {
-        return 0;
+    public void setFileSourceLocator(FileSourceLocator locator){
+        this.locator = locator;
     }
 
     //We need update the toString, equals and hash ?

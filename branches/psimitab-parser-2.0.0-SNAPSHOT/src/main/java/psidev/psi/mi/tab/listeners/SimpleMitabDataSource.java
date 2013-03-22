@@ -2,17 +2,14 @@ package psidev.psi.mi.tab.listeners;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.datasource.DataSourceError;
-import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.datasource.FileSourceParsingError;
-import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
+import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.tab.PsimiTabIterator;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
 import psidev.psi.mi.tab.events.InvalidFormatEvent;
 import psidev.psi.mi.tab.events.MissingCvEvent;
-import psidev.psi.mi.tab.model.BinaryInteraction;import psidev.psi.mi.tab.model.MitabFileSource;
+import psidev.psi.mi.tab.model.BinaryInteraction;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +30,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
     private Iterator<BinaryInteraction> mitabIterator;
     private File file;
     private InputStream stream;
-    private Map<DataSourceError, List<FileSourceContext>> errors;
+    private Collection<FileSourceError> errors;
 
     private Log log = LogFactory.getLog(SimpleMitabDataSource.class);
 
@@ -44,7 +41,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
         if (file == null){
            throw new IllegalArgumentException("File is mandatory for a MITAb datasource");
         }
-        errors = new HashMap<DataSourceError, List<FileSourceContext>>();
+        errors = new ArrayList<FileSourceError>();
     }
 
     public SimpleMitabDataSource(InputStream stream){
@@ -54,7 +51,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a MITAb datasource");
         }
-        errors = new HashMap<DataSourceError, List<FileSourceContext>>();
+        errors = new ArrayList<FileSourceError>();
     }
 
     public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
@@ -84,7 +81,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
         // do nothing
     }
 
-    public Map<DataSourceError, List<FileSourceContext>> getDataSourceErrors() {
+    public Collection<FileSourceError> getDataSourceErrors() {
         return errors;
     }
 
@@ -95,7 +92,9 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
             } catch (IOException e) {
                 log.error("Impossible to parse current file");
                 this.mitabIterator = null;
-                this.errors.put(new DataSourceError(e.getCause().toString(), e.getMessage()), Arrays.<FileSourceContext>asList(new MitabFileSource()));
+
+                FileSourceError error = new FileSourceError(e.getCause().toString(), e.getMessage(), new DefaultFileSourceContext());
+                this.errors.add(error);
             }
         }
         else {
@@ -104,8 +103,9 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
             } catch (IOException e) {
                 log.error("Impossible to parse current InputStream");
                 this.mitabIterator = null;
-                this.errors.put(new DataSourceError(e.getCause().toString(), e.getMessage()), Arrays.<FileSourceContext>asList(new MitabFileSource()));
-            }
+
+                FileSourceError error = new FileSourceError(e.getCause().toString(), e.getMessage(), new DefaultFileSourceContext());
+                this.errors.add(error);            }
         }
     }
 
@@ -117,39 +117,18 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
     }
 
     public void fireOnInvalidFormat(InvalidFormatEvent event){
-        DataSourceError error = new DataSourceError(FileSourceParsingError.invalid_syntax.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-           errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), event.getMessage(), event);
+        this.errors.add(error);
     }
 
     public void fireOnClusteredColumnEvent(ClusteredColumnEvent event) {
-        DataSourceError error = new DataSourceError(event.getErrorType().toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
+        this.errors.add(error);
     }
 
     public void fireOnMissingCvEvent(MissingCvEvent event) {
-        DataSourceError error = new DataSourceError(event.getErrorType().toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);;
+        this.errors.add(error);
     }
 
 }
