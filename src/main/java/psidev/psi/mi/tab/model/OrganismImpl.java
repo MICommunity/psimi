@@ -6,6 +6,7 @@
 package psidev.psi.mi.tab.model;
 
 import org.apache.commons.collections.CollectionUtils;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -22,7 +23,7 @@ import java.util.List;
  * @version $Id$
  * @since <pre>12-Jan-2007</pre>
  */
-public class OrganismImpl extends DefaultOrganism implements Organism {
+public class OrganismImpl extends DefaultOrganism implements Organism, FileSourceContext {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -31,6 +32,8 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
     private static final long serialVersionUID = 5647365864375422507L;
 
     List<CrossReference> identifiers;
+
+    private MitabSourceLocator locator;
 
     ///////////////////////
     // Cosntructor
@@ -96,6 +99,13 @@ public class OrganismImpl extends DefaultOrganism implements Organism {
     ////////////////////////
     // Getters & Setters
 
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
+    }
 
     public List<CrossReference> getIdentifiers() {
         if (identifiers == null){

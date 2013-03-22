@@ -39,4 +39,8 @@ public interface Checksum extends psidev.psi.mi.jami.model.Checksum, Serializabl
      * @param checksum Value to set for property 'checksum' in the annotation.
      */
     void setChecksum(String checksum);
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
+
 }

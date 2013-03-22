@@ -25,4 +25,8 @@ public interface CrossReference extends Xref, Serializable {
     void setText( String text );
 
     boolean hasText();
+
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
 }

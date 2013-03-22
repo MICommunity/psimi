@@ -3,6 +3,7 @@ package psidev.psi.mi.tab.model;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Range;
@@ -22,7 +23,7 @@ import java.util.List;
  * Time: 14:13
  * To change this template use File | Settings | File Templates.
  */
-public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
+public class FeatureImpl extends DefaultFeatureEvidence implements Feature, FileSourceContext {
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
      * To keep things consistent, please use the same thing.
@@ -46,6 +47,8 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
      * List of Range where appears of the feature.
      */
     private List<String> rangesAsString;
+
+    private MitabSourceLocator locator;
 
     /**
      * Construct a FeatureImpl object
@@ -144,6 +147,14 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature {
     public FeatureImpl(Interactor interactor, String featureType, List<String> range, String text) {
         this(interactor, featureType, range);
         setText(text);
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 
     @Override

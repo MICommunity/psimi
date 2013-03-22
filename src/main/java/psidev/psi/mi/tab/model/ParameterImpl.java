@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParameterValue;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
  * Time: 11:23
  * To change this template use File | Settings | File Templates.
  */
-public class ParameterImpl implements Parameter, psidev.psi.mi.jami.model.Parameter {
+public class ParameterImpl implements Parameter, psidev.psi.mi.jami.model.Parameter, FileSourceContext {
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
      * To keep things consistent, please use the same thing.
@@ -28,6 +29,8 @@ public class ParameterImpl implements Parameter, psidev.psi.mi.jami.model.Parame
     private BigDecimal uncertainty;
     private CvTerm unit;
     private ParameterValue value;
+
+    private MitabSourceLocator locator;
 
     //////////////////////
     // Constructors
@@ -84,6 +87,14 @@ public class ParameterImpl implements Parameter, psidev.psi.mi.jami.model.Parame
             this.unit = new DefaultCvTerm(unit);
         }
         this.uncertainty = new BigDecimal(Double.toString(uncertainty));
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

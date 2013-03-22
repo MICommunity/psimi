@@ -5,6 +5,7 @@
  */
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
-public class ConfidenceImpl implements Confidence, psidev.psi.mi.jami.model.Confidence {
+public class ConfidenceImpl implements Confidence, psidev.psi.mi.jami.model.Confidence, FileSourceContext {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -26,6 +27,8 @@ public class ConfidenceImpl implements Confidence, psidev.psi.mi.jami.model.Conf
     private CvTerm type;
     private String value;
     private CvTerm unit;
+
+    private MitabSourceLocator locator;
 
     //////////////////////
     // Constructor
@@ -49,6 +52,14 @@ public class ConfidenceImpl implements Confidence, psidev.psi.mi.jami.model.Conf
 
     //////////////////////
     // Getters and Setters
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
+    }
 
     public String getConfidenceType() {
         return type.getShortName();

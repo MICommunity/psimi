@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
@@ -10,7 +11,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * Time: 11:58
  * To change this template use File | Settings | File Templates.
  */
-public class ChecksumImpl implements Checksum, psidev.psi.mi.jami.model.Checksum {
+public class ChecksumImpl implements Checksum, psidev.psi.mi.jami.model.Checksum, FileSourceContext {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -20,6 +21,8 @@ public class ChecksumImpl implements Checksum, psidev.psi.mi.jami.model.Checksum
 
     private CvTerm method;
     private String value;
+
+    private MitabSourceLocator locator;
 
     //////////////////////
     // Constructors
@@ -39,6 +42,14 @@ public class ChecksumImpl implements Checksum, psidev.psi.mi.jami.model.Checksum
             throw new IllegalArgumentException( "Checksum cannot be null." );
         }
         this.value = checksum;
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

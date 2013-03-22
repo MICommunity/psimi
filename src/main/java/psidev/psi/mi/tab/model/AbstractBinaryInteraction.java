@@ -653,7 +653,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
         return locator;
     }
 
-    public void setFileSourceLocator(FileSourceLocator locator){
+    public void setLocator(FileSourceLocator locator){
         this.locator = locator;
     }
 

@@ -5,6 +5,7 @@
  */
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -16,7 +17,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * @version $Id$
  * @since <pre>02-Oct-2006</pre>
  */
-public class CrossReferenceImpl implements CrossReference, Xref {
+public class CrossReferenceImpl implements CrossReference, Xref, FileSourceContext {
 
 	/**
 	 * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -28,6 +29,8 @@ public class CrossReferenceImpl implements CrossReference, Xref {
     private String id;
     private String version;
     private CvTerm qualifier;
+
+    private MitabSourceLocator locator;
 
 	//////////////////////////
 	// Constructor
@@ -49,6 +52,14 @@ public class CrossReferenceImpl implements CrossReference, Xref {
 
 	/////////////////////////
 	// Getters and Setters
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
+    }
 
 	public String getDatabaseName() {
 		return this.database.getShortName();

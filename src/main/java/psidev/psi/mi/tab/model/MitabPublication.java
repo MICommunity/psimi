@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
@@ -23,7 +24,7 @@ import java.util.List;
  * @since <pre>13/02/13</pre>
  */
 
-public class MitabPublication extends DefaultPublication{
+public class MitabPublication extends DefaultPublication implements FileSourceContext{
 
     /**
      * Associated publications of that interaction.
@@ -41,7 +42,7 @@ public class MitabPublication extends DefaultPublication{
      */
     private List<CrossReference> sourceDatabases;
 
-
+    private MitabSourceLocator locator;
 
     public MitabPublication(){
         super((String)null);
@@ -80,6 +81,14 @@ public class MitabPublication extends DefaultPublication{
         if (publications != null) {
             this.publications.addAll(publications);
         }
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

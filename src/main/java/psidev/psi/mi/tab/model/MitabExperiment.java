@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
@@ -24,7 +25,7 @@ import java.util.List;
  * @since <pre>13/02/13</pre>
  */
 
-public class MitabExperiment extends DefaultExperiment{
+public class MitabExperiment extends DefaultExperiment implements FileSourceContext{
 
     private MitabPublication mitabPublication;
 
@@ -32,6 +33,8 @@ public class MitabExperiment extends DefaultExperiment{
      * Detection method for that interaction.
      */
     private List<CrossReference> detectionMethods;
+
+    private MitabSourceLocator locator;
 
     /**
      * Organism where the interaction happens.
@@ -54,6 +57,14 @@ public class MitabExperiment extends DefaultExperiment{
            detectionMethods = new DetectionMethodsList();
         }
         return detectionMethods;
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

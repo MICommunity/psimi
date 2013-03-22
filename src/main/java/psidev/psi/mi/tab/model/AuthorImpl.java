@@ -28,6 +28,8 @@ public class AuthorImpl implements Author {
      */
     private String name;
 
+    private MitabSourceLocator locator;
+
     /////////////////////////
     // Constructor
     public AuthorImpl( String name ) {
@@ -46,6 +48,14 @@ public class AuthorImpl implements Author {
 
     public void setName( String name ) {
         this.name = name;
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 
     ////////////////////////////

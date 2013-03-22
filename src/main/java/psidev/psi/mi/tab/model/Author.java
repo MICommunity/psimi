@@ -13,4 +13,8 @@ public interface Author extends Serializable {
     String getName();
 
     void setName( String name );
+
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
 }

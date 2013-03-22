@@ -108,4 +108,8 @@ public interface Parameter extends psidev.psi.mi.jami.model.Parameter, Serializa
      * @param uncertainty a double with the uncertainty
      */
     public void setUncertainty(Double uncertainty);
+
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
 }

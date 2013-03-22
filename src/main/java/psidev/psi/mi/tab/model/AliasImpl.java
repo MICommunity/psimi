@@ -5,6 +5,7 @@
  */
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * @version $Id$
  * @since <pre>03-Oct-2006</pre>
  */
-public class AliasImpl implements Alias, psidev.psi.mi.jami.model.Alias {
+public class AliasImpl implements Alias, psidev.psi.mi.jami.model.Alias, FileSourceContext {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -35,6 +36,8 @@ public class AliasImpl implements Alias, psidev.psi.mi.jami.model.Alias {
 
     private CvTerm type;
     private String name;
+
+    private MitabSourceLocator locator;
 
     /////////////////////////////////
     // Constructor
@@ -176,5 +179,13 @@ public class AliasImpl implements Alias, psidev.psi.mi.jami.model.Alias {
 
     public String getName() {
         return name;
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 }
