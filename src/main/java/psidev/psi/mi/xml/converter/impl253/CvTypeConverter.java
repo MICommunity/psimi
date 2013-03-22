@@ -80,7 +80,7 @@ public class CvTypeConverter {
 
         } catch ( Exception e ) {
             throw new ConverterException( "An exception was thrown while instanciating an model.CvType via reflection. " +
-                                          "Nested Exception attached", e );
+                                          "Nested Exception attached", e, clazz );
         }
 
         // Initialise the model reading the Jaxb object
@@ -147,7 +147,7 @@ public class CvTypeConverter {
 
         } catch ( Exception e ) {
             throw new ConverterException( "An exception was thrown while instanciating an jaxb.CvType via reflection. " +
-                                          "Nested Exception attached", e );
+                                          "Nested Exception attached", e, clazz );
         }
 
         // Initialise the model reading the Jaxb object

@@ -122,7 +122,7 @@ public class OrganismConverter {
 
         } catch ( Exception e ) {
             throw new ConverterException( "An exception was thrown while instanciating an model.BioSourceType via reflection. " +
-                                          "Nested Exception attached", e );
+                                          "Nested Exception attached", e, clazz );
         }
 
         // Initialise the JAXB object reading the model

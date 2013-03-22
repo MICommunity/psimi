@@ -135,7 +135,7 @@ public class PsimiXmlReader254 implements PsimiXmlReader {
 
             return mEntrySet;
         } catch ( ConverterException e ) {
-            throw new PsimiXmlReaderException( "An error occured while converting the data model", e );
+            throw new PsimiXmlReaderException( "An error occured while converting the data model", e, e.getCurrentObject() );
         }
     }
 }

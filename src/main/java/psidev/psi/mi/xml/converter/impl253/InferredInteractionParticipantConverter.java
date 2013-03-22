@@ -107,7 +107,7 @@ public class InferredInteractionParticipantConverter {
             }
 
         } else {
-            throw new ConverterException( "Neither a feature or a participant could be found in the given infered interaction participant." );
+            throw new ConverterException( "Neither a feature or a participant could be found in the given infered interaction participant.", mInferredInteractionParticipant );
         }
 
         return mInferredInteractionParticipant;
@@ -146,7 +146,7 @@ public class InferredInteractionParticipantConverter {
             jParticipant.setParticipantRef( mInferredInteractionParticipant.getParticipant().getId() );
 
         } else {
-            throw new ConverterException( "Neither a feature or a participant could be found in the given infered interaction participant." );
+            throw new ConverterException( "Neither a feature or a participant could be found in the given infered interaction participant.", mInferredInteractionParticipant );
         }
 
         return jParticipant;

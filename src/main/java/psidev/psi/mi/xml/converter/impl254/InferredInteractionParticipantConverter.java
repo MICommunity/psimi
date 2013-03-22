@@ -19,7 +19,6 @@ import psidev.psi.mi.xml.model.ParticipantRef;
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
  * @see psidev.psi.mi.xml.model.InferredInteractionParticipant
- * @see psidev.psi.mi.xml254.jaxb.Interaction.InferredInteractionList.InferredInteraction.Participant
  * @since <pre>07-Jun-2006</pre>
  */
 public class InferredInteractionParticipantConverter {
@@ -107,7 +106,7 @@ public class InferredInteractionParticipantConverter {
             }
 
         } else {
-            throw new ConverterException( "Neither a feature or a participant could be found in the given infered interaction participant." );
+            throw new ConverterException( "Neither a feature or a participant could be found in the given infered interaction participant.", mInferredInteractionParticipant );
         }
 
         return mInferredInteractionParticipant;

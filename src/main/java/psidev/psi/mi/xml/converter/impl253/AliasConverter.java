@@ -36,7 +36,9 @@ public class AliasConverter {
 
         psidev.psi.mi.xml.model.Alias mAlias = new psidev.psi.mi.xml.model.Alias();
         Locator locator = jAlias.sourceLocation();
-        mAlias.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
+        if (locator != null){
+            mAlias.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
+        }
 
         // Initialise the model reading the Jaxb object
 

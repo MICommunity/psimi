@@ -33,8 +33,9 @@ public class AvailabilityConverter {
 
         psidev.psi.mi.xml.model.Availability mAvailability = new psidev.psi.mi.xml.model.Availability();
         Locator locator = jAvailability.sourceLocation();
-        mAvailability.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
-
+        if (locator != null){
+            mAvailability.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
+        }
         // Initialise the model reading the Jaxb object
 
         // 1. set attributes

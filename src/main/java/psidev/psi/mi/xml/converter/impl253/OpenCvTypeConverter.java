@@ -87,7 +87,7 @@ public class OpenCvTypeConverter {
 
         } catch ( Exception e ) {
             throw new ConverterException( "An exception was thrown while instanciating an model.OpenCvType via reflection. " +
-                                          "Nested Exception attached", e );
+                                          "Nested Exception attached", e, clazz );
         }
 
         // Initialise the model reading the Jaxb object
