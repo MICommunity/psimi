@@ -1,8 +1,5 @@
 package psidev.psi.mi.jami.datasource;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A file source error.
  *
@@ -13,16 +10,14 @@ import java.util.List;
 
 public class FileSourceError extends DataSourceError {
 
-    private List<FileSourceContext> sourceContexts;
+    private FileSourceContext sourceContext;
 
-    public FileSourceError(String label, String message) {
+    public FileSourceError(String label, String message, FileSourceContext context) {
         super(label, message);
+        this.sourceContext = context;
     }
 
-    public List<FileSourceContext> getSourceContexts(){
-        if (sourceContexts == null){
-            sourceContexts = new ArrayList<FileSourceContext>();
-        }
-        return sourceContexts;
+    public FileSourceContext getSourceContext(){
+        return sourceContext;
     }
 }
