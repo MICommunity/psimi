@@ -7,6 +7,9 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 /**
  * A text describing the availability of data, e.g. a copyright statement.
  * <p/>
@@ -25,11 +28,13 @@ package psidev.psi.mi.xml.model;
  * </pre>
  */
 
-public class Availability {
+public class Availability implements FileSourceContext{
 
     private String value;
 
     private int id;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -124,4 +129,11 @@ public class Availability {
         return result;
     }
 
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 }

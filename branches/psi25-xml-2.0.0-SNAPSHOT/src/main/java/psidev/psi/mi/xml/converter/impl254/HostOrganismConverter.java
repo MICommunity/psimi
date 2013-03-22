@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.model.*;
@@ -74,6 +76,8 @@ public class HostOrganismConverter {
         }
 
         psidev.psi.mi.xml.model.HostOrganism mOrganism = new psidev.psi.mi.xml.model.HostOrganism();
+        Locator locator = jOrganism.sourceLocation();
+        mOrganism.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // Initialise the model reading the Jaxb object
 

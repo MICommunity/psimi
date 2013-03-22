@@ -5,16 +5,21 @@
  */
 package psidev.psi.mi.xml.converter.impl253;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Attribute;
+import psidev.psi.mi.xml.model.Availability;
+import psidev.psi.mi.xml.model.ExperimentDescription;
+import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.mi.xml253.jaxb.*;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Converts an entry between Jaxb and the model.
@@ -103,6 +108,8 @@ public class EntryConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Entry mEntry = new psidev.psi.mi.xml.model.Entry();
+        Locator locator = jEntry.sourceLocation();
+        mEntry.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // Initialise the model reading the Jaxb object
 

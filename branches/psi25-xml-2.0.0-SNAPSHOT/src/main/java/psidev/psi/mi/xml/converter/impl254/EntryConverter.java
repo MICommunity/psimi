@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -103,6 +105,8 @@ public class EntryConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Entry mEntry = new psidev.psi.mi.xml.model.Entry();
+        Locator locator = jEntry.sourceLocation();
+        mEntry.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // Initialise the model reading the Jaxb object
 

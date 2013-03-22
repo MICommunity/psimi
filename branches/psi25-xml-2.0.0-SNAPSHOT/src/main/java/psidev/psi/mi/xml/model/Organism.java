@@ -6,6 +6,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.utils.clone.CvTermCloner;
@@ -37,9 +39,10 @@ import java.util.Collection;
  * </pre>
  */
 
-public class Organism extends DefaultOrganism implements NamesContainer {
+public class Organism extends DefaultOrganism implements NamesContainer, FileSourceContext {
 
     private Names names;
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -57,6 +60,14 @@ public class Organism extends DefaultOrganism implements NamesContainer {
 
     ///////////////////////////
     // Getters and Setters
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 
     /**
      * Check if the optional names is defined.

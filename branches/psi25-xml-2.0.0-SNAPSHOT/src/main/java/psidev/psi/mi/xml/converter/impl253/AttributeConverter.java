@@ -5,6 +5,9 @@
  */
 package psidev.psi.mi.xml.converter.impl253;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 /**
  * Converter to and from JAXB of the class Attribute.
  *
@@ -29,6 +32,8 @@ public class AttributeConverter {
         }
 
         psidev.psi.mi.xml.model.Attribute mAttribute = new psidev.psi.mi.xml.model.Attribute();
+        Locator locator = jAttribute.sourceLocation();
+        mAttribute.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // Initialise the model reading the Jaxb object
 

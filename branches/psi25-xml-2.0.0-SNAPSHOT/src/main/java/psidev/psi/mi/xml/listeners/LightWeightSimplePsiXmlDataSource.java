@@ -1,6 +1,5 @@
 package psidev.psi.mi.xml.listeners;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.datasource.*;
@@ -33,7 +32,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     private List<IndexedEntry> indexedEntries;
     private File file;
     private InputStream stream;
-    private Map<DataSourceError, List<FileSourceContext>> errors;
+    private Collection<FileSourceError> errors;
 
     private Log log = LogFactory.getLog(LightWeightSimplePsiXmlDataSource.class);
 
@@ -41,7 +40,12 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         try {
             this.reader = new PsimiXmlLightweightReader(file);
         } catch (PsimiXmlReaderException e) {
-            InvalidXmlEvent evt = new InvalidXmlEvent("The file cannot be read because of " + ExceptionUtils.getFullStackTrace(e));
+            InvalidXmlEvent evt = new InvalidXmlEvent("The file cannot be read", e);
+
+            if (e.getCurrentObject() instanceof FileSourceContext){
+                FileSourceContext context = (FileSourceContext) e.getCurrentObject();
+                evt.setSourceLocator(context.getSourceLocator());
+            }
             fireOnInvalidXmlSyntax(evt);
         }
         this.reader.addXmlParserListener(this);
@@ -49,14 +53,18 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         if (file == null){
             throw new IllegalArgumentException("File is mandatory for a PSI-XML 2.5 datasource");
         }
-        errors = new HashMap<DataSourceError, List<FileSourceContext>>();
+        errors = new ArrayList<FileSourceError>();
     }
 
     public LightWeightSimplePsiXmlDataSource(InputStream stream){
         try {
             this.reader = new PsimiXmlLightweightReader(stream);
         } catch (PsimiXmlReaderException e) {
-            InvalidXmlEvent evt = new InvalidXmlEvent("The file cannot be read because of " + ExceptionUtils.getFullStackTrace(e));
+            InvalidXmlEvent evt = new InvalidXmlEvent("The file cannot be read", e);
+            if (e.getCurrentObject() instanceof FileSourceContext){
+                FileSourceContext context = (FileSourceContext) e.getCurrentObject();
+                evt.setSourceLocator(context.getSourceLocator());
+            }
             fireOnInvalidXmlSyntax(evt);
         }
         this.reader.addXmlParserListener(this);
@@ -64,14 +72,14 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        errors = new HashMap<DataSourceError, List<FileSourceContext>>();
+        errors = new ArrayList<FileSourceError>();
     }
 
     public LightWeightSimplePsiXmlDataSource(File file, PsimiXmlVersion version){
         try {
             this.reader = new PsimiXmlLightweightReader(file, version);
         } catch (PsimiXmlReaderException e) {
-            InvalidXmlEvent evt = new InvalidXmlEvent("The file cannot be read because of " + ExceptionUtils.getFullStackTrace(e));
+            InvalidXmlEvent evt = new InvalidXmlEvent("The file cannot be read", e);
             fireOnInvalidXmlSyntax(evt);
         }
         this.reader.addXmlParserListener(this);
@@ -79,14 +87,14 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         if (file == null){
             throw new IllegalArgumentException("File is mandatory for a PSI-XML 2.5 datasource");
         }
-        errors = new HashMap<DataSourceError, List<FileSourceContext>>();
+        errors = new ArrayList<FileSourceError>();
     }
 
     public LightWeightSimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version){
         try {
             this.reader = new PsimiXmlLightweightReader(stream, version);
         } catch (PsimiXmlReaderException e) {
-            InvalidXmlEvent evt = new InvalidXmlEvent("The inputstream cannot be read because of " + ExceptionUtils.getFullStackTrace(e));
+            InvalidXmlEvent evt = new InvalidXmlEvent("The inputstream cannot be read", e);
             fireOnInvalidXmlSyntax(evt);
         }
         this.reader.addXmlParserListener(this);
@@ -94,14 +102,14 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        errors = new HashMap<DataSourceError, List<FileSourceContext>>();
+        errors = new ArrayList<FileSourceError>();
     }
 
     public void initialiseContext(Map<String, Object> options) {
         // nothing for the moment
     }
 
-    public Map<DataSourceError, List<FileSourceContext>> getDataSourceErrors() {
+    public Collection<FileSourceError> getDataSourceErrors() {
         return errors;
     }
 
@@ -109,7 +117,11 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         try {
             this.indexedEntries = reader.getIndexedEntries();
         } catch (PsimiXmlReaderException e) {
-            InvalidXmlEvent evt = new InvalidXmlEvent("Impossible to extract the entries from the datasource because of " + ExceptionUtils.getFullStackTrace(e));
+            InvalidXmlEvent evt = new InvalidXmlEvent("Impossible to extract the entries from the datasource", e);
+            if (e.getCurrentObject() instanceof FileSourceContext){
+                FileSourceContext context = (FileSourceContext) e.getCurrentObject();
+                evt.setSourceLocator(context.getSourceLocator());
+            }
             fireOnInvalidXmlSyntax(evt);
         }
     }
@@ -119,99 +131,44 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public void fireOnInvalidXmlSyntax(InvalidXmlEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.invalid_syntax.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), event.getMessage(), event);
+
+        errors.add(error);
     }
 
     public void fireOnMultipleExperimentalRolesEvent(MultipleExperimentalRolesEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_experimental_roles.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.multiple_experimental_roles.toString(), event.getMessage(), event);
+        errors.add(error);
     }
 
     public void fireOnMultipleExperimentsPerInteractionEvent(MultipleExperimentsPerInteractionEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_experiments.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.multiple_experiments.toString(), event.getMessage(), event);
+        errors.add(error);
     }
 
     public void fireOnMultipleExpressedInOrganismsEvent(MultipleExpressedInOrganisms event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_expressed_in.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.multiple_expressed_in.toString(), event.getMessage(), event);
+        errors.add(error);
     }
 
     public void fireOnMultipleHostOrganismsPerExperimentEvent(MultipleHostOrganismsPerExperiment event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_host_organisms.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.multiple_host_organisms.toString(), event.getMessage(), event);
+        errors.add(error);
     }
 
     public void fireOnMultipleInteractionTypesEvent(MultipleInteractionTypesEvent event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_interaction_types.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.multiple_interaction_types.toString(), event.getMessage(), event);
+        errors.add(error);
     }
 
     public void fireOnMultipleParticipantIdentificationMethodsEvent(MultipleParticipantIdentificationMethodsPerParticipant event) {
-        DataSourceError error = new DataSourceError(FileSourceParsingError.multiple_participant_identification_methods.toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.multiple_participant_identification_methods.toString(), event.getMessage(), event);
+        errors.add(error);
     }
 
     public void fireOnMissingCvEvent(MissingCvEvent event) {
-        DataSourceError error = new DataSourceError(event.getErrorType().toString(), event.getMessage());
-        if (errors.containsKey(error)){
-            errors.get(error).add(event);
-        }
-        else{
-            List<FileSourceContext> contexts = new ArrayList<FileSourceContext>();
-            contexts.add(event);
-            errors.put(error, contexts);
-        }
+        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
+        errors.add(error);
     }
 
     public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {

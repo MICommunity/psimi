@@ -7,6 +7,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.utils.PositionUtils;
 
 /**
@@ -25,12 +27,14 @@ import psidev.psi.mi.jami.utils.PositionUtils;
  * </pre>
  */
 
-public class Position implements psidev.psi.mi.jami.model.Position{
+public class Position implements psidev.psi.mi.jami.model.Position, FileSourceContext{
 
     private RangeStatus status;
     private long start;
     private long end;
     private boolean isPositionUndetermined;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -59,6 +63,14 @@ public class Position implements psidev.psi.mi.jami.model.Position{
      */
     public long getPosition() {
         return start;
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

@@ -5,6 +5,7 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
@@ -108,8 +109,8 @@ public class ExperimentDescriptionConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.ExperimentDescription mExperimentDescription = new psidev.psi.mi.xml.model.ExperimentDescription();
-        mExperimentDescription.setLineNumber(jExperimentDescription.sourceLocation().getLineNumber());
-        mExperimentDescription.setColumnNumber(jExperimentDescription.sourceLocation().getColumnNumber());
+        Locator locator = jExperimentDescription.sourceLocation();
+        mExperimentDescription.setSourceLocator(new PsiXmlFileLocator(locator.getLineNumber(), locator.getColumnNumber(), jExperimentDescription.getId()));
         // 1. set attributes
 
         mExperimentDescription.setId( jExperimentDescription.getId() );
@@ -140,8 +141,7 @@ public class ExperimentDescriptionConverter {
                 // we have more than one host organism
                 if (listeners != null && !listeners.isEmpty() && jExperimentDescription.getHostOrganismList() != null && jExperimentDescription.getHostOrganismList().getHostOrganisms().size() > 1){
                     MultipleHostOrganismsPerExperiment evt = new MultipleHostOrganismsPerExperiment(mExperimentDescription, new HashSet<Organism>(mExperimentDescription.getHostOrganisms()), "Experiment " +mExperimentDescription.getId() + " contains "+jExperimentDescription.getHostOrganismList().getHostOrganisms().size()+" host organisms.");
-                    evt.setColumnNumber(jExperimentDescription.sourceLocation().getColumnNumber());
-                    evt.setLineNumber(jExperimentDescription.sourceLocation().getLineNumber());
+                    evt.setSourceLocator(mExperimentDescription.getSourceLocator());
                     for (PsiXml25ParserListener l : listeners){
                         l.fireOnMultipleHostOrganismsPerExperimentEvent(evt);
                     }

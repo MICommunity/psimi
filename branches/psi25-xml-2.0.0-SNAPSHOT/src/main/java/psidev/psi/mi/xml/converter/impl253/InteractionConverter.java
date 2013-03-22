@@ -7,6 +7,8 @@ package psidev.psi.mi.xml.converter.impl253;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -130,8 +132,8 @@ public class InteractionConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Interaction mInteraction = new psidev.psi.mi.xml.model.Interaction();
-        mInteraction.setLineNumber(jInteraction.sourceLocation().getLineNumber());
-        mInteraction.setColumnNumber(jInteraction.sourceLocation().getColumnNumber());
+        Locator locator = jInteraction.sourceLocation();
+        mInteraction.setSourceLocator(new PsiXmlFileLocator(locator.getLineNumber(), locator.getColumnNumber(), jInteraction.getId()));
 
         // Initialise the model reading the Jaxb object
 
@@ -202,8 +204,7 @@ public class InteractionConverter {
             // we have more than one experiment
             if (listeners != null && !listeners.isEmpty() && jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().size() > 1){
                 MultipleExperimentsPerInteractionEvent evt = new MultipleExperimentsPerInteractionEvent(mInteraction, new HashSet<ExperimentDescription>(mInteraction.getExperiments()), "Interaction " +mInteraction.getId() + " contains "+jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().size()+" experiments.");
-                evt.setColumnNumber(jInteraction.sourceLocation().getColumnNumber());
-                evt.setLineNumber(jInteraction.sourceLocation().getLineNumber());
+                evt.setSourceLocator(mInteraction.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnMultipleExperimentsPerInteractionEvent(evt);
                 }
@@ -295,8 +296,7 @@ public class InteractionConverter {
         // we have more than one interaction types
         if (listeners != null && !listeners.isEmpty() && jInteraction.getInteractionTypes().size() > 1){
             MultipleInteractionTypesEvent evt = new MultipleInteractionTypesEvent(mInteraction, new HashSet<InteractionType>(mInteraction.getInteractionTypes()), "Interaction " +mInteraction.getId() + " contains "+jInteraction.getInteractionTypes().size()+" interaction types.");
-            evt.setColumnNumber(jInteraction.sourceLocation().getColumnNumber());
-            evt.setLineNumber(jInteraction.sourceLocation().getLineNumber());
+            evt.setSourceLocator(mInteraction.getSourceLocator());
             for (PsiXml25ParserListener l : listeners){
                 l.fireOnMultipleInteractionTypesEvent(evt);
             }

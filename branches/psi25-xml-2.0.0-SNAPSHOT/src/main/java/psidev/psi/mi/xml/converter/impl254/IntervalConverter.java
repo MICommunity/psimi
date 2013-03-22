@@ -1,5 +1,8 @@
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 import java.math.BigInteger;
 
 /**
@@ -30,6 +33,9 @@ public class IntervalConverter {
         // 1. set attributes
         mInterval.setBegin( jInterval.getBegin().longValue() );
         mInterval.setEnd( jInterval.getEnd().longValue() );
+
+        Locator locator = jInterval.sourceLocation();
+        mInterval.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         return mInterval;
     }

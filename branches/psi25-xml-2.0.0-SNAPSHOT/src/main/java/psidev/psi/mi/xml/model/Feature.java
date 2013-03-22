@@ -8,6 +8,7 @@ package psidev.psi.mi.xml.model;
 
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -77,9 +78,7 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
 
     private Collection<Feature> bindingFeatures;
 
-    private int lineNumber;
-
-    private int columnNumber;
+    private PsiXmlFileLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -122,20 +121,12 @@ public class Feature extends DefaultFeatureEvidence implements ComponentFeature,
     // Getters and Setters
 
 
-    public int getLineNumber() {
-        return lineNumber;
+    public PsiXmlFileLocator getSourceLocator() {
+        return this.locator;
     }
 
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public int getColumnNumber() {
-        return columnNumber;
-    }
-
-    public void setColumnNumber(int columnNumber) {
-        this.columnNumber = columnNumber;
+    public void setSourceLocator(PsiXmlFileLocator locator) {
+        this.locator = locator;
     }
 
     /**

@@ -6,6 +6,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
@@ -40,7 +42,7 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Alias implements psidev.psi.mi.jami.model.Alias, Serializable {
+public class Alias implements psidev.psi.mi.jami.model.Alias, Serializable, FileSourceContext {
 
     ///////////////////////////
     // Constructors
@@ -49,6 +51,8 @@ public class Alias implements psidev.psi.mi.jami.model.Alias, Serializable {
 
     private CvTerm type;
     private String name;
+
+    private FileSourceLocator locator;
 
     public Alias() {
         this.name = UNSPECIFIED;
@@ -235,5 +239,13 @@ public class Alias implements psidev.psi.mi.jami.model.Alias, Serializable {
 
     public String getName() {
         return this.name;
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
     }
 }

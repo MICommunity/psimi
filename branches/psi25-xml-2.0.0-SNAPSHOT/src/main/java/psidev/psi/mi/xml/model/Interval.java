@@ -7,6 +7,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.utils.PositionUtils;
 
 import java.io.Serializable;
@@ -30,12 +32,14 @@ import java.io.Serializable;
  * </pre>
  */
 
-public class Interval implements psidev.psi.mi.jami.model.Position, Serializable {
+public class Interval implements psidev.psi.mi.jami.model.Position, Serializable, FileSourceContext {
 
     private RangeStatus status;
     private long start;
     private long end;
     private boolean isPositionUndetermined;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -56,6 +60,14 @@ public class Interval implements psidev.psi.mi.jami.model.Position, Serializable
 
     ///////////////////////////
     // Getters and Setters
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 
     /**
      * Gets the value of the begin property.

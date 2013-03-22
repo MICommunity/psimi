@@ -7,6 +7,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
@@ -37,13 +39,15 @@ import java.util.Collections;
  * </pre>
  */
 
-public abstract class CvType extends DefaultCvTerm implements NamesContainer, XrefContainer {
+public abstract class CvType extends DefaultCvTerm implements NamesContainer, XrefContainer, FileSourceContext {
 
     private Names names = new CvTermNames();
 
     private Xref xref;
 
     private final static String UNSPECIFIED = "unspecified";
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Getters and Setters
@@ -135,6 +139,14 @@ public abstract class CvType extends DefaultCvTerm implements NamesContainer, Xr
      */
     public Xref getXref() {
         return xref;
+    }
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

@@ -7,6 +7,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -32,7 +34,7 @@ import java.math.BigDecimal;
  * </pre>
  */
 
-public class Parameter implements psidev.psi.mi.jami.model.Parameter{
+public class Parameter implements psidev.psi.mi.jami.model.Parameter, FileSourceContext{
 
     private ExperimentRef experimentRef;
 
@@ -44,6 +46,8 @@ public class Parameter implements psidev.psi.mi.jami.model.Parameter{
     private BigDecimal uncertainty;
     private CvTerm unit;
     private ParameterValue value;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -60,6 +64,14 @@ public class Parameter implements psidev.psi.mi.jami.model.Parameter{
 
     ///////////////////////////
     // Getters and Setters
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 
     /**
      * Check if the optional base is defined.

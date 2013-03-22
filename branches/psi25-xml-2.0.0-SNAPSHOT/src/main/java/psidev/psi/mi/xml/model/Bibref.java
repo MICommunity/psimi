@@ -9,6 +9,8 @@ package psidev.psi.mi.xml.model;
 
 
 import org.apache.commons.lang.StringUtils;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -41,11 +43,13 @@ import java.util.*;
  * </pre>
  */
 
-public class Bibref extends DefaultPublication implements XrefContainer, AttributeContainer {
+public class Bibref extends DefaultPublication implements XrefContainer, AttributeContainer, FileSourceContext {
 
     private Xref xref;
 
     private Collection<Attribute> attributes;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -88,6 +92,14 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
     ///////////////////////////
     // Getters and Setters
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 
     /**
      * Gets the value of the xref property.

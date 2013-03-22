@@ -5,6 +5,7 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
@@ -88,8 +89,8 @@ public class FeatureConverter {
         checkDependencies();
 
         psidev.psi.mi.xml.model.Feature mFeature = new psidev.psi.mi.xml.model.Feature();
-        mFeature.setLineNumber(jFeature.sourceLocation().getLineNumber());
-        mFeature.setColumnNumber(jFeature.sourceLocation().getColumnNumber());
+        Locator locator = jFeature.sourceLocation();
+        mFeature.setSourceLocator(new PsiXmlFileLocator(locator.getLineNumber(), locator.getColumnNumber(), jFeature.getId()));
 
         // Initialise the model reading the Jaxb object
 

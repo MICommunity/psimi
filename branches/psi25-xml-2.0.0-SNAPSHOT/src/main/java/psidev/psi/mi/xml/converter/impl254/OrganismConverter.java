@@ -5,6 +5,8 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.model.CellType;
 import psidev.psi.mi.xml.model.Compartment;
@@ -48,6 +50,8 @@ public class OrganismConverter {
         }
 
         psidev.psi.mi.xml.model.Organism mOrganism = new psidev.psi.mi.xml.model.Organism();
+        Locator locator = jOrganism.sourceLocation();
+        mOrganism.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         // Initialise the model reading the Jaxb object
 

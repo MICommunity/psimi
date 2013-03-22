@@ -1,5 +1,8 @@
 package psidev.psi.mi.xml.converter.impl253;
 
+import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
+
 import java.math.BigInteger;
 
 /**
@@ -24,6 +27,8 @@ public class IntervalConverter {
         }
 
         psidev.psi.mi.xml.model.Interval mInterval = new psidev.psi.mi.xml.model.Interval();
+        Locator locator = jInterval.sourceLocation();
+        mInterval.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
 
         //Initialise the model reading the Jaxb object
 

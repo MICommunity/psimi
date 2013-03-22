@@ -7,6 +7,8 @@
 package psidev.psi.mi.xml.model;
 
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
@@ -83,7 +85,7 @@ import java.util.Collection;
  * </pre>
  */
 
-public class DbReference implements psidev.psi.mi.jami.model.Xref{
+public class DbReference implements psidev.psi.mi.jami.model.Xref, FileSourceContext{
 
     private Collection<Attribute> attributes;
 
@@ -96,6 +98,8 @@ public class DbReference implements psidev.psi.mi.jami.model.Xref{
     private String id;
     private String version;
     private CvTerm qualifier;
+
+    private FileSourceLocator locator;
 
     ///////////////////////////
     // Constructors
@@ -127,6 +131,14 @@ public class DbReference implements psidev.psi.mi.jami.model.Xref{
 
     ///////////////////////////
     // Getters and Setters
+
+    public FileSourceLocator getSourceLocator() {
+        return this.locator;
+    }
+
+    public void setSourceLocator(FileSourceLocator locator) {
+        this.locator = locator;
+    }
 
     /**
      * Check if the optional attributes is defined.
