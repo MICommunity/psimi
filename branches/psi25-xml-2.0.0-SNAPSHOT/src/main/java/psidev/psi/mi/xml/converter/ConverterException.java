@@ -13,6 +13,7 @@ package psidev.psi.mi.xml.converter;
  * @since <pre>18-Jun-2006</pre>
  */
 public class ConverterException extends Exception {
+    private Object currentObject;
 
     public ConverterException( String message ) {
         super( message );
@@ -20,5 +21,19 @@ public class ConverterException extends Exception {
 
     public ConverterException( String message, Throwable cause ) {
         super( message, cause );
+    }
+
+    public ConverterException( String message, Object currentObject ) {
+        super( message );
+        this.currentObject = currentObject;
+    }
+
+    public ConverterException( String message, Throwable cause, Object currentObject ) {
+        super( message, cause );
+        this.currentObject = currentObject;
+    }
+
+    public Object getCurrentObject() {
+        return currentObject;
     }
 }

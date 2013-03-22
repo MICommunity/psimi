@@ -176,7 +176,7 @@ public class ParticipantConverter {
         }
 
         if ( !foundInteractor ) {
-            throw new ConverterException( "Could not find either an interactor or an interaction for participant (id=" + jParticipant.getId() + ")." );
+            throw new ConverterException( "Could not find either an interactor or an interaction for participant (id=" + jParticipant.getId() + ").", mParticipant );
         }
 
         // BiologigicalRoles
@@ -348,7 +348,7 @@ public class ParticipantConverter {
         } else if ( mParticipant.hasInteraction() ) {
             jParticipant.setInteractionRef( mParticipant.getInteraction().getId() );
         } else {
-            throw new ConverterException( "Neither an interactor or an interaction was present in participant " + mParticipant.getId() );
+            throw new ConverterException( "Neither an interactor or an interaction was present in participant " + mParticipant.getId(), mParticipant );
         }
 
         // BiologigicalRoles

@@ -33,7 +33,9 @@ public class DbReferenceConverter {
 
         psidev.psi.mi.xml.model.DbReference mDbReference = new psidev.psi.mi.xml.model.DbReference();
         Locator locator = jDbReference.sourceLocation();
-        mDbReference.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
+        if (locator != null){
+            mDbReference.setSourceLocator(new FileSourceLocator(locator.getLineNumber(), locator.getColumnNumber()));
+        }
         // Initialise the model reading the Jaxb object
 
         // 1. set attributes

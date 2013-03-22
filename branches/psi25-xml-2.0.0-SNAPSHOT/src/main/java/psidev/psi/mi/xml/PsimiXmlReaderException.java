@@ -26,6 +26,25 @@ public class PsimiXmlReaderException extends Exception {
         super( cause );
     }
 
+    public PsimiXmlReaderException(Object currentObject) {
+        this.currentObject = currentObject;
+    }
+
+    public PsimiXmlReaderException( String message, Object currentObject ) {
+        super( message );
+        this.currentObject = currentObject;
+    }
+
+    public PsimiXmlReaderException( String message, Throwable cause, Object currentObject ) {
+        super( message, cause );
+        this.currentObject = currentObject;
+    }
+
+    public PsimiXmlReaderException( Throwable cause, Object currentObject ) {
+        super( cause );
+        this.currentObject = currentObject;
+    }
+
     public Object getCurrentObject() {
         return currentObject;
     }

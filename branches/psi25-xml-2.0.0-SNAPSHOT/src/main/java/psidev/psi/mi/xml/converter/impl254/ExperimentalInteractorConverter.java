@@ -108,7 +108,7 @@ public class ExperimentalInteractorConverter {
             interactor = interactorConverter.fromJaxb( jExperimentalInteractor.getInteractor() );
 
         } else {
-            throw new ConverterException( "neither an interactor ref or an interactor were provided." );
+            throw new ConverterException( "neither an interactor ref or an interactor were provided.", mExperimentalInteractor );
         }
 
         mExperimentalInteractor.setInteractor( interactor );
