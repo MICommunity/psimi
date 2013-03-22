@@ -170,7 +170,7 @@ public final class MitabParserUtils {
         Interactor interactorB = new Interactor();
 
         BinaryInteractionImpl interaction = new BinaryInteractionImpl(interactorA, interactorB);
-        interaction.setLocator(new FileSourceLocator(lineIndex, 0));
+        interaction.setLocator(new FileSourceLocator(lineIndex, -1));
 
         int charIndexIdA = 0;
         int charIndexIdB = charIndexIdA+4+(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()] != null ? line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()].length() : 0);

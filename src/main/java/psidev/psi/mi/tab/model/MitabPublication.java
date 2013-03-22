@@ -1,6 +1,7 @@
 package psidev.psi.mi.tab.model;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
@@ -42,7 +43,7 @@ public class MitabPublication extends DefaultPublication implements FileSourceCo
      */
     private List<CrossReference> sourceDatabases;
 
-    private MitabSourceLocator locator;
+    private FileSourceLocator locator;
 
     public MitabPublication(){
         super((String)null);
@@ -83,11 +84,11 @@ public class MitabPublication extends DefaultPublication implements FileSourceCo
         }
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return locator;
     }
 
-    public void setLocator(MitabSourceLocator locator) {
+    public void setLocator(FileSourceLocator locator) {
         this.locator = locator;
     }
 
