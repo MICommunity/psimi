@@ -141,6 +141,98 @@ public final class MitabParserUtils {
         return groups.toArray(new String[groups.size()]);
     }
 
+    public static String[] quoteAwareStrictOrderSplit(String str, char[] delimiters, boolean removeUnescapedQuotes) {
+        if (str == null) {
+            throw new NullPointerException("Null String to create Field");
+        }
+
+        if (str.isEmpty()) {
+            throw new IllegalArgumentException("Empty String passed to create Field");
+        }
+
+        if (delimiters == null) {
+            throw new NullPointerException("Null delimiters to create Field");
+        }
+
+        if (delimiters.length == 0) {
+            throw new IllegalArgumentException("At least one delimiter char is needed");
+        }
+
+        List<String> groups = new LinkedList<String>();
+
+        StringBuilder currGroup = new StringBuilder(str.length());
+
+        final char[] chars = str.toCharArray();
+
+        boolean withinQuotes = false;
+        boolean previousCharIsEscape = false;
+
+        char [] orderedDelimiters = delimiters;
+        int index = 1;
+
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+
+            boolean markedAsEscape = false;
+
+            if (c == '"') {
+                if (withinQuotes) {
+                    if (previousCharIsEscape) {
+                        if (!removeUnescapedQuotes) {
+                            currGroup.append("\\");
+                        }
+                        currGroup.append(c);
+                    } else if (currGroup.length() > 0) {
+                        withinQuotes = !withinQuotes;
+                    }
+                } else {
+                    withinQuotes = true;
+                }
+
+                if (!removeUnescapedQuotes && !previousCharIsEscape) {
+                    currGroup.append(c);
+                }
+
+            } else {
+                if (orderedDelimiters.length > 0 && c == orderedDelimiters[0]){
+
+                    if (currGroup.length() > 0) {
+                        if (!withinQuotes) {
+                            groups.add(currGroup.toString());
+                            // Note: the length of the stringbuilder can only be smaller, let's reuse the existing one.
+                            currGroup.setLength(0);
+                            orderedDelimiters = Arrays.copyOfRange(delimiters, index, delimiters.length);
+                            index++;
+                        } else {
+                            currGroup.append(c);
+                        }
+                    } else if (withinQuotes) {
+                        currGroup.append(c);
+                    }
+                }
+                else if (c == '\\') {
+                    if (withinQuotes) {
+                        previousCharIsEscape = true;
+                        markedAsEscape = true;
+                    } else {
+                        currGroup.append(c);
+                    }
+                } else {
+                    currGroup.append(c);
+                }
+            }
+
+            if (!markedAsEscape) {
+                previousCharIsEscape = false;
+            }
+        }
+
+        if (currGroup.length() > 0) {
+            groups.add(currGroup.toString());
+        }
+
+        return groups.toArray(new String[groups.size()]);
+    }
 
     private static boolean arrayContains(char[] chars, char cToFind) {
         for (char c : chars) {
@@ -354,7 +446,7 @@ public final class MitabParserUtils {
             for (String r : result) {
 
                 if (r != null) {
-                    String[] fields = MitabParserUtils.quoteAwareSplit(r, new char[]{':', '(', ')'}, true);
+                    String[] fields = MitabParserUtils.quoteAwareStrictOrderSplit(r, new char[]{':', '(', ')'}, true);
                     if (fields != null) {
                         int length = fields.length;
 
@@ -413,7 +505,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -429,13 +521,7 @@ public final class MitabParserUtils {
                         }
                         else if (length == 1) {
                             //Backward compatibility
-                            if (field.equalsIgnoreCase("spoke")) {
-                                object = new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion");
-                            } else if (field.equalsIgnoreCase("matrix")) {
-                                object = new CrossReferenceImpl("psi-mi", "MI:1061", "matrix expansion");
-                            } else if (field.equalsIgnoreCase("bipartite")) {
-                                object = new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion");
-							} else if (!result[0].equalsIgnoreCase("-")) {
+                            if (!result[0].equalsIgnoreCase("-")) {
                                 InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
@@ -475,7 +561,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -557,7 +643,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -619,7 +705,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -672,7 +758,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -720,7 +806,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -775,7 +861,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -841,7 +927,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -891,31 +977,18 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
-                    if (result != null) {
-
-                        int length = result.length;
-
-                        // some exception handling
-                        if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid stoichiometry (check the syntax. It has to be a Integer): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
-                            }                        }
-
-                        else if (length != 1) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid stoichiometry (check the syntax. It has to be a Integer): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
-                            }                        }
-                        else if (!result[0].equalsIgnoreCase("-"))
-                            object = new Integer(result[0]);
-
-                        if (object != null) {
-                            objects.add(object);
+                    try{
+                        object = Integer.parseInt(field);
+                    } catch (NumberFormatException e) {
+                        InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid stoichiometry (check the syntax. It has to be a Integer): " + field.toString());
+                        evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                        for (MitabParserListener l : listenerList){
+                            l.fireOnInvalidFormat(evt);
                         }
+                    }
+
+                    if (object != null) {
+                        objects.add(object);
                     }
 
                     newIndex+=field.length();
@@ -945,7 +1018,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -1001,7 +1074,7 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
+                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{'(', ')'}, true);
                     if (result != null) {
 
                         int length = result.length;
@@ -1054,40 +1127,18 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareSplit(field, new char[]{':', '(', ')'}, true);
-                    if (result != null) {
+                    try {
+                        if (!field.equalsIgnoreCase("-"))
+                            object = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH).parse(field);
+                    } catch (ParseException e) {
+                        InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid date (check the syntax. yyyy/MM/dd): " + field.toString());
+                        evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                        for (MitabParserListener l : listenerList){
+                            l.fireOnInvalidFormat(evt);
+                        }                             }
 
-                        int length = result.length;
-
-                        // some exception handling
-                        if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid date (check the syntax. yyyy/MM/dd): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
-                            }
-                        }
-
-                        if (length != 1) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid date (check the syntax. yyyy/MM/dd): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
-                            }
-                        }
-                        try {
-                            if (!result[0].equalsIgnoreCase("-"))
-                                object = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH).parse(result[0]);
-                        } catch (ParseException e) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid date (check the syntax. yyyy/MM/dd): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
-                            }                             }
-
-                        if (object != null) {
-                            objects.add(object);
-                        }
+                    if (object != null) {
+                        objects.add(object);
                     }
 
                     newIndex+=field.length();
@@ -1111,29 +1162,15 @@ public final class MitabParserUtils {
 
         if (column != null && !column.isEmpty()) {
 
-            String[] result = MitabParserUtils.quoteAwareSplit(column, new char[]{':', '(', ')'}, true);
-
-            if (result != null) {
-
-                int length = result.length;
-
-                // some exception handling
-                if (length == 0 || length > 3) {
-                    InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid negative boolean value (check the syntax. true, false or -): " + Arrays.asList(result).toString());
-                    evt.setSourceLocator(new MitabSourceLocator(lineNumber, charIndex, columnNumber));
-                    for (MitabParserListener l : listenerList){
-                        l.fireOnInvalidFormat(evt);
-                    }                  }
-
-                else if (length != 1) {
-                    InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid negative boolean value (check the syntax. true, false or -): " + Arrays.asList(result).toString());
-                    evt.setSourceLocator(new MitabSourceLocator(lineNumber, charIndex, columnNumber));
-                    for (MitabParserListener l : listenerList){
-                        l.fireOnInvalidFormat(evt);
-                    }                 }
-
-                else if (!result[0].equalsIgnoreCase("-"))
-                    object = Boolean.valueOf(result[0]);
+            if (!column.equalsIgnoreCase("-") && (column.equalsIgnoreCase("false") || column.equalsIgnoreCase("true"))) {
+                object = Boolean.valueOf(column);
+            }
+            else {
+                InvalidFormatEvent evt = new InvalidFormatEvent("It is not a valid boolean value: " + column.toString());
+                evt.setSourceLocator(new MitabSourceLocator(lineNumber, charIndex, columnNumber));
+                for (MitabParserListener l : listenerList){
+                    l.fireOnInvalidFormat(evt);
+                }
             }
 
         }

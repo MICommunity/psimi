@@ -95,6 +95,9 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     lineIndex++;
                     isHeader = false;
                 }
+                else if(!isHeader){
+                    lineIndex++;
+                }
 
             } while (isHeader);
 
@@ -118,6 +121,9 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                         nextLine = mReader.readLine(firstLine, lineIndex);
                         lineIndex++;
                         isHeader = false;
+                    }
+                    else if(!isHeader){
+                        lineIndex++;
                     }
 
                     errorInLine = false;
@@ -166,6 +172,9 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     lineIndex++;
                     isHeader = false;
                 }
+                else if(!isHeader){
+                    lineIndex++;
+                }
 
             } while (isHeader);
 
@@ -190,6 +199,9 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                         nextLine = mReader.readLine(firstLine, lineIndex);
                         lineIndex++;
                         isHeader = false;
+                    }
+                    else if(!isHeader){
+                        lineIndex++;
                     }
 
                     errorInLine = false;

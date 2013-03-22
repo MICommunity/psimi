@@ -29,7 +29,7 @@ public class MitabParsingLogger implements MitabParserListener {
                 FileSourceLocator locator = event.getSourceLocator();
                 stringBuffer.append(locator.getLocationDescription());
             }
-            stringBuffer.append(event.getMessage());
+            stringBuffer.append(" ").append(event.getMessage());
             log.error(stringBuffer.toString());
         }
     }
@@ -42,7 +42,7 @@ public class MitabParsingLogger implements MitabParserListener {
                 FileSourceLocator locator = event.getSourceLocator();
                 stringBuffer.append(locator.getLocationDescription());
             }
-            stringBuffer.append(event.getMessage());
+            stringBuffer.append(" ").append(event.getMessage());
             log.warn(stringBuffer.toString());
         }
     }
@@ -55,7 +55,7 @@ public class MitabParsingLogger implements MitabParserListener {
                 FileSourceLocator locator = event.getSourceLocator();
                 stringBuffer.append(locator.getLocationDescription());
             }
-            stringBuffer.append(event.getMessage());
+            stringBuffer.append(" ").append(event.getMessage());
             if (event.getLevel().equalsIgnoreCase("info")){
                 log.info(stringBuffer.toString());
             }
