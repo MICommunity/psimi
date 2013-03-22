@@ -19,4 +19,8 @@ public interface Confidence extends psidev.psi.mi.jami.model.Confidence, Seriali
     void setText( String text );
 
     void setValue( String value );
+
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
 }

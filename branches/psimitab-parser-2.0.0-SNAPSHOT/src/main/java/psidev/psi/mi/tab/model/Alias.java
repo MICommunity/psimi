@@ -39,4 +39,8 @@ public interface Alias extends psidev.psi.mi.jami.model.Alias, Serializable {
      * @param aliasType Value to set for property 'type'.
      */
     void setAliasType( String aliasType );
+
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
 }

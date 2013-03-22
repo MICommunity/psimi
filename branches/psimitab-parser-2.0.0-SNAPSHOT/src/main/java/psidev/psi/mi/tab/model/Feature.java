@@ -56,4 +56,8 @@ public interface Feature extends FeatureEvidence, Serializable {
      */
     void setText(String text);
 
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
+
 }

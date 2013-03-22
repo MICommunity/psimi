@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 
 import java.io.Serializable;
@@ -280,5 +281,7 @@ public interface BinaryInteraction<T extends Interactor> extends InteractionEvid
 
     //MITAB 2.7
 
+    FileSourceLocator getSourceLocator();
 
+    void setLocator(FileSourceLocator locator);
 }

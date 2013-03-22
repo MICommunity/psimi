@@ -1,5 +1,6 @@
 package psidev.psi.mi.tab.model;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
@@ -10,7 +11,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
  * Time: 16:38
  * To change this template use File | Settings | File Templates.
  */
-public class AnnotationImpl implements Annotation, psidev.psi.mi.jami.model.Annotation {
+public class AnnotationImpl implements Annotation, psidev.psi.mi.jami.model.Annotation, FileSourceContext {
 
     /**
      * Generated with IntelliJ plugin generateSerialVersionUID.
@@ -20,6 +21,8 @@ public class AnnotationImpl implements Annotation, psidev.psi.mi.jami.model.Anno
 
     private CvTerm topic;
     private String value;
+
+    private MitabSourceLocator locator;
 
     private static final String UNSPECIFIED = "unspecified";
     /////////////////////////////////
@@ -127,6 +130,14 @@ public class AnnotationImpl implements Annotation, psidev.psi.mi.jami.model.Anno
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return locator;
+    }
+
+    public void setLocator(MitabSourceLocator locator) {
+        this.locator = locator;
     }
 
     /**

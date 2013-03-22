@@ -38,4 +38,8 @@ public interface Annotation extends psidev.psi.mi.jami.model.Annotation,Serializ
      * @param text Value to set for property 'text' in the annotation.
      */
     void setText(String text);
+
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
 }

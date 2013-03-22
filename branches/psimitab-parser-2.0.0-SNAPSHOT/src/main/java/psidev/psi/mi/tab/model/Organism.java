@@ -24,4 +24,8 @@ public interface Organism extends psidev.psi.mi.jami.model.Organism, Serializabl
     void setIdentifiers( List<CrossReference> identifiers );
 
     String getTaxid();
+
+    MitabSourceLocator getSourceLocator();
+
+    void setLocator(MitabSourceLocator locator);
 }
