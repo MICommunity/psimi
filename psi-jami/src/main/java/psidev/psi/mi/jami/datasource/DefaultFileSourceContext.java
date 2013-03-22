@@ -10,23 +10,25 @@ package psidev.psi.mi.jami.datasource;
 
 public class DefaultFileSourceContext implements FileSourceContext {
 
-    private int lineNumber;
-    private int columnNumber;
-    private int id;
+    private FileSourceLocator sourceLocator;
 
-    public int getLineNumber() {
-        return lineNumber;
+    public DefaultFileSourceContext(){
+
     }
 
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
+    public DefaultFileSourceContext(FileSourceLocator locator){
+        this.sourceLocator = locator;
     }
 
-    public int getColumnNumber() {
-        return columnNumber;
+    public DefaultFileSourceContext(int lineNumber, int columnNumber){
+        this.sourceLocator = new FileSourceLocator(lineNumber, columnNumber);
     }
 
-    public void setColumnNumber(int columnNumber) {
-        this.columnNumber = columnNumber;
+    public FileSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }
