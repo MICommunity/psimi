@@ -10,17 +10,5 @@ package psidev.psi.mi.jami.datasource;
 
 public interface FileSourceContext {
 
-    /**
-     * The line number in the file where the object is located
-     * @return
-     */
-    public int getLineNumber();
-
-    /**
-     * The column number in the file where the object is located.
-     * For tab delimited files, the column number would be the actual tab column number. For all other files,
-     * The column number should indicate the character in the line.
-     * @return
-     */
-    public int getColumnNumber();
+    public FileSourceLocator getSourceLocator();
 }
