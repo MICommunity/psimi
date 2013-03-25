@@ -17,6 +17,7 @@ package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
@@ -508,13 +509,13 @@ public final class RuleUtils {
         }
     }
 
-    public static void checkPresenceOfAttributeInExperiment(ExperimentDescription experiment, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, String attMi, String attname){
+    public static void checkPresenceOfAttributeInExperiment(Experiment experiment, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, String attMi, String attname){
         // An experiment must have at least one attribute 'imex-curation' and one attribute 'full coverage'
-        if (experiment.hasAttributes()){
+        if (!experiment.getAnnotations().isEmpty()){
             // The attributes of the experiment
-            Collection<Attribute> attributes = experiment.getAttributes();
+            Collection<Annotation> attributes = experiment.getAnnotations();
             // The attributes with a name/MI attName/attMI
-            Collection<Attribute> attributeName = RuleUtils.findByAttributeName(attributes, attMi, attname);
+            Collection<Annotation> attributeName = AnnotationUtils.collectAllAnnotationsHavingTopic(attributes, attMi, attname);
 
             if (attributeName.isEmpty()){
                 messages.add( new ValidatorMessage( "The experiment does not have an attribute '"+attname+"' ("+attMi+") and it is required for IMEx. ",
