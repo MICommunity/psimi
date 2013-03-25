@@ -108,6 +108,8 @@ public final class RuleUtils {
 
     public static final String AUTHOR_CONFIDENCE = "author-confidence";
     public static final String AUTHOR_CONFIDENCE_MI_REF = "MI:0621";
+    public static final String AUTHOR_SCORE = "author-based confidence";
+    public static final String AUTHOR_SCORE_MI_REF = "MI:1221";
     public static final String CONFIDENCE_MAPPING = "confidence-mapping";
     public static final String CONFIDENCE_MAPPING_MI_REF = "MI:0622";
     public static final String EXPERIMENT_ATTRIBUTE = "experiment attribute name";
@@ -378,75 +380,6 @@ public final class RuleUtils {
         return isOfType( ontologyManager, feature.getFeatureType(), RuleUtils.BINDING_SITE, true );
     }
 
-    /**
-     * Builds a new colelction of references filtered according to the given parameters. If both filters are null, we
-     * get a new collection containing all references given.
-     *
-     * @param xrefs      the collection of reference to build upon.
-     * @param typeMiRef a Type Ref MI identifier, can be null.
-     * @param dbMiRef   a database MI identifier, can be null.
-     * @return a non null collection of references.
-     */
-    public static Collection<DbReference> searchReferences( Collection<DbReference> xrefs,
-                                                            String typeMiRef,
-                                                            String dbMiRef,
-                                                            String accession ) {
-
-        Collection<DbReference> refs = new ArrayList<DbReference>();
-
-        if( xrefs != null ) {
-            for ( DbReference ref : xrefs ) {
-                if ( dbMiRef != null && !dbMiRef.equals( ref.getDbAc() ) ) {
-                    continue;
-                }
-                if ( typeMiRef != null && !typeMiRef.equals( ref.getRefTypeAc() ) ) {
-                    continue;
-                }
-                if ( accession != null && !accession.equals( ref.getId() ) ) {
-                    continue;
-                }
-                refs.add( ref );
-            }
-        }
-
-        return refs;
-    }
-
-    /**
-     * Builds a new collection of references filtered according to the given parameters. If both filters are null, we
-     * get a new collection containing all references given.
-     *
-     * @param xrefs      the collection of reference to build upon.
-     * @param typeMiRefs a collection of  type reference MI identifier, can be null.
-     * @param dbMiRefs   a collection of database MI identifier, can be null.
-     * @param accessions   a collection of accession number supposed to match DbReference.id, can be null.
-     * @return a non null collection of references.
-     */
-    public static Collection<DbReference> searchReferences( Collection<DbReference> xrefs,
-                                                            Collection<String> typeMiRefs,
-                                                            Collection<String> dbMiRefs,
-                                                            Collection<String> accessions ) {
-
-        Collection<DbReference> refs = new ArrayList<DbReference>();
-
-        if( xrefs != null ) {
-            for ( DbReference ref : xrefs ) {
-                if ( dbMiRefs != null && !dbMiRefs.contains( ref.getDbAc() ) ) {
-                    continue;
-                }
-                if ( typeMiRefs != null && !typeMiRefs.contains( ref.getRefTypeAc() ) ) {
-                    continue;
-                }
-                if ( accessions != null && !accessions.contains( ref.getId() ) ) {
-                    continue;
-                }
-                refs.add( ref );
-            }
-        }
-
-        return refs;
-    }
-
     public static Set<String> collectIds( Collection<DbReference> refs ) {
         Set<String> ids = new HashSet<String>( refs.size() );
         for ( DbReference ref : refs ) {
@@ -461,23 +394,6 @@ public final class RuleUtils {
             ids.add( termI.getTermAccession() );
         }
         return ids;
-    }
-
-    public static Collection<Attribute> findByAttributeName( Collection<Attribute> attributes, String mi, String name ) {
-        Collection<Attribute> selectedAttribute = new ArrayList<Attribute>( attributes.size() );
-        for ( Attribute attribute : attributes ) {
-            if (mi != null && attribute.hasNameAc()){
-                if (mi.equals( attribute.getNameAc() )){
-                    selectedAttribute.add( attribute );
-                }
-            }
-            else if(name != null && attribute.getName() != null){
-                if (name.equalsIgnoreCase( attribute.getName() )){
-                    selectedAttribute.add( attribute );
-                }
-            }
-        }
-        return selectedAttribute;
     }
 
     /**
@@ -649,6 +565,19 @@ public final class RuleUtils {
         else if (object instanceof HasId){
             context.extractIdAndLabelFrom((HasId) object);
         }
+        return context;
+    }
+
+    public static Mi25Context buildContext( Object object, String objectLabel ) {
+        Mi25Context context;
+        context = new Mi25Context();
+        if (object instanceof FileSourceContext){
+            context.extractFileContextOnlyFrom((FileSourceContext)object);
+        }
+        else if (object instanceof HasId){
+            context.extractIdAndLabelFrom((HasId) object);
+        }
+        context.setObjectLabel(objectLabel);
         return context;
     }
 

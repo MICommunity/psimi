@@ -56,7 +56,8 @@ public class BiologicalRoleRule extends ObjectRule<ParticipantEvidence> {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // write the rule here ...
-        final Mi25Context context = RuleUtils.buildContext( participant );
+        final Mi25Context context = RuleUtils.buildContext( participant.getBiologicalRole(), "participant's biological role" );
+        context.addAssociatedContext(RuleUtils.buildContext( participant, "participant" ));
 
         RuleUtils.checkPsiMIXRef(participant.getBiologicalRole(), messages, context, this, RuleUtils.BIOLOGICAL_ROLE);
 

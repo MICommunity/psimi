@@ -1,11 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.ExperimentalRole;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -58,31 +57,14 @@ public class ExperimentalRoleRule  extends ObjectRule<Participant> {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // write the rule here ...
-        int participantId = participant.getId();
-        final Mi25Context context = buildContext( participantId );
+        CvTerm experimentalRole = participant.getExperimentalRole();
 
-        if ( !participant.hasExperimentalRoles() ) {
-            messages.add( new ValidatorMessage( "Interaction's participants should have at least one " +
-                    "experimental role; found 0.",
-                    MessageLevel.ERROR,
-                    context,
-                    this ) );
-        }
-        else{
-            for (ExperimentalRole role : participant.getExperimentalRoles()){
-                RuleUtils.checkPsiMIXRef(role, messages, context, this, RuleUtils.EXPERIMENTAL_ROLE);
-            }
-        }
+        final Mi25Context context = RuleUtils.buildContext( experimentalRole, "participant's experimental role" );
+        context.addAssociatedContext(RuleUtils.buildContext(participant, "participant"));
+
+        RuleUtils.checkPsiMIXRef(experimentalRole, messages, context, this, RuleUtils.EXPERIMENTAL_ROLE);
 
         return messages;
-    }
-
-    private Mi25Context buildContext( int participantId ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setId( participantId );
-        context.setObjectLabel("participant");
-        return context;
     }
 
     public String getId() {

@@ -1,8 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.ConfidenceUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -34,7 +36,7 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
         setName( "Confidence Score Definition Check" );
         setDescription( "Checks that the interaction defines its confidence score (if any) correctly." );
         addTip( "The score(s) should be defined at the interaction level under attribute(s) having for name " +
-                "'author-confidence' and nameAc 'MI:0621'." );
+                "'author-confidence' and nameAc 'MI:0621' or under confidence(s) having for type 'author-based confidence' and typeAc = 'MI:1221'." );
         addTip( "The scoring scheme should be defined at the experiment level in an attribute having for name " +
                 "'confidence-mapping' and nameAc 'MI:0622'." );
     }
@@ -51,13 +53,14 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction);
+        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
         // write the rule here ...
 
         final Collection<Annotation> atts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getAnnotations(),
                 AUTHOR_CONFIDENCE_MI_REF,
                 AUTHOR_CONFIDENCE);
+        boolean hasAddedExperimentContext = false;
 
         if ( ! atts.isEmpty() ) {
 
@@ -73,7 +76,44 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
                         context,
                         this ) );
             } else {
+                context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
+                hasAddedExperimentContext = true;
+                final Collection<Annotation> expAtts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getExperiment().getAnnotations(),
+                        CONFIDENCE_MAPPING_MI_REF,
+                        CONFIDENCE_MAPPING);
 
+                if( expAtts.isEmpty() ) {
+
+                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment()));
+                    messages.add( new ValidatorMessage( "Could not find a confidence mapping on the experiment attached to this interaction." ,
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+                }
+            }
+        }
+
+        final Collection<Confidence> confs = ConfidenceUtils.collectAllAnnotationsHavingTopic( interaction.getExperimentalConfidences(),
+                AUTHOR_SCORE_MI_REF,
+                AUTHOR_SCORE);
+
+        if ( ! confs.isEmpty() ) {
+
+            // check that in the list of experiment attached to an interaction there should be
+            // at least one with a confidence mapping.
+
+            if( interaction.getExperiment() == null ) {
+                // error, we should have at least one exp !!
+                messages.add( new ValidatorMessage( "No experiment defined for this interaction, furthermore, given " +
+                        "that the interaction defines an author score, the experiment " +
+                        "should have had a confidence mapping." ,
+                        MessageLevel.ERROR,
+                        context,
+                        this ) );
+            } else {
+                if (!hasAddedExperimentContext){
+                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
+                }
                 final Collection<Annotation> expAtts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getExperiment().getAnnotations(),
                         CONFIDENCE_MAPPING_MI_REF,
                         CONFIDENCE_MAPPING);

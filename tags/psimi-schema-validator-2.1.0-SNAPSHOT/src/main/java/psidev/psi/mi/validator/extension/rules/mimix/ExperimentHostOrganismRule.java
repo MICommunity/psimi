@@ -1,9 +1,9 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
-import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.Organism;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -43,19 +43,15 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
      * @param experiment an interaction to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( ExperimentDescription experiment ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Experiment experiment ) throws ValidatorException {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int experimentId = experiment.getId();
-
-        Mi25Context context = new Mi25Context();
-        context.setId( experimentId );
-        context.setObjectLabel("experiment");
+        Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
 
         // check on host organism
-        Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
-        if ( hostOrganisms.isEmpty() ) {
+        psidev.psi.mi.jami.model.Organism hostOrganism = experiment.getHostOrganism();
+        if ( hostOrganism == null ) {
 
             messages.add( new ValidatorMessage( "The experiment does not have a host organism and it is required for MIMIx.",
                                                 MessageLevel.ERROR,

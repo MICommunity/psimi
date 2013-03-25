@@ -1,11 +1,14 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -41,6 +44,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
         addTip( "The PSI-MI identifier for PubMed is: MI:0446" );
         addTip( "The PSI-MI identifier for DOI is: MI:0574" );
         addTip( "The PSI-MI identifier for primary-reference is: MI:0358" );
+        addTip( "The PSI-MI identifier for identity is: MI:0356" );
         addTip( "The PSI-MI identifier for contact-email is: MI:0634" );
         addTip( "The PSI-MI identifier for author-list is: MI:0636" );
         addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
@@ -59,40 +63,39 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(experiment);
+        Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
 
         boolean hasPublicationIdentifier = false;
         final Publication bibref = experiment.getPublication();
 
         if ( bibref != null ) {
 
-            final Xref xref = bibref.getXref();
-            if ( xref != null ) {
+            context.addAssociatedContext(RuleUtils.buildContext(bibref, "publication"));
 
-                final Collection<DbReference> dbReferences = xref.getAllDbReferences();
+            final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = bibref.getIdentifiers();
 
-                // search for reference type: primary-reference
-                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType(dbReferences, "MI:0358", "primary-reference", messages, context, this);
+            // search for reference type: primary-reference/identity
+            Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(dbReferences, Xref.PRIMARY_MI, Xref.PRIMARY);
+            primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dbReferences, Xref.IDENTITY_MI, Xref.IDENTITY));
+            
+            if ( !primaryReferences.isEmpty() ) {
+                // check if we have a pubmed or doi identifier available
 
-                if ( !primaryReferences.isEmpty() ) {
-                    // check if we have a pubmed or doi identifier available
+                final Collection<Xref> pubmeds = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, Xref.PUBMED_MI, Xref.PUBMED);
+                final Collection<Xref> dois = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, Xref.DOI_MI, Xref.DOI);
 
-                    final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed", messages, context, this);
-                    final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi", messages, context, this);
+                // the following line is commented because a new Rule has been implemented and is doing the same stuff
+                //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
 
-                    // the following line is commented because a new Rule has been implemented and is doing the same stuff
-                    //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
+                if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
+                    hasPublicationIdentifier = true;
 
-                    if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
-                        hasPublicationIdentifier = true;
-
-                        // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
-                        if (pubmeds.size() > 1 || dois.size() > 1){
-                            messages.add( new ValidatorMessage( "Only one pubmed/DOI identifier should have a reference-type set to 'primary-reference'.",
-                                    MessageLevel.WARN,
-                                    context,
-                                    this ) );
-                        }
+                    // Only one pubmed Id with a reference type set to 'primary-reference' or 'identity' is allowed
+                    if (pubmeds.size() > 1 || dois.size() > 1){
+                        messages.add( new ValidatorMessage( "Only one pubmed/DOI identifier should have a reference-type set to 'primary-reference' or 'identity'.",
+                                MessageLevel.WARN,
+                                context,
+                                this ) );
                     }
                 }
             }
@@ -101,10 +104,10 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
         if ( !hasPublicationIdentifier ) {
             // check that we have author email, publication title and author list : look first into bibRef and then into the experiment
-            Collection<Attribute> emails = RuleUtils.findByAttributeName( bibref.getAttributes(), "MI:0634", "contact-email" );
+            Collection<Annotation> emails = AnnotationUtils.collectAllAnnotationsHavingTopic(bibref.getAnnotations(), "MI:0634", "contact-email");
             int countValidEmail = 0;
             if ( emails.isEmpty() ) {
-                emails = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0634", "contact-email" );
+                emails = AnnotationUtils.collectAllAnnotationsHavingTopic( experiment.getAnnotations(), "MI:0634", "contact-email" );
             }
 
             if ( emails.isEmpty() ) {
@@ -116,7 +119,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                         this ) );
             } else {
                 int emptyEmailCount = 0;
-                for ( Attribute email : emails ) {
+                for ( Annotation email : emails ) {
                     final String address = email.getValue();
                     if ( address == null || address.trim().length() == 0 ) {
                         emptyEmailCount++;
@@ -150,10 +153,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 }
             }
 
-            Collection<Attribute> authorList = RuleUtils.findByAttributeName( bibref.getAttributes(), "MI:0636", "author-list" );
-            if ( authorList.isEmpty() ) {
-                  authorList = RuleUtils.findByAttributeName( experiment.getAttributes(), "MI:0636", "author-list" );
-            }
+            Collection<String> authorList = bibref.getAuthors();
 
             if ( authorList.isEmpty() ) {
                 // in the absence of a publication identifier, a author list is required.
@@ -163,10 +163,9 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                         context,
                         this ) );
             } else {
-                for ( Attribute author : authorList ) {
-                    final String value = author.getValue();
+                for ( String author : authorList ) {
                     int nonEmptyCount = 0;
-                    if ( value != null && value.trim().length() > 0 ) {
+                    if ( author != null && author.trim().length() > 0 ) {
                         nonEmptyCount++;
                     }
                     if ( nonEmptyCount == 0 ) {
@@ -181,31 +180,21 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 }
             }
 
-            Collection<Attribute> publicationTitles = RuleUtils.findByAttributeName( bibref.getAttributes(), null, "publication title" );
-            String title = null;
+            String publicationTitle = bibref.getTitle();
 
-            if ( publicationTitles.isEmpty() ) {
-                  publicationTitles = RuleUtils.findByAttributeName( experiment.getAttributes(), null, "publication title" );
+            Collection<Annotation> titles = AnnotationUtils.collectAllAnnotationsHavingTopic(bibref.getAnnotations(), Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
+            if (titles.size() == 0){
+                titles = AnnotationUtils.collectAllAnnotationsHavingTopic(experiment.getAnnotations(), Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
             }
-
-            if ( publicationTitles.isEmpty() ) {
-                 if ( experiment.hasNames() ) {
-                     title = experiment.getNames().getFullName();
-                 }
-            }
-            else{
-                title = publicationTitles.iterator().next().getValue();
-            }
-
-            if (publicationTitles.size() > 1){
-                 messages.add( new ValidatorMessage( publicationTitles.size() + " publications titles have been found and only one is expected.",
+            if (titles.size() > 1){
+                 messages.add( new ValidatorMessage( titles.size() + " publications titles have been found and only one is expected.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
             }
             else {
 
-                if ( title == null || title.trim().length() == 0 ) {
+                if ( publicationTitle == null || publicationTitle.trim().length() == 0 ) {
                     // in the absence of a publication identifier, an publication title is expected (i.e. experimentDescritpion.names.fullname)
                     messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non " +
                             "publication title is required.",

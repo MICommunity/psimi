@@ -1,12 +1,11 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.InteractionDetectionMethod;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -44,27 +43,16 @@ public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule
      * @param experiment an experiment to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( ExperimentDescription experiment ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Experiment experiment ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int experimentId = experiment.getId();
+        Mi25Context context = RuleUtils.buildContext(experiment.getInteractionDetectionMethod(), "interaction detection method");
+        context.addAssociatedContext(RuleUtils.buildContext(experiment, "experiment"));
 
-        Mi25Context context = new Mi25Context();
-        context.setId( experimentId );
-        context.setObjectLabel("experiment");
-
-        if (experiment.getInteractionDetectionMethod() == null){
-             messages.add( new ValidatorMessage( " The experiment does not have an Interaction Detection Method ( can be any children of MI:0001) and it is required for MIMIx",
-                                                    MessageLevel.ERROR,
-                                                    context,
-                                                    this ) );
-        }
-        else {
-            InteractionDetectionMethod intMethod = experiment.getInteractionDetectionMethod();
-            RuleUtils.checkPsiMIXRef(intMethod, messages, context, this, "MI:0001");
-        }
+        CvTerm intMethod = experiment.getInteractionDetectionMethod();
+        RuleUtils.checkPsiMIXRef(intMethod, messages, context, this, "MI:0001");
 
         return messages;
     }
