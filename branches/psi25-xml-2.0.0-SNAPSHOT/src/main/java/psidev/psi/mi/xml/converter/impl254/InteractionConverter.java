@@ -8,11 +8,13 @@ package psidev.psi.mi.xml.converter.impl254;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.events.MultipleExperimentsPerInteractionEvent;
 import psidev.psi.mi.xml.events.MultipleInteractionTypesEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
@@ -288,6 +290,14 @@ public class InteractionConverter {
                         }
                     }
                 }
+            }
+        }
+        // we have more than one experiment
+        if (listeners != null && !listeners.isEmpty() && mInteraction.getParticipants().isEmpty()){
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.interaction_without_any_participants, "Interaction " + mInteraction.getId() + " does not have any participants.");
+            evt.setSourceLocator(mInteraction.getSourceLocator());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
             }
         }
 
