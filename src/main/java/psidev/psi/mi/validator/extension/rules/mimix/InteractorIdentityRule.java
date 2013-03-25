@@ -1,9 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.Polymer;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -14,7 +15,8 @@ import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.BIOACTIVE_ENTITY_DATABASE_MI_REF;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.SEQUENCE_DATABASE_MI_REF;
 
 /**
  * <b> Check that each interactor has a cross reference to an appropriate reference database.</b>
@@ -24,7 +26,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
  * @version $Id$
  * @since 1.0
  */
-public class InteractorIdentityRule extends ObjectRule<Interactor> {
+public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor> {
 
     public InteractorIdentityRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -39,7 +41,7 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Interactor){
+        if (t instanceof psidev.psi.mi.jami.model.Interactor){
             return true;
         }
 
@@ -53,7 +55,7 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
      * @return a collection of validator messages.
      * @exception psidev.psi.tools.validator.ValidatorException if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( psidev.psi.mi.jami.model.Interactor interactor ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
@@ -61,8 +63,6 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
         final OntologyAccess mi = getMiOntology();
 
         // write the rule here ...
-        int interactorId = interactor.getId();
-
         if( RuleUtils.isSmallMolecule( ontologyManager, interactor ) || RuleUtils.isPolysaccharide( ontologyManager, interactor )) {
 
             // TODO cache these MI refs
@@ -70,17 +70,10 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
 
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
 
-            final Collection<DbReference> identities;
-            if( interactor.hasXref() ) {
-                identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                        Arrays.asList( IDENTITY_MI_REF ), dbMiRefs,
-                        null );
-            } else {
-                identities = Collections.EMPTY_LIST;
-            }
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
 
             if( identities.isEmpty() ) {
-                Mi25Context context = buildContext( interactorId );
+                Mi25Context context = RuleUtils.buildContext(interactor, "bioactive entity");
                 messages.add( new ValidatorMessage( "Interactor should have an Xref to a bioactive entity database with a ref type 'identity' ",
                         MessageLevel.WARN,
                         context,
@@ -95,26 +88,24 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
 
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
 
-            final Collection<DbReference> identities;
-
-            if( interactor.hasXref() ) {
-                identities = RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                        Arrays.asList( IDENTITY_MI_REF ),
-                        dbMiRefs,
-                        null );
-            } else {
-                identities = Collections.EMPTY_LIST;
-            }
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
 
             if( identities.isEmpty() ) {
-                Mi25Context context = buildContext( interactorId );
+                Mi25Context context = RuleUtils.buildContext(interactor, "biopolymer");
                     messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
                             MessageLevel.ERROR,
                             context,
                             this ) );
 
-                if (!interactor.hasSequence()){
-                    Mi25Context context2 = buildContext( interactorId );
+                if (interactor instanceof Polymer && ((Polymer) interactor).getSequence() == null){
+                    Mi25Context context2 = RuleUtils.buildContext( interactor, "biopolymer" );
+                    messages.add( new ValidatorMessage( "Biopolymer without a sequence and without any Xrefs to a sequence database with a ref type 'identity'.",
+                            MessageLevel.WARN,
+                            context2,
+                            this ) );
+                }
+                else {
+                    Mi25Context context2 = RuleUtils.buildContext( interactor, "biopolymer" );
                     messages.add( new ValidatorMessage( "Biopolymer without a sequence and without any Xrefs to a sequence database with a ref type 'identity'.",
                             MessageLevel.WARN,
                             context2,
@@ -127,14 +118,6 @@ public class InteractorIdentityRule extends ObjectRule<Interactor> {
         }
 
         return messages;
-    }
-
-    private Mi25Context buildContext( int interactorId ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setId( interactorId );
-        context.setObjectLabel("interactor");
-        return context;
     }
 
     public OntologyAccess getMiOntology() throws ValidatorException {

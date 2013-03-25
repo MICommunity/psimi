@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -21,7 +20,7 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class ProteinOrganismRule extends ObjectRule<Interactor> {
+public class ProteinOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor> {
     public ProteinOrganismRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -37,7 +36,7 @@ public class ProteinOrganismRule extends ObjectRule<Interactor> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Interactor){
+        if (t instanceof psidev.psi.mi.jami.model.Interactor){
             return true;
         }
 
@@ -45,17 +44,13 @@ public class ProteinOrganismRule extends ObjectRule<Interactor> {
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Interactor interactor) throws ValidatorException {
+    public Collection<ValidatorMessage> check(psidev.psi.mi.jami.model.Interactor interactor) throws ValidatorException {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int interactorId = interactor.getId();
+        Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
 
-        Mi25Context context = new Mi25Context();
-        context.setId(interactorId);
-        context.setObjectLabel("interactor");
-
-        if (RuleUtils.isProtein(ontologyManager, interactor) && !interactor.hasOrganism()){
+        if (RuleUtils.isProtein(ontologyManager, interactor) && interactor.getOrganism() == null){
             messages.add( new ValidatorMessage( "The protein does not have an organism and it is required for MIMIx.",
                                                 MessageLevel.ERROR,
                                                 context,

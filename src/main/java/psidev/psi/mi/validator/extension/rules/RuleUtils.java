@@ -164,14 +164,14 @@ public final class RuleUtils {
     // Utility methods
 
     public static void checkOrganism( OntologyManager ontologyManager,
-                                      Organism organism,
+                                      psidev.psi.mi.jami.model.Organism organism,
                                       Mi25Context context,
                                       Collection<ValidatorMessage> messages,
                                       Rule rule,
                                       String objectType,
                                       String organismType ) {
 
-        int taxId = organism.getNcbiTaxId();
+        int taxId = organism.getTaxId();
         switch ( taxId ) {
 
             // special cases in PSI-MI that do not exist in NEWT
@@ -376,8 +376,8 @@ public final class RuleUtils {
         return isOfType( ontologyManager, interactor.getType(), RuleUtils.PEPTIDE_MI_REF, false );
     }
 
-    public static boolean isBindingSite( OntologyManager ontologyManager, Feature feature ) {
-        return isOfType( ontologyManager, feature.getFeatureType(), RuleUtils.BINDING_SITE, true );
+    public static boolean isBindingSite( OntologyManager ontologyManager, FeatureEvidence feature ) {
+        return isOfType( ontologyManager, feature.getType(), RuleUtils.BINDING_SITE, true );
     }
 
     public static Set<String> collectIds( Collection<DbReference> refs ) {
@@ -572,7 +572,7 @@ public final class RuleUtils {
         Mi25Context context;
         context = new Mi25Context();
         if (object instanceof FileSourceContext){
-            context.extractFileContextOnlyFrom((FileSourceContext)object);
+            context.extractFileContextOnlyFrom((FileSourceContext) object);
         }
         else if (object instanceof HasId){
             context.extractIdAndLabelFrom((HasId) object);

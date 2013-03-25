@@ -1,9 +1,9 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Feature;
-import psidev.psi.mi.xml.model.Range;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class BindingDomainSizeRule extends ObjectRule<Feature> {
+public class BindingDomainSizeRule extends ObjectRule<FeatureEvidence> {
     public BindingDomainSizeRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -35,147 +35,109 @@ public class BindingDomainSizeRule extends ObjectRule<Feature> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Feature){
+        if (t instanceof FeatureEvidence){
             return true;
         }
 
         return false;
     }
 
-    private long getMaxRangeLength(Range range, boolean isStartDefined, boolean isEndDefined){
+    private long getMaxRangeLength(psidev.psi.mi.jami.model.Range range, boolean isStartDefined, boolean isEndDefined){
         long startPos = 0;
         long endPos = 0;
 
-        if (!isStartDefined){
-            startPos = 1;
-        }
-        else {
-
-            if (range.getBeginInterval() != null){
-                startPos = range.getBeginInterval().getBegin();
-            }
-            else if (range.getBegin() != null){
-                startPos = range.getBegin().getPosition();
-            }
+        if (isStartDefined){
+            startPos = range.getStart().getStart();
         }
 
         if (isEndDefined) {
-            if (range.getEndInterval() != null){
-                endPos = range.getEndInterval().getEnd();
-            }
-            else if (range.getEnd() != null){
-                endPos = range.getEndPosition().getPosition();
-            }
+            endPos = range.getEnd().getEnd();
         }
 
-        if (FeatureUtils.isLessThan(range.getStartStatus())){
-            startPos =  1;
+        if (PositionUtils.isLessThan(range.getStart())){
+            startPos =  Math.max(startPos - 1, 1);
         }
-        else if (FeatureUtils.isMoreThan(range.getStartStatus())){
+        else if (PositionUtils.isGreaterThan(range.getStart())){
             startPos =  Math.min(startPos + 1, endPos);
         }
 
-        if (FeatureUtils.isLessThan(range.getEndStatus())){
+        if (PositionUtils.isLessThan(range.getEnd())){
             endPos =  Math.max(endPos - 1, startPos);
         }
-        else if (FeatureUtils.isMoreThan(range.getStartStatus())){
+        else if (PositionUtils.isGreaterThan(range.getEnd())){
             endPos =  endPos + 1;
         }
         return endPos - startPos + 1;
     }
 
-    private long getMinRangeLength(Range range, boolean isStartDefined, boolean isEndDefined){
+    private long getMinRangeLength(psidev.psi.mi.jami.model.Range range, boolean isStartDefined, boolean isEndDefined){
 
         long startPos = 0;
         long endPos = 0;
 
         if (isStartDefined){
-
-            if (range.getBeginInterval() != null){
-                startPos = range.getBeginInterval().getEnd();
-            }
-            else if (range.getBegin() != null){
-                startPos = range.getBegin().getPosition();
-            }
+            startPos = range.getStart().getEnd();
         }
 
         if (isEndDefined) {
-            if (range.getEndInterval() != null){
-                endPos = range.getEndInterval().getBegin();
-            }
-            else if (range.getEnd() != null){
-                endPos = range.getEndPosition().getPosition();
-            }
+            endPos = range.getEnd().getStart();
         }
 
-        if (FeatureUtils.isLessThan(range.getStartStatus())){
+        if (PositionUtils.isLessThan(range.getStart())){
             startPos =  Math.max(1, startPos - 1);
         }
-        else if (FeatureUtils.isMoreThan(range.getStartStatus())){
+        else if (PositionUtils.isGreaterThan(range.getStart())){
             startPos =  Math.min(startPos + 1, endPos);
         }
 
-        if (FeatureUtils.isLessThan(range.getEndStatus())){
+        if (PositionUtils.isLessThan(range.getEnd())){
             endPos =  Math.max(endPos - 1, startPos);
         }
-        else if (FeatureUtils.isMoreThan(range.getStartStatus())){
+        else if (PositionUtils.isGreaterThan(range.getEnd())){
             endPos =  endPos + 1;
-        }
-
-        if (!isStartDefined){
-            startPos = endPos;
-        }
-        else if (!isEndDefined){
-            endPos = startPos;
         }
 
         return endPos - startPos + 1;
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Feature feature) throws ValidatorException {
+    public Collection<ValidatorMessage> check(FeatureEvidence feature) throws ValidatorException {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = new Mi25Context();
-        context.setId(feature.getId());
-        context.setObjectLabel("feature");
+        Mi25Context context = RuleUtils.buildContext(feature, "feature");
+        if (feature.getParticipantEvidence() != null){
+            context.addAssociatedContext(RuleUtils.buildContext(feature.getParticipantEvidence(), "participant"));
+        }
 
-        if (feature.hasFeatureType()){
+        if (feature.getType() != null){
             if (RuleUtils.isBindingSite(ontologyManager, feature)){
-                Collection<Range> ranges = feature.getFeatureRanges();
+                Collection<psidev.psi.mi.jami.model.Range> ranges = feature.getRanges();
 
                 int minSize = 0;
                 int maxSize = 0;
                 boolean isFeatureSiteDefined = false;
 
-                for (Range range : ranges){
-                    if (range.getStartStatus() == null || range.getEndStatus() == null){
+                for (psidev.psi.mi.jami.model.Range range : ranges){
+
+                    boolean isStartDefined = true;
+                    boolean isEndDefined = true;
+
+                    if (range.getStart().isPositionUndetermined()){
+                        isStartDefined = false;
+                    }
+
+                    if (range.getEnd().isPositionUndetermined()){
+                        isEndDefined = false;
+                    }
+
+                    isFeatureSiteDefined = isStartDefined && isEndDefined;
+
+                    if (!isFeatureSiteDefined){
                         break;
                     }
-                    else {
-                        long startPos = 0;
-                        long endPos = 0;
 
-                        boolean isStartDefined = true;
-                        boolean isEndDefined = true;
-
-                        if (FeatureUtils.isUndetermined(range.getStartStatus()) || FeatureUtils.isNTerminalRegion(range.getStartStatus()) || FeatureUtils.isCTerminalRegion(range.getStartStatus())){
-                            isStartDefined = false;
-                        }
-
-                        if (FeatureUtils.isUndetermined(range.getEndStatus()) || FeatureUtils.isNTerminalRegion(range.getEndStatus()) || FeatureUtils.isCTerminalRegion(range.getEndStatus())){
-                            isEndDefined = false;
-                        }
-
-                        isFeatureSiteDefined = isStartDefined && isEndDefined;
-
-                        if (!isFeatureSiteDefined){
-                            break;
-                        }
-
-                        minSize += getMinRangeLength(range, isStartDefined, isEndDefined);
-                        maxSize += getMaxRangeLength(range, isStartDefined, isEndDefined);
-                    }
+                    minSize += getMinRangeLength(range, isStartDefined, isEndDefined);
+                    maxSize += getMaxRangeLength(range, isStartDefined, isEndDefined);
                 }
 
                 if (minSize < 3 && maxSize < 3 && isFeatureSiteDefined){
