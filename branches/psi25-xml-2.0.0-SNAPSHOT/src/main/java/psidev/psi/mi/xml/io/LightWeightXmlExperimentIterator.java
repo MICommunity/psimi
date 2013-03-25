@@ -1,6 +1,5 @@
 package psidev.psi.mi.xml.io;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.events.InvalidXmlEvent;
@@ -85,7 +84,7 @@ public class LightWeightXmlExperimentIterator implements Iterator<ExperimentDesc
                 } while (desc == null && this.indexedEntriesIterator.hasNext() && errorInLine);
 
                 if (errorInLine && desc == null){
-                    InvalidXmlEvent evt = new InvalidXmlEvent("Error while reading the next entry. " + ExceptionUtils.getFullStackTrace(e));
+                    InvalidXmlEvent evt = new InvalidXmlEvent("Error while reading the next entry. " , e);
                     if (e.getCurrentObject() instanceof FileSourceContext){
                         FileSourceContext context = (FileSourceContext) e.getCurrentObject();
                         evt.setSourceLocator(context.getSourceLocator());
