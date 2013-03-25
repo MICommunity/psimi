@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -21,7 +20,7 @@ import java.util.List;
  * @since <pre>24/01/11</pre>
  */
 
-public class InteractorTypeRule extends ObjectRule<Interactor>{
+public class InteractorTypeRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor>{
 
         public InteractorTypeRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -37,7 +36,7 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Interactor){
+        if (t instanceof psidev.psi.mi.jami.model.Interactor){
             return true;
         }
 
@@ -51,21 +50,14 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
      * @return a collection of validator messages.
      * @exception psidev.psi.tools.validator.ValidatorException if we fail to retrieve the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( psidev.psi.mi.jami.model.Interactor interactor ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int interactorId = interactor.getId();
-        Mi25Context context = buildContext( interactorId );
+        Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
 
-        if (interactor.getInteractorType() == null){
-            messages.add( new ValidatorMessage( "The interactor does not have an interactor type. It is required by IMEx.",
-                            MessageLevel.ERROR,
-                            context,
-                            this ) );
-        }
-        else if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
+        if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
 
                     messages.add( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
                             "should be removed from the record.",
@@ -75,18 +67,10 @@ public class InteractorTypeRule extends ObjectRule<Interactor>{
         }
         else {
 
-            RuleUtils.checkPsiMIXRef(interactor.getInteractorType(), messages, context, this, RuleUtils.INTERACTOR_TYPE);
+            RuleUtils.checkPsiMIXRef(interactor.getType(), messages, context, this, RuleUtils.INTERACTOR_TYPE);
         }
 
         return messages;
-    }
-
-    private Mi25Context buildContext( int interactorId ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setId( interactorId );
-        context.setObjectLabel("interactor");
-        return context;
     }
 
     public String getId() {

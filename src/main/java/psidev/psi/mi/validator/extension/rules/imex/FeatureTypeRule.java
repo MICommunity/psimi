@@ -2,9 +2,9 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Feature;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -23,7 +23,7 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class FeatureTypeRule extends ObjectRule<Feature> {
+public class FeatureTypeRule extends ObjectRule<FeatureEvidence> {
 
     private static final Log log = LogFactory.getLog(FeatureTypeRule.class);
 
@@ -39,7 +39,7 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Feature){
+        if (t instanceof FeatureEvidence){
             return true;
         }
 
@@ -47,16 +47,14 @@ public class FeatureTypeRule extends ObjectRule<Feature> {
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Feature feature) throws ValidatorException {
+    public Collection<ValidatorMessage> check(FeatureEvidence feature) throws ValidatorException {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = new Mi25Context();
-        context.setId(feature.getId());
-        context.setObjectLabel("feature");
+        Mi25Context context = RuleUtils.buildContext(feature, "feature");
 
-        if (feature.hasFeatureType()){
+        if (feature.getType() != null){
 
-            RuleUtils.checkPsiMIOrModXRef(feature.getFeatureType(), messages, context, this, RuleUtils.FEATURE_TYPE);
+            RuleUtils.checkPsiMIOrModXRef(feature.getType(), messages, context, this, RuleUtils.FEATURE_TYPE);
 
         }
         else {

@@ -2,11 +2,11 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.InteractionType;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -39,23 +39,20 @@ public class InteractionTypeRule extends Mi25InteractionRule{
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Interaction interaction) throws ValidatorException {
+    public Collection<ValidatorMessage> check(InteractionEvidence interaction) throws ValidatorException {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = new Mi25Context();
-        context.setId(interaction.getId());
-        context.setObjectLabel( "interaction" );
+        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
-        if (interaction.hasInteractionTypes()){
-            Collection<InteractionType> interactionTypes = interaction.getInteractionTypes();
+        if (interaction.getType() != null){
+            CvTerm interactionType = interaction.getType();
 
-            for (InteractionType type : interactionTypes){
-                RuleUtils.checkPsiMIXRef(type, messages, context, this, RuleUtils.INTERACTION_TYPE);
-            }
+            RuleUtils.checkPsiMIXRef(interactionType, messages, context, this, RuleUtils.INTERACTION_TYPE);
+
         }
         else {
-            messages.add( new ValidatorMessage( "The interaction does not have any interaction types. At least one interaction type is required by IMEx.'",
+            messages.add( new ValidatorMessage( "The interaction does not have an interaction type. At least one interaction type is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,
                     this ) );

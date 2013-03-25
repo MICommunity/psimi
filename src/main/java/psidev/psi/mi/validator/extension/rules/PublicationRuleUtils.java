@@ -89,29 +89,23 @@ public class PublicationRuleUtils {
         }
     }
 
-    public static void checkImexInteractionId(Collection<DbReference> imexPrimaryReferences, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
+    public static void checkImexInteractionId(String imexPrimaryReference, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
 
         // If there is a reference type set to 'imex-primary'
-        if (!imexPrimaryReferences.isEmpty()){
-            for ( DbReference imex  : imexPrimaryReferences ) {
-                final String imexId = imex.getId();
-                if( imexId != null) {
-                    if (imexId.trim().length() > 0 ){
-                        if (!IMEx_INTERACTION_ID.matcher(imexId).matches()){
-                            messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx-xx).",
-                                    MessageLevel.ERROR,
-                                    context,
-                                    experimentRule ) );
-                        }
-                    }
-
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx-xx).",
+        if (!imexPrimaryReference.isEmpty()){
+            if (imexPrimaryReference.trim().length() > 0 ){
+                if (!IMEx_INTERACTION_ID.matcher(imexPrimaryReference).matches()){
+                    messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
                             MessageLevel.ERROR,
                             context,
                             experimentRule ) );
                 }
+            }
+            else {
+                messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
+                        MessageLevel.ERROR,
+                        context,
+                        experimentRule ) );
             }
         }
     }

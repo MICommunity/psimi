@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -21,7 +20,7 @@ import java.util.List;
  * @since 2.0
  *
  */
-public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
+public class TaxIdHostOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Organism> {
 
     public TaxIdHostOrganismRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -38,7 +37,7 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Organism){
+        if (t instanceof psidev.psi.mi.jami.model.Organism){
             return true;
         }
         return false;
@@ -51,11 +50,11 @@ public class TaxIdHostOrganismRule extends ObjectRule<Organism> {
      * @param organism an interaction to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( Organism organism ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( psidev.psi.mi.jami.model.Organism organism ) throws ValidatorException {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = new Mi25Context();
+        Mi25Context context = RuleUtils.buildContext(organism, "organism");
 
         RuleUtils.checkImexOrganism( ontologyManager, organism, context, messages, this,
                                           "Experiment or Interactor", "organism" );

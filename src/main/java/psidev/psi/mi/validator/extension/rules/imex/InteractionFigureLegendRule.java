@@ -1,10 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Attribute;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -32,26 +32,24 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
         addTip( "figure-legend accession in the PSI-MI ontology is " + RuleUtils.FIGURE_LEGEND );    }
 
     @Override
-    public Collection<ValidatorMessage> check(Interaction interaction) throws ValidatorException {
+    public Collection<ValidatorMessage> check(InteractionEvidence interaction) throws ValidatorException {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = new Mi25Context();
-        context.setId(interaction.getId());
-        context.setObjectLabel("interaction");
+        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
-        if (interaction.hasAttributes()){
-            Collection<Attribute> attributes = interaction.getAttributes();
+        if (!interaction.getAnnotations().isEmpty()){
+            Collection<Annotation> attributes = interaction.getAnnotations();
 
             boolean hasFigureLegend = false;
 
-            for (Attribute attribute : attributes){
-                if (attribute.getNameAc() != null){
-                    if (RuleUtils.FIGURE_LEGEND_MI_REF.equals(attribute.getNameAc())){
+            for (Annotation attribute : attributes){
+                if (attribute.getTopic().getIdentifiers() != null){
+                    if (RuleUtils.FIGURE_LEGEND_MI_REF.equals(attribute.getTopic().getMIIdentifier())){
                         hasFigureLegend = true;
                     }
                 }
-                else if (attribute.getName() != null){
-                    if (RuleUtils.FIGURE_LEGEND.equalsIgnoreCase(attribute.getName())){
+                else if (attribute.getTopic().getShortName() != null){
+                    if (RuleUtils.FIGURE_LEGEND.equalsIgnoreCase(attribute.getTopic().getShortName())){
                         hasFigureLegend = true;
                     }
                 }

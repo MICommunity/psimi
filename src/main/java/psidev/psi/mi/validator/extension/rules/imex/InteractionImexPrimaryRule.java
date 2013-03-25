@@ -1,11 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.PublicationRuleUtils;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -41,40 +40,20 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
      * @param interaction an interaction to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( InteractionEvidence interaction ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int interactionId = interaction.getId();
-
-        Mi25Context context = new Mi25Context();
-        context.setObjectLabel("interaction");
-        context.setId( interactionId );
+        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
         // Check xRef
-        if (interaction.hasXref()){
-            Collection<DbReference> dbReferences = interaction.getXref().getAllDbReferences();
+        if (interaction.getImexId() != null){
 
-            // search for reference type: imex-primary (should not be empty)
-            Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0662", "imex-primary", messages, context, this );
-
-            // At least one cross reference type 'imex-primary' is required and the Imex ID must be valid.
-            if (imexReferences.isEmpty()){
-                messages.add( new ValidatorMessage( "The interaction has " + dbReferences.size() + " cross reference(s) but none of them has a reference type set to 'imex-primary'. Each interaction should have" +
-                        "a cross reference 'imex-primary' " +
-                        "which extends the cross reference 'imex-primary' of the experiment.",
-                        MessageLevel.WARN,
-                        context,
-                        this ) );
-            }
-            else {
-                PublicationRuleUtils.checkImexInteractionId(imexReferences, messages, context, this);
-            }
-
+            PublicationRuleUtils.checkImexInteractionId(interaction.getImexId(), messages, context, this);
         }
         else {
-            messages.add( new ValidatorMessage( "The interaction does not have any cross references. At least one cross reference with a reference type set" +
+            messages.add( new ValidatorMessage( "The interaction does not have a imex primary cross references. A cross reference with a reference type set" +
                     " to 'imex-primary' (MI:0662) is recommended for IMEx.",
                     MessageLevel.WARN,
                     context,

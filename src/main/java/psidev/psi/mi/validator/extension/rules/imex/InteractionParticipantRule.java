@@ -1,8 +1,9 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -31,19 +32,15 @@ public class InteractionParticipantRule extends Mi25InteractionRule {
     }
 
     @Override
-    public Collection<ValidatorMessage> check(Interaction interaction) throws ValidatorException {
+    public Collection<ValidatorMessage> check(InteractionEvidence interaction) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int interactionId = interaction.getId();
-
-        Mi25Context context = new Mi25Context();
-        context.setId( interactionId );
-        context.setObjectLabel("interaction");
+        Mi25Context context = RuleUtils.buildContext(interaction);
 
         // Check participants
-        if (interaction.getParticipants().isEmpty()){
+        if (interaction.getParticipantEvidences().isEmpty()){
             messages.add( new ValidatorMessage( "The interaction does not have any participants and it is required by IMEx.",
                         MessageLevel.ERROR,
                         context,
