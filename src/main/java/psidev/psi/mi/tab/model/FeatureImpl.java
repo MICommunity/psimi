@@ -70,7 +70,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
             throw new IllegalArgumentException("You must give a non null feature type.");
         }
 
-        if (range != null && range.isEmpty()){
+        if (range != null && !range.isEmpty()){
             for (String r : range){
                 try{
                     getRangesAsString().add(r);
@@ -82,6 +82,16 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
         }
     }
 
+    public FeatureImpl(String featureType) {
+        super();
+
+        if (featureType != null){
+            setType(new DefaultCvTerm(featureType));
+        }
+        else {
+            throw new IllegalArgumentException("You must give a non null feature type.");
+        }
+    }
 
     //////////////////////
     // Constructors
@@ -119,7 +129,7 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
             throw new IllegalArgumentException("You must give a non null feature type.");
         }
 
-        if (range != null && range.isEmpty()){
+        if (range != null && !range.isEmpty()){
             for (String r : range){
                 try{
                     getRangesAsString().add(r);
@@ -128,6 +138,16 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
                     log.error("The range " + r + " will be ignored because not valid", e);
                 }
             }
+        }
+    }
+
+    public FeatureImpl(Interactor interactor, String featureType) {
+        super(interactor);
+        if (featureType != null){
+            setType(new DefaultCvTerm(featureType));
+        }
+        else {
+            throw new IllegalArgumentException("You must give a non null feature type.");
         }
     }
 
@@ -199,12 +219,14 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
      */
     public void setRangeAsString(List<String> ranges) {
         getRangesAsString().clear();
-        for (String r : ranges){
-            try{
-                rangesAsString.add(r);
-            }
-            catch (IllegalStateException e){
-                log.error("The range " + r + " will be ignored because not valid", e);
+        if (ranges != null && !ranges.isEmpty()){
+            for (String r : ranges){
+                try{
+                    rangesAsString.add(r);
+                }
+                catch (IllegalStateException e){
+                    log.error("The range " + r + " will be ignored because not valid", e);
+                }
             }
         }
     }
