@@ -15,10 +15,12 @@
  */
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -28,7 +30,8 @@ import psidev.psi.tools.validator.ValidatorMessage;
 
 import java.util.*;
 
-import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.INTERACTION_DATABASE_MI_REF;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.collectAccessions;
 
 /**
  * Checks that the given interaction does have an identity xref to a valid interaction database, as defined in the
@@ -54,24 +57,16 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
                 "PSI-MI controlled vocabularies." );
     }
 
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
-        int interactionId = interaction.getId();
+    public Collection<ValidatorMessage> check( InteractionEvidence interaction ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // write the rule here ...
-        Collection<DbReference> identities = null;
-        if( interaction.hasXref() ) {
-            identities = searchReferences( interaction.getXref().getAllDbReferences(),
-                                           IDENTITY_MI_REF,
-                                           null, null );
-        }
+        Collection<Xref> identities = XrefUtils.collectAllXrefsHavingQualifier(interaction.getIdentifiers(), Xref.IDENTITY_MI, Xref.IDENTITY);
         
-        if( identities == null || identities.isEmpty() ) {
-            Mi25Context context = new Mi25Context();
-            context.setId( interactionId );
-            context.setObjectLabel("interaction");
+        if( identities.isEmpty() ) {
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
             messages.add( new ValidatorMessage( "An interaction requires an identity cross reference to an interaction database (child term of "+ INTERACTION_DATABASE_MI_REF +")." ,
                                                 MessageLevel.ERROR,
                                                 context,
@@ -83,14 +78,9 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
             final Set<OntologyTermI> dbTerms = access.getValidTerms( INTERACTION_DATABASE_MI_REF, true, false );
             final Set<String> interactionDbMis = collectAccessions( dbTerms );
 
-            final Collection<DbReference> dbRefs = searchReferences( identities,
-                                                                     null,
-                                                                     interactionDbMis,
-                                                                     null );
+            final Collection<Xref> dbRefs = XrefUtils.searchAllXrefsHavingDatabase( identities, interactionDbMis);
             if( dbRefs.isEmpty() ) {
-                Mi25Context context = new Mi25Context();
-                context.setId( interactionId );
-                context.setObjectLabel("interaction");
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
                 String dbList = buildDbList( identities );
                 String msg = null;
                 if( dbList.length() > 0 ) {
@@ -110,12 +100,12 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
         return messages;
     }
 
-    private String buildDbList( Collection<DbReference> identities ) {
+    private String buildDbList( Collection<Xref> identities ) {
         StringBuilder sb = new StringBuilder( 128 );
-        for ( Iterator<DbReference> dbReferenceIterator = identities.iterator(); dbReferenceIterator.hasNext(); ) {
-            DbReference ref = dbReferenceIterator.next();
-            final String db = ref.getDb();
-            final String dbAc = ref.getDbAc();
+        for ( Iterator<Xref> dbReferenceIterator = identities.iterator(); dbReferenceIterator.hasNext(); ) {
+            Xref ref = dbReferenceIterator.next();
+            final String db = ref.getDatabase().getShortName();
+            final String dbAc = ref.getDatabase().getMIIdentifier();
             if( db != null && db.length() > 0 ) {
                 sb.append( db ).append(" ,");
             } else if( dbAc != null && dbAc.length() > 0 ) {

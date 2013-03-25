@@ -1,10 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Tissue;
-import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -13,6 +13,7 @@ import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.IDENTITY_MI_REF;
@@ -25,7 +26,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.IDENTITY_MI_REF;
  * @since <pre>25/01/11</pre>
  */
 
-public class TissueXRefRule extends ObjectRule<Tissue> {
+public class TissueXRefRule extends ObjectRule<Organism> {
 
     public TissueXRefRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
@@ -41,37 +42,42 @@ public class TissueXRefRule extends ObjectRule<Tissue> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Tissue){
+        if (t instanceof Organism){
             return true;
         }
         return false;
     }
 
     /**
-     * @param tissue to check on.
+     * @param organism to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( Tissue tissue ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Organism organism ) throws ValidatorException {
 
+        if (organism.getTissue() == null){
+            return Collections.EMPTY_LIST;
+        }
+
+        CvTerm tissue = organism.getTissue();
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = new Mi25Context();
+        Mi25Context context = RuleUtils.buildContext(tissue, "tissue");
+        context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
 
-        if (tissue.getXref() != null){
-            Xref ref = tissue.getXref();
+        if (!tissue.getIdentifiers().isEmpty()){
 
-            Collection<DbReference> brendaRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.BRENDA_MI_REF, RuleUtils.BRENDA, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
-            Collection<DbReference> tissueRef = RuleUtils.findByDatabaseAndReferenceType(ref.getAllDbReferences(), RuleUtils.TISSUE_LIST_MI_REF, RuleUtils.TISSUE_LIST, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY, messages, context, this);
+            Collection<psidev.psi.mi.jami.model.Xref> brendaRef = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(tissue.getIdentifiers(), RuleUtils.BRENDA_MI_REF, RuleUtils.BRENDA, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
+            Collection<psidev.psi.mi.jami.model.Xref> tissueRef = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(tissue.getIdentifiers(), RuleUtils.TISSUE_LIST_MI_REF, RuleUtils.TISSUE_LIST, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
 
             if (brendaRef.isEmpty() && tissueRef.isEmpty()){
-                messages.add( new ValidatorMessage( "The tissue " + (tissue.getNames() != null ? tissue.getNames().getShortLabel() : "") + " has "+ref.getAllDbReferences().size()+" cross reference(s) but none of them is a BRENDA or Tissue List cross reference with a qualifier 'identity' and it  is strongly recommended.'",
+                messages.add( new ValidatorMessage( "The tissue " + tissue.getShortName() + " has "+tissue.getIdentifiers().size()+" identifier(s) but none of them is a BRENDA or Tissue List cross reference with a qualifier 'identity' and it  is strongly recommended.'",
                         MessageLevel.WARN,
                         context,
                         this ) );
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The tissue " + (tissue.getNames() != null ? tissue.getNames().getShortLabel() : "") + " doesn't have any cross references and at least one cross reference to BRENDA or Tissue List " +
+            messages.add( new ValidatorMessage( "The tissue " + tissue.getShortName() + " doesn't have any cross references and at least one cross reference to BRENDA or Tissue List " +
                     "qualifier 'identity' is strongly recommended.'",
                     MessageLevel.WARN,
                     context,

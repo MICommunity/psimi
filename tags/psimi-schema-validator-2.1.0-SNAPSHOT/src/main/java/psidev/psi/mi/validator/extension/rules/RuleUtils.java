@@ -17,22 +17,19 @@ package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.xml.model.*;
-import psidev.psi.mi.xml.model.Feature;
 import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Organism;
-import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.Rule;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
@@ -234,14 +231,14 @@ public final class RuleUtils {
     }
 
     public static void checkImexOrganism( OntologyManager ontologyManager,
-                                          Organism organism,
+                                          psidev.psi.mi.jami.model.Organism organism,
                                           Mi25Context context,
                                           Collection<ValidatorMessage> messages,
                                           Rule rule,
                                           String objectType,
                                           String organismType ) {
 
-        int taxId = organism.getNcbiTaxId();
+        int taxId = organism.getTaxId();
         switch ( taxId ) {
 
             // special cases for Imex
@@ -448,60 +445,50 @@ public final class RuleUtils {
      * @param rule
      * @param mi
      */
-    public static void checkPsiMIOrModXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
-        Xref xref = container.getXref();
+    public static void checkPsiMIOrModXRef(CvTerm container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
         String containerName = container.getClass().getSimpleName();
 
-        if (xref != null){
-            Collection<DbReference> allDbRef = xref.getAllDbReferences();
+        Collection<psidev.psi.mi.jami.model.Xref> allDbRef = container.getIdentifiers();
 
-            if (!allDbRef.isEmpty()){
-                // search for database : db="psi-mi" dbAc="MI:0488"
-                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
-                Collection<DbReference> psiModReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0897", "psi-mod","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
+        if (!allDbRef.isEmpty()){
+            // search for database : db="psi-mi" dbAc="MI:0488"
+            Collection<psidev.psi.mi.jami.model.Xref> psiMiReferences = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(allDbRef, CvTerm.PSI_MI_MI, CvTerm.PSI_MI, Xref.IDENTITY_MI, Xref.IDENTITY);
+            Collection<psidev.psi.mi.jami.model.Xref> psiModReferences = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(allDbRef, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD, Xref.IDENTITY_MI, Xref.IDENTITY);
 
-                if (!psiModReferences.isEmpty() && !psiMiReferences.isEmpty()){
-                    messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and "+ psiMiReferences.size() +" psi-mi cross references with type 'identity'. As it is confusing, it is better to give only one identity cross reference (psi-mi or psi-mod)",
-                            MessageLevel.WARN,
+            if (!psiModReferences.isEmpty() && !psiMiReferences.isEmpty()){
+                messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and "+ psiMiReferences.size() +" psi-mi cross references with type 'identity'. As it is confusing, it is better to give only one identity cross reference (psi-mi or psi-mod)",
+                        MessageLevel.WARN,
+                        context,
+                        rule ) );
+            }
+            else if (!psiModReferences.isEmpty()){
+                if (psiModReferences.size() != 1){
+                    messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and only one is allowed.",
+                            MessageLevel.ERROR,
                             context,
                             rule ) );
                 }
-                else if (!psiModReferences.isEmpty()){
-                    if (psiModReferences.size() != 1){
-                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModReferences.size() +" psi-mod cross references with type 'identity' and only one is allowed.",
-                                MessageLevel.ERROR,
-                                context,
-                                rule ) );
-                    }
 
-                }
-                else if (!psiMiReferences.isEmpty()){
-                    // There is only one psi-mi database reference for an InteractionDetectionMethod
-                    if (psiMiReferences.size() != 1){
+            }
+            else if (!psiMiReferences.isEmpty()){
+                // There is only one psi-mi database reference for an InteractionDetectionMethod
+                if (psiMiReferences.size() != 1){
 
-                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
-                                MessageLevel.ERROR,
-                                context,
-                                rule ) );
-                    }
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
+                    messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
                             MessageLevel.ERROR,
                             context,
                             rule ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
+                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
-
             }
         }
         else {
-            messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897' in the XRef/primaryRef element) with type 'identity'(refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of \"+ mi +\").",
+            messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
                     MessageLevel.ERROR,
                     context,
                     rule ) );

@@ -1,9 +1,10 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.Polymer;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -25,7 +26,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
  * @version $Id$
  * @since 2.0
  */
-public class ProteinIdentityRule extends ObjectRule<Interactor> {
+public class ProteinIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor> {
 
     public ProteinIdentityRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -42,7 +43,7 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Interactor){
+        if (t instanceof psidev.psi.mi.jami.model.Interactor){
             return true;
         }
 
@@ -56,44 +57,35 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
      * @return a collection of validator messages.
      * @exception psidev.psi.tools.validator.ValidatorException if we fail to retrieve the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interactor interactor ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( psidev.psi.mi.jami.model.Interactor interactor ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int interactorId = interactor.getId();
-
         if( RuleUtils.isProtein( ontologyManager, interactor )) {
 
-            final Collection<DbReference> identities =
-                    RuleUtils.searchReferences( interactor.getXref().getAllDbReferences(),
-                            Arrays.asList( IDENTITY_MI_REF ),
-                            Arrays.asList( UNIPROTKB_MI_REF, REFSEQ_MI_REF ),
-                            null);
+            final Collection<Xref> identities =
+                    XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(),
+                            Arrays.asList(Xref.IDENTITY_MI),
+                            Arrays.asList(UNIPROTKB_MI_REF, REFSEQ_MI_REF));
 
-            final Collection<DbReference> identitiesUniprot =
-                    RuleUtils.searchReferences( identities,
-                            Arrays.asList( IDENTITY_MI_REF ),
-                            Arrays.asList( UNIPROTKB_MI_REF ),
-                            null);
+            final Collection<Xref> identitiesUniprot = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(),
+                    Xref.UNIPROTKB_MI, Xref.UNIPROTKB, Xref.IDENTITY_MI, Xref.IDENTITY);
 
-            final Collection<DbReference> identitiesRefseq =
-                    RuleUtils.searchReferences( identities,
-                            Arrays.asList( IDENTITY_MI_REF ),
-                            Arrays.asList( REFSEQ_MI_REF ),
-                            null);
+            final Collection<Xref> identitiesRefseq = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(),
+                    Xref.REFSEQ_MI, Xref.REFSEQ, Xref.IDENTITY_MI, Xref.IDENTITY);
 
             if( identities.isEmpty() ) {
 
-                if (interactor.hasSequence()){
-                    Mi25Context context = buildContext( interactorId );
+                if (interactor instanceof Polymer && ((Polymer)interactor).getSequence() != null){
+                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
                     messages.add( new ValidatorMessage( "Proteins should have a Xref to UniProtKB and RefSeq with a ref type 'identity' ",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 else {
-                    Mi25Context context = buildContext( interactorId );
+                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
                     messages.add( new ValidatorMessage( "Proteins should have a Xref to UniProtKB and RefSeq with a ref type 'identity'. If no identity cross references " +
                             "are given, the protein sequence is strongly recommended.",
                             MessageLevel.WARN,
@@ -103,14 +95,14 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
             }
             else{
                 if (identitiesUniprot.isEmpty()){
-                    Mi25Context context = buildContext( interactorId );
+                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
                     messages.add( new ValidatorMessage( "Proteins should have a Xref to UniProtKB with a ref type 'identity' ",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 if (identitiesRefseq.isEmpty()){
-                    Mi25Context context = buildContext( interactorId );
+                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
                     messages.add( new ValidatorMessage( "Proteins should have a Xref to RefSeq with a ref type 'identity' ",
                             MessageLevel.WARN,
                             context,
@@ -120,14 +112,6 @@ public class ProteinIdentityRule extends ObjectRule<Interactor> {
         }
 
         return messages;
-    }
-
-    private Mi25Context buildContext( int interactorId ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setId( interactorId );
-        context.setObjectLabel("interactor");
-        return context;
     }
 
     public String getId() {
