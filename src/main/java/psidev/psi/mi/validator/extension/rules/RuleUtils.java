@@ -16,10 +16,15 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Feature;
+import psidev.psi.mi.xml.model.Interaction;
+import psidev.psi.mi.xml.model.Organism;
+import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
@@ -458,107 +463,6 @@ public final class RuleUtils {
         return ids;
     }
 
-    /**
-     * Builds a new collection of attributes filtered according to the given parameters. If both filters are null, we
-     * get a new collection containing all attributess given.
-     *
-     * @param attributes the collection of attributes to build upon.
-     * @param name       a name filter, can be null.
-     * @param nameAc     accession number of the name attribute, can be null.
-     * @return a non null collection of attributes.
-     */
-    public static Collection<Attribute> searchAttributes( Collection<Attribute> attributes, String name, String nameAc, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule) {
-
-        Collection<Attribute> foundAttributes = new ArrayList<Attribute>( attributes.size() );
-
-        for ( Attribute attribute : attributes ) {
-            if( nameAc != null){
-                if (!nameAc.equals( attribute.getNameAc() )) {
-
-                    if (name != null){
-                        if (name.equalsIgnoreCase( attribute.getName() )){
-                            messages.add( new ValidatorMessage( "The attribute " + name + " (name attribute)  is associated with a nameAc which points to a different PSI-MI term. The nameAc always overwrites the name attribute in the attribute elements so the current attribute is not identified as " + name + " and it may not be what you wanted.",
-                                    MessageLevel.WARN,
-                                    context,
-                                    rule ) );
-                        }
-                    }
-
-                    continue;
-
-                }
-            }
-            if( name != null) {
-                if (!name.equalsIgnoreCase( attribute.getName() )){
-                    continue;
-                }
-            }
-            foundAttributes.add( attribute );
-        }
-
-        return foundAttributes;
-    }
-
-    public static Collection<DbReference> findByReferenceType( Collection<DbReference> dbReferences, String mi, String name, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
-        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
-        for ( DbReference reference : dbReferences ) {
-            if (mi != null){
-                if (reference.hasRefTypeAc()){
-                    if (mi.equals( reference.getRefTypeAc() )){
-                        selectedReferences.add( reference );
-                    }
-                    else if (name != null){
-                        if (name.equalsIgnoreCase( reference.getDb() )){
-                            messages.add( new ValidatorMessage( "The reference Type " + name + " (refType attribute)  is associated with a refTypeAc which points to a different PSI-MI term. The refTypeAc always overwrites the refType attribute in the cross references so the current reference type is not identified as " + name + " and it may not be what you wanted.",
-                                    MessageLevel.WARN,
-                                    context,
-                                    rule ) );
-                        }
-                    }
-                }
-            }
-            else if (name != null && reference.hasRefType()){
-                if (name.equalsIgnoreCase( reference.getRefType() )){
-                    selectedReferences.add( reference );
-                }
-            }
-        }
-        return selectedReferences;
-    }
-
-    public static  Collection<DbReference> findByDatabaseAndReferenceType( Collection<DbReference> dbReferences, String dbmi, String dbname, String qmi, String qname, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
-        Collection<DbReference> selectedDatabases = findByDatabase(dbReferences, dbmi, dbname, messages, context, rule);
-        Collection<DbReference> selectedReferenceTypes = findByReferenceType(selectedDatabases, qmi, qname, messages, context, rule);
-
-        return selectedReferenceTypes;
-    }
-
-    public static Collection<DbReference> findByDatabase( Collection<DbReference> dbReferences, String mi, String name, Collection<ValidatorMessage> messages, Mi25Context context, ObjectRule rule ) {
-        Collection<DbReference> selectedReferences = new ArrayList<DbReference>( dbReferences.size() );
-        for ( DbReference reference : dbReferences ) {
-
-            if (mi != null && reference.hasDbAc()){
-                if (mi.equals( reference.getDbAc() )){
-                    selectedReferences.add( reference );
-                }
-                else if (name != null){
-                    if (name.equalsIgnoreCase( reference.getDb() )){
-                        messages.add( new ValidatorMessage( "The database " + name + " (db attribute)  is associated with a dbAc which points to a different PSI-MI term. The dbAc always overwrites the db attribute in the cross references so the current database is not identified as " + name + " and it may not be what you wanted.",
-                                MessageLevel.WARN,
-                                context,
-                                rule ) );
-                    }
-                }
-            }
-            else if(name != null && reference.getDb() != null){
-                if (name.equals( reference.getDb() )){
-                    selectedReferences.add( reference );
-                }
-            }
-        }
-        return selectedReferences;
-    }
-
     public static Collection<Attribute> findByAttributeName( Collection<Attribute> attributes, String mi, String name ) {
         Collection<Attribute> selectedAttribute = new ArrayList<Attribute>( attributes.size() );
         for ( Attribute attribute : attributes ) {
@@ -584,40 +488,30 @@ public final class RuleUtils {
      * @param rule
      * @param mi
      */
-    public static void checkPsiMIXRef(XrefContainer container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
-        Xref xref = container.getXref();
+    public static void checkPsiMIXRef(CvTerm container, List<ValidatorMessage> messages, Mi25Context context, Rule rule, String mi){
+        Collection<psidev.psi.mi.jami.model.Xref> xrefs = container.getIdentifiers();
         String containerName = container.getClass().getSimpleName();
 
-        if (xref != null){
-            Collection<DbReference> allDbRef = xref.getAllDbReferences();
+        if (!xrefs.isEmpty()){
 
-            if (!allDbRef.isEmpty()){
-                // search for database : db="psi-mi" dbAc="MI:0488"
-                Collection<DbReference> psiMiReferences = RuleUtils.findByDatabaseAndReferenceType( allDbRef,"MI:0488", "psi-mi","MI:0356",  "identical object", messages, context, (ObjectRule) rule );
+            // search for database : db="psi-mi" dbAc="MI:0488"
+            Collection<psidev.psi.mi.jami.model.Xref> psiMiReferences = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(xrefs, CvTerm.PSI_MI_MI, CvTerm.PSI_MI, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY);
 
-                if (!psiMiReferences.isEmpty()){
-                    // There is only one psi-mi database reference for an InteractionDetectionMethod
-                    if (psiMiReferences.size() != 1){
+            if (!psiMiReferences.isEmpty()){
+                // There is only one psi-mi database reference for an InteractionDetectionMethod
+                if (psiMiReferences.size() != 1){
 
-                        messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
-                                MessageLevel.ERROR,
-                                context,
-                                rule ) );
-                    }
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
+                    messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiMiReferences.size() +" psi-mi cross references with type 'identity' and only one is allowed.",
                             MessageLevel.ERROR,
                             context,
                             rule ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
+                messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi cross reference (db = 'psi-mi' dbAc='MI:0488') with type 'identity' (refType = 'identity' refTypeAc='MI:0356').",
                         MessageLevel.ERROR,
                         context,
                         rule ) );
-
             }
         }
         else {
@@ -753,7 +647,7 @@ public final class RuleUtils {
             context.extractFileContextFrom((FileSourceContext)object);
         }
         else if (object instanceof HasId){
-            context.extractIdAndLabelFrom((HasId)object);
+            context.extractIdAndLabelFrom((HasId) object);
         }
         return context;
     }

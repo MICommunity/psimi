@@ -1,8 +1,8 @@
 package psidev.psi.mi.validator.extension;
 
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.Interaction;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
@@ -22,7 +22,7 @@ import java.util.Iterator;
  * @version $Id$
  * @since 2.0.0
  */
-public abstract class Mi25InteractionRule extends ObjectRule<Interaction> {
+public abstract class Mi25InteractionRule extends ObjectRule<InteractionEvidence> {
 
     //////////////////
     // Constructors
@@ -35,10 +35,10 @@ public abstract class Mi25InteractionRule extends ObjectRule<Interaction> {
     // ObjectRule
 
     public boolean canCheck(Object o) {
-       return ( o != null && o instanceof Interaction );
+       return ( o != null && o instanceof InteractionEvidence );
     }
 
-    public abstract Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException;
+    public abstract Collection<ValidatorMessage> check( InteractionEvidence interaction ) throws ValidatorException;
 
     ///////////////////////
     // Utility methods
