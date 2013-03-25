@@ -1,6 +1,7 @@
 package psidev.psi.mi.xml.events;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 
 import java.io.Serializable;
@@ -16,16 +17,19 @@ import java.io.Serializable;
 public class InvalidXmlEvent extends DefaultFileSourceContext implements Serializable{
 
     private String message;
+    private FileParsingErrorType errorType;
 
     private PsimiXmlReaderException exception;
 
-    public InvalidXmlEvent(String message){
+    public InvalidXmlEvent(FileParsingErrorType type, String message){
         this.message = message;
+        this.errorType = type;
     }
 
     public InvalidXmlEvent(String message, PsimiXmlReaderException exception){
         this.message = message;
         this.exception = exception;
+        this.errorType = FileParsingErrorType.invalid_syntax;
     }
 
     public String getMessage() {
@@ -34,5 +38,9 @@ public class InvalidXmlEvent extends DefaultFileSourceContext implements Seriali
 
     public PsimiXmlReaderException getException() {
         return exception;
+    }
+
+    public FileParsingErrorType getErrorType() {
+        return errorType;
     }
 }
