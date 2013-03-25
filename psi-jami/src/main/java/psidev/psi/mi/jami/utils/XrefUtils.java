@@ -88,6 +88,52 @@ public class XrefUtils {
     }
 
     /**
+     * Collect all cross references having a specific qualifier
+     * @param refs
+     * @param qualifierId
+     * @param qulifierName
+     * @return
+     */
+    public static Collection<Xref> collectAllXrefsHavingQualifier(Collection<? extends Xref> refs, String qualifierId, String qulifierName){
+
+        if (refs == null || refs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs);
+
+        for (Xref ref : refs){
+            if (doesXrefHaveQualifier(ref, qualifierId, qulifierName)){
+                identifiers.add(ref);
+            }
+        }
+
+        return identifiers;
+    }
+
+    /**
+     * Collect all cross references having a specific database
+     * @param refs
+     * @param dbId
+     * @param dbName
+     * @return
+     */
+    public static Collection<Xref> collectAllXrefsHavingDatabase(Collection<? extends Xref> refs, String dbId, String dbName){
+
+        if (refs == null || refs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs);
+
+        for (Xref ref : refs){
+            if (isXrefFromDatabase(ref, dbId, dbName)){
+                identifiers.add(ref);
+            }
+        }
+
+        return identifiers;
+    }
+
+    /**
      * Method to know if a Xref is from the same database (dbId is the MI identifier and dbName is the database shortname)
      * @param ref : the Xref
      * @param dbId : the database MI identifier
