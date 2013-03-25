@@ -6,9 +6,11 @@
 package psidev.psi.mi.xml.converter.impl254;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.MissingElementEvent;
 import psidev.psi.mi.xml.events.MultipleHostOrganismsPerExperiment;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
@@ -132,6 +134,16 @@ public class ExperimentDescriptionConverter {
         // bib ref
         if ( jExperimentDescription.getBibref() != null ) {
             mExperimentDescription.setBibref( bibrefConverter.fromJaxb( jExperimentDescription.getBibref() ) );
+        }
+        else {
+            // we don't have a publication
+            if (listeners != null && !listeners.isEmpty()){
+                MissingElementEvent evt = new MissingElementEvent("No publication attached to this experiment.", FileParsingErrorType.missing_publication);
+                evt.setSourceLocator(mExperimentDescription.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMissingElementEvent(evt);
+                }
+            }
         }
 
         // xref

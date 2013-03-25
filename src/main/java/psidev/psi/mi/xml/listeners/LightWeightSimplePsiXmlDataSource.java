@@ -166,7 +166,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         errors.add(error);
     }
 
-    public void fireOnMissingCvEvent(MissingCvEvent event) {
+    public void fireOnMissingElementEvent(MissingElementEvent event) {
         FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
         errors.add(error);
     }

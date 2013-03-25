@@ -12,7 +12,7 @@ import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
-import psidev.psi.mi.xml.events.MissingCvEvent;
+import psidev.psi.mi.xml.events.MissingElementEvent;
 import psidev.psi.mi.xml.events.MultipleExperimentalRolesEvent;
 import psidev.psi.mi.xml.events.MultipleExpressedInOrganisms;
 import psidev.psi.mi.xml.events.MultipleParticipantIdentificationMethodsPerParticipant;
@@ -198,11 +198,11 @@ public class ParticipantConverter {
         }
         // we have more than one identification methods
         else if (listeners != null && !listeners.isEmpty()){
-            MissingCvEvent evt = new MissingCvEvent("The biological role is missing for participant " + mParticipant.getId(), FileParsingErrorType.missing_biological_role);
+            MissingElementEvent evt = new MissingElementEvent("The biological role is missing for participant " + mParticipant.getId(), FileParsingErrorType.missing_biological_role);
             evt.setSourceLocator(mParticipant.getSourceLocator());
 
             for (PsiXml25ParserListener l : listeners){
-                l.fireOnMissingCvEvent(evt);
+                l.fireOnMissingElementEvent(evt);
             }
         }
 
