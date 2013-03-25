@@ -153,6 +153,9 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             }
             super.setShortLabel(value.getShortLabel());
             this.names.setFullName(value.getFullName());
+            if (this.getBibref() != null){
+                this.getBibref().setTitle(value.getFullName());
+            }
             this.names.getAliases().addAll(value.getAliases());
         }
         else if (this.names != null) {
