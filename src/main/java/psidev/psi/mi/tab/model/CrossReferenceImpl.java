@@ -35,18 +35,13 @@ public class CrossReferenceImpl implements CrossReference, Xref, FileSourceConte
 	//////////////////////////
 	// Constructor
 
-	public CrossReferenceImpl() {
-        database = new DefaultCvTerm("unknown");
-        id = "unknown";
-	}
-
 	public CrossReferenceImpl(String database, String identifier) {
-		this.database = new DefaultCvTerm(database != null ? database.trim() : null);
-        id = identifier != null ? identifier.trim() : null;
+		setDatabase(database);
+        setIdentifier(identifier);
 	}
 
 	public CrossReferenceImpl(String database, String identifier, String text) {
-		this(database != null ? database.trim() : null, identifier != null ? identifier.trim() : null);
+		this(database, identifier);
 		setText(text);
 	}
 

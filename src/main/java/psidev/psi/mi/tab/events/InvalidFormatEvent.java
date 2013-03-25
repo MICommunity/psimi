@@ -1,6 +1,7 @@
 package psidev.psi.mi.tab.events;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 
 import java.io.Serializable;
 
@@ -15,12 +16,18 @@ import java.io.Serializable;
 public class InvalidFormatEvent extends DefaultFileSourceContext implements Serializable{
 
     private String message;
+    private FileParsingErrorType errorType;
 
-    public InvalidFormatEvent(String message){
+    public InvalidFormatEvent(FileParsingErrorType type, String message){
         this.message = message;
+        this.errorType = type;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public FileParsingErrorType getErrorType() {
+        return errorType;
     }
 }
