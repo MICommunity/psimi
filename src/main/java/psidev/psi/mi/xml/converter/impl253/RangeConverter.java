@@ -7,8 +7,10 @@ package psidev.psi.mi.xml.converter.impl253;
 
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.RangeStatus;
 
@@ -80,13 +82,31 @@ public class RangeConverter {
         }
 
         // begin interval
-        if ( jRange.getBeginInterval() != null ) {
+        else if ( jRange.getBeginInterval() != null ) {
             mRange.setBeginInterval( intervalConverter.fromJaxb( jRange.getBeginInterval() ) );
+        }
+        else{
+            if (listeners != null){
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have a start position.");
+                evt.setSourceLocator(mRange.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnInvalidXmlSyntax(evt);
+                }
+            }
         }
 
         // start status
         if ( jRange.getStartStatus() != null ) {
-            mRange.setStartStatus( cvTypeConverter.fromJaxb( jRange.getStartStatus(), RangeStatus.class ) );
+            mRange.setStartStatus(cvTypeConverter.fromJaxb(jRange.getStartStatus(), RangeStatus.class));
+        }
+        else{
+            if (listeners != null){
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have a start range status.");
+                evt.setSourceLocator(mRange.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnInvalidXmlSyntax(evt);
+                }
+            }
         }
 
         // end
@@ -95,13 +115,31 @@ public class RangeConverter {
         }
 
         // end interval
-        if ( jRange.getEndInterval() != null ) {
+        else if ( jRange.getEndInterval() != null ) {
             mRange.setEndInterval( intervalConverter.fromJaxb( jRange.getEndInterval() ) );
+        }
+        else{
+            if (listeners != null){
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have an end position.");
+                evt.setSourceLocator(mRange.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnInvalidXmlSyntax(evt);
+                }
+            }
         }
 
         // end status
         if ( jRange.getEndStatus() != null ) {
             mRange.setEndStatus( cvTypeConverter.fromJaxb( jRange.getEndStatus(), RangeStatus.class ) );
+        }
+        else{
+            if (listeners != null){
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have an end range status.");
+                evt.setSourceLocator(mRange.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnInvalidXmlSyntax(evt);
+                }
+            }
         }
 
         return mRange;

@@ -102,12 +102,6 @@ public class InteractionConverter {
         this.inferredInteractionConverter.setListeners(listeners);
     }
 
-    public void setExperimentDescriptionConverter(psidev.psi.mi.xml.converter.impl254.ExperimentDescriptionConverter experimentDescriptionConverter) {
-        if (experimentDescriptionConverter != null){
-            this.experimentDescriptionConverter = experimentDescriptionConverter;
-        }
-    }
-
     /**
      * Set the DAO Factory that holds required DAOs for resolving ids.
      *

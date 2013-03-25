@@ -6,9 +6,11 @@
 package psidev.psi.mi.xml.converter.impl253;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
@@ -146,6 +148,13 @@ public class FeatureConverter {
         if ( jFeature.getFeatureRangeList() != null ) {
             for ( BaseLocationType jBaseLocation : jFeature.getFeatureRangeList().getFeatureRanges() ) {
                 mFeature.getFeatureRanges().add( rangeConverter.fromJaxb( jBaseLocation ) );
+            }
+        }
+        if (listeners != null && mFeature.getRanges().isEmpty()){
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.feature_without_ranges, "It is not a valid feature, it should contain at least one range");
+            evt.setSourceLocator(mFeature.getSourceLocator());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
             }
         }
 
