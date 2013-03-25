@@ -20,6 +20,9 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
+import psidev.psi.mi.jami.exception.IllegalRangeException;
+import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.utils.factory.RangeFactory;
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
 import psidev.psi.mi.tab.events.InvalidFormatEvent;
 import psidev.psi.mi.tab.events.MissingCvEvent;
@@ -1258,10 +1261,48 @@ public final class MitabParserUtils {
                                 String[] undeterminedRange = {"?-?"};
                                 object = new FeatureImpl(result[0], Arrays.asList(undeterminedRange));
                             }
+
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.feature_without_ranges, "It is not a valid feature, it should contain at least one range: " + Arrays.asList(result).toString());
+                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         } else if (length == 2) {
-                            object = new FeatureImpl(result[0], Arrays.asList(result[1].split(",")));
+                            object = new FeatureImpl(result[0]);
+
+                            List<String> ranges = Arrays.asList(result[1].split(","));
+
+                            for (String r : ranges){
+                                try {
+                                    Range range = RangeFactory.createRangeFromString(r);
+                                    object.getRanges().add(range);
+                                } catch (IllegalRangeException e) {
+                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
+                                    evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                    for (MitabParserListener l : listenerList){
+                                        l.fireOnInvalidFormat(evt);
+                                    }
+                                }
+                            }
                         } else if (length == 3) {
-                            object = new FeatureImpl(result[0], Arrays.asList(result[1].split(",")), result[2]);
+                            object = new FeatureImpl(result[0]);
+
+                            List<String> ranges = Arrays.asList(result[1].split(","));
+
+                            for (String r : ranges){
+                                try {
+                                    Range range = RangeFactory.createRangeFromString(r);
+                                    object.getRanges().add(range);
+                                } catch (IllegalRangeException e) {
+                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
+                                    evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                    for (MitabParserListener l : listenerList){
+                                        l.fireOnInvalidFormat(evt);
+                                    }
+                                }
+                            }
+
+                            object.setText(result[2]);
                         }
 
                         if (object != null) {
