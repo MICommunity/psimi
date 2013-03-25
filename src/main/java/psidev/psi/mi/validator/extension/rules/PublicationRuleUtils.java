@@ -63,34 +63,28 @@ public class PublicationRuleUtils {
 
     /**
      * Checks if the imex ids in a collection of imex-primary references are valid. Add new ValidatorMessage to messages if not.
-     * @param imexPrimaryReferences
+     * @param imexPrimaryReference
      * @param messages
      * @param context
      * @param experimentRule
      */
-    public static void checkImexId(Collection<DbReference> imexPrimaryReferences, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
+    public static void checkImexId(String imexPrimaryReference, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
 
         // If there is a reference type set to 'imex-primary'
-        if (!imexPrimaryReferences.isEmpty()){
-            for ( DbReference imex  : imexPrimaryReferences ) {
-                final String imexId = imex.getId();
-                if( imexId != null) {
-                    if (imexId.trim().length() > 0 ){
-                        if (!IMEx_ID.matcher(imexId).matches()){
-                            messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx).",
-                                    MessageLevel.ERROR,
-                                    context,
-                                    experimentRule ) );
-                        }
-                    }
-
-                }
-                else {
-                    messages.add( new ValidatorMessage( "The IMEx ID " + imexId + " is not a valid IMEX id (IM-xxx).",
+        if (imexPrimaryReference != null){
+            if (imexPrimaryReference.trim().length() > 0 ){
+                if (!IMEx_ID.matcher(imexPrimaryReference).matches()){
+                    messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
                             MessageLevel.ERROR,
                             context,
                             experimentRule ) );
                 }
+            }
+            else {
+                messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
+                        MessageLevel.ERROR,
+                        context,
+                        experimentRule ) );
             }
         }
     }

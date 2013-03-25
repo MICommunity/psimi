@@ -1,15 +1,14 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.PublicationRuleUtils;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +24,7 @@ import java.util.List;
  * @version $Id$
  * @since 2.0
  */
-public class ExperimentImexPrimaryRule extends Mi25ExperimentRule {
+public class ExperimentImexPrimaryRule extends ObjectRule<Publication> {
 
     public ExperimentImexPrimaryRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -38,44 +37,32 @@ public class ExperimentImexPrimaryRule extends Mi25ExperimentRule {
         addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        return ( t != null && t instanceof Publication);
+
+    }
+
     /**
      * Make sure that an experiment has a valid IMEX id in its xref.
      *
-     * @param experiment an experiment to check on.
+     * @param pub a publication to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( ExperimentDescription experiment ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Publication pub ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int experimentId = experiment.getId();
-
-        Mi25Context context = new Mi25Context();
-        context.setId( experimentId );
-        context.setObjectLabel("experiment");
+        Mi25Context context = RuleUtils.buildContext(pub, "publication");
 
         // Check xRef
-        if (experiment.hasXref()){
-            Collection<DbReference> dbReferences = experiment.getXref().getAllDbReferences();
-
-            // search for reference type: imex-primary (should not be empty)
-            Collection<DbReference> imexReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0662", "imex-primary", messages, context, this );
-
-            // At least one cross reference type 'imex-primary' is required and the Imex ID must be valid.
-            if (imexReferences.isEmpty()){
-                messages.add( new ValidatorMessage( "The experiment does not have a cross reference with a reference type set to 'imex-primary'. It is required for IMEx.",
-                        MessageLevel.ERROR,
-                        context,
-                        this ) );
-            }
-            else {
-                PublicationRuleUtils.checkImexId(imexReferences, messages, context, this);
-            }
+        if (pub.getImexId() != null){
+            PublicationRuleUtils.checkImexId(pub.getImexId(), messages, context, this);
 
         }
         else {
-            messages.add( new ValidatorMessage( "The experiment does not have any cross references. At least one cross reference with a reference type set" +
+            messages.add( new ValidatorMessage( "The experiment does not have an IMEx primary cross reference. An IMEx cross reference with a reference type set" +
                     " to 'imex-primary' (MI:0662) is required for IMEx.",
                     MessageLevel.ERROR,
                     context,
