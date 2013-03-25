@@ -1277,7 +1277,7 @@ public final class MitabParserUtils {
                                     Range range = RangeFactory.createRangeFromString(r);
                                     object.getRanges().add(range);
                                 } catch (IllegalRangeException e) {
-                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
+                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_feature_range, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
                                     evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                     for (MitabParserListener l : listenerList){
                                         l.fireOnInvalidFormat(evt);
@@ -1294,7 +1294,7 @@ public final class MitabParserUtils {
                                     Range range = RangeFactory.createRangeFromString(r);
                                     object.getRanges().add(range);
                                 } catch (IllegalRangeException e) {
-                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
+                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_feature_range, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
                                     evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                     for (MitabParserListener l : listenerList){
                                         l.fireOnInvalidFormat(evt);
