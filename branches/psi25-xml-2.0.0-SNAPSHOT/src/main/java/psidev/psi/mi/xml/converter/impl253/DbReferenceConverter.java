@@ -6,7 +6,9 @@
 package psidev.psi.mi.xml.converter.impl253;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 
 import java.util.List;
@@ -51,7 +53,27 @@ public class DbReferenceConverter {
 
         mDbReference.setDb( jDbReference.getDb() );
         mDbReference.setDbAc( jDbReference.getDbAc() );
+
+        if (jDbReference.getDb() == null || jDbReference.getDb().length() == 0) {
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference because the database is empty or null");
+            evt.setSourceLocator(new FileSourceLocator(jDbReference.sourceLocation() != null ? jDbReference.sourceLocation().getLineNumber() : 0, jDbReference.sourceLocation() != null ? jDbReference.sourceLocation().getColumnNumber() : 0));
+
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
+
         mDbReference.setId( jDbReference.getId() );
+
+        if (jDbReference.getId() == null || jDbReference.getId().length() == 0) {
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference because the database accession is empty or null");
+            evt.setSourceLocator(new FileSourceLocator(jDbReference.sourceLocation() != null ? jDbReference.sourceLocation().getLineNumber() : 0, jDbReference.sourceLocation() != null ? jDbReference.sourceLocation().getColumnNumber() : 0));
+
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
+
         mDbReference.setRefType( jDbReference.getRefType() );
         mDbReference.setRefTypeAc( jDbReference.getRefTypeAc() );
         mDbReference.setSecondary( jDbReference.getSecondary() );
