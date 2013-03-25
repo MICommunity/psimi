@@ -120,7 +120,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = RuleUtils.buildContext( interactor );
+                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
                     messages.add( new ValidatorMessage( message,
                             MessageLevel.WARN,
                             context,
@@ -144,7 +144,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = RuleUtils.buildContext( interactor );
+                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
                     messages.add( new ValidatorMessage( message,
                             MessageLevel.WARN,
                             context,
@@ -168,7 +168,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
                     String message= buffer.substring(0, buffer.length()-1);
 
                     // error
-                    Mi25Context context = RuleUtils.buildContext( interactor );
+                    Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
                     messages.add( new ValidatorMessage(message,
                             MessageLevel.WARN,
                             context,

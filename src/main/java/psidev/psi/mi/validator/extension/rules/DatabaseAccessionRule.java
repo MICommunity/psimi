@@ -308,12 +308,6 @@ public class DatabaseAccessionRule extends ObjectRule<psidev.psi.mi.jami.model.X
                 }
             }
             // If the regular expression is not known, do nothing
-            /*else {
-                messages.add( new ValidatorMessage( "There is no regular expression known for the database "+databaseAc+". Therefore we cannot check if this database cross reference is valid.",
-                        MessageLevel.INFO,
-                        context,
-                        this ) );
-            }*/
         }
     }
 
@@ -326,6 +320,7 @@ public class DatabaseAccessionRule extends ObjectRule<psidev.psi.mi.jami.model.X
     public Collection<ValidatorMessage> check(psidev.psi.mi.jami.model.Xref xref) throws ValidatorException {
         // sets up the context
         Mi25Context context = new Mi25Context();
+        RuleUtils.buildContext(xref, "database xref");
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();

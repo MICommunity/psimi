@@ -132,6 +132,18 @@ public class Mi25Context extends Context {
         }
     }
 
+    public void extractFileContextOnlyFrom(FileSourceContext element) {
+        if (element instanceof HasId){
+            HasId hasId = (HasId) element;
+            this.id = hasId.getId();
+        }
+
+        if (element.getSourceLocator() != null){
+            setLineNumber(element.getSourceLocator().getLineNumber());
+            setColumnNumber(element.getSourceLocator().getLineNumber());
+        }
+    }
+
     public void extractIdAndLabelFrom(HasId element) {
         if ( element instanceof InteractionEvidence) {
             this.id = element.getId();

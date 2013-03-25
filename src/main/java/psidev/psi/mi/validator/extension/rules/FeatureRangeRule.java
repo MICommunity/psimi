@@ -61,31 +61,39 @@ public class FeatureRangeRule extends ObjectRule<FeatureEvidence> {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(feature);
+        Mi25Context featureContext = RuleUtils.buildContext(feature, "feature");
         
         ParticipantEvidence participant = feature.getParticipantEvidence();
         psidev.psi.mi.jami.model.Interactor interactor = null;
         String sequence = null;
+
+        Mi25Context interactorContext = null;
+        Mi25Context participantContext = null;
         
         if (participant != null){
             interactor = participant.getInteractor();
-            context.addAssociatedContext(RuleUtils.buildContext(participant));
+            participantContext = RuleUtils.buildContext(participant, "participant");
             
             if (interactor != null){
                 sequence = interactor instanceof Polymer ? ((Polymer) interactor).getSequence() : null;
-                context.addAssociatedContext(RuleUtils.buildContext(interactor));
+                interactorContext = RuleUtils.buildContext(interactor, "interactor");
             }
         }
 
         Collection<psidev.psi.mi.jami.model.Range> ranges = feature .getRanges();
 
         for (psidev.psi.mi.jami.model.Range range : ranges){
+            Mi25Context rangeContext = RuleUtils.buildContext(range, "feature's range");
+            rangeContext.addAssociatedContext(featureContext);
+            rangeContext.addAssociatedContext(participantContext);
+            rangeContext.addAssociatedContext(interactorContext);
+
             List<String>  errorMessages = FeatureUtils.validateRange(range, sequence);
 
             for (String error : errorMessages){
                 messages.add( new ValidatorMessage( error,
                         MessageLevel.ERROR,
-                        context,
+                        featureContext,
                         this ) );
             }
         }
