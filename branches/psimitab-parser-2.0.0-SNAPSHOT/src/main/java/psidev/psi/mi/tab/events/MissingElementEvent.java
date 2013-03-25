@@ -13,13 +13,13 @@ import java.io.Serializable;
  * @since <pre>21/03/13</pre>
  */
 
-public class MissingCvEvent extends DefaultFileSourceContext implements Serializable {
+public class MissingElementEvent extends DefaultFileSourceContext implements Serializable {
 
     private String message;
     private String level;
     private FileParsingErrorType errorType;
 
-    public MissingCvEvent(String level, String message, FileParsingErrorType type){
+    public MissingElementEvent(String level, String message, FileParsingErrorType type){
         this.message = message;
         this.level = level;
         this.errorType = type;
