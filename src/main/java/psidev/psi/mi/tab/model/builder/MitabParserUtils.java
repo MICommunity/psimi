@@ -25,7 +25,7 @@ import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.factory.RangeFactory;
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
 import psidev.psi.mi.tab.events.InvalidFormatEvent;
-import psidev.psi.mi.tab.events.MissingCvEvent;
+import psidev.psi.mi.tab.events.MissingElementEvent;
 import psidev.psi.mi.tab.listeners.MitabParserListener;
 import psidev.psi.mi.tab.listeners.MitabParsingLogger;
 import psidev.psi.mi.tab.model.*;
@@ -783,11 +783,11 @@ public final class MitabParserUtils {
                 }
             }
             if (objects.isEmpty()){
-                MissingCvEvent evt = new MissingCvEvent(levelOfImportanceIfMissing, "No cv term has been specified for this column.", missingCvErrorType);
+                MissingElementEvent evt = new MissingElementEvent(levelOfImportanceIfMissing, "No cv term has been specified for this column.", missingCvErrorType);
                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, charIndex, columnNumber));
 
                 for (MitabParserListener l : listenerList){
-                    l.fireOnMissingCvEvent(evt);
+                    l.fireOnMissingElementEvent(evt);
                 }
             }
         }
@@ -898,6 +898,15 @@ public final class MitabParserUtils {
                         if (object != null) {
                             object.setLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             objects.add(object);
+                        }
+
+                        if (objects.isEmpty()){
+                            MissingElementEvent evt = new MissingElementEvent("error", "No publication provided for this interaction", FileParsingErrorType.missing_publication);
+                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, charIndex, columnNumber));
+
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnMissingElementEvent(evt);
+                            }
                         }
                     }
                     newIndex+=field.length();

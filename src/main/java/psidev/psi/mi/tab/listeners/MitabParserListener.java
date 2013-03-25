@@ -2,7 +2,7 @@ package psidev.psi.mi.tab.listeners;
 
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
 import psidev.psi.mi.tab.events.InvalidFormatEvent;
-import psidev.psi.mi.tab.events.MissingCvEvent;
+import psidev.psi.mi.tab.events.MissingElementEvent;
 
 import java.util.EventListener;
 
@@ -20,5 +20,5 @@ public interface MitabParserListener extends EventListener {
 
     public void fireOnClusteredColumnEvent(ClusteredColumnEvent event);
 
-    public void fireOnMissingCvEvent(MissingCvEvent event);
+    public void fireOnMissingElementEvent(MissingElementEvent event);
 }
