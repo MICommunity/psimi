@@ -323,7 +323,7 @@ public final class MitabParserUtils {
         interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()], listenerList, lineIndex, charIndexTaxIdB, PsimiTabColumns.TAXID_B.ordinal(), FileParsingErrorType.clustered_content));
 
         //MITAB 2.5
-        interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, charIndexDetMethod, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "error"));
+        interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, charIndexDetMethod, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interaction_detection_method, "error"));
         interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, charIndexFirstAuth, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
         interaction.setPublications(splitPublications(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, charIndexPublication, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
         interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, charIndexInteractionType,PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileParsingErrorType.multiple_interaction_types, FileParsingErrorType.missing_cv, "info"));
