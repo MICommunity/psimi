@@ -109,6 +109,23 @@ public class XrefUtils {
         return refs;
     }
 
+    public static Collection<Xref> searchAllXrefsHavingDatabase( Collection<Xref> xrefs, Collection<String> dbMiRefs) {
+
+        if (xrefs == null || xrefs.isEmpty() || dbMiRefs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> refs = new ArrayList<Xref>(xrefs.size());
+
+        for ( Xref ref : xrefs ) {
+            if ( !dbMiRefs.contains( ref.getDatabase().getMIIdentifier() ) ) {
+                continue;
+            }
+            refs.add( ref );
+        }
+
+        return refs;
+    }
+
     /**
      * Collect all cross references having a specific qualifier
      * @param refs
