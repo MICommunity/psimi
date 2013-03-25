@@ -173,6 +173,16 @@ public class ExperimentDescriptionConverter {
                     cvTypeConverter.fromJaxb( jExperimentDescription.getInteractionDetectionMethod(),
                                               InteractionDetectionMethod.class ) );
         }
+        else {
+            // we don't have an interaction detection method
+            if (listeners != null && !listeners.isEmpty()){
+                MissingElementEvent evt = new MissingElementEvent("No interaction detection method attached to this experiment.", FileParsingErrorType.missing_interaction_detection_method);
+                evt.setSourceLocator(mExperimentDescription.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMissingElementEvent(evt);
+                }
+            }
+        }
 
         // participant detection method
         if ( jExperimentDescription.getParticipantIdentificationMethod() != null ) {
