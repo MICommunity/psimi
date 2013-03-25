@@ -11,10 +11,12 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.ExperimentRef;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Parameter.
@@ -37,6 +39,8 @@ public class InteractionParameterConverter {
 
     private ExperimentDescriptionConverter experimentDescriptionConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /**
      * Handles DAOs.
      */
@@ -47,6 +51,11 @@ public class InteractionParameterConverter {
 
     public InteractionParameterConverter() {
         experimentDescriptionConverter = new ExperimentDescriptionConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.experimentDescriptionConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

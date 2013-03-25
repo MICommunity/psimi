@@ -9,6 +9,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
 import psidev.psi.mi.xml253.jaxb.BaseLocationType;
@@ -16,6 +17,7 @@ import psidev.psi.mi.xml253.jaxb.ExperimentRefListType;
 import psidev.psi.mi.xml253.jaxb.FeatureElementType;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Feature.
@@ -38,6 +40,8 @@ public class FeatureConverter {
     private RangeConverter rangeConverter;
     private AttributeConverter attributeConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /**
      * Handles DAOs.
      */
@@ -54,6 +58,17 @@ public class FeatureConverter {
         rangeConverter = new RangeConverter();
         attributeConverter = new AttributeConverter();
     }
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.xrefConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.organismConverter.setListeners(listeners);
+        this.rangeConverter.setListeners(listeners);
+    }
+
 
     ///////////////////////////////
     // DAO factory stategy

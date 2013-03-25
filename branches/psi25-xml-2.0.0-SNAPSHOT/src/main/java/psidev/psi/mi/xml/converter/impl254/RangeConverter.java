@@ -9,7 +9,10 @@ package psidev.psi.mi.xml.converter.impl254;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.RangeStatus;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Range.
@@ -29,6 +32,8 @@ public class RangeConverter {
     private PositionConverter positionConverter;
     private IntervalConverter intervalConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     ////////////////////////
     // Constructor
 
@@ -36,6 +41,13 @@ public class RangeConverter {
         cvTypeConverter = new CvTypeConverter();
         positionConverter = new PositionConverter();
         intervalConverter = new IntervalConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.cvTypeConverter.setListeners(listeners);
+        this.positionConverter.setListeners(listeners);
+        this.intervalConverter.setListeners(listeners);
     }
 
     /////////////////////////

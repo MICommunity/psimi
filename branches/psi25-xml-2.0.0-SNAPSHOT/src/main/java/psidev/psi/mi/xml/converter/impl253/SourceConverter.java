@@ -8,6 +8,7 @@ package psidev.psi.mi.xml.converter.impl253;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
 
@@ -16,6 +17,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Source.
@@ -34,6 +36,7 @@ public class SourceConverter {
     private NamesConverter namesConverter;
     private XrefConverter xrefConverter;
     private AttributeConverter attributeConverter;
+    private List<PsiXml25ParserListener> listeners;
 
     ///////////////////
     // Constructor
@@ -43,6 +46,14 @@ public class SourceConverter {
         namesConverter = new NamesConverter();
         xrefConverter = new XrefConverter();
         attributeConverter = new AttributeConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        xrefConverter.setListeners(listeners);
+        this.bibrefConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
     }
 
     /////////////////////////

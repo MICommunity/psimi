@@ -5,7 +5,10 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml254.jaxb.DbReference;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Xref.
@@ -23,11 +26,18 @@ public class XrefConverter {
 
     private DbReferenceConverter dbReferenceConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     ////////////////////////
     // Constructor
 
     public XrefConverter() {
         dbReferenceConverter = new DbReferenceConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.dbReferenceConverter.setListeners(listeners);
     }
 
     /////////////////////////

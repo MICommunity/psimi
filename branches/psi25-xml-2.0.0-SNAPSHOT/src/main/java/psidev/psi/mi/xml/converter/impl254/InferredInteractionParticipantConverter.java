@@ -8,10 +8,13 @@ package psidev.psi.mi.xml.converter.impl254;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Feature;
 import psidev.psi.mi.xml.model.FeatureRef;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.ParticipantRef;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class InferredInteractionParticipant.
@@ -31,10 +34,16 @@ public class InferredInteractionParticipantConverter {
      */
     private DAOFactory factory;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /////////////////////////
     // Constructor
 
     public InferredInteractionParticipantConverter() {
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
     }
 
     ///////////////////////////////

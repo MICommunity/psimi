@@ -7,9 +7,12 @@ package psidev.psi.mi.xml.converter.impl253;
 
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.ExperimentRef;
 import psidev.psi.mi.xml253.jaxb.ExperimentRefListType;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class ParticipantIdentificationMethod.
@@ -26,6 +29,7 @@ public class ParticipantIdentificationMethodConverter {
     // Instance variables
 
     private CvTypeConverter cvTypeConverter;
+    private List<PsiXml25ParserListener> listeners;
 
     /**
      * Handles DAOs.
@@ -34,6 +38,11 @@ public class ParticipantIdentificationMethodConverter {
 
     public ParticipantIdentificationMethodConverter() {
         cvTypeConverter = new CvTypeConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.cvTypeConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

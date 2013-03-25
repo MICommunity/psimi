@@ -91,6 +91,15 @@ public class InteractionConverter {
     public void setListeners(List<PsiXml25ParserListener> listeners) {
         this.listeners = listeners;
         this.participantConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.xrefConverter.setListeners(listeners);
+        this.confidenceConverter.setListeners(listeners);
+        this.availabilityConverter.setListeners(listeners);
+        this.experimentDescriptionConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.parameterConverter.setListeners(listeners);
+        this.inferredInteractionConverter.setListeners(listeners);
     }
 
     public void setExperimentDescriptionConverter(psidev.psi.mi.xml.converter.impl254.ExperimentDescriptionConverter experimentDescriptionConverter) {

@@ -92,7 +92,7 @@ public class DbReference implements psidev.psi.mi.jami.model.Xref, FileSourceCon
     private String secondary;
 
     private static String UNKNOWN = "unknown";
-    private static String UNSPECIFIED_ID = "-";
+    private static String UNSPECIFIED_ID = "unknown";
 
     private CvTerm database;
     private String id;

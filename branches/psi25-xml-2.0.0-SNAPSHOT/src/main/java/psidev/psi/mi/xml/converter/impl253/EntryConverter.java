@@ -56,7 +56,6 @@ public class EntryConverter {
         attributeConverter = new AttributeConverter();
         availabilityConverter = new AvailabilityConverter();
         interactionConverter = new InteractionConverter();
-        interactionConverter.setExperimentDescriptionConverter(experimentDescriptionConverter);
         interactorConverter = new InteractorConverter();
     }
 
@@ -66,6 +65,10 @@ public class EntryConverter {
         this.experimentDescriptionConverter.setListeners(listeners);
         this.interactionConverter.setListeners(listeners);
         this.interactorConverter.setListeners(listeners);
+        this.sourceConverter.setListeners(listeners);
+        this.sourceConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.availabilityConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

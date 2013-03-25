@@ -2,8 +2,10 @@ package psidev.psi.mi.xml.converter.impl253;
 
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * @author Michael Mueller (mmueller@ebi.ac.uk)
@@ -14,7 +16,13 @@ import java.math.BigInteger;
  */
 public class IntervalConverter {
 
+    private List<PsiXml25ParserListener> listeners;
+
     public IntervalConverter() {
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
     }
 
     /////////////////////////

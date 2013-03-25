@@ -71,6 +71,13 @@ public class ExperimentDescriptionConverter {
 
     public void setListeners(List<PsiXml25ParserListener> listeners) {
         this.listeners = listeners;
+        this.xrefConverter.setListeners(listeners);
+        this.bibrefConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.organismConverter.setListeners(listeners);
     }
 
     /**

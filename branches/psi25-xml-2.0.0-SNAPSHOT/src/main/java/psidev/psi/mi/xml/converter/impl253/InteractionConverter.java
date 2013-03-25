@@ -8,7 +8,6 @@ package psidev.psi.mi.xml.converter.impl253;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Locator;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.PsimiXmlForm;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
@@ -84,6 +83,15 @@ public class InteractionConverter {
     public void setListeners(List<PsiXml25ParserListener> listeners) {
         this.listeners = listeners;
         this.participantConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.xrefConverter.setListeners(listeners);
+        this.confidenceConverter.setListeners(listeners);
+        this.availabilityConverter.setListeners(listeners);
+        this.experimentDescriptionConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.parameterConverter.setListeners(listeners);
+        this.inferredInteractionConverter.setListeners(listeners);
     }
 
     /**
@@ -101,12 +109,6 @@ public class InteractionConverter {
         inferredInteractionConverter.setDAOFactory( factory );
         participantConverter.setDAOFactory( factory );
         experimentDescriptionConverter.setDAOFactory( factory );
-    }
-
-    public void setExperimentDescriptionConverter(ExperimentDescriptionConverter experimentDescriptionConverter) {
-        if (experimentDescriptionConverter != null){
-            this.experimentDescriptionConverter = experimentDescriptionConverter;
-        }
     }
 
     /**
