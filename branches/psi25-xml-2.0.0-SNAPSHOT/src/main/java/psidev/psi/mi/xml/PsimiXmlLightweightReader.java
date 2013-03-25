@@ -3,6 +3,7 @@ package psidev.psi.mi.xml;
 import psidev.psi.mi.xml.io.impl.PsimiXmlLightweightReader253;
 import psidev.psi.mi.xml.io.impl.PsimiXmlLightweightReader254;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
+import psidev.psi.mi.xml.listeners.PsiXml25ParsingLogger;
 import psidev.psi.mi.xml.util.PsimiXmlVersionDetector;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 
@@ -61,6 +62,11 @@ public class PsimiXmlLightweightReader implements psidev.psi.mi.xml.io.PsimiXmlL
             case VERSION_25_UNDEFINED:
                 this.readerPsimiXml = new PsimiXmlLightweightReader253(xmlDataFile);
                 break;
+        }
+        
+        listenerList.add(PsiXml25ParserListener.class, new PsiXml25ParsingLogger());
+        if (this.readerPsimiXml != null){
+            this.readerPsimiXml.registerListener(getListeners(PsiXml25ParserListener.class));
         }
     }
 
@@ -121,6 +127,10 @@ public class PsimiXmlLightweightReader implements psidev.psi.mi.xml.io.PsimiXmlL
                 this.readerPsimiXml = new PsimiXmlLightweightReader253(f);
                 break;
         }
+        listenerList.add(PsiXml25ParserListener.class, new PsiXml25ParsingLogger());
+        if (this.readerPsimiXml != null){
+            this.readerPsimiXml.registerListener(getListeners(PsiXml25ParserListener.class));
+        }
     }
 
     public PsimiXmlLightweightReader(InputStream is, PsimiXmlVersion version) throws PsimiXmlReaderException {
@@ -153,6 +163,7 @@ public class PsimiXmlLightweightReader implements psidev.psi.mi.xml.io.PsimiXmlL
                 break;
         }
 
+        listenerList.add(PsiXml25ParserListener.class, new PsiXml25ParsingLogger());
         if (this.readerPsimiXml != null){
             this.readerPsimiXml.registerListener(getListeners(PsiXml25ParserListener.class));
         }
@@ -163,7 +174,10 @@ public class PsimiXmlLightweightReader implements psidev.psi.mi.xml.io.PsimiXmlL
     }
 
     public void registerListener(List<PsiXml25ParserListener> listeners) {
-        if (listeners != null && listeners.isEmpty()){
+        if (listeners != null && !listeners.isEmpty()){
+            for (PsiXml25ParserListener l : listenerList.getListeners(PsiXml25ParserListener.class)){
+                listenerList.remove(PsiXml25ParserListener.class, l);
+            }
             for (PsiXml25ParserListener l : listeners){
                 listenerList.add(PsiXml25ParserListener.class, l);
             }

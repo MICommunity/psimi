@@ -101,6 +101,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
             EntryConverter ic = new EntryConverter();
             ic.setDAOFactory( new LazyDAOFactory() );
+            ic.setListeners(this.listeners);
 
             return ic.fromJaxb( e );
         } catch ( Exception e ) {
@@ -114,6 +115,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
             EntryType.Source s = um.unmarshal( buildSaxSource( is ),
                                                EntryType.Source.class ).getValue();
             SourceConverter ic = new SourceConverter();
+            ic.setListeners(this.listeners);
 
             return ic.fromJaxb( s );
         } catch ( Exception e ) {
@@ -129,6 +131,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
             List<Availability> availabilities = new ArrayList<Availability>();
 
             AvailabilityConverter ac = new AvailabilityConverter();
+            ac.setListeners(this.listeners);
             for ( AvailabilityType availabilityType : i.getAvailabilities() ) {
                 availabilities.add( ac.fromJaxb( availabilityType ) );
             }
@@ -147,6 +150,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
             InteractionConverter ic = new InteractionConverter();
             ic.setDAOFactory( new LazyDAOFactory() );
+            ic.setListeners(this.listeners);
 
             return ic.fromJaxb( i );
         } catch ( Exception e ) {
@@ -162,6 +166,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
             ExperimentDescriptionConverter ec = new ExperimentDescriptionConverter();
             ec.setDAOFactory( new LazyDAOFactory() );
+            ec.setListeners(this.listeners);
 
             return ec.fromJaxb( e );
         } catch ( Exception e ) {
@@ -177,6 +182,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
             InteractorConverter ic = new InteractorConverter();
             ic.setDAOFactory( new LazyDAOFactory() );
+            ic.setListeners(this.listeners);
 
             return ic.fromJaxb( i );
         } catch ( Exception e ) {
@@ -196,6 +202,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
             ParticipantConverter pc = new ParticipantConverter();
             pc.setDAOFactory( new LazyDAOFactory() );
+            pc.setListeners(this.listeners);
 
             return pc.fromJaxb( p );
         } catch ( Exception e ) {
@@ -211,6 +218,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
 
             FeatureConverter fc = new FeatureConverter();
             fc.setDAOFactory( new LazyDAOFactory() );
+            fc.setListeners(this.listeners);
 
             return fc.fromJaxb( f );
         } catch ( Exception e ) {
@@ -224,6 +232,7 @@ public class PsimiXmlPullParser253 implements PsimiXmlPullParser {
                                                           AttributeListType.Attribute.class ).getValue();
 
             AttributeConverter fc = new AttributeConverter();
+            fc.setListeners(this.listeners);
             return fc.fromJaxb( a );
         } catch ( Exception e ) {
             throw new PsimiXmlReaderException( "An error occured while parsing an attribute.", e );

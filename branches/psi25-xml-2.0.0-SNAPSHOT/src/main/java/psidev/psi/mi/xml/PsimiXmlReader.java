@@ -8,6 +8,7 @@ package psidev.psi.mi.xml;
 import psidev.psi.mi.xml.io.impl.PsimiXmlReader253;
 import psidev.psi.mi.xml.io.impl.PsimiXmlReader254;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
+import psidev.psi.mi.xml.listeners.PsiXml25ParsingLogger;
 import psidev.psi.mi.xml.model.EntrySet;
 import psidev.psi.mi.xml.util.PsimiXmlVersionDetector;
 
@@ -33,6 +34,7 @@ public class PsimiXmlReader implements psidev.psi.mi.xml.io.PsimiXmlReader {
     private PsimiXmlVersion version;
 
     public PsimiXmlReader() {
+        listenerList.add(PsiXml25ParserListener.class, new PsiXml25ParsingLogger());
     }
 
     public PsimiXmlReader(PsimiXmlVersion version) {
@@ -72,7 +74,10 @@ public class PsimiXmlReader implements psidev.psi.mi.xml.io.PsimiXmlReader {
     }
 
     public void registerListener(List<PsiXml25ParserListener> listeners) {
-        if (listeners != null && listeners.isEmpty()){
+        if (listeners != null && !listeners.isEmpty()){
+            for (PsiXml25ParserListener l : listenerList.getListeners(PsiXml25ParserListener.class)){
+                listenerList.remove(PsiXml25ParserListener.class, l);
+            }
             for (PsiXml25ParserListener l : listeners){
                 listenerList.add(PsiXml25ParserListener.class, l);
             }
