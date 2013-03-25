@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
@@ -59,15 +58,7 @@ public class BiologicalRoleRule extends ObjectRule<ParticipantEvidence> {
         // write the rule here ...
         final Mi25Context context = RuleUtils.buildContext( participant );
 
-        if ( participant.getBiologicalRole() == null ) {
-            messages.add( new ValidatorMessage( "Participant without a biological role. It is required by MIMIx. ",
-                    MessageLevel.ERROR,
-                    context,
-                    this ) );
-        }
-        else {
-            RuleUtils.checkPsiMIXRef(participant.getBiologicalRole(), messages, context, this, RuleUtils.BIOLOGICAL_ROLE);
-        }
+        RuleUtils.checkPsiMIXRef(participant.getBiologicalRole(), messages, context, this, RuleUtils.BIOLOGICAL_ROLE);
 
         return messages;
     }
