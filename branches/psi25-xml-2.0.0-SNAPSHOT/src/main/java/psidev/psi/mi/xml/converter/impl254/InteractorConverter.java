@@ -6,9 +6,11 @@
 package psidev.psi.mi.xml.converter.impl254;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml.model.Interactor;
@@ -109,8 +111,20 @@ public class InteractorConverter {
         mInteractor.setId( jInteractor.getId() );
 
         // 2. set encapsulated objects
-        mInteractor.setInteractorType( cvTypeConverter.fromJaxb( jInteractor.getInteractorType(),
-                                                                 InteractorType.class ) );
+        if (jInteractor.getInteractorType() != null){
+            mInteractor.setInteractorType( cvTypeConverter.fromJaxb( jInteractor.getInteractorType(),
+                    InteractorType.class ) );
+        }
+        else {
+            // we have more than one experiment
+            if (listeners != null && !listeners.isEmpty() ){
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_interactor_type, "Interactor " + mInteractor.getId() + " does not have any interactor types.");
+                evt.setSourceLocator(mInteractor.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnInvalidXmlSyntax(evt);
+                }
+            }
+        }
 
         // Names
         if ( jInteractor.getNames() != null ) {
