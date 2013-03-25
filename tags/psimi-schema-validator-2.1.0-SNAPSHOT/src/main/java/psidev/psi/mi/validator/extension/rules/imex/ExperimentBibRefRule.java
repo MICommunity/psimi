@@ -1,12 +1,11 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Bibref;
-import psidev.psi.mi.xml.model.DbReference;
-import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -46,73 +45,61 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
      * @param experiment an experiment to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( ExperimentDescription experiment ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Experiment experiment ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int experimentId = experiment.getId();
+        Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
 
-        Mi25Context context = new Mi25Context();
-        context.setId( experimentId );
-        context.setObjectLabel("experiment");
-
-        final Bibref bibref = experiment.getBibref();
+        final Publication bibref = experiment.getPublication();
 
         if ( bibref != null ) {
 
-            final Xref xref = bibref.getXref();
-            if ( xref != null ) {
+            final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = bibref.getIdentifiers();
 
-                final Collection<DbReference> dbReferences = xref.getAllDbReferences();
+            // search for reference type: primary-reference
+            Collection<psidev.psi.mi.jami.model.Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(dbReferences, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY);
+            primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dbReferences, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY));
 
-                // search for reference type: primary-reference
-                Collection<DbReference> primaryReferences = RuleUtils.findByReferenceType( dbReferences, "MI:0358", "primary-reference", messages, context, this);
-                // search for database pubmed or DOI.
-                Collection<DbReference> allPubmeds = RuleUtils.findByDatabase( dbReferences, "MI:0446", "pubmed", messages, context, this);
-                Collection<DbReference> allDois = RuleUtils.findByDatabase( dbReferences, "MI:0574", "doi", messages, context, this);
+            // search for database pubmed or DOI.
+            Collection<psidev.psi.mi.jami.model.Xref> allPubmeds = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED);
+            Collection<psidev.psi.mi.jami.model.Xref> allDois = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, psidev.psi.mi.jami.model.Xref.DOI_MI, psidev.psi.mi.jami.model.Xref.DOI);
 
-                // At least one pubmed/DOI reference is required
-                if ( !allPubmeds.isEmpty() || !allDois.isEmpty()){
+            // At least one pubmed/DOI reference is required
+            if ( !allPubmeds.isEmpty() || !allDois.isEmpty()){
 
-                    // At least one reference-type set to 'primary-reference' is required
-                    if ( !primaryReferences.isEmpty() ) {
-                        // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
+                // At least one reference-type set to 'primary-reference' is required
+                if ( !primaryReferences.isEmpty() ) {
+                    // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
 
-                        final Collection<DbReference> pubmeds = RuleUtils.findByDatabase( primaryReferences, "MI:0446", "pubmed", messages, context, this);
-                        final Collection<DbReference> dois = RuleUtils.findByDatabase( primaryReferences, "MI:0574", "doi", messages, context, this);
+                    final Collection<psidev.psi.mi.jami.model.Xref> pubmeds = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED);
+                    final Collection<psidev.psi.mi.jami.model.Xref> dois = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, psidev.psi.mi.jami.model.Xref.DOI_MI, psidev.psi.mi.jami.model.Xref.DOI);
 
-                        // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
-                        if (pubmeds.size() > 1){
-                            messages.add( new ValidatorMessage( "The experiment has " + pubmeds.size() + " pubmed references as 'primary-reference' but only one is allowed.",
-                                    MessageLevel.WARN,
-                                    context,
-                                    this ) );
-                        }
-
-                        if ( pubmeds.isEmpty() && dois.isEmpty() ) {
-                            messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " bibliographical references with a reference-type set to 'primary-reference' but none of them is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
-                                    MessageLevel.ERROR,
-                                    context,
-                                    this ) );
-                        }
+                    // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
+                    if (pubmeds.size() > 1){
+                        messages.add( new ValidatorMessage( "The experiment has " + pubmeds.size() + " pubmed references as 'primary-reference' but only one is allowed.",
+                                MessageLevel.WARN,
+                                context,
+                                this ) );
                     }
-                    else {
-                        messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of theme has a reference type set to 'primary-reference'. At least one Pubmed or DOI bibliographical primary reference is required.",
+
+                    if ( pubmeds.isEmpty() && dois.isEmpty() ) {
+                        messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " bibliographical references with a reference-type set to 'primary-reference' but none of them is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
                     }
                 }
                 else {
-                    messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of them is a PubMed or Digital Object reference. At least one Pubmed or DOI bibliographical primary reference is required.",
+                    messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of theme has a reference type set to 'primary-reference'. At least one Pubmed or DOI bibliographical primary reference is required.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
                 }
             }
             else {
-                messages.add( new ValidatorMessage( "The experiment does not have any bibliographical references. At least one Pubmed or DOI bibliographical primary reference is required.",
+                messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of them is a PubMed or Digital Object reference. At least one Pubmed or DOI bibliographical primary reference is required.",
                         MessageLevel.ERROR,
                         context,
                         this ) );
