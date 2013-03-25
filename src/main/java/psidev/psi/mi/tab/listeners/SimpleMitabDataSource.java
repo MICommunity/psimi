@@ -127,7 +127,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
     }
 
     public void fireOnMissingCvEvent(MissingCvEvent event) {
-        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);;
+        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
         this.errors.add(error);
     }
 
