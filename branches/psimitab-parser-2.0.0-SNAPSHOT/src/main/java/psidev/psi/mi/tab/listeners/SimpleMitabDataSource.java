@@ -117,7 +117,7 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
     }
 
     public void fireOnInvalidFormat(InvalidFormatEvent event){
-        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), event.getMessage(), event);
+        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
         this.errors.add(error);
     }
 

@@ -16,6 +16,7 @@
 package psidev.psi.mi.tab;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.tab.events.InvalidFormatEvent;
 import psidev.psi.mi.tab.listeners.MitabParserListener;
 import psidev.psi.mi.tab.listeners.MitabParsingLogger;
@@ -105,7 +106,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             boolean errorInLine = true;
             do {
                 try {
-                    InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
+                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
                     evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                     for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                         l.fireOnInvalidFormat(evt);
@@ -134,7 +135,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             } while (isHeader && errorInLine);
 
             if (errorInLine && nextLine == null){
-                InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
                 evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                 for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                     l.fireOnInvalidFormat(evt);
@@ -183,7 +184,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             boolean errorInLine = true;
             do {
                 try {
-                    InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
+                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Error while reading the header line. " + ExceptionUtils.getFullStackTrace(e));
                     evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                     for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                         l.fireOnInvalidFormat(evt);
@@ -212,7 +213,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             } while (isHeader && errorInLine);
 
             if (errorInLine && nextLine == null){
-                InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the header. " + ExceptionUtils.getFullStackTrace(e));
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Error while reading the header. " + ExceptionUtils.getFullStackTrace(e));
                 evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                 for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                     l.fireOnInvalidFormat(evt);
@@ -249,7 +250,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             boolean errorInLine = true;
             do {
                 try {
-                    InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the line. " + ExceptionUtils.getFullStackTrace(e));
+                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Error while reading the line. " + ExceptionUtils.getFullStackTrace(e));
                     evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                     for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                         l.fireOnInvalidFormat(evt);
@@ -279,7 +280,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
             } while (errorInLine);
 
             if (errorInLine && nextLine == null){
-                InvalidFormatEvent evt = new InvalidFormatEvent("Error while reading the line. " + ExceptionUtils.getFullStackTrace(e));
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Error while reading the line. " + ExceptionUtils.getFullStackTrace(e));
                 evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                 for (MitabParserListener l : mReader.getListeners(MitabParserListener.class)){
                     l.fireOnInvalidFormat(evt);
