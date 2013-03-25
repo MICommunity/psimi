@@ -126,8 +126,10 @@ public class Mi25Context extends Context {
                 this.objectLabel = "feature";
             }
         }
-        setLineNumber(element.getLineNumber());
-        setColumnNumber(element.getColumnNumber());
+        if (element.getSourceLocator() != null){
+            setLineNumber(element.getSourceLocator().getLineNumber());
+            setColumnNumber(element.getSourceLocator().getLineNumber());
+        }
     }
 
     public void extractIdAndLabelFrom(HasId element) {

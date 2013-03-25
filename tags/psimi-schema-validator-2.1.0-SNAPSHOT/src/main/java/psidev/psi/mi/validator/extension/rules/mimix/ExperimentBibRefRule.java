@@ -1,5 +1,7 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -52,19 +54,15 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
      * @param experiment an experiment to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( ExperimentDescription experiment ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Experiment experiment ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int experimentId = experiment.getId();
-
-        Mi25Context context = new Mi25Context();
-        context.setId( experimentId );
-        context.setObjectLabel("experiment");
+        Mi25Context context = RuleUtils.buildContext(experiment);
 
         boolean hasPublicationIdentifier = false;
-        final Bibref bibref = experiment.getBibref();
+        final Publication bibref = experiment.getPublication();
 
         if ( bibref != null ) {
 

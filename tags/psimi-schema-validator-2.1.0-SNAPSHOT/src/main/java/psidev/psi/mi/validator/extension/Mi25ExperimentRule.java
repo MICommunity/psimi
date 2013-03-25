@@ -1,14 +1,11 @@
 package psidev.psi.mi.validator.extension;
 
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.ExperimentDescription;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
-import psidev.psi.tools.ontology_manager.OntologyManager;
-import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 
-import java.util.Map;
 import java.util.Collection;
 
 /**
@@ -20,7 +17,7 @@ import java.util.Collection;
  * @version $Id$
  * @since 2.0.0
  */
-public abstract class Mi25ExperimentRule extends ObjectRule<ExperimentDescription> {
+public abstract class Mi25ExperimentRule extends ObjectRule<Experiment> {
 
     //////////////////
     // Constructors
@@ -33,10 +30,10 @@ public abstract class Mi25ExperimentRule extends ObjectRule<ExperimentDescriptio
     // ObjectRule
 
     public boolean canCheck(Object o) {
-       return ( o != null && o instanceof ExperimentDescription );
+       return ( o != null && o instanceof Experiment );
     }
 
-    public abstract Collection<ValidatorMessage> check( ExperimentDescription experiment ) throws ValidatorException;
+    public abstract Collection<ValidatorMessage> check( Experiment experiment ) throws ValidatorException;
 
     ///////////////////////
     // Utility methods

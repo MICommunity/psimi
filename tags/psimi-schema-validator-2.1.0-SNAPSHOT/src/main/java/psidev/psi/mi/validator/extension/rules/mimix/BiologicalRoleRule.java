@@ -1,8 +1,8 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -21,7 +21,7 @@ import java.util.List;
  * @since <pre>24/01/11</pre>
  */
 
-public class BiologicalRoleRule extends ObjectRule<Participant> {
+public class BiologicalRoleRule extends ObjectRule<ParticipantEvidence> {
 
     public BiologicalRoleRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
@@ -36,7 +36,7 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Participant){
+        if (t instanceof ParticipantEvidence){
             return true;
         }
 
@@ -51,16 +51,15 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
      * @throws psidev.psi.tools.validator.ValidatorException
      *          if we fail to retrieve the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Participant participant ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( ParticipantEvidence participant ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // write the rule here ...
-        int participantId = participant.getId();
-        final Mi25Context context = buildContext( participantId );
+        final Mi25Context context = RuleUtils.buildContext( participant );
 
-        if ( !participant.hasBiologicalRole() ) {
+        if ( participant.getBiologicalRole() == null ) {
             messages.add( new ValidatorMessage( "Participant without a biological role. It is required by MIMIx. ",
                     MessageLevel.ERROR,
                     context,
@@ -71,14 +70,6 @@ public class BiologicalRoleRule extends ObjectRule<Participant> {
         }
 
         return messages;
-    }
-
-    private Mi25Context buildContext( int participantId ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setId( participantId );
-        context.setObjectLabel("participant");
-        return context;
     }
 
     public String getId() {
