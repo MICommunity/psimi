@@ -10,9 +10,12 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.ExperimentRef;
 import psidev.psi.mi.xml254.jaxb.ExperimentRefList;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Confidence.
@@ -32,11 +35,18 @@ public class ConfidenceConverter {
 
     private DAOFactory factory;
 
+    private List<PsiXml25ParserListener> listeners;
+
     ////////////////////////
     // Constructor
 
     public ConfidenceConverter() {
         openCvTypeConverter = new OpenCvTypeConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.openCvTypeConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

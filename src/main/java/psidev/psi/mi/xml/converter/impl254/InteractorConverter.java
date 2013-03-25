@@ -58,6 +58,11 @@ public class InteractorConverter {
 
     public void setListeners(List<PsiXml25ParserListener> listeners) {
         this.listeners = listeners;
+        this.cvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.xrefConverter.setListeners(listeners);
+        this.organismConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

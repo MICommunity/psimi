@@ -9,12 +9,14 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml254.jaxb.AttributeList;
 import psidev.psi.mi.xml254.jaxb.BaseLocation;
 import psidev.psi.mi.xml254.jaxb.ExperimentRefList;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Feature.
@@ -37,6 +39,8 @@ public class FeatureConverter {
     private RangeConverter rangeConverter;
     private AttributeConverter attributeConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /**
      * Handles DAOs.
      */
@@ -46,12 +50,22 @@ public class FeatureConverter {
     // Constructor
 
     public FeatureConverter() {
-        cvTypeConverter = new CvTypeConverter();
-        namesConverter = new NamesConverter();
-        xrefConverter = new XrefConverter();
-        organismConverter = new OrganismConverter();
-        rangeConverter = new RangeConverter();
-        attributeConverter = new AttributeConverter();
+        cvTypeConverter = new psidev.psi.mi.xml.converter.impl254.CvTypeConverter();
+        namesConverter = new psidev.psi.mi.xml.converter.impl254.NamesConverter();
+        xrefConverter = new psidev.psi.mi.xml.converter.impl254.XrefConverter();
+        organismConverter = new psidev.psi.mi.xml.converter.impl254.OrganismConverter();
+        rangeConverter = new psidev.psi.mi.xml.converter.impl254.RangeConverter();
+        attributeConverter = new psidev.psi.mi.xml.converter.impl254.AttributeConverter();
+    }
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.xrefConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.cvTypeConverter.setListeners(listeners);
+        this.organismConverter.setListeners(listeners);
+        this.rangeConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

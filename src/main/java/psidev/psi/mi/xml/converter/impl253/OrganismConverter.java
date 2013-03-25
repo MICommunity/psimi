@@ -8,11 +8,13 @@ package psidev.psi.mi.xml.converter.impl253;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.CellType;
 import psidev.psi.mi.xml.model.Compartment;
 import psidev.psi.mi.xml.model.Tissue;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Organism.
@@ -34,6 +36,8 @@ public class OrganismConverter {
     private OpenCvTypeConverter openCvTypeConverter;
     private NamesConverter namesConverter;
 
+    private List<PsiXml25ParserListener> listeners;
+
     /////////////////////////
     // Constructor
 
@@ -42,6 +46,11 @@ public class OrganismConverter {
         namesConverter = new NamesConverter();
     }
 
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.namesConverter.setListeners(listeners);
+        this.openCvTypeConverter.setListeners(listeners);
+    }
 
     public psidev.psi.mi.xml.model.Organism fromJaxb( psidev.psi.mi.xml253.jaxb.BioSourceType jOrganism ) throws ConverterException {
 

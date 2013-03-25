@@ -9,9 +9,12 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.ExperimentRefListType;
 import psidev.psi.mi.xml253.jaxb.ParticipantType;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Organism.
@@ -29,6 +32,7 @@ public class HostOrganismConverter {
 
     private OpenCvTypeConverter openCvTypeConverter;
     private NamesConverter namesConverter;
+    private List<PsiXml25ParserListener> listeners;
 
     /**
      * Handles DAOs.
@@ -41,6 +45,12 @@ public class HostOrganismConverter {
     public HostOrganismConverter() {
         openCvTypeConverter = new OpenCvTypeConverter();
         namesConverter = new NamesConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.openCvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
     }
 
     ///////////////////////////////

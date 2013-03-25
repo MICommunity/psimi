@@ -7,9 +7,12 @@ package psidev.psi.mi.xml.converter.impl254;
 
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.ExperimentRef;
 import psidev.psi.mi.xml254.jaxb.ExperimentRefList;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class ExperimentalPreparation.
@@ -27,6 +30,7 @@ public class ExperimentalPreparationConverter {
 
     private CvTypeConverter cvTypeConverter;
 
+    private List<PsiXml25ParserListener> listeners;
     /**
      * Handles DAOs.
      */
@@ -34,6 +38,11 @@ public class ExperimentalPreparationConverter {
 
     public ExperimentalPreparationConverter() {
         cvTypeConverter = new CvTypeConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        cvTypeConverter.setListeners(this.listeners);
     }
 
     ///////////////////////////////

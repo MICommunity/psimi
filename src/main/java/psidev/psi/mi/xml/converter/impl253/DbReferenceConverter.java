@@ -7,6 +7,9 @@ package psidev.psi.mi.xml.converter.impl253;
 
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class DbReference.
@@ -19,7 +22,13 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
  */
 public class DbReferenceConverter {
 
+    private List<PsiXml25ParserListener> listeners;
+
     public DbReferenceConverter() {
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
     }
 
     /////////////////////////

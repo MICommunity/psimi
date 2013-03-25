@@ -87,6 +87,19 @@ public class ParticipantConverter {
 
     public void setListeners(List<PsiXml25ParserListener> listeners) {
         this.listeners = listeners;
+        this.cvTypeConverter.setListeners(listeners);
+        this.namesConverter.setListeners(listeners);
+        this.xrefConverter.setListeners(listeners);
+        this.confidenceConverter.setListeners(listeners);
+        this.experimentalInteractorConverter.setListeners(listeners);
+        this.featureConverter.setListeners(listeners);
+        this.hostOrganismConverter.setListeners(listeners);
+        this.parameterConverter.setListeners(listeners);
+        this.interactorConverter.setListeners(listeners);
+        this.experimentalRoleConverter.setListeners(listeners);
+        this.experimentalPreparationConverter.setListeners(listeners);
+        this.participantIdentificationMethodConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
     }
 
     /**

@@ -6,10 +6,12 @@
 package psidev.psi.mi.xml.converter.impl253;
 
 import psidev.psi.mi.xml.converter.ConverterException;
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.Attribute;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class OpenCvType.
@@ -28,6 +30,8 @@ public class OpenCvTypeConverter {
     private static final Class[] NO_PARAMETER_TYPES = new Class[]{};
     private static final Object[] NO_ARGS = new Object[]{};
 
+    private List<PsiXml25ParserListener> listeners;
+
     //////////////////////
     // Instance variables
 
@@ -42,6 +46,13 @@ public class OpenCvTypeConverter {
         namesConverter = new NamesConverter();
         xrefConverter = new XrefConverter();
         attributeConverter = new AttributeConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.namesConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.xrefConverter.setListeners(listeners);
     }
 
     /**

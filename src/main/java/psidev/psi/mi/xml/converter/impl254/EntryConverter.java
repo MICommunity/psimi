@@ -66,6 +66,10 @@ public class EntryConverter {
         this.experimentDescriptionConverter.setListeners(listeners);
         this.interactionConverter.setListeners(listeners);
         this.interactorConverter.setListeners(listeners);
+        this.sourceConverter.setListeners(listeners);
+        this.sourceConverter.setListeners(listeners);
+        this.attributeConverter.setListeners(listeners);
+        this.availabilityConverter.setListeners(listeners);
     }
 
     /**

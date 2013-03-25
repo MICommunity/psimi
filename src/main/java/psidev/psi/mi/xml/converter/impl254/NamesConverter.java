@@ -5,7 +5,10 @@
  */
 package psidev.psi.mi.xml.converter.impl254;
 
+import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml254.jaxb.Alias;
+
+import java.util.List;
 
 /**
  * Converter to and from JAXB of the class Names.
@@ -18,6 +21,8 @@ import psidev.psi.mi.xml254.jaxb.Alias;
  */
 public class NamesConverter {
 
+    private List<PsiXml25ParserListener> listeners;
+
     //////////////////////
     // Instance variable
 
@@ -28,6 +33,11 @@ public class NamesConverter {
 
     public NamesConverter() {
         aliasConverter = new AliasConverter();
+    }
+
+    public void setListeners(List<PsiXml25ParserListener> listeners) {
+        this.listeners = listeners;
+        this.aliasConverter.setListeners(listeners);
     }
 
     /////////////////////////
