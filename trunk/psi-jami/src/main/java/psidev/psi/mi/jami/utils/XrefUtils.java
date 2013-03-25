@@ -87,6 +87,28 @@ public class XrefUtils {
         return identifiers;
     }
 
+    public static Collection<Xref> searchAllXrefsHavingDatabaseAndQualifier( Collection<Xref> xrefs,
+                                                            Collection<String> typeMiRefs,
+                                                            Collection<String> dbMiRefs) {
+
+        if (xrefs == null || xrefs.isEmpty() || typeMiRefs.isEmpty() || dbMiRefs.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Xref> refs = new ArrayList<Xref>(xrefs.size());
+
+        for ( Xref ref : xrefs ) {
+            if ( !dbMiRefs.contains( ref.getDatabase().getMIIdentifier() ) ) {
+                continue;
+            }
+            if ( ref.getQualifier() == null || !typeMiRefs.contains( ref.getQualifier().getMIIdentifier() ) ) {
+                continue;
+            }
+            refs.add( ref );
+        }
+
+        return refs;
+    }
+
     /**
      * Collect all cross references having a specific qualifier
      * @param refs
