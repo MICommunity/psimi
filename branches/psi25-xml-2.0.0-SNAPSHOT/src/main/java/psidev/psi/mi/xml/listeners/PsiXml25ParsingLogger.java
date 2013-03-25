@@ -108,7 +108,7 @@ public class PsiXml25ParsingLogger implements PsiXml25ParserListener{
         }
     }
 
-    public void fireOnMissingCvEvent(MissingCvEvent event) {
+    public void fireOnMissingElementEvent(MissingElementEvent event) {
         if (event != null){
             stringBuffer.setLength(0);
             stringBuffer.append("A cv term is missing : ");
