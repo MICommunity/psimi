@@ -1,16 +1,13 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.ExperimentDescription;
-import psidev.psi.mi.xml.model.Interaction;
-import psidev.psi.mi.xml.model.Participant;
-import psidev.psi.mi.xml.model.ParticipantIdentificationMethod;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +22,7 @@ import java.util.List;
  * @version $Id: ExperimentParticipantIdentificationMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class ExperimentParticipantIdentificationMethodRule extends Mi25InteractionRule {
+public class ExperimentParticipantIdentificationMethodRule extends ObjectRule<ParticipantEvidence> {
 
     public ExperimentParticipantIdentificationMethodRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -38,61 +35,35 @@ public class ExperimentParticipantIdentificationMethodRule extends Mi25Interacti
         addTip( "The PSI-MI identifier for identical object is: MI:0356" );
     }
 
+    public boolean canCheck(Object o) {
+        return ( o != null && o instanceof ParticipantEvidence );
+    }
+
     /**
      * Make sure that an experiment has a valid Participant Identification Method that all the participant identification methods are valid.
      *
-     * @param interaction an interaction to check on.
+     * @param participant an interaction to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( ParticipantEvidence participant ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        int interactionId = interaction.getId();
+        Mi25Context context = RuleUtils.buildContext(participant, "participant");
+        if (participant.getInteractionEvidence() != null && participant.getInteractionEvidence().getExperiment() != null){
+            context.addAssociatedContext(RuleUtils.buildContext(participant.getInteractionEvidence().getExperiment(), "experiment"));
+        }
 
-        Collection<ExperimentDescription> experiments = interaction.getExperiments();
-        Collection<Participant> participants = interaction.getParticipants();
-
-        for (ExperimentDescription experiment : experiments){
-            int experimentId = experiment.getId();
-
-            boolean hasToCheckPartDetMetInExperiment = false;
-
-            for (Participant participant : participants){
-                int participantId = participant.getId();
-
-                Mi25Context context = new Mi25Context();
-                context.setId(participantId);
-                context.setObjectLabel("participant");
-
-                if (experiment.getParticipantIdentificationMethod() != null){
-                    hasToCheckPartDetMetInExperiment = true;
-                    break;
-                }
-                else if (experiment.getParticipantIdentificationMethod() == null && !participant.hasParticipantIdentificationMethods()){
-                    messages.add( new ValidatorMessage( " The participant does not have a participant identification method and it is required for MIMIx",
-                            MessageLevel.ERROR,
-                            context,
-                            this ) );
-                }
-                else if (participant.hasParticipantIdentificationMethods()){
-                    Collection<ParticipantIdentificationMethod> participantIdentifications = participant.getParticipantIdentificationMethods();
-
-                    for (ParticipantIdentificationMethod method : participantIdentifications){
-
-                        RuleUtils.checkPsiMIXRef(method, messages, context, this, "MI:0002");
-                    }
-                }
-            }
-
-            if (hasToCheckPartDetMetInExperiment){
-                Mi25Context context = new Mi25Context();
-                context.setId(experimentId);
-                context.setObjectLabel("experiment");
-
-                RuleUtils.checkPsiMIXRef(experiment.getParticipantIdentificationMethod(), messages, context, this, "MI:0002");
-            }
+        if (participant.getIdentificationMethod() == null){
+            messages.add( new ValidatorMessage( " The participant does not have a participant identification method and it is required for MIMIx",
+                    MessageLevel.ERROR,
+                    context,
+                    this ) );
+        }
+        else {
+            context.addAssociatedContext(RuleUtils.buildContext(participant.getIdentificationMethod(), "participant identification method"));
+            RuleUtils.checkPsiMIXRef(participant.getIdentificationMethod(), messages, context, this, "MI:0002");
         }
 
         return messages;

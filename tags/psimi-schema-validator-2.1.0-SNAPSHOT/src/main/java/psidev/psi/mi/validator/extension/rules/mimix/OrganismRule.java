@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -20,7 +19,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class OrganismRule extends ObjectRule<Organism> {
+public class OrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Organism> {
 
     public OrganismRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
@@ -38,7 +37,7 @@ public class OrganismRule extends ObjectRule<Organism> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Organism){
+        if (t instanceof psidev.psi.mi.jami.model.Organism){
             return true;
         }
 
@@ -52,7 +51,7 @@ public class OrganismRule extends ObjectRule<Organism> {
      * @param organism to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( Organism organism ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( psidev.psi.mi.jami.model.Organism organism ) throws ValidatorException {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
