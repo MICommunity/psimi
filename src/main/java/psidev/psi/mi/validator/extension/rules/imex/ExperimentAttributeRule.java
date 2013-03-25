@@ -1,10 +1,11 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.Attribute;
-import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -61,31 +62,32 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
     }
 
     @Override
-    public Collection<ValidatorMessage> check(ExperimentDescription experiment) throws ValidatorException {
+    public Collection<ValidatorMessage> check(Experiment experiment) throws ValidatorException {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        if (experiment.hasAttributes()){
-            Collection<Attribute> attributes = experiment.getAttributes();
-            Mi25Context context = new Mi25Context();
-            context.setId(experiment.getId());
-            context.setObjectLabel("experiment");
+        if (!experiment.getAnnotations().isEmpty()){
+            Collection<Annotation> attributes = experiment.getAnnotations();
+            Mi25Context experimentContext = RuleUtils.buildContext(experiment, "experiment");
 
-            for (Attribute attribute : attributes){
-                if (!attribute.hasNameAc()){
-                    if (attribute.getName() != null && !attribute.getName().equalsIgnoreCase(COPYRIGHT)){
-                        messages.add( new ValidatorMessage( "The attribute " + attribute.getName() + " does not have any nameAc. " +
-                                "All experiment's attributes should have a nameAc pointing to a valid PSI MI term (Excepted '"+COPYRIGHT+"' attribute)." +
-                                " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
+            for (Annotation attribute : attributes){
+                if (attribute.getTopic().getMIIdentifier() == null && !AnnotationUtils.doesAnnotationHaveTopic(attribute, null, COPYRIGHT)){
+                    Mi25Context context = RuleUtils.buildContext(attribute, "attribute");
+                    context.addAssociatedContext(experimentContext);
+
+                    messages.add( new ValidatorMessage( "The attribute " + attribute.getTopic().getShortName() + " does not have any nameAc. " +
+                            "All experiment's attributes should have a nameAc pointing to a valid PSI MI term (Excepted '"+COPYRIGHT+"' attribute)." +
+                            " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
                 }
                 else {
 
-                    if (!acceptedAttributes.contains(attribute.getNameAc())){
-                        messages.add( new ValidatorMessage( "The attribute " + attribute.getNameAc() + " ( " + attribute.getName() != null ? attribute.getName() : "no name" + " ) is not a child of MI:0665 ( 'experiment attribute name' ). " +
+                    if (!acceptedAttributes.contains(attribute.getTopic().getMIIdentifier())){
+                        Mi25Context context = RuleUtils.buildContext(attribute, "attribute");
+                        context.addAssociatedContext(experimentContext);
+                        messages.add( new ValidatorMessage( "The attribute " + attribute.getTopic().getMIIdentifier() + " ( " + attribute.getTopic().getShortName()+") is not a child of MI:0665 ( 'experiment attribute name' ). " +
                                 " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
                                 MessageLevel.WARN,
                                 context,
