@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -102,7 +103,7 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
 
             final String seq = interactor.getSequence();
 
-            if ( RuleUtils.isProtein( ontologyManager, interactor ) || RuleUtils.isPeptide( ontologyManager, interactor )) {
+            if ( RuleUtils.isProtein(ontologyManager, interactor) || RuleUtils.isPeptide( ontologyManager, interactor )) {
                 final Matcher matcher = NOT_AMINO_ACID_SEQUENCE_PATTERN.matcher( seq );
 
                 StringBuffer buffer = new StringBuffer();
