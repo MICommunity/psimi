@@ -67,7 +67,7 @@
                       cvElementPath="/interactionEvidence/participantEvidences/biologicalRole/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/biologicalRole"
-                      requirementLevel="MAY">
+                      requirementLevel="SHOULD">
            <CvTerm termAccession="PAR:0500" allowChildren="true" termName="biological role" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
@@ -75,7 +75,7 @@
                       cvElementPath="/interactionEvidence/participantEvidences/experimentalRole/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/experimentalRole"
-                      requirementLevel="MAY">
+                      requirementLevel="SHOULD">
            <CvTerm termAccession="PAR:0495" allowChildren="true" termName="experimental role" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
@@ -91,7 +91,7 @@
                       cvElementPath="/interactionEvidence/participantEvidences/experimentalPreparations/@MIIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/experimentalPreparations"
-                      requirementLevel="MUST">
+                      requirementLevel="SHOULD">
            <CvTerm termAccession="PAR:0346" allowChildren="true" termName="experimental preparation" useTerm="false" cvIdentifierRef="MI"/>
        </CvMappingRule>
 
