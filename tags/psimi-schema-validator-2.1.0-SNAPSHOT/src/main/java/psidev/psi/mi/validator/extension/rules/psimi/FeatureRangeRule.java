@@ -1,10 +1,11 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.utils.FeatureUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;

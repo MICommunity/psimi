@@ -10,7 +10,7 @@
 
    <CvMappingRuleList>
 
-       <CvMappingRule id="R1" name="Interaction Detection Method"
+       <CvMappingRule id="R2" name="Interaction Detection Method"
                       cvElementPath="/interactionEvidence/experiment/interactionDetectionMethod/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/experiment/interactionDetectionMethod"
@@ -19,7 +19,7 @@
            <CvTerm termAccession="PAR:1328" allowChildren="true" termName="molecule production method" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R2" name="Participant Detection Method"
+       <CvMappingRule id="R3" name="Participant Detection Method"
                       cvElementPath="/interactionEvidence/participantEvidences/identificationMethod/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/identificationMethod"
@@ -27,7 +27,7 @@
            <CvTerm termAccession="PAR:0002" allowChildren="true" termName="participant identification method" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R3" name="Participant's Feature Type"
+       <CvMappingRule id="R4" name="Participant's Feature Type"
                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/type/identifiers[1]/@id"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/type/"
@@ -38,7 +38,7 @@
            <CvTerm termAccession="MOD:00000" allowChildren="true" termName="protein modification" useTerm="false" cvIdentifierRef="MOD" />
        </CvMappingRule>
 
-       <CvMappingRule id="R4" name="Participant's Feature Detection Method"
+       <CvMappingRule id="R5" name="Participant's Feature Detection Method"
                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/detectionMethod/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/detectionMethod"
@@ -92,7 +92,7 @@
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/experimentalPreparations"
                       requirementLevel="SHOULD">
-           <CvTerm termAccession="PAR:0346" allowChildren="true" termName="experimental preparation" useTerm="false" cvIdentifierRef="MI"/>
+           <CvTerm termAccession="PAR:0346" allowChildren="true" termName="experimental preparation" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
    </CvMappingRuleList>

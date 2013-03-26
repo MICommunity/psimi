@@ -1,10 +1,11 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.psimi;
 
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.validator.extension.rules.dependencies.ValidatorRuleException;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;

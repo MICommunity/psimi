@@ -4,8 +4,9 @@
 
     <name>PSI-MI</name>
 
-    <rule class="psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.InteractorSequenceAlphabetRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.FeatureRangeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractorSequenceAlphabetRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentPublicationRule"/>
     
 </objectRuleList>

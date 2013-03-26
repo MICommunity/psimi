@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.ValidatorReport;
-import psidev.psi.mi.validator.extension.rules.DatabaseAccessionRule;
+import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
 import psidev.psi.mi.validator.extension.rules.PsimiXmlSchemaRule;
 import psidev.psi.mi.validator.extension.rules.cvmapping.MICvRuleManager;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;

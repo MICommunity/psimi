@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.validator.extension.rules.FeatureRangeRule;
+import psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeRule;
 import psidev.psi.mi.xml.model.Feature;
 import psidev.psi.mi.xml.model.Participant;
 import psidev.psi.mi.xml.model.Range;

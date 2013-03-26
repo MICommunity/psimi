@@ -2,6 +2,7 @@ package psidev.psi.mi.validator.extension.rules;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Interactor;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
