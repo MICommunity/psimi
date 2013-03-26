@@ -36,7 +36,7 @@ public class ExperimentPublicationRule extends ObjectRule<MolecularInteractionFi
 
     @Override
     public boolean canCheck(Object t) {
-        return ontologyManager instanceof MolecularInteractionFileDataSource;
+        return t instanceof MolecularInteractionFileDataSource;
     }
 
     @Override

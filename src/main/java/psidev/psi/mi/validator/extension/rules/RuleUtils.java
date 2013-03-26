@@ -404,6 +404,14 @@ public final class RuleUtils {
         return ids;
     }
 
+    public static Set<String> collectNames( Collection<OntologyTermI> refs ) {
+        Set<String> ids = new HashSet<String>( refs.size() );
+        for ( OntologyTermI termI : refs ) {
+            ids.add( termI.getPreferredName());
+        }
+        return ids;
+    }
+
     /**
      * Checks that a psi mi cross reference is present and well formatted. The controlled vocabulary rules will already check if the controlled vocabulary is valid
      * @param container

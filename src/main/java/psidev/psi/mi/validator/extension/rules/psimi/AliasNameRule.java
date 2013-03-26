@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO comment this
+ * Rule to check that each alias has a name
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,7 +29,7 @@ public class AliasNameRule extends ObjectRule<MolecularInteractionFileDataSource
 
     public AliasNameRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Aliases name check" );
+        setName( "Alias name check" );
 
         setDescription( "Check that each alias has a name." );
     }
