@@ -2,9 +2,12 @@ package psidev.psi.mi.tab.listeners;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.datasource.*;
+import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceError;
+import psidev.psi.mi.jami.datasource.MolecularInteractionFileDataSource;
+import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.MolecularInteractionDataSourceUtils;
+import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.tab.PsimiTabIterator;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
@@ -12,8 +15,13 @@ import psidev.psi.mi.tab.events.InvalidFormatEvent;
 import psidev.psi.mi.tab.events.MissingElementEvent;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A simple Mitab datasource.
@@ -51,7 +59,7 @@ public class SimpleMitabDataSource implements MolecularInteractionFileDataSource
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a MITAb datasource");
         }
-        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source"+System.currentTimeMillis(), ".txt");
+        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
         isTemporaryFile = true;
 
         errors = new ArrayList<FileSourceError>();
