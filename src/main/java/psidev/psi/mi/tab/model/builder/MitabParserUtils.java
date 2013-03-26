@@ -989,9 +989,65 @@ public final class MitabParserUtils {
                                 }
                             }
                         } else if (length == 2) {
-                            object = new AliasImpl(result[0], result[1]);
+                            String db = null;
+                            String name = null;
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else {
+                                db = result[0];
+                            }
+
+                            if (result[1].length() == 0){
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_alias_name, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else{
+                                name = result[1];
+                            }
+
+                            if (db != null && name != null){
+                                object = new AliasImpl(db, name);
+                            }
                         } else if (length == 3) {
-                            object = new AliasImpl(result[0], result[1], result[2]);
+                            String db = null;
+                            String name = null;
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else {
+                                db = result[0];
+                            }
+
+                            if (result[1].length() == 0){
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_alias_name, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else{
+                                name = result[1];
+                            }
+
+                            if (db != null && name != null){
+                                object = new AliasImpl(result[0], result[1], result[2]);
+                            }
                         }
 
                         if (object != null) {
