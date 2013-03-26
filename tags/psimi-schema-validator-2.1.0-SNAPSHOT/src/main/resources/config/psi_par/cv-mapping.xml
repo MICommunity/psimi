@@ -87,5 +87,13 @@
            <CvTerm termAccession="PAR:0333" allowChildren="true" termName="feature range status" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
+       <CvMappingRule id="R11" name="Participant's experimental preparation"
+                      cvElementPath="/interactionEvidence/participantEvidences/experimentalPreparations/@MIIdentifier"
+                      cvTermsCombinationLogic="OR"
+                      scopePath="/interactionEvidence/participantEvidences/experimentalPreparations"
+                      requirementLevel="MUST">
+           <CvTerm termAccession="PAR:0346" allowChildren="true" termName="experimental preparation" useTerm="false" cvIdentifierRef="MI"/>
+       </CvMappingRule>
+
    </CvMappingRuleList>
 </CvMapping>
