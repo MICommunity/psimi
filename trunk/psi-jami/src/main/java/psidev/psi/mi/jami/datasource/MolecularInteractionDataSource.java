@@ -15,7 +15,4 @@ public interface MolecularInteractionDataSource {
 
     public void initialiseContext(Map<String, Object> options);
     public Collection<? extends DataSourceError> getDataSourceErrors();
-
-    public void open();
-    public void close();
 }
