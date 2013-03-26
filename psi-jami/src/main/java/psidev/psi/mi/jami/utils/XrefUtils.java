@@ -89,18 +89,34 @@ public class XrefUtils {
 
     public static Collection<Xref> searchAllXrefsHavingDatabaseAndQualifier( Collection<Xref> xrefs,
                                                             Collection<String> typeMiRefs,
-                                                            Collection<String> dbMiRefs) {
+                                                            Collection<String> typeRefs,
+                                                            Collection<String> dbMiRefs,
+                                                            Collection<String> dbRefs) {
 
-        if (xrefs == null || xrefs.isEmpty() || typeMiRefs.isEmpty() || dbMiRefs.isEmpty()){
+        if (xrefs == null || xrefs.isEmpty() || (typeMiRefs.isEmpty() && typeRefs.isEmpty()) || (dbMiRefs.isEmpty() && dbRefs.isEmpty())){
             return Collections.EMPTY_LIST;
         }
         Collection<Xref> refs = new ArrayList<Xref>(xrefs.size());
 
         for ( Xref ref : xrefs ) {
-            if ( !dbMiRefs.contains( ref.getDatabase().getMIIdentifier() ) ) {
+            if (ref.getDatabase().getMIIdentifier() != null && !dbMiRefs.isEmpty()) {
+                if (!dbMiRefs.contains( ref.getDatabase().getMIIdentifier() )){
+                    continue;
+                }
+            }
+            else if (dbRefs.contains( ref.getDatabase().getShortName() )){
                 continue;
             }
-            if ( ref.getQualifier() == null || !typeMiRefs.contains( ref.getQualifier().getMIIdentifier() ) ) {
+
+            if ( ref.getQualifier() == null ) {
+                continue;
+            }
+            else if (ref.getQualifier().getMIIdentifier() != null && !typeMiRefs.isEmpty()){
+                if ( !typeMiRefs.contains( ref.getQualifier().getMIIdentifier() )){
+                    continue;
+                }
+            }
+            else if (!typeRefs.contains( ref.getQualifier().getShortName() )){
                 continue;
             }
             refs.add( ref );
@@ -109,15 +125,20 @@ public class XrefUtils {
         return refs;
     }
 
-    public static Collection<Xref> searchAllXrefsHavingDatabase( Collection<Xref> xrefs, Collection<String> dbMiRefs) {
+    public static Collection<Xref> searchAllXrefsHavingDatabase( Collection<Xref> xrefs, Collection<String> dbMiRefs, Collection<String> dbRefs) {
 
-        if (xrefs == null || xrefs.isEmpty() || dbMiRefs.isEmpty()){
+        if (xrefs == null || xrefs.isEmpty() || (dbMiRefs.isEmpty() && dbRefs.isEmpty())){
             return Collections.EMPTY_LIST;
         }
         Collection<Xref> refs = new ArrayList<Xref>(xrefs.size());
 
         for ( Xref ref : xrefs ) {
-            if ( !dbMiRefs.contains( ref.getDatabase().getMIIdentifier() ) ) {
+            if (ref.getDatabase().getMIIdentifier() != null && !dbMiRefs.isEmpty()) {
+                if (!dbMiRefs.contains( ref.getDatabase().getMIIdentifier() )){
+                    continue;
+                }
+            }
+            else if (dbRefs.contains( ref.getDatabase().getShortName() )){
                 continue;
             }
             refs.add( ref );
