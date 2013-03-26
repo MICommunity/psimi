@@ -5,14 +5,14 @@ import java.io.InputStream;
 import java.util.Collection;
 
 /**
- * TODO comment this
+ * Interface for molecular interaction datasources coming from a file
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26/03/13</pre>
  */
 
-public interface MolecularInteractionFileDataSource extends MolecularInteractionDataSource {
+public interface MolecularInteractionFileDataSource {
 
     public Collection<FileSourceError> getDataSourceErrors();
 
