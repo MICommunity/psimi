@@ -54,7 +54,7 @@ public class FeatureTypeRule extends ObjectRule<FeatureEvidence> {
 
         if (feature.getType() != null){
 
-            RuleUtils.checkPsiMIOrModXRef(feature.getType(), messages, context, this, RuleUtils.FEATURE_TYPE);
+            RuleUtils.checkUniquePsiMIOrModXRef(feature.getType(), messages, context, this, RuleUtils.FEATURE_TYPE);
 
         }
         else {

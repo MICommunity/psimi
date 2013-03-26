@@ -65,15 +65,13 @@ public class ProteinIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Int
         if( RuleUtils.isProtein( ontologyManager, interactor )) {
 
             final Collection<Xref> identities =
-                    XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(),
-                            Arrays.asList(Xref.IDENTITY_MI),
-                            Arrays.asList(UNIPROTKB_MI_REF, REFSEQ_MI_REF));
+                    XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), Arrays.asList(UNIPROTKB_MI_REF, REFSEQ_MI_REF));
 
-            final Collection<Xref> identitiesUniprot = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(),
-                    Xref.UNIPROTKB_MI, Xref.UNIPROTKB, Xref.IDENTITY_MI, Xref.IDENTITY);
+            final Collection<Xref> identitiesUniprot = XrefUtils.collectAllXrefsHavingDatabase(interactor.getIdentifiers(),
+                    Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
 
-            final Collection<Xref> identitiesRefseq = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(),
-                    Xref.REFSEQ_MI, Xref.REFSEQ, Xref.IDENTITY_MI, Xref.IDENTITY);
+            final Collection<Xref> identitiesRefseq = XrefUtils.collectAllXrefsHavingDatabase(interactor.getIdentifiers(),
+                    Xref.REFSEQ_MI, Xref.REFSEQ);
 
             if( identities.isEmpty() ) {
 

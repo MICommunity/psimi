@@ -67,7 +67,7 @@ public class InteractorTypeRule extends ObjectRule<psidev.psi.mi.jami.model.Inte
         }
         else {
 
-            RuleUtils.checkPsiMIXRef(interactor.getType(), messages, context, this, RuleUtils.INTERACTOR_TYPE);
+            RuleUtils.checkUniquePsiMIXRef(interactor.getType(), messages, context, this);
         }
 
         return messages;

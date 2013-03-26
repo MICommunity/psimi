@@ -43,7 +43,7 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
             boolean hasFigureLegend = false;
 
             for (Annotation attribute : attributes){
-                if (attribute.getTopic().getIdentifiers() != null){
+                if (attribute.getTopic().getMIIdentifier() != null){
                     if (RuleUtils.FIGURE_LEGEND_MI_REF.equals(attribute.getTopic().getMIIdentifier())){
                         hasFigureLegend = true;
                     }

@@ -62,7 +62,7 @@ public class ExperimentalRoleRule  extends ObjectRule<ParticipantEvidence> {
         final Mi25Context context = RuleUtils.buildContext(experimentalRole, "participant's experimental role");
         context.addAssociatedContext(RuleUtils.buildContext(participant, "participant"));
 
-        RuleUtils.checkPsiMIXRef(experimentalRole, messages, context, this, RuleUtils.EXPERIMENTAL_ROLE);
+        RuleUtils.checkUniquePsiMIXRef(experimentalRole, messages, context, this);
 
         return messages;
     }

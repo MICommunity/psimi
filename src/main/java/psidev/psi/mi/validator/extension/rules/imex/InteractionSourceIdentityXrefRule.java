@@ -63,9 +63,8 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // write the rule here ...
-        Collection<Xref> identities = XrefUtils.collectAllXrefsHavingQualifier(interaction.getIdentifiers(), Xref.IDENTITY_MI, Xref.IDENTITY);
-        
-        if( identities.isEmpty() ) {
+
+        if( interaction.getIdentifiers().isEmpty() ) {
             Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
             messages.add( new ValidatorMessage( "An interaction requires an identity cross reference to an interaction database (child term of "+ INTERACTION_DATABASE_MI_REF +")." ,
                                                 MessageLevel.ERROR,
@@ -78,10 +77,10 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
             final Set<OntologyTermI> dbTerms = access.getValidTerms( INTERACTION_DATABASE_MI_REF, true, false );
             final Set<String> interactionDbMis = collectAccessions( dbTerms );
 
-            final Collection<Xref> dbRefs = XrefUtils.searchAllXrefsHavingDatabase( identities, interactionDbMis);
+            final Collection<Xref> dbRefs = XrefUtils.searchAllXrefsHavingDatabase( interaction.getIdentifiers(), interactionDbMis);
             if( dbRefs.isEmpty() ) {
                 Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-                String dbList = buildDbList( identities );
+                String dbList = buildDbList( interaction.getIdentifiers() );
                 String msg = null;
                 if( dbList.length() > 0 ) {
                     msg = "Found identity cross reference ("+ dbList +"), but none to an interaction database (child term of "+ INTERACTION_DATABASE_MI_REF +").";

@@ -59,7 +59,7 @@ public class OrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Organism> 
 
         // check on host organism
         RuleUtils.checkOrganism(ontologyManager, organism, context, messages, this,
-                "Experiment or Interactor", "host organism");
+                "Experiment, Participant or Interactor", "host organism");
 
         return messages;
     }
