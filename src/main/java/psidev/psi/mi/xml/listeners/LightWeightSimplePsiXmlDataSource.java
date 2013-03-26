@@ -1,9 +1,13 @@
 package psidev.psi.mi.xml.listeners;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.*;
+import org.xml.sax.helpers.XMLReaderFactory;
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.MolecularInteractionDataSourceUtils;
 import psidev.psi.mi.xml.PsimiXmlLightweightReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlVersion;
@@ -14,8 +18,7 @@ import psidev.psi.mi.xml.io.LightWeightXmlInteractionIterator;
 import psidev.psi.mi.xml.io.LightWeightXmlInteractorIterator;
 import psidev.psi.mi.xml.xmlindex.IndexedEntry;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -26,12 +29,13 @@ import java.util.*;
  * @since <pre>15/03/13</pre>
  */
 
-public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSource, StreamingInteractorSource, StreamingInteractionSource, PsiXml25ParserListener {
+public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, MolecularInteractionFileDataSource, StreamingExperimentSource, StreamingInteractorSource, StreamingInteractionSource, PsiXml25ParserListener {
 
     private PsimiXmlLightweightReader reader;
     private List<IndexedEntry> indexedEntries;
     private File file;
-    private InputStream stream;
+    private boolean isTemporaryFile = false;
+    private boolean hasValidatedSyntax=false;
     private Collection<FileSourceError> errors;
 
     private Log log = LogFactory.getLog(LightWeightSimplePsiXmlDataSource.class);
@@ -56,7 +60,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         errors = new ArrayList<FileSourceError>();
     }
 
-    public LightWeightSimplePsiXmlDataSource(InputStream stream){
+    public LightWeightSimplePsiXmlDataSource(InputStream stream) throws IOException {
         try {
             this.reader = new PsimiXmlLightweightReader(stream);
         } catch (PsimiXmlReaderException e) {
@@ -68,10 +72,11 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
             fireOnInvalidXmlSyntax(evt);
         }
         this.reader.addXmlParserListener(this);
-        this.stream = stream;
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
+        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+        isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
 
@@ -90,7 +95,7 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
         errors = new ArrayList<FileSourceError>();
     }
 
-    public LightWeightSimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version){
+    public LightWeightSimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version) throws IOException {
         try {
             this.reader = new PsimiXmlLightweightReader(stream, version);
         } catch (PsimiXmlReaderException e) {
@@ -98,10 +103,14 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
             fireOnInvalidXmlSyntax(evt);
         }
         this.reader.addXmlParserListener(this);
-        this.stream = stream;
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
+        if (stream == null){
+            throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
+        }
+        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+        isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
 
@@ -128,6 +137,42 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
 
     public void close() {
         ConverterContext.remove();
+        if (isTemporaryFile && file != null){
+            file.delete();
+        }
+    }
+
+    public void validateFileSyntax() {
+        if (!hasValidatedSyntax){
+
+            if (log.isDebugEnabled()) log.debug("[SAX Validation] enabled via user preferences" );
+
+            String validationFeature = "http://xml.org/sax/features/validation";
+            String schemaFeature = "http://apache.org/xml/features/validation/schema";
+
+            XMLReader r = null;
+            try {
+                r = XMLReaderFactory.createXMLReader();
+
+                r.setFeature( validationFeature, true );
+                r.setFeature( schemaFeature, true );
+
+                r.setErrorHandler( this );
+                r.parse( new InputSource(  new FileReader( file )));
+
+            } catch (SAXException e) {
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_syntax, "Impossible to validate the source file because " + ExceptionUtils.getFullStackTrace(e));
+                fireOnInvalidXmlSyntax(evt);
+            } catch (FileNotFoundException e) {
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_syntax, "Impossible to validate the source file because the file "+file.getName()+"does not exist." + ExceptionUtils.getFullStackTrace(e));
+                fireOnInvalidXmlSyntax(evt);
+            } catch (IOException e) {
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_syntax, "Impossible to validate the source file because " + ExceptionUtils.getFullStackTrace(e));
+                fireOnInvalidXmlSyntax(evt);
+            }
+
+            hasValidatedSyntax = true;
+        }
     }
 
     public void fireOnInvalidXmlSyntax(InvalidXmlEvent event) {
@@ -172,6 +217,9 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
+        if (this.indexedEntries == null){
+            open();
+        }
         return new LightWeightXmlInteractionIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
@@ -188,14 +236,23 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
     }
 
     public Iterator<? extends Interaction> getInteractionsIterator() {
+        if (this.indexedEntries == null){
+            open();
+        }
         return new LightWeightXmlInteractionIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
     public Iterator<? extends Experiment> getExperimentsIterator() {
+        if (this.indexedEntries == null){
+            open();
+        }
         return new LightWeightXmlExperimentIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
     public Iterator<? extends Interactor> getInteractorsIterator() {
+        if (this.indexedEntries == null){
+            open();
+        }
         return new LightWeightXmlInteractorIterator(this.indexedEntries, new ArrayList<PsiXml25ParserListener>(Arrays.asList(this)));
     }
 
@@ -217,5 +274,20 @@ public class LightWeightSimplePsiXmlDataSource implements StreamingExperimentSou
 
     public Iterator<? extends Complex> getComplexesIterator() {
         return null;
+    }
+
+    public void warning(SAXParseException e) throws SAXException {
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
+    }
+
+    public void error(SAXParseException e) throws SAXException {
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
+    }
+
+    public void fatalError(SAXParseException e) throws SAXException {
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
     }
 }

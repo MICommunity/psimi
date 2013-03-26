@@ -1,19 +1,24 @@
 package psidev.psi.mi.xml.listeners;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.*;
+import org.xml.sax.helpers.XMLReaderFactory;
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.MolecularInteractionDataSourceUtils;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlVersion;
 import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.events.*;
-import psidev.psi.mi.xml.io.*;
+import psidev.psi.mi.xml.io.XmlExperimentIterator;
+import psidev.psi.mi.xml.io.XmlInteractionIterator;
+import psidev.psi.mi.xml.io.XmlInteractorIterator;
 import psidev.psi.mi.xml.model.EntrySet;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -24,12 +29,13 @@ import java.util.*;
  * @since <pre>15/03/13</pre>
  */
 
-public class SimplePsiXmlDataSource implements StreamingExperimentSource, StreamingInteractorSource, StreamingInteractionSource, PsiXml25ParserListener  {
+public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractionFileDataSource, StreamingExperimentSource, StreamingInteractorSource, StreamingInteractionSource, PsiXml25ParserListener  {
 
     private PsimiXmlReader reader;
     private EntrySet entrySet;
     private File file;
-    private InputStream stream;
+    private boolean isTemporaryFile = false;
+    private boolean hasValidatedSyntax=false;
     private Collection<FileSourceError> errors;
 
     private Log log = LogFactory.getLog(LightWeightSimplePsiXmlDataSource.class);
@@ -45,14 +51,15 @@ public class SimplePsiXmlDataSource implements StreamingExperimentSource, Stream
         errors = new ArrayList<FileSourceError>();
     }
 
-    public SimplePsiXmlDataSource(InputStream stream){
+    public SimplePsiXmlDataSource(InputStream stream) throws IOException {
         this.reader = new PsimiXmlReader();
 
         this.reader.addXmlParserListener(this);
-        this.stream = stream;
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
+        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+        isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
 
@@ -67,14 +74,15 @@ public class SimplePsiXmlDataSource implements StreamingExperimentSource, Stream
         errors = new ArrayList<FileSourceError>();
     }
 
-    public SimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version){
+    public SimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version) throws IOException {
         this.reader = new PsimiXmlReader(version);
 
         this.reader.addXmlParserListener(this);
-        this.stream = stream;
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
+        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+        isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
 
@@ -101,23 +109,46 @@ public class SimplePsiXmlDataSource implements StreamingExperimentSource, Stream
                 fireOnInvalidXmlSyntax(evt);
             }
         }
-        else {
-            try {
-                this.entrySet = this.reader.read(stream);
-            } catch (PsimiXmlReaderException e) {
-                log.error("Impossible to parse current InputStream");
-                InvalidXmlEvent evt = new InvalidXmlEvent("Impossible to parse current InputStream", e);
-                if (e.getCurrentObject() instanceof FileSourceContext){
-                    FileSourceContext context = (FileSourceContext) e.getCurrentObject();
-                    evt.setSourceLocator(context.getSourceLocator());
-                }
-                fireOnInvalidXmlSyntax(evt);
-            }
-        }
     }
 
     public void close() {
         ConverterContext.remove();
+        if (isTemporaryFile && file != null){
+            file.delete();
+        }
+    }
+
+    public void validateFileSyntax() {
+        if (!hasValidatedSyntax){
+
+            if (log.isDebugEnabled()) log.debug("[SAX Validation] enabled via user preferences" );
+
+            String validationFeature = "http://xml.org/sax/features/validation";
+            String schemaFeature = "http://apache.org/xml/features/validation/schema";
+
+            XMLReader r = null;
+            try {
+                r = XMLReaderFactory.createXMLReader();
+
+                r.setFeature( validationFeature, true );
+                r.setFeature( schemaFeature, true );
+
+                r.setErrorHandler( this );
+                r.parse( new InputSource(  new FileReader( file )));
+
+            } catch (SAXException e) {
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_syntax, "Impossible to validate the source file because " + ExceptionUtils.getFullStackTrace(e));
+                fireOnInvalidXmlSyntax(evt);
+            } catch (FileNotFoundException e) {
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_syntax, "Impossible to validate the source file because the file "+file.getName()+"does not exist." + ExceptionUtils.getFullStackTrace(e));
+                fireOnInvalidXmlSyntax(evt);
+            } catch (IOException e) {
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_syntax, "Impossible to validate the source file because " + ExceptionUtils.getFullStackTrace(e));
+                fireOnInvalidXmlSyntax(evt);
+            }
+
+            hasValidatedSyntax = true;
+        }
     }
 
     public void fireOnInvalidXmlSyntax(InvalidXmlEvent event) {
@@ -204,5 +235,20 @@ public class SimplePsiXmlDataSource implements StreamingExperimentSource, Stream
 
     public Iterator<? extends Complex> getComplexesIterator() {
         return null;
+    }
+
+    public void warning(SAXParseException e) throws SAXException {
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
+    }
+
+    public void error(SAXParseException e) throws SAXException {
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
+    }
+
+    public void fatalError(SAXParseException e) throws SAXException {
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
     }
 }
