@@ -3,8 +3,8 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
@@ -435,7 +435,7 @@ public class DependencyMapping {
      * @param rule
      * @return a list of messages
      */
-    protected Collection<ValidatorMessage> writeValidatorMessages(CvType term1, CvType term2, Term firstTermOfDependency, Term secondTermDependency,
+    protected Collection<ValidatorMessage> writeValidatorMessages(CvTerm term1, CvTerm term2, Term firstTermOfDependency, Term secondTermDependency,
                                                                   Collection<AssociatedTerm> associatedTermDependency,
                                                                   Mi25Context context, AbstractRule rule) {
 
@@ -523,8 +523,8 @@ public class DependencyMapping {
      * @param rule
      * @return a list of messages should any error be found.
      */
-    public Collection<ValidatorMessage> check( CvType term1,
-                                               CvType term2,
+    public Collection<ValidatorMessage> check( CvTerm term1,
+                                               CvTerm term2,
                                                Mi25Context context,
                                                AbstractRule rule) {
 
@@ -547,7 +547,7 @@ public class DependencyMapping {
                         sb.append( msg );
 
                         writePossibleDependenciesFor(required, sb);
-                        messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context.copy(), rule ) );
+                        messages.add( new ValidatorMessage( sb.toString(),  MessageLevel.ERROR, context, rule ) );
                         return messages;
                     }
                     else {
@@ -559,7 +559,7 @@ public class DependencyMapping {
                             final StringBuffer msg = new StringBuffer( 1024 );
                             msg.append("When the " + term1.getClass().getSimpleName() + " is "+Term.printTerm(firstTermOfDependency)+", it should be associated with : ");
                             writePossibleDependenciesFor(recommended, msg);
-                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context.copy(), rule ) );
+                            messages.add( new ValidatorMessage( msg.toString(),  MessageLevel.WARN, context, rule ) );
 
                             return messages;
                         }

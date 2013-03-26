@@ -2,12 +2,11 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
-import psidev.psi.mi.xml.model.Feature;
-import psidev.psi.mi.xml.model.FeatureType;
-import psidev.psi.mi.xml.model.Range;
-import psidev.psi.mi.xml.model.RangeStatus;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
@@ -28,7 +27,7 @@ import java.util.Collection;
  * @version $Id: FeatureType2FeatureRangeDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> {
+public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<FeatureEvidence> {
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
@@ -63,7 +62,7 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Feature){
+        if (t instanceof FeatureEvidence){
             return true;
         }
         return false;
@@ -77,22 +76,20 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<Feature> 
      * @return a collection of validator messages.
      *         if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Feature feature) throws ValidatorException {
+    public Collection<ValidatorMessage> check( FeatureEvidence feature) throws ValidatorException {
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // build a context in case of error
-        Mi25Context context = new Mi25Context();
-        context.setId( feature.getId());
-        context.setObjectLabel("feature");
+        Mi25Context context = RuleUtils.buildContext(feature, "feature");
 
-        if (feature.hasFeatureType()){
-            Collection<Range> featureRange = feature.getFeatureRanges();
-            FeatureType featureType = feature.getFeatureType();
+        if (feature.getType() != null){
+            Collection<psidev.psi.mi.jami.model.Range> featureRange = feature.getRanges();
+            CvTerm featureType = feature.getType();
 
-            for (Range r : featureRange){
-                RangeStatus startStatus =  r.getStartStatus();
-                RangeStatus endStatus =  r.getEndStatus();
+            for (psidev.psi.mi.jami.model.Range r : featureRange){
+                CvTerm startStatus =  r.getStart().getStatus();
+                CvTerm endStatus =  r.getEnd().getStatus();
 
                 messages.addAll( mapping.check( featureType, startStatus, context, this ) );
                 messages.addAll( mapping.check( featureType, endStatus, context, this ) );

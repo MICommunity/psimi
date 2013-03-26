@@ -43,8 +43,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         interaction.setXref(xRef);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        InteractionCrossReference2CrossReferenceTypeDependencyRule rule =
+                new InteractionCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
@@ -68,8 +68,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         interaction.setXref(xRef);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        InteractionCrossReference2CrossReferenceTypeDependencyRule rule =
+                new InteractionCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
         System.out.println(messages);
@@ -94,8 +94,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         exp.setXref(xRef);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
+                new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
         System.out.println(messages);
@@ -123,8 +123,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         exp.setBibref(bib);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
+                new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
         System.out.println(messages);
@@ -152,8 +152,8 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
 
         exp.setBibref(bib);
 
-        CrossReference2CrossReferenceTypeDependencyRule rule =
-                new CrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
+        ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
+                new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
         System.out.println(messages);
