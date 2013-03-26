@@ -257,151 +257,161 @@ public final class MitabParserUtils {
             throw new IllegalArgumentException("Empty line passed to create a BinaryInteraction");
         }
 
-        if (line.length < PsimiTabColumns.MITAB_LENGTH.ordinal()) {
-            line = MitabParserUtils.extendFormat(line, PsimiTabColumns.MITAB_LENGTH.ordinal());
-        }
-
-        Interactor interactorA = new Interactor();
-        Interactor interactorB = new Interactor();
-
-        BinaryInteractionImpl interaction = new BinaryInteractionImpl(interactorA, interactorB);
-        interaction.setLocator(new FileSourceLocator(lineIndex, -1));
-
-        int charIndexIdA = 0;
-        int charIndexIdB = charIndexIdA+4+(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()] != null ? line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()].length() : 0);
-        int charIndexAltIdA = charIndexIdB+4+(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()] != null ? line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()].length() : 0);
-        int charIndexAltIdB = charIndexAltIdA+4+(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()] != null ? line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()].length() : 0);
-        int charIndexAliasA = charIndexAltIdB+4+(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()] != null ? line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()].length() : 0);
-        int charIndexAliasB = charIndexAliasA+4+(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()] != null ? line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()].length() : 0);
-        int charIndexDetMethod = charIndexAliasB+4+(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()] != null ? line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()].length() : 0);
-        int charIndexFirstAuth = charIndexDetMethod+4+(line[PsimiTabColumns.INT_DET_METHOD.ordinal()] != null ? line[PsimiTabColumns.INT_DET_METHOD.ordinal()].length() : 0);
-        int charIndexPublication = charIndexFirstAuth+4+(line[PsimiTabColumns.PUB_AUTH.ordinal()] != null ? line[PsimiTabColumns.PUB_AUTH.ordinal()].length() : 0);
-        int charIndexTaxIdA = charIndexPublication+4+(line[PsimiTabColumns.PUB_ID.ordinal()] != null ? line[PsimiTabColumns.PUB_ID.ordinal()].length() : 0);
-        int charIndexTaxIdB = charIndexTaxIdA+4+(line[PsimiTabColumns.TAXID_A.ordinal()] != null ? line[PsimiTabColumns.TAXID_A.ordinal()].length() : 0);
-        int charIndexInteractionType = charIndexTaxIdB+4+(line[PsimiTabColumns.TAXID_B.ordinal()] != null ? line[PsimiTabColumns.TAXID_B.ordinal()].length() : 0);
-        int charIndexSource = charIndexInteractionType+4+(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()] != null ? line[PsimiTabColumns.INTERACTION_TYPE.ordinal()].length() : 0);
-        int charIndexInteractionId = charIndexSource+4+(line[PsimiTabColumns.SOURCE.ordinal()] != null ? line[PsimiTabColumns.SOURCE.ordinal()].length() : 0);
-        int charIndexConfidence = charIndexInteractionId+4+(line[PsimiTabColumns.INTERACTION_ID.ordinal()] != null ? line[PsimiTabColumns.INTERACTION_ID.ordinal()].length() : 0);
-        int charIndexComplex = charIndexConfidence+4+(line[PsimiTabColumns.CONFIDENCE.ordinal()] != null ? line[PsimiTabColumns.CONFIDENCE.ordinal()].length() : 0);
-        int charIndexBioRoleA = charIndexComplex+4+(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()] != null ? line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()].length() : 0);
-        int charIndexBioRoleB = charIndexBioRoleA+4+(line[PsimiTabColumns.BIOROLE_A.ordinal()] != null ? line[PsimiTabColumns.BIOROLE_A.ordinal()].length() : 0);
-        int charIndexExpRoleA = charIndexBioRoleB+4+(line[PsimiTabColumns.BIOROLE_B.ordinal()] != null ? line[PsimiTabColumns.BIOROLE_B.ordinal()].length() : 0);
-        int charIndexExpRoleB = charIndexExpRoleA+4+(line[PsimiTabColumns.EXPROLE_A.ordinal()] != null ? line[PsimiTabColumns.EXPROLE_A.ordinal()].length() : 0);
-        int charIndexTypeA = charIndexExpRoleB+4+(line[PsimiTabColumns.EXPROLE_B.ordinal()] != null ? line[PsimiTabColumns.EXPROLE_B.ordinal()].length() : 0);
-        int charIndexTypeB = charIndexTypeA+4+(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()] != null ? line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()].length() : 0);
-        int charIndexXrefA = charIndexTypeB+4+(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()] != null ? line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()].length() : 0);
-        int charIndexXrefB = charIndexXrefA+4+(line[PsimiTabColumns.XREFS_A.ordinal()] != null ? line[PsimiTabColumns.XREFS_A.ordinal()].length() : 0);
-        int charIndexXref = charIndexXrefB+4+(line[PsimiTabColumns.XREFS_B.ordinal()] != null ? line[PsimiTabColumns.XREFS_B.ordinal()].length() : 0);
-        int charIndexAnnotA = charIndexXref+4+(line[PsimiTabColumns.XREFS_I.ordinal()] != null ? line[PsimiTabColumns.XREFS_I.ordinal()].length() : 0);
-        int charIndexAnnotB = charIndexAnnotA+4+(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()] != null ? line[PsimiTabColumns.ANNOTATIONS_A.ordinal()].length() : 0);
-        int charIndexAnnot = charIndexAnnotB+4+(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()] != null ? line[PsimiTabColumns.ANNOTATIONS_B.ordinal()].length() : 0);
-        int charIndexHost = charIndexAnnot+4+(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()] != null ? line[PsimiTabColumns.ANNOTATIONS_I.ordinal()].length() : 0);
-        int charIndexParameters = charIndexHost+4+(line[PsimiTabColumns.HOST_ORGANISM.ordinal()] != null ? line[PsimiTabColumns.HOST_ORGANISM.ordinal()].length() : 0);
-        int charIndexCreationDate = charIndexParameters+4+(line[PsimiTabColumns.PARAMETERS_I.ordinal()] != null ? line[PsimiTabColumns.PARAMETERS_I.ordinal()].length() : 0);
-        int charIndexUpdateDate = charIndexCreationDate+4+(line[PsimiTabColumns.CREATION_DATE.ordinal()] != null ? line[PsimiTabColumns.CREATION_DATE.ordinal()].length() : 0);
-        int charIndexCheckA = charIndexUpdateDate+4+(line[PsimiTabColumns.UPDATE_DATE.ordinal()] != null ? line[PsimiTabColumns.UPDATE_DATE.ordinal()].length() : 0);
-        int charIndexCheckB = charIndexCheckA+4+(line[PsimiTabColumns.CHECKSUM_A.ordinal()] != null ? line[PsimiTabColumns.CHECKSUM_A.ordinal()].length() : 0);
-        int charIndexCheckI = charIndexCheckB+4+(line[PsimiTabColumns.CHECKSUM_B.ordinal()] != null ? line[PsimiTabColumns.CHECKSUM_B.ordinal()].length() : 0);
-        int charIndexNegative = charIndexCheckI+4+(line[PsimiTabColumns.CHECKSUM_I.ordinal()] != null ? line[PsimiTabColumns.CHECKSUM_I.ordinal()].length() : 0);
-        int charIndexFeatureA = charIndexNegative+4+(line[PsimiTabColumns.NEGATIVE.ordinal()] != null ? line[PsimiTabColumns.NEGATIVE.ordinal()].length() : 0);
-        int charIndexFeatureB = charIndexFeatureA+4+(line[PsimiTabColumns.FEATURES_A.ordinal()] != null ? line[PsimiTabColumns.FEATURES_A.ordinal()].length() : 0);
-        int charIndexStcA = charIndexFeatureB+4+(line[PsimiTabColumns.FEATURES_B.ordinal()] != null ? line[PsimiTabColumns.FEATURES_B.ordinal()].length() : 0);
-        int charIndexStcB = charIndexStcA+4+(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()] != null ? line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()].length() : 0);
-        int charIndexPMethodA = charIndexStcB+4+(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()] != null ? line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()].length() : 0);
-        int charIndexPMethodB = charIndexPMethodA+4+(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()] != null ? line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()].length() : 0);
-
-        //MITAB 2.5
-        interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexIdA, PsimiTabColumns.ID_INTERACTOR_A.ordinal()));
-        interactorA.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexAltIdA, PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()));
-        interactorA.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexAliasA, PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()));
-        interactorA.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_A.ordinal()], listenerList, lineIndex, charIndexTaxIdA, PsimiTabColumns.TAXID_A.ordinal(), FileParsingErrorType.clustered_content));
-
-        //MITAB 2.5
-        interactorB.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexIdB, PsimiTabColumns.ID_INTERACTOR_B.ordinal()));
-        interactorB.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexAltIdB, PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()));
-        interactorB.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexAliasB, PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()));
-        interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()], listenerList, lineIndex, charIndexTaxIdB, PsimiTabColumns.TAXID_B.ordinal(), FileParsingErrorType.clustered_content));
-
-        //MITAB 2.5
-        interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, charIndexDetMethod, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interaction_detection_method, "error"));
-        interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, charIndexFirstAuth, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
-        interaction.setPublications(splitPublications(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, charIndexPublication, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
-        interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, charIndexInteractionType,PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileParsingErrorType.multiple_interaction_types, FileParsingErrorType.missing_interaction_type, "info"));
-        interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, charIndexSource, PsimiTabColumns.SOURCE.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "error"));
-        interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, charIndexInteractionId, PsimiTabColumns.INTERACTION_ID.ordinal()));
-        interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()], listenerList, lineIndex, charIndexConfidence, PsimiTabColumns.CONFIDENCE.ordinal()));
-
-
-        //MITAB 2.6
-        interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, charIndexBioRoleA, PsimiTabColumns.BIOROLE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
-        interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, charIndexExpRoleA, PsimiTabColumns.EXPROLE_A.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
-        interactorA.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, charIndexTypeA, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
-        interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, charIndexXrefA, PsimiTabColumns.XREFS_A.ordinal()));
-        interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()], listenerList, lineIndex, charIndexAnnotA, PsimiTabColumns.ANNOTATIONS_A.ordinal()));
-        interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()], listenerList, lineIndex, charIndexCheckA, PsimiTabColumns.CHECKSUM_A.ordinal()));
-
-        //MITAB 2.6
-        interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, charIndexBioRoleB, PsimiTabColumns.BIOROLE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
-        interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, charIndexExpRoleB, PsimiTabColumns.EXPROLE_B.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
-        interactorB.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, charIndexTypeB, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
-        interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, charIndexXrefB, PsimiTabColumns.XREFS_B.ordinal()));
-        interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()], listenerList, lineIndex, charIndexAnnotB, PsimiTabColumns.ANNOTATIONS_B.ordinal()));
-        interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()], listenerList, lineIndex, charIndexCheckB, PsimiTabColumns.CHECKSUM_B.ordinal()));
-
-        //MITAB 2.6
-        interaction.setComplexExpansion(splitControlledVocabulary(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()], listenerList, lineIndex, charIndexComplex, PsimiTabColumns.COMPLEX_EXPANSION.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, ""));
-        interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()], listenerList, lineIndex, charIndexXref, PsimiTabColumns.XREFS_I.ordinal()));
-        interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()], listenerList, lineIndex, charIndexAnnot, PsimiTabColumns.ANNOTATIONS_I.ordinal()));
-        interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()], listenerList, lineIndex, charIndexHost, PsimiTabColumns.HOST_ORGANISM.ordinal(), FileParsingErrorType.multiple_host_organisms));
-        interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()], listenerList, lineIndex, charIndexParameters, PsimiTabColumns.PARAMETERS_I.ordinal()));
-        interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()], listenerList, lineIndex, charIndexCreationDate, PsimiTabColumns.CREATION_DATE.ordinal(), FileParsingErrorType.clustered_content));
-        interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()], listenerList, lineIndex, charIndexUpdateDate, PsimiTabColumns.UPDATE_DATE.ordinal(), FileParsingErrorType.clustered_content));
-        interaction.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()], listenerList, lineIndex, charIndexCheckI, PsimiTabColumns.CHECKSUM_I.ordinal()));
-        interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()], listenerList, lineIndex, charIndexNegative, PsimiTabColumns.NEGATIVE.ordinal()));
-
-        //MITAB 2.7
-        interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()], listenerList, lineIndex, charIndexFeatureA, PsimiTabColumns.FEATURES_A.ordinal()));
-        interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()], listenerList, lineIndex, charIndexStcA, PsimiTabColumns.STOICHIOMETRY_A.ordinal(), FileParsingErrorType.clustered_content));
-        interactorA.setParticipantIdentificationMethods(splitControlledVocabulary(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()], listenerList, lineIndex, charIndexPMethodA, PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "info"));
-
-
-        //MITAB 2.7
-        interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()], listenerList, lineIndex, charIndexFeatureA, PsimiTabColumns.FEATURES_B.ordinal()));
-        interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()], listenerList, lineIndex, charIndexFeatureB, PsimiTabColumns.STOICHIOMETRY_B.ordinal(), FileParsingErrorType.clustered_content));
-        interactorB.setParticipantIdentificationMethods(splitControlledVocabulary(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()], listenerList, lineIndex, charIndexPMethodB, PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "info"));
-
-        //We check some consistency in the interactors
-
-        if(!interactorA.isEmpty() && (interactorA.getIdentifiers() == null || interactorA.getIdentifiers().isEmpty())){
-            //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
-            throw new IllegalFormatException("The interactor A has not an identifier but contains information in other attributes." +
-                    "Please, add an identifier: " + interactorA.toString());
-        }
-
-        if(!interactorB.isEmpty() && (interactorB.getIdentifiers() == null || interactorB.getIdentifiers().isEmpty())){
-            //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
-            throw new IllegalFormatException("The interactor B has not an identifier but contains information in other attributes. " +
-                    "Please, add an identifier: " + interactorB.toString());
-        }
-
-        if(interactorA.isEmpty() && interactorB.isEmpty()){
-            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.interaction_without_any_participants, "Both interactors are null or empety. We can have a interaction without interactors");
+        if (line.length != PsimiTabVersion.v2_5.getNumberOfColumns() && line.length != PsimiTabVersion.v2_6.getNumberOfColumns() && line.length != PsimiTabVersion.v2_7.getNumberOfColumns()){
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "A MITAB file should have 15 (MITAB 2.5), 36 (MITAB 2.6), 42 (MITAB 2.7)");
             evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
             for (MitabParserListener l : listenerList){
                 l.fireOnInvalidFormat(evt);
             }
         }
+        else {
+            if (line.length < PsimiTabColumns.MITAB_LENGTH.ordinal()) {
+                line = MitabParserUtils.extendFormat(line, PsimiTabColumns.MITAB_LENGTH.ordinal());
+            }
 
-        //We check if it is a intra-inter interaction. In that case one of the interactors can be null
-        if(interactorA.isEmpty() && !interactorB.isEmpty()){
-            interaction.setInteractorA(null);
+            Interactor interactorA = new Interactor();
+            Interactor interactorB = new Interactor();
+
+            BinaryInteractionImpl interaction = new BinaryInteractionImpl(interactorA, interactorB);
+            interaction.setLocator(new FileSourceLocator(lineIndex, -1));
+
+            int charIndexIdA = 0;
+            int charIndexIdB = charIndexIdA+4+(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()] != null ? line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()].length() : 0);
+            int charIndexAltIdA = charIndexIdB+4+(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()] != null ? line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()].length() : 0);
+            int charIndexAltIdB = charIndexAltIdA+4+(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()] != null ? line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()].length() : 0);
+            int charIndexAliasA = charIndexAltIdB+4+(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()] != null ? line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()].length() : 0);
+            int charIndexAliasB = charIndexAliasA+4+(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()] != null ? line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()].length() : 0);
+            int charIndexDetMethod = charIndexAliasB+4+(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()] != null ? line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()].length() : 0);
+            int charIndexFirstAuth = charIndexDetMethod+4+(line[PsimiTabColumns.INT_DET_METHOD.ordinal()] != null ? line[PsimiTabColumns.INT_DET_METHOD.ordinal()].length() : 0);
+            int charIndexPublication = charIndexFirstAuth+4+(line[PsimiTabColumns.PUB_AUTH.ordinal()] != null ? line[PsimiTabColumns.PUB_AUTH.ordinal()].length() : 0);
+            int charIndexTaxIdA = charIndexPublication+4+(line[PsimiTabColumns.PUB_ID.ordinal()] != null ? line[PsimiTabColumns.PUB_ID.ordinal()].length() : 0);
+            int charIndexTaxIdB = charIndexTaxIdA+4+(line[PsimiTabColumns.TAXID_A.ordinal()] != null ? line[PsimiTabColumns.TAXID_A.ordinal()].length() : 0);
+            int charIndexInteractionType = charIndexTaxIdB+4+(line[PsimiTabColumns.TAXID_B.ordinal()] != null ? line[PsimiTabColumns.TAXID_B.ordinal()].length() : 0);
+            int charIndexSource = charIndexInteractionType+4+(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()] != null ? line[PsimiTabColumns.INTERACTION_TYPE.ordinal()].length() : 0);
+            int charIndexInteractionId = charIndexSource+4+(line[PsimiTabColumns.SOURCE.ordinal()] != null ? line[PsimiTabColumns.SOURCE.ordinal()].length() : 0);
+            int charIndexConfidence = charIndexInteractionId+4+(line[PsimiTabColumns.INTERACTION_ID.ordinal()] != null ? line[PsimiTabColumns.INTERACTION_ID.ordinal()].length() : 0);
+            int charIndexComplex = charIndexConfidence+4+(line[PsimiTabColumns.CONFIDENCE.ordinal()] != null ? line[PsimiTabColumns.CONFIDENCE.ordinal()].length() : 0);
+            int charIndexBioRoleA = charIndexComplex+4+(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()] != null ? line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()].length() : 0);
+            int charIndexBioRoleB = charIndexBioRoleA+4+(line[PsimiTabColumns.BIOROLE_A.ordinal()] != null ? line[PsimiTabColumns.BIOROLE_A.ordinal()].length() : 0);
+            int charIndexExpRoleA = charIndexBioRoleB+4+(line[PsimiTabColumns.BIOROLE_B.ordinal()] != null ? line[PsimiTabColumns.BIOROLE_B.ordinal()].length() : 0);
+            int charIndexExpRoleB = charIndexExpRoleA+4+(line[PsimiTabColumns.EXPROLE_A.ordinal()] != null ? line[PsimiTabColumns.EXPROLE_A.ordinal()].length() : 0);
+            int charIndexTypeA = charIndexExpRoleB+4+(line[PsimiTabColumns.EXPROLE_B.ordinal()] != null ? line[PsimiTabColumns.EXPROLE_B.ordinal()].length() : 0);
+            int charIndexTypeB = charIndexTypeA+4+(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()] != null ? line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()].length() : 0);
+            int charIndexXrefA = charIndexTypeB+4+(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()] != null ? line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()].length() : 0);
+            int charIndexXrefB = charIndexXrefA+4+(line[PsimiTabColumns.XREFS_A.ordinal()] != null ? line[PsimiTabColumns.XREFS_A.ordinal()].length() : 0);
+            int charIndexXref = charIndexXrefB+4+(line[PsimiTabColumns.XREFS_B.ordinal()] != null ? line[PsimiTabColumns.XREFS_B.ordinal()].length() : 0);
+            int charIndexAnnotA = charIndexXref+4+(line[PsimiTabColumns.XREFS_I.ordinal()] != null ? line[PsimiTabColumns.XREFS_I.ordinal()].length() : 0);
+            int charIndexAnnotB = charIndexAnnotA+4+(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()] != null ? line[PsimiTabColumns.ANNOTATIONS_A.ordinal()].length() : 0);
+            int charIndexAnnot = charIndexAnnotB+4+(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()] != null ? line[PsimiTabColumns.ANNOTATIONS_B.ordinal()].length() : 0);
+            int charIndexHost = charIndexAnnot+4+(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()] != null ? line[PsimiTabColumns.ANNOTATIONS_I.ordinal()].length() : 0);
+            int charIndexParameters = charIndexHost+4+(line[PsimiTabColumns.HOST_ORGANISM.ordinal()] != null ? line[PsimiTabColumns.HOST_ORGANISM.ordinal()].length() : 0);
+            int charIndexCreationDate = charIndexParameters+4+(line[PsimiTabColumns.PARAMETERS_I.ordinal()] != null ? line[PsimiTabColumns.PARAMETERS_I.ordinal()].length() : 0);
+            int charIndexUpdateDate = charIndexCreationDate+4+(line[PsimiTabColumns.CREATION_DATE.ordinal()] != null ? line[PsimiTabColumns.CREATION_DATE.ordinal()].length() : 0);
+            int charIndexCheckA = charIndexUpdateDate+4+(line[PsimiTabColumns.UPDATE_DATE.ordinal()] != null ? line[PsimiTabColumns.UPDATE_DATE.ordinal()].length() : 0);
+            int charIndexCheckB = charIndexCheckA+4+(line[PsimiTabColumns.CHECKSUM_A.ordinal()] != null ? line[PsimiTabColumns.CHECKSUM_A.ordinal()].length() : 0);
+            int charIndexCheckI = charIndexCheckB+4+(line[PsimiTabColumns.CHECKSUM_B.ordinal()] != null ? line[PsimiTabColumns.CHECKSUM_B.ordinal()].length() : 0);
+            int charIndexNegative = charIndexCheckI+4+(line[PsimiTabColumns.CHECKSUM_I.ordinal()] != null ? line[PsimiTabColumns.CHECKSUM_I.ordinal()].length() : 0);
+            int charIndexFeatureA = charIndexNegative+4+(line[PsimiTabColumns.NEGATIVE.ordinal()] != null ? line[PsimiTabColumns.NEGATIVE.ordinal()].length() : 0);
+            int charIndexFeatureB = charIndexFeatureA+4+(line[PsimiTabColumns.FEATURES_A.ordinal()] != null ? line[PsimiTabColumns.FEATURES_A.ordinal()].length() : 0);
+            int charIndexStcA = charIndexFeatureB+4+(line[PsimiTabColumns.FEATURES_B.ordinal()] != null ? line[PsimiTabColumns.FEATURES_B.ordinal()].length() : 0);
+            int charIndexStcB = charIndexStcA+4+(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()] != null ? line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()].length() : 0);
+            int charIndexPMethodA = charIndexStcB+4+(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()] != null ? line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()].length() : 0);
+            int charIndexPMethodB = charIndexPMethodA+4+(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()] != null ? line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()].length() : 0);
+
+            //MITAB 2.5
+            interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexIdA, PsimiTabColumns.ID_INTERACTOR_A.ordinal()));
+            interactorA.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexAltIdA, PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()));
+            interactorA.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexAliasA, PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()));
+            interactorA.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_A.ordinal()], listenerList, lineIndex, charIndexTaxIdA, PsimiTabColumns.TAXID_A.ordinal(), FileParsingErrorType.clustered_content));
+
+            //MITAB 2.5
+            interactorB.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexIdB, PsimiTabColumns.ID_INTERACTOR_B.ordinal()));
+            interactorB.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexAltIdB, PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()));
+            interactorB.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexAliasB, PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()));
+            interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()], listenerList, lineIndex, charIndexTaxIdB, PsimiTabColumns.TAXID_B.ordinal(), FileParsingErrorType.clustered_content));
+
+            //MITAB 2.5
+            interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, charIndexDetMethod, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interaction_detection_method, "error"));
+            interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, charIndexFirstAuth, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
+            interaction.setPublications(splitPublications(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, charIndexPublication, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
+            interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, charIndexInteractionType,PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileParsingErrorType.multiple_interaction_types, FileParsingErrorType.missing_interaction_type, "info"));
+            interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, charIndexSource, PsimiTabColumns.SOURCE.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "error"));
+            interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, charIndexInteractionId, PsimiTabColumns.INTERACTION_ID.ordinal()));
+            interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()], listenerList, lineIndex, charIndexConfidence, PsimiTabColumns.CONFIDENCE.ordinal()));
+
+
+            //MITAB 2.6
+            interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, charIndexBioRoleA, PsimiTabColumns.BIOROLE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
+            interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, charIndexExpRoleA, PsimiTabColumns.EXPROLE_A.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
+            interactorA.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, charIndexTypeA, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
+            interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, charIndexXrefA, PsimiTabColumns.XREFS_A.ordinal()));
+            interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()], listenerList, lineIndex, charIndexAnnotA, PsimiTabColumns.ANNOTATIONS_A.ordinal()));
+            interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()], listenerList, lineIndex, charIndexCheckA, PsimiTabColumns.CHECKSUM_A.ordinal()));
+
+            //MITAB 2.6
+            interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, charIndexBioRoleB, PsimiTabColumns.BIOROLE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
+            interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, charIndexExpRoleB, PsimiTabColumns.EXPROLE_B.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
+            interactorB.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, charIndexTypeB, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
+            interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, charIndexXrefB, PsimiTabColumns.XREFS_B.ordinal()));
+            interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()], listenerList, lineIndex, charIndexAnnotB, PsimiTabColumns.ANNOTATIONS_B.ordinal()));
+            interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()], listenerList, lineIndex, charIndexCheckB, PsimiTabColumns.CHECKSUM_B.ordinal()));
+
+            //MITAB 2.6
+            interaction.setComplexExpansion(splitControlledVocabulary(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()], listenerList, lineIndex, charIndexComplex, PsimiTabColumns.COMPLEX_EXPANSION.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, ""));
+            interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()], listenerList, lineIndex, charIndexXref, PsimiTabColumns.XREFS_I.ordinal()));
+            interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()], listenerList, lineIndex, charIndexAnnot, PsimiTabColumns.ANNOTATIONS_I.ordinal()));
+            interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()], listenerList, lineIndex, charIndexHost, PsimiTabColumns.HOST_ORGANISM.ordinal(), FileParsingErrorType.multiple_host_organisms));
+            interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()], listenerList, lineIndex, charIndexParameters, PsimiTabColumns.PARAMETERS_I.ordinal()));
+            interaction.setCreationDate(splitDates(line[PsimiTabColumns.CREATION_DATE.ordinal()], listenerList, lineIndex, charIndexCreationDate, PsimiTabColumns.CREATION_DATE.ordinal(), FileParsingErrorType.clustered_content));
+            interaction.setUpdateDate(splitDates(line[PsimiTabColumns.UPDATE_DATE.ordinal()], listenerList, lineIndex, charIndexUpdateDate, PsimiTabColumns.UPDATE_DATE.ordinal(), FileParsingErrorType.clustered_content));
+            interaction.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_I.ordinal()], listenerList, lineIndex, charIndexCheckI, PsimiTabColumns.CHECKSUM_I.ordinal()));
+            interaction.setNegativeInteraction(splitNegative(line[PsimiTabColumns.NEGATIVE.ordinal()], listenerList, lineIndex, charIndexNegative, PsimiTabColumns.NEGATIVE.ordinal()));
+
+            //MITAB 2.7
+            interactorA.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_A.ordinal()], listenerList, lineIndex, charIndexFeatureA, PsimiTabColumns.FEATURES_A.ordinal()));
+            interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()], listenerList, lineIndex, charIndexStcA, PsimiTabColumns.STOICHIOMETRY_A.ordinal(), FileParsingErrorType.clustered_content));
+            interactorA.setParticipantIdentificationMethods(splitControlledVocabulary(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()], listenerList, lineIndex, charIndexPMethodA, PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "info"));
+
+
+            //MITAB 2.7
+            interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()], listenerList, lineIndex, charIndexFeatureA, PsimiTabColumns.FEATURES_B.ordinal()));
+            interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()], listenerList, lineIndex, charIndexFeatureB, PsimiTabColumns.STOICHIOMETRY_B.ordinal(), FileParsingErrorType.clustered_content));
+            interactorB.setParticipantIdentificationMethods(splitControlledVocabulary(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()], listenerList, lineIndex, charIndexPMethodB, PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "info"));
+
+            //We check some consistency in the interactors
+
+            if(!interactorA.isEmpty() && (interactorA.getIdentifiers() == null || interactorA.getIdentifiers().isEmpty())){
+                //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
+                throw new IllegalFormatException("The interactor A has not an identifier but contains information in other attributes." +
+                        "Please, add an identifier: " + interactorA.toString());
+            }
+
+            if(!interactorB.isEmpty() && (interactorB.getIdentifiers() == null || interactorB.getIdentifiers().isEmpty())){
+                //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
+                throw new IllegalFormatException("The interactor B has not an identifier but contains information in other attributes. " +
+                        "Please, add an identifier: " + interactorB.toString());
+            }
+
+            if(interactorA.isEmpty() && interactorB.isEmpty()){
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.interaction_without_any_participants, "Both interactors are null or empety. We can have a interaction without interactors");
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
+                for (MitabParserListener l : listenerList){
+                    l.fireOnInvalidFormat(evt);
+                }
+            }
+
+            //We check if it is a intra-inter interaction. In that case one of the interactors can be null
+            if(interactorA.isEmpty() && !interactorB.isEmpty()){
+                interaction.setInteractorA(null);
+            }
+
+            if(interactorB.isEmpty() && !interactorA.isEmpty()){
+                interaction.setInteractorB(null);
+            }
+            return interaction;
         }
 
-        if(interactorB.isEmpty() && !interactorA.isEmpty()){
-            interaction.setInteractorB(null);
-        }
-
-        return interaction;
+        return null;
     }
 
     public static BinaryInteraction<Interactor> buildBinaryInteraction(String[] line) {

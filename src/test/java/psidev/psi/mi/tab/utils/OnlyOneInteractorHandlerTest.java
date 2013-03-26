@@ -44,7 +44,7 @@ public class OnlyOneInteractorHandlerTest {
 
     @Test
     public void cloneBinaryInteraction1() throws Exception {
-        String line = "uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-";
+        String line = "uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-";
         BinaryInteraction binaryInteraction = MitabParserUtils.buildBinaryInteraction(line.split("\t"));
 
         BinaryInteraction clone = handler.cloneBinaryInteraction(binaryInteraction);
@@ -55,8 +55,8 @@ public class OnlyOneInteractorHandlerTest {
     @Test
     public void merge1() throws Exception {
 
-        String line1 = "uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-";
-        String line2 = "uniprotkb:P23367\tuniprotkb:P23367\tgene name:mutH\tgene name:mutL\tgene name synonym:mutR|gene name synonym:prv|locus name:b2831\tlocus name:b4170\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-\t-";
+        String line1 = "uniprotkb:P23367\tuniprotkb:P09184\tgene name:mutL\tgene name:vsr\tlocus name:b4170\tlocus name:b1960\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-";
+        String line2 = "uniprotkb:P23367\tuniprotkb:P23367\tgene name:mutH\tgene name:mutL\tgene name synonym:mutR|gene name synonym:prv|locus name:b2831\tlocus name:b4170\tMI:0018(two hybrid)|MI:0014(adenylate cyclase)\t-\tpubmed:11585365\ttaxid:562(ecoli)\ttaxid:562(ecoli)\tMI:0218(physical interaction)\tEuropean Bioinformatics Institute:MI:0469\t-\t-";
         BinaryInteraction binaryInteraction1 = MitabParserUtils.buildBinaryInteraction(line1.split("\t"));
         BinaryInteraction binaryInteraction2 = MitabParserUtils.buildBinaryInteraction(line2.split("\t"));
 
