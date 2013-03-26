@@ -70,7 +70,8 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
 
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
 
-            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
+            //final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), dbMiRefs);
 
             if( identities.isEmpty() ) {
                 Mi25Context context = RuleUtils.buildContext(interactor, "bioactive entity");
@@ -88,8 +89,8 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
 
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
 
-            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
-
+            //final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), dbMiRefs);
             if( identities.isEmpty() ) {
                 Mi25Context context = RuleUtils.buildContext(interactor, "biopolymer");
                     messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
@@ -113,8 +114,6 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
                 }
             }
 
-        } else {
-            // until now (2009-01), that's all we can check on.
         }
 
         return messages;

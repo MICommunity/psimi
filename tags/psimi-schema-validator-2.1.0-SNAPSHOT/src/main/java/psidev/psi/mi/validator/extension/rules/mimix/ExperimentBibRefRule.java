@@ -74,25 +74,51 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
             final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = bibref.getIdentifiers();
 
-            // search for reference type: primary-reference/identity
-            Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(dbReferences, Xref.PRIMARY_MI, Xref.PRIMARY);
-            primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dbReferences, Xref.IDENTITY_MI, Xref.IDENTITY));
-            
-            if ( !primaryReferences.isEmpty() ) {
-                // check if we have a pubmed or doi identifier available
+            // check if we have a pubmed or doi identifier available
 
-                final Collection<Xref> pubmeds = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, Xref.PUBMED_MI, Xref.PUBMED);
-                final Collection<Xref> dois = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, Xref.DOI_MI, Xref.DOI);
+            final Collection<Xref> pubmeds = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, Xref.PUBMED_MI, Xref.PUBMED);
+            final Collection<Xref> dois = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, Xref.DOI_MI, Xref.DOI);
 
-                // the following line is commented because a new Rule has been implemented and is doing the same stuff
-                //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
+            // the following line is commented because a new Rule has been implemented and is doing the same stuff
+            //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
 
-                if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
-                    hasPublicationIdentifier = true;
+            if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
+                hasPublicationIdentifier = true;
 
-                    // Only one pubmed Id with a reference type set to 'primary-reference' or 'identity' is allowed
-                    if (pubmeds.size() > 1 || dois.size() > 1){
-                        messages.add( new ValidatorMessage( "Only one pubmed/DOI identifier should have a reference-type set to 'primary-reference' or 'identity'.",
+                // Only one pubmed Id with a reference type set to 'primary-reference' or 'identity' is allowed
+                if (pubmeds.size() > 1){
+
+                    // search for reference type: primary-reference/identity
+                    Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(pubmeds, Xref.PRIMARY_MI, Xref.PRIMARY);
+                    primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(pubmeds, Xref.IDENTITY_MI, Xref.IDENTITY));
+
+                    if ( primaryReferences.isEmpty() ) {
+                        messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" pubmed identifiers. Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
+                                MessageLevel.WARN,
+                                context,
+                                this ) );
+                    }
+                    else if (primaryReferences.size() > 1){
+                        messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" pubmed identifiers.",
+                                MessageLevel.WARN,
+                                context,
+                                this ) );
+                    }
+                }
+                if (dois.size() > 1){
+
+                    // search for reference type: primary-reference/identity
+                    Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(dois, Xref.PRIMARY_MI, Xref.PRIMARY);
+                    primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dois, Xref.IDENTITY_MI, Xref.IDENTITY));
+
+                    if ( primaryReferences.isEmpty() ) {
+                        messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" DOI identifiers. Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
+                                MessageLevel.WARN,
+                                context,
+                                this ) );
+                    }
+                    else if (primaryReferences.size() > 1){
+                        messages.add( new ValidatorMessage( "Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" DOI identifiers.",
                                 MessageLevel.WARN,
                                 context,
                                 this ) );

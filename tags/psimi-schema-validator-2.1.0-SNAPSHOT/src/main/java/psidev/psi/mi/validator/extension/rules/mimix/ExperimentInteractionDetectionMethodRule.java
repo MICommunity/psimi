@@ -52,7 +52,7 @@ public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule
         context.addAssociatedContext(RuleUtils.buildContext(experiment, "experiment"));
 
         CvTerm intMethod = experiment.getInteractionDetectionMethod();
-        RuleUtils.checkPsiMIXRef(intMethod, messages, context, this, "MI:0001");
+        RuleUtils.checkUniquePsiMIXRef(intMethod, messages, context, this);
 
         return messages;
     }

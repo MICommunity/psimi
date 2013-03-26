@@ -58,44 +58,65 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
             final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = bibref.getIdentifiers();
 
-            // search for reference type: primary-reference
-            Collection<psidev.psi.mi.jami.model.Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(dbReferences, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY);
-            primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dbReferences, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY));
-
             // search for database pubmed or DOI.
             Collection<psidev.psi.mi.jami.model.Xref> allPubmeds = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED);
             Collection<psidev.psi.mi.jami.model.Xref> allDois = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, psidev.psi.mi.jami.model.Xref.DOI_MI, psidev.psi.mi.jami.model.Xref.DOI);
 
             // At least one pubmed/DOI reference is required
             if ( !allPubmeds.isEmpty() || !allDois.isEmpty()){
+                // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
+                if (allPubmeds.size() > 1){
 
-                // At least one reference-type set to 'primary-reference' is required
-                if ( !primaryReferences.isEmpty() ) {
-                    // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
+                    // search for reference type: primary-reference
+                    Collection<psidev.psi.mi.jami.model.Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(allPubmeds, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY);
+                    primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(allPubmeds, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY));
 
-                    final Collection<psidev.psi.mi.jami.model.Xref> pubmeds = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED);
-                    final Collection<psidev.psi.mi.jami.model.Xref> dois = XrefUtils.collectAllXrefsHavingDatabase(primaryReferences, psidev.psi.mi.jami.model.Xref.DOI_MI, psidev.psi.mi.jami.model.Xref.DOI);
-
-                    // Only one pubmed Id with a reference type set to 'primary-reference' is allowed
-                    if (pubmeds.size() > 1){
-                        messages.add( new ValidatorMessage( "The experiment has " + pubmeds.size() + " pubmed references as 'primary-reference' but only one is allowed.",
+                    // At least one reference-type set to 'primary-reference' is required
+                    if ( primaryReferences.size() > 1 ) {
+                        // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
+                        messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " pubmed references as 'primary-reference' or 'identity' but only one is allowed.",
                                 MessageLevel.WARN,
                                 context,
                                 this ) );
-                    }
 
-                    if ( pubmeds.isEmpty() && dois.isEmpty() ) {
-                        messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " bibliographical references with a reference-type set to 'primary-reference' but none of them is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
+                    }
+                    else if (primaryReferences.isEmpty()) {
+                        messages.add( new ValidatorMessage( "The experiment has " + allPubmeds.size() + " pubmed references but none of theme has a reference type set to 'primary-reference' or 'identity'. When several pubmed identifiers are provided, only one of them should have qualifier set to 'primary-reference' or 'identity'.",
                                 MessageLevel.ERROR,
                                 context,
                                 this ) );
                     }
+
                 }
-                else {
-                    messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of theme has a reference type set to 'primary-reference'. At least one Pubmed or DOI bibliographical primary reference is required.",
+                else if ( allPubmeds.isEmpty() && allDois.isEmpty()) {
+                    messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of them is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
+                }
+
+                if (allDois.size() > 1){
+
+                    // search for reference type: primary-reference
+                    Collection<psidev.psi.mi.jami.model.Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(allDois, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY);
+                    primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(allDois, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY));
+
+                    // At least one reference-type set to 'primary-reference' is required
+                    if ( primaryReferences.size() > 1 ) {
+                        // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
+                        messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " DOI references as 'primary-reference' or 'identity' but only one is allowed.",
+                                MessageLevel.WARN,
+                                context,
+                                this ) );
+
+                    }
+                    else if (primaryReferences.isEmpty()) {
+                        messages.add( new ValidatorMessage( "The experiment has " + allPubmeds.size() + " DOI references but none of theme has a reference type set to 'primary-reference' or 'identity'. When several DOI identifiers are provided, only one of them should have qualifier set to 'primary-reference' or 'identity'.",
+                                MessageLevel.ERROR,
+                                context,
+                                this ) );
+                    }
+
                 }
             }
             else {

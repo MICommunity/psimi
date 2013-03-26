@@ -63,7 +63,7 @@ public class ExperimentParticipantIdentificationMethodRule extends ObjectRule<Pa
         }
         else {
             context.addAssociatedContext(RuleUtils.buildContext(participant.getIdentificationMethod(), "participant identification method"));
-            RuleUtils.checkPsiMIXRef(participant.getIdentificationMethod(), messages, context, this, "MI:0002");
+            RuleUtils.checkUniquePsiMIXRef(participant.getIdentificationMethod(), messages, context, this);
         }
 
         return messages;

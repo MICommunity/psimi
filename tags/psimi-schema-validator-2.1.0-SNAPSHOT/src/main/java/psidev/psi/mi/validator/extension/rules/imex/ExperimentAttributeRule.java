@@ -2,7 +2,6 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -42,6 +41,7 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
     }
 
     private void initializeAcceptedAttributes(){
+        // MI
         acceptedAttributes.add(RuleUtils.URL);
         acceptedAttributes.add(RuleUtils.LIBRARY_USED);
         acceptedAttributes.add(RuleUtils.EXP_MODIFICATION);
@@ -59,6 +59,26 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
         acceptedAttributes.add(RuleUtils.CURATION_REQUEST);
         acceptedAttributes.add(RuleUtils.IMEX_CURATION);
         acceptedAttributes.add(RuleUtils.FULL_COVERAGE);
+
+        // Names
+        acceptedAttributes.add(Annotation.URL);
+        acceptedAttributes.add(RuleUtils.LIBRARY_USED_NAME);
+        acceptedAttributes.add(RuleUtils.EXP_MODIFICATION_NAME);
+        acceptedAttributes.add(RuleUtils.DATASET_NAME);
+        acceptedAttributes.add(RuleUtils.DATA_PROCESSING_NAME);
+        acceptedAttributes.add(Annotation.COMMENT_MI);
+        acceptedAttributes.add(Annotation.CAUTION_MI);
+        acceptedAttributes.add(RuleUtils.AUTHOR_CONFIDENCE);
+        acceptedAttributes.add(RuleUtils.ANTIBODIES_NAME);
+        acceptedAttributes.add(Annotation.AUTHOR);
+        acceptedAttributes.add(Annotation.PUBLICATION_JOURNAL);
+        acceptedAttributes.add(Annotation.PUBLICATION_YEAR);
+        acceptedAttributes.add(RuleUtils.AUTHOR_SUBMITTED_NAME);
+        acceptedAttributes.add(RuleUtils.CONTACT_EMAIL);
+        acceptedAttributes.add(RuleUtils.CURATION_REQUEST_NAME);
+        acceptedAttributes.add(RuleUtils.IMEX_CURATION_NAME);
+        acceptedAttributes.add(RuleUtils.FULL_COVERAGE_NAME);
+        acceptedAttributes.add(COPYRIGHT);
     }
 
     @Override
@@ -71,28 +91,23 @@ public class ExperimentAttributeRule extends Mi25ExperimentRule{
             Mi25Context experimentContext = RuleUtils.buildContext(experiment, "experiment");
 
             for (Annotation attribute : attributes){
-                if (attribute.getTopic().getMIIdentifier() == null && !AnnotationUtils.doesAnnotationHaveTopic(attribute, null, COPYRIGHT)){
+                if (attribute.getTopic().getMIIdentifier() != null && !acceptedAttributes.contains(attribute.getTopic().getMIIdentifier())){
                     Mi25Context context = RuleUtils.buildContext(attribute, "attribute");
                     context.addAssociatedContext(experimentContext);
-
-                    messages.add( new ValidatorMessage( "The attribute " + attribute.getTopic().getShortName() + " does not have any nameAc. " +
-                            "All experiment's attributes should have a nameAc pointing to a valid PSI MI term (Excepted '"+COPYRIGHT+"' attribute)." +
+                    messages.add( new ValidatorMessage( "The attribute " + attribute.getTopic().getMIIdentifier() + " ( " + attribute.getTopic().getShortName()+") is not a child of MI:0665 ( 'experiment attribute name' ). " +
                             " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
-                else {
-
-                    if (!acceptedAttributes.contains(attribute.getTopic().getMIIdentifier())){
-                        Mi25Context context = RuleUtils.buildContext(attribute, "attribute");
-                        context.addAssociatedContext(experimentContext);
-                        messages.add( new ValidatorMessage( "The attribute " + attribute.getTopic().getMIIdentifier() + " ( " + attribute.getTopic().getShortName()+") is not a child of MI:0665 ( 'experiment attribute name' ). " +
-                                " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
+                else if (!acceptedAttributes.contains(attribute.getTopic().getShortName().toLowerCase())){
+                    Mi25Context context = RuleUtils.buildContext(attribute, "attribute");
+                    context.addAssociatedContext(experimentContext);
+                    messages.add( new ValidatorMessage( "The attribute " + attribute.getTopic().getMIIdentifier() + " ( " + attribute.getTopic().getShortName()+") is not a child of MI:0665 ( 'experiment attribute name' ). " +
+                            " All experiment's attributes should be children of 'experiment attribute name' (MI:0665)",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
                 }
             }
 

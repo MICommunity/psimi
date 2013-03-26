@@ -48,7 +48,7 @@ public class InteractionTypeRule extends Mi25InteractionRule{
         if (interaction.getType() != null){
             CvTerm interactionType = interaction.getType();
 
-            RuleUtils.checkPsiMIXRef(interactionType, messages, context, this, RuleUtils.INTERACTION_TYPE);
+            RuleUtils.checkUniquePsiMIXRef(interactionType, messages, context, this);
 
         }
         else {

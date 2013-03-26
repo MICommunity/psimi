@@ -67,8 +67,8 @@ public class CellLineXrefRule extends ObjectRule<Organism>{
 
         if (!cellType.getIdentifiers().isEmpty()){
 
-            Collection<psidev.psi.mi.jami.model.Xref> cabriReferences = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(cellType.getIdentifiers(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
-            Collection<psidev.psi.mi.jami.model.Xref> cellReferences = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(cellType.getIdentifiers(), RuleUtils.CELL_ONTOLOGY_MI_REF, RuleUtils.CELL_ONTOLOGY, RuleUtils.IDENTITY_MI_REF, RuleUtils.IDENTITY);
+            Collection<psidev.psi.mi.jami.model.Xref> cabriReferences = XrefUtils.collectAllXrefsHavingDatabase(cellType.getIdentifiers(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI);
+            Collection<psidev.psi.mi.jami.model.Xref> cellReferences = XrefUtils.collectAllXrefsHavingDatabase(cellType.getIdentifiers(), RuleUtils.CELL_ONTOLOGY_MI_REF, RuleUtils.CELL_ONTOLOGY);
             Collection<psidev.psi.mi.jami.model.Xref> allPubmeds = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(cellType.getXrefs(), psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY);
 
             if (cabriReferences.isEmpty() && cellReferences.isEmpty() && allPubmeds.isEmpty()){
