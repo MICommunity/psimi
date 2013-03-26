@@ -9,5 +9,6 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentPublicationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasNameRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasTypeRule"/>
     
 </objectRuleList>

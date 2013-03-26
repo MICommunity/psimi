@@ -314,7 +314,7 @@ public class DatabaseAccessionRule extends ObjectRule<psidev.psi.mi.jami.model.X
 
     @Override
     public boolean canCheck(Object o) {
-        return ( o != null && o instanceof psidev.psi.mi.jami.model.Xref);
+        return ( o instanceof psidev.psi.mi.jami.model.Xref);
     }
 
     @Override
