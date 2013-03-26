@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.MolecularInteractionDataSourceUtils;
 import psidev.psi.mi.tab.PsimiTabIterator;
 import psidev.psi.mi.tab.PsimiTabReader;
 import psidev.psi.mi.tab.events.ClusteredColumnEvent;
@@ -11,9 +12,7 @@ import psidev.psi.mi.tab.events.InvalidFormatEvent;
 import psidev.psi.mi.tab.events.MissingElementEvent;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -24,13 +23,15 @@ import java.util.*;
  * @since <pre>01/03/13</pre>
  */
 
-public class SimpleMitabDataSource implements StreamingInteractionSource, MitabParserListener{
+public class SimpleMitabDataSource implements MolecularInteractionFileDataSource, StreamingInteractionSource, MitabParserListener{
 
     private PsimiTabReader reader;
     private Iterator<BinaryInteraction> mitabIterator;
     private File file;
-    private InputStream stream;
     private Collection<FileSourceError> errors;
+    private boolean isTemporaryFile = false;
+    private boolean isValidatingSyntax = false;
+    private boolean hasValidatedSyntax=false;
 
     private Log log = LogFactory.getLog(SimpleMitabDataSource.class);
 
@@ -44,13 +45,15 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
         errors = new ArrayList<FileSourceError>();
     }
 
-    public SimpleMitabDataSource(InputStream stream){
+    public SimpleMitabDataSource(InputStream stream) throws IOException{
         this.reader = new PsimiTabReader();
         this.reader.addMitabParserListener(this);
-        this.stream = stream;
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a MITAb datasource");
         }
+        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source"+System.currentTimeMillis(), ".txt");
+        isTemporaryFile = true;
+
         errors = new ArrayList<FileSourceError>();
     }
 
@@ -97,16 +100,6 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
                 this.errors.add(error);
             }
         }
-        else {
-            try {
-                this.mitabIterator = this.reader.iterate(stream);
-            } catch (IOException e) {
-                log.error("Impossible to parse current InputStream");
-                this.mitabIterator = null;
-
-                FileSourceError error = new FileSourceError(e.getCause().toString(), e.getMessage(), new DefaultFileSourceContext());
-                this.errors.add(error);            }
-        }
     }
 
     public void close() {
@@ -114,21 +107,51 @@ public class SimpleMitabDataSource implements StreamingInteractionSource, MitabP
             ((PsimiTabIterator) mitabIterator).closeStreamReader();
             mitabIterator = null;
         }
+        if (isTemporaryFile && file != null){
+            file.delete();
+        }
+    }
+
+    public void validateFileSyntax() {
+        if (!hasValidatedSyntax){
+            isValidatingSyntax = true;
+
+            // just read datasource
+            if (mitabIterator == null){
+                open();
+            }
+
+            while (mitabIterator != null && mitabIterator.hasNext()){
+                mitabIterator.next();
+            }
+
+            hasValidatedSyntax = true;
+
+            mitabIterator = null;
+
+            isValidatingSyntax = false;
+        }
     }
 
     public void fireOnInvalidFormat(InvalidFormatEvent event){
-        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
-        this.errors.add(error);
+        if (isValidatingSyntax){
+            FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
+            this.errors.add(error);
+        }
     }
 
     public void fireOnClusteredColumnEvent(ClusteredColumnEvent event) {
-        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
-        this.errors.add(error);
+        if (!isValidatingSyntax){
+            FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
+            this.errors.add(error);
+        }
     }
 
     public void fireOnMissingElementEvent(MissingElementEvent event) {
-        FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
-        this.errors.add(error);
+        if (!isValidatingSyntax){
+            FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
+            this.errors.add(error);
+        }
     }
 
 }
