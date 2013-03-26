@@ -250,7 +250,7 @@ public final class MitabParserUtils {
     public static BinaryInteraction<Interactor> buildBinaryInteraction(String[] line, int lineIndex, List<MitabParserListener> listenerList) {
 
         if (line == null) {
-            throw new NullPointerException("Null line to create to create a BinaryInteraction");
+            throw new NullPointerException("Null line to create a BinaryInteraction");
         }
 
         if (line.length == 0) {
