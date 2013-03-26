@@ -1,5 +1,6 @@
 package psidev.psi.mi.validator.extension.rules.dependencies;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.xml.model.CvType;
 import psidev.psi.mi.xml.model.DbReference;
 
@@ -129,15 +130,15 @@ public class Term {
                 '}';
     }
 
-    public static Term buildTerm( CvType cv ) {
+    public static Term buildTerm( CvTerm cv ) {
         if (cv == null){
             return null;
         }
-        final String id = getMiIdentifier( cv );
+        final String id = cv.getMIIdentifier();
         if( id == null ) {
             return null;
         }
-        return new Term( id, cv.getNames().getShortLabel() );
+        return new Term( id, cv.getShortName() );
     }
 
     public static String printTerm( Term term ) {

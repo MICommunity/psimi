@@ -2,11 +2,15 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
@@ -75,37 +79,30 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
      * @return a collection of validator messages.
      *         if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( InteractionEvidence interaction ) throws ValidatorException {
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         // experiments for detecting the interaction
-        final Collection<ExperimentDescription> experiments = interaction.getExperiments();
+        final Experiment experiment = interaction.getExperiment();
         // participants of the interaction
-        final Collection<Participant> participants = interaction.getParticipants();
+        final Collection<? extends ParticipantEvidence> participants = interaction.getParticipantEvidences();
         // number of participants
         final int numberParticipants = participants.size();
-        final Collection<InteractionType> interactionType = interaction.getInteractionTypes();
+        final CvTerm interactionType = interaction.getType();
 
-        for ( ExperimentDescription experiment : experiments ) {
-
+        if (experiment != null){
             // build a context in case of error
-            Mi25Context context = new Mi25Context();
-            context.setId( interaction.getId() );
-            context.setObjectLabel( "interaction");
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+            context.addAssociatedContext(RuleUtils.buildContext(experiment, "experiment"));
 
-            final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
-            final Collection<Organism> hostOrganisms = experiment.getHostOrganisms();
-            int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.BAIT_MI_REF, "bait", experiment.getId(), messages, context);
-            int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.PREY_MI_REF, "prey", experiment.getId(), messages, context);
+            final CvTerm method = experiment.getInteractionDetectionMethod();
+            final psidev.psi.mi.jami.model.Organism hostOrganism = experiment.getHostOrganism();
+            int numberOfBaits = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.BAIT_MI_REF, "bait");
+            int numberOfPreys = getNumberOfParticipantWithExperimentalRole(participants, RuleUtils.PREY_MI_REF, "prey");
 
-            for ( Organism host : hostOrganisms ) {
-                for (InteractionType type : interactionType){
-                    messages.addAll( mapping.check( method, type, host, numberParticipants, numberOfBaits, numberOfPreys, context, this ) );
-                }
-            }
-
-        } // experiments
+            messages.addAll( mapping.check( method, interactionType, hostOrganism, numberParticipants, numberOfBaits, numberOfPreys, context, this ) );
+        }
 
         return messages;
     }
@@ -115,40 +112,19 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
      * @param role
      * @return  true if the role is a role with a psi MI identifier mi or a psi Mi short label shortLabel
      */
-    private boolean checkParticipantRole(ExperimentalRole role, String mi, String shortLabel, Collection<ValidatorMessage> messages, Mi25Context context){
+    private boolean checkParticipantRole(CvTerm role, String mi, String shortLabel){
 
-        boolean checkName = false;
-
-        Xref ref = role.getXref();
-        if (ref != null){
-            Collection<DbReference> references = ref.getAllDbReferences();
-
-            Collection<DbReference> psiMiRef = RuleUtils.findByDatabase(references, RuleUtils.PSI_MI, RuleUtils.PSI_MI_REF, messages, context, this);
-            if (!psiMiRef.isEmpty()){
-
-                for (DbReference psi : psiMiRef){
-
-                    if (psi.getId().equals(mi)){
-                        return true;
-                    }
-                }
-            }
-            else {
-                checkName = true;
+        if (role.getMIIdentifier() != null){
+            if (role.getMIIdentifier().equals(mi)){
+                return true;
             }
         }
         else {
-            checkName = true;
-        }
-
-        if (checkName && role.hasNames()){
-            if (role.getNames().hasShortLabel()){
-                if (role.getNames().getShortLabel().equals(shortLabel)){
-                    return true;
-                }
+            if (role.getShortName().equalsIgnoreCase(shortLabel)){
+                return true;
             }
-
         }
+
         return false;
     }
 
@@ -159,37 +135,15 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
      * @param roleName
      * @return the number of participants with a specific experimental role
      */
-    private int getNumberOfParticipantWithExperimentalRole(Collection<Participant> participants, String roleMi, String roleName, int experimentId, Collection<ValidatorMessage> messages, Mi25Context context){
+    private int getNumberOfParticipantWithExperimentalRole(Collection<? extends ParticipantEvidence> participants, String roleMi, String roleName){
 
         int num = 0;
-        for (Participant p : participants){
-            Collection<ExperimentalRole> experimentRoles = p.getExperimentalRoles();
-            for (ExperimentalRole role : experimentRoles){
-                Collection<ExperimentRef> experimentRefs = role.getExperimentRefs();
-
-                if (experimentRefs.isEmpty()){
-                    if (checkParticipantRole(role, roleMi, roleName, messages, context)){
-                        num++;
-                        break;
-                    }
-                }
-                else {
-                    int previousNum = num;
-                    for (ExperimentRef ref : experimentRefs){
-                        if (ref.getRef() == experimentId){
-                            if (checkParticipantRole(role, roleMi, roleName, messages, context)){
-                                num++;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (previousNum < num){
-                        break;
-                    }
-                }
-
-            } // experimental roles
+        for (ParticipantEvidence p : participants){
+            CvTerm experimentRole = p.getExperimentalRole();
+            if (checkParticipantRole(experimentRole, roleMi, roleName)){
+                num++;
+                break;
+            }
         }
         return num;
     }
@@ -483,11 +437,11 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          * @param host
          * @return
          */
-        private boolean isApplicableHostOrganism(Organism host){
+        private boolean isApplicableHostOrganism(psidev.psi.mi.jami.model.Organism host){
 
             if (this.requirements.hasHostRequirements()){
                 Set<String> validHosts = this.requirements.getApplicableHostOrganisms();
-                String taxId = Integer.toString(host.getNcbiTaxId());
+                String taxId = Integer.toString(host.getTaxId());
                 if (validHosts.contains(taxId)){
                     return true;
                 }
@@ -794,9 +748,9 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
          * @param rule
          * @return a list of messages should any error be found.
          */
-        private Collection<ValidatorMessage> check( InteractionDetectionMethod method,
-                                                    InteractionType interactionType,
-                                                    Organism host,
+        private Collection<ValidatorMessage> check( CvTerm method,
+                                                    CvTerm interactionType,
+                                                    psidev.psi.mi.jami.model.Organism host,
                                                     int numParticipants,
                                                     int numBaits,
                                                     int numPreys,
@@ -882,7 +836,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                         if (cond.hasRequirementsOnTheOrganism() && cond.isApplicableHostOrganism(host)){
                                             final StringBuffer msg = new StringBuffer( 1024 );
                                             msg.append("The interaction detection method "+Term.printTerm(methodTerm)+" " +
-                                                    "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the host organism is " + host.getNcbiTaxId() + "." +
+                                                    "is not normally associated with the interaction type "+Term.printTerm(brTerm)+" when the host organism is " + host.getTaxId() + "." +
                                                     " In this case, the possible interaction types are ");
 
                                             writePossibleDependenciesFor(interactionTypeCondition, msg);
@@ -924,7 +878,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
                                         if (!cond.isApplicableHostOrganism(host)){
                                             final StringBuffer msg = new StringBuffer( 1024 );
 
-                                            msg.append("The organism " + host.getNcbiTaxId() + " is unusual. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
+                                            msg.append("The organism " + host.getTaxId() + " is unusual. When the interaction detection method is "+ Term.printTerm(methodTerm) +" and " +
                                                     "the interaction type is " + Term.printTerm(brTerm) + " the host organism should be : ") ;
                                             for (String validHost : cond.getRequirements().getApplicableHostOrganisms()){
                                                 msg.append(validHost + ValidatorContext.getCurrentInstance().getValidatorConfig().getLineSeparator());

@@ -2,14 +2,18 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
-import psidev.psi.mi.xml.model.*;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +29,7 @@ import java.util.Collection;
  * @version $Id: InteractionDetectionMethod2BiologicalRoleDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi25InteractionRule {
+public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends ObjectRule<ParticipantEvidence> {
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
@@ -58,43 +62,42 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Mi2
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2BiologicalRole.tsv for the possible dependencies interaction detection method - biological role" );        
     }
 
+    public boolean canCheck(Object o) {
+        return ( o != null && o instanceof ParticipantEvidence);
+    }
+
     /**
      * For each experiment associated with this interaction, collect all respective participants and their biological roles and
      * check if the dependencies are correct.
      *
-     * @param interaction an interaction to check on.
+     * @param participant a participant to check on.
      * @return a collection of validator messages.
      *         if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( ParticipantEvidence participant ) throws ValidatorException {
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // experiments for detecting the interaction
-        final Collection<ExperimentDescription> experiments = interaction.getExperiments();
-        // participants of the interaction
-        final Collection<Participant> participants = interaction.getParticipants();
+        // build a context in case of error
+        Mi25Context context = RuleUtils.buildContext(participant, "participant");
 
-        for ( ExperimentDescription experiment : experiments ) {
+        CvTerm biolRole = participant.getBiologicalRole();
+        context.addAssociatedContext(RuleUtils.buildContext(biolRole, "participant's biological role"));
 
-            final InteractionDetectionMethod method = experiment.getInteractionDetectionMethod();
+        if (participant.getInteractionEvidence() != null){
+            InteractionEvidence interaction = participant.getInteractionEvidence();
+            context.addAssociatedContext(RuleUtils.buildContext(interaction, "interaction"));
 
-            for ( Participant p : participants ) {
+            if (interaction.getExperiment() != null){
+                Experiment exp = interaction.getExperiment();
+                context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
 
-                if (p.hasBiologicalRole()){
+                CvTerm method = exp.getInteractionDetectionMethod();
+                context.addAssociatedContext(RuleUtils.buildContext(method, "interaction detection method"));
 
-                    // build a context in case of error
-                    Mi25Context context = new Mi25Context();
-                    context.setId( p.getId() );
-                    context.setObjectLabel("participant");
-
-                    BiologicalRole biolRole = p.getBiologicalRole();
-
-                    messages.addAll( mapping.check( method, biolRole, context, this ) );
-                }
+                messages.addAll( mapping.check( method, biolRole, context, this ) );
             }
-
-        } // experiments
+        }
 
         return messages;
     }

@@ -2,15 +2,16 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25InteractionRule;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
-import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,7 +27,7 @@ import java.util.Collection;
  * @version $Id: FeatureType2FeatureDetectionMethodDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25InteractionRule {
+public class FeatureType2FeatureDetectionMethodDependencyRule extends ObjectRule<FeatureEvidence> {
 
     private static final Log log = LogFactory.getLog( InteractionDetectionMethod2BiologicalRoleDependencyRule.class );
 
@@ -63,67 +64,39 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends Mi25Intera
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/featureType2FeatureDetectionMethod.tsv for the possible dependencies feature type - feature detection method" );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        if (t instanceof FeatureEvidence){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * For each participants of the interaction, collect all respective feature detection methods and feature types and
      * check if the dependencies are correct.
      *
-     * @param interaction to check on.
+     * @param feature to check on.
      * @return a collection of validator messages.
      *         if we fail to retreive the MI Ontology.
      */
-    public Collection<ValidatorMessage> check( Interaction interaction) throws ValidatorException {
+    public Collection<ValidatorMessage> check( FeatureEvidence feature) throws ValidatorException {
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // The participants of the interaction
-        final Collection<Participant> participants = interaction.getParticipants();
+        CvTerm method = feature.getDetectionMethod();
 
-//        experiments.iterator().next().getFeatureDetectionMethod();
+        if (feature.getType() != null){
+            CvTerm featureType = feature.getType();
 
-        for ( Participant participant : participants) {
+            if (method != null){
+                Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                context.addAssociatedContext(RuleUtils.buildContext(method, "feature detection method"));
+                context.addAssociatedContext(RuleUtils.buildContext(featureType, "feature type"));
 
-            // Features of a participant
-            Collection<Feature> features = participant.getFeatures();
-
-            for (Feature feature : features){
-
-                FeatureDetectionMethod method = null;
-
-                if (feature.hasFeatureType()){
-                    FeatureType featureType = feature.getFeatureType();
-
-                    if (feature.hasFeatureDetectionMethod()){
-                        Mi25Context context = new Mi25Context();
-                        context.setId( feature.getId());
-                        context.setObjectLabel( "feature" );
-
-                        method = feature.getFeatureDetectionMethod();
-                        messages.addAll( mapping.check( featureType, method, context, this ) );
-                    }
-                    else {
-                        // The experiment refs of the feature
-                        final Collection<ExperimentRef> experimentRefs = feature.getExperimentRefs();
-
-                        // The experiments for detecting the interaction
-                        Collection<ExperimentDescription> experiments = RuleUtils.collectExperiment(interaction, experimentRefs);
-
-                        //Collection<ExperimentDescription> experiments = collectExperiment( interaction, feature.getExperimentRefs() );
-                        for (ExperimentDescription experiment : experiments){
-
-                            Mi25Context context = new Mi25Context();
-                            context.setId( feature.getId());
-                            context.setObjectLabel("feature");
-
-                            if (experiment.hasFeatureDetectionMethod()){
-                                method = experiment.getFeatureDetectionMethod();
-                                messages.addAll( mapping.check( featureType, method, context, this ) );
-                            }
-                        }
-                    }
-                }
+                messages.addAll( mapping.check( featureType, method, context, this ) );
             }
-
-        } // features
+        }
 
         return messages;
     }
