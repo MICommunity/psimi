@@ -6,7 +6,9 @@
 package psidev.psi.mi.xml.converter.impl254;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 
 import java.util.List;
@@ -55,6 +57,14 @@ public class AliasConverter {
         mAlias.setType( jAlias.getType() );
         mAlias.setTypeAc( jAlias.getTypeAc() );
         mAlias.setValue( jAlias.getValue() );
+        if (jAlias.getValue() == null || jAlias.getValue().length() == 0) {
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_alias_name, "It is not a valid alias because the alias name is empty or null");
+            evt.setSourceLocator(new FileSourceLocator(jAlias.sourceLocation() != null ? jAlias.sourceLocation().getLineNumber() : 0, jAlias.sourceLocation() != null ? jAlias.sourceLocation().getColumnNumber() : 0));
+
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
 
         return mAlias;
     }
