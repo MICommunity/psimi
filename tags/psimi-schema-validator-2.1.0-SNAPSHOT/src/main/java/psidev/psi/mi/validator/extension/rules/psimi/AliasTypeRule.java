@@ -29,7 +29,7 @@ public class AliasTypeRule extends ObjectRule<Alias>{
         setName( "Alias type check" );
 
         setDescription( "Check that the MI identifier for each alias is a valid MI identifier when it exists." );
-        addTip( "You can find all the regular expressions matching each alias type at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0300&termName=alias%20type" );
+        addTip( "You can find all existing alias types at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0300&termName=alias%20type" );
     }
 
     @Override
