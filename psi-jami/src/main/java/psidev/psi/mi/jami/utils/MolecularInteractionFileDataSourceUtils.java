@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils;
 
-import psidev.psi.mi.jami.datasource.DataSourceError;
+import psidev.psi.mi.jami.datasource.FileSourceError;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Collections;
  * @since <pre>26/03/13</pre>
  */
 
-public class MolecularInteractionDataSourceUtils {
+public class MolecularInteractionFileDataSourceUtils {
 
     /**
      * Collect all data source errors having same error type
@@ -23,14 +23,14 @@ public class MolecularInteractionDataSourceUtils {
      * @param errorType
      * @return
      */
-    public static Collection<DataSourceError> collectAllDataSourceErrorsHavingErrorType(Collection<? extends DataSourceError> errors, String errorType){
+    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorType(Collection<FileSourceError> errors, String errorType){
 
         if (errors == null || errors.isEmpty() || errorType == null){
             return Collections.EMPTY_LIST;
         }
-        Collection<DataSourceError> filteredErrors = new ArrayList<DataSourceError>(errors);
+        Collection<FileSourceError> filteredErrors = new ArrayList<FileSourceError>(errors.size());
 
-        for (DataSourceError err : errors){
+        for (FileSourceError err : errors){
             if (err.getLabel() != null && err.getLabel().equalsIgnoreCase(errorType)){
                 filteredErrors.add(err);
             }
