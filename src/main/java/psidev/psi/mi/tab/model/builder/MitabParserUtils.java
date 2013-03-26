@@ -319,14 +319,14 @@ public final class MitabParserUtils {
             int charIndexPMethodB = charIndexPMethodA+4+(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()] != null ? line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()].length() : 0);
 
             //MITAB 2.5
-            interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexIdA, PsimiTabColumns.ID_INTERACTOR_A.ordinal()));
-            interactorA.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexAltIdA, PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()));
+            interactorA.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexIdA, PsimiTabColumns.ID_INTERACTOR_A.ordinal(), false));
+            interactorA.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexAltIdA, PsimiTabColumns.ALTID_INTERACTOR_A.ordinal(), false));
             interactorA.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()], listenerList, lineIndex, charIndexAliasA, PsimiTabColumns.ALIAS_INTERACTOR_A.ordinal()));
             interactorA.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_A.ordinal()], listenerList, lineIndex, charIndexTaxIdA, PsimiTabColumns.TAXID_A.ordinal(), FileParsingErrorType.clustered_content));
 
             //MITAB 2.5
-            interactorB.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexIdB, PsimiTabColumns.ID_INTERACTOR_B.ordinal()));
-            interactorB.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexAltIdB, PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()));
+            interactorB.setIdentifiers(splitCrossReferences(line[PsimiTabColumns.ID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexIdB, PsimiTabColumns.ID_INTERACTOR_B.ordinal(), false));
+            interactorB.setAlternativeIdentifiers(splitCrossReferences(line[PsimiTabColumns.ALTID_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexAltIdB, PsimiTabColumns.ALTID_INTERACTOR_B.ordinal(), false));
             interactorB.setInteractorAliases(splitAliases(line[PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()], listenerList, lineIndex, charIndexAliasB, PsimiTabColumns.ALIAS_INTERACTOR_B.ordinal()));
             interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()], listenerList, lineIndex, charIndexTaxIdB, PsimiTabColumns.TAXID_B.ordinal(), FileParsingErrorType.clustered_content));
 
@@ -336,7 +336,7 @@ public final class MitabParserUtils {
             interaction.setPublications(splitPublications(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, charIndexPublication, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
             interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, charIndexInteractionType,PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileParsingErrorType.multiple_interaction_types, FileParsingErrorType.missing_interaction_type, "info"));
             interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, charIndexSource, PsimiTabColumns.SOURCE.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "error"));
-            interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, charIndexInteractionId, PsimiTabColumns.INTERACTION_ID.ordinal()));
+            interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, charIndexInteractionId, PsimiTabColumns.INTERACTION_ID.ordinal(), false));
             interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()], listenerList, lineIndex, charIndexConfidence, PsimiTabColumns.CONFIDENCE.ordinal()));
 
 
@@ -344,7 +344,7 @@ public final class MitabParserUtils {
             interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, charIndexBioRoleA, PsimiTabColumns.BIOROLE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
             interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, charIndexExpRoleA, PsimiTabColumns.EXPROLE_A.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
             interactorA.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, charIndexTypeA, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
-            interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, charIndexXrefA, PsimiTabColumns.XREFS_A.ordinal()));
+            interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, charIndexXrefA, PsimiTabColumns.XREFS_A.ordinal(), true));
             interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()], listenerList, lineIndex, charIndexAnnotA, PsimiTabColumns.ANNOTATIONS_A.ordinal()));
             interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()], listenerList, lineIndex, charIndexCheckA, PsimiTabColumns.CHECKSUM_A.ordinal()));
 
@@ -352,13 +352,13 @@ public final class MitabParserUtils {
             interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, charIndexBioRoleB, PsimiTabColumns.BIOROLE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
             interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, charIndexExpRoleB, PsimiTabColumns.EXPROLE_B.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
             interactorB.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, charIndexTypeB, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
-            interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, charIndexXrefB, PsimiTabColumns.XREFS_B.ordinal()));
+            interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, charIndexXrefB, PsimiTabColumns.XREFS_B.ordinal(), true));
             interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()], listenerList, lineIndex, charIndexAnnotB, PsimiTabColumns.ANNOTATIONS_B.ordinal()));
             interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()], listenerList, lineIndex, charIndexCheckB, PsimiTabColumns.CHECKSUM_B.ordinal()));
 
             //MITAB 2.6
             interaction.setComplexExpansion(splitControlledVocabulary(line[PsimiTabColumns.COMPLEX_EXPANSION.ordinal()], listenerList, lineIndex, charIndexComplex, PsimiTabColumns.COMPLEX_EXPANSION.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, ""));
-            interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()], listenerList, lineIndex, charIndexXref, PsimiTabColumns.XREFS_I.ordinal()));
+            interaction.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_I.ordinal()], listenerList, lineIndex, charIndexXref, PsimiTabColumns.XREFS_I.ordinal(), true));
             interaction.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_I.ordinal()], listenerList, lineIndex, charIndexAnnot, PsimiTabColumns.ANNOTATIONS_I.ordinal()));
             interaction.setHostOrganism(splitOrganism(line[PsimiTabColumns.HOST_ORGANISM.ordinal()], listenerList, lineIndex, charIndexHost, PsimiTabColumns.HOST_ORGANISM.ordinal(), FileParsingErrorType.multiple_host_organisms));
             interaction.setParameters(splitParameters(line[PsimiTabColumns.PARAMETERS_I.ordinal()], listenerList, lineIndex, charIndexParameters, PsimiTabColumns.PARAMETERS_I.ordinal()));
@@ -564,7 +564,7 @@ public final class MitabParserUtils {
         return organism;
     }
 
-    public static List<CrossReference> splitCrossReferences(String column, List<MitabParserListener> listenerList, int lineNumber, int startCharNumber, int columnNumber) {
+    public static List<CrossReference> splitCrossReferences(String column, List<MitabParserListener> listenerList, int lineNumber, int startCharNumber, int columnNumber, boolean allowsText) {
 
         List<CrossReference> objects = new ArrayList<CrossReference>();
         CrossReference object = null;
@@ -657,6 +657,15 @@ public final class MitabParserUtils {
 
                             if (database != null && id != null){
                                 object = new CrossReferenceImpl(result[0], result[1], result[2]);
+                            }
+
+                            if (!allowsText) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value. A text element is not allowed in this column): " + Arrays.asList(result).toString());
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
                             }
                         }
 
@@ -876,7 +885,8 @@ public final class MitabParserUtils {
                                 object = new CrossReferenceImpl(result[0], result[1]);
                             }
 
-                        } else if (length == 3) {
+                        }
+                        else if (result.length == 3) {
                             String database = null;
                             String id = null;
                             if (result[0].length() == 0) {
@@ -903,8 +913,14 @@ public final class MitabParserUtils {
                             }
 
                             if (database != null && id != null){
-                                dbNames.add(result[0]);
                                 object = new CrossReferenceImpl(result[0], result[1], result[2]);
+                            }
+
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value. A text element is not allowed in this column): " + Arrays.asList(result).toString());
+                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
                             }
                         }
 
@@ -1056,7 +1072,7 @@ public final class MitabParserUtils {
                         int length = result.length;
 
                         // some exception handling
-                        if (length == 0 || length > 3) {
+                        if (length == 0 || length > 2) {
                             InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid annotation (check the syntax topic:value): " + Arrays.asList(result).toString());
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
@@ -1072,12 +1088,6 @@ public final class MitabParserUtils {
 
                         } else if (length == 2) {
                             object = new AnnotationImpl(result[0], result[1]);
-                        } else  {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid annotation (check the syntax topic:value): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
-                            }
                         }
 
                         if (object != null) {
@@ -1177,7 +1187,7 @@ public final class MitabParserUtils {
                         int length = result.length;
 
                         // some exception handling
-                        if (length == 0 || length > 3) {
+                        if (length == 0 || length > 2) {
                             InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid checksum (check the syntax method:value): " + Arrays.asList(result).toString());
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
@@ -1193,8 +1203,7 @@ public final class MitabParserUtils {
                                 }                            }
                         } else if (length == 2) {
                             object = new ChecksumImpl(result[0], result[1]);
-                        } else
-                            throw new IllegalFormatException("String cannot be parsed to create a checksum (check the syntax): " + Arrays.asList(result).toString());
+                        }
 
                         if (object != null) {
                             object.setLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
@@ -1356,28 +1365,13 @@ public final class MitabParserUtils {
             for (String field : fields) {
                 if (field != null) {
 
-                    String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{'(', ')'}, true);
-                    if (result != null) {
+                    if (!field.equalsIgnoreCase("-")) {
+                        object = new AuthorImpl(field);
+                    }
 
-                        int length = result.length;
-
-                        // some exception handling
-                        if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid author (check the syntax first author et al. (date)): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
-                            }
-                        }
-
-                        else if (!field.equalsIgnoreCase("-")) {
-                            object = new AuthorImpl(field);
-                        }
-
-                        if (object != null) {
-                            object.setLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            objects.add(object);
-                        }
+                    if (object != null) {
+                        object.setLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                        objects.add(object);
                     }
 
                     newIndex+=field.length();

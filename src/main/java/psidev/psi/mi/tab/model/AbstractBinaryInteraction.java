@@ -759,7 +759,7 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> extends De
 		}
 
 
-		if (getPublications() != null ? !CollectionUtils.isEqualCollection(getPublications(), that.getPublications()) : that.getPublications() != null) {
+		if (getPublications() != null ? !CollectionUtils.isEqualCollection(getPublications(), that.getPublications()) : (that.getPublications() != null && !that.getPublications().isEmpty())) {
 			return false;
 		}
 
