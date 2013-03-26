@@ -7,7 +7,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.XMLReaderFactory;
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.MolecularInteractionDataSourceUtils;
+import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.PsimiXmlVersion;
@@ -58,7 +58,7 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
         isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
@@ -81,7 +81,7 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        this.file = MolecularInteractionDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
         isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
@@ -238,17 +238,68 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
     }
 
     public void warning(SAXParseException e) throws SAXException {
-        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
-        errors.add(error);
+        if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
+        || e.getMessage().contains("The value '' of attribute 'db'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'id' must appear")
+                || e.getMessage().contains("The value '' of attribute 'id'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database_accession.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null && (e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participantList}' is expected")
+                || e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participant}' is expected"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else {
+            FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
     }
 
     public void error(SAXParseException e) throws SAXException {
-        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
-        errors.add(error);
+        if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
+                || e.getMessage().contains("The value '' of attribute 'db'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'id' must appear")
+                || e.getMessage().contains("The value '' of attribute 'id'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database_accession.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null && (e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participantList}' is expected")
+                || e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participant}' is expected"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else {
+            FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
     }
 
     public void fatalError(SAXParseException e) throws SAXException {
-        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
-        errors.add(error);
+        if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
+                || e.getMessage().contains("The value '' of attribute 'db'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'id' must appear")
+                || e.getMessage().contains("The value '' of attribute 'id'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database_accession.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null && (e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participantList}' is expected")
+                || e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participant}' is expected"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else {
+            FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
     }
 }
