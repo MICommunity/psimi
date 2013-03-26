@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.events.MissingElementEvent;
 import psidev.psi.mi.xml.events.MultipleHostOrganismsPerExperiment;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
@@ -137,10 +138,10 @@ public class ExperimentDescriptionConverter {
         else {
             // we don't have a publication
             if (listeners != null && !listeners.isEmpty()){
-                MissingElementEvent evt = new MissingElementEvent("No publication attached to this experiment.", FileParsingErrorType.missing_publication);
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_publication, "No publication attached to this experiment.");
                 evt.setSourceLocator(mExperimentDescription.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
-                    l.fireOnMissingElementEvent(evt);
+                    l.fireOnInvalidXmlSyntax(evt);
                 }
             }
         }
