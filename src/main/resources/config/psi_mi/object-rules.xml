@@ -8,5 +8,6 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractorSequenceAlphabetRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentPublicationRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasNameRule"/>
     
 </objectRuleList>
