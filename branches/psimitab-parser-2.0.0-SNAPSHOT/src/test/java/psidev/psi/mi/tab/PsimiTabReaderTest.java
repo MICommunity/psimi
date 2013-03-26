@@ -84,7 +84,7 @@ public class PsimiTabReaderTest {
 	public static final String MITAB_2_LINE_WITH_HEADER =
 			"#ID interactor A\tID interactor B\tAlt. ID interactor A\tAlt. ID interactor B\tAliases interactor A\tAliases interactor B\tinteraction detection method(s)\tpublication(s) 1st author(s) surname\tPublication ID\ttaxid interactor A\ttaxid interactor B\tInteraction types\tSource databases and identifiers\tInteraction ID\tConfidenceImpl\n" +
 					"uniprotkb:P23367\tuniprotkb:P06722\tinterpro:IPR003594|interpro:IPR002099|go:GO:0005515|intact:EBI-554913\tinterpro:IPR004230|uniprotkb:Q9R2X2|uniprotkb:Q9R3A8|uniprotkb:Q9R411|uniprotkb:Q9S6P5|uniprotkb:Q9S6P6|uniprotkb:Q9S6P7|go:GO:0005515|intact:EBI-545170\tgene name:mutL|locus name:b4170\tgene name:mutH|gene name synonym:mutR|gene name synonym:prv|locus name:b2831\tadenylate cyclase:MI:0014\t-\tpubmed:11585365\ttaxid:562\ttaxid:562\tphysical interaction:MI:0218\t-\t-\t-\n" +
-					"uniprotkb:P23367\tuniprotkb:P06722\t-\t-\t-\t-\t-\t-\t-\ttaxid:562\ttaxid:562\t-\t-\t-\t-\t-";
+					"uniprotkb:P23367\tuniprotkb:P06722\t-\t-\t-\t-\t-\t-\t-\ttaxid:562\ttaxid:562\t-\t-\t-\t-";
 
 	@Test
 	public void read_String() throws PsimiTabException, IOException {
