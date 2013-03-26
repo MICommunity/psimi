@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.datasource;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.Collection;
 
 /**
@@ -16,8 +14,7 @@ public interface MolecularInteractionFileDataSource {
 
     public Collection<FileSourceError> getDataSourceErrors();
 
-    public void open(File file);
-    public void open(InputStream stream);
+    public void open();
     public void close();
 
     public void validateFileSyntax();
