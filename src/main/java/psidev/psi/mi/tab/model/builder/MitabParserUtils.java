@@ -847,12 +847,22 @@ public final class MitabParserUtils {
                             }
                         }
                         else if (length == 1) {
-                            //Backward compatibility
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                            if (!result[0].equalsIgnoreCase("-")) {
+                                //Backward compatibility
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_publication, "The interaction does not have any publication identifiers");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
                             }
                         } else if (length == 2) {
                             String database = null;
@@ -927,15 +937,6 @@ public final class MitabParserUtils {
                         if (object != null) {
                             object.setLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             objects.add(object);
-                        }
-
-                        if (objects.isEmpty()){
-                            MissingElementEvent evt = new MissingElementEvent("error", "No publication provided for this interaction", FileParsingErrorType.missing_publication);
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, charIndex, columnNumber));
-
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnMissingElementEvent(evt);
-                            }
                         }
                     }
                     newIndex+=field.length();
