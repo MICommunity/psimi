@@ -65,6 +65,6 @@ public class BiologicalRoleRule extends ObjectRule<ParticipantEvidence> {
     }
 
     public String getId() {
-        return "R15";
+        return "R40";
     }
 }

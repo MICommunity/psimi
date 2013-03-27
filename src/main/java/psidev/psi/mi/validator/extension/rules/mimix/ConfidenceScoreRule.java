@@ -133,6 +133,6 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
     }
 
     public String getId() {
-        return "R16";
+        return "R50";
     }
 }

@@ -65,6 +65,6 @@ public class OrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Organism> 
     }
 
     public String getId() {
-        return "R22";
+        return "R56";
     }
 }

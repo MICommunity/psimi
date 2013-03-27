@@ -235,6 +235,6 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
     }
 
     public String getId() {
-        return "R17";
+        return "R51";
     }
 }
