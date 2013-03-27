@@ -17,21 +17,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Rule to check that each experiment has an interaction detection method
+ * This rule chack that each interaction has at least one participant
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>27/03/13</pre>
  */
 
-public class ExperimentInteractionDetectionMethodRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class MissingInteractionParticipantsRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public ExperimentInteractionDetectionMethodRule(OntologyManager ontologyManager) {
+    public MissingInteractionParticipantsRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Experiment interaction detection method check" );
+        setName( "Interaction's participants check" );
 
-        setDescription( "Check that each experiment has an interaction detection method." );
+        setDescription( "Check that each interaction has at least one participant." );
     }
 
     @Override
@@ -45,8 +45,8 @@ public class ExperimentInteractionDetectionMethodRule extends ObjectRule<Molecul
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_interaction_detection_method.toString());
-        for (FileSourceError error : wrongDatabaseXrefs){
+        Collection<FileSourceError> param = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_interactor_type.toString());
+        for (FileSourceError error : param){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -56,7 +56,7 @@ public class ExperimentInteractionDetectionMethodRule extends ObjectRule<Molecul
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }
@@ -65,6 +65,6 @@ public class ExperimentInteractionDetectionMethodRule extends ObjectRule<Molecul
     }
 
     public String getId() {
-        return "20";
+        return "R26";
     }
 }

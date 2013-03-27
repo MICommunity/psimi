@@ -17,21 +17,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Check that an annotation topic is provided
+ * Rule to check feature range syntax and consistency
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>27/03/13</pre>
  */
 
-public class AnnotationTopicRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class FeatureRangeSyntaxRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public AnnotationTopicRule(OntologyManager ontologyManager) {
+    public FeatureRangeSyntaxRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Annotation topic rule check" );
+        setName( "Feature range syntax rule check" );
 
-        setDescription( "Check that each annotation has a non null topic." );
+        setDescription( "Check that each feature has at least one range and each range has a start/end position and status." );
     }
 
     @Override
@@ -45,8 +45,12 @@ public class AnnotationTopicRule extends ObjectRule<MolecularInteractionFileData
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_annotation_topic.toString());
-        for (FileSourceError error : wrongDatabaseXrefs){
+        Collection<FileSourceError> wrongRanges = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.invalid_feature_range.toString());
+        wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.feature_without_ranges.toString()));
+        wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_range_position.toString()));
+        wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_range_status.toString()));
+
+        for (FileSourceError error : wrongRanges){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -65,6 +69,6 @@ public class AnnotationTopicRule extends ObjectRule<MolecularInteractionFileData
     }
 
     public String getId() {
-        return "19";
+        return "R20";
     }
 }

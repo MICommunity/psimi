@@ -185,6 +185,6 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
 
 
     public String getId() {
-        return "R13";
+        return "R12";
     }
 }

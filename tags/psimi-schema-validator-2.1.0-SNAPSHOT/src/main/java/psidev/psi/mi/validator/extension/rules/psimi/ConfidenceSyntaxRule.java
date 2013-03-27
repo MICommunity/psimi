@@ -17,26 +17,26 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This rule is for checking that all experiment have a publication
+ * This rule will check the syntax of a confidence
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>26/03/13</pre>
+ * @since <pre>27/03/13</pre>
  */
 
-public class ExperimentPublicationRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class ConfidenceSyntaxRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public ExperimentPublicationRule(OntologyManager ontologyManager) {
+    public ConfidenceSyntaxRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Experiment's publication check" );
+        setName( "Confidence's syntax check" );
 
-        setDescription( "Check that each experiment has a publication." );
+        setDescription( "Check that each interaction confidence and participant confidence has a confidence type and a confidence value." );
     }
 
     @Override
     public boolean canCheck(Object t) {
-        return t instanceof MolecularInteractionFileDataSource;
+        return ontologyManager instanceof MolecularInteractionFileDataSource;
     }
 
     @Override
@@ -45,9 +45,9 @@ public class ExperimentPublicationRule extends ObjectRule<MolecularInteractionFi
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> missingPublications = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_publication.toString());
-
-        for (FileSourceError error : missingPublications){
+        Collection<FileSourceError> param = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_type.toString());
+        param.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_value.toString()));
+        for (FileSourceError error : param){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -57,7 +57,7 @@ public class ExperimentPublicationRule extends ObjectRule<MolecularInteractionFi
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }
@@ -66,6 +66,6 @@ public class ExperimentPublicationRule extends ObjectRule<MolecularInteractionFi
     }
 
     public String getId() {
-        return "15";
+        return "R24";
     }
 }

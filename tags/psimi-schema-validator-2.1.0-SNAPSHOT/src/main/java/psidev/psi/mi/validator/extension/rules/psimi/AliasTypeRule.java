@@ -61,6 +61,6 @@ public class AliasTypeRule extends ObjectRule<Alias>{
     }
 
     public String getId() {
-        return "R17";
+        return "R16";
     }
 }

@@ -11,7 +11,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * ExperimentInteractionDetectionMethodRule Tester.
+ * MissingExperimentInteractionDetectionMethodRule Tester.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -71,7 +71,7 @@ public class ExperimentInteractionDetectionMethodRuleTest extends AbstractRuleTe
 
         ExperimentDescription exp = new ExperimentDescription( bibref, intDetMet );
 
-        ExperimentInteractionDetectionMethodRule rule = new ExperimentInteractionDetectionMethodRule( ontologyMaganer );
+        MissingExperimentInteractionDetectionMethodRule rule = new MissingExperimentInteractionDetectionMethodRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );

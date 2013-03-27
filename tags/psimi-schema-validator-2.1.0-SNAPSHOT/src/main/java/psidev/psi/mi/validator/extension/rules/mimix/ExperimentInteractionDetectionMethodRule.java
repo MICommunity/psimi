@@ -19,7 +19,7 @@ import java.util.List;
  * Rule Id = 5. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
- * @version $Id: ExperimentInteractionDetectionMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @version $Id: MissingExperimentInteractionDetectionMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
 public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule {

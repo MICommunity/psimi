@@ -415,6 +415,6 @@ public class DatabaseAccessionRule extends ObjectRule<psidev.psi.mi.jami.model.X
     }
 
     public String getId() {
-        return "R12";
+        return "R11";
     }
 }
