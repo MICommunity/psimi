@@ -248,18 +248,30 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database_accession.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else if (e.getMessage() != null && (e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participantList}' is expected")
-                || e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participant}' is expected"))){
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                (e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participantList") || e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participant")) &&
+                e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else if (e.getMessage() != null && e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":bibref}' is expected")){
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":bibref") &&
+                e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
         else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'name' must appear")
                 || e.getMessage().contains("The value '' of attribute 'name'"))){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_annotation_topic.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":interactionDetectionMethod") &&
+                e.getMessage().contains("is expected")){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_interaction_detection_method.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
@@ -277,18 +289,30 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database_accession.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else if (e.getMessage() != null && (e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participantList}' is expected")
-                || e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participant}' is expected"))){
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                (e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participantList") || e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participant")) &&
+                e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else if (e.getMessage() != null && e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":bibref}' is expected")){
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":bibref") &&
+                e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
         else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'name' must appear")
                 || e.getMessage().contains("The value '' of attribute 'name'"))){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_annotation_topic.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":interactionDetectionMethod") &&
+                e.getMessage().contains("is expected")){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_interaction_detection_method.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
@@ -306,18 +330,30 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database_accession.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else if (e.getMessage() != null && (e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participantList}' is expected")
-                || e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":participant}' is expected"))){
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                (e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participantList") || e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participant")) &&
+                e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else if (e.getMessage() != null && e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":bibref}' is expected")){
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":bibref") &&
+                e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
         else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'name' must appear")
                 || e.getMessage().contains("The value '' of attribute 'name'"))){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_annotation_topic.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null &&
+                e.getMessage().contains("One of") &&
+                e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":interactionDetectionMethod") &&
+                e.getMessage().contains("is expected")){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_interaction_detection_method.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
