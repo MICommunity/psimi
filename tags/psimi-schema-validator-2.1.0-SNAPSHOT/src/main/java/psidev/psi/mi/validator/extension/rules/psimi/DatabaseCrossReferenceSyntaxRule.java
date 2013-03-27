@@ -29,7 +29,7 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
 
     public DatabaseCrossReferenceSyntaxRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Database cross reference check" );
+        setName( "Database cross reference syntax check" );
 
         setDescription( "Check that each database cross reference has a non null database and a non null accession." );
     }

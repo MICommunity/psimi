@@ -45,8 +45,8 @@ public class MissingExperimentInteractionDetectionMethodRule extends ObjectRule<
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_interaction_detection_method.toString());
-        for (FileSourceError error : wrongDatabaseXrefs){
+        Collection<FileSourceError> missingDetMethod = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_interaction_detection_method.toString());
+        for (FileSourceError error : missingDetMethod){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());

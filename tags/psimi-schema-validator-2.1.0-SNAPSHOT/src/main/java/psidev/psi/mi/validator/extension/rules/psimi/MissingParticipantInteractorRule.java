@@ -45,9 +45,9 @@ public class MissingParticipantInteractorRule extends ObjectRule<MolecularIntera
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongRanges = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.participant_without_interactor.toString());
+        Collection<FileSourceError> missingInteractors = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.participant_without_interactor.toString());
 
-        for (FileSourceError error : wrongRanges){
+        for (FileSourceError error : missingInteractors){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());

@@ -29,7 +29,7 @@ public class ConfidenceSyntaxRule extends ObjectRule<MolecularInteractionFileDat
 
     public ConfidenceSyntaxRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Confidence's syntax check" );
+        setName( "Interaction and Participant Confidence syntax check" );
 
         setDescription( "Check that each interaction confidence and participant confidence has a confidence type and a confidence value." );
     }
@@ -45,9 +45,9 @@ public class ConfidenceSyntaxRule extends ObjectRule<MolecularInteractionFileDat
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> param = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_type.toString());
-        param.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_value.toString()));
-        for (FileSourceError error : param){
+        Collection<FileSourceError> conf = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_type.toString());
+        conf.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_value.toString()));
+        for (FileSourceError error : conf){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
