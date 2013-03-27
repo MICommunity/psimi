@@ -1487,8 +1487,12 @@ public final class MitabParserUtils {
                                     InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The annotation " + field + "is not a valid annotation. " +
                                             "The topic cannot be null or empty");
                                     evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                    InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.missing_annotation_topic, "The annotation " + field + "is not a valid annotation. " +
+                                            "The topic cannot be null or empty");
+                                    evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                     for (MitabParserListener l : listenerList){
                                         l.fireOnInvalidFormat(evt);
+                                        l.fireOnInvalidFormat(evt2);
                                     }
                                 }
                                 else {
@@ -1502,8 +1506,12 @@ public final class MitabParserUtils {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The annotation " + field + "is not a valid annotation. " +
                                         "The topic cannot be null or empty");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.missing_annotation_topic, "The annotation " + field + "is not a valid annotation. " +
+                                        "The topic cannot be null or empty");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                                 object = new AnnotationImpl("unspecified", result[1]);
                             }
