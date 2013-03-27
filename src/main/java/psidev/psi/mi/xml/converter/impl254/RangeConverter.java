@@ -88,7 +88,7 @@ public class RangeConverter {
         }
         else{
             if (listeners != null){
-                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have a start position.");
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_range_position, "It is not a valid feature range because it does not have a start position.");
                 evt.setSourceLocator(mRange.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnInvalidXmlSyntax(evt);
@@ -102,7 +102,7 @@ public class RangeConverter {
         }
         else{
             if (listeners != null){
-                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have a start range status.");
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_range_status, "It is not a valid feature range because it does not have a start range status.");
                 evt.setSourceLocator(mRange.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnInvalidXmlSyntax(evt);
@@ -121,7 +121,7 @@ public class RangeConverter {
         }
         else{
             if (listeners != null){
-                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have an end position.");
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_range_position, "It is not a valid feature range because it does not have an end position.");
                 evt.setSourceLocator(mRange.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnInvalidXmlSyntax(evt);
@@ -135,7 +135,7 @@ public class RangeConverter {
         }
         else{
             if (listeners != null){
-                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.invalid_feature_range, "It is not a valid feature range because it does not have an end range status.");
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_range_status, "It is not a valid feature range because it does not have an end range status.");
                 evt.setSourceLocator(mRange.getSourceLocator());
                 for (PsiXml25ParserListener l : listeners){
                     l.fireOnInvalidXmlSyntax(evt);

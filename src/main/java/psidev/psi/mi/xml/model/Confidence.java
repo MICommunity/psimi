@@ -88,7 +88,7 @@ public class Confidence implements psidev.psi.mi.jami.model.Confidence, FileSour
      * @param value allowed object is {@link OpenCvType }
      */
     public void setUnit( Unit value ) {
-        this.unit = value;
+        this.unit = value != null ? value : new Unit();
     }
 
     public CvTerm getType() {

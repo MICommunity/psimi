@@ -6,10 +6,12 @@
 package psidev.psi.mi.xml.converter.impl253;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.ExperimentRef;
@@ -91,10 +93,28 @@ public class ConfidenceConverter {
 
         // 1. set attributes
         mConfidence.setValue( jConfidence.getValue() );
+        if (jConfidence.getValue()== null) {
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_confidence_value, "It is not a valid confidence because the confidence value is empty or null");
+            evt.setSourceLocator(new FileSourceLocator(jConfidence.sourceLocation() != null ? jConfidence.sourceLocation().getLineNumber() : 0, jConfidence.sourceLocation() != null ? jConfidence.sourceLocation().getColumnNumber() : 0));
+
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
 
         // 2. set encapsulated objects
-        mConfidence.setUnit( openCvTypeConverter.fromJaxb( jConfidence.getUnit(),
-                                                           psidev.psi.mi.xml.model.Unit.class ) );
+        if (jConfidence.getUnit()== null) {
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_confidence_type, "It is not a valid confidence because the confidence type/unit is empty or null");
+            evt.setSourceLocator(new FileSourceLocator(jConfidence.sourceLocation() != null ? jConfidence.sourceLocation().getLineNumber() : 0, jConfidence.sourceLocation() != null ? jConfidence.sourceLocation().getColumnNumber() : 0));
+
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
+        else {
+            mConfidence.setUnit( openCvTypeConverter.fromJaxb( jConfidence.getUnit(),
+                    psidev.psi.mi.xml.model.Unit.class ) );
+        }
 
         // experiments
         if ( jConfidence.getExperimentRefList() != null ) {

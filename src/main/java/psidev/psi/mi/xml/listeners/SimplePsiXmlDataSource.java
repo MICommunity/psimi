@@ -238,8 +238,8 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
     }
 
     public void warning(SAXParseException e) throws SAXException {
-        if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
-        || e.getMessage().contains("The value '' of attribute 'db'"))){
+        /*if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
+                || e.getMessage().contains("The value '' of attribute 'db'"))){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
@@ -251,7 +251,7 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
         else if (e.getMessage() != null &&
                 e.getMessage().contains("One of") &&
                 (e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participantList") || e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participant")) &&
-                e.getMessage().contains("is expected")){
+                 e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
@@ -273,13 +273,13 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
                 e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_interaction_detection_method.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
-        }
+        }*/
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
         errors.add(error);
     }
 
     public void error(SAXParseException e) throws SAXException {
-        if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
+        /*if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
                 || e.getMessage().contains("The value '' of attribute 'db'"))){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
@@ -292,7 +292,7 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
         else if (e.getMessage() != null &&
                 e.getMessage().contains("One of") &&
                 (e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participantList") || e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participant")) &&
-                e.getMessage().contains("is expected")){
+                 e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
@@ -314,13 +314,13 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
                 e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_interaction_detection_method.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
-        }
+        }*/
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
         errors.add(error);
     }
 
     public void fatalError(SAXParseException e) throws SAXException {
-        if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
+        /*if (e.getMessage() != null && (e.getMessage().contains("Attribute 'db' must appear")
                 || e.getMessage().contains("The value '' of attribute 'db'"))){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_database.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
@@ -333,7 +333,7 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
         else if (e.getMessage() != null &&
                 e.getMessage().contains("One of") &&
                 (e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participantList") || e.getMessage().contains("\"http://psi.hupo.org/mi/mif\":participant")) &&
-                e.getMessage().contains("is expected")){
+                 e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.interaction_without_any_participants.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
@@ -355,7 +355,7 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
                 e.getMessage().contains("is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_interaction_detection_method.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
-        }
+        }*/
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
         errors.add(error);
     }

@@ -6,9 +6,11 @@
 package psidev.psi.mi.xml.converter.impl253;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.ExperimentDescription;
 import psidev.psi.mi.xml.model.ExperimentRef;
@@ -95,9 +97,25 @@ public class ParticipantParameterConverter {
 
         mParameter.setBase( jParameter.getBase() );
         mParameter.setExponent( jParameter.getExponent() );
-        mParameter.setFactor( jParameter.getFactor().doubleValue() );
+        if (jParameter.getFactor() != null){
+            mParameter.setFactor( jParameter.getFactor().doubleValue() );
+        }
+        else if (listeners != null && !listeners.isEmpty()){
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_parameter_factor, "Participant parameter without a valid factor.");
+            evt.setSourceLocator(mParameter.getSourceLocator());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
         mParameter.setTerm( jParameter.getTerm() );
         mParameter.setTermAc( jParameter.getTermAc() );
+        if (listeners != null && !listeners.isEmpty() && jParameter.getTerm() == null && jParameter.getTermAc() == null){
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_parameter_type, "Participant parameter without a valid parameter type.");
+            evt.setSourceLocator(mParameter.getSourceLocator());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
         if ( jParameter.getUncertainty() != null ) {
             mParameter.setUncertainty( jParameter.getUncertainty().doubleValue() );
         }
