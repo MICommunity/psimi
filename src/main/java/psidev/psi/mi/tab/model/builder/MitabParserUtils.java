@@ -250,15 +250,23 @@ public final class MitabParserUtils {
     public static BinaryInteraction<Interactor> buildBinaryInteraction(String[] line, int lineIndex, List<MitabParserListener> listenerList) {
 
         if (line == null) {
-            throw new NullPointerException("Null line to create a BinaryInteraction");
-        }
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid MITAB line. A MITAB line cannot be null");
+            evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
 
-        if (line.length == 0) {
-            throw new IllegalArgumentException("Empty line passed to create a BinaryInteraction");
+            for (MitabParserListener l : listenerList){
+                l.fireOnInvalidFormat(evt);
+            }
         }
+        else if (line.length == 0) {
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid MITAB line. A MITAB line cannot be empty");
+            evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
 
-        if (line.length != PsimiTabVersion.v2_5.getNumberOfColumns() && line.length != PsimiTabVersion.v2_6.getNumberOfColumns() && line.length != PsimiTabVersion.v2_7.getNumberOfColumns()){
-            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "A MITAB file should have 15 (MITAB 2.5), 36 (MITAB 2.6), 42 (MITAB 2.7)");
+            for (MitabParserListener l : listenerList){
+                l.fireOnInvalidFormat(evt);
+            }
+        }
+        else if (line.length != PsimiTabVersion.v2_5.getNumberOfColumns() && line.length != PsimiTabVersion.v2_6.getNumberOfColumns() && line.length != PsimiTabVersion.v2_7.getNumberOfColumns()){
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "A MITAB file should have 15 (MITAB 2.5), 36 (MITAB 2.6), 42 (MITAB 2.7) but the parser could detect " + line.length + " columns.");
             evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
             for (MitabParserListener l : listenerList){
                 l.fireOnInvalidFormat(evt);
@@ -381,15 +389,23 @@ public final class MitabParserUtils {
             //We check some consistency in the interactors
 
             if(!interactorA.isEmpty() && (interactorA.getIdentifiers() == null || interactorA.getIdentifiers().isEmpty())){
-                //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
-                throw new IllegalFormatException("The interactor A has not an identifier but contains information in other attributes." +
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The interactor A has not an identifier but contains information in other attributes. " +
                         "Please, add an identifier: " + interactorA.toString());
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdA, 1));
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnInvalidFormat(evt);
+                }
             }
 
             if(!interactorB.isEmpty() && (interactorB.getIdentifiers() == null || interactorB.getIdentifiers().isEmpty())){
-                //We have some information in the interactor A, but is hasn't a identifier so we throw an exception.
-                throw new IllegalFormatException("The interactor B has not an identifier but contains information in other attributes. " +
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The interactor B has not an identifier but contains information in other attributes. " +
                         "Please, add an identifier: " + interactorB.toString());
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdB, 2));
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnInvalidFormat(evt);
+                }
             }
 
             if(interactorA.isEmpty() && interactorB.isEmpty()){
@@ -468,8 +484,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid organism (check the syntax taxid:value(name)): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                    "The expected syntax is taxid:accession(organism name). "+
+                                    "Check that you don't have one of these special characters ':', '(', ')' in database name, accession or organism name. " +
+                                    "If yes, the special characters must be escaped with double quote.");                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                             for (MitabParserListener l : listenerList){
                                 l.fireOnInvalidFormat(evt);
@@ -478,7 +496,8 @@ public final class MitabParserUtils {
 
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid organism (check the syntax taxid:value(name)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The expected syntax is taxid:accession(organism name). ");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
@@ -489,22 +508,34 @@ public final class MitabParserUtils {
                             String database = null;
                             String id = null;
                             if (fields[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(fields).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database cannot be empty and should be set to 'taxid'. ");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database cannot be empty and should be set to 'taxid'. ");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else {
                                 database = fields[0];
                             }
                             if (fields[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(fields).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database accession cannot be empty and should be set to a valid ncbi taxid or -1(in vitro), -2(chemical synthesis), -3(unknown), -4(in vivo). ");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database accession cannot be empty and should be set to a valid ncbi taxid or -1(in vitro), -2(chemical synthesis), -3(unknown), -4(in vivo). ");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -515,27 +546,51 @@ public final class MitabParserUtils {
                                 taxids.add(fields[1]);
                                 organism.addIdentifier(new CrossReferenceImpl(fields[0], fields[1]));
                             }
+                            else if (database == null && id != null){
+                                taxids.add(fields[1]);
+                                organism.addIdentifier(new CrossReferenceImpl("unspecified", fields[1]));
+                            }
+                            else if (database != null && id == null){
+                                taxids.add(fields[1]);
+                                organism.addIdentifier(new CrossReferenceImpl(fields[0], "-3"));
+                            }
+                            else {
+                                taxids.add(fields[1]);
+                                organism.addIdentifier(new CrossReferenceImpl("unspecified", "-3"));
+                            }
 
                         } else if (length == 3) {
                             String database = null;
                             String id = null;
                             if (fields[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(fields).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database cannot be empty and should be set to 'taxid'. ");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database cannot be empty and should be set to 'taxid'. ");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else {
                                 database = fields[0];
                             }
                             if (fields[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(fields).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database accession cannot be empty and should be set to a valid ncbi taxid or -1(in vitro), -2(chemical synthesis), -3(unknown), -4(in vivo). ");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The organism cross reference " + r + "is not a valid organism cross reference. " +
+                                        "The database accession cannot be empty and should be set to a valid ncbi taxid or -1(in vitro), -2(chemical synthesis), -3(unknown), -4(in vivo). ");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -545,6 +600,18 @@ public final class MitabParserUtils {
                             if (database != null && id != null){
                                 taxids.add(fields[1]);
                                 organism.addIdentifier(new CrossReferenceImpl(fields[0], fields[1], fields[2]));
+                            }
+                            else if (database == null && id != null){
+                                taxids.add(fields[1]);
+                                organism.addIdentifier(new CrossReferenceImpl("unspecified", fields[1], fields[2]));
+                            }
+                            else if (database != null && id == null){
+                                taxids.add(fields[1]);
+                                organism.addIdentifier(new CrossReferenceImpl(fields[0], "-3", fields[2]));
+                            }
+                            else {
+                                taxids.add(fields[1]);
+                                organism.addIdentifier(new CrossReferenceImpl("unspecified", "-3", fields[2]));
                             }
                         }
                     }
@@ -574,6 +641,7 @@ public final class MitabParserUtils {
             int newIndex = startCharNumber;
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
@@ -583,7 +651,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                    "The expected syntax is database:accession"+(allowsText?"(qualifier)":" . " +
+                                    "Check that you don't have one of these special characters ':'"+(allowsText?", '(', ')'":"")+" in database name, accession or text. " +
+                                    "If yes, the special characters must be escaped with double quote."));
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                             for (MitabParserListener l : listenerList){
@@ -593,7 +664,8 @@ public final class MitabParserUtils {
                         else if (length == 1) {
                             //Backward compatibility
                             if (!result[0].equalsIgnoreCase("-")) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The expected syntax is database:accession"+(allowsText?"(qualifier)":" ."));
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
@@ -604,22 +676,33 @@ public final class MitabParserUtils {
                             String database = null;
                             String id = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
+
                                 }
                             }
                             else {
                                 database = result[0];
                             }
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database accession cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database accession cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -629,26 +712,46 @@ public final class MitabParserUtils {
                             if (database != null && id != null){
                                 object = new CrossReferenceImpl(result[0], result[1]);
                             }
+                            else if (database == null && id != null){
+                                object = new CrossReferenceImpl("unknown", result[1]);
+                            }
+                            else if (database != null && id == null){
+                                object = new CrossReferenceImpl("unknown", result[1]);
+                            }
+                            else {
+                                object = new CrossReferenceImpl("unknown", "unknown");
+                            }
                         } else if (length == 3) {
                             String database = null;
                             String id = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
+
                                 }
                             }
                             else {
                                 database = result[0];
                             }
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database accession cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The database accession cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -657,6 +760,15 @@ public final class MitabParserUtils {
 
                             if (database != null && id != null){
                                 object = new CrossReferenceImpl(result[0], result[1], result[2]);
+                            }
+                            else if (database == null && id != null){
+                                object = new CrossReferenceImpl("unknown", result[1], result[2]);
+                            }
+                            else if (database != null && id == null){
+                                object = new CrossReferenceImpl("unknown", result[1], result[2]);
+                            }
+                            else {
+                                object = new CrossReferenceImpl("unknown", "unknown", result[2]);
                             }
 
                             if (!allowsText) {
@@ -693,6 +805,7 @@ public final class MitabParserUtils {
 
             int newIndex = charIndex;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
@@ -702,7 +815,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                    "The expected syntax is database:term_id(term name) . " +
+                                    "Check that you don't have one of these special characters ':', '(', ') in database name, term id or term name. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                             for (MitabParserListener l : listenerList){
@@ -718,7 +834,8 @@ public final class MitabParserUtils {
                             } else if (field.equalsIgnoreCase("bipartite")) {
                                 object = new CrossReferenceImpl("psi-mi", "MI:1062", "bipartite expansion");
                             } else if (!result[0].equalsIgnoreCase("-")) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The expected syntax is database:term_id(term name) .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
@@ -726,25 +843,44 @@ public final class MitabParserUtils {
                                 }
                             }
                         } else if (length == 2) {
+                            InvalidFormatEvent evt3 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The controlled vocabulary term " + field + "is not valid. " +
+                                    "The term name should be specified in parenthesis .");
+                            evt3.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt3);
+                            }
+
                             String database = null;
                             String id = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The ontology/database name cannot be empty .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The ontology/database name cannot be empty .");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else {
                                 database = result[0];
                             }
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The term id cannot be empty .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The term id cannot be empty .");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -754,27 +890,48 @@ public final class MitabParserUtils {
                             if (database != null && id != null){
                                 object = new CrossReferenceImpl(result[0], result[1]);
                             }
+                            else if (database == null && id != null){
+                                object = new CrossReferenceImpl("unknown", result[1]);
+                            }
+                            else if (database != null && id == null){
+                                object = new CrossReferenceImpl(result[0], "unknown");
+                            }
+                            else {
+                                object = new CrossReferenceImpl("unknown", "unknown");
+                            }
 
                         } else if (length == 3) {
                             String database = null;
                             String id = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The ontology/database name cannot be empty .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The ontology/database name cannot be empty .");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else {
                                 database = result[0];
                             }
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The term id cannot be empty .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The cross reference " + field + "is not a valid cross reference. " +
+                                        "The term id cannot be empty .");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -783,6 +940,15 @@ public final class MitabParserUtils {
 
                             if (database != null && id != null){
                                 object = new CrossReferenceImpl(result[0], result[1], result[2]);
+                            }
+                            else if (database == null && id != null){
+                                object = new CrossReferenceImpl("unknown", result[1], result[2]);
+                            }
+                            else if (database != null && id == null){
+                                object = new CrossReferenceImpl(result[0], "unknown", result[2]);
+                            }
+                            else {
+                                object = new CrossReferenceImpl("unknown", "unknown", result[2]);
                             }
                         }
 
@@ -830,6 +996,7 @@ public final class MitabParserUtils {
             int newIndex = charIndex;
 
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
@@ -839,7 +1006,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                    "The expected syntax is database:publication_id . " +
+                                    "Check that you don't have one of these special characters ':', '(', ') in database name or publication identifier. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                             for (MitabParserListener l : listenerList){
@@ -849,7 +1019,8 @@ public final class MitabParserUtils {
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
                                 //Backward compatibility
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The expected syntax is database:publication_id .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
@@ -868,10 +1039,16 @@ public final class MitabParserUtils {
                             String database = null;
                             String id = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be null or empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be null or empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
                                 for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
                                     l.fireOnInvalidFormat(evt);
                                 }
                             }
@@ -879,11 +1056,17 @@ public final class MitabParserUtils {
                                 database = result[0];
                             }
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The publication identifier cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The publication identifier cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -894,16 +1077,37 @@ public final class MitabParserUtils {
                                 dbNames.add(result[0]);
                                 object = new CrossReferenceImpl(result[0], result[1]);
                             }
-
+                            else if (database == null && id != null){
+                                object = new CrossReferenceImpl("unknown", result[1]);
+                            }
+                            else if (database != null && id == null){
+                                object = new CrossReferenceImpl(result[0], "unknown");
+                            }
+                            else {
+                                object = new CrossReferenceImpl("unknown", "unknown");
+                            }
                         }
                         else if (result.length == 3) {
+                            InvalidFormatEvent evt3 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The publication cross reference " + field + " is unusual. A text/qualifier is not expected in this column");
+                            evt3.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt3);
+                            }
+
                             String database = null;
                             String id = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be null or empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The database cannot be null or empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
                                 for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
                                     l.fireOnInvalidFormat(evt);
                                 }
                             }
@@ -911,11 +1115,17 @@ public final class MitabParserUtils {
                                 database = result[0];
                             }
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "It is not a valid cross reference (check the syntax db:value(text)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database_accession, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The publication identifier cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The publication cross reference " + field + "is not a valid cross reference. " +
+                                        "The publication identifier cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -923,14 +1133,17 @@ public final class MitabParserUtils {
                             }
 
                             if (database != null && id != null){
+                                dbNames.add(result[0]);
                                 object = new CrossReferenceImpl(result[0], result[1], result[2]);
                             }
-
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid cross reference (check the syntax db:value. A text element is not allowed in this column): " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
+                            else if (database == null && id != null){
+                                object = new CrossReferenceImpl("unknown", result[1], result[2]);
+                            }
+                            else if (database != null && id == null){
+                                object = new CrossReferenceImpl(result[0], "unknown", result[2]);
+                            }
+                            else {
+                                object = new CrossReferenceImpl("unknown", "unknown", result[2]);
                             }
                         }
 
@@ -964,6 +1177,7 @@ public final class MitabParserUtils {
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             int newIndex = charNumber;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
@@ -973,7 +1187,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The alias " + field + "is not a valid alias. " +
+                                    "The expected syntax is database:alias_name(alias_type) . " +
+                                    "Check that you don't have one of these special characters ':', '(', ') in database name, alias name or alias type. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
                                 l.fireOnInvalidFormat(evt);
@@ -982,7 +1199,8 @@ public final class MitabParserUtils {
 
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The alias " + field + "is not a valid alias. " +
+                                        "The expected syntax is database:alias_name(alias_type) .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
@@ -992,11 +1210,15 @@ public final class MitabParserUtils {
                             String db = null;
                             String name = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The alias " + field + "is not a valid alias. " +
+                                        "The database cannot be null or empty. If the database is not known, set the database to 'unknown'.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax , "The alias " + field + "is not a valid alias. " +
+                                        "The database cannot be null or empty. If the database is not known, set the database to 'unknown'.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else {
@@ -1004,9 +1226,13 @@ public final class MitabParserUtils {
                             }
 
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_alias_name, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_alias_name , "The alias " + field + "is not a valid alias. " +
+                                        "The alias name cannot be null or empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax , "The alias " + field + "is not a valid alias. " +
+                                        "The alias name cannot be null or empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
                                 }
@@ -1018,15 +1244,28 @@ public final class MitabParserUtils {
                             if (db != null && name != null){
                                 object = new AliasImpl(db, name);
                             }
+                            else if (db == null && name != null){
+                                object = new AliasImpl("unknown", result[1]);
+                            }
+                            else if (db != null && name == null){
+                                object = new AliasImpl(result[0], "unspecified");
+                            }
+                            else {
+                                object = new AliasImpl("unknown", "unspecified");
+                            }
                         } else if (length == 3) {
                             String db = null;
                             String name = null;
                             if (result[0].length() == 0) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_database, "The alias " + field + "is not a valid alias. " +
+                                        "The database cannot be null or empty. If the database is not known, set the database to 'unknown'.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax , "The alias " + field + "is not a valid alias. " +
+                                        "The database cannot be null or empty. If the database is not known, set the database to 'unknown'.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else {
@@ -1034,11 +1273,16 @@ public final class MitabParserUtils {
                             }
 
                             if (result[1].length() == 0){
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_alias_name, "It is not a valid alias (check the syntax db:name(alias type)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_alias_name , "The alias " + field + "is not a valid alias. " +
+                                        "The alias name cannot be null or empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax , "The alias " + field + "is not a valid alias. " +
+                                        "The alias name cannot be null or empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
                                 }
                             }
                             else{
@@ -1046,7 +1290,16 @@ public final class MitabParserUtils {
                             }
 
                             if (db != null && name != null){
-                                object = new AliasImpl(result[0], result[1], result[2]);
+                                object = new AliasImpl(db, name);
+                            }
+                            else if (db == null && name != null){
+                                object = new AliasImpl("unknown", result[1], result[2]);
+                            }
+                            else if (db != null && name == null){
+                                object = new AliasImpl(result[0], "unspecified", result[2]);
+                            }
+                            else {
+                                object = new AliasImpl("unknown", "unspecified", result[2]);
                             }
                         }
 
@@ -1073,6 +1326,7 @@ public final class MitabParserUtils {
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             int newIndex = charNumber;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
@@ -1082,7 +1336,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid confidence (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
+                                    "The expected syntax is confidence_type:value(unit) . " +
+                                    "Check that you don't have one of these special characters ':', '(', ') in confidence type, value or unit. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
                                 l.fireOnInvalidFormat(evt);
@@ -1091,12 +1348,92 @@ public final class MitabParserUtils {
 
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                object = new ConfidenceImpl("not-defined", result[0], "free-text");
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
+                                        "The expected syntax is confidence_type:value(unit) .");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                                object = new ConfidenceImpl("unknown", result[0]);
                             }
                         } else if (length == 2) {
-                            object = new ConfidenceImpl(result[0], result[1]);
+                            String type = null;
+                            String value = null;
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence type cannot be empty. If the confidence type is not known, use 'unknown'.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else {
+                                type = result[0];
+                            }
+
+                            if (result[1].length() == 0){
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence value cannot be empty.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else{
+                                value = result[1];
+                            }
+
+                            if (type != null && value != null){
+                                object = new ConfidenceImpl(type, value);
+                            }
+                            else if (type == null && value != null){
+                                object = new ConfidenceImpl("unknown", value);
+                            }
+                            else if (type != null && value == null){
+                                object = new ConfidenceImpl(type, "unspecified");
+                            }
+                            else {
+                                object = new ConfidenceImpl("unknown", "unspecified");
+                            }
                         } else if (length == 3) {
-                            object = new ConfidenceImpl(result[0], result[1], result[2]);
+                            String type = null;
+                            String value = null;
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence type cannot be empty. If the confidence type is not known, use 'unknown'.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else {
+                                type = result[0];
+                            }
+
+                            if (result[1].length() == 0){
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence value cannot be empty.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else{
+                                value = result[1];
+                            }
+
+                            if (type != null && value != null){
+                                object = new ConfidenceImpl(type, value, result[2]);
+                            }
+                            else if (type == null && value != null){
+                                object = new ConfidenceImpl("unknown", value, result[2]);
+                            }
+                            else if (type != null && value == null){
+                                object = new ConfidenceImpl(type, "unspecified", result[2]);
+                            }
+                            else {
+                                object = new ConfidenceImpl("unknown", "unspecified", result[2]);
+                            }
                         }
 
                         if (object != null) {
@@ -1121,6 +1458,7 @@ public final class MitabParserUtils {
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             int newIndex = charNumber;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':'}, true);
@@ -1130,7 +1468,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 2) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid annotation (check the syntax topic:value): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The annotation " + field + "is not a valid annotation. " +
+                                    "The expected syntax is topic:description. " +
+                                    "Check that you don't have one of these special characters ':' in topic or description. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
                                 l.fireOnInvalidFormat(evt);
@@ -1139,12 +1480,34 @@ public final class MitabParserUtils {
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
 
-                                //We allow annotations only with free text.
-                                object = new AnnotationImpl(result[0]);
+                                if (result[0].length() == 0) {
+                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The annotation " + field + "is not a valid annotation. " +
+                                            "The topic cannot be null or empty");
+                                    evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                    for (MitabParserListener l : listenerList){
+                                        l.fireOnInvalidFormat(evt);
+                                    }
+                                }
+                                else {
+                                    //We allow annotations only with free text.
+                                    object = new AnnotationImpl(result[0]);
+                                }
                             }
 
                         } else if (length == 2) {
-                            object = new AnnotationImpl(result[0], result[1]);
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The annotation " + field + "is not a valid annotation. " +
+                                        "The topic cannot be null or empty");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                                object = new AnnotationImpl("unspecified", result[1]);
+                            }
+                            else {
+                                //We allow annotations only with free text.
+                                object = new AnnotationImpl(result[0], result[1]);
+                            }
                         }
 
                         if (object != null) {
@@ -1170,6 +1533,7 @@ public final class MitabParserUtils {
 
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
@@ -1179,7 +1543,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                    "The expected syntax is parameter_type:factor x base exponent ~uncertainty (unit). " +
+                                    "Check that you don't have one of these special characters ':' in parameter type, value or unit. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
                                 l.fireOnInvalidFormat(evt);
@@ -1187,7 +1554,8 @@ public final class MitabParserUtils {
 
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The expected syntax is parameter_type:factor x base exponent ~uncertainty (unit).");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
@@ -1196,16 +1564,19 @@ public final class MitabParserUtils {
                             try {
                                 object = new ParameterImpl(result[0], result[1]);
                             } catch (IllegalParameterException e) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        e.getMessage());
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
-                                }                             }
+                                }
+                            }
                         } else if (length == 3) {
                             try {
                                 object = new ParameterImpl(result[0], result[1], result[2]);
                             } catch (IllegalParameterException e) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid parameter (check the syntax type:value(unit)): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        e.getMessage());
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
@@ -1236,6 +1607,7 @@ public final class MitabParserUtils {
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             int newIndex = charNumber;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':'}, true);
@@ -1245,7 +1617,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 2) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid checksum (check the syntax method:value): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The checksum " + field + "is not a valid checksum. " +
+                                    "The expected syntax is method:checksum. " +
+                                    "Check that you don't have one of these special characters ':' in method or checksum. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
                                 l.fireOnInvalidFormat(evt);
@@ -1253,13 +1628,51 @@ public final class MitabParserUtils {
 
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid checksum (check the syntax method:value): " + Arrays.asList(result).toString());
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The checksum " + field + "is not a valid checksum. " +
+                                        "The expected syntax is method:checksum.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
                                 }                            }
                         } else if (length == 2) {
-                            object = new ChecksumImpl(result[0], result[1]);
+                            String type = null;
+                            String value = null;
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The checksum " + field + "is not a valid checksum. " +
+                                        "The method cannot be empty. If the method is not known, use 'unknown'.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else {
+                                type = result[0];
+                            }
+
+                            if (result[1].length() == 0){
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The checksum " + field + "is not a valid checksum. " +
+                                        "The checksum cannot be empty.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                            }
+                            else{
+                                value = result[1];
+                            }
+
+                            if (type != null && value != null){
+                                object = new ChecksumImpl(type, value);
+                            }
+                            else if (type == null && value != null){
+                                object = new ChecksumImpl("unknown", value);
+                            }
+                            else if (type != null && value == null){
+                                object = new ChecksumImpl(type, "unspecified");
+                            }
+                            else {
+                                object = new ChecksumImpl("unknown", "unspecified");
+                            }
                         }
 
                         if (object != null) {
@@ -1285,12 +1698,14 @@ public final class MitabParserUtils {
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             int newIndex = charIndex;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     try{
                         object = Integer.parseInt(field);
                     } catch (NumberFormatException e) {
-                        InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid stoichiometry (check the syntax. It has to be a Integer): " + field.toString());
+                        InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The stoichiometry " + field + "is not a valid stoichiometry. " +
+                                "The expected syntax is number.");
                         evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                         for (MitabParserListener l : listenerList){
                             l.fireOnInvalidFormat(evt);
@@ -1326,6 +1741,7 @@ public final class MitabParserUtils {
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             int newIndex = charIndex;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     String[] result = MitabParserUtils.quoteAwareStrictOrderSplit(field, new char[]{':', '(', ')'}, true);
@@ -1335,7 +1751,10 @@ public final class MitabParserUtils {
 
                         // some exception handling
                         if (length == 0 || length > 3) {
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid feature (check the syntax. featureType:range1;range2(free text)): " + Arrays.asList(result).toString());
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + "is not a valid feature. " +
+                                    "The expected syntax is feature_type:range1,range2(free text). " +
+                                    "Check that you don't have one of these special characters ':', '(', ')' in feature type, range or free text. " +
+                                    "If yes, the special characters must be escaped with double quote.");
                             evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                             for (MitabParserListener l : listenerList){
                                 l.fireOnInvalidFormat(evt);
@@ -1344,19 +1763,48 @@ public final class MitabParserUtils {
 
                         else if (length == 1) {
                             if (!result[0].equalsIgnoreCase("-")) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + "is not a valid feature. " +
+                                        "The expected syntax is feature_type:range1,range2(free text). " +
+                                        "At least one range should be specified. If undetermined, use '?-?'");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.feature_without_ranges, "The feature " + field + "is not a valid feature. " +
+                                        "The expected syntax is feature_type:range1,range2(free text). " +
+                                        "At least one range should be specified. If undetermined, use '?-?'");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
+                                }
 
                                 //We have a feature without ranges {?-?}
                                 String[] undeterminedRange = {"?-?"};
-                                object = new FeatureImpl(result[0], Arrays.asList(undeterminedRange));
-                            }
-
-                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.feature_without_ranges, "It is not a valid feature, it should contain at least one range: " + Arrays.asList(result).toString());
-                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                            for (MitabParserListener l : listenerList){
-                                l.fireOnInvalidFormat(evt);
+                                if (result[0].length() == 0) {
+                                    InvalidFormatEvent evt3 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + "is not a valid feature. " +
+                                            "The feature type cannot be empty. If the type is not known, use 'unknown'.");
+                                    evt3.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                    for (MitabParserListener l : listenerList){
+                                        l.fireOnInvalidFormat(evt3);
+                                    }
+                                    object = new FeatureImpl("unknown", Arrays.asList(undeterminedRange));
+                                }
+                                else {
+                                    object = new FeatureImpl(result[0], Arrays.asList(undeterminedRange));
+                                }
                             }
                         } else if (length == 2) {
-                            object = new FeatureImpl(result[0]);
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + "is not a valid feature. " +
+                                        "The feature type cannot be empty. If the type is not known, use 'unknown'.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                                object = new FeatureImpl("unknown");
+                            }
+                            else {
+                                object = new FeatureImpl(result[0]);
+                            }
 
                             List<String> ranges = Arrays.asList(result[1].split(","));
 
@@ -1365,15 +1813,30 @@ public final class MitabParserUtils {
                                     Range range = RangeFactory.createRangeFromString(r);
                                     object.getRanges().add(range);
                                 } catch (IllegalRangeException e) {
-                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_feature_range, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
+                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_feature_range, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges. "+e.getMessage());
                                     evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                    InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges. "+e.getMessage());
+                                    evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                     for (MitabParserListener l : listenerList){
                                         l.fireOnInvalidFormat(evt);
+                                        l.fireOnInvalidFormat(evt2);
                                     }
                                 }
                             }
                         } else if (length == 3) {
-                            object = new FeatureImpl(result[0]);
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + "is not a valid feature. " +
+                                        "The feature type cannot be empty. If the type is not known, use 'unknown'.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                }
+                                object = new FeatureImpl("unknown");
+                            }
+                            else {
+                                object = new FeatureImpl(result[0]);
+                            }
 
                             List<String> ranges = Arrays.asList(result[1].split(","));
 
@@ -1382,10 +1845,14 @@ public final class MitabParserUtils {
                                     Range range = RangeFactory.createRangeFromString(r);
                                     object.getRanges().add(range);
                                 } catch (IllegalRangeException e) {
-                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_feature_range, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges.");
+                                    InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_feature_range, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges. " + e.getMessage());
                                     evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+
+                                    InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + " contains invalid ranges. Check the syntax for feature ranges. "+e.getMessage());
+                                    evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                     for (MitabParserListener l : listenerList){
                                         l.fireOnInvalidFormat(evt);
+                                        l.fireOnInvalidFormat(evt2);
                                     }
                                 }
                             }
@@ -1420,6 +1887,7 @@ public final class MitabParserUtils {
             String[] fields = MitabParserUtils.quoteAwareSplit(column, new char[]{'|'}, false);
             int newIndex = charIndex;
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     if (!field.equalsIgnoreCase("-")) {
@@ -1458,6 +1926,7 @@ public final class MitabParserUtils {
             int newIndex = charNumber;
 
             for (String field : fields) {
+                object = null;
                 if (field != null) {
 
                     try {
