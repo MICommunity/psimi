@@ -2,10 +2,7 @@ package psidev.psi.mi.tab.listeners;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
-import psidev.psi.mi.jami.datasource.FileSourceError;
-import psidev.psi.mi.jami.datasource.MolecularInteractionFileDataSource;
-import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
+import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.tab.PsimiTabIterator;
@@ -143,6 +140,10 @@ public class SimpleMitabDataSource implements MolecularInteractionFileDataSource
 
     public void fireOnInvalidFormat(InvalidFormatEvent event){
         if (isValidatingSyntax){
+            FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
+            this.errors.add(error);
+        }
+        else if (event.getErrorType() != FileParsingErrorType.invalid_syntax){
             FileSourceError error = new FileSourceError(event.getErrorType().toString(), event.getMessage(), event);
             this.errors.add(error);
         }
