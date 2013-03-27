@@ -19,17 +19,17 @@ import java.util.List;
  * Rule Id = 6. See http://docs.google.com/Doc?docid=0AXS9Q1JQ2DygZGdzbnZ0Ym5fMHAyNnM3NnRj&hl=en_GB&pli=1
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
- * @version $Id: ExperimentParticipantIdentificationMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
+ * @version $Id: ParticipantIdentificationMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class ExperimentParticipantIdentificationMethodRule extends ObjectRule<ParticipantEvidence> {
+public class ParticipantIdentificationMethodRule extends ObjectRule<ParticipantEvidence> {
 
-    public ExperimentParticipantIdentificationMethodRule( OntologyManager ontologyMaganer ) {
+    public ParticipantIdentificationMethodRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
 
-        setName( "Experiment Participant Identification Method check" );
-        setDescription( "Checks that each experiment has at least one Participant Identification Method (MI:0002) and that all Participant Identification Methods are valid." );
-        addTip( "Your experiment should have a Participant Identification method" );
+        setName( "Participant Identification Method check" );
+        setDescription( "Checks that each participant has at least one Participant Identification Method (MI:0002) and that all Participant Identification Methods are valid." );
+        addTip( "Your participant should have a Participant Identification method" );
         addTip( "Each participant identification method should have a PSI MI cross reference with a reference type set to identical object (MI:0356)" );
         addTip( "Any child of MI:0002 is a Participant Identification method. You can look at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI." );
         addTip( "The PSI-MI identifier for identical object is: MI:0356" );

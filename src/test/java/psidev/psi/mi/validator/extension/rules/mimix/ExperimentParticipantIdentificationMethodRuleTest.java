@@ -10,7 +10,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * ExperimentParticipantIdentificationMethodRule Tester.
+ * ParticipantIdentificationMethodRule Tester.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -43,7 +43,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         populatesParticipants(interaction);
 
-        ExperimentParticipantIdentificationMethodRule rule = new ExperimentParticipantIdentificationMethodRule( ontologyMaganer );
+        ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
@@ -71,7 +71,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         populatesParticipants(interaction);
 
-        ExperimentParticipantIdentificationMethodRule rule = new ExperimentParticipantIdentificationMethodRule( ontologyMaganer );
+        ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
@@ -84,7 +84,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         ExperimentDescription exp = new ExperimentDescription();
 
-        ExperimentParticipantIdentificationMethodRule rule = new ExperimentParticipantIdentificationMethodRule( ontologyMaganer );
+        ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
         Interaction interaction = new Interaction();
         interaction.getExperiments().add(exp);
@@ -120,7 +120,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
             p.getParticipantIdentificationMethods().add(partDetMet);
         }
 
-        ExperimentParticipantIdentificationMethodRule rule = new ExperimentParticipantIdentificationMethodRule( ontologyMaganer );
+        ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( interaction );
         Assert.assertNotNull( messages );
@@ -136,7 +136,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
         ExperimentDescription exp = new ExperimentDescription();
         exp.setParticipantIdentificationMethod(partDetMet);
 
-        ExperimentParticipantIdentificationMethodRule rule = new ExperimentParticipantIdentificationMethodRule( ontologyMaganer );
+        ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
         Interaction interaction = new Interaction();
         interaction.getExperiments().add(exp);
