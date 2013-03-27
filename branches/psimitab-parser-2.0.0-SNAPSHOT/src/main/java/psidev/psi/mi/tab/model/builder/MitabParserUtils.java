@@ -339,10 +339,11 @@ public final class MitabParserUtils {
             interactorB.setOrganism(splitOrganism(line[PsimiTabColumns.TAXID_B.ordinal()], listenerList, lineIndex, charIndexTaxIdB, PsimiTabColumns.TAXID_B.ordinal(), FileParsingErrorType.clustered_content));
 
             //MITAB 2.5
-            interaction.setDetectionMethods(splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, charIndexDetMethod, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interaction_detection_method, "error"));
+            List<CrossReference> detMethods = splitControlledVocabulary(line[PsimiTabColumns.INT_DET_METHOD.ordinal()], listenerList, lineIndex, charIndexDetMethod, PsimiTabColumns.INT_DET_METHOD.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interaction_detection_method, "error");
+            interaction.setDetectionMethods(detMethods);
             interaction.setAuthors(splitAuthor(line[PsimiTabColumns.PUB_AUTH.ordinal()], listenerList, lineIndex, charIndexFirstAuth, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
             interaction.setPublications(splitPublications(line[PsimiTabColumns.PUB_ID.ordinal()], listenerList, lineIndex, charIndexPublication, PsimiTabColumns.PUB_AUTH.ordinal(), FileParsingErrorType.clustered_content));
-            interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, charIndexInteractionType,PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileParsingErrorType.multiple_interaction_types, FileParsingErrorType.missing_interaction_type, "info"));
+            interaction.setInteractionTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTION_TYPE.ordinal()], listenerList, lineIndex, charIndexInteractionType,PsimiTabColumns.INTERACTION_TYPE.ordinal(), FileParsingErrorType.multiple_interaction_types, FileParsingErrorType.missing_cv, "info"));
             interaction.setSourceDatabases(splitControlledVocabulary(line[PsimiTabColumns.SOURCE.ordinal()], listenerList, lineIndex, charIndexSource, PsimiTabColumns.SOURCE.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "error"));
             interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()], listenerList, lineIndex, charIndexInteractionId, PsimiTabColumns.INTERACTION_ID.ordinal(), false));
             interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()], listenerList, lineIndex, charIndexConfidence, PsimiTabColumns.CONFIDENCE.ordinal()));
@@ -351,7 +352,8 @@ public final class MitabParserUtils {
             //MITAB 2.6
             interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, charIndexBioRoleA, PsimiTabColumns.BIOROLE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
             interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, charIndexExpRoleA, PsimiTabColumns.EXPROLE_A.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
-            interactorA.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, charIndexTypeA, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
+            List<CrossReference> interactorTypesA = splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, charIndexTypeA, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error");
+            interactorA.setInteractorTypes(interactorTypesA);
             interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, charIndexXrefA, PsimiTabColumns.XREFS_A.ordinal(), true));
             interactorA.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_A.ordinal()], listenerList, lineIndex, charIndexAnnotA, PsimiTabColumns.ANNOTATIONS_A.ordinal()));
             interactorA.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_A.ordinal()], listenerList, lineIndex, charIndexCheckA, PsimiTabColumns.CHECKSUM_A.ordinal()));
@@ -359,7 +361,8 @@ public final class MitabParserUtils {
             //MITAB 2.6
             interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, charIndexBioRoleB, PsimiTabColumns.BIOROLE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
             interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, charIndexExpRoleB, PsimiTabColumns.EXPROLE_B.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
-            interactorB.setInteractorTypes(splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, charIndexTypeB, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error"));
+            List<CrossReference> interactorTypesB = splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, charIndexTypeB, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error");
+            interactorB.setInteractorTypes(interactorTypesB);
             interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, charIndexXrefB, PsimiTabColumns.XREFS_B.ordinal(), true));
             interactorB.setAnnotations(splitAnnotations(line[PsimiTabColumns.ANNOTATIONS_B.ordinal()], listenerList, lineIndex, charIndexAnnotB, PsimiTabColumns.ANNOTATIONS_B.ordinal()));
             interactorB.setChecksums(splitChecksums(line[PsimiTabColumns.CHECKSUM_B.ordinal()], listenerList, lineIndex, charIndexCheckB, PsimiTabColumns.CHECKSUM_B.ordinal()));
@@ -386,25 +389,57 @@ public final class MitabParserUtils {
             interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()], listenerList, lineIndex, charIndexFeatureB, PsimiTabColumns.STOICHIOMETRY_B.ordinal(), FileParsingErrorType.clustered_content));
             interactorB.setParticipantIdentificationMethods(splitControlledVocabulary(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()], listenerList, lineIndex, charIndexPMethodB, PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_cv, "info"));
 
-            //We check some consistency in the interactors
-
-            if(!interactorA.isEmpty() && (interactorA.getIdentifiers() == null || interactorA.getIdentifiers().isEmpty())){
-                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The interactor A has not an identifier but contains information in other attributes. " +
-                        "Please, add an identifier: " + interactorA.toString());
-                evt.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdA, 1));
+            // we check consistency in interaction
+            if (detMethods.isEmpty() && interaction.getAuthors().isEmpty() && interaction.getPublications().isEmpty() && interaction.getHostOrganism() == null &&
+                    interaction.getCreationDate() == null && interaction.getSourceDatabases().isEmpty()){
+                MissingElementEvent evt = new MissingElementEvent("warn", "The interaction does not have a valid experiment.", FileParsingErrorType.interaction_evidence_without_experiment);
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, 1));
+                MissingElementEvent evt2 = new MissingElementEvent("warn", "The interaction does not have a valid publication.", FileParsingErrorType.missing_publication);
+                evt2.setSourceLocator(new MitabSourceLocator(lineIndex, -1, 1));
 
                 for (MitabParserListener l : listenerList){
-                    l.fireOnInvalidFormat(evt);
+                    l.fireOnMissingElementEvent(evt);
+                    l.fireOnMissingElementEvent(evt2);
+                }
+            }
+            else if (interaction.getAuthors().isEmpty() && interaction.getPublications().isEmpty() && interaction.getCreationDate() == null && interaction.getSourceDatabases().isEmpty()){
+                MissingElementEvent evt = new MissingElementEvent("warn", "The interaction does not have a valid publication.", FileParsingErrorType.missing_publication);
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, 1));
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnMissingElementEvent(evt);
                 }
             }
 
-            if(!interactorB.isEmpty() && (interactorB.getIdentifiers() == null || interactorB.getIdentifiers().isEmpty())){
-                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The interactor B has not an identifier but contains information in other attributes. " +
-                        "Please, add an identifier: " + interactorB.toString());
-                evt.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdB, 2));
+            //We check some consistency in the interactors
+            // we check consistency in participant
+            if (!interactorA.isEmpty() && interactorTypesA.isEmpty() && interactorA.getAliases().isEmpty() && interactorA.getIdentifiers().isEmpty() &&
+                    interactorA.getAlternativeIdentifiers().isEmpty() && interactorA.getInteractorXrefs().isEmpty() &&
+                    interactorA.getChecksums().isEmpty() && interactorA.getAnnotations().isEmpty() && interactorA.getOrganism() == null){
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The participant A does not have a valid interactor.");
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdA, 1));
+
+                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.participant_without_interactor, "The participant A does not have a valid interactor.");
+                evt2.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdA, 1));
 
                 for (MitabParserListener l : listenerList){
                     l.fireOnInvalidFormat(evt);
+                    l.fireOnInvalidFormat(evt2);
+                }
+            }
+
+            if (!interactorB.isEmpty() && interactorTypesB.isEmpty() && interactorB.getAliases().isEmpty() && interactorB.getIdentifiers().isEmpty() &&
+                    interactorB.getAlternativeIdentifiers().isEmpty() && interactorB.getInteractorXrefs().isEmpty() &&
+                    interactorB.getChecksums().isEmpty() && interactorB.getAnnotations().isEmpty() && interactorB.getOrganism() == null){
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The participant B does not have a valid interactor.");
+                evt.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdB, 1));
+
+                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.participant_without_interactor, "The participant B does not have a valid interactor.");
+                evt2.setSourceLocator(new MitabSourceLocator(lineIndex, charIndexIdB, 1));
+
+                for (MitabParserListener l : listenerList){
+                    l.fireOnInvalidFormat(evt);
+                    l.fireOnInvalidFormat(evt2);
                 }
             }
 
@@ -1030,14 +1065,6 @@ public final class MitabParserUtils {
                                     l.fireOnInvalidFormat(evt);
                                 }
                             }
-                            else {
-                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.missing_publication, "The interaction does not have any publication identifiers");
-                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-
-                                for (MitabParserListener l : listenerList){
-                                    l.fireOnInvalidFormat(evt);
-                                }
-                            }
                         } else if (length == 2) {
                             String database = null;
                             String id = null;
@@ -1354,10 +1381,30 @@ public final class MitabParserUtils {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
                                         "The expected syntax is confidence_type:value(unit) .");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt4 = new InvalidFormatEvent(FileParsingErrorType.missing_confidence_type, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence type cannot be empty. If it is not known, it should be set to 'unknown'");
+                                evt4.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt4);
                                 }
-                                object = new ConfidenceImpl("unknown", result[0]);
+
+                                if (result[0].length() == 0) {
+                                    InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
+                                            "The confidence value cannot be empty.");
+                                    evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                    InvalidFormatEvent evt3 = new InvalidFormatEvent(FileParsingErrorType.missing_confidence_value, "The confidence " + field + "is not a valid confidence. " +
+                                            "The confidence value cannot be empty.");
+                                    evt3.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                    for (MitabParserListener l : listenerList){
+                                        l.fireOnInvalidFormat(evt2);
+                                        l.fireOnInvalidFormat(evt3);
+                                    }
+                                    object = new ConfidenceImpl("unknown", "unknown");
+                                }
+                                else {
+                                    object = new ConfidenceImpl("unknown", result[0]);
+                                }
                             }
                         } else if (length == 2) {
                             String type = null;
@@ -1366,8 +1413,12 @@ public final class MitabParserUtils {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
                                         "The confidence type cannot be empty. If the confidence type is not known, use 'unknown'.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt4 = new InvalidFormatEvent(FileParsingErrorType.missing_confidence_type, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence type cannot be empty. If it is not known, it should be set to 'unknown'");
+                                evt4.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt4);
                                 }
                             }
                             else {
@@ -1378,8 +1429,12 @@ public final class MitabParserUtils {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
                                         "The confidence value cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt3 = new InvalidFormatEvent(FileParsingErrorType.missing_confidence_value, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence value cannot be empty.");
+                                evt3.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt3);
                                 }
                             }
                             else{
@@ -1405,8 +1460,12 @@ public final class MitabParserUtils {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
                                         "The confidence type cannot be empty. If the confidence type is not known, use 'unknown'.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt4 = new InvalidFormatEvent(FileParsingErrorType.missing_confidence_type, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence type cannot be empty. If it is not known, it should be set to 'unknown'");
+                                evt4.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt4);
                                 }
                             }
                             else {
@@ -1417,8 +1476,12 @@ public final class MitabParserUtils {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The confidence " + field + "is not a valid confidence. " +
                                         "The confidence value cannot be empty.");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt3 = new InvalidFormatEvent(FileParsingErrorType.missing_confidence_value, "The confidence " + field + "is not a valid confidence. " +
+                                        "The confidence value cannot be empty.");
+                                evt3.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt3);
                                 }
                             }
                             else{
@@ -1572,8 +1635,53 @@ public final class MitabParserUtils {
                                     l.fireOnInvalidFormat(evt);
                                 }                             }
                         } else if (length == 2) {
+                            String type = null;
+                            String value = null;
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter type cannot be empty. If the parameter type is not known, use 'unknown'.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.missing_parameter_type, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter type cannot be empty. If the parameter type is not known, use 'unknown'.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
+                                }
+                            }
+                            else {
+                                type = result[0];
+                            }
+
+                            if (result[1].length() == 0){
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter value cannot be empty.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.missing_parameter_factor, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter value cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
+                                }
+                            }
+                            else{
+                                value = result[1];
+                            }
+
                             try {
-                                object = new ParameterImpl(result[0], result[1]);
+                                if (type != null && value != null){
+                                    object = new ParameterImpl(type, value);
+                                }
+                                else if (type == null && value != null){
+                                    object = new ParameterImpl("unknown", value);
+                                }
+                                else if (type != null && value == null){
+                                    object = new ParameterImpl(type, "0");
+                                }
+                                else {
+                                    object = new ParameterImpl("unknown", "0");
+                                }
                             } catch (IllegalParameterException e) {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
                                         e.getMessage());
@@ -1583,15 +1691,61 @@ public final class MitabParserUtils {
                                 }
                             }
                         } else if (length == 3) {
+                            String type = null;
+                            String value = null;
+                            if (result[0].length() == 0) {
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter type cannot be empty. If the parameter type is not known, use 'unknown'.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.missing_parameter_type, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter type cannot be empty. If the parameter type is not known, use 'unknown'.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
+                                }
+                            }
+                            else {
+                                type = result[0];
+                            }
+
+                            if (result[1].length() == 0){
+                                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter value cannot be empty.");
+                                evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.missing_parameter_factor, "The parameter " + field + "is not a valid interaction parameter. " +
+                                        "The parameter value cannot be empty.");
+                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                                for (MitabParserListener l : listenerList){
+                                    l.fireOnInvalidFormat(evt);
+                                    l.fireOnInvalidFormat(evt2);
+                                }
+                            }
+                            else{
+                                value = result[1];
+                            }
+
                             try {
-                                object = new ParameterImpl(result[0], result[1], result[2]);
+                                if (type != null && value != null){
+                                    object = new ParameterImpl(type, value, result[2]);
+                                }
+                                else if (type == null && value != null){
+                                    object = new ParameterImpl("unknown", value, result[2]);
+                                }
+                                else if (type != null && value == null){
+                                    object = new ParameterImpl(type, "0", result[2]);
+                                }
+                                else {
+                                    object = new ParameterImpl("unknown", "0", result[2]);
+                                }
                             } catch (IllegalParameterException e) {
                                 InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The parameter " + field + "is not a valid interaction parameter. " +
                                         e.getMessage());
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
-                                }                             }
+                                }
+                            }
                         }
 
                         if (object != null) {
