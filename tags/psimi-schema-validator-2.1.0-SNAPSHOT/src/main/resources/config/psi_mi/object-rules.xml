@@ -27,5 +27,11 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantIdentificationMethodsRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionTypesRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ClusteredElementRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.PublicationAnnotationTopicRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentAnnotationTopicRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ControlledVocabularyAnnotationTopicRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ParticipantAnnotationTopicRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractionAnnotationTopicRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureAnnotationTopicRule"/>
     
 </objectRuleList>
