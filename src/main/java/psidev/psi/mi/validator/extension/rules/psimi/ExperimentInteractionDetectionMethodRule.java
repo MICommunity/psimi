@@ -56,7 +56,7 @@ public class ExperimentInteractionDetectionMethodRule extends ObjectRule<Molecul
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.ERROR,
+                    MessageLevel.WARN,
                     context,
                     this ) );
         }
