@@ -351,7 +351,7 @@ public final class MitabParserUtils {
 
             //MITAB 2.6
             interactorA.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_A.ordinal()], listenerList, lineIndex, charIndexBioRoleA, PsimiTabColumns.BIOROLE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
-            interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, charIndexExpRoleA, PsimiTabColumns.EXPROLE_A.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
+            interactorA.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_A.ordinal()], listenerList, lineIndex, charIndexExpRoleA, PsimiTabColumns.EXPROLE_A.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_experimental_role, "info"));
             List<CrossReference> interactorTypesA = splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_A.ordinal()], listenerList, lineIndex, charIndexTypeA, PsimiTabColumns.INTERACTOR_TYPE_A.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error");
             interactorA.setInteractorTypes(interactorTypesA);
             interactorA.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_A.ordinal()], listenerList, lineIndex, charIndexXrefA, PsimiTabColumns.XREFS_A.ordinal(), true));
@@ -360,7 +360,7 @@ public final class MitabParserUtils {
 
             //MITAB 2.6
             interactorB.setBiologicalRoles(splitControlledVocabulary(line[PsimiTabColumns.BIOROLE_B.ordinal()], listenerList, lineIndex, charIndexBioRoleB, PsimiTabColumns.BIOROLE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_biological_role, "info"));
-            interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, charIndexExpRoleB, PsimiTabColumns.EXPROLE_B.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_cv, "info"));
+            interactorB.setExperimentalRoles(splitControlledVocabulary(line[PsimiTabColumns.EXPROLE_B.ordinal()], listenerList, lineIndex, charIndexExpRoleB, PsimiTabColumns.EXPROLE_B.ordinal(), FileParsingErrorType.multiple_experimental_roles, FileParsingErrorType.missing_experimental_role, "info"));
             List<CrossReference> interactorTypesB = splitControlledVocabulary(line[PsimiTabColumns.INTERACTOR_TYPE_B.ordinal()], listenerList, lineIndex, charIndexTypeB, PsimiTabColumns.INTERACTOR_TYPE_B.ordinal(), FileParsingErrorType.clustered_content, FileParsingErrorType.missing_interactor_type, "error");
             interactorB.setInteractorTypes(interactorTypesB);
             interactorB.setXrefs(splitCrossReferences(line[PsimiTabColumns.XREFS_B.ordinal()], listenerList, lineIndex, charIndexXrefB, PsimiTabColumns.XREFS_B.ordinal(), true));
