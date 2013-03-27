@@ -57,7 +57,7 @@ public class ExperimentPublicationRule extends ObjectRule<MolecularInteractionFi
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.ERROR,
+                    MessageLevel.WARN,
                     context,
                     this ) );
         }
