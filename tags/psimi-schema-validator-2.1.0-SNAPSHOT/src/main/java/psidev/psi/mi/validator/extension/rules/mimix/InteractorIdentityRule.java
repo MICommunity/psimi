@@ -69,9 +69,10 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
             final Set<OntologyTermI> dbs = mi.getValidTerms( BIOACTIVE_ENTITY_DATABASE_MI_REF, true, false );
 
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
+            final Set<String> dbRefs = RuleUtils.collectNames( dbs );
 
             //final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
-            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), dbMiRefs);
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), dbMiRefs, dbRefs);
 
             if( identities.isEmpty() ) {
                 Mi25Context context = RuleUtils.buildContext(interactor, "bioactive entity");
@@ -88,9 +89,10 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
             final Set<OntologyTermI> dbs = mi.getValidTerms( SEQUENCE_DATABASE_MI_REF, true, false );
 
             final Set<String> dbMiRefs = RuleUtils.collectAccessions( dbs );
+            final Set<String> dbRefs = RuleUtils.collectNames( dbs );
 
             //final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabaseAndQualifier(interactor.getIdentifiers(), Arrays.asList(Xref.IDENTITY_MI), dbMiRefs);
-            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), dbMiRefs);
+            final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), dbMiRefs, dbRefs);
             if( identities.isEmpty() ) {
                 Mi25Context context = RuleUtils.buildContext(interactor, "biopolymer");
                     messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
@@ -124,6 +126,6 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
     }
 
     public String getId() {
-        return "R23";
+        return "R57";
     }
 }

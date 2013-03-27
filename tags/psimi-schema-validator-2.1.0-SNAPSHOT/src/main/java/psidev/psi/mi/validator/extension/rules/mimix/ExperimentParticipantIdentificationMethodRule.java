@@ -70,6 +70,6 @@ public class ExperimentParticipantIdentificationMethodRule extends ObjectRule<Pa
     }
 
     public String getId() {
-        return "R20";
+        return "R54";
     }
 }

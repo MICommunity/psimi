@@ -61,6 +61,6 @@ public class ProteinOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Int
     }
 
     public String getId() {
-        return "R24";
+        return "R58";
     }
 }

@@ -18,5 +18,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorIdentityRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ProteinOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.MissingParticipantBiologicalRoleRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.MissingParticipantExperimentalRoleRule"/>
 
 </objectRuleList>
