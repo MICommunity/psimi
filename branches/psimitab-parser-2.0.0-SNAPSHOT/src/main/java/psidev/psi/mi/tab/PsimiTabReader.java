@@ -1,7 +1,10 @@
 package psidev.psi.mi.tab;
 
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
+import psidev.psi.mi.tab.events.InvalidFormatEvent;
 import psidev.psi.mi.tab.listeners.MitabParserListener;
 import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.MitabSourceLocator;
 import psidev.psi.mi.tab.model.builder.MitabParserUtils;
 
 import javax.swing.event.EventListenerList;
@@ -28,22 +31,27 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
 
         int lineIndex = 0;
 
-
         while ((completeLine = reader.readLine()) != null) {
 
-            line = MitabParserUtils.quoteAwareSplit(completeLine, new char[]{'\t'}, false);
+            if (!completeLine.isEmpty()) {
 
-            if (line != null && line.length > 0 && line[0].startsWith("#")) {
-                //This line is a comment, we skip the line
-                lineIndex++;
-                continue;
+                line = MitabParserUtils.quoteAwareSplit(completeLine, new char[]{'\t'}, false);
+
+                if (line != null && line.length > 0 && line[0].startsWith("#")) {
+                    //This line is a comment, we skip the line
+                    lineIndex++;
+                    continue;
+                }
+                // line[] is an array of values from the line
+                // Avoid the problem of the size with the different formats
+                BinaryInteraction binary = MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class));
+                if (binary != null){
+                    interactions.add(binary);
+                }
             }
-            // line[] is an array of values from the line
-            // Avoid the problem of the size with the different formats
-
-            interactions.add(MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class)));
-
-            lineIndex++;
+            else {
+                lineIndex++;
+            }
         }
 
         return interactions;
@@ -210,35 +218,74 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
 
     public BinaryInteraction readLine(String str)  {
 
-        String[] line;
+        if (str == null) {
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid MITAB line. A MITAB line cannot be null");
+            evt.setSourceLocator(new MitabSourceLocator(-1, -1, -1));
 
-        line = MitabParserUtils.quoteAwareSplit(str, new char[]{'\t'}, false);
-
-        if (line.length > 0 && line[0].startsWith("#")) {
-            //This line is a comment, we skip the line
+            for (MitabParserListener l : getListeners(MitabParserListener.class)){
+                l.fireOnInvalidFormat(evt);
+            }
             return null;
         }
-        // line[] is an array of values from the line
-        // Avoid the problem of the size with the different formats
+        else if (str.isEmpty()) {
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid MITAB line. A MITAB line cannot be empty");
+            evt.setSourceLocator(new MitabSourceLocator(-1, -1, -1));
 
-        return MitabParserUtils.buildBinaryInteraction(line, 0, getListeners(MitabParserListener.class));
+            for (MitabParserListener l : getListeners(MitabParserListener.class)){
+                l.fireOnInvalidFormat(evt);
+            }
+            return null;
+        }
+        else {
+            String[] line;
+
+            line = MitabParserUtils.quoteAwareSplit(str, new char[]{'\t'}, false);
+
+            if (line.length > 0 && line[0].startsWith("#")) {
+                //This line is a comment, we skip the line
+                return null;
+            }
+            // line[] is an array of values from the line
+            // Avoid the problem of the size with the different formats
+
+            return MitabParserUtils.buildBinaryInteraction(line, 0, getListeners(MitabParserListener.class));
+        }
     }
 
     public BinaryInteraction readLine(String str, int lineIndex) {
 
-        BinaryInteraction interaction = null;
-        String[] line;
+        if (str == null) {
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid MITAB line. A MITAB line cannot be null");
+            evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
 
-        line = MitabParserUtils.quoteAwareSplit(str, new char[]{'\t'}, false);
-
-        if (line.length > 0 && line[0].startsWith("#")) {
-            //This line is a comment, we skip the line
+            for (MitabParserListener l : getListeners(MitabParserListener.class)){
+                l.fireOnInvalidFormat(evt);
+            }
             return null;
         }
-        // line[] is an array of values from the line
-        // Avoid the problem of the size with the different formats
+        else if (str.isEmpty()) {
+            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "It is not a valid MITAB line. A MITAB line cannot be empty");
+            evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
 
-        return MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class));
+            for (MitabParserListener l : getListeners(MitabParserListener.class)){
+                l.fireOnInvalidFormat(evt);
+            }
+            return null;
+        }
+        else {
+            String[] line;
+
+            line = MitabParserUtils.quoteAwareSplit(str, new char[]{'\t'}, false);
+
+            if (line.length > 0 && line[0].startsWith("#")) {
+                //This line is a comment, we skip the line
+                return null;
+            }
+            // line[] is an array of values from the line
+            // Avoid the problem of the size with the different formats
+
+            return MitabParserUtils.buildBinaryInteraction(line, lineIndex, getListeners(MitabParserListener.class));
+        }
     }
 
 
