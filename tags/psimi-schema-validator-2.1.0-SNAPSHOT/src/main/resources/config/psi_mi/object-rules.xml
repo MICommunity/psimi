@@ -26,5 +26,6 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExpressedInOrganismsRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantIdentificationMethodsRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionTypesRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ClusteredElementRule"/>
     
 </objectRuleList>
