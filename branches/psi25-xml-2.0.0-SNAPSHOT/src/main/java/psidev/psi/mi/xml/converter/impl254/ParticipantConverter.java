@@ -246,14 +246,29 @@ public class ParticipantConverter {
                     jParticipant.getExperimentalRoleList().getExperimentalRoles() ) {
 
                 mParticipant.getExperimentalRoles().add( experimentalRoleConverter.fromJaxb( jExperimentalRole ) );
-                // we have more than one experimental role
-                if (listeners != null && !listeners.isEmpty() && jParticipant.getExperimentalRoleList().getExperimentalRoles().size() > 1){
-                    MultipleExperimentalRolesEvent evt = new MultipleExperimentalRolesEvent(null, mParticipant, new HashSet<ExperimentalRole>(mParticipant.getExperimentalRoles()), "Participant "+mParticipant.getId()+" contains "+jParticipant.getExperimentalRoleList().getExperimentalRoles().size()+" experimental roles.");
-                    evt.setSourceLocator(mParticipant.getSourceLocator());
-                    for (PsiXml25ParserListener l : listeners){
-                        l.fireOnMultipleExperimentalRolesEvent(evt);
-                    }
+
+            }
+            // we have more than one experimental role
+            if (listeners != null && !listeners.isEmpty() && jParticipant.getExperimentalRoleList().getExperimentalRoles().size() > 1){
+                MultipleExperimentalRolesEvent evt = new MultipleExperimentalRolesEvent(null, mParticipant, new HashSet<ExperimentalRole>(mParticipant.getExperimentalRoles()), "Participant "+mParticipant.getId()+" contains "+jParticipant.getExperimentalRoleList().getExperimentalRoles().size()+" experimental roles.");
+                evt.setSourceLocator(mParticipant.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMultipleExperimentalRolesEvent(evt);
                 }
+            }
+            else if (listeners != null && !listeners.isEmpty() && jParticipant.getExperimentalRoleList().getExperimentalRoles().isEmpty()){
+                MissingElementEvent evt = new MissingElementEvent("Participant "+mParticipant.getId()+" does not have any experimental roles.", FileParsingErrorType.missing_experimental_role);
+                evt.setSourceLocator(mParticipant.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnMissingElementEvent(evt);
+                }
+            }
+        }
+        else if (listeners != null && !listeners.isEmpty()){
+            MissingElementEvent evt = new MissingElementEvent("Participant "+mParticipant.getId()+" does not have any experimental roles.", FileParsingErrorType.missing_experimental_role);
+            evt.setSourceLocator(mParticipant.getSourceLocator());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnMissingElementEvent(evt);
             }
         }
 
