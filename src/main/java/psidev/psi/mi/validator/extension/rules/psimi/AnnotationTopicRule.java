@@ -1,10 +1,11 @@
-package psidev.psi.mi.validator.extension.rules;
+package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceError;
 import psidev.psi.mi.jami.datasource.MolecularInteractionFileDataSource;
 import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -16,21 +17,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This rule is for checking the fileSyntax
+ * Check that an annotation topic is provided
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>26/03/13</pre>
+ * @since <pre>27/03/13</pre>
  */
 
-public class FileSyntaxRule extends ObjectRule<MolecularInteractionFileDataSource>{
+public class AnnotationTopicRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
-    public FileSyntaxRule(OntologyManager ontologyManager) {
+
+    public AnnotationTopicRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Molecular Interaction file syntax check" );
+        setName( "Annotation topic rule check" );
 
-        setDescription( "Check that the file syntax is correct." );
-        addTip( "If the error is too obscure, contact the intact team (intact-help@ebi.ac.uk) with your file attached to the e-mail." );
+        setDescription( "Check that each annotation has a non null topic." );
     }
 
     @Override
@@ -44,12 +45,8 @@ public class FileSyntaxRule extends ObjectRule<MolecularInteractionFileDataSourc
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // validate syntax, relies on data source to do the proper syntax validation
-        molecularInteractionFileDataSource.validateFileSyntax();
-
-        Collection<FileSourceError> basicSyntaxErrors = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.invalid_syntax.toString());
-
-        for (FileSourceError error : basicSyntaxErrors){
+        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_annotation_topic.toString());
+        for (FileSourceError error : wrongDatabaseXrefs){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -68,6 +65,6 @@ public class FileSyntaxRule extends ObjectRule<MolecularInteractionFileDataSourc
     }
 
     public String getId() {
-        return "1";
+        return "19";
     }
 }
