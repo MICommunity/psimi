@@ -26,11 +26,11 @@ import java.util.List;
 
 public class FeatureRangeRule extends ObjectRule<FeatureEvidence> {
 
-    public FeatureRangeRule( OntologyManager ontologyMaganer ) {
+    public FeatureRangeRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Feature range Check" );
+        setName( "Feature range consistency Check" );
         setDescription( "Checks that the each participant's feature range is valid : not out of bound (inferior to 1 or superior to the sequence length), not overlapping and compliant with the feature range status. " +
                 "WARNING : the status 'c-terminal' and 'n-terminal' cannot be used anymore for n-terminal/c-terminal features where the exact positions are not known. It is recommended to use " +
                 "the new terms 'c-terminal range' (MI:1039) and 'n-terminal range' (MI:1040) for such features" );
@@ -103,6 +103,6 @@ public class FeatureRangeRule extends ObjectRule<FeatureEvidence> {
     }
 
     public String getId() {
-        return "R14";
+        return "R13";
     }
 }

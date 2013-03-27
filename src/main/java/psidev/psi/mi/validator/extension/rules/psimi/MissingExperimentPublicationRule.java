@@ -17,26 +17,26 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Check that a database is well formatted
+ * This rule is for checking that all experiment have a publication
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>27/03/13</pre>
+ * @since <pre>26/03/13</pre>
  */
 
-public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class MissingExperimentPublicationRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public DatabaseCrossReferenceSyntaxRule(OntologyManager ontologyManager) {
+    public MissingExperimentPublicationRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Database cross reference check" );
+        setName( "Experiment's publication check" );
 
-        setDescription( "Check that each database cross reference has a non null database and a non null accession." );
+        setDescription( "Check that each experiment has a publication." );
     }
 
     @Override
     public boolean canCheck(Object t) {
-        return ontologyManager instanceof MolecularInteractionFileDataSource;
+        return t instanceof MolecularInteractionFileDataSource;
     }
 
     @Override
@@ -45,9 +45,9 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_database.toString());
-        wrongDatabaseXrefs.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_database_accession.toString()));
-        for (FileSourceError error : wrongDatabaseXrefs){
+        Collection<FileSourceError> missingPublications = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_publication.toString());
+
+        for (FileSourceError error : missingPublications){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -57,7 +57,7 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.ERROR,
+                    MessageLevel.WARN,
                     context,
                     this ) );
         }
@@ -66,6 +66,6 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
     }
 
     public String getId() {
-        return "R17";
+        return "R14";
     }
 }

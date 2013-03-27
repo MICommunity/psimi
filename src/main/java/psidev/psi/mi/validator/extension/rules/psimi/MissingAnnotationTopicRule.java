@@ -17,21 +17,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Rule to check that each alias has a name
+ * Check that an annotation topic is provided
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>26/03/13</pre>
+ * @since <pre>27/03/13</pre>
  */
 
-public class AliasNameRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class MissingAnnotationTopicRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public AliasNameRule(OntologyManager ontologyManager) {
+    public MissingAnnotationTopicRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Alias name check" );
+        setName( "Annotation topic rule check" );
 
-        setDescription( "Check that each alias has a name." );
+        setDescription( "Check that each annotation has a non null topic." );
     }
 
     @Override
@@ -45,9 +45,8 @@ public class AliasNameRule extends ObjectRule<MolecularInteractionFileDataSource
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> missingPublications = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_alias_name.toString());
-
-        for (FileSourceError error : missingPublications){
+        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_annotation_topic.toString());
+        for (FileSourceError error : wrongDatabaseXrefs){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -66,6 +65,6 @@ public class AliasNameRule extends ObjectRule<MolecularInteractionFileDataSource
     }
 
     public String getId() {
-        return "16";
+        return "R18";
     }
 }

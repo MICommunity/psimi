@@ -17,21 +17,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Check that a database is well formatted
+ * Rule to check that each experiment has an interaction detection method
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>27/03/13</pre>
  */
 
-public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class MissingExperimentInteractionDetectionMethodRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public DatabaseCrossReferenceSyntaxRule(OntologyManager ontologyManager) {
+    public MissingExperimentInteractionDetectionMethodRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Database cross reference check" );
+        setName( "Experiment interaction detection method check" );
 
-        setDescription( "Check that each database cross reference has a non null database and a non null accession." );
+        setDescription( "Check that each experiment has an interaction detection method." );
     }
 
     @Override
@@ -45,8 +45,7 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_database.toString());
-        wrongDatabaseXrefs.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_database_accession.toString()));
+        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_interaction_detection_method.toString());
         for (FileSourceError error : wrongDatabaseXrefs){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
@@ -57,7 +56,7 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.ERROR,
+                    MessageLevel.WARN,
                     context,
                     this ) );
         }
@@ -66,6 +65,6 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
     }
 
     public String getId() {
-        return "R17";
+        return "R19";
     }
 }

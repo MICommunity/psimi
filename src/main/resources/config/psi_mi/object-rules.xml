@@ -7,11 +7,18 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractorSequenceAlphabetRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentPublicationRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasNameRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingExperimentPublicationRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingAliasNameRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasTypeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.DatabaseCrossReferenceSyntaxRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AnnotationTopicRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentInteractionDetectionMethodRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingAnnotationTopicRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingExperimentInteractionDetectionMethodRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingParticipantInteractorRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ParameterSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractionExperimentRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ConfidenceSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractorTypeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractionParticipantsRule"/>
     
 </objectRuleList>
