@@ -13,7 +13,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentBibRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentHostOrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentInteractionDetectionMethodRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentParticipantIdentificationMethodRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ParticipantIdentificationMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentalRoleRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorIdentityRule"/>
