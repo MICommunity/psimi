@@ -10,5 +10,8 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentPublicationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasNameRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasTypeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.DatabaseCrossReferenceSyntaxRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AnnotationTopicRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.ExperimentInteractionDetectionMethodRule"/>
     
 </objectRuleList>
