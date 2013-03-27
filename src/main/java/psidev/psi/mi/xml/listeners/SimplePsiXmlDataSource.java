@@ -257,10 +257,8 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else {
-            FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
-            errors.add(error);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
     }
 
     public void error(SAXParseException e) throws SAXException {
@@ -283,10 +281,8 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else {
-            FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
-            errors.add(error);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
     }
 
     public void fatalError(SAXParseException e) throws SAXException {
@@ -309,9 +305,7 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
-        else {
-            FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
-            errors.add(error);
-        }
+        FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+        errors.add(error);
     }
 }
