@@ -12,10 +12,7 @@ import psidev.psi.mi.xml.converter.ConverterContext;
 import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
-import psidev.psi.mi.xml.events.MissingElementEvent;
-import psidev.psi.mi.xml.events.MultipleExperimentalRolesEvent;
-import psidev.psi.mi.xml.events.MultipleExpressedInOrganisms;
-import psidev.psi.mi.xml.events.MultipleParticipantIdentificationMethodsPerParticipant;
+import psidev.psi.mi.xml.events.*;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.mi.xml253.jaxb.AttributeListType;
@@ -189,7 +186,11 @@ public class ParticipantConverter {
         }
 
         if ( !foundInteractor ) {
-            throw new ConverterException( "Could not find either an interactor or an interaction for participant (id=" + jParticipant.getId() + ").", mParticipant );
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.participant_without_interactor, "Could not find either an interactor or an interaction for participant (id=" + jParticipant.getId() + ").");
+            evt.setSourceLocator(mParticipant.getSourceLocator());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
         }
 
         // BiologigicalRoles

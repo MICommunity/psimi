@@ -15,7 +15,6 @@ import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml.dao.PsiDAO;
 import psidev.psi.mi.xml.events.InvalidXmlEvent;
-import psidev.psi.mi.xml.events.MissingElementEvent;
 import psidev.psi.mi.xml.events.MultipleExperimentsPerInteractionEvent;
 import psidev.psi.mi.xml.events.MultipleInteractionTypesEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
@@ -222,6 +221,20 @@ public class InteractionConverter {
                     l.fireOnMultipleExperimentsPerInteractionEvent(evt);
                 }
             }
+            else if (listeners != null && !listeners.isEmpty() && jInteraction.getExperimentList().getExperimentRevesAndExperimentDescriptions().isEmpty()){
+                InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.interaction_evidence_without_experiment, "Interaction " + mInteraction.getId() + " does not have any experiments.");
+                evt.setSourceLocator(mInteraction.getSourceLocator());
+                for (PsiXml25ParserListener l : listeners){
+                    l.fireOnInvalidXmlSyntax(evt);
+                }
+            }
+        }
+        else if (listeners != null && !listeners.isEmpty()){
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.interaction_evidence_without_experiment, "Interaction " + mInteraction.getId() + " does not have any experiments.");
+            evt.setSourceLocator(mInteraction.getSourceLocator());
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
         }
 
         // participants
@@ -320,13 +333,6 @@ public class InteractionConverter {
             evt.setSourceLocator(mInteraction.getSourceLocator());
             for (PsiXml25ParserListener l : listeners){
                 l.fireOnMultipleInteractionTypesEvent(evt);
-            }
-        }
-        else if (listeners != null && !listeners.isEmpty() && jInteraction.getInteractionTypes().isEmpty()){
-            MissingElementEvent evt = new MissingElementEvent("Interaction " + mInteraction.getId() + " does not have any interaction types.", FileParsingErrorType.missing_interaction_type);
-            evt.setSourceLocator(mInteraction.getSourceLocator());
-            for (PsiXml25ParserListener l : listeners){
-                l.fireOnMissingElementEvent(evt);
             }
         }
 
