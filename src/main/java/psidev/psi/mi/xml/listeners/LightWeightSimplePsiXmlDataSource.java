@@ -296,6 +296,11 @@ public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, Molecula
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
+        else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'name' must appear")
+                || e.getMessage().contains("The value '' of attribute 'name'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_annotation_topic.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
 
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
         errors.add(error);
@@ -321,6 +326,11 @@ public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, Molecula
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
+        else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'name' must appear")
+                || e.getMessage().contains("The value '' of attribute 'name'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_annotation_topic.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
 
         FileSourceError error = new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
         errors.add(error);
@@ -344,6 +354,11 @@ public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, Molecula
         }
         else if (e.getMessage() != null && e.getMessage().contains("One of '{\"http://psi.hupo.org/mi/mif\":bibref}' is expected")){
             FileSourceError error = new FileSourceError(FileParsingErrorType.missing_publication.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
+            errors.add(error);
+        }
+        else if (e.getMessage() != null && (e.getMessage().contains("Attribute 'name' must appear")
+                || e.getMessage().contains("The value '' of attribute 'name'"))){
+            FileSourceError error = new FileSourceError(FileParsingErrorType.missing_annotation_topic.toString(), e.getMessage(), new DefaultFileSourceContext(e.getLineNumber(), e.getColumnNumber()));
             errors.add(error);
         }
 
