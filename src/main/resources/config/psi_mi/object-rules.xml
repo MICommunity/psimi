@@ -9,7 +9,7 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.FeatureRangeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingExperimentPublicationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingAliasNameRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasTypeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.psimi.AliasTypeAcRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.DatabaseCrossReferenceSyntaxRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingAnnotationTopicRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingExperimentInteractionDetectionMethodRule"/>

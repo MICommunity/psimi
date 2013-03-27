@@ -45,9 +45,9 @@ public class MissingAliasNameRule extends ObjectRule<MolecularInteractionFileDat
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> missingPublications = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_alias_name.toString());
+        Collection<FileSourceError> missingAliasNames = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_alias_name.toString());
 
-        for (FileSourceError error : missingPublications){
+        for (FileSourceError error : missingAliasNames){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());

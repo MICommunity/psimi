@@ -29,7 +29,7 @@ public class FeatureRangeSyntaxRule extends ObjectRule<MolecularInteractionFileD
 
     public FeatureRangeSyntaxRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Feature range syntax rule check" );
+        setName( "Feature range syntax check" );
 
         setDescription( "Check that each feature has at least one range and each range has a start/end position and status." );
     }

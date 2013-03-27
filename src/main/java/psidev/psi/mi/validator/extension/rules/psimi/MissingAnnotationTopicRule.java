@@ -29,7 +29,7 @@ public class MissingAnnotationTopicRule extends ObjectRule<MolecularInteractionF
 
     public MissingAnnotationTopicRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Annotation topic rule check" );
+        setName( "Missing annotation topic check" );
 
         setDescription( "Check that each annotation has a non null topic." );
     }
@@ -45,8 +45,8 @@ public class MissingAnnotationTopicRule extends ObjectRule<MolecularInteractionF
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_annotation_topic.toString());
-        for (FileSourceError error : wrongDatabaseXrefs){
+        Collection<FileSourceError> missingTopics = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_annotation_topic.toString());
+        for (FileSourceError error : missingTopics){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());

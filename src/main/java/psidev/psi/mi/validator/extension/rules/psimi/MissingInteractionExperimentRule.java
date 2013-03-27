@@ -45,8 +45,8 @@ public class MissingInteractionExperimentRule extends ObjectRule<MolecularIntera
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> param = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.interaction_evidence_without_experiment.toString());
-        for (FileSourceError error : param){
+        Collection<FileSourceError> missingExperiments = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.interaction_evidence_without_experiment.toString());
+        for (FileSourceError error : missingExperiments){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());

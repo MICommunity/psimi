@@ -45,8 +45,8 @@ public class MissingInteractorTypeRule extends ObjectRule<MolecularInteractionFi
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> param = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_interactor_type.toString());
-        for (FileSourceError error : param){
+        Collection<FileSourceError> missingType = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_interactor_type.toString());
+        for (FileSourceError error : missingType){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());

@@ -23,10 +23,10 @@ import java.util.Set;
  * @since <pre>26/03/13</pre>
  */
 
-public class AliasTypeRule extends ObjectRule<Alias>{
-    public AliasTypeRule(OntologyManager ontologyManager) {
+public class AliasTypeAcRule extends ObjectRule<Alias>{
+    public AliasTypeAcRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Alias type check" );
+        setName( "Alias type AC check" );
 
         setDescription( "Check that the MI identifier for each alias is a valid MI identifier when it exists." );
         addTip( "You can find all existing alias types at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0300&termName=alias%20type" );
