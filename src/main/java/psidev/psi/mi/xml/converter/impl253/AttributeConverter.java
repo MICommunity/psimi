@@ -6,7 +6,9 @@
 package psidev.psi.mi.xml.converter.impl253;
 
 import org.xml.sax.Locator;
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.xml.events.InvalidXmlEvent;
 import psidev.psi.mi.xml.listeners.PsiXml25ParserListener;
 
 import java.util.List;
@@ -50,6 +52,14 @@ public class AttributeConverter {
         // 1. set attributes
 
         mAttribute.setName( jAttribute.getName() );
+        if (jAttribute.getName()== null || jAttribute.getName().length() == 0) {
+            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.missing_annotation_topic, "It is not a valid attribute because the attribute name is empty or null");
+            evt.setSourceLocator(new FileSourceLocator(jAttribute.sourceLocation() != null ? jAttribute.sourceLocation().getLineNumber() : 0, jAttribute.sourceLocation() != null ? jAttribute.sourceLocation().getColumnNumber() : 0));
+
+            for (PsiXml25ParserListener l : listeners){
+                l.fireOnInvalidXmlSyntax(evt);
+            }
+        }
         mAttribute.setNameAc( jAttribute.getNameAc() );
         mAttribute.setValue( jAttribute.getValue() );
 
