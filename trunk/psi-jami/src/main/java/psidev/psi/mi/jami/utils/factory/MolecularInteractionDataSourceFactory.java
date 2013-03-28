@@ -30,7 +30,7 @@ public class MolecularInteractionDataSourceFactory {
         return null;
     }
 
-    public MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(InputStream stream, Map<String,Object> requiredOptions){
+    public static MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(InputStream stream, Map<String,Object> requiredOptions){
 
         for (RegisteredDataSource dataSource : registeredDataSources){
             if (dataSource.areSupportedOptions(requiredOptions)){
