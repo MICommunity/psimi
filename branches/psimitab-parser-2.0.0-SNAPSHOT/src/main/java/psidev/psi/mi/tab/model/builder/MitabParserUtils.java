@@ -1866,14 +1866,16 @@ public final class MitabParserUtils {
                 object = null;
                 if (field != null) {
 
-                    try{
-                        object = Integer.parseInt(field);
-                    } catch (NumberFormatException e) {
-                        InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The stoichiometry " + field + "is not a valid stoichiometry. " +
-                                "The expected syntax is number.");
-                        evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
-                        for (MitabParserListener l : listenerList){
-                            l.fireOnInvalidFormat(evt);
+                    if (!field.equals("-")){
+                        try{
+                            object = Integer.parseInt(field);
+                        } catch (NumberFormatException e) {
+                            InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The stoichiometry " + field + "is not a valid stoichiometry. " +
+                                    "The expected syntax is number.");
+                            evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
+                            for (MitabParserListener l : listenerList){
+                                l.fireOnInvalidFormat(evt);
+                            }
                         }
                     }
 
