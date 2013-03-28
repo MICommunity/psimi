@@ -59,7 +59,7 @@ public class FileSyntaxRule extends ObjectRule<MolecularInteractionFileDataSourc
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.ERROR,
+                    MessageLevel.FATAL,
                     context,
                     this ) );
         }

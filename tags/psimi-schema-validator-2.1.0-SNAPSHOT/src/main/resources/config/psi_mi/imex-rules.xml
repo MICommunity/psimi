@@ -24,7 +24,7 @@
 
     <rule class="psidev.psi.mi.validator.extension.rules.imex.BindingDomainSizeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.CellLineXrefRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentPublicationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.FullCoverageRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ImexCurationRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.PublicationImexPrimaryRule"/>

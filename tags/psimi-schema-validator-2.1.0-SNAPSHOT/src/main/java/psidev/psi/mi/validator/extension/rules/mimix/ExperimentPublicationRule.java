@@ -1,18 +1,17 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
+import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,11 +26,11 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 1.0
  */
-public class ExperimentBibRefRule extends Mi25ExperimentRule {
+public class ExperimentPublicationRule extends ObjectRule<Publication> {
 
     Pattern EMAIL_VALIDATOR = Pattern.compile( "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}" );
 
-    public ExperimentBibRefRule( OntologyManager ontologyMaganer ) {
+    public ExperimentPublicationRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
 
         // describe the rule.
@@ -50,79 +49,78 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
         addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
     }
 
+    @Override
+    public boolean canCheck(Object t) {
+        return t instanceof Publication;
+    }
+
     /**
      * Make sure that an experiment either has a pubmed id in its bibRef or that is has a publication title,
      * author name and contact email. Check also that at least one pubMed Id or DOI has a reference type set to 'primary-reference'.
      * Check if the id of references with a 'imex-primary' cross reference type is a valid IMEx ID (IM-xxx).
      *
-     * @param experiment an experiment to check on.
+     * @param pub a publication to check on.
      * @return a collection of validator messages.
      */
-    public Collection<ValidatorMessage> check( Experiment experiment ) throws ValidatorException {
+    public Collection<ValidatorMessage> check( Publication pub ) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
+        Mi25Context context = RuleUtils.buildContext(pub, "publication");
 
         boolean hasPublicationIdentifier = false;
-        final Publication bibref = experiment.getPublication();
 
-        if ( bibref != null ) {
+        final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = pub.getIdentifiers();
 
-            context.addAssociatedContext(RuleUtils.buildContext(bibref, "publication"));
+        // check if we have a pubmed or doi identifier available
 
-            final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = bibref.getIdentifiers();
+        final Collection<Xref> pubmeds = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, Xref.PUBMED_MI, Xref.PUBMED);
+        final Collection<Xref> dois = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, Xref.DOI_MI, Xref.DOI);
 
-            // check if we have a pubmed or doi identifier available
+        // the following line is commented because a new Rule has been implemented and is doing the same stuff
+        //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
 
-            final Collection<Xref> pubmeds = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, Xref.PUBMED_MI, Xref.PUBMED);
-            final Collection<Xref> dois = XrefUtils.collectAllXrefsHavingDatabase(dbReferences, Xref.DOI_MI, Xref.DOI);
+        if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
+            hasPublicationIdentifier = true;
 
-            // the following line is commented because a new Rule has been implemented and is doing the same stuff
-            //PublicationRuleUtils.checkPubmedId(pubmeds,messages,context,this);
+            // Only one pubmed Id with a reference type set to 'primary-reference' or 'identity' is allowed
+            if (pubmeds.size() > 1){
 
-            if ( !pubmeds.isEmpty() || !dois.isEmpty() ) {
-                hasPublicationIdentifier = true;
+                // search for reference type: primary-reference/identity
+                Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(pubmeds, Xref.PRIMARY_MI, Xref.PRIMARY);
+                primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(pubmeds, Xref.IDENTITY_MI, Xref.IDENTITY));
 
-                // Only one pubmed Id with a reference type set to 'primary-reference' or 'identity' is allowed
-                if (pubmeds.size() > 1){
-
-                    // search for reference type: primary-reference/identity
-                    Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(pubmeds, Xref.PRIMARY_MI, Xref.PRIMARY);
-                    primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(pubmeds, Xref.IDENTITY_MI, Xref.IDENTITY));
-
-                    if ( primaryReferences.isEmpty() ) {
-                        messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" pubmed identifiers. Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
-                    else if (primaryReferences.size() > 1){
-                        messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" pubmed identifiers.",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
+                if ( primaryReferences.isEmpty() ) {
+                    messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" pubmed identifiers. Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
                 }
-                if (dois.size() > 1){
+                else if (primaryReferences.size() > 1){
+                    messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" pubmed identifiers.",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+            }
+            if (dois.size() > 1){
 
-                    // search for reference type: primary-reference/identity
-                    Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(dois, Xref.PRIMARY_MI, Xref.PRIMARY);
-                    primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dois, Xref.IDENTITY_MI, Xref.IDENTITY));
+                // search for reference type: primary-reference/identity
+                Collection<Xref> primaryReferences = XrefUtils.collectAllXrefsHavingQualifier(dois, Xref.PRIMARY_MI, Xref.PRIMARY);
+                primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dois, Xref.IDENTITY_MI, Xref.IDENTITY));
 
-                    if ( primaryReferences.isEmpty() ) {
-                        messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" DOI identifiers. Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
-                    else if (primaryReferences.size() > 1){
-                        messages.add( new ValidatorMessage( "Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" DOI identifiers.",
-                                MessageLevel.WARN,
-                                context,
-                                this ) );
-                    }
+                if ( primaryReferences.isEmpty() ) {
+                    messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" DOI identifiers. Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
+                }
+                else if (primaryReferences.size() > 1){
+                    messages.add( new ValidatorMessage( "Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" DOI identifiers.",
+                            MessageLevel.WARN,
+                            context,
+                            this ) );
                 }
             }
         }
@@ -130,11 +128,8 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
 
         if ( !hasPublicationIdentifier ) {
             // check that we have author email, publication title and author list : look first into bibRef and then into the experiment
-            Collection<Annotation> emails = AnnotationUtils.collectAllAnnotationsHavingTopic(bibref.getAnnotations(), "MI:0634", "contact-email");
+            Collection<Annotation> emails = AnnotationUtils.collectAllAnnotationsHavingTopic(pub.getAnnotations(), "MI:0634", "contact-email");
             int countValidEmail = 0;
-            if ( emails.isEmpty() ) {
-                emails = AnnotationUtils.collectAllAnnotationsHavingTopic( experiment.getAnnotations(), "MI:0634", "contact-email" );
-            }
 
             if ( emails.isEmpty() ) {
 
@@ -179,7 +174,7 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 }
             }
 
-            Collection<String> authorList = bibref.getAuthors();
+            Collection<String> authorList = pub.getAuthors();
 
             if ( authorList.isEmpty() ) {
                 // in the absence of a publication identifier, a author list is required.
@@ -206,12 +201,10 @@ public class ExperimentBibRefRule extends Mi25ExperimentRule {
                 }
             }
 
-            String publicationTitle = bibref.getTitle();
+            String publicationTitle = pub.getTitle();
 
-            Collection<Annotation> titles = AnnotationUtils.collectAllAnnotationsHavingTopic(bibref.getAnnotations(), Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
-            if (titles.size() == 0){
-                titles = AnnotationUtils.collectAllAnnotationsHavingTopic(experiment.getAnnotations(), Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
-            }
+            Collection<Annotation> titles = AnnotationUtils.collectAllAnnotationsHavingTopic(pub.getAnnotations(), Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
+
             if (titles.size() > 1){
                  messages.add( new ValidatorMessage( titles.size() + " publications titles have been found and only one is expected.",
                             MessageLevel.ERROR,

@@ -1,7 +1,5 @@
 package psidev.psi.mi.validator.extension;
 
-import psidev.psi.tools.validator.ValidatorContext;
-
 /**
  * Mi25Validator context.
  *
@@ -28,6 +26,10 @@ public class Mi25ValidatorContext {
 
     public static Mi25ValidatorContext getCurrentInstance() {
         return instance.get();
+    }
+
+    public static void removeInstance() {
+        instance.remove();
     }
 
     public Mi25ValidatorConfig getValidatorConfig() {

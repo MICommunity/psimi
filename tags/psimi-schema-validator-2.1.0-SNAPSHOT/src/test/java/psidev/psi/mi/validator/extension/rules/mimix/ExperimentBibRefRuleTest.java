@@ -3,7 +3,6 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
-import psidev.psi.mi.validator.extension.rules.mimix.ExperimentBibRefRule;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.validator.ValidatorMessage;
 
@@ -32,7 +31,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -48,7 +47,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -69,7 +68,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -90,7 +89,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -112,7 +111,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -126,7 +125,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         final Bibref bibref = new Bibref();
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -144,7 +143,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         exp.getAttributes().add( new Attribute( null, "contact-email", "author@institute.co.uk" ) );
         exp.getAttributes().add( new Attribute( null, "author-list", "author1, author2, author3..." ) );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -162,7 +161,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         exp.getAttributes().add( new Attribute( "MI:0634", "", "author@institute.co.uk" ) );
         exp.getAttributes().add( new Attribute( "MI:0636", "", "author1, author2, author3..." ) );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
