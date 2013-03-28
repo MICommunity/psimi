@@ -1933,17 +1933,10 @@ public final class MitabParserUtils {
                                         "At least one range should be specified. If undetermined, use '?-?'");
                                 evt.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
 
-                                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.feature_without_ranges, "The feature " + field + "is not a valid feature. " +
-                                        "The expected syntax is feature_type:range1,range2(free text). " +
-                                        "At least one range should be specified. If undetermined, use '?-?'");
-                                evt2.setSourceLocator(new MitabSourceLocator(lineNumber, newIndex, columnNumber));
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
-                                    l.fireOnInvalidFormat(evt2);
                                 }
 
-                                //We have a feature without ranges {?-?}
-                                String[] undeterminedRange = {"?-?"};
                                 if (result[0].length() == 0) {
                                     InvalidFormatEvent evt3 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "The feature " + field + "is not a valid feature. " +
                                             "The feature type cannot be empty. If the type is not known, use 'unknown'.");
@@ -1951,10 +1944,10 @@ public final class MitabParserUtils {
                                     for (MitabParserListener l : listenerList){
                                         l.fireOnInvalidFormat(evt3);
                                     }
-                                    object = new FeatureImpl("unknown", Arrays.asList(undeterminedRange));
+                                    object = new FeatureImpl();
                                 }
                                 else {
-                                    object = new FeatureImpl(result[0], Arrays.asList(undeterminedRange));
+                                    object = new FeatureImpl(result[0]);
                                 }
                             }
                         } else if (length == 2) {
@@ -1965,7 +1958,7 @@ public final class MitabParserUtils {
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
                                 }
-                                object = new FeatureImpl("unknown");
+                                object = new FeatureImpl();
                             }
                             else {
                                 object = new FeatureImpl(result[0]);
@@ -1997,7 +1990,7 @@ public final class MitabParserUtils {
                                 for (MitabParserListener l : listenerList){
                                     l.fireOnInvalidFormat(evt);
                                 }
-                                object = new FeatureImpl("unknown");
+                                object = new FeatureImpl();
                             }
                             else {
                                 object = new FeatureImpl(result[0]);
