@@ -275,7 +275,7 @@ public class ParticipantConverter {
         // Features
         if ( jParticipant.getFeatureList() != null ) {
             for ( FeatureElementType jFeature : jParticipant.getFeatureList().getFeatures() ) {
-                mParticipant.getFeatures().add( featureConverter.fromJaxb( jFeature ) );
+                mParticipant.addFeatureEvidence( featureConverter.fromJaxb( jFeature ) );
             }
         }
 

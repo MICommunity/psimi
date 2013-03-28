@@ -241,7 +241,7 @@ public class InteractionConverter {
         if ( jInteraction.getParticipantList() != null ) {
             for ( psidev.psi.mi.xml254.jaxb.Participant jParticipant : jInteraction.getParticipantList().getParticipants() ) {
                 Participant participant = participantConverter.fromJaxb( jParticipant );
-                mInteraction.getParticipants().add( participant );
+                mInteraction.addParticipantEvidence( participant );
 
                 if (participant.getParticipantIdentificationMethods().isEmpty()){
                     if (!mInteraction.getExperiments().isEmpty()){
