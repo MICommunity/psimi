@@ -42,9 +42,12 @@ public class LightWeightXmlInteractionIterator implements Iterator<Interaction> 
 
     private void processNextInteraction(){
         Interaction desc = null;
-        while (this.interactionIterator.hasNext() && desc == null){
-            desc = this.interactionIterator.next();
+        if (this.interactionIterator != null){
+            while (this.interactionIterator.hasNext() && desc == null){
+                desc = this.interactionIterator.next();
+            }
         }
+
         while (this.indexedEntriesIterator.hasNext() && desc == null){
             entry = indexedEntriesIterator.next();
             try {
