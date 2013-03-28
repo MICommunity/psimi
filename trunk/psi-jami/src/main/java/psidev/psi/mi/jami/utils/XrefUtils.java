@@ -51,7 +51,7 @@ public class XrefUtils {
         if (refs == null || refs.isEmpty()){
             return Collections.EMPTY_LIST;
         }
-        Collection<Xref> identifiers = new ArrayList<Xref>(refs);
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs.size());
 
         for (Xref ref : refs){
             if (isXrefAnIdentifier(ref)){
@@ -76,7 +76,7 @@ public class XrefUtils {
         if (refs == null || refs.isEmpty()){
             return Collections.EMPTY_LIST;
         }
-        Collection<Xref> identifiers = new ArrayList<Xref>(refs);
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs.size());
 
         for (Xref ref : refs){
             if (isXrefFromDatabase(ref, dbId, dbName) && doesXrefHaveQualifier(ref, qualifierId, qulifierName)){
@@ -159,7 +159,7 @@ public class XrefUtils {
         if (refs == null || refs.isEmpty()){
             return Collections.EMPTY_LIST;
         }
-        Collection<Xref> identifiers = new ArrayList<Xref>(refs);
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs.size());
 
         for (Xref ref : refs){
             if (doesXrefHaveQualifier(ref, qualifierId, qulifierName)){
@@ -182,7 +182,7 @@ public class XrefUtils {
         if (refs == null || refs.isEmpty()){
             return Collections.EMPTY_LIST;
         }
-        Collection<Xref> identifiers = new ArrayList<Xref>(refs);
+        Collection<Xref> identifiers = new ArrayList<Xref>(refs.size());
 
         for (Xref ref : refs){
             if (isXrefFromDatabase(ref, dbId, dbName)){

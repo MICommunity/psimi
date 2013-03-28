@@ -51,12 +51,12 @@ public class ConfidenceUtils {
      * @param typeName
      * @return
      */
-    public static Collection<Confidence> collectAllAnnotationsHavingTopic(Collection<? extends Confidence> confs, String typeId, String typeName){
+    public static Collection<Confidence> collectAllConfidencesHavingType(Collection<? extends Confidence> confs, String typeId, String typeName){
 
         if (confs == null || confs.isEmpty()){
             return Collections.EMPTY_LIST;
         }
-        Collection<Confidence> confidences = new ArrayList<Confidence>(confs);
+        Collection<Confidence> confidences = new ArrayList<Confidence>(confs.size());
 
         for (Confidence conf : confidences){
             if (doesConfidenceHaveType(conf, typeId, typeName)){

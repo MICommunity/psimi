@@ -104,7 +104,7 @@ public class AnnotationUtils {
         if (annots == null || annots.isEmpty()){
             return Collections.EMPTY_LIST;
         }
-        Collection<Annotation> annotations = new ArrayList<Annotation>(annots);
+        Collection<Annotation> annotations = new ArrayList<Annotation>(annots.size());
 
         for (Annotation annot : annotations){
             if (doesAnnotationHaveTopic(annot, topicId, topicName)){
