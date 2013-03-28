@@ -1,4 +1,7 @@
-package psidev.psi.mi.jami.datasource;
+package psidev.psi.mi.jami.utils.factory;
+
+import psidev.psi.mi.jami.datasource.MolecularInteractionDataSource;
+import psidev.psi.mi.jami.datasource.RegisteredDataSource;
 
 import java.io.File;
 import java.io.InputStream;
@@ -47,5 +50,9 @@ public class DataSourceFactory {
     public static boolean registerDataSource(Class<? extends MolecularInteractionDataSource> dataSourceClass, Map<String,Object> supportedOptions){
         RegisteredDataSource registeredDataSource = new RegisteredDataSource(dataSourceClass, supportedOptions);
         return registeredDataSources.add(registeredDataSource);
+    }
+
+    public static void clearRegisteredDataSources(){
+        registeredDataSources.clear();
     }
 }
