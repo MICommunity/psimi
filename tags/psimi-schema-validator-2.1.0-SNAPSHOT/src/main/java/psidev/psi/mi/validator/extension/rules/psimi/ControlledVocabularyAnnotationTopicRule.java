@@ -26,7 +26,7 @@ public class ControlledVocabularyAnnotationTopicRule extends ObjectRule<CvTerm> 
 
         // describe the rule.
         setName("Controlled vocabulary annotation topics Check");
-        setDescription("Checks that the controlled vocabulary annotations having a MI term are valid controlled vocabulary annotation topics.");
+        setDescription("Checks that the controlled vocabulary annotations having a MI term are annotation topics for controlled vocabulary terms.");
         addTip( "Check http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0667&termName=controlled%20vocabulary%20attribute%20name for controlled vocabulary attribute names" );
     }
 
@@ -50,7 +50,7 @@ public class ControlledVocabularyAnnotationTopicRule extends ObjectRule<CvTerm> 
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
-                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid controlled vocabulary annotation topic",
+                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a topic for controlled vocabulary terms",
                                 MessageLevel.WARN,
                                 context,
                                 this ) );

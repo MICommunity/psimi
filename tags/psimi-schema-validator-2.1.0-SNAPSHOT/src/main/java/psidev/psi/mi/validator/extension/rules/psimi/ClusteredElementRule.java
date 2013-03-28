@@ -31,7 +31,7 @@ public class ClusteredElementRule extends ObjectRule<MolecularInteractionFileDat
         super(ontologyManager);
         setName( "Clustered element check" );
 
-        setDescription( "Check if an object is considered as a clustered object (example: a clustered column in MITAB)." );
+        setDescription( "Check if an object is considered as a clustered object (example: a clustered column in MITAB or a participant with several expressed in organisms)." );
     }
 
     @Override

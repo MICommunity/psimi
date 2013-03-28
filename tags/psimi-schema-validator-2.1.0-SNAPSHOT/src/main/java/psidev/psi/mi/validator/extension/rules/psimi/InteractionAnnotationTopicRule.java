@@ -55,7 +55,7 @@ public class InteractionAnnotationTopicRule extends ObjectRule<InteractionEviden
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
-                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid interaction annotation topic",
+                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid annotation topic for interactions",
                                 MessageLevel.WARN,
                                 context,
                                 this ) );
