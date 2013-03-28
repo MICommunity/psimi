@@ -154,7 +154,15 @@ public class Mi25ValidatorTest {
     }
 
     @Test
-    public void validate_Experiment() throws Exception {
+    public void validate_mitab() throws Exception {
+        // Test a valid file
+        Collection<ValidatorMessage> messages = getValidationMessage("10075675.txt" );
+        printMessages( messages );
+        Assert.assertEquals( 0, messages.size() );
+    }
+
+    @Test
+    public void validate_Experiment_mitab() throws Exception {
         // Test a valid file
         Collection<ValidatorMessage> messages = getValidationMessage("Alzheimer.xml" );
         printMessages( messages );
