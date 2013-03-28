@@ -42,8 +42,10 @@ public class LightWeightXmlExperimentIterator implements Iterator<ExperimentDesc
 
     private void processNextExperiment(){
         ExperimentDescription desc = null;
-        while (this.experimentIterator.hasNext() && desc == null){
-            desc = this.experimentIterator.next();
+        if (this.experimentIterator != null){
+            while (this.experimentIterator.hasNext() && desc == null){
+                desc = this.experimentIterator.next();
+            }
         }
         while (this.indexedEntriesIterator.hasNext() && desc == null){
             entry = indexedEntriesIterator.next();
