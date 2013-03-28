@@ -39,7 +39,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( p1 );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -57,7 +57,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( p1 );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 2, messages.size() );
@@ -76,7 +76,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( p1 );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 1, messages.size() );
@@ -95,7 +95,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( p1 );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 1, messages.size() );
@@ -114,7 +114,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( p1 );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -136,7 +136,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( p1 );
+        final Collection<ValidatorMessage> messages = rule.check( feature );
         Assert.assertNotNull( messages );
         System.out.println( messages );
         Assert.assertEquals( 1, messages.size() );

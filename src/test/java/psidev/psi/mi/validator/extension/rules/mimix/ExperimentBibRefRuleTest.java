@@ -33,7 +33,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -49,7 +49,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -70,7 +70,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -91,7 +91,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 3, messages.size() );
@@ -113,7 +113,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -127,7 +127,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         // should conplain about author-list, contact-email and publication title missing
         Assert.assertEquals( 3, messages.size() );
@@ -145,7 +145,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -163,7 +163,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }

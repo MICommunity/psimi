@@ -2,11 +2,14 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
@@ -55,7 +58,13 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
 
         FeatureType2FeatureDetectionMethodDependencyRule rule =
                 new FeatureType2FeatureDetectionMethodDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            for (FeatureEvidence f : p.getFeatureEvidences()){
+                messages.addAll(rule.check( f ));
+            }
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -89,7 +98,12 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
 
         FeatureType2FeatureDetectionMethodDependencyRule rule =
                 new FeatureType2FeatureDetectionMethodDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            for (FeatureEvidence f : p.getFeatureEvidences()){
+                messages.addAll(rule.check( f ));
+            }
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -113,7 +127,12 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
 
         FeatureType2FeatureDetectionMethodDependencyRule rule =
                 new FeatureType2FeatureDetectionMethodDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            for (FeatureEvidence f : p.getFeatureEvidences()){
+                messages.addAll(rule.check( f ));
+            }
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -146,7 +165,12 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
 
         FeatureType2FeatureDetectionMethodDependencyRule rule =
                 new FeatureType2FeatureDetectionMethodDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            for (FeatureEvidence f : p.getFeatureEvidences()){
+                messages.addAll(rule.check( f ));
+            }
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );

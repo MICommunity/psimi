@@ -2,6 +2,7 @@ package psidev.psi.mi.validator.extension.rules;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
 import psidev.psi.mi.xml.model.DbReference;
 import psidev.psi.mi.xml.model.Interactor;
@@ -9,6 +10,7 @@ import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -32,7 +34,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (Xref p : interactor.getIdentifiers()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -45,7 +51,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (Xref p : interactor.getIdentifiers()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -58,7 +68,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (Xref p : interactor.getIdentifiers()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -75,7 +89,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (Xref p : interactor.getIdentifiers()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -92,7 +110,11 @@ public class DatabaseAccessionRuleTest extends AbstractRuleTest {
 
         DatabaseAccessionRule rule = new DatabaseAccessionRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( interactor );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (Xref p : interactor.getIdentifiers()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );

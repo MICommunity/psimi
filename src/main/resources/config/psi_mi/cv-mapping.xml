@@ -69,10 +69,10 @@
             <CvTerm termAccession="MI:0495" allowChildren="true" termName="experimental role" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
-        <CvMappingRule id="R9" name="Feature's Range Status"
-                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/ranges/status/@MIIdentifier"
+        <CvMappingRule id="R9" name="Feature's Range start Status"
+                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/ranges/start/status/@MIIdentifier"
                        cvTermsCombinationLogic="OR"
-                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/ranges/status"
+                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/ranges/start/status"
                        requirementLevel="MUST">
             <CvTerm termAccession="MI:0333" allowChildren="true" termName="feature range status" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
@@ -83,6 +83,14 @@
                        scopePath="/interactionEvidence/participantEvidences/experimentalPreparations"
                        requirementLevel="SHOULD">
             <CvTerm termAccession="MI:0346" allowChildren="true" termName="experimental preparation" useTerm="false" cvIdentifierRef="MI"/>
+        </CvMappingRule>
+
+        <CvMappingRule id="R94" name="Feature's Range end Status"
+                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/ranges/end/status/@MIIdentifier"
+                       cvTermsCombinationLogic="OR"
+                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/ranges/end/status"
+                       requirementLevel="MUST">
+            <CvTerm termAccession="MI:0333" allowChildren="true" termName="feature range status" useTerm="false" cvIdentifierRef="MI"/>
         </CvMappingRule>
 
     </CvMappingRuleList>

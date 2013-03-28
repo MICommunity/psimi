@@ -1,6 +1,5 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
@@ -37,8 +36,10 @@ public class ExperimentImexCurationRuleTest extends AbstractRuleTest {
 
         ImexCurationRule rule = new ImexCurationRule( ontologyMaganer );
 
+        Interaction inter = new Interaction();
+        inter.setExperiment(exp);
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( inter );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -56,8 +57,10 @@ public class ExperimentImexCurationRuleTest extends AbstractRuleTest {
 
         ImexCurationRule rule = new ImexCurationRule( ontologyMaganer );
 
+        Interaction inter = new Interaction();
+        inter.setExperiment(exp);
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( inter );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }
@@ -75,8 +78,10 @@ public class ExperimentImexCurationRuleTest extends AbstractRuleTest {
 
         ImexCurationRule rule = new ImexCurationRule( ontologyMaganer );
 
+        Interaction inter = new Interaction();
+        inter.setExperiment(exp);
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( inter );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }
