@@ -56,7 +56,7 @@ public class MultipleInteractionExperimentsRule extends ObjectRule<MolecularInte
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }

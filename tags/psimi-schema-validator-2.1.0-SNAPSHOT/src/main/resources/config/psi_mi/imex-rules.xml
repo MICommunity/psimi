@@ -12,6 +12,12 @@
             </exclude>
             <exclude>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExperimentalRolesRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleExperimentHostOrganismsRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionExperimentsRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionTypesRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExperimentalRolesRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExpressedInOrganismsRule"/>
+                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantIdentificationMethodsRule"/>
             </exclude>
         </import>
     </importRuleList>
@@ -33,5 +39,10 @@
     <rule class="psidev.psi.mi.validator.extension.rules.imex.SingleExperimentRoleRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.TissueXRefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionTypeRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.MultipleExperimentHostOrganismsRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.MultipleInteractionExperimentsRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.MultipleInteractionTypesRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.MultipleParticipantExpressedInOrganismsRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.MultipleParticipantIdentificationMethodsRule"/>
 
 </objectRuleList>

@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules.psimi;
+package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceError;
@@ -17,21 +17,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Rule to check if a participant has several experimental roles
+ * This rule checks that an interaction does not have multiple experiments
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>27/03/13</pre>
  */
 
-public class MultipleParticipantExperimentalRolesRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class MultipleInteractionExperimentsRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public MultipleParticipantExperimentalRolesRule(OntologyManager ontologyManager) {
+    public MultipleInteractionExperimentsRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Multiple Participant's experimental roles check" );
+        setName( "Multiple Interaction's Experiments check" );
 
-        setDescription( "Check if a participant has several experimental roles." );
+        setDescription( "Check if an interaction has several experiments." );
     }
 
     @Override
@@ -45,8 +45,8 @@ public class MultipleParticipantExperimentalRolesRule extends ObjectRule<Molecul
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> multipleRoles = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.multiple_experimental_roles.toString());
-        for (FileSourceError error : multipleRoles){
+        Collection<FileSourceError> multipleExperiments = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.multiple_experiments.toString());
+        for (FileSourceError error : multipleExperiments){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -56,7 +56,7 @@ public class MultipleParticipantExperimentalRolesRule extends ObjectRule<Molecul
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }
@@ -65,6 +65,6 @@ public class MultipleParticipantExperimentalRolesRule extends ObjectRule<Molecul
     }
 
     public String getId() {
-        return "R27";
+        return "R79";
     }
 }

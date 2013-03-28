@@ -103,6 +103,6 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends Obj
     }
 
     public String getId() {
-        return "R84";
+        return "R90";
     }
 }

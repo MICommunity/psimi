@@ -56,7 +56,7 @@ public class MultipleParticipantExpressedInOrganismsRule extends ObjectRule<Mole
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }

@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules.psimi;
+package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceError;
@@ -17,21 +17,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Rule to check if a participant has several participant identification methods
+ * Rule to check if experiment has several host organisms
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>27/03/13</pre>
  */
 
-public class MultipleParticipantIdentificationMethodsRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class MultipleExperimentHostOrganismsRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
 
-    public MultipleParticipantIdentificationMethodsRule(OntologyManager ontologyManager) {
+    public MultipleExperimentHostOrganismsRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Multiple Participant's identification methods check" );
+        setName( "Multiple Experiment's host organisms check" );
 
-        setDescription( "Check if a participant has several participant identification methods." );
+        setDescription( "Check if an experiment has several host organisms." );
     }
 
     @Override
@@ -45,8 +45,8 @@ public class MultipleParticipantIdentificationMethodsRule extends ObjectRule<Mol
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> multipleDetMethod = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.multiple_participant_identification_methods.toString());
-        for (FileSourceError error : multipleDetMethod){
+        Collection<FileSourceError> multipleHostOrganisms = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.multiple_host_organisms.toString());
+        for (FileSourceError error : multipleHostOrganisms){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
                 context = RuleUtils.buildContext(error.getSourceContext());
@@ -65,6 +65,6 @@ public class MultipleParticipantIdentificationMethodsRule extends ObjectRule<Mol
     }
 
     public String getId() {
-        return "R31";
+        return "R78";
     }
 }

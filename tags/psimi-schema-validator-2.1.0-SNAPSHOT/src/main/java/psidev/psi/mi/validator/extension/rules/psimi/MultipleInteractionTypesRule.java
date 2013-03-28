@@ -56,7 +56,7 @@ public class MultipleInteractionTypesRule extends ObjectRule<MolecularInteractio
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }
