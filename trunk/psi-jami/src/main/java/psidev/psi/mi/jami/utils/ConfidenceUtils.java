@@ -58,7 +58,7 @@ public class ConfidenceUtils {
         }
         Collection<Confidence> confidences = new ArrayList<Confidence>(confs.size());
 
-        for (Confidence conf : confidences){
+        for (Confidence conf : confs){
             if (doesConfidenceHaveType(conf, typeId, typeName)){
                 confidences.add(conf);
             }

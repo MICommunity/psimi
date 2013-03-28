@@ -106,7 +106,7 @@ public class AnnotationUtils {
         }
         Collection<Annotation> annotations = new ArrayList<Annotation>(annots.size());
 
-        for (Annotation annot : annotations){
+        for (Annotation annot : annots){
             if (doesAnnotationHaveTopic(annot, topicId, topicName)){
                 annotations.add(annot);
             }
