@@ -271,8 +271,9 @@ public class IndexedEntry {
                 if (participant.getParticipantIdentificationMethods().isEmpty()){
                     if (!inter.getExperiments().isEmpty()){
                         for (ExperimentDescription desc : inter.getExperiments()){
-                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                            if (desc.getParticipantIdentificationMethod() != null){
+                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                            }
                             if (desc.getFeatureDetectionMethod() != null){
                                 for (Feature f : participant.getFeatures()){
                                     if (f.getFeatureDetectionMethod() == null){
@@ -287,8 +288,9 @@ public class IndexedEntry {
                         for (ExperimentRef ref : inter.getExperimentRefs()){
                             ExperimentDescription desc = unmarshallExperimentById( ref.getRef() );
                             if (desc != null){
-                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                                if (desc.getParticipantIdentificationMethod() != null){
+                                    participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                                }
                                 if (desc.getFeatureDetectionMethod() != null){
                                     for (Feature f : participant.getFeatures()){
                                         if (f.getFeatureDetectionMethod() == null){
@@ -350,8 +352,9 @@ public class IndexedEntry {
                 if (participant.getParticipantIdentificationMethods().isEmpty()){
                     if (!interaction.getExperiments().isEmpty()){
                         for (ExperimentDescription desc : interaction.getExperiments()){
-                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                            if (desc.getParticipantIdentificationMethod() != null){
+                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                            }
                             if (desc.getFeatureDetectionMethod() != null){
                                 for (Feature f : participant.getFeatures()){
                                     if (f.getFeatureDetectionMethod() == null){
@@ -366,8 +369,9 @@ public class IndexedEntry {
                         for (ExperimentRef ref : interaction.getExperimentRefs()){
                             ExperimentDescription desc = unmarshallExperimentById( ref.getRef() );
                             if (desc != null){
-                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                                if (desc.getParticipantIdentificationMethod() != null){
+                                    participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                                }
                                 if (desc.getFeatureDetectionMethod() != null){
                                     for (Feature f : participant.getFeatures()){
                                         if (f.getFeatureDetectionMethod() == null){

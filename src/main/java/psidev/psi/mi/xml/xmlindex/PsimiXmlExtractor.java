@@ -214,8 +214,9 @@ public class PsimiXmlExtractor {
             if (p.getParticipantIdentificationMethods().isEmpty()){
                 if (!interaction.getExperiments().isEmpty()){
                     for (ExperimentDescription desc : interaction.getExperiments()){
-                        p.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                        if (desc.getParticipantIdentificationMethod() != null){
+                            p.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                        }
                         if (desc.getFeatureDetectionMethod() != null){
                             for (Feature f : p.getFeatures()){
                                 if (f.getFeatureDetectionMethod() == null){
@@ -230,8 +231,9 @@ public class PsimiXmlExtractor {
                     for (ExperimentRef ref : interaction.getExperimentRefs()){
                         ExperimentDescription desc = getExperimentById( file, ref.getRef() );
                         if (desc != null){
-                            p.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                            if (desc.getParticipantIdentificationMethod() != null){
+                                p.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                            }
                             if (desc.getFeatureDetectionMethod() != null){
                                 for (Feature f : p.getFeatures()){
                                     if (f.getFeatureDetectionMethod() == null){
