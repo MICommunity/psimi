@@ -145,7 +145,7 @@ public class FileSourceAnalyzer {
             File temp = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "molecular_interaction_stream"+System.currentTimeMillis(), ".txt");
 
             // check first line
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            BufferedReader reader = new BufferedReader(new FileReader(temp));
 
             try {
                 String line = reader.readLine();
