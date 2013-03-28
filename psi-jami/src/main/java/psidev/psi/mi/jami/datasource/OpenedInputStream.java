@@ -32,6 +32,13 @@ public class OpenedInputStream {
     }
 
     public void close(){
+        if (stream != null){
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (file != null){
             file.delete();
         }
