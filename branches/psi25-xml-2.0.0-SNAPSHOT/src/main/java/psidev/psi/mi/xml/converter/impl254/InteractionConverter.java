@@ -246,8 +246,9 @@ public class InteractionConverter {
                 if (participant.getParticipantIdentificationMethods().isEmpty()){
                     if (!mInteraction.getExperiments().isEmpty()){
                         for (ExperimentDescription desc : mInteraction.getExperiments()){
-                            participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                            if (desc.getParticipantIdentificationMethod() != null){
+                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                            }
                             if (desc.getFeatureDetectionMethod() != null){
                                 for (Feature f : participant.getFeatures()){
                                     if (f.getFeatureDetectionMethod() == null){
@@ -263,8 +264,9 @@ public class InteractionConverter {
                         for (ExperimentRef ref : mInteraction.getExperimentRefs()){
                             ExperimentDescription desc = experimentDAO.retreive( ref.getRef() );
                             if (desc != null){
-                                participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
-
+                                if (desc.getParticipantIdentificationMethod() != null){
+                                    participant.getParticipantIdentificationMethods().add(desc.getParticipantIdentificationMethod());
+                                }
                                 if (desc.getFeatureDetectionMethod() != null){
                                     for (Feature f : participant.getFeatures()){
                                         if (f.getFeatureDetectionMethod() == null){
