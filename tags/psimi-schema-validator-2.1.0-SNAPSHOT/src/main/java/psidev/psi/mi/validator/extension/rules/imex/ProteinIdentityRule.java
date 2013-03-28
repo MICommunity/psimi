@@ -62,7 +62,7 @@ public class ProteinIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Int
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        if( RuleUtils.isProtein( ontologyManager, interactor )) {
+        if( interactor.getType() != null && RuleUtils.isProtein( ontologyManager, interactor )) {
 
             final Collection<Xref> identities =
                     XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), Arrays.asList(Xref.UNIPROTKB_MI, Xref.REFSEQ_MI), Arrays.asList(Xref.UNIPROTKB, Xref.REFSEQ));

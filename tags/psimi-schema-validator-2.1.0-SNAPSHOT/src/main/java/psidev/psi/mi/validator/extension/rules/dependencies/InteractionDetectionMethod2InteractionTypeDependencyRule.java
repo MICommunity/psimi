@@ -142,7 +142,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
             CvTerm experimentRole = p.getExperimentalRole();
             if (checkParticipantRole(experimentRole, roleMi, roleName)){
                 num++;
-                break;
             }
         }
         return num;

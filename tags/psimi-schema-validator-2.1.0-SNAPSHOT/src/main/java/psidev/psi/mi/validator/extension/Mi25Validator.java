@@ -750,7 +750,7 @@ public class Mi25Validator extends Validator {
 
             if (message.getContext() instanceof Mi25Context){
                 context = (Mi25Context) message.getContext();
-                if (!context.getObjectLabel().equals("interaction")){
+                if (context.getObjectLabel() != null && !context.getObjectLabel().equals("interaction")){
                     context.addAssociatedContext(RuleUtils.buildContext(interaction, "interaction"));
                 }
             }

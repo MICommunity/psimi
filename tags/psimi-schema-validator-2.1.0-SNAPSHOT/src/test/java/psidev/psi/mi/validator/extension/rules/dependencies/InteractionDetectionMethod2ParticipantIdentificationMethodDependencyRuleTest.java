@@ -138,7 +138,7 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         participant.setInteractor( new Interactor());
         participant.getParticipantIdentificationMethods().clear();
         participant.getParticipantIdentificationMethods().add( buildParticipantIdentificationMethod( partIdMi, partIdName ));
-        interaction.getParticipants().add( participant );
+        interaction.addParticipantEvidence( participant );
     }
 
     private ParticipantIdentificationMethod buildParticipantIdentificationMethod( String mi, String name ) {

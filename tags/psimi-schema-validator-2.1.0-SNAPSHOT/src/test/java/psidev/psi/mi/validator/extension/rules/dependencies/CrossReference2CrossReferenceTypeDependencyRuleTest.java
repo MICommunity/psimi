@@ -147,10 +147,7 @@ public class CrossReference2CrossReferenceTypeDependencyRuleTest extends Abstrac
         Xref xRef = new Xref();
         xRef.setPrimaryRef(database);
 
-        Bibref bib = new Bibref();
-        bib.setXref(xRef);
-
-        exp.setBibref(bib);
+        exp.setXref(xRef);
 
         ExperimentCrossReference2CrossReferenceTypeDependencyRule rule =
                 new ExperimentCrossReference2CrossReferenceTypeDependencyRule( ontologyMaganer );

@@ -57,17 +57,25 @@ public class InteractorTypeRule extends ObjectRule<psidev.psi.mi.jami.model.Inte
 
         Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
 
-        if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
-
-                    messages.add( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
-                            "should be removed from the record.",
-                            MessageLevel.WARN,
-                            context,
-                            this ) );
+        if (interactor.getType() == null){
+            messages.add( new ValidatorMessage( "The interactor does not have an interactor type and it is required by IMEx.",
+                    MessageLevel.ERROR,
+                    context,
+                    this ) );
         }
         else {
+            if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
 
-            RuleUtils.checkUniquePsiMIXRef(interactor.getType(), messages, context, this);
+                messages.add( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
+                        "should be removed from the record.",
+                        MessageLevel.WARN,
+                        context,
+                        this ) );
+            }
+            else {
+
+                RuleUtils.checkUniquePsiMIXRef(interactor.getType(), messages, context, this);
+            }
         }
 
         return messages;

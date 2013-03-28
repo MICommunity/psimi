@@ -89,7 +89,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
         detectionMethod.getNames().setShortLabel( "western blot" );
 
         exp.setFeatureDetectionMethod( detectionMethod );
-        interaction.getExperiments().add( exp );
+        interaction.setExperiment( exp );
 
         // set the feature type of the participants
         interaction.getParticipants().clear();
@@ -101,6 +101,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
         for (ParticipantEvidence p : interaction.getParticipantEvidences()){
             for (FeatureEvidence f : p.getFeatureEvidences()){
+                f.setDetectionMethod(exp.getFeatureDetectionMethod());
                 messages.addAll(rule.check( f ));
             }
         }
@@ -168,6 +169,7 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
         for (ParticipantEvidence p : interaction.getParticipantEvidences()){
             for (FeatureEvidence f : p.getFeatureEvidences()){
+                f.setDetectionMethod(exp.getFeatureDetectionMethod());
                 messages.addAll(rule.check( f ));
             }
         }
@@ -190,8 +192,8 @@ public class FeatureType2FeatureDetectionMethodDependencyRuleTest extends Abstra
         Feature feature = new Feature();
         feature.setFeatureType(type);
 
-        participant.getFeatures().add(feature);
+        participant.addFeatureEvidence(feature);
 
-        interaction.getParticipants().add( participant );
+        interaction.addParticipantEvidence( participant );
     }
 }

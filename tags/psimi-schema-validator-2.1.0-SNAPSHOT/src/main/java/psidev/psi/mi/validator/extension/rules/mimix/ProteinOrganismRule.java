@@ -50,7 +50,7 @@ public class ProteinOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Int
 
         Mi25Context context = RuleUtils.buildContext(interactor, "interactor");
 
-        if (RuleUtils.isProtein(ontologyManager, interactor) && interactor.getOrganism() == null){
+        if (interactor.getType() != null && RuleUtils.isProtein(ontologyManager, interactor) && interactor.getOrganism() == null){
             messages.add( new ValidatorMessage( "The protein does not have an organism and it is required for MIMIx.",
                                                 MessageLevel.ERROR,
                                                 context,
