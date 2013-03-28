@@ -65,7 +65,7 @@ public class ProteinIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Int
         if( RuleUtils.isProtein( ontologyManager, interactor )) {
 
             final Collection<Xref> identities =
-                    XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), Arrays.asList(UNIPROTKB_MI_REF, REFSEQ_MI_REF));
+                    XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), Arrays.asList(Xref.UNIPROTKB_MI, Xref.REFSEQ_MI), Arrays.asList(Xref.UNIPROTKB, Xref.REFSEQ));
 
             final Collection<Xref> identitiesUniprot = XrefUtils.collectAllXrefsHavingDatabase(interactor.getIdentifiers(),
                     Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
@@ -113,6 +113,6 @@ public class ProteinIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Int
     }
 
     public String getId() {
-        return "R40";
+        return "R74";
     }
 }

@@ -10,21 +10,22 @@
             <exclude>
                 <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
             </exclude>
+            <exclude>
+                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExperimentalRolesRule"/>
+            </exclude>
         </import>
     </importRuleList>
 
     <rule class="psidev.psi.mi.validator.extension.rules.imex.BindingDomainSizeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.CellLineXrefRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentAttributeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentBibRefRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentFullCoverageRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexCurationRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentImexPrimaryRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.FullCoverageRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.ImexCurationRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.PublicationImexPrimaryRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.FeatureTypeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.TaxIdHostOrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionFigureLegendRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionImexPrimaryRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionParticipantRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractionSourceIdentityXrefRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.InteractorTypeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.imex.NegativeInteractionRule"/>

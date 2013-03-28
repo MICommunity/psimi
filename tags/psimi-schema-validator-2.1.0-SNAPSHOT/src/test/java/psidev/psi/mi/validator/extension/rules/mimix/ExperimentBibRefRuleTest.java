@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * ExperimentFullCoverageRule Tester.
+ * FullCoverageRule Tester.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @since 2.0

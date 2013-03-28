@@ -1,7 +1,11 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
+import psidev.psi.mi.jami.datasource.FileParsingErrorType;
+import psidev.psi.mi.jami.datasource.FileSourceError;
+import psidev.psi.mi.jami.datasource.MolecularInteractionFileDataSource;
+import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.xml.model.Participant;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
@@ -20,11 +24,11 @@ import java.util.List;
  * @version $Id$
  * @since 2.0
  */
-public class SingleExperimentRoleRule extends ObjectRule<Participant> {
+public class SingleExperimentRoleRule extends ObjectRule<MolecularInteractionFileDataSource> {
 
-    public SingleExperimentRoleRule( OntologyManager ontologyManager ) {
-        super( ontologyManager );
 
+    public SingleExperimentRoleRule(OntologyManager ontologyManager) {
+        super(ontologyManager);
         // describe the rule.
         setName( "Single Participant's experimental Role Check" );
 
@@ -35,52 +39,35 @@ public class SingleExperimentRoleRule extends ObjectRule<Participant> {
 
     @Override
     public boolean canCheck(Object t) {
-        if (t instanceof Participant){
-            return true;
-        }
-
-        return false;
+        return ontologyManager instanceof MolecularInteractionFileDataSource;
     }
 
-    /**
-     * Checks that participants have a single experimental role.
-     *
-     * @param participant to check on.
-     * @return a collection of validator messages.
-     * @throws psidev.psi.tools.validator.ValidatorException
-     *          if we fail to retrieve the MI Ontology.
-     */
-    public Collection<ValidatorMessage> check( Participant participant ) throws ValidatorException {
+    @Override
+    public Collection<ValidatorMessage> check(MolecularInteractionFileDataSource molecularInteractionFileDataSource) throws ValidatorException {
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // write the rule here ...
-        int participantId = participant.getId();
-        if ( participant.hasExperimentalRoles() ) {
-            final int count = participant.getExperimentalRoles().size();
-            if ( count > 1 ) {
-                final Mi25Context context = buildContext( participantId );
-                messages.add( new ValidatorMessage( "Interaction's participants should have a single " +
-                        "experimental role; found " + count + ".",
-                        MessageLevel.ERROR,
-                        context,
-                        this ) );
+        Collection<FileSourceError> multipleRoles = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.multiple_experimental_roles.toString());
+        for (FileSourceError error : multipleRoles){
+            Mi25Context context = null;
+            if (error.getSourceContext() != null){
+                context = RuleUtils.buildContext(error.getSourceContext());
             }
+            else {
+                context = new Mi25Context();
+            }
+
+            messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
+                    MessageLevel.ERROR,
+                    context,
+                    this ) );
         }
 
         return messages;
     }
 
-    private Mi25Context buildContext( int participantId ) {
-        Mi25Context context;
-        context = new Mi25Context();
-        context.setId( participantId );
-        context.setObjectLabel("participant");
-        return context;
-    }
-
     public String getId() {
-        return "R41";
+        return "R75";
     }
 }

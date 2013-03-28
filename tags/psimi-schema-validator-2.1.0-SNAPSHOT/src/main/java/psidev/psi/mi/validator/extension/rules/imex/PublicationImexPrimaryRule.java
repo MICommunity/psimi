@@ -24,14 +24,14 @@ import java.util.List;
  * @version $Id$
  * @since 2.0
  */
-public class ExperimentImexPrimaryRule extends ObjectRule<Publication> {
+public class PublicationImexPrimaryRule extends ObjectRule<Publication> {
 
-    public ExperimentImexPrimaryRule( OntologyManager ontologyMaganer ) {
+    public PublicationImexPrimaryRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
 
         // describe the rule.
-        setName( "Experiment Imex-primary cross reference check" );
-        setDescription( "Checks that each experiment has a at least one cross reference 'imex-primary' and that all the imex" +
+        setName( "Publication Imex-primary cross reference check" );
+        setDescription( "Checks that each publication has a at least one cross reference 'imex-primary' and that all the imex" +
                 "IDs are correct." );
         addTip( "All records must have an IMEx ID (IM-xxx) when there is a cross reference type: imex-primary" );
         addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
@@ -62,7 +62,7 @@ public class ExperimentImexPrimaryRule extends ObjectRule<Publication> {
 
         }
         else {
-            messages.add( new ValidatorMessage( "The experiment does not have an IMEx primary cross reference. An IMEx cross reference with a reference type set" +
+            messages.add( new ValidatorMessage( "The publication does not have an IMEx primary cross reference. An IMEx cross reference with a reference type set" +
                     " to 'imex-primary' (MI:0662) is required for IMEx.",
                     MessageLevel.ERROR,
                     context,
@@ -73,6 +73,6 @@ public class ExperimentImexPrimaryRule extends ObjectRule<Publication> {
     }
 
     public String getId() {
-        return "R31";
+        return "R66";
     }
 }

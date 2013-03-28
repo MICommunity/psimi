@@ -88,6 +88,6 @@ public class TissueXRefRule extends ObjectRule<Organism> {
     }
 
     public String getId() {
-        return "R42";
+        return "R76";
     }
 }

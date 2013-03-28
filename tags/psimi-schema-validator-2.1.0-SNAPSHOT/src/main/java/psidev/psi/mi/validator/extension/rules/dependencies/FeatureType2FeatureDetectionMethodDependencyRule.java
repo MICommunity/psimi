@@ -102,6 +102,6 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends ObjectRule
     }
 
     public String getId() {
-        return "R44";
+        return "R82";
     }
 }

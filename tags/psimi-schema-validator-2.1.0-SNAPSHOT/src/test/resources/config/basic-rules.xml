@@ -3,7 +3,7 @@
                 xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/object-rule.xsd">
 
     <rule class="psidev.psi.mi.validator.extension.rules.BibRefRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.imex.ExperimentFullCoverageRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.imex.FullCoverageRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentInteractionDetectionMethodRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.InteractorOrganismRule"/>

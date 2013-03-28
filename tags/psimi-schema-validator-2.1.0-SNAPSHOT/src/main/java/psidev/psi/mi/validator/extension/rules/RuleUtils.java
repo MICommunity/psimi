@@ -16,14 +16,10 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -551,30 +547,6 @@ public final class RuleUtils {
                     rule ) );
 
         }
-    }
-
-    public static void checkPresenceOfAttributeInExperiment(Experiment experiment, List<ValidatorMessage> messages, Mi25Context context, Mi25ExperimentRule experimentRule, String attMi, String attname){
-        // An experiment must have at least one attribute 'imex-curation' and one attribute 'full coverage'
-        if (!experiment.getAnnotations().isEmpty()){
-            // The attributes of the experiment
-            Collection<Annotation> attributes = experiment.getAnnotations();
-            // The attributes with a name/MI attName/attMI
-            Collection<Annotation> attributeName = AnnotationUtils.collectAllAnnotationsHavingTopic(attributes, attMi, attname);
-
-            if (attributeName.isEmpty()){
-                messages.add( new ValidatorMessage( "The experiment does not have an attribute '"+attname+"' ("+attMi+") and it is required for IMEx. ",
-                        MessageLevel.ERROR,
-                        context,
-                        experimentRule ) );
-            }
-        }
-        else {
-            messages.add( new ValidatorMessage( "The experiment does not have any attributes. At least one attribute '"+attname+"' ("+attMi+") is required for IMEx. ",
-                    MessageLevel.ERROR,
-                    context,
-                    experimentRule ) );
-        }
-
     }
 
     /**

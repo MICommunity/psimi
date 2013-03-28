@@ -68,6 +68,6 @@ public class FeatureTypeRule extends ObjectRule<FeatureEvidence> {
     }
 
     public String getId() {
-        return "R32";
+        return "R67";
     }
 }

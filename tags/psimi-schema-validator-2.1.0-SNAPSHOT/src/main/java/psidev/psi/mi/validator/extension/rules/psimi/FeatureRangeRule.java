@@ -83,6 +83,13 @@ public class FeatureRangeRule extends ObjectRule<FeatureEvidence> {
 
         Collection<psidev.psi.mi.jami.model.Range> ranges = feature .getRanges();
 
+        if (ranges.isEmpty()){
+            messages.add( new ValidatorMessage( "Feature must have at least one range.'",
+                    MessageLevel.ERROR,
+                    featureContext,
+                    this ) );
+        }
+
         for (psidev.psi.mi.jami.model.Range range : ranges){
             Mi25Context rangeContext = RuleUtils.buildContext(range, "feature's range");
             rangeContext.addAssociatedContext(featureContext);

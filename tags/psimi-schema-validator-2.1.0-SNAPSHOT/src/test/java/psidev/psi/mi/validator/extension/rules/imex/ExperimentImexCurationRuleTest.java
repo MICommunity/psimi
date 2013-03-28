@@ -11,7 +11,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * ExperimentImexCurationRule Tester.
+ * ImexCurationRule Tester.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -35,7 +35,7 @@ public class ExperimentImexCurationRuleTest extends AbstractRuleTest {
 
         exp.getAttributes().add(new Attribute("MI:0959", "imex curation", ""));
 
-        ExperimentImexCurationRule rule = new ExperimentImexCurationRule( ontologyMaganer );
+        ImexCurationRule rule = new ImexCurationRule( ontologyMaganer );
 
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
@@ -54,7 +54,7 @@ public class ExperimentImexCurationRuleTest extends AbstractRuleTest {
 
         exp.getAttributes().add(new Attribute("journal", "Science (0036-8075)"));
 
-        ExperimentImexCurationRule rule = new ExperimentImexCurationRule( ontologyMaganer );
+        ImexCurationRule rule = new ImexCurationRule( ontologyMaganer );
 
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
@@ -73,7 +73,7 @@ public class ExperimentImexCurationRuleTest extends AbstractRuleTest {
 
         exp.getAttributes().add(new Attribute("MI:0957", "full coverage", ""));
 
-        ExperimentImexCurationRule rule = new ExperimentImexCurationRule( ontologyMaganer );
+        ImexCurationRule rule = new ImexCurationRule( ontologyMaganer );
 
 
         final Collection<ValidatorMessage> messages = rule.check( exp );

@@ -62,6 +62,6 @@ public class InteractionTypeRule extends Mi25InteractionRule{
     }
 
     public String getId() {
-        return "R40";
+        return "R77";
     }
 }
