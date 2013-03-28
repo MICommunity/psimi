@@ -70,6 +70,7 @@ public class MolecularInteractionFileDataSourceUtils {
                 String line;
                 while ( ( line = in.readLine() ) != null ) {
                     out.write( line );
+                    out.write( System.getProperty("line.separator"));
                 }
 
 
