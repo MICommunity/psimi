@@ -93,7 +93,7 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
             }
         }
 
-        final Collection<Confidence> confs = ConfidenceUtils.collectAllAnnotationsHavingTopic( interaction.getExperimentalConfidences(),
+        final Collection<Confidence> confs = ConfidenceUtils.collectAllConfidencesHavingType( interaction.getExperimentalConfidences(),
                 AUTHOR_SCORE_MI_REF,
                 AUTHOR_SCORE);
 

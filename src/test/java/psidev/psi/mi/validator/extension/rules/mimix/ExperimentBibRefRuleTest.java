@@ -80,8 +80,8 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         final Bibref bibref = new Bibref();
         DbReference primary = new DbReference( "intact", "MI:0469", "EBI-2432100", "primary-reference", "MI:0358" );
-        DbReference secondary1 =  new DbReference( "pubmed", "MI:0446", "123", "identity", "MI:0356" );
-        DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
+        DbReference secondary1 =  new DbReference( "pubmed", "MI:0446", "123", "see-also", "MI:0361" );
+        DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","see-also", "MI:0361" );
         Collection<DbReference> secondary = new ArrayList<DbReference>();
         secondary.add(secondary1);
         secondary.add(secondary2);
@@ -138,8 +138,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
 
         final Bibref bibref = new Bibref();
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
-        exp.setNames( new Names() );
-        exp.getNames().setFullName( "publication title" );
+        exp.getAttributes().add( new Attribute( null, "publication title", "publication title" ) );
         exp.getAttributes().add( new Attribute( null, "contact-email", "author@institute.co.uk" ) );
         exp.getAttributes().add( new Attribute( null, "author-list", "author1, author2, author3..." ) );
 
@@ -157,7 +156,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         final Bibref bibref = new Bibref();
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
         exp.setNames( new Names() );
-        exp.getNames().setFullName( "publication title" );
+        exp.getAttributes().add( new Attribute( null, "publication title", "publication title" ) );
         exp.getAttributes().add( new Attribute( "MI:0634", "", "author@institute.co.uk" ) );
         exp.getAttributes().add( new Attribute( "MI:0636", "", "author1, author2, author3..." ) );
 

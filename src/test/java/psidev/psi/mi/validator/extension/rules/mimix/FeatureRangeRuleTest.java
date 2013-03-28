@@ -53,7 +53,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildCertainFeature( 11, 15);
-        p1.getFeatures().add(feature);
+        p1.addFeatureEvidence(feature);
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 
@@ -72,7 +72,7 @@ public class FeatureRangeRuleTest extends AbstractRuleTest {
         p1.getInteractor().setSequence(sequence);
 
         Feature feature = buildCertainFeature( 4, 15);
-        p1.getFeatures().add(feature);
+        p1.addFeatureEvidence(feature);
 
         FeatureRangeRule rule = new FeatureRangeRule(ontologyMaganer);
 

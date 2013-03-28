@@ -30,7 +30,7 @@ public class InteractionImexPrimaryRuleTest extends AbstractRuleTest {
     public void validate_ImexId() throws Exception {
 
         DbReference primary = new DbReference( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        DbReference secondary1 =  new DbReference( "intact", "MI:0469", "IM-111-11", "imex-primary", "MI:0662" );
+        DbReference secondary1 =  new DbReference( "imex", "MI:0670", "IM-111-11", "imex-primary", "MI:0662" );
         DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
         Collection<DbReference> secondary = new ArrayList<DbReference>();
         secondary.add(secondary1);
@@ -51,7 +51,7 @@ public class InteractionImexPrimaryRuleTest extends AbstractRuleTest {
     public void validate_Wrong_ImexId() throws Exception {
 
         DbReference primary = new DbReference( "pubmed", "MI:0446", "123", "primary-reference", "MI:0358" );
-        DbReference secondary1 =  new DbReference( "intact", "MI:0469", "IM-1A1", "imex-primary", "MI:0662" );
+        DbReference secondary1 =  new DbReference( "imex", "MI:0670", "IM-1A1", "imex-primary", "MI:0662" );
         DbReference secondary2 =  new DbReference( "DOI", "MI:0574", "1234","identity", "MI:0356" );
         Collection<DbReference> secondary = new ArrayList<DbReference>();
         secondary.add(secondary1);
