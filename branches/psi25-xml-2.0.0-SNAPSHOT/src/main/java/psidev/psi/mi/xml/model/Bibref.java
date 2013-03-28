@@ -332,7 +332,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             if (getPrimaryRef() == null){
                 super.setPrimaryRef(value);
                 if (value != null){
-                    if (XrefUtils.isXrefAnIdentifier(value)){
+                    if (XrefUtils.isXrefAnIdentifier(value) || XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
                         ((PublicationIdentifierList)getIdentifiers()).addOnly(value);
                         processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
@@ -349,7 +349,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
                 super.setPrimaryRef(value);
 
                 if (value != null){
-                    if (XrefUtils.isXrefAnIdentifier(value)){
+                    if (XrefUtils.isXrefAnIdentifier(value) || XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
                         ((PublicationIdentifierList)getIdentifiers()).addOnly(value);
                         processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
@@ -366,7 +366,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
                 super.setPrimaryRef(value);
 
                 if (value != null){
-                    if (XrefUtils.isXrefAnIdentifier(value)){
+                    if (XrefUtils.isXrefAnIdentifier(value) || XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
                         ((PublicationIdentifierList)getIdentifiers()).addOnly(value);
                         processAddedIdentifierEvent(value);
                         isPrimaryAnIdentity = true;
@@ -386,7 +386,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
             }
             else {
                 super.setPrimaryRef(value);
-                if (XrefUtils.isXrefAnIdentifier(value)){
+                if (XrefUtils.isXrefAnIdentifier(value) || XrefUtils.doesXrefHaveQualifier(value, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
                     isPrimaryAnIdentity = true;
                 }
             }
@@ -425,7 +425,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
             @Override
             protected void processAddedObjectEvent(DbReference added) {
-                if (XrefUtils.isXrefAnIdentifier(added)){
+                if (XrefUtils.isXrefAnIdentifier(added) || XrefUtils.doesXrefHaveQualifier(added, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
                     ((PublicationIdentifierList)getIdentifiers()).addOnly(added);
                     processAddedIdentifierEvent(added);
                 }
@@ -437,7 +437,7 @@ public class Bibref extends DefaultPublication implements XrefContainer, Attribu
 
             @Override
             protected void processRemovedObjectEvent(DbReference removed) {
-                if (XrefUtils.isXrefAnIdentifier(removed)){
+                if (XrefUtils.isXrefAnIdentifier(removed) || XrefUtils.doesXrefHaveQualifier(removed, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY)){
                     ((PublicationIdentifierList)getIdentifiers()).removeOnly(removed);
                     processRemovedIdentifierEvent(removed);
                 }
