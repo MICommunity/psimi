@@ -444,14 +444,14 @@ public final class MitabParserUtils {
             }
 
             if(interactorA.isEmpty() && interactorB.isEmpty()){
-                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.interaction_without_any_participants, "Both interactors are null or empety. We can have a interaction without interactors");
+                InvalidFormatEvent evt = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Both interactors are null or empety. We can have a interaction without interactors");
                 evt.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
-                InvalidFormatEvent evt2 = new InvalidFormatEvent(FileParsingErrorType.invalid_syntax, "Both interactors are null or empety. We can have a interaction without interactors");
-                evt2.setSourceLocator(new MitabSourceLocator(lineIndex, -1, -1));
                 for (MitabParserListener l : listenerList){
                     l.fireOnInvalidFormat(evt);
-                    l.fireOnInvalidFormat(evt2);
                 }
+
+                interaction.setInteractorA(null);
+                interaction.setInteractorB(null);
             }
 
             //We check if it is a intra-inter interaction. In that case one of the interactors can be null
