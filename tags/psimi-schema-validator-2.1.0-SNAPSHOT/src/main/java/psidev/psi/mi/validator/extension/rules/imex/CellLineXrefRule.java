@@ -65,7 +65,7 @@ public class CellLineXrefRule extends ObjectRule<Organism>{
         Mi25Context context = RuleUtils.buildContext(cellType, "cell type");
         context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
 
-        if (!cellType.getIdentifiers().isEmpty()){
+        if (!cellType.getIdentifiers().isEmpty() || !cellType.getXrefs().isEmpty()){
 
             Collection<psidev.psi.mi.jami.model.Xref> cabriReferences = XrefUtils.collectAllXrefsHavingDatabase(cellType.getIdentifiers(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI);
             Collection<psidev.psi.mi.jami.model.Xref> cellReferences = XrefUtils.collectAllXrefsHavingDatabase(cellType.getIdentifiers(), RuleUtils.CELL_ONTOLOGY_MI_REF, RuleUtils.CELL_ONTOLOGY);

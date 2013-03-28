@@ -480,8 +480,8 @@ public final class RuleUtils {
 
             Collection<psidev.psi.mi.jami.model.Xref> psiMiReferences = XrefUtils.collectAllXrefsHavingDatabase(allDbRef, CvTerm.PSI_MI_MI, CvTerm.PSI_MI);
             Collection<psidev.psi.mi.jami.model.Xref> psiModReferences = XrefUtils.collectAllXrefsHavingDatabase(allDbRef, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD);
-            Collection<psidev.psi.mi.jami.model.Xref> psiMiIdentityReferences = XrefUtils.collectAllXrefsHavingQualifier(allDbRef, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY);
-            Collection<psidev.psi.mi.jami.model.Xref> psiModIdentityReferences = XrefUtils.collectAllXrefsHavingQualifier(allDbRef, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY);
+            Collection<psidev.psi.mi.jami.model.Xref> psiMiIdentityReferences = XrefUtils.collectAllXrefsHavingQualifier(psiMiReferences, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY);
+            Collection<psidev.psi.mi.jami.model.Xref> psiModIdentityReferences = XrefUtils.collectAllXrefsHavingQualifier(psiModReferences, psidev.psi.mi.jami.model.Xref.IDENTITY_MI, psidev.psi.mi.jami.model.Xref.IDENTITY);
 
             if (!psiMiIdentityReferences.isEmpty() && !psiModIdentityReferences.isEmpty()){
                 messages.add( new ValidatorMessage( "The "+ containerName + " has "+ psiModIdentityReferences.size() +" psi-mod cross references with type 'identity' and "+ psiMiIdentityReferences.size() +" psi-mi cross references with type 'identity'. As it is confusing, it is better to give only one identity cross reference (psi-mi or psi-mod)",

@@ -49,6 +49,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
         for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            p.setIdentificationMethod(exp.getParticipantIdentificationMethod());
             messages.addAll(rule.check( p ));
 
         }
@@ -159,11 +160,12 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
         for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            p.setIdentificationMethod(exp.getParticipantIdentificationMethod());
             messages.addAll(rule.check( p ));
 
         }
         Assert.assertNotNull( messages );
-        Assert.assertEquals( 1, messages.size() );
+        Assert.assertEquals( 2, messages.size() );
     }
 
     private void populatesParticipants(Interaction interaction){
@@ -177,7 +179,7 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
         name2.setShortLabel("p2");
         p2.setNames(name2);
 
-        interaction.getParticipants().add(p1);
-        interaction.getParticipants().add(p2);
+        interaction.addParticipantEvidence(p1);
+        interaction.addParticipantEvidence(p2);
     }
 }

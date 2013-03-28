@@ -95,19 +95,12 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
             final Collection<Xref> identities = XrefUtils.searchAllXrefsHavingDatabase(interactor.getIdentifiers(), dbMiRefs, dbRefs);
             if( identities.isEmpty() ) {
                 Mi25Context context = RuleUtils.buildContext(interactor, "biopolymer");
-                    messages.add( new ValidatorMessage( "Interactor should have an Xref to a sequence database with a ref type 'identity' ",
+                    messages.add( new ValidatorMessage( "Interactor should have a Xref to a sequence database with a ref type 'identity' ",
                             MessageLevel.ERROR,
                             context,
                             this ) );
 
                 if (interactor instanceof Polymer && ((Polymer) interactor).getSequence() == null){
-                    Mi25Context context2 = RuleUtils.buildContext( interactor, "biopolymer" );
-                    messages.add( new ValidatorMessage( "Biopolymer without a sequence and without any Xrefs to a sequence database with a ref type 'identity'.",
-                            MessageLevel.WARN,
-                            context2,
-                            this ) );
-                }
-                else {
                     Mi25Context context2 = RuleUtils.buildContext( interactor, "biopolymer" );
                     messages.add( new ValidatorMessage( "Biopolymer without a sequence and without any Xrefs to a sequence database with a ref type 'identity'.",
                             MessageLevel.WARN,

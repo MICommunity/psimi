@@ -102,8 +102,8 @@ public class InteractorIdentityRuleTest extends AbstractRuleTest {
         updateInteractorType( interactor, RuleUtils.PROTEIN_MI_REF );
         updateInteractorIdentity( interactor, UNIPROTKB_MI_REF, "P12345" );
 
-        interactor.getXref().getPrimaryRef().setRefTypeAc( null );
-        interactor.getXref().getPrimaryRef().setRefType( null );
+        interactor.getXrefs().add(interactor.getIdentifiers().iterator().next());
+        interactor.getIdentifiers().clear();
 
         InteractorIdentityRule rule = new InteractorIdentityRule( ontologyMaganer );
         final Collection<ValidatorMessage> messages = rule.check( interactor );
