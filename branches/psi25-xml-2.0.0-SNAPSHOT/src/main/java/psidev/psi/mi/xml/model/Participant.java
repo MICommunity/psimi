@@ -7,7 +7,6 @@
 package psidev.psi.mi.xml.model;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.utils.clone.*;
@@ -1606,6 +1605,7 @@ public class Participant extends DefaultParticipantEvidence implements Component
             setExperimentalRoleOnly(new ExperimentalRole());
             getExperimentalRole().setShortName(UNSPECIFIED_ROLE);
             getExperimentalRole().setMIIdentifier(UNSPECIFIED_ROLE_MI);
+            addOnly(getExperimentalRole());
         }
     }
 
