@@ -9,8 +9,6 @@
         <import type="resource" rules="/config/psi_mi/mimix-rules.xml">
             <exclude>
                 <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
-            </exclude>
-            <exclude>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExperimentalRolesRule"/>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleExperimentHostOrganismsRule"/>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionExperimentsRule"/>

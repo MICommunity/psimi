@@ -72,7 +72,7 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
         Organism host = new Organism();
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( "MI:0841", "phosphotransfer assay" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperiment( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, "MI:0841", "phosphotransfer assay" );
@@ -100,6 +100,6 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
         final Participant participant = new Participant();
         participant.setInteractor( new Interactor());
         participant.setBiologicalRole( buildBiologicalRole( bioMi, bioName ));
-        interaction.getParticipants().add( participant );
+        interaction.addParticipantEvidence( participant );
     }
 }

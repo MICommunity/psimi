@@ -63,7 +63,7 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
         final OntologyAccess mi = getMiOntology();
 
         // write the rule here ...
-        if( RuleUtils.isSmallMolecule( ontologyManager, interactor ) || RuleUtils.isPolysaccharide( ontologyManager, interactor )) {
+        if( interactor.getType() != null && (RuleUtils.isSmallMolecule( ontologyManager, interactor ) || RuleUtils.isPolysaccharide( ontologyManager, interactor ))) {
 
             // TODO cache these MI refs
             final Set<OntologyTermI> dbs = mi.getValidTerms( BIOACTIVE_ENTITY_DATABASE_MI_REF, true, false );
@@ -83,7 +83,7 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
             }
 
         }
-        else if( RuleUtils.isBiopolymer(ontologyManager, interactor)) {
+        else if( interactor.getType() != null && RuleUtils.isBiopolymer(ontologyManager, interactor)) {
 
             // TODO cache these MI refs
             final Set<OntologyTermI> dbs = mi.getValidTerms( SEQUENCE_DATABASE_MI_REF, true, false );

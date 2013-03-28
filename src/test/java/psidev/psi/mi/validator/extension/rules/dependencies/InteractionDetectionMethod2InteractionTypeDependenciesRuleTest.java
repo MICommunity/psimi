@@ -341,6 +341,6 @@ public class InteractionDetectionMethod2InteractionTypeDependenciesRuleTest exte
         participant.setInteractor( new Interactor());
         participant.getExperimentalRoles().clear();
         participant.getExperimentalRoles().add( buildExperimentalRole( expRoleMi, expRoleName ));
-        interaction.getParticipants().add( participant );
+        interaction.addParticipantEvidence( participant );
     }
 }

@@ -75,7 +75,7 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
         Organism host = new Organism();
 
         exp.setInteractionDetectionMethod( buildDetectionMethod( CROSS_LINKING_MI_REF, "cross-linking study" ) );
-        interaction.getExperiments().add( exp );
+        interaction.setExperiment( exp );
 
         // Set the interaction detection method
         setDetectionMethod( interaction, CROSS_LINKING_MI_REF, "cross-linking study" );
@@ -143,6 +143,6 @@ public class InteractionDetectionMethod2ExperimentRoleRuleTest extends AbstractR
         participant.setInteractor( new Interactor());
         participant.getExperimentalRoles().clear();
         participant.getExperimentalRoles().add( buildExperimentalRole( expRoleMi, expRoleName ));
-        interaction.getParticipants().add( participant );
+        interaction.addParticipantEvidence( participant );
     }
 }
