@@ -34,7 +34,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -57,7 +57,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -80,7 +80,7 @@ public class ExperimentBibRefRuleTest extends AbstractRuleTest {
         bibref.setXref( xref );
         ExperimentDescription exp = new ExperimentDescription( bibref, new InteractionDetectionMethod() );
 
-        ExperimentBibRefRule rule = new ExperimentBibRefRule( ontologyMaganer );
+        ExperimentPublicationRule rule = new ExperimentPublicationRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );

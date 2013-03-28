@@ -2,14 +2,17 @@ package psidev.psi.mi.validator.extension;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.datasource.*;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.factory.MolecularInteractionDataSourceFactory;
+import psidev.psi.mi.tab.listeners.SimpleMitabDataSource;
 import psidev.psi.mi.validator.ValidatorReport;
-import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
-import psidev.psi.mi.validator.extension.rules.PsimiXmlSchemaRule;
+import psidev.psi.mi.validator.extension.rules.FileSyntaxRule;
+import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.validator.extension.rules.cvmapping.MICvRuleManager;
-import psidev.psi.mi.xml.PsimiXmlLightweightReader;
+import psidev.psi.mi.validator.extension.rules.psimi.DatabaseAccessionRule;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
-import psidev.psi.mi.xml.model.*;
-import psidev.psi.mi.xml.xmlindex.IndexedEntry;
+import psidev.psi.mi.xml.listeners.LightWeightSimplePsiXmlDataSource;
 import psidev.psi.tools.cvrReader.mapping.jaxb.CvMapping;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.OntologyManagerContext;
@@ -18,11 +21,9 @@ import psidev.psi.tools.validator.*;
 import psidev.psi.tools.validator.preferences.UserPreferences;
 import psidev.psi.tools.validator.rules.Rule;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
-import psidev.psi.tools.validator.schema.SaxMessage;
-import psidev.psi.tools.validator.schema.SaxReport;
-import psidev.psi.tools.validator.schema.SaxValidatorHandler;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -55,6 +56,12 @@ public class Mi25Validator extends Validator {
 
     private ValidatorReport validatorReport;
 
+    private MolecularInteractionDataSource currentDataSource;
+
+    private FileSourceAnalyzer fileSourceAnalyzer;
+
+    public final static String SOURCE_FORMAT = "source_format";
+
     /**
      * Creates a MI 25 validator with the default user userPreferences.
      *
@@ -69,6 +76,7 @@ public class Mi25Validator extends Validator {
 
         super( ontologyconfig, cvMappingConfig, objectRuleConfig );
         validatorReport = new ValidatorReport();
+        fileSourceAnalyzer = new FileSourceAnalyzer();
     }
 
     public Mi25Validator( OntologyManager ontologyManager,
@@ -76,6 +84,7 @@ public class Mi25Validator extends Validator {
                           Collection<ObjectRule> objectRules) {
         super( ontologyManager, cvMapping, objectRules);
         validatorReport = new ValidatorReport();
+        fileSourceAnalyzer = new FileSourceAnalyzer();
     }
 
     ///////////////////////////
@@ -94,71 +103,18 @@ public class Mi25Validator extends Validator {
         super.setCvRuleManager(new MICvRuleManager(manager, cvMappingRules));
     }
 
-    //////////////////////////
-    // Utility
-
-    /**
-     * Return a unique ID.
-     *
-     * @return a unique id.
-     */
-    synchronized private long getUniqueId() {
-        return ++uniqId;
-    }
-
-    /**
-     * Store the content of the given input stream into a temporary file and return its descriptor.
-     *
-     * @param is the input stream to store.
-     * @return a File descriptor describing a temporary file storing the content of the given input stream.
-     * @throws IOException if an IO error occur.
-     */
-    private File storeAsTemporaryFile( InputStream is ) throws IOException {
-
-        if ( is == null ) {
-            throw new IllegalArgumentException( "You must give a non null InputStream" );
-        }
-        // Create a temp file and write URL content in it.
-        File tempDirectory = new File( System.getProperty( "java.io.tmpdir", "tmp" ) );
-        if ( !tempDirectory.exists() ) {
-            if ( !tempDirectory.mkdirs() ) {
-                throw new IOException( "Cannot create temp directory: " + tempDirectory.getAbsolutePath() );
-            }
-        }
-
-        long id = getUniqueId();
-
-        File tempFile = File.createTempFile( "validator." + id, ".xml", tempDirectory );
-
-        BufferedReader in = new BufferedReader( new InputStreamReader( is ) );
-        try{
-
-            log.info( "The file is temporary store as: " + tempFile.getAbsolutePath() );
-
-            BufferedWriter out = new BufferedWriter( new FileWriter( tempFile ) );
-
-            try{
-                String line;
-                while ( ( line = in.readLine() ) != null ) {
-                    out.write( line );
-                }
-
-
-                out.flush();
-            }
-            finally {
-                out.close();
-            }
-        }
-        finally {
-            in.close();
-        }
-
-        return tempFile;
-    }
-
     /////////////////////////////
     // Validator
+
+    public void registerMolecularInteractionDataSources(){
+        Map<String, Object> mitabOptions = new HashMap<String, Object>();
+        mitabOptions.put(SOURCE_FORMAT, MolecularInteractionSource.mitab.toString());
+        Map<String, Object> xmlOptions = new HashMap<String, Object>();
+        xmlOptions.put(SOURCE_FORMAT, MolecularInteractionSource.psi25_xml.toString());
+
+        MolecularInteractionDataSourceFactory.registerDataSource(SimpleMitabDataSource.class, mitabOptions);
+        MolecularInteractionDataSourceFactory.registerDataSource(LightWeightSimplePsiXmlDataSource.class, xmlOptions);
+    }
 
     /**
      * Validate a file and use the user preferences to decide if run semantic and syntax validation or not
@@ -168,17 +124,21 @@ public class Mi25Validator extends Validator {
      */
     public ValidatorReport validate( File file ) throws ValidatorException {
         this.validatorReport.clear();
-
+        registerMolecularInteractionDataSources();
         try {
+            MolecularInteractionSource sourceFormat = fileSourceAnalyzer.getMolecularInteractionSourceFor(file);
+            Map<String, Object> requiredOptions = new HashMap<String, Object>();
+            requiredOptions.put(SOURCE_FORMAT, sourceFormat.toString());
 
-            // 1. Validate XML input using Schema (MIF)
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(file, requiredOptions);
+            // 1. Validate source syntax
             if ( userPreferences.isSaxValidationEnabled() ) {
-                if (false == validateSyntax(file)) {
+                if (false == validateSyntax(currentDataSource)) {
                     return this.validatorReport;
                 }
             }
 
-            validateSemantic(file);
+            validateSemantic(currentDataSource);
 
             return this.validatorReport;
 
@@ -187,6 +147,9 @@ public class Mi25Validator extends Validator {
         }
         finally {
             clearThreadLocals();
+            if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
+                ((MolecularInteractionFileDataSource)this.currentDataSource).close();
+            }
         }
     }
 
@@ -198,7 +161,42 @@ public class Mi25Validator extends Validator {
     public boolean validateSyntax(File file){
         this.validatorReport.getSyntaxMessages().clear();
 
-        return runSyntaxValidation(this.validatorReport, file);
+        registerMolecularInteractionDataSources();
+        try {
+            MolecularInteractionSource sourceFormat = fileSourceAnalyzer.getMolecularInteractionSourceFor(file);
+            Map<String, Object> requiredOptions = new HashMap<String, Object>();
+            requiredOptions.put(SOURCE_FORMAT, sourceFormat.toString());
+
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(file, requiredOptions);
+
+            boolean valid = runSyntaxValidation(validatorReport, this.currentDataSource);
+            if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
+                ((MolecularInteractionFileDataSource)this.currentDataSource).close();
+            }
+            return valid;
+
+        } catch ( Exception e ) {
+            log.error("Error while running syntax validation", e);
+            String msg = "An unexpected error occured while running the syntax validation: The file format is not recognized";
+            if( e.getMessage() != null ) {
+                msg = msg + ": " + e.getMessage();
+            }
+            final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
+            validatorReport.getSyntaxMessages().add(message);
+
+            return false;
+        }
+    }
+
+    /**
+     * Validate the syntax of a datasource.
+     * @param dataSource
+     * @return false if syntax not valid
+     */
+    public boolean validateSyntax(MolecularInteractionDataSource dataSource){
+        this.validatorReport.getSyntaxMessages().clear();
+
+        return runSyntaxValidation(this.validatorReport, dataSource);
     }
 
     /**
@@ -209,7 +207,31 @@ public class Mi25Validator extends Validator {
     public boolean validateSyntax(InputStream streamToValidate){
         this.validatorReport.getSyntaxMessages().clear();
 
-        return runSyntaxValidation(this.validatorReport, streamToValidate);
+        registerMolecularInteractionDataSources();
+        try {
+            OpenedInputStream openedStream = fileSourceAnalyzer.getMolecularInteractionSourceFor(streamToValidate);
+            Map<String, Object> requiredOptions = new HashMap<String, Object>();
+            requiredOptions.put(SOURCE_FORMAT, openedStream.getSource().toString());
+
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(openedStream, requiredOptions);
+
+            boolean valid = runSyntaxValidation(validatorReport, this.currentDataSource);
+            if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
+                ((MolecularInteractionFileDataSource)this.currentDataSource).close();
+            }
+            return valid;
+
+        } catch ( Exception e ) {
+            log.error("Error while running syntax validation", e);
+            String msg = "An unexpected error occured while running the syntax validation: The file format is not recognized";
+            if( e.getMessage() != null ) {
+                msg = msg + ": " + e.getMessage();
+            }
+            final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
+            validatorReport.getSyntaxMessages().add(message);
+
+            return false;
+        }
     }
 
     /**
@@ -218,12 +240,36 @@ public class Mi25Validator extends Validator {
      * @throws ValidatorException
      * @throws PsimiXmlReaderException
      */
-    public void validateSemantic(File file) throws ValidatorException, PsimiXmlReaderException {
+    public void validateSemantic(File file) throws ValidatorException {
         this.validatorReport.getSemanticMessages().clear();
         this.validatorReport.setInteractionCount(0);
 
-        runSemanticValidation(this.validatorReport, file);
+        registerMolecularInteractionDataSources();
+        try {
+            MolecularInteractionSource sourceFormat = fileSourceAnalyzer.getMolecularInteractionSourceFor(file);
+            Map<String, Object> requiredOptions = new HashMap<String, Object>();
+            requiredOptions.put(SOURCE_FORMAT, sourceFormat.toString());
+
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(file, requiredOptions);
+
+            validateSemantic(currentDataSource);
+
+            if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
+                ((MolecularInteractionFileDataSource)this.currentDataSource).close();
+            }
+
+        } catch ( Exception e ) {
+            throw new ValidatorException( "Unable to process input file:" + file.getAbsolutePath(), e );
+        }
     }
+
+    public void validateSemantic(MolecularInteractionDataSource dataSource) throws ValidatorException {
+        this.validatorReport.getSemanticMessages().clear();
+        this.validatorReport.setInteractionCount(0);
+
+        runSemanticValidation(this.validatorReport, dataSource);
+    }
+
 
     /**
      * validate the semantic of an inputstream and write the results in the report of this validator
@@ -232,10 +278,26 @@ public class Mi25Validator extends Validator {
      * @throws PsimiXmlReaderException
      */
     public void validateSemantic(InputStream streamToValidate) throws ValidatorException, PsimiXmlReaderException {
-        this.validatorReport.getSyntaxMessages().clear();
+        this.validatorReport.getSemanticMessages().clear();
         this.validatorReport.setInteractionCount(0);
 
-        runSemanticValidation(this.validatorReport, streamToValidate);
+        registerMolecularInteractionDataSources();
+        try {
+            OpenedInputStream openedStream = fileSourceAnalyzer.getMolecularInteractionSourceFor(streamToValidate);
+            Map<String, Object> requiredOptions = new HashMap<String, Object>();
+            requiredOptions.put(SOURCE_FORMAT, openedStream.getSource().toString());
+
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(openedStream, requiredOptions);
+
+            validateSemantic(currentDataSource);
+
+            if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
+                ((MolecularInteractionFileDataSource)this.currentDataSource).close();
+            }
+
+        } catch ( Exception e ) {
+            throw new ValidatorException( "Unable to process input stream", e );
+        }
     }
 
     /**
@@ -248,31 +310,32 @@ public class Mi25Validator extends Validator {
     public ValidatorReport validate( InputStream is ) throws ValidatorException {
 
         this.validatorReport.clear();
-
+        registerMolecularInteractionDataSources();
         try {
-            File tempFile = storeAsTemporaryFile( is );
+            OpenedInputStream openedStream = fileSourceAnalyzer.getMolecularInteractionSourceFor(is);
+            Map<String, Object> requiredOptions = new HashMap<String, Object>();
+            requiredOptions.put(SOURCE_FORMAT, openedStream.getSource().toString());
 
-            // close the original inputStream as it has been successfully read
-            is.close();
-
-
-            // 1. Validate XML input using Schema (MIF)
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(is, requiredOptions);
+            // 1. Validate source syntax
             if ( userPreferences.isSaxValidationEnabled() ) {
-                if (false == validateSyntax(tempFile)) {
+                if (false == validateSyntax(currentDataSource)) {
                     return this.validatorReport;
                 }
             }
 
-            validateSemantic(tempFile);
-
-            tempFile.delete();
+            validateSemantic(currentDataSource);
 
             return this.validatorReport;
 
         } catch ( Exception e ) {
-            throw new ValidatorException( "Unable to process input stream", e );
-        } finally{
+            throw new ValidatorException( "Unable to process input stream:", e );
+        }
+        finally {
             clearThreadLocals();
+            if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
+                ((MolecularInteractionFileDataSource)this.currentDataSource).close();
+            }
         }
     }
 
@@ -283,73 +346,32 @@ public class Mi25Validator extends Validator {
      * @return a collection of messages
      * @throws ValidatorException
      */
-    public ValidatorReport validate( EntrySet es ) throws ValidatorException {
+    public ValidatorReport validate( MolecularInteractionDataSource es ) throws ValidatorException {
 
         this.validatorReport.clear();
+        this.currentDataSource = es;
 
-        try{
-            for ( Entry entry : es.getEntries() ) {
-                boolean hasExperimentList = false;
-                boolean hasInteractorList = false;
-
-                if (entry.hasExperiments()){
-                    hasExperimentList = true;
-                    for ( ExperimentDescription experiment : entry.getExperiments() ) {
-
-                        // cv mapping
-                        Collection<ValidatorMessage> messages = checkCvMapping( experiment, "/experiment/" );
-
-                        if( ! messages.isEmpty() ){
-                            checkExperiment(messages, experiment);
-                        }
-                        else{
-                            checkExperiment(messages, experiment);
-                        }
-
-                        this.validatorReport.getSemanticMessages().addAll(messages);
-                    }
-                }
-
-                if (entry.hasInteractors()){
-                    hasInteractorList = true;
-                    for ( Interactor interactor : entry.getInteractors() ) {
-                        // cv mapping
-                        Collection<ValidatorMessage> messages = checkCvMapping( interactor, "/interactor/" );
-
-                        if( ! messages.isEmpty() ){
-                            checkInteractor(messages, interactor);
-                        }
-                        else{
-                            checkInteractor(messages, interactor);
-                        }
-
-                        this.validatorReport.getSemanticMessages().addAll(messages);
-                    }
-                }
-
-                for ( Interaction interaction : entry.getInteractions() ) {
-
-                    // cv mapping
-                    Collection<ValidatorMessage> messages = checkCvMapping( interaction, "/interactionEvidence/" );
-                    if( ! messages.isEmpty() )
-                        messages = convertToMi25Messages( messages, interaction );
-
-                    // object rule
-                    checkInteraction(messages, interaction, hasExperimentList, hasInteractorList);
-
-                    this.validatorReport.getSemanticMessages().addAll(messages);
+        try {
+            // 1. Validate source syntax
+            if ( userPreferences.isSaxValidationEnabled() ) {
+                if (false == validateSyntax(currentDataSource)) {
+                    return this.validatorReport;
                 }
             }
 
-            // cluster all messages!!
-            Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(this.validatorReport.getSemanticMessages());
-            this.validatorReport.setSemanticMessages(clusteredValidatorMessages);
-        }
-        finally{
-            clearThreadLocals();
-        }
+            validateSemantic(currentDataSource);
 
-        return this.validatorReport;
+            return this.validatorReport;
+
+        } catch ( Exception e ) {
+            throw new ValidatorException( "Unable to process input stream:", e );
+        }
+        finally {
+            clearThreadLocals();
+            if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
+                ((MolecularInteractionFileDataSource)this.currentDataSource).close();
+            }
+        }
     }
 
     //////////////////////////////
@@ -359,445 +381,364 @@ public class Mi25Validator extends Validator {
      * Runs the semantic validation and append messages to the given report.
      *
      * @param report the report to be completed.
-     * @param nis the data stream to be validated.
+     * @param dataSource the molecular interaction source to be validated.
      * @throws PsimiXmlReaderException
      * @throws ValidatorException
      */
-    private void runSemanticValidation(ValidatorReport report, InputStream nis) throws PsimiXmlReaderException, ValidatorException {
+    private void runSemanticValidation(ValidatorReport report, MolecularInteractionDataSource dataSource) throws ValidatorException {
+        if (dataSource == null){
+            throw new ValidatorException("The molecular interaction datasource could not be loaded because the format is not recognized.");
+        }
 
         // Build the collection of messages in which we will accumulate the output of the validator
         Collection<ValidatorMessage> messages = report.getSemanticMessages();
-
-        List<IndexedEntry> entries = null;
-
-        try {
-            // then run the object rules (if any)
-            final Set<ObjectRule> rules = getObjectRules();
-            if ( (rules != null && !rules.isEmpty()) || getCvRuleManager() != null) {
-                if( entries == null ) {
-                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( nis );
-                    entries = psiReader.getIndexedEntries();
-                }
-
-                processSemanticValidation(report, messages, entries);
-            }
-
-        } catch(Exception e){
-            PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
-
-            StringBuffer messageBuffer = schemaRule.createMessageFromException(e);
-            messageBuffer.append("\n The validator reported at least " + messages.size() + " messages but the error in the xml file need " +
-                    "to be fixed before finishing the validation of the file.");
-
-            Mi25ClusteredContext context = new Mi25ClusteredContext();
-
-            messages.clear();
-            messages.add( new ValidatorMessage( messageBuffer.toString(),
-                    MessageLevel.FATAL,
-                    context,
-                    schemaRule ) );
-        }
-        finally {
-            clearThreadLocals();
-        }
+        processSemanticValidation(report, messages, dataSource);
     }
 
-    /**
-     * Runs the semantic validation and append messages to the given report.
-     *
-     * @param report the report to be completed.
-     * @param file the file to be validated.
-     * @throws PsimiXmlReaderException
-     * @throws ValidatorException
-     */
-    private void runSemanticValidation(ValidatorReport report, File file) throws PsimiXmlReaderException, ValidatorException {
+    private void processSemanticValidation(ValidatorReport report, Collection<ValidatorMessage> messages, MolecularInteractionDataSource dataSource) throws ValidatorException {
 
-        // Build the collection of messages in which we will accumulate the output of the validator
-        Collection<ValidatorMessage> messages = report.getSemanticMessages();
+        Collection<ValidatorMessage> interactionMessages = super.validate(dataSource);
+        // only validate streaming interaction source for now
+        if (dataSource instanceof StreamingInteractionSource){
+            StreamingInteractionSource interactionSource = (StreamingInteractionSource) dataSource;
 
-        List<IndexedEntry> entries = null;
-
-        try {
-            // then run the object rules (if any)
-            final Set<ObjectRule> rules = getObjectRules();
-            if ( (rules != null && !rules.isEmpty()) || getCvRuleManager() != null) {
-                if( entries == null ) {
-                    PsimiXmlLightweightReader psiReader = new PsimiXmlLightweightReader( file );
-                    entries = psiReader.getIndexedEntries();
-                }
-
-                processSemanticValidation(report, messages, entries);
-            }
-
-        } catch(Exception e){
-            PsimiXmlSchemaRule schemaRule = new PsimiXmlSchemaRule(this.ontologyMngr);
-
-            StringBuffer messageBuffer = schemaRule.createMessageFromException(e);
-            messageBuffer.append("\n The validator reported at least " + messages.size() + " messages but the error in the xml file need " +
-                    "to be fixed before finishing the validation of the file.");
-
-            Mi25Context context = new Mi25Context();
-
-            messages.clear();
-            messages.add( new ValidatorMessage( messageBuffer.toString(),
-                    MessageLevel.FATAL,
-                    context,
-                    schemaRule ) );
-        }
-    }
-
-    private void processSemanticValidation(ValidatorReport report, Collection<ValidatorMessage> messages, List<IndexedEntry> entries) throws PsimiXmlReaderException, ValidatorException {
-        for ( IndexedEntry entry : entries ) {
-            boolean hasExperimentList = false;
-            boolean hasInteractorList = false;
-            final Iterator<ExperimentDescription> experimentIterator = entry.unmarshallExperimentIterator();
-            if (experimentIterator.hasNext()){
-                hasExperimentList = true;
-
-                while ( experimentIterator.hasNext() ) {
-                    ExperimentDescription experiment = experimentIterator.next();
-
-                    // check using cv mapping rules
-                    Collection<ValidatorMessage> validatorMessages =
-                            super.checkCvMapping( experiment, "/experiment/" );
-
-                    if (validatorMessages != null){
-                        validatorMessages = convertToMi25Messages( validatorMessages, experiment );
-
-                        validatorMessages.addAll(checkExperiment(validatorMessages, experiment));
-                    }
-                    else {
-                        validatorMessages = checkExperiment(validatorMessages, experiment);
-                    }
-
-                    if( !validatorMessages.isEmpty() ) {
-                        updateLineNumber( validatorMessages, experiment.getLineNumber() );
-                    }
-
-                    // append messages to the global collection
-                    messages.addAll( validatorMessages );
-                }
-            }
-
-            // now process interactors
-            final Iterator<Interactor> interactorIterator = entry.unmarshallInteractorIterator();
-
-            if (interactorIterator.hasNext()){
-                hasInteractorList = true;
-
-                while ( interactorIterator.hasNext() ) {
-                    Interactor interactor = interactorIterator.next();
-
-                    // check using cv mapping rules
-                    Collection<ValidatorMessage> validatorMessages =
-                            super.checkCvMapping( interactor, "/interactor/" );
-
-                    if (validatorMessages != null){
-                        validatorMessages = convertToMi25Messages( validatorMessages, interactor );
-
-                        validatorMessages.addAll(checkInteractor(validatorMessages, interactor));
-                    }
-                    else {
-                        validatorMessages = checkInteractor(validatorMessages, interactor);
-                    }
-
-                    if( !validatorMessages.isEmpty() ) {
-                        updateLineNumber( validatorMessages, interactor.getLineNumber() );
-                    }
-
-                    // append messages to the global collection
-                    messages.addAll( validatorMessages );
-                }
-            }
+            Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionEvidencesIterator();
 
             // now process interactions
-            Iterator<Interaction> interactionIterator = entry.unmarshallInteractionIterator();
             while ( interactionIterator.hasNext() ) {
-                Interaction interaction = interactionIterator.next();
+                InteractionEvidence interaction = interactionIterator.next();
 
                 // check using cv mapping rules
-                Collection<ValidatorMessage> interactionMessages =
-                        super.checkCvMapping( interaction, "/interactionEvidence/" );
+                interactionMessages.addAll(super.checkCvMapping(interaction, "/interactionEvidence/"));
 
-                if (interactionMessages != null){
-                    interactionMessages = convertToMi25Messages( interactionMessages, interaction );
-
-                    interactionMessages.addAll(checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList));
-                }
-                else {
-                    interactionMessages = checkInteraction(interactionMessages, interaction, hasExperimentList, hasInteractorList);
-                }
+                checkInteraction(interactionMessages, interaction);
 
                 // add line number
                 if( !interactionMessages.isEmpty() ) {
-                    long lineNumber = entry.getInteractionLineNumber( interaction.getId() );
-                    updateLineNumber( interactionMessages, interaction.getLineNumber() );
+                    interactionMessages = convertToMi25Messages( interactionMessages, interaction );
                 }
 
                 // append messages to the global collection
                 messages.addAll( interactionMessages );
             }
-        }
 
-        // cluster all messages!!
-        Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
-        report.setSemanticMessages(clusteredValidatorMessages);
+            // cluster all messages!!
+            Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
+            report.setSemanticMessages(clusteredValidatorMessages);
+        }
+        else {
+            throw new ValidatorException("The molecular interaction datasource is not an InteractionStreaming data source and cannot be validated.");
+        }
     }
 
-    private Collection<ValidatorMessage> checkInteraction(Collection<ValidatorMessage> messages, Interaction interaction, boolean hasExperimentList, boolean hasInteractorList) throws ValidatorException {
+    private void checkInteraction(Collection<ValidatorMessage> messages, InteractionEvidence interaction) throws ValidatorException {
         // run the interaction specialized rules
-        Collection<ValidatorMessage> interactionMessages = super.validate( interaction );
+        messages.addAll(super.validate( interaction ));
 
-        if (!hasExperimentList){
-            for (ExperimentDescription experiment : interaction.getExperiments()){
-                checkExperiment(interactionMessages, experiment);
-            }
+        if (interaction.getExperiment() != null){
+            checkExperiment(messages, interaction.getExperiment());
         }
 
-        for (Confidence c : interaction.getConfidencesList()){
-            checkConfidence(interactionMessages, c);
+        for (psidev.psi.mi.jami.model.Confidence c : interaction.getExperimentalConfidences()){
+            checkConfidence(messages, c);
         }
 
-        for (InteractionType it : interaction.getInteractionTypes()){
+        for (Parameter p : interaction.getExperimentalParameters()){
+            checkParameter(messages, p);
+        }
+
+        if (interaction.getType() != null){
             // run the interaction type specialized rules
-            interactionMessages.addAll(super.validate( it ));
+            checkCvTerm(messages, interaction.getType());
         }
 
-        for (Participant p : interaction.getParticipants()){
-            checkParticipant(interactionMessages, p, hasInteractorList);
-
-            for (Feature f : p.getFeatures()){
-                checkFeature(interactionMessages, f);
+        if (!interaction.getXrefs().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : interaction.getXrefs()){
+                messages.addAll(super.validate( ref ));
             }
         }
 
-        // append messages to the global collection
-        if( ! interactionMessages.isEmpty() )
-            messages.addAll( convertToMi25Messages( interactionMessages, interaction ) );
-        return interactionMessages;
+        if (!interaction.getIdentifiers().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : interaction.getIdentifiers()){
+                messages.addAll(super.validate( ref ));
+            }
+        }
+
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            checkParticipant(messages, p);
+        }
     }
 
-    private Collection<ValidatorMessage> checkExperiment(Collection<ValidatorMessage> messages, ExperimentDescription experiment) throws ValidatorException {
+    private void checkExperiment(Collection<ValidatorMessage> messages, Experiment experiment) throws ValidatorException {
         // run the experiment specialized rules
-        Collection<ValidatorMessage> validatorMessages = super.validate( experiment );
+        messages.addAll(super.validate(experiment));
 
         // run the bibref specialized rules
-        validatorMessages.addAll(super.validate( experiment.getBibref() ));
-
-        // run the feature detection method specialized rules
-        validatorMessages.addAll(super.validate( experiment.getFeatureDetectionMethod() ));
+        if (experiment.getPublication() != null){
+            checkPublication(messages, experiment.getPublication());
+        }
 
         // run the interaction detection method specialized rules
-        validatorMessages.addAll(super.validate( experiment.getInteractionDetectionMethod() ));
+        checkCvTerm(messages, experiment.getInteractionDetectionMethod() );
 
-        // run the participant identification method specialized rules
-        validatorMessages.addAll(super.validate( experiment.getParticipantIdentificationMethod() ));
-
-        for (Confidence c : experiment.getConfidences()){
-            checkConfidence(validatorMessages, c);
+        if (experiment.getHostOrganism() != null){
+            checkOrganism(messages, experiment.getHostOrganism());
         }
 
-        for (Organism o : experiment.getHostOrganisms()){
-            checkOrganism(validatorMessages, o);
+        if (!experiment.getXrefs().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : experiment.getXrefs()){
+                messages.addAll(super.validate( ref ));
+            }
         }
-
-        if( ! validatorMessages.isEmpty() )
-            messages.addAll( convertToMi25Messages( validatorMessages, experiment ) );
-        return validatorMessages;
     }
 
-    private Collection<ValidatorMessage> checkInteractor(Collection<ValidatorMessage> messages, Interactor interactor) throws ValidatorException {
+    private void checkPublication(Collection<ValidatorMessage> messages, Publication publication) throws ValidatorException {
+        // run the experiment specialized rules
+        messages.addAll(super.validate( publication ));
+
+        // run the bibref specialized rules
+        if (publication.getSource() != null){
+            checkCvTerm(messages, publication.getSource());
+        }
+
+        if (!publication.getIdentifiers().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : publication.getIdentifiers()){
+                messages.addAll(super.validate( ref ));
+            }
+        }
+        if (!publication.getXrefs().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : publication.getXrefs()){
+                messages.addAll(super.validate( ref ));
+            }
+        }
+    }
+
+    private void checkInteractor(Collection<ValidatorMessage> messages, psidev.psi.mi.jami.model.Interactor interactor) throws ValidatorException {
         // run the interactor specialized rules
-        final Collection<ValidatorMessage> validatorMessages = super.validate( interactor );
+        messages.addAll(super.validate(interactor));
 
         // run the interactor type specialized rules
-        validatorMessages.addAll(super.validate( interactor.getInteractorType() ));
+        checkCvTerm(messages, interactor.getType() );
 
-        if (interactor.getOrganism() != null){
-            Organism o = interactor.getOrganism();
-
-            checkOrganism(validatorMessages, o);
+        if (!interactor.getIdentifiers().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : interactor.getIdentifiers()){
+                messages.addAll(super.validate( ref ));
+            }
+        }
+        if (!interactor.getXrefs().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : interactor.getXrefs()){
+                messages.addAll(super.validate( ref ));
+            }
+        }
+        if (!interactor.getAliases().isEmpty()){
+            for (Alias ref : interactor.getAliases()){
+                messages.addAll(super.validate( ref ));
+            }
         }
 
-        if( ! validatorMessages.isEmpty() )
-            messages.addAll( convertToMi25Messages( validatorMessages, interactor ) );
-
-        return validatorMessages;
+        if (interactor.getOrganism() != null){
+            checkOrganism(messages, interactor.getOrganism());
+        }
     }
 
-    private void checkParticipant(Collection<ValidatorMessage> validatorMessages, Participant p, boolean hasInteractorList) throws ValidatorException {
+    private void checkParticipant(Collection<ValidatorMessage> validatorMessages, ParticipantEvidence p) throws ValidatorException {
         // run the participant specialized rules
         validatorMessages.addAll(super.validate( p ));
 
-        if (p.getInteractor() != null && !hasInteractorList){
+        if (p.getInteractor() != null){
             checkInteractor(validatorMessages, p.getInteractor());
         }
 
         // run the biological roles specialized rules
-        validatorMessages.addAll(super.validate( p.getBiologicalRole() ));
+        checkCvTerm(validatorMessages, p.getBiologicalRole());
 
-        for (ParticipantIdentificationMethod m : p.getParticipantIdentificationMethods()){
+        if (p.getIdentificationMethod() != null){
             // run the participant identification specialized rules
-            validatorMessages.addAll(super.validate( m ));
+            checkCvTerm(validatorMessages, p.getIdentificationMethod());
         }
-        for (ExperimentalRole role : p.getExperimentalRoles()){
-            // run the experimental role specialized rules
-            validatorMessages.addAll(super.validate( role ));
-        }
-        for (Confidence c : p.getConfidenceList()){
+
+        checkCvTerm(validatorMessages, p.getExperimentalRole());
+
+        for (psidev.psi.mi.jami.model.Confidence c : p.getConfidences()){
             // run the confidence specialized rules
-            validatorMessages.addAll(super.validate( c ));
+            checkConfidence(validatorMessages, c );
         }
 
-        for (ExperimentalPreparation ep : p.getParticipantExperimentalPreparations()){
+        for (Parameter c : p.getParameters()){
+            // run the confidence specialized rules
+            checkParameter(validatorMessages, c);
+        }
+
+        for (CvTerm ep : p.getExperimentalPreparations()){
             // run the experimental preparation specialized rules
-            validatorMessages.addAll(super.validate( ep ));
+            checkCvTerm(validatorMessages, ep );
         }
 
-        for (ExperimentalInteractor ei : p.getExperimentalInteractors()){
-            // run the experimental interactor specialized rules
-            if (ei.getInteractor() != null && !hasInteractorList){
-                checkInteractor(validatorMessages, ei.getInteractor());
+        if (p.getExpressedInOrganism() != null){
+            checkOrganism(validatorMessages, p.getExpressedInOrganism());
+        }
+
+        if (!p.getXrefs().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : p.getXrefs()){
+                validatorMessages.addAll(super.validate( ref ));
+            }
+        }
+        if (!p.getAliases().isEmpty()){
+            for (Alias ref : p.getAliases()){
+                validatorMessages.addAll(super.validate( ref ));
             }
         }
 
-        for (HostOrganism o : p.getHostOrganisms()){
-            checkOrganism(validatorMessages, o.getOrganism());
+        for (FeatureEvidence f : p.getFeatureEvidences()){
+            checkFeature(validatorMessages, f);
         }
     }
 
-    private void checkFeature(Collection<ValidatorMessage> validatorMessages, Feature f ) throws ValidatorException {
+    private void checkFeature(Collection<ValidatorMessage> validatorMessages, FeatureEvidence f ) throws ValidatorException {
         // run the feature specialized rules
         validatorMessages.addAll(super.validate( f ));
 
         // run the feature detection method specialized rules
-        validatorMessages.addAll(super.validate( f.getFeatureDetectionMethod() ));
+        if (f.getDetectionMethod() != null){
+            checkCvTerm(validatorMessages, f.getDetectionMethod());
+        }
 
         // run the feature type specialized rules
-        validatorMessages.addAll(super.validate( f.getFeatureType() ));
+        if (f.getType() != null){
+            checkCvTerm(validatorMessages, f.getType());
+        }
 
-        for (Range r : f.getFeatureRanges()){
+        if (!f.getXrefs().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : f.getXrefs()){
+                validatorMessages.addAll(super.validate( ref ));
+            }
+        }
+
+        if (!f.getIdentifiers().isEmpty()){
+            for (psidev.psi.mi.jami.model.Xref ref : f.getXrefs()){
+                validatorMessages.addAll(super.validate( ref ));
+            }
+        }
+
+        for (psidev.psi.mi.jami.model.Range r : f.getRanges()){
             // run the start status specialized rules
-            validatorMessages.addAll(super.validate( r.getStartStatus() ));
+            checkCvTerm(validatorMessages, r.getStart().getStatus());
 
             // run the end status specialized rules
-            validatorMessages.addAll(super.validate( r.getEndStatus() ));
+            checkCvTerm(validatorMessages, r.getEnd().getStatus());
         }
     }
 
-    private void checkConfidence(Collection<ValidatorMessage> validatorMessages, Confidence c ) throws ValidatorException {
+    private void checkConfidence(Collection<ValidatorMessage> validatorMessages, psidev.psi.mi.jami.model.Confidence c ) throws ValidatorException {
+        if (c.getType() != null){
+            // run the unit specialized rules
+            checkCvTerm(validatorMessages, c.getType());
+        }
+
         if (c.getUnit() != null){
             // run the unit specialized rules
-            validatorMessages.addAll(super.validate( c.getUnit() ));
+            checkCvTerm(validatorMessages, c.getUnit());
         }
     }
 
-    private void checkOrganism(Collection<ValidatorMessage> validatorMessages, Organism o ) throws ValidatorException {
+    private void checkParameter(Collection<ValidatorMessage> validatorMessages, Parameter c ) throws ValidatorException {
+        if (c.getType() != null){
+            // run the unit specialized rules
+            checkCvTerm(validatorMessages, c.getType());
+        }
+
+        if (c.getUnit() != null){
+            // run the unit specialized rules
+            checkCvTerm(validatorMessages, c.getUnit());
+        }
+    }
+
+    private void checkCvTerm(Collection<ValidatorMessage> validatorMessages, CvTerm c ) throws ValidatorException {
+        validatorMessages.addAll(super.validate(c));
+
+        if (!c.getSynonyms().isEmpty()){
+            for (Alias alias : c.getSynonyms()){
+                validatorMessages.addAll(super.validate( alias ));
+            }
+        }
+
+        if (!c.getXrefs().isEmpty()){
+            // run the unit specialized rules
+            for (psidev.psi.mi.jami.model.Xref ref : c.getXrefs()){
+                validatorMessages.addAll(super.validate( ref ));
+            }
+        }
+
+        if (!c.getIdentifiers().isEmpty()){
+            // run the unit specialized rules
+            for (psidev.psi.mi.jami.model.Xref ref : c.getIdentifiers()){
+                validatorMessages.addAll(super.validate( ref ));
+            }
+        }
+    }
+
+    private void checkOrganism(Collection<ValidatorMessage> validatorMessages, psidev.psi.mi.jami.model.Organism o ) throws ValidatorException {
 
         // run the organism specialized rules
         validatorMessages.addAll(super.validate( o ));
 
         if (o.getCellType() != null){
             // run the celltype specialized rules
-            validatorMessages.addAll(super.validate( o.getCellType() ));
+            checkCvTerm(validatorMessages, o.getCellType());
         }
 
         if (o.getTissue() != null){
             // run the tissue specialized rules
-            validatorMessages.addAll(super.validate( o.getTissue() ));
+            checkCvTerm(validatorMessages, o.getTissue());
         }
 
         if (o.getCompartment() != null){
             // run the compartment specialized rules
-            validatorMessages.addAll(super.validate( o.getCompartment() ));
+            checkCvTerm(validatorMessages, o.getCompartment());
+        }
+
+        if (!o.getAliases().isEmpty()){
+            for (Alias alias : o.getAliases()){
+                validatorMessages.addAll(super.validate( alias ));
+            }
         }
     }
 
-    /**
-     * Runs the XML syntax validation and append messages to the report if any.
-     *
-     * @param report report in which errors should be reported.
-     * @param nis stream of data to be validated.
-     * @return true is the validation passed, false otherwise.
-     */
-    private boolean runSyntaxValidation(ValidatorReport report, InputStream nis) {
+    private boolean runSyntaxValidation(ValidatorReport report, MolecularInteractionDataSource dataSource) {
 
-        if (log.isDebugEnabled()) log.debug("[SAX Validation] enabled via user preferences" );
-        SaxReport saxReport = null;
-        try {
-            saxReport = SaxValidatorHandler.validate( nis );
-        } catch (Exception e) {
-            log.error("SAX error while running syntax validation", e);
-            String msg = "An unexpected error occured while running the syntax validation";
-            if( e.getMessage() != null ) {
-                msg = msg + ": " + e.getMessage();
-            }
+        if (log.isDebugEnabled()) log.debug("[Syntax Validation] enabled via user preferences" );
+
+        if (dataSource == null){
+            String msg = "The molecular interaction datasource could not be loaded";
             final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
             report.getSyntaxMessages().add(message);
-
-            return false; // abort
-        }
-
-        return processSyntaxValidation(report, saxReport);
-    }
-
-    /**
-     * Runs the XML syntax validation and append messages to the report if any.
-     *
-     * @param report report in which errors should be reported.
-     * @param file file to be validated.
-     * @return true is the validation passed, false otherwise.
-     */
-    private boolean runSyntaxValidation(ValidatorReport report, File file) {
-
-        if (log.isDebugEnabled()) log.debug("[SAX Validation] enabled via user preferences" );
-        SaxReport saxReport = null;
-        try {
-            saxReport = SaxValidatorHandler.validate( file );
-        } catch (Exception e) {
-            log.error("SAX error while running syntax validation", e);
-            String msg = "An unexpected error occured while running the syntax validation";
-            if( e.getMessage() != null ) {
-                msg = msg + ": " + e.getMessage();
-            }
-            final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
-            report.getSyntaxMessages().add(message);
-
-            return false; // abort
-        }
-
-        return processSyntaxValidation(report, saxReport);
-    }
-
-    private boolean processSyntaxValidation(ValidatorReport report, SaxReport saxReport) {
-        if ( !saxReport.isValid() ) {
-
-            if (log.isDebugEnabled()) log.debug( "[SAX Validation] File not PSI 2.5 valid." );
-
-            // show an error message
-            Collection<SaxMessage> messages = saxReport.getMessages();
-            if (log.isDebugEnabled()) {
-                log.debug( messages.size() + " message" + ( messages.size() > 1 ? "s" : "" ) + "" );
-            }
-            Collection<ValidatorMessage> validatorMessages = new ArrayList<ValidatorMessage>( messages.size() );
-            for ( SaxMessage saxMessage : messages ) {
-                // convert SaxMessage into a ValidatorMessage
-                ValidatorMessage vm = new ValidatorMessage( saxMessage, MessageLevel.FATAL );
-                validatorMessages.add( vm );
-            }
-
-            report.getSyntaxMessages().addAll( validatorMessages );
-
-            if (log.isDebugEnabled()) log.debug( "Abort semantic validation." );
             return false;
-        } else {
-            if (log.isDebugEnabled()) log.debug( "[SAX Validation] File is valid." );
         }
+        else if (dataSource instanceof MolecularInteractionFileDataSource){
+            MolecularInteractionFileDataSource fileSource = (MolecularInteractionFileDataSource) dataSource;
 
-        return true;
+            FileSyntaxRule syntaxRule = new FileSyntaxRule(ontologyMngr);
+            try {
+                report.getSyntaxMessages().addAll(syntaxRule.check(fileSource));
+                return report.getSyntaxMessages().isEmpty();
+            } catch (ValidatorException e) {
+                log.error("Error while running syntax validation", e);
+                String msg = "An unexpected error occured while running the syntax validation";
+                if( e.getMessage() != null ) {
+                    msg = msg + ": " + e.getMessage();
+                }
+                final ValidatorMessage message = new ValidatorMessage(msg, MessageLevel.FATAL );
+                report.getSyntaxMessages().add(message);
+
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
     }
 
-    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, Interaction interaction ) {
+    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, InteractionEvidence interaction ) {
         Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
 
         for ( ValidatorMessage message : messages ) {
@@ -805,69 +746,19 @@ public class Mi25Validator extends Validator {
 
             if (message.getContext() instanceof Mi25Context){
                 context = (Mi25Context) message.getContext();
-            }
-            else {
-                context = new Mi25Context();
-            }
-
-            context.setId( interaction.getId() );
-            context.setObjectLabel("interaction");
-            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
-        }
-
-        return convertedMessages;
-    }
-
-    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, ExperimentDescription experiment ) {
-        Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
-
-        for ( ValidatorMessage message : messages ) {
-            Mi25Context context = null;
-
-            if (message.getContext() instanceof Mi25Context){
-                context = (Mi25Context) message.getContext();
-            }
-            else {
-                context = new Mi25Context();
-            }
-
-            context.setId( experiment.getId() );
-            context.setObjectLabel("experiment");
-            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
-        }
-
-        return convertedMessages;
-    }
-
-    private Collection<ValidatorMessage> convertToMi25Messages( Collection<ValidatorMessage> messages, Interactor interactor ) {
-        Collection<ValidatorMessage> convertedMessages = new ArrayList<ValidatorMessage>( messages.size() );
-
-        for ( ValidatorMessage message : messages ) {
-            Mi25Context context = null;
-
-            if (message.getContext() instanceof Mi25Context){
-                context = (Mi25Context) message.getContext();
-            }
-            else {
-                context = new Mi25Context();
-            }
-
-            context.setId( interactor.getId() );
-            context.setObjectLabel("interactor");
-            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
-        }
-
-        return convertedMessages;
-    }
-
-    private void updateLineNumber( Collection<ValidatorMessage> validatorMessages, int lineNumber ) {
-        if( lineNumber > 0 ) {
-            for ( ValidatorMessage msg : validatorMessages ) {
-                if( msg.getContext() instanceof Mi25Context ) {
-                    ((Mi25Context) msg.getContext() ).setLineNumber( lineNumber );
+                if (!context.getObjectLabel().equals("interaction")){
+                    context.addAssociatedContext(RuleUtils.buildContext(interaction, "interaction"));
                 }
             }
+            else {
+                context = RuleUtils.buildContext(interaction, "interaction");
+                context.setContext(message.getContext().getContext());
+            }
+
+            convertedMessages.add( new ValidatorMessage( message.getMessage(), message.getLevel(), context, message.getRule() ) );
         }
+
+        return convertedMessages;
     }
 
     public Collection<ValidatorMessage> clusterByMessagesAndRules (Collection<ValidatorMessage> messages){
@@ -954,5 +845,7 @@ public class Mi25Validator extends Validator {
         DatabaseAccessionRule.closeGeneralCacheAdministrator();
         // close GeneralCacheAdministrator for OntologyManagerContext
         OntologyManagerContext.removeInstance();
+        // close Mi25ValidatorContext
+        Mi25ValidatorContext.removeInstance();
     }
 }
