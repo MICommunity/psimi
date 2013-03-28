@@ -1,6 +1,5 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
@@ -11,7 +10,7 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.Collection;
 
 /**
- * ExperimentFullCoverageRule Tester.
+ * FullCoverageRule Tester.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -35,7 +34,7 @@ public class ExperimentFullCoverageRuleTest extends AbstractRuleTest {
 
         exp.getAttributes().add(new Attribute("MI:0957", "full coverage", ""));
 
-        ExperimentFullCoverageRule rule = new ExperimentFullCoverageRule( ontologyMaganer );
+        FullCoverageRule rule = new FullCoverageRule( ontologyMaganer );
 
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
@@ -54,7 +53,7 @@ public class ExperimentFullCoverageRuleTest extends AbstractRuleTest {
 
         exp.getAttributes().add(new Attribute("journal", "Science (0036-8075)"));
 
-        ExperimentFullCoverageRule rule = new ExperimentFullCoverageRule( ontologyMaganer );
+        FullCoverageRule rule = new FullCoverageRule( ontologyMaganer );
 
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
@@ -73,7 +72,7 @@ public class ExperimentFullCoverageRuleTest extends AbstractRuleTest {
 
         exp.getAttributes().add(new Attribute("MI:0959", "imex curation", ""));
 
-        ExperimentFullCoverageRule rule = new ExperimentFullCoverageRule( ontologyMaganer );
+        FullCoverageRule rule = new FullCoverageRule( ontologyMaganer );
 
 
         final Collection<ValidatorMessage> messages = rule.check( exp );

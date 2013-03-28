@@ -125,6 +125,6 @@ public class InteractorCrossReference2CrossReferenceTypeDependencyRule extends O
     }
 
     public String getId() {
-        return "R50";
+        return "R80";
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * ExperimentFullCoverageRule Tester.
+ * FullCoverageRule Tester.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id: ExperimentBibRefRuleTest.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0

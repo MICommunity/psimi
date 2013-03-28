@@ -74,6 +74,6 @@ public class InteractorTypeRule extends ObjectRule<psidev.psi.mi.jami.model.Inte
     }
 
     public String getId() {
-        return "R38";
+        return "R72";
     }
 }

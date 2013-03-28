@@ -64,6 +64,6 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
     }
 
     public String getId() {
-        return "R35";
+        return "R70";
     }
 }

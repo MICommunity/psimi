@@ -46,7 +46,6 @@ public class FeatureRangeSyntaxRule extends ObjectRule<MolecularInteractionFileD
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
         Collection<FileSourceError> wrongRanges = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.invalid_feature_range.toString());
-        wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.feature_without_ranges.toString()));
         wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_range_position.toString()));
         wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_range_status.toString()));
 

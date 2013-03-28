@@ -149,7 +149,7 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
     }
 
     public String getId() {
-        return "R48";
+        return "R86";
     }
 
     //////////////////////

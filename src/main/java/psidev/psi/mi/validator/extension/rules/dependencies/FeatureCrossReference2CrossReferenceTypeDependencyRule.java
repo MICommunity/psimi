@@ -128,6 +128,6 @@ public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends Obje
     }
 
     public String getId() {
-        return "R50";
+        return "R81";
     }
 }

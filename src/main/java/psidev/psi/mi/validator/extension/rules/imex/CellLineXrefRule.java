@@ -91,6 +91,6 @@ public class CellLineXrefRule extends ObjectRule<Organism>{
     }
 
     public String getId() {
-        return "R26";
+        return "R62";
     }
 }

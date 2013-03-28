@@ -32,6 +32,7 @@ import java.util.*;
 
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.INTERACTION_DATABASE_MI_REF;
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.collectAccessions;
+import static psidev.psi.mi.validator.extension.rules.RuleUtils.collectNames;
 
 /**
  * Checks that the given interaction does have an identity xref to a valid interaction database, as defined in the
@@ -76,8 +77,9 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
             final OntologyAccess access = getMiOntology();
             final Set<OntologyTermI> dbTerms = access.getValidTerms( INTERACTION_DATABASE_MI_REF, true, false );
             final Set<String> interactionDbMis = collectAccessions( dbTerms );
+            final Set<String> interactionDbs = collectNames(dbTerms);
 
-            final Collection<Xref> dbRefs = XrefUtils.searchAllXrefsHavingDatabase( interaction.getIdentifiers(), interactionDbMis);
+            final Collection<Xref> dbRefs = XrefUtils.searchAllXrefsHavingDatabase( interaction.getIdentifiers(), interactionDbMis, interactionDbs);
             if( dbRefs.isEmpty() ) {
                 Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
                 String dbList = buildDbList( interaction.getIdentifiers() );
@@ -91,8 +93,6 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
                                                     MessageLevel.ERROR,
                                                     context,
                                                     this ) );
-
-                // TODO should we allow any other databases than interaction databases here ?
             }
         }
 
@@ -119,6 +119,6 @@ public class InteractionSourceIdentityXrefRule extends Mi25InteractionRule {
     }
 
     public String getId() {
-        return "R37";
+        return "R71";
     }
 }

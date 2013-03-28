@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules.imex;
+package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
@@ -52,6 +52,6 @@ public class InteractionParticipantRule extends Mi25InteractionRule {
     }
 
     public String getId() {
-        return "R36";
+        return "R26";
     }
 }

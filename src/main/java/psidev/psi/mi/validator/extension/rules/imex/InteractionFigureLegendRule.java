@@ -73,6 +73,6 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
     }
 
     public String getId() {
-        return "R34";
+        return "R69";
     }
 }

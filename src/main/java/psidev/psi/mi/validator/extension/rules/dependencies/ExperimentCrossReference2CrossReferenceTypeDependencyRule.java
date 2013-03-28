@@ -117,6 +117,6 @@ public class ExperimentCrossReference2CrossReferenceTypeDependencyRule extends M
     }
 
     public String getId() {
-        return "R43";
+        return "R78";
     }
 }

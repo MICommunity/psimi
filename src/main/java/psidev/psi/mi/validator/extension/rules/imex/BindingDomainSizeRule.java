@@ -159,6 +159,6 @@ public class BindingDomainSizeRule extends ObjectRule<FeatureEvidence> {
     }
 
     public String getId() {
-        return "R25";
+        return "R61";
     }
 }

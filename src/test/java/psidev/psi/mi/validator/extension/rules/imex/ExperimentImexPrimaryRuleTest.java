@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * ExperimentImexPrimaryRule Tester.
+ * PublicationImexPrimaryRule Tester.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -37,7 +37,7 @@ public class ExperimentImexPrimaryRuleTest extends AbstractRuleTest {
         ExperimentDescription exp = new ExperimentDescription();
         exp.setXref(xref);
 
-        ExperimentImexPrimaryRule rule = new ExperimentImexPrimaryRule( ontologyMaganer );
+        PublicationImexPrimaryRule rule = new PublicationImexPrimaryRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -58,7 +58,7 @@ public class ExperimentImexPrimaryRuleTest extends AbstractRuleTest {
         ExperimentDescription exp = new ExperimentDescription();
         exp.setXref(xref);
 
-        ExperimentImexPrimaryRule rule = new ExperimentImexPrimaryRule( ontologyMaganer );
+        PublicationImexPrimaryRule rule = new PublicationImexPrimaryRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
@@ -77,7 +77,7 @@ public class ExperimentImexPrimaryRuleTest extends AbstractRuleTest {
         ExperimentDescription exp = new ExperimentDescription();
         exp.setXref(xref);
 
-        ExperimentImexPrimaryRule rule = new ExperimentImexPrimaryRule( ontologyMaganer );
+        PublicationImexPrimaryRule rule = new PublicationImexPrimaryRule( ontologyMaganer );
 
         final Collection<ValidatorMessage> messages = rule.check( exp );
         Assert.assertNotNull( messages );
