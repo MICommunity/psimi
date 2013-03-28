@@ -54,13 +54,13 @@ public class RegisteredDataSource {
             dataSource = dataSourceClass.getConstructor(File.class).newInstance(file);
             dataSource.initialiseContext(requiredOptions);
         } catch (InstantiationException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName());
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName()+ ", " + e.getStackTrace());
         } catch (IllegalAccessException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName());
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName()+ ", " + e.getStackTrace());
         } catch (NoSuchMethodException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a file.");
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a file. " + e.getStackTrace());
         } catch (InvocationTargetException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a files.");
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a files. " + e.getStackTrace());
         }
 
         return dataSource;
@@ -72,13 +72,13 @@ public class RegisteredDataSource {
             dataSource = dataSourceClass.getConstructor(InputStream.class).newInstance(stream);
             dataSource.initialiseContext(requiredOptions);
         } catch (InstantiationException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName());
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName()+ ", " + e.getStackTrace());
         } catch (IllegalAccessException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName());
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + e.getStackTrace());
         } catch (NoSuchMethodException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a file.");
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a file. " + e.getStackTrace());
         } catch (InvocationTargetException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a files.");
+            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a files."  + e.getStackTrace());
         }
 
         return dataSource;
