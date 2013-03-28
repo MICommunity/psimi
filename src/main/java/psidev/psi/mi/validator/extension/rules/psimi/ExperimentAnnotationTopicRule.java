@@ -55,7 +55,7 @@ public class ExperimentAnnotationTopicRule extends ObjectRule<Experiment> {
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
-                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid experiment annotation topic",
+                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid annotation topic for experiments",
                                 MessageLevel.WARN,
                                 context,
                                 this ) );

@@ -31,7 +31,7 @@ public class MissingAnnotationTopicRule extends ObjectRule<MolecularInteractionF
         super(ontologyManager);
         setName( "Missing annotation topic check" );
 
-        setDescription( "Check that each annotation has a non null topic." );
+        setDescription( "Check that each annotation has a non empty topic." );
     }
 
     @Override

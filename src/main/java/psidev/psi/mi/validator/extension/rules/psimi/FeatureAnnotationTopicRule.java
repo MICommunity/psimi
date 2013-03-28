@@ -52,7 +52,7 @@ public class FeatureAnnotationTopicRule extends ObjectRule<FeatureEvidence> {
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
-                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid feature annotation topic",
+                        messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid annotation topic for features",
                                 MessageLevel.WARN,
                                 context,
                                 this ) );

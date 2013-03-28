@@ -31,7 +31,7 @@ public class FeatureRangeSyntaxRule extends ObjectRule<MolecularInteractionFileD
         super(ontologyManager);
         setName( "Feature range syntax check" );
 
-        setDescription( "Check that each feature has at least one range and each range has a start/end position and status." );
+        setDescription( "Check that each feature range has a start/end position and start/end status." );
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ConfidenceSyntaxRule extends ObjectRule<MolecularInteractionFileDat
 
     public ConfidenceSyntaxRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Interaction and Participant Confidence syntax check" );
+        setName( "Interaction and Participant's Confidence syntax check" );
 
         setDescription( "Check that each interaction confidence and participant confidence has a confidence type and a confidence value." );
     }

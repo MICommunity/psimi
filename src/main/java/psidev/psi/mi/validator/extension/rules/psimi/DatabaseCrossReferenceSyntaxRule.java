@@ -31,7 +31,7 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
         super(ontologyManager);
         setName( "Database cross reference syntax check" );
 
-        setDescription( "Check that each database cross reference has a non null database and a non null accession." );
+        setDescription( "Check that each database cross reference has a non empty database and a non empty database accession." );
     }
 
     @Override

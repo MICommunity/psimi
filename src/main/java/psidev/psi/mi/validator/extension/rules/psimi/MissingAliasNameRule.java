@@ -29,7 +29,7 @@ public class MissingAliasNameRule extends ObjectRule<MolecularInteractionFileDat
 
     public MissingAliasNameRule(OntologyManager ontologyManager) {
         super(ontologyManager);
-        setName( "Alias name check" );
+        setName( "Missing Alias name check" );
 
         setDescription( "Check that each alias has a name." );
     }
