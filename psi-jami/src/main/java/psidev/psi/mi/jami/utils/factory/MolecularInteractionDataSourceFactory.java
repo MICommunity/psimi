@@ -15,7 +15,7 @@ import java.util.*;
  * @since <pre>01/03/13</pre>
  */
 
-public class DataSourceFactory {
+public class MolecularInteractionDataSourceFactory {
 
     private static Set<RegisteredDataSource> registeredDataSources = new HashSet<RegisteredDataSource>();
 

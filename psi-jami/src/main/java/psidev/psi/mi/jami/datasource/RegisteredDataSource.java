@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * A RegisteredDataSource contains all the necessary information about a datasource that can be used for the DataSourceFactory.
+ * A RegisteredDataSource contains all the necessary information about a datasource that can be used for the MolecularInteractionDataSourceFactory.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
