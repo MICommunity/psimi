@@ -56,7 +56,7 @@ public class MultipleExperimentHostOrganismsRule extends ObjectRule<MolecularInt
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.WARN,
+                    MessageLevel.ERROR,
                     context,
                     this ) );
         }

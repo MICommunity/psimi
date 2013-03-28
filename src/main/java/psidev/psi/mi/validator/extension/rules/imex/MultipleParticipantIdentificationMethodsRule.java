@@ -1,4 +1,4 @@
-package psidev.psi.mi.validator.extension.rules.psimi;
+package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.jami.datasource.FileParsingErrorType;
 import psidev.psi.mi.jami.datasource.FileSourceError;
@@ -65,6 +65,6 @@ public class MultipleParticipantIdentificationMethodsRule extends ObjectRule<Mol
     }
 
     public String getId() {
-        return "R31";
+        return "R83";
     }
 }

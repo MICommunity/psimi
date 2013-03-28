@@ -126,6 +126,6 @@ public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends 
     }
 
     public String getId() {
-        return "R79";
+        return "R85";
     }
 }

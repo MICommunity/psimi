@@ -100,6 +100,6 @@ public class FeatureType2FeatureRangeDependencyRule extends ObjectRule<FeatureEv
     }
 
     public String getId() {
-        return "R83";
+        return "R89";
     }
 }

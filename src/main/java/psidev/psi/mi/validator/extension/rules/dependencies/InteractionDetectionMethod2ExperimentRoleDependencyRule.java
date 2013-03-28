@@ -102,6 +102,6 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends Obj
     }
 
     public String getId() {
-        return "R85";
+        return "R91";
     }
 }
