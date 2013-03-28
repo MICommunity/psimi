@@ -63,11 +63,8 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
     public FeatureImpl(String featureType, List<String> range) {
         super();
 
-        if (featureType != null){
+        if (featureType != null && featureType.trim().length() > 0){
             setType(new DefaultCvTerm(featureType));
-        }
-        else {
-            throw new IllegalArgumentException("You must give a non null feature type.");
         }
 
         if (range != null && !range.isEmpty()){
@@ -85,12 +82,28 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
     public FeatureImpl(String featureType) {
         super();
 
-        if (featureType != null){
+        if (featureType != null && featureType.trim().length() > 0){
             setType(new DefaultCvTerm(featureType));
         }
-        else {
-            throw new IllegalArgumentException("You must give a non null feature type.");
+    }
+
+    public FeatureImpl(List<String> range) {
+        super();
+
+        if (range != null && !range.isEmpty()){
+            for (String r : range){
+                try{
+                    getRangesAsString().add(r);
+                }
+                catch (IllegalStateException e){
+                    log.error("The range " + r + " will be ignored because not valid", e);
+                }
+            }
         }
+    }
+
+    public FeatureImpl() {
+        super();
     }
 
     //////////////////////
@@ -122,11 +135,8 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
      */
     public FeatureImpl(Interactor interactor, String featureType, List<String> range) {
         super(interactor);
-        if (featureType != null){
+        if (featureType != null && featureType.trim().length() > 0){
             setType(new DefaultCvTerm(featureType));
-        }
-        else {
-            throw new IllegalArgumentException("You must give a non null feature type.");
         }
 
         if (range != null && !range.isEmpty()){
@@ -143,11 +153,8 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
 
     public FeatureImpl(Interactor interactor, String featureType) {
         super(interactor);
-        if (featureType != null){
+        if (featureType != null && featureType.trim().length() > 0){
             setType(new DefaultCvTerm(featureType));
-        }
-        else {
-            throw new IllegalArgumentException("You must give a non null feature type.");
         }
     }
 
@@ -193,15 +200,9 @@ public class FeatureImpl extends DefaultFeatureEvidence implements Feature, File
      * {@inheritDoc}
      */
     public void setFeatureType(String featureType) {
-        if (featureType == null) {
-            throw new IllegalArgumentException("You must give a non null feature type.");
+        if (featureType != null && featureType.trim().length() > 0) {
+            setType(new DefaultCvTerm(featureType.trim()));
         }
-        featureType = featureType.trim();
-        if (featureType.length() == 0) {
-            throw new IllegalArgumentException("You must give a non empty feature type.");
-        }
-
-        setType(new DefaultCvTerm(featureType));
     }
 
     /**
