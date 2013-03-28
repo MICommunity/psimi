@@ -6,6 +6,7 @@ import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.CellType;
 import psidev.psi.mi.xml.model.DbReference;
+import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -32,7 +33,9 @@ public class CellLineXRefRuleTest extends AbstractRuleTest {
 
         CellLineXrefRule rule = new CellLineXrefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( cellLine );
+        Organism org = new Organism();
+        org.setCellType(cellLine);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 0, messages.size() );
     }
@@ -47,7 +50,9 @@ public class CellLineXRefRuleTest extends AbstractRuleTest {
 
         CellLineXrefRule rule = new CellLineXrefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( cellLine );
+        Organism org = new Organism();
+        org.setCellType(cellLine);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 0, messages.size() );
     }
@@ -62,7 +67,9 @@ public class CellLineXRefRuleTest extends AbstractRuleTest {
 
         CellLineXrefRule rule = new CellLineXrefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( cellLine );
+        Organism org = new Organism();
+        org.setCellType(cellLine);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 0, messages.size() );
     }
@@ -73,7 +80,9 @@ public class CellLineXRefRuleTest extends AbstractRuleTest {
 
         CellLineXrefRule rule = new CellLineXrefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( cellLine );
+        Organism org = new Organism();
+        org.setCellType(cellLine);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 1, messages.size() );
     }
@@ -88,7 +97,9 @@ public class CellLineXRefRuleTest extends AbstractRuleTest {
 
         CellLineXrefRule rule = new CellLineXrefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( cellLine );
+        Organism org = new Organism();
+        org.setCellType(cellLine);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 1, messages.size() );
     }

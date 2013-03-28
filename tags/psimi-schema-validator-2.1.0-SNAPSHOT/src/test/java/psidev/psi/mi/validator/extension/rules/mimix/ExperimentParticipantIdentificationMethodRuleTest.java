@@ -2,11 +2,13 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import org.junit.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -45,7 +47,11 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -91,7 +97,11 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         populatesParticipants(interaction);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 2, messages.size() );
@@ -122,7 +132,11 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         ParticipantIdentificationMethodRule rule = new ParticipantIdentificationMethodRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -143,7 +157,11 @@ public class ExperimentParticipantIdentificationMethodRuleTest extends AbstractR
 
         populatesParticipants(interaction);
 
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }

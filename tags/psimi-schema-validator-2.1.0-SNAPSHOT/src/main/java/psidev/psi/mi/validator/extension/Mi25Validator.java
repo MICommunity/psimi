@@ -213,7 +213,7 @@ public class Mi25Validator extends Validator {
             Map<String, Object> requiredOptions = new HashMap<String, Object>();
             requiredOptions.put(SOURCE_FORMAT, openedStream.getSource().toString());
 
-            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(openedStream, requiredOptions);
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(openedStream.getStream(), requiredOptions);
 
             boolean valid = runSyntaxValidation(validatorReport, this.currentDataSource);
             if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
@@ -287,13 +287,15 @@ public class Mi25Validator extends Validator {
             Map<String, Object> requiredOptions = new HashMap<String, Object>();
             requiredOptions.put(SOURCE_FORMAT, openedStream.getSource().toString());
 
-            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(openedStream, requiredOptions);
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(openedStream.getStream(), requiredOptions);
 
             validateSemantic(currentDataSource);
 
             if (this.currentDataSource instanceof MolecularInteractionFileDataSource){
                 ((MolecularInteractionFileDataSource)this.currentDataSource).close();
             }
+
+            openedStream.close();
 
         } catch ( Exception e ) {
             throw new ValidatorException( "Unable to process input stream", e );
@@ -316,7 +318,7 @@ public class Mi25Validator extends Validator {
             Map<String, Object> requiredOptions = new HashMap<String, Object>();
             requiredOptions.put(SOURCE_FORMAT, openedStream.getSource().toString());
 
-            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(is, requiredOptions);
+            this.currentDataSource = MolecularInteractionDataSourceFactory.getMolecularInteractionDataSourceFrom(openedStream.getStream(), requiredOptions);
             // 1. Validate source syntax
             if ( userPreferences.isSaxValidationEnabled() ) {
                 if (false == validateSyntax(currentDataSource)) {
@@ -325,6 +327,8 @@ public class Mi25Validator extends Validator {
             }
 
             validateSemantic(currentDataSource);
+
+            openedStream.close();
 
             return this.validatorReport;
 

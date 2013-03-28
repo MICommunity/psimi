@@ -5,6 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.xml.model.DbReference;
+import psidev.psi.mi.xml.model.Organism;
 import psidev.psi.mi.xml.model.Tissue;
 import psidev.psi.mi.xml.model.Xref;
 import psidev.psi.tools.validator.ValidatorException;
@@ -32,7 +33,9 @@ public class TissueXRefRuleTest extends AbstractRuleTest {
 
         TissueXRefRule rule = new TissueXRefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( tissue );
+        Organism org = new Organism();
+        org.setTissue(tissue);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 0, messages.size() );
     }
@@ -47,7 +50,9 @@ public class TissueXRefRuleTest extends AbstractRuleTest {
 
         TissueXRefRule rule = new TissueXRefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( tissue );
+        Organism org = new Organism();
+        org.setTissue(tissue);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 0, messages.size() );
     }
@@ -58,7 +63,9 @@ public class TissueXRefRuleTest extends AbstractRuleTest {
 
         TissueXRefRule rule = new TissueXRefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( tissue );
+        Organism org = new Organism();
+        org.setTissue(tissue);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 1, messages.size() );
     }
@@ -73,7 +80,9 @@ public class TissueXRefRuleTest extends AbstractRuleTest {
 
         TissueXRefRule rule = new TissueXRefRule(ontologyMaganer);
 
-        final Collection<ValidatorMessage> messages = rule.check( tissue );
+        Organism org = new Organism();
+        org.setTissue(tissue);
+        final Collection<ValidatorMessage> messages = rule.check( org );
         Assert.assertNotNull(messages);
         Assert.assertEquals( 1, messages.size() );
     }

@@ -39,7 +39,7 @@ public class ExperimentImexPrimaryRuleTest extends AbstractRuleTest {
 
         PublicationImexPrimaryRule rule = new PublicationImexPrimaryRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -60,7 +60,7 @@ public class ExperimentImexPrimaryRuleTest extends AbstractRuleTest {
 
         PublicationImexPrimaryRule rule = new PublicationImexPrimaryRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication()  );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
@@ -79,7 +79,7 @@ public class ExperimentImexPrimaryRuleTest extends AbstractRuleTest {
 
         PublicationImexPrimaryRule rule = new PublicationImexPrimaryRule( ontologyMaganer );
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( exp.getPublication() );
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );

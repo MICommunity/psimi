@@ -36,8 +36,10 @@ public class ExperimentFullCoverageRuleTest extends AbstractRuleTest {
 
         FullCoverageRule rule = new FullCoverageRule( ontologyMaganer );
 
+        Interaction inter = new Interaction();
+        inter.setExperiment(exp);
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( inter );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 0, messages.size() );
     }
@@ -55,8 +57,10 @@ public class ExperimentFullCoverageRuleTest extends AbstractRuleTest {
 
         FullCoverageRule rule = new FullCoverageRule( ontologyMaganer );
 
+        Interaction inter = new Interaction();
+        inter.setExperiment(exp);
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( inter );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }
@@ -74,8 +78,10 @@ public class ExperimentFullCoverageRuleTest extends AbstractRuleTest {
 
         FullCoverageRule rule = new FullCoverageRule( ontologyMaganer );
 
+        Interaction inter = new Interaction();
+        inter.setExperiment(exp);
 
-        final Collection<ValidatorMessage> messages = rule.check( exp );
+        final Collection<ValidatorMessage> messages = rule.check( inter );
         Assert.assertNotNull( messages );
         Assert.assertEquals( 1, messages.size() );
     }

@@ -2,11 +2,13 @@ package psidev.psi.mi.validator.extension.rules.dependencies;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.rules.AbstractRuleTest;
 import psidev.psi.mi.xml.model.*;
 import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 import psidev.psi.tools.validator.ValidatorMessage;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -46,7 +48,11 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
 
         InteractionDetectionMethod2BiologicalRoleDependencyRule rule =
                 new InteractionDetectionMethod2BiologicalRoleDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 0, messages.size() );
@@ -78,7 +84,11 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRuleTest extends
 
         InteractionDetectionMethod2BiologicalRoleDependencyRule rule =
                 new InteractionDetectionMethod2BiologicalRoleDependencyRule( ontologyMaganer );
-        final Collection<ValidatorMessage> messages = rule.check( interaction );
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        for (ParticipantEvidence p : interaction.getParticipantEvidences()){
+            messages.addAll(rule.check( p ));
+
+        }
         Assert.assertNotNull( messages );
         System.out.println(messages);
         Assert.assertEquals( 1, messages.size() );
