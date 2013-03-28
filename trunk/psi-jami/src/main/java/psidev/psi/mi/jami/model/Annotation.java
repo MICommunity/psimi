@@ -35,6 +35,8 @@ public interface Annotation {
     public static String PUBLICATION_YEAR_MI ="MI:0886";
     public static String AUTHOR="author list";
     public static String AUTHOR_MI ="MI:0636";
+    public static String CONTACT_EMAIL = "contact-email";
+    public static String CONTACT_EMAIL_MI = "MI:0634";
 
 
     /**
