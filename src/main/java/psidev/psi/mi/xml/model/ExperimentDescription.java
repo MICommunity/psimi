@@ -932,7 +932,7 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             if (AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE) ||
                     AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL) ||
                     AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR) ||
-                    AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+                    AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.AUTHOR_MI, Annotation.AUTHOR) || AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.CONTACT_EMAIL_MI, Annotation.CONTACT_EMAIL)){
                 getPublication().getAttributes().add(added);
             }
             else {
@@ -947,7 +947,7 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             if (AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE) ||
                     AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_JOURNAL_MI, Annotation.PUBLICATION_JOURNAL) ||
                     AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.PUBLICATION_YEAR_MI, Annotation.PUBLICATION_YEAR) ||
-                    AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.AUTHOR_MI, Annotation.AUTHOR)){
+                    AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.AUTHOR_MI, Annotation.AUTHOR) || AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.CONTACT_EMAIL_MI, Annotation.CONTACT_EMAIL)){
                 getPublication().getAttributes().remove(removed);
             }
             else {
