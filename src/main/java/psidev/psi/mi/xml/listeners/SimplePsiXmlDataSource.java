@@ -52,13 +52,14 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
     }
 
     public SimplePsiXmlDataSource(InputStream stream) throws IOException {
+        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+
         this.reader = new PsimiXmlReader();
 
         this.reader.addXmlParserListener(this);
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
         isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
@@ -75,13 +76,14 @@ public class SimplePsiXmlDataSource implements ErrorHandler, MolecularInteractio
     }
 
     public SimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version) throws IOException {
+        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+
         this.reader = new PsimiXmlReader(version);
 
         this.reader.addXmlParserListener(this);
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
         isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }

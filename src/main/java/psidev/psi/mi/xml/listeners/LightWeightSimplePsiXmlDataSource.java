@@ -61,8 +61,10 @@ public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, Molecula
     }
 
     public LightWeightSimplePsiXmlDataSource(InputStream stream) throws IOException {
+        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+
         try {
-            this.reader = new PsimiXmlLightweightReader(stream);
+            this.reader = new PsimiXmlLightweightReader(file);
         } catch (PsimiXmlReaderException e) {
             InvalidXmlEvent evt = new InvalidXmlEvent("The file cannot be read", e);
             if (e.getCurrentObject() instanceof FileSourceContext){
@@ -75,7 +77,6 @@ public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, Molecula
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
         isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
@@ -96,8 +97,10 @@ public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, Molecula
     }
 
     public LightWeightSimplePsiXmlDataSource(InputStream stream, PsimiXmlVersion version) throws IOException {
+        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
+
         try {
-            this.reader = new PsimiXmlLightweightReader(stream, version);
+            this.reader = new PsimiXmlLightweightReader(file, version);
         } catch (PsimiXmlReaderException e) {
             InvalidXmlEvent evt = new InvalidXmlEvent("The inputstream cannot be read", e);
             fireOnInvalidXmlSyntax(evt);
@@ -109,7 +112,6 @@ public class LightWeightSimplePsiXmlDataSource implements ErrorHandler, Molecula
         if (stream == null){
             throw new IllegalArgumentException("InputStream is mandatory for a PSI-XML 2.5 datasource");
         }
-        this.file = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "simple_mitab_source" + System.currentTimeMillis(), ".txt");
         isTemporaryFile = true;
         errors = new ArrayList<FileSourceError>();
     }
