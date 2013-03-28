@@ -48,38 +48,16 @@ public class RegisteredDataSource {
         return true;
     }
 
-    public MolecularInteractionDataSource instantiateNewDataSource(File file, Map<String,Object> requiredOptions){
-        MolecularInteractionDataSource dataSource = null;
-        try {
-            dataSource = dataSourceClass.getConstructor(File.class).newInstance(file);
-            dataSource.initialiseContext(requiredOptions);
-        } catch (InstantiationException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName()+ ", " + e.getClass() + ": " + e.getMessage());
-        } catch (IllegalAccessException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName()+ ", " + e.getClass() + ": " + e.getMessage());
-        } catch (NoSuchMethodException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a file. " + e.getClass() + ": " + e.getMessage());
-        } catch (InvocationTargetException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a files. " + e.getClass() + ": " + e.getMessage());
-        }
+    public MolecularInteractionDataSource instantiateNewDataSource(File file, Map<String,Object> requiredOptions) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        MolecularInteractionDataSource dataSource = dataSourceClass.getConstructor(File.class).newInstance(file);
+        dataSource.initialiseContext(requiredOptions);
 
         return dataSource;
     }
 
-    public MolecularInteractionDataSource instantiateNewDataSource(InputStream stream, Map<String,Object> requiredOptions){
-        MolecularInteractionDataSource dataSource = null;
-        try {
-            dataSource = dataSourceClass.getConstructor(InputStream.class).newInstance(stream);
-            dataSource.initialiseContext(requiredOptions);
-        } catch (InstantiationException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName()+ ", " + e.getClass() + ": " + e.getMessage());
-        } catch (IllegalAccessException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + e.getStackTrace());
-        } catch (NoSuchMethodException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a file. "+ e.getClass() + ": " + e.getMessage());
-        } catch (InvocationTargetException e) {
-            log.severe("Impossible to instantiate a new " + dataSourceClass.getCanonicalName() + " because does not have a constructor with a files."  + e.getClass() + ": " + e.getMessage());
-        }
+    public MolecularInteractionDataSource instantiateNewDataSource(InputStream stream, Map<String,Object> requiredOptions) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        MolecularInteractionDataSource dataSource = dataSourceClass.getConstructor(InputStream.class).newInstance(stream);
+        dataSource.initialiseContext(requiredOptions);
 
         return dataSource;
     }

@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.datasource.RegisteredDataSource;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -19,7 +20,7 @@ public class MolecularInteractionDataSourceFactory {
 
     private static Set<RegisteredDataSource> registeredDataSources = new HashSet<RegisteredDataSource>();
 
-    public static MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(File file, Map<String,Object> requiredOptions){
+    public static MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(File file, Map<String,Object> requiredOptions) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         for (RegisteredDataSource dataSource : registeredDataSources){
             if (dataSource.areSupportedOptions(requiredOptions)){
@@ -30,7 +31,7 @@ public class MolecularInteractionDataSourceFactory {
         return null;
     }
 
-    public static MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(InputStream stream, Map<String,Object> requiredOptions){
+    public static MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(InputStream stream, Map<String,Object> requiredOptions) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         for (RegisteredDataSource dataSource : registeredDataSources){
             if (dataSource.areSupportedOptions(requiredOptions)){
