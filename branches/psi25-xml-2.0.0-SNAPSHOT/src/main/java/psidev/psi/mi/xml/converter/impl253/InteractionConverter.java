@@ -299,15 +299,6 @@ public class InteractionConverter {
             }
         }
 
-        // we have more than one experiment
-        if (listeners != null && !listeners.isEmpty() && mInteraction.getParticipants().isEmpty()){
-            InvalidXmlEvent evt = new InvalidXmlEvent(FileParsingErrorType.interaction_without_any_participants, "Interaction " + mInteraction.getId() + " does not have any participants.");
-            evt.setSourceLocator(mInteraction.getSourceLocator());
-            for (PsiXml25ParserListener l : listeners){
-                l.fireOnInvalidXmlSyntax(evt);
-            }
-        }
-
         // inferred interactions
         if ( jInteraction.getInferredInteractionList() != null ) {
             for ( InteractionElementType.InferredInteractionList.InferredInteraction jInferredInteraction :
