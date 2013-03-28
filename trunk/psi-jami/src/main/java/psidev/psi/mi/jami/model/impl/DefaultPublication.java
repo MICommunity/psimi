@@ -388,12 +388,12 @@ public class DefaultPublication implements Publication, Serializable {
         // the added identifier is pubmed and it is not the current pubmed identifier
         if (pubmedId != added && XrefUtils.isXrefFromDatabase(added, Xref.PUBMED_MI, Xref.PUBMED)){
             // the current pubmed identifier is not identity, we may want to set pubmed Identifier
-            if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.IDENTITY_MI, Xref.IDENTITY)){
+            if (!XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.IDENTITY_MI, Xref.IDENTITY) && !XrefUtils.doesXrefHaveQualifier(pubmedId, Xref.PRIMARY_MI, Xref.PRIMARY)){
                 // the pubmed identifier is not set, we can set the pubmed
                 if (pubmedId == null){
                     pubmedId = added;
                 }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY) || XrefUtils.doesXrefHaveQualifier(added, Xref.PRIMARY_MI, Xref.PRIMARY)){
                     pubmedId = added;
                 }
                 // the added xref is secondary object and the current pubmed is not a secondary object, we reset pubmed identifier
@@ -406,12 +406,12 @@ public class DefaultPublication implements Publication, Serializable {
         // the added identifier is doi and it is not the current doi identifier
         else if (doi != added && XrefUtils.isXrefFromDatabase(added, Xref.DOI_MI, Xref.DOI)){
             // the current doi identifier is not identity, we may want to set doi
-            if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.IDENTITY_MI, Xref.IDENTITY)){
+            if (!XrefUtils.doesXrefHaveQualifier(doi, Xref.IDENTITY_MI, Xref.IDENTITY) && !XrefUtils.doesXrefHaveQualifier(doi, Xref.PRIMARY_MI, Xref.PRIMARY)){
                 // the doi is not set, we can set the doi
                 if (doi == null){
                     doi = added;
                 }
-                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY)){
+                else if (XrefUtils.doesXrefHaveQualifier(added, Xref.IDENTITY_MI, Xref.IDENTITY) || XrefUtils.doesXrefHaveQualifier(added, Xref.PRIMARY_MI, Xref.PRIMARY)){
                     doi = added;
                 }
                 // the added xref is secondary object and the current doi is not a secondary object, we reset doi
