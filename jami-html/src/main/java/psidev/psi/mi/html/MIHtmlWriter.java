@@ -263,7 +263,7 @@ public class MIHtmlWriter {
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(experiment);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
             writer.write("Experiment ");
             writer.write(anchor);
@@ -325,7 +325,7 @@ public class MIHtmlWriter {
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(participant);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
             writer.write("Participant ");
             writer.write(anchor);
@@ -433,7 +433,7 @@ public class MIHtmlWriter {
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(interactor);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
             writer.write("Interactor ");
             writer.write(anchor);
@@ -530,7 +530,7 @@ public class MIHtmlWriter {
             String anchor = HtmlWriterUtils.getHtmlAnchorFor(feature);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
             writer.write("Feature ");
             writer.write(anchor);
