@@ -126,6 +126,14 @@ public class Mi25Context extends Context {
         return clone;
     }
 
+    public boolean isContextWithAnchor(){
+        if (objectLabel == null){
+            return false;
+        }
+        return (objectLabel.equals("interaction") || objectLabel.equals("experiment") ||
+                objectLabel.equals("participant") || objectLabel.equals("feature"));
+    }
+
     ////////////////////////
     // toString
 
