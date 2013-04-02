@@ -50,10 +50,10 @@ public class MIHtmlWriter {
     public void writeHtmlStyle() throws IOException {
         writer.write("    <style>");
         writer.write(NEW_LINE);
-        writer.write("        table   {");
-        writer.write(NEW_LINE);
-        writer.write("        width:              100%;}");
-        writer.write(NEW_LINE);
+        //writer.write("        table   {");
+       // writer.write(NEW_LINE);
+        //writer.write("        width:              100%;}");
+        //writer.write(NEW_LINE);
         writer.write("        .title  {");
         writer.write(NEW_LINE);
         writer.write("        background-color:   #ddd;");
@@ -260,6 +260,8 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             // end table
             writer.write("    </table><br/>");
+
+            writer.flush();
         }
     }
 
@@ -323,6 +325,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
+            writer.flush();
         }
     }
 
@@ -356,6 +359,10 @@ public class MIHtmlWriter {
 
             // write host organism
             writeOrganism("Expressed in organism", participant.getExpressedInOrganism());
+
+            if (participant.getStoichiometry() != null){
+                writeProperty("Stoichiometry", Integer.toString(participant.getStoichiometry()));
+            }
 
             // experimental preparations
             if (!participant.getExperimentalPreparations().isEmpty()){
@@ -432,6 +439,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
+            writer.flush();
         }
     }
 
@@ -474,10 +482,10 @@ public class MIHtmlWriter {
             writeCvTerm("Interactor type", interactor.getType());
 
             // write sequence if any
-            if (interactor instanceof Polymer){
+            /*if (interactor instanceof Polymer){
                 Polymer polymer = (Polymer) interactor;
                 writeProperty("sequence", polymer.getSequence());
-            }
+            }*/
 
             // write aliases
             if (!interactor.getXrefs().isEmpty()){
@@ -530,6 +538,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
+            writer.flush();
         }
     }
 
@@ -624,6 +633,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
+            writer.flush();
         }
     }
 
@@ -713,6 +723,8 @@ public class MIHtmlWriter {
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
+
+        writer.flush();
     }
 
     public void writeOrganism(String label, Organism organism) throws IOException {
@@ -747,6 +759,8 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
+
+            writer.flush();
         }
     }
 
@@ -795,6 +809,8 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
+
+            writer.flush();
         }
     }
 
@@ -876,6 +892,7 @@ public class MIHtmlWriter {
     }
 
     public void close() throws java.io.IOException{
+        writer.flush();
         this.writer.close();
     }
 
