@@ -102,11 +102,14 @@ public class MIHtmlWriter {
         writer.write(NEW_LINE);
         writer.write(NEW_LINE);
         writer.write("    </style>");
+        writer.write(NEW_LINE);
         writer.write("</head>");
+        writer.write(NEW_LINE);
     }
 
     public void writerStartBody() throws IOException {
         writer.write("<body>");
+        writer.write(NEW_LINE);
     }
 
     public void writeInteractionList() throws IOException {
@@ -257,16 +260,20 @@ public class MIHtmlWriter {
 
     public void writeExperiment(Experiment experiment) throws IOException {
         if (experiment != null){
+            String anchor = HtmlWriterUtils.getHtmlAnchorFor(experiment);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\">");
-            writer.write("Experiment " + HtmlWriterUtils.getHtmlAnchorFor(experiment));
-            writer.write(":</td>");
+            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write(anchor);
+            writer.write("Experiment ");
+            writer.write(anchor);
+            writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
 
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
+
 
             // write experiment name
             writeProperty("Name", experiment.getShortLabel());
@@ -315,11 +322,14 @@ public class MIHtmlWriter {
 
     public void writeParticipant(ParticipantEvidence participant) throws IOException {
         if (participant != null){
+            String anchor = HtmlWriterUtils.getHtmlAnchorFor(participant);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\">");
-            writer.write("Participant " + HtmlWriterUtils.getHtmlAnchorFor(participant));
-            writer.write(":</td>");
+            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write(anchor);
+            writer.write("Participant ");
+            writer.write(anchor);
+            writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
 
@@ -420,11 +430,14 @@ public class MIHtmlWriter {
 
     public void writeInteractor(Interactor interactor) throws IOException {
         if (interactor != null){
+            String anchor = HtmlWriterUtils.getHtmlAnchorFor(interactor);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\">");
-            writer.write("Interactor " + HtmlWriterUtils.getHtmlAnchorFor(interactor));
-            writer.write(":</td>");
+            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write(anchor);
+            writer.write("Interactor ");
+            writer.write(anchor);
+            writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
 
@@ -514,11 +527,14 @@ public class MIHtmlWriter {
 
     public void writeFeature(FeatureEvidence feature) throws IOException {
         if (feature != null){
+            String anchor = HtmlWriterUtils.getHtmlAnchorFor(feature);
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\">");
-            writer.write("Feature " + HtmlWriterUtils.getHtmlAnchorFor(feature));
-            writer.write(":</td>");
+            writer.write("            <td class=\"table-title\"> colspan=\"2\"<a name=\"");
+            writer.write(anchor);
+            writer.write("Feature ");
+            writer.write(anchor);
+            writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
 
@@ -822,10 +838,13 @@ public class MIHtmlWriter {
     }
 
     public void writeInteractionAnchor(InteractionEvidence interaction) throws IOException {
+        String htmlAnchor = HtmlWriterUtils.getHtmlAnchorFor(interaction);
         writer.write("        <tr>");
         writer.write(NEW_LINE);
-        writer.write("            <td class=\"title\" colspan=\"2\"><a name=\"ix19934\">Interaction ");
-        writer.write(HtmlWriterUtils.getHtmlAnchorFor(interaction));
+        writer.write("            <td class=\"title\" colspan=\"2\"><a name=\"");
+        writer.write(htmlAnchor);
+        writer.write("\">Interaction ");
+        writer.write(htmlAnchor);
         writer.write("</a></td>");
         writer.write(NEW_LINE);
         writer.write("        </tr>");
