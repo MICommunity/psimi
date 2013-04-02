@@ -291,26 +291,26 @@ public class PsimiTabReader implements psidev.psi.mi.tab.io.PsimiTabReader {
 
     public Iterator<BinaryInteraction> iterate(Reader reader) throws IOException {
         final BufferedReader bufferedReader = new BufferedReader(reader);
-        return new PsimiTabIterator(bufferedReader);
+        return new PsimiTabIterator(bufferedReader, this);
     }
 
     public Iterator<BinaryInteraction> iterate(String s) throws IOException {
         final ByteArrayInputStream is = new ByteArrayInputStream(s.getBytes());
         final InputStreamReader reader = new InputStreamReader(is);
         final BufferedReader bufferedReader = new BufferedReader(reader);
-        return new PsimiTabIterator(bufferedReader);
+        return new PsimiTabIterator(bufferedReader, this);
     }
 
     public Iterator<BinaryInteraction> iterate(InputStream is) throws IOException {
         final InputStreamReader reader = new InputStreamReader(is);
         final BufferedReader bufferedReader = new BufferedReader(reader);
-        return new PsimiTabIterator(bufferedReader);
+        return new PsimiTabIterator(bufferedReader, this);
     }
 
     public Iterator<BinaryInteraction> iterate(File file) throws IOException {
         final FileReader reader = new FileReader(file);
         final BufferedReader bufferedReader = new BufferedReader(reader);
-        return new PsimiTabIterator(bufferedReader);
+        return new PsimiTabIterator(bufferedReader, this);
     }
 
     public void handleError(String message, Throwable e) throws PsimiTabException {
