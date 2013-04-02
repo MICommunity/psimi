@@ -758,7 +758,7 @@ public class MIHtmlWriter {
             // write identifiers
             if (!term.getIdentifiers().isEmpty()){
                 writeSubTitle("Identifiers: ");
-                for (Xref ref : term.getXrefs()){
+                for (Xref ref : term.getIdentifiers()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
                     }
