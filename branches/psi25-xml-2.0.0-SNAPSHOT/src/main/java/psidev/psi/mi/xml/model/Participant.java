@@ -9,6 +9,7 @@ package psidev.psi.mi.xml.model;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.clone.*;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
@@ -1520,21 +1521,51 @@ public class Participant extends DefaultParticipantEvidence implements Component
         @Override
         protected void processAddedObjectEvent(Attribute added) {
 
-            // we added a annotation, needs to add it in annotations
-            ((ParticipantAnnotationList)getAnnotations()).addOnly(added);
+            if (AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMMENT_MI, Annotation.COMMENT) && added.getValue() != null &&
+                    added.getValue().startsWith("Stoichiometry: ")){
+                try{
+                    setStoichiometry(Integer.parseInt(added.getValue().replace("Stoichiometry: ", "").trim()));
+                }
+                catch (NumberFormatException e){
+                    ((ParticipantAnnotationList)getAnnotations()).addOnly(added);
+                }
+            }
+            else {
+                // we added a annotation, needs to add it in annotations
+                ((ParticipantAnnotationList)getAnnotations()).addOnly(added);
+            }
         }
 
         @Override
         protected void processRemovedObjectEvent(Attribute removed) {
 
             // we removed a annotation, needs to remove it in annotations
-            ((ParticipantAnnotationList)getAnnotations()).removeOnly(removed);
+            if (AnnotationUtils.doesAnnotationHaveTopic(removed, Annotation.COMMENT_MI, Annotation.COMMENT) && removed.getValue() != null &&
+                    removed.getValue().startsWith("Stoichiometry: ")){
+                try{
+                    int stoichiometry = Integer.parseInt(removed.getValue().replace("Stoichiometry: ", "").trim());
+                    if (getStoichiometry() == stoichiometry){
+                        setStoichiometry(null);
+                    }
+                    else {
+                        ((ParticipantAnnotationList)getAnnotations()).removeOnly(removed);
+                    }
+                }
+                catch (NumberFormatException e){
+                    ((ParticipantAnnotationList)getAnnotations()).removeOnly(removed);
+                }
+            }
+            else {
+                // we added a annotation, needs to add it in annotations
+                ((ParticipantAnnotationList)getAnnotations()).removeOnly(removed);
+            }
         }
 
         @Override
         protected void clearProperties() {
             // clear all annotations
             ((ParticipantAnnotationList)getAnnotations()).clearOnly();
+            setStoichiometry(null);
         }
     }
 
