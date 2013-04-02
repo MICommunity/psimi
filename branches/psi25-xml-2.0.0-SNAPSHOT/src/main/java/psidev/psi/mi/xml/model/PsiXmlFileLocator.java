@@ -24,6 +24,6 @@ public class PsiXmlFileLocator extends FileSourceLocator {
 
     @Override
     public String getLocationDescription() {
-        return super.getLocationDescription() + (id != null ? ", Object id: "+id : "");
+        return super.getLocationDescription() + (id != null ? ", Id: "+id : "");
     }
 }
