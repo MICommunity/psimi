@@ -16,6 +16,7 @@
 package psidev.psi.mi.validator.extension.rules;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.utils.XrefUtils;
@@ -579,9 +580,7 @@ public final class RuleUtils {
         if (object instanceof FileSourceContext){
             context.extractFileContextFrom((FileSourceContext)object);
         }
-        else if (object instanceof HasId){
-            context.extractIdAndLabelFrom((HasId) object);
-        }
+
         return context;
     }
 
@@ -591,20 +590,16 @@ public final class RuleUtils {
         if (object instanceof FileSourceContext){
             context.extractFileContextOnlyFrom((FileSourceContext) object);
         }
-        else if (object instanceof HasId){
-            context.extractIdAndLabelFrom((HasId) object);
-        }
+
         context.setObjectLabel(objectLabel);
         return context;
     }
 
-    public static Mi25Context buildContext( int id, int lineNumber, int columnNumber, String objectLabel ) {
+    public static Mi25Context buildContext( FileSourceLocator locator, String objectLabel ) {
         Mi25Context context;
         context = new Mi25Context();
-        context.setId(id);
+        context.setLocator(locator);
         context.setObjectLabel(objectLabel);
-        context.setLineNumber(lineNumber);
-        context.setColumnNumber(columnNumber);
         return context;
     }
 }

@@ -4,7 +4,6 @@ import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.validator.extension.Mi25Context;
-import psidev.psi.mi.xml.model.HasId;
 import psidev.psi.tools.validator.Context;
 import psidev.psi.tools.validator.xpath.XPathResult;
 
@@ -32,8 +31,8 @@ public class Mi25XPathResult extends XPathResult {
             if (o instanceof FileSourceContext){
                 context.extractFileContextFrom((FileSourceContext) o);
             }
-            else if (o instanceof HasId){
-                context.setId(((HasId)o).getId());
+            else {
+                context.extractLabelFrom(o);
             }
             JXPathContext relCTX = rootContext.getRelativeContext( currentPointer );
             currentPointer = relCTX.getPointer( "parent::node()" );
