@@ -15,7 +15,7 @@ public class FileSourceLocator {
 
     public FileSourceLocator(int lineNumber, int charNumber){
         this.lineNumber = lineNumber;
-        this.charNumber = lineNumber;
+        this.charNumber = charNumber;
     }
 
     /**
