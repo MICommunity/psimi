@@ -182,19 +182,19 @@ public class Mi25Context extends Context {
         StringBuilder sb = new StringBuilder(128);
         sb.append( "Context(" );
 
-        if ( lineNumber != -1 ) {
-            sb.append( " line: " ).append( lineNumber );
-        }
-        if ( columnNumber != -1 ) {
-            sb.append( " column: " ).append( lineNumber );
-        }
-
         if ( objectLabel != null ) {
             sb.append( " "+objectLabel );
         }
 
         if ( id != -1 ) {
             sb.append( "[id='" ).append( id ).append( "']" );
+        }
+
+        if ( lineNumber != -1 ) {
+            sb.append( " line: " ).append( lineNumber );
+        }
+        if ( columnNumber != -1 ) {
+            sb.append( " column: " ).append( lineNumber );
         }
 
         sb.append( " )" );
