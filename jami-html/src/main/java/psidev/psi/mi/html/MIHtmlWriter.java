@@ -133,6 +133,16 @@ public class MIHtmlWriter {
         writerEndBody();
     }
 
+    public void writeDataSourceWithoutHeaderAndBody(StreamingInteractionSource interactionSource) throws IOException {
+        if (interactionSource != null){
+            writeInteractionList();
+            Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionEvidencesIterator();
+            while(interactionIterator != null && interactionIterator.hasNext()){
+                writeInteractionEvidence(interactionIterator.next());
+            }
+        }
+    }
+
     public void writeInteractionEvidence(InteractionEvidence interaction) throws IOException {
         if (interaction != null){
 
