@@ -50,10 +50,6 @@ public class MIHtmlWriter {
     public void writeHtmlStyle() throws IOException {
         writer.write("    <style>");
         writer.write(NEW_LINE);
-        //writer.write("        table   {");
-       // writer.write(NEW_LINE);
-        //writer.write("        width:              100%;}");
-        //writer.write(NEW_LINE);
         writer.write("        .title  {");
         writer.write(NEW_LINE);
         writer.write("        background-color:   #ddd;");
@@ -857,7 +853,7 @@ public class MIHtmlWriter {
         if (property != null){
             writer.write("        <tr>");
             writer.write(NEW_LINE);
-            writer.write("            <td class=\"table-title\" colspan=\"2\">");
+            writer.write("            <td class=\"table-title\">");
             writer.write(property);
             writer.write("</td>");
             writer.write(NEW_LINE);
