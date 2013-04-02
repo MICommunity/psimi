@@ -482,10 +482,10 @@ public class MIHtmlWriter {
             writeCvTerm("Interactor type", interactor.getType());
 
             // write sequence if any
-            /*if (interactor instanceof Polymer){
+            if (interactor instanceof Polymer){
                 Polymer polymer = (Polymer) interactor;
-                writeProperty("sequence", polymer.getSequence());
-            }*/
+                writeProperty("sequence", convertSequence(polymer));
+            }
 
             // write aliases
             if (!interactor.getXrefs().isEmpty()){
@@ -540,6 +540,34 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.flush();
         }
+    }
+
+    private String convertSequence(Polymer polymer) {
+        if (polymer.getSequence() == null){
+            return null;
+        }
+
+        StringBuffer buffer = new StringBuffer();
+        char[] values = polymer.getSequence().toCharArray();
+        int numberChar = 1;
+        int numberChunk = 1;
+
+        for (char aminoAcid : values){
+            if (numberChar == 11){
+                numberChar = 1;
+                buffer.append(" ");
+            }
+            if (numberChunk == 11){
+                numberChunk = 1;
+                buffer.append(NEW_LINE);
+            }
+
+            buffer.append(aminoAcid);
+            numberChar++;
+            numberChunk++;
+        }
+
+        return buffer.toString();
     }
 
     public void writeFeature(FeatureEvidence feature) throws IOException {
