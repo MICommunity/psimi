@@ -265,7 +265,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
-            writer.write("Experiment ");
+            writer.write("\">Experiment ");
             writer.write(anchor);
             writer.write("</a></td>");
             writer.write(NEW_LINE);
@@ -327,7 +327,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
-            writer.write("Participant ");
+            writer.write("\">Participant ");
             writer.write(anchor);
             writer.write("</a></td>");
             writer.write(NEW_LINE);
@@ -435,7 +435,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
-            writer.write("Interactor ");
+            writer.write("\">Interactor ");
             writer.write(anchor);
             writer.write("</a></td>");
             writer.write(NEW_LINE);
@@ -532,7 +532,7 @@ public class MIHtmlWriter {
             writer.write(NEW_LINE);
             writer.write("            <td class=\"table-title\" colspan=\"2\"><a name=\"");
             writer.write(anchor);
-            writer.write("Feature ");
+            writer.write("\">Feature ");
             writer.write(anchor);
             writer.write("</a></td>");
             writer.write(NEW_LINE);
