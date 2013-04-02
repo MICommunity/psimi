@@ -573,6 +573,41 @@ public class ExperimentDescription extends DefaultExperiment implements HasId, N
             setShortLabelOnly(value);
         }
 
+        public String getFullName() {
+            if (getPublication() == null){
+                setBibref(new Bibref());
+            }
+
+            return getPublication().getTitle();
+        }
+
+        /**
+         * Check if the optional fullName is defined.
+         *
+         * @return true if defined, false otherwise.
+         */
+        public boolean hasFullName() {
+            if (getPublication() == null){
+               return false;
+            }
+            else {
+                return getPublication().getTitle() != null;
+            }
+        }
+
+        /**
+         * Sets the value of the fullName property.
+         *
+         * @param value allowed object is {@link String }
+         */
+        public void setFullName( String value ) {
+            if (getPublication() == null){
+                setBibref(new Bibref());
+            }
+
+            getPublication().setTitle(value);
+        }
+
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
