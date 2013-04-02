@@ -404,12 +404,16 @@ public class Mi25Validator extends Validator {
         Collection<ValidatorMessage> interactionMessages = super.validate(dataSource);
         // only validate streaming interaction source for now
         if (dataSource instanceof StreamingInteractionSource){
+            int numberInteraction = 0;
+
             StreamingInteractionSource interactionSource = (StreamingInteractionSource) dataSource;
 
             Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionEvidencesIterator();
 
             // now process interactions
             while ( interactionIterator.hasNext() ) {
+                numberInteraction++;
+
                 InteractionEvidence interaction = interactionIterator.next();
 
                 // check using cv mapping rules
@@ -429,6 +433,7 @@ public class Mi25Validator extends Validator {
             // cluster all messages!!
             Collection<ValidatorMessage> clusteredValidatorMessages = clusterByMessagesAndRules(report.getSemanticMessages());
             report.setSemanticMessages(clusteredValidatorMessages);
+            report.setInteractionCount(numberInteraction);
         }
         else {
             throw new ValidatorException("The molecular interaction datasource is not an InteractionStreaming data source and cannot be validated.");
