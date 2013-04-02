@@ -136,7 +136,7 @@ public class RangeFactory {
             }
             else {
                 Position pos1 = PositionFactory.createPositionFromString(rangePositions[0]);
-                Position pos2 = PositionFactory.createPositionFromString(rangePositions[2]);
+                Position pos2 = PositionFactory.createPositionFromString(rangePositions[1]);
                 return new DefaultRange(pos1, pos2);
             }
         }
@@ -195,7 +195,7 @@ public class RangeFactory {
             }
             else {
                 Position pos1 = PositionFactory.createPositionFromString(rangePositions[0]);
-                Position pos2 = PositionFactory.createPositionFromString(rangePositions[2]);
+                Position pos2 = PositionFactory.createPositionFromString(rangePositions[1]);
                 return new DefaultRange(pos1, pos2, true);
             }
         }
