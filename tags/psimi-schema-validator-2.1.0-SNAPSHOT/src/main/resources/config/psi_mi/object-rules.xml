@@ -20,7 +20,6 @@
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.ConfidenceSyntaxRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MissingInteractorTypeRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.InteractionParticipantRule"/>
-    <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExperimentalRolesRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleExperimentHostOrganismsRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionExperimentsRule"/>
     <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExpressedInOrganismsRule"/>
