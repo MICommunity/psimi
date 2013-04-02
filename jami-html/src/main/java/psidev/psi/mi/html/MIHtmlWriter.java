@@ -42,6 +42,12 @@ public class MIHtmlWriter {
         writer.write(NEW_LINE);
         writer.write("    Molecular Interaction</title>");
         writer.write(NEW_LINE);
+        writeHtmlStyle();
+        writer.write("</head>");
+        writer.write(NEW_LINE);
+    }
+
+    public void writeHtmlStyle() throws IOException {
         writer.write("    <style>");
         writer.write(NEW_LINE);
         writer.write("        table   {");
@@ -90,21 +96,9 @@ public class MIHtmlWriter {
         writer.write(NEW_LINE);
         writer.write("        background-color:   #eee;}");
         writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
-        writer.write(NEW_LINE);
         writer.write("    </style>");
         writer.write(NEW_LINE);
-        writer.write("</head>");
-        writer.write(NEW_LINE);
+
     }
 
     public void writerStartBody() throws IOException {
@@ -135,6 +129,7 @@ public class MIHtmlWriter {
 
     public void writeDataSourceWithoutHeaderAndBody(StreamingInteractionSource interactionSource) throws IOException {
         if (interactionSource != null){
+            writeHtmlStyle();
             writeInteractionList();
             Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionEvidencesIterator();
             while(interactionIterator != null && interactionIterator.hasNext()){
