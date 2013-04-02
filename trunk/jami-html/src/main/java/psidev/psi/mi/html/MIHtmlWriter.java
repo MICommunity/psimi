@@ -121,6 +121,7 @@ public class MIHtmlWriter {
         writeHeader();
         writerStartBody();
         if (interactionSource != null){
+            writeInteractionList();
             Iterator<? extends InteractionEvidence> interactionIterator = interactionSource.getInteractionEvidencesIterator();
             while(interactionIterator != null && interactionIterator.hasNext()){
                 writeInteractionEvidence(interactionIterator.next());
