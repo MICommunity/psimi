@@ -13,7 +13,6 @@
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleExperimentHostOrganismsRule"/>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionExperimentsRule"/>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleInteractionTypesRule"/>
-                <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExperimentalRolesRule"/>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantExpressedInOrganismsRule"/>
                 <rule class="psidev.psi.mi.validator.extension.rules.psimi.MultipleParticipantIdentificationMethodsRule"/>
             </exclude>
