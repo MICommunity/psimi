@@ -631,7 +631,7 @@ public class MIHtmlWriter {
 
             // write pubmed
             if (publication.getPubmedId() != null){
-                writeProperty("Pubmed", "<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/\""+publication.getPubmedId()+">"+publication.getPubmedId()+"</a>");
+                writeProperty("Pubmed", "<a href=\"http://www.ncbi.nlm.nih.gov/pubmed/"+publication.getPubmedId()+"\">"+publication.getPubmedId()+"</a>");
             }
 
             // write doi
