@@ -41,6 +41,9 @@ public class ValidatorClient {
     public final static String CV = "cv";
 
     public final static String XML_EXTENSION = ".xml";
+    public final static String TEXT_EXTENSION = ".txt";
+    public final static String CSV_EXTENSION = ".csv";
+    public final static String TSV_EXTENSION = ".tsv";
 
     public final static String ZIP_EXTENSION = ".zip";
 
@@ -413,26 +416,29 @@ public class ValidatorClient {
         try {
             Mi25Validator validator = buildValidator(validationScope);
 
-            // validate XML and ZIP xmlFiles
-            String [] xmlExtension = {"xml"};
+            // validate XML TXT CSV and TSV and ZIP Files (XML and MITAB)
+            String [] recognizedExtensions = {"xml", "txt", "csv", "tsv"};
             String [] zipExtension = {"zip"};
             boolean recursive = true;
 
-            Collection<File> xmlFiles = new ArrayList<File>();
+            Collection<File> filesToValidate = new ArrayList<File>();
             Collection<File> zipFiles = new ArrayList<File>();
 
             if (dir.isDirectory()){
-                xmlFiles = FileUtils.listFiles(dir, xmlExtension, recursive);
+                filesToValidate = FileUtils.listFiles(dir, recognizedExtensions, recursive);
                 zipFiles = FileUtils.listFiles(dir, zipExtension, recursive);
             }
-            else if (dir.getName().endsWith(XML_EXTENSION)) {
-                xmlFiles.add(dir);
+            else if (dir.getName().endsWith(XML_EXTENSION) ||
+                    dir.getName().endsWith(TEXT_EXTENSION) ||
+                    dir.getName().endsWith(CSV_EXTENSION) ||
+                    dir.getName().endsWith(TSV_EXTENSION)) {
+                filesToValidate.add(dir);
             }
             else if (dir.getName().endsWith(ZIP_EXTENSION)) {
                 zipFiles.add(dir);
             }
 
-            for (File file : xmlFiles) {
+            for (File file : filesToValidate) {
 
                 System.out.println("Validate File : " + file.getAbsolutePath());
                 validateFile(file, validator, levelThreshold, validationScope);
@@ -465,7 +471,10 @@ public class ValidatorClient {
                     }
                     else{
 
-                        if (entry.getName().endsWith(XML_EXTENSION)){
+                        if (entry.getName().endsWith(XML_EXTENSION) ||
+                                entry.getName().endsWith(TEXT_EXTENSION) ||
+                                entry.getName().endsWith(CSV_EXTENSION) ||
+                                entry.getName().endsWith(TSV_EXTENSION)){
                             System.out.println("Extracting: " +entry.getName());
 
                             String entryName = parentDirectory.getAbsolutePath() + File.separator + entry.getName();
