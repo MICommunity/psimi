@@ -270,7 +270,7 @@ public class MIHtmlWriter {
             writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
-
+            writer.write(NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
 
@@ -315,6 +315,7 @@ public class MIHtmlWriter {
 
             // write
             writer.write("</table>");
+            writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
@@ -332,7 +333,7 @@ public class MIHtmlWriter {
             writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
-
+            writer.write(NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
 
@@ -423,6 +424,7 @@ public class MIHtmlWriter {
 
             // write
             writer.write("</table>");
+            writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
@@ -440,7 +442,7 @@ public class MIHtmlWriter {
             writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
-
+            writer.write(NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
 
@@ -520,6 +522,7 @@ public class MIHtmlWriter {
             }
 
             writer.write("</table>");
+            writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
@@ -537,7 +540,7 @@ public class MIHtmlWriter {
             writer.write("</a></td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
-
+            writer.write(NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
 
@@ -613,6 +616,7 @@ public class MIHtmlWriter {
             }
 
             writer.write("</table>");
+            writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
@@ -625,7 +629,7 @@ public class MIHtmlWriter {
             writer.write("            <td class=\"table-title\">Publication:</td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
-
+            writer.write(NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
 
@@ -700,6 +704,7 @@ public class MIHtmlWriter {
             }
 
             writer.write("</table>");
+            writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
@@ -714,7 +719,7 @@ public class MIHtmlWriter {
             writer.write(":</td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
-
+            writer.write(NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
 
@@ -734,6 +739,7 @@ public class MIHtmlWriter {
             writeCvTerm("Compartment", organism.getCompartment());
 
             writer.write("</table>");
+            writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
@@ -748,7 +754,7 @@ public class MIHtmlWriter {
             writer.write(":</td>");
             writer.write(NEW_LINE);
             writer.write("            <td class=\"normal-cell\">");
-
+            writer.write(NEW_LINE);
             writer.write("<table style=\"border: 1px solid #eee\" cellspacing=\"0\">");
             writer.write(NEW_LINE);
 
@@ -781,15 +787,20 @@ public class MIHtmlWriter {
                 }
             }
             writer.write("</table>");
+            writer.write(NEW_LINE);
             writer.write("</td>");
             writer.write(NEW_LINE);
         }
     }
 
     public void writeSubTitle(String subTitle) throws IOException {
+        writer.write("<tr>");
+        writer.write(NEW_LINE);
         writer.write("            <td class=\"table-subtitle\" colspan=\"2\">");
         writer.write(subTitle);
         writer.write("</td>");
+        writer.write(NEW_LINE);
+        writer.write("</tr>");
         writer.write(NEW_LINE);
     }
 
