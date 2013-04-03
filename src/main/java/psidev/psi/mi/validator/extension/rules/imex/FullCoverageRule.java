@@ -92,14 +92,6 @@ public class FullCoverageRule extends Mi25InteractionRule {
 
             if (attributeName.isEmpty()){
                 Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-                Experiment exp = interaction.getExperiment();
-                if (exp != null){
-                    context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
-                    Publication pub = exp.getPublication();
-                    if (pub != null){
-                        context.addAssociatedContext(RuleUtils.buildContext(pub, "publication"));
-                    }
-                }
                 messages.add( new ValidatorMessage( "The annotation 'full coverage' (MI:0957) is missing (can be at the interaction, experiment or publication level) and it is required for IMEx. ",
                         MessageLevel.ERROR,
                         context,

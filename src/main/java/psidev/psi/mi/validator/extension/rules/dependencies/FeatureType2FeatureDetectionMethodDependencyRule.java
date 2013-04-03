@@ -83,9 +83,6 @@ public class FeatureType2FeatureDetectionMethodDependencyRule extends MiFeatureR
 
             if (method != null){
                 Mi25Context context = RuleUtils.buildContext(feature, "feature");
-                context.addAssociatedContext(RuleUtils.buildContext(method, "feature detection method"));
-                context.addAssociatedContext(RuleUtils.buildContext(featureType, "feature type"));
-
                 messages.addAll( mapping.check( featureType, method, context, this ) );
             }
         }

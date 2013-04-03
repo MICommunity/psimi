@@ -84,8 +84,6 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
                 if( expAtts.isEmpty() ) {
                     Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
-                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
-                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment()));
                     messages.add( new ValidatorMessage( "Could not find a confidence mapping on the experiment attached to this interaction." ,
                             MessageLevel.ERROR,
                             context,
@@ -121,7 +119,6 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
 
                 if( expAtts.isEmpty() ) {
                     Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
 
                     messages.add( new ValidatorMessage( "Could not find a confidence mapping on the experiment attached to this interaction." ,
                             MessageLevel.ERROR,

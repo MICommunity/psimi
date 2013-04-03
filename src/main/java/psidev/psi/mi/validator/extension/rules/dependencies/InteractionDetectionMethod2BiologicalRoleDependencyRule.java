@@ -78,18 +78,14 @@ public class InteractionDetectionMethod2BiologicalRoleDependencyRule extends MiP
         Mi25Context context = RuleUtils.buildContext(participant, "participant");
 
         CvTerm biolRole = participant.getBiologicalRole();
-        context.addAssociatedContext(RuleUtils.buildContext(biolRole, "participant's biological role"));
 
         if (participant.getInteractionEvidence() != null){
             InteractionEvidence interaction = participant.getInteractionEvidence();
-            context.addAssociatedContext(RuleUtils.buildContext(interaction, "interaction"));
 
             if (interaction.getExperiment() != null){
                 Experiment exp = interaction.getExperiment();
-                context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
 
                 CvTerm method = exp.getInteractionDetectionMethod();
-                context.addAssociatedContext(RuleUtils.buildContext(method, "interaction detection method"));
 
                 messages.addAll( mapping.check( method, biolRole, context, this ) );
             }

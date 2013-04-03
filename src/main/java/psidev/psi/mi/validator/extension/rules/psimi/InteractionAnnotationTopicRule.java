@@ -48,9 +48,9 @@ public class InteractionAnnotationTopicRule extends Mi25InteractionRule {
                     dbTerms.addAll(RuleUtils.collectAccessions(access.getValidTerms("MI:0954", true, false)));
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
-                        Mi25Context context = RuleUtils.buildContext(interactionEvidence, "interaction");
+                        Mi25Context context = RuleUtils.buildContext(annot, "annotation");
 
-                        context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
+                        context.addAssociatedContext(RuleUtils.buildContext(interactionEvidence, "interaction"));
                         messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid annotation topic for interactions",
                                 MessageLevel.WARN,
                                 context,

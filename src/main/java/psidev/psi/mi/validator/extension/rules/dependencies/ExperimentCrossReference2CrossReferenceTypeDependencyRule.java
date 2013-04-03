@@ -106,8 +106,8 @@ public class ExperimentCrossReference2CrossReferenceTypeDependencyRule extends M
         Collection<psidev.psi.mi.jami.model.Xref> databaseReferences = container.getXrefs();
 
         for ( Xref reference : databaseReferences) {
-            Mi25Context context = RuleUtils.buildContext(container, "experiment");
-            context.addAssociatedContext(RuleUtils.buildContext(reference, "database cross reference"));
+            Mi25Context context = RuleUtils.buildContext(reference, "database cross reference");
+            context.addAssociatedContext(RuleUtils.buildContext(container, "experiment"));
 
             // build a context in case of error
             messages.addAll( mapping.check( reference.getDatabase(), reference.getQualifier(), context, this ) );

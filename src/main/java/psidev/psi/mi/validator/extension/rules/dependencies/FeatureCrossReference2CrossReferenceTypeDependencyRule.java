@@ -90,23 +90,23 @@ public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends MiFe
 
         Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        // Collect the db references
-        Collection<psidev.psi.mi.jami.model.Xref> databaseReferences = container.getXrefs();
+        // Collect the identifiers
+        Collection<psidev.psi.mi.jami.model.Xref> identifiers = container.getIdentifiers();
 
-        for ( Xref reference : databaseReferences) {
-            Mi25Context context = RuleUtils.buildContext(container, "feature");
-            context.addAssociatedContext(RuleUtils.buildContext(reference, "database cross reference"));
+        for ( Xref reference : identifiers) {
+            Mi25Context context = RuleUtils.buildContext(reference, "database cross reference");
+            context.addAssociatedContext(RuleUtils.buildContext(container, "feature"));
 
             // build a context in case of error
             messages.addAll( mapping.check( reference.getDatabase(), reference.getQualifier(), context, this ) );
         }
 
-        // Collect the identifiers
-        Collection<psidev.psi.mi.jami.model.Xref> identifiers = container.getIdentifiers();
+        // Collect the db references
+        Collection<psidev.psi.mi.jami.model.Xref> databaseReferences = container.getXrefs();
 
-        for ( Xref reference : identifiers) {
-            Mi25Context context = RuleUtils.buildContext(container, "feature");
-            context.addAssociatedContext(RuleUtils.buildContext(reference, "database cross reference"));
+        for ( Xref reference : databaseReferences) {
+            Mi25Context context = RuleUtils.buildContext(reference, "database cross reference");
+            context.addAssociatedContext(RuleUtils.buildContext(container, "feature"));
 
             // build a context in case of error
             messages.addAll( mapping.check( reference.getDatabase(), reference.getQualifier(), context, this ) );

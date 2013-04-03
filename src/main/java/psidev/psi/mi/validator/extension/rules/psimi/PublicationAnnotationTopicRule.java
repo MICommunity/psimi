@@ -49,9 +49,9 @@ public class PublicationAnnotationTopicRule extends MiPublicationRule{
                     dbTerms.addAll(RuleUtils.collectAccessions(access.getValidTerms("MI:0954", true, false)));
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
-                        Mi25Context context = RuleUtils.buildContext(publication, "publication");
+                        Mi25Context context = RuleUtils.buildContext(annot, "annotation");
 
-                        context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
+                        context.addAssociatedContext(RuleUtils.buildContext(publication, "publication"));
                         messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid publication annotation topic",
                                 MessageLevel.WARN,
                                 context,

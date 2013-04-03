@@ -78,18 +78,14 @@ public class InteractionDetectionMethod2ExperimentRoleDependencyRule extends MiP
         CvTerm role = participant.getExperimentalRole();
         // build a context in case of error
         Mi25Context context = RuleUtils.buildContext(participant, "participant");
-        context.addAssociatedContext(RuleUtils.buildContext(role, "participant's experimental role"));
 
         if (participant.getInteractionEvidence() != null){
             InteractionEvidence interaction = participant.getInteractionEvidence();
-            context.addAssociatedContext(RuleUtils.buildContext(interaction, "interaction"));
 
             if (interaction.getExperiment() != null){
                 Experiment exp = interaction.getExperiment();
-                context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
 
                 final CvTerm method = exp.getInteractionDetectionMethod();
-                context.addAssociatedContext(RuleUtils.buildContext(method, "interaction detection method"));
                 messages.addAll( mapping.check( method, role, context, this ) );
             }
         }

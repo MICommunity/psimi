@@ -48,20 +48,15 @@ public class ParticipantIdentificationMethodRule extends MiParticipantRule {
 
         if (participant.getIdentificationMethod() == null){
             Mi25Context context = RuleUtils.buildContext(participant, "participant");
-            if (participant.getInteractionEvidence() != null && participant.getInteractionEvidence().getExperiment() != null){
-                context.addAssociatedContext(RuleUtils.buildContext(participant.getInteractionEvidence().getExperiment(), "experiment"));
-            }
+
             messages.add( new ValidatorMessage( " The participant does not have a participant identification method and it is required for MIMIx",
                     MessageLevel.ERROR,
                     context,
                     this ) );
         }
         else {
-            Mi25Context context = RuleUtils.buildContext(participant, "participant");
-            if (participant.getInteractionEvidence() != null && participant.getInteractionEvidence().getExperiment() != null){
-                context.addAssociatedContext(RuleUtils.buildContext(participant.getInteractionEvidence().getExperiment(), "experiment"));
-            }
-            context.addAssociatedContext(RuleUtils.buildContext(participant.getIdentificationMethod(), "participant identification method"));
+            Mi25Context context = RuleUtils.buildContext(participant.getIdentificationMethod(), "participant identification method");
+            context.addAssociatedContext(RuleUtils.buildContext(participant, "participant"));
             RuleUtils.checkUniquePsiMIXRef(participant.getIdentificationMethod(), messages, context, this);
         }
 

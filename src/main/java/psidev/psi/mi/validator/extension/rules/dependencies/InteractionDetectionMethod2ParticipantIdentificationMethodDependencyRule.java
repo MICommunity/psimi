@@ -76,17 +76,13 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
 
         if (participant.getInteractionEvidence() != null){
             InteractionEvidence interaction = participant.getInteractionEvidence();
-            context.addAssociatedContext(RuleUtils.buildContext(interaction, "interaction"));
 
             if (interaction.getExperiment() != null){
                 Experiment exp = interaction.getExperiment();
-                context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
                 CvTerm detMethod = exp.getInteractionDetectionMethod();
                 if (detMethod != null){
-                    context.addAssociatedContext(RuleUtils.buildContext(detMethod, "interaction detection method"));
 
                     if (participant.getIdentificationMethod() != null){
-                        context.addAssociatedContext(RuleUtils.buildContext(participant.getIdentificationMethod(), "participant identification method"));
                         CvTerm participantMethod = participant.getIdentificationMethod();
 
                         messages.addAll( mapping.check( detMethod, participantMethod, context, this ) );
