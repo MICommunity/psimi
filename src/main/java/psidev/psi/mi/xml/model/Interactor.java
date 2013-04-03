@@ -9,7 +9,6 @@ package psidev.psi.mi.xml.model;
 
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -934,19 +933,19 @@ public class Interactor extends DefaultInteractor implements Polymer, HasId, Nam
             if (added.getNameAc() != null
                     && (added.getNameAc().equals(Checksum.ROGID_MI)
                     || added.getNameAc().equals(Checksum.INCHI_KEY_MI)
-                    || added.getNameAc().equals(Checksum.INCHI_MI))
+                    || added.getNameAc().equals(Checksum.INCHI_MI)
                     || added.getNameAc().equals(Checksum.SMILE_MI)
                     || added.getNameAc().equals("MI:1212")
-                    || added.getNameAc().equals("MI:0970")){
+                    || added.getNameAc().equals("MI:0970"))){
                  ((InteractorChecksumList) getChecksums()).addOnly(new DefaultChecksum(new DefaultCvTerm(added.getName(), added.getNameAc()), added.getValue()));
             }
             else if (added.getNameAc() == null
                     && (added.getName().equals(Checksum.ROGID)
                     || added.getName().equals(Checksum.INCHI_KEY)
-                    || added.getName().equals(Checksum.INCHI))
+                    || added.getName().equals(Checksum.INCHI)
                     || added.getName().equals(Checksum.SMILE)
                     || added.getName().equals("checksum")
-                    || added.getName().equals("inchi key")){
+                    || added.getName().equals("inchi key"))){
                 ((InteractorChecksumList) getChecksums()).addOnly(new DefaultChecksum(new DefaultCvTerm(added.getName()), added.getValue()));
             }
             else {
@@ -961,19 +960,19 @@ public class Interactor extends DefaultInteractor implements Polymer, HasId, Nam
             if (removed.getNameAc() != null
                     && (removed.getNameAc().equals(Checksum.ROGID_MI)
                     || removed.getNameAc().equals(Checksum.INCHI_KEY_MI)
-                    || removed.getNameAc().equals(Checksum.INCHI_MI))
+                    || removed.getNameAc().equals(Checksum.INCHI_MI)
                     || removed.getNameAc().equals(Checksum.SMILE_MI)
                     || removed.getNameAc().equals("MI:1212")
-                    || removed.getNameAc().equals("MI:0970")){
+                    || removed.getNameAc().equals("MI:0970"))){
                 ((InteractorChecksumList) getChecksums()).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName(), removed.getNameAc()), removed.getValue()));
             }
             else if (removed.getNameAc() == null
                     && (removed.getName().equals(Checksum.ROGID)
                     || removed.getName().equals(Checksum.INCHI_KEY)
-                    || removed.getName().equals(Checksum.INCHI))
+                    || removed.getName().equals(Checksum.INCHI)
                     || removed.getName().equals(Checksum.SMILE)
                     || removed.getName().equals("checksum")
-                    || removed.getName().equals("inchi key")){
+                    || removed.getName().equals("inchi key"))){
                 ((InteractorChecksumList) getChecksums()).removeOnly(new DefaultChecksum(new DefaultCvTerm(removed.getName()), removed.getValue()));
             }
             else {
