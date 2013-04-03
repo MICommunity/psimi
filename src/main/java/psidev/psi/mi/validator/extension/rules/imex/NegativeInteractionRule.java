@@ -38,9 +38,9 @@ public class NegativeInteractionRule extends Mi25InteractionRule{
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-
         if (interaction.isNegative()){
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
             messages.add( new ValidatorMessage( "Negative interactions are currently outside of the remit of IMEx and " +
                             "should be removed from the record.",
                             MessageLevel.WARN,

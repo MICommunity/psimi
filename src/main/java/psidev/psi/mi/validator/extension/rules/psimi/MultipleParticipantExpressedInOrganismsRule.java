@@ -44,14 +44,14 @@ public class MultipleParticipantExpressedInOrganismsRule extends MiFileDataSourc
         for (FileSourceError error : multipleExpressedIn){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "participant");
             }
             else {
                 context = new Mi25Context();
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.ERROR,
+                    MessageLevel.WARN,
                     context,
                     this ) );
         }

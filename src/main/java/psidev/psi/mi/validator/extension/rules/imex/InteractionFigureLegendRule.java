@@ -35,8 +35,6 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
     public Collection<ValidatorMessage> check(InteractionEvidence interaction) throws ValidatorException {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-
         if (!interaction.getAnnotations().isEmpty()){
             Collection<Annotation> attributes = interaction.getAnnotations();
 
@@ -56,6 +54,8 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
             }
 
             if (!hasFigureLegend){
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
                 messages.add( new ValidatorMessage( "Interaction with "+attributes.size()+" annotations but without a figure legend. A figure legend is recommended by IMEx.'",
                         MessageLevel.WARN,
                         context,
@@ -63,6 +63,8 @@ public class InteractionFigureLegendRule extends Mi25InteractionRule{
             }
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
             messages.add( new ValidatorMessage( "Interaction without a figure legend. A figure legend is recommended by IMEx.'",
                     MessageLevel.WARN,
                     context,

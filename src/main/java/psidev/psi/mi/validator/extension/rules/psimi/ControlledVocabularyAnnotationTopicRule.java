@@ -36,7 +36,6 @@ public class ControlledVocabularyAnnotationTopicRule extends MiCvRule {
         if (!cvTerm.getAnnotations().isEmpty()){
             // list of messages to return
             List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-            Mi25Context context = RuleUtils.buildContext(cvTerm, "controlled vocabulary term");
 
             for (Annotation annot : cvTerm.getAnnotations()){
                 if (annot.getTopic()!= null && annot.getTopic().getMIIdentifier() != null){
@@ -44,6 +43,8 @@ public class ControlledVocabularyAnnotationTopicRule extends MiCvRule {
                     Set<String> dbTerms = RuleUtils.collectAccessions(access.getValidTerms("MI:0667", true, false));
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
+                        Mi25Context context = RuleUtils.buildContext(cvTerm, "controlled vocabulary term");
+
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
                         messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a topic for controlled vocabulary terms",
                                 MessageLevel.WARN,

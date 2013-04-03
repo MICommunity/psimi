@@ -37,11 +37,11 @@ public class InteractionParticipantRule extends Mi25InteractionRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction);
-
         // Check participants
         if (interaction.getParticipantEvidences().isEmpty()){
-            messages.add( new ValidatorMessage( "The interaction does not have any participants and it is required by IMEx.",
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
+            messages.add( new ValidatorMessage( "The interaction does not have any participants.",
                         MessageLevel.ERROR,
                         context,
                         this ) );

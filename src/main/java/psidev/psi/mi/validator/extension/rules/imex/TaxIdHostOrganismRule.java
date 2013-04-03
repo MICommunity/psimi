@@ -1,6 +1,5 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
-import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.MiOrganismRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -46,9 +45,7 @@ public class TaxIdHostOrganismRule extends MiOrganismRule {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(organism, "organism");
-
-        RuleUtils.checkImexOrganism( ontologyManager, organism, context, messages, this,
+        RuleUtils.checkImexOrganism( ontologyManager, organism, messages, this,
                                           "Experiment or Interactor", "organism" );
 
         return messages;

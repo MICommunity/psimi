@@ -38,7 +38,6 @@ public class FeatureAnnotationTopicRule extends MiFeatureRule {
         if (!featureEvidence.getAnnotations().isEmpty()){
             // list of messages to return
             List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-            Mi25Context context = RuleUtils.buildContext(featureEvidence, "feature");
 
             for (Annotation annot : featureEvidence.getAnnotations()){
                 if (annot.getTopic()!= null && annot.getTopic().getMIIdentifier() != null){
@@ -46,6 +45,8 @@ public class FeatureAnnotationTopicRule extends MiFeatureRule {
                     Set<String> dbTerms = RuleUtils.collectAccessions(access.getValidTerms("MI:0668", true, false));
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
+                        Mi25Context context = RuleUtils.buildContext(featureEvidence, "feature");
+
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
                         messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid annotation topic for features",
                                 MessageLevel.WARN,

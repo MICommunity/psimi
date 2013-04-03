@@ -44,7 +44,7 @@ public class MissingParticipantBiologicalRoleRule extends MiFileDataSourceRule {
         for (FileSourceError error : missingType){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "participant");
             }
             else {
                 context = new Mi25Context();

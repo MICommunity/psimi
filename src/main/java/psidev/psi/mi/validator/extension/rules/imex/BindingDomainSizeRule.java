@@ -95,11 +95,6 @@ public class BindingDomainSizeRule extends MiFeatureRule {
     public Collection<ValidatorMessage> check(FeatureEvidence feature) throws ValidatorException {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(feature, "feature");
-        if (feature.getParticipantEvidence() != null){
-            context.addAssociatedContext(RuleUtils.buildContext(feature.getParticipantEvidence(), "participant"));
-        }
-
         if (feature.getType() != null){
             if (RuleUtils.isBindingSite(ontologyManager, feature)){
                 Collection<psidev.psi.mi.jami.model.Range> ranges = feature.getRanges();
@@ -132,12 +127,20 @@ public class BindingDomainSizeRule extends MiFeatureRule {
                 }
 
                 if (minSize < 3 && maxSize < 3 && isFeatureSiteDefined){
+                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    if (feature.getParticipantEvidence() != null){
+                        context.addAssociatedContext(RuleUtils.buildContext(feature.getParticipantEvidence(), "participant"));
+                    }
                     messages.add( new ValidatorMessage( "The binding site does not contain more than three amino acids. For one or two amino acids, the feature type should be any children of mutation instead of binding site.'",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 else if (minSize < 3 && maxSize >= 3 && isFeatureSiteDefined){
+                    Mi25Context context = RuleUtils.buildContext(feature, "feature");
+                    if (feature.getParticipantEvidence() != null){
+                        context.addAssociatedContext(RuleUtils.buildContext(feature.getParticipantEvidence(), "participant"));
+                    }
                     messages.add( new ValidatorMessage( "The minimum size of this binding site is "+minSize+" and binding site should always contain more than three amino acids.'",
                             MessageLevel.WARN,
                             context,

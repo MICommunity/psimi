@@ -47,11 +47,11 @@ public class ExperimentInteractionDetectionMethodRule extends Mi25ExperimentRule
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
+        CvTerm intMethod = experiment.getInteractionDetectionMethod();
 
-        Mi25Context context = RuleUtils.buildContext(experiment.getInteractionDetectionMethod(), "interaction detection method");
+        Mi25Context context = RuleUtils.buildContext(intMethod, "interaction detection method");
         context.addAssociatedContext(RuleUtils.buildContext(experiment, "experiment"));
 
-        CvTerm intMethod = experiment.getInteractionDetectionMethod();
         RuleUtils.checkUniquePsiMIXRef(intMethod, messages, context, this);
 
         return messages;

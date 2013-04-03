@@ -45,7 +45,7 @@ public class MissingAliasNameRule extends MiFileDataSourceRule {
         for (FileSourceError error : missingAliasNames){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "alias");
             }
             else {
                 context = new Mi25Context();

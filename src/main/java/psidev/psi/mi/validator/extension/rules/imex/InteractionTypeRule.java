@@ -43,15 +43,15 @@ public class InteractionTypeRule extends Mi25InteractionRule{
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-
         if (interaction.getType() != null){
             CvTerm interactionType = interaction.getType();
 
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
             RuleUtils.checkUniquePsiMIXRef(interactionType, messages, context, this);
 
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
             messages.add( new ValidatorMessage( "The interaction does not have an interaction type. At least one interaction type is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,

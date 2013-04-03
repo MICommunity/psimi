@@ -62,8 +62,6 @@ public class ExperimentPublicationRule extends MiPublicationRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(pub, "publication");
-
         boolean hasPublicationIdentifier = false;
 
         final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = pub.getIdentifiers();
@@ -87,12 +85,16 @@ public class ExperimentPublicationRule extends MiPublicationRule {
                 primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(pubmeds, Xref.IDENTITY_MI, Xref.IDENTITY));
 
                 if ( primaryReferences.isEmpty() ) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" pubmed identifiers. Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 else if (primaryReferences.size() > 1){
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "Only one pubmed identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" pubmed identifiers.",
                             MessageLevel.WARN,
                             context,
@@ -106,12 +108,16 @@ public class ExperimentPublicationRule extends MiPublicationRule {
                 primaryReferences.addAll(XrefUtils.collectAllXrefsHavingQualifier(dois, Xref.IDENTITY_MI, Xref.IDENTITY));
 
                 if ( primaryReferences.isEmpty() ) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "The publication has "+pubmeds.size()+" DOI identifiers. Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity' to identify the publication.",
                             MessageLevel.WARN,
                             context,
                             this ) );
                 }
                 else if (primaryReferences.size() > 1){
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "Only one DOI identifier should have a reference-type set to 'primary-reference' or 'identity'. We found "+primaryReferences.size()+" DOI identifiers.",
                             MessageLevel.WARN,
                             context,
@@ -127,6 +133,7 @@ public class ExperimentPublicationRule extends MiPublicationRule {
             int countValidEmail = 0;
 
             if ( emails.isEmpty() ) {
+                Mi25Context context = RuleUtils.buildContext(pub, "publication");
 
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, a contact email is " +
                         "required in the bibRef's or ExperimentDescription's attributes.",
@@ -141,6 +148,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
                         emptyEmailCount++;
                     } else {
                         if ( !EMAIL_VALIDATOR.matcher( address ).matches() ) {
+                            Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                             messages.add( new ValidatorMessage( "An contact email seems to be invalid: " + address,
                                     MessageLevel.WARN,
                                     context,
@@ -152,6 +161,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
                 }
 
                 if ( emptyEmailCount > 0 ) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "While looking for experimentDescription's contact email, we found "
                             + emptyEmailCount + " empty value(s).",
                             MessageLevel.INFO,
@@ -160,6 +171,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
                 }
 
                 if ( countValidEmail == 0 ) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     // in the absence of a publication identifier, a contact email is expected.
                     messages.add( new ValidatorMessage( "In the absence of a publication identifier, a valid contact " +
                             "email is required in the experimentDescription's attributes.",
@@ -172,6 +185,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
             Collection<String> authorList = pub.getAuthors();
 
             if ( authorList.isEmpty() ) {
+                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                 // in the absence of a publication identifier, a author list is required.
                 messages.add( new ValidatorMessage( "In the absence of a publication identifier, an author list is " +
                         "required in the bibRef's attributes.",
@@ -185,6 +200,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
                         nonEmptyCount++;
                     }
                     if ( nonEmptyCount == 0 ) {
+                        Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                         // in the absence of a publication identifier, an author list is expected.
                         messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non empty " +
                                 "author list is required in the experimentDescription's " +
@@ -201,7 +218,9 @@ public class ExperimentPublicationRule extends MiPublicationRule {
             Collection<Annotation> titles = AnnotationUtils.collectAllAnnotationsHavingTopic(pub.getAnnotations(), Annotation.PUBLICATION_TITLE_MI, Annotation.PUBLICATION_TITLE);
 
             if (titles.size() > 1){
-                 messages.add( new ValidatorMessage( titles.size() + " publications titles have been found and only one is expected.",
+                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
+                messages.add( new ValidatorMessage( titles.size() + " publications titles have been found and only one is expected.",
                             MessageLevel.ERROR,
                             context,
                             this ) );
@@ -209,6 +228,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
             else {
 
                 if ( publicationTitle == null || publicationTitle.trim().length() == 0 ) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     // in the absence of a publication identifier, an publication title is expected (i.e. experimentDescritpion.names.fullname)
                     messages.add( new ValidatorMessage( "In the absence of a publication identifier, an non " +
                             "publication title is required.",

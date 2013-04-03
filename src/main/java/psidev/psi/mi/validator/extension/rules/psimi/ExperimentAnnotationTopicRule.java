@@ -39,7 +39,6 @@ public class ExperimentAnnotationTopicRule extends Mi25ExperimentRule {
         if (!experiment.getAnnotations().isEmpty()){
             // list of messages to return
             List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-            Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
 
             for (Annotation annot : experiment.getAnnotations()){
                 if (annot.getTopic()!= null && annot.getTopic().getMIIdentifier() != null){
@@ -49,6 +48,7 @@ public class ExperimentAnnotationTopicRule extends Mi25ExperimentRule {
                     dbTerms.addAll(RuleUtils.collectAccessions(access.getValidTerms("MI:0954", true, false)));
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
+                        Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
                         messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid annotation topic for experiments",
                                 MessageLevel.WARN,

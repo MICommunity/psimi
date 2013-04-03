@@ -44,7 +44,7 @@ public class MissingExperimentInteractionDetectionMethodRule extends MiFileDataS
         for (FileSourceError error : missingDetMethod){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "experiment");
             }
             else {
                 context = new Mi25Context();

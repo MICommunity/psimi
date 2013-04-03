@@ -49,8 +49,6 @@ public class ExperimentPublicationRule extends MiPublicationRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(pub, "publication");
-
         final Collection<psidev.psi.mi.jami.model.Xref> dbReferences = pub.getIdentifiers();
 
         // search for database pubmed or DOI.
@@ -68,6 +66,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
 
                 // At least one reference-type set to 'primary-reference' is required
                 if ( primaryReferences.size() > 1 ) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
                     messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " pubmed references as 'primary-reference' or 'identity' but only one is allowed.",
                             MessageLevel.WARN,
@@ -76,6 +76,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
 
                 }
                 else if (primaryReferences.isEmpty()) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "The experiment has " + allPubmeds.size() + " pubmed references but none of theme has a reference type set to 'primary-reference' or 'identity'. When several pubmed identifiers are provided, only one of them should have qualifier set to 'primary-reference' or 'identity'.",
                             MessageLevel.ERROR,
                             context,
@@ -84,6 +86,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
 
             }
             else if ( allPubmeds.isEmpty() && allDois.isEmpty()) {
+                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                 messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of them is a PubMed or Digital Object reference. At least one Pubmed of DOI bibliographical primary reference is required.",
                         MessageLevel.ERROR,
                         context,
@@ -98,6 +102,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
 
                 // At least one reference-type set to 'primary-reference' is required
                 if ( primaryReferences.size() > 1 ) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     // check if we have a pubmed or doi identifier available. Doesn't test if it is valid as BibRefRule is checking that.
                     messages.add( new ValidatorMessage( "The experiment has " + primaryReferences.size() + " DOI references as 'primary-reference' or 'identity' but only one is allowed.",
                             MessageLevel.WARN,
@@ -106,6 +112,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
 
                 }
                 else if (primaryReferences.isEmpty()) {
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "The experiment has " + allPubmeds.size() + " DOI references but none of theme has a reference type set to 'primary-reference' or 'identity'. When several DOI identifiers are provided, only one of them should have qualifier set to 'primary-reference' or 'identity'.",
                             MessageLevel.ERROR,
                             context,
@@ -115,6 +123,8 @@ public class ExperimentPublicationRule extends MiPublicationRule {
             }
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
             messages.add( new ValidatorMessage( "The experiment has " + dbReferences.size() + " bibliographical references but none of them is a PubMed or Digital Object reference. At least one Pubmed or DOI bibliographical primary reference is required.",
                     MessageLevel.ERROR,
                     context,

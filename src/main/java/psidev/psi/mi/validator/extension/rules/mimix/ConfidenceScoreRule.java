@@ -53,8 +53,6 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-
         // write the rule here ...
 
         final Collection<Annotation> atts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getAnnotations(),
@@ -68,6 +66,9 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
             // at least one with a confidence mapping.
 
             if( interaction.getExperiment() == null ) {
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                hasAddedExperimentContext = true;
+
                 // error, we should have at least one exp !!
                 messages.add( new ValidatorMessage( "No experiment defined for this interaction, furthermore, given " +
                         "that the interaction defines an author confidence, the experiment " +
@@ -76,14 +77,14 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
                         context,
                         this ) );
             } else {
-                context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
-                hasAddedExperimentContext = true;
                 final Collection<Annotation> expAtts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getExperiment().getAnnotations(),
                         CONFIDENCE_MAPPING_MI_REF,
                         CONFIDENCE_MAPPING);
 
                 if( expAtts.isEmpty() ) {
+                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
 
+                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
                     context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment()));
                     messages.add( new ValidatorMessage( "Could not find a confidence mapping on the experiment attached to this interaction." ,
                             MessageLevel.ERROR,
@@ -102,7 +103,9 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
             // check that in the list of experiment attached to an interaction there should be
             // at least one with a confidence mapping.
 
-            if( interaction.getExperiment() == null ) {
+            if( interaction.getExperiment() == null && !hasAddedExperimentContext) {
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
                 // error, we should have at least one exp !!
                 messages.add( new ValidatorMessage( "No experiment defined for this interaction, furthermore, given " +
                         "that the interaction defines an author score, the experiment " +
@@ -111,16 +114,15 @@ public class ConfidenceScoreRule extends Mi25InteractionRule {
                         context,
                         this ) );
             } else {
-                if (!hasAddedExperimentContext){
-                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
-                }
+
                 final Collection<Annotation> expAtts = AnnotationUtils.collectAllAnnotationsHavingTopic( interaction.getExperiment().getAnnotations(),
                         CONFIDENCE_MAPPING_MI_REF,
                         CONFIDENCE_MAPPING);
 
                 if( expAtts.isEmpty() ) {
+                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment(), "experiment"));
 
-                    context.addAssociatedContext(RuleUtils.buildContext(interaction.getExperiment()));
                     messages.add( new ValidatorMessage( "Could not find a confidence mapping on the experiment attached to this interaction." ,
                             MessageLevel.ERROR,
                             context,

@@ -7,6 +7,8 @@ import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.MiFeatureRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
+import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
+import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -47,12 +49,43 @@ public class FeatureTypeRule extends MiFeatureRule{
 
             RuleUtils.checkUniquePsiMIOrModXRef(feature.getType(), messages, context, this, RuleUtils.FEATURE_TYPE);
 
+            if (feature.getType().getMIIdentifier() != null){
+                final OntologyAccess access = ontologyManager.getOntologyAccess("MI");
+                final OntologyTermI dbTerms = access.getTermForAccession(feature.getType().getMIIdentifier());
+
+                if (dbTerms != null){
+                    messages.add( new ValidatorMessage( "The feature type is not a valid MI term. The valid MI terms for alias types are available here: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+                }
+                else {
+                    Collection<OntologyTermI> parents = access.getAllParents(dbTerms);
+
+                    boolean foundParent = false;
+
+                    for (OntologyTermI p : parents){
+                        if ("MI:0116".equals(p.getTermAccession())){
+                            foundParent = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundParent){
+                        messages.add( new ValidatorMessage( "The feature type is not a valid MI term. The valid MI terms for alias types are available here: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type",
+                                MessageLevel.ERROR,
+                                context,
+                                this ) );
+                    }
+                }
+            }
+
         }
         else {
-            messages.add( new ValidatorMessage( "The feature does not have a feature type. It is required by IMEx.'",
+            messages.add(new ValidatorMessage("The feature does not have a feature type. It is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,
-                    this ) );
+                    this));
         }
 
         return messages;

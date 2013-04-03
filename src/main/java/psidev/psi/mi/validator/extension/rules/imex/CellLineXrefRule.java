@@ -54,9 +54,6 @@ public class CellLineXrefRule extends MiOrganismRule{
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
         CvTerm cellType = organism.getCellType();
 
-        Mi25Context context = RuleUtils.buildContext(cellType, "cell type");
-        context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
-
         if (!cellType.getIdentifiers().isEmpty() || !cellType.getXrefs().isEmpty()){
 
             Collection<psidev.psi.mi.jami.model.Xref> cabriReferences = XrefUtils.collectAllXrefsHavingDatabase(cellType.getIdentifiers(), RuleUtils.CABRI_MI_REF, RuleUtils.CABRI);
@@ -64,6 +61,8 @@ public class CellLineXrefRule extends MiOrganismRule{
             Collection<psidev.psi.mi.jami.model.Xref> allPubmeds = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(cellType.getXrefs(), psidev.psi.mi.jami.model.Xref.PUBMED_MI, psidev.psi.mi.jami.model.Xref.PUBMED, psidev.psi.mi.jami.model.Xref.PRIMARY_MI, psidev.psi.mi.jami.model.Xref.PRIMARY);
 
             if (cabriReferences.isEmpty() && cellReferences.isEmpty() && allPubmeds.isEmpty()){
+                Mi25Context context = RuleUtils.buildContext(cellType, "cell type");
+                context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
                 messages.add( new ValidatorMessage( "The cellType " + cellType.getShortName() + " does not have a CABRI or Cell Ontology cross reference with a qualifier 'identity' and it is strongly recommended. " +
                         "If the cell line cannot be identified but one of these databases, at least one pubmed primary reference is necessary.'",
                         MessageLevel.WARN,
@@ -72,6 +71,8 @@ public class CellLineXrefRule extends MiOrganismRule{
             }
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(cellType, "cell type");
+            context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
             messages.add( new ValidatorMessage( "The cellType " + cellType.getShortName() + " does not have any cross references and at least one cross reference to CABRI or Cell Ontology with " +
                     "qualifier 'identity' is strongly recommended. If the cell line cannot be identified but one of these databases, at least one pubmed primary reference is necessary.'",
                     MessageLevel.WARN,
