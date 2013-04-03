@@ -94,6 +94,14 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     //This line is not a comment, we read
                     nextLine = mReader.readLine(firstLine, lineIndex);
                     lineIndex++;
+
+                    while (nextLine == null && firstLine != null){
+                        firstLine = interactionStreamReader.readLine();
+                        if (firstLine != null){
+                            nextLine = mReader.readLine(firstLine, lineIndex);
+                        }
+                        lineIndex++;
+                    }
                     isHeader = false;
                 }
                 else if(!isHeader){
@@ -121,6 +129,13 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                         //This line is not a comment, we read
                         nextLine = mReader.readLine(firstLine, lineIndex);
                         lineIndex++;
+                        while (nextLine == null && firstLine != null){
+                            firstLine = interactionStreamReader.readLine();
+                            if (firstLine != null){
+                                nextLine = mReader.readLine(firstLine, lineIndex);
+                            }
+                            lineIndex++;
+                        }
                         isHeader = false;
                     }
                     else if(!isHeader){
@@ -171,6 +186,14 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     //This line is not a comment, we read
                     nextLine = mReader.readLine(firstLine, lineIndex);
                     lineIndex++;
+
+                    while (nextLine == null && firstLine != null){
+                        firstLine = interactionStreamReader.readLine();
+                        if (firstLine != null){
+                            nextLine = mReader.readLine(firstLine, lineIndex);
+                        }
+                        lineIndex++;
+                    }
                     isHeader = false;
                 }
                 else if(!isHeader){
@@ -199,6 +222,14 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                         //This line is not a comment, we read
                         nextLine = mReader.readLine(firstLine, lineIndex);
                         lineIndex++;
+
+                        while (nextLine == null && firstLine != null){
+                            firstLine = interactionStreamReader.readLine();
+                            if (firstLine != null){
+                                nextLine = mReader.readLine(firstLine, lineIndex);
+                            }
+                            lineIndex++;
+                        }
                         isHeader = false;
                     }
                     else if(!isHeader){
@@ -236,19 +267,20 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                 }
                 else {
                     nextLine = mReader.readLine(line, lineIndex);
+                    lineIndex++;
 
                     while (nextLine == null && line != null){
                         line = interactionStreamReader.readLine();
                         if (line != null){
                             nextLine = mReader.readLine(line, lineIndex);
                         }
+                        lineIndex++;
                     }
 
                     if (nextLine == null) {
                         closeStreamReader();
                         interactionStreamReader = null;
                     } else {
-                        lineIndex++;
                         lineConsummed = false;
                     }
                 }
@@ -271,19 +303,20 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
                     }
                     else {
                         nextLine = mReader.readLine(line, lineIndex);
+                        lineIndex++;
 
                         while (nextLine == null && line != null){
                             line = interactionStreamReader.readLine();
                             if (line != null){
                                 nextLine = mReader.readLine(line, lineIndex);
                             }
+                            lineIndex++;
                         }
 
                         if (nextLine == null) {
                             closeStreamReader();
                             interactionStreamReader = null;
                         } else {
-                            lineIndex++;
                             lineConsummed = false;
                         }
                     }
