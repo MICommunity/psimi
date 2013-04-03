@@ -414,7 +414,7 @@ public final class RuleUtils {
     public static Set<String> collectNames( Collection<OntologyTermI> refs ) {
         Set<String> ids = new HashSet<String>( refs.size() );
         for ( OntologyTermI termI : refs ) {
-            ids.add( termI.getPreferredName());
+            ids.add( termI.getPreferredName().toLowerCase().trim());
         }
         return ids;
     }
