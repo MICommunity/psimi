@@ -121,9 +121,6 @@ public final class MitabParserUtils {
                 } else if (withinQuotes) {
                     currGroup.append(c);
                 }
-                else {
-                    currGroup.append("");
-                }
             } else if (c == '\\') {
                 if (withinQuotes) {
                     previousCharIsEscape = true;
@@ -215,9 +212,7 @@ public final class MitabParserUtils {
                     } else if (withinQuotes) {
                         currGroup.append(c);
                     }
-                    else {
-                        currGroup.append("");
-                    }
+
                 }
                 else if (c == '\\') {
                     if (withinQuotes) {
