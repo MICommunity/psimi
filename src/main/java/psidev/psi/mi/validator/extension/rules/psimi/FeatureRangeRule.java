@@ -56,6 +56,14 @@ public class FeatureRangeRule extends MiFeatureRule {
         psidev.psi.mi.jami.model.Interactor interactor = null;
         String sequence = null;
 
+        if (participant != null){
+            interactor = participant.getInteractor();
+
+            if (interactor != null){
+                sequence = interactor instanceof Polymer ? ((Polymer) interactor).getSequence() : null;
+            }
+        }
+
         Collection<psidev.psi.mi.jami.model.Range> ranges = feature .getRanges();
 
         if (ranges.isEmpty()){
