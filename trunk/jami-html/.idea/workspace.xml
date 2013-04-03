@@ -8,17 +8,17 @@
     <ignored path="jami-html.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="$PROJECT_DIR$/../psi-jami/pom.xml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364887892936" ignored="false" />
-    <file path="/Dummy.txt" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364915215359" ignored="false" />
+    <file path="/Dummy.txt" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1365008111470" ignored="false" />
     <file path="/pom.xml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364911642014" ignored="false" />
-    <file path="/MIHtmlWriter.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364915210283" ignored="false" />
+    <file path="/MIHtmlWriter.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364974060479" ignored="false" />
     <file path="$PROJECT_DIR$/../../psi25-xml-2.0.0-SNAPSHOT/src/main/java/psidev/psi/mi/xml/model/ExperimentDescription.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364901015952" ignored="false" />
     <file path="/ExperimentDescription.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364890460379" ignored="false" />
     <file path="/HtmlWriterUtils.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364899909992" ignored="false" />
     <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/pom.xml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364903492066" ignored="false" />
-    <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/src/test/java/psidev/psi/mi/validator/extension/Mi25ValidatorTest.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364903477783" ignored="false" />
-    <file path="/Mi25ValidatorTest.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364900619704" ignored="false" />
+    <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/src/test/java/psidev/psi/mi/validator/extension/Mi25ValidatorTest.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364917312831" ignored="false" />
+    <file path="/Mi25ValidatorTest.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364917311987" ignored="false" />
     <file path="$PROJECT_DIR$/../../psi25-xml-2.0.0-SNAPSHOT/src/main/java/psidev/psi/mi/xml/model/PsiXmlFileLocator.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364901015952" ignored="false" />
-    <file path="$MAVEN_REPOSITORY$/psidev/psi/mi/jami-html/2.0.0-SNAPSHOT/jami-html-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/html/MIHtmlWriter.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364903231697" ignored="false" />
+    <file path="$MAVEN_REPOSITORY$/psidev/psi/mi/jami-html/2.0.0-SNAPSHOT/jami-html-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/html/MIHtmlWriter.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364916977618" ignored="false" />
     <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/10409737-wrongExperimentalRole.html" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364902069658" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/psidev/psi/mi/psimi-master/1.8.4-SNAPSHOT/psimi-master-1.8.4-SNAPSHOT.pom" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364904394361" ignored="false" />
     <file path="$PROJECT_DIR$/../../psi25-xml-2.0.0-SNAPSHOT/src/main/java/psidev/psi/mi/xml/model/Participant.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364904885496" ignored="false" />
@@ -35,15 +35,16 @@
     <file path="/RuleUtils.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364910263425" ignored="false" />
     <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/src/main/java/psidev/psi/mi/validator/extension/xpath/Mi25XPathResult.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364910452729" ignored="false" />
     <file path="/Mi25XPathResult.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364910347280" ignored="false" />
-    <file path="$PROJECT_DIR$/../../validator-view-2.5.0-SNAPSHOT/src/main/webapp/start.xhtml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364914700445" ignored="false" />
+    <file path="$PROJECT_DIR$/../../validator-view-2.5.0-SNAPSHOT/src/main/webapp/start.xhtml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364916226321" ignored="false" />
     <file path="/start.xhtml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364914462617" ignored="false" />
     <file path="$PROJECT_DIR$/../../validator-view-2.5.0-SNAPSHOT/pom.xml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364911642014" ignored="false" />
     <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/src/main/resources/config/psi_mi/imex-rules.xml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364911702483" ignored="false" />
     <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/src/main/resources/config/psi_mi/object-rules.xml" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364911737923" ignored="false" />
-    <file path="/fragment.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364913481182" ignored="false" />
+    <file path="/fragment.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364915619228" ignored="false" />
     <file path="$PROJECT_DIR$/../../psimitab-parser-2.0.0-SNAPSHOT/src/main/java/psidev/psi/mi/tab/model/builder/MitabParserUtils.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364913825497" ignored="false" />
     <file path="$PROJECT_DIR$/../psi-jami/src/main/java/psidev/psi/mi/jami/utils/factory/RangeFactory.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364914219854" ignored="false" />
     <file path="$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/utils/factory/RangeFactory.java" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364914291292" ignored="false" />
+    <file path="$PROJECT_DIR$/../../psimi-schema-validator-2.1.0-SNAPSHOT/src/test/resources/sample-xml/10075675.txt" changelist="861258ae-18cf-4950-a3e5-ac1f23a29432" time="1364917291651" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,25 +106,7 @@
       <file leaf-file-name="MIHtmlWriter.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/psidev/psi/mi/html/MIHtmlWriter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="894" column="23" selection-start="34901" selection-end="34901" vertical-scroll-proportion="0.796748">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Publication.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Publication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="17" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Experiment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Experiment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="17" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
+            <state line="740" column="103" selection-start="28438" selection-end="28438" vertical-scroll-proportion="8.72973">
               <folding />
             </state>
           </provider>
@@ -193,6 +176,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -261,7 +245,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -432,7 +415,23 @@
       <created>1364912137101</created>
       <updated>1364912137101</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Created html write for streaming interaction source">
+      <created>1364915224101</created>
+      <updated>1364915224101</updated>
+    </task>
+    <task id="LOCAL-00013" summary="MIHtmlWriter : updated writer for interactor sequence">
+      <created>1364916106101</created>
+      <updated>1364916106101</updated>
+    </task>
+    <task id="LOCAL-00014" summary="MIHtmlWriter : fixed a small bug">
+      <created>1364916926101</created>
+      <updated>1364916926101</updated>
+    </task>
+    <task id="LOCAL-00015" summary="MIHtmlWriter : fixed a small bugs">
+      <created>1364974097149</created>
+      <updated>1364974097149</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -450,17 +449,17 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24981189" sideWeight="0.96410257" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24981189" sideWeight="0.6717949" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904884" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32820514" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -503,7 +502,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created html write for streaming interaction source" />
+    <option name="LAST_COMMIT_MESSAGE" value="MIHtmlWriter : fixed a small bugs" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -517,6 +516,9 @@
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="Created html write for streaming interaction source" />
+    <MESSAGE value="MIHtmlWriter : updated writer for interactor sequence" />
+    <MESSAGE value="MIHtmlWriter : fixed a small bug" />
+    <MESSAGE value="MIHtmlWriter : fixed a small bugs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -538,16 +540,12 @@
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Publication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="17" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="14" column="17" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Experiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="17" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="12" column="17" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/psidev/psi/mi/html/HtmlWriterUtils.java">
@@ -571,9 +569,7 @@
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/datasource/FileSourceLocator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="18" selection-start="782" selection-end="782" vertical-scroll-proportion="0.7190413">
-          <folding />
-        </state>
+        <state line="36" column="18" selection-start="782" selection-end="782" vertical-scroll-proportion="0.7190413" />
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/ParameterValue.java">
@@ -583,23 +579,17 @@
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Parameter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="26" selection-start="898" selection-end="898" vertical-scroll-proportion="0.758988">
-          <folding />
-        </state>
+        <state line="38" column="26" selection-start="898" selection-end="898" vertical-scroll-proportion="0.758988" />
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Experiment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="17" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="12" column="17" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Publication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="17" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="14" column="17" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/psidev/psi/mi/psi-jami/2.0.0-SNAPSHOT/psi-jami-2.0.0-SNAPSHOT-sources.jar!/psidev/psi/mi/jami/model/Participant.java">
@@ -621,7 +611,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/psidev/psi/mi/html/MIHtmlWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="894" column="23" selection-start="34901" selection-end="34901" vertical-scroll-proportion="0.796748">
+        <state line="740" column="103" selection-start="28438" selection-end="28438" vertical-scroll-proportion="8.72973">
           <folding />
         </state>
       </provider>
