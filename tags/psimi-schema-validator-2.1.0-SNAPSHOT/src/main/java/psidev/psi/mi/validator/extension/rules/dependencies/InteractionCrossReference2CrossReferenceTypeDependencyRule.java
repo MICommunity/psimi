@@ -104,8 +104,8 @@ public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends 
         Collection<psidev.psi.mi.jami.model.Xref> databaseReferences = container.getXrefs();
 
         for ( Xref reference : databaseReferences) {
-            Mi25Context context = RuleUtils.buildContext(container, "interaction");
-            context.addAssociatedContext(RuleUtils.buildContext(reference, "database cross reference"));
+            Mi25Context context = RuleUtils.buildContext(reference, "database cross reference");
+            context.addAssociatedContext(RuleUtils.buildContext(container, "interaction"));
 
             // build a context in case of error
             messages.addAll( mapping.check( reference.getDatabase(), reference.getQualifier(), context, this ) );
@@ -115,8 +115,8 @@ public class InteractionCrossReference2CrossReferenceTypeDependencyRule extends 
         Collection<psidev.psi.mi.jami.model.Xref> identifiers = container.getIdentifiers();
 
         for ( Xref reference : identifiers) {
-            Mi25Context context = RuleUtils.buildContext(container, "interaction");
-            context.addAssociatedContext(RuleUtils.buildContext(reference, "database cross reference"));
+            Mi25Context context = RuleUtils.buildContext(reference, "database cross reference");
+            context.addAssociatedContext(RuleUtils.buildContext(container, "interaction"));
 
             // build a context in case of error
             messages.addAll( mapping.check( reference.getDatabase(), reference.getQualifier(), context, this ) );

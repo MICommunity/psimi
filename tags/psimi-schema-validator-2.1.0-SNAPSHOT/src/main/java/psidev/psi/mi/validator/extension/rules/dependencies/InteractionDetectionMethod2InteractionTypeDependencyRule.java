@@ -94,7 +94,6 @@ public class InteractionDetectionMethod2InteractionTypeDependencyRule extends Mi
         if (experiment != null){
             // build a context in case of error
             Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-            context.addAssociatedContext(RuleUtils.buildContext(experiment, "experiment"));
 
             final CvTerm method = experiment.getInteractionDetectionMethod();
             final psidev.psi.mi.jami.model.Organism hostOrganism = experiment.getHostOrganism();

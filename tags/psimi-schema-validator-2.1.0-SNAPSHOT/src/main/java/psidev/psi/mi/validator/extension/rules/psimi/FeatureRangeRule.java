@@ -82,20 +82,7 @@ public class FeatureRangeRule extends MiFeatureRule {
             for (String error : errorMessages){
                 Mi25Context rangeContext = RuleUtils.buildContext(range, "feature's range");
                 rangeContext.addAssociatedContext(RuleUtils.buildContext(feature, "feature"));
-                Mi25Context interactorContext = null;
-                Mi25Context participantContext = null;
 
-                if (participant != null){
-                    interactor = participant.getInteractor();
-                    participantContext = RuleUtils.buildContext(participant, "participant");
-
-                    if (interactor != null){
-                        sequence = interactor instanceof Polymer ? ((Polymer) interactor).getSequence() : null;
-                        interactorContext = RuleUtils.buildContext(interactor, "interactor");
-                    }
-                }
-                rangeContext.addAssociatedContext(participantContext);
-                rangeContext.addAssociatedContext(interactorContext);
                 messages.add( new ValidatorMessage( error,
                         MessageLevel.ERROR,
                         rangeContext,
