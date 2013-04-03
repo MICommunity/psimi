@@ -1001,20 +1001,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 removeOnly(old);
                 getBiologicalRole().getXrefs().remove(old);
 
-                // reset shortname
-                if (getBiologicalRole().getMIIdentifier() != null && getBiologicalRole().getMIIdentifier().equals(added.getId())){
-                    String name = added.getText();
+                String name = added.getText() != null ? added.getText() : "unknown";
 
-                    if (name != null){
-                        getBiologicalRole().setShortName(name);
-                    }
-                    else {
-                        resetBiologicalRoleNameFromMiReferences();
-                        if (getBiologicalRole().getShortName().equals("unknown")){
-                            resetBiologicalRoleNameFromFirstReferences();
-                        }
-                    }
-                }
+                setBiologicalRoleOnly(new DefaultCvTerm(name, name, added));
             }
             else {
                 getBiologicalRole().getXrefs().add(added);
@@ -1087,20 +1076,9 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 removeOnly(old);
                 getExperimentalRole().getXrefs().remove(old);
 
-                // reset shortname
-                if (getExperimentalRole().getMIIdentifier() != null && getExperimentalRole().getMIIdentifier().equals(added.getId())){
-                    String name = added.getText();
+                String name = added.getText() != null ? added.getText() : "unknown";
 
-                    if (name != null){
-                        getExperimentalRole().setShortName(name);
-                    }
-                    else {
-                        resetExperimentalRoleNameFromMiReferences();
-                        if (getExperimentalRole().getShortName().equals("unknown")){
-                            resetExperimentalRoleNameFromFirstReferences();
-                        }
-                    }
-                }
+                setExperimentalRoleOnly(new DefaultCvTerm(name, name, added));
             }
             else {
                 getExperimentalRole().getXrefs().add(added);
