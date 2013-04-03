@@ -995,7 +995,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 setBiologicalRoleOnly(new DefaultCvTerm(name, name, added));
             }
             // it was a UNSPECIFIED role, needs to clear it
-            else if ((size() == 1 || size() == 2) && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getBiologicalRole().getShortName().trim()) && (added.getText() == null || !Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(added.getText()))){
+            else if ((size() == 1 || size() == 2) && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getBiologicalRole().getShortName().trim()) && (added.getText() == null || !Participant.UNSPECIFIED_ROLE_MI.equalsIgnoreCase(added.getId()))){
                 // remove unspecified method
                 CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Participant.UNSPECIFIED_ROLE_MI, Participant.UNSPECIFIED_ROLE);
                 removeOnly(old);
@@ -1069,7 +1069,7 @@ public class Interactor extends DefaultParticipantEvidence implements Serializab
                 setExperimentalRoleOnly(new DefaultCvTerm(name, name, added));
             }
             // it was a UNSPECIFIED role, needs to clear it
-            else if ((size() == 1 || size() == 2) && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getExperimentalRole().getShortName().trim()) && (added.getText() == null || !Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(added.getText()))){
+            else if ((size() == 1 || size() == 2) && Participant.UNSPECIFIED_ROLE.equalsIgnoreCase(getExperimentalRole().getShortName().trim()) && (added.getText() == null || !Participant.UNSPECIFIED_ROLE_MI.equalsIgnoreCase(added.getId()))){
                 // remove unspecified method
                 CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Participant.UNSPECIFIED_ROLE_MI, Participant.UNSPECIFIED_ROLE);
                 removeOnly(old);
