@@ -40,6 +40,33 @@ public class MolecularInteractionFileDataSourceUtils {
     }
 
     /**
+     * Collect all data source errors having same error type
+     * @param errors
+     * @param errorTypes
+     * @return
+     */
+    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorType(Collection<FileSourceError> errors, String[] errorTypes){
+
+        if (errors == null || errors.isEmpty() || errorTypes == null || errorTypes.length == 0){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<FileSourceError> filteredErrors = new ArrayList<FileSourceError>(errors.size());
+
+        for (FileSourceError err : errors){
+            if (err.getLabel() != null){
+                for (String errorType : errorTypes){
+                    if (err.getLabel().equalsIgnoreCase(errorType)){
+                        filteredErrors.add(err);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return filteredErrors;
+    }
+
+    /**
      * Store the content of the given input stream into a temporary file and return its descriptor.
      *
      * @param is the input stream to store.

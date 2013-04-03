@@ -76,7 +76,7 @@ public class FileSourceAnalyzer {
                 else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
                     return MolecularInteractionSource.mitab;
                 }
-                else if (line.contains("\t") && line.split("\t").length >= 15){
+                else if (line.contains("\t")){
                     return MolecularInteractionSource.mitab;
                 }
                 else{
@@ -122,7 +122,7 @@ public class FileSourceAnalyzer {
                 else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
                     return MolecularInteractionSource.mitab;
                 }
-                else if (line.contains("\t") && line.split("\t").length >= 15){
+                else if (line.contains("\t")){
                     return MolecularInteractionSource.mitab;
                 }
                 else{
@@ -178,7 +178,7 @@ public class FileSourceAnalyzer {
                 else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
                     return new OpenedInputStream(temp,  MolecularInteractionSource.mitab);
                 }
-                else if (line.contains("\t") && line.split("\t").length >= 15){
+                else if (line.contains("\t")){
                     return new OpenedInputStream(temp,  MolecularInteractionSource.mitab);
                 }
                 else{
