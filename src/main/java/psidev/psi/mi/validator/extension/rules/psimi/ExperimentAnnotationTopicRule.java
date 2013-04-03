@@ -43,7 +43,7 @@ public class ExperimentAnnotationTopicRule extends Mi25ExperimentRule {
             for (Annotation annot : experiment.getAnnotations()){
                 if (annot.getTopic()!= null && annot.getTopic().getMIIdentifier() != null){
                     final OntologyAccess access = ontologyManager.getOntologyAccess("MI");
-                    Set<String> dbTerms = RuleUtils.collectAccessions(access.getValidTerms("MI:1093", true, false));
+                    Set<String> dbTerms = RuleUtils.collectAccessions(access.getValidTerms("MI:0665", true, false));
                     dbTerms.addAll(RuleUtils.collectAccessions(access.getValidTerms("MI:1045", true, false)));
                     dbTerms.addAll(RuleUtils.collectAccessions(access.getValidTerms("MI:0954", true, false)));
 
