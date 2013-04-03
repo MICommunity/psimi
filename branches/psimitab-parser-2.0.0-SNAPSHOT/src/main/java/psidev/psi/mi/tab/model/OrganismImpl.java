@@ -299,6 +299,13 @@ public class OrganismImpl extends DefaultOrganism implements Organism, FileSourc
         @Override
         protected void processAddedObjectEvent(CrossReference added) {
 
+            if (getTaxId() == -3 && !added.getId().equals("-3")){
+                int newTaxId = Integer.parseInt(added.getId());
+                setTaxIdOnly(newTaxId);
+                setCommonNameOnly(null);
+                setScientificNameOnly(null);
+            }
+
             if (added.getText() != null && getCommonName() != null && getScientificName() != null && !added.getText().equals(getCommonName()) && !added.getText().equals(getScientificName())){
                 Alias matchingAlias = new DefaultAlias(CvTermFactory.createMICvTerm(Alias.SYNONYM, Alias.SYNONYM_MI), added.getText());
 
