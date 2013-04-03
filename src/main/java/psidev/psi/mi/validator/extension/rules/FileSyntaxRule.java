@@ -47,7 +47,7 @@ public class FileSyntaxRule extends MiFileDataSourceRule{
         for (FileSourceError error : basicSyntaxErrors){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "");
             }
             else {
                 context = new Mi25Context();
