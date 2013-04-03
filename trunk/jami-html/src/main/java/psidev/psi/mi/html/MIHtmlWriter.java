@@ -151,15 +151,20 @@ public class MIHtmlWriter {
             writeProperty("IMEx id", interaction.getImexId());
 
             // write is negative
+            if (interaction.isNegative()){
+               writeProperty("Negative", "true");
+            }
 
             // write is inferred
+            if (interaction.isInferred()){
+                writeProperty("Inferred", "true");
+            }
 
             // write availibility
             writeProperty("Availability", interaction.getAvailability());
 
             // write identifiers
             if (!interaction.getIdentifiers().isEmpty()){
-                writeSubTitle("Identifiers: ");
                 for (Xref ref : interaction.getIdentifiers()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -186,7 +191,6 @@ public class MIHtmlWriter {
 
             // write xrefs
             if (!interaction.getXrefs().isEmpty()){
-                writeSubTitle("Other xrefs: ");
                 for (Xref ref : interaction.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -199,7 +203,6 @@ public class MIHtmlWriter {
 
             // write parameters
             if (!interaction.getExperimentalParameters().isEmpty()){
-                writeSubTitle("Interaction parameters: ");
                 for (Parameter ref : interaction.getExperimentalParameters()){
                     if (ref.getUnit() != null){
                         writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
@@ -212,7 +215,6 @@ public class MIHtmlWriter {
 
             // write confidences
             if (!interaction.getExperimentalConfidences().isEmpty()){
-                writeSubTitle("Interaction confidences: ");
                 for (Confidence ref : interaction.getExperimentalConfidences()){
                     if (ref.getUnit() != null){
                         writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue(), ref.getUnit().getShortName());
@@ -225,7 +227,6 @@ public class MIHtmlWriter {
 
             // write annotations
             if (!interaction.getAnnotations().isEmpty()){
-                writeSubTitle("Interaction annotations: ");
                 for (Annotation ref : interaction.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -238,7 +239,6 @@ public class MIHtmlWriter {
 
             // write checksums
             if (!interaction.getChecksums().isEmpty()){
-                writeSubTitle("Interaction checksum: ");
                 for (Checksum ref : interaction.getChecksums()){
                     writeProperty(ref.getMethod().getShortName(), ref.getValue());
                 }
@@ -292,7 +292,6 @@ public class MIHtmlWriter {
 
             // write xrefs
             if (!experiment.getXrefs().isEmpty()){
-                writeSubTitle("Xrefs: ");
                 for (Xref ref : experiment.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -305,7 +304,6 @@ public class MIHtmlWriter {
 
             // write annotations
             if (!experiment.getAnnotations().isEmpty()){
-                writeSubTitle("Experiment annotations: ");
                 for (Annotation ref : experiment.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -362,7 +360,6 @@ public class MIHtmlWriter {
 
             // experimental preparations
             if (!participant.getExperimentalPreparations().isEmpty()){
-                writeSubTitle("Experimental preparations: ");
                 int index = 1;
                 for (CvTerm ref : participant.getExperimentalPreparations()){
                     writeCvTerm("Preparation "+index, ref);
@@ -372,7 +369,6 @@ public class MIHtmlWriter {
 
             // write parameters
             if (!participant.getParameters().isEmpty()){
-                writeSubTitle("Participant parameters: ");
                 for (Parameter ref : participant.getParameters()){
                     if (ref.getUnit() != null){
                         writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue().toString(), ref.getUnit().getShortName());
@@ -385,7 +381,6 @@ public class MIHtmlWriter {
 
             // write confidences
             if (!participant.getConfidences().isEmpty()){
-                writeSubTitle("Participant confidences: ");
                 for (Confidence ref : participant.getConfidences()){
                     if (ref.getUnit() != null){
                         writePropertyWithQualifier(ref.getType().getShortName(), ref.getValue(), ref.getUnit().getShortName());
@@ -398,7 +393,6 @@ public class MIHtmlWriter {
 
             // write xrefs
             if (!participant.getXrefs().isEmpty()){
-                writeSubTitle("Xrefs: ");
                 for (Xref ref : participant.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -411,7 +405,6 @@ public class MIHtmlWriter {
 
             // write annotations
             if (!participant.getAnnotations().isEmpty()){
-                writeSubTitle("Participant annotations: ");
                 for (Annotation ref : participant.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -485,7 +478,6 @@ public class MIHtmlWriter {
 
             // write aliases
             if (!interactor.getXrefs().isEmpty()){
-                writeSubTitle("Aliases: ");
                 for (Alias ref : interactor.getAliases()){
                     if (ref.getType() != null){
                         writeProperty(ref.getType().getShortName(), ref.getName());
@@ -498,7 +490,6 @@ public class MIHtmlWriter {
 
             // write xrefs
             if (!interactor.getXrefs().isEmpty()){
-                writeSubTitle("Other Xrefs: ");
                 for (Xref ref : interactor.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -511,7 +502,6 @@ public class MIHtmlWriter {
 
             // write annotations
             if (!interactor.getAnnotations().isEmpty()){
-                writeSubTitle("Interactor annotations: ");
                 for (Annotation ref : interactor.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -524,7 +514,6 @@ public class MIHtmlWriter {
 
             // write checksums
             if (!interactor.getChecksums().isEmpty()){
-                writeSubTitle("Interactor checksum: ");
                 for (Checksum ref : interactor.getChecksums()){
                     writeProperty(ref.getMethod().getShortName(), ref.getValue());
                 }
@@ -589,7 +578,6 @@ public class MIHtmlWriter {
 
             // write identifiers
             if (!feature.getIdentifiers().isEmpty()){
-                writeSubTitle("Identifiers: ");
                 for (Xref ref : feature.getIdentifiers()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -606,22 +594,8 @@ public class MIHtmlWriter {
             // write detection method
             writeCvTerm("Feature detection method", feature.getDetectionMethod());
 
-            // write identifiers
-            if (!feature.getIdentifiers().isEmpty()){
-                writeSubTitle("Identifiers: ");
-                for (Xref ref : feature.getIdentifiers()){
-                    if (ref.getQualifier() != null){
-                        writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
-                    }
-                    else {
-                        writeProperty(ref.getDatabase().getShortName(), ref.getId());
-                    }
-                }
-            }
-
             // write xrefs
             if (!feature.getXrefs().isEmpty()){
-                writeSubTitle("Other Xrefs: ");
                 for (Xref ref : feature.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -634,7 +608,6 @@ public class MIHtmlWriter {
 
             // write annotations
             if (!feature.getAnnotations().isEmpty()){
-                writeSubTitle("Feature annotations: ");
                 for (Annotation ref : feature.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -705,7 +678,6 @@ public class MIHtmlWriter {
 
             // write identifiers
             if (!publication.getIdentifiers().isEmpty()){
-                writeSubTitle("Identifiers: ");
                 for (Xref ref : publication.getIdentifiers()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -718,7 +690,6 @@ public class MIHtmlWriter {
 
             // write xrefs
             if (!publication.getXrefs().isEmpty()){
-                writeSubTitle("Other Xrefs: ");
                 for (Xref ref : publication.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -731,7 +702,6 @@ public class MIHtmlWriter {
 
             // write annotations
             if (!publication.getAnnotations().isEmpty()){
-                writeSubTitle("Publication annotations: ");
                 for (Annotation ref : publication.getAnnotations()){
                     if (ref.getValue() != null){
                         writeProperty(ref.getTopic().getShortName(), ref.getValue());
@@ -806,7 +776,6 @@ public class MIHtmlWriter {
 
             // write identifiers
             if (!term.getIdentifiers().isEmpty()){
-                writeSubTitle("Identifiers: ");
                 for (Xref ref : term.getIdentifiers()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
@@ -819,7 +788,6 @@ public class MIHtmlWriter {
 
             // write xrefs
             if (!term.getXrefs().isEmpty()){
-                writeSubTitle("Other xrefs: ");
                 for (Xref ref : term.getXrefs()){
                     if (ref.getQualifier() != null){
                         writePropertyWithQualifier(ref.getDatabase().getShortName(), ref.getId(), ref.getQualifier().getShortName());
