@@ -91,7 +91,7 @@ public class PositionFactory {
         }
         // shortcut for fuzzy position
         else if (pos.contains(Range.FUZZY_POSITION_SYMBOL)){
-            String[] positionString = pos.split(Range.FUZZY_POSITION_SYMBOL);
+            String[] positionString = pos.split("\\.\\.");
             if (positionString.length != 2){
                 throw new IllegalRangeException("The fuzzy position " + pos + " is not valid and cannot be converted into a Position.");
             }
