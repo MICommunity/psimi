@@ -4,12 +4,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiFeatureRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +23,7 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class FeatureTypeRule extends ObjectRule<FeatureEvidence> {
+public class FeatureTypeRule extends MiFeatureRule{
 
     private static final Log log = LogFactory.getLog(FeatureTypeRule.class);
 
@@ -35,15 +35,6 @@ public class FeatureTypeRule extends ObjectRule<FeatureEvidence> {
         setDescription("Checks that each participant's feature has a feature type with " +
                 "a valid PSI MI cross reference.");
         addTip( "See http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type for the existing feature types" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof FeatureEvidence){
-            return true;
-        }
-
-        return false;
     }
 
     @Override

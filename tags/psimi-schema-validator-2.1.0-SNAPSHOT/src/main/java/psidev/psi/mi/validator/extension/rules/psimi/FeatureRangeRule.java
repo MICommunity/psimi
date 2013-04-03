@@ -5,12 +5,12 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.utils.FeatureUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiFeatureRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.List;
  * @since <pre>25-Aug-2010</pre>
  */
 
-public class FeatureRangeRule extends ObjectRule<FeatureEvidence> {
+public class FeatureRangeRule extends MiFeatureRule {
 
     public FeatureRangeRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
@@ -44,16 +44,6 @@ public class FeatureRangeRule extends ObjectRule<FeatureEvidence> {
         addTip( "The ranges should not be out of the total protein sequence." );
         addTip( "If the start position is not a range, we should not have a start interval and vice versa for the end position." );
         addTip( "The start and end intervals of a range should not overlap." );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-
-        if (t instanceof FeatureEvidence){
-            return true;
-        }
-
-        return false;
     }
 
     @Override

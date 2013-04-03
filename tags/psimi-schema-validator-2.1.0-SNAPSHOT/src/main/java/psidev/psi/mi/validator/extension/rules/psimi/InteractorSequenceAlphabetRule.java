@@ -17,12 +17,12 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiPolymerRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 2.0
  */
-public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
+public class InteractorSequenceAlphabetRule extends MiPolymerRule {
 
     public static final String AMINO_ACID_1_LETTER_CODES = "ARNDCEQGHILKMFPSTWYV";
     // source: http://searchlauncher.bcm.tmc.edu/multi-align/Help/pima.html
@@ -84,15 +84,6 @@ public class InteractorSequenceAlphabetRule extends ObjectRule<Polymer> {
         addTip( "Proteins and Peptides take amino acids from: " + AMINO_ACID_1_LETTER_CODES );
         addTip( "DNA interactors take nucleic acids from: " + DNA_1_LETTER_CODES );
         addTip( "RNA interactors take nucleic acids from: " + RNA_1_LETTER_CODES );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof Polymer){
-            return true;
-        }
-
-        return false;
     }
 
     public Collection<ValidatorMessage> check( Polymer interactor ) throws ValidatorException {

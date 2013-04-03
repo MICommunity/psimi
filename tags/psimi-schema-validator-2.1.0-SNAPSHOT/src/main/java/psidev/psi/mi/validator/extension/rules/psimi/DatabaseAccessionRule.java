@@ -5,6 +5,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiXrefRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.mi.validator.extension.rules.dependencies.ValidatorRuleException;
 import psidev.psi.tools.ontology_manager.OntologyManager;
@@ -13,7 +14,6 @@ import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * @since <pre>27-Aug-2010</pre>
  */
 
-public class DatabaseAccessionRule extends ObjectRule<psidev.psi.mi.jami.model.Xref> {
+public class DatabaseAccessionRule extends MiXrefRule {
 
     public static final Log log = LogFactory.getLog( DatabaseAccessionRule.class );
 
@@ -310,11 +310,6 @@ public class DatabaseAccessionRule extends ObjectRule<psidev.psi.mi.jami.model.X
             }
             // If the regular expression is not known, do nothing
         }
-    }
-
-    @Override
-    public boolean canCheck(Object o) {
-        return ( o instanceof psidev.psi.mi.jami.model.Xref);
     }
 
     @Override

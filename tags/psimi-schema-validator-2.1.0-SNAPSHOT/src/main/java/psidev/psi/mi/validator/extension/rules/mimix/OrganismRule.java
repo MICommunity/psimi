@@ -1,11 +1,11 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiOrganismRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0
  */
-public class OrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Organism> {
+public class OrganismRule extends MiOrganismRule {
 
     public OrganismRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
@@ -33,15 +33,6 @@ public class OrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Organism> 
         addTip( "By convention, the taxid for 'unknown' is -3" );
         addTip( "By convention, the taxid for 'in vivo' is -4" );
         addTip( "By convention, the taxid for 'in silico' is -5" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof psidev.psi.mi.jami.model.Organism){
-            return true;
-        }
-
-        return false;
     }
 
     /**

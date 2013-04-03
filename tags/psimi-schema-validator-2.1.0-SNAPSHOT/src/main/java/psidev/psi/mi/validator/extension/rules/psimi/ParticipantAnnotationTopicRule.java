@@ -3,13 +3,13 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiParticipantRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ import java.util.*;
  * @since <pre>27/03/13</pre>
  */
 
-public class ParticipantAnnotationTopicRule extends ObjectRule<ParticipantEvidence> {
+public class ParticipantAnnotationTopicRule extends MiParticipantRule {
     public ParticipantAnnotationTopicRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -29,11 +29,6 @@ public class ParticipantAnnotationTopicRule extends ObjectRule<ParticipantEviden
         setName("Participant annotation topics Check");
         setDescription("Checks that the participant annotations having a MI term are valid participant annotation topics.");
         addTip( "Check http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0666&termName=participant%20att%20name for participant attribute names" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return t instanceof ParticipantEvidence;
     }
 
     @Override

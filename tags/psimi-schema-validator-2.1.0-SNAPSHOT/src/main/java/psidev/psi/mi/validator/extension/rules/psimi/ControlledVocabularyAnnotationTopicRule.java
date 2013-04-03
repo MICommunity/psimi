@@ -3,13 +3,13 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiCvRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
@@ -20,7 +20,7 @@ import java.util.*;
  * @since <pre>27/03/13</pre>
  */
 
-public class ControlledVocabularyAnnotationTopicRule extends ObjectRule<CvTerm> {
+public class ControlledVocabularyAnnotationTopicRule extends MiCvRule {
     public ControlledVocabularyAnnotationTopicRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -28,11 +28,6 @@ public class ControlledVocabularyAnnotationTopicRule extends ObjectRule<CvTerm> 
         setName("Controlled vocabulary annotation topics Check");
         setDescription("Checks that the controlled vocabulary annotations having a MI term are annotation topics for controlled vocabulary terms.");
         addTip( "Check http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0667&termName=controlled%20vocabulary%20attribute%20name for controlled vocabulary attribute names" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return t instanceof CvTerm;
     }
 
     @Override

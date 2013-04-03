@@ -1,12 +1,12 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiInteractorRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,7 @@ import java.util.List;
  * @since <pre>24/01/11</pre>
  */
 
-public class InteractorTypeRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor>{
+public class InteractorTypeRule extends MiInteractorRule{
 
         public InteractorTypeRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -32,15 +32,6 @@ public class InteractorTypeRule extends ObjectRule<psidev.psi.mi.jami.model.Inte
                 "of the remit of IMEx." );
 
         addTip( "The possible interactor types can be found at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0313&termName=interactor%20type" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof psidev.psi.mi.jami.model.Interactor){
-            return true;
-        }
-
-        return false;
     }
 
     /**

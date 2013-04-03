@@ -5,12 +5,12 @@ import psidev.psi.mi.jami.datasource.FileSourceError;
 import psidev.psi.mi.jami.datasource.MolecularInteractionFileDataSource;
 import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiFileDataSourceRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.List;
  * @version $Id$
  * @since 2.0
  */
-public class SingleExperimentRoleRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class SingleExperimentRoleRule extends MiFileDataSourceRule {
 
 
     public SingleExperimentRoleRule(OntologyManager ontologyManager) {
@@ -35,11 +35,6 @@ public class SingleExperimentRoleRule extends ObjectRule<MolecularInteractionFil
         setDescription( "Check that each interaction's participant has a single experimental role." );
 
         addTip( "Experimental role terms can be found in the PSI-MI ontology under term MI:0495" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return ontologyManager instanceof MolecularInteractionFileDataSource;
     }
 
     @Override

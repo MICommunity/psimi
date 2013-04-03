@@ -6,12 +6,12 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.MiFeatureRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +28,7 @@ import java.util.Collection;
  * @since <pre>26/03/13</pre>
  */
 
-public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends ObjectRule<FeatureEvidence> {
+public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends MiFeatureRule {
 
     private static final Log log = LogFactory.getLog(FeatureCrossReference2CrossReferenceTypeDependencyRule.class);
 
@@ -76,18 +76,6 @@ public class FeatureCrossReference2CrossReferenceTypeDependencyRule extends Obje
 
     ///////////////////////
     // ObjectRule
-
-    /**
-     *
-     * @param o
-     * @return true if o is an instance of XrefContainer.
-     */
-    public boolean canCheck(Object o) {
-        if (o instanceof FeatureEvidence){
-            return true;
-        }
-        return false;
-    }
 
 
     /**

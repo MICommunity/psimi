@@ -3,12 +3,12 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiFeatureRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class BindingDomainSizeRule extends ObjectRule<FeatureEvidence> {
+public class BindingDomainSizeRule extends MiFeatureRule {
     public BindingDomainSizeRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -31,15 +31,6 @@ public class BindingDomainSizeRule extends ObjectRule<FeatureEvidence> {
         setDescription("Checks that each binding domain contains more than three amino acids. ");
         addTip("when the feature type is any children of binding site (MI:0117), the range should contain at least three amino acids, otherwise it is considered as a mutant.");
         addTip( "Mutant accessions in the PSI-MI ontology can be found at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0118&termName=mutation");
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof FeatureEvidence){
-            return true;
-        }
-
-        return false;
     }
 
     private long getMaxRangeLength(psidev.psi.mi.jami.model.Range range, boolean isStartDefined, boolean isEndDefined){

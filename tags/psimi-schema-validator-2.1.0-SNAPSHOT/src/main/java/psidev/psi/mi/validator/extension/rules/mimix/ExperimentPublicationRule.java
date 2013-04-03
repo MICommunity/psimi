@@ -6,12 +6,12 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiPublicationRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @version $Id$
  * @since 1.0
  */
-public class ExperimentPublicationRule extends ObjectRule<Publication> {
+public class ExperimentPublicationRule extends MiPublicationRule {
 
     Pattern EMAIL_VALIDATOR = Pattern.compile( "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}" );
 
@@ -47,11 +47,6 @@ public class ExperimentPublicationRule extends ObjectRule<Publication> {
         addTip( "The PSI-MI identifier for contact-email is: MI:0634" );
         addTip( "The PSI-MI identifier for author-list is: MI:0636" );
         addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return t instanceof Publication;
     }
 
     /**

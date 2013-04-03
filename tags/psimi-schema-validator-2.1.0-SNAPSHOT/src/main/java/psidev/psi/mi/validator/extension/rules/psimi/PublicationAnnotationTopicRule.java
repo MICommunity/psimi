@@ -3,13 +3,13 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiPublicationRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ import java.util.*;
  * @since <pre>27/03/13</pre>
  */
 
-public class PublicationAnnotationTopicRule extends ObjectRule<Publication>{
+public class PublicationAnnotationTopicRule extends MiPublicationRule{
     public PublicationAnnotationTopicRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -32,11 +32,6 @@ public class PublicationAnnotationTopicRule extends ObjectRule<Publication>{
         addTip( "Check http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0954&termName=curation%20quality for curation quality" );
         addTip( "Check http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1045&termName=curation%20content for curation content" );
 
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return t instanceof Publication;
     }
 
     @Override
