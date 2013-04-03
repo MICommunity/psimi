@@ -1097,20 +1097,9 @@ public class MitabInteractor extends DefaultInteractor implements Serializable, 
                 removeOnly(old);
                 getType().getXrefs().remove(old);
 
-                // reset shortname
-                if (getType().getMIIdentifier() != null && getType().getMIIdentifier().equals(added.getId())){
-                    String name = added.getText();
+                String name = added.getText() != null ? added.getText() : "unknown";
 
-                    if (name != null){
-                        getType().setShortName(name);
-                    }
-                    else {
-                        resetInteractorTypeNameFromMiReferences();
-                        if (getType().getShortName().equals("unknown")){
-                            resetInteractorTypeNameFromFirstReferences();
-                        }
-                    }
-                }
+                setTypeOnly(new DefaultCvTerm(name, name, added));
             }
             else {
                 getType().getXrefs().add(added);

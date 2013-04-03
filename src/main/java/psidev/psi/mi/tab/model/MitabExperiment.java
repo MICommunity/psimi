@@ -229,20 +229,9 @@ public class MitabExperiment extends DefaultExperiment implements FileSourceCont
                 removeOnly(old);
                 getInteractionDetectionMethod().getXrefs().remove(old);
 
-                // reset shortname
-                if (getInteractionDetectionMethod().getMIIdentifier() != null && getInteractionDetectionMethod().getMIIdentifier().equals(added.getId())){
-                    String name = added.getText();
+                String name = added.getText() != null ? added.getText() : "unknown";
 
-                    if (name != null){
-                        getInteractionDetectionMethod().setShortName(name);
-                    }
-                    else {
-                        resetInteractionDetectionMethodNameFromMiReferences();
-                        if (getInteractionDetectionMethod().getShortName().equals("unknown")){
-                            resetInteractionDetectionMethodNameFromFirstReferences();
-                        }
-                    }
-                }
+                setInteractionDetectionMethodOnly(new DefaultCvTerm(name, name, added));
             }
             else {
                 getInteractionDetectionMethod().getXrefs().add(added);
