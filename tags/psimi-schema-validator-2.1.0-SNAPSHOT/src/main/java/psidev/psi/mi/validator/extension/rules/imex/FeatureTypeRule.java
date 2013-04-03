@@ -43,9 +43,8 @@ public class FeatureTypeRule extends MiFeatureRule{
     public Collection<ValidatorMessage> check(FeatureEvidence feature) throws ValidatorException {
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(feature, "feature");
-
         if (feature.getType() != null){
+            Mi25Context context = RuleUtils.buildContext(feature, "feature");
 
             RuleUtils.checkUniquePsiMIOrModXRef(feature.getType(), messages, context, this, RuleUtils.FEATURE_TYPE);
 
@@ -53,7 +52,7 @@ public class FeatureTypeRule extends MiFeatureRule{
                 final OntologyAccess access = ontologyManager.getOntologyAccess("MI");
                 final OntologyTermI dbTerms = access.getTermForAccession(feature.getType().getMIIdentifier());
 
-                if (dbTerms != null){
+                if (dbTerms == null){
                     messages.add( new ValidatorMessage( "The feature type is not a valid MI term. The valid MI terms for alias types are available here: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0116&termName=feature%20type",
                             MessageLevel.ERROR,
                             context,
@@ -79,9 +78,41 @@ public class FeatureTypeRule extends MiFeatureRule{
                     }
                 }
             }
+            if (feature.getType().getMODIdentifier() != null){
+                final OntologyAccess access = ontologyManager.getOntologyAccess("MOD");
+                final OntologyTermI dbTerms = access.getTermForAccession(feature.getType().getMODIdentifier());
+
+                if (dbTerms == null){
+                    messages.add( new ValidatorMessage( "The feature type is not a valid MOD term.",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+                }
+                else {
+                    Collection<OntologyTermI> parents = access.getAllParents(dbTerms);
+
+                    boolean foundParent = false;
+
+                    for (OntologyTermI p : parents){
+                        if ("MI:0116".equals(p.getTermAccession())){
+                            foundParent = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundParent){
+                        messages.add( new ValidatorMessage( "The feature type is not a valid MI term.",
+                                MessageLevel.ERROR,
+                                context,
+                                this ) );
+                    }
+                }
+            }
 
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(feature, "feature");
+
             messages.add(new ValidatorMessage("The feature does not have a feature type. It is required by IMEx.'",
                     MessageLevel.ERROR,
                     context,
