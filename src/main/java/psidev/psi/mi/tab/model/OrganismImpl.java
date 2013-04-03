@@ -6,6 +6,7 @@
 package psidev.psi.mi.tab.model;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
@@ -300,10 +301,15 @@ public class OrganismImpl extends DefaultOrganism implements Organism, FileSourc
         protected void processAddedObjectEvent(CrossReference added) {
 
             if (getTaxId() == -3 && !added.getId().equals("-3")){
-                int newTaxId = Integer.parseInt(added.getId());
-                setTaxIdOnly(newTaxId);
-                setCommonNameOnly(null);
-                setScientificNameOnly(null);
+                try{
+                    int newTaxId = Integer.parseInt(added.getId());
+                    setTaxIdOnly(newTaxId);
+                    setCommonNameOnly(null);
+                    setScientificNameOnly(null);
+                }
+                catch (NumberFormatException e) {
+                    System.out.println(ExceptionUtils.getFullStackTrace(e));
+                }
             }
 
             if (added.getText() != null && getCommonName() != null && getScientificName() != null && !added.getText().equals(getCommonName()) && !added.getText().equals(getScientificName())){
