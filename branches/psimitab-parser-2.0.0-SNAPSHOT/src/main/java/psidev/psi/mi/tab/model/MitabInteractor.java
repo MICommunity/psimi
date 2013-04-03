@@ -1091,7 +1091,7 @@ public class MitabInteractor extends DefaultInteractor implements Serializable, 
                 setTypeOnly(new DefaultCvTerm(name, name, added));
             }
             // it was a UNSPECIFIED type, needs to clear it
-            else if ((size() == 1 || size() == 2) && Interactor.UNKNOWN_INTERACTOR.equalsIgnoreCase(getType().getShortName().trim()) && (added.getText() == null || !Interactor.UNKNOWN_INTERACTOR.equalsIgnoreCase(added.getText()))){
+            else if ((size() == 1 || size() == 2) && Interactor.UNKNOWN_INTERACTOR.equalsIgnoreCase(getType().getShortName().trim()) && (added.getText() == null || !Interactor.UNKNOWN_INTERACTOR_MI.equalsIgnoreCase(added.getId()))){
                 // remove unspecified method
                 CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Interactor.UNKNOWN_INTERACTOR_MI, Interactor.UNKNOWN_INTERACTOR);
                 removeOnly(old);

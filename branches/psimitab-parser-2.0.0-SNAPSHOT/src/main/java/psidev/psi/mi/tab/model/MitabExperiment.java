@@ -226,7 +226,7 @@ public class MitabExperiment extends DefaultExperiment implements FileSourceCont
                 setInteractionDetectionMethodOnly(new DefaultCvTerm(name, name, added));
             }
             // it was a UNSPECIFIED method, needs to clear it
-            else if ((size() == 1 || size() == 2) && Experiment.UNSPECIFIED_METHOD.equalsIgnoreCase(getInteractionDetectionMethod().getShortName().trim()) && (added.getText() == null || !Experiment.UNSPECIFIED_METHOD.equalsIgnoreCase(added.getText()))){
+            else if ((size() == 1 || size() == 2) && Experiment.UNSPECIFIED_METHOD.equalsIgnoreCase(getInteractionDetectionMethod().getShortName().trim()) && (added.getText() == null || !Experiment.UNSPECIFIED_METHOD_MI.equalsIgnoreCase(added.getId()))){
                 // remove unspecified method
                 CrossReference old = new CrossReferenceImpl(CvTerm.PSI_MI, Experiment.UNSPECIFIED_METHOD_MI, Experiment.UNSPECIFIED_METHOD);
                 removeOnly(old);
