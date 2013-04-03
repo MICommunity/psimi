@@ -45,14 +45,14 @@ public class InteractionImexPrimaryRule extends Mi25InteractionRule{
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-
         // Check xRef
         if (interaction.getImexId() != null){
 
-            PublicationRuleUtils.checkImexInteractionId(interaction.getImexId(), messages, context, this);
+            PublicationRuleUtils.checkImexInteractionId(interaction.getImexId(), messages, interaction, this);
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
             messages.add( new ValidatorMessage( "The interaction does not have a imex primary cross references. A cross reference with a reference type set" +
                     " to 'imex-primary' (MI:0662) is recommended for IMEx.",
                     MessageLevel.WARN,

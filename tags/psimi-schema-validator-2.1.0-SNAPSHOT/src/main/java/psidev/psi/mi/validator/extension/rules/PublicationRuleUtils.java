@@ -1,5 +1,7 @@
 package psidev.psi.mi.validator.extension.rules;
 
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ExperimentRule;
 import psidev.psi.mi.xml.model.DbReference;
@@ -65,15 +67,17 @@ public class PublicationRuleUtils {
      * Checks if the imex ids in a collection of imex-primary references are valid. Add new ValidatorMessage to messages if not.
      * @param imexPrimaryReference
      * @param messages
-     * @param context
+     * @param pub
      * @param experimentRule
      */
-    public static void checkImexId(String imexPrimaryReference, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
+    public static void checkImexId(String imexPrimaryReference, List<ValidatorMessage> messages, Publication pub, ObjectRule experimentRule){
 
         // If there is a reference type set to 'imex-primary'
         if (imexPrimaryReference != null){
             if (imexPrimaryReference.trim().length() > 0 ){
                 if (!IMEx_ID.matcher(imexPrimaryReference).matches()){
+                    Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                     messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
                             MessageLevel.ERROR,
                             context,
@@ -81,6 +85,8 @@ public class PublicationRuleUtils {
                 }
             }
             else {
+                Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
                 messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx).",
                         MessageLevel.ERROR,
                         context,
@@ -89,12 +95,14 @@ public class PublicationRuleUtils {
         }
     }
 
-    public static void checkImexInteractionId(String imexPrimaryReference, List<ValidatorMessage> messages, Mi25Context context, ObjectRule experimentRule){
+    public static void checkImexInteractionId(String imexPrimaryReference, List<ValidatorMessage> messages, InteractionEvidence interaction, ObjectRule experimentRule){
 
         // If there is a reference type set to 'imex-primary'
         if (!imexPrimaryReference.isEmpty()){
             if (imexPrimaryReference.trim().length() > 0 ){
                 if (!IMEx_INTERACTION_ID.matcher(imexPrimaryReference).matches()){
+                    Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
                     messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
                             MessageLevel.ERROR,
                             context,
@@ -102,6 +110,8 @@ public class PublicationRuleUtils {
                 }
             }
             else {
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+
                 messages.add( new ValidatorMessage( "The IMEx ID " + imexPrimaryReference + " is not a valid IMEX id (IM-xxx-xx).",
                         MessageLevel.ERROR,
                         context,

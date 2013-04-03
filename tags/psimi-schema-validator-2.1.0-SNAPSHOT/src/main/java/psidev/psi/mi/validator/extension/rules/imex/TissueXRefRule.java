@@ -53,15 +53,14 @@ public class TissueXRefRule extends MiOrganismRule {
         CvTerm tissue = organism.getTissue();
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(tissue, "tissue");
-        context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
-
         if (!tissue.getIdentifiers().isEmpty()){
 
             Collection<psidev.psi.mi.jami.model.Xref> brendaRef = XrefUtils.collectAllXrefsHavingDatabase(tissue.getIdentifiers(), RuleUtils.BRENDA_MI_REF, RuleUtils.BRENDA);
             Collection<psidev.psi.mi.jami.model.Xref> tissueRef = XrefUtils.collectAllXrefsHavingDatabase(tissue.getIdentifiers(), RuleUtils.TISSUE_LIST_MI_REF, RuleUtils.TISSUE_LIST);
 
             if (brendaRef.isEmpty() && tissueRef.isEmpty()){
+                Mi25Context context = RuleUtils.buildContext(tissue, "tissue");
+                context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
                 messages.add( new ValidatorMessage( "The tissue " + tissue.getShortName() + " has "+tissue.getIdentifiers().size()+" identifier(s) but none of them is a BRENDA or Tissue List cross reference with a qualifier 'identity' and it  is strongly recommended.'",
                         MessageLevel.WARN,
                         context,
@@ -69,6 +68,8 @@ public class TissueXRefRule extends MiOrganismRule {
             }
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(tissue, "tissue");
+            context.addAssociatedContext(RuleUtils.buildContext(organism, "organism"));
             messages.add( new ValidatorMessage( "The tissue " + tissue.getShortName() + " doesn't have any cross references and at least one cross reference to BRENDA or Tissue List " +
                     "qualifier 'identity' is strongly recommended.'",
                     MessageLevel.WARN,

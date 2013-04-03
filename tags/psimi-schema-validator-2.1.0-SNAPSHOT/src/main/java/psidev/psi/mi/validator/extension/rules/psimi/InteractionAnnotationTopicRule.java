@@ -39,7 +39,6 @@ public class InteractionAnnotationTopicRule extends Mi25InteractionRule {
         if (!interactionEvidence.getAnnotations().isEmpty()){
             // list of messages to return
             List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-            Mi25Context context = RuleUtils.buildContext(interactionEvidence, "interaction");
 
             for (Annotation annot : interactionEvidence.getAnnotations()){
                 if (annot.getTopic()!= null && annot.getTopic().getMIIdentifier() != null){
@@ -49,6 +48,8 @@ public class InteractionAnnotationTopicRule extends Mi25InteractionRule {
                     dbTerms.addAll(RuleUtils.collectAccessions(access.getValidTerms("MI:0954", true, false)));
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
+                        Mi25Context context = RuleUtils.buildContext(interactionEvidence, "interaction");
+
                         context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
                         messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid annotation topic for interactions",
                                 MessageLevel.WARN,

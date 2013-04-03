@@ -40,14 +40,12 @@ public class FeatureRangeSyntaxRule extends MiFileDataSourceRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongRanges = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.invalid_feature_range.toString());
-        wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_range_position.toString()));
-        wrongRanges.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_range_status.toString()));
+        Collection<FileSourceError> wrongRanges = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), new String[]{FileParsingErrorType.invalid_feature_range.toString(), FileParsingErrorType.missing_range_position.toString(), FileParsingErrorType.missing_range_status.toString()});
 
         for (FileSourceError error : wrongRanges){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "feature range");
             }
             else {
                 context = new Mi25Context();

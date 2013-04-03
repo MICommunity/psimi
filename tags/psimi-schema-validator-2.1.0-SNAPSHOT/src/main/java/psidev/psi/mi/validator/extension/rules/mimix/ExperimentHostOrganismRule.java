@@ -47,11 +47,10 @@ public class ExperimentHostOrganismRule extends Mi25ExperimentRule {
 
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
-
         // check on host organism
         psidev.psi.mi.jami.model.Organism hostOrganism = experiment.getHostOrganism();
         if ( hostOrganism == null ) {
+            Mi25Context context = RuleUtils.buildContext(experiment, "experiment");
 
             messages.add( new ValidatorMessage( "The experiment does not have a host organism and it is required for MIMIx.",
                                                 MessageLevel.ERROR,

@@ -48,14 +48,14 @@ public class PublicationImexPrimaryRule extends MiPublicationRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(pub, "publication");
-
         // Check xRef
         if (pub.getImexId() != null){
-            PublicationRuleUtils.checkImexId(pub.getImexId(), messages, context, this);
+            PublicationRuleUtils.checkImexId(pub.getImexId(), messages, pub, this);
 
         }
         else {
+            Mi25Context context = RuleUtils.buildContext(pub, "publication");
+
             messages.add( new ValidatorMessage( "The publication does not have an IMEx primary cross reference. An IMEx cross reference with a reference type set" +
                     " to 'imex-primary' (MI:0662) is required for IMEx.",
                     MessageLevel.ERROR,

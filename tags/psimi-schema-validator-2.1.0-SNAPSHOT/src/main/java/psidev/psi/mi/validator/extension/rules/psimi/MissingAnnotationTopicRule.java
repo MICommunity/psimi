@@ -44,7 +44,7 @@ public class MissingAnnotationTopicRule extends MiFileDataSourceRule {
         for (FileSourceError error : missingTopics){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "annotation");
             }
             else {
                 context = new Mi25Context();

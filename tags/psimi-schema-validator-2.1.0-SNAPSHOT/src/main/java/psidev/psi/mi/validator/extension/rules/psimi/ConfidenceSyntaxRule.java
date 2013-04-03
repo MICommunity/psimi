@@ -40,12 +40,11 @@ public class ConfidenceSyntaxRule extends MiFileDataSourceRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> conf = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_type.toString());
-        conf.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_confidence_value.toString()));
+        Collection<FileSourceError> conf = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), new String[]{FileParsingErrorType.missing_confidence_type.toString(), FileParsingErrorType.missing_confidence_value.toString()});
         for (FileSourceError error : conf){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "confidence");
             }
             else {
                 context = new Mi25Context();

@@ -45,7 +45,7 @@ public class MissingExperimentPublicationRule extends MiFileDataSourceRule {
         for (FileSourceError error : missingPublications){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "experiment");
             }
             else {
                 context = new Mi25Context();

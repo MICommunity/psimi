@@ -44,7 +44,7 @@ public class MissingInteractionExperimentRule extends MiFileDataSourceRule {
         for (FileSourceError error : missingExperiments){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "interaction");
             }
             else {
                 context = new Mi25Context();

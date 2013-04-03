@@ -44,7 +44,7 @@ public class MultipleParticipantIdentificationMethodsRule extends MiFileDataSour
         for (FileSourceError error : multipleDetMethod){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "participant");
             }
             else {
                 context = new Mi25Context();

@@ -6,6 +6,7 @@ import psidev.psi.mi.validator.extension.MiAliasRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
+import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
@@ -13,7 +14,6 @@ import psidev.psi.tools.validator.ValidatorMessage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Rule to check that an alias type has a valid alias type if not null
@@ -38,17 +38,38 @@ public class AliasTypeMIRule extends MiAliasRule{
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(alias, "alias");
-
         if (alias.getType() != null && alias.getType().getMIIdentifier() != null){
             final OntologyAccess access = ontologyManager.getOntologyAccess("MI");
-            final Set<String> dbTerms = RuleUtils.collectAccessions(access.getValidTerms("MI:0300", true, false));
+            final OntologyTermI dbTerm = access.getTermForAccession(alias.getType().getMIIdentifier());
 
-            if (!dbTerms.contains(alias.getType().getMIIdentifier())){
+            if (dbTerm == null){
+                Mi25Context context = RuleUtils.buildContext(alias, "alias");
+
                 messages.add( new ValidatorMessage( "The alias type is not a valid MI term. The valid MI terms for alias types are available here: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0300&termName=alias%20type",
                         MessageLevel.ERROR,
                         context,
                         this ) );
+            }
+            else {
+                Collection<OntologyTermI> parents = access.getAllParents(dbTerm);
+
+                boolean foundParent = false;
+
+                for (OntologyTermI p : parents){
+                    if ("MI:0300".equals(p.getTermAccession())){
+                        foundParent = true;
+                        break;
+                    }
+                }
+
+                if (!foundParent){
+                    Mi25Context context = RuleUtils.buildContext(alias, "alias");
+
+                    messages.add( new ValidatorMessage( "The alias type is not a valid MI term. The valid MI terms for alias types are available here: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0300&termName=alias%20type",
+                            MessageLevel.ERROR,
+                            context,
+                            this ) );
+                }
             }
         }
 

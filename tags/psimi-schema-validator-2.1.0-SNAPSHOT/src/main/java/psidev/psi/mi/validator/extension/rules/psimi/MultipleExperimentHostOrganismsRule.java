@@ -44,14 +44,14 @@ public class MultipleExperimentHostOrganismsRule extends MiFileDataSourceRule {
         for (FileSourceError error : multipleHostOrganisms){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "experiment");
             }
             else {
                 context = new Mi25Context();
             }
 
             messages.add( new ValidatorMessage( error.getLabel() + ": " + error.getMessage(),
-                    MessageLevel.ERROR,
+                    MessageLevel.WARN,
                     context,
                     this ) );
         }

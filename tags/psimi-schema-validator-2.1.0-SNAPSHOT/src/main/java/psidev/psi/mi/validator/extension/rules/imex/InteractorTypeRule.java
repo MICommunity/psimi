@@ -46,9 +46,9 @@ public class InteractorTypeRule extends MiInteractorRule{
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
-
         if (interactor.getType() == null){
+            Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
+
             messages.add( new ValidatorMessage( "The interactor does not have an interactor type and it is required by IMEx.",
                     MessageLevel.ERROR,
                     context,
@@ -56,6 +56,7 @@ public class InteractorTypeRule extends MiInteractorRule{
         }
         else {
             if( RuleUtils.isNucleicAcid(ontologyManager, interactor) || RuleUtils.isSmallMolecule(ontologyManager, interactor)) {
+                Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
 
                 messages.add( new ValidatorMessage( "'nucleic acids' and 'small molecules' are currently outside of the remit of IMEx and " +
                         "should be removed from the record.",
@@ -64,6 +65,7 @@ public class InteractorTypeRule extends MiInteractorRule{
                         this ) );
             }
             else {
+                Mi25Context context = RuleUtils.buildContext( interactor, "interactor" );
 
                 RuleUtils.checkUniquePsiMIXRef(interactor.getType(), messages, context, this);
             }

@@ -170,7 +170,6 @@ public final class RuleUtils {
 
     public static void checkOrganism( OntologyManager ontologyManager,
                                       psidev.psi.mi.jami.model.Organism organism,
-                                      Mi25Context context,
                                       Collection<ValidatorMessage> messages,
                                       Rule rule,
                                       String objectType,
@@ -192,6 +191,7 @@ public final class RuleUtils {
                 break;
 
             case 1:
+                Mi25Context context = RuleUtils.buildContext(organism, "organism");
                 // this is the root of newt, which users are not suppose to use to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
                         " for which the taxid was: '" + taxId +
@@ -202,6 +202,8 @@ public final class RuleUtils {
                 break;
 
             case 0:
+                context = RuleUtils.buildContext(organism, "organism");
+
                 // this is the root of newt, which users are not suppose to use to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
                         " for which the taxid was: '" + taxId +
@@ -214,6 +216,7 @@ public final class RuleUtils {
             default:
                 // check in NEWT if the taxid exists
                 if ( taxId < 0 ) {
+                    context = RuleUtils.buildContext(organism, "organism");
                     // break here
                     messages.add( new ValidatorMessage( objectType + " with an invalid " + organismType +
                             " for which the taxid was: '" + taxId + "'.",
@@ -225,6 +228,8 @@ public final class RuleUtils {
                     final OntologyAccess newt = ontologyManager.getOntologyAccess( "NEWT" );
                     final OntologyTermI newtTerm = newt.getTermForAccession( String.valueOf( taxId ) );
                     if ( newtTerm == null ) {
+                        context = RuleUtils.buildContext(organism, "organism");
+
                         // could not find it
                         final String msg = objectType + " with an invalid " + organismType + ", the taxid given was '" +
                                 taxId + "' which cannot be found in NEWT.";
@@ -239,7 +244,6 @@ public final class RuleUtils {
 
     public static void checkImexOrganism( OntologyManager ontologyManager,
                                           psidev.psi.mi.jami.model.Organism organism,
-                                          Mi25Context context,
                                           Collection<ValidatorMessage> messages,
                                           Rule rule,
                                           String objectType,
@@ -250,6 +254,8 @@ public final class RuleUtils {
 
             // special cases for Imex
             case -5:
+                Mi25Context context = RuleUtils.buildContext(organism, "organism");
+
                 // IMEX doesn't allow to use this term to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
@@ -259,6 +265,8 @@ public final class RuleUtils {
                         rule ) );
                 break;
             case -4:
+                context = RuleUtils.buildContext(organism, "organism");
+
                 // IMEX doesn't allow to use this term to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
@@ -268,6 +276,8 @@ public final class RuleUtils {
                         rule ) );
                 break;
             case -3:
+                context = RuleUtils.buildContext(organism, "organism");
+
                 // IMEX doesn't allow to use this term to define their host organism
                 messages.add( new ValidatorMessage( objectType + " with a " + organismType +
                         " for which the taxid was: '" + taxId +
@@ -277,7 +287,7 @@ public final class RuleUtils {
                         rule ) );
                 break;
             default:
-                checkOrganism(ontologyManager, organism, context, messages, rule, objectType, organismType);
+                checkOrganism(ontologyManager, organism, messages, rule, objectType, organismType);
         }
     }
 
@@ -540,13 +550,6 @@ public final class RuleUtils {
                         context,
                         rule ) );
             }
-        }
-        else {
-            messages.add( new ValidatorMessage( "The "+ containerName + " does not have a psi-mi or psi-mod cross reference (db = 'psi-mi' dbAc='MI:0488' or db = 'psi-mod' dbAc='MI:0897') with type 'identity' (refType = 'identity' refTypeAc='MI:0356'). One psi-mi cross reference is mandatory ( must be any child of "+ mi +").",
-                    MessageLevel.ERROR,
-                    context,
-                    rule ) );
-
         }
     }
 

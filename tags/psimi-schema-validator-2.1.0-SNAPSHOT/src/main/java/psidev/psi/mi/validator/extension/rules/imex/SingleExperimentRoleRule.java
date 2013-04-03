@@ -47,7 +47,7 @@ public class SingleExperimentRoleRule extends MiFileDataSourceRule {
         for (FileSourceError error : multipleRoles){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "participant");
             }
             else {
                 context = new Mi25Context();

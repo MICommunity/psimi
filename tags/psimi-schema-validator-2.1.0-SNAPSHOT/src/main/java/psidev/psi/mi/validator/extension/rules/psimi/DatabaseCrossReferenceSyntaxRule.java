@@ -40,12 +40,11 @@ public class DatabaseCrossReferenceSyntaxRule extends MiFileDataSourceRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_database.toString());
-        wrongDatabaseXrefs.addAll(MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), FileParsingErrorType.missing_database_accession.toString()));
+        Collection<FileSourceError> wrongDatabaseXrefs = MolecularInteractionFileDataSourceUtils.collectAllDataSourceErrorsHavingErrorType(molecularInteractionFileDataSource.getDataSourceErrors(), new String[]{FileParsingErrorType.missing_database.toString(), FileParsingErrorType.missing_database_accession.toString()});
         for (FileSourceError error : wrongDatabaseXrefs){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "database cross reference");
             }
             else {
                 context = new Mi25Context();

@@ -37,7 +37,6 @@ public class ParticipantAnnotationTopicRule extends MiParticipantRule {
         if (!participantEvidence.getAnnotations().isEmpty()){
             // list of messages to return
             List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
-            Mi25Context context = RuleUtils.buildContext(participantEvidence, "participant");
 
             for (Annotation annot : participantEvidence.getAnnotations()){
                 if (annot.getTopic()!= null && annot.getTopic().getMIIdentifier() != null){
@@ -45,7 +44,9 @@ public class ParticipantAnnotationTopicRule extends MiParticipantRule {
                     Set<String> dbTerms = RuleUtils.collectAccessions(access.getValidTerms("MI:0666", true, false));
 
                     if (!dbTerms.contains(annot.getTopic().getMIIdentifier())){
-                        context.addAssociatedContext(RuleUtils.buildContext(annot, "annotation"));
+                        Mi25Context context = RuleUtils.buildContext(annot, "annotation");
+
+                        context.addAssociatedContext(RuleUtils.buildContext(participantEvidence, "participant"));
                         messages.add( new ValidatorMessage( "The annotation topic "+annot.getTopic()+" is not a valid participant annotation topic",
                                 MessageLevel.WARN,
                                 context,

@@ -44,7 +44,7 @@ public class ClusteredElementRule extends MiFileDataSourceRule {
         for (FileSourceError error : multipleTypes){
             Mi25Context context = null;
             if (error.getSourceContext() != null){
-                context = RuleUtils.buildContext(error.getSourceContext());
+                context = RuleUtils.buildContext(error.getSourceContext().getSourceLocator(), "clustered element");
             }
             else {
                 context = new Mi25Context();

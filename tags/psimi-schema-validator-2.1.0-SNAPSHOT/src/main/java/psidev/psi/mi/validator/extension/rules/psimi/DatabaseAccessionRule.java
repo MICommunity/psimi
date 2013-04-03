@@ -4,6 +4,7 @@ import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.MiXrefRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -283,13 +284,14 @@ public class DatabaseAccessionRule extends MiXrefRule {
      * @param databaseAc : the database Ac
      * @param accession : the database accession
      * @param messages : the validator messages
-     * @param context : the validator context
      */
-    private void checkDatabaseCrossReference(OntologyAccess access, String databaseAc, String accession, List<ValidatorMessage> messages, Mi25Context context){
+    private void checkDatabaseCrossReference(OntologyAccess access, String databaseAc, String accession, List<ValidatorMessage> messages, Xref xRef){
         OntologyTermI databaseTerm = access.getTermForAccession(databaseAc);
 
         // a database cross reference must have a non null identifier
         if (databaseTerm == null){
+            Mi25Context context = new Mi25Context();
+            RuleUtils.buildContext(xRef, "database xref");
             messages.add( new ValidatorMessage( "The database "+databaseAc+" is not recognized.",
                     MessageLevel.ERROR,
                     context,
@@ -302,6 +304,8 @@ public class DatabaseAccessionRule extends MiXrefRule {
             if (databasePattern != null){
                 // All database accessions must match the regular expression of its database
                 if (!databasePattern.matcher(accession).matches()){
+                    Mi25Context context = new Mi25Context();
+                    RuleUtils.buildContext(xRef, "database xref");
                     messages.add( new ValidatorMessage( "The database accession "+accession+" is not a valid accession for the database "+databaseTerm.getPreferredName()+".",
                             MessageLevel.ERROR,
                             context,
@@ -314,14 +318,11 @@ public class DatabaseAccessionRule extends MiXrefRule {
 
     @Override
     public Collection<ValidatorMessage> check(psidev.psi.mi.jami.model.Xref xref) throws ValidatorException {
-        // sets up the context
-        Mi25Context context = new Mi25Context();
-        RuleUtils.buildContext(xref, "database xref");
 
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        checkCrossReference(xref, messages, context);
+        checkCrossReference(xref, messages);
 
         return messages;
     }
@@ -330,9 +331,8 @@ public class DatabaseAccessionRule extends MiXrefRule {
      * Checks that the cross references in the object XRef are valid
      * @param xRef
      * @param messages
-     * @param context
      */
-    private void  checkCrossReference(psidev.psi.mi.jami.model.Xref xRef, List<ValidatorMessage> messages, Mi25Context context){
+    private void  checkCrossReference(psidev.psi.mi.jami.model.Xref xRef, List<ValidatorMessage> messages){
         // if the XRef object is not null
         if (xRef != null){
 
@@ -348,13 +348,15 @@ public class DatabaseAccessionRule extends MiXrefRule {
                 String accession = xRef.getId();
 
                 if (dbAc != null){
-                    checkDatabaseCrossReference(access, dbAc, accession, messages, context);
+                    checkDatabaseCrossReference(access, dbAc, accession, messages, xRef);
                 }
                 else if (dbName != null){
                     try {
                         Map results = query.getTermsByName(dbName, ontologyId, false);
 
                         if (results == null || results.isEmpty()){
+                            Mi25Context context = new Mi25Context();
+                            RuleUtils.buildContext(xRef, "database xref");
                             messages.add( new ValidatorMessage( "The database "+dbName+" is not recognized in the PSI-MI ontology.",
                                     MessageLevel.INFO,
                                     context,
@@ -362,7 +364,7 @@ public class DatabaseAccessionRule extends MiXrefRule {
                         }
                         else if (results.size() == 1){
                             String MI = (String) results.keySet().iterator().next();
-                            checkDatabaseCrossReference(access, MI, accession, messages, context);
+                            checkDatabaseCrossReference(access, MI, accession, messages, xRef);
                         }
                         else {
                             if (results.containsValue(dbName)){
@@ -372,12 +374,14 @@ public class DatabaseAccessionRule extends MiXrefRule {
                                     String exactName = (String) results.get(MI);
 
                                     if (dbName.equalsIgnoreCase(exactName)){
-                                        checkDatabaseCrossReference(access, MI, accession, messages, context);
+                                        checkDatabaseCrossReference(access, MI, accession, messages, xRef);
                                         break;
                                     }
                                 }
                             }
                             else {
+                                Mi25Context context = new Mi25Context();
+                                RuleUtils.buildContext(xRef, "database xref");
                                 messages.add( new ValidatorMessage( "Several different databases can match the name "+dbName+". Therefore, it is not possible to check if the database accession is valid.",
                                         MessageLevel.INFO,
                                         context,
@@ -392,6 +396,8 @@ public class DatabaseAccessionRule extends MiXrefRule {
                     }
                 }
                 else {
+                    Mi25Context context = new Mi25Context();
+                    RuleUtils.buildContext(xRef, "database xref");
                     messages.add( new ValidatorMessage( "There is no database specified for the cross reference identifier "+accession+" and it is mandatory.",
                             MessageLevel.ERROR,
                             context,

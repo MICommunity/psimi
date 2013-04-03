@@ -50,8 +50,6 @@ public class ImexCurationRule extends Mi25InteractionRule {
         // list of messages to return
         List<ValidatorMessage> messages = new ArrayList<ValidatorMessage>();
 
-        Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
-
         boolean hasAnnotation = false;
         // An experiment must have at least one attribute 'imex-curation' and one attribute 'full coverage'
         if (!interaction.getAnnotations().isEmpty()){
@@ -65,8 +63,6 @@ public class ImexCurationRule extends Mi25InteractionRule {
 
         if (!hasAnnotation && interaction.getExperiment() != null){
             Experiment exp = interaction.getExperiment();
-            context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
-
             if (!exp.getAnnotations().isEmpty()){
                 // The attributes with a name/MI attName/attMI
                 Collection<Annotation> attributeName = AnnotationUtils.collectAllAnnotationsHavingTopic(exp.getAnnotations(), "MI:0959", "imex curation");
@@ -78,7 +74,6 @@ public class ImexCurationRule extends Mi25InteractionRule {
 
             if (!hasAnnotation && exp.getPublication() != null){
                 Publication pub = exp.getPublication();
-                context.addAssociatedContext(RuleUtils.buildContext(pub, "publication"));
 
                 if (!pub.getAnnotations().isEmpty()){
                     // The attributes with a name/MI attName/attMI
@@ -96,6 +91,15 @@ public class ImexCurationRule extends Mi25InteractionRule {
             Collection<Annotation> attributeName = AnnotationUtils.collectAllAnnotationsHavingTopic(interaction.getAnnotations(), "MI:0959", "imex curation");
 
             if (attributeName.isEmpty()){
+                Mi25Context context = RuleUtils.buildContext(interaction, "interaction");
+                Experiment exp = interaction.getExperiment();
+                if (exp != null){
+                    context.addAssociatedContext(RuleUtils.buildContext(exp, "experiment"));
+                    Publication pub = exp.getPublication();
+                    if (pub != null){
+                        context.addAssociatedContext(RuleUtils.buildContext(pub, "publication"));
+                    }
+                }
                 messages.add( new ValidatorMessage( "The annotation 'imex curation' (MI:0959) is missing (can be at the interaction, experiment or publication level) and it is required for IMEx. ",
                         MessageLevel.ERROR,
                         context,
