@@ -138,7 +138,7 @@ public class XrefUtils {
                     continue;
                 }
             }
-            else if (dbRefs.contains( ref.getDatabase().getShortName().trim().toLowerCase() )){
+            else if (!dbRefs.contains( ref.getDatabase().getShortName().trim().toLowerCase() )){
                 continue;
             }
             refs.add( ref );
