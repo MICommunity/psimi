@@ -41,7 +41,7 @@ public abstract class AbstractRuleWrapper<O> extends ObjectRule<O> {
 
         Iterator<ObjectRule<O>> ruleIterator = rules.iterator();
 
-        Collection<ValidatorMessage> messages = ruleIterator.next().check(o);
+        Collection<ValidatorMessage> messages = new ArrayList<ValidatorMessage>(ruleIterator.next().check(o));
 
         while (ruleIterator.hasNext()){
             messages.addAll(ruleIterator.next().check(o));
