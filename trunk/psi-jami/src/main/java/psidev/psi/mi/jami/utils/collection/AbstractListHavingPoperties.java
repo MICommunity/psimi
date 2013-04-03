@@ -22,7 +22,7 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
     public boolean add(T object) {
         boolean added = super.add(object);
 
-        if (added){
+        if (added && object != null){
             processAddedObjectEvent(object);
             return true;
         }
@@ -39,7 +39,7 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
             if (isEmpty()){
                 clearProperties();
             }
-            else {
+            else if (o != null){
                 processRemovedObjectEvent((T) o);
             }
 
@@ -61,13 +61,17 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
     @Override
     public void add(int i, T t) {
         super.add(i, t);
-        processAddedObjectEvent(t);
+        if (t != null){
+            processAddedObjectEvent(t);
+        }
     }
 
     @Override
     public T remove(int i) {
         T removed = super.remove(i);
-        processRemovedObjectEvent(removed);
+        if (removed != null){
+            processRemovedObjectEvent(removed);
+        }
         return removed;
     }
 
@@ -92,7 +96,9 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
         boolean removed = super.removeAll(objects);
 
         for (Object o : objects){
-            processRemovedObjectEvent((T)o);
+            if (o != null){
+                processRemovedObjectEvent((T)o);
+            }
         }
 
         return removed;
@@ -114,7 +120,9 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
 
         if (added){
             for (T object : ts){
-                processAddedObjectEvent(object);
+                if (object != null){
+                    processAddedObjectEvent(object);
+                }
             }
         }
 
@@ -127,7 +135,9 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
 
         if (added){
             for (T object : ts){
-                processAddedObjectEvent(object);
+                if (object != null){
+                    processAddedObjectEvent(object);
+                }
             }
         }
 
@@ -137,8 +147,12 @@ public abstract class AbstractListHavingPoperties<T> extends ArrayList<T> {
     @Override
     public T set(int i, T t) {
         T removed = super.set(i, t);
-        processRemovedObjectEvent(removed);
-        processAddedObjectEvent(t);
+        if (removed != null){
+            processRemovedObjectEvent(removed);
+        }
+        if (t != null){
+            processAddedObjectEvent(t);
+        }
 
         return removed;
     }
