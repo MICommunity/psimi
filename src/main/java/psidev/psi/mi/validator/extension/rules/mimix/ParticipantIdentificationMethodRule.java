@@ -2,12 +2,12 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiParticipantRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.util.List;
  * @version $Id: ParticipantIdentificationMethodRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class ParticipantIdentificationMethodRule extends ObjectRule<ParticipantEvidence> {
+public class ParticipantIdentificationMethodRule extends MiParticipantRule {
 
     public ParticipantIdentificationMethodRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
@@ -33,10 +33,6 @@ public class ParticipantIdentificationMethodRule extends ObjectRule<ParticipantE
         addTip( "Each participant identification method should have a PSI MI cross reference with a reference type set to identical object (MI:0356)" );
         addTip( "Any child of MI:0002 is a Participant Identification method. You can look at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI." );
         addTip( "The PSI-MI identifier for identical object is: MI:0356" );
-    }
-
-    public boolean canCheck(Object o) {
-        return ( o != null && o instanceof ParticipantEvidence );
     }
 
     /**

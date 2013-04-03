@@ -1,12 +1,12 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiInteractorRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,7 @@ import java.util.List;
  * @since <pre>25/01/11</pre>
  */
 
-public class ProteinOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor> {
+public class ProteinOrganismRule extends MiInteractorRule {
     public ProteinOrganismRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -32,15 +32,6 @@ public class ProteinOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Int
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );
         addTip( "By convention, the taxid for 'unknown' is -3" );
         addTip( "By convention, the taxid for 'in vivo' is -4" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof psidev.psi.mi.jami.model.Interactor){
-            return true;
-        }
-
-        return false;
     }
 
     @Override

@@ -3,11 +3,11 @@ package psidev.psi.mi.validator.extension.rules.mimix;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiParticipantRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +21,7 @@ import java.util.List;
  * @since <pre>24/01/11</pre>
  */
 
-public class ExperimentalRoleRule  extends ObjectRule<ParticipantEvidence> {
+public class ExperimentalRoleRule  extends MiParticipantRule {
 
     public ExperimentalRoleRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
@@ -32,15 +32,6 @@ public class ExperimentalRoleRule  extends ObjectRule<ParticipantEvidence> {
         setDescription( "Check that each interaction's participant has at least one experimental role. Each experimental role must refer to a valid term in the PSI-MI ontology." );
 
         addTip( "Experimental role terms can be found in the PSI-MI ontology under term MI:0495" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof ParticipantEvidence){
-            return true;
-        }
-
-        return false;
     }
 
     /**

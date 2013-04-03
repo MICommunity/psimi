@@ -1,11 +1,11 @@
 package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiOrganismRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2.0
  *
  */
-public class TaxIdHostOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.Organism> {
+public class TaxIdHostOrganismRule extends MiOrganismRule {
 
     public TaxIdHostOrganismRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -33,14 +33,6 @@ public class TaxIdHostOrganismRule extends ObjectRule<psidev.psi.mi.jami.model.O
         addTip( "By convention, the taxid for 'chemical synthesis' is -2" );
         //addTip( "By convention, the taxid for 'unknown' is -3" );
         //addTip( "By convention, the taxid for 'in vivo' is -4" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof psidev.psi.mi.jami.model.Organism){
-            return true;
-        }
-        return false;
     }
 
     /**

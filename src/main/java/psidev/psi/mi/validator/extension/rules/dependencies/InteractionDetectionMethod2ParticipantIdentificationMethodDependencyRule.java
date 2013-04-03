@@ -6,12 +6,12 @@ import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
 import psidev.psi.mi.validator.extension.Mi25ValidatorContext;
+import psidev.psi.mi.validator.extension.MiParticipantRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +27,7 @@ import java.util.Collection;
  * @version $Id: InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule extends ObjectRule<ParticipantEvidence> {
+public class InteractionDetectionMethod2ParticipantIdentificationMethodDependencyRule extends MiParticipantRule {
 
     //private static DependencyMappingInteractionDetectionMethod2InteractionType mapping;
     private DependencyMapping mapping = new DependencyMapping();
@@ -57,10 +57,6 @@ public class InteractionDetectionMethod2ParticipantIdentificationMethodDependenc
         setDescription( "Checks that each association interaction detection method - participant identification methods is valid and respects IMEx curation rules." );
         addTip( "Search the possible terms for interaction detection method and participant identification method on http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI" );
         addTip( "Look at the file http://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator/src/main/resources/InteractionDetectionMethod2ParticipantIdentificationMethod.tsv for the possible dependencies interaction detection method - participant identification method" );                                
-    }
-
-    public boolean canCheck(Object o) {
-        return ( o != null && o instanceof ParticipantEvidence);
     }
 
     /**

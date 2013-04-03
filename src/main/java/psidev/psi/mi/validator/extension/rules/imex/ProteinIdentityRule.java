@@ -4,12 +4,12 @@ import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiInteractorRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.*;
  * @version $Id$
  * @since 2.0
  */
-public class ProteinIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor> {
+public class ProteinIdentityRule extends MiInteractorRule {
 
     public ProteinIdentityRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -39,15 +39,6 @@ public class ProteinIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Int
         addTip( "UniProtKb accession in the PSI-MI ontology is " + UNIPROTKB_MI_REF );
         addTip( "RefSeq accession in the PSI-MI ontology is " + REFSEQ_MI_REF );
         addTip( "Identity accession in the PSI-MI ontology is " + IDENTITY_MI_REF );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof psidev.psi.mi.jami.model.Interactor){
-            return true;
-        }
-
-        return false;
     }
 
     /**

@@ -3,12 +3,12 @@ package psidev.psi.mi.validator.extension.rules.imex;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiPublicationRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +23,7 @@ import java.util.List;
  * @version $Id: BibRefRule.java 56 2010-01-22 15:37:09Z marine.dumousseau@wanadoo.fr $
  * @since 2.0
  */
-public class ExperimentPublicationRule extends ObjectRule<Publication> {
+public class ExperimentPublicationRule extends MiPublicationRule {
 
     public ExperimentPublicationRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
@@ -36,11 +36,6 @@ public class ExperimentPublicationRule extends ObjectRule<Publication> {
         addTip( "The PSI-MI identifier for PubMed is: MI:0446" );
         addTip( "The PSI-MI identifier for DOI is: MI:0574" );
         addTip( "The PSI-MI identifier for primary-reference is: MI:0358" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return t instanceof Publication;
     }
 
     /**

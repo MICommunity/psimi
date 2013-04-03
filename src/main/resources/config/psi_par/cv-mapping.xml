@@ -27,18 +27,16 @@
            <CvTerm termAccession="PAR:0002" allowChildren="true" termName="participant identification method" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R4" name="Participant's Feature Type PAR rule"
+       <!--<CvMappingRule id="R4" name="Participant's Feature Type PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/type/identifiers[1]/@id"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/type/"
                       requirementLevel="SHOULD">
-           <!--feature type from PAR like binding domain, mutations-->
            <CvTerm termAccession="PAR:0116" allowChildren="true" termName="feature type" useTerm="false" cvIdentifierRef="PAR" />
-           <!--feature type from MOD full list of ptm-->
            <CvTerm termAccession="MOD:00000" allowChildren="true" termName="protein modification" useTerm="false" cvIdentifierRef="MOD" />
-       </CvMappingRule>
+       </CvMappingRule> -->
 
-       <CvMappingRule id="R5" name="Participant's Feature Detection Method PAR rule"
+       <CvMappingRule id="R4" name="Participant's Feature Detection Method PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/detectionMethod/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/detectionMethod"
@@ -46,7 +44,7 @@
            <CvTerm termAccession="PAR:0003" allowChildren="true" termName="feature detection method" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R6" name="Experiment's Bibliographical References PAR rule"
+       <CvMappingRule id="R5" name="Experiment's Bibliographical References PAR rule"
                       cvElementPath="/interactionEvidence/experiment/publication/identifiers[1]/database/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/experiment"
@@ -55,7 +53,7 @@
            <CvTerm termAccession="PAR:0574" allowChildren="false" termName="digital object identifier" useTerm="true" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R7" name="Interactor Type PAR rule"
+       <CvMappingRule id="R6" name="Interactor Type PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/interactor/type/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/interactor/type"
@@ -63,7 +61,7 @@
            <CvTerm termAccession="PAR:0313" allowChildren="true" termName="interactor type" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R8" name="Participant's Biological Role PAR rule"
+       <CvMappingRule id="R7" name="Participant's Biological Role PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/biologicalRole/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/biologicalRole"
@@ -71,7 +69,7 @@
            <CvTerm termAccession="PAR:0500" allowChildren="true" termName="biological role" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R9" name="Participant's Experimental Role PAR rule"
+       <CvMappingRule id="R8" name="Participant's Experimental Role PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/experimentalRole/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/experimentalRole"
@@ -79,7 +77,7 @@
            <CvTerm termAccession="PAR:0495" allowChildren="true" termName="experimental role" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R10" name="Feature's Range start Status PAR rule"
+       <CvMappingRule id="R9" name="Feature's Range start Status PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/ranges/start/status/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/ranges/start/status"
@@ -87,7 +85,7 @@
            <CvTerm termAccession="PAR:0333" allowChildren="true" termName="feature range status" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R11" name="Participant's experimental preparation PAR rule"
+       <CvMappingRule id="R10" name="Participant's experimental preparation PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/experimentalPreparations/@MIIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/experimentalPreparations"
@@ -95,7 +93,7 @@
            <CvTerm termAccession="PAR:0346" allowChildren="true" termName="experimental preparation" useTerm="false" cvIdentifierRef="PAR"/>
        </CvMappingRule>
 
-       <CvMappingRule id="R12" name="Feature's Range end Status PAR rule"
+       <CvMappingRule id="R11" name="Feature's Range end Status PAR rule"
                       cvElementPath="/interactionEvidence/participantEvidences/featureEvidences/ranges/end//status/@PARIdentifier"
                       cvTermsCombinationLogic="OR"
                       scopePath="/interactionEvidence/participantEvidences/featureEvidences/ranges/end/status"

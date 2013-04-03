@@ -5,12 +5,12 @@ import psidev.psi.mi.jami.datasource.FileSourceError;
 import psidev.psi.mi.jami.datasource.MolecularInteractionFileDataSource;
 import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiFileDataSourceRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.List;
  * @since <pre>27/03/13</pre>
  */
 
-public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class DatabaseCrossReferenceSyntaxRule extends MiFileDataSourceRule {
 
 
     public DatabaseCrossReferenceSyntaxRule(OntologyManager ontologyManager) {
@@ -32,11 +32,6 @@ public class DatabaseCrossReferenceSyntaxRule extends ObjectRule<MolecularIntera
         setName( "Database cross reference syntax check" );
 
         setDescription( "Check that each database cross reference has a non empty database and a non empty database accession." );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return ontologyManager instanceof MolecularInteractionFileDataSource;
     }
 
     @Override

@@ -2,13 +2,13 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiAliasRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,18 +23,13 @@ import java.util.Set;
  * @since <pre>26/03/13</pre>
  */
 
-public class AliasTypeMIRule extends ObjectRule<Alias>{
+public class AliasTypeMIRule extends MiAliasRule{
     public AliasTypeMIRule(OntologyManager ontologyManager) {
         super(ontologyManager);
         setName( "Alias type MI check" );
 
         setDescription( "Check that the MI identifier for each alias is a valid MI identifier when it exists." );
         addTip( "You can find all existing alias types at http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0300&termName=alias%20type" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return t instanceof Alias;
     }
 
     @Override

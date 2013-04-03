@@ -5,12 +5,12 @@ import psidev.psi.mi.jami.datasource.FileSourceError;
 import psidev.psi.mi.jami.datasource.MolecularInteractionFileDataSource;
 import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiFileDataSourceRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.List;
  * @since <pre>26/03/13</pre>
  */
 
-public class MissingAliasNameRule extends ObjectRule<MolecularInteractionFileDataSource> {
+public class MissingAliasNameRule extends MiFileDataSourceRule {
 
 
     public MissingAliasNameRule(OntologyManager ontologyManager) {
@@ -32,11 +32,6 @@ public class MissingAliasNameRule extends ObjectRule<MolecularInteractionFileDat
         setName( "Missing Alias name check" );
 
         setDescription( "Check that each alias has a name." );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return ontologyManager instanceof MolecularInteractionFileDataSource;
     }
 
     @Override

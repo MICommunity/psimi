@@ -2,13 +2,13 @@ package psidev.psi.mi.validator.extension.rules.imex;
 
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiPublicationRule;
 import psidev.psi.mi.validator.extension.rules.PublicationRuleUtils;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.List;
  * @version $Id$
  * @since 2.0
  */
-public class PublicationImexPrimaryRule extends ObjectRule<Publication> {
+public class PublicationImexPrimaryRule extends MiPublicationRule {
 
     public PublicationImexPrimaryRule(OntologyManager ontologyMaganer) {
         super( ontologyMaganer );
@@ -35,12 +35,6 @@ public class PublicationImexPrimaryRule extends ObjectRule<Publication> {
                 "IDs are correct." );
         addTip( "All records must have an IMEx ID (IM-xxx) when there is a cross reference type: imex-primary" );
         addTip( "The PSI-MI identifier for imex-primary is: MI:0662" );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return ( t != null && t instanceof Publication);
-
     }
 
     /**

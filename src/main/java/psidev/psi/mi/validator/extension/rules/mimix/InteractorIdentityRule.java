@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiInteractorRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
@@ -11,9 +12,11 @@ import psidev.psi.tools.ontology_manager.interfaces.OntologyTermI;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.BIOACTIVE_ENTITY_DATABASE_MI_REF;
 import static psidev.psi.mi.validator.extension.rules.RuleUtils.SEQUENCE_DATABASE_MI_REF;
@@ -26,7 +29,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.SEQUENCE_DATABAS
  * @version $Id$
  * @since 1.0
  */
-public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.Interactor> {
+public class InteractorIdentityRule extends MiInteractorRule {
 
     public InteractorIdentityRule( OntologyManager ontologyMaganer ) {
         super( ontologyMaganer );
@@ -37,15 +40,6 @@ public class InteractorIdentityRule extends ObjectRule<psidev.psi.mi.jami.model.
         addTip( "Sequence databases can be found in the PSI-MI ontology under term MI:0683" );
         addTip( "Bioactive entity databases can be found in the PSI-MI ontology under term MI:2054" );
         addTip( "The term " );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof psidev.psi.mi.jami.model.Interactor){
-            return true;
-        }
-
-        return false;
     }
 
     /**

@@ -103,6 +103,149 @@ public class Mi25Validator extends Validator {
         super.setCvRuleManager(new MICvRuleManager(manager, cvMappingRules));
     }
 
+    @Override
+    public void setObjectRules(Collection<ObjectRule> objectRules){
+
+        if (objectRules != null){
+            getObjectRules().clear();
+
+            AliasRuleWrapper aliasWrapper = null;
+            ExperimentRuleWrapper experimentWrapper = null;
+            CvRuleWrapper cvWrapper = null;
+            FeatureRuleWrapper featureWrapper = null;
+            InteractionRuleWrapper interactionWrapper = null;
+            InteractorRuleWrapper interactorWrapper = null;
+            MolecularInteractionFileDataSourceRuleWrapper molecularSourceWrapper = null;
+            OrganismRuleWrapper organismWrapper = null;
+            ParticipantRuleWrapper participantWrapper = null;
+            PolymerRuleWrapper polymerWrapper = null;
+            PublicationRuleWrapper publicationWrapper = null;
+            XrefRuleWrapper xrefWrapper = null;
+
+            for (ObjectRule rule : objectRules){
+                if (rule instanceof MiAliasRule){
+                    if (aliasWrapper == null){
+                        aliasWrapper = new AliasRuleWrapper(this.ontologyMngr);
+                    }
+                    aliasWrapper.addRule(rule);
+                }
+                else if (rule instanceof Mi25ExperimentRule){
+                    if (experimentWrapper == null){
+                        experimentWrapper = new ExperimentRuleWrapper(this.ontologyMngr);
+                    }
+                    experimentWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiCvRule){
+                    if (cvWrapper == null){
+                        cvWrapper = new CvRuleWrapper(this.ontologyMngr);
+                    }
+                    cvWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiFeatureRule){
+                    if (featureWrapper == null){
+                        featureWrapper = new FeatureRuleWrapper(this.ontologyMngr);
+                    }
+                    featureWrapper.addRule(rule);
+                }
+                else if (rule instanceof Mi25InteractionRule){
+                    if (interactionWrapper == null){
+                        interactionWrapper = new InteractionRuleWrapper(this.ontologyMngr);
+                    }
+                    interactionWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiInteractorRule){
+                    if (interactorWrapper == null){
+                        interactorWrapper = new InteractorRuleWrapper(this.ontologyMngr);
+                    }
+                    interactorWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiFileDataSourceRule){
+                    if (molecularSourceWrapper == null){
+                        molecularSourceWrapper = new MolecularInteractionFileDataSourceRuleWrapper(this.ontologyMngr);
+                    }
+                    molecularSourceWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiOrganismRule){
+                    if (organismWrapper == null){
+                        organismWrapper = new OrganismRuleWrapper(this.ontologyMngr);
+                    }
+                    organismWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiParticipantRule){
+                    if (participantWrapper == null){
+                        participantWrapper = new ParticipantRuleWrapper(this.ontologyMngr);
+                    }
+                    participantWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiPolymerRule){
+                    if (polymerWrapper == null){
+                        polymerWrapper = new PolymerRuleWrapper(this.ontologyMngr);
+                    }
+                    polymerWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiPublicationRule){
+                    if (publicationWrapper == null){
+                        publicationWrapper = new PublicationRuleWrapper(this.ontologyMngr);
+                    }
+                    publicationWrapper.addRule(rule);
+                }
+                else if (rule instanceof MiXrefRule){
+                    if (xrefWrapper == null){
+                        xrefWrapper = new XrefRuleWrapper(this.ontologyMngr);
+                    }
+                    xrefWrapper.addRule(rule);
+                }
+                else {
+                    getObjectRules().add(rule);
+                }
+            }
+
+            if (aliasWrapper != null){
+                getObjectRules().add(aliasWrapper);
+            }
+            if (experimentWrapper != null){
+                getObjectRules().add(experimentWrapper);
+            }
+            if (cvWrapper != null){
+                getObjectRules().add(cvWrapper);
+            }
+            if (featureWrapper != null){
+                getObjectRules().add(featureWrapper);
+            }
+            if (interactionWrapper != null){
+                getObjectRules().add(interactionWrapper);
+            }
+            if (interactorWrapper != null){
+                getObjectRules().add(interactorWrapper);
+            }
+            if (molecularSourceWrapper != null){
+                getObjectRules().add(molecularSourceWrapper);
+            }
+            if (organismWrapper != null){
+                getObjectRules().add(organismWrapper);
+            }
+            if (participantWrapper != null){
+                getObjectRules().add(participantWrapper);
+            }
+            if (polymerWrapper != null){
+                getObjectRules().add(polymerWrapper);
+            }
+            if (publicationWrapper != null){
+                getObjectRules().add(publicationWrapper);
+            }
+            if (xrefWrapper != null){
+                getObjectRules().add(xrefWrapper);
+            }
+        }
+        else {
+            log.info("No object rule has been loaded.");
+        }
+
+        if (getObjectRules().isEmpty()){
+            log.info("The list of object rules is empty.");
+        }
+    }
+
     /////////////////////////////
     // Validator
 

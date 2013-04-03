@@ -3,13 +3,13 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiFeatureRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.ontology_manager.interfaces.OntologyAccess;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ import java.util.*;
  * @since <pre>27/03/13</pre>
  */
 
-public class FeatureAnnotationTopicRule extends ObjectRule<FeatureEvidence> {
+public class FeatureAnnotationTopicRule extends MiFeatureRule {
     public FeatureAnnotationTopicRule(OntologyManager ontologyManager) {
         super(ontologyManager);
 
@@ -30,11 +30,6 @@ public class FeatureAnnotationTopicRule extends ObjectRule<FeatureEvidence> {
         setDescription("Checks that the feature annotations having a MI term are valid feature annotation topics.");
         addTip( "Check http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A0668&termName=feature%20att%20name for feature attribute names" );
 
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        return t instanceof FeatureEvidence;
     }
 
     @Override

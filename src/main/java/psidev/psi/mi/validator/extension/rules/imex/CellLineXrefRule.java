@@ -4,12 +4,12 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.validator.extension.Mi25Context;
+import psidev.psi.mi.validator.extension.MiOrganismRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.MessageLevel;
 import psidev.psi.tools.validator.ValidatorException;
 import psidev.psi.tools.validator.ValidatorMessage;
-import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,7 @@ import static psidev.psi.mi.validator.extension.rules.RuleUtils.IDENTITY_MI_REF;
  * @since <pre>25/01/11</pre>
  */
 
-public class CellLineXrefRule extends ObjectRule<Organism>{
+public class CellLineXrefRule extends MiOrganismRule{
 
     public CellLineXrefRule( OntologyManager ontologyManager ) {
         super( ontologyManager );
@@ -39,14 +39,6 @@ public class CellLineXrefRule extends ObjectRule<Organism>{
         addTip( "CABRI accession in the PSI-MI ontology is " + RuleUtils.CABRI_MI_REF );
         addTip( "Cell Ontology accession in the PSI-MI ontology is " + RuleUtils.CELL_ONTOLOGY_MI_REF );
         addTip( "Identity accession in the PSI-MI ontology is " + IDENTITY_MI_REF );
-    }
-
-    @Override
-    public boolean canCheck(Object t) {
-        if (t instanceof Organism){
-            return true;
-        }
-        return false;
     }
 
     /**
