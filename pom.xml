@@ -24,6 +24,9 @@
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
         <module>assembly</module>
+    <!--<module>psi-jami</module>
+    <module>jami-html</module>
+    <module>psimi-enricher</module>-->
   </modules>
 
     <scm>
