@@ -10,7 +10,7 @@ package psidev.psi.mi.query;
 public class DefaultQueryObject implements QueryObject{
     private String database;
     private String searchTerm;
-    private String searchCriteria;
+    private Criteria searchCriteria;
 
     private String result;
 
@@ -32,11 +32,11 @@ public class DefaultQueryObject implements QueryObject{
         this.searchTerm = searchTerm;
     }
 
-    public String getSearchCriteria() {
+    public Criteria getSearchCriteria() {
         return searchCriteria;
     }
 
-    public void setSearchCriteria(String searchCriteria) {
+    public void setSearchCriteria(Criteria searchCriteria) {
         this.searchCriteria = searchCriteria;
     }
 

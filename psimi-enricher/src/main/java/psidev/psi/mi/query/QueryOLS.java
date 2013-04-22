@@ -11,7 +11,7 @@ import uk.ac.ebi.ols.soap.QueryServiceLocator;
  * Date: 12/04/13
  * Time: 14:07
  */
-public class queryOLS {
+public class QueryOLS {
 
     /**
      *
@@ -22,14 +22,24 @@ public class queryOLS {
      * @throws UnrecognizedTermException
      * @throws BridgeFailedException
      */
-    protected QueryObject queryObject(QueryObject queryObject) throws UnrecognizedTermException, BridgeFailedException{
+    protected QueryObject queryOnObject(QueryObject queryObject) throws UnrecognizedTermException, BridgeFailedException{
         String result = queryObject.getSearchTerm();
         try{
             //should the query service be disposable or reused?
             uk.ac.ebi.ols.soap.QueryService locator = new QueryServiceLocator();
             uk.ac.ebi.ols.soap.Query qs = locator.getOntologyQuery();
 
-            result = qs.getTermById(queryObject.getSearchTerm(),null);//Must be null or have the correct ontology id
+
+            //Must be null or have the correct ontology id
+            if(Character.isLetter(queryObject.getSearchTerm().charAt(0))){
+                //If begins with letter, the identifier is included
+                result = qs.getTermById(queryObject.getSearchTerm(),null);
+            }else{
+                //else begins with number, try including database
+                //Otherwise if just number, the search is run on NEWT not MI or GO
+                //This is not an adaptable solution - will not help if database was identified with e.g. psi-mi
+                result = qs.getTermById(queryObject.getDatabase()+":"+queryObject.getSearchTerm(),null);
+            }
         }catch (Exception e) {
             throw new BridgeFailedException(e);
         }
