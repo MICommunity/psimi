@@ -1,6 +1,8 @@
 package psidev.psi.mi.query;
 
 import psidev.psi.mi.exception.*;
+import psidev.psi.mi.query.bridge.QueryOLS;
+import psidev.psi.mi.query.bridge.QueryUniProt;
 
 /**
  * An implementation of the QueryInterface. Takes the query object and passes it through to a relevant query.
@@ -26,7 +28,7 @@ public class DefaultQueryInterface implements QueryInterface{
      * @throws UnrecognizedDatabaseException
      */
     public QueryObject passQuery(QueryObject queryObject)
-    throws UnrecognizedTermException, BridgeFailedException, UnrecognizedDatabaseException {
+    throws UnrecognizedTermException, BridgeFailedException, UnrecognizedDatabaseException, UnrecognizedCriteriaException {
         Database dID = null;
 
         for (Database d : Database.values()){

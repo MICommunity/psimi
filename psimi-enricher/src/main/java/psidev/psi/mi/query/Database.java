@@ -4,6 +4,8 @@ package psidev.psi.mi.query;
  * An enum identifier to couple the names of database queries with the identifiers.
  * Some databases (i.e. OLS) have multiple identifiers that might be used (i.e. "MI","GO",etc).
  *
+ * Allowing the database to contain a variety of options allows for customisation that can be implemented later
+ *
  * A database and its terms must be implemented in both the 'Database' Enums
  * and passQuery in the QueryInterface
  *

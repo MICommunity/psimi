@@ -1,6 +1,7 @@
 package psidev.psi.mi.query;
 
 import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.exception.UnrecognizedCriteriaException;
 import psidev.psi.mi.exception.UnrecognizedDatabaseException;
 import psidev.psi.mi.exception.UnrecognizedTermException;
 
@@ -13,5 +14,6 @@ import psidev.psi.mi.exception.UnrecognizedTermException;
  */
 public interface QueryInterface {
     public QueryObject passQuery(QueryObject queryObject)
-            throws UnrecognizedTermException, BridgeFailedException, UnrecognizedDatabaseException;
+            throws UnrecognizedTermException, BridgeFailedException,
+            UnrecognizedDatabaseException, UnrecognizedCriteriaException;
 }

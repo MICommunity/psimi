@@ -10,7 +10,7 @@ package psidev.psi.mi.query;
 public class DefaultQueryObject implements QueryObject{
     private String database;
     private String searchTerm;
-    private Criteria searchCriteria;
+    private Criteria searchCriteria = Criteria.TERM;
 
     private String result;
 
