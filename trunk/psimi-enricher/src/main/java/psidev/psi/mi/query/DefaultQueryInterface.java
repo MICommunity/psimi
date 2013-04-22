@@ -3,25 +3,34 @@ package psidev.psi.mi.query;
 import psidev.psi.mi.exception.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * An implementation of the QueryInterface. Takes the query object and passes it through to a relevant query.
+ * Although it can accept an arbitrary QueryObject, it can only be searched on if the terms have been defined.
+ *
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 16/04/13
  * Time: 11:16
  */
 public class DefaultQueryInterface implements QueryInterface{
-    //String source;
-    //String term;
 
+    /**
+     *
+     *
+     * A database and its terms must be implemented in both the 'Database' Enums
+     * and passQuery in the QueryInterface
+     *
+     * @param queryObject
+     * @return
+     * @throws UnrecognizedTermException
+     * @throws BridgeFailedException
+     * @throws UnrecognizedDatabaseException
+     */
     public QueryObject passQuery(QueryObject queryObject)
     throws UnrecognizedTermException, BridgeFailedException, UnrecognizedDatabaseException {
-        //Get a query
-        //choose which database it is for
-        //check cache
         Database dID = null;
 
         for (Database d : Database.values()){
-            if(queryObject.getDatabase().equals(d)){
+            if(d.compareDB(queryObject.getDatabase())){
                 dID = d;
                 break;
             }
@@ -32,15 +41,18 @@ public class DefaultQueryInterface implements QueryInterface{
         }
 
         switch(dID){
-            case OLS:   queryOLS ols = new queryOLS();
-                return ols.queryObject(queryObject);
+            case OLS:       QueryOLS ols = new QueryOLS();
+                    return ols.queryOnObject(queryObject);
+
+            case UNIPROT:   QueryUniProt unp = new QueryUniProt();
+                    return unp.queryOnObject(queryObject);
 
             default:     throw new UnrecognizedDatabaseException();
         }
 
         /*
         }else if (source.equals("UP")){
-            queryUniProt up = new queryUniProt();
+            QueryUniProt up = new QueryUniProt();
             return up.queryTermID(term);
         }       */
 

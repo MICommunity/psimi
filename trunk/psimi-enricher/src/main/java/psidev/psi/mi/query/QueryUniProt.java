@@ -12,20 +12,32 @@ import uk.ac.ebi.kraken.uuw.services.remoting.UniProtJAPI;
  * Date: 12/04/13
  * Time: 14:14
  */
-public class queryUniProt {
+public class QueryUniProt {
 
-    public String queryTermID(String term) throws UnrecognizedTermException{
+    public QueryObject queryOnObject(QueryObject queryObject) throws UnrecognizedTermException{
+
         EntryRetrievalService entryRetrievalService = UniProtJAPI.factory.getEntryRetrievalService();
-        UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(term);
+
+        UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(queryObject.getSearchTerm());
 
         if(entry == null) {
             throw new UnrecognizedTermException();
         }
 
-        System.out.println("entry = " + entry);
-        return entry.getUniProtId().getValue();
+        switch(queryObject.getSearchCriteria()){
+           case SCIENTIFICNAME:     queryObject.setResult(entry.getOrganism().getScientificName().getValue());
+                                return queryObject;
+
+           case COMMONNAME:         queryObject.setResult(entry.getOrganism().getCommonName().getValue());
+                                return queryObject;
+
+
+           default:     throw new UnrecognizedTermException();
+
+        }
     }
 
+    /*
     protected void test2() throws UnrecognizedTermException{
 
         String test = "Q15942" ;// "O95835"; //
@@ -34,6 +46,10 @@ public class queryUniProt {
 
         //Retrieve UniProt entry by its accession number
         UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(test);
+
+
+
+
 
         System.out.println("entry = " + entry);
 
@@ -48,5 +64,6 @@ public class queryUniProt {
             System.out.println("entry ec numbers = " + entry.getProteinDescription().getEcNumbers());
         }
     }
+    */
 
 }
