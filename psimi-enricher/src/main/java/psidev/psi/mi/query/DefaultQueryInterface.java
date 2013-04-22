@@ -9,7 +9,7 @@ import psidev.psi.mi.exception.*;
  * Date: 16/04/13
  * Time: 11:16
  */
-public class DefaultQueryInterface{
+public class DefaultQueryInterface implements QueryInterface{
     //String source;
     //String term;
 

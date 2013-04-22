@@ -13,13 +13,13 @@ public class App
         tester t = new tester();
 
 
-        t.log("MI","MI:2097") ;
-        t.log("MI","foo");
+        t.newQuery("MI","MI:2097") ;
+        t.newQuery("MI","foo");
 
-        t.log("UP","Q15942");
-        t.log("UP","foo");
+        t.newQuery("Uniprot","Q15942");
+        t.newQuery("uniprot","foo");
 
-        t.log("derp","foo");
+        t.newQuery("derp","foo");
 
     }
 
