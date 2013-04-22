@@ -13,21 +13,26 @@ import psidev.psi.mi.query.*;
  */
 public class tester {
 
-    public void log(String DB,String termID){
-        String x;
+    public void newQuery(String DB,String term){
+        QueryObject o = new DefaultQueryObject();
+        o.setDatabase(DB);
+        o.setSearchTerm(term);
 
         try{
-            queryInterface q = new queryInterface();
-            x = q.passQuery(DB, termID);
-            System.out.println(x) ;
+
+
+            DefaultQueryInterface q = new DefaultQueryInterface();
+            o = q.passQuery(o);
+            System.out.println(o.getResult()) ;
+
         }catch(UnrecognizedTermException e) {
-            System.out.println("oops - couldn't find " + termID);
+            System.out.println("oops - couldn't find " + o.getSearchTerm());
 
         } catch (BridgeFailedException e) {
-            System.out.println("oops - couldn't access " + termID);
+            System.out.println("oops - couldn't access " + o.getSearchTerm());
             //e.printStackTrace();
         }catch (UnrecognizedDatabaseException e){
-            System.out.println("oops - couldn't find a database "+DB+" for " + termID);
+            System.out.println("oops - couldn't find a database "+o.getDatabase()+" for " + o.getSearchTerm());
             //e.printStackTrace();
         }
     }

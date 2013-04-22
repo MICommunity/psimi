@@ -11,7 +11,7 @@ package psidev.psi.mi.query;
  */
 public enum Database {
     OLS ("MI","psi-mi"),
-    UNIPROT ("uniprotkb");
+    UNIPROT ("uniprotkb","uniprot");
 
     String[] nameOptions;
 
