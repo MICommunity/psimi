@@ -7,11 +7,27 @@
     <formats>
         <format>zip</format>
     </formats>
-
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>README*</include>
+                <include>LICENSE*</include>
+                <include>NOTICE*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>target</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
     <dependencySets>
         <dependencySet>
-            <outputDirectory>${artifactId}</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
             <unpack>false</unpack>
+            <scope>runtime</scope>
         </dependencySet>
     </dependencySets>
 </assembly>

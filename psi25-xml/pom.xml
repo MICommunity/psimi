@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>psidev.psi.mi</groupId>
@@ -30,6 +31,30 @@
         <plugins>
             <!--assembly-->
             <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.3</version>
                 <executions>
@@ -48,13 +73,13 @@
                 </configuration>
             </plugin>
             <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-jar-plugin</artifactId>
-                 <configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                     </archive>
-                 </configuration>
+                    </archive>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.ops4j</groupId>
@@ -74,13 +99,13 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
                 <executions>
-                     <execution>
+                    <execution>
                         <id>bundle-manifest</id>
                         <phase>process-classes</phase>
                         <goals>
                             <goal>manifest</goal>
                         </goals>
-                     </execution>
+                    </execution>
                 </executions>
                 <configuration>
                     <instructions>
@@ -92,9 +117,9 @@
                         <Export-Package>
                             !${bundle.namespace}.internal.*,
 
-                             ${bundle.namespace}.*;version=${pom.version},
-                             psidev.psi.mi.xml254.jaxb;version=${pom.version},
-                             psidev.psi.mi.xml253.jaxb;version=${pom.version}"
+                            ${bundle.namespace}.*;version=${pom.version},
+                            psidev.psi.mi.xml254.jaxb;version=${pom.version},
+                            psidev.psi.mi.xml253.jaxb;version=${pom.version}"
                         </Export-Package>
                         <Private-Package>${bundle.namespace}.internal.*</Private-Package>
                         <Import-Package>*</Import-Package>
@@ -212,8 +237,8 @@
             <version>8.7</version>
             <exclusions>
                 <exclusion>
-                   <groupId>xerces</groupId>
-                   <artifactId>xercesImpl</artifactId>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
