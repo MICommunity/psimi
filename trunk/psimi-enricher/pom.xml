@@ -95,22 +95,5 @@
             <name>IntAct Nexus</name>
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
         </repository>
-
-        <repository>
-            <id>ebi-repo</id>
-            <name>>ebi-repo</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo</url>
-        </repository>
-
-
-        <repository>
-            <id>ebi-repo</id>
-            <name>The EBI Maven2 repository</name>
-            <url>http://www.ebi.ac.uk/~maven/m2repo</url>
-        </repository>
-
-
-
-
     </repositories>
 </project>
