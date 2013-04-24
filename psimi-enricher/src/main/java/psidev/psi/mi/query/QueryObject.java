@@ -12,8 +12,8 @@ public interface QueryObject {
     public String getSearchTerm();
     public void setSearchTerm(String searchTerm);
 
-    public Criteria getSearchCriteria();
-    public void setSearchCriteria(Criteria searchCriteria);
+    public Criteria getCriteria();
+    public void setCriteria(Criteria searchCriteria);
 
     public void setResult(String result);
     public String getResult();

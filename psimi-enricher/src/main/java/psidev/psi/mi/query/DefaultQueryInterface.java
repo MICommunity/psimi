@@ -1,6 +1,8 @@
 package psidev.psi.mi.query;
 
 import psidev.psi.mi.exception.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.query.bridge.QueryOLS;
 import psidev.psi.mi.query.bridge.QueryUniProt;
 
@@ -16,22 +18,20 @@ import psidev.psi.mi.query.bridge.QueryUniProt;
 public class DefaultQueryInterface implements QueryInterface{
 
     /**
-     *
-     *
-     * A database and its terms must be implemented in both the 'Database' Enums
+     * A database and its terms must be implemented in both the 'Service' Enums
      * and passQuery in the QueryInterface
      *
      * @param queryObject
-     * @return
+     * @return The original queryObject, updated with a result.
      * @throws UnrecognizedTermException
      * @throws BridgeFailedException
      * @throws UnrecognizedDatabaseException
      */
     public QueryObject passQuery(QueryObject queryObject)
     throws UnrecognizedTermException, BridgeFailedException, UnrecognizedDatabaseException, UnrecognizedCriteriaException {
-        Database dID = null;
+        Service dID = null;
 
-        for (Database d : Database.values()){
+        for (Service d : Service.values()){
             if(d.compareDB(queryObject.getDatabase())){
                 dID = d;
                 break;
@@ -51,13 +51,13 @@ public class DefaultQueryInterface implements QueryInterface{
 
             default:     throw new UnrecognizedDatabaseException();
         }
+    }
 
-        /*
-        }else if (source.equals("UP")){
-            QueryUniProt up = new QueryUniProt();
-            return up.queryTermID(term);
-        }       */
 
+    public void foo(){
+        String shortName = "foo";
+        String miIdentifier = "bar";
+        CvTerm bar = new DefaultCvTerm(shortName, miIdentifier);
     }
 
 }

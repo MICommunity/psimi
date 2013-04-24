@@ -6,20 +6,20 @@ package psidev.psi.mi.query;
  *
  * Allowing the database to contain a variety of options allows for customisation that can be implemented later
  *
- * A database and its terms must be implemented in both the 'Database' Enums
+ * A database and its terms must be implemented in both the 'Service' Enums
  * and passQuery in the QueryInterface
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 22/04/13
  * Time: 10:14
  */
-public enum Database {
+public enum Service {
     OLS ("MI","psi-mi","GO"),
     UNIPROT ("uniprotkb","uniprot");
 
     String[] nameOptions;
 
-    Database(String... nameOptions){
+    Service(String... nameOptions){
         this.nameOptions = nameOptions;
     }
 

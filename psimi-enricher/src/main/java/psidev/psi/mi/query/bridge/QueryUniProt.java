@@ -2,8 +2,10 @@ package psidev.psi.mi.query.bridge;
 
 import psidev.psi.mi.exception.*;
 import psidev.psi.mi.query.QueryObject;
+import psidev.psi.mi.query.bridge.uniprot.UniProtUtil;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.uuw.services.remoting.EntryRetrievalService;
+import uk.ac.ebi.kraken.uuw.services.remoting.RemoteDataAccessException;
 import uk.ac.ebi.kraken.uuw.services.remoting.UniProtJAPI;
 
 /**
@@ -16,28 +18,34 @@ import uk.ac.ebi.kraken.uuw.services.remoting.UniProtJAPI;
 public class QueryUniProt {
 
     public QueryObject queryOnObject(QueryObject queryObject)
-    throws UnrecognizedTermException, UnrecognizedCriteriaException{
+            throws UnrecognizedTermException, UnrecognizedCriteriaException, BridgeFailedException{
 
         EntryRetrievalService entryRetrievalService = UniProtJAPI.factory.getEntryRetrievalService();
 
-        UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(queryObject.getSearchTerm());
+        try{
+            UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(queryObject.getSearchTerm());
 
-        if(entry == null) {
-            throw new UnrecognizedTermException();
-        }
+            if(entry == null) {
+                throw new UnrecognizedTermException();
+            }
 
-        switch(queryObject.getSearchCriteria()){
-            case TAXID:     queryObject.setResult(entry.getNcbiTaxonomyIds().toString());
+            UniProtUtil u = new UniProtUtil();
+            u.uniProtToJami(entry) ;
 
-           case SCIENTIFICNAME:     queryObject.setResult(entry.getOrganism().getScientificName().getValue());
-                                return queryObject;
+            switch(queryObject.getCriteria()){
 
-           case COMMONNAME:         queryObject.setResult(entry.getOrganism().getCommonName().getValue());
-                                return queryObject;
+                case SCIENTIFICNAME:     queryObject.setResult(entry.getOrganism().getScientificName().getValue());
+                    return queryObject;
+
+                case COMMONNAME:         queryObject.setResult(entry.getOrganism().getCommonName().getValue());
+                    return queryObject;
 
 
-           default:     throw new UnrecognizedCriteriaException();
+                default:     throw new UnrecognizedCriteriaException();
 
+            }
+        }catch (RemoteDataAccessException e){
+            throw new BridgeFailedException(e);
         }
     }
 }

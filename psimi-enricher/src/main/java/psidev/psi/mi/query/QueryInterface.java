@@ -16,4 +16,7 @@ public interface QueryInterface {
     public QueryObject passQuery(QueryObject queryObject)
             throws UnrecognizedTermException, BridgeFailedException,
             UnrecognizedDatabaseException, UnrecognizedCriteriaException;
+
+
+
 }
