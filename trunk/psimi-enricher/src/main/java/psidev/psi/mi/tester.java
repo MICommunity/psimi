@@ -14,25 +14,15 @@ import psidev.psi.mi.query.*;
  */
 public class tester {
 
-    public void newQuery(String DB,String term){
-        QueryObject o = new DefaultQueryObject();
-        o.setDatabase(DB);
-        o.setSearchTerm(term);
 
-        newQuery(o);
-    }
 
     public void newQuery(String DB,String term, Criteria criteria){
-        QueryObject o = new DefaultQueryObject();
-        o.setDatabase(DB);
-        o.setSearchTerm(term);
-        o.setSearchCriteria(criteria);
-
+        QueryObject o = new DefaultQueryObject(DB, term, criteria);
         newQuery(o);
     }
 
     public void newQuery(QueryObject o){
-        System.out.println("SEARCH: " + o.getSearchTerm()+", IN: "+o.getDatabase()+", ON: "+o.getSearchCriteria());
+        System.out.println("SEARCH: " + o.getSearchTerm()+", IN: "+o.getDatabase()+", ON: "+o.getCriteria());
 
         try{
             DefaultQueryInterface q = new DefaultQueryInterface();
@@ -49,7 +39,7 @@ public class tester {
             System.out.println("oops - couldn't find a database "+o.getDatabase()+" for " + o.getSearchTerm());
             //e.printStackTrace();
         } catch (UnrecognizedCriteriaException e){
-            System.out.println("oops - couldn't search on "+o.getSearchCriteria()+" in " + o.getDatabase());
+            System.out.println("oops - couldn't search on "+o.getCriteria()+" in " + o.getDatabase());
         }
     }
 }

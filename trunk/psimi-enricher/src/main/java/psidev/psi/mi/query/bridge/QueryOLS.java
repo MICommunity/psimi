@@ -38,7 +38,7 @@ public class QueryOLS {
             qs = locator.getOntologyQuery();
 
 
-            switch (queryObject.getSearchCriteria()){
+            switch (queryObject.getCriteria()){
                 case TERM:
                     if(Character.isLetter(queryObject.getSearchTerm().charAt(0))){
                         //If begins with letter, the identifier is included
