@@ -21,6 +21,11 @@ public class XrefExtractor extends Extractor{
 
     public ArrayList<Xref> getXrefs(UniProtEntry entry) {
         report = null;//Start a new report
+        if(entry == null){
+            report.add("No entry to extract xrefs from");
+            return null;
+        }
+
         ArrayList<Xref> xrefs = new ArrayList<Xref>() ;
 
         Iterator<DatabaseCrossReference> iterator = entry.getDatabaseCrossReferences().iterator();

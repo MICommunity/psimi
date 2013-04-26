@@ -1,73 +1,72 @@
 package psidev.psi.mi.query.bridge;
 
-import psidev.psi.mi.exception.*;
+import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.exception.UnrecognizedCriteriaException;
+import psidev.psi.mi.exception.UnrecognizedTermException;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.query.QueryObject;
+import psidev.psi.mi.query.bridge.ols.EnrichOLSCvTerm;
+import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
 import javax.xml.rpc.ServiceException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Methods to query the Ontology Lookup Service.
  * Utilises the OLS soap service.
+ *
+ *
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 12/04/13
  * Time: 14:07
  */
 public class QueryOLS {
+    boolean throwBadID = false;
+    Query qs;
 
     /**
+     * Opens the OLS query service. QS is null if it fails to initialise.
      *
-     *
-     * @param queryObject   carries all the parameters for the search and carries the result back.
-     *                      The searchCriteria is ignored as there is only one OLS search.
-     * @return
-     * @throws UnrecognizedTermException
+     * @throws psidev.psi.mi.exception.BridgeFailedException    if the query service throws problems
+     */
+    public QueryOLS()
+            throws BridgeFailedException {
+
+        try{
+            qs = new QueryServiceLocator().getOntologyQuery();
+
+            /*HashMap map = qs.getOntologyNames();
+            for(Object key : map.keySet()){
+                System.out.println("DB "+map.get(key)+" for key " +key);
+            } */
+        }catch (ServiceException e) {
+            qs = null;
+            throw new BridgeFailedException("OLS QS bridge failed to initialise.",e);
+        } catch(Exception e){}
+    }
+
+    /**
+     * Opens the OLS query service. QS is null if it fails to initialise.
+     * @param throwBadID      whether or not bad IDs are thrown as an error or ignored
      * @throws BridgeFailedException
      */
-    public QueryObject queryOnObject(QueryObject queryObject)
-    throws UnrecognizedTermException, BridgeFailedException, UnrecognizedCriteriaException{
-        String result = queryObject.getSearchTerm();
+    /*public QueryOLS(boolean throwBadID)
+            throws BridgeFailedException{
 
-        try {
-            //should the query service be disposable or reused?
-            uk.ac.ebi.ols.soap.QueryService locator = new QueryServiceLocator();
-            uk.ac.ebi.ols.soap.Query qs = null;
+        this();
+        this.throwBadID = throwBadID;
+    }*/
 
-            qs = locator.getOntologyQuery();
+    public CvTerm queryOnCvTerm(CvTerm cvTerm)
+            throws UnrecognizedTermException, BridgeFailedException{
 
-
-            switch (queryObject.getCriteria()){
-                case TERM:
-                    if(Character.isLetter(queryObject.getSearchTerm().charAt(0))){
-                        //If begins with letter, the identifier is included
-                        result = qs.getTermById(queryObject.getSearchTerm(),null);
-                    }else{
-                        //else begins with number, try including database
-                        //Otherwise if just number, the search is run on NEWT not MI or GO
-                        //This is not an adaptable solution - will not help if database was identified with e.g. psi-mi
-                        result = qs.getTermById(queryObject.getDatabase()+":"+queryObject.getSearchTerm(),null);
-                    }
-                    break;
-
-                default:   throw new UnrecognizedCriteriaException();
-            }
-
-        } catch (ServiceException e) {
-            throw new BridgeFailedException(e);
-        } catch (RemoteException e) {
-            throw new BridgeFailedException(e);
-        }
-
-        //If no exceptions were caught, the query continues
-        //Each API will show missing terms in separate ways - must check in each query
-        if(result.equals(queryObject.getSearchTerm())){
-            throw new UnrecognizedTermException();
-        }
-        else{
-            queryObject.setResult(result);
-            return queryObject;
-        }
+        EnrichOLSCvTerm enrich = new EnrichOLSCvTerm(qs);
+        return enrich.queryOnCvTerm(cvTerm);
     }
 }

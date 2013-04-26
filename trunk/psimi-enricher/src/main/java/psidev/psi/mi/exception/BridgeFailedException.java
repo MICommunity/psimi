@@ -2,7 +2,7 @@ package psidev.psi.mi.exception;
 
 /**
  * An error object to signify that a query to a database has failed.
- * This Exception will also pass the original Exception that caused the problem.
+ * This Exception MUST also pass the original Exception that caused the problem.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 15/04/13
@@ -17,10 +17,10 @@ public class BridgeFailedException extends Exception{
     public BridgeFailedException(String s) {
         super(s);
     }
-
+     */
     public BridgeFailedException(String s, Throwable throwable) {
         super(s, throwable);
-    }  */
+    }
 
     public BridgeFailedException(Throwable throwable) {
         super(throwable);

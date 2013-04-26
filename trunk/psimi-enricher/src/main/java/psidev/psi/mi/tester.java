@@ -4,7 +4,12 @@ import psidev.psi.mi.exception.BridgeFailedException;
 import psidev.psi.mi.exception.UnrecognizedCriteriaException;
 import psidev.psi.mi.exception.UnrecognizedDatabaseException;
 import psidev.psi.mi.exception.UnrecognizedTermException;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import psidev.psi.mi.query.*;
+import psidev.psi.mi.query.bridge.QueryOLS;
+import uk.ac.ebi.ols.soap.Query;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -14,32 +19,29 @@ import psidev.psi.mi.query.*;
  */
 public class tester {
 
+    QueryOLS qol;
+    public tester(){
+        try {
+            qol = new QueryOLS();
+        } catch (BridgeFailedException e) {
+            System.out.println(e.getMessage());
+        }
 
-
-    public void newQuery(String DB,String term, Criteria criteria){
-        QueryObject o = new DefaultQueryObject(DB, term, criteria);
-        newQuery(o);
     }
 
-    public void newQuery(QueryObject o){
-        System.out.println("SEARCH: " + o.getSearchTerm()+", IN: "+o.getDatabase()+", ON: "+o.getCriteria());
+    public void testCVTerm(CvTerm cvTerm){
 
         try{
-            DefaultQueryInterface q = new DefaultQueryInterface();
-            o = q.passQuery(o);
-            System.out.println("RESULT: "+o.getResult()) ;
+            System.out.println("----\nSEARCH by GEN: full ["+cvTerm.getFullName()+"] with short ["+cvTerm.getShortName()+"]"+
+                    "\nwith mi id ["+cvTerm.getMIIdentifier()+"] mod id ["+cvTerm.getMODIdentifier()+"]");
+            cvTerm = qol.queryOnCvTerm(cvTerm);
+            System.out.println("\nRESULT: \nfullname: "+cvTerm.getFullName());
+            System.out.println("mi id ["+cvTerm.getMIIdentifier()+"] mod id ["+cvTerm.getMODIdentifier()+"]");
+            System.out.println("shortname: "+cvTerm.getShortName());
 
-        }catch(UnrecognizedTermException e) {
-            System.out.println("oops - couldn't find " + o.getSearchTerm());
 
-        } catch (BridgeFailedException e) {
-            System.out.println("oops - couldn't access " + o.getSearchTerm());
-            //e.printStackTrace();
-        }catch (UnrecognizedDatabaseException e){
-            System.out.println("oops - couldn't find a database "+o.getDatabase()+" for " + o.getSearchTerm());
-            //e.printStackTrace();
-        } catch (UnrecognizedCriteriaException e){
-            System.out.println("oops - couldn't search on "+o.getCriteria()+" in " + o.getDatabase());
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
