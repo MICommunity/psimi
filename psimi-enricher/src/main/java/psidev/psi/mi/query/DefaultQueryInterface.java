@@ -43,12 +43,12 @@ public class DefaultQueryInterface implements QueryInterface{
         }
 
         switch(dID){
-            case OLS:       QueryOLS ols = new QueryOLS();
+            /*case OLS:       QueryOLS ols = new QueryOLS();
                     return ols.queryOnObject(queryObject);
 
             case UNIPROT:   QueryUniProt unp = new QueryUniProt();
                     return unp.queryOnObject(queryObject);
-
+             */
             default:     throw new UnrecognizedDatabaseException();
         }
     }

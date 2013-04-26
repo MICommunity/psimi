@@ -15,6 +15,10 @@ public class OrganismExtractor extends Extractor{
 
     public Organism getOrganism(UniProtEntry entry){
         report = null;
+        if(entry == null){
+            report.add("No entry to extract organism from");
+            return null;
+        }
 
         Organism organism;
 

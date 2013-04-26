@@ -1,7 +1,10 @@
 package psidev.psi.mi;
 
 import psidev.psi.mi.exception.UnrecognizedTermException;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import psidev.psi.mi.query.*;
+import psidev.psi.mi.query.bridge.QueryOLS;
 
 /**
  * Hello world!
@@ -10,28 +13,28 @@ import psidev.psi.mi.query.*;
 public class App
 {
     public static void main(String[] args){
+
         tester t = new tester();
+        //t.testMIQuery("allosteric change in dynamics","MI:1166");
 
-        t.newQuery("psi-mi","MI:0915",Criteria.TERM);
-        t.newQuery("psi-mi","MI:0403",Criteria.TERM);
-
-        t.newQuery("MI","MI:2097",Criteria.TERM);
-        t.newQuery("MI","MI:2097",Criteria.SCIENTIFICNAME);
+        t.testCVTerm(CvTermFactory.createMODCvTerm("dehydromethionine","MOD:01906"));
+        t.testCVTerm(CvTermFactory.createMODCvTerm("dehydromethionine",null));
+        t.testCVTerm(CvTermFactory.createMODCvTerm("dehydromethion",null));
 
 
-        t.newQuery("MI","MI:2097",Criteria.TERM);
-        t.newQuery("MI","2097",Criteria.TERM);
-        t.newQuery("MI", "foo", Criteria.TERM);
+        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynamics","MOD:01906"));
+        t.testCVTerm(CvTermFactory.createMODCvTerm("allosteric change in dynamics","MI:1166"));
 
-        t.newQuery("go","GO:0007165",Criteria.TERM);//(signal transduction)
+        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynamics","MI:1166"));
+        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynamics",null));
+        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynam",null));
+        t.testCVTerm(CvTermFactory.createMICvTerm("osteric change in dynam",null));
+        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric",null));
+        t.testCVTerm(CvTermFactory.createMICvTerm("0915", "MI:0915"));
+        t.testCVTerm(CvTermFactory.createMICvTerm("0915", null));
 
-        t.newQuery("Uniprot","Q15942",Criteria.TAXID);
 
-        t.newQuery("Uniprot","Q15942",Criteria.COMMONNAME);
-        t.newQuery("Uniprot","Q15942",Criteria.SCIENTIFICNAME);
-        t.newQuery("uniprot", "foo", Criteria.TERM);
 
-        t.newQuery("derp", "foo", Criteria.TERM);
     }
 
 
