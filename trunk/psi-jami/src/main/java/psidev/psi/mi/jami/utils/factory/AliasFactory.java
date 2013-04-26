@@ -13,39 +13,39 @@ import psidev.psi.mi.jami.model.impl.DefaultAlias;
 
 public class AliasFactory {
     
-    public Alias createGeneName(String name){
+    public static Alias createGeneName(String name){
         return new DefaultAlias(CvTermFactory.createGeneNameAliasType(), name);
     }
 
-    public Alias createComplexSynonym(String name){
+    public static Alias createComplexSynonym(String name){
         return new DefaultAlias(CvTermFactory.createComplexSynonym(), name);
     }
 
-    public Alias createAuthorAssignedName(String name){
+    public static Alias createAuthorAssignedName(String name){
         return new DefaultAlias(CvTermFactory.createAuthorAssignedName(), name);
     }
 
-    public Alias createGeneNameSynonym(String name){
+    public static Alias createGeneNameSynonym(String name){
         return new DefaultAlias(CvTermFactory.createGeneNameSynonym(), name);
     }
 
-    public Alias createIsoformSynonym(String name){
+    public static Alias createIsoformSynonym(String name){
         return new DefaultAlias(CvTermFactory.createIsoformSynonym(), name);
     }
 
-    public Alias createOrfName(String name){
+    public static Alias createOrfName(String name){
         return new DefaultAlias(CvTermFactory.createOrfName(), name);
     }
 
-    public Alias createLocusName(String name){
+    public static Alias createLocusName(String name){
         return new DefaultAlias(CvTermFactory.createLocusName(), name);
     }
 
-    public Alias createAlias(String typeName, String typeMi, String name){
+    public static Alias createAlias(String typeName, String typeMi, String name){
         return new DefaultAlias(CvTermFactory.createMICvTerm(typeName, typeMi), name);
     }
 
-    public Alias createAlias(String typeName, String name){
+    public static Alias createAlias(String typeName, String name){
         return new DefaultAlias(CvTermFactory.createMICvTerm(typeName, null), name);
     }
 }
