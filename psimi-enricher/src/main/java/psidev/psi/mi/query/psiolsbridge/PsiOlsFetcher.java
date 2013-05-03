@@ -42,7 +42,7 @@ public class PsiOlsFetcher {
      * @throws UnrecognizedTermException    thrown if the id can not be found and @throwBadID is true
      * @throws BridgeFailedException
      */
-    public CvTerm fetchByIdentifier(String identifier)
+    public CvTerm fetchFullNameByIdentifier(String identifier)
             throws UnrecognizedTermException, BridgeFailedException{
 
         String resultTerm;
@@ -104,14 +104,14 @@ public class PsiOlsFetcher {
      * @throws BridgeFailedException
      * @throws UnrecognizedTermException
      */
-    public List<CvTerm> fetchByTerm(String name, String ontology)
+    public List<CvTerm> fetchIDByTerm(String name, String ontology)
             throws BridgeFailedException, UnrecognizedTermException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
 
-        cvTermList.addAll(fetchByExactTerm(name, ontology));
+        cvTermList.addAll(fetchIDByExactTerm(name, ontology));
         if(cvTermList.size() == 0){
-            cvTermList.addAll(fetchByFuzzyTerm(name, ontology));
+            cvTermList.addAll(fetchIDByFuzzyTerm(name, ontology));
         }
         if(cvTermList.size() == 0){
             return null;
@@ -129,7 +129,7 @@ public class PsiOlsFetcher {
      * @throws BridgeFailedException
      * @throws UnrecognizedTermException
      */
-    public List<CvTerm> fetchByExactTerm(String name, String ontology)
+    public List<CvTerm> fetchIDByExactTerm(String name, String ontology)
             throws BridgeFailedException, UnrecognizedTermException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
@@ -162,7 +162,7 @@ public class PsiOlsFetcher {
      * @throws BridgeFailedException
      * @throws UnrecognizedTermException
      */
-    public List<CvTerm> fetchByFuzzyTerm(String name, String ontology)
+    public List<CvTerm> fetchIDByFuzzyTerm(String name, String ontology)
             throws BridgeFailedException, UnrecognizedTermException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
@@ -196,7 +196,7 @@ public class PsiOlsFetcher {
      * @return          A new CvTerm with any results that were found filled in.
      * @throws BridgeFailedException
      */
-    public CvTerm fetchMetaData(String identifier)
+    public CvTerm fetchMetaDataByID(String identifier)
             throws BridgeFailedException{
 
         String META_DATA_SEPARATOR = "_";
