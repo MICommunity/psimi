@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Time: 11:43
  */
 public class EnrichOLSCvTerm {
-
+    /*
     private String ONTOLOGY = null;
     private String SHORTLABEL_IDENTIFIER = null;
     private String SYNONYM_IDENTIFIER = null;
@@ -42,7 +42,7 @@ public class EnrichOLSCvTerm {
 
     public EnrichOLSCvTerm(Query qs){
         this.qs = qs;
-    }
+    }   */
 
     /**
      * Attempts to fill in missing fields for a CvTerm.
@@ -59,7 +59,7 @@ public class EnrichOLSCvTerm {
      * @throws psidev.psi.mi.exception.UnrecognizedTermException    if a dodgy ID was supplied
      * @throws BridgeFailedException        if the query service throws problems
      */
-    public CvTerm queryOnCvTerm(CvTerm cvTerm)
+    /*public CvTerm queryOnCvTerm(CvTerm cvTerm)
             throws UnrecognizedTermException, BridgeFailedException{
 
         //STEP 1:
@@ -116,7 +116,7 @@ public class EnrichOLSCvTerm {
      * @throws UnrecognizedTermException    thrown if the id can not be found and @throwBadID is true
      * @throws BridgeFailedException
      */
-    public CvTerm queryByID(CvTerm cvTerm)
+    /*public CvTerm queryByID(CvTerm cvTerm)
             throws UnrecognizedTermException, BridgeFailedException{
 
         String resultTerm;
@@ -151,7 +151,7 @@ public class EnrichOLSCvTerm {
      * @return
      * @throws BridgeFailedException
      */
-    public CvTerm queryByTerm(CvTerm cvTerm, String name)
+    /*public CvTerm queryByTerm(CvTerm cvTerm, String name)
             throws BridgeFailedException, UnrecognizedTermException{
 
         HashMap termNamesMap;
@@ -210,7 +210,7 @@ public class EnrichOLSCvTerm {
      * @return
      * @throws BridgeFailedException
      */
-    public CvTerm getMetaData(CvTerm cvTerm)
+    /*public CvTerm getMetaData(CvTerm cvTerm)
             throws BridgeFailedException{
 
         String description;
@@ -229,7 +229,7 @@ public class EnrichOLSCvTerm {
                     description = (String) metaDataMap.get(key);
                 }
                 else if (keyName.startsWith(SYNONYM_IDENTIFIER + META_DATA_SEPARATOR){
-                    cvTerm.cvTerm.getSynonyms()
+                    cvTerm.cvTerm.getSynonyms() ;
 
                 }
                 else if (keyName.startsWith(SHORTLABEL_IDENTIFIER + META_DATA_SEPARATOR)){
@@ -254,7 +254,7 @@ public class EnrichOLSCvTerm {
      * Set the
      * @param ID
      */
-    public void setOntology(String ID){
+    /*public void setOntology(String ID){
         if(ID.equals("MI")){
             ONTOLOGY = "MI";
             SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
@@ -276,5 +276,5 @@ public class EnrichOLSCvTerm {
                 throw new UnrecognizedTermException("Could not resolve an id from ["+identifier+"]");
             }
         }
-    }
+    }  */
 }
