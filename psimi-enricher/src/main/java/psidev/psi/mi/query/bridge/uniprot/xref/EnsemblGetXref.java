@@ -11,8 +11,11 @@ import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensembl.Ensembl;
 import java.util.ArrayList;
 
 /**
- * A class to handle the translation of a UniProt DatabaseCrossReference object.
- * A separate class exists for each database as UniProt treats each as individual classes.
+ * Handles the translation of a UniProt DatabaseCrossReference object.
+ * A separate class exists for each database as UniProt passes different objects.
+ *
+ * Ensembl Xrefs can be for 3 types, by default all are reported.
+ *
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 24/04/13
