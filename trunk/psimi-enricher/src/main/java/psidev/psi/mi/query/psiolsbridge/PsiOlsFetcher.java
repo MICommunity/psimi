@@ -14,9 +14,12 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 /**
+ * These methods query to the Ontology Look Up Service.
+ *
+ * They should only be used to query on PSI ontologies, ie: MI, MOD, PAR
  * //TODO See @fetchMetaData!
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * Author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 26/04/13
  * Time: 15:32
  */

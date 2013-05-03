@@ -17,6 +17,7 @@ import java.util.HashMap;
  * Date: 26/04/13
  * Time: 11:43
  */
+@Deprecated
 public class EnrichOLSCvTerm {
     /*
     private String ONTOLOGY = null;
