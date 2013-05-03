@@ -35,7 +35,7 @@ public class QueryOLS {
      *
      * @throws psidev.psi.mi.exception.BridgeFailedException    if the query service throws problems
      */
-    public QueryOLS()
+    /*public QueryOLS()
             throws BridgeFailedException {
 
         try{
@@ -45,7 +45,7 @@ public class QueryOLS {
             for(Object key : map.keySet()){
                 System.out.println("DB "+map.get(key)+" for key " +key);
             } */
-        }catch (ServiceException e) {
+       /* }catch (ServiceException e) {
             qs = null;
             throw new BridgeFailedException("OLS QS bridge failed to initialise.",e);
         } catch(Exception e){}
@@ -63,10 +63,10 @@ public class QueryOLS {
         this.throwBadID = throwBadID;
     }*/
 
-    public CvTerm queryOnCvTerm(CvTerm cvTerm)
+    /*public CvTerm queryOnCvTerm(CvTerm cvTerm)
             throws UnrecognizedTermException, BridgeFailedException{
 
         EnrichOLSCvTerm enrich = new EnrichOLSCvTerm(qs);
         return enrich.queryOnCvTerm(cvTerm);
-    }
+    } */
 }
