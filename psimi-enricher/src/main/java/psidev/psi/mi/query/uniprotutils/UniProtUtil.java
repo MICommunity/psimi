@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.bridge.uniprot;
+package psidev.psi.mi.query.uniprot;
 
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;

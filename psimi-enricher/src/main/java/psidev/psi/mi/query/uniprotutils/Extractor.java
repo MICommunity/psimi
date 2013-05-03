@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.bridge.uniprot;
+package psidev.psi.mi.query.uniprot;
 
 import java.util.ArrayList;
 
