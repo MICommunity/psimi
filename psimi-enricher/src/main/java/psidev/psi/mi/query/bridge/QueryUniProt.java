@@ -4,7 +4,6 @@ import psidev.psi.mi.exception.BridgeFailedException;
 import psidev.psi.mi.exception.UnrecognizedCriteriaException;
 import psidev.psi.mi.exception.UnrecognizedTermException;
 import psidev.psi.mi.query.QueryObject;
-import psidev.psi.mi.query.uniprot.UniProtUtil;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.uuw.services.remoting.EntryRetrievalService;
 import uk.ac.ebi.kraken.uuw.services.remoting.RemoteDataAccessException;
@@ -13,13 +12,14 @@ import uk.ac.ebi.kraken.uuw.services.remoting.UniProtJAPI;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 12/04/13
  * Time: 14:14
  */
+@Deprecated
 public class QueryUniProt {
 
-    public QueryObject queryOnObject(QueryObject queryObject)
+   /* public QueryObject queryOnObject(QueryObject queryObject)
             throws UnrecognizedTermException, UnrecognizedCriteriaException, BridgeFailedException{
 
         EntryRetrievalService entryRetrievalService = UniProtJAPI.factory.getEntryRetrievalService();
@@ -49,5 +49,5 @@ public class QueryUniProt {
         }catch (RemoteDataAccessException e){
             throw new BridgeFailedException(e);
         }
-    }
+    }  */
 }

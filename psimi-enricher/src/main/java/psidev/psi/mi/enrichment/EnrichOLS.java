@@ -1,12 +1,14 @@
 package psidev.psi.mi.enrichment;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.exception.BridgeFailedException;
 import psidev.psi.mi.exception.UnrecognizedTermException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.query.psiolsbridge.PsiOlsFetcher;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +19,19 @@ import java.util.logging.Logger;
  */
 public class EnrichOLS {
 
-    private final static Logger LOGGER = Logger.getLogger(EnrichOLS.class.getName());
+    //private final static Logger LOGGER = Logger.getLogger(EnrichOLS.class.getName());
+
+    private final Logger log = LoggerFactory.getLogger(EnrichOLS.class.getName());
+
+    private PsiOlsFetcher fetcher = null;
+
+    public EnrichOLS(){
+        try{
+            fetcher = new PsiOlsFetcher();
+        }catch (BridgeFailedException e){
+            log.warn("BridgeFailedException on initial pass");
+        }
+    }
 
     /**
      *
@@ -33,13 +47,13 @@ public class EnrichOLS {
      * @return
      */
     public CvTerm queryOnCvTerm(CvTerm cvTerm) {
-        PsiOlsFetcher fetcher;
-
-        try{
-            fetcher = new PsiOlsFetcher();
-        }catch (BridgeFailedException e){
-            LOGGER.severe("BridgeFailedException");
-            return null;
+        if(fetcher == null){
+            try{
+                fetcher = new PsiOlsFetcher();
+            }catch (BridgeFailedException e){
+                log.error("BridgeFailedException on second pass");
+                return null;
+            }
         }
 
         boolean overwriteAll = true;
@@ -55,6 +69,7 @@ public class EnrichOLS {
             identifier = cvTerm.getPARIdentifier();
         }
 
+        if(log.isDebugEnabled()){log.debug("This is a debug message");}
         //If an identifier is provided, all other details are taken from that
         if(identifier != null) {
             //If the name is missing or overwirteAll - get it from the stuff
@@ -62,19 +77,20 @@ public class EnrichOLS {
                 try{
                     CvTerm cvTest = fetcher.fetchFullNameByIdentifier(identifier);
                     if(cvTest.getFullName() != null){
-                        if(cvTerm.getFullName().equals(cvTest.getFullName())){
+                        if(cvTerm.getFullName() != null
+                                && cvTerm.getFullName().equals(cvTest.getFullName())){
                             //Has not changed
                             //Do nothing
                         }else{
-                            LOGGER.info("Overwriting ["+cvTerm.getFullName()+"] with ["+cvTest.getFullName()+"] for ID ["+identifier+"]");
+                            log.info("Overwriting ["+cvTerm.getFullName()+"] with ["+cvTest.getFullName()+"] for ID ["+identifier+"]");
                             //Todo Log that this has been changed
                             cvTerm.setFullName(cvTest.getFullName());
                         }
                     }
                 } catch (UnrecognizedTermException e) {
-                    LOGGER.warning("UnrecognizedTermException");
+                    log.warn("UnrecognizedTermException");
                 } catch (BridgeFailedException e) {
-                    LOGGER.severe("BridgeFailedException");
+                    log.error("BridgeFailedException");
                     return null;
                 }
             }
@@ -85,9 +101,9 @@ public class EnrichOLS {
                 try{
                     cvTest = fetcher.fetchIDByTerm(cvTerm.getFullName(), null);
                 } catch (UnrecognizedTermException e) {
-                    LOGGER.warning("UnrecognizedTermException");
+                    log.warn("UnrecognizedTermException");
                 } catch (BridgeFailedException e) {
-                    LOGGER.severe("BridgeFailedException");
+                    log.error("BridgeFailedException");
                     return null;
                 }
             }
@@ -95,9 +111,9 @@ public class EnrichOLS {
                 try{
                     cvTest = fetcher.fetchIDByTerm(cvTerm.getShortName(), null);
                 } catch (UnrecognizedTermException e) {
-                    LOGGER.warning("UnrecognizedTermException");
+                    log.warn("UnrecognizedTermException");
                 } catch (BridgeFailedException e) {
-                    LOGGER.severe("BridgeFailedException");
+                    log.error("BridgeFailedException");
                     return null;
                 }
             }
@@ -126,7 +142,7 @@ public class EnrichOLS {
                 //Todo Copy over the short name
                 //todo copy over the synonyms
             } catch (BridgeFailedException e) {
-                LOGGER.severe("BridgeFailedException");
+                log.error("BridgeFailedException");
                 return null;
             }
         }

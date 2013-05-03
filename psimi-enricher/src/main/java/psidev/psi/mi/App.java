@@ -1,10 +1,7 @@
 package psidev.psi.mi;
 
-import psidev.psi.mi.exception.UnrecognizedTermException;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
-import psidev.psi.mi.query.*;
-import psidev.psi.mi.query.bridge.QueryOLS;
+
 
 /**
  * Hello world!

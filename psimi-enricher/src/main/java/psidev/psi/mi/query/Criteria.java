@@ -9,6 +9,7 @@ package psidev.psi.mi.query;
  * Date: 22/04/13
  * Time: 13:48
  */
+@Deprecated
 public enum Criteria {
     TERM, SCIENTIFICNAME, COMMONNAME, TAXID;
 }

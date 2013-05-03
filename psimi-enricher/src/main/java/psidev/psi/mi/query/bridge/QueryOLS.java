@@ -26,6 +26,7 @@ import java.util.Set;
  * Date: 12/04/13
  * Time: 14:07
  */
+@Deprecated
 public class QueryOLS {
     boolean throwBadID = false;
     Query qs;
