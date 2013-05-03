@@ -1,7 +1,7 @@
 package psidev.psi.mi.query;
 
 /**
- * An enum identifier to couple the names of database queries with the identifiers.
+ * Couples the names of database queries with the identifiers.
  * Some databases (i.e. OLS) have multiple identifiers that might be used (i.e. "MI","GO",etc).
  *
  * Allowing the database to contain a variety of options allows for customisation that can be implemented later
@@ -14,7 +14,7 @@ package psidev.psi.mi.query;
  * Time: 10:14
  */
 public enum Service {
-    OLS ("MI","psi-mi","GO"),
+    OLS ("MI","MOD","GO"),
     UNIPROT ("uniprotkb","uniprot");
 
     String[] nameOptions;

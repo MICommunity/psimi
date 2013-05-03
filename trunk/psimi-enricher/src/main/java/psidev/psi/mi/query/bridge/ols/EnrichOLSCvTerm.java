@@ -21,6 +21,7 @@ public class EnrichOLSCvTerm {
 
     private String ONTOLOGY = null;
     private String SHORTLABEL_IDENTIFIER = null;
+    private String SYNONYM_IDENTIFIER = null;
 
     private static final String META_DATA_SEPARATOR = "_";
     private static final String DEFINITION_KEY = "definition";
@@ -60,8 +61,6 @@ public class EnrichOLSCvTerm {
      */
     public CvTerm queryOnCvTerm(CvTerm cvTerm)
             throws UnrecognizedTermException, BridgeFailedException{
-
-
 
         //STEP 1:
         //Which ontology?
@@ -228,7 +227,12 @@ public class EnrichOLSCvTerm {
                 String keyName = (String)key;
                 if (DEFINITION_KEY.equalsIgnoreCase(keyName)){
                     description = (String) metaDataMap.get(key);
-                }else if (keyName.startsWith(SHORTLABEL_IDENTIFIER + META_DATA_SEPARATOR)){
+                }
+                else if (keyName.startsWith(SYNONYM_IDENTIFIER + META_DATA_SEPARATOR){
+                    cvTerm.cvTerm.getSynonyms()
+
+                }
+                else if (keyName.startsWith(SHORTLABEL_IDENTIFIER + META_DATA_SEPARATOR)){
                     shortLabel = (String)metaDataMap.get(key);
                     shortLabel = shortLabel.toLowerCase();
                 }
@@ -254,6 +258,7 @@ public class EnrichOLSCvTerm {
         if(ID.equals("MI")){
             ONTOLOGY = "MI";
             SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
+            SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
         }else if(ID.equals("MOD")){
             ONTOLOGY = "MOD";
             SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
