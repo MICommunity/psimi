@@ -1,8 +1,8 @@
-package psidev.psi.mi.query.uniprot;
+package psidev.psi.mi.query.uniprotutils;
 
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.query.uniprot.xref.EnsemblGetXref;
-import psidev.psi.mi.query.uniprot.xref.GetXrefInterface;
+import psidev.psi.mi.query.uniprotutils.xref.EnsemblGetXref;
+import psidev.psi.mi.query.uniprotutils.xref.GetXrefInterface;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
@@ -17,12 +17,12 @@ import java.util.Iterator;
  * Date: 24/04/13
  * Time: 13:51
  */
-public class XrefExtractor extends Extractor{
+public class XrefExtractor{
 
     public ArrayList<Xref> getXrefs(UniProtEntry entry) {
-        report = null;//Start a new report
+
         if(entry == null){
-            report.add("No entry to extract xrefs from");
+            //report.add("No entry to extract xrefs from");
             return null;
         }
 
@@ -40,7 +40,7 @@ public class XrefExtractor extends Extractor{
                     break;
 
                 default:
-                    report.add("No GetXref for "+db);
+                    //report.add("No GetXref for "+db);
                     break; //Gracefully ignore all other databases
             }
         }

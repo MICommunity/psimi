@@ -7,7 +7,8 @@ package psidev.psi.mi.query;
  * Date: 22/04/13
  * Time: 10:02
  */
-public class DefaultQueryObject implements QueryObject{
+@Deprecated
+public class DefaultQueryObject implements QueryObject{ /*
     private String database;
     private String searchTerm;
     private Criteria criteria = Criteria.TERM;
@@ -50,7 +51,7 @@ public class DefaultQueryObject implements QueryObject{
 
     public void setResult(String result) {
         this.result = result;
-    }
+    }  */
 
 
 

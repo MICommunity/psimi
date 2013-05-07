@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprot.xref;
+package psidev.psi.mi.query.uniprotutils.xref;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;

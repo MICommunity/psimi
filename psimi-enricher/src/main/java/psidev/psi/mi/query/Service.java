@@ -13,7 +13,8 @@ package psidev.psi.mi.query;
  * Date: 22/04/13
  * Time: 10:14
  */
-public enum Service {
+@Deprecated
+public enum Service { /*
     OLS ("MI","MOD","GO"),
     UNIPROT ("uniprotkb","uniprot");
 
@@ -30,5 +31,5 @@ public enum Service {
             }
         }
         return false;
-    }
+    } */
 }

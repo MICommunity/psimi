@@ -3,7 +3,6 @@ package psidev.psi.mi.enrichment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnrecognizedTermException;
 import psidev.psi.mi.query.uniprotbridge.UniprotFetcher;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
@@ -30,13 +29,6 @@ public class EnrichUniprot {
         }catch(BridgeFailedException e){
             log.error("BridgeFailedException");
             return null;
-        }  catch(UnrecognizedTermException e){
-            log.warn("The ID ["+ID+"] was not an identifier in UniProt. UnrecognizedTermException");
-            return null;
         }
     }
-
-
-
-
 }

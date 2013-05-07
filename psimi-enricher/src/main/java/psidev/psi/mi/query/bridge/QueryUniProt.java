@@ -1,14 +1,5 @@
 package psidev.psi.mi.query.bridge;
 
-import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnrecognizedCriteriaException;
-import psidev.psi.mi.exception.UnrecognizedTermException;
-import psidev.psi.mi.query.QueryObject;
-import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.kraken.uuw.services.remoting.EntryRetrievalService;
-import uk.ac.ebi.kraken.uuw.services.remoting.RemoteDataAccessException;
-import uk.ac.ebi.kraken.uuw.services.remoting.UniProtJAPI;
-
 /**
  * Created with IntelliJ IDEA.
  *
