@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprotbridge.uniprotutils;
+package psidev.psi.mi.query.uniprotbridge.uniprotextractors;
 
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Date: 24/04/13
  * Time: 14:01
  */
-public class OrganismExtractor {
+public class OrganismExtractorUniprot {
 
     public ArrayList<Organism> getOrganismFromEntry(UniProtEntry entry) {
         if(entry == null){
