@@ -2,8 +2,7 @@ package psidev.psi.mi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.enrichment.EnrichOLS;
-import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.query.psiolsbridge.PsiOlsEnricher;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import psidev.psi.mi.query.bridge.QueryOLS;
@@ -17,11 +16,11 @@ import psidev.psi.mi.query.bridge.QueryOLS;
  * Time: 12:15
  */
 public class tester {
-    private final Logger log = LoggerFactory.getLogger(EnrichOLS.class.getName());
-    EnrichOLS eols;
+    private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());
+    PsiOlsEnricher eols;
 
     public tester(){
-        eols = new EnrichOLS();
+        eols = new PsiOlsEnricher();
     }
 
     public void testCVTerm(CvTerm cvTerm){

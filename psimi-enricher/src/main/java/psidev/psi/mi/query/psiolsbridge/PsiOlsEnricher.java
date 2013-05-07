@@ -1,11 +1,9 @@
-package psidev.psi.mi.enrichment;
+package psidev.psi.mi.query.psiolsbridge;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnresolvableIDException;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.query.psiolsbridge.PsiOlsFetcher;
 
 import java.util.List;
 
@@ -17,13 +15,13 @@ import java.util.List;
  * Date: 03/05/13
  * Time: 10:32
  */
-public class EnrichOLS {
+public class PsiOlsEnricher {
 
-    private final Logger log = LoggerFactory.getLogger(EnrichOLS.class.getName());
+    private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());
 
     private PsiOlsFetcher fetcher = null;
 
-    public EnrichOLS(){
+    public PsiOlsEnricher(){
         try{
             fetcher = new PsiOlsFetcher();
         }catch (BridgeFailedException e){
@@ -116,7 +114,7 @@ public class EnrichOLS {
                             }else if(cvTest.get(i).getPARIdentifier() != null){
                                 identifierx = cvTest.get(i).getPARIdentifier();
                             }
-                            log.debug("Found "+identifierx);
+                            log.debug("Found " + identifierx);
                         }
                     }
                     //Todo Choose how to deal with multiple term matches
