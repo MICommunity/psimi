@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprotbridge.uniprotutils;
+package psidev.psi.mi.query.uniprotbridge.uniprotextractors;
 
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Date: 22/04/13
  * Time: 16:38
  */
-public class ExtractAllUniProt {
+public class ExtractAllUniprot {
 
     public static void uniprotToJami (UniProtEntry entry){
 

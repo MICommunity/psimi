@@ -1,8 +1,8 @@
-package psidev.psi.mi.query.uniprotbridge.uniprotutils;
+package psidev.psi.mi.query.uniprotbridge.uniprotextractors;
 
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.query.uniprotbridge.uniprotutils.xref.EnsemblGetXref;
-import psidev.psi.mi.query.uniprotbridge.uniprotutils.xref.GetXrefInterface;
+import psidev.psi.mi.query.uniprotbridge.uniprotextractors.xrefuniprot.EnsemblGetXref;
+import psidev.psi.mi.query.uniprotbridge.uniprotextractors.xrefuniprot.GetXrefInterface;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
@@ -17,7 +17,7 @@ import java.util.Iterator;
  * Date: 24/04/13
  * Time: 13:51
  */
-public class XrefExtractor{
+public class XrefExtractorUniprot {
 
     public ArrayList<Xref> getXrefs(UniProtEntry entry) {
 
