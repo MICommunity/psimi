@@ -1,20 +1,6 @@
 package psidev.psi.mi.query.bridge;
 
-import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnrecognizedCriteriaException;
-import psidev.psi.mi.exception.UnrecognizedTermException;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.query.QueryObject;
-import psidev.psi.mi.query.bridge.ols.EnrichOLSCvTerm;
 import uk.ac.ebi.ols.soap.Query;
-import uk.ac.ebi.ols.soap.QueryServiceLocator;
-
-import javax.xml.rpc.ServiceException;
-import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Methods to query the Ontology Lookup Service.

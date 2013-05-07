@@ -1,9 +1,6 @@
 package psidev.psi.mi.query.uniprotbridge;
 
 import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnrecognizedCriteriaException;
-import psidev.psi.mi.exception.UnrecognizedTermException;
-import psidev.psi.mi.query.QueryObject;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.uuw.services.remoting.EntryRetrievalService;
 import uk.ac.ebi.kraken.uuw.services.remoting.RemoteDataAccessException;
@@ -25,13 +22,13 @@ public class UniprotFetcher {
     }
 
     public UniProtEntry fetchEntryByID(String ID)
-            throws UnrecognizedTermException, BridgeFailedException {
+            throws BridgeFailedException {
 
         try{
             UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(ID);
 
             if(entry == null) {
-                throw new UnrecognizedTermException();
+                return null;
             }
 
             return entry;

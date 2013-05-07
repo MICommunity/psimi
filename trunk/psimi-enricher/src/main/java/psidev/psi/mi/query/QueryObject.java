@@ -3,7 +3,8 @@ package psidev.psi.mi.query;
 /**
  * A query object without a database or searchterm sill not work.
  */
-public interface QueryObject {
+@Deprecated
+public interface QueryObject { /*
 
    // public void initialiseQueryObject(String database, String searchTerm, String searchCriteria);
 
@@ -16,6 +17,6 @@ public interface QueryObject {
     public void setCriteria(Criteria searchCriteria);
 
     public void setResult(String result);
-    public String getResult();
+    public String getResult(); */
 
 }

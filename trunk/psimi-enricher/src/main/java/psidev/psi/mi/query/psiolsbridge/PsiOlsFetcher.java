@@ -1,7 +1,9 @@
 package psidev.psi.mi.query.psiolsbridge;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnrecognizedTermException;
+import psidev.psi.mi.exception.UnresolvableIDException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -26,6 +28,7 @@ import java.util.*;
 public class PsiOlsFetcher {
 
     Query qs;
+    private final Logger log = LoggerFactory.getLogger(PsiOlsFetcher.class.getName());
 
     public PsiOlsFetcher()
             throws BridgeFailedException {
@@ -42,11 +45,10 @@ public class PsiOlsFetcher {
      * Uses ID to fetch the full name.
      *
      * @return
-     * @throws UnrecognizedTermException    thrown if the id can not be found and @throwBadID is true
      * @throws BridgeFailedException
      */
     public CvTerm fetchFullNameByIdentifier(String identifier)
-            throws UnrecognizedTermException, BridgeFailedException{
+            throws BridgeFailedException{
 
         String resultTerm;
         try {
@@ -56,7 +58,7 @@ public class PsiOlsFetcher {
         }
 
         if(resultTerm.equals(identifier)){
-            throw new UnrecognizedTermException("Could not retrieve an entry for ["+resultTerm+"]");
+            return null;
         } else {
             CvTerm cvTerm = new DefaultCvTerm(resultTerm);
             cvTerm.setFullName(resultTerm);
@@ -75,10 +77,10 @@ public class PsiOlsFetcher {
      * @param cvTerm
      * @param identifier
      * @return
-     * @throws UnrecognizedTermException
+     * @throws UnresolvableIDException
      */
     private CvTerm setID(CvTerm cvTerm, String identifier)
-            throws UnrecognizedTermException{
+            throws UnresolvableIDException{
 
         if(identifier.split(":")[0].equals("MI")){
             cvTerm.setMIIdentifier(identifier);
@@ -87,7 +89,10 @@ public class PsiOlsFetcher {
         }else if(identifier.split(":")[0].equals("PAR")){
             cvTerm.setPARIdentifier(identifier);
         }else{
-            throw new UnrecognizedTermException("Could not resolve an id from ["+identifier+"]");
+            if(log.isDebugEnabled()){
+                log.debug("Could not resolve an id from ["+identifier+"]");
+            }
+            throw new UnresolvableIDException("Could not resolve an id from ["+identifier+"]");
         }
         return cvTerm;
     }
@@ -105,10 +110,9 @@ public class PsiOlsFetcher {
      * @param ontology  Can be null. Use to limit ontologies that are searched.
      * @return          Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
-     * @throws UnrecognizedTermException
      */
     public List<CvTerm> fetchIDByTerm(String name, String ontology)
-            throws BridgeFailedException, UnrecognizedTermException{
+            throws BridgeFailedException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
 
@@ -130,10 +134,9 @@ public class PsiOlsFetcher {
      * @param ontology      Can be null. Use to limit ontologies that are searched.
      * @return              Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
-     * @throws UnrecognizedTermException
      */
     public List<CvTerm> fetchIDByExactTerm(String name, String ontology)
-            throws BridgeFailedException, UnrecognizedTermException{
+            throws BridgeFailedException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
         HashMap termNamesMap;
@@ -147,11 +150,14 @@ public class PsiOlsFetcher {
         //Exact matches were found
         if (termNamesMap != null) {
             for(Object key : termNamesMap.keySet()){
-                termNamesMap.get(key);
-                CvTerm cvTerm = new DefaultCvTerm((String)termNamesMap.get(key));
-                cvTerm = setID(cvTerm, (String)key);
-                cvTerm.setFullName((String)termNamesMap.get(key));
-                cvTermList.add(cvTerm);
+                try{
+                    termNamesMap.get(key);
+                    CvTerm cvTerm = new DefaultCvTerm((String)termNamesMap.get(key));
+                    cvTerm = setID(cvTerm, (String)key);
+                    cvTerm.setFullName((String)termNamesMap.get(key));
+                    cvTermList.add(cvTerm);
+                }catch(UnresolvableIDException e){
+                }
             }
         }
         return cvTermList;
@@ -163,10 +169,9 @@ public class PsiOlsFetcher {
      * @param ontology
      * @return
      * @throws BridgeFailedException
-     * @throws UnrecognizedTermException
      */
     public List<CvTerm> fetchIDByFuzzyTerm(String name, String ontology)
-            throws BridgeFailedException, UnrecognizedTermException{
+            throws BridgeFailedException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
         HashMap termNamesMap;
@@ -179,11 +184,15 @@ public class PsiOlsFetcher {
 
         if(termNamesMap != null){
             for(Object key : termNamesMap.keySet()){
-                termNamesMap.get(key);
-                CvTerm cvTerm = new DefaultCvTerm((String)termNamesMap.get(key));
-                cvTerm = setID(cvTerm, (String)key);
-                cvTerm.setFullName((String)termNamesMap.get(key));
-                cvTermList.add(cvTerm);
+                try{
+                    termNamesMap.get(key);
+                    CvTerm cvTerm = new DefaultCvTerm((String)termNamesMap.get(key));
+                    cvTerm = setID(cvTerm, (String)key);
+                    cvTerm.setFullName((String)termNamesMap.get(key));
+                    cvTermList.add(cvTerm);
+                }catch(UnresolvableIDException e){
+
+                }
             }
         }
         return cvTermList;

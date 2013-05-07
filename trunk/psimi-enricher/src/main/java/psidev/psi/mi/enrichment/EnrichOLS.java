@@ -3,7 +3,7 @@ package psidev.psi.mi.enrichment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnrecognizedTermException;
+import psidev.psi.mi.exception.UnresolvableIDException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.query.psiolsbridge.PsiOlsFetcher;
 
@@ -67,55 +67,26 @@ public class EnrichOLS {
             identifier = cvTerm.getPARIdentifier();
         }
 
+        //TODO: a mismatched identifier creeps through without checks
 
-        //If an identifier is provided, all other details are taken from that
-        if(identifier != null) {
-            //If the name is missing or overwirteAll - get it from the stuff
-            if(cvTerm.getFullName() == null || overwriteAll){
-                if(log.isDebugEnabled()){log.debug("Finding the full name by ID ["+identifier+"].");}
-                try{
-                    CvTerm cvTest = fetcher.fetchFullNameByIdentifier(identifier);
-                    if(cvTest.getFullName() != null){
-                        if(cvTerm.getFullName() != null
-                                && cvTerm.getFullName().equals(cvTest.getFullName())){
-                            //Has not changed
-                            //Do nothing
-                        }else{
-                            log.info("Overwriting ["+cvTerm.getFullName()+"] with ["+cvTest.getFullName()+"] for ID ["+identifier+"]");
-                            cvTerm.setFullName(cvTest.getFullName());
-                        }
-                    }
-                } catch (UnrecognizedTermException e) {
-                    log.warn("The ID ["+identifier+"] was not identifier in OLS. UnrecognizedTermException.");
-                } catch (BridgeFailedException e) {
-                    log.error("BridgeFailedException");
-                    return null;
-                }
-            }
         //If ID is not provided, try filling it in from name phrases
-        }else{
+        if(identifier == null){
             List<CvTerm> cvTest = null;
+            //Try searching by full name
             if(cvTerm.getFullName() != null) {
                 try{
                     cvTest = fetcher.fetchIDByTerm(cvTerm.getFullName(), null);
                     if(log.isDebugEnabled()){log.debug("No ID, searching on the full name");}
-                } catch (UnrecognizedTermException e) {
-                    if(log.isDebugEnabled()){
-                        log.debug("Could not find ID by full name ["+cvTerm.getFullName()+"]. UnrecognizedTermException.");
-                    }
                 } catch (BridgeFailedException e) {
                     log.error("BridgeFailedException");
                     return null;
                 }
             }
+            //Still nothing, try searching by shortname
             if(cvTest == null){
                 try{
-
                     cvTest = fetcher.fetchIDByTerm(cvTerm.getShortName(), null);
-                } catch (UnrecognizedTermException e) {
-                    if(log.isDebugEnabled()){
-                        log.debug("Could not find ID by short name ["+cvTerm.getShortName()+"]. UnrecognizedTermException.");
-                    }
+                    if(log.isDebugEnabled()){log.debug("No ID, searching on the short name");}
                 } catch (BridgeFailedException e) {
                     log.error("BridgeFailedException");
                     return null;
@@ -134,17 +105,67 @@ public class EnrichOLS {
                         cvTerm.setPARIdentifier(cvTest.get(0).getPARIdentifier());
                     }
                 }else{
-                    log.warn("Could not choose between multiple term matches.");
+                    log.warn("Could not choose between "+cvTest.size()+" term matches.");
+                    if(log.isDebugEnabled()){
+                        for(int i = 0; i < cvTest.size() ; i++){
+                            String identifierx = null;
+                            if(cvTest.get(i).getMIIdentifier() != null){
+                                identifierx = cvTest.get(i).getMIIdentifier();
+                            }else if(cvTest.get(i).getMODIdentifier() != null){
+                                identifierx = cvTest.get(i).getMODIdentifier();
+                            }else if(cvTest.get(i).getPARIdentifier() != null){
+                                identifierx = cvTest.get(i).getPARIdentifier();
+                            }
+                            log.debug("Found "+identifierx);
+                        }
+                    }
                     //Todo Choose how to deal with multiple term matches
                 }
             }
         }
 
+
+        //If an identifier is provided, all other details are taken from that
+        if(identifier != null) {
+            //If the name is missing or overwirteAll - get it from the stuff
+            if(cvTerm.getFullName() == null || overwriteAll){
+                if(log.isDebugEnabled()){log.debug("Finding the full name by ID ["+identifier+"].");}
+                try{
+                    CvTerm cvTest = fetcher.fetchFullNameByIdentifier(identifier);
+                    if(cvTest.getFullName() != null){
+                        if(cvTerm.getFullName() != null
+                                && cvTerm.getFullName().equals(cvTest.getFullName())){
+                            //Has not changed
+                            //Do nothing
+                        }else{
+                            if(cvTerm.getFullName() != null){
+                                log.info("Overwriting full name ["+cvTerm.getFullName()+"] with ["+cvTest.getFullName()+"] for ID ["+identifier+"]");
+                            }
+                            cvTerm.setFullName(cvTest.getFullName());
+                        }
+                    }
+                } catch (BridgeFailedException e) {
+                    log.error("BridgeFailedException");
+                    return null;
+                }
+            }
+        }
+
         //If there's an identifier to use and the order is to overwrite
+        //Try and update the shortname
         if(identifier != null && overwriteAll) {
             try{
                 CvTerm cvTest = fetcher.fetchMetaDataByID(identifier);
-                //Todo Copy over the short name
+                //A shortname was found or use the long name
+                if(!cvTest.getShortName().equals(""+identifier)
+                        && !cvTerm.getShortName().equals(cvTest.getShortName())) {
+                    log.info("Overwriting shortname ["+cvTerm.getShortName()+"] with ["+cvTest.getShortName()+"] for ID ["+identifier+"]");
+                    cvTerm.setShortName(cvTest.getShortName());
+                } else if (cvTerm.getFullName() != null
+                        && !cvTerm.getShortName().equals(cvTerm.getFullName())){
+                    log.info("Overwriting shortname ["+cvTerm.getShortName()+"] with full name ["+cvTerm.getFullName()+"] for ID ["+identifier+"]");
+                    cvTerm.setShortName(cvTerm.getFullName());
+                }
                 //todo copy over the synonyms
             } catch (BridgeFailedException e) {
                 log.error("BridgeFailedException");

@@ -15,6 +15,7 @@ import psidev.psi.mi.query.bridge.QueryUniProt;
  * Date: 16/04/13
  * Time: 11:16
  */
+@Deprecated
 public class DefaultQueryInterface implements QueryInterface{
 
     /**
@@ -27,7 +28,7 @@ public class DefaultQueryInterface implements QueryInterface{
      * @throws BridgeFailedException
      * @throws UnrecognizedDatabaseException
      */
-    public QueryObject passQuery(QueryObject queryObject)
+    /*public QueryObject passQuery(QueryObject queryObject)
     throws UnrecognizedTermException, BridgeFailedException, UnrecognizedDatabaseException, UnrecognizedCriteriaException {
         Service dID = null;
 
@@ -49,7 +50,7 @@ public class DefaultQueryInterface implements QueryInterface{
             case UNIPROT:   QueryUniProt unp = new QueryUniProt();
                     return unp.queryOnObject(queryObject);
              */
-            default:     throw new UnrecognizedDatabaseException();
+           /* default:     throw new UnrecognizedDatabaseException();
         }
     }
 
@@ -58,6 +59,6 @@ public class DefaultQueryInterface implements QueryInterface{
         String shortName = "foo";
         String miIdentifier = "bar";
         CvTerm bar = new DefaultCvTerm(shortName, miIdentifier);
-    }
+    } */
 
 }
