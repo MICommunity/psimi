@@ -18,14 +18,17 @@ import uk.ac.ebi.kraken.uuw.services.remoting.UniProtJAPI;
  */
 public class UniprotFetcher {
 
+    EntryRetrievalService entryRetrievalService;
 
-    public UniProtEntry queryOnObject(QueryObject queryObject)
-            throws UnrecognizedTermException, UnrecognizedCriteriaException, BridgeFailedException {
+    public UniprotFetcher(){
+        entryRetrievalService = UniProtJAPI.factory.getEntryRetrievalService();
+    }
 
-        EntryRetrievalService entryRetrievalService = UniProtJAPI.factory.getEntryRetrievalService();
+    public UniProtEntry fetchEntryByID(String ID)
+            throws UnrecognizedTermException, BridgeFailedException {
 
         try{
-            UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(queryObject.getSearchTerm());
+            UniProtEntry entry = (UniProtEntry) entryRetrievalService.getUniProtEntry(ID);
 
             if(entry == null) {
                 throw new UnrecognizedTermException();

@@ -19,8 +19,6 @@ import java.util.List;
  */
 public class EnrichOLS {
 
-    //private final static Logger LOGGER = Logger.getLogger(EnrichOLS.class.getName());
-
     private final Logger log = LoggerFactory.getLogger(EnrichOLS.class.getName());
 
     private PsiOlsFetcher fetcher = null;
@@ -29,7 +27,7 @@ public class EnrichOLS {
         try{
             fetcher = new PsiOlsFetcher();
         }catch (BridgeFailedException e){
-            log.warn("BridgeFailedException on initial pass");
+            log.error("BridgeFailedException on initial pass.");
         }
     }
 
@@ -51,7 +49,7 @@ public class EnrichOLS {
             try{
                 fetcher = new PsiOlsFetcher();
             }catch (BridgeFailedException e){
-                log.error("BridgeFailedException on second pass");
+                log.error("BridgeFailedException on second pass.");
                 return null;
             }
         }
@@ -69,11 +67,12 @@ public class EnrichOLS {
             identifier = cvTerm.getPARIdentifier();
         }
 
-        if(log.isDebugEnabled()){log.debug("This is a debug message");}
+
         //If an identifier is provided, all other details are taken from that
         if(identifier != null) {
             //If the name is missing or overwirteAll - get it from the stuff
             if(cvTerm.getFullName() == null || overwriteAll){
+                if(log.isDebugEnabled()){log.debug("Finding the full name by ID ["+identifier+"].");}
                 try{
                     CvTerm cvTest = fetcher.fetchFullNameByIdentifier(identifier);
                     if(cvTest.getFullName() != null){
@@ -83,12 +82,11 @@ public class EnrichOLS {
                             //Do nothing
                         }else{
                             log.info("Overwriting ["+cvTerm.getFullName()+"] with ["+cvTest.getFullName()+"] for ID ["+identifier+"]");
-                            //Todo Log that this has been changed
                             cvTerm.setFullName(cvTest.getFullName());
                         }
                     }
                 } catch (UnrecognizedTermException e) {
-                    log.warn("UnrecognizedTermException");
+                    log.warn("The ID ["+identifier+"] was not identifier in OLS. UnrecognizedTermException.");
                 } catch (BridgeFailedException e) {
                     log.error("BridgeFailedException");
                     return null;
@@ -100,8 +98,11 @@ public class EnrichOLS {
             if(cvTerm.getFullName() != null) {
                 try{
                     cvTest = fetcher.fetchIDByTerm(cvTerm.getFullName(), null);
+                    if(log.isDebugEnabled()){log.debug("No ID, searching on the full name");}
                 } catch (UnrecognizedTermException e) {
-                    log.warn("UnrecognizedTermException");
+                    if(log.isDebugEnabled()){
+                        log.debug("Could not find ID by full name ["+cvTerm.getFullName()+"]. UnrecognizedTermException.");
+                    }
                 } catch (BridgeFailedException e) {
                     log.error("BridgeFailedException");
                     return null;
@@ -109,9 +110,12 @@ public class EnrichOLS {
             }
             if(cvTest == null){
                 try{
+
                     cvTest = fetcher.fetchIDByTerm(cvTerm.getShortName(), null);
                 } catch (UnrecognizedTermException e) {
-                    log.warn("UnrecognizedTermException");
+                    if(log.isDebugEnabled()){
+                        log.debug("Could not find ID by short name ["+cvTerm.getShortName()+"]. UnrecognizedTermException.");
+                    }
                 } catch (BridgeFailedException e) {
                     log.error("BridgeFailedException");
                     return null;
@@ -130,6 +134,7 @@ public class EnrichOLS {
                         cvTerm.setPARIdentifier(cvTest.get(0).getPARIdentifier());
                     }
                 }else{
+                    log.warn("Could not choose between multiple term matches.");
                     //Todo Choose how to deal with multiple term matches
                 }
             }
@@ -150,6 +155,4 @@ public class EnrichOLS {
 
         return cvTerm;
     }
-
-
 }
