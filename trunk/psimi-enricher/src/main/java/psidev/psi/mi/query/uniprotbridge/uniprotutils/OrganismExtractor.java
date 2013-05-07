@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprotutils;
+package psidev.psi.mi.query.uniprotbridge.uniprotutils;
 
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;

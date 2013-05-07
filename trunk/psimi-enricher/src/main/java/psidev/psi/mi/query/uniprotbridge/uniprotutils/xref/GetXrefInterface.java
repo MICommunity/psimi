@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprotutils.xref;
+package psidev.psi.mi.query.uniprotbridge.uniprotutils.xref;
 
 import psidev.psi.mi.jami.model.Xref;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;

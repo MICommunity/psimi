@@ -1,9 +1,8 @@
-package psidev.psi.mi.enrichment;
+package psidev.psi.mi.query.uniprotbridge;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.query.uniprotbridge.UniprotFetcher;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
 /**
@@ -13,11 +12,11 @@ import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
  * Date: 07/05/13
  * Time: 10:09
  */
-public class EnrichUniprot {
+public class UniprotEnricher {
     UniprotFetcher fetcher;
-    private final Logger log = LoggerFactory.getLogger(EnrichUniprot.class.getName());
+    private final Logger log = LoggerFactory.getLogger(UniprotEnricher.class.getName());
 
-    public EnrichUniprot (){
+    public UniprotEnricher(){
         fetcher = new UniprotFetcher();
     }
 
