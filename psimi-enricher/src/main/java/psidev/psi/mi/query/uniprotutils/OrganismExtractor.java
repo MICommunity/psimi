@@ -4,6 +4,8 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -11,46 +13,32 @@ import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
  * Date: 24/04/13
  * Time: 14:01
  */
-public class OrganismExtractor extends Extractor{
+public class OrganismExtractor {
 
-    public Organism getOrganism(UniProtEntry entry){
-        report = null;
+    public ArrayList<Organism> getOrganismFromEntry(UniProtEntry entry) {
         if(entry == null){
-            report.add("No entry to extract organism from");
             return null;
         }
 
-        Organism organism;
-
+        ArrayList<Organism> organism = new ArrayList<Organism>();
         int taxidSize = entry.getNcbiTaxonomyIds().size();
 
-
         if(taxidSize == 0){
-            report.add("No taxid available");
-            organism = new DefaultOrganism(-3);
-        } else if(taxidSize == 1){
-            organism = new DefaultOrganism(Integer.parseInt(entry.getNcbiTaxonomyIds().get(0).getValue()));
-        }else{
-            organism = new DefaultOrganism(Integer.parseInt(entry.getNcbiTaxonomyIds().get(0).getValue()));
-            String test = entry.getNcbiTaxonomyIds().get(0).getValue();
-            for(int i = 1; i < entry.getNcbiTaxonomyIds().size(); i++) {
-                if(! test.equals(entry.getNcbiTaxonomyIds().get(i).getValue())) {
-                    report.add("Conflicting taxid "+test+" and "+entry.getNcbiTaxonomyIds().get(i).getValue());
-                    organism = new DefaultOrganism(-3);
-                    break;
-                }
+            organism.add(new DefaultOrganism(-3));
+        } else {
+            for(int i = 0; i < taxidSize; i++){
+                Organism organismEntry = new DefaultOrganism(Integer.parseInt(
+                        entry.getNcbiTaxonomyIds().get(0).getValue()));
+                organismEntry.setCommonName(entry.getOrganism().getCommonName().getValue());
+                organismEntry.setScientificName(entry.getOrganism().getScientificName().getValue());
+
+                //setCellType(CvTerm cellType);
+                //setCompartment(CvTerm compartment);
+                //CvTerm getTissue();
+
+                organism.add(organismEntry);
             }
-
-
         }
-
-        organism.setCommonName(entry.getOrganism().getCommonName().getValue());
-        organism.setScientificName(entry.getOrganism().getScientificName().getValue());
-
-        //setCellType(CvTerm cellType);
-        //setCompartment(CvTerm compartment);
-        //CvTerm getTissue();
-
         return organism;
     }
 }
