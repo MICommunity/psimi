@@ -1,6 +1,7 @@
 package psidev.psi.mi;
 
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.query.uniprotbridge.UniprotEnricher;
+import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
 
 /**
@@ -10,7 +11,12 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 public class App
 {
     public static void main(String[] args){
-
+        UniprotEnricher u = new UniprotEnricher();
+        UniProtEntry e = u.getEntryByID("P11163");
+        System.out.println(e.getUniProtId());
+        System.out.println(e.getNcbiTaxonomyIds());
+        System.out.println(e.getProteinDescription());
+         /*
         tester t = new tester();
 
         t.testCVTerm(CvTermFactory.createMODCvTerm("bob","GO:0071840"));
@@ -32,7 +38,7 @@ public class App
         t.testCVTerm(CvTermFactory.createMICvTerm("allosteric",null));
         t.testCVTerm(CvTermFactory.createMICvTerm("0915", "MI:0915"));
         t.testCVTerm(CvTermFactory.createMICvTerm("0915", null));
-
+           */
 
 
     }

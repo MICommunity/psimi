@@ -25,6 +25,7 @@ import java.util.*;
  * Date: 26/04/13
  * Time: 15:32
  */
+@Deprecated
 public class PsiOlsFetcher {
 
     Query qs;

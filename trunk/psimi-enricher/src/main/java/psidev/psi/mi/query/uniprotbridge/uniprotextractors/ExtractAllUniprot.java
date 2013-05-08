@@ -17,8 +17,8 @@ public class ExtractAllUniprot {
 
     public static void uniprotToJami (UniProtEntry entry){
 
-        ArrayList<Organism> organism = new OrganismExtractor().getOrganismFromEntry(entry);
-        ArrayList<Xref> xref = new XrefExtractor().getXrefs(entry);
+        //ArrayList<Organism> organism = new OrganismExtractor().getOrganismFromEntry(entry);
+        //ArrayList<Xref> xref = new XrefExtractor().getXrefs(entry);
 
 
         //return null;

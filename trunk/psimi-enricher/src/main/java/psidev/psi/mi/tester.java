@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.query.psiolsbridge.PsiOlsEnricher;
 import psidev.psi.mi.jami.model.CvTerm;
 
-import psidev.psi.mi.query.bridge.QueryOLS;
 
 
 /**
@@ -16,7 +15,7 @@ import psidev.psi.mi.query.bridge.QueryOLS;
  * Time: 12:15
  */
 public class tester {
-    private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());
+    /*private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());
     PsiOlsEnricher eols;
 
     public tester(){
@@ -43,5 +42,5 @@ public class tester {
         //}/*catch(Exception e) {
            // System.out.println("foobar"+e.getMessage());
        // } */
-    }
+    //}
 }

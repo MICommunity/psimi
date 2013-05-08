@@ -15,6 +15,7 @@ import java.util.List;
  * Date: 03/05/13
  * Time: 10:32
  */
+@Deprecated
 public class PsiOlsEnricher {
 
     private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());
