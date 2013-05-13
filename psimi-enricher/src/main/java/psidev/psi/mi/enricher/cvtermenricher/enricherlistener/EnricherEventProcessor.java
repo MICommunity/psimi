@@ -15,6 +15,5 @@ public interface EnricherEventProcessor {
     public void removeEnricherListener(EnricherListener listener);
     public void fireOverwriteEvent(OverwriteEvent e);
     public void fireAdditionEvent(AdditionEvent e) ;
-    public void fireIgnoredEvent(String identity,String reason);
 }
 

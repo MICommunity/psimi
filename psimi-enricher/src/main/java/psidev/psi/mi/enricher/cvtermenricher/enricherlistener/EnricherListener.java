@@ -16,9 +16,4 @@ public interface EnricherListener {
 
     public void additionEvent(AdditionEvent e);
 
-    /**
-     * If an object can not be updated for any reason.
-     * @param identity
-     */
-    public void ignoredEvent(String identity, String reason);
 }
