@@ -1,6 +1,6 @@
 package psidev.psi.mi.DEPRECATEDquery.uniprotbridge;
 
-import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.uuw.services.remoting.EntryRetrievalService;
 import uk.ac.ebi.kraken.uuw.services.remoting.RemoteDataAccessException;

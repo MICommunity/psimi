@@ -18,14 +18,11 @@ public class MaximumCvTermEnricher
         implements CvTermEnricher{
 
 
-    private CvTermEnricherUtil util;
-
     public MaximumCvTermEnricher() throws EnrichmentException {
-        util = new CvTermEnricherUtil();
     }
 
     public void enrichCvTerm(CvTerm cvTermMaster) throws EnrichmentException{
-        CvTerm cvTermEnriched = util.getEnrichedForm(cvTermMaster);
+        CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
     }
 
     public void enrichCvTerms(Collection<CvTerm> cvTermMasters) {

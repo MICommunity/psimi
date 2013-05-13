@@ -2,8 +2,8 @@ package psidev.psi.mi.DEPRECATEDquery.psiolsbridge;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.exception.BridgeFailedException;
-import psidev.psi.mi.exception.UnresolvableIDException;
+import psidev.psi.mi.fetcher.exception.BridgeFailedException;
+import psidev.psi.mi.fetcher.exception.UnresolvableIDException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
