@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.chebibridge.chebiextractors;
+package psidev.psi.mi.DEPRECATEDquery.chebibridge.chebiextractors;
 
 /**
  * Created with IntelliJ IDEA.

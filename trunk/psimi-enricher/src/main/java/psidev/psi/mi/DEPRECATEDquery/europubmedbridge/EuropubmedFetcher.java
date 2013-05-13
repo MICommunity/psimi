@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.europubmedbridge;
+package psidev.psi.mi.DEPRECATEDquery.europubmedbridge;
 
 /**
  * Created with IntelliJ IDEA.

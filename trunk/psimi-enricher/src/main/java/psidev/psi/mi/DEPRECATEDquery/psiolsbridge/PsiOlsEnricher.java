@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.psiolsbridge;
+package psidev.psi.mi.DEPRECATEDquery.psiolsbridge;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

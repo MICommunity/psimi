@@ -1,7 +1,7 @@
 package psidev.psi.mi.exception;
 
 /**
- * An error object to signify that a query to a database has failed.
+ * An error object to signify that a DEPRECATEDquery to a database has failed.
  * This Exception MUST also pass the original Exception that caused the problem.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
@@ -10,14 +10,14 @@ package psidev.psi.mi.exception;
  */
 public class BridgeFailedException extends Exception{
 
-    /*public BridgeFailedException() {
+    public BridgeFailedException() {
         super();
     }
 
     public BridgeFailedException(String s) {
         super(s);
     }
-     */
+
     public BridgeFailedException(String s, Throwable throwable) {
         super(s, throwable);
     }

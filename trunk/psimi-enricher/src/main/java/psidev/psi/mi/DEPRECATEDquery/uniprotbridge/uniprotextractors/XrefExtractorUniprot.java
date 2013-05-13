@@ -1,8 +1,8 @@
-package psidev.psi.mi.query.uniprotbridge.uniprotextractors;
+package psidev.psi.mi.DEPRECATEDquery.uniprotbridge.uniprotextractors;
 
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.query.uniprotbridge.uniprotextractors.xrefuniprot.EnsemblGetXref;
-import psidev.psi.mi.query.uniprotbridge.uniprotextractors.xrefuniprot.GetXrefInterface;
+import psidev.psi.mi.DEPRECATEDquery.uniprotbridge.uniprotextractors.xrefuniprot.EnsemblGetXref;
+import psidev.psi.mi.DEPRECATEDquery.uniprotbridge.uniprotextractors.xrefuniprot.GetXrefInterface;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
 import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;

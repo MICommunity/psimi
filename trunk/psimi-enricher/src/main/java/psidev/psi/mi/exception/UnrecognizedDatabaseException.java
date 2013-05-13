@@ -7,6 +7,7 @@ package psidev.psi.mi.exception;
  * Date: 16/04/13
  * Time: 11:56
  */
+@Deprecated
 public class UnrecognizedDatabaseException extends Exception {
     public UnrecognizedDatabaseException() {
         super();

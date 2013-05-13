@@ -1,10 +1,6 @@
-package psidev.psi.mi.query.uniprotbridge.uniprotextractors;
+package psidev.psi.mi.DEPRECATEDquery.uniprotbridge.uniprotextractors;
 
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Xref;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +13,7 @@ public class ExtractAllUniprot {
 
     public static void uniprotToJami (UniProtEntry entry){
 
-        //ArrayList<Organism> organism = new OrganismExtractor().getOrganismFromEntry(entry);
+        //ArrayList<Organism> organismenricher = new OrganismExtractor().getOrganismFromEntry(entry);
         //ArrayList<Xref> xref = new XrefExtractor().getXrefs(entry);
 
 
