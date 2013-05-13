@@ -1,4 +1,4 @@
-package psidev.psi.mi.enricher.cvtermenricher.listener.event;
+package psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event;
 
 /**
  * Created with IntelliJ IDEA.
