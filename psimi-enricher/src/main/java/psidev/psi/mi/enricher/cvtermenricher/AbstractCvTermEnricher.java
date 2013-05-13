@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.enricher.cvtermenricher.exception.BadIdentifierException;
 import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
 import psidev.psi.mi.enricher.cvtermenricher.exception.MissingIdentifierException;
-import psidev.psi.mi.enricher.cvtermenricher.listener.EnricherEventProcessorImp;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.EnricherEventProcessorImp;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -38,13 +38,19 @@ public abstract class AbstractCvTermEnricher
         }
     }
 
-
-
     protected CvTerm getEnrichedForm(CvTerm cvTermMaster) throws EnrichmentException {
+        return getEnrichedForm(cvTermMaster, null);
+    }
+
+    protected CvTerm getEnrichedForm(CvTerm cvTermMaster, EnrichmentReport report) throws EnrichmentException {
         String identifier = identifierScraper(cvTermMaster);
         CvTerm enriched = null;
 
         if(identifier != null) {
+            if(report != null) {
+                report.setIdentity(identifier);
+                report.setIdentityType("Identifier");
+            }
             try {
                 if(log.isTraceEnabled()){log.trace("Searching on identifier "+identifier);}
                 enriched = fetcher.getCVTermByID(identifier, null);
@@ -60,9 +66,12 @@ public abstract class AbstractCvTermEnricher
         if(enriched == null){
             if(log.isTraceEnabled()){log.trace("No identifier found");}
             if(cvTermMaster.getFullName() != null){
+                if(report != null) {
+                    report.setIdentity(cvTermMaster.getFullName());
+                    report.setIdentityType("FullName");
+                }
                 try {
                     if(log.isTraceEnabled()){log.trace("Searching on fullname "+cvTermMaster.getFullName());}
-
                     enriched = fetcher.getCVTermByName(cvTermMaster.getFullName(), null);
                 } catch (BridgeFailedException e) {
                     if(log.isTraceEnabled()){log.trace("Bridge failed");}
@@ -74,6 +83,10 @@ public abstract class AbstractCvTermEnricher
         if(enriched == null){
             if(log.isTraceEnabled()){log.trace("No identifier found");}
             if(cvTermMaster.getShortName() != null){
+                if(report != null) {
+                    report.setIdentity(cvTermMaster.getShortName());
+                    report.setIdentityType("ShortName");
+                }
                 try {
                     if(log.isTraceEnabled()){log.trace("Searching on short name "+cvTermMaster.getShortName());}
 

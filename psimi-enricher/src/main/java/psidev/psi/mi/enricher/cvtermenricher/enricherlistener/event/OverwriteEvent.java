@@ -1,4 +1,4 @@
-package psidev.psi.mi.enricher.cvtermenricher.listener.event;
+package psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,14 +8,17 @@ package psidev.psi.mi.enricher.cvtermenricher.listener.event;
  * Time: 13:40
  */
 public class OverwriteEvent {
-    private String field;
+
     private String identity;
+    private String identityType;
+    private String field;
     private String oldValue;
     private String newValue;
 
-    public OverwriteEvent(String field, String identity, String oldValue, String newValue){
-        this.field = field;
+    public OverwriteEvent(String identity, String identityType, String field, String oldValue, String newValue){
         this.identity = identity;
+        this.identityType = identityType;
+        this.field = field;
         this.oldValue = oldValue;
         this.newValue = newValue;
     }

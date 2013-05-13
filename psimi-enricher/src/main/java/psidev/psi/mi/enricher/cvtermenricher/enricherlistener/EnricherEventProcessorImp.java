@@ -1,7 +1,7 @@
-package psidev.psi.mi.enricher.cvtermenricher.listener;
+package psidev.psi.mi.enricher.cvtermenricher.enricherlistener;
 
-import psidev.psi.mi.enricher.cvtermenricher.listener.event.AdditionEvent;
-import psidev.psi.mi.enricher.cvtermenricher.listener.event.OverwriteEvent;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.AdditionEvent;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.OverwriteEvent;
 
 import java.util.ArrayList;
 

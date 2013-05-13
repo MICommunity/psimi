@@ -1,7 +1,7 @@
 package psidev.psi.mi.enricher.cvtermenricher;
 
 import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
-import psidev.psi.mi.enricher.cvtermenricher.listener.event.AdditionEvent;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.AdditionEvent;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.Collection;
@@ -20,13 +20,22 @@ public class MinimumCvTermEnricher
     }
 
     public void enrichCvTerm(CvTerm cvTermMaster) throws EnrichmentException{
-        CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
+        EnrichmentReport report = new EnrichmentReport();
+        CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster, report);
 
         if(cvTermMaster.getFullName() == null
                 && cvTermEnriched.getFullName() != null){
             cvTermMaster.setFullName(cvTermEnriched.getFullName());
-            fireAdditionEvent(new AdditionEvent("Fullname" , null, cvTermMaster.getFullName()));
+            fireAdditionEvent(new AdditionEvent(report.getIdentity(), report.getIdentityType(), "FullName", cvTermMaster.getFullName()));
         }
+         /*
+        if(cvTermMaster.getFullName() == null
+                && cvTermEnriched.getFullName() != null){
+            cvTermMaster.setFullName(cvTermEnriched.getFullName());
+            fireAdditionEvent(new AdditionEvent(report.getIdentity(), report.getMethod(), "FullName", cvTermMaster.getFullName()));
+        }   */
+
+
     }
 
     public void enrichCvTerms(Collection<CvTerm> cvTermMasters) {
