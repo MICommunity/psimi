@@ -38,9 +38,4 @@ public class EnricherEventProcessorImp implements EnricherEventProcessor {
         }
     }
 
-    public void fireIgnoredEvent(String identity, String reason) {
-        for (EnricherListener il : enricherListeners) {
-            il.ignoredEvent(identity, reason);
-        }
-    }
 }

@@ -1,7 +1,9 @@
 package psidev.psi.mi.enricher.cvtermenricher;
 
 /**
- * Created with IntelliJ IDEA.
+ * "Identity" is a value which being used to identifier the object
+ * "IdentityType" is the field of the value.
+ * Ideally the identityType will be (in order of preference) the identifier, fullname or shortname.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/05/13
