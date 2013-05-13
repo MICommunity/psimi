@@ -1,6 +1,6 @@
 package psidev.psi.mi.DEPRECATEDquery.chebibridge;
 
-import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import uk.ac.ebi.chebi.webapps.chebiWS.client.ChebiWebServiceClient;
 import uk.ac.ebi.chebi.webapps.chebiWS.model.ChebiWebServiceFault_Exception;
 import uk.ac.ebi.chebi.webapps.chebiWS.model.*;

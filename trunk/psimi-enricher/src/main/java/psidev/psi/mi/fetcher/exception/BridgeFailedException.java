@@ -1,4 +1,4 @@
-package psidev.psi.mi.exception;
+package psidev.psi.mi.fetcher.exception;
 
 /**
  * An error object to signify that a DEPRECATEDquery to a database has failed.

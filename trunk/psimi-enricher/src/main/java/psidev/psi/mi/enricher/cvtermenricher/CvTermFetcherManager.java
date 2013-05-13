@@ -1,6 +1,6 @@
 package psidev.psi.mi.enricher.cvtermenricher;
 
-import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.fetcher.ols.OlsFetcher;
 

@@ -5,7 +5,8 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.enricher.cvtermenricher.exception.BadIdentifierException;
 import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
 import psidev.psi.mi.enricher.cvtermenricher.exception.MissingIdentifierException;
-import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.enricher.cvtermenricher.listener.EnricherEventProcessorImp;
+import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 
@@ -19,13 +20,15 @@ import java.util.Iterator;
  * Date: 13/05/13
  * Time: 14:21
  */
-public class CvTermEnricherUtil {
+public abstract class AbstractCvTermEnricher
+        extends EnricherEventProcessorImp
+        implements CvTermEnricher{
 
-    private final Logger log = LoggerFactory.getLogger(CvTermEnricherUtil.class.getName());
+    private final Logger log = LoggerFactory.getLogger(AbstractCvTermEnricher.class.getName());
 
     private CvTermFetcherManager fetcher;
 
-    public CvTermEnricherUtil() throws EnrichmentException {
+    public AbstractCvTermEnricher() throws EnrichmentException {
         fetcher = new CvTermFetcherManager();
         try {
             fetcher.addDefaultFetcher();
@@ -37,7 +40,7 @@ public class CvTermEnricherUtil {
 
 
 
-    public CvTerm getEnrichedForm(CvTerm cvTermMaster) throws EnrichmentException {
+    protected CvTerm getEnrichedForm(CvTerm cvTermMaster) throws EnrichmentException {
         String identifier = identifierScraper(cvTermMaster);
         CvTerm enriched = null;
 

@@ -1,6 +1,6 @@
 package psidev.psi.mi.fetcher.ols;
 
-import psidev.psi.mi.exception.BridgeFailedException;
+import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.utils.factory.AliasFactory;
 import uk.ac.ebi.ols.soap.Query;
