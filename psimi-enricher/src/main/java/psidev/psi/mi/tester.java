@@ -1,11 +1,5 @@
 package psidev.psi.mi;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import psidev.psi.mi.query.psiolsbridge.PsiOlsEnricher;
-import psidev.psi.mi.jami.model.CvTerm;
-
-
 
 /**
  * Created with IntelliJ IDEA.

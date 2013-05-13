@@ -7,6 +7,7 @@ package psidev.psi.mi.exception;
  * Date: 15/04/13
  * Time: 11:20
  */
+@Deprecated
 public class UnresolvableIDException extends Exception {
 
     public UnresolvableIDException() {

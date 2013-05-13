@@ -1,6 +1,6 @@
 package psidev.psi.mi;
 
-import psidev.psi.mi.query.uniprotbridge.UniprotEnricher;
+import psidev.psi.mi.DEPRECATEDquery.uniprotbridge.UniprotEnricher;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
 

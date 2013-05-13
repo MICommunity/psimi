@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprotbridge.uniprotextractors.xrefuniprot;
+package psidev.psi.mi.DEPRECATEDquery.uniprotbridge.uniprotextractors.xrefuniprot;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;

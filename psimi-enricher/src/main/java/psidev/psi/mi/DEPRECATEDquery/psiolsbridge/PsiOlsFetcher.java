@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.psiolsbridge;
+package psidev.psi.mi.DEPRECATEDquery.psiolsbridge;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,6 @@ import psidev.psi.mi.exception.UnresolvableIDException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.utils.factory.AliasFactory;
 import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
@@ -16,9 +15,9 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 /**
- * These methods query to the Ontology Look Up Service.
+ * These methods DEPRECATEDquery to the Ontology Look Up Service.
  *
- * They should only be used to query on PSI ontologies, ie: MI, MOD, PAR
+ * They should only be used to DEPRECATEDquery on PSI ontologies, ie: MI, MOD, PAR
  * //TODO See @fetchMetaData!
  *
  * Author: Gabriel Aldam (galdam@ebi.ac.uk)
@@ -55,7 +54,7 @@ public class PsiOlsFetcher {
         try {
             resultTerm = qs.getTermById(identifier,null);
         } catch (RemoteException e) {
-            throw new BridgeFailedException("OLS QS bridge failed on a query by ID.",e);
+            throw new BridgeFailedException("OLS QS bridge failed on a DEPRECATEDquery by ID.",e);
         }
 
         if(resultTerm.equals(identifier)){
@@ -145,7 +144,7 @@ public class PsiOlsFetcher {
         try{
             termNamesMap = qs.getTermsByExactName(name, ontology);
         }catch (RemoteException e) {
-            throw new BridgeFailedException("OLS QS bridge failed on a query by term name.",e);
+            throw new BridgeFailedException("OLS QS bridge failed on a DEPRECATEDquery by term name.",e);
         }
 
         //Exact matches were found
@@ -180,7 +179,7 @@ public class PsiOlsFetcher {
         try{
             termNamesMap = qs.getTermsByName(name, ontology , false);
         }catch (RemoteException e) {
-            throw new BridgeFailedException("OLS QS bridge failed on a query by term name.",e);
+            throw new BridgeFailedException("OLS QS bridge failed on a DEPRECATEDquery by term name.",e);
         }
 
         if(termNamesMap != null){
@@ -225,7 +224,7 @@ public class PsiOlsFetcher {
         try{
             metaDataMap = qs.getTermMetadata(identifier,null);
         }catch (RemoteException e) {
-            throw new BridgeFailedException("OLS QS bridge failed on a query for meta data.",e);
+            throw new BridgeFailedException("OLS QS bridge failed on a DEPRECATEDquery for meta data.",e);
         }
 
         if(identifier.split(":")[0].equals("MI")){

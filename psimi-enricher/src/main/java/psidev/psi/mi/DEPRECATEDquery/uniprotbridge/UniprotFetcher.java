@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprotbridge;
+package psidev.psi.mi.DEPRECATEDquery.uniprotbridge;
 
 import psidev.psi.mi.exception.BridgeFailedException;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;

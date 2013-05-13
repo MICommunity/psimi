@@ -1,4 +1,4 @@
-package psidev.psi.mi.query.uniprotbridge.uniprotextractors;
+package psidev.psi.mi.DEPRECATEDquery.uniprotbridge.uniprotextractors;
 
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
