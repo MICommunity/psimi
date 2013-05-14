@@ -27,9 +27,15 @@ public class MinimumCvTermEnricher
     public MinimumCvTermEnricher() throws EnrichmentException {
     }
 
-    public void enrichCvTerm(CvTerm cvTermMaster) throws EnrichmentException{
+    public void enrichCvTerm(CvTerm cvTermMaster)
+            throws EnrichmentException{
         EnricherEvent report = new EnricherEvent();
         CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster, report);
+        enrichCvTerm(cvTermMaster, cvTermEnriched, report);
+    }
+
+    public void enrichCvTerm(CvTerm cvTermMaster, CvTerm cvTermEnriched, EnricherEvent report)
+            throws EnrichmentException{
 
         //Todo report obsolete
         //Add full name
@@ -40,9 +46,6 @@ public class MinimumCvTermEnricher
             e.setAdditionValues("FullName", cvTermMaster.getFullName());
             fireAdditionEvent(e);
         }
-
-
-
 
         //Add identifiers
         Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(

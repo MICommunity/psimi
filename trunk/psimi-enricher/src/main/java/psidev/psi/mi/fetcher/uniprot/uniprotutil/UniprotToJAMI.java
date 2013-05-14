@@ -21,8 +21,10 @@ public class UniprotToJAMI {
             return null;
         }
 
-        //todo
+        //todo   this is ~ID, should be name
         Protein p = new DefaultProtein(e.getUniProtId().toString());
+
+        p.setUniprotkb(e.getUniProtId().toString());
 
         p.setOrganism(getOrganismFromEntry(e));
 

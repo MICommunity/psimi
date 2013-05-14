@@ -1,5 +1,7 @@
 package psidev.psi.mi.enricher.proteinenricher;
 
+import psidev.psi.mi.fetcher.exception.BridgeFailedException;
+import psidev.psi.mi.fetcher.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
@@ -11,7 +13,15 @@ import psidev.psi.mi.jami.model.Protein;
  */
 public abstract class AbstractProteinEnricher {
 
-    protected Protein getEnrichedForm(Protein MasterProtein){
-        return null;
+    private ProteinFetcher fetcher;
+
+    public void AbstractProteinEnricher() throws BridgeFailedException {
+        fetcher = new UniprotFetcher();
+    }
+
+    protected Protein getEnrichedForm(Protein MasterProtein) throws BridgeFailedException {
+        return fetcher.getProteinByID(MasterProtein.getUniprotkb());
+
+        //return null;
     }
 }
