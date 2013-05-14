@@ -2,6 +2,7 @@ package psidev.psi.mi.enricher.cvtermenricher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.EnricherEvent;
 import psidev.psi.mi.enricher.cvtermenricher.exception.BadIdentifierException;
 import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
 import psidev.psi.mi.enricher.cvtermenricher.exception.MissingIdentifierException;
@@ -42,14 +43,14 @@ public abstract class AbstractCvTermEnricher
         return getEnrichedForm(cvTermMaster, null);
     }
 
-    protected CvTerm getEnrichedForm(CvTerm cvTermMaster, EnrichmentReport report) throws EnrichmentException {
+    protected CvTerm getEnrichedForm(CvTerm cvTermMaster, EnricherEvent report) throws EnrichmentException {
         String identifier = identifierScraper(cvTermMaster);
         CvTerm enriched = null;
 
         if(identifier != null) {
             if(report != null) {
-                report.setIdentity(identifier);
-                report.setIdentityType("Identifier");
+                report.setQueryID(identifier);
+                report.setQueryIDType("Identifier");
             }
             try {
                 if(log.isTraceEnabled()){log.trace("Searching on identifier "+identifier);}
@@ -67,8 +68,8 @@ public abstract class AbstractCvTermEnricher
             if(log.isTraceEnabled()){log.trace("No identifier found");}
             if(cvTermMaster.getFullName() != null){
                 if(report != null) {
-                    report.setIdentity(cvTermMaster.getFullName());
-                    report.setIdentityType("FullName");
+                    report.setQueryID(cvTermMaster.getFullName());
+                    report.setQueryIDType("FullName");
                 }
                 try {
                     if(log.isTraceEnabled()){log.trace("Searching on fullname "+cvTermMaster.getFullName());}
@@ -84,8 +85,8 @@ public abstract class AbstractCvTermEnricher
             if(log.isTraceEnabled()){log.trace("No identifier found");}
             if(cvTermMaster.getShortName() != null){
                 if(report != null) {
-                    report.setIdentity(cvTermMaster.getShortName());
-                    report.setIdentityType("ShortName");
+                    report.setQueryID(cvTermMaster.getShortName());
+                    report.setQueryIDType("ShortName");
                 }
                 try {
                     if(log.isTraceEnabled()){log.trace("Searching on short name "+cvTermMaster.getShortName());}

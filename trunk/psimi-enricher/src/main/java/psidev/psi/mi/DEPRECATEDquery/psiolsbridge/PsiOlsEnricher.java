@@ -17,7 +17,8 @@ import java.util.List;
  */
 @Deprecated
 public class PsiOlsEnricher {
-
+    public PsiOlsEnricher(){}
+    /*
     private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());
 
     private PsiOlsFetcher fetcher = null;
@@ -43,7 +44,7 @@ public class PsiOlsEnricher {
      * @param cvTerm
      * @return
      */
-    public CvTerm queryOnCvTerm(CvTerm cvTerm) {
+    /*public CvTerm queryOnCvTerm(CvTerm cvTerm) {
         if(fetcher == null){
             try{
                 fetcher = new PsiOlsFetcher();
@@ -174,5 +175,5 @@ public class PsiOlsEnricher {
 
 
         return cvTerm;
-    }
+    }   */
 }

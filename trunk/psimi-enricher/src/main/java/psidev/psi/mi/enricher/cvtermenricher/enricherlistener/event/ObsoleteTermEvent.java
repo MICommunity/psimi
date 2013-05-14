@@ -8,11 +8,12 @@ package psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event;
  * Time: 13:36
  */
 public class ObsoleteTermEvent extends EnricherEvent {
-    private String identity;
 
+    public ObsoleteTermEvent(EnricherEvent e){
+        super(e);
+    }
 
-    public ObsoleteTermEvent(String identity){
-        this.identity = identity;
-
+    public ObsoleteTermEvent(String queryID, String queryIDType){
+        super(queryID, queryIDType);
     }
 }

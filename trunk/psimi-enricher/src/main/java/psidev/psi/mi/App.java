@@ -11,6 +11,10 @@ import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 public class App
 {
     public static void main(String[] args){
+
+        tester t = new tester();
+        t.testa();
+          /*
         UniprotEnricher u = new UniprotEnricher();
         UniProtEntry e = u.getEntryByID("P11163");
         System.out.println(e.getUniProtId());

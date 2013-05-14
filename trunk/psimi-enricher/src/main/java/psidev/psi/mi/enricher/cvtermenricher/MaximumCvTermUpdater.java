@@ -1,8 +1,10 @@
 package psidev.psi.mi.enricher.cvtermenricher;
 
-import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.EnricherEvent;
-import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
+import org.apache.commons.collections.CollectionUtils;
 import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.AdditionEvent;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.EnricherEvent;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.OverwriteEvent;
+import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
@@ -12,37 +14,53 @@ import psidev.psi.mi.util.CollectionUtilsExtra;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
- * Created with IntelliJ IDEA.
- *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 08/05/13
- * Time: 14:19
+ * Date: 13/05/13
+ * Time: 14:16
  */
-public class MinimumCvTermEnricher
-        extends AbstractCvTermEnricher{
+public class MaximumCvTermUpdater
+        extends MinimumCvTermEnricher
+        implements CvTermEnricher{
 
-    public MinimumCvTermEnricher() throws EnrichmentException {
+
+    public MaximumCvTermUpdater() throws EnrichmentException {
     }
 
     public void enrichCvTerm(CvTerm cvTermMaster) throws EnrichmentException{
         EnricherEvent report = new EnricherEvent();
         CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster, report);
 
-        //Todo report obsolete
-        //Add full name
-        if(cvTermMaster.getFullName() == null
-                && cvTermEnriched.getFullName() != null){
-            cvTermMaster.setFullName(cvTermEnriched.getFullName());
-            AdditionEvent e = new AdditionEvent(report);
-            e.setAdditionValues("FullName", cvTermMaster.getFullName());
-            fireAdditionEvent(e);
+        //Check full name
+        if(cvTermEnriched.getFullName() != null){
+            //Add fullname
+            if(cvTermMaster.getFullName() == null){
+                cvTermMaster.setFullName(cvTermEnriched.getFullName());
+
+                AdditionEvent e = new AdditionEvent(report);
+                e.setAdditionValues("FullName", cvTermMaster.getFullName());
+                fireAdditionEvent(e);
+            }
+            //ELSE overwrite fullname
+            else if(!cvTermMaster.getFullName().equals(cvTermEnriched.getFullName())){
+                String oldname =  cvTermMaster.getFullName();
+                cvTermMaster.setFullName(cvTermEnriched.getFullName());
+
+                OverwriteEvent e = new OverwriteEvent(report);
+                e.setOverwriteValues("FullName", oldname, cvTermMaster.getFullName());
+                fireOverwriteEvent(e);
+            }
         }
 
+        //Overwrite shortname
+        if(!cvTermMaster.getShortName().equals(cvTermEnriched.getShortName())){
+            String oldname =  cvTermMaster.getShortName();
+            cvTermMaster.setShortName(cvTermEnriched.getShortName());
 
-
+            OverwriteEvent e = new OverwriteEvent(report);
+            e.setOverwriteValues("ShortName", oldname, cvTermMaster.getShortName());
+            fireOverwriteEvent(e);
+        }
 
         //Add identifiers
         Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
@@ -52,6 +70,7 @@ public class MinimumCvTermEnricher
 
         for(Xref x: subtractedIdentifiers){
             cvTermMaster.getIdentifiers().add(x);
+
             AdditionEvent e = new AdditionEvent(report);
             e.setAdditionValues("Identifier", x.getId());
             fireAdditionEvent(e);
