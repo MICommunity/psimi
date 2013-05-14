@@ -3,16 +3,12 @@ package psidev.psi.mi.DEPRECATEDquery.psiolsbridge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
-import psidev.psi.mi.fetcher.exception.UnresolvableIDException;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+
 import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
 import javax.xml.rpc.ServiceException;
-import java.rmi.RemoteException;
-import java.util.*;
+
 
 /**
  * These methods DEPRECATEDquery to the Ontology Look Up Service.
@@ -40,13 +36,8 @@ public class PsiOlsFetcher {
             throw new BridgeFailedException("OLS QS bridge failed to initialise.",e);
         }
     }
+    /*
 
-    /**
-     * Uses ID to fetch the full name.
-     *
-     * @return
-     * @throws BridgeFailedException
-     */
     public CvTerm fetchFullNameByIdentifier(String identifier)
             throws BridgeFailedException{
 
@@ -79,7 +70,7 @@ public class PsiOlsFetcher {
      * @return
      * @throws UnresolvableIDException
      */
-    private CvTerm setID(CvTerm cvTerm, String identifier)
+    /*private CvTerm setID(CvTerm cvTerm, String identifier)
             throws UnresolvableIDException{
 
         if(identifier.split(":")[0].equals("MI")){
@@ -111,7 +102,7 @@ public class PsiOlsFetcher {
      * @return          Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
      */
-    public List<CvTerm> fetchIDByTerm(String name, String ontology)
+    /*public List<CvTerm> fetchIDByTerm(String name, String ontology)
             throws BridgeFailedException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
@@ -135,7 +126,7 @@ public class PsiOlsFetcher {
      * @return              Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
      */
-    public List<CvTerm> fetchIDByExactTerm(String name, String ontology)
+    /*public List<CvTerm> fetchIDByExactTerm(String name, String ontology)
             throws BridgeFailedException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
@@ -170,7 +161,7 @@ public class PsiOlsFetcher {
      * @return
      * @throws BridgeFailedException
      */
-    public List<CvTerm> fetchIDByFuzzyTerm(String name, String ontology)
+    /*public List<CvTerm> fetchIDByFuzzyTerm(String name, String ontology)
             throws BridgeFailedException{
 
         List<CvTerm> cvTermList = new ArrayList<CvTerm>();
@@ -208,7 +199,7 @@ public class PsiOlsFetcher {
      * @return          A new CvTerm with any results that were found filled in.
      * @throws BridgeFailedException
      */
-    public CvTerm fetchMetaDataByID(String identifier)
+    /*public CvTerm fetchMetaDataByID(String identifier)
             throws BridgeFailedException{
 
         String META_DATA_SEPARATOR = "_";
@@ -261,5 +252,5 @@ public class PsiOlsFetcher {
         }
 
         return cvTerm;
-    }
+    } */
 }

@@ -1,6 +1,10 @@
 package psidev.psi.mi;
 
 
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.AdditionEvent;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.EnricherEvent;
+import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.OverwriteEvent;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -9,6 +13,16 @@ package psidev.psi.mi;
  * Time: 12:15
  */
 public class tester {
+
+
+    public void testa(){
+
+
+
+    }
+
+
+
     /*private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());
     PsiOlsEnricher eols;
 
