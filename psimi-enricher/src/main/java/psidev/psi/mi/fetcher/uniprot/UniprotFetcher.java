@@ -1,8 +1,10 @@
 package psidev.psi.mi.fetcher.uniprot;
 
+import psidev.psi.mi.enricher.organismenricher.OrganismFetcher;
 import psidev.psi.mi.enricher.proteinenricher.ProteinFetcher;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import psidev.psi.mi.fetcher.uniprot.uniprotutil.UniprotToJAMI;
+import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Protein;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
@@ -13,7 +15,8 @@ import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
  * Date: 14/05/13
  * Time: 13:09
  */
-public class UniprotFetcher implements ProteinFetcher {
+public class UniprotFetcher
+        implements ProteinFetcher { //, OrganismFetcher {
 
     UniprotBridge bridge;
 
@@ -26,5 +29,10 @@ public class UniprotFetcher implements ProteinFetcher {
         Protein p = UniprotToJAMI.getProteinFromEntry(e);
         return p;
     }
-
+    /*
+    public Organism getOrganismByID(String ID) throws BridgeFailedException {
+        UniProtEntry e = bridge.fetchEntryByID(ID);
+        Organism o = UniprotToJAMI.getOrganismFromEntry(e);
+        return o;
+    }  */
 }
