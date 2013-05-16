@@ -40,18 +40,12 @@ public abstract class AbstractCvTermEnricher
     }
 
     protected CvTerm getEnrichedForm(CvTerm cvTermMaster) throws EnrichmentException {
-        return getEnrichedForm(cvTermMaster, null);
-    }
-
-    protected CvTerm getEnrichedForm(CvTerm cvTermMaster, EnricherEvent report) throws EnrichmentException {
         String identifier = identifierScraper(cvTermMaster);
         CvTerm enriched = null;
 
         if(identifier != null) {
-            if(report != null) {
-                report.setQueryID(identifier);
-                report.setQueryIDType("Identifier");
-            }
+            enricherEvent = new EnricherEvent(identifier,"Identifier");
+
             try {
                 if(log.isTraceEnabled()){log.trace("Searching on identifier "+identifier);}
                 enriched = fetcher.getCVTermByID(identifier, null);
@@ -67,10 +61,8 @@ public abstract class AbstractCvTermEnricher
         if(enriched == null){
             if(log.isTraceEnabled()){log.trace("No identifier found");}
             if(cvTermMaster.getFullName() != null){
-                if(report != null) {
-                    report.setQueryID(cvTermMaster.getFullName());
-                    report.setQueryIDType("FullName");
-                }
+                enricherEvent = new EnricherEvent(cvTermMaster.getFullName(),"FullName");
+
                 try {
                     if(log.isTraceEnabled()){log.trace("Searching on fullname "+cvTermMaster.getFullName());}
                     enriched = fetcher.getCVTermByName(cvTermMaster.getFullName(), null);
@@ -84,10 +76,8 @@ public abstract class AbstractCvTermEnricher
         if(enriched == null){
             if(log.isTraceEnabled()){log.trace("No identifier found");}
             if(cvTermMaster.getShortName() != null){
-                if(report != null) {
-                    report.setQueryID(cvTermMaster.getShortName());
-                    report.setQueryIDType("ShortName");
-                }
+                enricherEvent = new EnricherEvent(cvTermMaster.getShortName(),"ShortName");
+
                 try {
                     if(log.isTraceEnabled()){log.trace("Searching on short name "+cvTermMaster.getShortName());}
 

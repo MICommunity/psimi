@@ -39,15 +39,13 @@ public class MinimumProteinEnricher
 
 
     public void enrichProtein(Protein proteinMaster, Protein proteinEnriched){
-        proteinEnriched.setShortName("test");
-        log.debug("shortname is "+proteinEnriched.getShortName());
+        //proteinEnriched.setShortName("test");
+        //log.debug("shortname is "+proteinEnriched.getShortName());
                 //Shortname
         if (!proteinMaster.getShortName().equalsIgnoreCase(
                 proteinEnriched.getShortName())) {
             addMismatchEvent(new MismatchEvent(
-                    "ShortName",
-                    proteinMaster.getShortName(),
-                    proteinEnriched.getShortName()));
+                    "ShortName", proteinMaster.getShortName(),proteinEnriched.getShortName()));
         }
 
         //Fullname
