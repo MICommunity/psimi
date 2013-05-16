@@ -15,7 +15,8 @@ import psidev.psi.mi.jami.model.Protein;
  * Date: 14/05/13
  * Time: 14:27
  */
-public abstract class AbstractProteinEnricher extends EnricherEventProcessorImp {
+public abstract class AbstractProteinEnricher
+        extends EnricherEventProcessorImp {
 
     protected final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
     private ProteinFetcher fetcher=null;
@@ -30,9 +31,7 @@ public abstract class AbstractProteinEnricher extends EnricherEventProcessorImp 
             log.debug("The fetcher was really null.");
             return null;
         } else {
-            enricherEvent = new EnricherEvent();
-            enricherEvent.setQueryID(MasterProtein.getUniprotkb());
-            enricherEvent.setQueryIDType("UniprotKb");
+            enricherEvent = new EnricherEvent(MasterProtein.getUniprotkb(),"UniprotKb");
             return fetcher.getProteinByID(MasterProtein.getUniprotkb());
         }
     }

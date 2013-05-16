@@ -29,7 +29,7 @@ public class MaximumCvTermUpdater
             throws EnrichmentException{
 
         enricherEvent = new EnricherEvent();
-        CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster, enricherEvent);
+        CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
         enrichCvTerm(cvTermMaster, cvTermEnriched);
     }
 
@@ -59,35 +59,6 @@ public class MaximumCvTermUpdater
             addOverwriteEvent(new OverwriteEvent(
                     "ShortName", oldname, cvTermMaster.getShortName()));
         }
-
-        /*
-        //Add identifiers
-        Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
-                cvTermEnriched.getIdentifiers(),
-                cvTermMaster.getIdentifiers(),
-                new DefaultXrefComparator());
-
-        for(Xref x: subtractedIdentifiers){
-            cvTermMaster.getIdentifiers().add(x);
-
-            AdditionEvent e = new AdditionEvent(report);
-            e.setAdditionValues("Identifier", x.getId());
-            fireAdditionEvent(e);
-        }
-
-        //Add synonyms
-        Collection<Alias> subtractedSynonyms = CollectionUtilsExtra.comparatorSubtract(
-                cvTermEnriched.getSynonyms(),
-                cvTermMaster.getSynonyms(),
-                new DefaultAliasComparator());
-
-        for(Alias x: subtractedSynonyms){
-            cvTermMaster.getSynonyms().add(x);
-
-            AdditionEvent e = new AdditionEvent(report);
-            e.setAdditionValues( "Synonym", "Name: "+x.getName()+", Type: "+x.getType());
-            fireAdditionEvent(e);
-        }   */
     }
 
     public void enrichCvTerms(Collection<CvTerm> cvTermMasters) {
