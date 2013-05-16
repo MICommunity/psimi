@@ -1,4 +1,4 @@
-package psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event;
+package psidev.psi.mi.enricherlistener.event;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,14 +11,13 @@ public class AdditionEvent extends EnricherEvent{
     private String field;
     private String newValue;
 
-    public AdditionEvent(EnricherEvent e){
-        super(e);
+    public AdditionEvent(){
     }
 
-    /*public AdditionEvent(String queryID, String queryIDType, String field, String newValue){
-        super(queryID, queryIDType);
+    public AdditionEvent(String field, String newValue){
         setAdditionValues(field, newValue);
-    }   */
+    }
+
 
     public void setAdditionValues(String field, String newValue){
         this.field = field;

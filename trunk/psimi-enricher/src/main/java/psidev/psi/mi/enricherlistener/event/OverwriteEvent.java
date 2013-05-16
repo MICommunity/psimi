@@ -1,4 +1,4 @@
-package psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event;
+package psidev.psi.mi.enricherlistener.event;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,12 +12,10 @@ public class OverwriteEvent extends EnricherEvent{
     private String field;
     private String newValue;
 
-    public OverwriteEvent(EnricherEvent e){
-        super(e);
+    public OverwriteEvent(){
     }
 
-    public OverwriteEvent(String queryID, String queryIDType, String field, String newValue, String oldValue){
-        super(queryID, queryIDType);
+    public OverwriteEvent(String field, String newValue, String oldValue){
         setOverwriteValues(field, newValue, oldValue);
 
     }

@@ -1,11 +1,17 @@
 package psidev.psi.mi.fetcher.uniprot.uniprotutil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.utils.factory.ChecksumFactory;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
+import uk.ac.ebi.kraken.interfaces.uniprot.description.Field;
+import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,15 +22,57 @@ import java.util.Collection;
  */
 public class UniprotToJAMI {
 
+    private final static Logger log = LoggerFactory.getLogger(UniprotToJAMI.class.getName());
+
     public static Protein getProteinFromEntry(UniProtEntry e){
         if(e == null){
             return null;
         }
 
-        //todo   this is ~ID, should be name
-        Protein p = new DefaultProtein(e.getUniProtId().toString());
+        String shortName = null;
+        String fullName = null;
 
-        p.setUniprotkb(e.getUniProtId().toString());
+        //THIS ID HAS BEEN TAKEN FROM THE 'ID' name
+        List<Field> fields =  e.getProteinDescription().getRecommendedName().getFields();
+        for(Field f: fields){
+            if(f.getType() == FieldType.SHORT){
+                if(shortName == null){
+                    shortName = f.getValue();
+                }
+                else{System.out.println("MULTINAMED UNIPROT");}
+            }
+            if(f.getType() == FieldType.FULL){
+                if(fullName == null){
+                    fullName = f.getValue();
+                }
+                else{System.out.println("MULTINAMED UNIPROT");}
+            }
+        }
+
+        Protein p;
+        //SHORTNAME
+        if(shortName != null){
+            p = new DefaultProtein(shortName);
+        }else if(fullName != null){
+            p = new DefaultProtein(fullName);
+        }else {
+            p = new DefaultProtein(e.getUniProtId().getValue());
+        }
+
+        //FULLNAME
+        if(fullName != null){
+            p.setFullName(fullName);
+        }
+
+        //PRIMARY ACCESSION
+        p.setUniprotkb(e.getPrimaryUniProtAccession().getValue());
+
+        //SEQUENCE // CHECKSUMS
+        p.setSequence(e.getSequence().getValue());
+        ChecksumFactory cf = new ChecksumFactory();
+        //todo implement checksums
+        p.getChecksums().add(cf.createAnnotation("methodName", "methodMi", e.getSequence().getCRC64()));
+        //p.setRogid();
 
         p.setOrganism(getOrganismFromEntry(e));
 
@@ -41,12 +89,13 @@ public class UniprotToJAMI {
         } else if(e.getNcbiTaxonomyIds().size() > 1){
             o = new DefaultOrganism(-3); //Unknown
         } else {
-            String id = e.getNcbiTaxonomyIds().get(0).toString();
+            String id = e.getNcbiTaxonomyIds().get(0).getValue();
+            log.debug("organism id is "+id);
             o = new DefaultOrganism( Integer.parseInt( id ) );
         }
 
-        o.setCommonName(e.getOrganism().getCommonName().toString());
-        o.setScientificName(e.getOrganism().getScientificName().toString());
+        o.setCommonName(e.getOrganism().getCommonName().getValue());
+        o.setScientificName(e.getOrganism().getScientificName().getValue());
 
         return o;
     }
