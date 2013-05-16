@@ -1,9 +1,12 @@
 package psidev.psi.mi;
 
 
-import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.AdditionEvent;
-import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.EnricherEvent;
-import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.OverwriteEvent;
+import psidev.psi.mi.enricher.proteinenricher.MinimumProteinEnricher;
+import psidev.psi.mi.enricher.proteinenricher.ProteinEnricher;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultProtein;
+
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,14 +16,18 @@ import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.OverwriteEve
  * Time: 12:15
  */
 public class tester {
-
+    /*
 
     public void testa(){
+        ProteinEnricher proteinEnricher = new MinimumProteinEnricher();
 
+
+
+        Protein a = new DefaultProtein("P42694");
 
 
     }
-
+       */
 
 
     /*private final Logger log = LoggerFactory.getLogger(PsiOlsEnricher.class.getName());

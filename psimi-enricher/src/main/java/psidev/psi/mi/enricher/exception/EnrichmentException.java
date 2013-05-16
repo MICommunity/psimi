@@ -1,4 +1,4 @@
-package psidev.psi.mi.enricher.cvtermenricher.exception;
+package psidev.psi.mi.enricher.exception;
 
 /**
  * A general error during enrichment

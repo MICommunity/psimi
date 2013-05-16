@@ -1,6 +1,8 @@
 package psidev.psi.mi.enricher.cvtermenricher;
 
-import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
+import psidev.psi.mi.enricher.exception.EnrichmentException;
+import psidev.psi.mi.enricherlistener.EnricherEventProcessor;
+import psidev.psi.mi.enricherlistener.EnricherEventProcessorImp;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.Collection;
@@ -12,7 +14,7 @@ import java.util.Collection;
  * Date: 13/05/13
  * Time: 13:13
  */
-public interface CvTermEnricher {
+public interface CvTermEnricher extends EnricherEventProcessor {
     public void enrichCvTerm(CvTerm cvTermMaster)  throws EnrichmentException;
     public void enrichCvTerms(Collection<CvTerm> cvTermMasters);
 }

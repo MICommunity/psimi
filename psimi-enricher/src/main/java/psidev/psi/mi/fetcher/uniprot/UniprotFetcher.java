@@ -1,5 +1,7 @@
 package psidev.psi.mi.fetcher.uniprot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.enricher.organismenricher.OrganismFetcher;
 import psidev.psi.mi.enricher.proteinenricher.ProteinFetcher;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
@@ -18,17 +20,29 @@ import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 public class UniprotFetcher
         implements ProteinFetcher { //, OrganismFetcher {
 
+    private final Logger log = LoggerFactory.getLogger(UniprotFetcher.class.getName());
+
     UniprotBridge bridge;
 
     public UniprotFetcher() throws BridgeFailedException {
+        log.debug("starting bridge");
         bridge = new UniprotBridge();
     }
 
     public Protein getProteinByID(String ID) throws BridgeFailedException {
+        if(log.isDebugEnabled()) log.debug("Searching on id ["+ID+"]");
         UniProtEntry e = bridge.fetchEntryByID(ID);
+
+        if(e == null){
+            if(log.isDebugEnabled()) log.debug("Entry is null");
+            return null;
+        }
+
         Protein p = UniprotToJAMI.getProteinFromEntry(e);
+        if(log.isDebugEnabled()) if(p == null) log.debug("Protein came back null");
         return p;
     }
+
     /*
     public Organism getOrganismByID(String ID) throws BridgeFailedException {
         UniProtEntry e = bridge.fetchEntryByID(ID);

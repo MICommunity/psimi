@@ -2,11 +2,11 @@ package psidev.psi.mi.enricher.cvtermenricher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.event.EnricherEvent;
-import psidev.psi.mi.enricher.cvtermenricher.exception.BadIdentifierException;
-import psidev.psi.mi.enricher.cvtermenricher.exception.EnrichmentException;
-import psidev.psi.mi.enricher.cvtermenricher.exception.MissingIdentifierException;
-import psidev.psi.mi.enricher.cvtermenricher.enricherlistener.EnricherEventProcessorImp;
+import psidev.psi.mi.enricherlistener.event.EnricherEvent;
+import psidev.psi.mi.enricher.exception.BadIdentifierException;
+import psidev.psi.mi.enricher.exception.EnrichmentException;
+import psidev.psi.mi.enricher.exception.MissingIdentifierException;
+import psidev.psi.mi.enricherlistener.EnricherEventProcessorImp;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;

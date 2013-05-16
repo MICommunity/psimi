@@ -1,4 +1,4 @@
-package psidev.psi.mi.enricher.cvtermenricher.exception;
+package psidev.psi.mi.enricher.exception;
 
 /**
  * Thrown if the identifier returned no result

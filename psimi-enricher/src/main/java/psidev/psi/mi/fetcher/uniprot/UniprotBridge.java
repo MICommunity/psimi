@@ -16,8 +16,12 @@ import uk.ac.ebi.kraken.uuw.services.remoting.UniProtJAPI;
 public class UniprotBridge {
     private EntryRetrievalService entryRetrievalService;
 
-    public UniprotBridge(){
-        entryRetrievalService = UniProtJAPI.factory.getEntryRetrievalService();
+    public UniprotBridge() throws BridgeFailedException{
+        try{
+            entryRetrievalService = UniProtJAPI.factory.getEntryRetrievalService();
+        }catch (RemoteDataAccessException e){
+            throw new BridgeFailedException(e);
+        }
     }
 
     public UniProtEntry fetchEntryByID(String ID)
