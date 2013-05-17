@@ -66,7 +66,7 @@ public class MaximumCvTermUpdater
                 String oldname =  cvTermMaster.getFullName();
                 cvTermMaster.setFullName(cvTermEnriched.getFullName());
                 addOverwriteEvent(new OverwriteEvent(
-                        "FullName", oldname, cvTermMaster.getFullName()));
+                        "FullName", cvTermMaster.getFullName(), oldname));
             }
         }
 
@@ -75,7 +75,7 @@ public class MaximumCvTermUpdater
             String oldname =  cvTermMaster.getShortName();
             cvTermMaster.setShortName(cvTermEnriched.getShortName());
             addOverwriteEvent(new OverwriteEvent(
-                    "ShortName", oldname, cvTermMaster.getShortName()));
+                    "ShortName", cvTermMaster.getShortName(), oldname));
         }
     }
 

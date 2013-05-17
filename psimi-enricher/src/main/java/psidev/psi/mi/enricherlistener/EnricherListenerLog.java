@@ -28,11 +28,11 @@ public class EnricherListenerLog implements EnricherListener {
         }
 
         for(MismatchEvent a :e.getMismatches()) {
-            log.info("Mismatch on ["+a.getField()+"] has the value ["+a.getOldValue()+"] which mismatches ["+a.getNewValue()+"]");
+            log.info("Mismatch on ["+a.getField()+"] has the current value ["+a.getOldValue()+"] which mismatches ["+a.getNewValue()+"]");
         }
 
         for(OverwriteEvent a :e.getOverwrites()) {
-            log.info("Overwrite on ["+a.getField()+"] had the value ["+a.getOldValue()+"] overwritten with ["+a.getNewValue()+"]");
+            log.info("Overwrite on ["+a.getField()+"] had the old value ["+a.getOldValue()+"] overwritten with ["+a.getNewValue()+"]");
         }
 
     }
