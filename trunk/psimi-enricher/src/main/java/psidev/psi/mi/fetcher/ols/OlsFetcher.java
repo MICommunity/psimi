@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.enricher.cvtermenricher.CvTermFetcher;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -97,7 +99,8 @@ public class OlsFetcher implements CvTermFetcher {
         HashMap metaDataMap = bridge.fetchMetaDataByID(identifier);
         String shortName = bridge.extractShortNameFromMetaData(metaDataMap, ontology);
         if(shortName != null) cvTerm.setShortName(shortName);
-        cvTerm.getSynonyms().addAll(bridge.extractSynonymsFromMetaData(metaDataMap, ontology));
+        Collection<Alias> synonyms = bridge.extractSynonymsFromMetaData(metaDataMap, ontology);
+        if(synonyms != null) cvTerm.getSynonyms().addAll(synonyms);
 
         return cvTerm;
 

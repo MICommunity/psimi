@@ -3,6 +3,7 @@ package psidev.psi.mi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.enricher.cvtermenricher.CvTermEnricher;
+import psidev.psi.mi.enricher.cvtermenricher.MaximumCvTermUpdater;
 import psidev.psi.mi.enricher.cvtermenricher.MinimumCvTermEnricher;
 import psidev.psi.mi.enricher.proteinenricher.MinimumProteinEnricher;
 import psidev.psi.mi.enricher.proteinenricher.ProteinEnricher;
@@ -29,10 +30,23 @@ public class CvTermTest {
     CvTermEnricher cvTermEnricher;
 
     public CvTermTest(){
+        minenrich();
+    }
+
+    public void maxenrich(){
+        try{
+            cvTermEnricher = new MaximumCvTermUpdater();
+            cvTermEnricher.addEnricherListener(new EnricherListenerLog());
+        } catch (Exception e){
+            log.debug("the cv enricher did not initialise");
+            e.printStackTrace();
+        }
+    }
+
+    public void minenrich(){
         try{
             cvTermEnricher = new MinimumCvTermEnricher();
             cvTermEnricher.addEnricherListener(new EnricherListenerLog());
-
         } catch (Exception e){
             log.debug("the cv enricher did not initialise");
             e.printStackTrace();
@@ -55,7 +69,7 @@ public class CvTermTest {
                 cvTermEnricher.enrichCvTerm(a);
             } catch (Exception e){
                 log.debug("The cv enricher did not return cv a");
-                e.printStackTrace();
+                log.debug(e.getMessage());
             }
         }
     }
