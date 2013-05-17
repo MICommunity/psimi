@@ -36,16 +36,18 @@ public class OlsBridge{
 
     /**
      * Uses ID to fetch the full name.
+     * If the identifier could not be found, returns null.
      *
-     * @return
+     * @return The full name of the CvTerm
      * @throws BridgeFailedException
      */
-    public String fetchFullNameByIdentifier(String identifier)
+    public String fetchFullNameByIdentifier(String identifier, String ontology)
             throws BridgeFailedException{
 
         try {
-            String fullname = qs.getTermById(identifier,null);
+            String fullname = qs.getTermById(identifier,ontology);
             if(fullname.equals(identifier)){
+                //The identifier could not be found.
                 return null;
             } else {
                 return fullname;
@@ -135,6 +137,9 @@ public class OlsBridge{
         return null;
     }
 
+
+
+
     /**
      * Retrieve the metadata for an entry.
      * <p>
@@ -145,37 +150,68 @@ public class OlsBridge{
      * @return          A new CvTerm with any results that were found filled in.
      * @throws BridgeFailedException
      */
-    public Collection<Alias> fetchMetaDataByID(String identifier, String dbname)
+    public HashMap fetchMetaDataByID(String identifier)
             throws BridgeFailedException{
 
-        //String SHORTLABEL_IDENTIFIER;
-        String SYNONYM_IDENTIFIER;
-
-        if(dbname.equals("MI")){
-            //SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
-            SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
-        }
-        else if(dbname.equals("MOD")){
-            //SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
-            SYNONYM_IDENTIFIER = "Alternate name curated by PSI-MOD";
-        }
-        else {
-            return null;
-        }
-
-        String META_DATA_SEPARATOR = "_";
-        String DEFINITION_KEY = "definition";
-
-        String description;
-        //String shortLabel = null;
-
-        HashMap metaDataMap;
         try{
-            metaDataMap = qs.getTermMetadata(identifier,null);
+            return qs.getTermMetadata(identifier,null);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
         }
+    }
 
+    /**
+     *
+     * @param metaDataMap
+     * @param dbname
+     * @return
+     */
+    public String extractShortNameFromMetaData(
+            HashMap metaDataMap, String dbname){
+
+        String META_DATA_SEPARATOR = "_";
+        String SHORTLABEL_IDENTIFIER;
+        if(dbname == null) return null;
+        else if(dbname.equals("MI")) SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
+        else if(dbname.equals("MOD")) SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
+        else return null;
+
+        if (metaDataMap != null) {
+            Collection<Alias> synonyms = new ArrayList<Alias>();
+            for (Object key : metaDataMap.keySet()){
+                String keyName = (String)key;
+                if (keyName.startsWith(SHORTLABEL_IDENTIFIER + META_DATA_SEPARATOR)){
+                    return (String)metaDataMap.get(key);
+                }
+            }
+        }
+        return null;
+    }
+
+    public String extractDescriptionFromMetaData(
+            HashMap metaDataMap){
+        String DEFINITION_KEY = "definition";
+        if (metaDataMap != null) {
+            Collection<Alias> synonyms = new ArrayList<Alias>();
+            for (Object key : metaDataMap.keySet()){
+                String keyName = (String)key;
+                if (DEFINITION_KEY.equalsIgnoreCase(keyName)){
+                    return (String) metaDataMap.get(key);
+                }
+            }
+        }
+        return null;
+    }
+
+    public  Collection<Alias> extractSynonymsFromMetaData(
+            HashMap metaDataMap, String dbname){
+
+        String META_DATA_SEPARATOR = "_";
+        String SYNONYM_IDENTIFIER;
+        if(dbname == null) return null;
+        else if(dbname.equals("MI")) SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
+        else if(dbname.equals("MOD")) SYNONYM_IDENTIFIER = "Alternate name curated by PSI-MOD";
+        else return null;
 
         if (metaDataMap != null) {
             Collection<Alias> synonyms = new ArrayList<Alias>();
@@ -183,16 +219,9 @@ public class OlsBridge{
                 String keyName = (String)key;
                 if (keyName.startsWith(SYNONYM_IDENTIFIER + META_DATA_SEPARATOR)){
 
-                    synonyms.add(AliasFactory.createAlias("synonym", "MI:1041", (String)metaDataMap.get(key)));
+                    synonyms.add(AliasFactory.createAlias(
+                            "synonym", "MI:1041", (String)metaDataMap.get(key)));
                 }
-                /*else if (DEFINITION_KEY.equalsIgnoreCase(keyName)){
-                    description = (String) metaDataMap.get(key);
-                }*/
-
-                //Todo If the ShortLabel is to be used, this must be implemented
-                /*else if (keyName.startsWith(SHORTLABEL_IDENTIFIER + META_DATA_SEPARATOR)){
-                    cvTerm.setShortName((String)metaDataMap.get(key));
-                }*/
             }
             return synonyms;
         }else{

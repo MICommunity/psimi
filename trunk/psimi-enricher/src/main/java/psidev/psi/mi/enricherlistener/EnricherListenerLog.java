@@ -8,7 +8,9 @@ import psidev.psi.mi.enricherlistener.event.MismatchEvent;
 import psidev.psi.mi.enricherlistener.event.OverwriteEvent;
 
 /**
- * Created with IntelliJ IDEA.
+ * An implementation of the enricherListener which reports to the logger.
+ * Upon receiving an enricherEvent,
+ * it will report all additions, mismatches and overwrites which have taken place.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 16/05/13

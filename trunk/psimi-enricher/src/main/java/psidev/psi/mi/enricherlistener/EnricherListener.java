@@ -4,7 +4,7 @@ package psidev.psi.mi.enricherlistener;
 import psidev.psi.mi.enricherlistener.event.EnricherEvent;
 
 /**
- * Created with IntelliJ IDEA.
+ * The methods which must be implemented by an EnricherListener.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/05/13
@@ -12,6 +12,10 @@ import psidev.psi.mi.enricherlistener.event.EnricherEvent;
  */
 public interface EnricherListener {
 
+    /**
+     * Fires at the end of an enrichment and contains a log of all events
+     * @param e
+     */
     public void enricherEvent(EnricherEvent e);
 
 

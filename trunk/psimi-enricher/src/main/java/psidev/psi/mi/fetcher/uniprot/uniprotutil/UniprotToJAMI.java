@@ -72,7 +72,7 @@ public class UniprotToJAMI {
         ChecksumFactory cf = new ChecksumFactory();
         //todo implement checksums
         p.getChecksums().add(cf.createAnnotation("methodName", "methodMi", e.getSequence().getCRC64()));
-        //p.setRogid();
+        //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
 
         p.setOrganism(getOrganismFromEntry(e));
 
@@ -90,7 +90,6 @@ public class UniprotToJAMI {
             o = new DefaultOrganism(-3); //Unknown
         } else {
             String id = e.getNcbiTaxonomyIds().get(0).getValue();
-            log.debug("organism id is "+id);
             o = new DefaultOrganism( Integer.parseInt( id ) );
         }
 

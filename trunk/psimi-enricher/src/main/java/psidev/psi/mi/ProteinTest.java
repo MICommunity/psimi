@@ -34,7 +34,7 @@ public class ProteinTest {
 
     public void testProteins(){
 
-        String[] tests = {"P42694","Q9Y2H6"};
+        String[] tests = {"P42694","Q9Y2H6","FOOBAR"};
 
         for(String s : tests){
             Protein a = new DefaultProtein(s);
@@ -44,7 +44,7 @@ public class ProteinTest {
                 proteinEnricher.enrichProtein(a);
             } catch (Exception e){
                 log.debug("The protein enricher did not return protein a");
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }
