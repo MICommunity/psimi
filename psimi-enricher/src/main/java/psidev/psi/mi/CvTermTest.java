@@ -1,5 +1,17 @@
 package psidev.psi.mi;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import psidev.psi.mi.enricher.cvtermenricher.CvTermEnricher;
+import psidev.psi.mi.enricher.cvtermenricher.MinimumCvTermEnricher;
+import psidev.psi.mi.enricher.proteinenricher.MinimumProteinEnricher;
+import psidev.psi.mi.enricher.proteinenricher.ProteinEnricher;
+import psidev.psi.mi.enricherlistener.EnricherListenerLog;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -8,38 +20,69 @@ package psidev.psi.mi;
  * Time: 13:32
  */
 public class CvTermTest {
-    /*
-
-    tester t = new tester();
-    t.testa();
-          /*
-        UniprotEnricher u = new UniprotEnricher();
-        UniProtEntry e = u.getEntryByID("P11163");
-        System.out.println(e.getUniProtId());
-        System.out.println(e.getNcbiTaxonomyIds());
-        System.out.println(e.getProteinDescription());
-         /*
-        tester t = new tester();
-
-        t.testCVTerm(CvTermFactory.createMODCvTerm("bob","GO:0071840"));
-
-        t.testCVTerm(CvTermFactory.createMODCvTerm("dehydromethionine","MOD:01906"));
-        t.testCVTerm(CvTermFactory.createMODCvTerm("dehydromethionine",null));
-        t.testCVTerm(CvTermFactory.createMODCvTerm("dehydromethion",null));
-
-        t.testCVTerm(CvTermFactory.createMODCvTerm("stuff","MOD:00698"));
 
 
-        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynamics","MOD:01906"));
-        t.testCVTerm(CvTermFactory.createMODCvTerm("allosteric change in dynamics","MI:1166"));
 
-        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynamics","MI:1166"));
-        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynamics",null));
-        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric change in dynam",null));
-        t.testCVTerm(CvTermFactory.createMICvTerm("osteric change in dynam",null));
-        t.testCVTerm(CvTermFactory.createMICvTerm("allosteric",null));
-        t.testCVTerm(CvTermFactory.createMICvTerm("0915", "MI:0915"));
-        t.testCVTerm(CvTermFactory.createMICvTerm("0915", null));
-           */
 
+    private final Logger log = LoggerFactory.getLogger(ProteinTest.class.getName());
+
+    CvTermEnricher cvTermEnricher;
+
+    public CvTermTest(){
+        try{
+            cvTermEnricher = new MinimumCvTermEnricher();
+            cvTermEnricher.addEnricherListener(new EnricherListenerLog());
+
+        } catch (Exception e){
+            log.debug("the cv enricher did not initialise");
+            e.printStackTrace();
+        }
+    }
+
+    public void testModCV(){
+
+        String[][] tests = {
+                {"bob","GO:0071840"},
+                {"dehydromethionine","MOD:01906"},
+                {"dehydromethionine",null},
+                {"dehydromethion",null},
+                {"stuff","MOD:00698"} };
+
+        for(String[] s : tests){
+            CvTerm a = CvTermFactory.createMODCvTerm(s[0],s[1]);
+
+            try{
+                cvTermEnricher.enrichCvTerm(a);
+            } catch (Exception e){
+                log.debug("The cv enricher did not return cv a");
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void testMiCV(){
+
+        String[][] tests = {
+                {"allosteric change in dynamics","MOD:01906"},
+                {"allosteric change in dynamics","MI:1166" } ,
+                {"allosteric change in dynamics","MI:1166" } ,
+                {"allosteric change in dynamics",null } ,
+                {"allosteric change in dynam",null},
+                {"osteric change in dynam",null},
+                {"allosteric",null},
+                {"0915", "MI:0915"},
+                {"0915", null}};
+
+        for(String[] s : tests){
+            CvTerm a = CvTermFactory.createMICvTerm(s[0],s[1]);
+
+            try{
+                cvTermEnricher.enrichCvTerm(a);
+            } catch (Exception e){
+                log.debug("The cv enricher did not return cv a");
+                log.debug(e.getMessage());
+            }
+        }
+    }
 }

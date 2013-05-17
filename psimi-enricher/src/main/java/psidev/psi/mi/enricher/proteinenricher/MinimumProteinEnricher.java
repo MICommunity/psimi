@@ -21,14 +21,14 @@ public class MinimumProteinEnricher
         extends AbstractProteinEnricher
         implements ProteinEnricher{
 
-    public MinimumProteinEnricher()  throws BridgeFailedException {
+    public MinimumProteinEnricher()  throws EnrichmentException {
         super();
         log.debug("Starting the protein enricher");
 
     }
 
     public void enrichProtein(Protein proteinMaster)
-            throws BridgeFailedException {
+            throws EnrichmentException {
 
         Protein proteinEnriched = getEnrichedForm(proteinMaster);
         if(proteinEnriched == null){
@@ -39,9 +39,8 @@ public class MinimumProteinEnricher
 
 
     public void enrichProtein(Protein proteinMaster, Protein proteinEnriched){
-        //proteinEnriched.setShortName("test");
-        //log.debug("shortname is "+proteinEnriched.getShortName());
-                //Shortname
+
+        //Shortname
         if (!proteinMaster.getShortName().equalsIgnoreCase(
                 proteinEnriched.getShortName())) {
             addMismatchEvent(new MismatchEvent(
@@ -115,7 +114,7 @@ public class MinimumProteinEnricher
                 }
             }
         }catch(EnrichmentException e){
-            log.debug("Caught Enrichment exception fired by organism conflict");
+            log.warn("Caught Enrichment exception fired by organism conflict");
         }
 
 

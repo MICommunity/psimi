@@ -14,6 +14,7 @@ import psidev.psi.mi.util.CollectionUtilsExtra;
 import java.util.Collection;
 
 /**
+ *
  * Date: 13/05/13
  * Time: 14:16
  */
@@ -25,16 +26,35 @@ public class MaximumCvTermUpdater
     public MaximumCvTermUpdater() throws EnrichmentException {
     }
 
+    /**
+     * Enrichment and update of a single CvTerm.
+     * If update takes place, the master will be edited.
+     *
+     * @param cvTermMaster  a CvTerm to update
+     * @throws EnrichmentException
+     */
     public void enrichCvTerm(CvTerm cvTermMaster)
             throws EnrichmentException{
 
+        //Reinitialise the enricher event
         enricherEvent = new EnricherEvent();
+        //Get the enriched form
         CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
+        //Enrich and update
         enrichCvTerm(cvTermMaster, cvTermEnriched);
+        //Fire the report
+        fireEnricherEvent(enricherEvent);
     }
 
 
-
+    /**
+     * Compares two CvTerms and updates the master with any fields that it is missing or mismatched.
+     * The minimum enricher is run first to add any missing fields,
+     * then, the full name and short name are overwritten.
+     * @param cvTermMaster      The cvTerm to be updated
+     * @param cvTermEnriched    The cvTerm containing the data to update the master with.
+     * @throws EnrichmentException
+     */
     public void enrichCvTerm(CvTerm cvTermMaster, CvTerm cvTermEnriched)
             throws EnrichmentException{
 
@@ -45,7 +65,6 @@ public class MaximumCvTermUpdater
             if(!cvTermMaster.getFullName().equals(cvTermEnriched.getFullName())){
                 String oldname =  cvTermMaster.getFullName();
                 cvTermMaster.setFullName(cvTermEnriched.getFullName());
-                //TODO MISMATCH OR OVERWRITE
                 addOverwriteEvent(new OverwriteEvent(
                         "FullName", oldname, cvTermMaster.getFullName()));
             }
@@ -55,7 +74,6 @@ public class MaximumCvTermUpdater
         if(!cvTermMaster.getShortName().equals(cvTermEnriched.getShortName())){
             String oldname =  cvTermMaster.getShortName();
             cvTermMaster.setShortName(cvTermEnriched.getShortName());
-            //TODO MISMATCH OR OVERWRITE
             addOverwriteEvent(new OverwriteEvent(
                     "ShortName", oldname, cvTermMaster.getShortName()));
         }

@@ -1,6 +1,7 @@
 package psidev.psi.mi.enricher.proteinenricher;
 
 
+import psidev.psi.mi.enricher.exception.EnrichmentException;
 import psidev.psi.mi.enricherlistener.EnricherEventProcessor;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Protein;
@@ -13,5 +14,5 @@ import psidev.psi.mi.jami.model.Protein;
  * Time: 13:03
  */
 public interface ProteinEnricher extends EnricherEventProcessor {
-    public void enrichProtein(Protein proteinMaster) throws BridgeFailedException;
+    public void enrichProtein(Protein proteinMaster) throws BridgeFailedException, EnrichmentException;
 }

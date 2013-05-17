@@ -7,7 +7,8 @@ import psidev.psi.mi.fetcher.ols.OlsFetcher;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
+ * A manager for redirecting queries to alternative CvTermFetchers.
+ * Allows for users who would rather use their own fetcher for some or all ontologies.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 08/05/13
