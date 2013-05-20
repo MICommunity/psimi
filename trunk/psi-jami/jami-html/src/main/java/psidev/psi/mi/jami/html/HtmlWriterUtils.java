@@ -1,4 +1,4 @@
-package psidev.psi.mi.html;
+package psidev.psi.mi.jami.html;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
