@@ -23,11 +23,9 @@
         <module>calimocho-xml</module>
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
-        <module>psi-jami</module>
-        <module>jami-html</module>
         <module>psimi-enricher</module>
         <module>assembly</module>
-    <module>bridges-master</module>
+    <module>psi-jami</module>
   </modules>
 
     <scm>
