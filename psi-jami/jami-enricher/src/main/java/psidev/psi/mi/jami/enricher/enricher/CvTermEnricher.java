@@ -30,6 +30,10 @@ public interface CvTermEnricher extends EnricherEventProcessor {
 
     public void enrichCvTerms(Collection<CvTerm> cvTermMasters);
 
+    /**
+     *
+     * @param fetcher
+     */
     public void setFetcher(CvTermFetcher fetcher);
 
     public CvTermFetcher getFetcher();
