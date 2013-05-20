@@ -8,6 +8,7 @@ import psidev.psi.mi.enricher.exception.EnrichmentException;
 import psidev.psi.mi.enricher.exception.MissingIdentifierException;
 import psidev.psi.mi.enricherlistener.EnricherEventProcessorImp;
 import psidev.psi.mi.fetcher.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 

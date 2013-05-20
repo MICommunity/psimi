@@ -3,7 +3,6 @@ package psidev.psi.mi.enricher.cvtermenricher;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
-import psidev.psi.mi.jami.bridges.ols.*;
 import psidev.psi.mi.jami.model.CvTerm;
 
 
@@ -17,8 +16,9 @@ import java.util.HashMap;
  * Date: 08/05/13
  * Time: 16:36
  */
-public class CvTermFetcherManager implements CvTermFetcher {
-    private final String DEFAULTKEY = "default";
+@Deprecated
+public class CvTermFetcherManager {//implements CvTermFetcher {
+    /*private final String DEFAULTKEY = "default";
 
     private HashMap<String,CvTermFetcher> ontologyFetchers;
 
@@ -53,5 +53,5 @@ public class CvTermFetcherManager implements CvTermFetcher {
         }else{
             return ontologyFetchers.get(DEFAULTKEY).getCVTermByName(name, dbname);
         }
-    }
+    } */
 }
