@@ -88,9 +88,9 @@
         </dependency>
 
         <dependency>
-            <groupId>no.uib</groupId>
-            <artifactId>ols-dialog</artifactId>
-            <version>3.4.0</version>
+            <groupId>uk.ac.ebi.ols</groupId>
+            <artifactId>ols-client</artifactId>
+            <version>1.18</version>
         </dependency>
 
         <dependency>
