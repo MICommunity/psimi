@@ -31,6 +31,19 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
@@ -40,9 +53,10 @@
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
         </repository>
     </repositories>
-  <modules>
-    <module>bridges-core</module>
-    <module>jami-uniprot</module>
-    <module>jami-ols</module>
-  </modules>
+
+    <modules>
+      <module>bridges-core</module>
+      <module>jami-uniprot</module>
+      <module>jami-ols</module>
+    </modules>
 </project>
