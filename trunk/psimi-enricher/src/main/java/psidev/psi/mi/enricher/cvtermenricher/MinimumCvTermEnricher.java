@@ -41,6 +41,10 @@ public class MinimumCvTermEnricher
         enricherEvent = new EnricherEvent();
         //Get the enriched form
         CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
+        if(cvTermEnriched == null){
+            //log.debug("The enriched protein was null");
+            return;
+        }
         //Enrich
         enrichCvTerm(cvTermMaster, cvTermEnriched);
         //Find mismatches
