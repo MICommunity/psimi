@@ -36,20 +36,6 @@ public interface Experiment {
     public void setPublicationAndAddExperiment(Publication publication);
 
     /**
-     * The short label of experiment.
-     * It can be null.
-     * Ex: brehme-2009-1
-     * @return the shortName
-     */
-    public String getShortLabel();
-
-    /**
-     * Set the short label of an experiment
-     * @param name : short name
-     */
-    public void setShortLabel(String name);
-
-    /**
      * Collection of cross references for an experiment which can give more information about the experiment.
      * It cannot be null and if the experiment does not have any xrefs, the method should return an empty Collection.
      * Ex: PRIDE experiment/project xrefs
@@ -64,6 +50,13 @@ public interface Experiment {
      * @return the annotations
      */
     public Collection<Annotation> getAnnotations();
+
+    /**
+     * Collection of confidences for a specific experiment. It can happen that an authors give different confidences to the same experiment depending on the environment.
+     * It cannot be null. If the experiment does not have any confidences, the method should return an empty Collection.
+     * @return the confidences for this experiment
+     */
+    public Collection<Confidence> getConfidences();
 
     /**
      * The experimental method to determine the interaction. It is a controlled vocabulary term and cannot not be null.
