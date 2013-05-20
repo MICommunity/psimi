@@ -1,8 +1,11 @@
 package psidev.psi.mi.enricher.cvtermenricher;
 
-import psidev.psi.mi.fetcher.exception.BridgeFailedException;
+
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.bridges.ols.*;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.fetcher.ols.OlsFetcher;
+
 
 import java.util.HashMap;
 
@@ -36,7 +39,7 @@ public class CvTermFetcherManager implements CvTermFetcher {
         ontologyFetchers.put(key, fetcher);
     }
 
-    public CvTerm getCVTermByID(String identifier, String dbname) throws BridgeFailedException {
+    public CvTerm getCvTermByID(String identifier, String dbname) throws BridgeFailedException {
         if(ontologyFetchers.containsKey(dbname)){
             return ontologyFetchers.get(dbname).getCVTermByID(identifier, dbname);
         }else{
@@ -44,7 +47,7 @@ public class CvTermFetcherManager implements CvTermFetcher {
         }
     }
 
-    public CvTerm getCVTermByName(String name, String dbname) throws BridgeFailedException {
+    public CvTerm getCvTermByName(String name, String dbname) throws BridgeFailedException {
         if(ontologyFetchers.containsKey(dbname)){
             return ontologyFetchers.get(dbname).getCVTermByName(name, dbname);
         }else{
