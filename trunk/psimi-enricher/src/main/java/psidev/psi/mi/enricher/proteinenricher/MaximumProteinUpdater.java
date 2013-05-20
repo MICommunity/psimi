@@ -27,7 +27,8 @@ public class MaximumProteinUpdater
 
     }
 
-    public void updateProtein(Protein proteinMaster)
+    @Override
+    public void enrichProtein(Protein proteinMaster)
             throws EnrichmentException {
 
         Protein proteinEnriched = getEnrichedForm(proteinMaster);
@@ -37,7 +38,7 @@ public class MaximumProteinUpdater
         }
         super.enrichProtein(proteinMaster, proteinEnriched);
 
-
+        updateProteinMismatches(proteinMaster, proteinEnriched);
 
         fireEnricherEvent(enricherEvent);
     }
