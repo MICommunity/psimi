@@ -2,6 +2,7 @@ package psidev.psi.mi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import psidev.psi.mi.enricher.proteinenricher.MaximumProteinUpdater;
 import psidev.psi.mi.enricher.proteinenricher.MinimumProteinEnricher;
 import psidev.psi.mi.enricher.proteinenricher.ProteinEnricher;
 import psidev.psi.mi.enricherlistener.EnricherListenerLog;
@@ -22,9 +23,19 @@ public class ProteinTest {
     ProteinEnricher proteinEnricher;
 
     public ProteinTest(){
-        try{
+        /*try{
             proteinEnricher = new MinimumProteinEnricher();
             proteinEnricher.addEnricherListener(new EnricherListenerLog());
+
+        } catch (Exception e){
+            log.debug("the protein enricher did not initialise");
+            e.printStackTrace();
+        }    */
+    }
+
+    public void min(){ try{
+        proteinEnricher = new MinimumProteinEnricher();
+        proteinEnricher.addEnricherListener(new EnricherListenerLog());
 
         } catch (Exception e){
             log.debug("the protein enricher did not initialise");
@@ -32,10 +43,20 @@ public class ProteinTest {
         }
     }
 
+    public void max(){ try{
+        proteinEnricher = new MaximumProteinUpdater();
+        proteinEnricher.addEnricherListener(new EnricherListenerLog());
+
+        } catch (Exception e){
+            log.debug("the protein enricher did not initialise");
+            e.printStackTrace();
+        }
+    }
+
+
+    String[] tests = {"P42694","Q9Y2H6","FOOBAR"};
+
     public void testProteins(){
-
-        String[] tests = {"P42694","Q9Y2H6","FOOBAR"};
-
         for(String s : tests){
             Protein a = new DefaultProtein(s);
             a.setUniprotkb(s);
@@ -48,5 +69,4 @@ public class ProteinTest {
             }
         }
     }
-
 }
