@@ -40,6 +40,10 @@ public class MaximumCvTermUpdater
         enricherEvent = new EnricherEvent();
         //Get the enriched form
         CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
+        if(cvTermEnriched == null){
+            //log.debug("cvTerm was null");
+            return;
+        }
         //Enrich and update
         enrichCvTerm(cvTermMaster, cvTermEnriched);
         //Fire the report

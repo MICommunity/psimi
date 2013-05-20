@@ -3,7 +3,7 @@ package psidev.psi.mi.enricher.proteinenricher;
 import psidev.psi.mi.enricher.exception.EnrichmentException;
 import psidev.psi.mi.enricherlistener.event.AdditionEvent;
 import psidev.psi.mi.enricherlistener.event.MismatchEvent;
-import psidev.psi.mi.fetcher.exception.BridgeFailedException;
+import psidev.psi.mi.enricherlistener.event.OverwriteEvent;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -14,83 +14,70 @@ import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
  * Created with IntelliJ IDEA.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 14/05/13
- * Time: 14:27
+ * Date: 20/05/13
+ * Time: 09:42
  */
-public class MinimumProteinEnricher
-        extends AbstractProteinEnricher
+public class MaximumProteinUpdater
+        extends MinimumProteinEnricher
         implements ProteinEnricher{
 
-    public MinimumProteinEnricher()  throws EnrichmentException {
+    public MaximumProteinUpdater()  throws EnrichmentException {
         super();
-        log.debug("Starting the protein enricher");
+        log.debug("Starting the maximum protein updater");
 
     }
 
-    public void enrichProtein(Protein proteinMaster)
+    public void updateProtein(Protein proteinMaster)
             throws EnrichmentException {
 
         Protein proteinEnriched = getEnrichedForm(proteinMaster);
         if(proteinEnriched == null){
             log.debug("The enriched protein was null");
+            return;
         }
-        enrichProtein(proteinMaster, proteinEnriched);
-        compareProteinMismatches(proteinMaster, proteinEnriched);
+        super.enrichProtein(proteinMaster, proteinEnriched);
+
+
+
         fireEnricherEvent(enricherEvent);
     }
 
 
-    public void enrichProtein(Protein proteinMaster, Protein proteinEnriched){
-        //Fullname
-        if(proteinMaster.getFullName() == null
-                && proteinEnriched.getFullName() != null){
-            proteinMaster.setFullName( proteinEnriched.getFullName() );
-            addAdditionEvent(new AdditionEvent(
-                    "Full name",proteinEnriched.getFullName()));
-        }
-
-        //PRIMARY ACCESSION
-        if(proteinMaster.getUniprotkb() == null
-                && proteinEnriched.getUniprotkb() != null) {
-            proteinMaster.setUniprotkb(proteinEnriched.getUniprotkb());
-            addAdditionEvent(new AdditionEvent("uniprotKb AC",proteinEnriched.getUniprotkb()));
-        }
-
-        //SEQUENCE
-        if(proteinMaster.getSequence() == null
-                && proteinEnriched.getSequence() != null){
-            proteinMaster.setSequence(proteinEnriched.getSequence());
-            addAdditionEvent(new AdditionEvent("Sequence",proteinMaster.getSequence()));
-        }
-    }
-
-    public void compareProteinMismatches(Protein proteinMaster, Protein proteinEnriched){
+    public void updateProteinMismatches(Protein proteinMaster, Protein proteinEnriched){
 
         //Short name
         if (!proteinMaster.getShortName().equalsIgnoreCase(
                 proteinEnriched.getShortName() )) {
-            addMismatchEvent(new MismatchEvent(
-                    "ShortName", proteinMaster.getShortName(),proteinEnriched.getShortName()));
+            String oldValue = proteinMaster.getShortName();
+            proteinMaster.setShortName(proteinEnriched.getShortName());
+            addOverwriteEvent(new OverwriteEvent(
+                    "ShortName", oldValue, proteinMaster.getShortName()));
         }
 
         //Full name
         if (!proteinMaster.getFullName().equalsIgnoreCase(
                 proteinEnriched.getFullName() )) {
-            addMismatchEvent(new MismatchEvent(
-                "FullName",proteinMaster.getFullName(),proteinEnriched.getFullName()));
+            String oldValue = proteinMaster.getFullName();
+            proteinMaster.setFullName(proteinEnriched.getFullName());
+            addOverwriteEvent(new OverwriteEvent(
+                    "FullName",oldValue, proteinMaster.getFullName()));
         }
 
         //Uniprot AC
         if(! proteinMaster.getUniprotkb().equalsIgnoreCase(
                 proteinEnriched.getUniprotkb() )){
-            addMismatchEvent(new MismatchEvent(
-                    "UniprotKB AC", proteinMaster.getUniprotkb(),proteinEnriched.getUniprotkb()));
+            String oldValue = proteinMaster.getUniprotkb() ;
+            proteinMaster.setUniprotkb(proteinEnriched.getUniprotkb());
+            addOverwriteEvent(new OverwriteEvent(
+                    "UniprotKB AC", oldValue, proteinMaster.getUniprotkb()));
         }
 
         //Sequence
         if(! proteinMaster.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
-            addMismatchEvent(new MismatchEvent(
-                    "Sequence",proteinEnriched.getSequence(),proteinMaster.getSequence()));
+            String oldValue = proteinMaster.getSequence();
+            proteinMaster.setSequence(proteinEnriched.getSequence());
+            addOverwriteEvent(new OverwriteEvent(
+                    "Sequence", oldValue, proteinEnriched.getSequence()));
         }
 
 
@@ -115,7 +102,10 @@ public class MinimumProteinEnricher
                             addAdditionEvent(new AdditionEvent("RogID",rogid));
                         }
                         else if(!proteinMaster.getRogid().equals(rogid)){
-                            addMismatchEvent(new MismatchEvent("RogID",proteinMaster.getRogid(),rogid));
+                            String oldValue = proteinMaster.getRogid();
+                            proteinMaster.setRogid(rogid);
+                            addOverwriteEvent(new OverwriteEvent(
+                                    "RogID",oldValue, proteinMaster.getRogid()));
                         }
                     } catch (SeguidException e) {
                         log.debug("caught exception from a failed rogid");
