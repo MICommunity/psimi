@@ -54,4 +54,17 @@ public interface Range {
      * @return
      */
     public void setLink(boolean link);
+
+    /**
+     * The resultingSequence in case of mutation or variant.
+     * It can be null if not relevant for this range.
+     * @return the ResultingSequence if there is a sequence change for this range object, null otherwise
+     */
+    public ResultingSequence getResultingSequence();
+
+    /**
+     * Sets the resultingSequence of this range object
+     * @param resultingSequence
+     */
+    public void setResultingSequence(ResultingSequence resultingSequence);
 }
