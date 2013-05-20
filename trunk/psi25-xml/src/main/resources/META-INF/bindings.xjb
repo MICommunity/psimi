@@ -17,6 +17,12 @@
         </schemaBindings>
     </bindings>
 
+    <bindings schemaLocation="MIF300.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="psidev.psi.mi.xml300.jaxb"/>
+        </schemaBindings>
+    </bindings>
+
     <globalBindings>
         <xjc:simple/>
         <xjc:serializable/>

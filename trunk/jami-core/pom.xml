@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>psidev.psi.mi</groupId>
-    <artifactId>psi-jami</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
-    <name>PSI :: JAMI - Java framework for Molecular Interactions</name>
+    <artifactId>jami-core</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>PSI :: JAMI - Core interfaces, default implementations and utility classes</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

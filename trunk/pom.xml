@@ -27,7 +27,8 @@
         <module>jami-html</module>
         <module>psimi-enricher</module>
         <module>assembly</module>
-    </modules>
+    <module>bridges-master</module>
+  </modules>
 
     <scm>
         <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
