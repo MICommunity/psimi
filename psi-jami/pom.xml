@@ -13,10 +13,16 @@
   <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
   <name>PSI :: JAMI - Java framework for molecular interactions</name>
+  <description>JAMI master module</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <modules>
+        <module>jami-core</module>
+        <module>jami-html</module>
+  </modules>
 
   <dependencies>
     <dependency>
