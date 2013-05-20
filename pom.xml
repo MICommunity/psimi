@@ -37,6 +37,9 @@
     <properties>
         <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
         <psimi.version>${pom.version}</psimi.version>
+        <jami.version>1.0.0-SNAPSHOT</jami.version>
+        <calimocho.version>2.5.1-SNAPSHOT</calimocho.version>
+        <validator.version>2.0.6-SNAPSHOT</validator.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
