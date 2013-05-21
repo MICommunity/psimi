@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.exception.EntryNotFoundException;
+import psidev.psi.mi.jami.bridges.exception.FetcherException;
+import psidev.psi.mi.jami.bridges.exception.NullSearchException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.uniprot.uniprot.uniprotutil.UniprotToJAMI;
 import psidev.psi.mi.jami.model.Protein;
@@ -24,22 +27,24 @@ public class UniprotFetcher
 
     UniprotBridge bridge;
 
-    public UniprotFetcher() throws BridgeFailedException {
-        log.debug("starting bridge");
+    public UniprotFetcher() throws FetcherException {
+        log.trace("Starting uniprot bridge");
         bridge = new UniprotBridge();
     }
 
-    public Protein getProteinByID(String ID) throws BridgeFailedException {
-        if(log.isDebugEnabled()) log.debug("Searching on id ["+ID+"]");
-        UniProtEntry e = bridge.fetchEntryByID(ID);
+    public Protein getProteinByID(String identifier)
+            throws FetcherException {
 
+        if(identifier == null){
+            throw new NullSearchException("The provided searchName was null.");
+        }
+        UniProtEntry e = bridge.fetchEntryByID(identifier);
         if(e == null){
-            if(log.isDebugEnabled()) log.debug("Entry is null");
-            return null;
+            throw new EntryNotFoundException("Identifier "+identifier+" returned no uniprotKB entry.");
         }
 
         Protein p = UniprotToJAMI.getProteinFromEntry(e);
-        if(log.isDebugEnabled()) if(p == null) log.debug("Protein came back null");
+
         return p;
     }
 

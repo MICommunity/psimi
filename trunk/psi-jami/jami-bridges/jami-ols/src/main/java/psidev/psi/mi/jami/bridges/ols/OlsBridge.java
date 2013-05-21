@@ -72,7 +72,7 @@ public class OlsBridge{
      * @return          Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
      */
-    public HashMap<String,String> fetchIDByTerm(String name, String ontology)
+    public HashMap<String,String> fetchIDByBestGuessTerm(String name, String ontology)
             throws BridgeFailedException{
 
         HashMap<String,String> idList = new HashMap<String, String>();

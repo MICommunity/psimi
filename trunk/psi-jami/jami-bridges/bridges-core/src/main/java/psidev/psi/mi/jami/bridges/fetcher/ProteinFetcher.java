@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
@@ -12,6 +13,6 @@ import psidev.psi.mi.jami.model.Protein;
  */
 public interface ProteinFetcher {
     public Protein getProteinByID(String identifier)
-            throws BridgeFailedException;
+            throws FetcherException;
 
 }
