@@ -164,17 +164,17 @@ public class OlsBridge{
     /**
      *
      * @param metaDataMap
-     * @param dbname
+     * @param database
      * @return
      */
     public String extractShortNameFromMetaData(
-            HashMap metaDataMap, String dbname){
+            HashMap metaDataMap, String database){
 
         String META_DATA_SEPARATOR = "_";
         String SHORTLABEL_IDENTIFIER;
-        if(dbname == null) return null;
-        else if(dbname.equals("MI")) SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
-        else if(dbname.equals("MOD")) SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
+        if(database == null) return null;
+        else if(database.equals("psi-mi")) SHORTLABEL_IDENTIFIER = "Unique short label curated by PSI-MI";
+        else if(database.equals("psi-mod")) SHORTLABEL_IDENTIFIER = "Short label curated by PSI-MOD";
         else return null;
 
         if (metaDataMap != null) {
@@ -204,14 +204,14 @@ public class OlsBridge{
         return null;
     }
 
-    public  Collection<Alias> extractSynonymsFromMetaData(
-            HashMap metaDataMap, String dbname){
+    public Collection<Alias> extractSynonymsFromMetaData(
+            HashMap metaDataMap, String database){
 
         String META_DATA_SEPARATOR = "_";
         String SYNONYM_IDENTIFIER;
-        if(dbname == null) return null;
-        else if(dbname.equals("MI")) SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
-        else if(dbname.equals("MOD")) SYNONYM_IDENTIFIER = "Alternate name curated by PSI-MOD";
+        if(database == null) return null;
+        else if(database.equalsIgnoreCase("psi-mi")) SYNONYM_IDENTIFIER = "Alternate label curated by PSI-MI";
+        else if(database.equalsIgnoreCase("psi-mod")) SYNONYM_IDENTIFIER = "Alternate name curated by PSI-MOD";
         else return null;
 
         if (metaDataMap != null) {
@@ -219,7 +219,6 @@ public class OlsBridge{
             for (Object key : metaDataMap.keySet()){
                 String keyName = (String)key;
                 if (keyName.startsWith(SYNONYM_IDENTIFIER + META_DATA_SEPARATOR)){
-
                     synonyms.add(AliasFactory.createAlias(
                             "synonym", "MI:1041", (String) metaDataMap.get(key)));
                 }
