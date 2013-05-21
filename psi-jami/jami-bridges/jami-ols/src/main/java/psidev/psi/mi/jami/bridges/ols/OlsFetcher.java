@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.bridges.ols;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.exception.*;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -28,22 +28,29 @@ public class OlsFetcher implements CvTermFetcher {
 
     OlsBridge bridge;
 
-    public OlsFetcher() throws BridgeFailedException {
+    public OlsFetcher() throws FetcherException {
         bridge = new OlsBridge();
     }
 
 
-    public CvTerm getCvTermByID(String identifier, String ontology)
-            throws BridgeFailedException{
+    public CvTerm getCvTermByID(String identifier, String database)
+            throws FetcherException{
 
-        String name = bridge.fetchFullNameByIdentifier(identifier, ontology);
-        if(name == null){
-            return null;
+        if(identifier == null){
+            throw new NullSearchException("The provided identifier was null.");
         }
+        //TODO Change the way ontology moves through this section. Capture database name
+
+        String termName = bridge.fetchFullNameByIdentifier(identifier, ontology);
+        if(termName == null){
+            throw new EntryNotFoundException("Identifier "+identifier+" returned no termName.");
+        }
+
         if(ontology == null){
             ontology = OlsUtil.ontologyGetter(identifier);
             if(ontology == null) return null;
         }
+
         //Todo Ideally this should be a single, simple factory method
         Xref dbxref = new DefaultXref(new DefaultCvTerm(ontology),identifier, CvTermUtils.getIdentity());
         CvTerm cvTerm = new DefaultCvTerm(name,name,dbxref);
@@ -51,30 +58,59 @@ public class OlsFetcher implements CvTermFetcher {
     }
 
 
-    public CvTerm getCvTermByName(String name, String ontology)
-            throws BridgeFailedException{
-        HashMap<String,String> identifierMap = bridge.fetchIDByTerm(name, ontology);
+    public CvTerm getCvTermByTerm(String searchName, String database)
+            throws FetcherException {
 
-        if(identifierMap == null || identifierMap.size() <1) return null;
-        String identifier = null;
+        return getCvTermByTerm(searchName, database, false);
+    }
 
-        if(log.isDebugEnabled()){
-            log.debug("Identifier ["+name+"] gave "+identifierMap.size()+" ids ");
-            for(Object key : identifierMap.keySet()){
-                log.debug("Term got the ID: "+key.toString()+" with name "+identifierMap.get(key));
-            }
+
+    public CvTerm getCvTermByTerm(String searchName, String database, boolean useFuzzySearch)
+            throws FetcherException{
+
+        if(searchName == null){
+            throw new NullSearchException("The provided searchName was null.");
         }
 
-        if(identifierMap.size()>1) return null;
+        HashMap<String,String> identifierMap = null;
+        if(useFuzzySearch){
+            identifierMap = bridge.fetchIDByBestGuessTerm(searchName, ontology);
+        }else{
+            identifierMap = bridge.fetchIDByExactTerm(searchName, ontology);
+        }
+
+        if(identifierMap == null || identifierMap.size() < 1) {
+            throw new EntryNotFoundException(
+                    "The searchName ["+searchName+"] gave 0 IDs.");
+
+        }else if(identifierMap.size() > 1){
+            if(log.isDebugEnabled()){
+                for(Object key : identifierMap.keySet()){
+                    log.debug("Term ["+searchName+"] got the ID: "+key.toString()+" with name "+identifierMap.get(key));
+                }
+            }
+
+            throw new EntryNotFoundException(
+                    "The searchName ["+searchName+"] gave "+identifierMap.size()+" IDs.");
+        }
+
+        String resultIdentifier = null;
+        String resultTerm = null;
 
         for(Object key : identifierMap.keySet()){
-            identifier = key.toString();
+            resultIdentifier = key.toString();
+            resultTerm = identifierMap.get(resultIdentifier);
         }
 
-        if(identifier==null) return null;
-        String identifierTerm = identifierMap.get(identifier);
-        if(identifierTerm == null) return null;
-        String identifierOntology =  OlsUtil.ontologyGetter(identifier);
+        if(resultIdentifier == null || resultTerm == null){
+            throw new BadResultException(
+                    "The searchName ["+searchName+"] gave UNEXPECTED null results. "
+                    +"ID is ["+resultIdentifier+"] and term is ["+resultTerm+"].");
+        }
+
+
+        String identifierOntology =  OlsUtil.ontologyGetter(resultIdentifier);
+        //TODO THROW EXCEPTION
         if(identifierOntology == null) return null;
 
         //Todo Ideally this should be a single, simple factory method
@@ -83,6 +119,8 @@ public class OlsFetcher implements CvTermFetcher {
 
         return completeIdentifiedCvTerm(cvTerm, identifier, identifierOntology);
     }
+
+
 
     /**
      * Adds additional information after the identifier and full name has been resolved.
@@ -94,8 +132,8 @@ public class OlsFetcher implements CvTermFetcher {
      * @return
      * @throws BridgeFailedException
      */
-    public CvTerm completeIdentifiedCvTerm(CvTerm cvTerm, String identifier, String ontology)
-            throws BridgeFailedException{
+    private CvTerm completeIdentifiedCvTerm(CvTerm cvTerm, String identifier, String ontology)
+            throws FetcherException{
 
         HashMap metaDataMap = bridge.fetchMetaDataByID(identifier);
         String shortName = bridge.extractShortNameFromMetaData(metaDataMap, ontology);

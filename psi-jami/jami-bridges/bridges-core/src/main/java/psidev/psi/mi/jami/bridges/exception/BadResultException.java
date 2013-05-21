@@ -8,21 +8,21 @@ package psidev.psi.mi.jami.bridges.exception;
  * Date: 15/04/13
  * Time: 13:21
  */
-public class BridgeFailedException extends FetcherException{
+public class BadResultException extends FetcherException{
 
-    public BridgeFailedException() {
+    public BadResultException() {
         super();
     }
 
-    public BridgeFailedException(String s) {
+    public BadResultException(String s) {
         super(s);
     }
 
-    public BridgeFailedException(String s, Throwable throwable) {
+    public BadResultException(String s, Throwable throwable) {
         super(s, throwable);
     }
 
-    public BridgeFailedException(Throwable throwable) {
+    public BadResultException(Throwable throwable) {
         super(throwable);
     }
 }

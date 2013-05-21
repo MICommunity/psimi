@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.exception.EntryNotFoundException;
+import psidev.psi.mi.jami.bridges.exception.FetcherException;
+import psidev.psi.mi.jami.bridges.exception.NullSearchException;
 import psidev.psi.mi.jami.model.CvTerm;
 
 /**
@@ -17,25 +20,40 @@ public interface CvTermFetcher {
      * If the identifier can not be accessed, returns null.
      *
      * @param identifier    The identifier to search by
-     * @param ontology
+     * @param database
      * @return A fully enriched CvTerm
      * @throws BridgeFailedException    Thrown if there are problems with the connection
      */
-    public CvTerm getCvTermByID(String identifier, String ontology)
-            throws BridgeFailedException;
+    public CvTerm getCvTermByID(String identifier, String database)
+            throws FetcherException;
 
     /**
      * Identifies and initiates a CvTerm using its name.
-     * The identifier is retrieved using the search by name method in the bridge.
-     * If the identifier is null, does not begin with its database identifier (eg, MI:999)
-     * or multiple identifiers are found, this method returns null.
+     * The identifier is retrieved using the search by exact name method in the bridge.
+     * If the identifier is null, or multiple identifiers are found, throws exceptions.
      *
-     * @param name      A name to search for.
-     * @param ontology    The identifier for the database to search. Can be null.
-     * @return  A cvTerm found, using the name.
+     * @param searchName
+     * @param database
+     * @return
      * @throws BridgeFailedException
+     * @throws NullSearchException
+     * @throws EntryNotFoundException
      */
-    public CvTerm getCvTermByName(String name, String ontology)
-            throws BridgeFailedException;
+    public CvTerm getCvTermByTerm(String searchName, String database)
+            throws FetcherException;
 
+    /**
+     * Identifies and initiates a CvTerm using its name.
+     * A fuzzy search can also be used by setting @link{useFuzzySearch} to true.
+     * This will extend to search possibilities to partial matches if no exact matches can be found.
+     * @param searchName
+     * @param database
+     * @param useFuzzySearch
+     * @return
+     * @throws BridgeFailedException
+     * @throws NullSearchException
+     * @throws EntryNotFoundException
+     */
+    public CvTerm getCvTermByTerm(String searchName, String database, boolean useFuzzySearch)
+            throws FetcherException;
 }
