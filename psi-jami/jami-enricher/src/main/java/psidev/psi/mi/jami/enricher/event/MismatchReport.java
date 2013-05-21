@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherlistener.event;
+package psidev.psi.mi.jami.enricher.event;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,17 +7,17 @@ package psidev.psi.mi.jami.enricher.enricherlistener.event;
  * Date: 15/05/13
  * Time: 16:35
  */
-public class MismatchEvent {
+public class MismatchReport {
 
     private String field;
     private String oldValue;
     private String newValue;
 
-    public MismatchEvent(String field, String oldValue, String newValue){
+    public MismatchReport(String field, String oldValue, String newValue){
         setMismatchValues(field, oldValue, newValue);
     }
 
-    /*public AdditionEvent(String queryID, String queryIDType, String field, String newValue){
+    /*public AdditionReport(String queryID, String queryIDType, String field, String newValue){
         super(queryID, queryIDType);
         setAdditionValues(field, newValue);
     }   */

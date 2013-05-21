@@ -1,6 +1,6 @@
-package psidev.psi.mi.jami.enricher.enricherlistener;
+package psidev.psi.mi.jami.enricher.listener;
 
-import psidev.psi.mi.jami.enricher.enricherlistener.event.*;
+import psidev.psi.mi.jami.enricher.event.*;
 /**
  * An extension to allow the listening and firing of enrichment events.
  * Using this interface allows other methods to listen and receive reports.
@@ -24,26 +24,26 @@ public interface EnricherEventProcessor {
 
     /**
      * Fires the enricherEvent with details of all changes made.
-     * @param e The report of all events.
+     * @param r The report of all events.
      */
-    public void fireEnricherEvent(EnricherEvent e);
+    public void fireEnricherReport(EnricherEvent r);
 
     /**
      * Adds information to the enricherEvent when something has been overwritten,
-     * @param e A descritpion of what has been overwritten
+     * @param r A descritpion of what has been overwritten
      */
-    public void addOverwriteEvent(OverwriteEvent e);
+    public void addOverwriteReport(OverwriteReport r);
 
     /**
      * Adds information to the enricherEvent when something has been added.
-     * @param e A description of what has been added
+     * @param r A description of what has been added
      */
-    public void addAdditionEvent(AdditionEvent e) ;
+    public void addAdditionReport(AdditionReport r) ;
 
     /**
      * Adds information to the enricherEvent when two fields do not match.
-     * @param e A description of what mismatches
+     * @param r A description of what mismatches
      */
-    public void addMismatchEvent(MismatchEvent e);
+    public void addMismatchReport(MismatchReport r);
 }
 

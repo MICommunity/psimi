@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherlistener.event;
+package psidev.psi.mi.jami.enricher.event;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,15 +7,15 @@ package psidev.psi.mi.jami.enricher.enricherlistener.event;
  * Date: 13/05/13
  * Time: 13:40
  */
-public class OverwriteEvent extends EnricherEvent{
+public class OverwriteReport extends EnricherEvent{
     private String oldValue;
     private String field;
     private String newValue;
 
-    public OverwriteEvent(){
+    public OverwriteReport(){
     }
 
-    public OverwriteEvent(String field, String newValue, String oldValue){
+    public OverwriteReport(String field, String newValue, String oldValue){
         setOverwriteValues(field, newValue, oldValue);
 
     }

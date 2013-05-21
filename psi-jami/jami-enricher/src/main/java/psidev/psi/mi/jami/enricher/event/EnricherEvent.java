@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherlistener.event;
+package psidev.psi.mi.jami.enricher.event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,9 @@ public class EnricherEvent {
     private EnricherEvent e;    private String queryID = null;
     private String queryIDType = null;
 
-    private List<MismatchEvent> mismatches = new ArrayList<MismatchEvent>();
-    private List<AdditionEvent> additions = new ArrayList<AdditionEvent>();
-    private List<OverwriteEvent> overwrites = new ArrayList<OverwriteEvent>();
+    private List<MismatchReport> mismatches = new ArrayList<MismatchReport>();
+    private List<AdditionReport> additions = new ArrayList<AdditionReport>();
+    private List<OverwriteReport> overwrites = new ArrayList<OverwriteReport>();
 
 
     public EnricherEvent(){
@@ -53,21 +53,21 @@ public class EnricherEvent {
         }
     }
 
-    public void addMismatchEvent(MismatchEvent e) {
-        mismatches.add(e);
+    public void addMismatchReport(MismatchReport r) {
+        mismatches.add(r);
     }
 
-    public void addAdditionEvent(AdditionEvent e) {
-        additions.add(e);
+    public void addAdditionReport(AdditionReport r) {
+        additions.add(r);
     }
 
-    public void addOverwriteEvent(OverwriteEvent e) {
-        overwrites.add(e);
+    public void addOverwriteReport(OverwriteReport r) {
+        overwrites.add(r);
     }
 
 
 
-    public List<OverwriteEvent> getOverwrites() {return overwrites;}
-    public List<MismatchEvent> getMismatches() {return mismatches;}
-    public List<AdditionEvent> getAdditions() {return additions;}
+    public List<OverwriteReport> getOverwrites() {return overwrites;}
+    public List<MismatchReport> getMismatches() {return mismatches;}
+    public List<AdditionReport> getAdditions() {return additions;}
 }
