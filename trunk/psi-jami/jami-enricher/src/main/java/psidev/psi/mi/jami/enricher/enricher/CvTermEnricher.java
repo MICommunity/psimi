@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.enricher.enricher;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
-import psidev.psi.mi.jami.enricher.enricherlistener.EnricherEventProcessor;
+import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessor;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.model.CvTerm;
 

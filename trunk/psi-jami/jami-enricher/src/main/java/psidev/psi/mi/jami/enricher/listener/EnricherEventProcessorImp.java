@@ -1,9 +1,11 @@
-package psidev.psi.mi.jami.enricher.enricherlistener;
+package psidev.psi.mi.jami.enricher.listener;
 
-import psidev.psi.mi.enricherlistener.event.AdditionEvent;
-import psidev.psi.mi.enricherlistener.event.EnricherEvent;
-import psidev.psi.mi.enricherlistener.event.MismatchEvent;
-import psidev.psi.mi.enricherlistener.event.OverwriteEvent;
+
+
+import psidev.psi.mi.jami.enricher.event.AdditionReport;
+import psidev.psi.mi.jami.enricher.event.EnricherEvent;
+import psidev.psi.mi.jami.enricher.event.MismatchReport;
+import psidev.psi.mi.jami.enricher.event.OverwriteReport;
 
 import java.util.ArrayList;
 
@@ -46,31 +48,31 @@ public abstract class EnricherEventProcessorImp implements EnricherEventProcesso
      */
     public void fireEnricherEvent(EnricherEvent e) {
         for (EnricherListener il : enricherListeners) {
-            il.enricherEvent(e);
+            il.onEnricherEvent(e);
         }
     }
 
     /**
      * Adds information to the enricherEvent when something has been overwritten,
-     * @param e A description of what has been overwritten
+     * @param r A description of what has been overwritten
      */
-    public void addOverwriteEvent(OverwriteEvent e) {
-        enricherEvent.addOverwriteEvent(e);
+    public void addOverwriteReport(OverwriteReport r) {
+        enricherEvent.addOverwriteReport(r);
     }
 
     /**
      * Adds information to the enricherEvent when something has been added.
-     * @param e A description of what has been added
+     * @param r A description of what has been added
      */
-    public void addAdditionEvent(AdditionEvent e) {
-        enricherEvent.addAdditionEvent(e);
+    public void addAdditionReport(AdditionReport r) {
+        enricherEvent.addAdditionReport(r);
     }
 
     /**
      * Adds information to the enricherEvent when two fields do not match.
-     * @param e A description of what mismatches
+     * @param r A description of what mismatches
      */
-    public void addMismatchEvent(MismatchEvent e) {
-        enricherEvent.addMismatchEvent(e);
+    public void addMismatchReport(MismatchReport r) {
+        enricherEvent.addMismatchReport(r);
     }
 }

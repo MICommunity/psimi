@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherlistener.event;
+package psidev.psi.mi.jami.enricher.event;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,14 +7,14 @@ package psidev.psi.mi.jami.enricher.enricherlistener.event;
  * Date: 13/05/13
  * Time: 14:30
  */
-public class AdditionEvent extends EnricherEvent{
+public class AdditionReport extends EnricherEvent{
     private String field;
     private String newValue;
 
-    public AdditionEvent(){
+    public AdditionReport(){
     }
 
-    public AdditionEvent(String field, String newValue){
+    public AdditionReport(String field, String newValue){
         setAdditionValues(field, newValue);
     }
 
