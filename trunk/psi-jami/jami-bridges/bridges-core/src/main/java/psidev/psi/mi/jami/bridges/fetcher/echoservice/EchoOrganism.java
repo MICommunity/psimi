@@ -18,9 +18,7 @@ public class EchoOrganism
 
     Organism echo = null;
 
-    public EchoOrganism(){
-
-    }
+    public EchoOrganism(){}
 
     public EchoOrganism(Organism echo){
         this.echo = echo;
@@ -29,8 +27,16 @@ public class EchoOrganism
     public Organism getOrganismByTaxID(int taxID)
             throws FetcherException {
 
-        if(echo == null) throw new BridgeFailedException("No Organism to Echo");
-        else if(echo.getTaxId() != taxID) throw new EntryNotFoundException("Echo does not contain the requested Organism.");
-        else return echo;
+        if(echo == null) {
+            throw new BridgeFailedException(
+                    "No Organism to Echo");
+
+        }else if(echo.getTaxId() != taxID){
+            throw new EntryNotFoundException(
+                    "Echo does not contain the requested Organism.");
+
+        }else{
+            return echo;
+        }
     }
 }

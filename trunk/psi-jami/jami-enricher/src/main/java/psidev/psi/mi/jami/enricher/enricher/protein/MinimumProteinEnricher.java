@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.enricher.enricher.protein;
 
-
 import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
 import psidev.psi.mi.jami.enricher.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.enricher.organism.MinimumOrganismEnricher;
@@ -8,7 +7,6 @@ import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.event.MismatchReport;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
@@ -26,17 +24,15 @@ public class MinimumProteinEnricher
         extends AbstractProteinEnricher
         implements ProteinEnricher {
 
-    public MinimumProteinEnricher()  throws EnrichmentException {
+    public MinimumProteinEnricher()
+            throws EnrichmentException {
         super();
-        log.debug("Starting the protein enricher");
-
     }
 
     public void enrichProtein(Protein proteinMaster)
             throws EnrichmentException {
 
         Protein proteinEnriched = getEnrichedForm(proteinMaster);
-        if(proteinEnriched == null) throw new FetchingException("Null protein");
 
         enrichProtein(proteinMaster, proteinEnriched);
         compareProteinMismatches(proteinMaster, proteinEnriched);
@@ -44,7 +40,9 @@ public class MinimumProteinEnricher
     }
 
 
-    protected void enrichProtein(Protein proteinMaster, Protein proteinEnriched){
+    protected void enrichProtein(Protein proteinMaster, Protein proteinEnriched)
+            throws EnrichmentException{
+
         //Fullname
         if(proteinMaster.getFullName() == null
                 && proteinEnriched.getFullName() != null){
@@ -105,7 +103,7 @@ public class MinimumProteinEnricher
                 minimumOrganismEnricher.setFetcher(new EchoOrganism(proteinEnriched.getOrganism()));
                 minimumOrganismEnricher.addEnricherListener(new EnricherListener() {
                     public void onEnricherEvent(EnricherEvent e) {
-                        addSubEnricherEvent(e);
+                        addEchoSubEnricherEvent(e);
                     }
                 });
 
@@ -136,7 +134,7 @@ public class MinimumProteinEnricher
                 }
             }
         }catch(EnrichmentException e){
-            log.warn("Caught Enrichment exception fired by organism conflict");
+            log.warn("Caught Enrichment exception fired by organism");
         }
     }
 }

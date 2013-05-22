@@ -60,8 +60,7 @@ public abstract class AbstractCvTermEnricher
      */
     protected CvTerm getEnrichedForm(CvTerm cvTermMaster)
             throws EnrichmentException {
-        if(log.isDebugEnabled()) log.debug("-- NEW ENRICHMENT BEGINS --");
-        if(fetcher == null) throw new FetchingException("Fetcher is null.");
+        if(fetcher == null) throw new FetchingException("CvTermFetcher is null.");
 
         CvTerm enriched = null;
         enricherEvent.clear();
@@ -126,10 +125,7 @@ public abstract class AbstractCvTermEnricher
             else{ if(log.isTraceEnabled()) log.trace("No short name to search on."); }
         }*/
 
-        if(enriched == null){
-            log.debug("No enrichment made, throwing enricher exception");
-            throw new FetchingException("Missing identifier or resolvable name.");
-        }
+        if(enriched == null)throw new FetchingException("Null CvTerm");
 
         return enriched;
     }

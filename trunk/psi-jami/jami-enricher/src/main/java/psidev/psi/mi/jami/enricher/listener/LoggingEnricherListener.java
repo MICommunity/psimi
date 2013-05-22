@@ -21,6 +21,10 @@ public class LoggingEnricherListener implements EnricherListener {
     private final Logger log = LoggerFactory.getLogger(LoggingEnricherListener.class.getName());
 
     public void onEnricherEvent(EnricherEvent e) {
+        logAllReports(e);
+    }
+
+    public void logAllReports(EnricherEvent e) {
         log.info("Logging for: ["+e.getQueryID()+"] " +
                 "Object type : " +e.getObjectType()+
                 "(a query on ["+e.getQueryIDType()+"])");
@@ -44,8 +48,7 @@ public class LoggingEnricherListener implements EnricherListener {
 
         for(EnricherEvent s :e.getAdditions()) {
             log.info("Sub enrichment begins");
-            onEnricherEvent(s);
+            logAllReports(s);
         }
-
     }
 }
