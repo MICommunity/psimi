@@ -1,18 +1,20 @@
 package psidev.psi.mi.jami.utils.comparator.experiment;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Unambiguous experiments comparator
  * It will look first at the publications using a UnambiguousPublicationComparator. If the publications are the same, it will look at the
  * interaction detection methods using UnambiguousCvTermComparator. If the interaction detection methods are the same, it will look at
  * the host organisms using UnambiguousOrganismComparator.
+ * If the host organisms are the same, it will look at the variableParameters using UnambiguousVariableParameterComparator.
  *
  * This comparator will ignore all the other properties of an experiment.
  *
@@ -38,6 +40,7 @@ public class UnambiguousExperimentComparator extends ExperimentComparator {
      * It will look first at the publications using a UnambiguousPublicationComparator. If the publications are the same, it will look at the
      * interaction detection methods using UnambiguousCvTermComparator. If the interaction detection methods are the same, it will look at
      * the host organisms using UnambiguousOrganismComparator.
+     * If the host organisms are the same, it will look at the variableParameters using UnambiguousVariableParameterComparator.
      *
      * This comparator will ignore all the other properties of an experiment.
      */
@@ -92,6 +95,12 @@ public class UnambiguousExperimentComparator extends ExperimentComparator {
 
         Organism organism = exp.getHostOrganism();
         hashcode = 31*hashcode + UnambiguousOrganismComparator.hashCode(organism);
+
+        List<VariableParameter> list1 = new ArrayList<VariableParameter>(exp.getVariableParameters());
+        Collections.sort(list1, unambiguousExperimentComparator.getVariableParameterCollectionComparator().getObjectComparator());
+        for (VariableParameter param : list1){
+            hashcode = 31*hashcode + UnambiguousVariableParameterComparator.hashCode(param);
+        }
 
         return hashcode;
     }

@@ -13,11 +13,11 @@ import java.util.Collection;
 public interface ModelledInteraction extends Interaction{
 
     /**
-     * Experiments that have been used to predict this modelled interaction.
+     * Interaction evidences supporting this modelled interaction.
      * The collection cannot be null. If the modelled interaction does not have experimental interactions attached to it, the method should return an empty set
      * @return the collection of experimental evidences
      */
-    public Collection<Experiment> getExperiments();
+    public Collection<InteractionEvidence> getInteractionEvidences();
 
     /**
      * The source which reported this modelled interaction. It can be an organization, institute, ...
@@ -83,4 +83,12 @@ public interface ModelledInteraction extends Interaction{
      * @return the parameters
      */
     public Collection<ModelledParameter> getModelledParameters();
+
+    /**
+     * The collection of cooperative effects associated with this modelledInteraction.
+     * The collection cannot be null. If the ModelledInteraction does not have any cooperative effects, this method
+     * should return an empty collection.
+     * @return the collection of cooperative effects for this modelled interaction
+     */
+    public Collection<CooperativeEffect> getCooperativeEffects();
 }

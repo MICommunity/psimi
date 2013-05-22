@@ -18,12 +18,14 @@ import java.util.Collections;
 public class DefaultExperiment implements Experiment {
 
     private Publication publication;
-    private String shortLabel;
     private Collection<Xref> xrefs;
     private Collection<Annotation> annotations;
     private CvTerm interactionDetectionMethod;
     private Organism hostOrganism;
     private Collection<InteractionEvidence> interactions;
+
+    private Collection<Confidence> confidences;
+    private Collection<VariableParameter> variableParameters;
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod){
 
@@ -34,18 +36,8 @@ public class DefaultExperiment implements Experiment {
         this.interactionDetectionMethod = interactionDetectionMethod;
     }
 
-    public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod){
-        this(publication, interactionDetectionMethod);
-        this.shortLabel = shortLabel;
-    }
-
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod, Organism organism){
         this(publication, interactionDetectionMethod);
-        this.hostOrganism = organism;
-    }
-
-    public DefaultExperiment(String shortLabel, Publication publication, CvTerm interactionDetectionMethod, Organism organism){
-        this(shortLabel, publication, interactionDetectionMethod);
         this.hostOrganism = organism;
     }
 
@@ -88,6 +80,32 @@ public class DefaultExperiment implements Experiment {
         }
     }
 
+    protected void initialiseConfidences(){
+        this.confidences = new ArrayList<Confidence>();
+    }
+
+    protected void initialiseVariableParameters(){
+        this.variableParameters = new ArrayList<VariableParameter>();
+    }
+
+    protected void initialiseConfidencesWith(Collection<Confidence> confs){
+        if (confs == null){
+            this.confidences = Collections.EMPTY_LIST;
+        }
+        else{
+            this.confidences = confs;
+        }
+    }
+
+    protected void initialiseVariableParametersWith(Collection<VariableParameter> variableParameters){
+        if (variableParameters == null){
+            this.variableParameters = Collections.EMPTY_LIST;
+        }
+        else{
+            this.variableParameters = variableParameters;
+        }
+    }
+
     public Publication getPublication() {
         return this.publication;
     }
@@ -104,14 +122,6 @@ public class DefaultExperiment implements Experiment {
         }
     }
 
-    public String getShortLabel() {
-        return this.shortLabel;
-    }
-
-    public void setShortLabel(String name) {
-        this.shortLabel = name;
-    }
-
     public Collection<Xref> getXrefs() {
         if (xrefs == null){
             initialiseXrefs();
@@ -124,6 +134,13 @@ public class DefaultExperiment implements Experiment {
            initialiseAnnotations();
         }
         return this.annotations;
+    }
+
+    public Collection<Confidence> getConfidences() {
+        if (confidences == null){
+            initialiseConfidences();
+        }
+        return confidences;
     }
 
     public CvTerm getInteractionDetectionMethod() {
@@ -202,6 +219,13 @@ public class DefaultExperiment implements Experiment {
             }
         }
         return removed;
+    }
+
+    public Collection<VariableParameter> getVariableParameters() {
+        if (variableParameters == null){
+            initialiseVariableParameters();
+        }
+        return variableParameters;
     }
 
     @Override

@@ -15,6 +15,8 @@ public class RangeCloner {
     public static void copyAndOverrideRangeProperties(Range source, Range target){
         if (source != null && target != null){
             target.setPositions(source.getStart(), source.getEnd());
+            target.setLink(source.isLink());
+            target.setResultingSequence(source.getResultingSequence());
         }
     }
 }

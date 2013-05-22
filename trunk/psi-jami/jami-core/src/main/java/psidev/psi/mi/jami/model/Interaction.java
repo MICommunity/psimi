@@ -76,19 +76,6 @@ public interface Interaction {
     public Collection<Annotation> getAnnotations();
 
     /**
-     * Boolean value to know if an interaction is negative.
-     * It is false by default (positive interaction by default)
-     * @return true if the interaction is negative
-     */
-    public boolean isNegative();
-
-    /**
-     * Sets the negative boolean value.
-     * @param negative: negative value
-     */
-    public void setNegative(boolean negative);
-
-    /**
      * The last update date.
      * It can be null if not relevant or not known.
      * @return the last update date
@@ -120,11 +107,11 @@ public interface Interaction {
      * Ex: direct interaction, association, ...
      * @return the interaction type
      */
-    public CvTerm getType();
+    public CvTerm getInteractionType();
 
     /**
      * Sets the interaction type.
      * @param term : interaction type
      */
-    public void setType(CvTerm term);
+    public void setInteractionType(CvTerm term);
 }

@@ -85,7 +85,7 @@ public class UnambiguousExactParticipantBaseComparator extends ParticipantBaseCo
         int hashcode = 31;
         hashcode = 31*hashcode + UnambiguousExactInteractorBaseComparator.hashCode(participant.getInteractor());
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(participant.getBiologicalRole());
-        hashcode = 31*hashcode + (participant.getStoichiometry() != null ? participant.getStoichiometry() : 0);
+        hashcode = 31*hashcode + StoichiometryComparator.hashCode(participant.getStoichiometry());
 
         return hashcode;
     }

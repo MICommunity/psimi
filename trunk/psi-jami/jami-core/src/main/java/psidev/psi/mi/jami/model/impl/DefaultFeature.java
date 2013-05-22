@@ -31,6 +31,9 @@ public class DefaultFeature<T extends Feature> implements Feature, Serializable{
     private CvTerm type;
     private Collection<Range> ranges;
 
+    private CvTerm interactionEffect;
+    private CvTerm interactionDependency;
+
     public DefaultFeature(){
     }
 
@@ -177,6 +180,22 @@ public class DefaultFeature<T extends Feature> implements Feature, Serializable{
             initialiseRanges();
         }
         return this.ranges;
+    }
+
+    public CvTerm getInteractionEffect() {
+        return this.interactionEffect;
+    }
+
+    public void setInteractionEffect(CvTerm effect) {
+        this.interactionEffect = effect;
+    }
+
+    public CvTerm getInteractionDependency() {
+        return this.interactionDependency;
+    }
+
+    public void setInteractionDependency(CvTerm interactionDependency) {
+        this.interactionDependency = interactionDependency;
     }
 
     protected void processAddedIdentifierEvent(Xref added) {

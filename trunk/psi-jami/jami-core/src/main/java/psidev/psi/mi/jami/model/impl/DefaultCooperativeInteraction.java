@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.CooperativeInteraction;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Source;

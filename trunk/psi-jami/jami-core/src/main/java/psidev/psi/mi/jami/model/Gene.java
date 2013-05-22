@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.model;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Gene extends Interactor{
+public interface Gene extends Molecule{
 
     public static String GENE = "gene";
     public static String GENE_MI = "MI:0250";

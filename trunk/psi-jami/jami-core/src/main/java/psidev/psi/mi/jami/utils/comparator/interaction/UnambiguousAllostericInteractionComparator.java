@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
-import psidev.psi.mi.jami.model.AllostericInteraction;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousModelledParticipantComparator;

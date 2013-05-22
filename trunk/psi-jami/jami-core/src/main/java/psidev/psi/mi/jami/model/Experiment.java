@@ -120,4 +120,12 @@ public interface Experiment {
      * @return true if interaction evidences are removed from the list of interactions
      */
     public boolean removeAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences);
+
+    /**
+     * The collection of variableParameters and their values used in this experiment.
+     * The collection cannot be null. If the experiment does not have any variableParameters,
+     * this method should return an empty collection.
+     * @return the collection of variableParameters and their values used in this experiment
+     */
+    public Collection<VariableParameter> getVariableParameters();
 }

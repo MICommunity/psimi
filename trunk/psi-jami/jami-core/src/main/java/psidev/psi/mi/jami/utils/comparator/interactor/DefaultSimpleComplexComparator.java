@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantInteractorComparator;
 
 /**
  * Default Complex comparator which will only compare interactors in the components
@@ -21,16 +21,16 @@ public class DefaultSimpleComplexComparator extends ComplexComparator{
     private static DefaultSimpleComplexComparator defaultSimpleComplexComparator;
 
     /**
-     * Creates a new DefaultSimpleComplexComparator. It will use a DefaultInteractorBaseComparator, DefaultComponentInteractorComparator to
+     * Creates a new DefaultSimpleComplexComparator. It will use a DefaultInteractorBaseComparator, DefaultModelledParticipantInteractorComparator to
      * compares components
      */
     public DefaultSimpleComplexComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultComponentInteractorComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultModelledParticipantInteractorComparator());
     }
 
     @Override
     /**
-     * It will first compare the collection of components using DefaultComponentInteractorComparator.
+     * It will first compare the collection of components using DefaultModelledParticipantInteractorComparator.
      * If the components are the same, it will look at the default properties of an interactor
      * using DefaultInteractorBaseComparator.
      */

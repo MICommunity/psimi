@@ -27,7 +27,7 @@ public class DefaultInteractor implements Interactor, Serializable {
     private Collection<Annotation> annotations;
     private Collection<Alias> aliases;
     private Organism organism;
-    private CvTerm type;
+    private CvTerm interactorType;
 
     public DefaultInteractor(String name, CvTerm type){
         if (name == null || (name != null && name.length() == 0)){
@@ -35,9 +35,9 @@ public class DefaultInteractor implements Interactor, Serializable {
         }
         this.shortName = name;
         if (type == null){
-            throw new IllegalArgumentException("The interactor type cannot be null.");
+            throw new IllegalArgumentException("The interactor interactorType cannot be null.");
         }
-        this.type = type;
+        this.interactorType = type;
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type){
@@ -202,15 +202,15 @@ public class DefaultInteractor implements Interactor, Serializable {
         this.organism = organism;
     }
 
-    public CvTerm getType() {
-        return this.type;
+    public CvTerm getInteractorType() {
+        return this.interactorType;
     }
 
-    public void setType(CvTerm type) {
-        if (type == null){
-            throw new IllegalArgumentException("The interactor type cannot be null.");
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            throw new IllegalArgumentException("The interactor interactorType cannot be null.");
         }
-        this.type = type;
+        this.interactorType = interactorType;
     }
 
     @Override

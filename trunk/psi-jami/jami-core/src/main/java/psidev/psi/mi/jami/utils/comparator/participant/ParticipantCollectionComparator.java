@@ -26,6 +26,6 @@ public class ParticipantCollectionComparator<T extends Participant>  extends Col
 
     @Override
     public Comparator<T> getObjectComparator() {
-        return (Comparator<T>) objectComparator;
+        return objectComparator;
     }
 }

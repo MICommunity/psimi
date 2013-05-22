@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationCompara
  * It will look first at the publications using a DefaultPublicationComparator. If the publications are the same, it will look at the
  * interaction detection methods using DefaultCvTermComparator. If the interaction detection methods are the same, it will look at
  * the host organisms using DefaultOrganismComparator.
+ * If the host organisms are the same, it will look at the variableParameters using DefaultVariableParameterComparator.
  *
  * This comparator will ignore all the other properties of an experiment.
  *
@@ -34,6 +35,7 @@ public class DefaultExperimentComparator extends ExperimentComparator {
      * It will look first at the publications using a DefaultPublicationComparator. If the publications are the same, it will look at the
      * interaction detection methods using DefaultCvTermComparator. If the interaction detection methods are the same, it will look at
      * the host organisms using DefaultOrganismComparator.
+     * If the host organisms are the same, it will look at the variableParameters using DefaultVariableParameterComparator.
      *
      * This comparator will ignore all the other properties of an experiment.
      */

@@ -18,7 +18,7 @@ import java.util.Collections;
  */
 
 public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> implements FeatureEvidence {
-    private CvTerm detectionMethod;
+    private Collection<CvTerm> detectionMethods;
     private ParticipantEvidence participantEvidence;
     private Collection<FeatureEvidence> bindingSiteEvidences;
 
@@ -42,12 +42,6 @@ public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> impl
         this.participantEvidence = participant;
     }
 
-    public DefaultFeatureEvidence(ParticipantEvidence participant, CvTerm type, CvTerm detectionMethod) {
-        super(type);
-        this.detectionMethod = detectionMethod;
-        this.participantEvidence = participant;
-    }
-
     public DefaultFeatureEvidence() {
         super();
     }
@@ -64,18 +58,12 @@ public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> impl
         super(shortName, fullName, type);
     }
 
-    public DefaultFeatureEvidence(CvTerm type, CvTerm detectionMethod) {
-        super(type);
-        this.detectionMethod = detectionMethod;
-    }
-
-    public DefaultFeatureEvidence(String shortName, String fullName, CvTerm type, CvTerm detectionMethod) {
-        super(shortName, fullName, type);
-        this.detectionMethod = detectionMethod;
-    }
-
     protected void initialiseBindingSiteEvidences(){
         this.bindingSiteEvidences = new ArrayList<FeatureEvidence>();
+    }
+
+    protected void initialiseDetectionMethods(){
+        this.detectionMethods = new ArrayList<CvTerm>();
     }
 
     protected void initialiseBindingSiteEvidencesWith(Collection<FeatureEvidence> features){
@@ -84,6 +72,15 @@ public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> impl
         }
         else {
             this.bindingSiteEvidences = features;
+        }
+    }
+
+    protected void initialiseDetectionMethodsWith(Collection<CvTerm> methods){
+        if (methods == null){
+            this.detectionMethods = Collections.EMPTY_LIST;
+        }
+        else {
+            this.detectionMethods = methods;
         }
     }
 
@@ -144,12 +141,8 @@ public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> impl
         return added;
     }
 
-    public CvTerm getDetectionMethod() {
-        return this.detectionMethod;
-    }
-
-    public void setDetectionMethod(CvTerm method) {
-        this.detectionMethod = method;
+    public Collection<CvTerm> getDetectionMethods() {
+        return this.detectionMethods;
     }
 
     public ParticipantEvidence getParticipantEvidence() {
@@ -182,10 +175,5 @@ public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> impl
 
         // use UnambiguousExperimentalFeature comparator for equals
         return UnambiguousFeatureEvidenceComparator.areEquals(this, (FeatureEvidence) o);
-    }
-
-    @Override
-    public String toString() {
-        return (detectionMethod != null ? detectionMethod.toString() + ", " : "") + super.toString();
     }
 }

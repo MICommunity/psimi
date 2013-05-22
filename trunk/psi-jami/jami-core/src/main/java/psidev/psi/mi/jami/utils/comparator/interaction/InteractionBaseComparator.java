@@ -10,8 +10,7 @@ import java.util.Comparator;
  * Basic Interaction comparator.
  *
  * It will first compare the participants using ParticipantBaseComparator. If the participants are the same, it will compare
- * the interaction types using AbstractCvTermComparator. If the interaction types are the same, it will compare the negative properties.
- * A negative interaction will come after a positive interaction.
+ * the interaction types using AbstractCvTermComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -64,30 +63,10 @@ public class InteractionBaseComparator implements Comparator<Interaction> {
         else {
 
             // then compares interaction type
-            CvTerm type1 = interaction1.getType();
-            CvTerm type2 = interaction2.getType();
+            CvTerm type1 = interaction1.getInteractionType();
+            CvTerm type2 = interaction2.getInteractionType();
 
-            int comp = cvTermComparator.compare(type1, type2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares negative
-            boolean isNegative1 = interaction1.isNegative();
-            boolean  isNegative2 = interaction2.isNegative();
-
-            if (isNegative1 == isNegative2){
-                return EQUAL;
-            }
-            else if (isNegative1){
-                return AFTER;
-            }
-            else if (isNegative2){
-                return BEFORE;
-            }
-            else {
-                return EQUAL;
-            }
+            return cvTermComparator.compare(type1, type2);
         }
     }
 }

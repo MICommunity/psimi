@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.utils.clone;
 
-import psidev.psi.mi.jami.model.Component;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**

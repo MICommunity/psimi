@@ -1,13 +1,15 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactComponentComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledParticipantComparator;
 
 /**
  * Unambiguous exact Complex comparator
  *
  * It will first look at the default properties of an interactor using UnambiguousExactInteractorBaseComparator.
- * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousExactComponentComparator.
+ * It will then compare interaction types using UnambiguousExactCvTermComparator.
+ * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousExactModelledParticipantComparator.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -20,18 +22,19 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
     private static UnambiguousExactComplexComparator unambiguousExactComplexComparator;
 
     /**
-     * Creates a new UnambiguousExactComplexComparator. It will use a UnambiguousExactInteractorBaseComparator, UnambiguousExactComponentComparator to
+     * Creates a new UnambiguousExactComplexComparator. It will use a UnambiguousExactInteractorBaseComparator, UnambiguousExactModelledParticipantComparator to
      * compares components.
      */
     public UnambiguousExactComplexComparator() {
-        super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousExactComponentComparator());
+        super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousExactModelledParticipantComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
     /**
      *
      * It will first look at the default properties of an interactor using UnambiguousExactInteractorBaseComparator.
-     * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousExactComponentComparator.
+     * It will then compare interaction types using UnambiguousExactCvTermComparator.
+     * If the basic interactor properties are the same, It will first compare the collection of components using UnambiguousExactModelledParticipantComparator.
      */
     public int compare(Complex complex1, Complex complex2) {
         return super.compare(complex1, complex2);
@@ -40,6 +43,12 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
     @Override
     public UnambiguousExactInteractorBaseComparator getInteractorComparator() {
         return (UnambiguousExactInteractorBaseComparator) this.interactorComparator;
+    }
+
+
+    @Override
+    public UnambiguousCvTermComparator getCvTermComparator() {
+        return (UnambiguousCvTermComparator) super.getCvTermComparator();
     }
 
     /**

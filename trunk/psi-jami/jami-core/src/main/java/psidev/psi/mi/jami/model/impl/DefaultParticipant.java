@@ -25,7 +25,8 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
     private Collection<Xref> xrefs;
     private Collection<Annotation> annotations;
     private Collection<Alias> aliases;
-    private Integer stoichiometry;
+    private Stoichiometry stoichiometry;
+    private CausalRelationship causalRelationship;
 
     public DefaultParticipant(T interactor){
         if (interactor == null){
@@ -43,12 +44,12 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
         this.biologicalRole = bioRole != null ? bioRole : CvTermFactory.createUnspecifiedRole();
     }
 
-    public DefaultParticipant(T interactor, Integer stoichiometry){
+    public DefaultParticipant(T interactor, Stoichiometry stoichiometry){
         this(interactor);
         this.stoichiometry = stoichiometry;
     }
 
-    public DefaultParticipant(T interactor, CvTerm bioRole, Integer stoichiometry){
+    public DefaultParticipant(T interactor, CvTerm bioRole, Stoichiometry stoichiometry){
         this(interactor, bioRole);
         this.stoichiometry = stoichiometry;
     }
@@ -116,6 +117,14 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
         }
     }
 
+    public CausalRelationship getCausalRelationship() {
+        return this.causalRelationship;
+    }
+
+    public void setCausalRelationship(CausalRelationship relationship) {
+        this.causalRelationship = relationship;
+    }
+
     public Collection<Xref> getXrefs() {
         if (xrefs == null){
             initialiseXrefs();
@@ -137,11 +146,20 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
         return this.aliases;
     }
 
-    public Integer getStoichiometry() {
+    public Stoichiometry getStoichiometry() {
         return this.stoichiometry;
     }
 
     public void setStoichiometry(Integer stoichiometry) {
+        if (stoichiometry == null){
+            this.stoichiometry = null;
+        }
+        else {
+            this.stoichiometry = new DefaultStoichiometry(stoichiometry, stoichiometry);
+        }
+    }
+
+    public void setStoichiometry(Stoichiometry stoichiometry) {
         this.stoichiometry = stoichiometry;
     }
 
@@ -161,7 +179,7 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
 
     @Override
     public String toString() {
-        return interactor.toString() + " ( " + biologicalRole.toString() + ")";
+        return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (stoichiometry != null ? ", stoichiometry: " + stoichiometry.toString() : "");
     }
 
     @Override

@@ -68,8 +68,8 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
         }
         else{
             // compares first interactor types
-            CvTerm type1 = interactor1.getType();
-            CvTerm type2 = interactor2.getType();
+            CvTerm type1 = interactor1.getInteractorType();
+            CvTerm type2 = interactor2.getInteractorType();
 
             int comp=EQUAL;
             if (type1 != null || type2 != null){
@@ -128,7 +128,7 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
         }
 
         int hashcode = 31;
-        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(interactor.getType());
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(interactor.getInteractorType());
         hashcode = 31*hashcode + OrganismTaxIdComparator.hashCode(interactor.getOrganism());
         hashcode = 31*hashcode + interactor.getShortName().hashCode();
 

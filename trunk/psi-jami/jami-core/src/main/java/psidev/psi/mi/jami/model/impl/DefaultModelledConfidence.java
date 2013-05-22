@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledConfidence;
+import psidev.psi.mi.jami.model.Publication;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,33 +18,29 @@ import java.util.Collections;
 
 public class DefaultModelledConfidence extends DefaultConfidence implements ModelledConfidence {
 
-    private Collection<Experiment> experiments;
+    private Collection<Publication> publications;
 
     public DefaultModelledConfidence(CvTerm type, String value) {
         super(type, value);
     }
 
-    public DefaultModelledConfidence(CvTerm type, String value, CvTerm unit) {
-        super(type, value, unit);
+    protected void initialisePublications(){
+        publications = new ArrayList<Publication>();
     }
 
-    protected void initialiseExperiments(){
-        experiments = new ArrayList<Experiment>();
-    }
-
-    protected void initialiseExperimentsWith(Collection<Experiment> experiments){
-        if (experiments == null){
-            this.experiments = Collections.EMPTY_LIST;
+    protected void initialisePublicationsWith(Collection<Publication> publications){
+        if (publications == null){
+            this.publications = Collections.EMPTY_LIST;
         }
         else {
-            this.experiments = experiments;
+            this.publications = publications;
         }
     }
 
-    public Collection<Experiment> getExperiments() {
-        if (this.experiments == null){
-            initialiseExperiments();
+    public Collection<Publication> getPublications() {
+        if (this.publications == null){
+            initialisePublications();
         }
-        return experiments;
+        return publications;
     }
 }

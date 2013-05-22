@@ -73,8 +73,7 @@ public class UnambiguousInteractionBaseComparator extends InteractionBaseCompara
 
         int hashcode = 31;
 
-        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(interaction.getType());
-        hashcode = 31 * hashcode + (interaction.isNegative() ? 0 : 1);
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(interaction.getInteractionType());
 
         return hashcode;
     }

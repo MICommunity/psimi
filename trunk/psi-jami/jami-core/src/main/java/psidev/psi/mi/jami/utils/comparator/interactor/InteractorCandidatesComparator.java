@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.InteractorCandidates;
+import psidev.psi.mi.jami.model.InteractorSet;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.*;
@@ -16,7 +16,7 @@ import java.util.*;
  * @since <pre>17/01/13</pre>
  */
 
-public class InteractorCandidatesComparator implements Comparator<InteractorCandidates> {
+public class InteractorCandidatesComparator implements Comparator<InteractorSet> {
 
     protected CollectionComparator<Interactor> interactorCollectionComparator;
 
@@ -41,7 +41,7 @@ public class InteractorCandidatesComparator implements Comparator<InteractorCand
      * @param interactorCandidates2
      * @return
      */
-    public int compare(InteractorCandidates interactorCandidates1, InteractorCandidates interactorCandidates2) {
+    public int compare(InteractorSet interactorCandidates1, InteractorSet interactorCandidates2) {
 
         // compare collections
         return interactorCollectionComparator.compare(interactorCandidates1, interactorCandidates2);

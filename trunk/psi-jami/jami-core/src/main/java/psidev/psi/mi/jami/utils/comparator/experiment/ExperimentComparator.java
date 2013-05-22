@@ -1,12 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.experiment;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismComparator;
 
+import java.util.Collection;
 import java.util.Comparator;
 
 /**
@@ -14,6 +12,7 @@ import java.util.Comparator;
  * It will look first at the publications using a Comparator<Publication>. If the publications are the same, it will look at the
  * interaction detection methods using AbstractCvTermComparator. If the interaction detection methods are the same, it will look at
  * the host organisms using OrganismComparator.
+ * If the host organisms are the same, it will look at the variableParameters using VariableParameterComparator.
  *
  * This comparator will ignore all the other properties of an experiment.
  *
@@ -27,6 +26,7 @@ public class ExperimentComparator implements Comparator<Experiment>{
     protected Comparator<Publication> publicationComparator;
     protected OrganismComparator organismComparator;
     protected AbstractCvTermComparator cvTermComparator;
+    protected VariableParameterCollectionComparator variableParameterCollectionComparator;
 
     /**
      * Creates a new ExperimentComparator. It needs a Comparator<Publication> to compare publications, a OrganismComparator to compare host organisms
@@ -44,12 +44,14 @@ public class ExperimentComparator implements Comparator<Experiment>{
         }
         this.organismComparator = organismComparator;
         this.cvTermComparator = this.organismComparator.getCvTermComparator();
+        this.variableParameterCollectionComparator = new VariableParameterCollectionComparator(new VariableParameterComparator(this.cvTermComparator));
     }
 
     /**
      * It will look first at the publications using a PublicationComparator. If the publications are the same, it will look at the
      * interaction detection methods using AbstractCvTermComparator. If the interaction detection methods are the same, it will look at
      * the host organisms using OrganismComparator.
+     * If the host organisms are the same, it will look at the variableParameters using VariableParameterComparator.
      *
      * This comparator will ignore all the other properties of an experiment.
      * @param experiment1
@@ -93,7 +95,16 @@ public class ExperimentComparator implements Comparator<Experiment>{
             Organism organism1 = experiment1.getHostOrganism();
             Organism organism2 = experiment2.getHostOrganism();
 
-            return organismComparator.compare(organism1, organism2);
+            comp = organismComparator.compare(organism1, organism2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compares variable parameters
+            Collection<VariableParameter> variableParameters1 = experiment1.getVariableParameters();
+            Collection<VariableParameter> variableParameters2 = experiment2.getVariableParameters();
+
+            return variableParameterCollectionComparator.compare(variableParameters1, variableParameters2);
         }
     }
 
@@ -103,5 +114,9 @@ public class ExperimentComparator implements Comparator<Experiment>{
 
     public OrganismComparator getOrganismComparator() {
         return organismComparator;
+    }
+
+    public VariableParameterCollectionComparator getVariableParameterCollectionComparator() {
+        return variableParameterCollectionComparator;
     }
 }

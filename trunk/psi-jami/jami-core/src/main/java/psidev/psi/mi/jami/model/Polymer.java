@@ -8,11 +8,17 @@ package psidev.psi.mi.jami.model;
  * @since <pre>21/03/13</pre>
  */
 
-public interface Polymer extends Interactor{
+public interface Polymer extends Molecule{
 
     /**
      * The sequence of the polymer. Null if it is not known
      * @return
      */
     public String getSequence();
+
+    /**
+     * Sets the sequence of the polymer.
+     * @param sequence
+     */
+    public void setSequence(String sequence);
 }

@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 
@@ -26,6 +23,7 @@ import java.util.Comparator;
 public class ParticipantBaseComparator<T extends Feature> extends ParticipantInteractorComparator {
 
     protected AbstractCvTermComparator cvTermComparator;
+    protected StoichiometryComparator stoichiometryComparator;
 
     /**
      * Creates a new ParticipantBaseComparator
@@ -45,10 +43,16 @@ public class ParticipantBaseComparator<T extends Feature> extends ParticipantInt
         if (featureComparator == null){
             throw new IllegalArgumentException("The feature comparator is required to compare participant features. It cannot be null");
         }
+
+        this.stoichiometryComparator = new StoichiometryComparator();
     }
 
     public AbstractCvTermComparator getCvTermComparator() {
         return cvTermComparator;
+    }
+
+    public StoichiometryComparator getStoichiometryComparator() {
+        return stoichiometryComparator;
     }
 
     /**
@@ -96,25 +100,10 @@ public class ParticipantBaseComparator<T extends Feature> extends ParticipantInt
             }
 
             // then compares the stoichiometry
-            Integer stc1 = participant1.getStoichiometry();
-            Integer stc2 = participant2.getStoichiometry();
+            Stoichiometry stc1 = participant1.getStoichiometry();
+            Stoichiometry stc2 = participant2.getStoichiometry();
 
-            if (stc1 != null && stc2 != null){
-                if (stc1 < stc2){
-                    return BEFORE;
-                }
-                else if (stc1 > stc2){
-                    return AFTER;
-                }
-            }
-            else if (stc1 == null && stc2 != null){
-                return AFTER;
-            }
-            else if (stc2 == null && stc1 != null){
-                return BEFORE;
-            }
-
-            return EQUAL;
+            return stoichiometryComparator.compare(stc1, stc2);
         }
     }
 }

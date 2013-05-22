@@ -14,5 +14,10 @@ import java.util.Collection;
 
 public interface ModelledConfidence extends Confidence {
 
-    public Collection<Experiment> getExperiments();
+    /**
+     * The publications where this confidence has been reported if relevant.
+     * The collection cannot be null. If the modelledConfidence does not have any publications, the method should return an empty collection
+     * @return the collection of Publication where this modelledConfidence has been reported
+     */
+    public Collection<Publication> getPublications();
 }
