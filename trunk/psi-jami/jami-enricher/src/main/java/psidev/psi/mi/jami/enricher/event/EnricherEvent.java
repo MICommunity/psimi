@@ -14,6 +14,7 @@ public class EnricherEvent {
 
     private String queryID = null;
     private String queryIDType = null;
+    private String objectType = null;
 
     private List<EnricherEvent> subEnricherEvents = new ArrayList<EnricherEvent>();
 
@@ -22,7 +23,8 @@ public class EnricherEvent {
     private List<OverwriteReport> overwrites = new ArrayList<OverwriteReport>();
 
 
-    public EnricherEvent(){
+    public EnricherEvent(String objectType){
+        this.objectType = objectType;
     }
 
     public EnricherEvent(String queryID, String queryIDType){
@@ -43,31 +45,27 @@ public class EnricherEvent {
         this.queryIDType = queryIDType;
     }
 
-    public String getQueryID(){
-        return queryID;
-    }
-    public String getQueryIDType(){
-        return queryIDType;
-    }
+    public String getQueryID(){return queryID;}
+    public String getQueryIDType(){return queryIDType;}
+    public String getObjectType(){return this.objectType;}
 
 
     public void addSubEnricherEvent(EnricherEvent e){
         subEnricherEvents.add(e);
     }
-
+    public void addEchoSubEnricherEvent(EnricherEvent e){
+        e.setQueryIDType("Echo");
+        subEnricherEvents.add(e);
+    }
     public void addMismatchReport(MismatchReport r) {
         mismatches.add(r);
     }
-
     public void addAdditionReport(AdditionReport r) {
         additions.add(r);
     }
-
     public void addOverwriteReport(OverwriteReport r) {
         overwrites.add(r);
     }
-
-
 
     public List<OverwriteReport> getOverwrites() {return overwrites;}
     public List<MismatchReport> getMismatches() {return mismatches;}

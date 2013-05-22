@@ -22,7 +22,7 @@ public abstract class EnricherEventProcessorImp implements EnricherEventProcesso
     //List of all listeners to report to
     private ArrayList<EnricherListener> enricherListeners = new ArrayList<EnricherListener>();
     //The report of all activity
-    protected EnricherEvent enricherEvent = new EnricherEvent();
+    protected EnricherEvent enricherEvent;
 
     /**
      * Adds a new EnricherListener to report to.
@@ -54,6 +54,10 @@ public abstract class EnricherEventProcessorImp implements EnricherEventProcesso
 
     public void addSubEnricherEvent(EnricherEvent e){
         enricherEvent.addSubEnricherEvent(e);
+    }
+
+    public void addEchoSubEnricherEvent(EnricherEvent e){
+        enricherEvent.addEchoSubEnricherEvent(e);
     }
 
     /**

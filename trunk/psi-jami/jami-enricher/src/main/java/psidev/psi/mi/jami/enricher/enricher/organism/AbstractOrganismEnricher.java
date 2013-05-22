@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.enricher.OrganismEnricher;
+import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
@@ -27,6 +28,7 @@ public abstract class AbstractOrganismEnricher
 
     public AbstractOrganismEnricher()
             throws EnrichmentException{
+        enricherEvent = new EnricherEvent("Organism");
 
     }
 
