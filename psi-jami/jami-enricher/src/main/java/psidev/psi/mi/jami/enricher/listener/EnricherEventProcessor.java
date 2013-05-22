@@ -26,7 +26,13 @@ public interface EnricherEventProcessor {
      * Fires the enricherEvent with details of all changes made.
      * @param r The report of all events.
      */
-    public void fireEnricherReport(EnricherEvent r);
+    public void fireEnricherEvent(EnricherEvent r);
+
+    /**
+     * Adds a subset of events which took place in a separate enricher.
+     * @param e
+     */
+    public void addSubEnricherEvent(EnricherEvent e);
 
     /**
      * Adds information to the enricherEvent when something has been overwritten,
