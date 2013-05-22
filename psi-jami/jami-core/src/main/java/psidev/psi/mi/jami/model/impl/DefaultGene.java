@@ -263,11 +263,11 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     }
 
     @Override
-    public void setType(CvTerm type) {
+    public void setInteractorType(CvTerm type) {
         if (!DefaultCvTermComparator.areEquals(type, CvTermUtils.getGene())){
             throw new IllegalArgumentException("This interactor is a Gene and the only available interactor type is gene (MI:0301)");
         }
-        super.setType(type);
+        super.setInteractorType(type);
     }
 
     @Override

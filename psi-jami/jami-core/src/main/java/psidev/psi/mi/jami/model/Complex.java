@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.model;
 
-import java.util.Collection;
-
 /**
  * An interactor composed of interacting molecules that can be copurified.
  *
@@ -10,7 +8,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Complex extends Interactor {
+public interface Complex extends Interactor, ModelledInteraction {
 
     public static final String COMPLEX="complex";
     public static final String COMPLEX_MI="MI:0314";
@@ -20,14 +18,14 @@ public interface Complex extends Interactor {
      * The collection cannot be null. If the complex does not have any interaction evidences, the method should return an empty collection
      * @return the collection of experiments
      */
-    public Collection<InteractionEvidence> getInteractionEvidences();
+    /*public Collection<InteractionEvidence> getInteractionEvidences();*/
 
     /**
      * The components for this complex.
      * The collection cannot be null. If the complex does not have any components, the method should return an empty collection.
      * @return the components of a complex
      */
-    public Collection<? extends Component> getComponents();
+    /*public Collection<? extends Component> getComponents();*/
 
     /**
      * The physical properties for this complex.
@@ -51,28 +49,28 @@ public interface Complex extends Interactor {
      * @param part
      * @return true if participant is added to the list of participants
      */
-    public boolean  addComponent(Component part);
+    /*public boolean  addComponent(Component part); */
 
     /**
      * This method will remove the participant and set the interaction of the removed participant to null.
      * @param part
      * @return true if participant is removed from the list of participants
      */
-    public boolean removeComponent(Component part);
+    /*public boolean removeComponent(Component part); */
 
     /**
      * This method will add all participants and set the interaction of the new participants to this current interaction
      * @param part
      * @return true if participants are added to the list of participants
      */
-    public boolean  addAllComponents(Collection<? extends Component> part);
+    /*public boolean  addAllComponents(Collection<? extends Component> part); */
 
     /**
      * This method will remove all the participant and set the interaction of the removed participants to null.
      * @param part
      * @return true if participants are removed from the list of participants
      */
-    public boolean removeAllComponents(Collection<? extends Component> part);
+    /*public boolean removeAllComponents(Collection<? extends Component> part);   */
 
     /**
      * The confidences in this interaction.
@@ -80,7 +78,7 @@ public interface Complex extends Interactor {
      * Ex: author based scores, statistical confidences, ...
      * @return the confidences
      */
-    public Collection<ModelledConfidence> getConfidences();
+    /*public Collection<ModelledConfidence> getConfidences(); */
 
     /**
      * Collection of numerical parameters for this interaction.
@@ -88,12 +86,5 @@ public interface Complex extends Interactor {
      * Ex: IC50, ...
      * @return the parameters
      */
-    public Collection<ModelledParameter> getParameters();
-
-    /**
-     * The collection of publications/reviews associated with this complex.
-     * The collection cannot be null. If the complex does not refer to any publications, this method shoudl return an empty collection.
-     * @return
-     */
-    public Collection<Xref> getPublications();
+    /*public Collection<ModelledParameter> getParameters(); */
 }

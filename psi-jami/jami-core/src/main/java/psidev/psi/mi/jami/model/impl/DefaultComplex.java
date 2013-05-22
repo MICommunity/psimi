@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 import psidev.psi.mi.jami.utils.factory.CvTermFactory;
@@ -9,6 +10,7 @@ import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 
 /**
  * Default implementation for complexes
@@ -21,42 +23,48 @@ import java.util.Collections;
 public class DefaultComplex extends DefaultInteractor implements Complex {
 
     private Collection<InteractionEvidence> interactionEvidences;
-    private Collection<Component> components;
+    private Collection<ModelledParticipant> components;
     private Annotation physicalProperties;
     private Collection<ModelledConfidence> confidences;
     private Collection<ModelledParameter> parameters;
-    private Collection<Xref> publications;
 
-    public DefaultComplex(String name, CvTerm type) {
-        super(name, type);
+    private Source source;
+    private Collection<CooperativeEffect> cooperativeEffects;
+    private Checksum rigid;
+    private Date updatedDate;
+    private Date createdDate;
+    private CvTerm interactionType;
+
+    public DefaultComplex(String name, CvTerm interactortype) {
+        super(name, interactortype);
     }
 
-    public DefaultComplex(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
+    public DefaultComplex(String name, String fullName, CvTerm interactorType) {
+        super(name, fullName, interactorType);
     }
 
-    public DefaultComplex(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
+    public DefaultComplex(String name, CvTerm interactorType, Organism organism) {
+        super(name, interactorType, organism);
     }
 
-    public DefaultComplex(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
+    public DefaultComplex(String name, String fullName, CvTerm interactorType, Organism organism) {
+        super(name, fullName, interactorType, organism);
     }
 
-    public DefaultComplex(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+    public DefaultComplex(String name, CvTerm interactorType, Xref uniqueId) {
+        super(name, interactorType, uniqueId);
     }
 
-    public DefaultComplex(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type, uniqueId);
+    public DefaultComplex(String name, String fullName, CvTerm interactorType, Xref uniqueId) {
+        super(name, fullName, interactorType, uniqueId);
     }
 
-    public DefaultComplex(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+    public DefaultComplex(String name, CvTerm interactorType, Organism organism, Xref uniqueId) {
+        super(name, interactorType, organism, uniqueId);
     }
 
-    public DefaultComplex(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type, organism, uniqueId);
+    public DefaultComplex(String name, String fullName, CvTerm interactorType, Organism organism, Xref uniqueId) {
+        super(name, fullName, interactorType, organism, uniqueId);
     }
 
     public DefaultComplex(String name) {
@@ -91,18 +99,6 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
     }
 
-    protected void initialisePublications(){
-        this.publications = new ArrayList<Xref>();
-    }
-
-    protected void initialisePublicationsWith(Collection<Xref> xrefs){
-        if (xrefs == null){
-            this.publications = Collections.EMPTY_LIST;
-        }
-        else {
-            this.publications = xrefs;
-        }
-    }
     protected void initialiseInteractionEvidences(){
         this.interactionEvidences = new ArrayList<InteractionEvidence>();
     }
@@ -113,6 +109,19 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         }
         else{
             this.interactionEvidences = interactionEvidences;
+        }
+    }
+
+    protected void initialiseCooperativeEffects(){
+        this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+    }
+
+    protected void initialiseCooperativeEffectsWith(Collection<CooperativeEffect> cooperativeEffects){
+        if (cooperativeEffects == null){
+            this.cooperativeEffects = Collections.EMPTY_LIST;
+        }
+        else{
+            this.cooperativeEffects = cooperativeEffects;
         }
     }
 
@@ -143,10 +152,10 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     }
 
     protected void initialiseComponents(){
-        this.components = new ArrayList<Component>();
+        this.components = new ArrayList<ModelledParticipant>();
     }
 
-    protected void initialiseComponentsWith(Collection<Component> components){
+    protected void initialiseComponentsWith(Collection<ModelledParticipant> components){
         if (components == null){
             this.components = Collections.EMPTY_LIST;
         }
@@ -167,82 +176,102 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         return this.interactionEvidences;
     }
 
-    public Collection<? extends Component> getComponents() {
+    @Override
+    protected void initialiseChecksums(){
+        initialiseChecksumsWith(new ComplexChecksumList());
+    }
+
+    public Source getSource() {
+        return this.source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public Collection<? extends ModelledParticipant> getModelledParticipants() {
         if (components == null){
-           initialiseComponents();
+            initialiseComponents();
         }
         return this.components;
     }
 
-    public Collection<ModelledConfidence> getConfidences() {
-        if (confidences == null){
-            initialiseConfidences();
-        }
-        return this.confidences;
-    }
-
-    public Collection<ModelledParameter> getParameters() {
-        if (parameters == null){
-            initialiseParameters();
-        }
-        return this.parameters;
-    }
-
-    public String getPhysicalProperties() {
-        return this.physicalProperties != null ? this.physicalProperties.getValue() : null;
-    }
-
-    public boolean addComponent(Component part) {
+    public boolean addModelledParticipant(ModelledParticipant part) {
         if (part == null){
             return false;
         }
         if (components == null){
             initialiseComponents();
         }
-        part.setComplex(this);
+        part.setModelledInteraction(this);
         return components.add(part);
     }
 
-    public boolean removeComponent(Component part) {
+    public boolean removeModelledParticipant(ModelledParticipant part) {
         if (part == null){
             return false;
         }
         if (components == null){
             initialiseComponents();
         }
-        part.setComplex(null);
+        part.setModelledInteraction(null);
         if (components.remove(part)){
             return true;
         }
         return false;
     }
 
-    public boolean addAllComponents(Collection<? extends Component> part) {
-        if (part == null){
+    public boolean addAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
+        if (participants == null){
             return false;
         }
 
         boolean added = false;
-        for (Component p : part){
-            if (addComponent(p)){
+        for (ModelledParticipant p : participants){
+            if (addModelledParticipant(p)){
                 added = true;
             }
         }
         return added;
     }
 
-    public boolean removeAllComponents(Collection<? extends Component> part) {
-        if (part == null){
+    public boolean removeAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
+        if (participants == null){
             return false;
         }
 
         boolean removed = false;
-        for (Component p : part){
-            if (removeComponent(p)){
+        for (ModelledParticipant p : participants){
+            if (removeModelledParticipant(p)){
                 removed = true;
             }
         }
         return removed;
+    }
+
+    public Collection<ModelledConfidence> getModelledConfidences() {
+        if (confidences == null){
+            initialiseConfidences();
+        }
+        return this.confidences;
+    }
+
+    public Collection<ModelledParameter> getModelledParameters() {
+        if (parameters == null){
+            initialiseParameters();
+        }
+        return this.parameters;
+    }
+
+    public Collection<CooperativeEffect> getCooperativeEffects() {
+        if (cooperativeEffects == null){
+            initialiseCooperativeEffects();
+        }
+        return this.cooperativeEffects;
+    }
+
+    public String getPhysicalProperties() {
+        return this.physicalProperties != null ? this.physicalProperties.getValue() : null;
     }
 
     public void setPhysicalProperties(String properties) {
@@ -264,13 +293,6 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
             AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, COMPLEX_MI, COMPLEX);
             physicalProperties = null;
         }
-    }
-
-    public Collection<Xref> getPublications() {
-        if (publications == null){
-            initialisePublications();
-        }
-        return this.publications;
     }
 
     protected void processAddedAnnotationEvent(Annotation added) {
@@ -303,6 +325,69 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         return UnambiguousExactComplexComparator.areEquals(this, (Complex) o);
     }
 
+    public String getRigid() {
+        return this.rigid != null ? this.rigid.getValue() : null;
+    }
+
+    public void setRigid(String rigid) {
+        Collection<Checksum> checksums = getChecksums();
+        if (rigid != null){
+            CvTerm rigidMethod = CvTermFactory.createRigid();
+            // first remove old rigid
+            if (this.rigid != null){
+                checksums.remove(this.rigid);
+            }
+            this.rigid = new DefaultChecksum(rigidMethod, rigid);
+            checksums.add(this.rigid);
+        }
+        // remove all smiles if the collection is not empty
+        else if (!checksums.isEmpty()) {
+            ChecksumUtils.removeAllChecksumWithMethod(checksums, Checksum.RIGID_MI, Checksum.RIGID);
+            this.rigid = null;
+        }
+    }
+
+    public Date getUpdatedDate() {
+        return this.updatedDate;
+    }
+
+    public void setUpdatedDate(Date updated) {
+        this.updatedDate = updated;
+    }
+
+    public Date getCreatedDate() {
+        return this.createdDate;
+    }
+
+    public void setCreatedDate(Date created) {
+        this.createdDate = created;
+    }
+
+    public CvTerm getInteractionType() {
+        return this.interactionType;
+    }
+
+    public void setInteractionType(CvTerm term) {
+        this.interactionType = term;
+    }
+
+    protected void processAddedChecksumEvent(Checksum added) {
+        if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
+            // the rigid is not set, we can set the rigid
+            rigid = added;
+        }
+    }
+
+    protected void processRemovedChecksumEvent(Checksum removed) {
+        if (rigid == removed){
+            rigid = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.RIGID_MI, Checksum.RIGID);
+        }
+    }
+
+    protected void clearPropertiesLinkedToChecksums() {
+        rigid = null;
+    }
+
     private class ComplexAnnotationList extends AbstractListHavingPoperties<Annotation> {
         public ComplexAnnotationList(){
             super();
@@ -321,6 +406,27 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         @Override
         protected void clearProperties() {
             clearPropertiesLinkedToAnnotations();
+        }
+    }
+
+    private class ComplexChecksumList extends AbstractListHavingPoperties<Checksum> {
+        public ComplexChecksumList(){
+            super();
+        }
+
+        @Override
+        protected void processAddedObjectEvent(Checksum added) {
+            processAddedChecksumEvent(added);
+        }
+
+        @Override
+        protected void processRemovedObjectEvent(Checksum removed) {
+            processRemovedChecksumEvent(removed);
+        }
+
+        @Override
+        protected void clearProperties() {
+            clearPropertiesLinkedToChecksums();
         }
     }
 }

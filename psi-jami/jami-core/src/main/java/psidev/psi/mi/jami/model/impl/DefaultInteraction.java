@@ -29,22 +29,20 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
     private Collection<Xref> identifiers;
     private Collection<Xref> xrefs;
     private Collection<Annotation> annotations;
-    private boolean isNegative;
     private Date updatedDate;
     private Date createdDate;
-    private CvTerm type;
+    private CvTerm interactionType;
 
     public DefaultInteraction(){
     }
 
     public DefaultInteraction(String shortName){
-        this();
         this.shortName = shortName;
     }
 
     public DefaultInteraction(String shortName, CvTerm type){
         this(shortName);
-        this.type = type;
+        this.interactionType = type;
     }
 
     protected void initialiseAnnotations(){
@@ -59,7 +57,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
         this.identifiers = new ArrayList<Xref>();
     }
 
-    protected void initialiseChecksum(){
+    protected void initialiseChecksums(){
         this.checksums = new InteractionChecksumList();
     }
 
@@ -145,7 +143,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
 
     public Collection<Checksum> getChecksums() {
         if (checksums == null){
-           initialiseChecksum();
+           initialiseChecksums();
         }
         return this.checksums;
     }
@@ -155,14 +153,6 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
             initialiseAnnotations();
         }
         return this.annotations;
-    }
-
-    public boolean isNegative() {
-        return this.isNegative;
-    }
-
-    public void setNegative(boolean negative) {
-        this.isNegative = negative;
     }
 
     public Date getUpdatedDate() {
@@ -181,12 +171,12 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
         this.createdDate = created;
     }
 
-    public CvTerm getType() {
-        return this.type;
+    public CvTerm getInteractionType() {
+        return this.interactionType;
     }
 
-    public void setType(CvTerm term) {
-       this.type = term;
+    public void setInteractionType(CvTerm term) {
+       this.interactionType = term;
     }
 
     protected void processAddedChecksumEvent(Checksum added) {
@@ -228,7 +218,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
 
     @Override
     public String toString() {
-        return (shortName != null ? shortName+", " : "") + type != null ? type.toString() : "" + ", negative = " + isNegative;
+        return (shortName != null ? shortName+", " : "") + interactionType != null ? interactionType.toString() : "";
     }
 
     private class InteractionChecksumList extends AbstractListHavingPoperties<Checksum> {

@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.clone;
 
-import psidev.psi.mi.jami.model.ComponentFeature;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ModelledFeature;
 
 /**
  * This class will clone/copy properties of a feature
@@ -24,6 +24,8 @@ public class FeatureCloner {
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
             target.setType(source.getType());
+            target.setInteractionDependency(source.getInteractionDependency());
+            target.setInteractionEffect(source.getInteractionEffect());
 
             // copy collections
             target.getAnnotations().clear();
@@ -39,19 +41,21 @@ public class FeatureCloner {
         }
     }
 
-    public static void copyAndOverrideComponentFeaturesProperties(ComponentFeature source, ComponentFeature target){
+    public static void copyAndOverrideModelledFeaturesProperties(ModelledFeature source, ModelledFeature target){
         if (source != null && target != null){
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
             target.setType(source.getType());
+            target.setInteractionDependency(source.getInteractionDependency());
+            target.setInteractionEffect(source.getInteractionEffect());
 
             // copy collections
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
-            target.getBindingSites().clear();
-            target.addAllBindingSites(source.getBindingSites());
+            target.getModelledBindingSites().clear();
+            target.addAllModelledBindingSites(source.getModelledBindingSites());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getRanges().clear();

@@ -5,14 +5,15 @@ import psidev.psi.mi.jami.model.Interactor;
 /**
  * Unambiguous exact Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses UnambiguousExactBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses UnambiguousExactProteinComparator for comparing Protein objects.
  * - Uses UnambiguousExactGeneComparator for comparing Gene objects.
  * - Uses UnambiguousExactNucleicAcidComparator for comparing NucleicAcids objects.
+ * - Uses UnambiguousExactPolymerComparator for comparing Polymer objects
  * - Uses UnambiguousExactComplexComparator for comparing complexes
- * - Uses UnambiguousExactInteractorCandidatesComparator for comparing interactor candidates
+ * - Uses UnambiguousExactInteractorSetComparator for comparing interactor candidates
  * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,8 +30,9 @@ public class UnambiguousExactInteractorComparator extends InteractorComparator {
      * - Uses UnambiguousExactProteinComparator for comparing Protein objects.
      * - Uses UnambiguousExactGeneComparator for comparing Gene objects.
      * - Uses UnambiguousExactNucleicAcidComparator for comparing NucleicAcids objects.
+     * - Uses UnambiguousExactPolymerComparator for comparing Polymer objects
      * - Uses UnambiguousExactComplexComparator for comparing complexes
-     * - Uses UnambiguousExactInteractorCandidatesComparator for comparing interactor candidates
+     * - Uses UnambiguousExactInteractorSetComparator for comparing interactor candidates
      * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      * */
     public UnambiguousExactInteractorComparator() {
@@ -49,14 +51,15 @@ public class UnambiguousExactInteractorComparator extends InteractorComparator {
 
     @Override
     /**
-     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
+     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
      * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
      * - Uses UnambiguousExactBioactiveEntityComparator for comparing BioactiveEntity objects.
      * - Uses UnambiguousExactProteinComparator for comparing Protein objects.
      * - Uses UnambiguousExactGeneComparator for comparing Gene objects.
      * - Uses UnambiguousExactNucleicAcidComparator for comparing NucleicAcids objects.
+     * - Uses UnambiguousExactPolymerComparator for comparing Polymer objects
      * - Uses UnambiguousExactComplexComparator for comparing complexes
-     * - Uses UnambiguousExactInteractorCandidatesComparator for comparing interactor candidates
+     * - Uses UnambiguousExactInteractorSetComparator for comparing interactor candidates
      * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public int compare(Interactor interactor1, Interactor interactor2) {

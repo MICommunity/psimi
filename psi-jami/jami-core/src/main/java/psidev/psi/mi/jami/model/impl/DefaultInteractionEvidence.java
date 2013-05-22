@@ -27,6 +27,9 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     private boolean isInferred = false;
     private Collection<ParticipantEvidence> participantEvidences;
     private Collection<Confidence> experimentalConfidences;
+    private boolean isNegative;
+
+    private Collection<VariableParameterValueSet> variableParameterValueSets;
 
     public DefaultInteractionEvidence(Experiment experiment) {
         super();
@@ -122,6 +125,19 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         }
     }
 
+    protected void initialiseVariableParameterValueSets(){
+        this.variableParameterValueSets = new ArrayList<VariableParameterValueSet>();
+    }
+
+    protected void initialiseVariableParameterValueSetsWith(Collection<VariableParameterValueSet> variableValues){
+        if (variableValues == null){
+            this.variableParameterValueSets = Collections.EMPTY_LIST;
+        }
+        else {
+            this.variableParameterValueSets = variableValues;
+        }
+    }
+
     protected void initialiseParticipantEvidences(){
         this.participantEvidences = new ArrayList<ParticipantEvidence>();
     }
@@ -191,6 +207,14 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         }
     }
 
+    public Collection<VariableParameterValueSet> getVariableParameterValues() {
+
+        if (variableParameterValueSets == null){
+            initialiseVariableParameterValueSets();
+        }
+        return this.variableParameterValueSets;
+    }
+
     public Collection<Confidence> getExperimentalConfidences() {
         if (experimentalConfidences == null){
             initialiseExperimentalConfidences();
@@ -204,6 +228,14 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
 
     public void setAvailability(String availability) {
         this.availability = availability;
+    }
+
+    public boolean isNegative() {
+        return this.isNegative;
+    }
+
+    public void setNegative(boolean negative) {
+        this.isNegative = negative;
     }
 
     public Collection<Parameter> getExperimentalParameters() {

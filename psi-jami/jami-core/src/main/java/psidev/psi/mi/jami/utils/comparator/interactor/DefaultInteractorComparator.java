@@ -5,14 +5,15 @@ import psidev.psi.mi.jami.model.Interactor;
 /**
  * Default generic Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses DefaultBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses DefaultProteinComparator for comparing Protein objects.
  * - Uses DefaultGeneComparator for comparing Gene objects.
  * - Uses DefaultNucleicAcidComparator for comparing NucleicAcids objects.
+ * - Uses DefaultPolymerComparator for comparing Polymer objects
  * - Uses DefaultComplexComparator for comparing complexes
- * - Uses DefaultInteractorCandidatesComparator for comparing interactor candidates
+ * - Uses DefaultInteractorSetComparator for comparing interactor candidates
  * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -30,8 +31,9 @@ public class DefaultInteractorComparator extends InteractorComparator{
      * - Uses DefaultProteinComparator for comparing Protein objects.
      * - Uses DefaultGeneComparator for comparing Gene objects.
      * - Uses DefaultNucleicAcidComparator for comparing NucleicAcids objects.
+     * - Uses DefaultPolymerComparator for comparing Polymer objects
      * - Uses DefaultComplexComparator for comparing complexes
-     * - Uses DefaultInteractorCandidatesComparator for comparing interactor candidates
+     * - Uses DefaultInteractorSetComparator for comparing interactor candidates
      * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public DefaultInteractorComparator() {
@@ -50,14 +52,15 @@ public class DefaultInteractorComparator extends InteractorComparator{
 
     @Override
     /**
-     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
+     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
      * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
      * - Uses DefaultBioactiveEntityComparator for comparing BioactiveEntity objects.
      * - Uses DefaultProteinComparator for comparing Protein objects.
      * - Uses DefaultGeneComparator for comparing Gene objects.
      * - Uses DefaultNucleicAcidComparator for comparing NucleicAcids objects.
+     * - Uses DefaultPolymerComparator for comparing Polymer objects
      * - Uses DefaultComplexComparator for comparing complexes
-     * - Uses DefaultInteractorCandidatesComparator for comparing interactor candidates
+     * - Uses DefaultInteractorSetComparator for comparing interactor candidates
      * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above.
      */
     public int compare(Interactor interactor1, Interactor interactor2) {

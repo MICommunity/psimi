@@ -16,7 +16,6 @@ public class DefaultConfidence implements Confidence {
 
     private CvTerm type;
     private String value;
-    private CvTerm unit;
 
     public DefaultConfidence(CvTerm type, String value){
         if (type == null){
@@ -29,21 +28,12 @@ public class DefaultConfidence implements Confidence {
         this.value = value;
     }
 
-    public DefaultConfidence(CvTerm type, String value, CvTerm unit){
-        this(type, value);
-        this.unit = unit;
-    }
-
     public CvTerm getType() {
         return this.type;
     }
 
     public String getValue() {
         return this.value;
-    }
-
-    public CvTerm getUnit() {
-        return this.unit;
     }
 
     @Override
@@ -61,7 +51,7 @@ public class DefaultConfidence implements Confidence {
 
     @Override
     public String toString() {
-        return type.toString() + ": " + value + (unit != null ? "("+unit.toString()+")" : "");
+        return type.toString() + ": " + value;
     }
 
     @Override

@@ -26,11 +26,4 @@ public interface Confidence {
      * @return the confidence value
      */
     public String getValue();
-
-    /**
-     * The unit of a confidence can be null.
-     * Ex: percent
-     * @return The unit of the value if it exists.
-     */
-    public CvTerm getUnit();
 }

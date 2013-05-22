@@ -80,6 +80,24 @@ public class FeatureBaseComparator implements Comparator<Feature> {
                 return comp;
             }
 
+            // then compares feature effect
+            CvTerm interactionEffect1 = feature1.getInteractionEffect();
+            CvTerm interactionEffect2 = feature2.getInteractionEffect();
+
+            comp = cvTermComparator.compare(interactionEffect1, interactionEffect2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compares feature dependency with interaction
+            CvTerm interactionDependency1 = feature1.getInteractionDependency();
+            CvTerm interactionDependency2 = feature2.getInteractionDependency();
+
+            comp = cvTermComparator.compare(interactionDependency1, interactionDependency2);
+            if (comp != 0){
+                return comp;
+            }
+
             String interpro1 = feature1.getInterpro();
             String interpro2 = feature2.getInterpro();
 

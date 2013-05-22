@@ -14,17 +14,12 @@ import java.util.Collection;
 public interface FeatureEvidence extends Feature {
 
     /**
-     * The feature detection method. It is a controlled vocabulary term and can be null.
+     * The collection of feature detection methods. Each feature detectionMethod is a controlled vocabulary term.
+     * The collection cannot be null. If the featureEvidence does not have any detection methods, it should return an empty collection.
      * Ex: autoradiography, predetermined feature, ...
-     * @return the detection method
+     * @return the collection of detection methods for this feature
      */
-    public CvTerm getDetectionMethod();
-
-    /**
-     * Sets the feature detection method
-     * @param method : detection method
-     */
-    public void setDetectionMethod(CvTerm method);
+    public Collection<CvTerm> getDetectionMethods();
 
     /**
      * The participant to which the feature is attached.

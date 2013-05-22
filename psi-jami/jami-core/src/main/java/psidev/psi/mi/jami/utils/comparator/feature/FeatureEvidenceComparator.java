@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.utils.comparator.feature;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
 
+import java.util.Collection;
 import java.util.Comparator;
 
 /**
@@ -22,6 +24,7 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
 
     protected FeatureBaseComparator featureComparator;
     protected AbstractCvTermComparator cvTermComparator;
+    protected CvTermsCollectionComparator cvTermCollectionComparators;
 
     /**
      * Creates a new FeatureEvidenceComparator.
@@ -36,10 +39,15 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
             throw new IllegalArgumentException("The CvTerm comparator is required to compare feature detection methods . It cannot be null");
         }
         this.cvTermComparator = featureComparator.getCvTermComparator();
+        this.cvTermCollectionComparators = new CvTermsCollectionComparator(this.cvTermComparator);
     }
 
     public FeatureBaseComparator getFeatureComparator() {
         return featureComparator;
+    }
+
+    public CvTermsCollectionComparator getCvTermCollectionComparators() {
+        return cvTermCollectionComparators;
     }
 
     /**
@@ -73,10 +81,10 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
             }
 
             // then compare feature detection methods
-            CvTerm detMethod1 = experimentalFeature1.getDetectionMethod();
-            CvTerm detMethod2 = experimentalFeature2.getDetectionMethod();
+            Collection<CvTerm> detMethod1 = experimentalFeature1.getDetectionMethods();
+            Collection<CvTerm> detMethod2 = experimentalFeature2.getDetectionMethods();
 
-           return cvTermComparator.compare(detMethod1, detMethod2);
+           return cvTermCollectionComparators.compare(detMethod1, detMethod2);
         }
     }
 }

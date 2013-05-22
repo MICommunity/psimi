@@ -1,12 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousComponentInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousModelledParticipantInteractorComparator;
 
 /**
  * Unambiguous Complex comparator which will only compare interactors in the components
  *
- * It will first compare the collection of components using UnambiguousComponentInteractorComparator.
+ * It will first compare the collection of components using UnambiguousModelledParticipantInteractorComparator.
  * If the components are the same, it will look at the default properties of an interactor
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -19,16 +19,16 @@ public class UnambiguousSimpleComplexComparator extends ComplexComparator {
     private static UnambiguousSimpleComplexComparator unambiguousSimpleComplexComparator;
 
     /**
-     * Creates a new UnambiguousSimpleComplexComparator. It will use a UnambiguousInteractorBaseComparator, UnambiguousComponentInteractorComparator to
+     * Creates a new UnambiguousSimpleComplexComparator. It will use a UnambiguousInteractorBaseComparator, UnambiguousModelledParticipantInteractorComparator to
      * compares components
      */
     public UnambiguousSimpleComplexComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new UnambiguousComponentInteractorComparator());
+        super(new UnambiguousInteractorBaseComparator(), new UnambiguousModelledParticipantInteractorComparator());
     }
 
     @Override
     /**
-     * It will first compare the collection of components using UnambiguousComponentInteractorComparator.
+     * It will first compare the collection of components using UnambiguousModelledParticipantInteractorComparator.
      * If the components are the same, it will look at the default properties of an interactor
      * using UnambiguousInteractorBaseComparator.
      */

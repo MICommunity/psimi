@@ -88,8 +88,8 @@ public class ExactInteractorBaseComparator extends InteractorBaseComparator {
         }
         else{
             // compares first interactor types if both are set
-            CvTerm type1 = interactor1.getType();
-            CvTerm type2 = interactor2.getType();
+            CvTerm type1 = interactor1.getInteractorType();
+            CvTerm type2 = interactor2.getInteractorType();
 
             int comp=EQUAL;
             if (type1 != null && type2 != null){

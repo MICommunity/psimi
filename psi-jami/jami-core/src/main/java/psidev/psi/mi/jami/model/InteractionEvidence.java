@@ -50,6 +50,15 @@ public interface InteractionEvidence extends Interaction{
     public void setExperimentAndAddInteractionEvidence(Experiment experiment);
 
     /**
+     * The collection of variableParameterValueSet this interaction has been observed with. Each variableParameterValueSet contains
+     * a set of variableParameterValues which have been used together.
+     * This collection cannot be null. If the interactionEvidence does not have any variableParameterValueSet, this method should return
+     * an empty set.
+     * @return the collection of variableParameterValueSet
+     */
+    public Collection<VariableParameterValueSet> getVariableParameterValues();
+
+    /**
      * The availability for this interaction. By default it is null because freely available.
      * Ex: copyrights, ...
      * @return the availability
@@ -125,4 +134,17 @@ public interface InteractionEvidence extends Interaction{
      * @return the confidences
      */
     public Collection<Confidence> getExperimentalConfidences();
+
+    /**
+     * Boolean value to know if an interaction is negative.
+     * It is false by default (positive interaction by default)
+     * @return true if the interaction is negative
+     */
+    public boolean isNegative();
+
+    /**
+     * Sets the negative boolean value.
+     * @param negative: negative value
+     */
+    public void setNegative(boolean negative);
 }

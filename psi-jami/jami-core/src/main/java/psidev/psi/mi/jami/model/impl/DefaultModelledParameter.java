@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledParameter;
 import psidev.psi.mi.jami.model.ParameterValue;
+import psidev.psi.mi.jami.model.Publication;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.Collections;
 
 public class DefaultModelledParameter extends DefaultParameter implements ModelledParameter{
 
-    private Collection<Experiment> experiments;
+    private Collection<Publication> publications;
 
     public DefaultModelledParameter(CvTerm type, ParameterValue value) {
         super(type, value);
@@ -47,23 +47,23 @@ public class DefaultModelledParameter extends DefaultParameter implements Modell
         super(type, value, unit);
     }
 
-    protected void initialiseExperiments(){
-        experiments = new ArrayList<Experiment>();
+    protected void initialisePublications(){
+        publications = new ArrayList<Publication>();
     }
 
-    protected void initialiseExperimentsWith(Collection<Experiment> experiments){
-        if (experiments == null){
-            this.experiments = Collections.EMPTY_LIST;
+    protected void initialiseExperimentsWith(Collection<Publication> publications){
+        if (publications == null){
+            this.publications = Collections.EMPTY_LIST;
         }
         else {
-            this.experiments = experiments;
+            this.publications = publications;
         }
     }
 
-    public Collection<Experiment> getExperiments() {
-        if (this.experiments == null){
-            initialiseExperiments();
+    public Collection<Publication> getPublications() {
+        if (this.publications == null){
+            initialisePublications();
         }
-        return experiments;
+        return publications;
     }
 }

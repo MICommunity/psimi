@@ -102,12 +102,12 @@ public interface Interactor {
      * Ex: protein, gene, small molecule, ...
      * @return interactor type
      */
-    public CvTerm getType();
+    public CvTerm getInteractorType();
 
     /**
      * Sets the molecule type for this interactor
      * @param type : molecule type
      * @throws IllegalArgumentException when the type is null
      */
-    public void setType(CvTerm type);
+    public void setInteractorType(CvTerm type);
 }

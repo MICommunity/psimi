@@ -14,5 +14,10 @@ import java.util.Collection;
 
 public interface ModelledParameter extends Parameter {
 
-    public Collection<Experiment> getExperiments();
+    /**
+     * The publications where this parameter has been reported if relevant.
+     * The collection cannot be null. If the modelledParameter does not have any publications, the method should return an empty collection
+     * @return the collection of Publication where this modelledParameter has been reported
+     */
+    public Collection<Publication> getPublications();
 }

@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.model.impl;
 
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
-import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeComparator;
+import psidev.psi.mi.jami.model.ResultingSequence;
+import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 
 import java.io.Serializable;
 
@@ -20,6 +22,9 @@ public class DefaultRange implements Range, Serializable {
     private Position end;
     private boolean isLink;
 
+    private ResultingSequence resultingSequence;
+    private Participant participant;
+
     public DefaultRange(Position start, Position end){
         setPositions(start, end);
     }
@@ -27,6 +32,26 @@ public class DefaultRange implements Range, Serializable {
     public DefaultRange(Position start, Position end, boolean isLink){
         this(start, end);
         this.isLink = isLink;
+    }
+
+    public DefaultRange(Position start, Position end, ResultingSequence resultingSequence){
+        this(start, end);
+        this.resultingSequence = resultingSequence;
+    }
+
+    public DefaultRange(Position start, Position end, boolean isLink, ResultingSequence resultingSequence){
+        this(start, end, isLink);
+        this.resultingSequence = resultingSequence;
+    }
+
+    public DefaultRange(Position start, Position end, Participant participant){
+        this(start, end);
+        this.participant = participant;
+    }
+
+    public DefaultRange(Position start, Position end, boolean isLink, Participant participant){
+        this(start, end, isLink);
+        this.participant = participant;
     }
 
     public Position getStart() {
@@ -60,6 +85,22 @@ public class DefaultRange implements Range, Serializable {
         this.isLink = link;
     }
 
+    public ResultingSequence getResultingSequence() {
+        return this.resultingSequence;
+    }
+
+    public void setResultingSequence(ResultingSequence resultingSequence) {
+        this.resultingSequence = resultingSequence;
+    }
+
+    public Participant getParticipant() {
+        return this.participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
@@ -70,12 +111,12 @@ public class DefaultRange implements Range, Serializable {
             return false;
         }
 
-        return UnambiguousRangeComparator.areEquals(this, (Range) o);
+        return UnambiguousRangeAndResultingSequenceComparator.areEquals(this, (Range) o);
     }
 
     @Override
     public int hashCode() {
-        return UnambiguousRangeComparator.hashCode(this);
+        return UnambiguousRangeAndResultingSequenceComparator.hashCode(this);
     }
 
     @Override

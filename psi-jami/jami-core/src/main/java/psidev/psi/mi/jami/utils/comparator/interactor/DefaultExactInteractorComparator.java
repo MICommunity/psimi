@@ -5,14 +5,15 @@ import psidev.psi.mi.jami.model.Interactor;
 /**
  * Default exact Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses DefaultExactBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses DefaultExactProteinComparator for comparing Protein objects.
  * - Uses DefaultExactGeneComparator for comparing Gene objects.
  * - Uses DefaultExactNucleicAcidComparator for comparing NucleicAcids objects.
+ * - Uses DefaultExactPolymerComparator for comparing Polymer objects
  * - Uses DefaultExactComplexComparator for comparing complexes
- * - Uses DefaultExactInteractorCandidatesComparator for comparing interactor candidates
+ * - Uses DefaultExactInteractorSetComparator for comparing interactor candidates
  * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -30,8 +31,9 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
      * - Uses DefaultExactProteinComparator for comparing Protein objects.
      * - Uses DefaultExactGeneComparator for comparing Gene objects.
      * - Uses DefaultExactNucleicAcidComparator for comparing NucleicAcids objects.
+     * - Uses DefaultExactPolymerComparator for comparing Polymer objects
      * - Uses DefaultExactComplexComparator for comparing complexes
-     * - Uses DefaultExactInteractorCandidatesComparator for comparing interactor candidates
+     * - Uses DefaultExactInteractorSetComparator for comparing interactor candidates
      * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public DefaultExactInteractorComparator() {
@@ -50,14 +52,15 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
 
     @Override
     /**
-     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorCandidates.
+     * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
      * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
      * - Uses DefaultExactBioactiveEntityComparator for comparing BioactiveEntity objects.
      * - Uses DefaultExactProteinComparator for comparing Protein objects.
      * - Uses DefaultExactGeneComparator for comparing Gene objects.
      * - Uses DefaultExactNucleicAcidComparator for comparing NucleicAcids objects.
+     * - Uses DefaultExactPolymerComparator for comparing Polymer objects
      * - Uses DefaultExactComplexComparator for comparing complexes
-     * - Uses DefaultExactInteractorCandidatesComparator for comparing interactor candidates
+     * - Uses DefaultExactInteractorSetComparator for comparing interactor candidates
      * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public int compare(Interactor interactor1, Interactor interactor2) {

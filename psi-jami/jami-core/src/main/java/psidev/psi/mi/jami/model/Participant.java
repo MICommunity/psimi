@@ -47,6 +47,20 @@ public interface Participant<T extends Interactor> {
     public void setBiologicalRole(CvTerm bioRole);
 
     /**
+     * The causal relationship of this participant on another participant of the interaction.
+     * It can be null if the participant does not have any causal relationship or it is not relevant
+     * Ex: increasing, decreasing, disrupting, etc.
+     * @return the effect of this participant on the interaction
+     */
+    public CausalRelationship getCausalRelationship();
+
+    /**
+     * Sets the interaction effect for this participant on another participant of the interaction.
+     * @param relationship : the relationship between this participant and another participant of another interaction
+     */
+    public void setCausalRelationship(CausalRelationship relationship);
+
+    /**
      * Collection of cross references which give more information about the participant.
      * The set of xrefs cannot be null. If the participant does not have any xrefs, the method should return an empty Collection.
      * Ex: author identifiers, ...
@@ -74,11 +88,17 @@ public interface Participant<T extends Interactor> {
      * If the stoichiometry for this participant is unknown, the method should return null.
      * @return the stoichiometry
      */
-    public Integer getStoichiometry();
+    public Stoichiometry getStoichiometry();
+
+    /**
+     * Sets the mean stoichiometry for this participant.
+     * @param stoichiometry : mean stoichiometry value
+     */
+    public void setStoichiometry(Integer stoichiometry);
 
     /**
      * Sets the stoichiometry for this participant.
-     * @param stoichiometry : stoichiometry
+     * @param stoichiometry : the stoichiometry
      */
-    public void setStoichiometry(Integer stoichiometry);
+    public void setStoichiometry(Stoichiometry stoichiometry);
 }

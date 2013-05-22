@@ -87,9 +87,6 @@ public class UnambiguousConfidenceComparator extends ConfidenceComparator {
         String value = conf.getValue();
         hashcode = 31*hashcode + value.hashCode();
 
-        CvTerm unit = conf.getUnit();
-        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(unit);
-
         return hashcode;
     }
 }

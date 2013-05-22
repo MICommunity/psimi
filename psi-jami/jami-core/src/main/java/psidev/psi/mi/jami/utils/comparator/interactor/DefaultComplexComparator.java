@@ -1,13 +1,15 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultComponentComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
 
 /**
  * Default Complex comparator
  *
  * It will first look at the default properties of an interactor using DefaultInteractorBaseComparator.
- * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
+ * It will then compare interaction types using DefaultCvTermComparator.
+ * If the basic interactor properties are the same, It will first compare the collection of components using DefaultModelledParticipantComparator.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -24,13 +26,14 @@ public class DefaultComplexComparator extends ComplexComparator{
      * compares components..
      */
     public DefaultComplexComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultComponentComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultModelledParticipantComparator(), new DefaultCvTermComparator());
     }
 
     @Override
     /**
      * It will first look at the default properties of an interactor using DefaultInteractorBaseComparator.
-     * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
+     * It will then compare interaction types using DefaultCvTermComparator.
+     * If the basic interactor properties are the same, It will first compare the collection of components using DefaultModelledParticipantComparator.
      *
      */
     public int compare(Complex complex1, Complex complex2) {
@@ -40,6 +43,11 @@ public class DefaultComplexComparator extends ComplexComparator{
     @Override
     public DefaultInteractorBaseComparator getInteractorComparator() {
         return (DefaultInteractorBaseComparator) this.interactorComparator;
+    }
+
+    @Override
+    public DefaultCvTermComparator getCvTermComparator() {
+        return (DefaultCvTermComparator) super.getCvTermComparator();
     }
 
     /**

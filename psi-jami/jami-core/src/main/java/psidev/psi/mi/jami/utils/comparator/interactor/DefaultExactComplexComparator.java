@@ -1,13 +1,15 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactComponentComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantComparator;
 
 /**
  * Default exact Complex comparator
  *
  * It will first look at the default properties of an interactor using DefaultExactInteractorBaseComparator.
- * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
+ * It will then compare interaction types using DefaultCvTermComparator.
+ * If the basic interactor properties are the same, It will first compare the collection of components using DefaultExactModelledParticipantComparator.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -20,18 +22,19 @@ public class DefaultExactComplexComparator extends ComplexComparator{
     private static DefaultExactComplexComparator defaultExactComplexComparator;
 
     /**
-     * Creates a new DefaultExactComplexComparator. It will use a DefaultExactInteractorBaseComparator, DefaultExactComponentComparator to
+     * Creates a new DefaultExactComplexComparator. It will use a DefaultExactInteractorBaseComparator, DefaultExactModelledParticipantComparator to
      * compares components.
      */
     public DefaultExactComplexComparator() {
-        super(new DefaultExactInteractorBaseComparator(), new DefaultExactComponentComparator());
+        super(new DefaultExactInteractorBaseComparator(), new DefaultExactModelledParticipantComparator(), new DefaultCvTermComparator());
     }
 
     @Override
     /**
      *
      * It will first look at the default properties of an interactor using DefaultExactInteractorBaseComparator.
-     * If the basic interactor properties are the same, It will first compare the collection of components using DefaultExactComponentComparator.
+     * It will then compare interaction types using DefaultCvTermComparator.
+     * If the basic interactor properties are the same, It will first compare the collection of components using DefaultExactModelledParticipantComparator.
      *
      */
     public int compare(Complex complex1, Complex complex2) {
@@ -41,6 +44,11 @@ public class DefaultExactComplexComparator extends ComplexComparator{
     @Override
     public DefaultExactInteractorBaseComparator getInteractorComparator() {
         return (DefaultExactInteractorBaseComparator) this.interactorComparator;
+    }
+
+    @Override
+    public DefaultCvTermComparator getCvTermComparator() {
+        return (DefaultCvTermComparator) super.getCvTermComparator();
     }
 
     /**

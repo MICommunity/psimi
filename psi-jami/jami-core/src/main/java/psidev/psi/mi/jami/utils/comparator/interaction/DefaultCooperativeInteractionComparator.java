@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
-import psidev.psi.mi.jami.model.CooperativeInteraction;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**

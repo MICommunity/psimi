@@ -71,16 +71,6 @@ public class ConfidenceComparator implements Comparator<Confidence>{
                 return comp;
             }
 
-            // check unit
-            CvTerm unit1 = confidence1.getUnit();
-            CvTerm unit2 = confidence2.getUnit();
-
-            int comp2 = cvTermComparator.compare(unit1, unit2);
-
-            if (comp2 != 0){
-                return comp2;
-            }
-
             String value1 = confidence1.getValue();
             String value2 = confidence2.getValue();
 
