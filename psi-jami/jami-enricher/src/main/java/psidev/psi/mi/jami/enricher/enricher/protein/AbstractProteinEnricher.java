@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
@@ -24,14 +25,9 @@ public abstract class AbstractProteinEnricher
     protected final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
     private ProteinFetcher fetcher=null;
 
-    public AbstractProteinEnricher() throws EnrichmentException {
-        /*log.debug("Starting the protein fetcher");
-        try{
-            fetcher = new UniprotFetcher();
-        } catch (BridgeFailedException e) {
-            log.warn("Protein fetcher failed on initialise.");
-            throw new EnrichmentException(e);
-        }*/
+    public AbstractProteinEnricher()
+            throws EnrichmentException {
+        enricherEvent = new EnricherEvent("Protein");
     }
 
     public void setFetcher(ProteinFetcher fetcher){

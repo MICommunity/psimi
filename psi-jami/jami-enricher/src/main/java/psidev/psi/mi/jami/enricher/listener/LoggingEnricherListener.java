@@ -16,12 +16,13 @@ import psidev.psi.mi.jami.enricher.event.OverwriteReport;
  * Date: 16/05/13
  * Time: 13:09
  */
-public class EnricherListenerLog implements EnricherListener {
+public class LoggingEnricherListener implements EnricherListener {
 
-    private final Logger log = LoggerFactory.getLogger(EnricherListenerLog.class.getName());
+    private final Logger log = LoggerFactory.getLogger(LoggingEnricherListener.class.getName());
 
     public void onEnricherEvent(EnricherEvent e) {
         log.info("Logging for: ["+e.getQueryID()+"] " +
+                "Object type : " +e.getObjectType()+
                 "(a query on ["+e.getQueryIDType()+"])");
 
         for(AdditionReport r :e.getAdditions()) {
@@ -39,6 +40,11 @@ public class EnricherListenerLog implements EnricherListener {
             log.info("Overwrite on ["+r.getField()+"] " +
                     "had the old value ["+r.getOldValue()+"] " +
                     "overwritten with ["+r.getNewValue()+"]");
+        }
+
+        for(EnricherEvent s :e.getAdditions()) {
+            log.info("Sub enrichment begins");
+            onEnricherEvent(s);
         }
 
     }
