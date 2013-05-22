@@ -1,11 +1,13 @@
 package psidev.psi.mi.jami.enricher.enricher.protein;
 
+import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
 import psidev.psi.mi.jami.enricher.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.enricher.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
-import psidev.psi.mi.jami.enricher.event.MismatchReport;
+import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.event.OverwriteReport;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
@@ -86,10 +88,20 @@ public class MaximumProteinUpdater
         //Orgnaism, // ROGID
         try{
             if(proteinEnriched.getOrganism() != null){
+
+                MinimumOrganismEnricher minimumOrganismEnricher= new MinimumOrganismEnricher();
+                minimumOrganismEnricher.setFetcher(new EchoOrganism(proteinEnriched.getOrganism()));
+                minimumOrganismEnricher.addEnricherListener(new EnricherListener() {
+                    public void onEnricherEvent(EnricherEvent e) {
+                        addSubEnricherEvent(e);
+                    }
+                });
+
                 if(proteinMaster.getOrganism() == null && proteinEnriched.getOrganism() != null){
                     proteinMaster.setOrganism(new DefaultOrganism(-3));
                 }
-                enrichOrganism(proteinMaster.getOrganism(), proteinEnriched.getOrganism());
+
+                minimumOrganismEnricher.enrichOrganism(proteinMaster.getOrganism());
 
                 if(proteinMaster.getOrganism().getTaxId() > 0
                         && proteinMaster.getSequence() != null){
@@ -101,13 +113,13 @@ public class MaximumProteinUpdater
                                 proteinMaster.getSequence(),""+proteinMaster.getOrganism().getTaxId());
                         if(proteinMaster.getRogid() == null){
                             proteinMaster.setRogid(rogid);
-                            addAdditionReport(new AdditionReport("RogID",rogid));
+                            addAdditionReport(new AdditionReport("RogID", rogid));
                         }
                         else if(!proteinMaster.getRogid().equals(rogid)){
                             String oldValue = proteinMaster.getRogid();
                             proteinMaster.setRogid(rogid);
                             addOverwriteReport(new OverwriteReport(
-                                    "RogID",oldValue, proteinMaster.getRogid()));
+                                    "RogID", oldValue, proteinMaster.getRogid()));
                         }
                     } catch (SeguidException e) {
                         log.debug("caught exception from a failed rogid");
@@ -117,58 +129,6 @@ public class MaximumProteinUpdater
             }
         }catch(EnrichmentException e){
             log.warn("Caught Enrichment exception fired by organism conflict");
-        }
-
-
-
-
-    }
-
-
-    public void enrichOrganism(Organism masterOrganism, Organism enrichedOrganism)
-            throws EnrichmentException {
-
-        if(masterOrganism == null && enrichedOrganism == null) return;
-        if(masterOrganism == null && enrichedOrganism != null) masterOrganism = new DefaultOrganism(-3);
-
-        if(enrichedOrganism.getTaxId() >= 0){
-
-            //TaxID
-            if(masterOrganism.getTaxId() >= 0){
-                if(masterOrganism.getTaxId() != enrichedOrganism.getTaxId()) {
-                    //Todo organism conflict
-                    addMismatchReport(new MismatchReport(
-                            "TaxID", "" + masterOrganism.getTaxId(), "" + enrichedOrganism.getTaxId()));
-                    throw new EnrichmentException();
-                }
-            }
-            if(masterOrganism.getTaxId() == -3){
-                masterOrganism.setTaxId(enrichedOrganism.getTaxId());
-                addAdditionReport(new AdditionReport("TaxId", "" + masterOrganism.getTaxId()));
-            }
-
-            //Scientific name
-            if(enrichedOrganism.getScientificName() != null){
-                if(masterOrganism.getScientificName() == null){
-                    masterOrganism.setScientificName(enrichedOrganism.getScientificName());
-                    addAdditionReport(new AdditionReport("Scientific name", enrichedOrganism.getScientificName()));
-                } else if (!enrichedOrganism.getScientificName().equalsIgnoreCase(
-                        masterOrganism.getScientificName())){
-                    addMismatchReport(new MismatchReport("Scientific name", masterOrganism.getScientificName(), enrichedOrganism.getScientificName()));
-                }
-            }
-
-            //Commonname
-            if(enrichedOrganism.getCommonName() != null){
-                if(masterOrganism.getCommonName() == null){
-                    masterOrganism.setCommonName(enrichedOrganism.getCommonName());
-                    addAdditionReport(new AdditionReport("Common name", masterOrganism.getCommonName()));
-                } else if (!enrichedOrganism.getCommonName().equalsIgnoreCase(
-                        masterOrganism.getCommonName())){
-                    addMismatchReport(new MismatchReport("Common name", masterOrganism.getCommonName(), enrichedOrganism.getCommonName()));
-                }
-            }
-
         }
     }
 }

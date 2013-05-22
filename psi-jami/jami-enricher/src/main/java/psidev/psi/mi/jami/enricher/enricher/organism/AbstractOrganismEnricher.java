@@ -29,7 +29,6 @@ public abstract class AbstractOrganismEnricher
     public AbstractOrganismEnricher()
             throws EnrichmentException{
         enricherEvent = new EnricherEvent("Organism");
-
     }
 
     public void setFetcher(OrganismFetcher fetcher){
@@ -43,16 +42,18 @@ public abstract class AbstractOrganismEnricher
             throws EnrichmentException {
         if(fetcher == null) throw new FetchingException("Fetcher is null.");
 
-        Organism o;
+        Organism enriched;
         try{
-            o = fetcher.getOrganismByTaxID(MasterOrganism.getTaxId());
+            enriched = fetcher.getOrganismByTaxID(MasterOrganism.getTaxId());
             enricherEvent.clear();
             enricherEvent.setQueryDetails(""+MasterOrganism.getTaxId(),"TaxId");
         }catch(FetcherException e){
             throw new FetchingException(e);
         }
 
-        return o;
+        if(enriched==null) throw new FetchingException("Null organism");
+
+        return enriched;
     }
 
 }

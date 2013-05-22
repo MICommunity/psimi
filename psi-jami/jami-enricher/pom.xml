@@ -17,6 +17,7 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>bridges-core</artifactId>

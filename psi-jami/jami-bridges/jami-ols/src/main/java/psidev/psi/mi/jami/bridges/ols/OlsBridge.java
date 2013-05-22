@@ -24,6 +24,7 @@ public class OlsBridge{
 
     Query qs;
 
+
     public OlsBridge()
             throws BridgeFailedException {
 
@@ -155,9 +156,18 @@ public class OlsBridge{
             throws BridgeFailedException{
 
         try{
-            return qs.getTermMetadata(identifier,null);
+            return qs.getTermMetadata(identifier, null);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
+        }
+    }
+
+    public boolean isIdentifierObsolete(String identifier, String databaseIdentifier)
+            throws BridgeFailedException{
+        try{
+            return qs.isObsolete(identifier, databaseIdentifier);
+        }catch(RemoteException e){
+            throw new BridgeFailedException();
         }
     }
 

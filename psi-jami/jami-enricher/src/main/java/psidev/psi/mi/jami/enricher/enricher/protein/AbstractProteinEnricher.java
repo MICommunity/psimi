@@ -23,7 +23,7 @@ public abstract class AbstractProteinEnricher
         implements ProteinEnricher {
 
     protected final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
-    private ProteinFetcher fetcher=null;
+    private ProteinFetcher fetcher = null;
 
     public AbstractProteinEnricher()
             throws EnrichmentException {
@@ -39,21 +39,20 @@ public abstract class AbstractProteinEnricher
 
     protected Protein getEnrichedForm(Protein MasterProtein)
             throws EnrichmentException {
+        if(fetcher == null) throw new FetchingException("ProteinFetcher is null.");
 
-        if(fetcher == null) throw new FetchingException("Fetcher is null.");
-
-        enricherEvent.clear();
-        enricherEvent.setQueryDetails(MasterProtein.getUniprotkb(),"UniprotKb");
-
-        Protein p = null;
+        Protein enriched = null;
         try{
-            p = fetcher.getProteinByID(MasterProtein.getUniprotkb());
+            enriched = fetcher.getProteinByID(MasterProtein.getUniprotkb());
+            enricherEvent.clear();
+            enricherEvent.setQueryDetails(MasterProtein.getUniprotkb(),"UniprotKb");
         }catch (FetcherException e) {
             new FetchingException(e);
         }
 
-        if(p==null) throw new FetchingException("Null protein");
-        return p;
+        if(enriched==null) throw new FetchingException("Null protein");
+
+        return enriched;
 
     }
 }
