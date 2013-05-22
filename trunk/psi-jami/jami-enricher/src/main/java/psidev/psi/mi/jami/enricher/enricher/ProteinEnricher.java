@@ -14,10 +14,9 @@ import psidev.psi.mi.jami.model.Protein;
  * Time: 13:03
  */
 public interface ProteinEnricher extends EnricherEventProcessor {
-    public void enrichProtein(Protein proteinMaster) throws EnrichmentException;
-
+    public void enrichProtein(Protein proteinMaster)
+            throws EnrichmentException;
 
     public void setFetcher(ProteinFetcher fetcher);
-
     public ProteinFetcher getFetcher();
 }

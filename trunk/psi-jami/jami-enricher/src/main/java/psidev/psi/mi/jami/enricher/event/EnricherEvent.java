@@ -12,8 +12,10 @@ import java.util.List;
  */
 public class EnricherEvent {
 
-    private EnricherEvent e;    private String queryID = null;
+    private String queryID = null;
     private String queryIDType = null;
+
+    private List<EnricherEvent> subEnricherEvents = new ArrayList<EnricherEvent>();
 
     private List<MismatchReport> mismatches = new ArrayList<MismatchReport>();
     private List<AdditionReport> additions = new ArrayList<AdditionReport>();
@@ -28,7 +30,6 @@ public class EnricherEvent {
         this.queryIDType = queryIDType;
     }
 
-
     public void setQueryID(String queryID) {
         this.queryID = queryID;
     }
@@ -37,20 +38,21 @@ public class EnricherEvent {
         this.queryIDType = queryIDType;
     }
 
+    public void setQueryDetails(String queryID, String queryIDType) {
+        this.queryID = queryID;
+        this.queryIDType = queryIDType;
+    }
 
     public String getQueryID(){
-        if(queryID == null) {
-            return e.getQueryID();
-        } else{
-            return queryID;
-        }
+        return queryID;
     }
     public String getQueryIDType(){
-        if(queryIDType == null) {
-            return e.getQueryIDType();
-        } else{
-            return queryIDType;
-        }
+        return queryIDType;
+    }
+
+
+    public void addSubEnricherEvent(EnricherEvent e){
+        subEnricherEvents.add(e);
     }
 
     public void addMismatchReport(MismatchReport r) {
@@ -70,4 +72,14 @@ public class EnricherEvent {
     public List<OverwriteReport> getOverwrites() {return overwrites;}
     public List<MismatchReport> getMismatches() {return mismatches;}
     public List<AdditionReport> getAdditions() {return additions;}
+
+    public void clear(){
+        queryID = null;
+        queryIDType = null;
+
+        subEnricherEvents.clear();
+        mismatches.clear();
+        additions.clear();
+        overwrites.clear();
+    }
 }
