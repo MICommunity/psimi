@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.bridges.ols;
 
-
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.utils.factory.AliasFactory;
@@ -9,9 +8,9 @@ import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
 import javax.xml.rpc.ServiceException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,12 +46,12 @@ public class OlsBridge{
             throws BridgeFailedException{
 
         try {
-            String fullname = qs.getTermById(identifier,ontology);
-            if(fullname.equals(identifier)){
+            String fullName = qs.getTermById(identifier,ontology);
+            if(fullName.equals(identifier)){
                 //The identifier could not be found.
                 return null;
             } else {
-                return fullname;
+                return fullName;
             }
         } catch (RemoteException e) {
             throw new BridgeFailedException(e);
