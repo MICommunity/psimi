@@ -1,16 +1,16 @@
 package psidev.psi.mi.jami.utils.comparator.publication;
 
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.XrefsCollectionComparator;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Unambiguous publication comparator.
  * It will first compare IMEx identifiers (publication with IMEx will always come first).
- * If both IMEx identifiers are not, it will only compare the identifiers (pubmed, then doi) using UnambiguousExternalIdentifierComparator (publications with identifiers will always come first).
+ * If both IMEx identifiers are not, it will only compare the identifiers (pubmed, then doi, then all identifiers) using UnambiguousExternalIdentifierComparator (publications with identifiers will always come first).
  * If both publication identifiers are not set, it will look at first publication title (case insensitive),
  * then the authors (order is taken into account), then the journal (case insensitive) and finally the publication date.
  * - Two publications which are null are equals
@@ -21,15 +21,18 @@ import java.util.List;
  * @since <pre>21/12/12</pre>
  */
 
-public class UnambiguousPublicationComparator extends PublicationComparator {
+public class UnambiguousPublicationComparator extends AbstractPublicationComparator {
 
     private static UnambiguousPublicationComparator unambiguousPublicationComparator;
+
+    private XrefsCollectionComparator identifierCollectionComparator;
 
     /**
      * Creates a new UnambiguousPublicationComparator based on UnambiguousExternalIdentifierComparator
      */
     public UnambiguousPublicationComparator() {
         super(new UnambiguousExternalIdentifierComparator());
+        this.identifierCollectionComparator = new XrefsCollectionComparator(getIdentifierComparator());
     }
 
     @Override
@@ -37,10 +40,14 @@ public class UnambiguousPublicationComparator extends PublicationComparator {
         return (UnambiguousExternalIdentifierComparator) identifierComparator;
     }
 
+    public XrefsCollectionComparator getIdentifierCollectionComparator() {
+        return identifierCollectionComparator;
+    }
+
     @Override
     /**
      * It will first compare IMEx identifiers (publication with IMEx will always come first).
-     * If both IMEx identifiers are not, it will only compare the identifiers (pubmed, then doi) using UnambiguousExternalIdentifierComparator (publications with identifiers will always come first).
+     * If both IMEx identifiers are not, it will only compare the identifiers (pubmed, then doi, then all identifiers) using UnambiguousExternalIdentifierComparator (publications with identifiers will always come first).
      * If both publication identifiers are not set, it will look at first publication title (case insensitive),
      * then the authors (order is taken into account), then the journal (case insensitive) and finally the publication date.
      * - Two publications which are null are equals
@@ -102,8 +109,16 @@ public class UnambiguousPublicationComparator extends PublicationComparator {
                 else if (doi2 != null){
                     return AFTER;
                 }
+                // compare all identifiers first
+                else if (!publication1.getIdentifiers().isEmpty() || !publication2.getIdentifiers().isEmpty()){
+
+                    Collection<Xref> identifiers1 = publication1.getIdentifiers();
+                    Collection<Xref> identifiers2 = publication2.getIdentifiers();
+                    return identifierCollectionComparator.compare(identifiers1, identifiers2);
+                }
                 // use journal, publication date, publication authors and publication title to compare publications
                 else {
+
                     // first compares titles
                     String title1 = publication1.getTitle();
                     String title2 = publication2.getTitle();
@@ -179,7 +194,7 @@ public class UnambiguousPublicationComparator extends PublicationComparator {
                             }
                             // compares publication dates
                             Date date1 = publication1.getPublicationDate();
-                            Date date2 = publication1.getPublicationDate();
+                            Date date2 = publication2.getPublicationDate();
 
                             if (date1 == null && date2 == null){
                                 return EQUAL;
@@ -237,21 +252,32 @@ public class UnambiguousPublicationComparator extends PublicationComparator {
         int hashcode = 31;
         hashcode = 31*hashcode + (pub.getImexId() != null ? pub.getImexId().hashCode() : 0);
 
-        if (pub.getPubmedId() != null){
-            hashcode = 31*hashcode + (pub.getPubmedId() != null ? pub.getPubmedId().hashCode() : 0);
+        if (pub.getImexId() != null){
+            hashcode = 31*hashcode + pub.getImexId().hashCode();
+        }
+        else if (pub.getPubmedId() != null){
+            hashcode = 31*hashcode + pub.getPubmedId().hashCode();
         }
         else if (pub.getDoi() != null){
-            hashcode = 31*hashcode + (pub.getDoi() != null ? pub.getDoi().hashCode() : 0);
+            hashcode = 31*hashcode + pub.getDoi().hashCode();
+        }
+        else if (!pub.getIdentifiers().isEmpty()){
+            List<Xref> list1 = new ArrayList<Xref>(pub.getIdentifiers());
+
+            Collections.sort(list1, unambiguousPublicationComparator.getIdentifierCollectionComparator().getObjectComparator());
+            for (Xref id : list1){
+                hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(id);
+            }
         }
         else {
             hashcode = 31*hashcode + (pub.getTitle() != null ? pub.getTitle().toLowerCase().trim().hashCode() : 0);
 
             List<String> authors = pub.getAuthors();
             for (String author : authors){
-                hashcode = 31*hashcode + author.hashCode();
+                hashcode = 31*hashcode + author.toLowerCase().trim().hashCode();
             }
 
-            hashcode = 31*hashcode + (pub.getJournal() != null ? pub.getJournal().hashCode() : 0);
+            hashcode = 31*hashcode + (pub.getJournal() != null ? pub.getJournal().toLowerCase().trim().hashCode() : 0);
             hashcode = 31*hashcode + (pub.getPublicationDate() != null ? pub.getPublicationDate().hashCode() : 0);
         }
 

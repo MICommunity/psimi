@@ -232,14 +232,16 @@ public class DefaultPublication implements Publication, Serializable {
         if (identifier != null){
             CvTerm imexDatabase = CvTermUtils.createImexDatabase();
             CvTerm imexPrimaryQualifier = CvTermUtils.createImexPrimaryQualifier();
-            // first remove old doi if not null
+            // first remove old imex if not null
             if (this.imexId != null){
                 xrefs.remove(this.imexId);
             }
             this.imexId = new DefaultXref(imexDatabase, identifier, imexPrimaryQualifier);
             xrefs.add(this.imexId);
+
+            this.curationDepth = CurationDepth.IMEx;
         }
-        else {
+        else if (this.imexId != null){
             throw new IllegalArgumentException("The imex id has to be non null.");
         }
     }
@@ -301,11 +303,19 @@ public class DefaultPublication implements Publication, Serializable {
     }
 
     public void setCurationDepth(CurationDepth curationDepth) {
-        if (imexId == null){
-            this.curationDepth = curationDepth;
-        }
-        else if (imexId != null && !curationDepth.equals(CurationDepth.IMEx)){
+
+        if (imexId != null && curationDepth != null && !curationDepth.equals(CurationDepth.IMEx)){
             throw new IllegalArgumentException("The curationDepth " + curationDepth.toString() + " is not allowed because the publication has an IMEx id so it has IMEx curation depth.");
+        }
+        else if (imexId != null && curationDepth == null){
+            throw new IllegalArgumentException("The curationDepth cannot be null/not specified because the publication has an IMEx id so it has IMEx curation depth.");
+        }
+
+        if (curationDepth == null) {
+            this.curationDepth = CurationDepth.undefined;
+        }
+        else {
+            this.curationDepth = curationDepth;
         }
     }
 
@@ -330,7 +340,7 @@ public class DefaultPublication implements Publication, Serializable {
             return false;
         }
         else {
-            if (experiments.add(exp)){
+            if (getExperiments().add(exp)){
                 exp.setPublication(this);
                 return true;
             }
@@ -343,7 +353,7 @@ public class DefaultPublication implements Publication, Serializable {
             return false;
         }
         else {
-            if (experiments.remove(exp)){
+            if (getExperiments().remove(exp)){
                 exp.setPublication(null);
                 return true;
             }

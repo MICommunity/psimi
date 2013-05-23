@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * Simple comparator for curated publications.
- * It uses a PublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source and then the released date.
+ * It uses a AbstractPublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source and then the released date.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class CuratedPublicationComparator implements Comparator<Publication> {
 
-    protected PublicationComparator publicationComparator;
+    protected AbstractPublicationComparator publicationComparator;
     protected AbstractCvTermComparator sourceComparator;
 
     /**
@@ -27,7 +27,7 @@ public class CuratedPublicationComparator implements Comparator<Publication> {
      * @param pubComparator : the comparator for the publication (not curation information). It is required
      * @param sourceComparator : the source comparator
      */
-    public CuratedPublicationComparator(PublicationComparator pubComparator, AbstractCvTermComparator sourceComparator){
+    public CuratedPublicationComparator(AbstractPublicationComparator pubComparator, AbstractCvTermComparator sourceComparator){
         if (pubComparator == null){
             throw new IllegalArgumentException("The publication comparator is required to compare publication bibliographic properties. It cannot be null");
         }
@@ -38,7 +38,7 @@ public class CuratedPublicationComparator implements Comparator<Publication> {
         this.sourceComparator = sourceComparator;
     }
 
-    public PublicationComparator getPublicationComparator() {
+    public AbstractPublicationComparator getPublicationComparator() {
         return publicationComparator;
     }
 
@@ -47,7 +47,7 @@ public class CuratedPublicationComparator implements Comparator<Publication> {
     }
 
     /**
-     * It uses a PublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source and then the released date.
+     * It uses a AbstractPublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source and then the released date.
      * @param publication1
      * @param publication2
      * @return

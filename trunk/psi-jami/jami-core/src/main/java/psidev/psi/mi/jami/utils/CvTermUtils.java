@@ -219,15 +219,15 @@ public class CvTermUtils {
     }
 
     public static CvTerm createPubmedDatabase(){
-        return createMICvTerm(Xref.PUBMED_MI, Xref.PUBMED);
+        return createMICvTerm(Xref.PUBMED, Xref.PUBMED_MI);
     }
 
     public static CvTerm createDoiDatabase(){
-        return createMICvTerm(Xref.DOI_MI, Xref.DOI);
+        return createMICvTerm(Xref.DOI, Xref.DOI_MI);
     }
 
     public static CvTerm createInterproDatabase(){
-        return createMICvTerm(Xref.INTERPRO_MI, Xref.INTERPRO);
+        return createMICvTerm(Xref.INTERPRO, Xref.INTERPRO_MI);
     }
 
     public static CvTerm createSmile(){
