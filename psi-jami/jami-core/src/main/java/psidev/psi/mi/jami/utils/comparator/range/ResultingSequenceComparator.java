@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Simple resultingSequence comparator
  *
  * It will first compare the original sequence and then if the original sequences are the same, it will compare the
- * new sequences.
+ * new sequences (case insensitive).
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -56,7 +56,7 @@ public class ResultingSequenceComparator implements Comparator<ResultingSequence
                 comp = BEFORE;
             }
             else{
-                comp = originalSequence1.compareTo(originalSequence2);
+                comp = originalSequence1.toLowerCase().trim().compareTo(originalSequence2.toLowerCase().trim());
             }
             if (comp != 0){
                return comp;
@@ -75,7 +75,7 @@ public class ResultingSequenceComparator implements Comparator<ResultingSequence
                 return BEFORE;
             }
             else{
-                return newSequence1.compareTo(newSequence2);
+                return newSequence1.toLowerCase().trim().compareTo(newSequence2.toLowerCase().trim());
             }
         }
     }
@@ -111,9 +111,9 @@ public class ResultingSequenceComparator implements Comparator<ResultingSequence
 
         int hashcode = 31;
         String originalSequence = resultingSequence.getOriginalSequence();
-        hashcode = 31*hashcode + (originalSequence != null ? originalSequence.hashCode() : 0);
+        hashcode = 31*hashcode + (originalSequence != null ? originalSequence.toLowerCase().trim().hashCode() : 0);
         String newSequence = resultingSequence.getNewSequence();
-        hashcode = 31*hashcode + (newSequence != null ? newSequence.hashCode() : 0);
+        hashcode = 31*hashcode + (newSequence != null ? newSequence.toLowerCase().trim().hashCode() : 0);
 
         return hashcode;
     }
