@@ -30,12 +30,12 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         this.modelledInteraction = interaction;
     }
 
-    public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor, Integer stoichiometry) {
+    public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
         this.modelledInteraction = interaction;
     }
 
-    public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor, CvTerm bioRole, Integer stoichiometry) {
+    public DefaultModelledParticipant(ModelledInteraction interaction, Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactor, bioRole, stoichiometry);
         this.modelledInteraction = interaction;
     }
@@ -48,11 +48,11 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         super(interactor, bioRole);
     }
 
-    public DefaultModelledParticipant(Interactor interactor, Integer stoichiometry) {
+    public DefaultModelledParticipant(Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
     }
 
-    public DefaultModelledParticipant(Interactor interactor, CvTerm bioRole, Integer stoichiometry) {
+    public DefaultModelledParticipant(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
         super(interactor, bioRole, stoichiometry);
     }
 

@@ -16,11 +16,4 @@ public interface MoleculeEffector extends AllostericEffector{
      * @return the participant that elicits the allosteric response.
      */
     public ModelledParticipant getMolecule();
-
-    /**
-     * Sets the allosteric molecule effector
-     * @param participant : the allosteric molecule effector
-     * @throws IllegalArgumentException if participant is null
-     */
-    public void setMolecule(ModelledParticipant participant);
 }

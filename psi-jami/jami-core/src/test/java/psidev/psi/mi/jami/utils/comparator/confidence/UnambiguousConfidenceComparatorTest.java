@@ -65,28 +65,4 @@ public class UnambiguousConfidenceComparatorTest {
         Assert.assertFalse(UnambiguousConfidenceComparator.areEquals(confidence1, confidence2));
         Assert.assertTrue(UnambiguousConfidenceComparator.hashCode(confidence1) != UnambiguousConfidenceComparator.hashCode(confidence2));
     }
-
-    @Test
-    public void test_confidence_null_unit_after() throws Exception {
-        Confidence confidence1 = new DefaultConfidence(new DefaultCvTerm("author-score"), "5", new DefaultCvTerm("percent"));
-        Confidence confidence2 = new DefaultConfidence(new DefaultCvTerm("author-score"), "5");
-
-        Assert.assertTrue(comparator.compare(confidence1, confidence2) < 0);
-        Assert.assertTrue(comparator.compare(confidence2, confidence1) > 0);
-
-        Assert.assertFalse(UnambiguousConfidenceComparator.areEquals(confidence1, confidence2));
-        Assert.assertTrue(UnambiguousConfidenceComparator.hashCode(confidence1) != UnambiguousConfidenceComparator.hashCode(confidence2));
-    }
-
-    @Test
-    public void test_confidence_unit_comparison() throws Exception {
-        Confidence confidence1 = new DefaultConfidence(new DefaultCvTerm("author-score"), "5", new DefaultCvTerm("percent"));
-        Confidence confidence2 = new DefaultConfidence(new DefaultCvTerm("author-score"), "5", new DefaultCvTerm("fraction"));
-
-        Assert.assertTrue(comparator.compare(confidence1, confidence2) != 0);
-        Assert.assertTrue(comparator.compare(confidence2, confidence1) != 0);
-
-        Assert.assertFalse(UnambiguousConfidenceComparator.areEquals(confidence1, confidence2));
-        Assert.assertTrue(UnambiguousConfidenceComparator.hashCode(confidence1) != UnambiguousConfidenceComparator.hashCode(confidence2));
-    }
 }

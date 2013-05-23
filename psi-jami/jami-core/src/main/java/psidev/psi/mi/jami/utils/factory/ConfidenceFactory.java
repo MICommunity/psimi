@@ -21,14 +21,6 @@ public class ConfidenceFactory {
         return new DefaultConfidence(CvTermFactory.createMICvTerm(typeName, null), value);
     }
 
-    public Confidence createConfidenceWithUnit(String typeName, String typeMi, String value, String unitname, String unitMi){
-        return new DefaultConfidence(CvTermFactory.createMICvTerm(typeName, typeMi), value, CvTermFactory.createMICvTerm(unitname, unitMi));
-    }
-
-    public Confidence createConfidenceWithUnit(String typeName, String value, String unitName){
-        return new DefaultConfidence(CvTermFactory.createMICvTerm(typeName, null), value, CvTermFactory.createMICvTerm(unitName, null));
-    }
-
     public Confidence createAuthorBasedConfidence(String value){
         return new DefaultConfidence(CvTermFactory.createMICvTerm(Confidence.AUTHOR_BASED_CONFIDENCE, Confidence.AUTHOR_BASED_CONFIDENCE_MI), value);
     }

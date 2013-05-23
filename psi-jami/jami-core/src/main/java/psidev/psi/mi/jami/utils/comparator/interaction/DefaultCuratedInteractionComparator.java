@@ -23,7 +23,7 @@ public class DefaultCuratedInteractionComparator extends InteractionComparator {
      * Creates a new DefaultCuratedInteractionComparator.
      */
     public DefaultCuratedInteractionComparator() {
-        super(new DefaultInteractionBaseComparator(), new DefaultCuratedModelledInteractionComparator(), new DefaultInteractionEvidenceComparator(), new DefaultCuratedCooperativeInteractionComparator(), new DefaultCuratedAllostericInteractionComparator());
+        super(new DefaultInteractionBaseComparator(), new DefaultCuratedModelledInteractionComparator(), new DefaultInteractionEvidenceComparator());
     }
 
     @Override
@@ -34,16 +34,6 @@ public class DefaultCuratedInteractionComparator extends InteractionComparator {
     @Override
     public DefaultInteractionEvidenceComparator getExperimentalInteractionComparator() {
         return (DefaultInteractionEvidenceComparator) this.experimentalInteractionComparator;
-    }
-
-    @Override
-    public DefaultCuratedCooperativeInteractionComparator getCooperativeInteractionComparator() {
-        return (DefaultCuratedCooperativeInteractionComparator) this.cooperativeInteractionComparator;
-    }
-
-    @Override
-    public DefaultCuratedAllostericInteractionComparator getAllostericInteractionComparator() {
-        return (DefaultCuratedAllostericInteractionComparator) allostericInteractionComparator;
     }
 
     @Override

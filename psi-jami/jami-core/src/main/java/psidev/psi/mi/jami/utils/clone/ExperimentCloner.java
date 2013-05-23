@@ -23,7 +23,6 @@ public class ExperimentCloner {
             target.setHostOrganism(source.getHostOrganism());
             target.setInteractionDetectionMethod(source.getInteractionDetectionMethod());
             target.setPublication(source.getPublication());
-            target.setShortLabel(source.getShortLabel());
 
             // copy collections
             target.getAnnotations().clear();

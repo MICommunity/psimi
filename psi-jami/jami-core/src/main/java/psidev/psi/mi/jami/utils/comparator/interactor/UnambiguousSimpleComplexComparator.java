@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousModelledParticipantInteractorComparator;
 
 /**
@@ -23,7 +24,12 @@ public class UnambiguousSimpleComplexComparator extends ComplexComparator {
      * compares components
      */
     public UnambiguousSimpleComplexComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new UnambiguousModelledParticipantInteractorComparator());
+        super(new UnambiguousInteractorBaseComparator(), new UnambiguousModelledParticipantInteractorComparator(), new UnambiguousCvTermComparator());
+    }
+
+    @Override
+    public UnambiguousCvTermComparator getCvTermComparator() {
+        return (UnambiguousCvTermComparator) super.getCvTermComparator();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
-import psidev.psi.mi.jami.model.CooperativeEffect;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionComparator;
@@ -12,6 +10,11 @@ import java.util.Comparator;
 
 /**
  * Basic comparator for CooperativeEffect
+ *
+ * It will first compare the outcome using AbstractCvTermComparator. Then it will compare the response using AbstractCvTermComparator.
+ * Then it will compare the CooperativityEvidences using CooperativityEvidenceComparator.
+ *
+ * Finally it will compare the affected interactions using ModelledInteractionComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -24,7 +27,7 @@ public class CooperativeEffectComparator implements Comparator<CooperativeEffect
     private CooperativityEvidenceCollectionComparator cooperativityEvidenceCollectionComparator;
     private ModelledInteractionCollectionComparator modelledInteractionCollectionComparator;
 
-    private CooperativeEffectComparator(AbstractCvTermComparator cvTermComparator, CooperativityEvidenceComparator cooperativityEvidenceComparator, ModelledInteractionComparator modelledInteractionComparator){
+    public CooperativeEffectComparator(AbstractCvTermComparator cvTermComparator, CooperativityEvidenceComparator cooperativityEvidenceComparator, ModelledInteractionComparator modelledInteractionComparator){
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator cannot be null and is required for comparing outcome and response.");
         }
@@ -53,6 +56,15 @@ public class CooperativeEffectComparator implements Comparator<CooperativeEffect
         return modelledInteractionCollectionComparator;
     }
 
+    /**
+     * It will first compare the outcome using AbstractCvTermComparator. Then it will compare the response using AbstractCvTermComparator.
+     * Then it will compare the CooperativityEvidences using CooperativityEvidenceComparator.
+     *
+     * Finally it will compare the affected interactions using ModelledInteractionComparator
+     * @param cooperativeEffect1
+     * @param cooperativeEffect2
+     * @return
+     */
     public int compare(CooperativeEffect cooperativeEffect1, CooperativeEffect cooperativeEffect2) {
         int EQUAL = 0;
         int BEFORE = -1;
@@ -68,19 +80,38 @@ public class CooperativeEffectComparator implements Comparator<CooperativeEffect
             return BEFORE;
         }
         else {
+            // first compare outcome
+            CvTerm outcome1 = cooperativeEffect1.getOutCome();
+            CvTerm outcome2 = cooperativeEffect2.getOutCome();
 
-            Publication pub1 = cooperativityEvidence1.getPublication();
-            Publication pub2 = cooperativityEvidence2.getPublication();
-
-            int comp = publicationComparator.compare(pub1, pub2);
+            int comp = cvTermComparator.compare(outcome1, outcome2);
             if (comp != 0){
                 return comp;
             }
 
-            Collection<CvTerm> evidenceMethods1 = cooperativityEvidence1.getEvidenceMethods();
-            Collection<CvTerm> evidenceMethods2 = cooperativityEvidence2.getEvidenceMethods();
+            // then compare response
+            CvTerm response1 = cooperativeEffect1.getResponse();
+            CvTerm response2 = cooperativeEffect2.getResponse();
 
-            return cvTermsCollectionComparator.compare(evidenceMethods1, evidenceMethods2);
+            comp = cvTermComparator.compare(response1, response2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compare cooperativity evidences
+            Collection<CooperativityEvidence> evidenceMethods1 = cooperativeEffect1.getCooperativityEvidences();
+            Collection<CooperativityEvidence> evidenceMethods2 = cooperativeEffect2.getCooperativityEvidences();
+
+            comp = cooperativityEvidenceCollectionComparator.compare(evidenceMethods1, evidenceMethods2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compare affected Interactions
+            Collection<ModelledInteraction> modelledInteractions1 = cooperativeEffect1.getAffectedInteractions();
+            Collection<ModelledInteraction> modelledInteractions2 = cooperativeEffect2.getAffectedInteractions();
+
+            return modelledInteractionCollectionComparator.compare(modelledInteractions1, modelledInteractions2);
         }
     }
 }
