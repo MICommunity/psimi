@@ -16,7 +16,5 @@ public interface StreamingInteractionSource extends MolecularInteractionDataSour
 
     public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator();
     public Iterator<? extends ModelledInteraction> getModelledInteractionsIterator();
-    public Iterator<? extends CooperativeInteraction> getCooperativeInteractionsIterator();
-    public Iterator<? extends AllostericInteraction> getAllostericInteractionsIterator();
     public Iterator<? extends Interaction> getInteractionsIterator();
 }
