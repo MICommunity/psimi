@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactCooperativeEffectComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -111,5 +112,28 @@ public class DefaultCooperativeEffect implements CooperativeEffect {
 
     public void setResponse(CvTerm response) {
         this.response = response;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof CooperativeEffect)){
+            return false;
+        }
+
+        return UnambiguousExactCooperativeEffectComparator.areEquals(this, (CooperativeEffect) o);
+    }
+
+    @Override
+    public int hashCode() {
+        return UnambiguousExactCooperativeEffectComparator.hashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Outcome: "+(outcome != null ? outcome.toString() : "") + (response != null ? ", response: " + response.toString() : "");
     }
 }

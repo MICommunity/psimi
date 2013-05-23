@@ -22,7 +22,7 @@ public class UnambiguousCuratedInteractionComparator extends InteractionComparat
      * Creates a new UnambiguousCuratedInteractionComparator.
      */
     public UnambiguousCuratedInteractionComparator() {
-        super(new UnambiguousInteractionBaseComparator(), new UnambiguousCuratedModelledInteractionComparator(), new UnambiguousInteractionEvidenceComparator(), new UnambiguousCuratedCooperativeInteractionComparator(), new UnambiguousCuratedAllostericInteractionComparator());
+        super(new UnambiguousInteractionBaseComparator(), new UnambiguousCuratedModelledInteractionComparator(), new UnambiguousInteractionEvidenceComparator());
     }
 
     @Override
@@ -33,16 +33,6 @@ public class UnambiguousCuratedInteractionComparator extends InteractionComparat
     @Override
     public UnambiguousInteractionEvidenceComparator getExperimentalInteractionComparator() {
         return (UnambiguousInteractionEvidenceComparator) this.experimentalInteractionComparator;
-    }
-
-    @Override
-    public UnambiguousCuratedCooperativeInteractionComparator getCooperativeInteractionComparator() {
-        return (UnambiguousCuratedCooperativeInteractionComparator) this.cooperativeInteractionComparator;
-    }
-
-    @Override
-    public UnambiguousCuratedAllostericInteractionComparator getAllostericInteractionComparator() {
-        return (UnambiguousCuratedAllostericInteractionComparator) allostericInteractionComparator;
     }
 
     @Override

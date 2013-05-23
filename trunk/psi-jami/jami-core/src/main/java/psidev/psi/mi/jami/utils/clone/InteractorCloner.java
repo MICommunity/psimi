@@ -22,7 +22,7 @@ public class InteractorCloner {
         if (source != null && target != null){
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
-            target.setType(source.getType());
+            target.setInteractorType(source.getInteractorType());
             target.setOrganism(source.getOrganism());
 
             // copy collections
@@ -53,8 +53,8 @@ public class InteractorCloner {
             // copy collections
             target.getInteractionEvidences().clear();
             target.getInteractionEvidences().addAll(source.getInteractionEvidences());
-            target.getComponents().clear();
-            target.addAllComponents(source.getComponents());
+            target.getModelledParticipants().clear();
+            target.addAllModelledParticipants(source.getModelledParticipants());
         }
     }
 }

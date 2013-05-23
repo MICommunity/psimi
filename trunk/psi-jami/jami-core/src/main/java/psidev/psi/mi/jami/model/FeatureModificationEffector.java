@@ -16,11 +16,4 @@ public interface FeatureModificationEffector extends AllostericEffector {
      * @return the feature that elicits the allosteric response.
      */
     public ModelledFeature getFeatureModification();
-
-    /**
-     * Sets the allosteric feature effector
-     * @param modification : the allosteric feature effector
-     * @throws IllegalArgumentException if modification is null
-     */
-    public void setMolecule(ModelledFeature modification);
 }

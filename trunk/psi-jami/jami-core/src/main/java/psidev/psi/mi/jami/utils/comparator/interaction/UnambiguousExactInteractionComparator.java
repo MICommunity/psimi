@@ -24,7 +24,7 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
      * Creates a new UnambiguousExactInteractionComparator.
      */
     public UnambiguousExactInteractionComparator() {
-        super(new UnambiguousExactInteractionBaseComparator(), new UnambiguousExactModelledInteractionComparator(), new UnambiguousExactInteractionEvidenceComparator(), new UnambiguousExactCooperativeInteractionComparator(), new UnambiguousExactAllostericInteractionComparator());
+        super(new UnambiguousExactInteractionBaseComparator(), new UnambiguousExactModelledInteractionComparator(), new UnambiguousExactInteractionEvidenceComparator());
     }
 
     @Override
@@ -35,16 +35,6 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
     @Override
     public UnambiguousExactInteractionEvidenceComparator getExperimentalInteractionComparator() {
         return (UnambiguousExactInteractionEvidenceComparator) this.experimentalInteractionComparator;
-    }
-
-    @Override
-    public UnambiguousExactCooperativeInteractionComparator getCooperativeInteractionComparator() {
-        return (UnambiguousExactCooperativeInteractionComparator) this.cooperativeInteractionComparator;
-    }
-
-    @Override
-    public UnambiguousExactAllostericInteractionComparator getAllostericInteractionComparator() {
-        return (UnambiguousExactAllostericInteractionComparator) allostericInteractionComparator;
     }
 
     @Override

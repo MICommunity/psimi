@@ -20,17 +20,14 @@ public class DefaultConfidenceTest {
 
         Assert.assertEquals(new DefaultCvTerm("author-score"), confidence.getType());
         Assert.assertEquals("high", confidence.getValue());
-        Assert.assertNull(confidence.getUnit());
     }
 
     @Test
     public void test_create_confidence_with_unit() throws Exception {
-        Confidence confidence = new DefaultConfidence(new DefaultCvTerm("author-score"), "high", new DefaultCvTerm("percent"));
+        Confidence confidence = new DefaultConfidence(new DefaultCvTerm("author-score"), "high");
 
         Assert.assertEquals(new DefaultCvTerm("author-score"), confidence.getType());
         Assert.assertEquals("high", confidence.getValue());
-        Assert.assertNotNull(confidence.getUnit());
-        Assert.assertEquals(new DefaultCvTerm("percent"), confidence.getUnit());
     }
 
     @Test(expected=IllegalArgumentException.class)

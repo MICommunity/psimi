@@ -24,7 +24,7 @@ public class DefaultInteractionComparator extends InteractionComparator {
      * Creates a new DefaultInteractionComparator.
      */
     public DefaultInteractionComparator() {
-        super(new DefaultInteractionBaseComparator(), new DefaultModelledInteractionComparator(), new DefaultInteractionEvidenceComparator(), new DefaultCooperativeInteractionComparator(), new DefaultAllostericInteractionComparator());
+        super(new DefaultInteractionBaseComparator(), new DefaultModelledInteractionComparator(), new DefaultInteractionEvidenceComparator());
     }
 
     @Override
@@ -35,16 +35,6 @@ public class DefaultInteractionComparator extends InteractionComparator {
     @Override
     public DefaultInteractionEvidenceComparator getExperimentalInteractionComparator() {
         return (DefaultInteractionEvidenceComparator) this.experimentalInteractionComparator;
-    }
-
-    @Override
-    public DefaultCooperativeInteractionComparator getCooperativeInteractionComparator() {
-        return (DefaultCooperativeInteractionComparator) this.cooperativeInteractionComparator;
-    }
-
-    @Override
-    public DefaultAllostericInteractionComparator getAllostericInteractionComparator() {
-        return (DefaultAllostericInteractionComparator) allostericInteractionComparator;
     }
 
     @Override

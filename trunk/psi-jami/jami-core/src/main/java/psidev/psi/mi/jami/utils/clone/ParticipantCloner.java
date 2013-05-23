@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.clone;
 
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
@@ -51,7 +52,7 @@ public class ParticipantCloner {
      * @param source
      * @param target
      */
-    public static void copyAndOverrideComponentProperties(Component source, Component target){
+    public static void copyAndOverrideComponentProperties(ModelledParticipant source, ModelledParticipant target){
         if (source != null && target != null){
             target.setBiologicalRole(source.getBiologicalRole());
             target.setInteractor(source.getInteractor());
@@ -60,8 +61,8 @@ public class ParticipantCloner {
             // copy collections
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
-            target.getComponentFeatures().clear();
-            target.addAllComponentFeatures(source.getComponentFeatures());
+            target.getModelledFeatures().clear();
+            target.addAllModelledFeatures(source.getModelledFeatures());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getAliases().clear();

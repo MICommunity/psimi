@@ -17,11 +17,12 @@ import java.util.Collections;
 
 public class DefaultModelledInteraction extends DefaultInteraction implements ModelledInteraction{
 
-    private Collection<Experiment> experiments;
+    private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
     private Collection<ModelledParticipant> modelledParticipants;
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
+    private Collection<CooperativeEffect> cooperativeEffects;
 
     public DefaultModelledInteraction() {
         super();
@@ -48,8 +49,21 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         this.modelledParticipants = new ArrayList<ModelledParticipant>();
     }
 
-    protected void initialiseExperiments(){
-        this.experiments = new ArrayList<Experiment>();
+    protected void initialiseInteractionEvidences(){
+        this.interactionEvidences = new ArrayList<InteractionEvidence>();
+    }
+
+    protected void initialiseCooperativeEffects(){
+        this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+    }
+
+    protected void initialiseCooperativeEffectsWith(Collection<CooperativeEffect> cooperativeEffects){
+        if (cooperativeEffects == null){
+            this.cooperativeEffects = Collections.EMPTY_LIST;
+        }
+        else{
+            this.cooperativeEffects = cooperativeEffects;
+        }
     }
 
     protected void initialiseModelledConfidences(){
@@ -65,12 +79,12 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         }
     }
 
-    protected void initialiseExperimentsWith(Collection<Experiment> experiments){
-        if (experiments == null){
-            this.experiments = Collections.EMPTY_LIST;
+    protected void initialiseInteractionEvidencesWith(Collection<InteractionEvidence> evidences){
+        if (evidences == null){
+            this.interactionEvidences = Collections.EMPTY_LIST;
         }
         else {
-            this.experiments = experiments;
+            this.interactionEvidences = evidences;
         }
     }
 
@@ -96,11 +110,11 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         }
     }
 
-    public Collection<Experiment> getExperiments() {
-        if (experiments == null){
-            initialiseExperiments();
+    public Collection<InteractionEvidence> getInteractionEvidences() {
+        if (interactionEvidences == null){
+            initialiseInteractionEvidences();
         }
-        return this.experiments;
+        return this.interactionEvidences;
     }
 
     public Collection<? extends ModelledParticipant> getModelledParticipants() {
@@ -186,6 +200,13 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
             initialiseModelledParameters();
         }
         return this.modelledParameters;
+    }
+
+    public Collection<CooperativeEffect> getCooperativeEffects() {
+        if (cooperativeEffects == null){
+            initialiseCooperativeEffects();
+        }
+        return this.cooperativeEffects;
     }
 
     @Override

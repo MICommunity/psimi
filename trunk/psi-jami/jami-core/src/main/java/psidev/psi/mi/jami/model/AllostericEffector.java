@@ -9,4 +9,12 @@ package psidev.psi.mi.jami.model;
  */
 
 public interface AllostericEffector {
+
+    /**
+     * The type of allosteric effector.
+     * This method cannot return null.
+     * Example: molecule, feature_modification, other,...
+     * @return type of allosteric effector.
+     */
+    public AllostericEffectorType getEffectorType();
 }
