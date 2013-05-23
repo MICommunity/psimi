@@ -30,14 +30,17 @@ public abstract class AbstractCvTermEnricher
 
     private final Logger log = LoggerFactory.getLogger(AbstractCvTermEnricher.class.getName());
     private CvTermFetcher fetcher = null;
+    private static final String TYPE =  "CvTerm";
 
-    /**
-     * @throws EnrichmentException      Thrown when the bridge can not be initiated
-     */
-    public AbstractCvTermEnricher()
-            throws EnrichmentException {
-        enricherEvent = new EnricherEvent("CvTerm");
+    public AbstractCvTermEnricher(){
+        enricherEvent = new EnricherEvent(TYPE);
     }
+
+    public AbstractCvTermEnricher(CvTermFetcher fetcher){
+        this();
+        setFetcher(fetcher);
+    }
+
 
     public void setFetcher(CvTermFetcher fetcher){
         this.fetcher = fetcher;
