@@ -67,6 +67,7 @@ public class EnricherEvent {
         overwrites.add(r);
     }
 
+    public List<EnricherEvent> getSubEnricherEvents() {return subEnricherEvents;}
     public List<OverwriteReport> getOverwrites() {return overwrites;}
     public List<MismatchReport> getMismatches() {return mismatches;}
     public List<AdditionReport> getAdditions() {return additions;}

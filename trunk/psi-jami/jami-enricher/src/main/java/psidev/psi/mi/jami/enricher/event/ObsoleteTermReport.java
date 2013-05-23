@@ -7,7 +7,7 @@ package psidev.psi.mi.jami.enricher.event;
  * Date: 13/05/13
  * Time: 13:36
  */
-public class ObsoleteTermReport extends EnricherEvent {
+public class ObsoleteTermReport {
 
     public ObsoleteTermReport(){
     }

@@ -46,7 +46,7 @@ public class LoggingEnricherListener implements EnricherListener {
                     "overwritten with ["+r.getNewValue()+"]");
         }
 
-        for(EnricherEvent s :e.getAdditions()) {
+        for(EnricherEvent s :e.getSubEnricherEvents()) {
             log.info("Sub enrichment begins");
             logAllReports(s);
         }

@@ -7,7 +7,7 @@ package psidev.psi.mi.jami.enricher.event;
  * Date: 13/05/13
  * Time: 13:40
  */
-public class OverwriteReport extends EnricherEvent{
+public class OverwriteReport{
     private String oldValue;
     private String field;
     private String newValue;
@@ -17,7 +17,6 @@ public class OverwriteReport extends EnricherEvent{
 
     public OverwriteReport(String field, String newValue, String oldValue){
         setOverwriteValues(field, newValue, oldValue);
-
     }
 
     public void setOverwriteValues(String field, String newValue, String oldValue){

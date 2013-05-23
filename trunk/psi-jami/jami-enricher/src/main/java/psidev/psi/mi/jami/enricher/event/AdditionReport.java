@@ -7,7 +7,7 @@ package psidev.psi.mi.jami.enricher.event;
  * Date: 13/05/13
  * Time: 14:30
  */
-public class AdditionReport extends EnricherEvent{
+public class AdditionReport{
     private String field;
     private String newValue;
 
