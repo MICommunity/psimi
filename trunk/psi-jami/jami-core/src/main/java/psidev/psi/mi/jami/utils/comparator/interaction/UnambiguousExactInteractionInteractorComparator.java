@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorBaseComparator;
 
 /**
  * Unambiguous exact interaction comparator only based on the interactors of an interaction.
@@ -24,7 +24,7 @@ public class UnambiguousExactInteractionInteractorComparator extends Interaction
      * compare interactors involved in the interaction
      */
     public UnambiguousExactInteractionInteractorComparator() {
-        super(new UnambiguousInteractorComparator());
+        super(new UnambiguousInteractorBaseComparator());
     }
 
     @Override

@@ -4,8 +4,7 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 
@@ -32,7 +31,7 @@ public class UnambiguousExactParticipantEvidenceComparator extends ParticipantEv
      * and a UnambiguousOrganismComparator to compare expressed in organisms
      */
     public UnambiguousExactParticipantEvidenceComparator() {
-        super(new ParticipantBaseComparator<FeatureEvidence>(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureEvidenceComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
+        super(new ParticipantBaseComparator<FeatureEvidence>(new UnambiguousExactInteractorBaseComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureEvidenceComparator()), new UnambiguousCvTermComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator());
     }
 
     @Override

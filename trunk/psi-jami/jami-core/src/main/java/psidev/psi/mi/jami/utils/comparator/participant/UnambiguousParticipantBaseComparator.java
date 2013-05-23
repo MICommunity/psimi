@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
 /**
  * Unambiguous participant comparator
@@ -29,12 +28,12 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
      * compare features.
      */
     public UnambiguousParticipantBaseComparator() {
-        super(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureBaseComparator());
+        super(new UnambiguousInteractorBaseComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureBaseComparator());
     }
 
     @Override
-    public UnambiguousInteractorComparator getInteractorComparator() {
-        return (UnambiguousInteractorComparator) this.interactorComparator;
+    public UnambiguousInteractorBaseComparator getInteractorComparator() {
+        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
     }
 
     @Override

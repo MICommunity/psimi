@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorBaseComparator;
 
 /**
  * Default biological participant comparator.
@@ -26,7 +26,7 @@ public class DefaultModelledParticipantComparator extends ModelledParticipantCom
      * the basic properties of a participant.
      */
     public DefaultModelledParticipantComparator() {
-        super(new ParticipantBaseComparator<ModelledFeature>(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultModelledFeatureComparator()));
+        super(new ParticipantBaseComparator<ModelledFeature>(new DefaultInteractorBaseComparator(), new DefaultCvTermComparator(), new DefaultModelledFeatureComparator()));
     }
 
     @Override
