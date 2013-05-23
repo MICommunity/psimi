@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.publication.PublicationComparator;
+import psidev.psi.mi.jami.utils.comparator.publication.AbstractPublicationComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -13,7 +13,7 @@ import java.util.Comparator;
 /**
  * Basic comparator for cooperativityEvidence
  *
- * It will first compare the publications using PublicationComparator and then the evidenceMethods using AbstractCvTermComparator
+ * It will first compare the publications using AbstractPublicationComparator and then the evidenceMethods using AbstractCvTermComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -23,9 +23,9 @@ import java.util.Comparator;
 public class CooperativityEvidenceComparator implements Comparator<CooperativityEvidence> {
 
     private CvTermsCollectionComparator cvTermsCollectionComparator;
-    private PublicationComparator publicationComparator;
+    private AbstractPublicationComparator publicationComparator;
 
-    public CooperativityEvidenceComparator(AbstractCvTermComparator cvTermComparator, PublicationComparator publicationComparator){
+    public CooperativityEvidenceComparator(AbstractCvTermComparator cvTermComparator, AbstractPublicationComparator publicationComparator){
 
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator cannot be null as we need one to compare evidenceMethods of a cooperativityEvidence");
@@ -41,12 +41,12 @@ public class CooperativityEvidenceComparator implements Comparator<Cooperativity
         return cvTermsCollectionComparator;
     }
 
-    public PublicationComparator getPublicationComparator() {
+    public AbstractPublicationComparator getPublicationComparator() {
         return publicationComparator;
     }
 
     /**
-     * It will first compare the publications using PublicationComparator and then the evidenceMethods using AbstractCvTermComparator
+     * It will first compare the publications using AbstractPublicationComparator and then the evidenceMethods using AbstractCvTermComparator
      * @param cooperativityEvidence1
      * @param cooperativityEvidence2
      * @return

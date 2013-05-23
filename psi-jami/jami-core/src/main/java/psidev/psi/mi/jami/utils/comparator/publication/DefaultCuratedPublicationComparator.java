@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
- * Default curated PublicationComparator
+ * Default curated AbstractPublicationComparator
  * It uses a DefaultPublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source using DefaultCvTermComparator and then the released date.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)

@@ -48,7 +48,7 @@ public class ExperimentComparator implements Comparator<Experiment>{
     }
 
     /**
-     * It will look first at the publications using a PublicationComparator. If the publications are the same, it will look at the
+     * It will look first at the publications using a AbstractPublicationComparator. If the publications are the same, it will look at the
      * interaction detection methods using AbstractCvTermComparator. If the interaction detection methods are the same, it will look at
      * the host organisms using OrganismComparator.
      * If the host organisms are the same, it will look at the variableParameters using VariableParameterComparator.
