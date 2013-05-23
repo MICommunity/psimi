@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-        this.biologicalRole = CvTermFactory.createUnspecifiedRole();
+        this.biologicalRole = CvTermUtils.createUnspecifiedRole();
     }
 
     public DefaultParticipant(T interactor, CvTerm bioRole){
@@ -41,7 +41,7 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
             throw new IllegalArgumentException("The interactor cannot be null.");
         }
         this.interactor = interactor;
-        this.biologicalRole = bioRole != null ? bioRole : CvTermFactory.createUnspecifiedRole();
+        this.biologicalRole = bioRole != null ? bioRole : CvTermUtils.createUnspecifiedRole();
     }
 
     public DefaultParticipant(T interactor, Stoichiometry stoichiometry){
@@ -110,7 +110,7 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
 
     public void setBiologicalRole(CvTerm bioRole) {
         if (bioRole == null){
-            this.biologicalRole = CvTermFactory.createUnspecifiedRole();
+            this.biologicalRole = CvTermUtils.createUnspecifiedRole();
         }
         else {
             biologicalRole = bioRole;

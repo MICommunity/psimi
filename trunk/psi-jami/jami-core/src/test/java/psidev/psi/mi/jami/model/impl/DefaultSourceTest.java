@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Source;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for DefaultSource
@@ -31,7 +31,7 @@ public class DefaultSourceTest {
 
     @Test
     public void test_create_source_details() throws Exception {
-        Source intact = new DefaultSource("intact", "http://ww.ebi.ac.uk/intact/", "hinxton", new DefaultPublication(new DefaultXref(CvTermFactory.createPubmedDatabase(), "12345")));
+        Source intact = new DefaultSource("intact", "http://ww.ebi.ac.uk/intact/", "hinxton", new DefaultPublication(new DefaultXref(CvTermUtils.createPubmedDatabase(), "12345")));
 
         Assert.assertEquals("intact", intact.getShortName());
         Assert.assertNotNull(intact.getAnnotations());
@@ -40,7 +40,7 @@ public class DefaultSourceTest {
 
         Assert.assertEquals("http://ww.ebi.ac.uk/intact/", intact.getUrl());
         Assert.assertEquals("hinxton", intact.getPostalAddress());
-        Assert.assertEquals(new DefaultPublication(new DefaultXref(CvTermFactory.createPubmedDatabase(), "12345")), intact.getPublication());
+        Assert.assertEquals(new DefaultPublication(new DefaultXref(CvTermUtils.createPubmedDatabase(), "12345")), intact.getPublication());
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -56,7 +56,7 @@ public class DefaultSourceTest {
 
     @Test
     public void test_create_source_ontologyId() throws Exception {
-        Source intact = new DefaultSource("intact", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), "MI:0469"));
+        Source intact = new DefaultSource("intact", new DefaultXref(CvTermUtils.createPsiMiDatabaseNameOnly(), "MI:0469"));
 
         Assert.assertEquals("intact", intact.getShortName());
         Assert.assertEquals("MI:0469", intact.getMIIdentifier());
@@ -71,7 +71,7 @@ public class DefaultSourceTest {
 
     @Test
     public void test_create_source_fullName() throws Exception {
-        Source intact = new DefaultSource("intact", "intact database", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), "MI:0469"));
+        Source intact = new DefaultSource("intact", "intact database", new DefaultXref(CvTermUtils.createPsiMiDatabaseNameOnly(), "MI:0469"));
 
         Assert.assertEquals("intact", intact.getShortName());
         Assert.assertEquals("intact database", intact.getFullName());

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -325,5 +326,117 @@ public class XrefUtils {
                 }
             }
         }
+    }
+
+    public static Xref createXref(String databaseName, String databaseMi, String id){
+        return new DefaultXref(CvTermUtils.createMICvTerm(databaseName, databaseMi), id);
+    }
+
+    public static Xref createXref(String databaseName, String id){
+        return new DefaultXref(CvTermUtils.createMICvTerm(databaseName, null), id);
+    }
+
+    public static Xref createXrefWithQualifier(String databaseName, String databaseMi, String id, String qualifierName, String qualifierMi){
+        return new DefaultXref(CvTermUtils.createMICvTerm(databaseName, databaseMi), id, CvTermUtils.createMICvTerm(qualifierName, qualifierMi));
+    }
+
+    public static Xref createXrefWithQualifier(String databaseName, String id, String qualifierName){
+        return new DefaultXref(CvTermUtils.createMICvTerm(databaseName, null), id, CvTermUtils.createMICvTerm(qualifierName, null));
+    }
+
+    public static Xref createIdentityXref(String databaseName, String databaseMi, String id){
+        return createXrefWithQualifier(databaseName, databaseMi, id, Xref.IDENTITY, Xref.IDENTITY_MI);
+    }
+
+    public static Xref createIdentityXref(String databaseName, String id){
+        return createXrefWithQualifier(databaseName, null, id, Xref.IDENTITY, Xref.IDENTITY_MI);
+    }
+
+    public static Xref createSecondaryXref(String databaseName, String databaseMi, String id){
+        return createXrefWithQualifier(databaseName, databaseMi, id, Xref.SECONDARY, Xref.SECONDARY_MI);
+    }
+
+    public static Xref createSecondaryXref(String databaseName, String id){
+        return createXrefWithQualifier(databaseName, null, id, Xref.SECONDARY, Xref.SECONDARY_MI);
+    }
+
+    public static Xref createUniprotIdentity(String uniprot){
+        return createIdentityXref(Xref.UNIPROTKB, Xref.UNIPROTKB_MI, uniprot);
+    }
+
+    public static Xref createRefseqIdentity(String refseq){
+        return createIdentityXref(Xref.REFSEQ, Xref.REFSEQ_MI, refseq);
+    }
+
+    public static Xref createEnsemblIdentity(String ensembl){
+        return createIdentityXref(Xref.ENSEMBL, Xref.ENSEMBL_MI, ensembl);
+    }
+
+    public static Xref createEnsemblGenomesIdentity(String ensembl){
+        return createIdentityXref(Xref.ENSEMBL_GENOMES, Xref.ENSEMBL_GENOMES_MI, ensembl);
+    }
+
+    public static Xref createEntrezGeneIdIdentity(String geneId){
+        return createIdentityXref(Xref.ENTREZ_GENE, Xref.ENTREZ_GENE_MI, geneId);
+    }
+
+    public static Xref createDdbjEmblGenbankIdentity(String id){
+        return createIdentityXref(Xref.DDBJ_EMBL_GENBANK, Xref.DDBJ_EMBL_GENBANK_MI, id);
+    }
+
+    public static Xref createChebiIdentity(String id){
+        return createIdentityXref(Xref.CHEBI, Xref.CHEBI_MI, id);
+    }
+
+    public static Xref createPubmedIdentity(String id){
+        return createIdentityXref(Xref.PUBMED, Xref.PUBMED_MI, id);
+    }
+
+    public static Xref createDoiIdentity(String id){
+        return createIdentityXref(Xref.DOI, Xref.DOI_MI, id);
+    }
+
+    public static Xref createPsiMiIdentity(String id){
+        return createIdentityXref(CvTerm.PSI_MI, CvTerm.PSI_MI_MI, id);
+    }
+
+    public static Xref createPsiModIdentity(String id){
+        return createSecondaryXref(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI, id);
+    }
+
+    public static Xref createUniprotSecondary(String uniprot){
+        return createSecondaryXref(Xref.UNIPROTKB, Xref.UNIPROTKB_MI, uniprot);
+    }
+
+    public static Xref createRefseqSecondary(String refseq){
+        return createSecondaryXref(Xref.REFSEQ, Xref.REFSEQ_MI, refseq);
+    }
+
+    public static Xref createEnsemblSecondary(String ensembl){
+        return createSecondaryXref(Xref.ENSEMBL, Xref.ENSEMBL_MI, ensembl);
+    }
+
+    public static Xref createEnsemblGenomesSecondary(String ensembl){
+        return createSecondaryXref(Xref.ENSEMBL_GENOMES, Xref.ENSEMBL_GENOMES_MI, ensembl);
+    }
+
+    public static Xref createEntrezGeneIdSecondary(String geneId){
+        return createSecondaryXref(Xref.ENTREZ_GENE, Xref.ENTREZ_GENE_MI, geneId);
+    }
+
+    public static Xref createDdbjEmblGenbankSecondary(String id){
+        return createSecondaryXref(Xref.DDBJ_EMBL_GENBANK, Xref.DDBJ_EMBL_GENBANK_MI, id);
+    }
+
+    public static Xref createChebiSecondary(String id){
+        return createSecondaryXref(Xref.CHEBI, Xref.CHEBI_MI, id);
+    }
+
+    public static Xref createPsiMiSecondary(String id){
+        return createSecondaryXref(CvTerm.PSI_MI, CvTerm.PSI_MI_MI, id);
+    }
+
+    public static Xref createPsiModSecondary(String id){
+        return createSecondaryXref(CvTerm.PSI_MOD, CvTerm.PSI_MOD_MI, id);
     }
 }

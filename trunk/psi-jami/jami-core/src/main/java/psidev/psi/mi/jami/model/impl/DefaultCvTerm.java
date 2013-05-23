@@ -4,10 +4,10 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -159,8 +159,8 @@ public class DefaultCvTerm implements CvTerm, Serializable {
 
         // add new mi if not null
         if (mi != null){
-            CvTerm psiMiDatabase = CvTermFactory.createPsiMiDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm psiMiDatabase = CvTermUtils.createPsiMiDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old psi mi if not null
             if (this.miIdentifier != null){
                 cvTermIdentifiers.remove(this.miIdentifier);
@@ -181,8 +181,8 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         // add new mod if not null
         if (mod != null){
 
-            CvTerm psiModDatabase = CvTermFactory.createPsiModDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm psiModDatabase = CvTermUtils.createPsiModDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old psi mod if not null
             if (this.modIdentifier != null){
                 cvTermIdentifiers.remove(this.modIdentifier);
@@ -203,8 +203,8 @@ public class DefaultCvTerm implements CvTerm, Serializable {
         // add new mod if not null
         if (par != null){
 
-            CvTerm psiModDatabase = CvTermFactory.createPsiParDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm psiModDatabase = CvTermUtils.createPsiParDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old psi mod if not null
             if (this.parIdentifier != null){
                 cvTermIdentifiers.remove(this.parIdentifier);

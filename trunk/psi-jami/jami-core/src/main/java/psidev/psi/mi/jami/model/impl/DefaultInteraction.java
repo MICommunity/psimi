@@ -2,10 +2,10 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class DefaultInteraction<P extends Participant> implements Interaction, S
     public void setRigid(String rigid) {
         Collection<Checksum> checksums = getChecksums();
         if (rigid != null){
-            CvTerm rigidMethod = CvTermFactory.createRigid();
+            CvTerm rigidMethod = CvTermUtils.createRigid();
             // first remove old rigid
             if (this.rigid != null){
                 checksums.remove(this.rigid);

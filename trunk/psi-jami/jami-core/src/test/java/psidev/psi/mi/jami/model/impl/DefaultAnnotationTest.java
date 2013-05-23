@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for DefaultAnnotation
@@ -17,17 +17,17 @@ public class DefaultAnnotationTest {
 
     @Test
     public void test_create_annotation_topic_and_value() throws Exception {
-        Annotation annotation = new DefaultAnnotation(CvTermFactory.createComplexPhysicalProperties(), "Molecular mass = 154 kDa");
+        Annotation annotation = new DefaultAnnotation(CvTermUtils.createComplexPhysicalProperties(), "Molecular mass = 154 kDa");
 
-        Assert.assertEquals(CvTermFactory.createComplexPhysicalProperties(), annotation.getTopic());
+        Assert.assertEquals(CvTermUtils.createComplexPhysicalProperties(), annotation.getTopic());
         Assert.assertEquals("Molecular mass = 154 kDa", annotation.getValue());
     }
 
     @Test
     public void test_create_annotation_topic_only() throws Exception {
-        Annotation annotation = new DefaultAnnotation(CvTermFactory.createComplexPhysicalProperties());
+        Annotation annotation = new DefaultAnnotation(CvTermUtils.createComplexPhysicalProperties());
 
-        Assert.assertEquals(CvTermFactory.createComplexPhysicalProperties(), annotation.getTopic());
+        Assert.assertEquals(CvTermUtils.createComplexPhysicalProperties(), annotation.getTopic());
         Assert.assertNull(annotation.getValue());
     }
 

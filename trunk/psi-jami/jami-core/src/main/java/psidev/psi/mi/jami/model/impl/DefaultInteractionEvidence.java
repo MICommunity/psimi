@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionEvidenceComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -177,8 +177,8 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         // add new imex if not null
         if (identifier != null){
             ExperimentalInteractionXrefList interactionXrefs = (ExperimentalInteractionXrefList) getXrefs();
-            CvTerm imexDatabase = CvTermFactory.createImexDatabase();
-            CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
+            CvTerm imexDatabase = CvTermUtils.createImexDatabase();
+            CvTerm imexPrimaryQualifier = CvTermUtils.createImexPrimaryQualifier();
             // first remove old doi if not null
             if (this.imexId != null){
                 interactionXrefs.removeOnly(this.imexId);

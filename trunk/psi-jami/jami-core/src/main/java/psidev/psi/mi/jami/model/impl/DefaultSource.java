@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.Collection;
 
@@ -90,7 +90,7 @@ public class DefaultSource extends DefaultCvTerm implements Source {
 
         // add new url if not null
         if (url != null){
-            CvTerm complexPhysicalProperties = CvTermFactory.createMICvTerm(Annotation.URL, Annotation.URL_MI);
+            CvTerm complexPhysicalProperties = CvTermUtils.createMICvTerm(Annotation.URL, Annotation.URL_MI);
             // first remove old url if not null
             if (this.url != null){
                 sourceAnnotationList.remove(this.url);

@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.utils.factory;
+package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
@@ -11,10 +11,10 @@ import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
  * @since <pre>11/02/13</pre>
  */
 
-public class ExperimentalInteractionFactory {
+public class ExperimentalInteractionUtils {
     
     public static InteractionEvidence createEmptyBasicExperimentalInteraction(){
 
-        return new DefaultInteractionEvidence(ExperimentFactory.createUnknownBasicExperiment());
+        return new DefaultInteractionEvidence(ExperimentUtils.createUnknownBasicExperiment());
     }
 }

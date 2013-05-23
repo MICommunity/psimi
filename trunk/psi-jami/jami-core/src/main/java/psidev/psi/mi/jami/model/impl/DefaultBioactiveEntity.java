@@ -2,10 +2,10 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactBioactiveEntityComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.Collection;
 
@@ -79,54 +79,54 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     }
 
     public DefaultBioactiveEntity(String name) {
-        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
     }
 
     public DefaultBioactiveEntity(String name, String fullName) {
-        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
     }
 
     public DefaultBioactiveEntity(String name, Organism organism) {
-        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
     }
 
     public DefaultBioactiveEntity(String name, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
+        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
+        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
 
     }
 
     public DefaultBioactiveEntity(String name, String fullName, String uniqueChebi) {
-        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public DefaultBioactiveEntity(String name, Organism organism, String uniqueChebi) {
-        super(name, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Organism organism, String uniqueChebi) {
-        super(name, fullName, CvTermFactory.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
@@ -151,8 +151,8 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
         // add new chebi if not null
         if (id != null){
-            CvTerm chebiDatabase = CvTermFactory.createChebiDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm chebiDatabase = CvTermUtils.createChebiDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.chebi != null){
                 bioactiveEntityIdentifiers.remove(this.chebi);
@@ -175,7 +175,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         Collection<Checksum> bioactiveEntityChecksums = getChecksums();
 
         if (smile != null){
-            CvTerm smileMethod = CvTermFactory.createSmile();
+            CvTerm smileMethod = CvTermUtils.createSmile();
             // first remove old smile
             if (this.smile != null){
                 bioactiveEntityChecksums.remove(this.smile);
@@ -198,7 +198,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         Collection<Checksum> bioactiveEntityChecksums = getChecksums();
 
         if (standardInchiKey != null){
-            CvTerm inchiKeyMethod = CvTermFactory.createStandardInchiKey();
+            CvTerm inchiKeyMethod = CvTermUtils.createStandardInchiKey();
             // first remove old standard inchi key
             if (this.standardInchiKey != null){
                 bioactiveEntityChecksums.remove(this.standardInchiKey);
@@ -221,7 +221,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
         Collection<Checksum> bioactiveEntityChecksums = getChecksums();
 
         if (standardInchi != null){
-            CvTerm inchiMethod = CvTermFactory.createStandardInchi();
+            CvTerm inchiMethod = CvTermUtils.createStandardInchi();
             // first remove standard inchi
             if (this.standardInchi != null){
                 bioactiveEntityChecksums.remove(this.standardInchi);

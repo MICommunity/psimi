@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -88,5 +89,33 @@ public class ChecksumUtils {
                 }
             }
         }
+    }
+
+    public static Checksum createChecksum(String methodName, String methodMi, String checksum){
+        return new DefaultChecksum(CvTermUtils.createMICvTerm(methodName, methodMi), checksum);
+    }
+
+    public static Checksum createChecksum(String methodName, String checksum){
+        return new DefaultChecksum(CvTermUtils.createMICvTerm(methodName, null), checksum);
+    }
+
+    public static Checksum createRogid(String checksum){
+        return new DefaultChecksum(CvTermUtils.createRogid(), checksum);
+    }
+
+    public static Checksum createRigid(String checksum){
+        return new DefaultChecksum(CvTermUtils.createRigid(), checksum);
+    }
+
+    public static Checksum createStandardInchiKey(String checksum){
+        return new DefaultChecksum(CvTermUtils.createStandardInchiKey(), checksum);
+    }
+
+    public static Checksum createStandardInchi(String checksum){
+        return new DefaultChecksum(CvTermUtils.createStandardInchi(), checksum);
+    }
+
+    public static Checksum createSmile(String checksum){
+        return new DefaultChecksum(CvTermUtils.createSmile(), checksum);
     }
 }

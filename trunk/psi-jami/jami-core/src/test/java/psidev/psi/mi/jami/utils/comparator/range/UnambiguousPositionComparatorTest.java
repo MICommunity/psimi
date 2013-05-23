@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.impl.DefaultPosition;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for UnambiguousPositionComparator
@@ -21,7 +21,7 @@ public class UnambiguousPositionComparatorTest {
     @Test
     public void test_position_null_after() throws Exception {
         Position pos1 = null;
-        Position pos2 = new DefaultPosition(CvTermFactory.createUndeterminedStatus(), 0);
+        Position pos2 = new DefaultPosition(CvTermUtils.createUndeterminedStatus(), 0);
 
         Assert.assertTrue(comparator.compare(pos1, pos2) > 0);
         Assert.assertTrue(comparator.compare(pos2, pos1) < 0);
@@ -32,8 +32,8 @@ public class UnambiguousPositionComparatorTest {
 
     @Test
     public void test_position_status_comparison() throws Exception {
-        Position pos1 = new DefaultPosition(CvTermFactory.createNTerminalRangeStatus(), 0);
-        Position pos2 = new DefaultPosition(CvTermFactory.createUndeterminedStatus(), 0);
+        Position pos1 = new DefaultPosition(CvTermUtils.createNTerminalRangeStatus(), 0);
+        Position pos2 = new DefaultPosition(CvTermUtils.createUndeterminedStatus(), 0);
 
         Assert.assertTrue(comparator.compare(pos1, pos2) != 0);
         Assert.assertTrue(comparator.compare(pos2, pos1) != 0);
@@ -44,8 +44,8 @@ public class UnambiguousPositionComparatorTest {
 
     @Test
     public void test_position_same_undetermined_status_ignore_start_end() throws Exception {
-        Position pos1 = new DefaultPosition(CvTermFactory.createUndeterminedStatus(), 3);
-        Position pos2 = new DefaultPosition(CvTermFactory.createUndeterminedStatus(), 0);
+        Position pos1 = new DefaultPosition(CvTermUtils.createUndeterminedStatus(), 3);
+        Position pos2 = new DefaultPosition(CvTermUtils.createUndeterminedStatus(), 0);
 
         Assert.assertTrue(comparator.compare(pos1, pos2) == 0);
         Assert.assertTrue(comparator.compare(pos2, pos1) == 0);
@@ -56,8 +56,8 @@ public class UnambiguousPositionComparatorTest {
 
     @Test
     public void test_position_same_nTerminalrange_status_ignore_start_end() throws Exception {
-        Position pos1 = new DefaultPosition(CvTermFactory.createNTerminalRangeStatus(), 3);
-        Position pos2 = new DefaultPosition(CvTermFactory.createNTerminalRangeStatus(), 0);
+        Position pos1 = new DefaultPosition(CvTermUtils.createNTerminalRangeStatus(), 3);
+        Position pos2 = new DefaultPosition(CvTermUtils.createNTerminalRangeStatus(), 0);
 
         Assert.assertTrue(comparator.compare(pos1, pos2) == 0);
         Assert.assertTrue(comparator.compare(pos2, pos1) == 0);
@@ -68,8 +68,8 @@ public class UnambiguousPositionComparatorTest {
 
     @Test
     public void test_position_same_CTerminalRange_status_ignore_start_end() throws Exception {
-        Position pos1 = new DefaultPosition(CvTermFactory.createCTerminalRangeStatus(), 3);
-        Position pos2 = new DefaultPosition(CvTermFactory.createCTerminalRangeStatus(), 0);
+        Position pos1 = new DefaultPosition(CvTermUtils.createCTerminalRangeStatus(), 3);
+        Position pos2 = new DefaultPosition(CvTermUtils.createCTerminalRangeStatus(), 0);
 
         Assert.assertTrue(comparator.compare(pos1, pos2) == 0);
         Assert.assertTrue(comparator.compare(pos2, pos1) == 0);
@@ -104,8 +104,8 @@ public class UnambiguousPositionComparatorTest {
 
     @Test
     public void test_position_same_status_same_start_end() throws Exception {
-        Position pos1 = new DefaultPosition(CvTermFactory.createCertainStatus(), 3);
-        Position pos2 = new DefaultPosition(CvTermFactory.createCertainStatus(), 3);
+        Position pos1 = new DefaultPosition(CvTermUtils.createCertainStatus(), 3);
+        Position pos2 = new DefaultPosition(CvTermUtils.createCertainStatus(), 3);
 
         Assert.assertTrue(comparator.compare(pos1, pos2) == 0);
         Assert.assertTrue(comparator.compare(pos2, pos1) == 0);

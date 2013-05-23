@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.utils.factory;
+package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
@@ -11,9 +11,9 @@ import psidev.psi.mi.jami.model.impl.DefaultExperiment;
  * @since <pre>11/02/13</pre>
  */
 
-public class ExperimentFactory {
+public class ExperimentUtils {
 
     public static Experiment createUnknownBasicExperiment(){
-        return new DefaultExperiment(PublicationFactory.createUnknownBasicPublication(), CvTermFactory.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
+        return new DefaultExperiment(PublicationUtils.createUnknownBasicPublication(), CvTermUtils.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
     }
 }

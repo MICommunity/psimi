@@ -4,10 +4,10 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.NucleicAcid;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactNucleicAcidComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.Collection;
 
@@ -58,35 +58,35 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
     }
 
     public DefaultNucleicAcid(String name) {
-        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
+        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
     }
 
     public DefaultNucleicAcid(String name, String fullName) {
-        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
+        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
     }
 
     public DefaultNucleicAcid(String name, Organism organism) {
-        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
+        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
     }
 
     public DefaultNucleicAcid(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
+        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
     }
 
     public DefaultNucleicAcid(String name, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
+        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
     }
 
     public DefaultNucleicAcid(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
     }
 
     public DefaultNucleicAcid(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
+        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
     }
 
     public DefaultNucleicAcid(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
     }
 
     public String getDdbjEmblGenbank() {
@@ -103,8 +103,8 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
 
         // add new ddbj/embl/genbank if not null
         if (id != null){
-            CvTerm ddbjEmblGenbankDatabase = CvTermFactory.createDdbjEmblGenbankDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm ddbjEmblGenbankDatabase = CvTermUtils.createDdbjEmblGenbankDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old ddbj/embl/genbank if not null
             if (this.ddbjEmblGenbank != null){
                 nucleicAcidIdentifiers.remove(this.ddbjEmblGenbank);
@@ -128,8 +128,8 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
 
         // add new refseq if not null
         if (id != null){
-            CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm refseqDatabase = CvTermUtils.createRefseqDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
                 nucleicAcidIdentifiers.remove(this.refseq);
