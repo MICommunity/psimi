@@ -27,92 +27,92 @@ public class MinimumCvTermEnricher
 
     /**
      * Enrichment of a single CvTerm.
-     * If enrichment takes place, the master will be edited.
+     * If enrichment takes place, the ToEnrich will be edited.
      *
-     * @param cvTermMaster  a CvTerm to enrich
+     * @param cvTermToEnrich  a CvTerm to enrich
      * @throws EnrichmentException
      */
-    public void enrichCvTerm(CvTerm cvTermMaster)
+    public void enrichCvTerm(CvTerm cvTermToEnrich)
             throws EnrichmentException{
 
         //Get the enriched form
-        CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
+        CvTerm cvTermEnriched = getEnrichedForm(cvTermToEnrich);
         if(cvTermEnriched == null){
             //log.debug("The enriched protein was null");
             return;
         }
         //Enrich
-        enrichCvTerm(cvTermMaster, cvTermEnriched);
+        enrichCvTerm(cvTermToEnrich, cvTermEnriched);
         //Find mismatches
-        compareForMismatches(cvTermMaster, cvTermEnriched);
+        compareForMismatches(cvTermToEnrich, cvTermEnriched);
         //Fire the report
         fireEnricherEvent(enricherEvent);
     }
 
     /**
-     * Compares two CvTerms and updates the master with any fields that it is missing.
+     * Compares two CvTerms and updates the ToEnrich with any fields that it is missing.
      * Only full name and synonyms are considered.
-     * @param cvTermMaster      The cvTerm to be updated
-     * @param cvTermEnriched    The cvTerm containing the data to update the master with.
+     * @param cvTermToEnrich      The cvTerm to be updated
+     * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
      * @throws EnrichmentException
      */
-    public void enrichCvTerm(CvTerm cvTermMaster, CvTerm cvTermEnriched)
+    public void enrichCvTerm(CvTerm cvTermToEnrich, CvTerm cvTermEnriched)
             throws EnrichmentException{
 
         //Todo report obsolete
         //Add full name
-        if(cvTermMaster.getFullName() == null
+        if(cvTermToEnrich.getFullName() == null
                 && cvTermEnriched.getFullName() != null){
-            cvTermMaster.setFullName(cvTermEnriched.getFullName());
-            addAdditionReport(new AdditionReport("FullName", cvTermMaster.getFullName()));
+            cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
+            addAdditionReport(new AdditionReport("FullName", cvTermToEnrich.getFullName()));
         }
 
         //Add identifiers
         Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
                 cvTermEnriched.getIdentifiers(),
-                cvTermMaster.getIdentifiers(),
+                cvTermToEnrich.getIdentifiers(),
                 new DefaultXrefComparator());
 
         for(Xref x: subtractedIdentifiers){
-            cvTermMaster.getIdentifiers().add(x);
+            cvTermToEnrich.getIdentifiers().add(x);
             addAdditionReport(new AdditionReport("Identifier", x.getId()));
         }
 
         //Add synonyms
         Collection<Alias> subtractedSynonyms = CollectionUtilsExtra.comparatorSubtract(
                 cvTermEnriched.getSynonyms(),
-                cvTermMaster.getSynonyms(),
+                cvTermToEnrich.getSynonyms(),
                 new DefaultAliasComparator());
 
         for(Alias x: subtractedSynonyms){
-            cvTermMaster.getSynonyms().add(x);
+            cvTermToEnrich.getSynonyms().add(x);
             addAdditionReport(new AdditionReport("Synonym", "Name: " + x.getName() + ", Type: " + x.getType()));
         }
     }
 
     /**
-     * Compares the Master and enriched form for mismatches.
-     * The full name and the short name are compared between the master and enriched forms.
-     * @param cvTermMaster
+     * Compares the ToEnrich and enriched form for mismatches.
+     * The full name and the short name are compared between the ToEnrich and enriched forms.
+     * @param cvTermToEnrich
      * @param cvTermEnriched
      */
-    public void compareForMismatches(CvTerm cvTermMaster, CvTerm cvTermEnriched){
+    public void compareForMismatches(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
         //Check full name
         if(cvTermEnriched.getFullName() != null){
-            if(!cvTermMaster.getFullName().equals(cvTermEnriched.getFullName())){
+            if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
                 addMismatchReport(new MismatchReport(
-                        "FullName", cvTermMaster.getFullName(), cvTermEnriched.getFullName()));
+                        "FullName", cvTermToEnrich.getFullName(), cvTermEnriched.getFullName()));
             }
         }
 
         //Overwrite shortname
-        if(!cvTermMaster.getShortName().equals(cvTermEnriched.getShortName())){
+        if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
             addMismatchReport(new MismatchReport(
-                    "ShortName", cvTermMaster.getShortName(), cvTermEnriched.getShortName()));
+                    "ShortName", cvTermToEnrich.getShortName(), cvTermEnriched.getShortName()));
         }
     }
 
-    public void enrichCvTerms(Collection<CvTerm> cvTermMasters) {
+    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

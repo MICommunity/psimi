@@ -33,23 +33,23 @@ public class MinimumProteinEnricher
         super(fetcher);
     }
 
-    public void enrichProtein(Protein proteinMaster)
+    public void enrichProtein(Protein proteinToEnrich)
             throws EnrichmentException {
 
-        Protein proteinEnriched = getEnrichedForm(proteinMaster);
-        enrichProtein(proteinMaster, proteinEnriched);
-        compareProteinMismatches(proteinMaster, proteinEnriched);
+        Protein proteinEnriched = getEnrichedForm(proteinToEnrich);
+        enrichProtein(proteinToEnrich, proteinEnriched);
+        compareProteinMismatches(proteinToEnrich, proteinEnriched);
         fireEnricherEvent(enricherEvent);
     }
 
 
-    protected void enrichProtein(Protein proteinMaster, Protein proteinEnriched)
+    protected void enrichProtein(Protein proteinToEnrich, Protein proteinEnriched)
             throws EnrichmentException{
 
         //Fullname
-        if(proteinMaster.getFullName() == null
+        if(proteinToEnrich.getFullName() == null
                 && proteinEnriched.getFullName() != null){
-            proteinMaster.setFullName( proteinEnriched.getFullName() );
+            proteinToEnrich.setFullName( proteinEnriched.getFullName() );
             addAdditionReport(new AdditionReport(
                     "Full name", proteinEnriched.getFullName()));
         }
@@ -60,52 +60,52 @@ public class MinimumProteinEnricher
          * Currently the AC always matches.
          * This is included against a scenario where a fetcher uses a filed other than AC
          */
-        if(proteinMaster.getUniprotkb() == null
+        if(proteinToEnrich.getUniprotkb() == null
                 && proteinEnriched.getUniprotkb() != null) {
-            proteinMaster.setUniprotkb(proteinEnriched.getUniprotkb());
+            proteinToEnrich.setUniprotkb(proteinEnriched.getUniprotkb());
             addAdditionReport(new AdditionReport("uniprotKb AC", proteinEnriched.getUniprotkb()));
         }
 
         //SEQUENCE
-        if(proteinMaster.getSequence() == null
+        if(proteinToEnrich.getSequence() == null
                 && proteinEnriched.getSequence() != null){
-            proteinMaster.setSequence(proteinEnriched.getSequence());
-            addAdditionReport(new AdditionReport("Sequence", proteinMaster.getSequence()));
+            proteinToEnrich.setSequence(proteinEnriched.getSequence());
+            addAdditionReport(new AdditionReport("Sequence", proteinToEnrich.getSequence()));
         }
     }
 
-    public void compareProteinMismatches(Protein proteinMaster, Protein proteinEnriched){
+    public void compareProteinMismatches(Protein proteinToEnrich, Protein proteinEnriched){
 
         //Short name
-        if (!proteinMaster.getShortName().equalsIgnoreCase(
+        if (!proteinToEnrich.getShortName().equalsIgnoreCase(
                 proteinEnriched.getShortName() )) {
             addMismatchReport(new MismatchReport(
-                    "ShortName", proteinMaster.getShortName(), proteinEnriched.getShortName()));
+                    "ShortName", proteinToEnrich.getShortName(), proteinEnriched.getShortName()));
         }
 
         //Full name
         if(proteinEnriched.getFullName() != null){
-            if (!proteinMaster.getFullName().equalsIgnoreCase(
+            if (!proteinToEnrich.getFullName().equalsIgnoreCase(
                     proteinEnriched.getFullName() )) {
                 addMismatchReport(new MismatchReport(
-                        "FullName", proteinMaster.getFullName(), proteinEnriched.getFullName()));
+                        "FullName", proteinToEnrich.getFullName(), proteinEnriched.getFullName()));
             }
         }
 
         //Uniprot AC
         if(proteinEnriched.getUniprotkb() != null){
-            if(! proteinMaster.getUniprotkb().equalsIgnoreCase(
+            if(! proteinToEnrich.getUniprotkb().equalsIgnoreCase(
                     proteinEnriched.getUniprotkb() )){
                 addMismatchReport(new MismatchReport(
-                        "UniprotKB AC", proteinMaster.getUniprotkb(), proteinEnriched.getUniprotkb()));
+                        "UniprotKB AC", proteinToEnrich.getUniprotkb(), proteinEnriched.getUniprotkb()));
             }
         }
 
         //Sequence
         if(proteinEnriched.getSequence() != null){
-            if(! proteinMaster.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
+            if(! proteinToEnrich.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
                 addMismatchReport(new MismatchReport(
-                        "Sequence", proteinEnriched.getSequence(), proteinMaster.getSequence()));
+                        "Sequence", proteinEnriched.getSequence(), proteinToEnrich.getSequence()));
             }
         }
 
@@ -121,25 +121,25 @@ public class MinimumProteinEnricher
                     }
                 });
 
-                if(proteinMaster.getOrganism() == null && proteinEnriched.getOrganism() != null){
-                    proteinMaster.setOrganism(new DefaultOrganism(-3));
+                if(proteinToEnrich.getOrganism() == null && proteinEnriched.getOrganism() != null){
+                    proteinToEnrich.setOrganism(new DefaultOrganism(-3));
                 }
-                minimumOrganismEnricher.enrichOrganism(proteinMaster.getOrganism());
+                minimumOrganismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
 
-                if(proteinMaster.getOrganism().getTaxId() > 0
-                        && proteinMaster.getSequence() != null){
+                if(proteinToEnrich.getOrganism().getTaxId() > 0
+                        && proteinToEnrich.getSequence() != null){
                     RogidGenerator rogidGenerator = new RogidGenerator();
                     // String rogid = null;
 
                     try {
                         String rogid = rogidGenerator.calculateRogid(
-                                proteinMaster.getSequence(),""+proteinMaster.getOrganism().getTaxId());
-                        if(proteinMaster.getRogid() == null){
-                            proteinMaster.setRogid(rogid);
+                                proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
+                        if(proteinToEnrich.getRogid() == null){
+                            proteinToEnrich.setRogid(rogid);
                             addAdditionReport(new AdditionReport("RogID", rogid));
                         }
-                        else if(!proteinMaster.getRogid().equals(rogid)){
-                            addMismatchReport(new MismatchReport("RogID", proteinMaster.getRogid(), rogid));
+                        else if(!proteinToEnrich.getRogid().equals(rogid)){
+                            addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(), rogid));
                         }
                     } catch (SeguidException e) {
                         log.debug("caught exception from a failed rogid");

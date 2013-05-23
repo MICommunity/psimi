@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.bridges.ols;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.utils.factory.AliasFactory;
+import psidev.psi.mi.jami.utils.AliasUtils;
 import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
@@ -228,7 +228,7 @@ public class OlsBridge{
             for (Object key : metaDataMap.keySet()){
                 String keyName = (String)key;
                 if (keyName.startsWith(SYNONYM_IDENTIFIER + META_DATA_SEPARATOR)){
-                    synonyms.add(AliasFactory.createAlias(
+                    synonyms.add(AliasUtils.createAlias(
                             "synonym", "MI:1041", (String) metaDataMap.get(key)));
                 }
             }
