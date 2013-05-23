@@ -5,7 +5,9 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
+import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.mock.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
@@ -31,8 +33,7 @@ public class MinimumProteinEnricherTest {
     @Before
     public void initialiseFetcherAndEnricher() throws EnrichmentException {
         this.fetcher = new MockProteinFetcher();
-        this.minimumProteinEnricher = new MinimumProteinEnricher();
-        this.minimumProteinEnricher.setFetcher(this.fetcher);
+        this.minimumProteinEnricher = new MinimumProteinEnricher(fetcher);
 
         Protein testProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         testProtein.setUniprotkb(TEST_AC);
@@ -93,5 +94,24 @@ public class MinimumProteinEnricherTest {
         assertEquals( protein_with_all_fields.getShortName(), "test2 shortName");
         assertEquals( protein_with_all_fields.getFullName(), "test2 fullName");
         assertEquals( protein_with_all_fields.getSequence(), "TAGTAG");
+    }
+
+    private EnricherEvent event;
+
+    @Test
+    public void test_enricher_event_is_fired() throws EnrichmentException {
+        Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");
+        protein_to_enrich.setUniprotkb(TEST_AC);
+
+        event = null;
+        this.minimumProteinEnricher.addEnricherListener(new EnricherListener() {
+            public void onEnricherEvent(EnricherEvent e) {
+                event = e;
+            }
+        });
+
+        minimumProteinEnricher.enrichProtein(protein_to_enrich);
+
+        assertNotNull(event);
     }
 }

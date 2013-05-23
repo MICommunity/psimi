@@ -50,7 +50,7 @@ public class MaximumProteinUpdater
     }
 
 
-    public void updateProteinMismatches(Protein proteinToEnrich, Protein proteinEnriched){
+    protected void updateProteinMismatches(Protein proteinToEnrich, Protein proteinEnriched){
 
         //Short name
         if (!proteinToEnrich.getShortName().equalsIgnoreCase(
