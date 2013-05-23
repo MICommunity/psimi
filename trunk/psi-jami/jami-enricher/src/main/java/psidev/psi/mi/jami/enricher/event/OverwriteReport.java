@@ -15,11 +15,11 @@ public class OverwriteReport{
     public OverwriteReport(){
     }
 
-    public OverwriteReport(String field, String newValue, String oldValue){
-        setOverwriteValues(field, newValue, oldValue);
+    public OverwriteReport(String field, String oldValue, String newValue){
+        setOverwriteValues(field, oldValue, newValue);
     }
 
-    public void setOverwriteValues(String field, String newValue, String oldValue){
+    public void setOverwriteValues(String field, String oldValue, String newValue){
         this.field = field;
         this.newValue = newValue;
         this.oldValue = oldValue;
