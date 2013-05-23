@@ -84,7 +84,7 @@ public class MaximumProteinUpdater
                     "Sequence", oldValue, proteinEnriched.getSequence()));
         }
 
-
+        /*
         //Orgnaism, // ROGID
         try{
             if(proteinEnriched.getOrganism() != null){
@@ -129,6 +129,6 @@ public class MaximumProteinUpdater
             }
         }catch(EnrichmentException e){
             log.warn("Caught Enrichment exception fired by organism conflict");
-        }
+        }  */
     }
 }

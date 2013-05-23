@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.cvterm;
 
-import psidev.psi.mi.jami.enricher.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.event.OverwriteReport;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.model.CvTerm;

@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.protein;
 
-import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
+//import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
@@ -95,7 +95,7 @@ public class MinimumProteinEnricher
                     "Sequence", proteinEnriched.getSequence(), proteinMaster.getSequence()));
         }
 
-
+        /*
         //Orgnaism, // ROGID
         try{
             if(proteinEnriched.getOrganism() != null){
@@ -135,6 +135,6 @@ public class MinimumProteinEnricher
             }
         }catch(EnrichmentException e){
             log.warn("Caught Enrichment exception fired by organism");
-        }
+        }*/
     }
 }
