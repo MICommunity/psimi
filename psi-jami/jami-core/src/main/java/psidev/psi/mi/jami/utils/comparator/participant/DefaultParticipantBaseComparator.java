@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorBaseComparator;
 
 /**
  * Default participant comparator
@@ -29,12 +29,12 @@ public class DefaultParticipantBaseComparator extends ParticipantBaseComparator 
      * compare features.
      */
     public DefaultParticipantBaseComparator() {
-        super(new DefaultInteractorComparator(), new DefaultCvTermComparator(), new DefaultFeatureBaseComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultCvTermComparator(), new DefaultFeatureBaseComparator());
     }
 
     @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorComparator;
+    public DefaultInteractorBaseComparator getInteractorComparator() {
+        return (DefaultInteractorBaseComparator) this.interactorComparator;
     }
 
     @Override

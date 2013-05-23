@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 
 /**
  * unambiguous exact biological participant comparator.
@@ -26,7 +26,7 @@ public class UnambiguousExactModelledParticipantComparator extends ModelledParti
      * the basic properties of a participant.
      */
     public UnambiguousExactModelledParticipantComparator() {
-        super(new ParticipantBaseComparator<ModelledFeature>(new UnambiguousExactInteractorComparator(), new UnambiguousCvTermComparator(), new UnambiguousModelledFeaturecomparator()));
+        super(new ParticipantBaseComparator<ModelledFeature>(new UnambiguousExactInteractorBaseComparator(), new UnambiguousCvTermComparator(), new UnambiguousModelledFeaturecomparator()));
     }
 
     @Override

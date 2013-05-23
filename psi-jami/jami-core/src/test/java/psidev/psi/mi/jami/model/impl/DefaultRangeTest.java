@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.utils.InteractorUtils;
 
 /**
  * Unit tester for DefaultRange
@@ -47,6 +48,22 @@ public class DefaultRangeTest {
         range1.setPositions(new DefaultPosition(6), new DefaultPosition(8));
         Assert.assertEquals(new DefaultPosition(6), range1.getStart());
         Assert.assertEquals(new DefaultPosition(8), range1.getEnd());
+    }
+
+    @Test
+    public void test_set_range_resulting_sequence(){
+        Range range1 = new DefaultRange(new DefaultPosition(3), new DefaultPosition(4));
+        range1.setResultingSequence(new DefaultResultingSequence("AAG","AGA"));
+        Assert.assertNotNull(range1.getResultingSequence());
+        Assert.assertEquals(new DefaultResultingSequence("AAG","AGA"), range1.getResultingSequence());
+    }
+
+    @Test
+    public void test_set_range_participant(){
+        Range range1 = new DefaultRange(new DefaultPosition(3), new DefaultPosition(4));
+        range1.setParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        Assert.assertNotNull(range1.getParticipant());
+        Assert.assertEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), range1.getParticipant());
     }
 
     @Test(expected=IllegalArgumentException.class)

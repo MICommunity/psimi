@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.InteractorBaseComparator;
 
 import java.util.Comparator;
 
@@ -31,7 +31,7 @@ public class ParticipantBaseComparator<T extends Feature> extends ParticipantInt
      * @param cvTermComparator : CvTerm comparator required for comparing biological roles
      * @param featureComparator : FeatureBaseComparator required for comparing participant features
      */
-    public ParticipantBaseComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator,
+    public ParticipantBaseComparator(InteractorBaseComparator interactorComparator, AbstractCvTermComparator cvTermComparator,
                                      Comparator<T> featureComparator){
 
         super(interactorComparator);
