@@ -22,6 +22,16 @@ public class DefaultResultingSequence implements ResultingSequence {
     private String newSequence;
     private Collection<Xref> xrefs;
 
+    public DefaultResultingSequence(){
+        this.originalSequence = null;
+        this.newSequence = null;
+    }
+
+    public DefaultResultingSequence(String oldSequence, String newSequence){
+        this.originalSequence = oldSequence;
+        this.newSequence = newSequence;
+    }
+
     protected void initialiseXrefs(){
         this.xrefs = new ArrayList<Xref>();
     }

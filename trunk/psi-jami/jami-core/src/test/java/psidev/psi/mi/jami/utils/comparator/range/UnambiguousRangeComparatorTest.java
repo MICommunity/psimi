@@ -5,6 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.impl.DefaultPosition;
 import psidev.psi.mi.jami.model.impl.DefaultRange;
+import psidev.psi.mi.jami.model.impl.DefaultResultingSequence;
 
 /**
  * Unit tester for UnambiguousRangeComparator
@@ -70,6 +71,19 @@ public class UnambiguousRangeComparatorTest {
     public void test_identical_ranges() throws Exception {
         Range range1 = new DefaultRange(new DefaultPosition(3,4), new DefaultPosition(4,5), true);
         Range range2 = new DefaultRange(new DefaultPosition(3,4), new DefaultPosition(4,5), true);
+
+        Assert.assertTrue(comparator.compare(range1, range2) == 0);
+        Assert.assertTrue(comparator.compare(range2, range1) == 0);
+
+        Assert.assertTrue(UnambiguousRangeComparator.areEquals(range1, range2));
+        Assert.assertTrue(UnambiguousRangeComparator.hashCode(range1) == UnambiguousRangeComparator.hashCode(range2));
+    }
+
+    @Test
+    public void test_identical_ranges_ignore_resulting_sequence() throws Exception {
+        Range range1 = new DefaultRange(new DefaultPosition(3,4), new DefaultPosition(4,5), true);
+        Range range2 = new DefaultRange(new DefaultPosition(3,4), new DefaultPosition(4,5), true);
+        range1.setResultingSequence(new DefaultResultingSequence("AAG", "AAA"));
 
         Assert.assertTrue(comparator.compare(range1, range2) == 0);
         Assert.assertTrue(comparator.compare(range2, range1) == 0);
