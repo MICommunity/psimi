@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- *
- * When extended with an enricher, an EnrichmentEvent will be reported at the end.
+ * The basic layer for all cvTerm enrichment.
+ * Responsible for fetching an enriched form for comparison.
  * To get a report of all changes, use an enrichment listener.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
@@ -50,18 +50,17 @@ public abstract class AbstractCvTermEnricher
     }
 
     /**
-     * Uses details in the CvTerm Master to generate a new, ideal CvTerm.
-     * No changes are made to the master CvTerm.
-     * The enriched form is generated using an identifying feature of the master.
+     * Uses details in the CvTermToEnrich to generate a new, ideal CvTerm.
+     * No changes are made to the CvTermToEnrich.
      * This will be an identifier if it is provided, followed by the full and short names.
      * If the identifier can not be identified, an enrichment exception is thrown.
      * If the full or short names do not match a single entry, an enrichment exception is thrown.
      *
-     * @param cvTermMaster  The CvTerm to be enriched
-     * @return              A new, ideal CvTerm inferred from an identifying feature of the master.
+     * @param cvTermToEnrich  The CvTerm to be enriched
+     * @return              A new, ideal CvTerm inferred from an identifying feature of the CvTermToEnrich.
      * @throws EnrichmentException  Thrown when a bridge has failed or in the case of bad identifiers.
      */
-    protected CvTerm getEnrichedForm(CvTerm cvTermMaster)
+    protected CvTerm getEnrichedForm(CvTerm cvTermToEnrich)
             throws EnrichmentException {
         if(fetcher == null) throw new FetchingException("CvTermFetcher is null.");
 
@@ -70,15 +69,15 @@ public abstract class AbstractCvTermEnricher
 
 
         Collection<Xref> identifiersList = new ArrayList<Xref>();
-        identifiersList.addAll(cvTermMaster.getIdentifiers());
+        identifiersList.addAll(cvTermToEnrich.getIdentifiers());
         if(identifiersList.size() > 0){
             String identifier = null;
-            if(cvTermMaster.getMIIdentifier() != null){
-                identifier = cvTermMaster.getMIIdentifier();
-            }else if(cvTermMaster.getMODIdentifier() != null){
-                identifier = cvTermMaster.getMODIdentifier();
-            }else if(cvTermMaster.getPARIdentifier() != null){
-                identifier = cvTermMaster.getPARIdentifier();
+            if(cvTermToEnrich.getMIIdentifier() != null){
+                identifier = cvTermToEnrich.getMIIdentifier();
+            }else if(cvTermToEnrich.getMODIdentifier() != null){
+                identifier = cvTermToEnrich.getMODIdentifier();
+            }else if(cvTermToEnrich.getPARIdentifier() != null){
+                identifier = cvTermToEnrich.getPARIdentifier();
             }
             if(identifier != null){
                 Xref identifierXref;
@@ -97,13 +96,13 @@ public abstract class AbstractCvTermEnricher
 
         /*
         if(enriched == null){
-            if(cvTermMaster.getFullName() != null){
-                enricherEvent.setQueryDetails(cvTermMaster.getFullName(),"FullName");
+            if(cvTermToEnrich.getFullName() != null){
+                enricherEvent.setQueryDetails(cvTermToEnrich.getFullName(),"FullName");
 
                 try {
-                    if(log.isTraceEnabled()){log.trace("Searching on fullname "+cvTermMaster.getFullName());}
+                    if(log.isTraceEnabled()){log.trace("Searching on fullname "+cvTermToEnrich.getFullName());}
                     //TODO where do you get the database for term if there is no identifier?
-                    enriched = fetcher.getCvTermByName(cvTermMaster.getFullName(), cvTermMaster.get);
+                    enriched = fetcher.getCvTermByName(cvTermToEnrich.getFullName(), cvTermToEnrich.get);
                 } catch (BridgeFailedException e) {
                     if(log.isTraceEnabled()){log.trace("Bridge failed");}
                     throw new EnrichmentException(e);
@@ -112,14 +111,14 @@ public abstract class AbstractCvTermEnricher
         }
 
         if(enriched == null){
-            if(cvTermMaster.getShortName() != null){
-                enricherEvent.setQueryDetails(cvTermMaster.getShortName(),"ShortName");
+            if(cvTermToEnrich.getShortName() != null){
+                enricherEvent.setQueryDetails(cvTermToEnrich.getShortName(),"ShortName");
 
                 try {
-                    if(log.isTraceEnabled()){log.trace("Searching on short name "+cvTermMaster.getShortName());}
+                    if(log.isTraceEnabled()){log.trace("Searching on short name "+cvTermToEnrich.getShortName());}
                     //Todo find out if ols gives a database
 
-                    enriched = fetcher.getCvTermByName(cvTermMaster.getShortName(), null);
+                    enriched = fetcher.getCvTermByName(cvTermToEnrich.getShortName(), null);
                 } catch (BridgeFailedException e) {
                     if(log.isTraceEnabled()){log.trace("Bridge failed");}
                     throw new EnrichmentException(e);

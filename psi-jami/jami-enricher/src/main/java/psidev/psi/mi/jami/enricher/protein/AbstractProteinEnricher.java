@@ -43,15 +43,15 @@ public abstract class AbstractProteinEnricher
         return this.fetcher;
     }
 
-    protected Protein getEnrichedForm(Protein MasterProtein)
+    protected Protein getEnrichedForm(Protein ProteinToEnrich)
             throws EnrichmentException {
         if(fetcher == null) throw new FetchingException("ProteinFetcher is null.");
 
         Protein enriched = null;
         try{
-            enriched = fetcher.getProteinByID(MasterProtein.getUniprotkb());
+            enriched = fetcher.getProteinByID(ProteinToEnrich.getUniprotkb());
             enricherEvent.clear();
-            enricherEvent.setQueryDetails(MasterProtein.getUniprotkb(),"UniprotKb");
+            enricherEvent.setQueryDetails(ProteinToEnrich.getUniprotkb(),"UniprotKb");
         }catch (FetcherException e) {
             new FetchingException(e);
         }

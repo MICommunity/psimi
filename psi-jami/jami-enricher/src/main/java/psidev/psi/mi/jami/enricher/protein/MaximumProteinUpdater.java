@@ -34,55 +34,55 @@ public class MaximumProteinUpdater
     }
 
     @Override
-    public void enrichProtein(Protein proteinMaster)
+    public void enrichProtein(Protein proteinToEnrich)
             throws EnrichmentException {
 
-        Protein proteinEnriched = getEnrichedForm(proteinMaster);
+        Protein proteinEnriched = getEnrichedForm(proteinToEnrich);
         if(proteinEnriched == null){
             log.debug("The enriched protein was null");
             return;
         }
-        super.enrichProtein(proteinMaster, proteinEnriched);
+        super.enrichProtein(proteinToEnrich, proteinEnriched);
 
-        updateProteinMismatches(proteinMaster, proteinEnriched);
+        updateProteinMismatches(proteinToEnrich, proteinEnriched);
 
         fireEnricherEvent(enricherEvent);
     }
 
 
-    public void updateProteinMismatches(Protein proteinMaster, Protein proteinEnriched){
+    public void updateProteinMismatches(Protein proteinToEnrich, Protein proteinEnriched){
 
         //Short name
-        if (!proteinMaster.getShortName().equalsIgnoreCase(
+        if (!proteinToEnrich.getShortName().equalsIgnoreCase(
                 proteinEnriched.getShortName() )) {
-            String oldValue = proteinMaster.getShortName();
-            proteinMaster.setShortName(proteinEnriched.getShortName());
+            String oldValue = proteinToEnrich.getShortName();
+            proteinToEnrich.setShortName(proteinEnriched.getShortName());
             addOverwriteReport(new OverwriteReport(
-                    "ShortName", oldValue, proteinMaster.getShortName()));
+                    "ShortName", oldValue, proteinToEnrich.getShortName()));
         }
 
         //Full name
-        if (!proteinMaster.getFullName().equalsIgnoreCase(
+        if (!proteinToEnrich.getFullName().equalsIgnoreCase(
                 proteinEnriched.getFullName() )) {
-            String oldValue = proteinMaster.getFullName();
-            proteinMaster.setFullName(proteinEnriched.getFullName());
+            String oldValue = proteinToEnrich.getFullName();
+            proteinToEnrich.setFullName(proteinEnriched.getFullName());
             addOverwriteReport(new OverwriteReport(
-                    "FullName", oldValue, proteinMaster.getFullName()));
+                    "FullName", oldValue, proteinToEnrich.getFullName()));
         }
 
         //Uniprot AC
-        if(! proteinMaster.getUniprotkb().equalsIgnoreCase(
+        if(! proteinToEnrich.getUniprotkb().equalsIgnoreCase(
                 proteinEnriched.getUniprotkb() )){
-            String oldValue = proteinMaster.getUniprotkb() ;
-            proteinMaster.setUniprotkb(proteinEnriched.getUniprotkb());
+            String oldValue = proteinToEnrich.getUniprotkb() ;
+            proteinToEnrich.setUniprotkb(proteinEnriched.getUniprotkb());
             addOverwriteReport(new OverwriteReport(
-                    "UniprotKB AC", oldValue, proteinMaster.getUniprotkb()));
+                    "UniprotKB AC", oldValue, proteinToEnrich.getUniprotkb()));
         }
 
         //Sequence
-        if(! proteinMaster.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
-            String oldValue = proteinMaster.getSequence();
-            proteinMaster.setSequence(proteinEnriched.getSequence());
+        if(! proteinToEnrich.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
+            String oldValue = proteinToEnrich.getSequence();
+            proteinToEnrich.setSequence(proteinEnriched.getSequence());
             addOverwriteReport(new OverwriteReport(
                     "Sequence", oldValue, proteinEnriched.getSequence()));
         }
@@ -100,29 +100,29 @@ public class MaximumProteinUpdater
                     }
                 });
 
-                if(proteinMaster.getOrganism() == null && proteinEnriched.getOrganism() != null){
-                    proteinMaster.setOrganism(new DefaultOrganism(-3));
+                if(proteinToEnrich.getOrganism() == null && proteinEnriched.getOrganism() != null){
+                    proteinToEnrich.setOrganism(new DefaultOrganism(-3));
                 }
 
-                minimumOrganismEnricher.enrichOrganism(proteinMaster.getOrganism());
+                minimumOrganismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
 
-                if(proteinMaster.getOrganism().getTaxId() > 0
-                        && proteinMaster.getSequence() != null){
+                if(proteinToEnrich.getOrganism().getTaxId() > 0
+                        && proteinToEnrich.getSequence() != null){
                     RogidGenerator rogidGenerator = new RogidGenerator();
                     // String rogid = null;
 
                     try {
                         String rogid = rogidGenerator.calculateRogid(
-                                proteinMaster.getSequence(),""+proteinMaster.getOrganism().getTaxId());
-                        if(proteinMaster.getRogid() == null){
-                            proteinMaster.setRogid(rogid);
+                                proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
+                        if(proteinToEnrich.getRogid() == null){
+                            proteinToEnrich.setRogid(rogid);
                             addAdditionReport(new AdditionReport("RogID", rogid));
                         }
-                        else if(!proteinMaster.getRogid().equals(rogid)){
-                            String oldValue = proteinMaster.getRogid();
-                            proteinMaster.setRogid(rogid);
+                        else if(!proteinToEnrich.getRogid().equals(rogid)){
+                            String oldValue = proteinToEnrich.getRogid();
+                            proteinToEnrich.setRogid(rogid);
                             addOverwriteReport(new OverwriteReport(
-                                    "RogID", oldValue, proteinMaster.getRogid()));
+                                    "RogID", oldValue, proteinToEnrich.getRogid()));
                         }
                     } catch (SeguidException e) {
                         log.debug("caught exception from a failed rogid");

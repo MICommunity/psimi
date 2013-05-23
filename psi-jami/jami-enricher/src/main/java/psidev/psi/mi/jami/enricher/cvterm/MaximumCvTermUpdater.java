@@ -22,59 +22,59 @@ public class MaximumCvTermUpdater
 
     /**
      * Enrichment and update of a single CvTerm.
-     * If update takes place, the master will be edited.
+     * If update takes place, the ToEnrich will be edited.
      *
-     * @param cvTermMaster  a CvTerm to update
+     * @param cvTermToEnrich  a CvTerm to update
      * @throws EnrichmentException
      */
-    public void enrichCvTerm(CvTerm cvTermMaster)
+    public void enrichCvTerm(CvTerm cvTermToEnrich)
             throws EnrichmentException {
 
-        CvTerm cvTermEnriched = getEnrichedForm(cvTermMaster);
+        CvTerm cvTermEnriched = getEnrichedForm(cvTermToEnrich);
         if(cvTermEnriched == null){
             //log.debug("cvTerm was null");
             return;
         }
         //Enrich and update
-        enrichCvTerm(cvTermMaster, cvTermEnriched);
+        enrichCvTerm(cvTermToEnrich, cvTermEnriched);
         //Fire the report
         fireEnricherEvent(enricherEvent);
     }
 
 
     /**
-     * Compares two CvTerms and updates the master with any fields that it is missing or mismatched.
+     * Compares two CvTerms and updates the ToEnrich with any fields that it is missing or mismatched.
      * The minimum enricher is run first to add any missing fields,
      * then, the full name and short name are overwritten.
-     * @param cvTermMaster      The cvTerm to be updated
-     * @param cvTermEnriched    The cvTerm containing the data to update the master with.
+     * @param cvTermToEnrich      The cvTerm to be updated
+     * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
      * @throws EnrichmentException
      */
-    public void enrichCvTerm(CvTerm cvTermMaster, CvTerm cvTermEnriched)
+    public void enrichCvTerm(CvTerm cvTermToEnrich, CvTerm cvTermEnriched)
             throws EnrichmentException{
 
-        super.enrichCvTerm(cvTermMaster, cvTermEnriched);
+        super.enrichCvTerm(cvTermToEnrich, cvTermEnriched);
 
         //Check full name
         if(cvTermEnriched.getFullName() != null){
-            if(!cvTermMaster.getFullName().equals(cvTermEnriched.getFullName())){
-                String oldname =  cvTermMaster.getFullName();
-                cvTermMaster.setFullName(cvTermEnriched.getFullName());
+            if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
+                String oldname =  cvTermToEnrich.getFullName();
+                cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
                 addOverwriteReport(new OverwriteReport(
-                        "FullName", cvTermMaster.getFullName(), oldname));
+                        "FullName", cvTermToEnrich.getFullName(), oldname));
             }
         }
 
         //Overwrite shortname
-        if(!cvTermMaster.getShortName().equals(cvTermEnriched.getShortName())){
-            String oldname =  cvTermMaster.getShortName();
-            cvTermMaster.setShortName(cvTermEnriched.getShortName());
+        if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
+            String oldname =  cvTermToEnrich.getShortName();
+            cvTermToEnrich.setShortName(cvTermEnriched.getShortName());
             addOverwriteReport(new OverwriteReport(
-                    "ShortName", cvTermMaster.getShortName(), oldname));
+                    "ShortName", cvTermToEnrich.getShortName(), oldname));
         }
     }
 
-    public void enrichCvTerms(Collection<CvTerm> cvTermMasters) {
+    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 

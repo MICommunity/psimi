@@ -21,14 +21,14 @@ public interface CvTermEnricher extends EnricherEventProcessor {
 
     /**
      * Enrichment of a single CvTerm.
-     * If enrichment takes place, the master will be edited.
-     * @param cvTermMaster  a CvTerm to enrich
+     * If enrichment takes place, the ToEnrich will be edited.
+     * @param cvTermToEnrich  a CvTerm to enrich
      * @throws EnrichmentException  Thrown if the bridge fails or other problems halt the enrichment.
      */
-    public void enrichCvTerm(CvTerm cvTermMaster)  throws EnrichmentException;
+    public void enrichCvTerm(CvTerm cvTermToEnrich)  throws EnrichmentException;
 
 
-    public void enrichCvTerms(Collection<CvTerm> cvTermMasters);
+    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich);
 
     /**
      *
