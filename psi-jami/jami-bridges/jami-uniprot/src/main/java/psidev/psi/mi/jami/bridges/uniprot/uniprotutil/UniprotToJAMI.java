@@ -13,9 +13,9 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.utils.factory.AliasFactory;
-import psidev.psi.mi.jami.utils.factory.ChecksumFactory;
-import psidev.psi.mi.jami.utils.factory.XrefFactory;
+import psidev.psi.mi.jami.utils.AliasUtils;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensembl.Ensembl;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.flybase.FlyBase;
@@ -104,11 +104,11 @@ public class UniprotToJAMI {
                     "The Uniprot entry ["+p.getShortName()+"] has no primary Accession.");
         }
 
-        XrefFactory xrefFactory = new XrefFactory();
+
         //UNIPROT ID AS SECONDARY AC
         if(e.getUniProtId() != null){
             p.getIdentifiers().add(
-                    xrefFactory.createUniprotSecondary(e.getUniProtId().getValue()));
+                    XrefUtils.createUniprotSecondary(e.getUniProtId().getValue()));
         }
         //SECONDARY ACs
         if(e.getSecondaryUniProtAccessions() != null
@@ -116,7 +116,7 @@ public class UniprotToJAMI {
             for(SecondaryUniProtAccession ac : e.getSecondaryUniProtAccessions()){
                 if(ac.getValue() != null){
                     p.getIdentifiers().add(
-                            xrefFactory.createUniprotSecondary(ac.getValue()));
+                            XrefUtils.createUniprotSecondary(ac.getValue()));
                 }
             }
         }
@@ -127,31 +127,31 @@ public class UniprotToJAMI {
             for(Gene g : e.getGenes()){
                 //Gene Name
                 if(g.hasGeneName()){
-                    p.getAliases().add(AliasFactory.createGeneName(
-                            g.getGeneName().getValue()));
+                    p.getAliases().add(
+                            AliasUtils.createGeneName(g.getGeneName().getValue()));
                 }
                 //Gene Name Synonym
                 if(g.getGeneNameSynonyms() != null
                         && g.getGeneNameSynonyms().size() > 0){
                     for(GeneNameSynonym gns : g.getGeneNameSynonyms()){
-                        p.getAliases().add(AliasFactory.createGeneNameSynonym(
-                                gns.getValue()));
+                        p.getAliases().add(
+                                AliasUtils.createGeneNameSynonym(gns.getValue()));
                     }
                 }
                 //ORF names
                 if(g.getORFNames() != null
                         && g.getORFNames().size() > 0){
                     for(ORFName orf : g.getORFNames()){
-                        p.getAliases().add(AliasFactory.createOrfName(
-                                orf.getValue()));
+                        p.getAliases().add(
+                                AliasUtils.createOrfName(orf.getValue()));
                     }
                 }
                 //Locus Names
                 if(g.getOrderedLocusNames() != null
                         && g.getOrderedLocusNames().size() > 0){
                     for(OrderedLocusName oln : g.getOrderedLocusNames()){
-                        p.getAliases().add(AliasFactory.createLocusName(
-                                oln.getValue()));
+                        p.getAliases().add(
+                                AliasUtils.createLocusName(oln.getValue()));
                     }
                 }
             }
@@ -168,9 +168,10 @@ public class UniprotToJAMI {
 
         //SEQUENCE // CHECKSUMS
         p.setSequence(e.getSequence().getValue());
-        ChecksumFactory cf = new ChecksumFactory();
+
         //todo add MI term for crc64 checksums
-        p.getChecksums().add(cf.createAnnotation("CRC64", null, e.getSequence().getCRC64()));
+        p.getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, e.getSequence().getCRC64()));
         //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
 
         p.setOrganism(getOrganismFromEntry(e));
