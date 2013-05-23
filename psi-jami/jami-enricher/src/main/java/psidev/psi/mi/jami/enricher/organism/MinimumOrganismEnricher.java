@@ -1,6 +1,6 @@
-package psidev.psi.mi.jami.enricher.enricher.organism;
+package psidev.psi.mi.jami.enricher.organism;
 
-import psidev.psi.mi.jami.enricher.enricher.OrganismEnricher;
+import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.MismatchReport;
 import psidev.psi.mi.jami.enricher.exception.ConflictException;

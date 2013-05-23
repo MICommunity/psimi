@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricher;
+package psidev.psi.mi.jami.enricher;
 
 
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
