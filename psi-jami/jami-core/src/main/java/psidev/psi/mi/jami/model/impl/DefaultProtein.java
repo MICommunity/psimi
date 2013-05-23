@@ -3,10 +3,10 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactProteinComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.Collection;
 
@@ -59,35 +59,35 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     }
 
     public DefaultProtein(String name) {
-        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI));
+        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI));
     }
 
     public DefaultProtein(String name, String fullName) {
-        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI));
+        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI));
     }
 
     public DefaultProtein(String name, Organism organism) {
-        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
+        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
     }
 
     public DefaultProtein(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
+        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
     }
 
     public DefaultProtein(String name, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
+        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
     }
 
     public DefaultProtein(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
     }
 
     public DefaultProtein(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
+        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
     }
 
     public DefaultProtein(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
     }
 
     @Override
@@ -114,8 +114,8 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         // add new uniprotkb if not null
         if (ac != null){
-            CvTerm uniprotkbDatabase = CvTermFactory.createUniprotkbDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm uniprotkbDatabase = CvTermUtils.createUniprotkbDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old uniprotkb if not null
             if (this.uniprotkb != null){
                 proteinIdentifiers.remove(this.uniprotkb);
@@ -139,8 +139,8 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         // add new refseq if not null
         if (ac != null){
-            CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm refseqDatabase = CvTermUtils.createRefseqDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old refseq if not null
             if (this.refseq != null){
                 proteinIdentifiers.remove(this.refseq);
@@ -164,7 +164,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
 
         // add new gene name if not null
         if (name != null){
-            CvTerm geneNameType = CvTermFactory.createGeneNameAliasType();
+            CvTerm geneNameType = CvTermUtils.createGeneNameAliasType();
             // first remove old gene name if not null
             if (this.geneName != null){
                 proteinAliases.remove(this.geneName);
@@ -187,7 +187,7 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         Collection<Checksum> proteinChecksums = getChecksums();
 
         if (rogid != null){
-            CvTerm rogidMethod = CvTermFactory.createRogid();
+            CvTerm rogidMethod = CvTermUtils.createRogid();
             // first remove old rogid
             if (this.rogid != null){
                 proteinChecksums.remove(this.rogid);

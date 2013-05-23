@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultConfidence;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,5 +66,17 @@ public class ConfidenceUtils {
         }
 
         return confidences;
+    }
+
+    public static Confidence createConfidence(String typeName, String typeMi, String value){
+        return new DefaultConfidence(CvTermUtils.createMICvTerm(typeName, typeMi), value);
+    }
+
+    public static Confidence createConfidence(String typeName, String value){
+        return new DefaultConfidence(CvTermUtils.createMICvTerm(typeName, null), value);
+    }
+
+    public static Confidence createAuthorBasedConfidence(String value){
+        return new DefaultConfidence(CvTermUtils.createMICvTerm(Confidence.AUTHOR_BASED_CONFIDENCE, Confidence.AUTHOR_BASED_CONFIDENCE_MI), value);
     }
 }

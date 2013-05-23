@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for UnambiguousChecksumComparator
@@ -21,7 +21,7 @@ public class UnambiguousChecksumComparatorTest {
     @Test
     public void test_checksum_null_after() throws Exception {
         Checksum checksum1 = null;
-        Checksum checksum2 = new DefaultChecksum(CvTermFactory.createRogid(), "xxxxxxxxx");
+        Checksum checksum2 = new DefaultChecksum(CvTermUtils.createRogid(), "xxxxxxxxx");
 
         Assert.assertTrue(comparator.compare(checksum1, checksum2) > 0);
         Assert.assertTrue(comparator.compare(checksum2, checksum1) < 0);
@@ -32,8 +32,8 @@ public class UnambiguousChecksumComparatorTest {
 
     @Test
     public void test_checksum_method_comparison() throws Exception {
-        Checksum checksum1 = new DefaultChecksum(CvTermFactory.createStandardInchiKey(), "xxxxxxxxx");
-        Checksum checksum2 = new DefaultChecksum(CvTermFactory.createRogid(), "xxxxxxxxx");
+        Checksum checksum1 = new DefaultChecksum(CvTermUtils.createStandardInchiKey(), "xxxxxxxxx");
+        Checksum checksum2 = new DefaultChecksum(CvTermUtils.createRogid(), "xxxxxxxxx");
 
         Assert.assertTrue(comparator.compare(checksum1, checksum2) != 0);
 
@@ -43,8 +43,8 @@ public class UnambiguousChecksumComparatorTest {
 
     @Test
     public void test_checksum_value_comparison() throws Exception {
-        Checksum checksum1 = new DefaultChecksum(CvTermFactory.createRogid(), "xxxxxxxxx");
-        Checksum checksum2 = new DefaultChecksum(CvTermFactory.createRogid(), "xxxxxxxxx");
+        Checksum checksum1 = new DefaultChecksum(CvTermUtils.createRogid(), "xxxxxxxxx");
+        Checksum checksum2 = new DefaultChecksum(CvTermUtils.createRogid(), "xxxxxxxxx");
 
         Assert.assertTrue(comparator.compare(checksum1, checksum2) == 0);
 
@@ -54,8 +54,8 @@ public class UnambiguousChecksumComparatorTest {
 
     @Test
     public void test_checksum_value_case_sensitive() throws Exception {
-        Checksum checksum1 = new DefaultChecksum(CvTermFactory.createRogid(), "xxxXXXxxx");
-        Checksum checksum2 = new DefaultChecksum(CvTermFactory.createRogid(), "xxxxxxxxx");
+        Checksum checksum1 = new DefaultChecksum(CvTermUtils.createRogid(), "xxxXXXxxx");
+        Checksum checksum2 = new DefaultChecksum(CvTermUtils.createRogid(), "xxxxxxxxx");
 
         Assert.assertTrue(comparator.compare(checksum1, checksum2) != 0);
 

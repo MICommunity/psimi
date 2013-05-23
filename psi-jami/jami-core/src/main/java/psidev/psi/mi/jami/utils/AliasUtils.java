@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultAlias;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -88,5 +89,41 @@ public class AliasUtils {
                 }
             }
         }
+    }
+
+    public static Alias createGeneName(String name){
+        return new DefaultAlias(CvTermUtils.createGeneNameAliasType(), name);
+    }
+
+    public static Alias createComplexSynonym(String name){
+        return new DefaultAlias(CvTermUtils.createComplexSynonym(), name);
+    }
+
+    public static Alias createAuthorAssignedName(String name){
+        return new DefaultAlias(CvTermUtils.createAuthorAssignedName(), name);
+    }
+
+    public static Alias createGeneNameSynonym(String name){
+        return new DefaultAlias(CvTermUtils.createGeneNameSynonym(), name);
+    }
+
+    public static Alias createIsoformSynonym(String name){
+        return new DefaultAlias(CvTermUtils.createIsoformSynonym(), name);
+    }
+
+    public static Alias createOrfName(String name){
+        return new DefaultAlias(CvTermUtils.createOrfName(), name);
+    }
+
+    public static Alias createLocusName(String name){
+        return new DefaultAlias(CvTermUtils.createLocusName(), name);
+    }
+
+    public static Alias createAlias(String typeName, String typeMi, String name){
+        return new DefaultAlias(CvTermUtils.createMICvTerm(typeName, typeMi), name);
+    }
+
+    public static Alias createAlias(String typeName, String name){
+        return new DefaultAlias(CvTermUtils.createMICvTerm(typeName, null), name);
     }
 }

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -113,5 +114,21 @@ public class AnnotationUtils {
         }
 
         return annotations;
+    }
+
+    public static Annotation createAnnotation(String topicName, String topicMi, String name){
+        return new DefaultAnnotation(CvTermUtils.createMICvTerm(topicName, topicMi), name);
+    }
+
+    public static Annotation createAnnotation(String topicName, String name){
+        return new DefaultAnnotation(CvTermUtils.createMICvTerm(topicName, null), name);
+    }
+
+    public static Annotation createComment(String comment){
+        return new DefaultAnnotation(CvTermUtils.createMICvTerm(Annotation.COMMENT, Annotation.COMMENT_MI), comment);
+    }
+
+    public static Annotation createCaution(String caution){
+        return new DefaultAnnotation(CvTermUtils.createMICvTerm(Annotation.CAUTION, Annotation.CAUTION_MI), caution);
     }
 }

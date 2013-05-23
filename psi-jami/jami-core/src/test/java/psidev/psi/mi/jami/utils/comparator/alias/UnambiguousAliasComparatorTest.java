@@ -5,7 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for UnambiguousAliasComparator
@@ -34,7 +34,7 @@ public class UnambiguousAliasComparatorTest {
     @Test
     public void test_alias_type_comparison() throws Exception {
         Alias alias1 = new DefaultAlias(new DefaultCvTerm("synonym"), "brca2");
-        Alias alias2 = new DefaultAlias(CvTermFactory.createGeneNameAliasType(), "brca2");
+        Alias alias2 = new DefaultAlias(CvTermUtils.createGeneNameAliasType(), "brca2");
 
         Assert.assertTrue(comparator.compare(alias1, alias2) != 0);
 
@@ -44,8 +44,8 @@ public class UnambiguousAliasComparatorTest {
 
     @Test
     public void test_alias_name_comparison() throws Exception {
-        Alias alias1 = new DefaultAlias(CvTermFactory.createGeneNameAliasType(), "brca2");
-        Alias alias2 = new DefaultAlias(CvTermFactory.createGeneNameAliasType(), "brca2");
+        Alias alias1 = new DefaultAlias(CvTermUtils.createGeneNameAliasType(), "brca2");
+        Alias alias2 = new DefaultAlias(CvTermUtils.createGeneNameAliasType(), "brca2");
 
         Assert.assertTrue(comparator.compare(alias1, alias2) == 0);
 
@@ -55,8 +55,8 @@ public class UnambiguousAliasComparatorTest {
 
     @Test
     public void test_alias_name_case_sensitive() throws Exception {
-        Alias alias1 = new DefaultAlias(CvTermFactory.createGeneNameAliasType(), "bRCa2");
-        Alias alias2 = new DefaultAlias(CvTermFactory.createGeneNameAliasType(), "brca2");
+        Alias alias1 = new DefaultAlias(CvTermUtils.createGeneNameAliasType(), "bRCa2");
+        Alias alias2 = new DefaultAlias(CvTermUtils.createGeneNameAliasType(), "brca2");
 
         Assert.assertTrue(comparator.compare(alias1, alias2) != 0);
 

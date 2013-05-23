@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for Checksum
@@ -17,9 +17,9 @@ public class DefaultChecksumTest {
 
     @Test
     public void test_create_checksum_method_and_value() throws Exception {
-        Checksum checksum = new DefaultChecksum(CvTermFactory.createRogid(), "xxxxxxxxx");
+        Checksum checksum = new DefaultChecksum(CvTermUtils.createRogid(), "xxxxxxxxx");
 
-        Assert.assertEquals(CvTermFactory.createRogid(), checksum.getMethod());
+        Assert.assertEquals(CvTermUtils.createRogid(), checksum.getMethod());
         Assert.assertEquals("xxxxxxxxx", checksum.getValue());
     }
 
@@ -30,6 +30,6 @@ public class DefaultChecksumTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void test_create_checksum_no_value() throws Exception {
-        Checksum checksum = new DefaultChecksum(CvTermFactory.createRogid(), null);
+        Checksum checksum = new DefaultChecksum(CvTermUtils.createRogid(), null);
     }
 }

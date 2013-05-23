@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.*;
@@ -175,8 +175,8 @@ public class DefaultPublication implements Publication, Serializable {
 
         // add new pubmed if not null
         if (pubmedId != null){
-            CvTerm pubmedDatabase = CvTermFactory.createPubmedDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm pubmedDatabase = CvTermUtils.createPubmedDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old pubmed if not null
             if (this.pubmedId != null){
                 identifiers.remove(this.pubmedId);
@@ -199,8 +199,8 @@ public class DefaultPublication implements Publication, Serializable {
         Collection<Xref> identifiers = getIdentifiers();
         // add new doi if not null
         if (doi != null){
-            CvTerm doiDatabase = CvTermFactory.createDoiDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm doiDatabase = CvTermUtils.createDoiDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old doi if not null
             if (this.doi != null){
                 identifiers.remove(this.doi);
@@ -230,8 +230,8 @@ public class DefaultPublication implements Publication, Serializable {
         Collection<Xref> xrefs = getXrefs();
         // add new imex if not null
         if (identifier != null){
-            CvTerm imexDatabase = CvTermFactory.createImexDatabase();
-            CvTerm imexPrimaryQualifier = CvTermFactory.createImexPrimaryQualifier();
+            CvTerm imexDatabase = CvTermUtils.createImexDatabase();
+            CvTerm imexPrimaryQualifier = CvTermUtils.createImexPrimaryQualifier();
             // first remove old doi if not null
             if (this.imexId != null){
                 xrefs.remove(this.imexId);

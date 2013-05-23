@@ -3,9 +3,9 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,35 +68,35 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     }
 
     public DefaultComplex(String name) {
-        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI));
+        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI));
     }
 
     public DefaultComplex(String name, String fullName) {
-        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI));
+        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI));
     }
 
     public DefaultComplex(String name, Organism organism) {
-        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
+        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
     }
 
     public DefaultComplex(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
+        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
     }
 
     public DefaultComplex(String name, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
+        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
     }
 
     public DefaultComplex(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
     }
 
     public DefaultComplex(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
+        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
     }
 
     public DefaultComplex(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
     }
 
     protected void initialiseInteractionEvidences(){
@@ -280,7 +280,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         // add new physical properties if not null
         if (properties != null){
 
-            CvTerm complexPhysicalProperties = CvTermFactory.createComplexPhysicalProperties();
+            CvTerm complexPhysicalProperties = CvTermUtils.createComplexPhysicalProperties();
             // first remove old physical property if not null
             if (this.physicalProperties != null){
                 complexAnnotationList.remove(this.physicalProperties);
@@ -332,7 +332,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     public void setRigid(String rigid) {
         Collection<Checksum> checksums = getChecksums();
         if (rigid != null){
-            CvTerm rigidMethod = CvTermFactory.createRigid();
+            CvTerm rigidMethod = CvTermUtils.createRigid();
             // first remove old rigid
             if (this.rigid != null){
                 checksums.remove(this.rigid);

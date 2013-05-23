@@ -4,8 +4,8 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
+import psidev.psi.mi.jami.utils.ParameterUtils;
 import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
-import psidev.psi.mi.jami.utils.factory.ParameterFactory;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -57,7 +57,7 @@ public class DefaultParameter implements Parameter, Serializable {
         }
         this.type = type;
 
-        Parameter param = ParameterFactory.createParameterFromString(type, value);
+        Parameter param = ParameterUtils.createParameterFromString(type, value);
         this.value = param.getValue();
         this.uncertainty = param.getUncertainty();
     }

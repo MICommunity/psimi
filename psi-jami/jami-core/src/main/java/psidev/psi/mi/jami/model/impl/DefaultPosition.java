@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousPositionComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.logging.Logger;
@@ -37,7 +37,7 @@ public class DefaultPosition implements Position, Serializable {
         }
         this.start = start;
         this.end = end;
-        this.status = CvTermFactory.createRangeStatus();
+        this.status = CvTermUtils.createRangeStatus();
         isPositionUndetermined = false;
     }
 
@@ -85,13 +85,13 @@ public class DefaultPosition implements Position, Serializable {
         if (position == 0){
             start = position;
             end = position;
-            this.status = CvTermFactory.createUndeterminedStatus();
+            this.status = CvTermUtils.createUndeterminedStatus();
             isPositionUndetermined = true;
         }
         else {
             start = position;
             end = position;
-            this.status = CvTermFactory.createCertainStatus();
+            this.status = CvTermUtils.createCertainStatus();
             isPositionUndetermined = false;
         }
     }

@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.utils.factory;
+package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
@@ -13,7 +13,7 @@ import java.util.Date;
  * @since <pre>11/02/13</pre>
  */
 
-public class PublicationFactory {
+public class PublicationUtils {
     
     public static Publication createUnknownBasicPublication(){
 

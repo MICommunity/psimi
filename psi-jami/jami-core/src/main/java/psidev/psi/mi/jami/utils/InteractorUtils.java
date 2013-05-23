@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.utils.factory;
+package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.impl.DefaultInteractor;
@@ -11,9 +11,9 @@ import psidev.psi.mi.jami.model.impl.DefaultInteractor;
  * @since <pre>11/02/13</pre>
  */
 
-public class InteractorFactory {
+public class InteractorUtils {
 
     public static Interactor createUnknownBasicInteractor(){
-        return new DefaultInteractor("unknown", CvTermFactory.createMICvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI));
+        return new DefaultInteractor("unknown", CvTermUtils.createMICvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI));
     }
 }

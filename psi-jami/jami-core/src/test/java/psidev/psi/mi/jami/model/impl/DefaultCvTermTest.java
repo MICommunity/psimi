@@ -5,7 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for DefaultCvTerm
@@ -40,7 +40,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_create_cvTerm_ontologyId() throws Exception {
-        CvTerm uniprotkb = new DefaultCvTerm("uniprotkb", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI));
+        CvTerm uniprotkb = new DefaultCvTerm("uniprotkb", new DefaultXref(CvTermUtils.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI));
 
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals(Xref.UNIPROTKB_MI, uniprotkb.getMIIdentifier());
@@ -51,7 +51,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_create_cvTerm_fullName() throws Exception {
-        CvTerm uniprotkb = new DefaultCvTerm("uniprotkb", "uniprot knowledge database", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI));
+        CvTerm uniprotkb = new DefaultCvTerm("uniprotkb", "uniprot knowledge database", new DefaultXref(CvTermUtils.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI));
 
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
         Assert.assertEquals("uniprot knowledge database", uniprotkb.getFullName());
@@ -63,7 +63,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_create_cvTerm_definition() throws Exception {
-        OntologyTerm uniprotkb = new DefaultOntologyTerm("uniprotkb", "uniprot knowledge database", new DefaultXref(CvTermFactory.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI),
+        OntologyTerm uniprotkb = new DefaultOntologyTerm("uniprotkb", "uniprot knowledge database", new DefaultXref(CvTermUtils.createPsiMiDatabaseNameOnly(), Xref.UNIPROTKB_MI),
                 "sequence database for proteins");
 
         Assert.assertEquals("uniprotkb", uniprotkb.getShortName());
@@ -95,7 +95,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_create_cvTerm_mod() throws Exception {
-        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermFactory.createPsiModDatabase(), "MOD:xxx"));
+        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermUtils.createPsiModDatabase(), "MOD:xxx"));
 
         Assert.assertEquals("modTerm", term.getShortName());
         Assert.assertEquals("MOD:xxx", term.getMODIdentifier());
@@ -164,7 +164,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_reset_cvTerm_mod() throws Exception {
-        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermFactory.createPsiModDatabase(), "MOD:xxx"));
+        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermUtils.createPsiModDatabase(), "MOD:xxx"));
         term.setMODIdentifier("MOD:xxx3");
 
         Assert.assertEquals("modTerm", term.getShortName());
@@ -182,8 +182,8 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_add_cvTerm_mod_identity_replace_mod_without_identity() throws Exception {
-        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermFactory.createPsiModDatabase(), "MOD:xxx"));
-        term.getIdentifiers().add(new DefaultXref(CvTermFactory.createPsiModDatabase(), "MOD:xxx3", CvTermFactory.createIdentityQualifier()));
+        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermUtils.createPsiModDatabase(), "MOD:xxx"));
+        term.getIdentifiers().add(new DefaultXref(CvTermUtils.createPsiModDatabase(), "MOD:xxx3", CvTermUtils.createIdentityQualifier()));
 
         Assert.assertEquals("modTerm", term.getShortName());
         Assert.assertEquals("MOD:xxx3", term.getMODIdentifier());
@@ -197,8 +197,8 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_add_cvTerm_mi_identity_replace_mi_without_identity() throws Exception {
-        CvTerm term = new DefaultCvTerm("miTerm", new DefaultXref(CvTermFactory.createPsiMiDatabase(), "MI:xxx"));
-        term.getIdentifiers().add(new DefaultXref(CvTermFactory.createPsiMiDatabase(), "MI:xxx3", CvTermFactory.createIdentityQualifier()));
+        CvTerm term = new DefaultCvTerm("miTerm", new DefaultXref(CvTermUtils.createPsiMiDatabase(), "MI:xxx"));
+        term.getIdentifiers().add(new DefaultXref(CvTermUtils.createPsiMiDatabase(), "MI:xxx3", CvTermUtils.createIdentityQualifier()));
 
         Assert.assertEquals("miTerm", term.getShortName());
         Assert.assertEquals("MI:xxx3", term.getMIIdentifier());
@@ -212,7 +212,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_remove_cvTerm_mod_identity() throws Exception {
-        Xref mod = new DefaultXref(CvTermFactory.createPsiModDatabase(), "MOD:xxx");
+        Xref mod = new DefaultXref(CvTermUtils.createPsiModDatabase(), "MOD:xxx");
         CvTerm term = new DefaultCvTerm("modTerm", mod);
         term.getIdentifiers().remove(mod);
 
@@ -228,7 +228,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_remove_cvTerm_mi_identity() throws Exception {
-        Xref mi = new DefaultXref(CvTermFactory.createPsiMiDatabase(), "MI:xxx");
+        Xref mi = new DefaultXref(CvTermUtils.createPsiMiDatabase(), "MI:xxx");
         CvTerm term = new DefaultCvTerm("miTerm", mi);
         term.getIdentifiers().remove(mi);
 
@@ -258,7 +258,7 @@ public class DefaultCvTermTest {
 
     @Test
     public void test_create_cvTerm_mod_remove_all_mod() throws Exception {
-        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermFactory.createPsiModDatabase(), "MOD:xxx"));
+        CvTerm term = new DefaultCvTerm("modTerm", new DefaultXref(CvTermUtils.createPsiModDatabase(), "MOD:xxx"));
         term.setMODIdentifier(null);
 
         Assert.assertEquals("modTerm", term.getShortName());

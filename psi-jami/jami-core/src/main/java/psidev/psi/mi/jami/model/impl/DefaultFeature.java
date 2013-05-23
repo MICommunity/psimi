@@ -1,11 +1,11 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -130,8 +130,8 @@ public class DefaultFeature<T extends Feature> implements Feature, Serializable{
 
         // add new interpro if not null
         if (interpro != null){
-            CvTerm interproDatabase = CvTermFactory.createInterproDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm interproDatabase = CvTermUtils.createInterproDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old chebi if not null
             if (this.interpro != null){
                 featureIdentifiers.remove(this.interpro);

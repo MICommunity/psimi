@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 
 /**
  * Unit tester for UnambiguousCvTermComparator
@@ -23,7 +23,7 @@ public class UnambiguousCvTermComparatorTest {
     @Test
     public void test_cv_null_after() throws Exception {
         CvTerm term1 = null;
-        CvTerm term2 = CvTermFactory.createChebiDatabase();
+        CvTerm term2 = CvTermUtils.createChebiDatabase();
 
         Assert.assertTrue(comparator.compare(term1, term2) > 0);
         Assert.assertTrue(comparator.compare(term2, term1) < 0);
@@ -35,9 +35,9 @@ public class UnambiguousCvTermComparatorTest {
     @Test
     public void test_cv_identifiers_empty_before() throws Exception {
         // null identifier
-        CvTerm term1 = CvTermFactory.createMICvTerm("chebi", null);
+        CvTerm term1 = CvTermUtils.createMICvTerm("chebi", null);
         // chebi identifier
-        CvTerm term2 = CvTermFactory.createChebiDatabase();
+        CvTerm term2 = CvTermUtils.createChebiDatabase();
 
         Assert.assertTrue(comparator.compare(term1, term2) > 0);
         Assert.assertTrue(comparator.compare(term2, term1) < 0);
@@ -49,9 +49,9 @@ public class UnambiguousCvTermComparatorTest {
     @Test
     public void test_cv_identifier_comparison() throws Exception {
         // uniprokb identifier
-        CvTerm term1 = CvTermFactory.createMICvTerm("chebi", Xref.UNIPROTKB_MI);
+        CvTerm term1 = CvTermUtils.createMICvTerm("chebi", Xref.UNIPROTKB_MI);
         // chebi identifier
-        CvTerm term2 = CvTermFactory.createMICvTerm("chebi", Xref.CHEBI_MI);
+        CvTerm term2 = CvTermUtils.createMICvTerm("chebi", Xref.CHEBI_MI);
 
         Assert.assertTrue(comparator.compare(term1, term2) != 0);
         Assert.assertTrue(comparator.compare(term2, term1) != 0);
@@ -77,8 +77,8 @@ public class UnambiguousCvTermComparatorTest {
 
     @Test
     public void test_cv_shortName_case_insensitive() throws Exception {
-        CvTerm term1 = CvTermFactory.createMICvTerm("chebi", null);
-        CvTerm term2 = CvTermFactory.createMICvTerm("CHeBi", null);
+        CvTerm term1 = CvTermUtils.createMICvTerm("chebi", null);
+        CvTerm term2 = CvTermUtils.createMICvTerm("CHeBi", null);
         term2.setFullName("chebi database");
 
         Assert.assertTrue(comparator.compare(term1, term2) == 0);
@@ -91,9 +91,9 @@ public class UnambiguousCvTermComparatorTest {
     @Test
     public void test_cv_shortName_comparison() throws Exception {
         // uniprokb
-        CvTerm term1 = CvTermFactory.createMICvTerm("uniprokb", null);
+        CvTerm term1 = CvTermUtils.createMICvTerm("uniprokb", null);
         // chebi
-        CvTerm term2 = CvTermFactory.createMICvTerm("chebi", null);
+        CvTerm term2 = CvTermUtils.createMICvTerm("chebi", null);
         term2.setFullName("chebi database");
 
         Assert.assertTrue(comparator.compare(term1, term2) != 0);

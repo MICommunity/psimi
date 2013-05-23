@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactGeneComparator;
-import psidev.psi.mi.jami.utils.factory.CvTermFactory;
 
 import java.util.Collection;
 
@@ -29,35 +28,35 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     private Xref refseq;
 
     public DefaultGene(String name) {
-        super(name, CvTermFactory.createGeneInteractorType());
+        super(name, CvTermUtils.createGeneInteractorType());
     }
 
     public DefaultGene(String name, String fullName) {
-        super(name, fullName, CvTermFactory.createGeneInteractorType());
+        super(name, fullName, CvTermUtils.createGeneInteractorType());
     }
 
     public DefaultGene(String name, Organism organism) {
-        super(name, CvTermFactory.createGeneInteractorType(), organism);
+        super(name, CvTermUtils.createGeneInteractorType(), organism);
     }
 
     public DefaultGene(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermFactory.createGeneInteractorType(), organism);
+        super(name, fullName, CvTermUtils.createGeneInteractorType(), organism);
     }
 
     public DefaultGene(String name, Xref uniqueId) {
-        super(name, CvTermFactory.createGeneInteractorType(), uniqueId);
+        super(name, CvTermUtils.createGeneInteractorType(), uniqueId);
     }
 
     public DefaultGene(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createGeneInteractorType(), uniqueId);
+        super(name, fullName, CvTermUtils.createGeneInteractorType(), uniqueId);
     }
 
     public DefaultGene(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermFactory.createGeneInteractorType(), organism, uniqueId);
+        super(name, CvTermUtils.createGeneInteractorType(), organism, uniqueId);
     }
 
     public DefaultGene(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermFactory.createGeneInteractorType(), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createGeneInteractorType(), organism, uniqueId);
     }
 
     @Override
@@ -74,8 +73,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
 
         // add new ensembl if not null
         if (ac != null){
-            CvTerm ensemblDatabase = CvTermFactory.createEnsemblDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm ensemblDatabase = CvTermUtils.createEnsemblDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old ensembl if not null
             if (this.ensembl != null){
                 geneIdentifiers.remove(this.ensembl);
@@ -99,8 +98,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
 
         // add new ensembl genomes if not null
         if (ac != null){
-            CvTerm ensemblGenomesDatabase = CvTermFactory.createEnsemblGenomesDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm ensemblGenomesDatabase = CvTermUtils.createEnsemblGenomesDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old ensembl genome if not null
             if (this.ensemblGenome != null){
                 geneIdentifiers.remove(this.ensemblGenome);
@@ -124,8 +123,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
 
         // add new entrez gene id genomes if not null
         if (id != null){
-            CvTerm entrezDatabase = CvTermFactory.createEntrezGeneIdDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm entrezDatabase = CvTermUtils.createEntrezGeneIdDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove old entrez gene id if not null
             if (this.entrezGeneId!= null){
                 geneIdentifiers.remove(this.entrezGeneId);
@@ -149,8 +148,8 @@ public class DefaultGene extends DefaultInteractor implements Gene {
 
         // add new refseq if not null
         if (ac != null){
-            CvTerm refseqDatabase = CvTermFactory.createRefseqDatabase();
-            CvTerm identityQualifier = CvTermFactory.createIdentityQualifier();
+            CvTerm refseqDatabase = CvTermUtils.createRefseqDatabase();
+            CvTerm identityQualifier = CvTermUtils.createIdentityQualifier();
             // first remove refseq if not null
             if (this.refseq!= null){
                 geneIdentifiers.remove(this.refseq);
