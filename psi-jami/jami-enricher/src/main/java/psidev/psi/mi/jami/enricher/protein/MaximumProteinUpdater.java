@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.enricher.protein;
 
+import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.organism.MinimumOrganismEnricher;
@@ -24,10 +25,12 @@ public class MaximumProteinUpdater
         extends MinimumProteinEnricher
         implements ProteinEnricher {
 
-    public MaximumProteinUpdater()  throws EnrichmentException {
+    public MaximumProteinUpdater(){
         super();
-        log.debug("Starting the maximum protein updater");
+    }
 
+    public MaximumProteinUpdater(ProteinFetcher fetcher){
+        super(fetcher);
     }
 
     @Override

@@ -24,11 +24,17 @@ public abstract class AbstractProteinEnricher
 
     protected final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
     private ProteinFetcher fetcher = null;
+    private static final String TYPE = "Protein";
 
-    public AbstractProteinEnricher()
-            throws EnrichmentException {
-        enricherEvent = new EnricherEvent("Protein");
+    public AbstractProteinEnricher(){
+        enricherEvent = new EnricherEvent(TYPE);
     }
+
+    public AbstractProteinEnricher(ProteinFetcher fetcher){
+        this();
+        setFetcher(fetcher);
+    }
+
 
     public void setFetcher(ProteinFetcher fetcher){
         this.fetcher = fetcher;

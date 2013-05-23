@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.protein;
 
 //import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
+import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
@@ -24,16 +25,18 @@ public class MinimumProteinEnricher
         extends AbstractProteinEnricher
         implements ProteinEnricher {
 
-    public MinimumProteinEnricher()
-            throws EnrichmentException {
+    public MinimumProteinEnricher(){
         super();
+    }
+
+    public MinimumProteinEnricher(ProteinFetcher fetcher){
+        super(fetcher);
     }
 
     public void enrichProtein(Protein proteinMaster)
             throws EnrichmentException {
 
         Protein proteinEnriched = getEnrichedForm(proteinMaster);
-
         enrichProtein(proteinMaster, proteinEnriched);
         compareProteinMismatches(proteinMaster, proteinEnriched);
         fireEnricherEvent(enricherEvent);
@@ -51,7 +54,12 @@ public class MinimumProteinEnricher
                     "Full name", proteinEnriched.getFullName()));
         }
 
+
         //PRIMARY ACCESSION
+        /**
+         * Currently the AC always matches.
+         * This is included against a scenario where a fetcher uses a filed other than AC
+         */
         if(proteinMaster.getUniprotkb() == null
                 && proteinEnriched.getUniprotkb() != null) {
             proteinMaster.setUniprotkb(proteinEnriched.getUniprotkb());
@@ -76,23 +84,29 @@ public class MinimumProteinEnricher
         }
 
         //Full name
-        if (!proteinMaster.getFullName().equalsIgnoreCase(
-                proteinEnriched.getFullName() )) {
-            addMismatchReport(new MismatchReport(
-                    "FullName", proteinMaster.getFullName(), proteinEnriched.getFullName()));
+        if(proteinEnriched.getFullName() != null){
+            if (!proteinMaster.getFullName().equalsIgnoreCase(
+                    proteinEnriched.getFullName() )) {
+                addMismatchReport(new MismatchReport(
+                        "FullName", proteinMaster.getFullName(), proteinEnriched.getFullName()));
+            }
         }
 
         //Uniprot AC
-        if(! proteinMaster.getUniprotkb().equalsIgnoreCase(
-                proteinEnriched.getUniprotkb() )){
-            addMismatchReport(new MismatchReport(
-                    "UniprotKB AC", proteinMaster.getUniprotkb(), proteinEnriched.getUniprotkb()));
+        if(proteinEnriched.getUniprotkb() != null){
+            if(! proteinMaster.getUniprotkb().equalsIgnoreCase(
+                    proteinEnriched.getUniprotkb() )){
+                addMismatchReport(new MismatchReport(
+                        "UniprotKB AC", proteinMaster.getUniprotkb(), proteinEnriched.getUniprotkb()));
+            }
         }
 
         //Sequence
-        if(! proteinMaster.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
-            addMismatchReport(new MismatchReport(
-                    "Sequence", proteinEnriched.getSequence(), proteinMaster.getSequence()));
+        if(proteinEnriched.getSequence() != null){
+            if(! proteinMaster.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
+                addMismatchReport(new MismatchReport(
+                        "Sequence", proteinEnriched.getSequence(), proteinMaster.getSequence()));
+            }
         }
 
         /*

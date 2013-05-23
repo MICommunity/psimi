@@ -25,10 +25,15 @@ public abstract class AbstractOrganismEnricher
 
     protected final Logger log = LoggerFactory.getLogger(AbstractOrganismEnricher.class.getName());
     private OrganismFetcher fetcher=null;
+    private static final String TYPE = "Organism";
 
-    public AbstractOrganismEnricher()
-            throws EnrichmentException{
-        enricherEvent = new EnricherEvent("Organism");
+    public AbstractOrganismEnricher(){
+        enricherEvent = new EnricherEvent(TYPE);
+    }
+
+    public AbstractOrganismEnricher(OrganismFetcher fetcher){
+        this();
+        setFetcher(fetcher);
     }
 
     public void setFetcher(OrganismFetcher fetcher){
