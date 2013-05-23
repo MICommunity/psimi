@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricher.cvterm;
+package psidev.psi.mi.jami.enricher.cvterm;
 
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.MismatchReport;

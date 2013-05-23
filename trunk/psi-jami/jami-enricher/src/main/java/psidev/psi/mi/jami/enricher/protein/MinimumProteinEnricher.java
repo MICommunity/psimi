@@ -1,8 +1,8 @@
-package psidev.psi.mi.jami.enricher.enricher.protein;
+package psidev.psi.mi.jami.enricher.protein;
 
 import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
-import psidev.psi.mi.jami.enricher.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.enricher.organism.MinimumOrganismEnricher;
+import psidev.psi.mi.jami.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.event.MismatchReport;

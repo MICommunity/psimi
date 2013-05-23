@@ -1,10 +1,10 @@
-package psidev.psi.mi.jami.enricher.enricher.protein;
+package psidev.psi.mi.jami.enricher.protein;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
-import psidev.psi.mi.jami.enricher.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
