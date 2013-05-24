@@ -107,12 +107,11 @@ public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvi
     }
 
     public void setParticipantEvidenceAndAddFeature(ParticipantEvidence participant) {
-
-        if (participant != null){
-            this.participantEvidence.addFeatureEvidence(this);
-        }
-        else{
+        if (this.participantEvidence != null){
             this.participantEvidence.removeFeatureEvidence(this);
+        }
+        if (participant != null){
+            participant.addFeatureEvidence(this);
         }
     }
 

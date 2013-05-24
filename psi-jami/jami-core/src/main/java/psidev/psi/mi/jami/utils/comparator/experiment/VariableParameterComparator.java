@@ -67,19 +67,7 @@ public class VariableParameterComparator implements Comparator<VariableParameter
             String description1 = variableParameter1.getDescription();
             String description2 = variableParameter2.getDescription();
 
-            int comp;
-            if (description1 == null && description2 == null){
-                comp = EQUAL;
-            }
-            else if (description1 == null){
-                comp = AFTER;
-            }
-            else if (description2 == null){
-                comp = BEFORE;
-            }
-            else {
-                comp = description1.toLowerCase().trim().compareTo(description2.toLowerCase().trim());
-            }
+            int comp = description1.toLowerCase().trim().compareTo(description2.toLowerCase().trim());
 
             if (comp != 0){
                 return comp;
