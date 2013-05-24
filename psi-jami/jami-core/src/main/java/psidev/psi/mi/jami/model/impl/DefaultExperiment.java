@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousExperimentComparator;
 
 import java.util.ArrayList;
@@ -27,13 +28,22 @@ public class DefaultExperiment implements Experiment {
     private Collection<Confidence> confidences;
     private Collection<VariableParameter> variableParameters;
 
+    public DefaultExperiment(Publication publication){
+
+        this.publication = publication;
+        this.interactionDetectionMethod = CvTermUtils.createUnspecifiedMethod();
+
+    }
+
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod){
 
         this.publication = publication;
         if (interactionDetectionMethod == null){
-            throw new IllegalArgumentException("The interaction detection method is required and cannot be null");
+            this.interactionDetectionMethod = CvTermUtils.createUnspecifiedMethod();
         }
-        this.interactionDetectionMethod = interactionDetectionMethod;
+        else {
+            this.interactionDetectionMethod = interactionDetectionMethod;
+        }
     }
 
     public DefaultExperiment(Publication publication, CvTerm interactionDetectionMethod, Organism organism){
@@ -115,10 +125,12 @@ public class DefaultExperiment implements Experiment {
     }
 
     public void setPublicationAndAddExperiment(Publication publication) {
-        this.publication = publication;
+        if (this.publication != null){
+           this.publication.removeExperiment(this);
+        }
 
         if (publication != null){
-            this.publication.getExperiments().add(this);
+            publication.addExperiment(this);
         }
     }
 
@@ -149,9 +161,11 @@ public class DefaultExperiment implements Experiment {
 
     public void setInteractionDetectionMethod(CvTerm term) {
         if (term == null){
-            throw new IllegalArgumentException("The interaction detection method cannot be null");
+            this.interactionDetectionMethod = CvTermUtils.createUnspecifiedMethod();
         }
-        this.interactionDetectionMethod = term;
+        else{
+            this.interactionDetectionMethod = term;
+        }
     }
 
     public Organism getHostOrganism() {

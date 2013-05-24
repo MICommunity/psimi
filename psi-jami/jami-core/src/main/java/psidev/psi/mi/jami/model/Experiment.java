@@ -31,6 +31,7 @@ public interface Experiment {
 
     /**
      * Set the publication where the experiment has been described and add the experiment to the list of experiments for this publication
+     * If publication is null, it will remove this experiment from the previous publication attached to this experiment
      * @param publication : the publication
      */
     public void setPublicationAndAddExperiment(Publication publication);
@@ -67,8 +68,8 @@ public interface Experiment {
 
     /**
      * Set the interaction detection method for this experiment
-     * @param term : the detction method
-     * @throws IllegalArgumentException if the interaction detection method is null
+     * If term is null, this method will set the interaction detection method to 'unspecified method' (MI:0686).
+     * @param term : the detection method
      */
     public void setInteractionDetectionMethod(CvTerm term);
 

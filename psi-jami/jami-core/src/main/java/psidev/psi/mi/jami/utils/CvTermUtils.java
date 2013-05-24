@@ -345,4 +345,8 @@ public class CvTermUtils {
     public static CvTerm createBiologicalFeatureType(){
         return createMICvTerm(Feature.BIOLOGICAL_FEATURE, Feature.BIOLOGICAL_FEATURE_MI);
     }
+
+    public static CvTerm createUnspecifiedMethod(){
+        return createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
+    }
 }
