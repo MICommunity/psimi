@@ -20,7 +20,7 @@ import java.util.Collections;
  * @since <pre>01/02/13</pre>
  */
 
-public class DefaultFeature<T extends Feature> implements Feature, Serializable{
+public class DefaultFeature implements Feature, Serializable{
 
     private String shortName;
     private String fullName;
@@ -51,6 +51,21 @@ public class DefaultFeature<T extends Feature> implements Feature, Serializable{
     public DefaultFeature(String shortName, String fullName, CvTerm type){
         this(shortName, fullName);
         this.type =type;
+    }
+
+    public DefaultFeature(String shortName, String fullName, String interpro){
+        this(shortName, fullName);
+        setInterpro(interpro);
+    }
+
+    public DefaultFeature(CvTerm type, String interpro){
+        this(type);
+        setInterpro(interpro);
+    }
+
+    public DefaultFeature(String shortName, String fullName, CvTerm type, String interpro){
+        this(shortName, fullName, type);
+        setInterpro(interpro);
     }
 
     protected void initialiseIdentifiers(){

@@ -34,6 +34,7 @@ public class UnambiguousCuratedPublicationComparatorTest {
         Assert.assertTrue(comparator.compare(pub2, pub1) > 0);
 
         Assert.assertFalse(UnambiguousCuratedPublicationComparator.areEquals(pub1, pub2));
+        Assert.assertTrue(UnambiguousCuratedPublicationComparator.hashCode(pub1) != UnambiguousCuratedPublicationComparator.hashCode(pub2));
     }
 
     @Test
@@ -49,6 +50,7 @@ public class UnambiguousCuratedPublicationComparatorTest {
         Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(UnambiguousCuratedPublicationComparator.areEquals(pub1, pub2));
+        Assert.assertTrue(UnambiguousCuratedPublicationComparator.hashCode(pub1) == UnambiguousCuratedPublicationComparator.hashCode(pub2));
     }
 
     @Test
@@ -66,6 +68,7 @@ public class UnambiguousCuratedPublicationComparatorTest {
         Assert.assertTrue(comparator.compare(pub2, pub1) > 0);
 
         Assert.assertFalse(UnambiguousCuratedPublicationComparator.areEquals(pub1, pub2));
+        Assert.assertTrue(UnambiguousCuratedPublicationComparator.hashCode(pub1) != UnambiguousCuratedPublicationComparator.hashCode(pub2));
     }
 
     @Test
@@ -83,6 +86,7 @@ public class UnambiguousCuratedPublicationComparatorTest {
         Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(UnambiguousCuratedPublicationComparator.areEquals(pub1, pub2));
+        Assert.assertTrue(UnambiguousCuratedPublicationComparator.hashCode(pub1) == UnambiguousCuratedPublicationComparator.hashCode(pub2));
     }
 
     @Test
@@ -102,6 +106,7 @@ public class UnambiguousCuratedPublicationComparatorTest {
         Assert.assertTrue(comparator.compare(pub2, pub1) > 0);
 
         Assert.assertFalse(UnambiguousCuratedPublicationComparator.areEquals(pub1, pub2));
+        Assert.assertTrue(UnambiguousCuratedPublicationComparator.hashCode(pub1) != UnambiguousCuratedPublicationComparator.hashCode(pub2));
     }
 
     @Test
@@ -121,5 +126,6 @@ public class UnambiguousCuratedPublicationComparatorTest {
         Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(UnambiguousCuratedPublicationComparator.areEquals(pub1, pub2));
+        Assert.assertTrue(UnambiguousCuratedPublicationComparator.hashCode(pub1) == UnambiguousCuratedPublicationComparator.hashCode(pub2));
     }
 }

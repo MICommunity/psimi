@@ -11,7 +11,7 @@ import java.util.Comparator;
 /**
  * Basic FeatureEvidence comparator.
  * It will first compare feature detection methods using AbstractCvTermComparator. If both feature detection methods are the same,
- * it will use a FeatureBaseComparator to compare basic properties of a feature.
+ * it will use a AbstractFeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of an experimental feature.
  *
@@ -22,7 +22,7 @@ import java.util.Comparator;
 
 public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
 
-    protected FeatureBaseComparator featureComparator;
+    protected AbstractFeatureBaseComparator featureComparator;
     protected AbstractCvTermComparator cvTermComparator;
     protected CvTermsCollectionComparator cvTermCollectionComparators;
 
@@ -30,7 +30,7 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
      * Creates a new FeatureEvidenceComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public FeatureEvidenceComparator(FeatureBaseComparator featureComparator){
+    public FeatureEvidenceComparator(AbstractFeatureBaseComparator featureComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
@@ -42,7 +42,7 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
         this.cvTermCollectionComparators = new CvTermsCollectionComparator(this.cvTermComparator);
     }
 
-    public FeatureBaseComparator getFeatureComparator() {
+    public AbstractFeatureBaseComparator getFeatureComparator() {
         return featureComparator;
     }
 
@@ -51,7 +51,7 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
     }
 
     /**
-     * It will first use a FeatureBaseComparator to compare basic properties of a feature.
+     * It will first use a AbstractFeatureBaseComparator to compare basic properties of a feature.
      * If the basic feature properties are the same, it will then compare feature detection methods using AbstractCvTermComparator.
      * This comparator will ignore all the other properties of an experimental feature.
      *

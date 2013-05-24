@@ -9,7 +9,7 @@ import java.util.Comparator;
  * Component features come first, then Biological features come first and then experimental features.
  * - It uses ModelledFeatureComparator to compare biological features
  * - It uses FeatureEvidenceComparator to compare experimental features
- * - It uses FeatureBaseComparator to compare basic feature properties
+ * - It uses AbstractFeatureBaseComparator to compare basic feature properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,9 +20,9 @@ public class FeatureComparator implements Comparator<Feature> {
 
     protected ModelledFeatureComparator biologicalFeatureComparator;
     protected FeatureEvidenceComparator experimentalFeatureComparator;
-    protected FeatureBaseComparator featureBaseComparator;
+    protected AbstractFeatureBaseComparator featureBaseComparator;
 
-    public FeatureComparator(FeatureBaseComparator featureBaseComparator){
+    public FeatureComparator(AbstractFeatureBaseComparator featureBaseComparator){
         if (featureBaseComparator == null){
             throw new IllegalArgumentException("The featureBaseComparator is required to create more specific feature comparators and compares basic feature properties. It cannot be null");
         }
@@ -40,7 +40,7 @@ public class FeatureComparator implements Comparator<Feature> {
         return experimentalFeatureComparator;
     }
 
-    public FeatureBaseComparator getFeatureBaseComparator() {
+    public AbstractFeatureBaseComparator getFeatureBaseComparator() {
         return featureBaseComparator;
     }
 
@@ -48,7 +48,7 @@ public class FeatureComparator implements Comparator<Feature> {
      * Biological features come first and then experimental features.
      * - It uses ModelledFeatureComparator to compare biological features
      * - It uses FeatureEvidenceComparator to compare experimental features
-     * - It uses FeatureBaseComparator to compare basic feature properties
+     * - It uses AbstractFeatureBaseComparator to compare basic feature properties
      * @param feature1
      * @param feature2
      * @return

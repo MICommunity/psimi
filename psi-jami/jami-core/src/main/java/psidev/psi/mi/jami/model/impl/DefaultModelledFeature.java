@@ -17,7 +17,7 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultModelledFeature extends DefaultFeature<ModelledFeature> implements ModelledFeature {
+public class DefaultModelledFeature extends DefaultFeature implements ModelledFeature {
 
     private ModelledParticipant modelledParticipant;
     private Collection<ModelledFeature> bindingFeatures;

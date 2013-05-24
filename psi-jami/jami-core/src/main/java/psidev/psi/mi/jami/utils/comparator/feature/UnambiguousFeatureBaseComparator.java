@@ -3,9 +3,11 @@ package psidev.psi.mi.jami.utils.comparator.feature;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.XrefsCollectionComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,17 +16,19 @@ import java.util.List;
 
 /**
  * Unambiguous feature comparator.
- * It will look first at the feature types using a UnambiguousCvTermComparator. If the feature types are the same, it will compare the interpro identifiers.
- * if interpro identifiers are the same, it will look at the ranges using UnambiguousRangeComparator.
- *
+ * It will look first at the feature shortnames (case insensitive). Then, it will compare the feature types using a UnambiguousCvTermComparator. If the feature types are the same,
+ * it will compare interactionEffect and then interactionDependency using UnambiguousCvTermComparator. Then it will compare interpro identifier and if the features do not have an interpro identifier,
+ * it will look for at the identifiers in the feature identifiers using UnambiguousIdentifierComparator.
+ * Finally, it will look at the ranges using UnambiguousRangeComparator.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>16/01/13</pre>
  */
 
-public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
+public class UnambiguousFeatureBaseComparator extends AbstractFeatureBaseComparator {
 
     private static UnambiguousFeatureBaseComparator unambiguousFeatureComparator;
+    private XrefsCollectionComparator externalIdentifierCollectionComparator;
 
     /**
      * Creates a new UnambiguousFeatureBaseComparator. It will use a UnambiguousCvTermComparator to compare feature types and range status,
@@ -32,12 +36,19 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
      */
     public UnambiguousFeatureBaseComparator() {
         super(new UnambiguousCvTermComparator(), new UnambiguousExternalIdentifierComparator());
+        this.externalIdentifierCollectionComparator = new XrefsCollectionComparator(getIdentifierComparator());
+    }
+
+    public XrefsCollectionComparator getExternalIdentifierCollectionComparator() {
+        return externalIdentifierCollectionComparator;
     }
 
     @Override
     /**
-     * It will look first at the feature types using a UnambiguousCvTermComparator. If the feature types are the same, it will compare the interpro identifiers.
-     * if interpro identifiers are the same, it will look at the ranges using UnambiguousRangeComparator.
+     * It will look first at the feature shortnames (case insensitive). Then, it will compare the feature types using a UnambiguousCvTermComparator. If the feature types are the same,
+     * it will compare interactionEffect and then interactionDependency using UnambiguousCvTermComparator. Then it will compare interpro identifier and if the features do not have an interpro identifier,
+     * it will look for at the identifiers in the feature identifiers using UnambiguousIdentifierComparator.
+     * Finally, it will look at the ranges using UnambiguousRangeComparator.
      */
     public int compare(Feature feature1, Feature feature2) {
         int EQUAL = 0;
@@ -54,7 +65,23 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
             return BEFORE;
         }
         else {
-            // first compares feature types
+            // first compare shortnames
+            String name1 = feature1.getShortName();
+            String name2 = feature2.getShortName();
+            if (name1 != null && name2 != null){
+                int comp = name1.toLowerCase().trim().compareTo(name2.toLowerCase().trim());
+                if (comp != 0){
+                    return comp;
+                }
+            }
+            else if (name1 != null){
+                return BEFORE;
+            }
+            else if (name2 != null){
+                return AFTER;
+            }
+
+            // then compares feature types
             CvTerm type1 = feature1.getType();
             CvTerm type2 = feature2.getType();
 
@@ -95,6 +122,16 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
             }
             else if (interpro2 != null){
                 return AFTER;
+            }
+            // compare all identifiers
+            else {
+                Collection<Xref> identifiers1 = feature1.getIdentifiers();
+                Collection<Xref> identifiers2 = feature2.getIdentifiers();
+
+                comp = externalIdentifierCollectionComparator.compare(identifiers1, identifiers2);
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             // then compares the ranges
@@ -144,10 +181,21 @@ public class UnambiguousFeatureBaseComparator extends FeatureBaseComparator {
         }
 
         int hashcode = 31;
+        hashcode = 31*hashcode + (feature.getShortName() != null ? feature.getShortName().toLowerCase().trim().hashCode() : 0);
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(feature.getType());
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(feature.getInteractionEffect());
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(feature.getInteractionDependency());
-        hashcode = 31*hashcode + (feature.getInterpro() != null ? feature.getInterpro().hashCode() : 0);
+        if (feature.getInterpro() != null){
+            hashcode = 31*hashcode + (feature.getInterpro() != null ? feature.getInterpro().hashCode() : 0);
+        }
+        else {
+            List<Xref> identifiers = new ArrayList<Xref>(feature.getIdentifiers());
+
+            Collections.sort(identifiers, unambiguousFeatureComparator.getExternalIdentifierCollectionComparator().getObjectComparator());
+            for (Xref ref : identifiers){
+                hashcode = 31*hashcode + UnambiguousExternalIdentifierComparator.hashCode(ref);
+            }
+        }
         List<Range> list1 = new ArrayList<Range>(feature.getRanges());
 
         Collections.sort(list1, unambiguousFeatureComparator.getRangeCollectionComparator().getObjectComparator());
