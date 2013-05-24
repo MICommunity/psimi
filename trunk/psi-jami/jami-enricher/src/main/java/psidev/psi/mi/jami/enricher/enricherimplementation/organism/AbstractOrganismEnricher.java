@@ -56,7 +56,7 @@ public abstract class AbstractOrganismEnricher
         try{
             enriched = fetcher.getOrganismByTaxID(MasterOrganism.getTaxId());
             enricherEvent.clear();
-            enricherEvent.setQueryDetails(""+MasterOrganism.getTaxId(),"TaxId");
+            enricherEvent.setQueryDetails(""+MasterOrganism.getTaxId(),"TaxID");
         }catch(FetcherException e){
             throw new FetchingException(e);
         }
@@ -120,21 +120,25 @@ public abstract class AbstractOrganismEnricher
         }
 
         //Scientific Name
-        if (!organismEnriched.getScientificName().equalsIgnoreCase(
-                organismToEnrich.getScientificName())){
-            addMismatchReport(new MismatchReport(
-                    "Scientific name",
-                    organismToEnrich.getScientificName(),
-                    organismEnriched.getScientificName()));
+        if (organismEnriched.getScientificName() != null){
+            if (!organismEnriched.getScientificName().equalsIgnoreCase(
+                    organismToEnrich.getScientificName())){
+                addMismatchReport(new MismatchReport(
+                        "Scientific name",
+                        organismToEnrich.getScientificName(),
+                        organismEnriched.getScientificName()));
+            }
         }
 
         //Common Name
-        if (!organismEnriched.getCommonName().equalsIgnoreCase(
-                organismToEnrich.getCommonName())){
-            addMismatchReport(new MismatchReport(
-                    "Common name",
-                    organismToEnrich.getCommonName(),
-                    organismEnriched.getCommonName()));
+        if (organismEnriched.getCommonName() != null){
+            if (!organismEnriched.getCommonName().equalsIgnoreCase(
+                    organismToEnrich.getCommonName())){
+                addMismatchReport(new MismatchReport(
+                        "Common name",
+                        organismToEnrich.getCommonName(),
+                        organismEnriched.getCommonName()));
+            }
         }
     }
 
@@ -154,28 +158,29 @@ public abstract class AbstractOrganismEnricher
         }
 
         //Scientific Name
-        if (!organismEnriched.getScientificName().equalsIgnoreCase(
-                organismToEnrich.getScientificName())){
-            String oldValue = organismToEnrich.getScientificName();
-            organismToEnrich.setScientificName(organismEnriched.getScientificName());
-            addOverwriteReport(new OverwriteReport(
-                    "Scientific name",
-                    oldValue,
-                    organismToEnrich.getScientificName()));
+        if (organismEnriched.getScientificName() != null){
+            if (!organismEnriched.getScientificName().equalsIgnoreCase(
+                    organismToEnrich.getScientificName())){
+                String oldValue = organismToEnrich.getScientificName();
+                organismToEnrich.setScientificName(organismEnriched.getScientificName());
+                addOverwriteReport(new OverwriteReport(
+                        "Scientific name",
+                        oldValue,
+                        organismToEnrich.getScientificName()));
+            }
         }
 
         //Common Name
-        if (!organismEnriched.getCommonName().equalsIgnoreCase(
-                organismToEnrich.getCommonName())){
-            String oldValue = organismToEnrich.getCommonName();
-            organismToEnrich.setCommonName(organismEnriched.getCommonName());
-            addOverwriteReport(new OverwriteReport(
-                    "Common name",
-                    oldValue,
-                    organismToEnrich.getCommonName()));
+        if (organismEnriched.getCommonName() != null){
+            if (!organismEnriched.getCommonName().equalsIgnoreCase(
+                    organismToEnrich.getCommonName())){
+                String oldValue = organismToEnrich.getCommonName();
+                organismToEnrich.setCommonName(organismEnriched.getCommonName());
+                addOverwriteReport(new OverwriteReport(
+                        "Common name",
+                        oldValue,
+                        organismToEnrich.getCommonName()));
+            }
         }
-
     }
-
-
 }
