@@ -26,7 +26,7 @@ import static junit.framework.Assert.assertTrue;
 public class MaximumOrganismUpdaterTest {
 
 
-    private MinimumOrganismEnricher maximumOrganismEnricher;
+    private MaximumOrganismUpdater maximumOrganismUpdater;
     private MockOrganismFetcher fetcher;
     private EnricherEvent event;
 
@@ -38,7 +38,7 @@ public class MaximumOrganismUpdaterTest {
     @Before
     public void initialiseFetcherAndEnricher() throws EnrichmentException {
         this.fetcher = new MockOrganismFetcher();
-        this.maximumOrganismEnricher = new MinimumOrganismEnricher(fetcher);
+        this.maximumOrganismUpdater = new MaximumOrganismUpdater(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism("" + TEST_AC_FULL_ORG, fullOrganism);
@@ -62,7 +62,7 @@ public class MaximumOrganismUpdaterTest {
         assertNotNull(organism_with_all_fields.getCommonName());
         assertNotNull(organism_with_all_fields.getScientificName());
 
-        this.maximumOrganismEnricher.enrichOrganism(organism_with_all_fields);
+        this.maximumOrganismUpdater.enrichOrganism(organism_with_all_fields);
 
         assertEquals(TEST_AC_FULL_ORG, organism_with_all_fields.getTaxId());
         assertEquals(TEST_COMMONNAME, organism_with_all_fields.getCommonName());
@@ -78,19 +78,19 @@ public class MaximumOrganismUpdaterTest {
     public void test_overwrite_does_not_change_fields_to_null_from_enrichedOrganism()
             throws EnrichmentException{
 
-        Organism organism_with_all_fields = new DefaultOrganism(TEST_AC_FULL_ORG,"common","scientific");
+        Organism organism_with_all_fields = new DefaultOrganism(TEST_AC_HALF_ORG,"common","scientific");
 
-        assertEquals(TEST_AC_FULL_ORG, organism_with_all_fields.getTaxId());
+        assertEquals(TEST_AC_HALF_ORG, organism_with_all_fields.getTaxId());
         assertEquals("common", organism_with_all_fields.getCommonName());
         assertEquals("scientific", organism_with_all_fields.getScientificName());
 
-        this.maximumOrganismEnricher.enrichOrganism(organism_with_all_fields);
+        this.maximumOrganismUpdater.enrichOrganism(organism_with_all_fields);
 
         assertNotNull(organism_with_all_fields.getTaxId());
         assertNotNull(organism_with_all_fields.getCommonName());
         assertNotNull(organism_with_all_fields.getScientificName());
 
-        assertEquals(TEST_AC_FULL_ORG, organism_with_all_fields.getTaxId());
+        assertEquals(TEST_AC_HALF_ORG, organism_with_all_fields.getTaxId());
         assertEquals("common", organism_with_all_fields.getCommonName());
         assertEquals("scientific", organism_with_all_fields.getScientificName());
     }
@@ -112,16 +112,13 @@ public class MaximumOrganismUpdaterTest {
         Organism organism_test_three = new DefaultOrganism(TEST_AC_HALF_ORG);
 
 
-        this.maximumOrganismEnricher.addEnricherListener(new EnricherListener() {
+        this.maximumOrganismUpdater.addEnricherListener(new EnricherListener() {
             public void onEnricherEvent(EnricherEvent e) {
                 event = e;
             }
         });
 
-        //If this is failing, you may wish to use a logging listener to read the log.
-        //this.minimumProteinEnricher.addEnricherListener(new LoggingEnricherListener());
-
-        maximumOrganismEnricher.enrichOrganism(organism_test_one);
+        maximumOrganismUpdater.enrichOrganism(organism_test_one);
 
         assertEquals(event.getQueryID(), ""+TEST_AC_FULL_ORG);
 
@@ -129,14 +126,14 @@ public class MaximumOrganismUpdaterTest {
         assertTrue(event.getMismatches().size() == 0);
         assertTrue(event.getOverwrites().size() == 0);
 
-        maximumOrganismEnricher.enrichOrganism(organism_test_two);
+        maximumOrganismUpdater.enrichOrganism(organism_test_two);
 
         assertEquals(event.getQueryID(), ""+TEST_AC_FULL_ORG);
         assertTrue(event.getAdditions().size() == 0);
         assertTrue(event.getMismatches().size() == 0);
         assertTrue(event.getOverwrites().size() > 0);
 
-        maximumOrganismEnricher.enrichOrganism(organism_test_three);
+        maximumOrganismUpdater.enrichOrganism(organism_test_three);
 
         assertEquals(event.getQueryID(), ""+TEST_AC_HALF_ORG);
         assertTrue(event.getAdditions().size() == 0);
@@ -157,13 +154,15 @@ public class MaximumOrganismUpdaterTest {
     public void test_enricher_event_is_fired_and_has_correct_content() throws EnrichmentException {
         Organism organism_to_enrich = new DefaultOrganism(TEST_AC_FULL_ORG, "testpart2 commonName", "testpart2 scientificName");
 
-        this.maximumOrganismEnricher.addEnricherListener(new EnricherListener() {
+        this.maximumOrganismUpdater.addEnricherListener(new EnricherListener() {
             public void onEnricherEvent(EnricherEvent e) {
                 event = e;
             }
         });
 
-        maximumOrganismEnricher.enrichOrganism(organism_to_enrich);
+        //this.maximumOrganismUpdater.addEnricherListener(new LoggingEnricherListener());
+
+        maximumOrganismUpdater.enrichOrganism(organism_to_enrich);
 
         assertNotNull(event);
         assertEquals(event.getObjectType(), "Organism");

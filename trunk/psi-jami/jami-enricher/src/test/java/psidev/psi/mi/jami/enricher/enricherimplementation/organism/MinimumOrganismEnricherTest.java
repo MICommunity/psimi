@@ -133,7 +133,7 @@ public class MinimumOrganismEnricherTest {
         });
 
         //If this is failing, you may wish to use a logging listener to read the log.
-        this.minimumOrganismEnricher.addEnricherListener(new LoggingEnricherListener());
+        //this.minimumOrganismEnricher.addEnricherListener(new LoggingEnricherListener());
 
         this.minimumOrganismEnricher.enrichOrganism(organism_with_all_fields);
 
