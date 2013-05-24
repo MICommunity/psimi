@@ -1,16 +1,23 @@
-package psidev.psi.mi.jami.enricher.cvterm;
+package psidev.psi.mi.jami.enricher.enricherimplementation.cvterm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
+import psidev.psi.mi.jami.enricher.event.MismatchReport;
+import psidev.psi.mi.jami.enricher.event.OverwriteReport;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
+import psidev.psi.mi.jami.enricher.util.CollectionUtilsExtra;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,7 +67,7 @@ public abstract class AbstractCvTermEnricher
      * @return              A new, ideal CvTerm inferred from an identifying feature of the CvTermToEnrich.
      * @throws EnrichmentException  Thrown when a bridge has failed or in the case of bad identifiers.
      */
-    protected CvTerm getEnrichedForm(CvTerm cvTermToEnrich)
+    protected CvTerm getFullyEnrichedForm(CvTerm cvTermToEnrich)
             throws EnrichmentException {
         if(fetcher == null) throw new FetchingException("CvTermFetcher is null.");
 
@@ -85,7 +92,7 @@ public abstract class AbstractCvTermEnricher
                     if(id.getId() == identifier){
                         identifierXref = id;
                         enricherEvent.setQueryDetails(identifierXref.getId(), "Identifier");
-                        enriched = enrichByIdentifier(identifierXref);
+                        enriched = getFullyEnrichedFormByIdentifier(identifierXref);
                         break;
                     }
                 }
@@ -132,9 +139,7 @@ public abstract class AbstractCvTermEnricher
         return enriched;
     }
 
-
-
-    private CvTerm enrichByIdentifier(Xref identifier)
+    private CvTerm getFullyEnrichedFormByIdentifier(Xref identifier)
             throws EnrichmentException{
 
         if(log.isTraceEnabled()) log.trace("Searching on identifier "+identifier.getId());
@@ -146,4 +151,99 @@ public abstract class AbstractCvTermEnricher
         }
     }
 
+    /**
+     * Compares two CvTerms and updates the ToEnrich with any fields that it is missing.
+     * Only full name and synonyms are considered.
+     * @param cvTermToEnrich      The cvTerm to be updated
+     * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
+     * @throws EnrichmentException
+     */
+    protected void runCvTermAdditionEnrichment(CvTerm cvTermToEnrich, CvTerm cvTermEnriched)
+            throws EnrichmentException{
+
+        //Todo report obsolete
+
+        //ShortName not checked - never null
+
+        //FullName
+        if(cvTermToEnrich.getFullName() == null
+                && cvTermEnriched.getFullName() != null){
+            cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
+            addAdditionReport(new AdditionReport("FullName", cvTermToEnrich.getFullName()));
+        }
+
+        //Add identifiers
+        Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
+                cvTermEnriched.getIdentifiers(),
+                cvTermToEnrich.getIdentifiers(),
+                new DefaultXrefComparator());
+
+        for(Xref x: subtractedIdentifiers){
+            cvTermToEnrich.getIdentifiers().add(x);
+            addAdditionReport(new AdditionReport("Identifier", x.getId()));
+        }
+
+        //Add synonyms
+        Collection<Alias> subtractedSynonyms = CollectionUtilsExtra.comparatorSubtract(
+                cvTermEnriched.getSynonyms(),
+                cvTermToEnrich.getSynonyms(),
+                new DefaultAliasComparator());
+
+        for(Alias x: subtractedSynonyms){
+            cvTermToEnrich.getSynonyms().add(x);
+            addAdditionReport(new AdditionReport("Synonym", "Name: " + x.getName() + ", Type: " + x.getType()));
+        }
+    }
+
+    /**
+     * Compares the ToEnrich and enriched form for mismatches.
+     * The full name and the short name are compared between the ToEnrich and enriched forms.
+     * @param cvTermToEnrich
+     * @param cvTermEnriched
+     */
+    public void runCvTermMismatchComparison(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
+        //ShortName - can never be null
+        if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
+            addMismatchReport(new MismatchReport(
+                    "ShortName", cvTermToEnrich.getShortName(), cvTermEnriched.getShortName()));
+        }
+
+        //FullName
+        if(cvTermEnriched.getFullName() != null){
+            if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
+                addMismatchReport(new MismatchReport(
+                        "FullName", cvTermToEnrich.getFullName(), cvTermEnriched.getFullName()));
+            }
+        }
+    }
+
+    /**
+     * Compares two CvTerms and updates the ToEnrich with any fields that it is missing or mismatched.
+     * The minimum enricher is run first to add any missing fields,
+     * then, the full name and short name are overwritten.
+     * @param cvTermToEnrich      The cvTerm to be updated
+     * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
+     * @throws EnrichmentException
+     */
+    public void runCvTermOverwriteUpdate(CvTerm cvTermToEnrich, CvTerm cvTermEnriched)
+            throws EnrichmentException{
+
+        //Overwrite shortname - is never null
+        if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
+            String oldname =  cvTermToEnrich.getShortName();
+            cvTermToEnrich.setShortName(cvTermEnriched.getShortName());
+            addOverwriteReport(new OverwriteReport(
+                    "ShortName", cvTermToEnrich.getShortName(), oldname));
+        }
+
+        //Check full name
+        if(cvTermEnriched.getFullName() != null){
+            if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
+                String oldname =  cvTermToEnrich.getFullName();
+                cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
+                addOverwriteReport(new OverwriteReport(
+                        "FullName", cvTermToEnrich.getFullName(), oldname));
+            }
+        }
+    }
 }

@@ -1,18 +1,10 @@
-package psidev.psi.mi.jami.enricher.protein;
+package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
 
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
-import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.organism.MinimumOrganismEnricher;
-import psidev.psi.mi.jami.enricher.event.AdditionReport;
-import psidev.psi.mi.jami.enricher.event.EnricherEvent;
-import psidev.psi.mi.jami.enricher.event.OverwriteReport;
+import psidev.psi.mi.jami.enricher.enricherimplementation.organism.MaximumOrganismUpdater;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.impl.DefaultOrganism;
-import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,6 +29,7 @@ public class MaximumProteinUpdater
             throws EnrichmentException {
 
         Protein proteinEnriched = getFullyEnrichedForm(proteinToEnrich);
+        super.setOrganismEnricher(new MaximumOrganismUpdater());
         runProteinAdditionEnrichment(proteinToEnrich, proteinEnriched);
         runProteinOverwriteUpdate(proteinToEnrich, proteinEnriched);
         fireEnricherEvent(enricherEvent);

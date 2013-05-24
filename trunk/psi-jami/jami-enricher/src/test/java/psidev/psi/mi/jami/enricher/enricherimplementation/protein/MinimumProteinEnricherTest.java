@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.protein;
+package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
@@ -8,8 +8,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
-import psidev.psi.mi.jami.enricher.listener.LoggingEnricherListener;
-import psidev.psi.mi.jami.enricher.mock.protein.MockProteinFetcher;
+import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 
