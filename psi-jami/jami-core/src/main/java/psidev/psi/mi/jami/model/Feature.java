@@ -12,6 +12,9 @@ import java.util.Collection;
 
 public interface Feature {
 
+    public static String BIOLOGICAL_FEATURE = "biological feature";
+    public static String BIOLOGICAL_FEATURE_MI ="MI:0252";
+
     /**
      * The short name of a feature.
      * It can be null
