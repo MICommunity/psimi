@@ -104,7 +104,6 @@ public class UniprotToJAMI {
                     "The Uniprot entry ["+p.getShortName()+"] has no primary Accession.");
         }
 
-
         //UNIPROT ID AS SECONDARY AC
         if(e.getUniProtId() != null){
             p.getIdentifiers().add(
@@ -147,6 +146,7 @@ public class UniprotToJAMI {
                     }
                 }
                 //Locus Names
+                //TODO check these are equivalent
                 if(g.getOrderedLocusNames() != null
                         && g.getOrderedLocusNames().size() > 0){
                     for(OrderedLocusName oln : g.getOrderedLocusNames()){
@@ -169,9 +169,11 @@ public class UniprotToJAMI {
         //SEQUENCE // CHECKSUMS
         p.setSequence(e.getSequence().getValue());
 
+        //CHECKSUMS
         //todo add MI term for crc64 checksums
         p.getChecksums().add(
                 ChecksumUtils.createChecksum("CRC64", null, e.getSequence().getCRC64()));
+
         //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
 
         p.setOrganism(getOrganismFromEntry(e));
