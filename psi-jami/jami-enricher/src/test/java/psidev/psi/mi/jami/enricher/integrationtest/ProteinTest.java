@@ -8,8 +8,8 @@ import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.listener.LoggingEnricherListener;
-import psidev.psi.mi.jami.enricher.protein.MaximumProteinUpdater;
-import psidev.psi.mi.jami.enricher.protein.MinimumProteinEnricher;
+import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MaximumProteinUpdater;
+import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 

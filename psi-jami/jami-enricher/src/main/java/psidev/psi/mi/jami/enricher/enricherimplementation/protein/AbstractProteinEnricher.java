@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.enricher.protein;
+package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
@@ -12,7 +13,12 @@ import psidev.psi.mi.jami.enricher.event.OverwriteReport;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
+import psidev.psi.mi.jami.enricher.listener.EnricherListener;
+import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
+import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +34,7 @@ public abstract class AbstractProteinEnricher
     protected final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
     private ProteinFetcher fetcher = null;
     private static final String TYPE = "Protein";
+    private OrganismEnricher organismEnricher;
 
     public AbstractProteinEnricher(){
         enricherEvent = new EnricherEvent(TYPE);
@@ -38,12 +45,24 @@ public abstract class AbstractProteinEnricher
         setFetcher(fetcher);
     }
 
-
     public void setFetcher(ProteinFetcher fetcher){
         this.fetcher = fetcher;
     }
     public ProteinFetcher getFetcher(){
         return this.fetcher;
+    }
+
+    public void setOrganismEnricher(OrganismEnricher organismEnricher){
+        this.organismEnricher = organismEnricher;
+        //MinimumOrganismEnricher minimumOrganismEnricher = new MinimumOrganismEnricher();
+
+        organismEnricher.addEnricherListener(new EnricherListener() {
+            public void onEnricherEvent(EnricherEvent e) {
+                addEchoSubEnricherEvent(e);
+            }
+        });
+
+
     }
 
     protected Protein getFullyEnrichedForm(Protein ProteinToEnrich)
@@ -57,7 +76,7 @@ public abstract class AbstractProteinEnricher
             enricherEvent.clear();
             enricherEvent.setQueryDetails(ProteinToEnrich.getUniprotkb(),"UniprotKB AC");
         }catch (FetcherException e) {
-            new FetchingException(e);
+            throw new FetchingException(e);
         }
 
         if(enriched==null) throw new FetchingException("Null protein");
@@ -68,7 +87,9 @@ public abstract class AbstractProteinEnricher
     protected void runProteinAdditionEnrichment(Protein proteinToEnrich, Protein proteinEnriched)
             throws EnrichmentException{
 
-        //Fullname
+        //ShortName - is never null
+
+        //FullName
         if(proteinToEnrich.getFullName() == null
                 && proteinEnriched.getFullName() != null){
             proteinToEnrich.setFullName( proteinEnriched.getFullName() );
@@ -77,22 +98,33 @@ public abstract class AbstractProteinEnricher
         }
 
 
-        //PRIMARY ACCESSION
-        /**
-         * Currently the AC always matches.
-         * This is included against a scenario where a fetcher uses a filed other than AC
-         */
+        //PRIMARY Uniprot AC
         if(proteinToEnrich.getUniprotkb() == null
                 && proteinEnriched.getUniprotkb() != null) {
             proteinToEnrich.setUniprotkb(proteinEnriched.getUniprotkb());
             addAdditionReport(new AdditionReport("uniprotKb AC", proteinEnriched.getUniprotkb()));
         }
 
-        //SEQUENCE
+
+        //Sequence
         if(proteinToEnrich.getSequence() == null
                 && proteinEnriched.getSequence() != null){
             proteinToEnrich.setSequence(proteinEnriched.getSequence());
             addAdditionReport(new AdditionReport("Sequence", proteinToEnrich.getSequence()));
+        }
+
+
+        //Organism - Create a new empty organism and pass the problem over to the organismEnricher
+        if(proteinToEnrich.getOrganism() == null
+                && proteinEnriched.getOrganism() != null){
+            if(organismEnricher == null) throw new EnrichmentException(
+                    "OrganismEnricher was not provided for proteinEnricher");
+
+            proteinToEnrich.setOrganism(new DefaultOrganism(-3));
+            MockOrganismFetcher fetcher = new MockOrganismFetcher();
+            fetcher.addNewOrganism(""+proteinEnriched.getOrganism().getTaxId(), proteinEnriched.getOrganism());
+            organismEnricher.setFetcher(fetcher);
+            organismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
         }
     }
 
@@ -131,52 +163,37 @@ public abstract class AbstractProteinEnricher
             }
         }
 
-        /*
-        //Orgnaism, // ROGID
-        try{
-            if(proteinEnriched.getOrganism() != null){
-                MinimumOrganismEnricher minimumOrganismEnricher= new MinimumOrganismEnricher();
-                minimumOrganismEnricher.setFetcher(new EchoOrganism(proteinEnriched.getOrganism()));
-                minimumOrganismEnricher.addEnricherListener(new EnricherListener() {
-                    public void onEnricherEvent(EnricherEvent e) {
-                        addEchoSubEnricherEvent(e);
-                    }
-                });
+        //Organism is done at addition
 
-                if(proteinToEnrich.getOrganism() == null && proteinEnriched.getOrganism() != null){
-                    proteinToEnrich.setOrganism(new DefaultOrganism(-3));
+        //RogID
+        if(proteinToEnrich.getOrganism() != null
+                && proteinToEnrich.getOrganism().getTaxId() > 0
+                && proteinToEnrich.getSequence() != null){
+
+            RogidGenerator rogidGenerator = new RogidGenerator();
+
+            try {
+                String rogid = rogidGenerator.calculateRogid(
+                        proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
+                if(proteinToEnrich.getRogid() == null){
+                    proteinToEnrich.setRogid(rogid);
+                    addAdditionReport(new AdditionReport("RogID", rogid));
                 }
-                minimumOrganismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
-
-                if(proteinToEnrich.getOrganism().getTaxId() > 0
-                        && proteinToEnrich.getSequence() != null){
-                    RogidGenerator rogidGenerator = new RogidGenerator();
-                    // String rogid = null;
-
-                    try {
-                        String rogid = rogidGenerator.calculateRogid(
-                                proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
-                        if(proteinToEnrich.getRogid() == null){
-                            proteinToEnrich.setRogid(rogid);
-                            addAdditionReport(new AdditionReport("RogID", rogid));
-                        }
-                        else if(!proteinToEnrich.getRogid().equals(rogid)){
-                            addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(), rogid));
-                        }
-                    } catch (SeguidException e) {
-                        log.debug("caught exception from a failed rogid");
-                        e.printStackTrace();
-                    }
+                else if(!proteinToEnrich.getRogid().equals(rogid)){
+                    //TODO HOW TO DEAL WITH A WRONG ROGID
+                    addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(), rogid));
                 }
+            } catch (SeguidException e) {
+                addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(),"[NULL ROGID]"));
+                log.debug("caught exception from a failed rogid");
+                //e.printStackTrace();
             }
-        }catch(EnrichmentException e){
-            log.warn("Caught Enrichment exception fired by organism");
-        }*/
+        }
     }
 
     protected void runProteinOverwriteUpdate(Protein proteinToEnrich, Protein proteinEnriched){
 
-        //Short name
+        //ShortName - is never null
         if (!proteinToEnrich.getShortName().equalsIgnoreCase(
                 proteinEnriched.getShortName() )) {
             String oldValue = proteinToEnrich.getShortName();
@@ -196,7 +213,7 @@ public abstract class AbstractProteinEnricher
             }
         }
 
-        //Uniprot AC
+        //PRIMARY Uniprot AC
         if(proteinEnriched.getUniprotkb() != null){
             if(! proteinToEnrich.getUniprotkb().equalsIgnoreCase(
                     proteinEnriched.getUniprotkb() )){
@@ -217,51 +234,33 @@ public abstract class AbstractProteinEnricher
             }
         }
 
-        /*
-        //Orgnaism, // ROGID
-        try{
-            if(proteinEnriched.getOrganism() != null){
+        //Organism is done at addition
 
-                MinimumOrganismEnricher minimumOrganismEnricher= new MinimumOrganismEnricher();
-                minimumOrganismEnricher.setFetcher(new EchoOrganism(proteinEnriched.getOrganism()));
-                minimumOrganismEnricher.addEnricherListener(new EnricherListener() {
-                    public void onEnricherEvent(EnricherEvent e) {
-                        addSubEnricherEvent(e);
-                    }
-                });
+        //RogID
+        if(proteinToEnrich.getOrganism() != null
+                && proteinToEnrich.getOrganism().getTaxId() > 0
+                && proteinToEnrich.getSequence() != null){
 
-                if(proteinToEnrich.getOrganism() == null && proteinEnriched.getOrganism() != null){
-                    proteinToEnrich.setOrganism(new DefaultOrganism(-3));
+            RogidGenerator rogidGenerator = new RogidGenerator();
+
+            try {
+                String rogid = rogidGenerator.calculateRogid(
+                        proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
+                if(proteinToEnrich.getRogid() == null){
+                    proteinToEnrich.setRogid(rogid);
+                    addAdditionReport(new AdditionReport("RogID", rogid));
                 }
-
-                minimumOrganismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
-
-                if(proteinToEnrich.getOrganism().getTaxId() > 0
-                        && proteinToEnrich.getSequence() != null){
-                    RogidGenerator rogidGenerator = new RogidGenerator();
-                    // String rogid = null;
-
-                    try {
-                        String rogid = rogidGenerator.calculateRogid(
-                                proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
-                        if(proteinToEnrich.getRogid() == null){
-                            proteinToEnrich.setRogid(rogid);
-                            addAdditionReport(new AdditionReport("RogID", rogid));
-                        }
-                        else if(!proteinToEnrich.getRogid().equals(rogid)){
-                            String oldValue = proteinToEnrich.getRogid();
-                            proteinToEnrich.setRogid(rogid);
-                            addOverwriteReport(new OverwriteReport(
-                                    "RogID", oldValue, proteinToEnrich.getRogid()));
-                        }
-                    } catch (SeguidException e) {
-                        log.debug("caught exception from a failed rogid");
-                        e.printStackTrace();
-                    }
+                else if(!proteinToEnrich.getRogid().equals(rogid)){
+                    //TODO HOW TO DEAL WITH A WRONG ROGID
+                    String oldValue =  proteinToEnrich.getRogid();
+                    proteinToEnrich.setRogid(rogid);
+                    addOverwriteReport(new OverwriteReport("RogID", oldValue, proteinToEnrich.getRogid()));
                 }
+            } catch (SeguidException e) {
+                addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(),"[NULL ROGID]"));
+                log.debug("Caught exception from a failed RogID");
+                //e.printStackTrace();
             }
-        }catch(EnrichmentException e){
-            log.warn("Caught Enrichment exception fired by organism conflict");
-        }  */
+        }
     }
 }
