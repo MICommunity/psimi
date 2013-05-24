@@ -68,16 +68,15 @@ public class ProteinTest {
             } catch (EnrichmentException e){
                 log.debug("The protein enricher did not return a protein");
                 log.debug("msg reads: "+e.getMessage());
-                log.debug("log reads: ");
-                e.printStackTrace();
+                //log.debug("log reads: "); e.printStackTrace();
             }
         }
     }
 
     public static void main(String[] args){
         ProteinTest pt = new ProteinTest();
-        //pt.min();
-        //pt.testProteins();
+        pt.min();
+        pt.testProteins();
         pt.max();
         pt.testProteins();
     }

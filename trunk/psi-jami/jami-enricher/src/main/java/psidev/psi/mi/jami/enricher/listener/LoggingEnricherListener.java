@@ -21,6 +21,7 @@ public class LoggingEnricherListener implements EnricherListener {
     private final Logger log = LoggerFactory.getLogger(LoggingEnricherListener.class.getName());
 
     public void onEnricherEvent(EnricherEvent e) {
+        log.info(" ---- New Log ----");
         logAllReports(e);
     }
 
