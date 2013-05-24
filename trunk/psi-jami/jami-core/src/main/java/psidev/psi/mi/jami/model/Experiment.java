@@ -128,4 +128,32 @@ public interface Experiment {
      * @return the collection of variableParameters and their values used in this experiment
      */
     public Collection<VariableParameter> getVariableParameters();
+
+    /**
+     * This method will add the variableParameter and set the experiment of the new variableParameter to this current experiment
+     * @param variableParameter
+     * @return true if variableParameter is added to the list of variableParameters
+     */
+    public boolean  addVariableParameter(VariableParameter variableParameter);
+
+    /**
+     * This method will remove the variableParameter and set the experiment of the removed variableParameter to null.
+     * @param variableParameter
+     * @return true if variableParameter is removed from the list of variableParameters
+     */
+    public boolean removeVariableParameter(VariableParameter variableParameter);
+
+    /**
+     * This method will add all variableParameters and set the experiment of the new variableParameters to this current experiment
+     * @param variableParameters
+     * @return true if variableParameters are added to the list of variableParameters
+     */
+    public boolean  addAllVariableParameters(Collection<? extends VariableParameter> variableParameters);
+
+    /**
+     * This method will remove all the variableParameters and set the experiment of the removed variableParameters to null.
+     * @param variableParameters
+     * @return true if variableParameters are removed from the list of variableParameters
+     */
+    public boolean removeAllVariableParameters(Collection<? extends VariableParameter> variableParameters);
 }

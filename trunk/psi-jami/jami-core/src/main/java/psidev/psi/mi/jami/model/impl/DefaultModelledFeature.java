@@ -81,11 +81,12 @@ public class DefaultModelledFeature extends DefaultFeature implements ModelledFe
     }
 
     public void setModelledParticipantAndAddFeature(ModelledParticipant participant) {
-        if (participant != null){
-            this.modelledParticipant.addModelledFeature(this);
-        }
-        else {
+        if (this.modelledParticipant != null){
             this.modelledParticipant.removeModelledFeature(this);
+        }
+
+        if (participant != null){
+            participant.addModelledFeature(this);
         }
     }
 

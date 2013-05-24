@@ -96,8 +96,12 @@ public class DefaultVariableParameter implements VariableParameter {
     }
 
     public void setExperimentAndAddVariableParameter(Experiment experiment) {
-        this.experiment = experiment;
-        experiment.getVariableParameters().add(this);
+        if (this.experiment != null){
+            this.experiment.removeVariableParameter(this);
+        }
+        if (experiment != null){
+           experiment.addVariableParameter(this);
+        }
     }
 
 

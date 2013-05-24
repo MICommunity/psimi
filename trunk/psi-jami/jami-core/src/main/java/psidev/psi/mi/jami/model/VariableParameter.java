@@ -63,7 +63,8 @@ public interface VariableParameter {
 
     /**
      * Sets the experiment for this variableParameter and add this variableParameter to the list of variableParameters
-     * of this experiment
+     * of this experiment.
+     * If experiment is null, remove the variableParameter from the previous experiment attached to this variableParameter
      * @param experiment
      */
     public void setExperimentAndAddVariableParameter(Experiment experiment);

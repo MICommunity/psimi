@@ -46,18 +46,7 @@ public class VariableParameterValueComparator implements Comparator<VariablePara
             String value2 = variableParameterValue2.getValue();
 
             int comp;
-            if (value1 == null && value2 == null){
-                comp = EQUAL;
-            }
-            else if (value1 == null){
-                comp = AFTER;
-            }
-            else if (value2 == null){
-                comp = BEFORE;
-            }
-            else {
-                comp = value1.toLowerCase().trim().compareTo(value2.toLowerCase().trim());
-            }
+            comp = value1.toLowerCase().trim().compareTo(value2.toLowerCase().trim());
 
             if (comp != 0){
                return comp;

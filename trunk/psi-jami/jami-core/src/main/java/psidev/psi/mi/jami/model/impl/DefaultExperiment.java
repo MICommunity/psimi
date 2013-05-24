@@ -228,6 +228,58 @@ public class DefaultExperiment implements Experiment {
         return variableParameters;
     }
 
+    public boolean addVariableParameter(VariableParameter variableParameter) {
+        if (variableParameter == null){
+            return false;
+        }
+
+        if (getVariableParameters().add(variableParameter)){
+            variableParameter.setExperiment(this);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeVariableParameter(VariableParameter variableParameter) {
+        if (variableParameter == null){
+            return false;
+        }
+
+        if (getVariableParameters().remove(variableParameter)){
+            variableParameter.setExperiment(null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
+        if (variableParameters == null){
+            return false;
+        }
+
+        boolean added = false;
+        for (VariableParameter param : variableParameters){
+            if (addVariableParameter(param)){
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    public boolean removeAllVariableParameters(Collection<? extends VariableParameter> variableParameters) {
+        if (variableParameters == null){
+            return false;
+        }
+
+        boolean removed = false;
+        for (VariableParameter param : variableParameters){
+            if (removeVariableParameter(param)){
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o){
