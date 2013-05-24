@@ -5,12 +5,20 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
+import psidev.psi.mi.jami.enricher.exception.ConflictException;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
+
+import java.util.Collection;
 
 /**
  * Unit tester for MinimumProteinEnricher
@@ -54,7 +62,7 @@ public class MinimumProteinEnricherTest {
      * @throws EnrichmentException
      */
     @Test
-    public void test_set_fullname_if_null() throws EnrichmentException {
+    public void test_set_fullName_if_null() throws EnrichmentException {
 
         Protein protein_without_fullName = new DefaultProtein("test2 shortName");
         protein_without_fullName.setUniprotkb(TEST_AC_FULL_PROT);
@@ -95,6 +103,46 @@ public class MinimumProteinEnricherTest {
         assertEquals(TEST_SEQUENCE, protein_without_sequence.getSequence());
     }
 
+    @Test
+    public void test_set_organism_if_null() throws EnrichmentException{
+        Protein protein_without_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_without_organism.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_without_organism.setSequence(TEST_SEQUENCE);
+
+        try {
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setOrganism(new DefaultOrganism(11111,"Common","Scientific"));
+        } catch (FetcherException e) {
+            e.printStackTrace();
+        }
+
+        assertNull(protein_without_organism.getOrganism());
+
+        this.minimumProteinEnricher.enrichProtein(protein_without_organism);
+
+        assertNotNull(protein_without_organism.getOrganism());
+        assertEquals(11111 , protein_without_organism.getOrganism().getTaxId());
+        assertEquals("Common" , protein_without_organism.getOrganism().getCommonName());
+        assertEquals("Scientific" , protein_without_organism.getOrganism().getScientificName());
+    }
+
+    @Test(expected = ConflictException.class)
+    public void test_organism_conflict() throws EnrichmentException{
+        Protein protein_with_wrong_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_wrong_organism.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_wrong_organism.setSequence(TEST_SEQUENCE);
+        protein_with_wrong_organism.setOrganism(new DefaultOrganism(55555));
+
+        try {
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setOrganism(new DefaultOrganism(11111,"Common","Scientific"));
+        } catch (FetcherException e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(protein_with_wrong_organism.getOrganism());
+
+        this.minimumProteinEnricher.enrichProtein(protein_with_wrong_organism);
+    }
+
     /**
      * Enrich an already complete protein with a different but complete protein.
      * This should not change any fields of the original protein.
@@ -124,7 +172,7 @@ public class MinimumProteinEnricherTest {
      * @throws EnrichmentException
      */
     @Test
-    public void test_mismatch_does_not_happen_on_a_null_enrichedprotein() throws EnrichmentException{
+    public void test_mismatch_does_not_happen_on_a_null_enrichedProtein() throws EnrichmentException{
 
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
@@ -144,6 +192,14 @@ public class MinimumProteinEnricherTest {
 
         assertTrue(event.getMismatches().size() == 1);
     }
+
+    //TODO Consider further tests for the passing of an organism to the enricher
+
+    //TODO Add a test for the rogid
+
+    //todo add test for crc64 checksum:
+    //todo check that crc64 already existing but the same is passed over and not added
+    //todo check that crc64 that is different throws conflict
 
     /**
      * Enrich an already completed protein with a less complete protein

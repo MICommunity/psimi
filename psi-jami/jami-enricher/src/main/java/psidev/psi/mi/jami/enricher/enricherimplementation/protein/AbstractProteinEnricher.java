@@ -10,15 +10,25 @@ import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.event.MismatchReport;
 import psidev.psi.mi.jami.enricher.event.OverwriteReport;
+import psidev.psi.mi.jami.enricher.exception.ConflictException;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.util.CollectionUtilsExtra;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -113,14 +123,74 @@ public abstract class AbstractProteinEnricher
             addAdditionReport(new AdditionReport("Sequence", proteinToEnrich.getSequence()));
         }
 
+        //TODO - is this correct? Is there a scenario where 2 primary ACs are created
+        //Add identifiers
+        Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
+                proteinEnriched.getIdentifiers(),
+                proteinToEnrich.getIdentifiers(),
+                new DefaultXrefComparator());
+
+        for(Xref x: subtractedIdentifiers){
+            proteinToEnrich.getIdentifiers().add(x);
+            addAdditionReport(new AdditionReport("Identifier", x.getId()));
+        }
+
+        //Aliases
+        Collection<Alias> subtractedAliases = CollectionUtilsExtra.comparatorSubtract(
+                proteinEnriched.getAliases(),
+                proteinToEnrich.getAliases(),
+                new DefaultAliasComparator());
+        for(Alias x: subtractedAliases){
+            proteinToEnrich.getAliases().add(x);
+            addAdditionReport(new AdditionReport("Alias", x.getName()+" in "+x.getType()));
+        }
+
+        //Xref
+        Collection<Xref> subtractedXrefs = CollectionUtilsExtra.comparatorSubtract(
+                proteinEnriched.getXrefs(),
+                proteinToEnrich.getXrefs(),
+                new DefaultXrefComparator());
+        for(Xref x: subtractedXrefs){
+            proteinToEnrich.getXrefs().add(x);
+            addAdditionReport(new AdditionReport("Xref", x.getId()));
+        }
+
+
+        //TODO confirm that this is the proper way to handle this scenario in all situations
+        //CHECKSUM - CRC64
+        Checksum crc64checksum = null;
+        for(Checksum c :proteinEnriched.getChecksums()){
+            if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                if(crc64checksum != null) throw new EnrichmentException(
+                        "Multiple CRC64 checksums found in the fetched protein");
+                crc64checksum = c;
+            }
+        }
+        if( crc64checksum != null){
+            boolean exists = false;
+            for(Checksum c :proteinEnriched.getChecksums()){
+                if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                    if(!c.getValue().equals(crc64checksum.getValue())) throw new ConflictException(
+                            "CRC64 checksum in the protein being enriched " +
+                            "conflicts with the fetched protein.");
+                    else exists = true;
+                }
+            }
+            if(!exists){
+                proteinEnriched.getChecksums().add(crc64checksum);
+                addAdditionReport(new AdditionReport("CRC64", crc64checksum.getValue()));
+            }
+        }
+
+        //CHECKSUM - ROGID - will be calculated at mismatch/overwrite stage
 
         //Organism - Create a new empty organism and pass the problem over to the organismEnricher
-        if(proteinToEnrich.getOrganism() == null
-                && proteinEnriched.getOrganism() != null){
+        if(proteinEnriched.getOrganism() != null){
             if(organismEnricher == null) throw new EnrichmentException(
                     "OrganismEnricher was not provided for proteinEnricher");
 
-            proteinToEnrich.setOrganism(new DefaultOrganism(-3));
+            if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
+
             MockOrganismFetcher fetcher = new MockOrganismFetcher();
             fetcher.addNewOrganism(""+proteinToEnrich.getOrganism().getTaxId(), proteinEnriched.getOrganism());
             organismEnricher.setFetcher(fetcher);
@@ -163,9 +233,9 @@ public abstract class AbstractProteinEnricher
             }
         }
 
-        //Organism is done at addition
+        //Organism - is done at addition
 
-        //RogID
+        //Checksum -RogID
         if(proteinToEnrich.getOrganism() != null
                 && proteinToEnrich.getOrganism().getTaxId() > 0
                 && proteinToEnrich.getSequence() != null){
