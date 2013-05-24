@@ -12,7 +12,9 @@ import psidev.psi.mi.jami.model.Organism;
  * Date: 22/05/13
  * Time: 10:06
  */
-public interface OrganismEnricher extends EnricherEventProcessor {
+public interface OrganismEnricher
+        extends EnricherEventProcessor {
+
     public void enrichOrganism(Organism organismToEnrich)
             throws EnrichmentException;
 

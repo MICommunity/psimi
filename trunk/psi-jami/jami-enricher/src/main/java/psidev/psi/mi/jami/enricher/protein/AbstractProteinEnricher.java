@@ -48,6 +48,7 @@ public abstract class AbstractProteinEnricher
 
     protected Protein getFullyEnrichedForm(Protein ProteinToEnrich)
             throws EnrichmentException {
+
         if(fetcher == null) throw new FetchingException("ProteinFetcher is null.");
 
         Protein enriched = null;
