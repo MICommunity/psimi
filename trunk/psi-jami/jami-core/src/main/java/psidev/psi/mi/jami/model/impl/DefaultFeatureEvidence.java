@@ -84,64 +84,17 @@ public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvi
         }
     }
 
-    public Collection<? extends FeatureEvidence> getBindingSiteEvidences() {
+    public Collection<FeatureEvidence> getLinkedFeatureEvidences() {
         if(bindingSiteEvidences == null){
             initialiseBindingSiteEvidences();
         }
         return this.bindingSiteEvidences;
     }
 
-    public boolean addBindingSiteEvidence(FeatureEvidence feature) {
-        if (feature == null){
-            return false;
-        }
-        if(bindingSiteEvidences == null){
-            initialiseBindingSiteEvidences();
-        }
-
-        return bindingSiteEvidences.add(feature);
-    }
-
-    public boolean removeBindingSiteEvidence(FeatureEvidence feature) {
-        if (feature == null){
-            return false;
-        }
-        if(bindingSiteEvidences == null){
-            initialiseBindingSiteEvidences();
-        }
-
-        return bindingSiteEvidences.add(feature);
-    }
-
-    public boolean addAllBindingSiteEvidences(Collection<? extends FeatureEvidence> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (FeatureEvidence feature : features){
-            if (addBindingSiteEvidence(feature)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllBindingSiteEvidences(Collection<? extends FeatureEvidence> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (FeatureEvidence feature : features){
-            if (removeBindingSiteEvidence(feature)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
     public Collection<CvTerm> getDetectionMethods() {
+        if (detectionMethods == null){
+            initialiseDetectionMethods();
+        }
         return this.detectionMethods;
     }
 
@@ -159,7 +112,7 @@ public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvi
             this.participantEvidence.addFeatureEvidence(this);
         }
         else{
-            this.participantEvidence = null;
+            this.participantEvidence.removeFeatureEvidence(this);
         }
     }
 

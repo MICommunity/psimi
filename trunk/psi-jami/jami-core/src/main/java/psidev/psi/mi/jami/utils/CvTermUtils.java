@@ -341,4 +341,8 @@ public class CvTermUtils {
     public static CvTerm createIdentityXrefQualifier(){
         return createMICvTerm(Xref.IDENTITY, Xref.IDENTITY_MI);
     }
+
+    public static CvTerm createBiologicalFeatureType(){
+        return createMICvTerm(Feature.BIOLOGICAL_FEATURE, Feature.BIOLOGICAL_FEATURE_MI);
+    }
 }
