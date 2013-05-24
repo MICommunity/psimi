@@ -17,7 +17,7 @@ import java.util.Collections;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultFeatureEvidence extends DefaultFeature<FeatureEvidence> implements FeatureEvidence {
+public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvidence {
     private Collection<CvTerm> detectionMethods;
     private ParticipantEvidence participantEvidence;
     private Collection<FeatureEvidence> bindingSiteEvidences;

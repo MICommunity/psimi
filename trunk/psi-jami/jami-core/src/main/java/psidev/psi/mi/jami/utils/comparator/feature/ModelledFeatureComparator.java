@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 /**
  * Basic ModelledFeature comparator.
- * It will use a FeatureBaseComparator to compare basic properties of a feature.
+ * It will use a AbstractFeatureBaseComparator to compare basic properties of a feature.
  *
  * This comparator will ignore all the other properties of a biological feature.
  *
@@ -17,25 +17,25 @@ import java.util.Comparator;
 
 public class ModelledFeatureComparator implements Comparator<ModelledFeature> {
 
-    protected FeatureBaseComparator featureComparator;
+    protected AbstractFeatureBaseComparator featureComparator;
 
     /**
      * Creates a new ModelledFeatureComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public ModelledFeatureComparator(FeatureBaseComparator featureComparator){
+    public ModelledFeatureComparator(AbstractFeatureBaseComparator featureComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
         this.featureComparator = featureComparator;
     }
 
-    public FeatureBaseComparator getFeatureComparator() {
+    public AbstractFeatureBaseComparator getFeatureComparator() {
         return featureComparator;
     }
 
     /**
-     * It will use a FeatureBaseComparator to compare basic properties of a feature.
+     * It will use a AbstractFeatureBaseComparator to compare basic properties of a feature.
      *
      * This comparator will ignore all the other properties of a biological feature.
      *

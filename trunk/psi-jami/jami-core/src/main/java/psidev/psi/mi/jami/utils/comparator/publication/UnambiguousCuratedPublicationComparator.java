@@ -54,4 +54,26 @@ public class UnambiguousCuratedPublicationComparator extends CuratedPublicationC
 
         return unambiguousCuratedPublicationComparator.compare(pub1, pub2) == 0;
     }
+
+    /**
+     *
+     * @param pub
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Publication pub){
+        if (unambiguousCuratedPublicationComparator == null){
+            unambiguousCuratedPublicationComparator = new UnambiguousCuratedPublicationComparator();
+        }
+
+        if (pub == null){
+            return 0;
+        }
+
+        int hashcode = UnambiguousPublicationComparator.hashCode(pub);
+        hashcode = 31*hashcode + pub.getCurationDepth().hashCode();
+        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(pub.getSource());
+        hashcode = 31*hashcode + (pub.getReleasedDate() != null ? pub.getReleasedDate().hashCode() : 0);
+
+        return hashcode;
+    }
 }

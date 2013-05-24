@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousCuratedPublicationComparator;
 import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
 
 import java.io.Serializable;
@@ -481,12 +482,12 @@ public class DefaultPublication implements Publication, Serializable {
             return false;
         }
 
-        return UnambiguousPublicationComparator.areEquals(this, (Publication) o);
+        return UnambiguousCuratedPublicationComparator.areEquals(this, (Publication) o);
     }
 
     @Override
     public int hashCode() {
-        return UnambiguousPublicationComparator.hashCode(this);
+        return UnambiguousCuratedPublicationComparator.hashCode(this);
     }
 
     @Override
