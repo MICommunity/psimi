@@ -122,7 +122,7 @@ public abstract class AbstractProteinEnricher
 
             proteinToEnrich.setOrganism(new DefaultOrganism(-3));
             MockOrganismFetcher fetcher = new MockOrganismFetcher();
-            fetcher.addNewOrganism(""+proteinEnriched.getOrganism().getTaxId(), proteinEnriched.getOrganism());
+            fetcher.addNewOrganism(""+proteinToEnrich.getOrganism().getTaxId(), proteinEnriched.getOrganism());
             organismEnricher.setFetcher(fetcher);
             organismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
         }
