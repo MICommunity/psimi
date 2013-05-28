@@ -294,6 +294,10 @@ public class CvTermUtils {
         return createMICvTerm(Gene.GENE, Gene.GENE_MI);
     }
 
+    public static CvTerm createPolymerInteractorType(){
+        return createMICvTerm(Polymer.POLYMER, Polymer.POLYMER_MI);
+    }
+
     public static CvTerm createGeneNameAliasType(){
         return createMICvTerm(Alias.GENE_NAME, Alias.GENE_NAME_MI);
     }

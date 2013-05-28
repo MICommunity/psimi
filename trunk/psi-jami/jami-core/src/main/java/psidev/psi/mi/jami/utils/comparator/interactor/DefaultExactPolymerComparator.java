@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * @since <pre>21/05/13</pre>
  */
 
-public class DefaultExactPolymerComparator extends PolymerComparator{
+public class DefaultExactPolymerComparator extends AbstractPolymerComparator {
 
     private static DefaultExactPolymerComparator defaultExactPolymerComparator;
 
@@ -31,7 +31,36 @@ public class DefaultExactPolymerComparator extends PolymerComparator{
      * If the basic interactor properties are the same, it will look at sequence/organism.
      */
     public int compare(Polymer polymer1, Polymer polymer2) {
-        return super.compare(polymer1, polymer2);
+        int EQUAL = 0;
+        int BEFORE = -1;
+        int AFTER = 1;
+
+        if (polymer1 == null && polymer2 == null){
+            return EQUAL;
+        }
+        else if (polymer1 == null){
+            return AFTER;
+        }
+        else if (polymer2 == null){
+            return BEFORE;
+        }
+        else {
+
+            // First compares the basic interactor properties
+            int comp = interactorComparator.compare(polymer1, polymer2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // compares sequences
+            String seq1 = polymer1.getSequence();
+            String seq2 = polymer2.getSequence();
+
+            if (seq1 != null && seq2 != null){
+                comp = seq1.toLowerCase().trim().compareTo(seq2.toLowerCase().trim());
+            }
+            return comp;
+        }
     }
 
     @Override

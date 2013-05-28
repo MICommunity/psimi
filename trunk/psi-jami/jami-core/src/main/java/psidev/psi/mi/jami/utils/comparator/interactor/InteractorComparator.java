@@ -15,7 +15,7 @@ import java.util.Comparator;
  * - Uses NucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses ComplexComparator for comparing complexes
  * - Uses InteractorCandidatesComparator for comparing interactor candidates
- * - Uses PolymerComparator for comparing polymers
+ * - Uses AbstractPolymerComparator for comparing polymers
  * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -32,14 +32,14 @@ public class InteractorComparator implements Comparator<Interactor> {
     protected Comparator<Interactor> interactorBaseComparator;
     protected ComplexComparator complexComparator;
     protected InteractorCandidatesComparator interactorCandaidatesComparator;
-    protected PolymerComparator polymerComparator;
+    protected AbstractPolymerComparator polymerComparator;
 
     /**
      * Creates a new InteractorComparator.
      * @param interactorBaseComparator : required to create more specific comparators and to compare basic interactor objects
      * @param complexComparator : required to compare complex objects
      */
-    public InteractorComparator(Comparator<Interactor> interactorBaseComparator, ComplexComparator complexComparator){
+    public InteractorComparator(Comparator<Interactor> interactorBaseComparator, ComplexComparator complexComparator, AbstractPolymerComparator polymerComparator){
         if (interactorBaseComparator == null){
             throw new IllegalArgumentException("The interactorBaseComparator is required to create more specific interactor comparators and compares basic interactor properties. It cannot be null");
         }
@@ -48,7 +48,10 @@ public class InteractorComparator implements Comparator<Interactor> {
         this.geneComparator = new GeneComparator(this.interactorBaseComparator);
         this.proteinComparator = new ProteinComparator(this.interactorBaseComparator);
         this.nucleicAcidComparator = new NucleicAcidComparator(this.interactorBaseComparator);
-        this.polymerComparator = new PolymerComparator(this.interactorBaseComparator);
+        if (polymerComparator == null){
+            throw new IllegalArgumentException("The PolymerComparator is required to compare polymers. It cannot be null");
+        }
+        this.polymerComparator = polymerComparator;
 
         if (complexComparator == null){
             throw new IllegalArgumentException("The ComplexComparator is required to compare complexes. It cannot be null");
@@ -81,7 +84,7 @@ public class InteractorComparator implements Comparator<Interactor> {
         return complexComparator;
     }
 
-    public PolymerComparator getPolymerComparator() {
+    public AbstractPolymerComparator getPolymerComparator() {
         return polymerComparator;
     }
 

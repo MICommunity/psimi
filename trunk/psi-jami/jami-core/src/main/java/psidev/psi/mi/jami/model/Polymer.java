@@ -10,6 +10,9 @@ package psidev.psi.mi.jami.model;
 
 public interface Polymer extends Molecule{
 
+    public static final String POLYMER = "biopolymer";
+    public static final String POLYMER_MI="MI:0383";
+
     /**
      * The sequence of the polymer. Null if it is not known
      * @return

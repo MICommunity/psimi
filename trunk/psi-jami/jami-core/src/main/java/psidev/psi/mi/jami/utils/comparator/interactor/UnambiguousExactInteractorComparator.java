@@ -36,7 +36,7 @@ public class UnambiguousExactInteractorComparator extends InteractorComparator {
      * - use UnambiguousExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      * */
     public UnambiguousExactInteractorComparator() {
-        super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousExactComplexComparator());
+        super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousExactComplexComparator(), new UnambiguousExactPolymerComparator());
     }
 
     @Override

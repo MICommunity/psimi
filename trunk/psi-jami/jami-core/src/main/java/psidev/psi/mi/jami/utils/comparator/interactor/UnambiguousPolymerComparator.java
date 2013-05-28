@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * @since <pre>21/05/13</pre>
  */
 
-public class UnambiguousPolymerComparator extends PolymerComparator {
+public class UnambiguousPolymerComparator extends AbstractPolymerComparator {
 
     private static UnambiguousPolymerComparator unambiguousPolymerComparator;
 
@@ -57,8 +57,8 @@ public class UnambiguousPolymerComparator extends PolymerComparator {
             String seq2 = polymer2.getSequence();
 
             if (seq1 != null && seq2 != null){
-                comp = seq1.compareTo(seq2);
-                // if sequences are equal, look at the organism before saying that the proteins are equals.
+                comp = seq1.trim().toLowerCase().compareTo(seq2.trim().toLowerCase());
+                // if sequences are equal, look at the organism before saying that the polymers are equals.
                 if (comp == 0){
                     comp = organismComparator.compare(polymer1.getOrganism(), polymer2.getOrganism());
                 }
