@@ -36,6 +36,19 @@ public class DefaultInteractorTest {
     }
 
     @Test
+    public void create_gene_set_interactor_type_null(){
+
+        Interactor interactor = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType());
+        Assert.assertEquals(CvTermUtils.createGeneInteractorType(), interactor.getInteractorType());
+
+        interactor.setInteractorType(null);
+        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), interactor.getInteractorType());
+
+        interactor.setInteractorType(CvTermUtils.createGeneInteractorType());
+        Assert.assertEquals(CvTermUtils.createGeneInteractorType(), interactor.getInteractorType());
+    }
+
+    @Test
     public void create_interactor_with_shortname_fullName_interactorType(){
 
         Interactor interactor = new DefaultInteractor("test", "test interactor", CvTermUtils.createGeneInteractorType());

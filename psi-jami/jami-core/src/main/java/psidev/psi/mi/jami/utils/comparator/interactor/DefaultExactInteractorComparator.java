@@ -37,7 +37,7 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
      * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public DefaultExactInteractorComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultExactComplexComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultExactComplexComparator(), new DefaultExactPolymerComparator());
     }
 
     @Override
