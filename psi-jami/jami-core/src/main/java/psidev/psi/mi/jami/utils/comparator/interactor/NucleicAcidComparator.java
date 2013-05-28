@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.NucleicAcid;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
@@ -7,7 +8,7 @@ import java.util.Comparator;
 
 /**
  * Basic nucleic acids comparator.
- * It will first use InteractorBaseComparator to compare the basic interactor properties.
+ * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties.
  * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
  *
@@ -18,14 +19,14 @@ import java.util.Comparator;
 
 public class NucleicAcidComparator implements Comparator<NucleicAcid> {
 
-    protected InteractorBaseComparator interactorComparator;
+    protected Comparator<Interactor> interactorComparator;
     protected OrganismTaxIdComparator organismComparator;
 
     /**
-     * Creates a new NucleicAcidComparator. It needs a InteractorBaseComparator to compares interactor properties and it will creates a new OrganismTaxIdComparator
+     * Creates a new NucleicAcidComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties and it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      */
-    public NucleicAcidComparator(InteractorBaseComparator interactorComparator){
+    public NucleicAcidComparator(Comparator<Interactor> interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare nucleic acids. It cannot be null");
         }
@@ -35,12 +36,12 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
     }
 
     /**
-     * Creates a new NucleicAcidComparator. It needs a InteractorBaseComparator to compares interactor properties and a OrganismComparator
+     * Creates a new NucleicAcidComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties and a OrganismComparator
      * to compare the sequence and organism. If the organism comparator is null,it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      * @param organismComparator : comparator for organism
      */
-    public NucleicAcidComparator(InteractorBaseComparator interactorComparator, OrganismTaxIdComparator organismComparator){
+    public NucleicAcidComparator(Comparator<Interactor> interactorComparator, OrganismTaxIdComparator organismComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare nucleic acids. It cannot be null");
         }
@@ -54,7 +55,7 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
     }
 
     /**
-     * It will first use InteractorBaseComparator to compare the basic interactor properties.
+     * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties.
      * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
      *
@@ -117,7 +118,7 @@ public class NucleicAcidComparator implements Comparator<NucleicAcid> {
         }
     }
 
-    public InteractorBaseComparator getInteractorComparator() {
+    public Comparator<Interactor> getInteractorComparator() {
         return interactorComparator;
     }
 

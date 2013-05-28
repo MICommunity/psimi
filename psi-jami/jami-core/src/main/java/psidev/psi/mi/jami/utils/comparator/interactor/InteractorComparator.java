@@ -16,7 +16,7 @@ import java.util.Comparator;
  * - Uses ComplexComparator for comparing complexes
  * - Uses InteractorCandidatesComparator for comparing interactor candidates
  * - Uses PolymerComparator for comparing polymers
- * - use InteractorBaseComparator for comparing basic interactors that are not one of the above.
+ * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,7 +29,7 @@ public class InteractorComparator implements Comparator<Interactor> {
     protected GeneComparator geneComparator;
     protected ProteinComparator proteinComparator;
     protected NucleicAcidComparator nucleicAcidComparator;
-    protected InteractorBaseComparator interactorBaseComparator;
+    protected Comparator<Interactor> interactorBaseComparator;
     protected ComplexComparator complexComparator;
     protected InteractorCandidatesComparator interactorCandaidatesComparator;
     protected PolymerComparator polymerComparator;
@@ -39,7 +39,7 @@ public class InteractorComparator implements Comparator<Interactor> {
      * @param interactorBaseComparator : required to create more specific comparators and to compare basic interactor objects
      * @param complexComparator : required to compare complex objects
      */
-    public InteractorComparator(InteractorBaseComparator interactorBaseComparator, ComplexComparator complexComparator){
+    public InteractorComparator(Comparator<Interactor> interactorBaseComparator, ComplexComparator complexComparator){
         if (interactorBaseComparator == null){
             throw new IllegalArgumentException("The interactorBaseComparator is required to create more specific interactor comparators and compares basic interactor properties. It cannot be null");
         }
@@ -73,7 +73,7 @@ public class InteractorComparator implements Comparator<Interactor> {
         return nucleicAcidComparator;
     }
 
-    public InteractorBaseComparator getInteractorBaseComparator() {
+    public Comparator<Interactor> getInteractorBaseComparator() {
         return interactorBaseComparator;
     }
 
@@ -99,7 +99,7 @@ public class InteractorComparator implements Comparator<Interactor> {
      * - Uses NucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses InteractorCandidatesComparator for comparing interactor candidates
      * - Uses polymerComparator for comparing Polymer objects.
-     * - use InteractorBaseComparator for comparing basic interactors that are not one of the above.
+     * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
 
      * @param interactor1
      * @param interactor2

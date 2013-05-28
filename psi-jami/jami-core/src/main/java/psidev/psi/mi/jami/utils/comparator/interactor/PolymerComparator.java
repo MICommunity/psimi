@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
@@ -7,7 +8,7 @@ import java.util.Comparator;
 
 /**
  * Basic polymer comparator.
- * It will first use InteractorBaseComparator to compare the basic interactor properties
+ * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties
  * If the basic interactor properties are the same, it will look at sequence/organism.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -17,14 +18,14 @@ import java.util.Comparator;
 
 public class PolymerComparator implements Comparator<Polymer> {
 
-    protected InteractorBaseComparator interactorComparator;
+    protected Comparator<Interactor> interactorComparator;
     protected OrganismTaxIdComparator organismComparator;
 
     /**
-     * Creates a new PolymerComparator. It needs a InteractorBaseComparator to compares interactor properties and it will creates a new OrganismTaxIdComparator
+     * Creates a new PolymerComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties and it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      */
-    public PolymerComparator(InteractorBaseComparator interactorComparator){
+    public PolymerComparator(Comparator<Interactor> interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare polymers. It cannot be null");
         }
@@ -34,12 +35,12 @@ public class PolymerComparator implements Comparator<Polymer> {
     }
 
     /**
-     * Creates a new PolymerComparator. It needs a InteractorBaseComparator to compares interactor properties and a OrganismComparator
+     * Creates a new PolymerComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties and a OrganismComparator
      * to compare the sequence and organism. If the organism comparator is null,it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      * @param organismComparator : comparator for organism
      */
-    public PolymerComparator(InteractorBaseComparator interactorComparator, OrganismTaxIdComparator organismComparator){
+    public PolymerComparator(Comparator<Interactor> interactorComparator, OrganismTaxIdComparator organismComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare polymers. It cannot be null");
         }
@@ -53,7 +54,7 @@ public class PolymerComparator implements Comparator<Polymer> {
     }
 
     /**
-     * It will first use InteractorBaseComparator to compare the basic interactor properties
+     * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, it will look at sequence/organism.
      *
      * @param polymer1
@@ -97,7 +98,7 @@ public class PolymerComparator implements Comparator<Polymer> {
         }
     }
 
-    public InteractorBaseComparator getInteractorComparator() {
+    public Comparator<Interactor> getInteractorComparator() {
         return interactorComparator;
     }
 }

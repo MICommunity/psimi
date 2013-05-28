@@ -1,12 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Gene;
+import psidev.psi.mi.jami.model.Interactor;
 
 import java.util.Comparator;
 
 /**
  * Basic genes comparator.
- * It will first use InteractorBaseComparator to compare the basic interactor properties
+ * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties
  * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
  * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
  *
@@ -17,9 +18,9 @@ import java.util.Comparator;
 
 public class GeneComparator implements Comparator<Gene> {
 
-    protected InteractorBaseComparator interactorComparator;
+    protected Comparator<Interactor> interactorComparator;
 
-    public GeneComparator(InteractorBaseComparator interactorComparator){
+    public GeneComparator(Comparator<Interactor> interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare genes. It cannot be null");
         }
@@ -27,7 +28,7 @@ public class GeneComparator implements Comparator<Gene> {
     }
 
     /**
-     * It will first use InteractorBaseComparator to compare the basic interactor properties
+     * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
      * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
      *
@@ -92,7 +93,7 @@ public class GeneComparator implements Comparator<Gene> {
         }
     }
 
-    public InteractorBaseComparator getInteractorComparator() {
+    public Comparator<Interactor> getInteractorComparator() {
         return interactorComparator;
     }
 }

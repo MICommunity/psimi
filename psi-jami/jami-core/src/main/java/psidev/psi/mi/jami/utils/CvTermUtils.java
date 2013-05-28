@@ -349,4 +349,8 @@ public class CvTermUtils {
     public static CvTerm createUnspecifiedMethod(){
         return createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
     }
+
+    public static CvTerm createUnknownInteractorType(){
+        return createMICvTerm(Interactor.UNKNOWN_INTERACTOR, Interactor.UNKNOWN_INTERACTOR_MI);
+    }
 }

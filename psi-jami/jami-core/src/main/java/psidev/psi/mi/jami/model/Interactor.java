@@ -106,8 +106,8 @@ public interface Interactor {
 
     /**
      * Sets the molecule type for this interactor
+     * If the given type is null, this method utomatically sets the interactor type to 'unknown participant' (MI:0329)
      * @param type : molecule type
-     * @throws IllegalArgumentException when the type is null
      */
     public void setInteractorType(CvTerm type);
 }

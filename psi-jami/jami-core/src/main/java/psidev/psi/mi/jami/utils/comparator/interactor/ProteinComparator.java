@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
@@ -7,7 +8,7 @@ import java.util.Comparator;
 
 /**
  * Basic proteins comparator.
- * It will first use InteractorBaseComparator to compare the basic interactor properties
+ * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties
  * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
  * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
  * If at least one gene name is not set, it will look at sequence/organism.
@@ -19,14 +20,14 @@ import java.util.Comparator;
 
 public class ProteinComparator implements Comparator<Protein>{
 
-    protected InteractorBaseComparator interactorComparator;
+    protected Comparator<Interactor> interactorComparator;
     protected OrganismTaxIdComparator organismComparator;
 
     /**
-     * Creates a new ProteinComparator. It needs a InteractorBaseComparator to compares interactor properties and it will creates a new OrganismTaxIdComparator
+     * Creates a new ProteinComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties and it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      */
-    public ProteinComparator(InteractorBaseComparator interactorComparator){
+    public ProteinComparator(Comparator<Interactor> interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare proteins. It cannot be null");
         }
@@ -36,12 +37,12 @@ public class ProteinComparator implements Comparator<Protein>{
     }
 
     /**
-     * Creates a new ProteinComparator. It needs a InteractorBaseComparator to compares interactor properties and a OrganismComparator
+     * Creates a new ProteinComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties and a OrganismComparator
      * to compare the sequence and organism. If the organism comparator is null,it will creates a new OrganismTaxIdComparator
      * @param interactorComparator : comparator for interactor properties. It is required
      * @param organismComparator : comparator for organism
      */
-    public ProteinComparator(InteractorBaseComparator interactorComparator, OrganismTaxIdComparator organismComparator){
+    public ProteinComparator(Comparator<Interactor> interactorComparator, OrganismTaxIdComparator organismComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare proteins. It cannot be null");
         }
@@ -55,7 +56,7 @@ public class ProteinComparator implements Comparator<Protein>{
     }
 
     /**
-     * It will first use InteractorBaseComparator to compare the basic interactor properties
+     * It will first use AbstractInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
      * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
      * If at least one gene name is not set, it will look at sequence/organism.
@@ -133,7 +134,7 @@ public class ProteinComparator implements Comparator<Protein>{
         }
     }
 
-    public InteractorBaseComparator getInteractorComparator() {
+    public Comparator<Interactor> getInteractorComparator() {
         return interactorComparator;
     }
 }
