@@ -72,7 +72,7 @@ public class MaximumProteinUpdaterTest {
      * @throws EnrichmentException
      */
     @Test
-    public void test_overwrite_does_not_change_fields_to_null_from_enrichedprotein() throws EnrichmentException{
+    public void test_overwrite_does_not_change_fields_to_null_from_proteinEnriched() throws EnrichmentException{
 
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");

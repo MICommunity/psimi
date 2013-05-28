@@ -14,7 +14,8 @@ public class EnricherEvent {
 
     private String queryID = null;
     private String queryIDType = null;
-    private String objectType = null;
+    private String fetcherType = null;
+    private final String objectType;
 
     private List<EnricherEvent> subEnricherEvents = new ArrayList<EnricherEvent>();
 
@@ -27,36 +28,30 @@ public class EnricherEvent {
         this.objectType = objectType;
     }
 
-    public EnricherEvent(String queryID, String queryIDType){
-        this.queryID = queryID;
-        this.queryIDType = queryIDType;
-    }
-
-    public void setQueryID(String queryID) {
+    /*public void setQueryID(String queryID) {
         this.queryID = queryID;
     }
 
     public void setQueryIDType(String queryIDType) {
         this.queryIDType = queryIDType;
-    }
+    } */
 
-    public void setQueryDetails(String queryID, String queryIDType) {
+    public void setQueryDetails(String queryID, String queryIDType, String fetcherType) {
         this.queryID = queryID;
         this.queryIDType = queryIDType;
+        this.fetcherType = fetcherType;
     }
 
     public String getQueryID(){return queryID;}
     public String getQueryIDType(){return queryIDType;}
+    public String getFetcherType(){return fetcherType;}
     public String getObjectType(){return this.objectType;}
 
 
     public void addSubEnricherEvent(EnricherEvent e){
         subEnricherEvents.add(e);
     }
-    public void addEchoSubEnricherEvent(EnricherEvent e){
-        e.setQueryIDType("Echo");
-        subEnricherEvents.add(e);
-    }
+
     public void addMismatchReport(MismatchReport r) {
         mismatches.add(r);
     }
@@ -75,6 +70,8 @@ public class EnricherEvent {
     public void clear(){
         queryID = null;
         queryIDType = null;
+        fetcherType = null;
+        //objectType is final
 
         subEnricherEvents.clear();
         mismatches.clear();

@@ -35,13 +35,6 @@ public interface EnricherEventProcessor {
     public void addSubEnricherEvent(EnricherEvent e);
 
     /**
-     * Adds a subset of events which took place in a separate enricher.
-     * Notes that the enrichment source was an echo from the super.
-     * @param e
-     */
-    public void addEchoSubEnricherEvent(EnricherEvent e);
-
-    /**
      * Adds information to the enricherEvent when something has been overwritten,
      * @param r A descritpion of what has been overwritten
      */

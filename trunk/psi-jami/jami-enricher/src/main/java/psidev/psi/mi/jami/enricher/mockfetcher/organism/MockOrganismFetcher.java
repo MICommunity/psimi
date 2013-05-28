@@ -44,4 +44,8 @@ public class MockOrganismFetcher
     public void clearOrganisms(){
         localOrganisms.clear();
     }
+
+    public String getService() {
+        return "Mock Organism Fetcher";
+    }
 }

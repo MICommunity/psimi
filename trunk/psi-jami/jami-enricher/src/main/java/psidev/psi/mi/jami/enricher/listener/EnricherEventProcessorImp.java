@@ -56,10 +56,6 @@ public abstract class EnricherEventProcessorImp implements EnricherEventProcesso
         enricherEvent.addSubEnricherEvent(e);
     }
 
-    public void addEchoSubEnricherEvent(EnricherEvent e){
-        enricherEvent.addEchoSubEnricherEvent(e);
-    }
-
     /**
      * Adds information to the enricherEvent when something has been overwritten,
      * @param r A description of what has been overwritten

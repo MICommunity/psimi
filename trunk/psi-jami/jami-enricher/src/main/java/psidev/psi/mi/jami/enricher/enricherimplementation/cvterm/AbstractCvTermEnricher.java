@@ -70,35 +70,54 @@ public abstract class AbstractCvTermEnricher
     protected CvTerm getFullyEnrichedForm(CvTerm cvTermToEnrich)
             throws EnrichmentException {
         if(fetcher == null) throw new FetchingException("CvTermFetcher is null.");
+        if(cvTermToEnrich == null)throw new EnrichmentException("Attempted to enrich null CvTerm");
 
         CvTerm enriched = null;
         enricherEvent.clear();
 
-
         Collection<Xref> identifiersList = new ArrayList<Xref>();
         identifiersList.addAll(cvTermToEnrich.getIdentifiers());
         if(identifiersList.size() > 0){
-            String identifier = null;
-            if(cvTermToEnrich.getMIIdentifier() != null){
-                identifier = cvTermToEnrich.getMIIdentifier();
-            }else if(cvTermToEnrich.getMODIdentifier() != null){
-                identifier = cvTermToEnrich.getMODIdentifier();
-            }else if(cvTermToEnrich.getPARIdentifier() != null){
-                identifier = cvTermToEnrich.getPARIdentifier();
+            //Try with MI
+            for(Xref id : identifiersList){
+                if( enriched != null ) break;
+                else if( id.getDatabase().getShortName().equals(CvTerm.PSI_MI_MI)){
+                    try{
+                        enriched = getFullyEnrichedFormByIdentifier(id);
+                        enricherEvent.clear();
+                        enricherEvent.setQueryDetails(
+                                id.getId(), "MI Identifier", fetcher.getService());
+                    }catch(FetchingException e){enriched = null;} //Ignore this exception, try the next identifier
+                }
             }
-            if(identifier != null){
-                Xref identifierXref;
+            //Try with MOD
+            if( enriched == null){
                 for(Xref id : identifiersList){
-                    if(id.getId() == identifier){
-                        identifierXref = id;
-                        enricherEvent.setQueryDetails(identifierXref.getId(), "Identifier");
-                        enriched = getFullyEnrichedFormByIdentifier(identifierXref);
-                        break;
+                    if( enriched != null ) break;
+                    else if( id.getDatabase().getShortName().equals(CvTerm.PSI_MOD_MI)){
+                        try{
+                            enriched = getFullyEnrichedFormByIdentifier(id);
+                            enricherEvent.clear();
+                            enricherEvent.setQueryDetails(
+                                    id.getId(), "MOD Identifier", fetcher.getService());
+                        }catch(FetchingException e){enriched = null;} //Ignore this exception, try the next identifier
                     }
                 }
-
             }
-            //Todo use other identifiers if none of these are present
+            //Try with any other
+            if( enriched == null){
+                for(Xref id : identifiersList){
+                    if( enriched != null ) break;
+                    else if( id.getId() != null){
+                        try{
+                            enriched = getFullyEnrichedFormByIdentifier(id);
+                            enricherEvent.clear();
+                            enricherEvent.setQueryDetails(
+                                    id.getId(), id.getDatabase().getShortName()+" Identifier", fetcher.getService());
+                        }catch(FetchingException e){enriched = null;} //Ignore this exception, try the next identifier
+                    }
+                }
+            }
         }
 
         /*

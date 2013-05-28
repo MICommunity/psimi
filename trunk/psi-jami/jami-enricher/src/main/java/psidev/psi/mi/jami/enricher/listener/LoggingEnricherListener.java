@@ -28,7 +28,8 @@ public class LoggingEnricherListener implements EnricherListener {
     public void logAllReports(EnricherEvent e) {
         log.info("Logging for: ["+e.getQueryID()+"] " +
                 "Object type : " +e.getObjectType()+
-                "(a query on ["+e.getQueryIDType()+"])");
+                "(a query on ["+e.getQueryIDType()+"] "+
+                "to the ["+e.getFetcherType()+"] fetcher");
 
         for(AdditionReport r :e.getAdditions()) {
             log.info("Addition on ["+r.getField()+"] " +

@@ -22,7 +22,8 @@ import java.util.Map;
  * Date: 08/05/13
  * Time: 11:25
  */
-public class OlsFetcher implements CvTermFetcher {
+public class OlsFetcher
+        implements CvTermFetcher {
 
     private final Logger log = LoggerFactory.getLogger(OlsFetcher.class.getName());
 
@@ -183,5 +184,9 @@ public class OlsFetcher implements CvTermFetcher {
         if(synonyms != null) cvTermEnriched.getSynonyms().addAll(synonyms);
 
         return cvTermEnriched;
+    }
+
+    public String getService() {
+        return "Ontology Lookup Service";
     }
 }

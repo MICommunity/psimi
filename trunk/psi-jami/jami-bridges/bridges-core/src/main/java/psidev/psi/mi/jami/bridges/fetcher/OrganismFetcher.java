@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Organism;
  * Date: 22/05/13
  * Time: 10:20
  */
-public interface OrganismFetcher {
+public interface OrganismFetcher extends Fetcher{
     public Organism getOrganismByTaxID(int taxID)
             throws FetcherException;
 }
