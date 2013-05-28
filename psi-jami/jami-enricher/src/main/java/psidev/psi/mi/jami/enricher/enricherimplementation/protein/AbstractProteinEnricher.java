@@ -64,27 +64,24 @@ public abstract class AbstractProteinEnricher
 
     public void setOrganismEnricher(OrganismEnricher organismEnricher){
         this.organismEnricher = organismEnricher;
-        //MinimumOrganismEnricher minimumOrganismEnricher = new MinimumOrganismEnricher();
-
         organismEnricher.addEnricherListener(new EnricherListener() {
             public void onEnricherEvent(EnricherEvent e) {
-                addEchoSubEnricherEvent(e);
+                addSubEnricherEvent(e);
             }
         });
-
-
     }
 
     protected Protein getFullyEnrichedForm(Protein ProteinToEnrich)
             throws EnrichmentException {
 
         if(fetcher == null) throw new FetchingException("ProteinFetcher is null.");
+        if(ProteinToEnrich == null) throw new FetchingException("Attempted to enrich a null protein.");
 
         Protein enriched = null;
         try{
             enriched = fetcher.getProteinByID(ProteinToEnrich.getUniprotkb());
             enricherEvent.clear();
-            enricherEvent.setQueryDetails(ProteinToEnrich.getUniprotkb(),"UniprotKB AC");
+            enricherEvent.setQueryDetails(ProteinToEnrich.getUniprotkb(),"UniprotKB AC", fetcher.getService());
         }catch (FetcherException e) {
             throw new FetchingException(e);
         }
@@ -155,46 +152,92 @@ public abstract class AbstractProteinEnricher
             addAdditionReport(new AdditionReport("Xref", x.getId()));
         }
 
-
-        //TODO confirm that this is the proper way to handle this scenario in all situations
-        //CHECKSUM - CRC64
-        Checksum crc64checksum = null;
-        for(Checksum c :proteinEnriched.getChecksums()){
-            if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                if(crc64checksum != null) throw new EnrichmentException(
-                        "Multiple CRC64 checksums found in the fetched protein");
-                crc64checksum = c;
-            }
-        }
-        if( crc64checksum != null){
-            boolean exists = false;
-            for(Checksum c :proteinEnriched.getChecksums()){
-                if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                    if(!c.getValue().equals(crc64checksum.getValue())) throw new ConflictException(
-                            "CRC64 checksum in the protein being enriched " +
-                            "conflicts with the fetched protein.");
-                    else exists = true;
-                }
-            }
-            if(!exists){
-                proteinEnriched.getChecksums().add(crc64checksum);
-                addAdditionReport(new AdditionReport("CRC64", crc64checksum.getValue()));
-            }
-        }
-
-        //CHECKSUM - ROGID - will be calculated at mismatch/overwrite stage
-
-        //Organism - Create a new empty organism and pass the problem over to the organismEnricher
+        //Organism -
         if(proteinEnriched.getOrganism() != null){
             if(organismEnricher == null) throw new EnrichmentException(
                     "OrganismEnricher was not provided for proteinEnricher");
 
+            //Create a new empty organism and pass the problem over to the organismEnricher
             if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
 
             MockOrganismFetcher fetcher = new MockOrganismFetcher();
             fetcher.addNewOrganism(""+proteinToEnrich.getOrganism().getTaxId(), proteinEnriched.getOrganism());
             organismEnricher.setFetcher(fetcher);
             organismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
+        }
+
+
+        //TODO confirm that this is the proper way to handle this scenario in all situations
+        //Check that in all situations a mismatching checksum is a failure
+        //CHECKSUM - CRC64
+        Checksum crc64checksum = null;
+        //Is there a checksum in the fetched protein
+        for(Checksum c :proteinEnriched.getChecksums()){
+            if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                if(crc64checksum != null) throw new FetchingException(
+                        "Multiple CRC64 checksums found in the fetched protein");
+                //Multiple checksums suggests an error on the fetchers part.
+                crc64checksum = c;
+            }
+        }
+        if( crc64checksum != null){
+            boolean exists = false;
+            for(Checksum c :proteinToEnrich.getChecksums()){
+                if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                    if(!c.getValue().equals(crc64checksum.getValue())) throw new ConflictException(
+                            "CRC64 checksum in the protein being enriched " +
+                            "conflicts with the fetched protein CRC64.");
+                    else exists = true;
+                }
+            }
+
+            if(!exists){
+                proteinToEnrich.getChecksums().add(crc64checksum);
+                addAdditionReport(new AdditionReport(
+                        "CRC64", crc64checksum.getValue()));
+            }
+        }
+
+        //Checksum -RogID
+        if(proteinToEnrich.getOrganism() != null
+                && proteinToEnrich.getOrganism().getTaxId() > 0
+                && proteinToEnrich.getSequence() != null){
+
+            RogidGenerator rogidGenerator = new RogidGenerator();
+
+            try {
+                String rogid = rogidGenerator.calculateRogid(
+                        proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
+                if(proteinToEnrich.getRogid() == null){
+                    proteinToEnrich.setRogid(rogid);
+                    addAdditionReport(new AdditionReport("RogID", rogid));
+                }
+                else if(!proteinToEnrich.getRogid().equals(rogid)){
+                    throw new ConflictException(
+                            "ROGID checksum in the protein being enriched " +
+                            "conflicts with the fetched protein ROGID."
+                    );
+                    //TODO HOW TO DEAL WITH A WRONG ROGID
+                    //addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(), rogid));
+                }
+            } catch (SeguidException e) {
+                addMismatchReport(new MismatchReport(
+                        "RogID", proteinToEnrich.getRogid(),"[NULL ROGID CAUSED BY SEGUID EXCEPTION]"));
+                log.debug("caught exception from a failed rogid due to SeguidException");
+            }
+        }else if(proteinToEnrich.getRogid() != null){
+            if(proteinToEnrich.getOrganism() == null) throw new ConflictException(
+                    "ROGID checksum in the protein being enriched " +
+                            "but unable to confirm as organism is null.");
+
+            else if(proteinToEnrich.getOrganism().getTaxId() <= 0) throw new ConflictException(
+                    "ROGID checksum in the protein being enriched " +
+                            "but unable to confirm as organism taxid is not legal "+
+                            "(value is ["+proteinToEnrich.getOrganism().getTaxId()+"]).");
+
+            else if(proteinToEnrich.getSequence() == null) throw new ConflictException(
+                    "ROGID checksum in the protein being enriched " +
+                            "but unable to confirm it as no sequence is provided.");
         }
     }
 
@@ -230,33 +273,6 @@ public abstract class AbstractProteinEnricher
             if(! proteinToEnrich.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
                 addMismatchReport(new MismatchReport(
                         "Sequence", proteinEnriched.getSequence(), proteinToEnrich.getSequence()));
-            }
-        }
-
-        //Organism - is done at addition
-
-        //Checksum -RogID
-        if(proteinToEnrich.getOrganism() != null
-                && proteinToEnrich.getOrganism().getTaxId() > 0
-                && proteinToEnrich.getSequence() != null){
-
-            RogidGenerator rogidGenerator = new RogidGenerator();
-
-            try {
-                String rogid = rogidGenerator.calculateRogid(
-                        proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
-                if(proteinToEnrich.getRogid() == null){
-                    proteinToEnrich.setRogid(rogid);
-                    addAdditionReport(new AdditionReport("RogID", rogid));
-                }
-                else if(!proteinToEnrich.getRogid().equals(rogid)){
-                    //TODO HOW TO DEAL WITH A WRONG ROGID
-                    addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(), rogid));
-                }
-            } catch (SeguidException e) {
-                addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(),"[NULL ROGID]"));
-                log.debug("caught exception from a failed rogid");
-                //e.printStackTrace();
             }
         }
     }
@@ -301,35 +317,6 @@ public abstract class AbstractProteinEnricher
                 proteinToEnrich.setSequence(proteinEnriched.getSequence());
                 addOverwriteReport(new OverwriteReport(
                         "Sequence", oldValue, proteinEnriched.getSequence()));
-            }
-        }
-
-        //Organism is done at addition
-
-        //RogID
-        if(proteinToEnrich.getOrganism() != null
-                && proteinToEnrich.getOrganism().getTaxId() > 0
-                && proteinToEnrich.getSequence() != null){
-
-            RogidGenerator rogidGenerator = new RogidGenerator();
-
-            try {
-                String rogid = rogidGenerator.calculateRogid(
-                        proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
-                if(proteinToEnrich.getRogid() == null){
-                    proteinToEnrich.setRogid(rogid);
-                    addAdditionReport(new AdditionReport("RogID", rogid));
-                }
-                else if(!proteinToEnrich.getRogid().equals(rogid)){
-                    //TODO HOW TO DEAL WITH A WRONG ROGID
-                    String oldValue =  proteinToEnrich.getRogid();
-                    proteinToEnrich.setRogid(rogid);
-                    addOverwriteReport(new OverwriteReport("RogID", oldValue, proteinToEnrich.getRogid()));
-                }
-            } catch (SeguidException e) {
-                addMismatchReport(new MismatchReport("RogID", proteinToEnrich.getRogid(),"[NULL ROGID]"));
-                log.debug("Caught exception from a failed RogID");
-                //e.printStackTrace();
             }
         }
     }

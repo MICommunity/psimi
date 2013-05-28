@@ -42,4 +42,8 @@ public class UniprotFetcher
 
         return p;
     }
+
+    public String getService() {
+        return "UniprotKB";
+    }
 }

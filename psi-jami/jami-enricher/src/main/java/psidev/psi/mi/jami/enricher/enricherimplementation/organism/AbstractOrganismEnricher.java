@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.enricher.exception.ConflictException;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
+import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -47,16 +48,17 @@ public abstract class AbstractOrganismEnricher
         return this.fetcher;
     }
 
-    protected Organism getFullyEnrichedForm(Organism MasterOrganism)
+    protected Organism getFullyEnrichedForm(Organism organismToEnrich)
             throws EnrichmentException {
 
         if(fetcher == null) throw new FetchingException("OrganismFetcher is null.");
+        if(organismToEnrich == null) throw new FetchingException("Attempted to enrich a null organism.");
 
         Organism enriched = null;
         try{
-            enriched = fetcher.getOrganismByTaxID(MasterOrganism.getTaxId());
+            enriched = fetcher.getOrganismByTaxID(organismToEnrich.getTaxId());
             enricherEvent.clear();
-            enricherEvent.setQueryDetails(""+MasterOrganism.getTaxId(),"TaxID");
+            enricherEvent.setQueryDetails(""+organismToEnrich.getTaxId(),"TaxID",fetcher.getService());
         }catch(FetcherException e){
             throw new FetchingException(e);
         }

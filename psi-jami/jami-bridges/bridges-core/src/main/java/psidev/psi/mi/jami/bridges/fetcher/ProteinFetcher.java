@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Protein;
  * Date: 14/05/13
  * Time: 13:50
  */
-public interface ProteinFetcher {
+public interface ProteinFetcher extends Fetcher{
     public Protein getProteinByID(String identifier)
             throws FetcherException;
 

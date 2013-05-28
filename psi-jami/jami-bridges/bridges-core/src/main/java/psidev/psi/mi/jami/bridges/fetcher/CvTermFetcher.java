@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.CvTerm;
  * Date: 08/05/13
  * Time: 16:34
  */
-public interface CvTermFetcher {
+public interface CvTermFetcher extends Fetcher{
 
     public CvTerm getCvTermByID(String identifier, String databaseName)
             throws FetcherException;

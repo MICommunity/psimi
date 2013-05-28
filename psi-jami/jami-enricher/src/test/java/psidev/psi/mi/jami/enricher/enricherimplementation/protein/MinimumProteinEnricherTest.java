@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.exception.ConflictException;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
+import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
 import psidev.psi.mi.jami.model.Alias;
@@ -17,6 +18,9 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.utils.ChecksumUtils;
+import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
+import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 import java.util.Collection;
 
@@ -53,8 +57,28 @@ public class MinimumProteinEnricherTest {
         Protein halfProtein = new DefaultProtein(TEST_SHORTNAME);
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
+
+        this.minimumProteinEnricher.addEnricherListener(new EnricherListener() {
+            public void onEnricherEvent(EnricherEvent e) {
+                event = e;
+            }
+        });
+
         event = null;
     }
+
+    @Test(expected = FetchingException.class)
+    public void test_no_fetching_on_null_protein() throws EnrichmentException{
+        Protein null_protein = null;
+        this.minimumProteinEnricher.enrichProtein(null_protein);
+    }
+
+    @Test(expected = FetchingException.class)
+    public void test_no_fetching_on_null_protein_identifier() throws EnrichmentException{
+        Protein null_identifier_protein = new DefaultProtein("Identifier free protein");
+        this.minimumProteinEnricher.enrichProtein(null_identifier_protein);
+    }
+
 
     /**
      * Enrich a protein that has no full name.
@@ -173,17 +197,9 @@ public class MinimumProteinEnricherTest {
      */
     @Test
     public void test_mismatch_does_not_happen_on_a_null_enrichedProtein() throws EnrichmentException{
-
-
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_HALF_PROT);
         protein_with_all_fields.setSequence("TAGTAG");
-
-        this.minimumProteinEnricher.addEnricherListener(new EnricherListener() {
-            public void onEnricherEvent(EnricherEvent e) {
-                event = e;
-            }
-        });
 
         //If this is failing, you may wish to use a logging listener to read the log.
         //this.minimumProteinEnricher.addEnricherListener(new LoggingEnricherListener());
@@ -195,11 +211,229 @@ public class MinimumProteinEnricherTest {
 
     //TODO Consider further tests for the passing of an organism to the enricher
 
-    //TODO Add a test for the rogid
+    /**
+     * If there is no Rogid, add it.
+     * @throws EnrichmentException
+     * @throws SeguidException
+     */
+    @Test
+    public void test_set_rogid_if_null() throws EnrichmentException, SeguidException {
+        Protein protein_with_no_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_no_rogid.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_no_rogid.setSequence(TEST_SEQUENCE);
+        protein_with_no_rogid.setOrganism(new DefaultOrganism(55555));
 
-    //todo add test for crc64 checksum:
-    //todo check that crc64 already existing but the same is passed over and not added
-    //todo check that crc64 that is different throws conflict
+        try {
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
+        } catch (FetcherException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(protein_with_no_rogid.getRogid() == null);
+        minimumProteinEnricher.enrichProtein(protein_with_no_rogid);
+        assertTrue(protein_with_no_rogid.getRogid() != null);
+
+        RogidGenerator rogidGenerator = new RogidGenerator();
+        String rogid = rogidGenerator.calculateRogid(TEST_SEQUENCE,"55555");
+
+        assertEquals(rogid, protein_with_no_rogid.getRogid());
+    }
+
+    /**
+     * If the supplied rogid matches, ignore it.
+     * @throws EnrichmentException
+     * @throws SeguidException
+     */
+    @Test
+    public void test_ignore_rogid_if_the_same() throws EnrichmentException, SeguidException {
+        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
+        protein_with_a_rogid.setOrganism(new DefaultOrganism(55555));
+        RogidGenerator rogidGenerator = new RogidGenerator();
+        String rogid = rogidGenerator.calculateRogid(TEST_SEQUENCE,"55555");
+        protein_with_a_rogid.setRogid(rogid);
+
+        try {
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
+        } catch (FetcherException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(rogid, protein_with_a_rogid.getRogid());
+
+        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+
+        assertEquals(rogid, protein_with_a_rogid.getRogid());
+    }
+
+    /**
+     * If the supplied rogid mismatches, throw a conflict.
+     * @throws EnrichmentException
+     * @throws SeguidException
+     */
+    @Test(expected = ConflictException.class)
+    public void test_conflict_if_rogid_is_different() throws EnrichmentException, SeguidException {
+        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
+        protein_with_a_rogid.setOrganism(new DefaultOrganism(55555));
+        protein_with_a_rogid.setRogid("This is a bad ROGID");
+
+        try {
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
+        } catch (FetcherException e) {
+            e.printStackTrace();
+        }
+
+        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+    }
+
+
+    /**
+     * If there is no taxId but a rogid is present, it can not be confirmed so throw a conflict.
+     * @throws EnrichmentException
+     * @throws SeguidException
+     */
+    @Test(expected = ConflictException.class)
+    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_organism() throws EnrichmentException{
+        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
+        protein_with_a_rogid.setRogid("This is a bad ROGID");
+
+        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+    }
+
+    /**
+     * If there is no taxId but a rogid is present, it can not be confirmed so throw a conflict.
+     * @throws EnrichmentException
+     * @throws SeguidException
+     */
+    @Test(expected = ConflictException.class)
+    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_taxid() throws EnrichmentException{
+        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_a_rogid.setSequence(TEST_SEQUENCE);
+        protein_with_a_rogid.setOrganism(new DefaultOrganism(-3));
+        protein_with_a_rogid.setRogid("This is a bad ROGID");
+
+        try {
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setOrganism(new DefaultOrganism(-3));
+        } catch (FetcherException e) {
+            e.printStackTrace();
+        }
+
+        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+    }
+
+    /**
+     * If there is not sequence but a rogid is present, it cannot be confirmed so throw a conflict.
+     * @throws EnrichmentException
+     * @throws SeguidException
+     */
+    @Test(expected = ConflictException.class)
+    public void test_conflict_if_rogid_can_not_be_confirmed_due_to_missing_sequence() throws EnrichmentException{
+        Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_a_rogid.setOrganism(new DefaultOrganism(55555));
+        protein_with_a_rogid.setRogid("This is a bad ROGID");
+
+        try {
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setOrganism(new DefaultOrganism(55555,"Common","Scientific"));
+            fetcher.getProteinByID(TEST_AC_FULL_PROT).setSequence("");
+        } catch (FetcherException e) {
+            e.printStackTrace();
+        }
+
+        minimumProteinEnricher.enrichProtein(protein_with_a_rogid);
+    }
+
+
+    /**
+     * Tests that when the proteinToEnrich contains no CRC64 checksum,
+     * it is added.
+     * @throws EnrichmentException
+     * @throws FetcherException
+     */
+    @Test
+    public void test_set_CRC64_if_none_in_proteinToEnrich() throws EnrichmentException, FetcherException{
+        fetcher.getProteinByID(TEST_AC_FULL_PROT).getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
+
+        Protein protein_with_no_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
+        protein_with_no_checksum.setUniprotkb(TEST_AC_FULL_PROT);
+
+        assertTrue(protein_with_no_checksum.getChecksums().size() == 0);
+        minimumProteinEnricher.enrichProtein(protein_with_no_checksum);
+        assertTrue(protein_with_no_checksum.getChecksums().size() == 1);
+    }
+
+    /**
+     * Tests that when the proteinToEnrich contains an identical CRC64 checksum,
+     * it is not added.
+     * @throws EnrichmentException
+     * @throws FetcherException
+     */
+    @Test
+    public void test_identical_CRC64_is_not_added() throws EnrichmentException, FetcherException{
+        fetcher.getProteinByID(TEST_AC_FULL_PROT).getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
+
+        Protein protein_with_matching_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
+        protein_with_matching_checksum.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_matching_checksum.setSequence(TEST_SEQUENCE);
+        protein_with_matching_checksum.getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
+
+        assertTrue(protein_with_matching_checksum.getChecksums().size() == 1);
+
+        minimumProteinEnricher.enrichProtein(protein_with_matching_checksum);
+
+        assertTrue(protein_with_matching_checksum.getChecksums().size() == 1);
+        assertTrue(event.getAdditions().size() == 0);
+    }
+
+    /**
+     * Tests that when a checksum that does not match is found, a conflict error is thrown.
+     * The checksum comparison should also be case sensitive.
+     * @throws EnrichmentException
+     * @throws FetcherException
+     */
+    @Test(expected = ConflictException.class)
+    public void test_case_sensitive_conflict_on_CRC64() throws EnrichmentException, FetcherException{
+        fetcher.getProteinByID(TEST_AC_FULL_PROT).getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
+
+        Protein protein_with_mismatched_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
+        protein_with_mismatched_checksum.setUniprotkb(TEST_AC_FULL_PROT);
+        protein_with_mismatched_checksum.getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, "abcdefg"));
+
+        minimumProteinEnricher.enrichProtein(protein_with_mismatched_checksum);
+    }
+
+    /**
+     * Tests that when the fetched protein contains multiple checksums, a fetchingException is thrown.
+     * This shows that the fetched protein contains errors.
+     * @throws EnrichmentException
+     * @throws FetcherException
+     */
+    @Test(expected = FetchingException.class)
+    public void test_no_multiple_CRC64_checksums_in_fetched_proteins() throws EnrichmentException, FetcherException{
+        fetcher.getProteinByID(TEST_AC_FULL_PROT).getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, "AbCdEfG"));
+        fetcher.getProteinByID(TEST_AC_FULL_PROT).getChecksums().add(
+                ChecksumUtils.createChecksum("CRC64", null, "HiJkLmN"));
+
+        Protein protein_with_mismatched_checksum = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME);
+        protein_with_mismatched_checksum.setUniprotkb(TEST_AC_FULL_PROT);
+
+        assertTrue(fetcher.getProteinByID(TEST_AC_FULL_PROT).getChecksums().size() == 2);
+
+        minimumProteinEnricher.enrichProtein(protein_with_mismatched_checksum);
+    }
+
 
     /**
      * Enrich an already completed protein with a less complete protein
@@ -220,12 +454,6 @@ public class MinimumProteinEnricherTest {
         Protein protein_test_two = new DefaultProtein("testpart2 shortName", "testpart2 fullName");
         protein_test_two.setUniprotkb(TEST_AC_HALF_PROT);
         protein_test_two.setSequence("TAGTAG");
-
-        this.minimumProteinEnricher.addEnricherListener(new EnricherListener() {
-            public void onEnricherEvent(EnricherEvent e) {
-                event = e;
-            }
-        });
 
         //If this is failing, you may wish to use a logging listener to read the log.
         //this.minimumProteinEnricher.addEnricherListener(new LoggingEnricherListener());
@@ -259,13 +487,6 @@ public class MinimumProteinEnricherTest {
     public void test_enricher_event_is_fired_and_has_correct_content() throws EnrichmentException {
         Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_to_enrich.setUniprotkb(TEST_AC_FULL_PROT);
-
-        event = null;
-        this.minimumProteinEnricher.addEnricherListener(new EnricherListener() {
-            public void onEnricherEvent(EnricherEvent e) {
-                event = e;
-            }
-        });
 
         minimumProteinEnricher.enrichProtein(protein_to_enrich);
 

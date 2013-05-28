@@ -42,4 +42,8 @@ public class MockProteinFetcher
     public void clearProteins(){
         localProteins.clear();
     }
+
+    public String getService() {
+        return "Mock Protein Fetcher";
+    }
 }
