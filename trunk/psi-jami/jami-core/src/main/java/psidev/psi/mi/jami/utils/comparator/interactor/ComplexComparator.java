@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ModelledParticipantCollectionComparator;
@@ -13,7 +14,7 @@ import java.util.Comparator;
 /**
  * Basic ComplexComparator.
  *
- * It will first look at the default properties of an interactor using InteractorBaseComparator.
+ * It will first look at the default properties of an interactor using AbstractInteractorBaseComparator.
  * It will then compare the interaction types using AbstractCvtermComparator
  * If the basic interactor properties are the same, It will first compare the collection of components using ModelledParticipantComparator.
  *
@@ -24,15 +25,15 @@ import java.util.Comparator;
 
 public class ComplexComparator implements Comparator<Complex> {
 
-    protected InteractorBaseComparator interactorComparator;
+    protected Comparator<Interactor> interactorComparator;
     protected ModelledParticipantCollectionComparator componentCollectionComparator;
     private AbstractCvTermComparator cvTermComparator;
 
     /**
-     * Creates a bew ComplexComparator. It needs a InteractorBaseComparator to compares interactor properties
+     * Creates a bew ComplexComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties
      * @param interactorComparator : comparator for interactor properties. It is required
      */
-    public ComplexComparator(InteractorBaseComparator interactorComparator, ModelledParticipantComparator componentComparator, AbstractCvTermComparator cvTermComparator){
+    public ComplexComparator(Comparator<Interactor> interactorComparator, ModelledParticipantComparator componentComparator, AbstractCvTermComparator cvTermComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The interactor comparator is required to compare complexes. It cannot be null");
         }
@@ -50,7 +51,7 @@ public class ComplexComparator implements Comparator<Complex> {
     }
 
     /**
-     * It will first look at the default properties of an interactor using InteractorBaseComparator.
+     * It will first look at the default properties of an interactor using AbstractInteractorBaseComparator.
      * It will then compare the interaction types using AbstractCvtermComparator
      * If the basic interactor properties are the same, It will first compare the collection of components using ComponentComparator.
      *
@@ -96,7 +97,7 @@ public class ComplexComparator implements Comparator<Complex> {
         }
     }
 
-    public InteractorBaseComparator getInteractorComparator() {
+    public Comparator<Interactor> getInteractorComparator() {
         return interactorComparator;
     }
 

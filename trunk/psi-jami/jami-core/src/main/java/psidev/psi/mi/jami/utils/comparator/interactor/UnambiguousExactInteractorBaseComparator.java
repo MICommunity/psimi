@@ -3,22 +3,21 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
 /**
  * Unambiguous Interactor base comparator.
  * It will first compare the interactor types using UnambiguousCvTermComparator. If both types are equal,
- * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal, it will use a UnambiguousInteractorBaseComparator to compare basic Interactor properties.
+ * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal,
+ * it will use a UnambiguousInteractorBaseComparator to compare basic Interactor properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBaseComparator{
+public class UnambiguousExactInteractorBaseComparator extends AbstractExactInteractorBaseComparator {
 
     private static UnambiguousExactInteractorBaseComparator unambiguousExactInteractorComparator;
 
@@ -28,17 +27,12 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
      * organisms and a UnambiguousCvTermComparator to compare checksum types and interactor types
      */
     public UnambiguousExactInteractorBaseComparator() {
-        super(new UnambiguousExternalIdentifierComparator(), new UnambiguousAliasComparator(), new OrganismTaxIdComparator(), new UnambiguousCvTermComparator());
+        super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
-    public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
-        return (UnambiguousExternalIdentifierComparator) this.identifierComparator;
-    }
-
-    @Override
-    public UnambiguousAliasComparator getAliasComparator() {
-        return (UnambiguousAliasComparator) this.aliasComparator;
+    public UnambiguousInteractorBaseComparator getInteractorBaseComparator() {
+        return (UnambiguousInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     @Override
@@ -49,8 +43,8 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
     @Override
     /**
      * It will first compare the interactor types using UnambiguousCvTermComparator. If both types are equal,
-     * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal, it will use a UnambiguousInteractorBaseComparator to compare basic Interactor properties.
-     *
+     * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal,
+     * it will use a UnambiguousInteractorBaseComparator to compare basic Interactor properties.
      */
     public int compare(Interactor interactor1, Interactor interactor2) {
         int EQUAL = 0;
@@ -71,10 +65,7 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
             CvTerm type1 = interactor1.getInteractorType();
             CvTerm type2 = interactor2.getInteractorType();
 
-            int comp=EQUAL;
-            if (type1 != null || type2 != null){
-                comp = typeComparator.compare(type1, type2);
-            }
+            int comp = typeComparator.compare(type1, type2);
 
             if (comp != 0){
                 return comp;
@@ -84,18 +75,15 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
             Organism organism1 = interactor1.getOrganism();
             Organism organism2 = interactor2.getOrganism();
 
-            if (organism1 != null || organism2 != null){
-                comp = organismComparator.compare(organism1, organism2);
-            }
+            comp = organismComparator.compare(organism1, organism2);
 
             if (comp != 0){
                 return comp;
             }
 
-            // then compares the short name (case sensitive)
-            String shortName1 = interactor1.getShortName();
-            String shortName2 = interactor2.getShortName();
-            return shortName1.compareTo(shortName2);
+            // then compares basic properties
+
+            return interactorBaseComparator.compare(interactor1, interactor2);
         }
     }
 
@@ -130,7 +118,7 @@ public class UnambiguousExactInteractorBaseComparator extends ExactInteractorBas
         int hashcode = 31;
         hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(interactor.getInteractorType());
         hashcode = 31*hashcode + OrganismTaxIdComparator.hashCode(interactor.getOrganism());
-        hashcode = 31*hashcode + interactor.getShortName().hashCode();
+        hashcode = 31*hashcode + UnambiguousInteractorBaseComparator.hashCode(interactor);
 
         return hashcode;
     }

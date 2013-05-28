@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
@@ -35,9 +36,11 @@ public class DefaultInteractor implements Interactor, Serializable {
         }
         this.shortName = name;
         if (type == null){
-            throw new IllegalArgumentException("The interactor interactorType cannot be null.");
+            this.interactorType = CvTermUtils.createUnknownInteractorType();
         }
-        this.interactorType = type;
+        else {
+            this.interactorType = type;
+        }
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type){
@@ -57,22 +60,70 @@ public class DefaultInteractor implements Interactor, Serializable {
 
     public DefaultInteractor(String name, CvTerm type, Xref uniqueId){
         this(name, type);
-        this.identifiers.add(uniqueId);
+        getIdentifiers().add(uniqueId);
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type, Xref uniqueId){
         this(name, fullName, type);
-        this.identifiers.add(uniqueId);
+        getIdentifiers().add(uniqueId);
     }
 
     public DefaultInteractor(String name, CvTerm type, Organism organism, Xref uniqueId){
         this(name, type, organism);
-        this.identifiers.add(uniqueId);
+        getIdentifiers().add(uniqueId);
     }
 
     public DefaultInteractor(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId){
         this(name, fullName, type, organism);
-        this.identifiers.add(uniqueId);
+        getIdentifiers().add(uniqueId);
+    }
+
+    public DefaultInteractor(String name){
+        if (name == null || (name != null && name.length() == 0)){
+            throw new IllegalArgumentException("The short name cannot be null or empty.");
+        }
+        this.shortName = name;
+        this.interactorType = CvTermUtils.createUnknownInteractorType();
+    }
+
+    public DefaultInteractor(String name, String fullName){
+        this(name);
+        this.fullName = fullName;
+    }
+
+    public DefaultInteractor(String name, Organism organism){
+        this(name);
+        this.organism = organism;
+        this.interactorType = CvTermUtils.createUnknownInteractorType();
+    }
+
+    public DefaultInteractor(String name, String fullName, Organism organism){
+        this(name, fullName);
+        this.organism = organism;
+    }
+
+    public DefaultInteractor(String name, Xref uniqueId){
+        this(name);
+        getIdentifiers().add(uniqueId);
+        this.interactorType = CvTermUtils.createUnknownInteractorType();
+    }
+
+    public DefaultInteractor(String name, String fullName, Xref uniqueId){
+        this(name, fullName);
+        getIdentifiers().add(uniqueId);
+        this.interactorType = CvTermUtils.createUnknownInteractorType();
+    }
+
+    public DefaultInteractor(String name, Organism organism, Xref uniqueId){
+        this(name, organism);
+        getIdentifiers().add(uniqueId);
+        this.interactorType = CvTermUtils.createUnknownInteractorType();
+    }
+
+    public DefaultInteractor(String name, String fullName, Organism organism, Xref uniqueId){
+        this(name, fullName, organism);
+        getIdentifiers().add(uniqueId);
+        this.interactorType = CvTermUtils.createUnknownInteractorType();
     }
 
     protected void initialiseAnnotations(){
@@ -208,9 +259,11 @@ public class DefaultInteractor implements Interactor, Serializable {
 
     public void setInteractorType(CvTerm interactorType) {
         if (interactorType == null){
-            throw new IllegalArgumentException("The interactor interactorType cannot be null.");
+            this.interactorType = CvTermUtils.createUnknownInteractorType();
         }
-        this.interactorType = interactorType;
+        else {
+            this.interactorType = interactorType;
+        }
     }
 
     @Override
@@ -229,7 +282,7 @@ public class DefaultInteractor implements Interactor, Serializable {
 
     @Override
     public String toString() {
-        return shortName + (organism != null ? ", " + organism.toString() : "");
+        return shortName + (organism != null ? ", " + organism.toString() : "") + (interactorType != null ? ", " + interactorType.toString() : "")  ;
     }
 
     @Override
