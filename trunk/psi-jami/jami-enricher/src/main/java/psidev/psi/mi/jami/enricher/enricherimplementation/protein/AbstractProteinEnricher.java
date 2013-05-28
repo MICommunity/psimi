@@ -17,11 +17,9 @@ import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.util.CollectionUtilsExtra;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
@@ -93,6 +91,18 @@ public abstract class AbstractProteinEnricher
 
     protected void runProteinAdditionEnrichment(Protein proteinToEnrich, Protein proteinEnriched)
             throws EnrichmentException{
+
+        //InteractorType
+        if(proteinToEnrich.getInteractorType().getMIIdentifier() != Protein.PROTEIN_MI){
+            if(proteinToEnrich.getInteractorType().getMIIdentifier() == Interactor.UNKNOWN_INTERACTOR_MI){
+                proteinToEnrich.setInteractorType(CvTermUtils.createProteinInteractorType());
+                addAdditionReport(new AdditionReport("InteractorType", Protein.PROTEIN));
+            }
+            //TODO consider if the conflict should be thrown if a polymer is provided rather than protein
+            else throw new ConflictException("Expected InteractorType [Protein] "+
+                    "but found ["+proteinToEnrich.getInteractorType().getShortName()+"] "+
+                    "with the psi-mi id ["+proteinToEnrich.getInteractorType().getMIIdentifier()+"]");
+        }
 
         //ShortName - is never null
 
