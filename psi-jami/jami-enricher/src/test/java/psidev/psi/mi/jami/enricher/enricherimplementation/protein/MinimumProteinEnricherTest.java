@@ -12,13 +12,11 @@ import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherListener;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
@@ -79,6 +77,57 @@ public class MinimumProteinEnricherTest {
         this.minimumProteinEnricher.enrichProtein(null_identifier_protein);
     }
 
+
+    @Test
+    public void test_ignore_if_interactorType_is_already_protein() throws EnrichmentException{
+        Protein protein_with_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
+
+        CvTerm value = CvTermUtils.createProteinInteractorType();
+
+        protein_with_interactor_type.setInteractorType(value);
+
+        minimumProteinEnricher.enrichProtein(protein_with_interactor_type);
+
+        assertTrue(event.getAdditions().size() == 0);
+        assertTrue(protein_with_interactor_type.getInteractorType() == value); //Show they are the same instance
+    }
+
+
+
+    @Test
+    public void test_interactorType_updated_if_unknown() throws EnrichmentException{
+        Protein protein_with_no_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_no_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
+        protein_with_no_interactor_type.setInteractorType(CvTermUtils.createUnknownInteractorType());
+
+        assertEquals(Protein.UNKNOWN_INTERACTOR_MI,
+                protein_with_no_interactor_type.getInteractorType().getMIIdentifier());
+        assertEquals(Protein.UNKNOWN_INTERACTOR,
+                protein_with_no_interactor_type.getInteractorType().getShortName());
+
+        minimumProteinEnricher.enrichProtein(protein_with_no_interactor_type);
+
+
+        assertEquals(Protein.PROTEIN,
+                protein_with_no_interactor_type.getInteractorType().getShortName());
+        assertEquals(Protein.PROTEIN_MI,
+                protein_with_no_interactor_type.getInteractorType().getMIIdentifier());
+
+        assertEquals(1, event.getAdditions().size());
+
+    }
+
+
+    @Test(expected = ConflictException.class)
+    public void test_interactorType_conflict_if_unexpected_type() throws EnrichmentException{
+
+        Protein protein_with_bad_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
+        protein_with_bad_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
+        protein_with_bad_interactor_type.setInteractorType(CvTermUtils.createGeneInteractorType());
+
+        minimumProteinEnricher.enrichProtein(protein_with_bad_interactor_type);
+    }
 
     /**
      * Enrich a protein that has no full name.
