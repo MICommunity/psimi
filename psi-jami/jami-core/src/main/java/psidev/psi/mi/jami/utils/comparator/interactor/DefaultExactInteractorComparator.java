@@ -38,7 +38,7 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
      */
     public DefaultExactInteractorComparator() {
         super(new DefaultInteractorBaseComparator(), new DefaultExactComplexComparator(), new DefaultExactPolymerComparator(),
-                new DefaultExactBioactiveEntityComparator(), new DefaultExactGeneComparator());
+                new DefaultExactBioactiveEntityComparator(), new DefaultExactGeneComparator(), new DefaultExactNucleicAcidComparator());
     }
 
     @Override
@@ -64,6 +64,11 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
     @Override
     public DefaultExactGeneComparator getGeneComparator() {
         return (DefaultExactGeneComparator) super.getGeneComparator();
+    }
+
+    @Override
+    public DefaultExactNucleicAcidComparator getNucleicAcidComparator() {
+        return (DefaultExactNucleicAcidComparator) super.getNucleicAcidComparator();
     }
 
     @Override

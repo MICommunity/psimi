@@ -302,6 +302,10 @@ public class CvTermUtils {
         return createMICvTerm(Protein.PROTEIN, Protein.PROTEIN_MI);
     }
 
+    public static CvTerm createNucleicAcidInteractorType(){
+        return createMICvTerm(NucleicAcid.NULCEIC_ACID, NucleicAcid.NULCEIC_ACID_MI);
+    }
+
     public static CvTerm createBioactiveEntityType(){
         return createMICvTerm(BioactiveEntity.BIOACTIVE_ENTITY, BioactiveEntity.BIOACTIVE_ENTITY_MI);
     }

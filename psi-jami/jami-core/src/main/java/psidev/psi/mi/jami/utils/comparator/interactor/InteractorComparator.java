@@ -12,7 +12,7 @@ import java.util.Comparator;
  * - Uses AbstractBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses ProteinComparator for comparing Protein objects.
  * - Uses AbstractGeneComparator for comparing Gene objects.
- * - Uses NucleicAcidComparator for comparing NucleicAcids objects.
+ * - Uses AbstractNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses ComplexComparator for comparing complexes
  * - Uses InteractorCandidatesComparator for comparing interactor candidates
  * - Uses AbstractPolymerComparator for comparing polymers
@@ -28,7 +28,7 @@ public class InteractorComparator implements Comparator<Interactor> {
     protected AbstractBioactiveEntityComparator bioactiveEntityComparator;
     protected AbstractGeneComparator geneComparator;
     protected ProteinComparator proteinComparator;
-    protected NucleicAcidComparator nucleicAcidComparator;
+    protected AbstractNucleicAcidComparator nucleicAcidComparator;
     protected Comparator<Interactor> interactorBaseComparator;
     protected ComplexComparator complexComparator;
     protected InteractorCandidatesComparator interactorCandaidatesComparator;
@@ -40,7 +40,8 @@ public class InteractorComparator implements Comparator<Interactor> {
      * @param complexComparator : required to compare complex objects
      */
     public InteractorComparator(Comparator<Interactor> interactorBaseComparator, ComplexComparator complexComparator, AbstractPolymerComparator polymerComparator,
-                                AbstractBioactiveEntityComparator bioactiveEntityComparator, AbstractGeneComparator geneComparator){
+                                AbstractBioactiveEntityComparator bioactiveEntityComparator, AbstractGeneComparator geneComparator,
+                                AbstractNucleicAcidComparator nucleicAcidComparator){
         if (interactorBaseComparator == null){
             throw new IllegalArgumentException("The interactorBaseComparator is required to create more specific interactor comparators and compares basic interactor properties. It cannot be null");
         }
@@ -54,7 +55,10 @@ public class InteractorComparator implements Comparator<Interactor> {
         }
         this.geneComparator = geneComparator;
         this.proteinComparator = new ProteinComparator(this.interactorBaseComparator);
-        this.nucleicAcidComparator = new NucleicAcidComparator(this.interactorBaseComparator);
+        if (nucleicAcidComparator == null){
+            throw new IllegalArgumentException("The NucleicAcidComparator is required to compare nucleicAcids. It cannot be null");
+        }
+        this.nucleicAcidComparator = nucleicAcidComparator;
         if (polymerComparator == null){
             throw new IllegalArgumentException("The PolymerComparator is required to compare polymers. It cannot be null");
         }
@@ -79,7 +83,7 @@ public class InteractorComparator implements Comparator<Interactor> {
         return proteinComparator;
     }
 
-    public NucleicAcidComparator getNucleicAcidComparator() {
+    public AbstractNucleicAcidComparator getNucleicAcidComparator() {
         return nucleicAcidComparator;
     }
 
@@ -95,7 +99,7 @@ public class InteractorComparator implements Comparator<Interactor> {
         return polymerComparator;
     }
 
-    public InteractorCandidatesComparator getInteractorCandaidatesComparator() {
+    public InteractorCandidatesComparator getInteractorCandidatesComparator() {
         return interactorCandaidatesComparator;
     }
 
@@ -106,7 +110,7 @@ public class InteractorComparator implements Comparator<Interactor> {
      * - Uses AbstractBioactiveEntityComparator for comparing BioactiveEntity objects.
      * - Uses ProteinComparator for comparing Protein objects.
      * - Uses AbstractGeneComparator for comparing Gene objects.
-     * - Uses NucleicAcidComparator for comparing NucleicAcids objects.
+     * - Uses AbstractNucleicAcidComparator for comparing NucleicAcids objects.
      * - Uses InteractorCandidatesComparator for comparing interactor candidates
      * - Uses polymerComparator for comparing Polymer objects.
      * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.

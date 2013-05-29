@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.NucleicAcid;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Default exact nucleic acids comparator.
@@ -14,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExactNucleicAcidComparator extends NucleicAcidComparator {
+public class DefaultExactNucleicAcidComparator extends DefaultNucleicAcidComparator {
 
     private static DefaultExactNucleicAcidComparator defaultExactNucleicAcidComparator;
 
@@ -23,7 +22,7 @@ public class DefaultExactNucleicAcidComparator extends NucleicAcidComparator {
      * OrganismTaxIdComparator to compares organism.
      */
     public DefaultExactNucleicAcidComparator() {
-        super(new DefaultExactInteractorBaseComparator(), new OrganismTaxIdComparator());
+        super(new DefaultExactPolymerComparator());
     }
 
     @Override
@@ -38,8 +37,8 @@ public class DefaultExactNucleicAcidComparator extends NucleicAcidComparator {
     }
 
     @Override
-    public DefaultExactInteractorBaseComparator getInteractorComparator() {
-        return (DefaultExactInteractorBaseComparator) this.interactorComparator;
+    public DefaultExactPolymerComparator getInteractorComparator() {
+        return (DefaultExactPolymerComparator) this.interactorComparator;
     }
 
     /**

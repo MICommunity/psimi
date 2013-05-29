@@ -19,74 +19,73 @@ import java.util.Collection;
  * @since <pre>01/02/13</pre>
  */
 
-public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid{
+public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
 
     private Xref ddbjEmblGenbank;
     private Xref refseq;
-    private String sequence;
 
     public DefaultNucleicAcid(String name, CvTerm type) {
-        super(name, type);
+        super(name, type != null ? type : CvTermUtils.createNucleicAcidInteractorType());
     }
 
     public DefaultNucleicAcid(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : CvTermUtils.createNucleicAcidInteractorType());
     }
 
     public DefaultNucleicAcid(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
+        super(name, type != null ? type : CvTermUtils.createNucleicAcidInteractorType(), organism);
     }
 
     public DefaultNucleicAcid(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : CvTermUtils.createNucleicAcidInteractorType(), organism);
     }
 
     public DefaultNucleicAcid(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createNucleicAcidInteractorType(), uniqueId);
     }
 
     public DefaultNucleicAcid(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createNucleicAcidInteractorType(), uniqueId);
     }
 
     public DefaultNucleicAcid(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createNucleicAcidInteractorType(), organism, uniqueId);
     }
 
     public DefaultNucleicAcid(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type, organism, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createNucleicAcidInteractorType(), organism, uniqueId);
     }
 
     public DefaultNucleicAcid(String name) {
-        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
+        super(name, CvTermUtils.createNucleicAcidInteractorType());
     }
 
     public DefaultNucleicAcid(String name, String fullName) {
-        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI));
+        super(name, fullName, CvTermUtils.createNucleicAcidInteractorType());
     }
 
     public DefaultNucleicAcid(String name, Organism organism) {
-        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
+        super(name, CvTermUtils.createNucleicAcidInteractorType(), organism);
     }
 
     public DefaultNucleicAcid(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism);
+        super(name, fullName, CvTermUtils.createNucleicAcidInteractorType(), organism);
     }
 
     public DefaultNucleicAcid(String name, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
+        super(name, CvTermUtils.createNucleicAcidInteractorType(), uniqueId);
     }
 
     public DefaultNucleicAcid(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createNucleicAcidInteractorType(), uniqueId);
     }
 
     public DefaultNucleicAcid(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
+        super(name, CvTermUtils.createNucleicAcidInteractorType(), organism, uniqueId);
     }
 
     public DefaultNucleicAcid(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(NULCEIC_ACID, NULCEIC_ACID_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createNucleicAcidInteractorType(), organism, uniqueId);
     }
 
     public String getDdbjEmblGenbank() {
@@ -144,14 +143,6 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
         }
     }
 
-    public String getSequence() {
-        return this.sequence;
-    }
-
-    public void setSequence(String sequence) {
-        this.sequence = sequence;
-    }
-
     protected void processAddedIdentifiersEvent(Xref added) {
         // the added identifier is ddbj/embl/genbank and it is not the current ddbj/embl/genbank identifier
         if (ddbjEmblGenbank != added && XrefUtils.isXrefFromDatabase(added, Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK)){
@@ -203,6 +194,20 @@ public class DefaultNucleicAcid extends DefaultInteractor implements NucleicAcid
     protected void clearPropertiesLinkedToIdentifiers() {
         ddbjEmblGenbank = null;
         refseq = null;
+    }
+
+    @Override
+    /**
+     * Sets the interactor type of this NucleicAcid.
+     * If the interactor type is null, it will set the interactor type to nucleic acid (MI:0318)
+     */
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            super.setInteractorType(CvTermUtils.createNucleicAcidInteractorType());
+        }
+        else {
+            super.setInteractorType(interactorType);
+        }
     }
 
     @Override

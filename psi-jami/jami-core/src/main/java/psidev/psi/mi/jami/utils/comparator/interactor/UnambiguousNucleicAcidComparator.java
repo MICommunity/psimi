@@ -1,21 +1,18 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.NucleicAcid;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Unambiguous nucleic acids comparator.
- * It will first use UnambiguousInteractorBaseComparator to compare the basic interactor properties.
- * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier (The interactor with a non null DDBJ/EMBL/genbank identifier will always come first).
- * If the DDBJ/EMBL/Genbank identifiers are not set, it will look at the
- * Refseq identifiers (The interactor with a non null refseq identifier will always come first). If the Refseq identifiers are not set, it will look at the sequence/organism (The interactor with a non null sequence will always come first)..
- *
+ * It will first use UnambiguousPolymerComparator to compare the basic interactor properties.
+ * If the basic polymer properties are the same, It will look for DDBJ/EMBL/Genbank identifier. If the DDBJ/EMBL/Genbank identifiers are identical, it will look at the
+ * Refseq identifiers.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>15/01/13</pre>
  */
 
-public class UnambiguousNucleicAcidComparator extends NucleicAcidComparator {
+public class UnambiguousNucleicAcidComparator extends AbstractNucleicAcidComparator {
 
     private static UnambiguousNucleicAcidComparator unambiguousNucleicAcidComparator;
 
@@ -24,16 +21,18 @@ public class UnambiguousNucleicAcidComparator extends NucleicAcidComparator {
      * OrganismTaxIdComparator to compares organism.
      */
     public UnambiguousNucleicAcidComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator());
+        super(new UnambiguousPolymerComparator());
+    }
+
+    protected UnambiguousNucleicAcidComparator(AbstractPolymerComparator polymerBaseComparator) {
+        super(polymerBaseComparator != null ? polymerBaseComparator : new UnambiguousPolymerComparator());
     }
 
     @Override
     /**
-     * It will first use UnambiguousInteractorBaseComparator to compare the basic interactor properties.
-     * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier (The interactor with a non null DDBJ/EMBL/genbank identifier will always come first).
-     * If the DDBJ/EMBL/Genbank identifiers are not set, it will look at the
-     * Refseq identifiers (The interactor with a non null refseq identifier will always come first). If the Refseq identifiers are not set, it will look at the sequence/organism (The interactor with a non null sequence will always come first)..
-     *
+     * It will first use UnambiguousPolymerComparator to compare the basic interactor properties.
+     * If the basic polymer properties are the same, It will look for DDBJ/EMBL/Genbank identifier. If the DDBJ/EMBL/Genbank identifiers are identical, it will look at the
+     * Refseq identifiers.
      */
     public int compare(NucleicAcid nucleicAcid1, NucleicAcid nucleicAcid2) {
         int EQUAL = 0;
@@ -59,10 +58,13 @@ public class UnambiguousNucleicAcidComparator extends NucleicAcidComparator {
 
             // then compares DDBJ/EMBL/Genbank identifiers
             String ddbjEmblGenbank1 = nucleicAcid1.getDdbjEmblGenbank();
-            String ddbjEmblGenbank2 = nucleicAcid1.getDdbjEmblGenbank();
+            String ddbjEmblGenbank2 = nucleicAcid2.getDdbjEmblGenbank();
 
             if (ddbjEmblGenbank1 != null && ddbjEmblGenbank2 != null){
-                return ddbjEmblGenbank1.compareTo(ddbjEmblGenbank2);
+                comp = ddbjEmblGenbank1.compareTo(ddbjEmblGenbank2);
+                if (comp != 0){
+                    return 0;
+                }
             }
             else if(ddbjEmblGenbank1 != null){
                 return BEFORE;
@@ -85,31 +87,13 @@ public class UnambiguousNucleicAcidComparator extends NucleicAcidComparator {
                 return AFTER;
             }
 
-            // compares sequences if at least one Refseq is not set
-            String seq1 = nucleicAcid1.getSequence();
-            String seq2 = nucleicAcid2.getSequence();
-
-            if (seq1 != null && seq2 != null){
-                comp = seq1.compareTo(seq2);
-                // if sequences are equal, look at the organism before saying that the nucleic acids are equals.
-                if (comp == 0){
-                    comp = organismComparator.compare(nucleicAcid1.getOrganism(), nucleicAcid2.getOrganism());
-                }
-            }
-            else if(seq1 != null){
-                return BEFORE;
-            }
-            else if(seq2 != null){
-                return AFTER;
-            }
-
             return comp;
         }
     }
 
     @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousPolymerComparator getInteractorComparator() {
+        return (UnambiguousPolymerComparator) this.interactorComparator;
     }
 
     /**
