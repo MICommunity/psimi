@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.BioactiveEntity;
+import psidev.psi.mi.jami.model.Interactor;
+
+import java.util.Comparator;
 
 /**
  * Unambiguous bioactive entity comparator.
@@ -24,6 +27,10 @@ public class UnambiguousBioactiveEntityComparator extends AbstractBioactiveEntit
      */
     public UnambiguousBioactiveEntityComparator() {
         super(new UnambiguousInteractorBaseComparator());
+    }
+
+    protected UnambiguousBioactiveEntityComparator(Comparator<Interactor> interactorBaseComparator) {
+        super(interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator());
     }
 
     @Override
@@ -120,11 +127,6 @@ public class UnambiguousBioactiveEntityComparator extends AbstractBioactiveEntit
 
             return comp;
         }
-    }
-
-    @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
     }
 
     /**

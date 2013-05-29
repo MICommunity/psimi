@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExactBioactiveEntityComparator extends AbstractBioactiveEntityComparator {
+public class DefaultExactBioactiveEntityComparator extends DefaultBioactiveEntityComparator {
 
     private static DefaultExactBioactiveEntityComparator defaultExactBioactiveEntityComparator;
 
@@ -38,67 +38,8 @@ public class DefaultExactBioactiveEntityComparator extends AbstractBioactiveEnti
      *
      */
     public int compare(BioactiveEntity bioactiveEntity1, BioactiveEntity bioactiveEntity2) {
-        int EQUAL = 0;
-        int BEFORE = -1;
-        int AFTER = 1;
 
-        if (bioactiveEntity1 == null && bioactiveEntity2 == null){
-            return EQUAL;
-        }
-        else if (bioactiveEntity1 == null){
-            return AFTER;
-        }
-        else if (bioactiveEntity2 == null){
-            return BEFORE;
-        }
-        else {
-
-            // First compares the basic interactor properties
-            int comp = interactorComparator.compare(bioactiveEntity1, bioactiveEntity2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares CHEBI identifiers
-            String chebi1 = bioactiveEntity1.getChebi();
-            String chebi2 = bioactiveEntity2.getChebi();
-
-            if (chebi1 != null && chebi2 != null){
-                return chebi1.compareTo(chebi2);
-            }
-
-            // compares standard InChi key if at least one smile is not set
-            String inchikey1 = bioactiveEntity1.getStandardInchiKey();
-            String inchiKey2 = bioactiveEntity2.getStandardInchiKey();
-
-            if (inchikey1 != null && inchiKey2 != null){
-                comp = inchikey1.compareTo(inchiKey2);
-                if (comp != 0){
-                    return comp;
-                }
-            }
-
-            // compares smile if at least one chebi identifier is not set
-            String smile1 = bioactiveEntity1.getSmile();
-            String smile2 = bioactiveEntity2.getSmile();
-
-            if (smile1 != null && smile2 != null){
-                comp = smile1.compareTo(smile2);
-                if (comp != 0){
-                    return comp;
-                }
-            }
-
-            // compares standard inchi if at least one inchi key is not set
-            String inchi1 = bioactiveEntity1.getStandardInchi();
-            String inchi2 = bioactiveEntity2.getStandardInchi();
-
-            if (inchi1 != null && inchi2 != null){
-                comp = inchi1.compareTo(inchi2);
-            }
-
-            return comp;
-        }
+        return super.compare(bioactiveEntity1, bioactiveEntity2);
     }
 
     @Override

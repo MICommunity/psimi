@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Gene;
+import psidev.psi.mi.jami.model.Interactor;
+
+import java.util.Comparator;
 
 /**
  * Unambiguous gene comparator.
@@ -15,7 +18,7 @@ import psidev.psi.mi.jami.model.Gene;
  * @since <pre>15/01/13</pre>
  */
 
-public class UnambiguousGeneComparator extends GeneComparator {
+public class UnambiguousGeneComparator extends AbstractGeneComparator {
 
     private static UnambiguousGeneComparator unambiguousGeneComparator;
 
@@ -24,6 +27,10 @@ public class UnambiguousGeneComparator extends GeneComparator {
      */
     public UnambiguousGeneComparator(){
         super(new UnambiguousInteractorBaseComparator());
+    }
+
+    protected UnambiguousGeneComparator(Comparator<Interactor> interactorBaseComparator){
+        super(interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator());
     }
 
     @Override
@@ -114,11 +121,6 @@ public class UnambiguousGeneComparator extends GeneComparator {
 
             return comp;
         }
-    }
-
-    @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
     }
 
     /**

@@ -37,7 +37,8 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
      * - use DefaultExactInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public DefaultExactInteractorComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultExactComplexComparator(), new DefaultExactPolymerComparator(), new DefaultExactBioactiveEntityComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultExactComplexComparator(), new DefaultExactPolymerComparator(),
+                new DefaultExactBioactiveEntityComparator(), new DefaultExactGeneComparator());
     }
 
     @Override
@@ -58,6 +59,11 @@ public class DefaultExactInteractorComparator extends InteractorComparator {
     @Override
     public DefaultExactPolymerComparator getPolymerComparator() {
         return (DefaultExactPolymerComparator) super.getPolymerComparator();
+    }
+
+    @Override
+    public DefaultExactGeneComparator getGeneComparator() {
+        return (DefaultExactGeneComparator) super.getGeneComparator();
     }
 
     @Override
