@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.Gene;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactGeneComparator extends GeneComparator {
+public class UnambiguousExactGeneComparator extends UnambiguousGeneComparator {
 
     private static UnambiguousExactGeneComparator unambiguousExactGeneComparator;
 

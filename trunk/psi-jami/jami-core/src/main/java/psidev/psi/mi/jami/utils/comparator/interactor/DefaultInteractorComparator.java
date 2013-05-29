@@ -37,7 +37,8 @@ public class DefaultInteractorComparator extends InteractorComparator{
      * - use DefaultInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public DefaultInteractorComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultComplexComparator(), new DefaultPolymerComparator(), new DefaultBioactiveEntityComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultComplexComparator(), new DefaultPolymerComparator(),
+                new DefaultBioactiveEntityComparator(), new DefaultGeneComparator());
     }
 
     @Override
@@ -58,6 +59,11 @@ public class DefaultInteractorComparator extends InteractorComparator{
     @Override
     public DefaultBioactiveEntityComparator getBioactiveEntityComparator() {
         return (DefaultBioactiveEntityComparator) super.getBioactiveEntityComparator();
+    }
+
+    @Override
+    public DefaultGeneComparator getGeneComparator() {
+        return (DefaultGeneComparator) super.getGeneComparator();
     }
 
     @Override

@@ -59,6 +59,28 @@ public class DefaultGene extends DefaultInteractor implements Gene {
         super(name, fullName, CvTermUtils.createGeneInteractorType(), organism, uniqueId);
     }
 
+    public DefaultGene(String name, String fullName, String ensembl) {
+        super(name, fullName, CvTermUtils.createGeneInteractorType());
+
+        if (ensembl != null){
+            setEnsembl(ensembl);
+        }
+    }
+
+    public DefaultGene(String name, Organism organism, String ensembl) {
+        super(name, CvTermUtils.createGeneInteractorType(), organism);
+        if (ensembl != null){
+            setEnsembl(ensembl);
+        }
+    }
+
+    public DefaultGene(String name, String fullName, Organism organism, String ensembl) {
+        super(name, fullName, CvTermUtils.createGeneInteractorType(), organism);
+        if (ensembl != null){
+            setEnsembl(ensembl);
+        }
+    }
+
     @Override
     protected void initialiseIdentifiers() {
         initialiseIdentifiersWith(new GeneIdentifierList());
@@ -240,7 +262,7 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     }
 
     protected void processRemovedIdentifierEvent(Xref removed) {
-        if (ensembl != null && ensemblGenome.equals(removed)){
+        if (ensembl != null && ensembl.equals(removed)){
             ensembl = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.ENSEMBL_MI, Xref.ENSEMBL);
         }
         else if (ensemblGenome != null && ensemblGenome.equals(removed)){
@@ -262,6 +284,10 @@ public class DefaultGene extends DefaultInteractor implements Gene {
     }
 
     @Override
+    /**
+     * Sets the interactor type.
+     * @throw IllegalArgumentException: If the give type is not gene (MI:0301)
+     */
     public void setInteractorType(CvTerm type) {
         if (!DefaultCvTermComparator.areEquals(type, CvTermUtils.getGene())){
             throw new IllegalArgumentException("This interactor is a Gene and the only available interactor type is gene (MI:0301)");

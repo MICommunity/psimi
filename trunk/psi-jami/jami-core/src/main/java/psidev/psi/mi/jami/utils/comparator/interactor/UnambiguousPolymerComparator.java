@@ -1,7 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
+
+import java.util.Comparator;
 
 /**
  * Unambiguous polymer comparator.
@@ -23,6 +26,10 @@ public class UnambiguousPolymerComparator extends AbstractPolymerComparator {
      */
     public UnambiguousPolymerComparator(){
         super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator());
+    }
+
+    protected UnambiguousPolymerComparator(Comparator<Interactor> interactorBaseComparator){
+        super(interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator());
     }
 
     @Override
@@ -71,11 +78,6 @@ public class UnambiguousPolymerComparator extends AbstractPolymerComparator {
             }
             return comp;
         }
-    }
-
-    @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
     }
 
     /**

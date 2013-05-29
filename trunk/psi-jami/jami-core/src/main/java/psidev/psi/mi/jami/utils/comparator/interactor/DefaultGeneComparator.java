@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Gene;
+import psidev.psi.mi.jami.model.Interactor;
+
+import java.util.Comparator;
 
 /**
  * Default gene comparator.
@@ -13,7 +16,7 @@ import psidev.psi.mi.jami.model.Gene;
  * @since <pre>15/01/13</pre>
  */
 
-public class DefaultGeneComparator extends GeneComparator {
+public class DefaultGeneComparator extends AbstractGeneComparator {
 
     private static DefaultGeneComparator defaultGeneComparator;
 
@@ -24,6 +27,10 @@ public class DefaultGeneComparator extends GeneComparator {
         super(new DefaultInteractorBaseComparator());
     }
 
+    protected DefaultGeneComparator(Comparator<Interactor> interactorBaseComparator){
+        super(interactorBaseComparator != null ? interactorBaseComparator : new DefaultInteractorBaseComparator());
+    }
+
     @Override
     /**
      * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties
@@ -32,12 +39,60 @@ public class DefaultGeneComparator extends GeneComparator {
      *
      */
     public int compare(Gene gene1, Gene gene2) {
-        return super.compare(gene1, gene2);
-    }
+        int EQUAL = 0;
+        int BEFORE = -1;
+        int AFTER = 1;
 
-    @Override
-    public DefaultInteractorBaseComparator getInteractorComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorComparator;
+        if (gene1 == null && gene2 == null){
+            return EQUAL;
+        }
+        else if (gene1 == null){
+            return AFTER;
+        }
+        else if (gene2 == null){
+            return BEFORE;
+        }
+        else {
+            // First compares the interactor properties
+            int comp = interactorComparator.compare(gene1, gene2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // first compares ensembl identifiers
+            String ensembl1 = gene1.getEnsembl();
+            String ensembl2 = gene2.getEnsembl();
+
+            if (ensembl1 != null && ensembl2 != null){
+                return ensembl1.compareTo(ensembl2);
+            }
+
+            // compares ensemblGenomes identifier if at least one ensembl identifier is not set
+            String ensemblGenome1 = gene1.getEnsembleGenome();
+            String ensemblGenome2 = gene2.getEnsembleGenome();
+
+            if (ensemblGenome1 != null && ensemblGenome2 != null){
+                return ensemblGenome1.compareTo(ensemblGenome2);
+            }
+
+            // compares entrez/gene Id if at least one ensemblGenomes identifier is not set
+            String geneId1 = gene1.getEntrezGeneId();
+            String geneId2 = gene2.getEntrezGeneId();
+
+            if (geneId1 != null && geneId2 != null){
+                return geneId1.compareTo(geneId2);
+            }
+
+            // compares refseq identifier if at least one reseq identifier is not set
+            String refseq1 = gene1.getRefseq();
+            String refseq2 = gene2.getRefseq();
+
+            if (refseq1 != null && refseq2 != null){
+                return refseq1.compareTo(refseq2);
+            }
+
+            return comp;
+        }
     }
 
     /**
