@@ -35,7 +35,8 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
      * - use UnambiguousInteractorBaseComparator for comparing basic interactors that are not one of the above..
      */
     public UnambiguousInteractorComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new UnambiguousComplexComparator(), new UnambiguousPolymerComparator());
+        super(new UnambiguousInteractorBaseComparator(), new UnambiguousComplexComparator(), new UnambiguousPolymerComparator(),
+                new UnambiguousBioactiveEntityComparator());
     }
 
     @Override
@@ -46,6 +47,16 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
     @Override
     public UnambiguousComplexComparator getComplexComparator() {
         return (UnambiguousComplexComparator) this.complexComparator;
+    }
+
+    @Override
+    public UnambiguousPolymerComparator getPolymerComparator() {
+        return (UnambiguousPolymerComparator) super.getPolymerComparator();
+    }
+
+    @Override
+    public UnambiguousBioactiveEntityComparator getBioactiveEntityComparator() {
+        return (UnambiguousBioactiveEntityComparator) super.getBioactiveEntityComparator();
     }
 
     @Override
