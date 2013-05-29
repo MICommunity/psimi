@@ -3,16 +3,17 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 import psidev.psi.mi.jami.model.InteractorSet;
 
 /**
- * Unambiguous InteractorCandidatesComparator.
+ * Unambiguous InteractorSetComparator.
  *
- * It will first compare the collection of Interactors using UnambiguousInteractorComparator
+ * It will first compare the basic interactor properties using UnambiguousInteractorBaseComparator
+ * Then it will compare the collection of Interactors using UnambiguousInteractorBaseComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousInteractorSetComparator extends InteractorCandidatesComparator {
+public class UnambiguousInteractorSetComparator extends InteractorSetComparator {
 
     private static UnambiguousInteractorSetComparator unambiguousInteractorCandidatesComparator;
 
@@ -20,20 +21,21 @@ public class UnambiguousInteractorSetComparator extends InteractorCandidatesComp
      * Creates a new UnambiguousInteractorSetComparator. It will use a UnambiguousInteractorComparator.
      */
     public UnambiguousInteractorSetComparator() {
-        super(new UnambiguousInteractorComparator());
+        super(new UnambiguousInteractorBaseComparator());
     }
 
     @Override
     /**
-     * It will first compare the collection of Interactors using UnambiguousInteractorComparator
+     * It will first compare the basic interactor properties using UnambiguousInteractorBaseComparator
+     * Then it will compare the collection of Interactors using UnambiguousInteractorBaseComparator
      */
     public int compare(InteractorSet candidat1, InteractorSet candidat2) {
         return super.compare(candidat1, candidat2);
     }
 
     @Override
-    public UnambiguousInteractorComparator getInteractorComparator() {
-        return (UnambiguousInteractorComparator) this.interactorCollectionComparator.getObjectComparator();
+    public UnambiguousInteractorBaseComparator getInteractorBaseComparator() {
+        return (UnambiguousInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     /**

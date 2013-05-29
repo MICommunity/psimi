@@ -3,36 +3,37 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 import psidev.psi.mi.jami.model.InteractorSet;
 
 /**
- * Default exact InteractorCandidatesComparator.
- *
- * It will first compare the collection of Interactors using DefaultExactInteractorComparator
+ * Default exact InteractorSetComparator.
+ * It will first compare the basic interactor properties using DefaultExactInteractorBaseComparator
+ * Then it will compare the collection of Interactors using DefaultExactInteractorBaseComparator
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExactInteractorSetComparator extends InteractorCandidatesComparator{
+public class DefaultExactInteractorSetComparator extends InteractorSetComparator {
 
     private static DefaultExactInteractorSetComparator defaultExactInteractorCandidatesComparator;
 
     /**
-     * Creates a new DefaultInteractorSetComparator. It will use a DefaultExactInteractorComparator.
+     * Creates a new DefaultInteractorSetComparator. It will use a DefaultExactInteractorBaseComparator.
      */
     public DefaultExactInteractorSetComparator() {
-        super(new DefaultExactInteractorComparator());
+        super(new DefaultExactInteractorBaseComparator());
     }
 
     @Override
     /**
-     * It will first compare the collection of Interactors using DefaultExactInteractorComparator
+     * It will first compare the basic interactor properties using DefaultExactInteractorBaseComparator
+     * Then it will compare the collection of Interactors using DefaultExactInteractorBaseComparator
      */
     public int compare(InteractorSet candidat1, InteractorSet candidat2) {
         return super.compare(candidat1, candidat2);
     }
 
     @Override
-    public DefaultExactInteractorComparator getInteractorComparator() {
-        return (DefaultExactInteractorComparator) this.interactorCollectionComparator.getObjectComparator();
+    public DefaultExactInteractorBaseComparator getInteractorBaseComparator() {
+        return (DefaultExactInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     /**

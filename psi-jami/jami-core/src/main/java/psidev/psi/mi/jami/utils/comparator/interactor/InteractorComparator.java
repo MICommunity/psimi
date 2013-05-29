@@ -14,7 +14,7 @@ import java.util.Comparator;
  * - Uses AbstractGeneComparator for comparing Gene objects.
  * - Uses AbstractNucleicAcidComparator for comparing NucleicAcids objects.
  * - Uses ComplexComparator for comparing complexes
- * - Uses InteractorCandidatesComparator for comparing interactor candidates
+ * - Uses InteractorSetComparator for comparing interactor candidates
  * - Uses AbstractPolymerComparator for comparing polymers
  * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
  *
@@ -31,7 +31,7 @@ public class InteractorComparator implements Comparator<Interactor> {
     protected AbstractNucleicAcidComparator nucleicAcidComparator;
     protected Comparator<Interactor> interactorBaseComparator;
     protected ComplexComparator complexComparator;
-    protected InteractorCandidatesComparator interactorCandaidatesComparator;
+    protected InteractorSetComparator interactorCandidatesComparator;
     protected AbstractPolymerComparator polymerComparator;
 
     /**
@@ -71,7 +71,7 @@ public class InteractorComparator implements Comparator<Interactor> {
             throw new IllegalArgumentException("The ComplexComparator is required to compare complexes. It cannot be null");
         }
         this.complexComparator = complexComparator;
-        this.interactorCandaidatesComparator = new InteractorCandidatesComparator(this);
+        this.interactorCandidatesComparator = new InteractorSetComparator(this);
     }
 
     public AbstractBioactiveEntityComparator getBioactiveEntityComparator() {
@@ -102,8 +102,8 @@ public class InteractorComparator implements Comparator<Interactor> {
         return polymerComparator;
     }
 
-    public InteractorCandidatesComparator getInteractorCandidatesComparator() {
-        return interactorCandaidatesComparator;
+    public InteractorSetComparator getInteractorCandidatesComparator() {
+        return interactorCandidatesComparator;
     }
 
     /**
@@ -114,7 +114,7 @@ public class InteractorComparator implements Comparator<Interactor> {
      * - Uses AbstractProteinComparator for comparing Protein objects.
      * - Uses AbstractGeneComparator for comparing Gene objects.
      * - Uses AbstractNucleicAcidComparator for comparing NucleicAcids objects.
-     * - Uses InteractorCandidatesComparator for comparing interactor candidates
+     * - Uses InteractorSetComparator for comparing interactor candidates
      * - Uses polymerComparator for comparing Polymer objects.
      * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
 
@@ -227,7 +227,7 @@ public class InteractorComparator implements Comparator<Interactor> {
                                     boolean isCandidates1 = interactor1 instanceof InteractorSet;
                                     boolean isCandidates2 = interactor2 instanceof InteractorSet;
                                     if (isCandidates1 && isCandidates2){
-                                        return complexComparator.compare((Complex) interactor1, (Complex) interactor2);
+                                        return interactorCandidatesComparator.compare((InteractorSet) interactor1, (InteractorSet) interactor2);
                                     }
                                     // the complex is before
                                     else if (isCandidates1){
