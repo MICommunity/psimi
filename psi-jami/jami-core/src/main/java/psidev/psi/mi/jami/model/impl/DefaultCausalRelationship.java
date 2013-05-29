@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactCausalRelationshipComparator;
 
 /**
- * Defautl implementation for CausalRelationship
+ * Default implementation for CausalRelationship
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
