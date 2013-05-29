@@ -1,20 +1,18 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.NucleicAcid;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Unambiguous exact nucleic acids comparator.
- * It will first use UnambiguousExactInteractorBaseComparator to compare the basic interactor properties.
- * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
- * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
- *
+ * It will first use UnambiguousExactPolymerBaseComparator to compare the basic interactor properties.
+ * If the basic polymer properties are the same, It will look for DDBJ/EMBL/Genbank identifier. If the DDBJ/EMBL/Genbank identifiers are identical, it will look at the
+ * Refseq identifiers.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactNucleicAcidComparator extends NucleicAcidComparator {
+public class UnambiguousExactNucleicAcidComparator extends UnambiguousNucleicAcidComparator {
 
     private static UnambiguousExactNucleicAcidComparator unambiguousExactNucleicAcidComparator;
 
@@ -23,22 +21,22 @@ public class UnambiguousExactNucleicAcidComparator extends NucleicAcidComparator
      * OrganismTaxIdComparator to compares organism.
      */
     public UnambiguousExactNucleicAcidComparator() {
-        super(new UnambiguousExactInteractorBaseComparator(), new OrganismTaxIdComparator());
+        super(new UnambiguousExactPolymerComparator());
     }
 
     @Override
     /**
-     * It will first use UnambiguousExactInteractorBaseComparator to compare the basic interactor properties.
-     * If the basic interactor properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set, it will look at the
-     * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the sequence/organism.
+     * It will first use UnambiguousExactPolymerBaseComparator to compare the basic interactor properties.
+     * If the basic polymer properties are the same, It will look for DDBJ/EMBL/Genbank identifier. If the DDBJ/EMBL/Genbank identifiers are identical, it will look at the
+     * Refseq identifiers.
      */
     public int compare(NucleicAcid nucleicAcid1, NucleicAcid nucleicAcid2) {
         return super.compare(nucleicAcid1, nucleicAcid2);
     }
 
     @Override
-    public UnambiguousExactInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousExactPolymerComparator getInteractorComparator() {
+        return (UnambiguousExactPolymerComparator) this.interactorComparator;
     }
 
     /**
