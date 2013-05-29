@@ -17,7 +17,7 @@ import java.util.Collection;
  * @since <pre>24/01/13</pre>
  */
 
-public class DefaultBioactiveEntity extends DefaultInteractor implements BioactiveEntity {
+public class DefaultBioactiveEntity extends DefaultMolecule implements BioactiveEntity {
 
     private Xref chebi;
     private Checksum smile;

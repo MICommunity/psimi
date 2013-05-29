@@ -1,46 +1,45 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Default exact proteins comparator.
- * It will first use DefaultExactInteractorBaseComparator to compare the basic interactor properties
- * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
- * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
- * If at least one gene name is not set, it will look at sequence/organism.
+ * It will first use DefaultExactPolymerComparator to compare the basic interactor properties
+ * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set or are identical, it will look at the
+ * Refseq identifiers. If at least one Refseq/uniprot identifiers is not set, it will look at the rogids. If at least one rogid is not set or both are identical, it will look at the gene names.
+ *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExactProteinComparator extends ProteinComparator {
+public class DefaultExactProteinComparator extends DefaultProteinComparator {
 
     private static DefaultExactProteinComparator defaultExactProteinComparator;
 
     /**
-     * Creates a new DefaultExactProteinComparator. It will uses a DefaultExactInteractorBaseComparator to compare interactor properties and a
+     * Creates a new DefaultExactProteinComparator. It will uses a DefaultExactPolymerComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public DefaultExactProteinComparator(){
-        super(new DefaultInteractorBaseComparator(), new OrganismTaxIdComparator());
+        super(new DefaultExactPolymerComparator());
     }
 
     @Override
     /**
-     * It will first use DefaultExactInteractorBaseComparator to compare the basic interactor properties
-     * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set, it will look at the
-     * Refseq identifiers. If at least one Refseq identifiers is not set, it will look at the rogids. If at least one rogid is not set, it will look at the gene names.
-     * If at least one gene name is not set, it will look at sequence/organism.
+     * It will first use DefaultExactPolymerComparator to compare the basic interactor properties
+     * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set or are identical, it will look at the
+     * Refseq identifiers. If at least one Refseq/uniprot identifiers is not set, it will look at the rogids. If at least one rogid is not set or both are identical, it will look at the gene names.
+     *
      */
     public int compare(Protein protein1, Protein protein2) {
         return super.compare(protein1, protein2);
     }
 
     @Override
-    public DefaultExactInteractorBaseComparator getInteractorComparator() {
-        return (DefaultExactInteractorBaseComparator) this.interactorComparator;
+    public DefaultExactPolymerComparator getInteractorComparator() {
+        return (DefaultExactPolymerComparator) this.interactorComparator;
     }
 
     /**

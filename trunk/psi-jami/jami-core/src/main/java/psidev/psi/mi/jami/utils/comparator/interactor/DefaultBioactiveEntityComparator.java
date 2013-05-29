@@ -66,7 +66,10 @@ public class DefaultBioactiveEntityComparator extends AbstractBioactiveEntityCom
             String chebi2 = bioactiveEntity2.getChebi();
 
             if (chebi1 != null && chebi2 != null){
-                return chebi1.compareTo(chebi2);
+                comp = chebi1.compareTo(chebi2);
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             // compares standard InChi key

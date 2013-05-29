@@ -38,7 +38,8 @@ public class DefaultInteractorComparator extends InteractorComparator{
      */
     public DefaultInteractorComparator() {
         super(new DefaultInteractorBaseComparator(), new DefaultComplexComparator(), new DefaultPolymerComparator(),
-                new DefaultBioactiveEntityComparator(), new DefaultGeneComparator(), new DefaultNucleicAcidComparator());
+                new DefaultBioactiveEntityComparator(), new DefaultGeneComparator(), new DefaultNucleicAcidComparator(),
+                new DefaultProteinComparator());
     }
 
     @Override
@@ -69,6 +70,11 @@ public class DefaultInteractorComparator extends InteractorComparator{
     @Override
     public DefaultNucleicAcidComparator getNucleicAcidComparator() {
         return (DefaultNucleicAcidComparator) super.getNucleicAcidComparator();
+    }
+
+    @Override
+    public DefaultProteinComparator getProteinComparator() {
+        return (DefaultProteinComparator) super.getProteinComparator();
     }
 
     @Override

@@ -1,43 +1,44 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Unambiguous proteins comparator.
- * It will first use UnambiguousInteractorBaseComparator to compare the basic interactor properties
+ * It will first use UnambiguousPolymerComparator to compare the basic interactor properties
  * If the basic interactor properties are the same, It will look for uniprotkb identifier (The interactor with non null uniprot id will always come first).
- * If the uniprotkb identifiers are not set, it will look at the
- * Refseq identifiers (The interactor with non null refseq id will always come first). If the Refseq identifiers are not set,
- * it will look at the rogids (The interactor with non null rogid will always come first). If the rogids are not set,
+ * If the uniprotkb identifiers are identical, it will look at the
+ * Refseq identifiers (The interactor with non null refseq id will always come first). If the Refseq and uniport identifiers are not set,
+ * it will look at the rogids (The interactor with non null rogid will always come first). If the rogids are identical,
  * it will look at the gene names (The interactor with non null gene name will always come first).
- * If the gene names are not set, it will look at sequence/organism (The interactor with non null sequence will always come first).
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>15/01/13</pre>
  */
 
-public class UnambiguousProteinComparator extends ProteinComparator {
+public class UnambiguousProteinComparator extends AbstractProteinComparator {
 
     private static UnambiguousProteinComparator unambiguousProteinComparator;
 
     /**
-     * Creates a new UnambiguousProteinComparator. It will uses a UnambiguousInteractorBaseComparator to compare interactor properties and a
+     * Creates a new UnambiguousProteinComparator. It will uses a UnambiguousPolymerComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public UnambiguousProteinComparator(){
-        super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator());
+        super(new UnambiguousPolymerComparator());
+    }
+
+    protected UnambiguousProteinComparator(AbstractPolymerComparator polymerBaseComparator){
+        super(polymerBaseComparator != null ? polymerBaseComparator : new UnambiguousPolymerComparator());
     }
 
     @Override
     /**
-     * It will first use UnambiguousInteractorBaseComparator to compare the basic interactor properties
+     * It will first use UnambiguousPolymerComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look for uniprotkb identifier (The interactor with non null uniprot id will always come first).
-     * If the uniprotkb identifiers are not set, it will look at the
-     * Refseq identifiers (The interactor with non null refseq id will always come first). If the Refseq identifiers are not set,
-     * it will look at the rogids (The interactor with non null rogid will always come first). If the rogids are not set,
+     * If the uniprotkb identifiers are identical, it will look at the
+     * Refseq identifiers (The interactor with non null refseq id will always come first). If the Refseq and uniport identifiers are not set,
+     * it will look at the rogids (The interactor with non null rogid will always come first). If the rogids are identical,
      * it will look at the gene names (The interactor with non null gene name will always come first).
-     * If the gene names are not set, it will look at sequence/organism (The interactor with non null sequence will always come first).
      */
     public int compare(Protein protein1, Protein protein2) {
         int EQUAL = 0;
@@ -66,7 +67,10 @@ public class UnambiguousProteinComparator extends ProteinComparator {
             String uniprot2 = protein2.getUniprotkb();
 
             if (uniprot1 != null && uniprot2 != null){
-                return uniprot1.compareTo(uniprot2);
+                comp = uniprot1.compareTo(uniprot2);
+                if (comp != 0){
+                    return comp;
+                }
             }
             else if (uniprot1 != null) {
                 return BEFORE;
@@ -76,11 +80,14 @@ public class UnambiguousProteinComparator extends ProteinComparator {
             }
 
             // compares Refseq
-            String refseq1 = protein1.getUniprotkb();
-            String refseq2 = protein2.getUniprotkb();
+            String refseq1 = protein1.getRefseq();
+            String refseq2 = protein2.getRefseq();
 
             if (refseq1 != null && refseq2 != null){
-                return refseq1.compareTo(refseq2);
+                comp = refseq1.compareTo(refseq2);
+                if (comp != 0){
+                    return comp;
+                }
             }
             else if (refseq1 != null) {
                 return BEFORE;
@@ -94,7 +101,10 @@ public class UnambiguousProteinComparator extends ProteinComparator {
             String rogid2 = protein2.getRogid();
 
             if (rogid1 != null && rogid2 != null){
-                return rogid1.compareTo(rogid2);
+                comp = rogid1.compareTo(rogid2);
+                if (comp != 0){
+                    return comp;
+                }
             }
             else if (rogid1 != null) {
                 return BEFORE;
@@ -117,30 +127,13 @@ public class UnambiguousProteinComparator extends ProteinComparator {
                 return AFTER;
             }
 
-            // compares sequences if at least one gene name is not set
-            String seq1 = protein1.getSequence();
-            String seq2 = protein2.getSequence();
-
-            if (seq1 != null && seq2 != null){
-                comp = seq1.compareTo(seq2);
-                // if sequences are equal, look at the organism before saying that the proteins are equals.
-                if (comp == 0){
-                    comp = organismComparator.compare(protein1.getOrganism(), protein2.getOrganism());
-                }
-            }
-            else if (seq1 != null) {
-                return BEFORE;
-            }
-            else if (seq2 != null) {
-                return AFTER;
-            }
             return comp;
         }
     }
 
     @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousPolymerComparator getInteractorComparator() {
+        return (UnambiguousPolymerComparator) this.interactorComparator;
     }
 
     /**

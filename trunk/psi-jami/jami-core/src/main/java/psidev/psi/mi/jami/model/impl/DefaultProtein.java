@@ -18,76 +18,75 @@ import java.util.Collection;
  * @since <pre>01/02/13</pre>
  */
 
-public class DefaultProtein extends DefaultInteractor implements Protein {
+public class DefaultProtein extends DefaultPolymer implements Protein {
 
     private Xref uniprotkb;
     private Xref refseq;
     private Alias geneName;
     private Checksum rogid;
-    private String sequence;
 
     public DefaultProtein(String name, CvTerm type) {
-        super(name, type);
+        super(name, type != null ? type : CvTermUtils.createProteinInteractorType());
     }
 
     public DefaultProtein(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : CvTermUtils.createProteinInteractorType());
     }
 
     public DefaultProtein(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
+        super(name, type != null ? type : CvTermUtils.createProteinInteractorType(), organism);
     }
 
     public DefaultProtein(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : CvTermUtils.createProteinInteractorType(), organism);
     }
 
     public DefaultProtein(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createProteinInteractorType(), uniqueId);
     }
 
     public DefaultProtein(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createProteinInteractorType(), uniqueId);
     }
 
     public DefaultProtein(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createProteinInteractorType(), organism, uniqueId);
     }
 
     public DefaultProtein(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type, organism, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createProteinInteractorType(), organism, uniqueId);
     }
 
     public DefaultProtein(String name) {
-        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI));
+        super(name, CvTermUtils.createProteinInteractorType());
     }
 
     public DefaultProtein(String name, String fullName) {
-        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI));
+        super(name, fullName, CvTermUtils.createProteinInteractorType());
     }
 
     public DefaultProtein(String name, Organism organism) {
-        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
+        super(name, CvTermUtils.createProteinInteractorType(), organism);
     }
 
     public DefaultProtein(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism);
+        super(name, fullName, CvTermUtils.createProteinInteractorType(), organism);
     }
 
     public DefaultProtein(String name, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
+        super(name, CvTermUtils.createProteinInteractorType(), uniqueId);
     }
 
     public DefaultProtein(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createProteinInteractorType(), uniqueId);
     }
 
     public DefaultProtein(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
+        super(name, CvTermUtils.createProteinInteractorType(), organism, uniqueId);
     }
 
     public DefaultProtein(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(PROTEIN, PROTEIN_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createProteinInteractorType(), organism, uniqueId);
     }
 
     @Override
@@ -202,14 +201,6 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
         }
     }
 
-    public String getSequence() {
-        return this.sequence;
-    }
-
-    public void setSequence(String sequence) {
-        this.sequence = sequence;
-    }
-
     protected void processAddedAliasEvent(Alias added) {
         // the added alias is gene name and it is not the current gene name
         if (geneName == null && AliasUtils.doesAliasHaveType(added, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
@@ -295,6 +286,20 @@ public class DefaultProtein extends DefaultInteractor implements Protein {
     protected void clearPropertiesLinkedToIdentifiers() {
         uniprotkb = null;
         refseq = null;
+    }
+
+    @Override
+    /**
+     * Sets the interactor type of this protein.
+     * If the given interactorType is null, it will set the interactor type to 'protein' (MI:0326)
+     */
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            super.setInteractorType(CvTermUtils.createProteinInteractorType());
+        }
+        else {
+            super.setInteractorType(interactorType);
+        }
     }
 
     @Override

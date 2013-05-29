@@ -36,7 +36,8 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
      */
     public UnambiguousInteractorComparator() {
         super(new UnambiguousInteractorBaseComparator(), new UnambiguousComplexComparator(), new UnambiguousPolymerComparator(),
-                new UnambiguousBioactiveEntityComparator(), new UnambiguousGeneComparator(), new UnambiguousNucleicAcidComparator());
+                new UnambiguousBioactiveEntityComparator(), new UnambiguousGeneComparator(), new UnambiguousNucleicAcidComparator(),
+                new UnambiguousProteinComparator());
     }
 
     @Override
@@ -67,6 +68,11 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
     @Override
     public UnambiguousNucleicAcidComparator getNucleicAcidComparator() {
         return (UnambiguousNucleicAcidComparator) super.getNucleicAcidComparator();
+    }
+
+    @Override
+    public UnambiguousProteinComparator getProteinComparator() {
+        return (UnambiguousProteinComparator) super.getProteinComparator();
     }
 
     @Override
