@@ -68,7 +68,10 @@ public class UnambiguousGeneComparator extends AbstractGeneComparator {
             String ensembl2 = gene2.getEnsembl();
 
             if (ensembl1 != null && ensembl2 != null){
-                return ensembl1.compareTo(ensembl2);
+                comp = ensembl1.compareTo(ensembl2);
+                if (comp != 0){
+                    return comp;
+                }
             }
             else if (ensembl1 != null){
                 return BEFORE;
@@ -82,7 +85,10 @@ public class UnambiguousGeneComparator extends AbstractGeneComparator {
             String ensemblGenome2 = gene2.getEnsembleGenome();
 
             if (ensemblGenome1 != null && ensemblGenome2 != null){
-                return ensemblGenome1.compareTo(ensemblGenome2);
+                comp = ensemblGenome1.compareTo(ensemblGenome2);
+                if (comp != 0){
+                    return comp;
+                }
             }
             else if (ensemblGenome1 != null){
                 return BEFORE;
@@ -96,7 +102,10 @@ public class UnambiguousGeneComparator extends AbstractGeneComparator {
             String geneId2 = gene2.getEntrezGeneId();
 
             if (geneId1 != null && geneId2 != null){
-                return geneId1.compareTo(geneId2);
+                comp = geneId1.compareTo(geneId2);
+                if (comp != 0){
+                    return comp;
+                }
             }
             else if (geneId1 != null){
                 return BEFORE;
