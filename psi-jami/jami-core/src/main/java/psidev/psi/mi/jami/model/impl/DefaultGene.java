@@ -20,7 +20,7 @@ import java.util.Collection;
  * @since <pre>24/01/13</pre>
  */
 
-public class DefaultGene extends DefaultInteractor implements Gene {
+public class DefaultGene extends DefaultMolecule implements Gene {
 
     private Xref ensembl;
     private Xref ensemblGenome;

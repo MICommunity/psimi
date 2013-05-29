@@ -68,7 +68,10 @@ public class UnambiguousBioactiveEntityComparator extends AbstractBioactiveEntit
             String chebi2 = bioactiveEntity2.getChebi();
 
             if (chebi1 != null && chebi2 != null){
-                return chebi1.compareTo(chebi2);
+                comp = chebi1.compareTo(chebi2);
+                if (comp != 0){
+                    return comp;
+                }
             }
             else if (chebi1 != null){
                 return BEFORE;
