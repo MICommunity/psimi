@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
 import java.util.*;
 
 /**
- * TDefault implementation for interactor set
+ * Default implementation for interactor set
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -24,14 +24,77 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
 
     public DefaultInteractorSet(String name, String fullName, CvTerm type) {
         super(name, fullName, type);
+        initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, CvTerm type, Organism organism) {
         super(name, type, organism);
+        initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorSet(String name, String fullName, CvTerm type, Organism organism) {
         super(name, fullName, type, organism);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, CvTerm type, Xref uniqueId) {
+        super(name, type, uniqueId);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, String fullName, CvTerm type, Xref uniqueId) {
+        super(name, fullName, type, uniqueId);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, CvTerm type, Organism organism, Xref uniqueId) {
+        super(name, type, organism, uniqueId);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
+        super(name, fullName, type, organism, uniqueId);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name) {
+        super(name);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, String fullName) {
+        super(name, fullName);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, Organism organism) {
+        super(name, organism);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, String fullName, Organism organism) {
+        super(name, fullName, organism);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, Xref uniqueId) {
+        super(name, uniqueId);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, String fullName, Xref uniqueId) {
+        super(name, fullName, uniqueId);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, Organism organism, Xref uniqueId) {
+        super(name, organism, uniqueId);
+        initialiseInteractorCandidatesSet();
+    }
+
+    public DefaultInteractorSet(String name, String fullName, Organism organism, Xref uniqueId) {
+        super(name, fullName, organism, uniqueId);
+        initialiseInteractorCandidatesSet();
     }
 
     protected void initialiseInteractorCandidatesSet(){

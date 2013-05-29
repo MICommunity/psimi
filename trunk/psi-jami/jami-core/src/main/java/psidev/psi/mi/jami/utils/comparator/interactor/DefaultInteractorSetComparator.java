@@ -3,37 +3,38 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 import psidev.psi.mi.jami.model.InteractorSet;
 
 /**
- * Default InteractorCandidatesComparator.
+ * Default InteractorSetComparator.
  *
- * It will first compare the collection of Interactors using DefaultInteractorComparator
+ * It will first compare the basic interactor properties using DefaultInteractorBaseComparator
+ * Then it will compare the collection of Interactors using DefaultInteractorBaseComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultInteractorSetComparator extends InteractorCandidatesComparator {
+public class DefaultInteractorSetComparator extends InteractorSetComparator {
 
     private static DefaultInteractorSetComparator defaultInteractorCandidatesComparator;
 
     /**
-     * Creates a new DefaultInteractorSetComparator. It will use a DefaultInteractorComparator.
+     * Creates a new DefaultInteractorSetComparator. It will use a DefaultInteractorBaseComparator.
      */
     public DefaultInteractorSetComparator() {
-        super(new DefaultInteractorComparator());
+        super(new DefaultInteractorBaseComparator());
     }
 
     @Override
     /**
-     * It will first compare the collection of Interactors using DefaultInteractorComparator
-     */
+     * It will first compare the basic interactor properties using DefaultInteractorBaseComparator
+     * Then it will compare the collection of Interactors using DefaultInteractorBaseComparator     */
     public int compare(InteractorSet candidat1, InteractorSet candidat2) {
         return super.compare(candidat1, candidat2);
     }
 
     @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorCollectionComparator.getObjectComparator();
+    public DefaultInteractorBaseComparator getInteractorBaseComparator() {
+        return (DefaultInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     /**
