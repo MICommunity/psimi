@@ -302,6 +302,10 @@ public class CvTermUtils {
         return createMICvTerm(Protein.PROTEIN, Protein.PROTEIN_MI);
     }
 
+    public static CvTerm createBioactiveEntityType(){
+        return createMICvTerm(BioactiveEntity.BIOACTIVE_ENTITY, BioactiveEntity.BIOACTIVE_ENTITY_MI);
+    }
+
     public static CvTerm createGeneNameAliasType(){
         return createMICvTerm(Alias.GENE_NAME, Alias.GENE_NAME_MI);
     }

@@ -5,9 +5,9 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
 /**
  * unambiguous Exact bioactive entity comparator.
  * It will first use UnambiguousExactInteractorBaseComparator to compare the basic interactor properties.
- * If the basic interactor properties are the same, It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
- * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
- * will look at the standard Inchi.
+ * If the basic interactor properties are the same, It will look first for CHEBI identifier (the interactor with a non null CHEBI identifier will always come first). If the CHEBI identifiers are not set, it will look at the
+ * standard inchi key (the interactor with a non null standard inchi key will always come first). If the standard inchi keys are identical, it will look at the smile (the interactor with a non null smile will always come first). If the smiles are identical, it
+ * will look at the standard Inchi (the interactor with a non null standard inchi will always come first).
  * This comparator will ignore all the other properties of an interactor.
  *
  *
@@ -16,7 +16,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactBioactiveEntityComparator extends BioactiveEntityComparator {
+public class UnambiguousExactBioactiveEntityComparator extends AbstractBioactiveEntityComparator {
     private static UnambiguousExactBioactiveEntityComparator unambiguousExactBioactiveEntityComparator;
 
     /**
@@ -29,13 +29,97 @@ public class UnambiguousExactBioactiveEntityComparator extends BioactiveEntityCo
     @Override
     /**
      * It will first use UnambiguousExactInteractorBaseComparator to compare the basic interactor properties.
-     * If the basic interactor properties are the same, It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
-     * smiles. If at least one smile is not set, it will look at the standard Inchi key. If at least one standard Inchi key is not set, it
-     * will look at the standard Inchi.
+     * If the basic interactor properties are the same, It will look first for CHEBI identifier (the interactor with a non null CHEBI identifier will always come first). If the CHEBI identifiers are not set, it will look at the
+     * standard inchi key (the interactor with a non null standard inchi key will always come first). If the standard inchi keys are identical, it will look at the smile (the interactor with a non null smile will always come first). If the smiles are identical, it
+     * will look at the standard Inchi (the interactor with a non null standard inchi will always come first).
      * This comparator will ignore all the other properties of an interactor.
      */
     public int compare(BioactiveEntity bioactiveEntity1, BioactiveEntity bioactiveEntity2) {
-        return super.compare(bioactiveEntity1, bioactiveEntity2);    //To change body of overridden methods use File | Settings | File Templates.
+        int EQUAL = 0;
+        int BEFORE = -1;
+        int AFTER = 1;
+
+        if (bioactiveEntity1 == null && bioactiveEntity2 == null){
+            return EQUAL;
+        }
+        else if (bioactiveEntity1 == null){
+            return AFTER;
+        }
+        else if (bioactiveEntity2 == null){
+            return BEFORE;
+        }
+        else {
+
+            // First compares the basic interactor properties
+            int comp = interactorComparator.compare(bioactiveEntity1, bioactiveEntity2);
+            if (comp != 0){
+                return comp;
+            }
+
+            // then compares CHEBI identifiers
+            String chebi1 = bioactiveEntity1.getChebi();
+            String chebi2 = bioactiveEntity2.getChebi();
+
+            if (chebi1 != null && chebi2 != null){
+                return chebi1.compareTo(chebi2);
+            }
+            else if (chebi1 != null){
+                return BEFORE;
+            }
+            else if (chebi2 != null){
+                return AFTER;
+            }
+
+            // compares standard InChi key
+            String inchikey1 = bioactiveEntity1.getStandardInchiKey();
+            String inchiKey2 = bioactiveEntity2.getStandardInchiKey();
+
+            if (inchikey1 != null && inchiKey2 != null){
+                comp = inchikey1.compareTo(inchiKey2);
+                if (comp != 0){
+                    return comp;
+                }
+            }
+            else if (inchikey1 != null){
+                return BEFORE;
+            }
+            else if (inchiKey2 != null){
+                return AFTER;
+            }
+
+            // compares smile
+            String smile1 = bioactiveEntity1.getSmile();
+            String smile2 = bioactiveEntity2.getSmile();
+
+            if (smile1 != null && smile2 != null){
+                comp = smile1.compareTo(smile2);
+                if (comp != 0){
+                    return comp;
+                }
+            }
+            else if (smile1 != null){
+                return BEFORE;
+            }
+            else if (smile2 != null){
+                return AFTER;
+            }
+
+            // compares standard inchi
+            String inchi1 = bioactiveEntity1.getStandardInchi();
+            String inchi2 = bioactiveEntity2.getStandardInchi();
+
+            if (inchi1 != null && inchi2 != null){
+                return inchi1.compareTo(inchi2);
+            }
+            else if (inchi1 != null){
+                return BEFORE;
+            }
+            else if (inchi2 != null){
+                return AFTER;
+            }
+
+            return comp;
+        }
     }
 
     @Override

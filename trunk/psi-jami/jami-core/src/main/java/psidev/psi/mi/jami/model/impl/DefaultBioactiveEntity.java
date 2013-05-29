@@ -25,108 +25,108 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     private Checksum standardInchiKey;
 
     public DefaultBioactiveEntity(String name, CvTerm type) {
-        super(name, type);
+        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType());
     }
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType());
     }
 
     public DefaultBioactiveEntity(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
+        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
     }
 
     public DefaultBioactiveEntity(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type, Xref uniqueId) {
-        super(name, fullName, type, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, fullName, type, organism, uniqueId);
+        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
 
     }
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type, String uniqueChebi) {
-        super(name, fullName, type);
+        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType());
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public DefaultBioactiveEntity(String name, CvTerm type, Organism organism, String uniqueChebi) {
-        super(name, type, organism);
+        super(name, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public DefaultBioactiveEntity(String name, String fullName, CvTerm type, Organism organism, String uniqueChebi) {
-        super(name, fullName, type, organism);
+        super(name, fullName, type != null ? type : CvTermUtils.createBioactiveEntityType(), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public DefaultBioactiveEntity(String name) {
-        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+        super(name, CvTermUtils.createBioactiveEntityType());
     }
 
     public DefaultBioactiveEntity(String name, String fullName) {
-        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+        super(name, fullName, CvTermUtils.createBioactiveEntityType());
     }
 
     public DefaultBioactiveEntity(String name, Organism organism) {
-        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, CvTermUtils.createBioactiveEntityType(), organism);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, fullName, CvTermUtils.createBioactiveEntityType(), organism);
     }
 
     public DefaultBioactiveEntity(String name, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
+        super(name, CvTermUtils.createBioactiveEntityType(), uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createBioactiveEntityType(), uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
+        super(name, CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createBioactiveEntityType(), organism, uniqueId);
 
     }
 
     public DefaultBioactiveEntity(String name, String fullName, String uniqueChebi) {
-        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI));
+        super(name, fullName, CvTermUtils.createBioactiveEntityType());
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public DefaultBioactiveEntity(String name, Organism organism, String uniqueChebi) {
-        super(name, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, CvTermUtils.createBioactiveEntityType(), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
     }
 
     public DefaultBioactiveEntity(String name, String fullName, Organism organism, String uniqueChebi) {
-        super(name, fullName, CvTermUtils.createMICvTerm(BIOACTIVE_ENTITY, BIOACTIVE_ENTITY_MI), organism);
+        super(name, fullName, CvTermUtils.createBioactiveEntityType(), organism);
         if (uniqueChebi != null){
             setChebi(uniqueChebi);
         }
@@ -197,7 +197,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     public void setStandardInchiKey(String key) {
         Collection<Checksum> bioactiveEntityChecksums = getChecksums();
 
-        if (standardInchiKey != null){
+        if (key != null){
             CvTerm inchiKeyMethod = CvTermUtils.createStandardInchiKey();
             // first remove old standard inchi key
             if (this.standardInchiKey != null){
@@ -220,7 +220,7 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
     public void setStandardInchi(String inchi) {
         Collection<Checksum> bioactiveEntityChecksums = getChecksums();
 
-        if (standardInchi != null){
+        if (inchi != null){
             CvTerm inchiMethod = CvTermUtils.createStandardInchi();
             // first remove standard inchi
             if (this.standardInchi != null){
@@ -301,6 +301,20 @@ public class DefaultBioactiveEntity extends DefaultInteractor implements Bioacti
 
     protected void clearPropertiesLinkedToIdentifiers() {
         chebi = null;
+    }
+
+    @Override
+    /**
+     * Sets the interactor type of this bioactive entity.
+     * If the given interactorType is null, it sets the interactorType to 'bioactive entity'(MI:1100)
+     */
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+            super.setInteractorType(CvTermUtils.createBioactiveEntityType());
+        }
+        else {
+            super.setInteractorType(interactorType);
+        }
     }
 
     @Override
