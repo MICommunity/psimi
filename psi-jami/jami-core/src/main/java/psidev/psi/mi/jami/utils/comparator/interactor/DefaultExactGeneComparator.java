@@ -5,8 +5,8 @@ import psidev.psi.mi.jami.model.Gene;
 /**
  * Default exact gene comparator.
  * It will first use DefaultExactInteractorBaseComparator to compare the basic interactor properties
- * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
- * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
+ * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set or are identical, it will look at the
+ * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set or both are identical, it will look at the entrez/gene id. If at least one entrez/gene id is not set or both are identical, it will look at the refseq identifiers.
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -28,8 +28,8 @@ public class DefaultExactGeneComparator extends DefaultGeneComparator {
     @Override
     /**
      * It will first use DefaultExactInteractorBaseComparator to compare the basic interactor properties
-     * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
-     * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
+     * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set or are identical, it will look at the
+     * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set or both are identical, it will look at the entrez/gene id. If at least one entrez/gene id is not set or both are identical, it will look at the refseq identifiers.
      *
      */
     public int compare(Gene gene1, Gene gene2) {

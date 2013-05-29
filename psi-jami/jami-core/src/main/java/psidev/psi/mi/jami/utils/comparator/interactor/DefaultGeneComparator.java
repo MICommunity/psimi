@@ -8,8 +8,8 @@ import java.util.Comparator;
 /**
  * Default gene comparator.
  * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties
- * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
- * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
+ * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set or are identical, it will look at the
+ * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set or both are identical, it will look at the entrez/gene id. If at least one entrez/gene id is not set or both are identical, it will look at the refseq identifiers.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -34,8 +34,8 @@ public class DefaultGeneComparator extends AbstractGeneComparator {
     @Override
     /**
      * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties
-     * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
-     * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set, it will look at the entrez/gene id. If at least one entrez/gene id is not set, it will look at the refseq identifiers.
+     * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set or are identical, it will look at the
+     * ensemblGenome identifiers. If at least one ensemblGemome identifiers is not set or both are identical, it will look at the entrez/gene id. If at least one entrez/gene id is not set or both are identical, it will look at the refseq identifiers.
      *
      */
     public int compare(Gene gene1, Gene gene2) {
@@ -64,7 +64,10 @@ public class DefaultGeneComparator extends AbstractGeneComparator {
             String ensembl2 = gene2.getEnsembl();
 
             if (ensembl1 != null && ensembl2 != null){
-                return ensembl1.compareTo(ensembl2);
+                comp = ensembl1.compareTo(ensembl2);
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             // compares ensemblGenomes identifier if at least one ensembl identifier is not set
@@ -72,7 +75,10 @@ public class DefaultGeneComparator extends AbstractGeneComparator {
             String ensemblGenome2 = gene2.getEnsembleGenome();
 
             if (ensemblGenome1 != null && ensemblGenome2 != null){
-                return ensemblGenome1.compareTo(ensemblGenome2);
+                comp = ensemblGenome1.compareTo(ensemblGenome2);
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             // compares entrez/gene Id if at least one ensemblGenomes identifier is not set
@@ -80,7 +86,10 @@ public class DefaultGeneComparator extends AbstractGeneComparator {
             String geneId2 = gene2.getEntrezGeneId();
 
             if (geneId1 != null && geneId2 != null){
-                return geneId1.compareTo(geneId2);
+                comp = geneId1.compareTo(geneId2);
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             // compares refseq identifier if at least one reseq identifier is not set
@@ -88,7 +97,10 @@ public class DefaultGeneComparator extends AbstractGeneComparator {
             String refseq2 = gene2.getRefseq();
 
             if (refseq1 != null && refseq2 != null){
-                return refseq1.compareTo(refseq2);
+                comp = refseq1.compareTo(refseq2);
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             return comp;
