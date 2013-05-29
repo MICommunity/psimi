@@ -7,14 +7,14 @@ import java.util.Comparator;
 /**
  * Generic Interactor Comparator.
  *
- * Bioactive entities come first, then proteins, then genes, then nucleic acids, then complexes and finally InteractorSet.
+ * Bioactive entities come first, then proteins, then genes, then nucleic acids, then interactorSet and finally Complexes.
  * If two interactors are from the same Interactor interface, it will use a more specific Comparator :
  * - Uses AbstractBioactiveEntityComparator for comparing BioactiveEntity objects.
  * - Uses AbstractProteinComparator for comparing Protein objects.
  * - Uses AbstractGeneComparator for comparing Gene objects.
  * - Uses AbstractNucleicAcidComparator for comparing NucleicAcids objects.
- * - Uses ComplexComparator for comparing complexes
  * - Uses InteractorSetComparator for comparing interactor candidates
+ * - Uses ComplexComparator for comparing complexes
  * - Uses AbstractPolymerComparator for comparing polymers
  * - use AbstractInteractorBaseComparator for comparing basic interactors that are not one of the above.
  *
@@ -71,7 +71,7 @@ public class InteractorComparator implements Comparator<Interactor> {
             throw new IllegalArgumentException("The ComplexComparator is required to compare complexes. It cannot be null");
         }
         this.complexComparator = complexComparator;
-        this.interactorCandidatesComparator = new InteractorSetComparator(this);
+        this.interactorCandidatesComparator = new InteractorSetComparator(interactorBaseComparator);
     }
 
     public AbstractBioactiveEntityComparator getBioactiveEntityComparator() {
@@ -209,31 +209,32 @@ public class InteractorComparator implements Comparator<Interactor> {
                                 return AFTER;
                             }
                             else {
-                                boolean isComplex1 = interactor1 instanceof Complex;
-                                boolean isComplex2 = interactor2 instanceof Complex;
-                                // both are complexes
-                                if (isComplex1 && isComplex2){
-                                    return complexComparator.compare((Complex) interactor1, (Complex) interactor2);
+
+                                // both are interactor candidates
+                                boolean isCandidates1 = interactor1 instanceof InteractorSet;
+                                boolean isCandidates2 = interactor2 instanceof InteractorSet;
+                                if (isCandidates1 && isCandidates2){
+                                    return interactorCandidatesComparator.compare((InteractorSet) interactor1, (InteractorSet) interactor2);
                                 }
                                 // the complex is before
-                                else if (isComplex1){
+                                else if (isCandidates1){
                                     return BEFORE;
                                 }
-                                else if (isComplex2){
+                                else if (isCandidates2){
                                     return AFTER;
                                 }
                                 else {
-                                    // both are interactor candidates
-                                    boolean isCandidates1 = interactor1 instanceof InteractorSet;
-                                    boolean isCandidates2 = interactor2 instanceof InteractorSet;
-                                    if (isCandidates1 && isCandidates2){
-                                        return interactorCandidatesComparator.compare((InteractorSet) interactor1, (InteractorSet) interactor2);
+                                    boolean isComplex1 = interactor1 instanceof Complex;
+                                    boolean isComplex2 = interactor2 instanceof Complex;
+                                    // both are complexes
+                                    if (isComplex1 && isComplex2){
+                                        return complexComparator.compare((Complex) interactor1, (Complex) interactor2);
                                     }
                                     // the complex is before
-                                    else if (isCandidates1){
+                                    else if (isComplex1){
                                         return BEFORE;
                                     }
-                                    else if (isCandidates2){
+                                    else if (isComplex2){
                                         return AFTER;
                                     }
                                     else {
