@@ -20,7 +20,7 @@ public class UnambiguousExactInteractorSetComparator extends InteractorSetCompar
      * Creates a new UnambiguousExactInteractorSetComparator. It will use a UnambiguousExactInteractorBaseComparator.
      */
     public UnambiguousExactInteractorSetComparator() {
-        super(new UnambiguousExactInteractorBaseComparator());
+        super(new UnambiguousExactInteractorComparator());
     }
 
     @Override

@@ -21,7 +21,7 @@ public class UnambiguousInteractorSetComparator extends InteractorSetComparator 
      * Creates a new UnambiguousInteractorSetComparator. It will use a UnambiguousInteractorComparator.
      */
     public UnambiguousInteractorSetComparator() {
-        super(new UnambiguousInteractorBaseComparator());
+        super(new UnambiguousInteractorComparator());
     }
 
     @Override
