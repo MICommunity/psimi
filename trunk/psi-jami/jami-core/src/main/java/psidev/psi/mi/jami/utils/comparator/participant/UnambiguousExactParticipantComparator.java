@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Unambiguous exact generic Participant comparator
- * Components come first and then experimental participants.
+ * Modelled participants come first and then experimental participants.
  * - It uses UnambiguousExactComponentComparator to compare components
  * - It uses UnambiguousExactParticipantEvidenceComparator to compare experimental participants
  * - It uses UnambiguousExactParticipantBaseComparator to compare basic participant properties
@@ -43,7 +43,7 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
 
     @Override
     /**
-     * Components come first and then experimental participants.
+     * Modelled participants come first and then experimental participants.
      * - It uses UnambiguousExactComponentComparator to compare components
      * - It uses UnambiguousExactParticipantEvidenceComparator to compare experimental participants
      * - It uses UnambiguousExactParticipantBaseComparator to compare basic participant properties

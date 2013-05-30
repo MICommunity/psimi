@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Generic default participant comparator.
- * Components come first and then experimental participants.
+ * Modelled participants come first and then experimental participants.
  * - It uses DefaultComponentComparator to compare components
  * - It uses DefaultParticipantEvidenceComparator to compare experimental participants
  * - It uses DefaultParticipantBaseComparator to compare basic participant properties
@@ -42,7 +42,7 @@ public class DefaultParticipantComparator extends ParticipantComparator {
 
     @Override
     /**
-     * Components come first and then experimental participants.
+     * Modelled participants come first and then experimental participants.
      * - It uses DefaultComponentComparator to compare components
      * - It uses DefaultParticipantEvidenceComparator to compare experimental participants
      * - It uses DefaultParticipantBaseComparator to compare basic participant properties
