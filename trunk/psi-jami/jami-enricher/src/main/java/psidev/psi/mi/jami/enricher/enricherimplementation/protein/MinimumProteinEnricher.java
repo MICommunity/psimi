@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.enricher.enricherimplementation.organism.MinimumOrgani
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.model.Protein;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -29,7 +31,8 @@ public class MinimumProteinEnricher
     public void enrichProtein(Protein proteinToEnrich)
             throws EnrichmentException {
 
-        Protein proteinEnriched = getFullyEnrichedForm(proteinToEnrich);
+        Collection<Protein> proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
+        Protein proteinEnriched = chooseProteinEnriched(proteinsEnriched);
         super.setOrganismEnricher(new MinimumOrganismEnricher());
         runProteinAdditionEnrichment(proteinToEnrich, proteinEnriched);
         runProteinMismatchComparison(proteinToEnrich, proteinEnriched);

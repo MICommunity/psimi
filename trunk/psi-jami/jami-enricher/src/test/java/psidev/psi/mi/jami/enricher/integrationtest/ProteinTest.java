@@ -56,7 +56,7 @@ public class ProteinTest {
     }
 
 
-    String[] tests = {"P42694","Q9Y2H6","FOOBAR"};
+    String[] tests = {"P42694","Q9Y2H6","Q6ZRI6-3", "P13055-2","PRO_0000015868","FOOBAR"};
 
     public void testProteins(){
         for(String s : tests){

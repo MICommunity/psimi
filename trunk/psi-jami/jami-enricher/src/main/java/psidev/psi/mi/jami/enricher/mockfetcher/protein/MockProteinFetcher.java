@@ -5,6 +5,8 @@ import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,13 +27,17 @@ public class MockProteinFetcher
         localProteins = new HashMap<String, Protein>();
     }
 
-    public Protein getProteinByID(String identifier) throws FetcherException {
+    public Collection<Protein> getProteinsByID(String identifier) throws FetcherException {
         if(! localProteins.containsKey(identifier)) {
             throw new EntryNotFoundException(
                     "No protein to repeat with ID ["+identifier+"]");
         }
 
-        else return localProteins.get(identifier);
+        else {
+            ArrayList<Protein> proteins = new ArrayList<Protein>();
+            proteins.add(localProteins.get(identifier));
+            return proteins;
+        }
     }
 
     public void addNewProtein(String uniprot, Protein protein){
