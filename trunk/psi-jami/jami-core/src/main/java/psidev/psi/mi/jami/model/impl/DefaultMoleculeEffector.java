@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.AllostericEffectorType;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.MoleculeEffector;
+import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactMoleculeEffectorComparator;
 
 /**
  * Default implementation for MoleculeEffector
@@ -29,5 +30,28 @@ public class DefaultMoleculeEffector implements MoleculeEffector{
 
     public AllostericEffectorType getEffectorType() {
         return AllostericEffectorType.molecule;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof MoleculeEffector)){
+            return false;
+        }
+
+        return UnambiguousExactMoleculeEffectorComparator.areEquals(this, (MoleculeEffector) o);
+    }
+
+    @Override
+    public int hashCode() {
+        return UnambiguousExactMoleculeEffectorComparator.hashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return "molecule effector: " + participant.toString();
     }
 }
