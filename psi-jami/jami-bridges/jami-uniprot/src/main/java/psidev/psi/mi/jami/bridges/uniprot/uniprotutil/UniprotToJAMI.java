@@ -17,6 +17,8 @@ import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.kraken.interfaces.uniprot.*;
+import uk.ac.ebi.kraken.interfaces.uniprot.comments.AlternativeProductsIsoform;
+import uk.ac.ebi.kraken.interfaces.uniprot.comments.IsoformSynonym;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensembl.Ensembl;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.flybase.FlyBase;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.go.Go;
@@ -28,6 +30,7 @@ import uk.ac.ebi.kraken.interfaces.uniprot.dbx.refseq.RefSeq;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.wormbase.WormBase;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Field;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
+import uk.ac.ebi.kraken.interfaces.uniprot.features.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.genename.GeneNameSynonym;
 import uk.ac.ebi.kraken.interfaces.uniprot.genename.ORFName;
 import uk.ac.ebi.kraken.interfaces.uniprot.genename.OrderedLocusName;
@@ -48,13 +51,14 @@ public class UniprotToJAMI {
 
     private final static Logger log = LoggerFactory.getLogger(UniprotToJAMI.class.getName());
 
-    public static Protein getProteinFromEntry(UniProtEntry e)
+    public static Protein getProteinMasterFromEntry(UniProtEntry e)
             throws FetcherException {
 
         if(e == null){
             throw new EntryNotFoundException("Uniprot entry was null.");
         }
 
+        Protein p;
         String shortName = null;
         String fullName = null;
 
@@ -75,9 +79,7 @@ public class UniprotToJAMI {
             }
         }
 
-        Protein p;
-
-        //SHORTNAME - ShortName/FullName/UniprotID/UniprotAC
+        //SHORT NAME - ShortName/FullName/UniprotID/UniprotAC
         if(shortName != null){
             p = new DefaultProtein(shortName);
         }else if(fullName != null){
@@ -181,6 +183,285 @@ public class UniprotToJAMI {
         return p;
     }
 
+
+
+    /**
+     *
+     *
+     *
+     * The mapping of fields for isoforms is as follows:
+     * SHORT NAME - isoform identifier
+     * ORGANISM - masterProtein organism
+     * SEQUENCE - isoform sequence
+     * ALIASES - gene name; gene name synonym; orf; locus name
+     * ALIASES - isoform synonyms
+     * XREF - ONLY: MasterProtein (db = uniprotkb, id = uniprotMaster, qualifier = isoform-parent (MI:0243))
+     *
+     * Other notes:
+     * CHECKSUMS - rogid will be generated at enrichment, CRC64 will be ignored
+     *
+     * **FULL NAME - protein description, primary id, secondary ids
+     *
+     * @param entry
+     * @param isoform
+     * @param identifier
+     * @return
+     * @throws FetcherException
+     */
+    public static Protein getProteinIsoformFromEntry(
+            UniProtEntry entry,
+            AlternativeProductsIsoform isoform,
+            String identifier)
+            throws FetcherException {
+
+        if(entry == null) throw new EntryNotFoundException("Uniprot entry was null.");
+        if(isoform == null) throw new EntryNotFoundException("Isoform entry was null.");
+
+        // SHORT NAME - identifier
+        Protein p = new DefaultProtein(identifier);
+
+        //todo
+        // FULL NAME - protein description
+        // p.setFullName(entry.getProteinDescription().);
+
+        // ORGANISM
+        p.setOrganism(getOrganismFromEntry(entry));
+
+
+        // SEQUENCE
+        switch (isoform.getIsoformSequenceStatus()) {
+            case NOT_DESCRIBED:
+                //log.error("According to uniprot the splice variant " + spliceVarId + " has no sequence (status = NOT_DESCRIBED)");
+                break;
+            case DESCRIBED:
+                p.setSequence(entry.getSplicedSequence(isoform.getName().getValue()));
+                break;
+            case DISPLAYED:
+                p.setSequence(entry.getSplicedSequence(isoform.getName().getValue()));
+                break;
+            case EXTERNAL:
+                // As it currently stands, when an isoform is retrieved,
+                // it will be retrieved with the entry which matches its identifier.
+                // This means that it should never have an external sequence.
+                // This would change if there was an attempt to withdraw all other isoforms from the entry
+                // as well as the one which matches.
+                log.warn("An isoform ["+isoform.getName().getValue()+"] has an unexpected external sequence.");
+                //getExternalSequence(isoform);
+                break;
+        }
+
+        //log.trace("Sequence reads : "+p.getSequence());
+
+        //CHECKSUMS
+        //p.getChecksums().add(ChecksumUtils.createChecksum("CRC64", null, e.getSequence().getCRC64()));
+        //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
+
+
+        // ALIASES - gene name, gene name synonyms, orf, locus
+        if(entry.getGenes() != null && entry.getGenes().size() > 0){
+            for(Gene g : entry.getGenes()){
+                //Gene Name
+                if(g.hasGeneName()) p.getAliases().add(AliasUtils.createGeneName(g.getGeneName().getValue()));
+                //Gene Name Synonym
+                if(g.getGeneNameSynonyms() != null && g.getGeneNameSynonyms().size() > 0){
+                    for(GeneNameSynonym gns : g.getGeneNameSynonyms()){
+                        p.getAliases().add( AliasUtils.createGeneNameSynonym(gns.getValue()));
+                    }
+                }
+                //ORF names
+                if(g.getORFNames() != null && g.getORFNames().size() > 0){
+                    for(ORFName orf : g.getORFNames()){
+                        p.getAliases().add( AliasUtils.createOrfName(orf.getValue()));
+                    }
+                }
+                //Locus Names
+                if(g.getOrderedLocusNames() != null && g.getOrderedLocusNames().size() > 0){
+                    for(OrderedLocusName oln : g.getOrderedLocusNames()){
+                        p.getAliases().add( AliasUtils.createLocusName(oln.getValue()));
+                    }
+                }
+            }
+        }
+
+        // ALIASES - isoform synonyms
+        for ( IsoformSynonym syn : isoform.getSynonyms() ) {
+            p.getAliases().add( AliasUtils.createIsoformSynonym( syn.getValue() ));
+        }
+
+        // XREF - uniprotMaster
+        // TODO confirm this is the correct xref
+        // add a xref with db = uniprotkb, id = uniprotMaster and qualifier = isoform-parent (MI:0243)
+        p.getXrefs().add(XrefUtils.createSecondaryXref("uniprotkb","MI:0243","uniprotMaster"));
+
+        return p;
+    }
+
+
+
+    public static String getExternalSequence(AlternativeProductsIsoform isoform){
+           /* //sequence = uniProtEntry.getSplicedSequence(isoform.getName().getValue());
+            Iterator<UniProtEntry> iterator = getUniProtEntry(parentProtein);
+            int numberOfEntryInIterator = 0;
+            while (iterator.hasNext()) {
+                UniProtEntry uniprotEntryParentProtein = iterator.next();
+                //sequence = uniprotEntryParentProtein.getSplicedSequence(isoform.getName().getValue());
+                if (numberOfEntryInIterator >= 1) {
+                    // we were expecting to find only one protein - hopefully that should not happen !
+                    log.error("We were expecting to find only one protein while loading external sequence from: " + parentProtein);
+                    log.error("Found " + uniprotEntryParentProtein.getUniProtId());
+                    while (iterator.hasNext()) {
+                        UniProtEntry p = iterator.next();
+                        log.error("Found " + p.getUniProtId());
+                        sequence = null;
+                    }
+                } else {
+                    numberOfEntryInIterator++;
+                    sequence = uniprotEntryParentProtein.getSplicedSequence(isoform.getName().getValue());
+
+                    if (sequence == null || sequence.length() == 0 ) {
+                        for (UniprotSpliceVariant uniprotSpliceVariant : findSpliceVariants(uniprotEntryParentProtein, organism, seqMap)) {
+                            if (uniprotSpliceVariant.getPrimaryAc().equals(spliceVarId)) {
+                                sequence = uniprotSpliceVariant.getSequence();
+                                break;
+                            }
+                        }
+                    }
+                }
+                numberOfEntryInIterator++;
+            }  */
+        return "String";
+    }
+
+
+    /**
+     *
+     * The mapping of fields for features is as follows:
+     * SHORT NAME - pro_xx identifier
+     * PRIMARY AC - uniprotIdMaster-chainId
+     * ORGANISM - masterProtein organism
+     * SEQUENCE - feature sequence
+     * ALIASES - gene name; gene name synonym; orf; locus name
+     * ALIASES - isoform synonyms
+     * XREF - ONLY: MasterProtein (db = uniprotkb, id = uniprotMaster and qualifier = chain-parent (MI:0951))
+     *
+     * Other notes:
+     * CHECKSUMS - rogid will be generated at enrichment, CRC64 will be ignored
+     * fullname is feature chain description.
+     *
+     * @param entry
+     * @param feature
+     * @param identifier
+     * @return
+     * @throws FetcherException
+     */
+    public static Protein getProteinFeatureFromEntry(
+            UniProtEntry entry,
+            Feature feature,
+            String identifier) throws FetcherException {
+
+
+        if(entry == null) throw new EntryNotFoundException("Uniprot entry was null.");
+        if(feature == null) throw new EntryNotFoundException("Feature entry was null.");
+
+        // SHORT NAME - identifier
+        Protein p = new DefaultProtein(identifier);
+
+        FeatureLocation location = null;
+        if(feature.getType() == FeatureType.CHAIN) {
+            ChainFeature chainFeature = (ChainFeature)feature;
+
+            // SEQUENCE - feature sequence
+            location = chainFeature.getFeatureLocation();
+        }
+        else if(feature.getType() == FeatureType.PEPTIDE) {
+            PeptideFeature chainFeature = (PeptideFeature)feature;
+
+            // SEQUENCE - feature sequence
+            location = chainFeature.getFeatureLocation();
+        }
+        else if(feature.getType() == FeatureType.PROPEP)  {
+            ProPepFeature chainFeature = (ProPepFeature)feature;
+
+            // SEQUENCE - feature sequence
+            location = chainFeature.getFeatureLocation();
+        }
+
+
+        if (location != null){
+            int begin = location.getStart()-1;
+            int end = location.getEnd();
+
+            if(location.getStart() == -1) begin = 0;
+            if(location.getEnd() == -1) end = entry.getSequence().getValue().length() -1;
+
+            if(begin > end) throw new BadResultException(
+                    "Sequence has beginning ("+begin+") larger than end ("+end+").");
+            if(end>entry.getSequence().getValue().length()) throw new BadResultException(
+                    "Sequence has end ("+end+") larger than " +
+                    "length ("+entry.getSequence().getValue().length()+").");
+            if(begin < 0 || end < 0) throw new BadResultException(
+                    "Sequence a beginning ("+begin+") or end ("+end+") lower than 0.");
+
+            p.setSequence(entry.getSequence().subSequence(begin,end).getValue());
+        }
+
+
+
+        //todo
+        // FULL NAME - protein description
+        // p.setFullName(entry.getProteinDescription().);
+
+        //PRIMARY AC - uniprotIdMaster-chainId
+        if(entry.getPrimaryUniProtAccession() != null){
+            String primaryAc = entry.getPrimaryUniProtAccession().getValue()+"-"+identifier;
+            p.setUniprotkb(primaryAc);
+        }
+
+        // ORGANISM
+        p.setOrganism(getOrganismFromEntry(entry));
+
+        //CHECKSUMS
+        //p.getChecksums().add(ChecksumUtils.createChecksum("CRC64", null, e.getSequence().getCRC64()));
+        //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
+
+        // ALIASES - gene name, gene name synonyms, orf, locus
+        if(entry.getGenes() != null && entry.getGenes().size() > 0){
+            for(Gene g : entry.getGenes()){
+                //Gene Name
+                if(g.hasGeneName()) p.getAliases().add(AliasUtils.createGeneName(g.getGeneName().getValue()));
+                //Gene Name Synonym
+                if(g.getGeneNameSynonyms() != null && g.getGeneNameSynonyms().size() > 0){
+                    for(GeneNameSynonym gns : g.getGeneNameSynonyms()){
+                        p.getAliases().add( AliasUtils.createGeneNameSynonym(gns.getValue()));
+                    }
+                }
+                //ORF names
+                if(g.getORFNames() != null && g.getORFNames().size() > 0){
+                    for(ORFName orf : g.getORFNames()){
+                        p.getAliases().add( AliasUtils.createOrfName(orf.getValue()));
+                    }
+                }
+                //Locus Names
+                if(g.getOrderedLocusNames() != null && g.getOrderedLocusNames().size() > 0){
+                    for(OrderedLocusName oln : g.getOrderedLocusNames()){
+                        p.getAliases().add( AliasUtils.createLocusName(oln.getValue()));
+                    }
+                }
+            }
+        }
+
+        // ALIASES - feature synonyms
+
+
+        // XREF - uniprotMaster
+        // TODO confirm this is the correct xref
+        //db = uniprotkb, id = uniprotMaster and qualifier = chain-parent (MI:0951))
+        p.getXrefs().add(XrefUtils.createSecondaryXref("uniprotkb","MI:0951","uniprotMaster"));
+
+        return p;
+    }
+
+
     private static Map<DatabaseType,CvTerm> databaseMap = null;
     protected static void initiateDatabaseMap(){
         databaseMap = new HashMap<DatabaseType, CvTerm>();
@@ -200,7 +481,6 @@ public class UniprotToJAMI {
 
         if (databaseMap.containsKey(dbxref.getDatabase())){
             CvTerm database = databaseMap.get(dbxref.getDatabase());
-
             String id = null;
 
             if(dbxref.getDatabase() == DatabaseType.GO){
@@ -220,7 +500,7 @@ public class UniprotToJAMI {
                 if(db.hasReactomeAccessionNumber()) id = db.getReactomeAccessionNumber().getValue();
             }
             else if(dbxref.getDatabase() == DatabaseType.ENSEMBL){
-                //Todo check that the order f these is correct
+                //Todo check that the order of these is correct
                 Ensembl db = (Ensembl)dbxref;
                 if(db.hasEnsemblProteinIdentifier()) id = db.getEnsemblProteinIdentifier().getValue();
                 else if(db.hasEnsemblTranscriptIdentifier()) id = db.getEnsemblTranscriptIdentifier().getValue();
@@ -252,7 +532,6 @@ public class UniprotToJAMI {
     public static Organism getOrganismFromEntry(UniProtEntry e)
             throws FetcherException{
 
-        //TODO Change where ogrnaisms come from
         Organism o;
 
         if(e.getNcbiTaxonomyIds() == null
@@ -261,7 +540,7 @@ public class UniprotToJAMI {
         } else if(e.getNcbiTaxonomyIds().size() > 1){
             throw new BadResultException(
                     "Uniprot entry ["+e.getPrimaryUniProtAccession().getValue()+"] "
-                    +"has multiple organisms.");
+                            +"has multiple organisms.");
         } else {
             String id = e.getNcbiTaxonomyIds().get(0).getValue();
             try{
@@ -277,5 +556,4 @@ public class UniprotToJAMI {
 
         return o;
     }
-
 }

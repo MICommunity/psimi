@@ -69,15 +69,15 @@ public abstract class AbstractProteinEnricher
         });
     }
 
-    protected Protein getFullyEnrichedForm(Protein ProteinToEnrich)
+    protected Collection<Protein> getFullyEnrichedForms(Protein ProteinToEnrich)
             throws EnrichmentException {
 
         if(fetcher == null) throw new FetchingException("ProteinFetcher is null.");
         if(ProteinToEnrich == null) throw new FetchingException("Attempted to enrich a null protein.");
 
-        Protein enriched = null;
+        Collection<Protein> enriched = null;
         try{
-            enriched = fetcher.getProteinByID(ProteinToEnrich.getUniprotkb());
+            enriched = fetcher.getProteinsByID(ProteinToEnrich.getUniprotkb());
             enricherEvent.clear();
             enricherEvent.setQueryDetails(ProteinToEnrich.getUniprotkb(),"UniprotKB AC", fetcher.getService());
         }catch (FetcherException e) {
@@ -87,6 +87,22 @@ public abstract class AbstractProteinEnricher
         if(enriched==null) throw new FetchingException("Null protein");
 
         return enriched;
+    }
+
+    protected Protein chooseProteinEnriched(Collection<Protein> proteinsEnriched){
+        //TODO implement a real choice!
+
+        //Only 1 entry, return it
+        if(proteinsEnriched.size() == 1) {
+            for(Protein protein : proteinsEnriched){return protein;}
+        }
+        //More than 1 entry, make a choice!
+        else if(proteinsEnriched.size() > 1) {
+            for(Protein protein : proteinsEnriched){
+                return protein;
+            }
+        }
+        return null;
     }
 
     protected void runProteinAdditionEnrichment(Protein proteinToEnrich, Protein proteinEnriched)
@@ -139,7 +155,7 @@ public abstract class AbstractProteinEnricher
 
         for(Xref x: subtractedIdentifiers){
             proteinToEnrich.getIdentifiers().add(x);
-            addAdditionReport(new AdditionReport("Identifier", x.getId()));
+            addAdditionReport(new AdditionReport("Identifier", x.getId()+" in "+x.getDatabase()));
         }
 
         //Aliases
@@ -159,7 +175,7 @@ public abstract class AbstractProteinEnricher
                 new DefaultXrefComparator());
         for(Xref x: subtractedXrefs){
             proteinToEnrich.getXrefs().add(x);
-            addAdditionReport(new AdditionReport("Xref", x.getId()));
+            addAdditionReport(new AdditionReport("Xref", x.getId()+" in "+x.getDatabase()));
         }
 
         //Organism -
@@ -251,7 +267,7 @@ public abstract class AbstractProteinEnricher
         }
     }
 
-    public void runProteinMismatchComparison(Protein proteinToEnrich, Protein proteinEnriched){
+    protected void runProteinMismatchComparison(Protein proteinToEnrich, Protein proteinEnriched){
 
         //Short name
         if (!proteinToEnrich.getShortName().equalsIgnoreCase(

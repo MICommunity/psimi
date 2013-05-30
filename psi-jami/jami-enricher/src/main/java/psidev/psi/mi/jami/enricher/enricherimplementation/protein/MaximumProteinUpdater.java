@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.enricher.enricherimplementation.organism.MaximumOrgani
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.model.Protein;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -28,7 +30,9 @@ public class MaximumProteinUpdater
     public void enrichProtein(Protein proteinToEnrich)
             throws EnrichmentException {
 
-        Protein proteinEnriched = getFullyEnrichedForm(proteinToEnrich);
+        Collection<Protein> proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
+        Protein proteinEnriched = chooseProteinEnriched(proteinsEnriched);
+
         super.setOrganismEnricher(new MaximumOrganismUpdater());
         runProteinAdditionEnrichment(proteinToEnrich, proteinEnriched);
         runProteinOverwriteUpdate(proteinToEnrich, proteinEnriched);

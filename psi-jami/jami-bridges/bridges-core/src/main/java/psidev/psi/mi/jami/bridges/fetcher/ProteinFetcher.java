@@ -4,6 +4,8 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.model.Protein;
 
+import java.util.Collection;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -12,7 +14,7 @@ import psidev.psi.mi.jami.model.Protein;
  * Time: 13:50
  */
 public interface ProteinFetcher extends Fetcher{
-    public Protein getProteinByID(String identifier)
+    public Collection<Protein> getProteinsByID(String identifier)
             throws FetcherException;
 
 }

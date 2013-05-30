@@ -23,6 +23,7 @@ public class LoggingEnricherListener implements EnricherListener {
     public void onEnricherEvent(EnricherEvent e) {
         log.info(" ---- New Log ----");
         logAllReports(e);
+        log.info(" ---- Log Ends ----");
     }
 
     public void logAllReports(EnricherEvent e) {
@@ -49,8 +50,9 @@ public class LoggingEnricherListener implements EnricherListener {
         }
 
         for(EnricherEvent s :e.getSubEnricherEvents()) {
-            log.info("Sub enrichment begins");
+            log.info("-- Sub enrichment begins --");
             logAllReports(s);
+            log.info("-- Sub enrichment ends --");
         }
     }
 }
