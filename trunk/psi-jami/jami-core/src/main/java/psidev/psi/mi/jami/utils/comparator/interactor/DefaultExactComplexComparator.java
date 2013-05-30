@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantInteractorComparator;
 
 /**
  * Default exact Complex comparator
@@ -31,6 +32,10 @@ public class DefaultExactComplexComparator extends ComplexComparator{
 
     public DefaultExactComplexComparator(DefaultExactModelledParticipantComparator comparator) {
         super(new DefaultExactInteractorBaseComparator(), comparator != null ? comparator : new DefaultExactModelledParticipantComparator(), new DefaultCvTermComparator());
+    }
+
+    public DefaultExactComplexComparator(DefaultExactModelledParticipantInteractorComparator comparator) {
+        super(new DefaultExactInteractorBaseComparator(), comparator != null ? comparator : new DefaultExactModelledParticipantInteractorComparator(), new DefaultCvTermComparator());
     }
 
     @Override

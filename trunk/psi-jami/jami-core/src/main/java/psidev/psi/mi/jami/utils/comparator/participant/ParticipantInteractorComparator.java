@@ -29,6 +29,10 @@ public class ParticipantInteractorComparator<T extends Participant> implements C
         this.interactorComparator = interactorComparator;
     }
 
+    public void setInteractorComparator(InteractorComparator interactorComparator) {
+        this.interactorComparator = interactorComparator;
+    }
+
     public InteractorComparator getInteractorComparator() {
         return interactorComparator;
     }
@@ -43,9 +47,8 @@ public class ParticipantInteractorComparator<T extends Participant> implements C
      */
     public int compare(T participant1, T participant2) {
         if (interactorComparator == null){
-            throw new IllegalStateException("The Interactor comparator is required to compare interactors. It cannot be null");
+            throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
         }
-
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

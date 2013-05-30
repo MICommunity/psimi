@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
 /**
  * unambiguous exact biological participant comparator.
@@ -24,7 +26,7 @@ public class UnambiguousExactModelledParticipantComparator extends ModelledParti
      */
     public UnambiguousExactModelledParticipantComparator() {
         super(new UnambiguousModelledFeaturecomparator());
-        setParticipantBaseComparator(new UnambiguousExactParticipantBaseComparator(this));
+        setParticipantBaseComparator(new UnambiguousExactParticipantBaseComparator(new UnambiguousExactInteractorComparator(new UnambiguousExactComplexComparator(this))));
     }
 
     @Override
