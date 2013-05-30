@@ -2,15 +2,15 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
 /**
  * Unambiguous participant comparator
  * It will first compare the interactors using UnambiguousInteractorComparator. If both interactors are the same,
  * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a UnambiguousFeatureBaseComparator.
+ * will look at the stoichiometry (participant with lower stoichiometry will come first).
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -24,16 +24,19 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
 
     /**
      * Creates a new UnambiguousParticipantBaseComparator. It will use a UnambiguousInteractorComparator to compare
-     * interactors, a UnambiguousCvTermComparator to compare biological roles, a UnambiguousFeatureBaseComparator to
-     * compare features.
+     * interactors, a UnambiguousCvTermComparator to compare biological roles
      */
     public UnambiguousParticipantBaseComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new UnambiguousCvTermComparator(), new UnambiguousFeatureBaseComparator());
+        super(new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator());
+    }
+
+    public UnambiguousParticipantBaseComparator(UnambiguousModelledParticipantComparator comparator) {
+        super(comparator != null ? new UnambiguousInteractorComparator(new UnambiguousComplexComparator(comparator)) : new UnambiguousInteractorComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousInteractorComparator getInteractorComparator() {
+        return (UnambiguousInteractorComparator) this.interactorComparator;
     }
 
     @Override
@@ -45,8 +48,7 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
     /**
      * It will first compare the interactors using UnambiguousInteractorComparator. If both interactors are the same,
      * it will compare the biological roles using UnambiguousCvTermComparator. If both biological roles are the same, it
-     * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a UnambiguousFeatureBaseComparator.
+     * will look at the stoichiometry (participant with lower stoichiometry will come first).
      *
      * This comparator will ignore all the other properties of a participant.
      */

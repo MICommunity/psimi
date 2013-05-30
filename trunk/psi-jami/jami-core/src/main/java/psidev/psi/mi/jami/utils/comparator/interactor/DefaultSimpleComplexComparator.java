@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
 
 /**
  * Default Complex comparator which will only compare interactors in the components
@@ -26,7 +26,7 @@ public class DefaultSimpleComplexComparator extends ComplexComparator{
      * compares components
      */
     public DefaultSimpleComplexComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultModelledParticipantInteractorComparator(), new DefaultCvTermComparator());
+        super(new DefaultInteractorBaseComparator(), new DefaultModelledParticipantComparator(), new DefaultCvTermComparator());
     }
 
     @Override
@@ -40,8 +40,8 @@ public class DefaultSimpleComplexComparator extends ComplexComparator{
     }
 
     @Override
-    public DefaultInteractorBaseComparator getInteractorComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorComparator;
+    public DefaultInteractorBaseComparator getInteractorBaseComparator() {
+        return (DefaultInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     @Override

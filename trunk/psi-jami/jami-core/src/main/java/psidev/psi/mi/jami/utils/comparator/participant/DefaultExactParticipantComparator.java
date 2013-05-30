@@ -22,7 +22,8 @@ public class DefaultExactParticipantComparator extends ParticipantComparator {
      * Creates a DefaultExactParticipantComparator. It will use a DefaultExactParticipantBaseComparator to compare basic feature properties
      */
     public DefaultExactParticipantComparator() {
-        super(new DefaultExactParticipantBaseComparator(), new DefaultExactParticipantEvidenceComparator());
+        super(new DefaultExactParticipantBaseComparator(), new DefaultExactParticipantEvidenceComparator(),
+                new DefaultExactModelledParticipantComparator());
     }
 
     @Override
@@ -33,6 +34,11 @@ public class DefaultExactParticipantComparator extends ParticipantComparator {
     @Override
     public DefaultExactParticipantEvidenceComparator getExperimentalParticipantComparator() {
         return (DefaultExactParticipantEvidenceComparator) this.experimentalParticipantComparator;
+    }
+
+    @Override
+    public DefaultExactModelledParticipantComparator getBiologicalParticipantComparator() {
+        return (DefaultExactModelledParticipantComparator) super.getBiologicalParticipantComparator();
     }
 
     @Override

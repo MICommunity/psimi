@@ -42,6 +42,12 @@ public class DefaultInteractorComparator extends InteractorComparator{
                 new DefaultProteinComparator());
     }
 
+    public DefaultInteractorComparator(DefaultComplexComparator complexComparator) {
+        super(new DefaultInteractorBaseComparator(), complexComparator != null ? complexComparator : new DefaultComplexComparator(), new DefaultPolymerComparator(),
+                new DefaultBioactiveEntityComparator(), new DefaultGeneComparator(), new DefaultNucleicAcidComparator(),
+                new DefaultProteinComparator());
+    }
+
     @Override
     public DefaultInteractorBaseComparator getInteractorBaseComparator() {
         return (DefaultInteractorBaseComparator) this.interactorBaseComparator;

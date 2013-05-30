@@ -29,6 +29,10 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
         super(new UnambiguousExactInteractorBaseComparator(), new UnambiguousExactModelledParticipantComparator(), new UnambiguousCvTermComparator());
     }
 
+    public UnambiguousExactComplexComparator(UnambiguousExactModelledParticipantComparator comparator) {
+        super(new UnambiguousExactInteractorBaseComparator(), comparator != null ? comparator : new UnambiguousExactModelledParticipantComparator(), new UnambiguousCvTermComparator());
+    }
+
     @Override
     /**
      *
@@ -41,8 +45,8 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
     }
 
     @Override
-    public UnambiguousExactInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousExactInteractorBaseComparator getInteractorBaseComparator() {
+        return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;
     }
 
 

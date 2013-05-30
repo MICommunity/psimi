@@ -1,7 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Stoichiometry;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 
 import java.util.Comparator;
 
@@ -19,29 +23,28 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ParticipantBaseComparator<T extends Feature> extends ParticipantInteractorComparator {
+public class ParticipantBaseComparator implements Comparator<Participant> {
 
     protected AbstractCvTermComparator cvTermComparator;
     protected StoichiometryComparator stoichiometryComparator;
+    protected InteractorComparator interactorComparator;
 
     /**
      * Creates a new ParticipantBaseComparator
      * @param interactorComparator : interactor comparator required for comparing the molecules
      * @param cvTermComparator : CvTerm comparator required for comparing biological roles
-     * @param featureComparator : AbstractFeatureBaseComparator required for comparing participant features
      */
-    public ParticipantBaseComparator(Comparator<Interactor> interactorComparator, AbstractCvTermComparator cvTermComparator,
-                                     Comparator<T> featureComparator){
+    public ParticipantBaseComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator){
 
-        super(interactorComparator);
+        if (interactorComparator == null){
+            throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
+        }
+        this.interactorComparator = interactorComparator;
 
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare biological roles. It cannot be null");
         }
         this.cvTermComparator = cvTermComparator;
-        if (featureComparator == null){
-            throw new IllegalArgumentException("The feature comparator is required to compare participant features. It cannot be null");
-        }
 
         this.stoichiometryComparator = new StoichiometryComparator();
     }
@@ -52,6 +55,10 @@ public class ParticipantBaseComparator<T extends Feature> extends ParticipantInt
 
     public StoichiometryComparator getStoichiometryComparator() {
         return stoichiometryComparator;
+    }
+
+    public InteractorComparator getInteractorComparator() {
+        return interactorComparator;
     }
 
     /**

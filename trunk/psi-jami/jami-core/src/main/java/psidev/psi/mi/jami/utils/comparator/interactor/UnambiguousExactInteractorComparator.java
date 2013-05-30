@@ -41,6 +41,12 @@ public class UnambiguousExactInteractorComparator extends InteractorComparator {
                 new UnambiguousExactProteinComparator());
     }
 
+    public UnambiguousExactInteractorComparator(UnambiguousExactComplexComparator comparator) {
+        super(new UnambiguousExactInteractorBaseComparator(), comparator != null ? comparator : new UnambiguousExactComplexComparator(), new UnambiguousExactPolymerComparator(),
+                new UnambiguousExactBioactiveEntityComparator(), new UnambiguousExactGeneComparator(), new UnambiguousExactNucleicAcidComparator(),
+                new UnambiguousExactProteinComparator());
+    }
+
     @Override
     public UnambiguousExactInteractorBaseComparator getInteractorBaseComparator() {
         return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;

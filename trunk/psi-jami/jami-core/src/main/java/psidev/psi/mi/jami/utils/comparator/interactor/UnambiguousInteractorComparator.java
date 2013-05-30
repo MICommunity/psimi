@@ -40,6 +40,12 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
                 new UnambiguousProteinComparator());
     }
 
+    public UnambiguousInteractorComparator(UnambiguousComplexComparator complexComparator) {
+        super(new UnambiguousInteractorBaseComparator(), complexComparator != null ? complexComparator : new UnambiguousComplexComparator(), new UnambiguousPolymerComparator(),
+                new UnambiguousBioactiveEntityComparator(), new UnambiguousGeneComparator(), new UnambiguousNucleicAcidComparator(),
+                new UnambiguousProteinComparator());
+    }
+
     @Override
     public UnambiguousInteractorBaseComparator getInteractorBaseComparator() {
         return (UnambiguousInteractorBaseComparator) this.interactorBaseComparator;

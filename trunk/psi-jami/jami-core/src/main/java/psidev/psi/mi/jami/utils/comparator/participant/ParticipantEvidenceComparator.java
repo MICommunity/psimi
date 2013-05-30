@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.FeatureEvidenceComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterComparator;
@@ -26,7 +26,7 @@ import java.util.Comparator;
 
 public class ParticipantEvidenceComparator implements Comparator<ParticipantEvidence> {
 
-    protected ParticipantInteractorComparator participantComparator;
+    protected ParticipantBaseComparator participantBaseComparator;
     protected CvTermsCollectionComparator cvTermCollectionComparator;
     protected OrganismComparator organismComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
@@ -34,22 +34,19 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
 
     /**
      * Creates a new ParticipantEvidenceComparator
-     * @param participantComparator : the participant comparator required to compare basic properties of a participant
-     * @param cvTermComparator : the CvTerm comparator required to compare experimental roles, experimental preparations and identification methods
+     * @param participantBaseComparator : the participant comparator required to compare basic properties of a participant
      * @param organismComparator : the organism comparator required to compare expressed in organisms
      * @param parameterComparator: ParameterComparator required for comparing participant features
      */
-    public ParticipantEvidenceComparator(ParticipantInteractorComparator participantComparator,
-                                         AbstractCvTermComparator cvTermComparator, OrganismComparator organismComparator,
-                                         ParameterComparator parameterComparator){
-        if (participantComparator == null){
+    public ParticipantEvidenceComparator(ParticipantBaseComparator participantBaseComparator,
+                                         OrganismComparator organismComparator,
+                                         ParameterComparator parameterComparator,
+                                         FeatureEvidenceComparator featureComparator){
+        if (participantBaseComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
         }
-        this.participantComparator = participantComparator;
-        if (cvTermComparator == null){
-            throw new IllegalArgumentException("The CvTerm comparator is required to compare experimental roles, identification methods and preparations. It cannot be null");
-        }
-        this.cvTermCollectionComparator = new CvTermsCollectionComparator(cvTermComparator);
+        this.participantBaseComparator = participantBaseComparator;
+        this.cvTermCollectionComparator = new CvTermsCollectionComparator(this.participantBaseComparator.getCvTermComparator());
         if (organismComparator == null){
             throw new IllegalArgumentException("The Organism comparator is required to compare expressed in organisms. It cannot be null");
         }
@@ -58,15 +55,18 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
             throw new IllegalArgumentException("The parameter comparator is required to compare participant parameters. It cannot be null");
         }
         this.parameterCollectionComparator = new ParameterCollectionComparator(parameterComparator);
-        this.featureCollectionComparator = new FeatureCollectionComparator(participantComparator);
+        if (featureComparator == null){
+            throw new IllegalArgumentException("The feature comparator is required to compare features. It cannot be null");
+        }
+        this.featureCollectionComparator = new FeatureCollectionComparator(featureComparator);
     }
 
     public ParameterCollectionComparator getParameterCollectionComparator() {
         return parameterCollectionComparator;
     }
 
-    public ParticipantInteractorComparator getParticipantComparator() {
-        return participantComparator;
+    public ParticipantBaseComparator getParticipantBaseComparator() {
+        return participantBaseComparator;
     }
 
     public CvTermsCollectionComparator getCvTermCollectionComparator() {
@@ -108,7 +108,7 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
         else {
 
             // first compares basic participant properties
-            int comp = participantComparator.compare(experimentalParticipant1, experimentalParticipant2);
+            int comp = participantBaseComparator.compare(experimentalParticipant1, experimentalParticipant2);
             if (comp != 0){
                return comp;
             }

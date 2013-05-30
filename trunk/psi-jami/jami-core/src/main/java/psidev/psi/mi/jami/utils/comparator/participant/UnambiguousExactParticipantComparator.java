@@ -22,7 +22,8 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
      * Creates a UnambiguousExactParticipantComparator. It will use a UnambiguousExactParticipantBaseComparator to compare basic feature properties
      */
     public UnambiguousExactParticipantComparator() {
-        super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousExactParticipantEvidenceComparator());
+        super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousExactParticipantEvidenceComparator(),
+                new UnambiguousExactModelledParticipantComparator());
     }
 
     @Override
@@ -33,6 +34,11 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
     @Override
     public UnambiguousExactParticipantEvidenceComparator getExperimentalParticipantComparator() {
         return (UnambiguousExactParticipantEvidenceComparator) this.experimentalParticipantComparator;
+    }
+
+    @Override
+    public UnambiguousExactModelledParticipantComparator getBiologicalParticipantComparator() {
+        return (UnambiguousExactModelledParticipantComparator) super.getBiologicalParticipantComparator();
     }
 
     @Override

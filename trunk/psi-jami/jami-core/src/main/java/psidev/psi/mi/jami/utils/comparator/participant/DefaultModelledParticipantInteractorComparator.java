@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
  * Default biological participant comparator based on the interactor only.
@@ -13,7 +14,7 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultModelledParticipantInteractorComparator extends ModelledParticipantComparator {
+public class DefaultModelledParticipantInteractorComparator extends ParticipantInteractorComparator<ModelledParticipant> {
 
     private static DefaultModelledParticipantInteractorComparator defaultBiologicalParticipantInteractorComparator;
 
@@ -22,12 +23,12 @@ public class DefaultModelledParticipantInteractorComparator extends ModelledPart
      * the basic properties of a participant.
      */
     public DefaultModelledParticipantInteractorComparator() {
-        super(new DefaultParticipantInteractorComparator());
+        super(new DefaultInteractorComparator());
     }
 
     @Override
-    public DefaultParticipantInteractorComparator getParticipantComparator() {
-        return (DefaultParticipantInteractorComparator) this.participantComparator;
+    public DefaultInteractorComparator getInteractorComparator() {
+        return (DefaultInteractorComparator) this.interactorComparator;
     }
 
     @Override

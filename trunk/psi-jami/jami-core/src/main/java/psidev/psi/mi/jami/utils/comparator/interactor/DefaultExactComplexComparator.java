@@ -29,6 +29,10 @@ public class DefaultExactComplexComparator extends ComplexComparator{
         super(new DefaultExactInteractorBaseComparator(), new DefaultExactModelledParticipantComparator(), new DefaultCvTermComparator());
     }
 
+    public DefaultExactComplexComparator(DefaultExactModelledParticipantComparator comparator) {
+        super(new DefaultExactInteractorBaseComparator(), comparator != null ? comparator : new DefaultExactModelledParticipantComparator(), new DefaultCvTermComparator());
+    }
+
     @Override
     /**
      *
@@ -42,8 +46,8 @@ public class DefaultExactComplexComparator extends ComplexComparator{
     }
 
     @Override
-    public DefaultExactInteractorBaseComparator getInteractorComparator() {
-        return (DefaultExactInteractorBaseComparator) this.interactorComparator;
+    public DefaultExactInteractorBaseComparator getInteractorBaseComparator() {
+        return (DefaultExactInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     @Override

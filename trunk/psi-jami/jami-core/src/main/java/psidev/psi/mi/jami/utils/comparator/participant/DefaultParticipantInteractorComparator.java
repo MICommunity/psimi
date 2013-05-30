@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
  * It will compare the interactors using DefaultInteractorComparator.
@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorBaseCompa
  * @since <pre>16/01/13</pre>
  */
 
-public class DefaultParticipantInteractorComparator extends ParticipantInteractorComparator {
+public class DefaultParticipantInteractorComparator extends ParticipantInteractorComparator<Participant> {
 
     private static DefaultParticipantInteractorComparator defaultInteractorParticipantComparator;
 
@@ -22,12 +22,12 @@ public class DefaultParticipantInteractorComparator extends ParticipantInteracto
      * interactors.
      */
     public DefaultParticipantInteractorComparator() {
-        super(new DefaultInteractorBaseComparator());
+        super(new DefaultInteractorComparator());
     }
 
     @Override
-    public DefaultInteractorBaseComparator getInteractorComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorComparator;
+    public DefaultInteractorComparator getInteractorComparator() {
+        return (DefaultInteractorComparator) this.interactorComparator;
     }
 
     @Override

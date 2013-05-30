@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 
 import java.util.Comparator;
 
@@ -16,22 +17,19 @@ import java.util.Comparator;
  * @since <pre>16/01/13</pre>
  */
 
-public class ParticipantInteractorComparator implements Comparator<Participant> {
+public class ParticipantInteractorComparator<T extends Participant> implements Comparator<T> {
 
-    protected Comparator<Interactor> interactorComparator;
+    protected InteractorComparator interactorComparator;
 
     /**
      * Creates a new ParticipantInteractorComparator.
      * @param interactorComparator : the interactor comparator required to compare the interactor
      */
-    public ParticipantInteractorComparator(Comparator<Interactor> interactorComparator){
-        if (interactorComparator == null){
-            throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
-        }
+    public ParticipantInteractorComparator(InteractorComparator interactorComparator){
         this.interactorComparator = interactorComparator;
     }
 
-    public Comparator<Interactor> getInteractorComparator() {
+    public InteractorComparator getInteractorComparator() {
         return interactorComparator;
     }
 
@@ -43,7 +41,11 @@ public class ParticipantInteractorComparator implements Comparator<Participant> 
      * @param participant2
      * @return
      */
-    public int compare(Participant participant1, Participant participant2) {
+    public int compare(T participant1, T participant2) {
+        if (interactorComparator == null){
+            throw new IllegalStateException("The Interactor comparator is required to compare interactors. It cannot be null");
+        }
+
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;

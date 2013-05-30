@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
+import psidev.psi.mi.jami.utils.comparator.feature.ModelledFeatureComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -20,23 +21,26 @@ import java.util.Comparator;
 
 public class ModelledParticipantComparator implements Comparator<ModelledParticipant> {
 
-    protected ParticipantInteractorComparator participantComparator;
+    protected ParticipantBaseComparator participantBaseComparator;
     protected FeatureCollectionComparator featureCollectionComparator;
 
     /**
      * Creates a new ComponentComparator
-     * @param participantComparator : the participant comparator required to compare basic participant properties
      */
-    public ModelledParticipantComparator(ParticipantInteractorComparator participantComparator){
-        if (participantComparator == null){
-            throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
+    public ModelledParticipantComparator(ModelledFeatureComparator featureComparator){
+
+        if (featureComparator == null){
+            throw new IllegalArgumentException("The modelled feature comparator is required to compare modelled features. It cannot be null");
         }
-        this.participantComparator = participantComparator;
-        this.featureCollectionComparator = new FeatureCollectionComparator(participantComparator);
+        this.featureCollectionComparator = new FeatureCollectionComparator(featureComparator);
     }
 
-    public ParticipantInteractorComparator getParticipantComparator() {
-        return participantComparator;
+    public ParticipantBaseComparator getParticipantBaseComparator() {
+        return participantBaseComparator;
+    }
+
+    public void setParticipantBaseComparator(ParticipantBaseComparator participantBaseComparator) {
+        this.participantBaseComparator = participantBaseComparator;
     }
 
     public FeatureCollectionComparator getFeatureCollectionComparator() {
@@ -52,6 +56,9 @@ public class ModelledParticipantComparator implements Comparator<ModelledPartici
      * @return
      */
     public int compare(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2) {
+        if (participantBaseComparator == null){
+            throw new IllegalStateException("The participant base comparator is required to compare basic participant properties. It cannot be null");
+        }
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
@@ -66,7 +73,7 @@ public class ModelledParticipantComparator implements Comparator<ModelledPartici
             return BEFORE;
         }
         else {
-            int comp = participantComparator.compare(bioParticipant1, bioParticipant2);
+            int comp = participantBaseComparator.compare(bioParticipant1, bioParticipant2);
 
             // then compares the features
             Collection<? extends ModelledFeature> features1 = bioParticipant1.getModelledFeatures();

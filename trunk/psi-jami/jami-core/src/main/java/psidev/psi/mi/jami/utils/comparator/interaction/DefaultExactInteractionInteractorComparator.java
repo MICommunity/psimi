@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
  * Default exact interaction comparator only based on the interactors of an interaction.
@@ -24,7 +24,7 @@ public class DefaultExactInteractionInteractorComparator extends InteractionInte
      * compare interactors involved in the interaction
      */
     public DefaultExactInteractionInteractorComparator() {
-        super(new DefaultExactInteractorBaseComparator());
+        super(new DefaultExactInteractorComparator());
     }
 
     @Override

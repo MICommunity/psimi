@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
 /**
  * Unambiguous biological participant comparator based on the interactor only.
- * It will compare the basic properties of a biological participant using UnambiguousParticipantInteractorComparator.
+ * It will compare the basic properties of an interactor using UnambiguousInteractorComparator.
  *
  * This comparator will ignore all the other properties of a biological participant.
  *
@@ -13,26 +14,26 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
  * @since <pre>13/02/13</pre>
  */
 
-public class UnambiguousModelledParticipantInteractorComparator extends ModelledParticipantComparator {
+public class UnambiguousModelledParticipantInteractorComparator extends ParticipantInteractorComparator<ModelledParticipant> {
 
     private static UnambiguousModelledParticipantInteractorComparator unambiguousParticipantInteractorComparator;
 
     /**
-     * Creates a new UnambiguousModelledParticipantInteractorComparator. It will use a UnambiguousParticipantInteractorComparator to compare
-     * the basic properties of a participant.
+     * Creates a new UnambiguousModelledParticipantInteractorComparator. It will use a UnambiguousInteractorComparator to compare
+     * the basic properties of an interactor.
      */
     public UnambiguousModelledParticipantInteractorComparator() {
-        super(new UnambiguousParticipantInteractorComparator());
+        super(new UnambiguousInteractorComparator());
     }
 
     @Override
-    public UnambiguousParticipantInteractorComparator getParticipantComparator() {
-        return (UnambiguousParticipantInteractorComparator) this.participantComparator;
+    public UnambiguousInteractorComparator getInteractorComparator() {
+        return (UnambiguousInteractorComparator) this.interactorComparator;
     }
 
     @Override
     /**
-     * It will compare the basic properties of a biological participant using UnambiguousParticipantInteractorComparator.
+     * It will compare the basic properties of an interactor using UnambiguousInteractorComparator.
      *
      * This comparator will ignore all the other properties of a biological participant.
      */
