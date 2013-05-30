@@ -21,7 +21,7 @@ public class DefaultInteractorSetComparator extends InteractorSetComparator {
      * Creates a new DefaultInteractorSetComparator. It will use a DefaultInteractorBaseComparator.
      */
     public DefaultInteractorSetComparator() {
-        super(new DefaultInteractorBaseComparator());
+        super(new DefaultInteractorComparator());
     }
 
     @Override

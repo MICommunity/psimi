@@ -25,11 +25,11 @@ public class InteractorSetComparator implements Comparator<InteractorSet> {
      * Creates a new InteractorSetComparator
      * @param interactorComparator : the interactor comparator required to compare interactors
      */
-    public InteractorSetComparator(Comparator<Interactor> interactorComparator){
+    public InteractorSetComparator(InteractorComparator interactorComparator){
         if (interactorComparator == null){
             throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
         }
-        this.interactorBaseComparator = interactorComparator;
+        this.interactorBaseComparator = interactorComparator.getInteractorBaseComparator();
         this.interactorCollectionComparator = new CollectionComparator<Interactor>(interactorComparator);
     }
 

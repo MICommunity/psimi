@@ -71,7 +71,7 @@ public class InteractorComparator implements Comparator<Interactor> {
             throw new IllegalArgumentException("The ComplexComparator is required to compare complexes. It cannot be null");
         }
         this.complexComparator = complexComparator;
-        this.interactorCandidatesComparator = new InteractorSetComparator(interactorBaseComparator);
+        this.interactorCandidatesComparator = new InteractorSetComparator(this);
     }
 
     public AbstractBioactiveEntityComparator getBioactiveEntityComparator() {

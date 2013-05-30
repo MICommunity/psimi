@@ -19,7 +19,7 @@ public class DefaultExactInteractorSetComparator extends InteractorSetComparator
      * Creates a new DefaultInteractorSetComparator. It will use a DefaultExactInteractorBaseComparator.
      */
     public DefaultExactInteractorSetComparator() {
-        super(new DefaultExactInteractorBaseComparator());
+        super(new DefaultExactInteractorComparator());
     }
 
     @Override
