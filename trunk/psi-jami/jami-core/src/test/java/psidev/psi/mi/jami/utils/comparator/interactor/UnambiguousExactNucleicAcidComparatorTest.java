@@ -8,16 +8,16 @@ import psidev.psi.mi.jami.model.impl.DefaultNucleicAcid;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 /**
- * Unit tester for UnambiguousNucleicAcidComparator
+ * Unit tester for UnambiguousExactNucleicAcidComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>29/05/13</pre>
  */
 
-public class UnambiguousNucleicAcidComparatorTest {
+public class UnambiguousExactNucleicAcidComparatorTest {
 
-    private UnambiguousNucleicAcidComparator comparator = new UnambiguousNucleicAcidComparator();
+    private UnambiguousExactNucleicAcidComparator comparator = new UnambiguousExactNucleicAcidComparator();
 
     @Test
     public void test_nucleic_acid_null_after(){
@@ -27,7 +27,7 @@ public class UnambiguousNucleicAcidComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousNucleicAcidComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class UnambiguousNucleicAcidComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousNucleicAcidComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class UnambiguousNucleicAcidComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousNucleicAcidComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class UnambiguousNucleicAcidComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousNucleicAcidComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class UnambiguousNucleicAcidComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousNucleicAcidComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -103,6 +103,6 @@ public class UnambiguousNucleicAcidComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousNucleicAcidComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 }

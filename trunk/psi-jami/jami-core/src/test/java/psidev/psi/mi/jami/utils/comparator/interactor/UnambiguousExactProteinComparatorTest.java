@@ -8,16 +8,16 @@ import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 /**
- * Unit tester for UnambiguousProteinComparator
+ * Unit tester for UnambiguousExactProteinComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>29/05/13</pre>
  */
 
-public class UnambiguousProteinComparatorTest {
+public class UnambiguousExactProteinComparatorTest {
 
-    private UnambiguousProteinComparator comparator = new UnambiguousProteinComparator();
+    private UnambiguousExactProteinComparator comparator = new UnambiguousExactProteinComparator();
 
     @Test
     public void test_nucleic_acid_null_after(){
@@ -27,7 +27,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -103,7 +103,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -137,7 +137,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -172,7 +172,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -191,7 +191,7 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -208,6 +208,6 @@ public class UnambiguousProteinComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousProteinComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactProteinComparator.areEquals(interactor1, interactor2));
     }
 }

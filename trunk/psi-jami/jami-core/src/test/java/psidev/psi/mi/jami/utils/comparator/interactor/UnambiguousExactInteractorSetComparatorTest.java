@@ -8,16 +8,16 @@ import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 /**
- * Unit tester of UnambiguousInteractorSetComparator
+ * Unit tester of UnambiguousExactInteractorSetComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>29/05/13</pre>
  */
 
-public class UnambiguousInteractorSetComparatorTest {
+public class UnambiguousExactInteractorSetComparatorTest {
 
-    private UnambiguousInteractorSetComparator comparator = new UnambiguousInteractorSetComparator();
+    private UnambiguousExactInteractorSetComparator comparator = new UnambiguousExactInteractorSetComparator();
 
     @Test
     public void test_interactor_set_null_after(){
@@ -27,7 +27,7 @@ public class UnambiguousInteractorSetComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousInteractorSetComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorSetComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class UnambiguousInteractorSetComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousInteractorSetComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorSetComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class UnambiguousInteractorSetComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousInteractorSetComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorSetComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class UnambiguousInteractorSetComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousInteractorSetComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactInteractorSetComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -91,6 +91,6 @@ public class UnambiguousInteractorSetComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousInteractorSetComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactInteractorSetComparator.areEquals(interactor1, interactor2));
     }
 }

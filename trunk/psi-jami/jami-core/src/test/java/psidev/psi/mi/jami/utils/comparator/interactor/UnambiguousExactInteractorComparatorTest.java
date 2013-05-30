@@ -6,16 +6,16 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 
 /**
- * Unit tester for
+ * Unit tester for UnambiguousExactInteractorComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>29/05/13</pre>
  */
 
-public class UnambiguousInteractorComparatorTest {
+public class UnambiguousExactInteractorComparatorTest {
 
-    private UnambiguousInteractorComparator comparator = new UnambiguousInteractorComparator();
+    private UnambiguousExactInteractorComparator comparator = new UnambiguousExactInteractorComparator();
 
     @Test
     public void test_interactor_null_after(){
@@ -25,7 +25,7 @@ public class UnambiguousInteractorComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -46,13 +46,13 @@ public class UnambiguousInteractorComparatorTest {
         Assert.assertTrue(comparator.compare(interactor6, interactor3) > 0);
         Assert.assertTrue(comparator.compare(interactor7, interactor3) > 0);
 
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor1, interactor3));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor2, interactor3));
-        Assert.assertTrue(UnambiguousInteractorComparator.areEquals(interactor3, interactor3));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor4, interactor3));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor5, interactor3));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor6, interactor3));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor7, interactor3));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor1, interactor3));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor2, interactor3));
+        Assert.assertTrue(UnambiguousExactInteractorComparator.areEquals(interactor3, interactor3));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor4, interactor3));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor5, interactor3));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor6, interactor3));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor7, interactor3));
 
     }
 
@@ -74,13 +74,13 @@ public class UnambiguousInteractorComparatorTest {
         Assert.assertTrue(comparator.compare(interactor6, interactor4) > 0);
         Assert.assertTrue(comparator.compare(interactor7, interactor4) > 0);
 
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor1, interactor4));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor2, interactor4));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor3, interactor4));
-        Assert.assertTrue(UnambiguousInteractorComparator.areEquals(interactor4, interactor4));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor5, interactor4));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor6, interactor4));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor7, interactor4));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor1, interactor4));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor2, interactor4));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor3, interactor4));
+        Assert.assertTrue(UnambiguousExactInteractorComparator.areEquals(interactor4, interactor4));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor5, interactor4));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor6, interactor4));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor7, interactor4));
 
     }
 
@@ -102,13 +102,13 @@ public class UnambiguousInteractorComparatorTest {
         Assert.assertTrue(comparator.compare(interactor6, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor7, interactor2) > 0);
 
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor1, interactor2));
-        Assert.assertTrue(UnambiguousInteractorComparator.areEquals(interactor2, interactor2));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor3, interactor2));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor4, interactor2));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor5, interactor2));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor6, interactor2));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor7, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactInteractorComparator.areEquals(interactor2, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor3, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor4, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor5, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor6, interactor2));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor7, interactor2));
 
     }
 
@@ -130,13 +130,13 @@ public class UnambiguousInteractorComparatorTest {
         Assert.assertTrue(comparator.compare(interactor6, interactor5) > 0);
         Assert.assertTrue(comparator.compare(interactor7, interactor5) > 0);
 
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor1, interactor5));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor2, interactor5));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor3, interactor5));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor4, interactor5));
-        Assert.assertTrue(UnambiguousInteractorComparator.areEquals(interactor5, interactor5));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor6, interactor5));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor7, interactor5));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor1, interactor5));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor2, interactor5));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor3, interactor5));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor4, interactor5));
+        Assert.assertTrue(UnambiguousExactInteractorComparator.areEquals(interactor5, interactor5));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor6, interactor5));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor7, interactor5));
 
     }
 
@@ -158,13 +158,13 @@ public class UnambiguousInteractorComparatorTest {
         Assert.assertTrue(comparator.compare(interactor6, interactor6) == 0);
         Assert.assertTrue(comparator.compare(interactor7, interactor6) > 0);
 
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor1, interactor6));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor2, interactor6));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor3, interactor6));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor4, interactor6));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor5, interactor6));
-        Assert.assertTrue(UnambiguousInteractorComparator.areEquals(interactor6, interactor6));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor7, interactor6));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor1, interactor6));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor2, interactor6));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor3, interactor6));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor4, interactor6));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor5, interactor6));
+        Assert.assertTrue(UnambiguousExactInteractorComparator.areEquals(interactor6, interactor6));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor7, interactor6));
 
     }
 
@@ -186,13 +186,13 @@ public class UnambiguousInteractorComparatorTest {
         Assert.assertTrue(comparator.compare(interactor6, interactor7) < 0);
         Assert.assertTrue(comparator.compare(interactor7, interactor7) == 0);
 
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor1, interactor7));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor2, interactor7));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor3, interactor7));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor4, interactor7));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor5, interactor7));
-        Assert.assertFalse(UnambiguousInteractorComparator.areEquals(interactor6, interactor7));
-        Assert.assertTrue(UnambiguousInteractorComparator.areEquals(interactor7, interactor7));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor1, interactor7));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor2, interactor7));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor3, interactor7));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor4, interactor7));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor5, interactor7));
+        Assert.assertFalse(UnambiguousExactInteractorComparator.areEquals(interactor6, interactor7));
+        Assert.assertTrue(UnambiguousExactInteractorComparator.areEquals(interactor7, interactor7));
 
     }
 }

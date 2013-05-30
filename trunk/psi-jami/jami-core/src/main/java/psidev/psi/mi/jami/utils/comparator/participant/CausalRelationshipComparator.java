@@ -21,25 +21,25 @@ import java.util.Comparator;
 public class CausalRelationshipComparator implements Comparator<CausalRelationship>{
 
     private AbstractCvTermComparator cvTermComparator;
-    private ParticipantBaseComparator participantComparator;
+    private ParticipantComparator participantComparator;
 
-    public CausalRelationshipComparator(AbstractCvTermComparator cvTermComparator, ParticipantBaseComparator participantBaseComparator){
+    public CausalRelationshipComparator(AbstractCvTermComparator cvTermComparator, ParticipantComparator participantComparator){
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator cannot be null in a CausalRelationshipComparator");
         }
         this.cvTermComparator = cvTermComparator;
 
-        if (participantBaseComparator == null){
+        if (participantComparator == null){
             throw new IllegalArgumentException("The participantComparator cannot be null in a CausalRelationshipComparator");
         }
-        this.participantComparator = participantBaseComparator;
+        this.participantComparator = participantComparator;
     }
 
     public AbstractCvTermComparator getCvTermComparator() {
         return cvTermComparator;
     }
 
-    public ParticipantBaseComparator getParticipantComparator() {
+    public ParticipantComparator getParticipantComparator() {
         return participantComparator;
     }
 

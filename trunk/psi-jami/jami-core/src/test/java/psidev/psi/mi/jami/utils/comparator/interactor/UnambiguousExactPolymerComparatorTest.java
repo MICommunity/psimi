@@ -7,16 +7,16 @@ import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultPolymer;
 
 /**
- * Unit tester for UnambiguousPolymerComparator
+ * Unit tester for UnambiguousExactPolymerComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>28/05/13</pre>
  */
 
-public class UnambiguousPolymerComparatorTest {
+public class UnambiguousExactPolymerComparatorTest {
 
-    private UnambiguousPolymerComparator comparator = new UnambiguousPolymerComparator();
+    private UnambiguousExactPolymerComparator comparator = new UnambiguousExactPolymerComparator();
 
     @Test
     public void test_polymer_null_after(){
@@ -26,7 +26,7 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -120,6 +120,6 @@ public class UnambiguousPolymerComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousPolymerComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactPolymerComparator.areEquals(interactor1, interactor2));
     }
 }
