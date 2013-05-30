@@ -74,10 +74,13 @@ public class ModelledParticipantComparator implements Comparator<ModelledPartici
         }
         else {
             int comp = participantBaseComparator.compare(bioParticipant1, bioParticipant2);
+            if (comp != 0){
+                return comp;
+            }
 
             // then compares the features
-            Collection<? extends ModelledFeature> features1 = bioParticipant1.getModelledFeatures();
-            Collection<? extends ModelledFeature> features2 = bioParticipant2.getModelledFeatures();
+            Collection<ModelledFeature> features1 = bioParticipant1.getModelledFeatures();
+            Collection<ModelledFeature> features2 = bioParticipant2.getModelledFeatures();
 
             return featureCollectionComparator.compare(features1, features2);
         }
