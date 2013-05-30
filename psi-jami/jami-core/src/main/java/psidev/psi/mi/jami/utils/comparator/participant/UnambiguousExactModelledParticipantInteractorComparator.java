@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
 /**
@@ -23,7 +24,8 @@ public class UnambiguousExactModelledParticipantInteractorComparator extends Par
      * the basic properties of an interactor.
      */
     public UnambiguousExactModelledParticipantInteractorComparator() {
-        super(new UnambiguousExactInteractorComparator());
+        super(null);
+        setInteractorComparator(new UnambiguousExactInteractorComparator(new UnambiguousExactComplexComparator(this)));
     }
 
     @Override

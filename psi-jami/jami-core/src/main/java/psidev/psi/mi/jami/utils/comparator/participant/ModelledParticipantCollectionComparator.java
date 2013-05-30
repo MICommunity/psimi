@@ -3,6 +3,8 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
+import java.util.Comparator;
+
 /**
  * Comparator for collection of biological participants
  *
@@ -18,12 +20,8 @@ public class ModelledParticipantCollectionComparator extends CollectionComparato
      *
      * @param biologicalParticipantComparator
      */
-    public ModelledParticipantCollectionComparator(ModelledParticipantComparator biologicalParticipantComparator) {
+    public ModelledParticipantCollectionComparator(Comparator<ModelledParticipant> biologicalParticipantComparator) {
         super(biologicalParticipantComparator);
     }
 
-    @Override
-    public ModelledParticipantComparator getObjectComparator() {
-        return (ModelledParticipantComparator) objectComparator;
-    }
 }

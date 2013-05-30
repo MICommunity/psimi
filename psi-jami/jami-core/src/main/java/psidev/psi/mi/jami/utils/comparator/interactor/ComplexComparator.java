@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ModelledParticipantCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.ModelledParticipantComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -33,7 +32,7 @@ public class ComplexComparator implements Comparator<Complex> {
      * Creates a bew ComplexComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties
      *
      */
-    public ComplexComparator(Comparator<Interactor> interactorBaseComparator, ModelledParticipantComparator componentComparator, AbstractCvTermComparator cvTermComparator){
+    public ComplexComparator(Comparator<Interactor> interactorBaseComparator, Comparator<ModelledParticipant> componentComparator, AbstractCvTermComparator cvTermComparator){
 
         if (componentComparator == null){
             throw new IllegalArgumentException("The ModelledParticipant comparator is required to compare participants composing the complexes. It cannot be null");

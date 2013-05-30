@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
@@ -23,7 +24,8 @@ public class DefaultExactModelledParticipantInteractorComparator extends Partici
      * the basic properties of a interactor in the participant.
      */
     public DefaultExactModelledParticipantInteractorComparator() {
-        super(new DefaultExactInteractorComparator());
+        super(null);
+        setInteractorComparator(new DefaultExactInteractorComparator(new DefaultExactComplexComparator(this)));
     }
 
     @Override

@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -30,8 +29,8 @@ public class DefaultParticipantBaseComparator extends ParticipantBaseComparator 
         super(new DefaultInteractorComparator(), new DefaultCvTermComparator());
     }
 
-    public DefaultParticipantBaseComparator(DefaultModelledParticipantComparator comparator) {
-        super(comparator != null ? new DefaultInteractorComparator(new DefaultComplexComparator(comparator)) : new DefaultInteractorComparator(), new DefaultCvTermComparator());
+    public DefaultParticipantBaseComparator(DefaultInteractorComparator comparator) {
+        super(comparator != null ? comparator : new DefaultInteractorComparator(), new DefaultCvTermComparator());
     }
 
     @Override
