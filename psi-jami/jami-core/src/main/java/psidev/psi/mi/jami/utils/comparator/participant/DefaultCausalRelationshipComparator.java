@@ -23,7 +23,7 @@ public class DefaultCausalRelationshipComparator extends CausalRelationshipCompa
      *
      */
     public DefaultCausalRelationshipComparator() {
-        super(new DefaultCvTermComparator(), new DefaultParticipantBaseComparator());
+        super(new DefaultCvTermComparator(), new DefaultParticipantComparator());
     }
 
     @Override
@@ -32,8 +32,8 @@ public class DefaultCausalRelationshipComparator extends CausalRelationshipCompa
     }
 
     @Override
-    public DefaultParticipantBaseComparator getParticipantComparator() {
-        return (DefaultParticipantBaseComparator) super.getParticipantComparator();
+    public DefaultParticipantComparator getParticipantComparator() {
+        return (DefaultParticipantComparator) super.getParticipantComparator();
     }
 
     @Override

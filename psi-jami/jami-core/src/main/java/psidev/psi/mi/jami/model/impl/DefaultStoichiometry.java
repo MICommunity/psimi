@@ -16,6 +16,12 @@ public class DefaultStoichiometry implements Stoichiometry{
     private int minValue;
     private int maxValue;
 
+    public DefaultStoichiometry(int value){
+
+        this.minValue = value;
+        this.maxValue = value;
+    }
+
     public DefaultStoichiometry(int minValue, int maxValue){
         if (minValue > maxValue){
            throw new IllegalArgumentException("The minValue " + minValue + " cannot be bigger than the maxValue " + maxValue);

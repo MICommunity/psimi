@@ -8,16 +8,16 @@ import psidev.psi.mi.jami.model.impl.DefaultGene;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 /**
- * Unit tester for UnambiguousGeneComparator
+ * Unit tester for UnambiguousExactGeneComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>29/05/13</pre>
  */
 
-public class UnambiguousGeneComparatorTest {
+public class UnambiguousExactGeneComparatorTest {
 
-    private UnambiguousGeneComparator comparator = new UnambiguousGeneComparator();
+    private UnambiguousExactGeneComparator comparator = new UnambiguousExactGeneComparator();
 
     @Test
     public void test_gene_null_after(){
@@ -27,7 +27,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -170,7 +170,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -187,7 +187,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -217,7 +217,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -234,7 +234,7 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -251,6 +251,6 @@ public class UnambiguousGeneComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousGeneComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactGeneComparator.areEquals(interactor1, interactor2));
     }
 }

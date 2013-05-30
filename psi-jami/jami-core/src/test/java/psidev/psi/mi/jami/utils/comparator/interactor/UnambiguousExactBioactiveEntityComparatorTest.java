@@ -8,16 +8,16 @@ import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 /**
- * Unit tester of UnambiguousBioactiveEntityComparator
+ * Unit tester of UnambiguousExactBioactiveEntityComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>28/05/13</pre>
  */
 
-public class UnambiguousBioactiveEntityComparatorTest {
+public class UnambiguousExactBioactiveEntityComparatorTest {
 
-    private UnambiguousBioactiveEntityComparator comparator = new UnambiguousBioactiveEntityComparator();
+    private UnambiguousExactBioactiveEntityComparator comparator = new UnambiguousExactBioactiveEntityComparator();
 
     @Test
     public void test_bioactiveEntity_null_after(){
@@ -27,7 +27,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -180,7 +180,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -196,7 +196,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -211,7 +211,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -229,7 +229,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
-        Assert.assertTrue(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertTrue(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -257,7 +257,7 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
     @Test
@@ -274,6 +274,6 @@ public class UnambiguousBioactiveEntityComparatorTest {
         Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
         Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
-        Assert.assertFalse(UnambiguousBioactiveEntityComparator.areEquals(interactor1, interactor2));
+        Assert.assertFalse(UnambiguousExactBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 }

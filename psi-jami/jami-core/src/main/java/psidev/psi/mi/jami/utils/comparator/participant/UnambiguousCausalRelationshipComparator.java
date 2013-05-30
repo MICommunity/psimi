@@ -23,7 +23,7 @@ public class UnambiguousCausalRelationshipComparator extends CausalRelationshipC
      *
      */
     public UnambiguousCausalRelationshipComparator() {
-        super(new UnambiguousCvTermComparator(), new UnambiguousParticipantBaseComparator());
+        super(new UnambiguousCvTermComparator(), new UnambiguousParticipantComparator());
     }
 
     @Override
@@ -32,8 +32,8 @@ public class UnambiguousCausalRelationshipComparator extends CausalRelationshipC
     }
 
     @Override
-    public UnambiguousParticipantBaseComparator getParticipantComparator() {
-        return (UnambiguousParticipantBaseComparator) super.getParticipantComparator();
+    public UnambiguousParticipantComparator getParticipantComparator() {
+        return (UnambiguousParticipantComparator) super.getParticipantComparator();
     }
 
     @Override
