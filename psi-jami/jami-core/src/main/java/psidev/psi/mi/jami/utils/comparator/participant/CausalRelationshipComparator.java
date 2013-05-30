@@ -30,7 +30,7 @@ public class CausalRelationshipComparator implements Comparator<CausalRelationsh
         this.cvTermComparator = cvTermComparator;
 
         if (participantComparator == null){
-            throw new IllegalArgumentException("The participantComparator cannot be null in a CausalRelationshipComparator");
+            throw new IllegalArgumentException("The participantBaseComparator cannot be null in a CausalRelationshipComparator");
         }
         this.participantComparator = participantComparator;
     }

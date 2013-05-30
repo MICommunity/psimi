@@ -1,13 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
-import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
  * Default experimental participant comparator based on the interactor only.
- * It will compare the basic properties of an experimental participant using DefaultParticipantInteractorComparator.
+ * It will compare the basic properties of aninteractor using DefaultInteractorComparator.
  *
  * This comparator will ignore all the other properties of an experimental participant.
  *
@@ -16,48 +14,31 @@ import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultParticipantEvidenceInteractorComparator extends ParticipantEvidenceComparator {
+public class DefaultParticipantEvidenceInteractorComparator extends ParticipantInteractorComparator<ParticipantEvidence> {
 
     private static DefaultParticipantEvidenceInteractorComparator defaultExperimentalParticipantInteractorComparator;
 
     /**
-     * Creates a new DefaultParticipantEvidenceInteractorComparator. It will use a DefaultParticipantInteractorComparator to compare
-     * the basic properties of a participant.
+     * Creates a new DefaultParticipantEvidenceInteractorComparator. It will use a DefaultInteractorComparator to compare
+     * the basic properties of a interactor.
      */
     public DefaultParticipantEvidenceInteractorComparator() {
-        super(new DefaultParticipantInteractorComparator(), new DefaultCvTermComparator(), new DefaultOrganismComparator(), new DefaultParameterComparator());
+        super(new DefaultInteractorComparator());
     }
 
     @Override
-    public DefaultParticipantBaseComparator getParticipantComparator() {
-        return (DefaultParticipantBaseComparator) this.participantComparator;
+    public DefaultInteractorComparator getInteractorComparator() {
+        return (DefaultInteractorComparator) this.interactorComparator;
     }
 
     @Override
     /**
-     * It will compare the basic properties of an experimental participant using DefaultParticipantInteractorComparator.
+     * It will compare the basic properties of aninteractor using DefaultInteractorComparator.
      *
      * This comparator will ignore all the other properties of an experimental participant.
      */
     public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
-        int EQUAL = 0;
-        int BEFORE = -1;
-        int AFTER = 1;
-
-        if (experimentalParticipant1 == null && experimentalParticipant1 == null){
-            return EQUAL;
-        }
-        else if (experimentalParticipant1 == null){
-            return AFTER;
-        }
-        else if (experimentalParticipant2 == null){
-            return BEFORE;
-        }
-        else {
-
-            // compares interactor participant properties
-            return participantComparator.compare(experimentalParticipant1, experimentalParticipant2);
-        }
+        return super.compare(experimentalParticipant1, experimentalParticipant2);
     }
 
     /**

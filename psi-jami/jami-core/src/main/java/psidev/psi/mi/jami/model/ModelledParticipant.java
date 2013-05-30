@@ -13,7 +13,8 @@ import java.util.Collection;
 public interface ModelledParticipant extends Participant<Interactor>{
 
     /**
-     * Sets the complex and add the new component to its list of components
+     * Sets the modelledInteraction and add the new modelledParticipant to its list of modelledParticipants.
+     * If the give interaction is null, it will remove the modelledParticipant from the previous interaction it was attached to
      * @param interaction : modelled interaction
      */
     public void setModelledInteractionAndAddModelledParticipant(ModelledInteraction interaction);
@@ -36,7 +37,7 @@ public interface ModelledParticipant extends Participant<Interactor>{
      * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
      * @return the features
      */
-    public Collection<? extends ModelledFeature> getModelledFeatures();
+    public Collection<ModelledFeature> getModelledFeatures();
 
     /**
      * This method will add the feature and set the participant of the new feature to this current participant

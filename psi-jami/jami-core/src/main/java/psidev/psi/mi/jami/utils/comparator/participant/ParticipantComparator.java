@@ -24,7 +24,7 @@ public class ParticipantComparator implements Comparator<Participant> {
     protected ParticipantEvidenceComparator experimentalParticipantComparator;
     protected ModelledParticipantComparator biologicalParticipantComparator;
 
-    public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ParticipantEvidenceComparator experimentalParticipantComparator){
+    public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ParticipantEvidenceComparator experimentalParticipantComparator, ModelledParticipantComparator modelledParticipantComparator){
         if (participantBaseComparator == null){
             throw new IllegalArgumentException("The participantBaseComparator is required to create more specific participant comparators and compares basic participant properties. It cannot be null");
         }
@@ -33,7 +33,10 @@ public class ParticipantComparator implements Comparator<Participant> {
             throw new IllegalArgumentException("The experimentalParticipantComparator is required to compare experimental participant properties. It cannot be null");
         }
         this.experimentalParticipantComparator = experimentalParticipantComparator;
-        this.biologicalParticipantComparator = new ModelledParticipantComparator(participantBaseComparator);
+        if (modelledParticipantComparator == null){
+            throw new IllegalArgumentException("The modelledParticipantComparator is required to compare modelled participant properties. It cannot be null");
+        }
+        this.biologicalParticipantComparator = modelledParticipantComparator;
     }
 
     /**

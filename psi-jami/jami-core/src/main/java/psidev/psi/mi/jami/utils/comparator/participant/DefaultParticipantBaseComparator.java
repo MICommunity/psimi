@@ -2,15 +2,14 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultComplexComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
  * Default participant comparator
  * It will first compare the interactors using DefaultInteractorComparator. If both interactors are the same,
  * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a DefaultFeatureBaseComparator.
+ * will look at the stoichiometry (participant with lower stoichiometry will come first).
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -25,16 +24,19 @@ public class DefaultParticipantBaseComparator extends ParticipantBaseComparator 
 
     /**
      * Creates a new DefaultParticipantBaseComparator. It will use a DefaultInteractorBaseComparator to compare
-     * interactors, a DefaultCvTermComparator to compare biological roles, a DefaultFeatureBaseComparator to
-     * compare features.
+     * interactors, a DefaultCvTermComparator to compare biological roles.
      */
     public DefaultParticipantBaseComparator() {
-        super(new DefaultInteractorBaseComparator(), new DefaultCvTermComparator(), new DefaultFeatureBaseComparator());
+        super(new DefaultInteractorComparator(), new DefaultCvTermComparator());
+    }
+
+    public DefaultParticipantBaseComparator(DefaultModelledParticipantComparator comparator) {
+        super(comparator != null ? new DefaultInteractorComparator(new DefaultComplexComparator(comparator)) : new DefaultInteractorComparator(), new DefaultCvTermComparator());
     }
 
     @Override
-    public DefaultInteractorBaseComparator getInteractorComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorComparator;
+    public DefaultInteractorComparator getInteractorComparator() {
+        return (DefaultInteractorComparator) this.interactorComparator;
     }
 
     @Override
@@ -46,8 +48,7 @@ public class DefaultParticipantBaseComparator extends ParticipantBaseComparator 
     /**
      * It will first compare the interactors using DefaultInteractorBaseComparator. If both interactors are the same,
      * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
-     * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
-     * it will compare the features using a DefaultFeatureBaseComparator.
+     * will look at the stoichiometry (participant with lower stoichiometry will come first).
      *
      * This comparator will ignore all the other properties of a participant.
      */

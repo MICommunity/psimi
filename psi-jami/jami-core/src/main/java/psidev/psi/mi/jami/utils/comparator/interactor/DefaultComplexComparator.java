@@ -29,6 +29,10 @@ public class DefaultComplexComparator extends ComplexComparator{
         super(new DefaultInteractorBaseComparator(), new DefaultModelledParticipantComparator(), new DefaultCvTermComparator());
     }
 
+    public DefaultComplexComparator(DefaultModelledParticipantComparator modelledParticipantComparator) {
+        super(new DefaultInteractorBaseComparator(), modelledParticipantComparator != null ? modelledParticipantComparator : new DefaultModelledParticipantComparator(), new DefaultCvTermComparator());
+    }
+
     @Override
     /**
      * It will first look at the default properties of an interactor using DefaultInteractorBaseComparator.
@@ -41,8 +45,8 @@ public class DefaultComplexComparator extends ComplexComparator{
     }
 
     @Override
-    public DefaultInteractorBaseComparator getInteractorComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorComparator;
+    public DefaultInteractorBaseComparator getInteractorBaseComparator() {
+        return (DefaultInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     @Override

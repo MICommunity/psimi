@@ -28,6 +28,10 @@ public class UnambiguousComplexComparator extends ComplexComparator{
         super(new UnambiguousInteractorBaseComparator(), new UnambiguousModelledParticipantComparator(), new UnambiguousCvTermComparator());
     }
 
+    public UnambiguousComplexComparator(UnambiguousModelledParticipantComparator comparator) {
+        super(new UnambiguousInteractorBaseComparator(), comparator != null ? comparator : new UnambiguousModelledParticipantComparator(), new UnambiguousCvTermComparator());
+    }
+
     @Override
     /**
      * It will first look at the default properties of an interactor using UnambiguousInteractorBaseComparator.
@@ -39,8 +43,8 @@ public class UnambiguousComplexComparator extends ComplexComparator{
     }
 
     @Override
-    public UnambiguousInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorComparator;
+    public UnambiguousInteractorBaseComparator getInteractorBaseComparator() {
+        return (UnambiguousInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     @Override
