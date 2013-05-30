@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -23,7 +24,8 @@ public class DefaultParticipantEvidenceInteractorComparator extends ParticipantI
      * the basic properties of a interactor.
      */
     public DefaultParticipantEvidenceInteractorComparator() {
-        super(new DefaultInteractorComparator());
+        super(null);
+        setInteractorComparator(new DefaultInteractorComparator(new DefaultComplexComparator(new DefaultModelledParticipantInteractorComparator())));
     }
 
     @Override

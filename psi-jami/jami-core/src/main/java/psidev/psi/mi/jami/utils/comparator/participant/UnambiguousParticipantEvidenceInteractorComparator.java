@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousInteractorComparator;
 
 /**
@@ -22,7 +23,7 @@ public class UnambiguousParticipantEvidenceInteractorComparator extends Particip
      * the basic properties of a interactor.
      */
     public UnambiguousParticipantEvidenceInteractorComparator() {
-        super(new UnambiguousInteractorComparator());
+        super(new UnambiguousInteractorComparator(new UnambiguousComplexComparator(new UnambiguousModelledParticipantInteractorComparator())));
     }
 
     @Override
