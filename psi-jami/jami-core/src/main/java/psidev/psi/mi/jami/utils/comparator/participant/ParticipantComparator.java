@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 /**
  * Generic participant comparator.
- * Components come first, then biological participants and then experimental participants.
+ * Modelled participants come first and then experimental participants.
  * - It uses ParticipantEvidenceComparator to compare experimental participants
  * - It uses ModelledParticipantComparator to compare biological participants
  * - It uses ParticipantBaseComparator to compare basic participant properties
@@ -40,7 +40,7 @@ public class ParticipantComparator implements Comparator<Participant> {
     }
 
     /**
-     * Components come first, then biological participants and then experimental participants.
+     * Modelled participants come first and then experimental participants.
      * - It uses ParticipantEvidenceComparator to compare experimental participants
      * - It uses ModelledParticipantComparator to compare biological participants
      * - It uses ParticipantBaseComparator to compare basic participant properties
