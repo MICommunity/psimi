@@ -34,6 +34,8 @@ public class MaximumProteinUpdater
         Protein proteinEnriched = chooseProteinEnriched(proteinsEnriched);
 
         super.setOrganismEnricher(new MaximumOrganismUpdater());
+
+
         runProteinAdditionEnrichment(proteinToEnrich, proteinEnriched);
         runProteinOverwriteUpdate(proteinToEnrich, proteinEnriched);
         fireEnricherEvent(enricherEvent);
