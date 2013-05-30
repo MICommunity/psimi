@@ -31,10 +31,10 @@ public class DefaultFeatureEvidenceTest {
     public void test_set_unset_participantEvidence(){
 
         FeatureEvidence feature = new DefaultFeatureEvidence();
-        ParticipantEvidence p = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor(), null);
+        ParticipantEvidence p = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         feature.setParticipantEvidence(p);
 
-        Assert.assertEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor(), null), feature.getParticipantEvidence());
+        Assert.assertEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipantEvidence());
         Assert.assertEquals(0, p.getFeatureEvidences().size());
 
         feature.setParticipantEvidenceAndAddFeature(p);
