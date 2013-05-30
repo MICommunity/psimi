@@ -31,17 +31,12 @@ public interface ParticipantEvidence extends Participant<Interactor>{
 
     /**
      * The identification methods for this participant.
-     * The identification method is a controlled vocabulary term and can be null if not specified.
+     * Each identification method is a controlled vocabulary term.
+     * The collection cannot be null. If the participant does not have any identification methods, this method should return an empty collection
      * Ex: western blot, immunostaining, ...
      * @return the participant identification method
      */
-    public CvTerm getIdentificationMethod();
-
-    /**
-     * Set the participant identification method
-     * @param identificationMethod : participant identification method
-     */
-    public void setIdentificationMethod(CvTerm identificationMethod);
+    public Collection<CvTerm> getIdentificationMethods();
 
     /**
      * The experimental preparations for this participant.
@@ -82,7 +77,8 @@ public interface ParticipantEvidence extends Participant<Interactor>{
     public Collection<Parameter> getParameters();
 
     /**
-     * Sets the interaction evidence and add the new participant to its list of participant evidences
+     * Sets the interaction evidence and add the new participant to its list of participant evidences.
+     * If the given interaction is null, it will remove this featureEvidence from the previous interaction it was attached to
      * @param interaction : interaction evidence
      */
     public void setInteractionEvidenceAndAddParticipantEvidence(InteractionEvidence interaction);
@@ -133,5 +129,5 @@ public interface ParticipantEvidence extends Participant<Interactor>{
      * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
      * @return the features
      */
-    public Collection<? extends FeatureEvidence> getFeatureEvidences();
+    public Collection<FeatureEvidence> getFeatureEvidences();
 }

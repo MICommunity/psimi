@@ -24,7 +24,8 @@ public class ParticipantCloner {
             target.setExperimentalRole(source.getExperimentalRole());
             target.setExpressedInOrganism(source.getExpressedInOrganism());
             target.setBiologicalRole(source.getBiologicalRole());
-            target.setIdentificationMethod(source.getIdentificationMethod());
+            target.getIdentificationMethods().clear();
+            target.getIdentificationMethods().addAll(source.getIdentificationMethods());
             target.setInteractor(source.getInteractor());
             target.setStoichiometry(source.getStoichiometry());
 

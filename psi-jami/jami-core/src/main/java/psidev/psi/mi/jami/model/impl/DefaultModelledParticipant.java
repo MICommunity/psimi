@@ -114,10 +114,8 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         if (feature == null){
             return false;
         }
-        if (modelledFeatures == null){
-            initialiseModelledFeatures();
-        }
-        if (modelledFeatures.add(feature)){
+
+        if (getModelledFeatures().add(feature)){
             feature.setModelledParticipant(this);
             return true;
         }
@@ -129,10 +127,8 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         if (feature == null){
             return false;
         }
-        if (modelledFeatures == null){
-            initialiseModelledFeatures();
-        }
-        if (modelledFeatures.remove(feature)){
+
+        if (getModelledFeatures().remove(feature)){
             feature.setModelledParticipant(null);
             return true;
         }

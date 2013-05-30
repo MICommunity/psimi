@@ -96,7 +96,7 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
         int BEFORE = -1;
         int AFTER = 1;
 
-        if (experimentalParticipant1 == null && experimentalParticipant1 == null){
+        if (experimentalParticipant1 == null && experimentalParticipant2 == null){
             return EQUAL;
         }
         else if (experimentalParticipant1 == null){
@@ -123,10 +123,10 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
             }
 
             // then compares the participant identification method
-            CvTerm method1 = experimentalParticipant1.getIdentificationMethod();
-            CvTerm method2 = experimentalParticipant2.getIdentificationMethod();
+            Collection<CvTerm> method1 = experimentalParticipant1.getIdentificationMethods();
+            Collection<CvTerm> method2 = experimentalParticipant2.getIdentificationMethods();
 
-            comp = cvTermCollectionComparator.getObjectComparator().compare(method1, method2);
+            comp = cvTermCollectionComparator.compare(method1, method2);
             if (comp != 0){
                 return comp;
             }
