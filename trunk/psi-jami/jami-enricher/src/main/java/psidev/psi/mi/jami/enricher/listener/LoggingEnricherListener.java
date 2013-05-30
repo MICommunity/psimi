@@ -20,11 +20,15 @@ public class LoggingEnricherListener implements EnricherListener {
 
     private final Logger log = LoggerFactory.getLogger(LoggingEnricherListener.class.getName());
 
+    private boolean showXrefs = true;
+
     public void onEnricherEvent(EnricherEvent e) {
         log.info(" ---- New Log ----");
         logAllReports(e);
         log.info(" ---- Log Ends ----");
     }
+
+    public void showXrefs(boolean showXrefs){this.showXrefs = showXrefs;}
 
     public void logAllReports(EnricherEvent e) {
         log.info("Logging for: ["+e.getQueryID()+"] " +
@@ -32,9 +36,10 @@ public class LoggingEnricherListener implements EnricherListener {
                 "(a query on ["+e.getQueryIDType()+"] "+
                 "to the ["+e.getFetcherType()+"] fetcher");
 
-        for(AdditionReport r :e.getAdditions()) {
-            log.info("Addition on ["+r.getField()+"] " +
-                    "was added the value: ["+r.getNewValue()+"]");
+        for(OverwriteReport r :e.getOverwrites()) {
+            log.info("Overwrite on ["+r.getField()+"] " +
+                    "had the old value ["+r.getOldValue()+"] " +
+                    "overwritten with ["+r.getNewValue()+"]");
         }
 
         for(MismatchReport r :e.getMismatches()) {
@@ -43,10 +48,12 @@ public class LoggingEnricherListener implements EnricherListener {
                     "which mismatches ["+r.getNewValue()+"]");
         }
 
-        for(OverwriteReport r :e.getOverwrites()) {
-            log.info("Overwrite on ["+r.getField()+"] " +
-                    "had the old value ["+r.getOldValue()+"] " +
-                    "overwritten with ["+r.getNewValue()+"]");
+        for(AdditionReport r :e.getAdditions()) {
+            if(r.getField().equalsIgnoreCase("Xref") && !showXrefs){}
+            else{
+                log.info("Addition on ["+r.getField()+"] " +
+                        "was added the value: ["+r.getNewValue()+"]");
+            }
         }
 
         for(EnricherEvent s :e.getSubEnricherEvents()) {

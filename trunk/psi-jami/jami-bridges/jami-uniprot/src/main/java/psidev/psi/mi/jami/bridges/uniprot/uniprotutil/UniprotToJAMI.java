@@ -222,7 +222,16 @@ public class UniprotToJAMI {
 
         //todo
         // FULL NAME - protein description
-        // p.setFullName(entry.getProteinDescription().);
+        if(entry.getProteinDescription().hasRecommendedName()) {
+            for(Field f: entry.getProteinDescription().getRecommendedName().getFields()){
+                if(f.getType() == FieldType.FULL){
+                    p.setFullName(f.getValue()); //Use the full name if there is one
+                    break;
+                }else if(f.getType() == FieldType.SHORT){
+                    p.setFullName(f.getValue()); //Use the short name if nothing else
+                }
+            }
+        }
 
         // ORGANISM
         p.setOrganism(getOrganismFromEntry(entry));
@@ -366,27 +375,25 @@ public class UniprotToJAMI {
         // SHORT NAME - identifier
         Protein p = new DefaultProtein(identifier);
 
+        // FULL NAME - feature description
+        // SEQUENCE - feature sequence
         FeatureLocation location = null;
         if(feature.getType() == FeatureType.CHAIN) {
             ChainFeature chainFeature = (ChainFeature)feature;
-
-            // SEQUENCE - feature sequence
             location = chainFeature.getFeatureLocation();
+            //FULL NAME
+            p.setFullName(chainFeature.getFeatureDescription().getValue());
+        }else if(feature.getType() == FeatureType.PEPTIDE) {
+            PeptideFeature peptideFeature = (PeptideFeature)feature;
+            location = peptideFeature.getFeatureLocation();
+            //FULL NAME
+            p.setFullName(peptideFeature.getFeatureDescription().getValue());
+        }else if(feature.getType() == FeatureType.PROPEP)  {
+            ProPepFeature proPepFeature = (ProPepFeature)feature;
+            location = proPepFeature.getFeatureLocation();
+            //FULL NAME
+            p.setFullName(proPepFeature.getFeatureDescription().getValue());
         }
-        else if(feature.getType() == FeatureType.PEPTIDE) {
-            PeptideFeature chainFeature = (PeptideFeature)feature;
-
-            // SEQUENCE - feature sequence
-            location = chainFeature.getFeatureLocation();
-        }
-        else if(feature.getType() == FeatureType.PROPEP)  {
-            ProPepFeature chainFeature = (ProPepFeature)feature;
-
-            // SEQUENCE - feature sequence
-            location = chainFeature.getFeatureLocation();
-        }
-
-
         if (location != null){
             int begin = location.getStart()-1;
             int end = location.getEnd();
@@ -409,7 +416,7 @@ public class UniprotToJAMI {
 
         //todo
         // FULL NAME - protein description
-        // p.setFullName(entry.getProteinDescription().);
+        //entry.getProteinDescription().);
 
         //PRIMARY AC - uniprotIdMaster-chainId
         if(entry.getPrimaryUniProtAccession() != null){
@@ -449,9 +456,6 @@ public class UniprotToJAMI {
                 }
             }
         }
-
-        // ALIASES - feature synonyms
-
 
         // XREF - uniprotMaster
         // TODO confirm this is the correct xref

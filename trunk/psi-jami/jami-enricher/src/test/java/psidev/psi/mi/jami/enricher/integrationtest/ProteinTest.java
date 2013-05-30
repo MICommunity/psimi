@@ -39,24 +39,20 @@ public class ProteinTest {
 
 
     public void min(){
-        //try{
         proteinEnricher = new MinimumProteinEnricher(fetcher);
         proteinEnricher.addEnricherListener(new LoggingEnricherListener());
-
-        //} catch (Exception e){
-            //log.debug("the protein enricher did not initialise");
-            //e.printStackTrace();
-       // }
     }
 
     public void max(){
         proteinEnricher = new MaximumProteinUpdater(fetcher);
-        proteinEnricher.addEnricherListener(new LoggingEnricherListener());
-
+        LoggingEnricherListener loglist = new LoggingEnricherListener();
+        loglist.showXrefs(false);
+        proteinEnricher.addEnricherListener(loglist);
     }
 
 
-    String[] tests = {"P42694","Q9Y2H6","Q6ZRI6-3", "P13055-2","PRO_0000015868","FOOBAR"};
+    String[] tests = {"P12345", "P77681", "P11163"};
+            //"P17671-2"};//"P42694","Q9Y2H6","Q6ZRI6-3", "P13055-2","PRO_0000015868","FOOBAR"};
 
     public void testProteins(){
         for(String s : tests){
@@ -75,8 +71,8 @@ public class ProteinTest {
 
     public static void main(String[] args){
         ProteinTest pt = new ProteinTest();
-        pt.min();
-        pt.testProteins();
+        //pt.min();
+        //pt.testProteins();
         pt.max();
         pt.testProteins();
     }

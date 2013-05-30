@@ -26,8 +26,21 @@ public class UniprotFetcherTest {
         fetcher = new UniprotFetcher();
     }
 
+    //--------------MASTER
+
+
+
+    //--------------ISOFORM
+
+    /**
+     * For a set of isoform identifiers,
+     * Check that the regular expression catches them,
+     * Check that they return a single protein.
+     * Check that the protein has only expected fields
+     * @throws FetcherException
+     */
     @Test
-    public void test_proteins_returned_by_isoform_identifier() throws FetcherException {
+    public void test_isoform_returned_identifier() throws FetcherException {
         String[] identifiers = {"Q6ZRI6-3", "P13055-2"};
 
         for(String identifier : identifiers){
@@ -45,8 +58,16 @@ public class UniprotFetcherTest {
         }
     }
 
+    //--------------FEATURE CHAIN
+
+    /**
+     * For a set of feature chain identifiers,
+     * Check that the regular expression catches them,
+     * check that they return a single protein.
+     * @throws FetcherException
+     */
     @Test
-    public void test_protein_returned_by_feature_chain_search() throws FetcherException {
+    public void test_feature_chain_search_regular_expression() throws FetcherException {
         String[] identifiers = {
                 "PRO_0000030311",
                 "P19838-PRO_0000030311",
@@ -56,36 +77,61 @@ public class UniprotFetcherTest {
 
         for(String identifier : identifiers){
             assertTrue(fetcher.UNIPROT_PRO_REGEX.matcher(identifier).find());
-            fetcher.getProteinsByID(identifier);
+            assertEquals(1, fetcher.getProteinsByID(identifier).size());
         }
     }
 
+    /**
+     * Testing a fringe case where the sub sequence continues to the end.
+     * For the chosen identifier,
+     * Check one protein is returned,
+     * check that the sequence it returns is of the correct length
+     * check that the sequence is returns is correct.
+     *
+     * @throws FetcherException
+     */
     @Test
-    public void test_sequence_is_correct_in_protein_returned_by_feature_chain_search() throws FetcherException{
-
-
+    public void test_feature_chain_search_has_correct_sequence_for_truncation_to_end()
+            throws FetcherException{
         Collection<Protein> proteins;
 
         //Sequence and length were independently verified at:
         //http://www.uniprot.org/uniprot/P15515
-        proteins = fetcher.getProteinsByID("PRO_0000021416");//Fringe case - the end is at the maximum length
+        proteins = fetcher.getProteinsByID("PRO_0000021416");
+        //Fringe case - the end is at the maximum length
         assertTrue(proteins.size() == 1);
 
         for(Protein protein : proteins){
+            assertEquals(38, protein.getSequence().length());
             assertEquals("DSHEKRHHGYRRKFHEKHHSHREFPFYGDYGSNYLYDN",
                     protein.getSequence());
-            assertEquals(38, protein.getSequence().length());
         }
+    }
+
+    /**
+     * Testing a fringe case where the sub sequence begins on the first position.
+     * For the chosen identifier,
+     * Check one protein is returned,
+     * check that the sequence it returns is of the correct length
+     * check that the sequence is returns is correct.
+     *
+     * @throws FetcherException
+     */
+    @Test
+    public void test_feature_chain_search_has_correct_sequence_for_truncation_from_start()
+            throws FetcherException{
+        Collection<Protein> proteins;
 
         //Sequence and length were independently verified at:
         //http://www.uniprot.org/uniprot/Q9TQY7
-        proteins = fetcher.getProteinsByID("PRO_0000015868"); //Fringe case - the beginning is the first position
+        proteins = fetcher.getProteinsByID("PRO_0000015868");
+        //Fringe case - the beginning is the first position
         assertTrue(proteins.size() == 1);
 
         for(Protein protein : proteins){
+            assertEquals(30, protein.getSequence().length());
             assertEquals("FPNQHLCGSHLVEALYLVCGEKGFYYIPRM",
                     protein.getSequence());
-            assertEquals(30, protein.getSequence().length());
         }
     }
 }
