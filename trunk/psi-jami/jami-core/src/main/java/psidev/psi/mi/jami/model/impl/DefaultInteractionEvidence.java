@@ -23,10 +23,10 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     private Xref imexId;
     private Experiment experiment;
     private String availability;
-    private Collection<Parameter> experimentalParameters;
+    private Collection<Parameter> parameters;
     private boolean isInferred = false;
     private Collection<ParticipantEvidence> participantEvidences;
-    private Collection<Confidence> experimentalConfidences;
+    private Collection<Confidence> confidences;
     private boolean isNegative;
 
     private Collection<VariableParameterValueSet> variableParameterValueSets;
@@ -104,24 +104,20 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         super(shortName);
     }
 
-    public DefaultInteractionEvidence(String shortName, Source source) {
-        super(shortName, source);
-    }
-
     public DefaultInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
     }
 
     protected void initialiseExperimentalConfidences(){
-        this.experimentalConfidences = new ArrayList<Confidence>();
+        this.confidences = new ArrayList<Confidence>();
     }
 
     protected void initialiseExperimentalConfidencesWith(Collection<Confidence> confidences){
         if (confidences == null){
-            this.experimentalConfidences = Collections.EMPTY_LIST;
+            this.confidences = Collections.EMPTY_LIST;
         }
         else {
-            this.experimentalConfidences = confidences;
+            this.confidences = confidences;
         }
     }
 
@@ -143,15 +139,15 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     }
 
     protected void initialiseExperimentalParameters(){
-        this.experimentalParameters = new ArrayList<Parameter>();
+        this.parameters = new ArrayList<Parameter>();
     }
 
     protected void initialiseExperimentalParametersWith(Collection<Parameter> parameters){
         if (parameters == null){
-            this.experimentalParameters = Collections.EMPTY_LIST;
+            this.parameters = Collections.EMPTY_LIST;
         }
         else {
-            this.experimentalParameters = parameters;
+            this.parameters = parameters;
         }
     }
 
@@ -200,10 +196,12 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     }
 
     public void setExperimentAndAddInteractionEvidence(Experiment experiment) {
-        this.experiment = experiment;
+        if (this.experiment != null){
+            this.experiment.removeInteractionEvidence(this);
+        }
 
         if (experiment != null){
-            this.experiment.getInteractionEvidences().add(this);
+            experiment.addInteractionEvidence(this);
         }
     }
 
@@ -215,11 +213,11 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         return this.variableParameterValueSets;
     }
 
-    public Collection<Confidence> getExperimentalConfidences() {
-        if (experimentalConfidences == null){
+    public Collection<Confidence> getConfidences() {
+        if (confidences == null){
             initialiseExperimentalConfidences();
         }
-        return this.experimentalConfidences;
+        return this.confidences;
     }
 
     public String getAvailability() {
@@ -238,11 +236,11 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         this.isNegative = negative;
     }
 
-    public Collection<Parameter> getExperimentalParameters() {
-        if (experimentalParameters == null){
+    public Collection<Parameter> getParameters() {
+        if (parameters == null){
             initialiseExperimentalParameters();
         }
-        return this.experimentalParameters;
+        return this.parameters;
     }
 
     public boolean isInferred() {
@@ -253,7 +251,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         this.isInferred = inferred;
     }
 
-    public Collection<? extends ParticipantEvidence> getParticipantEvidences() {
+    public Collection<ParticipantEvidence> getParticipantEvidences() {
         if (participantEvidences == null){
             initialiseParticipantEvidences();
         }
@@ -264,10 +262,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         if (part == null){
             return false;
         }
-        if (participantEvidences == null){
-            initialiseParticipantEvidences();
-        }
-        if (participantEvidences.add(part)){
+        if (getParticipantEvidences().add(part)){
             part.setInteractionEvidence(this);
             return true;
         }
@@ -278,10 +273,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         if (part == null){
             return false;
         }
-        if (participantEvidences == null){
-            initialiseParticipantEvidences();
-        }
-        if (participantEvidences.remove(part)){
+        if (getParticipantEvidences().remove(part)){
             part.setInteractionEvidence(null);
             return true;
         }

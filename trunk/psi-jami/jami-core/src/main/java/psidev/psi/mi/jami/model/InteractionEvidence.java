@@ -45,6 +45,7 @@ public interface InteractionEvidence extends Interaction{
 
     /**
      * Sets the experiment for this interaction and add the interaction to the list of interaction evidences
+     * If the given experiment is null, it will remove this interaction evidence from the previous experiment attached to this interaction
      * @param experiment : experiment
      */
     public void setExperimentAndAddInteractionEvidence(Experiment experiment);
@@ -77,7 +78,7 @@ public interface InteractionEvidence extends Interaction{
      * Ex: IC50, ...
      * @return the parameters
      */
-    public Collection<Parameter> getExperimentalParameters();
+    public Collection<Parameter> getParameters();
 
     /**
      * Boolean value to know if the interaction is inferred from multiple experiments which on their own would not support the interaction.
@@ -97,7 +98,7 @@ public interface InteractionEvidence extends Interaction{
      * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
      * @return the particiants
      */
-    public Collection<? extends ParticipantEvidence> getParticipantEvidences();
+    public Collection<ParticipantEvidence> getParticipantEvidences();
 
     /**
      * This method will add the participant evidence and set the interaction evidence of the new participant evidence to this current interaction
@@ -133,7 +134,7 @@ public interface InteractionEvidence extends Interaction{
      * Ex: author based scores, statistical confidences, ...
      * @return the confidences
      */
-    public Collection<Confidence> getExperimentalConfidences();
+    public Collection<Confidence> getConfidences();
 
     /**
      * Boolean value to know if an interaction is negative.
