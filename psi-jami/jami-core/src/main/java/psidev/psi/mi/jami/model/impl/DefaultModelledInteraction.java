@@ -137,10 +137,7 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         if (part == null){
             return false;
         }
-        if (modelledParticipants == null){
-            initialiseModelledParticipants();
-        }
-        if (modelledParticipants.add(part)){
+        if (getModelledParticipants().add(part)){
             part.setModelledInteraction(this);
             return true;
         }
@@ -151,10 +148,8 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         if (part == null){
             return false;
         }
-        if (modelledParticipants == null){
-            initialiseModelledParticipants();
-        }
-        if (modelledParticipants.remove(part)){
+
+        if (getModelledParticipants().remove(part)){
             part.setModelledInteraction(null);
             return true;
         }
