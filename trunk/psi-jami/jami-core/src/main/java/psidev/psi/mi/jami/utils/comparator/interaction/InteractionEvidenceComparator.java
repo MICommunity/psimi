@@ -13,11 +13,11 @@ import java.util.Comparator;
 /**
  * Basic InteractionEvidenceComparator.
  *
- * It will first compare the basic interaction properties using AbstractInteractionBaseComparator<ParticipantEvidence>.
+ * It will first compare the basic interaction properties using Comparator<Interaction>.
  * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
  * A negative interaction will come after a positive interaction. it will compare
- * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.
- * If the parameters are the same, it will first compare the experimental variableParameters and then it will compare the inferred boolean value (Inferred interactions will always come after).
+ * the experiment using ExperimentComparator. If the experiments are the same, it will compare the participants using ParticipantEvidenceComparator. Then it will compare the parameters using ParameterComparator.
+ * If the parameters are the same, it will first compare the experimental variableParameters using VariableParameterValueSetComparator and then it will compare the inferred boolean value (Inferred interactions will always come after).
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -26,7 +26,7 @@ import java.util.Comparator;
 
 public class InteractionEvidenceComparator implements Comparator<InteractionEvidence> {
 
-    protected AbstractInteractionBaseComparator interactionComparator;
+    protected Comparator<Interaction> interactionComparator;
     protected ExperimentComparator experimentComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
     protected ParticipantCollectionComparator participantCollectionComparator;
@@ -38,7 +38,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
      * @param experimentComparator : required to compare experiments
      * @param parameterComparator : required to compare parameters
      */
-    public InteractionEvidenceComparator(Comparator<ParticipantEvidence> participantComparator, AbstractInteractionBaseComparator interactionComparator, ExperimentComparator experimentComparator,
+    public InteractionEvidenceComparator(Comparator<ParticipantEvidence> participantComparator, Comparator<Interaction> interactionComparator, ExperimentComparator experimentComparator,
                                          ParameterComparator parameterComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
@@ -65,7 +65,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
         return parameterCollectionComparator;
     }
 
-    public AbstractInteractionBaseComparator getInteractionComparator() {
+    public Comparator<Interaction> getInteractionBaseComparator() {
         return interactionComparator;
     }
 
@@ -82,12 +82,11 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
     }
 
     /**
-     * It will first compare the basic interaction properties using AbstractInteractionBaseComparator<ParticipantEvidence>.
+     * It will first compare the basic interaction properties using Comparator<Interaction>.
      * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
      * A negative interaction will come after a positive interaction. it will compare
-     * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.
-     * If the parameters are the same, it will first compare the experimental variableParameters and then it will compare the inferred boolean value (Inferred interactions will always come after).
-     *
+     * the experiment using ExperimentComparator. If the experiments are the same, it will compare the participants using ParticipantEvidenceComparator. Then, it will compare the parameters using ParameterComparator.
+     * If the parameters are the same, it will first compare the experimental variableParameters using VariableParameterValueSetComparator and then it will compare the inferred boolean value (Inferred interactions will always come after).
      * @param experimentalInteraction1
      * @param experimentalInteraction2
      * @return
@@ -120,15 +119,6 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
                 return imex1.compareTo(imex2);
             }
 
-            // If at least one IMEx id is not set, will compare the experiment
-            Experiment exp1 = experimentalInteraction1.getExperiment();
-            Experiment exp2 = experimentalInteraction2.getExperiment();
-
-            comp = experimentComparator.compare(exp1, exp2);
-            if (comp != 0){
-                return comp;
-            }
-
             // then compares negative
             boolean isNegative1 = experimentalInteraction1.isNegative();
             boolean  isNegative2 = experimentalInteraction2.isNegative();
@@ -140,9 +130,18 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
                 return BEFORE;
             }
 
+            // If at least one IMEx id is not set, will compare the experiment
+            Experiment exp1 = experimentalInteraction1.getExperiment();
+            Experiment exp2 = experimentalInteraction2.getExperiment();
+
+            comp = experimentComparator.compare(exp1, exp2);
+            if (comp != 0){
+                return comp;
+            }
+
             // first compares participants of an interaction
-            Collection<? extends ParticipantEvidence> participants1 = experimentalInteraction1.getParticipantEvidences();
-            Collection<? extends ParticipantEvidence> participants2 = experimentalInteraction2.getParticipantEvidences();
+            Collection<ParticipantEvidence> participants1 = experimentalInteraction1.getParticipantEvidences();
+            Collection<ParticipantEvidence> participants2 = experimentalInteraction2.getParticipantEvidences();
 
             comp = participantCollectionComparator.compare(participants1, participants2);
             if (comp != 0){
