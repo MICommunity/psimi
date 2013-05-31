@@ -25,13 +25,13 @@ public class UnambiguousExactCuratedModelledInteractionComparator extends Modell
      * compare basic interaction properties
      */
     public UnambiguousExactCuratedModelledInteractionComparator() {
-        super(new UnambiguousExactModelledParticipantComparator(), new InteractionBaseComparator(new UnambiguousCvTermComparator()));
+        super(new UnambiguousExactModelledParticipantComparator(), new UnambiguousCuratedInteractionBaseComparator());
         this.sourceComparator = new UnambiguousCvTermComparator();
     }
 
     @Override
-    public InteractionBaseComparator getInteractionComparator() {
-        return this.interactionComparator;
+    public UnambiguousCuratedInteractionBaseComparator getInteractionBaseComparator() {
+        return (UnambiguousCuratedInteractionBaseComparator) this.interactionBaseComparator;
     }
     public UnambiguousCvTermComparator getSourceComparator() {
         return sourceComparator;

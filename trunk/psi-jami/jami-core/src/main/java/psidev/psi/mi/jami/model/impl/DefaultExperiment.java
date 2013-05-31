@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousExperimentComparator;
+import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousCuratedExperimentComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -304,12 +304,12 @@ public class DefaultExperiment implements Experiment {
             return false;
         }
 
-        return UnambiguousExperimentComparator.areEquals(this, (Experiment) o);
+        return UnambiguousCuratedExperimentComparator.areEquals(this, (Experiment) o);
     }
 
     @Override
     public int hashCode() {
-        return UnambiguousExperimentComparator.hashCode(this);
+        return UnambiguousCuratedExperimentComparator.hashCode(this);
     }
 
     @Override

@@ -27,13 +27,13 @@ public class DefaultExactCuratedModelledInteractionComparator extends ModelledIn
      * compare basic interaction properties
      */
     public DefaultExactCuratedModelledInteractionComparator() {
-        super(new DefaultExactModelledParticipantComparator(), new InteractionBaseComparator(new DefaultCvTermComparator()));
+        super(new DefaultExactModelledParticipantComparator(), new DefaultCuratedInteractionBaseComparator());
         this.sourceComparator = new DefaultCvTermComparator();
     }
 
     @Override
-    public InteractionBaseComparator getInteractionComparator() {
-        return this.interactionComparator;
+    public DefaultCuratedInteractionBaseComparator getInteractionBaseComparator() {
+        return (DefaultCuratedInteractionBaseComparator) this.interactionBaseComparator;
     }
 
     public DefaultCvTermComparator getSourceComparator() {

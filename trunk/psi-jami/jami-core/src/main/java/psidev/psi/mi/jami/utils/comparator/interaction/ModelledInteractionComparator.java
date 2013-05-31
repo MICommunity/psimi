@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
+import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComparator;
@@ -10,7 +11,7 @@ import java.util.Comparator;
 /**
  * Basic ModelledInteraction comparator.
  *
- * It will use a InteractionBaseComparator<Component> to compare basic interaction properties.
+ * It will use a AbstractInteractionBaseComparator<Component> to compare basic interaction properties.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,7 +20,7 @@ import java.util.Comparator;
 
 public class ModelledInteractionComparator implements Comparator<ModelledInteraction> {
 
-    protected InteractionBaseComparator interactionComparator;
+    protected Comparator<Interaction> interactionBaseComparator;
     protected ParticipantCollectionComparator participantCollectionComparator;
 
     /**
@@ -27,11 +28,11 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
      * @param participantComparator : required to compare participants
      * @param interactionComparator
      */
-    public ModelledInteractionComparator(Comparator<ModelledParticipant> participantComparator, InteractionBaseComparator interactionComparator){
+    public ModelledInteractionComparator(Comparator<ModelledParticipant> participantComparator, Comparator<Interaction> interactionComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
         }
-        this.interactionComparator = interactionComparator;
+        this.interactionBaseComparator = interactionComparator;
         if (participantComparator == null){
             throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
         }
@@ -43,12 +44,12 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
         return participantCollectionComparator;
     }
 
-    public InteractionBaseComparator getInteractionComparator() {
-        return interactionComparator;
+    public Comparator<Interaction> getInteractionBaseComparator() {
+        return interactionBaseComparator;
     }
 
     /**
-     * It will use a InteractionBaseComparator<Component> to compare basic interaction properties.
+     * It will use a AbstractInteractionBaseComparator<Component> to compare basic interaction properties.
      * @param modelledInteraction1
      * @param modelledInteraction2
      * @return
@@ -69,7 +70,7 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
         }
         else {
 
-            int comp = interactionComparator.compare(modelledInteraction1, modelledInteraction2);
+            int comp = interactionBaseComparator.compare(modelledInteraction1, modelledInteraction2);
             if (comp != 0){
                return comp;
             }
