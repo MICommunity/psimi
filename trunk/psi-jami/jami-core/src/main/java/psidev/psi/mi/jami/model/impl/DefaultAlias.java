@@ -7,7 +7,9 @@ import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 import java.io.Serializable;
 
 /**
- * Default implementation of Alias
+ * Default implementation of Alias.
+ *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousAliasComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantComparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +10,19 @@ import java.util.Collections;
 
 /**
  * Default implementation for participant
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the participant object is a complex object.
+ * To compare participant objects, you can use some comparators provided by default:
+ * - DefaultParticipantBaseComparator
+ * - UnambiguousParticipantBaseComparator
+ * - DefaultExactParticipantBaseComparator
+ * - UnambiguousExactParticipantBaseComparator
+ * - ParticipantBaseComparator
+ * - DefaultParticipantComparator
+ * - UnambiguousParticipantComparator
+ * - DefaultExactParticipantComparator
+ * - UnambiguousExactParticipantComparator
+ * - ParticipantComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -164,28 +175,7 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Participant)){
-            return false;
-        }
-
-        // use UnambiguousExactParticipant comparator for equals
-        return UnambiguousExactParticipantComparator.areEquals(this, (Participant) o);
-    }
-
-    @Override
     public String toString() {
         return interactor.toString() + " ( " + biologicalRole.toString() + ")" + (stoichiometry != null ? ", stoichiometry: " + stoichiometry.toString() : "");
-    }
-
-    @Override
-    public int hashCode() {
-        // use UnambiguousExactParticipantBase comparator for hashcode to avoid instance of calls. It is possible that
-        // the method equals will return false and the hashcode will be the same but it is not a big issue
-        return UnambiguousExactParticipantBaseComparator.hashCode(this);
     }
 }

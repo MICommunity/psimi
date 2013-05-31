@@ -5,10 +5,17 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Polymer;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactPolymerComparator;
 
 /**
  * Default implementation for Polymer
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Polymer object is a complex object.
+ * To compare Polymer objects, you can use some comparators provided by default:
+ * - DefaultPolymerComparator
+ * - UnambiguousPolymerComparator
+ * - DefaultExactPolymerComparator
+ * - UnambiguousExactPolymerComparator
+ * - AbstractPolymerComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -103,19 +110,5 @@ public class DefaultPolymer extends DefaultMolecule implements Polymer{
         else {
             super.setInteractorType(interactorType);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Polymer)){
-            return false;
-        }
-
-        // use UnambiguousExactPolymer comparator for equals
-        return UnambiguousExactPolymerComparator.areEquals(this, (Polymer) o);
     }
 }

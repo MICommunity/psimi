@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +13,14 @@ import java.util.Date;
 
 /**
  * Default implementation for complexes
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Complex object is a complex object.
+ * To compare Complex objects, you can use some comparators provided by default:
+ * - DefaultComplexComparator
+ * - UnambiguousComplexComparator
+ * - DefaultExactComplexComparator
+ * - UnambiguousExactComplexComparator
+ * - ComplexComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -323,20 +330,6 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         else{
             super.setInteractorType(interactorType);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Complex)){
-            return false;
-        }
-
-        // use UnambiguousExactComplex comparator for equals
-        return UnambiguousExactComplexComparator.areEquals(this, (Complex) o);
     }
 
     public String getRigid() {

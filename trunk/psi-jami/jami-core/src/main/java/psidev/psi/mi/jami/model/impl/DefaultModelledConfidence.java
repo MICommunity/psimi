@@ -11,6 +11,8 @@ import java.util.Collections;
 /**
  * Default implementation for ModelledInteraction
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousConfidenceComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>28/02/13</pre>

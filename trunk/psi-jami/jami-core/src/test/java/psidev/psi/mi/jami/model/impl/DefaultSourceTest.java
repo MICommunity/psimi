@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationComparator;
 
 /**
  * Unit tester for DefaultSource
@@ -40,7 +41,7 @@ public class DefaultSourceTest {
 
         Assert.assertEquals("http://ww.ebi.ac.uk/intact/", intact.getUrl());
         Assert.assertEquals("hinxton", intact.getPostalAddress());
-        Assert.assertEquals(new DefaultPublication(new DefaultXref(CvTermUtils.createPubmedDatabase(), "12345")), intact.getPublication());
+        Assert.assertTrue(DefaultPublicationComparator.areEquals(new DefaultPublication(new DefaultXref(CvTermUtils.createPubmedDatabase(), "12345")), intact.getPublication()));
     }
 
     @Test(expected=IllegalArgumentException.class)

@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactCuratedInteractionEvidenceComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +11,18 @@ import java.util.Collections;
 
 /**
  * Default implementation for InteractionEvidence
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the InteractionEvidence object is a complex object.
+ * To compare InteractionEvidence objects, you can use some comparators provided by default:
+ * - DefaultInteractionEvidenceComparator
+ * - UnambiguousInteractionEvidenceComparator
+ * - DefaultCuratedInteractionEvidenceComparator
+ * - UnambiguousCuratedInteractionEvidenceComparator
+ * - DefaultExactInteractionEvidenceComparator
+ * - UnambiguousExactInteractionEvidenceComparator
+ * - DefaultCuratedExactInteractionEvidenceComparator
+ * - UnambiguousCuratedExactInteractionEvidenceComparator
+ * - AbstractInteractionBaseComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -328,20 +339,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
 
     protected void clearPropertiesLinkedToXrefs() {
         imexId = null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof InteractionEvidence)){
-            return false;
-        }
-
-        // use UnambiguousExactExperimentalInteraction comparator for equals
-        return UnambiguousExactCuratedInteractionEvidenceComparator.areEquals(this, (InteractionEvidence) o);
     }
 
     @Override

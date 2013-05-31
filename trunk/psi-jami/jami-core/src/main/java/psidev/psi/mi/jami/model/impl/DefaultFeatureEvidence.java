@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +10,11 @@ import java.util.Collections;
 
 /**
  * Default implementation for FeatureEvidence
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the FeatureEvidence object is a complex object.
+ * To compare FeatureEvidence objects, you can use some comparators provided by default:
+ * - DefaultFeatureEvidenceComparator
+ * - UnambiguousFeatureEvidenceComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -113,19 +117,5 @@ public class DefaultFeatureEvidence extends DefaultFeature implements FeatureEvi
         if (participant != null){
             participant.addFeatureEvidence(this);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof FeatureEvidence)){
-            return false;
-        }
-
-        // use UnambiguousExperimentalFeature comparator for equals
-        return UnambiguousFeatureEvidenceComparator.areEquals(this, (FeatureEvidence) o);
     }
 }

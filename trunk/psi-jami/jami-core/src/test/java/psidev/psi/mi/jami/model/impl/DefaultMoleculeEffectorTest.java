@@ -5,6 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.AllostericEffectorType;
 import psidev.psi.mi.jami.model.MoleculeEffector;
 import psidev.psi.mi.jami.utils.InteractorUtils;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
 
 /**
  * Unit tester for DefaultMoleculeEffector
@@ -22,7 +23,7 @@ public class DefaultMoleculeEffectorTest {
         MoleculeEffector effector = new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
 
         Assert.assertEquals(AllostericEffectorType.molecule, effector.getEffectorType());
-        Assert.assertEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), effector.getMolecule());
+        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), effector.getMolecule()));
     }
 
     @Test(expected=IllegalArgumentException.class)

@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 /**
  * Default implementation for Parameter
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousParameterComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

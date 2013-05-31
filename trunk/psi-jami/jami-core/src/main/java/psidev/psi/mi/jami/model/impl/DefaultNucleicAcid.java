@@ -7,12 +7,19 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactNucleicAcidComparator;
 
 import java.util.Collection;
 
 /**
  * Default implementation for NucleicAcid.
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the NucleicAcid object is a complex object.
+ * To compare NucleicAcid objects, you can use some comparators provided by default:
+ * - DefaultNucleicAcidComparator
+ * - UnambiguousNucleicAcidComparator
+ * - DefaultExactNucleicAcidComparator
+ * - UnambiguousExactNucleicAcidComparator
+ * - NucleicAcidComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -208,20 +215,6 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
         else {
             super.setInteractorType(interactorType);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof NucleicAcid)){
-            return false;
-        }
-
-        // use UnambiguousExactNucleicAcid comparator for equals
-        return UnambiguousExactNucleicAcidComparator.areEquals(this, (NucleicAcid) o);
     }
 
     @Override

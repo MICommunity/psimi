@@ -5,12 +5,19 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactBioactiveEntityComparator;
 
 import java.util.Collection;
 
 /**
  * Default implementation for bioactive entity
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the BioactiveEntity object is a complex object.
+ * To compare BioactiveEntity objects, you can use some comparators provided by default:
+ * - DefaultBioactiveEntityComparator
+ * - UnambiguousBioactiveEntityComparator
+ * - DefaultExactBioactiveEntityComparator
+ * - UnambiguousExactBioactiveEntityComparator
+ * - BioactiveEntityComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -320,20 +327,6 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
     @Override
     public String toString() {
         return chebi != null ? chebi.getId() : (standardInchiKey != null ? standardInchiKey.getValue() : (smile != null ? smile.getValue() : (standardInchi != null ? standardInchi.getValue() : super.toString())));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof BioactiveEntity)){
-            return false;
-        }
-
-        // use UnambiguousExactBioactiveEntity comparator for equals
-        return UnambiguousExactBioactiveEntityComparator.areEquals(this, (BioactiveEntity) o);
     }
 
     private class BioctiveEntityIdentifierList extends AbstractListHavingPoperties<Xref> {

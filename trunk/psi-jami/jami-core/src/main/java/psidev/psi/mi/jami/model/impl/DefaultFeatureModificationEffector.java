@@ -3,12 +3,15 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.AllostericEffectorType;
 import psidev.psi.mi.jami.model.FeatureModificationEffector;
 import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.MoleculeEffector;
-import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactMoleculeEffectorComparator;
-import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousFeatureModificationEffectorComparator;
 
 /**
  * Default implementation for FeatureModificationEffector
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the FeatureModificationEffector object is a complex object.
+ * To compare FeatureModificationEffector objects, you can use some comparators provided by default:
+ * - DefaultFeatureModificationEffectorComparator
+ * - UnambiguousFeatureModificationEffectorComparator
+ * - FeatureModificationEffector comparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -32,24 +35,6 @@ public class DefaultFeatureModificationEffector implements FeatureModificationEf
 
     public AllostericEffectorType getEffectorType() {
         return AllostericEffectorType.feature_modification;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof FeatureModificationEffector)){
-            return false;
-        }
-
-        return UnambiguousFeatureModificationEffectorComparator.areEquals(this, (FeatureModificationEffector) o);
-    }
-
-    @Override
-    public int hashCode() {
-        return UnambiguousFeatureModificationEffectorComparator.hashCode(this);
     }
 
     @Override

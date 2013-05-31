@@ -7,8 +7,10 @@ import psidev.psi.mi.jami.utils.comparator.annotation.UnambiguousAnnotationCompa
 import java.io.Serializable;
 
 /**
- * Default implementation for Annotation
+ * Default implementation for Annotation.
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousAnnotationComparator
+
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

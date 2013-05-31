@@ -6,12 +6,19 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactProteinComparator;
 
 import java.util.Collection;
 
 /**
  * Default implementation for proteins and peptides
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Protein object is a complex object.
+ * To compare Protein objects, you can use some comparators provided by default:
+ * - DefaultProteinComparator
+ * - UnambiguousProteinComparator
+ * - DefaultExactProteinComparator
+ * - UnambiguousExactProteinComparator
+ * - AvbstractProteinComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -305,20 +312,6 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
     @Override
     public String toString() {
         return geneName != null ? geneName.getName() : (uniprotkb != null ? uniprotkb.getId() : (refseq != null ? refseq.getId() : super.toString()));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Protein)){
-            return false;
-        }
-
-        // use UnambiguousExactProtein comparator for equals
-        return UnambiguousExactProteinComparator.areEquals(this, (Protein) o);
     }
 
     private class ProteinIdentifierList extends AbstractListHavingPoperties<Xref> {

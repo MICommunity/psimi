@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.model.impl;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CooperativityEvidence;
+import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationComparator;
 
 /**
  * Unit tester for DefaultCooperativityEvidence
@@ -19,7 +20,7 @@ public class DefaultCooperativityEvidenceTest {
 
         CooperativityEvidence evidence = new DefaultCooperativityEvidence(new DefaultPublication("12345"));
 
-        Assert.assertEquals(new DefaultPublication("12345"), evidence.getPublication());
+        Assert.assertTrue(DefaultPublicationComparator.areEquals(new DefaultPublication("12345"), evidence.getPublication()));
         Assert.assertNotNull(evidence.getEvidenceMethods());
     }
 

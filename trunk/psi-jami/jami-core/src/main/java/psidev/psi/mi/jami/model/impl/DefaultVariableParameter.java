@@ -13,6 +13,8 @@ import java.util.Collections;
 /**
  * Default implementation for variableParameters
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousVariableParameterComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/05/13</pre>

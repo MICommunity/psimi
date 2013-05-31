@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactCooperativeEffectBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactCooperativeEffectComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +8,14 @@ import java.util.Collections;
 
 /**
  * Default implementation for CooperativeEffect
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the CooperativeEffect object is a complex object.
+ * To compare CooperativeEffect objects, you can use some comparators provided by default:
+ * - DefaultCooperativeEffectComparator
+ * - UnambiguousCooperativeEffectComparator
+ * - DefaultExactCooperativeEffectComparator
+ * - UnambiguousExactCooperativeEffectComparator
+ * - CooperativeEffectComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -113,24 +119,6 @@ public class DefaultCooperativeEffect implements CooperativeEffect {
 
     public void setResponse(CvTerm response) {
         this.response = response;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof CooperativeEffect)){
-            return false;
-        }
-
-        return UnambiguousExactCooperativeEffectComparator.areEquals(this, (CooperativeEffect) o);
-    }
-
-    @Override
-    public int hashCode() {
-        return UnambiguousExactCooperativeEffectBaseComparator.hashCode(this);
     }
 
     @Override

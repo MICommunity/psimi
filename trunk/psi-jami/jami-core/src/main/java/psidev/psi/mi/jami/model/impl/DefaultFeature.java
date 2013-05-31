@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureComparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +12,14 @@ import java.util.Collections;
 
 /**
  * Default implementation for feature
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Feature object is a complex object.
+ * To compare Feature objects, you can use some comparators provided by default:
+ * - DefaultFeatureBaseComparator
+ * - UnambiguousFeatureBaseComparator
+ * - DefaultFeatureComparator
+ * - UnambiguousFeatureComparator
+ * - AbstractFeatureBaseComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -242,27 +248,6 @@ public class DefaultFeature implements Feature, Serializable{
 
     protected void clearPropertiesLinkedToIdentifiers() {
         interpro = null;
-    }
-
-    @Override
-    public int hashCode() {
-        // use UnambiguousFeatureBase comparator for hashcode to avoid instance of calls. It is possible that
-        // the method equals will return false and the hashcode will be the same but it is not a big issue
-        return UnambiguousFeatureBaseComparator.hashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Feature)){
-            return false;
-        }
-
-        // use UnambiguousFeature comparator for equals
-        return UnambiguousFeatureComparator.areEquals(this, (Feature) o);
     }
 
     @Override

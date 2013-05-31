@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 /**
  * Default implementation for Position
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousPositionComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

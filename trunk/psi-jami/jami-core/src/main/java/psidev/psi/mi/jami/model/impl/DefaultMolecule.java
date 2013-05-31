@@ -8,6 +8,9 @@ import psidev.psi.mi.jami.model.Xref;
 /**
  * The default implementation for a molecule
  *
+ * Notes: The equals and hashcode methods have NOT been overridden because the molecule object is a complex object.
+ * To compare molecule objects, you can use some comparators provided by default (see DefaultInteractor)
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/05/13</pre>

@@ -5,6 +5,8 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
+import psidev.psi.mi.jami.utils.comparator.interaction.DefaultInteractionEvidenceComparator;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
  * Unit tester for DefaultParticipantEvidence
@@ -21,7 +23,7 @@ public class DefaultParticipantEvidenceTest {
 
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
 
-        Assert.assertEquals(InteractorUtils.createUnknownBasicInteractor(), participant.getInteractor());
+        Assert.assertTrue(DefaultInteractorComparator.areEquals(InteractorUtils.createUnknownBasicInteractor(), participant.getInteractor()));
         Assert.assertNotNull(participant.getExperimentalPreparations());
         Assert.assertNotNull(participant.getIdentificationMethods());
         Assert.assertNotNull(participant.getFeatureEvidences());
@@ -52,7 +54,7 @@ public class DefaultParticipantEvidenceTest {
         InteractionEvidence i = new DefaultInteractionEvidence("test interaction");
         participant.setInteractionEvidence(i);
 
-        Assert.assertEquals(new DefaultInteractionEvidence("test interaction"), participant.getInteractionEvidence());
+        Assert.assertTrue(DefaultInteractionEvidenceComparator.areEquals(new DefaultInteractionEvidence("test interaction"), participant.getInteractionEvidence()));
         Assert.assertEquals(0, i.getParticipantEvidences().size());
 
         participant.setInteractionEvidenceAndAddParticipantEvidence(i);

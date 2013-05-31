@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledParticipantComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +8,14 @@ import java.util.Collections;
 
 /**
  * Default implementation for ModelledParticipant
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the ModelledParticipant object is a complex object.
+ * To compare ModelledParticipant objects, you can use some comparators provided by default:
+ * - DefaultModelledParticipantComparator
+ * - UnambiguousModelledParticipantComparator
+ * - DefaultExactModelledParticipantComparator
+ * - UnambiguousExactModelledParticipantComparator
+ * - ModelledParticipantComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -67,20 +74,6 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         else {
             this.modelledFeatures = features;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof ModelledParticipant)){
-            return false;
-        }
-
-        // use UnambiguousExactBiologicalParticipant comparator for equals
-        return UnambiguousExactModelledParticipantComparator.areEquals(this, (ModelledParticipant) o);
     }
 
     public void setModelledInteractionAndAddModelledParticipant(ModelledInteraction interaction) {
