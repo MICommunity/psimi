@@ -86,11 +86,14 @@ public class AllosteryComparator implements Comparator<Allostery>{
             return BEFORE;
         }
         else {
+            int comp = cooperativeEffectComparator.compare(allostery1, allostery2);
+            if (comp != 0){
+               return comp;
+            }
+
             // first compare allosteric effector
             AllostericEffector effector1 = allostery1.getAllostericEffector();
             AllostericEffector effector2 = allostery2.getAllostericEffector();
-
-            int comp;
 
             // both effectors are molecules
             if (effector1.getEffectorType().equals(AllostericEffectorType.molecule) && effector2.getEffectorType().equals(AllostericEffectorType.molecule)){
