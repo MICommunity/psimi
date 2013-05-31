@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.datasource;
 
 /**
- * A datasource error has a label, an error message
+ * A datasource error has a label and an error message
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

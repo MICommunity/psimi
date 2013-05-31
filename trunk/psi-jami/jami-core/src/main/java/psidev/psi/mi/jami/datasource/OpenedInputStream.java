@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.datasource;
 import java.io.*;
 
 /**
- * The openedInputStream contains an inputStream that is wrapping an opened inputStream and the first line that was read to identify the molecular interaction source
+ * The openedInputStream contains a temporary file and the type of dataSourceFile it represents
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -15,9 +15,9 @@ public class OpenedInputStream {
     private InputStream stream;
     private File file;
 
-    private MolecularInteractionSource source;
+    private MIFileSource source;
 
-    public OpenedInputStream(File file, MolecularInteractionSource source) throws FileNotFoundException {
+    public OpenedInputStream(File file, MIFileSource source) throws FileNotFoundException {
         this.file = file;
         stream = new FileInputStream(file);
         this.source = source;
@@ -27,7 +27,7 @@ public class OpenedInputStream {
         return stream;
     }
 
-    public MolecularInteractionSource getSource() {
+    public MIFileSource getSource() {
         return source;
     }
 

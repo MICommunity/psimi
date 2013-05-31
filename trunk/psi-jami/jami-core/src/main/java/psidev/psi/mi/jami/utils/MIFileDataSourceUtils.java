@@ -15,7 +15,7 @@ import java.util.Collections;
  * @since <pre>26/03/13</pre>
  */
 
-public class MolecularInteractionFileDataSourceUtils {
+public class MIFileDataSourceUtils {
 
     /**
      * Collect all data source errors having same error type
@@ -78,6 +78,7 @@ public class MolecularInteractionFileDataSourceUtils {
         if ( is == null ) {
             throw new IllegalArgumentException( "You must give a non null InputStream" );
         }
+
         // Create a temp file and write URL content in it.
         File tempDirectory = new File( System.getProperty( "java.io.tmpdir", "tmp" ) );
         if ( !tempDirectory.exists() ) {

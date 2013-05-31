@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.factory;
 
-import psidev.psi.mi.jami.datasource.MolecularInteractionDataSource;
-import psidev.psi.mi.jami.datasource.RegisteredDataSource;
+import psidev.psi.mi.jami.datasource.MIDataSource;
+import psidev.psi.mi.jami.datasource.RegisteredMIDataSource;
 
 import java.io.File;
 import java.io.InputStream;
@@ -18,11 +18,11 @@ import java.util.*;
 
 public class MolecularInteractionDataSourceFactory {
 
-    private static Set<RegisteredDataSource> registeredDataSources = new HashSet<RegisteredDataSource>();
+    private static Set<RegisteredMIDataSource> registeredDataSources = new HashSet<RegisteredMIDataSource>();
 
-    public static MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(File file, Map<String,Object> requiredOptions) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static MIDataSource getMolecularInteractionDataSourceFrom(File file, Map<String,Object> requiredOptions) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        for (RegisteredDataSource dataSource : registeredDataSources){
+        for (RegisteredMIDataSource dataSource : registeredDataSources){
             if (dataSource.areSupportedOptions(requiredOptions)){
                  return dataSource.instantiateNewDataSource(file, requiredOptions);
             }
@@ -31,9 +31,9 @@ public class MolecularInteractionDataSourceFactory {
         return null;
     }
 
-    public static MolecularInteractionDataSource getMolecularInteractionDataSourceFrom(InputStream stream, Map<String,Object> requiredOptions) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static MIDataSource getMolecularInteractionDataSourceFrom(InputStream stream, Map<String,Object> requiredOptions) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        for (RegisteredDataSource dataSource : registeredDataSources){
+        for (RegisteredMIDataSource dataSource : registeredDataSources){
             if (dataSource.areSupportedOptions(requiredOptions)){
                 return dataSource.instantiateNewDataSource(stream, requiredOptions);
             }
@@ -48,8 +48,8 @@ public class MolecularInteractionDataSourceFactory {
      * @param supportedOptions
      * @return true if the data source has been registered
      */
-    public static boolean registerDataSource(Class<? extends MolecularInteractionDataSource> dataSourceClass, Map<String,Object> supportedOptions){
-        RegisteredDataSource registeredDataSource = new RegisteredDataSource(dataSourceClass, supportedOptions);
+    public static boolean registerDataSource(Class<? extends MIDataSource> dataSourceClass, Map<String,Object> supportedOptions){
+        RegisteredMIDataSource registeredDataSource = new RegisteredMIDataSource(dataSourceClass, supportedOptions);
         return registeredDataSources.add(registeredDataSource);
     }
 

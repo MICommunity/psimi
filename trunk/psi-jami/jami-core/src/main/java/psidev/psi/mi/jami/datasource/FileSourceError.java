@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.datasource;
 
 /**
- * A file source error.
+ * A file source error is a DataSourceError with a fileSourceContext.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

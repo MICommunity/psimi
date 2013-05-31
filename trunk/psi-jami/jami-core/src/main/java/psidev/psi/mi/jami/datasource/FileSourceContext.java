@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.datasource;
 
 /**
- * Some context about the datasource object when it is located in a file.
+ * Some context where an object is located in a file.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -10,5 +10,10 @@ package psidev.psi.mi.jami.datasource;
 
 public interface FileSourceContext {
 
+    /**
+     * The locator of a position in a file.
+     * It can be null
+     * @return
+     */
     public FileSourceLocator getSourceLocator();
 }

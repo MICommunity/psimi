@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface StreamingInteractorSource extends MolecularInteractionDataSource{
+public interface StreamingInteractorSource extends MIDataSource {
 
     /**
      * The interactors iterator for this datasource.
@@ -24,5 +24,6 @@ public interface StreamingInteractorSource extends MolecularInteractionDataSourc
     public Iterator<? extends NucleicAcid> getNucleicAcidsIterator();
     public Iterator<? extends Gene> getGenesIterator();
     public Iterator<? extends BioactiveEntity> getBioactiveEntitiesIterator();
+    public Iterator<? extends InteractorSet> getInteractorSetIterator();
     public Iterator<? extends Complex> getComplexesIterator();
 }
