@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousCuratedInteractionBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionComparator;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactCuratedInteractionComparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -213,7 +213,7 @@ public class DefaultInteraction implements Interaction, Serializable {
         }
 
         // use UnambiguousExactInteraction comparator for equals
-        return UnambiguousExactInteractionComparator.areEquals(this, (Interaction) o);
+        return UnambiguousExactCuratedInteractionComparator.areEquals(this, (Interaction) o);
     }
 
     @Override

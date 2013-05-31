@@ -4,12 +4,10 @@ import psidev.psi.mi.jami.model.Interaction;
 
 /**
  * Default curated Generic interaction comparator.
- * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
- * - It uses DefaultInteractionEvidenceComparator to compare experimental interactions
+ * Modelled interaction come first and then experimental interactions
+ * - It uses DefaultCuratedInteractionEvidenceComparator to compare experimental interactions
  * - It uses DefaultCuratedModelledInteractionComparator to compare modelled interactions
- * - It uses DefaultCuratedCooperativeInteractionComparator to compare cooperative interactions
- * - It uses DefaultCuratedAllostericInteractionComparator to compare allosteric interactions
- * - It uses DefaultInteractionBaseComparator to compare basic interaction properties
+ * - It uses DefaultCuratedInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -23,27 +21,31 @@ public class DefaultCuratedInteractionComparator extends InteractionComparator {
      * Creates a new DefaultCuratedInteractionComparator.
      */
     public DefaultCuratedInteractionComparator() {
-        super(new DefaultInteractionBaseComparator(), new DefaultCuratedModelledInteractionComparator(), new DefaultInteractionEvidenceComparator());
+        super(new DefaultCuratedInteractionBaseComparator(), new DefaultCuratedModelledInteractionComparator(), new DefaultCuratedInteractionEvidenceComparator());
     }
 
     @Override
-    public DefaultInteractionBaseComparator getInteractionBaseComparator() {
-        return (DefaultInteractionBaseComparator) this.interactionBaseComparator;
+    public DefaultCuratedInteractionBaseComparator getInteractionBaseComparator() {
+        return (DefaultCuratedInteractionBaseComparator) this.interactionBaseComparator;
     }
 
     @Override
-    public DefaultInteractionEvidenceComparator getExperimentalInteractionComparator() {
-        return (DefaultInteractionEvidenceComparator) this.experimentalInteractionComparator;
+    public DefaultCuratedInteractionEvidenceComparator getExperimentalInteractionComparator() {
+        return (DefaultCuratedInteractionEvidenceComparator) this.experimentalInteractionComparator;
+    }
+
+    @Override
+    public DefaultCuratedModelledInteractionComparator getModelledInteractionComparator() {
+        return (DefaultCuratedModelledInteractionComparator) super.getModelledInteractionComparator();
     }
 
     @Override
     /**
      * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
-     * - It uses DefaultCuratedInteractionEvidenceComparator to compare experimental interactions
+     * Modelled interaction come first and then experimental interactions
+     * - It uses DefaultInteractionEvidenceComparator to compare experimental interactions
      * - It uses DefaultCuratedModelledInteractionComparator to compare modelled interactions
-     * - It uses DefaultCuratedCooperativeInteractionComparator to compare cooperative interactions
-     * - It uses DefaultCuratedAllostericInteractionComparator to compare allosteric interactions
-     * - It uses DefaultCuratedInteractionBaseComparator to compare basic interaction properties
+     * - It uses DefaultInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {
         return super.compare(interaction1, interaction2);

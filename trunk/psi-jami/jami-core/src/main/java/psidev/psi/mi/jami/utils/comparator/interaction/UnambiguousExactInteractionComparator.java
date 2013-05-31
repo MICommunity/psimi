@@ -4,12 +4,10 @@ import psidev.psi.mi.jami.model.Interaction;
 
 /**
  * Unambiguous exact Generic interaction comparator.
- * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * Modelled interactions come first and then experimental interactions
  * - It uses UnambiguousExactInteractionEvidenceComparator to compare experimental interactions
  * - It uses UnambiguousExactModelledInteractionComparator to compare modelled interactions
- * - It uses UnambiguousExactCooperativeInteractionComparator to compare cooperative interactions
- * - It uses UnambiguousExactAllostericInteractionComparator to compare allosteric interactions
- * - It uses UnambiguousExactInteractionBaseComparator to compare basic interaction properties
+ * - It uses UnambiguousInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -38,13 +36,16 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
     }
 
     @Override
+    public UnambiguousExactModelledInteractionComparator getModelledInteractionComparator() {
+        return (UnambiguousExactModelledInteractionComparator) super.getModelledInteractionComparator();
+    }
+
+    @Override
     /**
-     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * Modelled interactions come first and then experimental interactions
      * - It uses UnambiguousExactInteractionEvidenceComparator to compare experimental interactions
      * - It uses UnambiguousExactModelledInteractionComparator to compare modelled interactions
-     * - It uses UnambiguousExactCooperativeInteractionComparator to compare cooperative interactions
-     * - It uses UnambiguousExactAllostericInteractionComparator to compare allosteric interactions
-     * - It uses UnambiguousExactInteractionBaseComparator to compare basic interaction properties
+     * - It uses UnambiguousInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {
         return super.compare(interaction1, interaction2);

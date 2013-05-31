@@ -4,11 +4,9 @@ import psidev.psi.mi.jami.model.Interaction;
 
 /**
  * Default exact Generic interaction comparator.
- * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * Modelled interactions come first, then experimental interactions
  * - It uses DefaultExactInteractionEvidenceComparator to compare experimental interactions
  * - It uses DefaultExactModelledInteractionComparator to compare modelled interactions
- * - It uses DefaultExactCooperativeInteractionComparator to compare cooperative interactions
- * - It uses DefaultExactAllostericInteractionComparator to compare allosteric interactions
  * - It uses DefaultExactInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -38,12 +36,15 @@ public class DefaultExactInteractionComparator extends InteractionComparator {
     }
 
     @Override
+    public DefaultExactModelledInteractionComparator getModelledInteractionComparator() {
+        return (DefaultExactModelledInteractionComparator) super.getModelledInteractionComparator();
+    }
+
+    @Override
     /**
-     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * Modelled interactions come first, then experimental interactions
      * - It uses DefaultExactInteractionEvidenceComparator to compare experimental interactions
      * - It uses DefaultExactModelledInteractionComparator to compare modelled interactions
-     * - It uses DefaultExactCooperativeInteractionComparator to compare cooperative interactions
-     * - It uses DefaultExactAllostericInteractionComparator to compare allosteric interactions
      * - It uses DefaultExactInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {
