@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactModelledInteractionComparator;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactCuratedModelledInteractionComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -221,6 +221,6 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         }
 
         // use UnambiguousExactModelledInteraction comparator for equals
-        return UnambiguousExactModelledInteractionComparator.areEquals(this, (ModelledInteraction) o);
+        return UnambiguousExactCuratedModelledInteractionComparator.areEquals(this, (ModelledInteraction) o);
     }
 }
