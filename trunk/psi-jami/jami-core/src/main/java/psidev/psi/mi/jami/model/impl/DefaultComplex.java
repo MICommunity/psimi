@@ -35,68 +35,68 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
     private Date createdDate;
     private CvTerm interactionType;
 
-    public DefaultComplex(String name, CvTerm interactortype) {
-        super(name, interactortype);
+    public DefaultComplex(String name, CvTerm interactorType) {
+        super(name, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType());
     }
 
     public DefaultComplex(String name, String fullName, CvTerm interactorType) {
-        super(name, fullName, interactorType);
+        super(name, fullName, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType());
     }
 
     public DefaultComplex(String name, CvTerm interactorType, Organism organism) {
-        super(name, interactorType, organism);
+        super(name, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType(), organism);
     }
 
     public DefaultComplex(String name, String fullName, CvTerm interactorType, Organism organism) {
-        super(name, fullName, interactorType, organism);
+        super(name, fullName, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType(), organism);
     }
 
     public DefaultComplex(String name, CvTerm interactorType, Xref uniqueId) {
-        super(name, interactorType, uniqueId);
+        super(name, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType(), uniqueId);
     }
 
     public DefaultComplex(String name, String fullName, CvTerm interactorType, Xref uniqueId) {
-        super(name, fullName, interactorType, uniqueId);
+        super(name, fullName, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType(), uniqueId);
     }
 
     public DefaultComplex(String name, CvTerm interactorType, Organism organism, Xref uniqueId) {
-        super(name, interactorType, organism, uniqueId);
+        super(name, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType(), organism, uniqueId);
     }
 
     public DefaultComplex(String name, String fullName, CvTerm interactorType, Organism organism, Xref uniqueId) {
-        super(name, fullName, interactorType, organism, uniqueId);
+        super(name, fullName, interactorType != null ? interactorType : CvTermUtils.createComplexInteractorType(), organism, uniqueId);
     }
 
     public DefaultComplex(String name) {
-        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI));
+        super(name, CvTermUtils.createComplexInteractorType());
     }
 
     public DefaultComplex(String name, String fullName) {
-        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI));
+        super(name, fullName, CvTermUtils.createComplexInteractorType());
     }
 
     public DefaultComplex(String name, Organism organism) {
-        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
+        super(name, CvTermUtils.createComplexInteractorType(), organism);
     }
 
     public DefaultComplex(String name, String fullName, Organism organism) {
-        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism);
+        super(name, fullName, CvTermUtils.createComplexInteractorType(), organism);
     }
 
     public DefaultComplex(String name, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
+        super(name, CvTermUtils.createComplexInteractorType(), uniqueId);
     }
 
     public DefaultComplex(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), uniqueId);
+        super(name, fullName, CvTermUtils.createComplexInteractorType(), uniqueId);
     }
 
     public DefaultComplex(String name, Organism organism, Xref uniqueId) {
-        super(name, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
+        super(name, CvTermUtils.createComplexInteractorType(), organism, uniqueId);
     }
 
     public DefaultComplex(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, CvTermUtils.createMICvTerm(COMPLEX, COMPLEX_MI), organism, uniqueId);
+        super(name, fullName, CvTermUtils.createComplexInteractorType(), organism, uniqueId);
     }
 
     protected void initialiseInteractionEvidences(){
@@ -189,7 +189,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         this.source = source;
     }
 
-    public Collection<? extends ModelledParticipant> getModelledParticipants() {
+    public Collection<ModelledParticipant> getModelledParticipants() {
         if (components == null){
             initialiseComponents();
         }
@@ -309,6 +309,20 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
 
     protected void clearPropertiesLinkedToAnnotations() {
         physicalProperties = null;
+    }
+
+    @Override
+    /**
+     * Sets the interactor type for this complex.
+     * If the given interactorType is null, it will set the interactor type to 'complex' (MI:0314)
+     */
+    public void setInteractorType(CvTerm interactorType) {
+        if (interactorType == null){
+           super.setInteractorType(CvTermUtils.createComplexInteractorType());
+        }
+        else{
+            super.setInteractorType(interactorType);
+        }
     }
 
     @Override

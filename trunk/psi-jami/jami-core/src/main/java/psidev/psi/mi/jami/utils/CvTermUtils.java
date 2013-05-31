@@ -314,6 +314,10 @@ public class CvTermUtils {
         return createMICvTerm(Alias.GENE_NAME, Alias.GENE_NAME_MI);
     }
 
+    public static CvTerm createComplexInteractorType(){
+        return createMICvTerm(Complex.COMPLEX, Complex.COMPLEX_MI);
+    }
+
     public static CvTerm createComplexSynonym(){
         return createMICvTerm(Alias.COMPLEX_SYNONYM, Alias.COMPLEX_SYNONYM_MI);
     }
