@@ -94,8 +94,8 @@ public class ComplexComparator implements Comparator<Complex> {
             }
 
             // then compares collection of components
-            Collection<? extends ModelledParticipant> components1 = complex1.getModelledParticipants();
-            Collection<? extends ModelledParticipant> components2 = complex2.getModelledParticipants();
+            Collection<ModelledParticipant> components1 = complex1.getModelledParticipants();
+            Collection<ModelledParticipant> components2 = complex2.getModelledParticipants();
 
             return componentCollectionComparator.compare(components1, components2);
         }
