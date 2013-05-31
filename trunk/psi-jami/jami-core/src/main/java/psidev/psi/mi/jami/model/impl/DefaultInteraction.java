@@ -21,7 +21,7 @@ import java.util.Date;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultInteraction<P extends Participant> implements Interaction, Serializable {
+public class DefaultInteraction implements Interaction, Serializable {
 
     private String shortName;
     private Checksum rigid;
