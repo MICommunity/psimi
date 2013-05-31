@@ -4,10 +4,15 @@ import psidev.psi.mi.jami.model.AllostericEffector;
 import psidev.psi.mi.jami.model.Allostery;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactAllosteryComparator;
 
 /**
  * Default implementation for Allostery
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Allostery object is a complex object.
+ * To compare Allostery objects, you can use some comparators provided by default:
+ * - DefaultAllosteryComparator
+ * - UnambiguousAllosteryComparator
+ * - AllosteryComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -81,19 +86,6 @@ public class DefaultAllostery<T extends AllostericEffector> extends DefaultCoope
             throw new IllegalArgumentException("The allosteric effector cannot be null");
         }
         this.allostericEffector = effector;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Allostery)){
-            return false;
-        }
-
-        return UnambiguousExactAllosteryComparator.areEquals(this, (Allostery) o);
     }
 
     @Override

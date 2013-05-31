@@ -2,14 +2,21 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactParticipantEvidenceComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Default implementation for Participant
+ * Default implementation for ParticipantEvidence
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the ParticipantEvidence object is a complex object.
+ * To compare ParticipantEvidence objects, you can use some comparators provided by default:
+ * - DefaultParticipantEvidenceComparator
+ * - UnambiguousParticipantEvidenceComparator
+ * - DefaultExactParticipantEvidenceComparator
+ * - UnambiguousExactParticipantEvidenceComparator
+ * - ParticipantEvidenceComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -402,19 +409,5 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
     @Override
     public String toString() {
         return super.toString() + (experimentalRole != null ? ", " + experimentalRole.toString() : "") + (expressedIn != null ? ", " + expressedIn.toString() : "");
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof ParticipantEvidence)){
-            return false;
-        }
-
-        // use UnambiguousExactExperimentalParticipant comparator for equals
-        return UnambiguousExactParticipantEvidenceComparator.areEquals(this, (ParticipantEvidence) o);
     }
 }

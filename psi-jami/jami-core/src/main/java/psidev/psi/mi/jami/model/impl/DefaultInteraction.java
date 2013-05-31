@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousCuratedInteractionBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactCuratedInteractionComparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +13,18 @@ import java.util.Date;
 
 /**
  * Default implementation for interaction
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the interaction object is a complex object.
+ * To compare interaction objects, you can use some comparators provided by default:
+ * - DefaultInteractionBaseComparator
+ * - UnambiguousInteractionBaseComparator
+ * - DefaultCuratedInteractionBaseComparator
+ * - UnambiguousCuratedInteractionBaseComparator
+ * - DefaultInteractionComparator
+ * - UnambiguousInteractionComparator
+ * - DefaultCuratedInteractionComparator
+ * - UnambiguousCuratedInteractionComparator
+ * - AbstractInteractionBaseComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -197,28 +207,8 @@ public class DefaultInteraction implements Interaction, Serializable {
     }
 
     @Override
-    public int hashCode() {
-        // use UnambiguousCuratedInteractionBase comparator for hashcode
-        return UnambiguousCuratedInteractionBaseComparator.hashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Interaction)){
-            return false;
-        }
-
-        // use UnambiguousExactInteraction comparator for equals
-        return UnambiguousExactCuratedInteractionComparator.areEquals(this, (Interaction) o);
-    }
-
-    @Override
     public String toString() {
-        return (shortName != null ? shortName+", " : "") + interactionType != null ? interactionType.toString() : "";
+        return (shortName != null ? shortName+", " : "") + (interactionType != null ? interactionType.toString() : "");
     }
 
     private class InteractionChecksumList extends AbstractListHavingPoperties<Checksum> {

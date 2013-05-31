@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactCuratedModelledInteractionComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +8,19 @@ import java.util.Collections;
 
 /**
  * Default implemntation for ModelledInteraction
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the ModelledInteraction object is a complex object.
+ * To compare ModelledInteraction objects, you can use some comparators provided by default:
+ * - DefaultModelledInteractionComparator
+ * - UnambiguousModelledInteractionComparator
+ * - DefaultCuratedModelledInteractionComparator
+ * - UnambiguousCuratedModelledInteractionComparator
+ * - DefaultCuratedExactModelledInteractionComparator
+ * - UnambiguousCuratedExactModelledInteractionComparator
+ * - DefaultExactModelledInteractionComparator
+ * - UnambiguousExactModelledInteractionComparator
+ * - ModelledInteractionComparator
+ * - CuratedModelledInteractionComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -203,19 +215,5 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
             initialiseCooperativeEffects();
         }
         return this.cooperativeEffects;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof ModelledInteraction)){
-            return false;
-        }
-
-        // use UnambiguousExactModelledInteraction comparator for equals
-        return UnambiguousExactCuratedModelledInteractionComparator.areEquals(this, (ModelledInteraction) o);
     }
 }

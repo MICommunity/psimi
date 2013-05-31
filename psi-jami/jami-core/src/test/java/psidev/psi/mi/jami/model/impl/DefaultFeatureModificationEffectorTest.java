@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.AllostericEffectorType;
 import psidev.psi.mi.jami.model.FeatureModificationEffector;
+import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureComparator;
 
 /**
  * Unit tester for DefaultFeatureModificationEffector
@@ -21,7 +22,7 @@ public class DefaultFeatureModificationEffectorTest {
         FeatureModificationEffector effector = new DefaultFeatureModificationEffector(new DefaultModelledFeature("test", "test feature"));
 
         Assert.assertEquals(AllostericEffectorType.feature_modification, effector.getEffectorType());
-        Assert.assertEquals(new DefaultModelledFeature("test", "test feature"), effector.getFeatureModification());
+        Assert.assertTrue(DefaultModelledFeatureComparator.areEquals(new DefaultModelledFeature("test", "test feature"), effector.getFeatureModification()));
     }
 
     @Test(expected=IllegalArgumentException.class)

@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.utils.comparator.participant.StoichiometryComparator;
 /**
  * Default implementation for stoichiometry
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with StoichiometryComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/05/13</pre>

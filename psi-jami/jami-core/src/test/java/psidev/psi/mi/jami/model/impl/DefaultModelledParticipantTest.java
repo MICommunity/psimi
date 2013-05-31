@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.InteractorUtils;
+import psidev.psi.mi.jami.utils.comparator.interaction.DefaultModelledInteractionComparator;
 
 /**
  * Unit tester for DefaultModelledParticipant
@@ -33,7 +34,7 @@ public class DefaultModelledParticipantTest {
         ModelledInteraction i = new DefaultModelledInteraction("test interaction");
         participant.setModelledInteraction(i);
 
-        Assert.assertEquals(new DefaultModelledInteraction("test interaction"), participant.getModelledInteraction());
+        Assert.assertTrue(DefaultModelledInteractionComparator.areEquals(new DefaultModelledInteraction("test interaction"), participant.getModelledInteraction()));
         Assert.assertEquals(0, i.getModelledParticipants().size());
 
         participant.setModelledInteractionAndAddModelledParticipant(i);

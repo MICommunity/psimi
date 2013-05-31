@@ -17,6 +17,8 @@ import java.util.Collections;
 /**
  * Default implementation for CvTerm
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousCvTermComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/01/13</pre>

@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +11,11 @@ import java.util.Collections;
 
 /**
  * Default implementation for ModelledFeature
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the ModelledFeature object is a complex object.
+ * To compare ModelledFeature objects, you can use some comparators provided by default:
+ * - DefaultModelledFeatureComparator
+ * - UnambiguousModelledFeatureComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -95,19 +99,5 @@ public class DefaultModelledFeature extends DefaultFeature implements ModelledFe
             initialiseBindingFeatures();
         }
         return this.bindingFeatures;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof ModelledFeature)){
-            return false;
-        }
-
-        // use UnambiguousBiologicalFeature comparator for equals
-        return UnambiguousModelledFeaturecomparator.areEquals(this, (ModelledFeature) o);
     }
 }

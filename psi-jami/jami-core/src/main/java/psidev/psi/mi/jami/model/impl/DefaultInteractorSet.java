@@ -1,12 +1,18 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorSetComparator;
 
 import java.util.*;
 
 /**
  * Default implementation for interactor set
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the InteractorSet object is a complex object.
+ * To compare InteractorSet objects, you can use some comparators provided by default:
+ * - DefaultInteractorSetComparator
+ * - UnambiguousInteractorSetComparator
+ * - DefaultExactInteractorSetComparator
+ * - UnambiguousExactInteractorSetComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -160,19 +166,5 @@ public class DefaultInteractorSet extends DefaultInteractor implements Interacto
 
     public void clear() {
         interactors.clear();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof InteractorSet)){
-            return false;
-        }
-
-        // use UnambiguousExactInteractorCandidates comparator for equals
-        return UnambiguousExactInteractorSetComparator.areEquals(this, (InteractorSet) o);
     }
 }

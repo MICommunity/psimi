@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.utils.comparator.experiment.VariableParameterValueComp
 /**
  * Default implementation for variableValue.
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with VariableParameterValueComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/05/13</pre>

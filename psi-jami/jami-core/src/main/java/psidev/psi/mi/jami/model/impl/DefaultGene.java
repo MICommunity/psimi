@@ -8,12 +8,19 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactGeneComparator;
 
 import java.util.Collection;
 
 /**
  * Default implementation for gene
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Gene object is a complex object.
+ * To compare Gene objects, you can use some comparators provided by default:
+ * - DefaultGeneComparator
+ * - UnambiguousGeneComparator
+ * - DefaultExactGeneComparator
+ * - UnambiguousExactGeneComparator
+ * - GeneComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -293,20 +300,6 @@ public class DefaultGene extends DefaultMolecule implements Gene {
             throw new IllegalArgumentException("This interactor is a Gene and the only available interactor type is gene (MI:0301)");
         }
         super.setInteractorType(type);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Gene)){
-            return false;
-        }
-
-        // use UnambiguousExactGeneEntity comparator for equals
-        return UnambiguousExactGeneComparator.areEquals(this, (Gene) o);
     }
 
     @Override

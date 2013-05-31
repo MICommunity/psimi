@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
+import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
  * Unit tester for DefaultParticipant
@@ -23,7 +24,7 @@ public class DefaultParticipantTest {
 
         Participant<Interactor> p = new DefaultParticipant<Interactor>(InteractorUtils.createUnknownBasicInteractor());
 
-        Assert.assertEquals(InteractorUtils.createUnknownBasicInteractor(), p.getInteractor());
+        Assert.assertTrue(DefaultInteractorComparator.areEquals(InteractorUtils.createUnknownBasicInteractor(), p.getInteractor()));
         Assert.assertNotNull(p.getAliases());
         Assert.assertNotNull(p.getXrefs());
         Assert.assertNotNull(p.getAnnotations());

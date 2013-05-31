@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.InteractorUtils;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultParticipantComparator;
 
 /**
  * Unit tester for DefaultRange
@@ -63,7 +64,7 @@ public class DefaultRangeTest {
         Range range1 = new DefaultRange(new DefaultPosition(3), new DefaultPosition(4));
         range1.setParticipant(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
         Assert.assertNotNull(range1.getParticipant());
-        Assert.assertEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), range1.getParticipant());
+        Assert.assertTrue(DefaultParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), range1.getParticipant()));
     }
 
     @Test(expected=IllegalArgumentException.class)

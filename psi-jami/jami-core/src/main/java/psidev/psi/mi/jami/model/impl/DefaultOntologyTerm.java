@@ -11,6 +11,8 @@ import java.util.Collections;
 /**
  * Default implementation for ontology term
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousCvTermComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>15/02/13</pre>

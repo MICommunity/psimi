@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.VariableParameter;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.ExperimentUtils;
+import psidev.psi.mi.jami.utils.comparator.experiment.DefaultExperimentComparator;
 
 /**
  * Unit tester for DefaultVariableParameter
@@ -53,7 +54,7 @@ public class DefaultVariableParameterTest {
         VariableParameter param = new DefaultVariableParameter("PMA treatment", ExperimentUtils.createUnknownBasicExperiment());
 
         Assert.assertEquals("PMA treatment", param.getDescription());
-        Assert.assertEquals(ExperimentUtils.createUnknownBasicExperiment(), param.getExperiment());
+        Assert.assertTrue(DefaultExperimentComparator.areEquals(ExperimentUtils.createUnknownBasicExperiment(), param.getExperiment()));
         Assert.assertNull(param.getUnit());
         Assert.assertNotNull(param.getVariableValues());
     }

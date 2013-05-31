@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousCuratedExperimentComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +9,14 @@ import java.util.Collections;
 
 /**
  * Default implementation for Experiment
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Experiment object is a complex object.
+ * To compare Experiment objects, you can use some comparators provided by default:
+ * - DefaultExperimentComparator
+ * - UnambiguousExperimentComparator
+ * - DefaultECuratedExperimentComparator
+ * - UnambiguousCuratedExperimentComparator
+ * - ExperimentComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -292,24 +299,6 @@ public class DefaultExperiment implements Experiment {
             }
         }
         return removed;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Experiment)){
-            return false;
-        }
-
-        return UnambiguousCuratedExperimentComparator.areEquals(this, (Experiment) o);
-    }
-
-    @Override
-    public int hashCode() {
-        return UnambiguousCuratedExperimentComparator.hashCode(this);
     }
 
     @Override

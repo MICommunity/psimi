@@ -13,6 +13,8 @@ import java.util.Collections;
 /**
  * Default implementation for organism
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousOrganismComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

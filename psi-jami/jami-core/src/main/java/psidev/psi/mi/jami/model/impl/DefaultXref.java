@@ -9,6 +9,8 @@ import java.io.Serializable;
 /**
  * Default implementation for Xref
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousXrefComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

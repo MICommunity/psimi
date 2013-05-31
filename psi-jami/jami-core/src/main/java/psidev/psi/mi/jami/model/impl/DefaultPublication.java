@@ -4,14 +4,21 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousCuratedPublicationComparator;
-import psidev.psi.mi.jami.utils.comparator.publication.UnambiguousPublicationComparator;
 
 import java.io.Serializable;
 import java.util.*;
 
 /**
  * Default implementation for a Publication
+ *
+ * Notes: The equals and hashcode methods have NOT been overridden because the Publication object is a complex object.
+ * To compare Publication objects, you can use some comparators provided by default:
+ * - DefaultPublicationComparator
+ * - UnambiguousPublicationComparator
+ * - DefaultCuratedPublicationComparator
+ * - UnambiguousCuratedPublicationComparator
+ * - PublicationComparator
+ * - CuratedPublicationComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -470,24 +477,6 @@ public class DefaultPublication implements Publication, Serializable {
 
     protected void clearPropertiesLinkedToXrefs() {
         imexId = null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o){
-            return true;
-        }
-
-        if (!(o instanceof Publication)){
-            return false;
-        }
-
-        return UnambiguousCuratedPublicationComparator.areEquals(this, (Publication) o);
-    }
-
-    @Override
-    public int hashCode() {
-        return UnambiguousCuratedPublicationComparator.hashCode(this);
     }
 
     @Override

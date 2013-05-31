@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.utils.comparator.checksum.UnambiguousChecksumComparato
 /**
  * Default implementation for Checksum
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousChecksumComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

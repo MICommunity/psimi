@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.utils.comparator.confidence.UnambiguousConfidenceCompa
 /**
  * Default implementation for Confidence
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousConfidenceComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

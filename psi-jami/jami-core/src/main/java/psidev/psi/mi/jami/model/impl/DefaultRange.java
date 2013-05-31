@@ -11,6 +11,8 @@ import java.io.Serializable;
 /**
  * Default implementation for Range
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with UnambiguousRangeAndResultingSequenceComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/01/13</pre>

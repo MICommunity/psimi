@@ -9,6 +9,8 @@ import java.util.*;
 /**
  * Default implementation for VariableParameterValueSet
  *
+ * Notes: The equals and hashcode methods have been overridden to be consistent with VariableParameterValueSetComparator
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>22/05/13</pre>
