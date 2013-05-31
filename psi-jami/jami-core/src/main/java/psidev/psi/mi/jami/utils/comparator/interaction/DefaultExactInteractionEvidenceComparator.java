@@ -8,11 +8,11 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactParticipantEv
 /**
  * Default exact InteractionEvidenceComparator.
  *
- * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
- * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
- * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ParticipantEvidence>.
- *
+ * It will first compare the basic interaction properties using DefaultInteractionBaseComparator.
+ * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
+ * A negative interaction will come after a positive interaction. it will compare
+ * the experiment using DefaultExperimentComparator.  If the experiments are the same, it will compare the participants using DefaultExactParticipantEvidenceComparator. it will compare the parameters using DefaultParameterComparator.
+ * If the parameters are the same, it will first compare the experimental variableParameters using VariableParameterValueSetComparator and then it will compare the inferred boolean value (Inferred interactions will always come after).
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/01/13</pre>
@@ -37,12 +37,17 @@ public class DefaultExactInteractionEvidenceComparator extends InteractionEviden
     }
 
     @Override
+    public DefaultInteractionBaseComparator getInteractionBaseComparator() {
+        return (DefaultInteractionBaseComparator) super.getInteractionBaseComparator();
+    }
+
+    @Override
     /**
-     * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
-     * the experiment using DefaultExperimentComparator. If the experiments are the same, it will compare the parameters using DefaultParameterComparator.
-     * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using DefaultInteractionBaseComparator<ParticipantEvidence>.
-     *
+     * It will first compare the basic interaction properties using DefaultInteractionBaseComparator.
+     * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
+     * A negative interaction will come after a positive interaction. it will compare
+     * the experiment using DefaultExperimentComparator.  If the experiments are the same, it will compare the participants using DefaultExactParticipantEvidenceComparator. it will compare the parameters using DefaultParameterComparator.
+     * If the parameters are the same, it will first compare the experimental variableParameters using VariableParameterValueSetComparator and then it will compare the inferred boolean value (Inferred interactions will always come after).
      **/
     public int compare(InteractionEvidence interaction1, InteractionEvidence interaction2) {
         return super.compare(interaction1, interaction2);

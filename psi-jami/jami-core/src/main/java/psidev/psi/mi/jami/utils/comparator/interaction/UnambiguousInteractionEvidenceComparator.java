@@ -8,10 +8,11 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantEvi
 /**
  * Unambiguous InteractionEvidenceComparator.
  *
- * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
- * the experiment using UnambiguousExperimentComparator. If the experiments are the same, it will compare the parameters using UnambiguousParameterComparator.
- * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
- * If the experimental interaction properties are the same, it will compare the basic interaction properties using UnambiguousInteractionBaseComparator<ParticipantEvidence>.
+ * It will first compare the basic interaction properties using UnambiguousInteractionBaseComparator.
+ * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
+ * A negative interaction will come after a positive interaction. it will compare
+ * the experiment using UnambiguousExperimentComparator. If the experiments are the same, it will compare the participants using UnambiguousParticipantEvidenceComparator. Then it will compare the parameters using UnambiguousParameterComparator.
+ * If the parameters are the same, it will first compare the experimental variableParameters using VariableParameterValueSetComparator and then it will compare the inferred boolean value (Inferred interactions will always come after).
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -38,11 +39,17 @@ public class UnambiguousInteractionEvidenceComparator extends InteractionEvidenc
     }
 
     @Override
+    public UnambiguousInteractionBaseComparator getInteractionBaseComparator() {
+        return ( UnambiguousInteractionBaseComparator) super.getInteractionBaseComparator();
+    }
+
+    @Override
     /**
-     * It will first compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare
-     * the experiment using UnambiguousExperimentComparator. If the experiments are the same, it will compare the parameters using UnambiguousParameterComparator.
-     * If the parameters are the same, it will compare the inferred boolean value (Inferred interactions will always come after).
-     * If the experimental interaction properties are the same, it will compare the basic interaction properties using UnambiguousInteractionBaseComparator<ParticipantEvidence>.
+     * It will first compare the basic interaction properties using UnambiguousInteractionBaseComparator.
+     * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
+     * A negative interaction will come after a positive interaction. it will compare
+     * the experiment using UnambiguousExperimentComparator. If the experiments are the same, it will compare the participants using UnambiguousParticipantEvidenceComparator. Then it will compare the parameters using UnambiguousParameterComparator.
+     * If the parameters are the same, it will first compare the experimental variableParameters using VariableParameterValueSetComparator and then it will compare the inferred boolean value (Inferred interactions will always come after).
      *
      *
      **/
