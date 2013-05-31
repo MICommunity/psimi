@@ -4,8 +4,8 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousCuratedInteractionBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousInteractionBaseComparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -198,8 +198,8 @@ public class DefaultInteraction implements Interaction, Serializable {
 
     @Override
     public int hashCode() {
-        // use UnambiguousExactInteractionBase comparator for hashcode
-        return UnambiguousInteractionBaseComparator.hashCode(this);
+        // use UnambiguousCuratedInteractionBase comparator for hashcode
+        return UnambiguousCuratedInteractionBaseComparator.hashCode(this);
     }
 
     @Override
