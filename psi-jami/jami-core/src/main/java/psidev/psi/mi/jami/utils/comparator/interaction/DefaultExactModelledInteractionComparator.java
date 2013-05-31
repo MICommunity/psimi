@@ -6,7 +6,8 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParti
 /**
  * Default exact ModelledInteraction comparator.
  *
- * It will use a DefaultExactInteractionBaseComparator to compare basic interaction properties.
+ * It will use a DefaultInteractionBaseComparator to compare basic interaction properties.
+ * Then it will compare the modelledParticipants using DefaultExactModelledParticipantComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -34,7 +35,8 @@ public class DefaultExactModelledInteractionComparator extends ModelledInteracti
     }
 
     /**
-     * Use DefaultExactModelledInteractionComparator to know if two modelled interactions are equals.
+     * It will use a DefaultInteractionBaseComparator to compare basic interaction properties.
+     * Then it will compare the modelledParticipants using DefaultExactModelledParticipantComparator.
      * @param interaction1
      * @param interaction2
      * @return true if the two modelled interactions are equal

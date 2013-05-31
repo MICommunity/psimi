@@ -6,7 +6,8 @@ import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousExactModelledP
 /**
  * Unambiguous exact ModelledInteraction comparator.
  *
- * It will use a UnambiguousExactInteractionBaseComparator to compare basic interaction properties.
+ * It will use a UnambiguousInteractionBaseComparator to compare basic interaction properties.
+ * Then it will compare the modelledParticipants using UnambiguousExactModelledParticipantComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -27,7 +28,8 @@ public class UnambiguousExactModelledInteractionComparator extends ModelledInter
 
     @Override
     /**
-     * It will use a UnambiguousExactCuratedInteractionBaseComparator to compare basic interaction properties.
+     * It will use a UnambiguousInteractionBaseComparator to compare basic interaction properties.
+     * Then it will compare the modelledParticipants using UnambiguousExactModelledParticipantComparator.
      */
     public int compare(ModelledInteraction interaction1, ModelledInteraction interaction2) {
         return super.compare(interaction1, interaction2);

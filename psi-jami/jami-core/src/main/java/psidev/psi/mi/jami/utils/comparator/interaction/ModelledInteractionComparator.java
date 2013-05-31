@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.utils.comparator.participant.CustomizableModelledParticipantComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComparator;
 
 import java.util.Collection;
@@ -11,7 +12,8 @@ import java.util.Comparator;
 /**
  * Basic ModelledInteraction comparator.
  *
- * It will use a AbstractInteractionBaseComparator<Component> to compare basic interaction properties.
+ * It will use a Comparator<Interaction> to compare basic interaction properties.
+ * Then it will compare the modelledParticipants using CustomizableModelledParticipantComparator.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -28,7 +30,7 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
      * @param participantComparator : required to compare participants
      * @param interactionComparator
      */
-    public ModelledInteractionComparator(Comparator<ModelledParticipant> participantComparator, Comparator<Interaction> interactionComparator){
+    public ModelledInteractionComparator(CustomizableModelledParticipantComparator participantComparator, Comparator<Interaction> interactionComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
         }
@@ -49,7 +51,8 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
     }
 
     /**
-     * It will use a AbstractInteractionBaseComparator<Component> to compare basic interaction properties.
+     * It will use a Comparator<Interaction> to compare basic interaction properties.
+     * Then it will compare the modelledParticipants using CustomizableModelledParticipantComparator.
      * @param modelledInteraction1
      * @param modelledInteraction2
      * @return
