@@ -15,10 +15,11 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
  * @since <pre>30/05/13</pre>
  */
 
-public class UnambiguousExactModelledParticipantInteractorComparator extends ParticipantInteractorComparator<ModelledParticipant> {
+public class UnambiguousExactModelledParticipantInteractorComparator extends ParticipantInteractorComparator<ModelledParticipant> implements CustomizableModelledParticipantComparator{
 
     private static UnambiguousExactModelledParticipantInteractorComparator unambiguousExactParticipantInteractorComparator;
 
+    private boolean checkComplexesAsInteractor = true;
     /**
      * Creates a new UnambiguousExactModelledParticipantInteractorComparator. It will use a UnambiguousExactInteractorComparator to compare
      * the basic properties of an interactor.
@@ -40,7 +41,7 @@ public class UnambiguousExactModelledParticipantInteractorComparator extends Par
      * This comparator will ignore all the other properties of a biological participant.
      */
     public int compare(ModelledParticipant component1, ModelledParticipant component2) {
-        return super.compare(component1, component2);
+        return checkComplexesAsInteractor ? super.compare(component1, component2) : 0;
     }
 
     /**
@@ -55,5 +56,13 @@ public class UnambiguousExactModelledParticipantInteractorComparator extends Par
         }
 
         return unambiguousExactParticipantInteractorComparator.compare(component1, component2) == 0;
+    }
+
+    public boolean isCheckComplexesAsInteractors() {
+        return checkComplexesAsInteractor;
+    }
+
+    public void setCheckComplexesAsInteractors(boolean checkComplexesAsInteractors) {
+        this.checkComplexesAsInteractor = checkComplexesAsInteractors;
     }
 }
