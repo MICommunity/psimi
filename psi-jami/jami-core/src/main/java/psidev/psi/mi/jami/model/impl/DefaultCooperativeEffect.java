@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactCooperativeEffectBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactCooperativeEffectComparator;
 
 import java.util.ArrayList;
@@ -129,7 +130,7 @@ public class DefaultCooperativeEffect implements CooperativeEffect {
 
     @Override
     public int hashCode() {
-        return UnambiguousExactCooperativeEffectComparator.hashCode(this);
+        return UnambiguousExactCooperativeEffectBaseComparator.hashCode(this);
     }
 
     @Override

@@ -5,36 +5,36 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.DefaultModelledInteractionComparator;
 
 /**
- * Default comparator for CooperativeEffect
+ * Default cooperative effect comparator
  *
- * It will first compare the outcome using DefaultCvTermComparator. Then it will compare the response using DefaultCvTermComparator.
- * Then it will compare the CooperativityEvidences using DefaultCooperativityEvidenceComparator.
+ * Allostery effects will always come before basic cooperative effects (preassembly)
  *
- * Finally it will compare the affected interactions using DefaultModelledInteractionComparator
+ * - It will use DefaultAllosteryComparator to compare allostery
+ * - It will use DefaultCooperativeEffectBaseComparator to compare basic cooperative effects
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>23/05/13</pre>
+ * @since <pre>31/05/13</pre>
  */
 
-public class DefaultCooperativeEffectComparator extends CooperativeEffectComparator {
+public class DefaultCooperativeEffectComparator extends CooperativeEffectComparator{
 
     private static DefaultCooperativeEffectComparator defaultCooperativeEffectComparator;
 
     public DefaultCooperativeEffectComparator() {
-        super(new DefaultCvTermComparator(), new DefaultCooperativityEvidenceComparator(), new DefaultModelledInteractionComparator());
+        super(new DefaultAllosteryComparator());
     }
 
     @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) super.getCvTermComparator();
+    public DefaultAllosteryComparator getAllosteryComparator() {
+        return (DefaultAllosteryComparator) super.getAllosteryComparator();
     }
 
     /**
-     * It will first compare the outcome using DefaultCvTermComparator. Then it will compare the response using DefaultCvTermComparator.
-     * Then it will compare the CooperativityEvidences using DefaultCooperativityEvidenceComparator.
+     * Allostery effects will always come before basic cooperative effects (preassembly)
      *
-     * Finally it will compare the affected interactions using DefaultModelledInteractionComparator
+     * - It will use DefaultAllosteryComparator to compare allostery
+     * - It will use DefaultCooperativeEffectBaseComparator to compare basic cooperative effects
      */
     public int compare(CooperativeEffect effect1, CooperativeEffect effect2) {
         return super.compare(effect1, effect2);

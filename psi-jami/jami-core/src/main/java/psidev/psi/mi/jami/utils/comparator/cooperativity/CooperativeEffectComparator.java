@@ -1,66 +1,43 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionComparator;
 
-import java.util.Collection;
 import java.util.Comparator;
 
 /**
- * Basic comparator for CooperativeEffect
+ * Basic cooperative effect comparator
  *
- * It will first compare the outcome using AbstractCvTermComparator. Then it will compare the response using AbstractCvTermComparator.
- * Then it will compare the CooperativityEvidences using CooperativityEvidenceComparator.
+ * Allostery effects will always come before basic cooperative effects (preassembly)
  *
- * Finally it will compare the affected interactions using ModelledInteractionComparator
+ * - It will use AllosteryComparator to compare allostery
+ * - It will use CooperativeEffectBaseComparator to compare basic cooperative effects
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>22/05/13</pre>
+ * @since <pre>31/05/13</pre>
  */
 
 public class CooperativeEffectComparator implements Comparator<CooperativeEffect>{
 
-    private AbstractCvTermComparator cvTermComparator;
-    private CooperativityEvidenceCollectionComparator cooperativityEvidenceCollectionComparator;
-    private ModelledInteractionCollectionComparator modelledInteractionCollectionComparator;
+    private AllosteryComparator allosteryComparator;
 
-    public CooperativeEffectComparator(AbstractCvTermComparator cvTermComparator, CooperativityEvidenceComparator cooperativityEvidenceComparator, ModelledInteractionComparator modelledInteractionComparator){
-        if (cvTermComparator == null){
-            throw new IllegalArgumentException("The cvTermComparator cannot be null and is required for comparing outcome and response.");
-        }
-        this.cvTermComparator = cvTermComparator;
+    public CooperativeEffectComparator(AllosteryComparator allosteryComparator){
 
-        if (cooperativityEvidenceComparator == null){
-            throw new IllegalArgumentException("The cooperativityEvidenceComparator cannot be null and is required for comparing cooperativity evidences.");
+        if (allosteryComparator == null){
+            throw new IllegalArgumentException("The AllosteryComparator is required to compare basic properties of allostery");
         }
-        this.cooperativityEvidenceCollectionComparator = new CooperativityEvidenceCollectionComparator(cooperativityEvidenceComparator);
-
-        if (modelledInteractionComparator == null){
-            throw new IllegalArgumentException("The modelledInteractionComparator cannot be null and is required for comparing affected interactions.");
-        }
-        this.modelledInteractionCollectionComparator = new ModelledInteractionCollectionComparator(modelledInteractionComparator);
+        this.allosteryComparator = allosteryComparator;
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
-        return cvTermComparator;
-    }
-
-    public CooperativityEvidenceCollectionComparator getCooperativityEvidenceCollectionComparator() {
-        return cooperativityEvidenceCollectionComparator;
-    }
-
-    public ModelledInteractionCollectionComparator getModelledInteractionCollectionComparator() {
-        return modelledInteractionCollectionComparator;
+    public AllosteryComparator getAllosteryComparator() {
+        return allosteryComparator;
     }
 
     /**
-     * It will first compare the outcome using AbstractCvTermComparator. Then it will compare the response using AbstractCvTermComparator.
-     * Then it will compare the CooperativityEvidences using CooperativityEvidenceComparator.
+     * Allostery effects will always come before basic cooperative effects (preassembly)
      *
-     * Finally it will compare the affected interactions using ModelledInteractionComparator
+     * - It will use AllosteryComparator to compare allostery
+     * - It will use CooperativeEffectBaseComparator to compare basic cooperative effects
      * @param cooperativeEffect1
      * @param cooperativeEffect2
      * @return
@@ -80,38 +57,25 @@ public class CooperativeEffectComparator implements Comparator<CooperativeEffect
             return BEFORE;
         }
         else {
-            // first compare outcome
-            CvTerm outcome1 = cooperativeEffect1.getOutCome();
-            CvTerm outcome2 = cooperativeEffect2.getOutCome();
+            // first check if both cooperative effects are from the same interface
 
-            int comp = cvTermComparator.compare(outcome1, outcome2);
-            if (comp != 0){
-                return comp;
+            // both are allostery
+            boolean isAllostery1 = cooperativeEffect1 instanceof Allostery;
+            boolean isAllostery2 = cooperativeEffect2 instanceof Allostery;
+            if (isAllostery1 && isAllostery2){
+                return allosteryComparator.compare((Allostery) cooperativeEffect1, (Allostery) cooperativeEffect2);
             }
-
-            // then compare response
-            CvTerm response1 = cooperativeEffect1.getResponse();
-            CvTerm response2 = cooperativeEffect2.getResponse();
-
-            comp = cvTermComparator.compare(response1, response2);
-            if (comp != 0){
-                return comp;
+            // the allostery is before
+            else if (isAllostery1){
+                return BEFORE;
             }
-
-            // then compare cooperativity evidences
-            Collection<CooperativityEvidence> evidenceMethods1 = cooperativeEffect1.getCooperativityEvidences();
-            Collection<CooperativityEvidence> evidenceMethods2 = cooperativeEffect2.getCooperativityEvidences();
-
-            comp = cooperativityEvidenceCollectionComparator.compare(evidenceMethods1, evidenceMethods2);
-            if (comp != 0){
-                return comp;
+            else if (isAllostery2){
+                return AFTER;
             }
-
-            // then compare affected Interactions
-            Collection<ModelledInteraction> modelledInteractions1 = cooperativeEffect1.getAffectedInteractions();
-            Collection<ModelledInteraction> modelledInteractions2 = cooperativeEffect2.getAffectedInteractions();
-
-            return modelledInteractionCollectionComparator.compare(modelledInteractions1, modelledInteractions2);
+            else {
+                // both are simple preassembly effects
+                return allosteryComparator.getCooperativeEffectComparator().compare(cooperativeEffect1, cooperativeEffect2);
+            }
         }
     }
 }
