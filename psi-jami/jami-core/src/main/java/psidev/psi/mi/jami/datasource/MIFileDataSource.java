@@ -1,0 +1,36 @@
+package psidev.psi.mi.jami.datasource;
+
+import java.util.Collection;
+
+/**
+ * Interface for molecular interaction datasources coming from a file
+ *
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id$
+ * @since <pre>26/03/13</pre>
+ */
+
+public interface MIFileDataSource extends MIDataSource{
+
+    /**
+     * In a MIFileDataSource, the dataSourceErrors are FileSourceErrors.
+     * The collection cannot be null. If the MIFileDataSource does not have any fileSourceErrors, the method should return an empty collection
+     * @return the collection of FileSourceErrors
+     */
+    public Collection<FileSourceError> getDataSourceErrors();
+
+    /**
+     * This method opens the file data source (or inputStream)
+     */
+    public void open();
+
+    /**
+     * This method close the file data source (or inputStream)
+     */
+    public void close();
+
+    /**
+     * Validate the syntax of this MIFileDataSource
+     */
+    public void validateFileSyntax();
+}

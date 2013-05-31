@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
-import psidev.psi.mi.jami.utils.MolecularInteractionFileDataSourceUtils;
+import psidev.psi.mi.jami.utils.MIFileDataSourceUtils;
 
 import java.io.*;
 
@@ -19,7 +19,7 @@ public class FileSourceAnalyzer {
     public static String CSV_EXTENSION=".csv";
     public static String TSV_EXTENSION=".tsv";
 
-    public MolecularInteractionSource getMolecularInteractionSourceFor(File file) throws IOException {
+    public MIFileSource getMolecularInteractionSourceFor(File file) throws IOException {
 
         if (file == null){
             throw new FileNotFoundException("The file cannot be null.");
@@ -32,7 +32,7 @@ public class FileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
 
                 // skip empty lines or break lines or xml encode line
@@ -41,13 +41,13 @@ public class FileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
                 else if (line.startsWith("<entrySet")){
-                    return MolecularInteractionSource.psi25_xml;
+                    return MIFileSource.psi25_xml;
                 }
                 else{
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
             }
             finally {
@@ -62,7 +62,7 @@ public class FileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
 
                 // skip empty lines or break lines
@@ -71,16 +71,16 @@ public class FileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
                 else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
-                    return MolecularInteractionSource.mitab;
+                    return MIFileSource.mitab;
                 }
                 else if (line.contains("\t")){
-                    return MolecularInteractionSource.mitab;
+                    return MIFileSource.mitab;
                 }
                 else{
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
             }
             finally {
@@ -95,7 +95,7 @@ public class FileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
 
                 // skip empty lines or break lines or xml encode line
@@ -104,29 +104,29 @@ public class FileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
                 // we have xml
                 else if (line.trim().startsWith("<?xml")){
                     line = reader.readLine();
                     if (line.startsWith("<entrySet")){
-                        return MolecularInteractionSource.psi25_xml;
+                        return MIFileSource.psi25_xml;
                     }
                     else {
-                        return MolecularInteractionSource.other;
+                        return MIFileSource.other;
                     }
                 }
                 else if (line.startsWith("<entrySet")){
-                    return MolecularInteractionSource.psi25_xml;
+                    return MIFileSource.psi25_xml;
                 }
                 else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
-                    return MolecularInteractionSource.mitab;
+                    return MIFileSource.mitab;
                 }
                 else if (line.contains("\t")){
-                    return MolecularInteractionSource.mitab;
+                    return MIFileSource.mitab;
                 }
                 else{
-                    return MolecularInteractionSource.other;
+                    return MIFileSource.other;
                 }
             }
             finally {
@@ -142,7 +142,7 @@ public class FileSourceAnalyzer {
         }
         else {
 
-            File temp = MolecularInteractionFileDataSourceUtils.storeAsTemporaryFile(stream, "molecular_interaction_stream"+System.currentTimeMillis(), ".txt");
+            File temp = MIFileDataSourceUtils.storeAsTemporaryFile(stream, "molecular_interaction_stream" + System.currentTimeMillis(), ".txt");
 
             // check first line
             BufferedReader reader = new BufferedReader(new FileReader(temp));
@@ -151,7 +151,7 @@ public class FileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return new OpenedInputStream(temp, MolecularInteractionSource.other);
+                    return new OpenedInputStream(temp, MIFileSource.other);
                 }
 
                 // skip empty lines or break lines or xml encode line
@@ -160,29 +160,29 @@ public class FileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return new OpenedInputStream(temp, MolecularInteractionSource.other);
+                    return new OpenedInputStream(temp, MIFileSource.other);
                 }
                 // we have xml
                 else if (line.trim().startsWith("<?xml")){
                     line = reader.readLine();
                     if (line.startsWith("<entrySet")){
-                        return new OpenedInputStream(temp, MolecularInteractionSource.psi25_xml);
+                        return new OpenedInputStream(temp, MIFileSource.psi25_xml);
                     }
                     else {
-                        return new OpenedInputStream(temp, MolecularInteractionSource.other);
+                        return new OpenedInputStream(temp, MIFileSource.other);
                     }
                 }
                 else if (line.startsWith("<entrySet")){
-                    return new OpenedInputStream(temp,  MolecularInteractionSource.psi25_xml);
+                    return new OpenedInputStream(temp,  MIFileSource.psi25_xml);
                 }
                 else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
-                    return new OpenedInputStream(temp,  MolecularInteractionSource.mitab);
+                    return new OpenedInputStream(temp,  MIFileSource.mitab);
                 }
                 else if (line.contains("\t")){
-                    return new OpenedInputStream(temp,  MolecularInteractionSource.mitab);
+                    return new OpenedInputStream(temp,  MIFileSource.mitab);
                 }
                 else{
-                    return new OpenedInputStream(temp, MolecularInteractionSource.other);
+                    return new OpenedInputStream(temp, MIFileSource.other);
                 }
             }
             finally {

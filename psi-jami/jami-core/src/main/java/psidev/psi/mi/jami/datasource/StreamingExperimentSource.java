@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @since <pre>18/12/12</pre>
  */
 
-public interface StreamingExperimentSource extends MolecularInteractionDataSource{
+public interface StreamingExperimentSource extends MIDataSource {
 
     /**
      * The experiments iterator for this datasource.

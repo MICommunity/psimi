@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.datasource;
 
 /**
- * A fileSourceContext contains some information
+ * A DefaultFileSourceContext is the basic implementation of FileSourceContext and
+ * contains some file location information
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
