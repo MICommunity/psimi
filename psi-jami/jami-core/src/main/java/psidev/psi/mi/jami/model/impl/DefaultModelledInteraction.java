@@ -33,7 +33,8 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
     }
 
     public DefaultModelledInteraction(String shortName, Source source) {
-        super(shortName, source);
+        super(shortName);
+        this.source = source;
     }
 
     public DefaultModelledInteraction(String shortName, CvTerm type) {
@@ -117,7 +118,7 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         return this.interactionEvidences;
     }
 
-    public Collection<? extends ModelledParticipant> getModelledParticipants() {
+    public Collection<ModelledParticipant> getModelledParticipants() {
         if (modelledParticipants == null){
             initialiseModelledParticipants();
         }
