@@ -29,6 +29,8 @@ public class ParticipantBaseComparator implements Comparator<Participant> {
     protected StoichiometryComparator stoichiometryComparator;
     protected InteractorComparator interactorComparator;
 
+    protected boolean ignoreInteractors = false;
+
     /**
      * Creates a new ParticipantBaseComparator
      * @param interactorComparator : interactor comparator required for comparing the molecules
@@ -61,6 +63,14 @@ public class ParticipantBaseComparator implements Comparator<Participant> {
         return interactorComparator;
     }
 
+    public boolean isIgnoreInteractors() {
+        return ignoreInteractors;
+    }
+
+    public void setIgnoreInteractors(boolean ignoreInteractors) {
+        this.ignoreInteractors = ignoreInteractors;
+    }
+
     /**
      * It will first compare the interactors using InteractorComparator. If both interactors are the same,
      * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
@@ -87,13 +97,16 @@ public class ParticipantBaseComparator implements Comparator<Participant> {
             return BEFORE;
         }
         else {
+            int comp;
             // first compares interactors
-            Interactor interactor1 = participant1.getInteractor();
-            Interactor interactor2 = participant2.getInteractor();
+            if (!ignoreInteractors){
+                Interactor interactor1 = participant1.getInteractor();
+                Interactor interactor2 = participant2.getInteractor();
 
-            int comp = interactorComparator.compare(interactor1, interactor2);
-            if (comp != 0){
-                return comp;
+                comp = interactorComparator.compare(interactor1, interactor2);
+                if (comp != 0){
+                    return comp;
+                }
             }
 
             // then compares the biological role

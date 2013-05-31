@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.ModelledFeatureComparator;
 
 import java.util.Collection;
-import java.util.Comparator;
 
 /**
  * Basic biological participant comparator.
@@ -19,10 +18,12 @@ import java.util.Comparator;
  * @since <pre>13/02/13</pre>
  */
 
-public class ModelledParticipantComparator implements Comparator<ModelledParticipant> {
+public class ModelledParticipantComparator implements CustomizableModelledParticipantComparator {
 
     protected ParticipantBaseComparator participantBaseComparator;
     protected FeatureCollectionComparator featureCollectionComparator;
+
+    protected boolean checkComplexesAsInteractors = true;
 
     /**
      * Creates a new ComponentComparator
@@ -47,6 +48,14 @@ public class ModelledParticipantComparator implements Comparator<ModelledPartici
         return featureCollectionComparator;
     }
 
+    public boolean isCheckComplexesAsInteractors() {
+        return checkComplexesAsInteractors;
+    }
+
+    public void setCheckComplexesAsInteractors(boolean checkComplexesAsInteractors) {
+        this.checkComplexesAsInteractors = checkComplexesAsInteractors;
+    }
+
     /**
      * It will compare the basic properties of a biological participant using ParticipantInteractorComparator.
      *
@@ -58,6 +67,9 @@ public class ModelledParticipantComparator implements Comparator<ModelledPartici
     public int compare(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2) {
         if (participantBaseComparator == null){
             throw new IllegalStateException("The participant base comparator is required to compare basic participant properties. It cannot be null");
+        }
+        else{
+            participantBaseComparator.setIgnoreInteractors(false);
         }
         int EQUAL = 0;
         int BEFORE = -1;
@@ -73,6 +85,25 @@ public class ModelledParticipantComparator implements Comparator<ModelledPartici
             return BEFORE;
         }
         else {
+
+            if (!checkComplexesAsInteractors){
+                // the bioparticipant 1 contains a complex that self interacts
+                if (bioParticipant1.getInteractor() == bioParticipant1.getModelledInteraction()){
+                    // the bioparticipant 2 contains a complex that self interacts
+                    if (bioParticipant2.getInteractor() == bioParticipant2.getModelledInteraction()){
+                        participantBaseComparator.setIgnoreInteractors(true);
+                    }
+                    // the bioparticipant 2 is not self, it comes after the self participant
+                    else {
+                        return BEFORE;
+                    }
+                }
+                // the bioparticipant 2 contains a complex that self interacts, comes before
+                else if (bioParticipant2.getInteractor() == bioParticipant2.getModelledInteraction()){
+                    return AFTER;
+                }
+            }
+
             int comp = participantBaseComparator.compare(bioParticipant1, bioParticipant2);
             if (comp != 0){
                 return comp;
