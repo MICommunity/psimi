@@ -50,4 +50,27 @@ public class UnambiguousCuratedInteractionBaseComparator extends CuratedInteract
 
         return unambiguousCuratedInteractionBaseComparator.compare(interaction1, interaction2) == 0;
     }
+
+    /**
+     *
+     * @param interaction
+     * @return the hashcode consistent with the equals method for this comparator
+     */
+    public static int hashCode(Interaction interaction){
+        if (unambiguousCuratedInteractionBaseComparator == null){
+            unambiguousCuratedInteractionBaseComparator = new UnambiguousCuratedInteractionBaseComparator();
+        }
+
+        if (interaction == null){
+            return 0;
+        }
+
+        int hashcode = 31;
+
+        hashcode = 31*hashcode + UnambiguousInteractionBaseComparator.hashCode(interaction);
+        hashcode = 31*hashcode + (interaction.getCreatedDate() != null ? interaction.getCreatedDate().hashCode() : 0);
+        hashcode = 31*hashcode + (interaction.getUpdatedDate() != null ? interaction.getUpdatedDate().hashCode() : 0);
+
+        return hashcode;
+    }
 }
