@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousModelledParticipantComparator;
 
 /**
@@ -23,7 +22,7 @@ public class UnambiguousModelledInteractionComparator extends ModelledInteractio
      * compare basic interaction properties
      */
     public UnambiguousModelledInteractionComparator() {
-        super(new UnambiguousModelledParticipantComparator(), new InteractionBaseComparator(new UnambiguousCvTermComparator()));
+        super(new UnambiguousModelledParticipantComparator(), new UnambiguousInteractionBaseComparator());
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.Comparator;
  * - It uses ModelledInteractionComparator to compare modelled interactions
  * - It uses CooperativeInteractionComparator to compare cooperative interactions
  * - It uses AllostericInteractionComparator to compare allosteric interactions
- * - It uses InteractionBaseComparator to compare basic interaction properties
+ * - It uses AbstractInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -20,11 +20,11 @@ import java.util.Comparator;
 
 public class InteractionComparator implements Comparator<Interaction> {
 
-    protected InteractionBaseComparator interactionBaseComparator;
+    protected Comparator<Interaction> interactionBaseComparator;
     protected InteractionEvidenceComparator experimentalInteractionComparator;
     protected ModelledInteractionComparator modelledInteractionComparator;
 
-    public InteractionComparator(InteractionBaseComparator interactionBaseComparator, ModelledInteractionComparator modelledInteractionComparator, InteractionEvidenceComparator experimentalInteractionComparator){
+    public InteractionComparator(Comparator<Interaction> interactionBaseComparator, ModelledInteractionComparator modelledInteractionComparator, InteractionEvidenceComparator experimentalInteractionComparator){
         if (interactionBaseComparator == null){
             throw new IllegalArgumentException("The interactionBaseComparator is required to create more specific interaction comparators and compares basic interaction properties. It cannot be null");
         }
@@ -39,7 +39,7 @@ public class InteractionComparator implements Comparator<Interaction> {
         this.modelledInteractionComparator = modelledInteractionComparator;
     }
 
-    public InteractionBaseComparator getInteractionBaseComparator() {
+    public Comparator<Interaction> getInteractionBaseComparator() {
         return interactionBaseComparator;
     }
 
@@ -57,7 +57,7 @@ public class InteractionComparator implements Comparator<Interaction> {
      * - It uses ModelledInteractionComparator to compare modelled interactions
      * - It uses CooperativeInteractionComparator to compare cooperative interactions
      * - It uses AllostericInteractionComparator to compare allosteric interactions
-     * - It uses InteractionBaseComparator to compare basic interaction properties
+     * - It uses AbstractInteractionBaseComparator to compare basic interaction properties
      * @param interaction1
      * @param interaction2
      * @return

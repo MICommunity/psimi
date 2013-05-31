@@ -24,12 +24,12 @@ public class DefaultExactInteractionComparator extends InteractionComparator {
      * Creates a new DefaultExactInteractionComparator.
      */
     public DefaultExactInteractionComparator() {
-        super(new DefaultExactInteractionBaseComparator(), new DefaultExactModelledInteractionComparator(), new DefaultExactInteractionEvidenceComparator());
+        super(new DefaultInteractionBaseComparator(), new DefaultExactModelledInteractionComparator(), new DefaultExactInteractionEvidenceComparator());
     }
 
     @Override
-    public DefaultExactInteractionBaseComparator getInteractionBaseComparator() {
-        return (DefaultExactInteractionBaseComparator) this.interactionBaseComparator;
+    public DefaultInteractionBaseComparator getInteractionBaseComparator() {
+        return (DefaultInteractionBaseComparator) this.interactionBaseComparator;
     }
 
     @Override

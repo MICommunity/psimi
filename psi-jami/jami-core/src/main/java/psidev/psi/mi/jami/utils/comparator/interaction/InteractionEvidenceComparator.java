@@ -13,7 +13,7 @@ import java.util.Comparator;
 /**
  * Basic InteractionEvidenceComparator.
  *
- * It will first compare the basic interaction properties using InteractionBaseComparator<ParticipantEvidence>.
+ * It will first compare the basic interaction properties using AbstractInteractionBaseComparator<ParticipantEvidence>.
  * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
  * A negative interaction will come after a positive interaction. it will compare
  * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.
@@ -26,7 +26,7 @@ import java.util.Comparator;
 
 public class InteractionEvidenceComparator implements Comparator<InteractionEvidence> {
 
-    protected InteractionBaseComparator interactionComparator;
+    protected AbstractInteractionBaseComparator interactionComparator;
     protected ExperimentComparator experimentComparator;
     protected ParameterCollectionComparator parameterCollectionComparator;
     protected ParticipantCollectionComparator participantCollectionComparator;
@@ -38,7 +38,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
      * @param experimentComparator : required to compare experiments
      * @param parameterComparator : required to compare parameters
      */
-    public InteractionEvidenceComparator(Comparator<ParticipantEvidence> participantComparator, InteractionBaseComparator interactionComparator, ExperimentComparator experimentComparator,
+    public InteractionEvidenceComparator(Comparator<ParticipantEvidence> participantComparator, AbstractInteractionBaseComparator interactionComparator, ExperimentComparator experimentComparator,
                                          ParameterComparator parameterComparator){
         if (interactionComparator == null){
             throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
@@ -65,7 +65,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
         return parameterCollectionComparator;
     }
 
-    public InteractionBaseComparator getInteractionComparator() {
+    public AbstractInteractionBaseComparator getInteractionComparator() {
         return interactionComparator;
     }
 
@@ -82,7 +82,7 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
     }
 
     /**
-     * It will first compare the basic interaction properties using InteractionBaseComparator<ParticipantEvidence>.
+     * It will first compare the basic interaction properties using AbstractInteractionBaseComparator<ParticipantEvidence>.
      * It will then compares the IMEx identifiers if both IMEx ids are set. If at least one IMEx id is not set, it will compare the negative properties.
      * A negative interaction will come after a positive interaction. it will compare
      * the experiment using ExperimentComparator. If the experiments are the same, it will compare the parameters using ParameterComparator.

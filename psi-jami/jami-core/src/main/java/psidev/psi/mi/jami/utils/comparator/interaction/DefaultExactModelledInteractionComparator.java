@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantComparator;
 
 /**
@@ -23,7 +22,7 @@ public class DefaultExactModelledInteractionComparator extends ModelledInteracti
      * compare basic interaction properties
      */
     public DefaultExactModelledInteractionComparator() {
-        super(new DefaultExactModelledParticipantComparator(), new InteractionBaseComparator(new DefaultCvTermComparator()));
+        super(new DefaultExactModelledParticipantComparator(), new DefaultInteractionBaseComparator());
     }
 
     @Override

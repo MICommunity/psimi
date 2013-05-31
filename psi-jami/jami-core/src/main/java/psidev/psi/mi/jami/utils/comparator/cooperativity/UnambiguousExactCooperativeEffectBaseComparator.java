@@ -5,8 +5,8 @@ import psidev.psi.mi.jami.model.CooperativityEvidence;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionBaseComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactModelledInteractionComparator;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousInteractionBaseComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,7 +91,7 @@ public class UnambiguousExactCooperativeEffectBaseComparator extends Cooperative
         List<ModelledInteraction> list2 = new ArrayList<ModelledInteraction>(effect.getAffectedInteractions());
         Collections.sort(list2, unambiguousExactCooperativeEffectComparator.getModelledInteractionCollectionComparator().getObjectComparator());
         for (ModelledInteraction interaction : list2){
-            hashcode = 31*hashcode + UnambiguousExactInteractionBaseComparator.hashCode(interaction);
+            hashcode = 31*hashcode + UnambiguousInteractionBaseComparator.hashCode(interaction);
         }
 
         return hashcode;

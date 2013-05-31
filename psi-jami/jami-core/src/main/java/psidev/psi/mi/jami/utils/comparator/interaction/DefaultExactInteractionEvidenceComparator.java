@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.experiment.DefaultExperimentComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactParticipantEvidenceComparator;
@@ -28,7 +27,7 @@ public class DefaultExactInteractionEvidenceComparator extends InteractionEviden
      * compare basic interaction properties, DefaultExactParameterComparator to compare parameters, DefaultExactExperimentComparator to compare experiments
      */
     public DefaultExactInteractionEvidenceComparator() {
-        super(new DefaultExactParticipantEvidenceComparator(), new InteractionBaseComparator(new DefaultCvTermComparator()),
+        super(new DefaultExactParticipantEvidenceComparator(), new DefaultInteractionBaseComparator(),
                 new DefaultExperimentComparator(), new DefaultParameterComparator());
     }
 
