@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactInteractionEvidenceComparator;
+import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousExactCuratedInteractionEvidenceComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -341,7 +341,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         }
 
         // use UnambiguousExactExperimentalInteraction comparator for equals
-        return UnambiguousExactInteractionEvidenceComparator.areEquals(this, (InteractionEvidence) o);
+        return UnambiguousExactCuratedInteractionEvidenceComparator.areEquals(this, (InteractionEvidence) o);
     }
 
     @Override
