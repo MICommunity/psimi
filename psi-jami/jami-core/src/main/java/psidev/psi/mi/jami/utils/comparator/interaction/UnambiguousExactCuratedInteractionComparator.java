@@ -4,12 +4,10 @@ import psidev.psi.mi.jami.model.Interaction;
 
 /**
  * Unambiguous exact curated Generic interaction comparator.
- * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
- * - It uses UnambiguousExactInteractionEvidenceComparator to compare experimental interactions
+ * Modelled interactions come first and then experimental interactions
+ * - It uses UnambiguousExactCuratedInteractionEvidenceComparator to compare experimental interactions
  * - It uses UnambiguousExactCuratedModelledInteractionComparator to compare modelled interactions
- * - It uses UnambiguousExactCuratedCooperativeInteractionComparator to compare cooperative interactions
- * - It uses UnambiguousExactCuratedAllostericInteractionComparator to compare allosteric interactions
- * - It uses UnambiguousExactInteractionBaseComparator to compare basic interaction properties
+ * - It uses UnambiguousCuratedInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -24,27 +22,30 @@ public class UnambiguousExactCuratedInteractionComparator extends InteractionCom
      * Creates a new UnambiguousExactCuratedInteractionComparator.
      */
     public UnambiguousExactCuratedInteractionComparator() {
-        super(new UnambiguousInteractionBaseComparator(), new UnambiguousExactCuratedModelledInteractionComparator(), new UnambiguousExactInteractionEvidenceComparator());
+        super(new UnambiguousCuratedInteractionBaseComparator(), new UnambiguousExactCuratedModelledInteractionComparator(), new UnambiguousExactCuratedInteractionEvidenceComparator());
     }
 
     @Override
-    public UnambiguousInteractionBaseComparator getInteractionBaseComparator() {
-        return (UnambiguousInteractionBaseComparator) this.interactionBaseComparator;
+    public UnambiguousCuratedInteractionBaseComparator getInteractionBaseComparator() {
+        return (UnambiguousCuratedInteractionBaseComparator) this.interactionBaseComparator;
     }
 
     @Override
-    public UnambiguousExactInteractionEvidenceComparator getExperimentalInteractionComparator() {
-        return (UnambiguousExactInteractionEvidenceComparator) this.experimentalInteractionComparator;
+    public UnambiguousExactCuratedInteractionEvidenceComparator getExperimentalInteractionComparator() {
+        return (UnambiguousExactCuratedInteractionEvidenceComparator) this.experimentalInteractionComparator;
+    }
+
+    @Override
+    public UnambiguousExactCuratedModelledInteractionComparator getModelledInteractionComparator() {
+        return (UnambiguousExactCuratedModelledInteractionComparator) super.getModelledInteractionComparator();
     }
 
     @Override
     /**
-     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
-     * - It uses UnambiguousExactInteractionEvidenceComparator to compare experimental interactions
+     * Modelled interactions come first and then experimental interactions
+     * - It uses UnambiguousExactCuratedInteractionEvidenceComparator to compare experimental interactions
      * - It uses UnambiguousExactCuratedModelledInteractionComparator to compare modelled interactions
-     * - It uses UnambiguousExactCuratedCooperativeInteractionComparator to compare cooperative interactions
-     * - It uses UnambiguousExactCuratedAllostericInteractionComparator to compare allosteric interactions
-     * - It uses UnambiguousExactInteractionBaseComparator to compare basic interaction properties
+     * - It uses UnambiguousCuratedInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {
         return super.compare(interaction1, interaction2);

@@ -4,11 +4,9 @@ import psidev.psi.mi.jami.model.Interaction;
 
 /**
  * Unambiguous Generic interaction comparator.
- * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * Modelled interactions come first and then experimental interactions
  * - It uses UnambiguousInteractionEvidenceComparator to compare experimental interactions
  * - It uses UnambiguousModelledInteractionComparator to compare modelled interactions
- * - It uses UnambiguousCooperativeInteractionComparator to compare cooperative interactions
- * - It uses UnambiguousAllostericInteractionComparator to compare allosteric interactions
  * - It uses UnambiguousInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -38,12 +36,15 @@ public class UnambiguousInteractionComparator extends InteractionComparator {
     }
 
     @Override
+    public UnambiguousModelledInteractionComparator getModelledInteractionComparator() {
+        return (UnambiguousModelledInteractionComparator) super.getModelledInteractionComparator();
+    }
+
+    @Override
     /**
-     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * Modelled interactions come first and then experimental interactions
      * - It uses UnambiguousInteractionEvidenceComparator to compare experimental interactions
      * - It uses UnambiguousModelledInteractionComparator to compare modelled interactions
-     * - It uses UnambiguousCooperativeInteractionComparator to compare cooperative interactions
-     * - It uses UnambiguousAllostericInteractionComparator to compare allosteric interactions
      * - It uses UnambiguousInteractionBaseComparator to compare basic interaction properties
      */
     public int compare(Interaction interaction1, Interaction interaction2) {

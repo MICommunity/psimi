@@ -6,11 +6,9 @@ import java.util.Comparator;
 
 /**
  * Generic interaction comparator.
- * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+ * Modelled interactions come first, then experimental interactions.
  * - It uses InteractionEvidenceComparator to compare experimental interactions
  * - It uses ModelledInteractionComparator to compare modelled interactions
- * - It uses CooperativeInteractionComparator to compare cooperative interactions
- * - It uses AllostericInteractionComparator to compare allosteric interactions
  * - It uses AbstractInteractionBaseComparator to compare basic interaction properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -52,11 +50,9 @@ public class InteractionComparator implements Comparator<Interaction> {
     }
 
     /**
-     * Experimental interactions come first, then allosteric interactions, then cooperative interactions, then modelled interactions.
+     * Modelled interactions come first, then experimental interactions.
      * - It uses InteractionEvidenceComparator to compare experimental interactions
      * - It uses ModelledInteractionComparator to compare modelled interactions
-     * - It uses CooperativeInteractionComparator to compare cooperative interactions
-     * - It uses AllostericInteractionComparator to compare allosteric interactions
      * - It uses AbstractInteractionBaseComparator to compare basic interaction properties
      * @param interaction1
      * @param interaction2
@@ -79,31 +75,31 @@ public class InteractionComparator implements Comparator<Interaction> {
         else {
             // first check if both interactions are from the same interface
 
-            // both are experimental interactions
-            boolean isExperimentalInteraction1 = interaction1 instanceof InteractionEvidence;
-            boolean isExperimentalInteraction2 = interaction2 instanceof InteractionEvidence;
-            if (isExperimentalInteraction1 && isExperimentalInteraction2){
-                return experimentalInteractionComparator.compare((InteractionEvidence) interaction1, (InteractionEvidence) interaction2);
+            // both are modelled interactions
+            boolean isModelledInteraction1 = interaction1 instanceof ModelledInteraction;
+            boolean isModelledInteraction2 = interaction2 instanceof ModelledInteraction;
+            if (isModelledInteraction1 && isModelledInteraction2){
+                return modelledInteractionComparator.compare((ModelledInteraction) interaction1, (ModelledInteraction) interaction2);
             }
-            // the experimental interaction is before
-            else if (isExperimentalInteraction1){
+            // the modelled interaction is before
+            else if (isModelledInteraction1){
                 return BEFORE;
             }
-            else if (isExperimentalInteraction2){
+            else if (isModelledInteraction2){
                 return AFTER;
             }
             else {
-                // both are modelled interactions
-                boolean isModelledInteraction1 = interaction1 instanceof ModelledInteraction;
-                boolean isModelledInteraction2 = interaction2 instanceof ModelledInteraction;
-                if (isModelledInteraction1 && isModelledInteraction2){
-                    return modelledInteractionComparator.compare((ModelledInteraction) interaction1, (ModelledInteraction) interaction2);
+                // both are experimental interactions
+                boolean isExperimentalInteraction1 = interaction1 instanceof InteractionEvidence;
+                boolean isExperimentalInteraction2 = interaction2 instanceof InteractionEvidence;
+                if (isExperimentalInteraction1 && isExperimentalInteraction2){
+                    return experimentalInteractionComparator.compare((InteractionEvidence) interaction1, (InteractionEvidence) interaction2);
                 }
-                // the modelled interaction is before
-                else if (isModelledInteraction1){
+                // the experimental interaction is before
+                else if (isExperimentalInteraction1){
                     return BEFORE;
                 }
-                else if (isModelledInteraction2){
+                else if (isExperimentalInteraction2){
                     return AFTER;
                 }
                 else {

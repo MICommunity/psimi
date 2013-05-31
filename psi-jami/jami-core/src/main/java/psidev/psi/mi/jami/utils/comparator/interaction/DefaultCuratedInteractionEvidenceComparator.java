@@ -20,15 +20,15 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultParticipantEvidenc
  * @since <pre>31/05/13</pre>
  */
 
-public class DefaultCuratedInteractionEvidenceComnparator extends InteractionEvidenceComparator{
+public class DefaultCuratedInteractionEvidenceComparator extends InteractionEvidenceComparator{
 
-    private static DefaultCuratedInteractionEvidenceComnparator defaultCuratedInteractionEvidenceComparator;
+    private static DefaultCuratedInteractionEvidenceComparator defaultCuratedInteractionEvidenceComparator;
 
     /**
-     * Creates a new DefaultCuratedInteractionEvidenceComnparator. It will use a DefaultCuratedInteractionBaseComparator to
+     * Creates a new DefaultCuratedInteractionEvidenceComparator. It will use a DefaultCuratedInteractionBaseComparator to
      * compare basic interaction properties, DefaultParameterComparator to compare parameters, DefaultExperimentComparator to compare experiments
      */
-    public DefaultCuratedInteractionEvidenceComnparator() {
+    public DefaultCuratedInteractionEvidenceComparator() {
         super(new DefaultParticipantEvidenceComparator(), new DefaultCuratedInteractionBaseComparator(),
                 new DefaultCuratedExperimentComparator(), new DefaultParameterComparator());
     }
@@ -56,14 +56,14 @@ public class DefaultCuratedInteractionEvidenceComnparator extends InteractionEvi
     }
 
     /**
-     * Use DefaultCuratedInteractionEvidenceComnparator to know if two experimental interactions are equals.
+     * Use DefaultCuratedInteractionEvidenceComparator to know if two experimental interactions are equals.
      * @param interaction1
      * @param interaction2
      * @return true if the two experimental interactions are equal
      */
     public static boolean areEquals(InteractionEvidence interaction1, InteractionEvidence interaction2){
         if (defaultCuratedInteractionEvidenceComparator == null){
-            defaultCuratedInteractionEvidenceComparator = new DefaultCuratedInteractionEvidenceComnparator();
+            defaultCuratedInteractionEvidenceComparator = new DefaultCuratedInteractionEvidenceComparator();
         }
 
         return defaultCuratedInteractionEvidenceComparator.compare(interaction1, interaction2) == 0;
