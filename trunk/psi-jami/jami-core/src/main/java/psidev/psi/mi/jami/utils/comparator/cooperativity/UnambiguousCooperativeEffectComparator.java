@@ -1,28 +1,18 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
 import psidev.psi.mi.jami.model.CooperativeEffect;
-import psidev.psi.mi.jami.model.CooperativityEvidence;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousInteractionBaseComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.UnambiguousModelledInteractionComparator;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
- * Unambiguous comparator for CooperativeEffect
+ * Unambiguous cooperative effect comparator
  *
- * It will first compare the outcome using UnambiguousCvTermComparator. Then it will compare the response using UnambiguousCvTermComparator.
- * Then it will compare the CooperativityEvidences using UnambiguousCooperativityEvidenceComparator.
+ * Allostery effects will always come before basic cooperative effects (preassembly)
  *
- * Finally it will compare the affected interactions using UnambiguousModelledInteractionComparator
+ * - It will use UnambiguousAllosteryComparator to compare allostery
+ * - It will use UnambiguousCooperativeEffectBaseComparator to compare basic cooperative effects
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>23/05/13</pre>
+ * @since <pre>31/05/13</pre>
  */
 
 public class UnambiguousCooperativeEffectComparator extends CooperativeEffectComparator {
@@ -30,19 +20,19 @@ public class UnambiguousCooperativeEffectComparator extends CooperativeEffectCom
     private static UnambiguousCooperativeEffectComparator unambiguousCooperativeEffectComparator;
 
     public UnambiguousCooperativeEffectComparator() {
-        super(new UnambiguousCvTermComparator(), new UnambiguousCooperativityEvidenceComparator(), new UnambiguousModelledInteractionComparator());
+        super(new UnambiguousAllosteryComparator());
     }
 
     @Override
-    public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) super.getCvTermComparator();
+    public UnambiguousAllosteryComparator getAllosteryComparator() {
+        return (UnambiguousAllosteryComparator) super.getAllosteryComparator();
     }
 
     /**
-     * It will first compare the outcome using UnambiguousCvTermComparator. Then it will compare the response using UnambiguousCvTermComparator.
-     * Then it will compare the CooperativityEvidences using UnambiguousCooperativityEvidenceComparator.
+     * Allostery effects will always come before basic cooperative effects (preassembly)
      *
-     * Finally it will compare the affected interactions using UnambiguousModelledInteractionComparator
+     * - It will use DefaultExactAllosteryComparator to compare allostery
+     * - It will use DefaultExactCooperativeEffectBaseComparator to compare basic cooperative effects
      */
     public int compare(CooperativeEffect effect1, CooperativeEffect effect2) {
         return super.compare(effect1, effect2);
@@ -60,40 +50,5 @@ public class UnambiguousCooperativeEffectComparator extends CooperativeEffectCom
         }
 
         return unambiguousCooperativeEffectComparator.compare(effect1, effect2) == 0;
-    }
-
-    /**
-     *
-     * @param effect
-     * @return the hashcode consistent with the equals method for this comparator
-     */
-    public static int hashCode(CooperativeEffect effect){
-        if (unambiguousCooperativeEffectComparator == null){
-            unambiguousCooperativeEffectComparator = new UnambiguousCooperativeEffectComparator();
-        }
-
-        if (effect == null){
-            return 0;
-        }
-
-        int hashcode = 31;
-        CvTerm outcome = effect.getOutCome();
-        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(outcome);
-        CvTerm response = effect.getResponse();
-        hashcode = 31*hashcode + UnambiguousCvTermComparator.hashCode(response);
-
-        List<CooperativityEvidence> list1 = new ArrayList<CooperativityEvidence>(effect.getCooperativityEvidences());
-        Collections.sort(list1, unambiguousCooperativeEffectComparator.getCooperativityEvidenceCollectionComparator().getObjectComparator());
-        for (CooperativityEvidence evidence : list1){
-            hashcode = 31*hashcode + UnambiguousCooperativityEvidenceComparator.hashCode(evidence);
-        }
-
-        List<ModelledInteraction> list2 = new ArrayList<ModelledInteraction>(effect.getAffectedInteractions());
-        Collections.sort(list2, unambiguousCooperativeEffectComparator.getModelledInteractionCollectionComparator().getObjectComparator());
-        for (ModelledInteraction interaction : list2){
-            hashcode = 31*hashcode + UnambiguousInteractionBaseComparator.hashCode(interaction);
-        }
-
-        return hashcode;
     }
 }

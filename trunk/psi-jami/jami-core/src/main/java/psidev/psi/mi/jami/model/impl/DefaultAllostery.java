@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.AllostericEffector;
 import psidev.psi.mi.jami.model.Allostery;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousExactAllosteryComparator;
 
 /**
  * Default implementation for Allostery
@@ -80,5 +81,23 @@ public class DefaultAllostery<T extends AllostericEffector> extends DefaultCoope
             throw new IllegalArgumentException("The allosteric effector cannot be null");
         }
         this.allostericEffector = effector;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+
+        if (!(o instanceof Allostery)){
+            return false;
+        }
+
+        return UnambiguousExactAllosteryComparator.areEquals(this, (Allostery) o);
+    }
+
+    @Override
+    public String toString() {
+        return "allostery: " + super.toString();
     }
 }
