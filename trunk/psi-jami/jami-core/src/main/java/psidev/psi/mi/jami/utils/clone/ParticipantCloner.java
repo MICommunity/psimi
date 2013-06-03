@@ -24,16 +24,15 @@ public class ParticipantCloner {
             target.setExperimentalRole(source.getExperimentalRole());
             target.setExpressedInOrganism(source.getExpressedInOrganism());
             target.setBiologicalRole(source.getBiologicalRole());
-            target.getIdentificationMethods().clear();
-            target.getIdentificationMethods().addAll(source.getIdentificationMethods());
             target.setInteractor(source.getInteractor());
             target.setStoichiometry(source.getStoichiometry());
+            target.setCausalRelationship(source.getCausalRelationship());
 
             // copy collections
             target.getAnnotations().clear();
             target.getAnnotations().addAll(source.getAnnotations());
             target.getFeatureEvidences().clear();
-            target.addAllFeatureEvidences(source.getFeatureEvidences());
+            target.getFeatureEvidences().addAll(source.getFeatureEvidences());
             target.getConfidences().clear();
             target.getConfidences().addAll(source.getConfidences());
             target.getXrefs().clear();
@@ -44,6 +43,8 @@ public class ParticipantCloner {
             target.getExperimentalPreparations().addAll(source.getExperimentalPreparations());
             target.getParameters().clear();
             target.getParameters().addAll(source.getParameters());
+            target.getIdentificationMethods().clear();
+            target.getIdentificationMethods().addAll(source.getIdentificationMethods());
         }
     }
 
@@ -58,6 +59,7 @@ public class ParticipantCloner {
             target.setBiologicalRole(source.getBiologicalRole());
             target.setInteractor(source.getInteractor());
             target.setStoichiometry(source.getStoichiometry());
+            target.setCausalRelationship(source.getCausalRelationship());
 
             // copy collections
             target.getAnnotations().clear();

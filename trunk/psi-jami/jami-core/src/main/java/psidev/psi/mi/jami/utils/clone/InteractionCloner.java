@@ -14,6 +14,8 @@ public class InteractionCloner {
 
     /***
      * This method will copy properties of interaction source in interaction target and will override all the other properties of Target interaction.
+     * This method will set the experiment of this interaction evidence but it will not add this interaction to the list of interactionEvidences
+     * This method will add all the participant evidences of the source but will not set their interactionEvidence to the target
      * @param source
      * @param target
      */
@@ -40,7 +42,7 @@ public class InteractionCloner {
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
             target.getParticipantEvidences().clear();
-            target.addAllParticipantEvidences(source.getParticipantEvidences());
+            target.getParticipantEvidences().addAll(source.getParticipantEvidences());
             target.getParameters().clear();
             target.getParameters().addAll(source.getParameters());
         }
