@@ -4,7 +4,9 @@ import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -17,6 +19,13 @@ import java.util.Iterator;
 
 public class ChecksumUtils {
 
+    /**
+     * To check if a checksum does have a specific method
+     * @param checksum
+     * @param methodId
+     * @param methodName
+     * @return true if the checksum has the method with given name/identifier
+     */
     public static boolean doesChecksumHaveMethod(Checksum checksum, String methodId, String methodName){
 
         if (checksum == null || (methodName == null && methodId == null)){
@@ -31,10 +40,33 @@ public class ChecksumUtils {
         }
         // we need to compare methodNames
         else if (methodName != null) {
-            return methodName.toLowerCase().equals(method.getShortName().toLowerCase());
+            return methodName.toLowerCase().trim().equals(method.getShortName().toLowerCase().trim());
         }
 
         return false;
+    }
+
+    /**
+     * Collect all checksum having a specific method
+     * @param checksums
+     * @param methodId
+     * @param methodName
+     * @return
+     */
+    public static Collection<Checksum> collectAllChecksumsHavingMethod(Collection<? extends Checksum> checksums, String methodId, String methodName){
+
+        if (checksums == null || checksums.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Checksum> selectedChecksums = new ArrayList<Checksum>(checksums.size());
+
+        for (Checksum checksum : checksums){
+            if (doesChecksumHaveMethod(checksum, methodId, methodName)){
+                selectedChecksums.add(checksum);
+            }
+        }
+
+        return selectedChecksums;
     }
 
     /**
