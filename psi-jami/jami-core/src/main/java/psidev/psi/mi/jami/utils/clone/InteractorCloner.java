@@ -47,14 +47,22 @@ public class InteractorCloner {
     public static void copyAndOverrideComplexProperties(Complex source, Complex target){
         if (source != null && target != null){
             copyAndOverrideInteractorProperties(source, target);
-
-            target.setPhysicalProperties(source.getPhysicalProperties());
+            target.setSource(source.getSource());
+            target.setCreatedDate(source.getCreatedDate());
+            target.setUpdatedDate(source.getUpdatedDate());
+            target.setInteractionType(source.getInteractionType());
 
             // copy collections
             target.getInteractionEvidences().clear();
             target.getInteractionEvidences().addAll(source.getInteractionEvidences());
             target.getModelledParticipants().clear();
             target.addAllModelledParticipants(source.getModelledParticipants());
+            target.getModelledParameters().clear();
+            target.getModelledParameters().addAll(source.getModelledParameters());
+            target.getModelledConfidences().clear();
+            target.getModelledConfidences().addAll(source.getModelledConfidences());
+            target.getCooperativeEffects().clear();
+            target.getCooperativeEffects().addAll(source.getCooperativeEffects());
         }
     }
 }
