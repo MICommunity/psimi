@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO comment this
+ * The mock protein fetcher mimics a normal protein fetcher
+ * but can only fetch proteins which have been loaded into it.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -21,12 +22,19 @@ import java.util.Map;
 public class MockProteinFetcher
         implements ProteinFetcher {
 
-    private Map<String, Protein> localProteins;
+    private Map<String, ArrayList<Protein>> localProteins;
 
     public MockProteinFetcher(){
-        localProteins = new HashMap<String, Protein>();
+        localProteins = new HashMap<String, ArrayList<Protein>>();
     }
 
+    /**
+     * Will return a collection of proteins if one or more protein has been added with the identifier.
+     * If no proteins can be found, it will throw a fetcherException (as a true fetcher would).
+     * @param identifier
+     * @return
+     * @throws FetcherException
+     */
     public Collection<Protein> getProteinsByID(String identifier) throws FetcherException {
         if(! localProteins.containsKey(identifier)) {
             throw new EntryNotFoundException(
@@ -34,15 +42,24 @@ public class MockProteinFetcher
         }
 
         else {
-            ArrayList<Protein> proteins = new ArrayList<Protein>();
-            proteins.add(localProteins.get(identifier));
-            return proteins;
+            return localProteins.get(identifier);
         }
     }
 
-    public void addNewProtein(String uniprot, Protein protein){
+    /**
+     * Adds the protein to the available return values.
+     * If a protein of the given identifier already exists,
+     * it will be appended and both proteins will be returned in a search for that identifier.
+     * @param identifier
+     * @param protein
+     */
+    public void addNewProtein(String identifier, Protein protein){
         if(protein == null) return;
-        localProteins.put(uniprot, protein);
+        if(! localProteins.containsKey(identifier)){
+            ArrayList<Protein> array = new ArrayList<Protein>();
+            localProteins.put(identifier, array);
+        }
+        localProteins.get(identifier).add(protein);
     }
 
     public void clearProteins(){
