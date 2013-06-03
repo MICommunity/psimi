@@ -30,7 +30,9 @@ public interface MIFileDataSource extends MIDataSource{
     public void close();
 
     /**
-     * Validate the syntax of this MIFileDataSource
+     * Validate the syntax of this MIFileDataSource.
+     * It returns true if the file syntax is valid, false otherwise.
+     * When the file syntax is invalid, the syntax errors are stored in the dataSourceErrors of this MIDataSource
      */
-    public void validateFileSyntax();
+    public boolean validateFileSyntax();
 }
