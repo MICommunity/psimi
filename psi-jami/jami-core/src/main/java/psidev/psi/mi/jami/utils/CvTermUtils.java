@@ -29,6 +29,7 @@ public class CvTermUtils {
     private static CvTerm greaterThan;
     private static CvTerm lessThan;
     private static CvTerm certain;
+    private static CvTerm range;
 
     public static CvTerm getGene() {
         if (gene == null){
@@ -91,6 +92,13 @@ public class CvTermUtils {
             cTerminalRange = createCTerminalRangeStatus();
         }
         return cTerminalRange;
+    }
+
+    public static CvTerm getFuzzyRange() {
+        if (range == null){
+            range = createRangeStatus();
+        }
+        return range;
     }
 
     public static CvTerm getNTerminal() {
