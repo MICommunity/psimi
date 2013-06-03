@@ -12,13 +12,22 @@ import java.io.*;
  * @since <pre>01/03/13</pre>
  */
 
-public class FileSourceAnalyzer {
+public class MIFileSourceAnalyzer {
 
     public static String XML_EXTENSION=".xml";
     public static String TXT_EXTENSION=".txt";
     public static String CSV_EXTENSION=".csv";
     public static String TSV_EXTENSION=".tsv";
 
+    public static final String MITAB_25_TITLE="#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)";
+
+    /**
+     * Recognize the MIFileDataSource from the file signature and first line.
+     * It will recognize psi25-xml and mitab files. If it is neither of them, it will return  MIFileSource.other
+     * @param file : the file to analyze
+     * @return the MIFileSource that matches the file
+     * @throws IOException
+     */
     public MIFileSource getMolecularInteractionSourceFor(File file) throws IOException {
 
         if (file == null){
@@ -73,7 +82,7 @@ public class FileSourceAnalyzer {
                 if (line == null){
                     return MIFileSource.other;
                 }
-                else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
+                else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
                     return MIFileSource.mitab;
                 }
                 else if (line.contains("\t")){
@@ -119,7 +128,7 @@ public class FileSourceAnalyzer {
                 else if (line.startsWith("<entrySet")){
                     return MIFileSource.psi25_xml;
                 }
-                else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
+                else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
                     return MIFileSource.mitab;
                 }
                 else if (line.contains("\t")){
@@ -135,6 +144,16 @@ public class FileSourceAnalyzer {
         }
     }
 
+    /**
+     * Recognize the MIFileDataSource from the inputStream.
+     * Because it needs to open the inputStream to analyze its content, it will return an OpenedInputStream which contains the MIFileSource and
+     * a copy of the inputStream it opened which should be used instead of the given 'stream' which have been opened and closed. As for a normal InputStream, it needs to be closed after being used.
+     * It will recognize psi25-xml and mitab files. If it is neither of them, it will return an OpenedInputStream MIFileSource.other
+     *
+     * @param stream : the stream to recognize
+     * @return
+     * @throws IOException
+     */
     public OpenedInputStream getMolecularInteractionSourceFor(InputStream stream) throws IOException {
 
         if (stream == null){
@@ -175,7 +194,7 @@ public class FileSourceAnalyzer {
                 else if (line.startsWith("<entrySet")){
                     return new OpenedInputStream(temp,  MIFileSource.psi25_xml);
                 }
-                else if (line.toLowerCase().trim().startsWith("#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)".toLowerCase())){
+                else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
                     return new OpenedInputStream(temp,  MIFileSource.mitab);
                 }
                 else if (line.contains("\t")){

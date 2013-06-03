@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.datasource;
 import java.io.*;
 
 /**
- * The openedInputStream contains a temporary file and the type of dataSourceFile it represents
+ * The openedInputStream contains a temporary file and the type of dataSourceFile it represents.
+ *
+ * It needs to be closed after being used.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -23,7 +25,7 @@ public class OpenedInputStream {
         this.source = source;
     }
 
-    public InputStream getStream() {
+    public InputStream getCopiedStream() {
         return stream;
     }
 
