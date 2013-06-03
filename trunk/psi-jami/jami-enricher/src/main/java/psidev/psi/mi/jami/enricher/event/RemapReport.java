@@ -7,9 +7,13 @@ package psidev.psi.mi.jami.enricher.event;
  * Date: 13/05/13
  * Time: 13:36
  */
-public class ObsoleteTermReport {
+public class RemapReport {
+    private String msg;
 
-    public ObsoleteTermReport(){
+    public RemapReport(String msg){
+        this.msg = msg;
     }
+
+    public String getMsg(){return msg;}
 
 }

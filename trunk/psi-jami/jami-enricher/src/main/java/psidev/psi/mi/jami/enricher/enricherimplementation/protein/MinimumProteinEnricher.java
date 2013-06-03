@@ -32,7 +32,7 @@ public class MinimumProteinEnricher
             throws EnrichmentException {
 
         Collection<Protein> proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
-        Protein proteinEnriched = chooseProteinEnriched(proteinsEnriched);
+        Protein proteinEnriched = chooseProteinEnriched(proteinToEnrich, proteinsEnriched);
         super.setOrganismEnricher(new MinimumOrganismEnricher());
         runProteinAdditionEnrichment(proteinToEnrich, proteinEnriched);
         runProteinMismatchComparison(proteinToEnrich, proteinEnriched);

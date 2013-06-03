@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.enricher.listener.LoggingEnricherListener;
 import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MaximumProteinUpdater;
 import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 
 /**
@@ -50,14 +51,17 @@ public class ProteinTest {
         proteinEnricher.addEnricherListener(loglist);
     }
 
+    //String[] tests = {"P77681"};
 
-    String[] tests = {"P12345", "P77681", "P11163"};
-            //"P17671-2"};//"P42694","Q9Y2H6","Q6ZRI6-3", "P13055-2","PRO_0000015868","FOOBAR"};
+    String[] tests = {"P12345", "P77681", "P11163",
+            "P17671-2","Q6ZRI6-3", "P13055-2",
+            "P42694","Q9Y2H6","PRO_0000015868","FOOBAR"};
 
     public void testProteins(){
         for(String s : tests){
             Protein a = new DefaultProtein(s);
             a.setUniprotkb(s);
+            //a.setOrganism(new DefaultOrganism(168927));
 
             try{
                 proteinEnricher.enrichProtein(a);

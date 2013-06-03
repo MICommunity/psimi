@@ -6,11 +6,9 @@ import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.event.AdditionReport;
-import psidev.psi.mi.jami.enricher.event.EnricherEvent;
-import psidev.psi.mi.jami.enricher.event.MismatchReport;
-import psidev.psi.mi.jami.enricher.event.OverwriteReport;
+import psidev.psi.mi.jami.enricher.event.*;
 import psidev.psi.mi.jami.enricher.exception.ConflictException;
+import psidev.psi.mi.jami.enricher.exception.DemergeException;
 import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
 import psidev.psi.mi.jami.enricher.exception.FetchingException;
 import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
@@ -89,20 +87,63 @@ public abstract class AbstractProteinEnricher
         return enriched;
     }
 
-    protected Protein chooseProteinEnriched(Collection<Protein> proteinsEnriched){
+    protected Protein chooseProteinEnriched(Protein proteinToEnrich, Collection<Protein> proteinsEnriched) throws EnrichmentException {
         //TODO implement a real choice!
 
+       // log.debug("There are "+proteinsEnriched.size()+" proteins for consideration of enrichment.");
         //Only 1 entry, return it
         if(proteinsEnriched.size() == 1) {
             for(Protein protein : proteinsEnriched){return protein;}
         }
-        //More than 1 entry, make a choice!
-        else if(proteinsEnriched.size() > 1) {
+
+        Collection<Protein> choice = new ArrayList<Protein>();
+
+        //log.debug("The original is "+proteinToEnrich.getFullName()+" "+proteinToEnrich.getUniprotkb());
+
+        if(proteinToEnrich.getOrganism() == null){
+           // log.debug("Protein to enrich has no organism");
+        }
+
+        if(proteinsEnriched.size() > 1) {
             for(Protein protein : proteinsEnriched){
+                if(protein.getOrganism() != null){
+                   // log.debug("Protein "+protein.getFullName()+" "+protein.getUniprotkb()+" has an organism "+protein.getOrganism().getTaxId());
+
+                    if(proteinToEnrich.getOrganism() != null
+                            && protein.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()){
+
+                        choice.add(protein);
+                       // log.debug("Could use use "+protein.getFullName()+" "+protein.getUniprotkb());
+                    }
+                    else {
+                       // log.debug("Did not use "+protein.getFullName()+" "+protein.getUniprotkb());
+                    }
+                }
+                else {
+                   // log.debug("Protein "+protein.getFullName()+" "+protein.getUniprotkb()+" does not have an organism.");
+                }
+            }
+        }
+
+       // log.debug("There are "+choice.size()+" proteins which match the organism of the proteinToEnrich.");
+
+        int organism = -3;
+        if(proteinToEnrich.getOrganism() != null) organism = proteinToEnrich.getOrganism().getTaxId();
+
+        if(choice.size() == 1) {
+            for(Protein protein : choice){
+                enricherEvent.addRemapReport(new RemapReport("There are "+proteinsEnriched.size()+
+                        " proteins returned by "+proteinToEnrich.getUniprotkb()+
+                        " of which only "+protein.getUniprotkb()+" matches the organism "+organism+"."));
                 return protein;
             }
         }
-        return null;
+
+
+
+        throw new DemergeException("There are "+proteinsEnriched.size()+
+                " proteins returned by "+proteinToEnrich.getUniprotkb()+
+                " of which "+choice.size()+" match the organism "+organism+".");
     }
 
     protected void runProteinAdditionEnrichment(Protein proteinToEnrich, Protein proteinEnriched)

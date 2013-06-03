@@ -83,7 +83,7 @@ public abstract class AbstractOrganismEnricher
                 if(organismToEnrich.getTaxId() != organismEnriched.getTaxId()) {
                     throw new ConflictException("Organism Conflict on TaxId. " +
                             "ToEnrich had ["+organismToEnrich.getTaxId()+"] " +
-                            "but fetcher found ["+organismEnriched.getTaxId());
+                            "but fetcher found ["+organismEnriched.getTaxId()+"]");
                 }
             }else if(organismToEnrich.getTaxId() == -3){
                 organismToEnrich.setTaxId(organismEnriched.getTaxId());
