@@ -17,6 +17,13 @@ import java.util.Iterator;
 
 public class AliasUtils {
 
+    /**
+     * To know if an alias have a specific type.
+     * @param alias
+     * @param typeId
+     * @param typeName
+     * @return true if the alias has the type with given name/identifier
+     */
     public static boolean doesAliasHaveType(Alias alias, String typeId, String typeName){
 
         if (alias == null || (typeName == null && typeId == null)){

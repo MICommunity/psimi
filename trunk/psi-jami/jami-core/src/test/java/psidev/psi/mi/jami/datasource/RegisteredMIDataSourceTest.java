@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,5 +114,22 @@ public class RegisteredMIDataSourceTest {
         Assert.assertEquals(registeredSource.hashCode(), registeredSource2.hashCode());
         Assert.assertNotSame(registeredSource.hashCode(), registeredSource3.hashCode());
         Assert.assertNotSame(registeredSource2.hashCode(), registeredSource3.hashCode());
+    }
+
+    @Test
+    public void test_initialize_data_source() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        Map<String, Object> possibleOptions = new HashMap<String, Object>();
+        possibleOptions.put("file_source", "xml");
+        possibleOptions.put("streaming", "false");
+
+        RegisteredMIFileDataSource registeredSource = new RegisteredMIFileDataSource(MockInteractionDataSource.class, possibleOptions);
+
+        Map<String, Object> requiredOptions = new HashMap<String, Object>();
+        requiredOptions.put(RegisteredMIFileDataSource.SOURCE_OPTION, new ByteArrayInputStream("".getBytes()));
+
+        MIFileDataSource source = registeredSource.instantiateNewDataSource(requiredOptions);
+
+        Assert.assertNotNull(source);
+        Assert.assertTrue(source instanceof MockInteractionDataSource);
     }
 }
