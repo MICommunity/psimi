@@ -14,10 +14,10 @@ import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 public class ExperimentUtils {
 
     public static Experiment createUnknownBasicExperiment(){
-        return new DefaultExperiment(PublicationUtils.createUnknownBasicPublication(), CvTermUtils.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
+        return new DefaultExperiment(PublicationUtils.createUnknownBasicPublication(), CvTermUtils.createUnspecifiedMethod());
     }
 
     public static Experiment createExperimentWithoutPublication(){
-        return new DefaultExperiment(null, CvTermUtils.createMICvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI));
+        return new DefaultExperiment(null, CvTermUtils.createUnspecifiedMethod());
     }
 }

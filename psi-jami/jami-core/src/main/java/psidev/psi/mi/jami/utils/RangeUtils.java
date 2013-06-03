@@ -5,6 +5,9 @@ import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.impl.DefaultRange;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Utility methods for Ranges
  *
@@ -24,6 +27,95 @@ public class RangeUtils {
         String pos2 = PositionUtils.convertPositionToString(range.getEnd());
 
         return pos1+Range.POSITION_SEPARATOR+pos2;
+    }
+
+    /**
+     * Method to check if the range is valid or not. If the range is valid, the method returns null otherwise it returns a message.
+     * @param range : the range to check
+     * @param sequence : the sequence of the polymer
+     * @return empty list if the range is within the sequence, coherent with its fuzzy type and not overlapping. If the range is not valid, it will return a list of error messages describing why the range is invalid
+     */
+    public static List<String> validateRange(Range range, String sequence){
+
+        if (range != null) {
+
+            Position start = range.getStart();
+            Position end = range.getEnd();
+
+            List<String> messages = PositionUtils.validateRangePosition(start, sequence);
+
+            messages.addAll(PositionUtils.validateRangePosition(end, sequence));
+
+            if (areRangeStatusInconsistent(start, end)){
+                messages.add("The start status "+start.getStatus().getShortName()  +" and end status "+end.getStatus().getShortName()+" are inconsistent");
+            }
+
+            if (!(start.isPositionUndetermined()) && !(end.isPositionUndetermined()) && areRangePositionsOverlapping(range, start.getStart(), start.getEnd(), end.getStart(), end.getEnd())){
+                messages.add("The range positions overlap : ("+start.getStart()+"-"+start.getEnd()+") - ("+end.getStart()+"-"+end.getEnd()+")");
+            }
+
+            return messages;
+        }
+
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * Checks if the interval positions of the range are overlapping
+     * @param range
+     * @return true if the range intervals are overlapping
+     */
+    private static boolean areRangePositionsOverlapping(Range range, long fromStart, long fromEnd, long toStart, long toEnd){
+        // get the range status
+        Position start = range.getStart();
+        Position end = range.getEnd();
+
+        // both the end and the start have a specific status
+        // in the specific case where the start is superior to a position and the end is inferior to another position, we need to check that the
+        // range is not invalid because 'greater than' and 'less than' are both exclusive
+        if (PositionUtils.isGreaterThan(start) && PositionUtils.isLessThan(end) && toEnd - fromStart < 2){
+            return true;
+        }
+        // we have a greater than start position and the end position is equal to the start position
+        else if (PositionUtils.isGreaterThan(start) && !PositionUtils.isGreaterThan(end) && fromStart == toEnd){
+            return true;
+        }
+        // we have a less than end position and the start position is equal to the start position
+        else if (!PositionUtils.isLessThan(start) && PositionUtils.isLessThan(end) && fromStart == toEnd){
+            return true;
+        }
+        // As the range positions are 0 when the status is undetermined, we can only check if the ranges are not overlapping when both start and end are not undetermined
+        else if (!(PositionUtils.isUndetermined(start) || PositionUtils.isCTerminalRange(start) || PositionUtils.isNTerminalRange(start)) && !(PositionUtils.isUndetermined(end) || PositionUtils.isCTerminalRange(end) || PositionUtils.isNTerminalRange(end))){
+            return PositionUtils.arePositionsOverlapping(fromStart, fromEnd, toStart, toEnd);
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param start : the start position
+     * @param end : the end position
+     * @return  true if the range status are inconsistent (n-terminal is the end, c-terminal is the beginning)
+     */
+    private static boolean areRangeStatusInconsistent(Position start, Position end){
+
+        // the start position is C-terminal but the end position is different from C-terminal
+        if (PositionUtils.isCTerminal(start) && !PositionUtils.isCTerminal(end)){
+            return true;
+        }
+        // the end position is N-terminal but the start position is different from N-terminal
+        else if (PositionUtils.isNTerminal(end) && !PositionUtils.isNTerminal(start)){
+            return true;
+        }
+        else if (PositionUtils.isCTerminalRange(start) && !(PositionUtils.isCTerminal(end) || PositionUtils.isCTerminalRange(end))){
+            return true;
+        }
+        else if (PositionUtils.isNTerminalRange(end) && !(PositionUtils.isNTerminal(start) || PositionUtils.isNTerminalRange(start))){
+            return true;
+        }
+
+        return false;
     }
 
     public static Range createUndeterminedRange(){

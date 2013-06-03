@@ -12,9 +12,9 @@ import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
  * @since <pre>11/02/13</pre>
  */
 
-public class ExperimentalParticipantUtils {
+public class ParticipantUtils {
 
-     public static ParticipantEvidence createUnknownBasicParticipant(){
-         return new DefaultParticipantEvidence(ExperimentalInteractionUtils.createEmptyBasicExperimentalInteraction(), InteractorUtils.createUnknownBasicInteractor(), new DefaultCvTerm("unspecified method"));
+     public static ParticipantEvidence createUnknownBasicExperimentalParticipant(){
+         return new DefaultParticipantEvidence(InteractionUtils.createEmptyBasicExperimentalInteraction(), InteractorUtils.createUnknownBasicInteractor(), new DefaultCvTerm("unspecified method"));
      }
 }

@@ -23,7 +23,7 @@ public class MIFileDataSourceUtils {
      * @param errorType
      * @return
      */
-    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorType(Collection<FileSourceError> errors, String errorType){
+    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorType(Collection<? extends FileSourceError> errors, String errorType){
 
         if (errors == null || errors.isEmpty() || errorType == null){
             return Collections.EMPTY_LIST;
@@ -45,7 +45,7 @@ public class MIFileDataSourceUtils {
      * @param errorTypes
      * @return
      */
-    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorType(Collection<FileSourceError> errors, String[] errorTypes){
+    public static Collection<FileSourceError> collectAllDataSourceErrorsHavingErrorTypes(Collection<? extends FileSourceError> errors, String[] errorTypes){
 
         if (errors == null || errors.isEmpty() || errorTypes == null || errorTypes.length == 0){
             return Collections.EMPTY_LIST;
