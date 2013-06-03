@@ -4,7 +4,9 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -31,6 +33,10 @@ public class AliasUtils {
         }
 
         CvTerm type = alias.getType();
+        if (type == null){
+            return false;
+        }
+
         // we can compare identifiers
         if (typeId != null && type.getMIIdentifier() != null){
             // we have the same type id
@@ -38,10 +44,33 @@ public class AliasUtils {
         }
         // we need to compare type names
         else if (typeName != null) {
-            return typeName.toLowerCase().equals(type.getShortName().toLowerCase());
+            return typeName.toLowerCase().trim().equals(type.getShortName().toLowerCase().trim());
         }
 
         return false;
+    }
+
+    /**
+     * Extract all the aliases having a specific type.
+     * @param aliases
+     * @param typeId
+     * @param typeName
+     * @return the selection of aliases having the specified type (typeId or typeName if no ids)
+     */
+    public static Collection<Alias> collectAllAliasesHavingType(Collection<? extends Alias> aliases, String typeId, String typeName){
+
+        if (aliases == null || aliases.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Alias> selectedAliases = new ArrayList<Alias>(aliases.size());
+
+        for (Alias alias : aliases){
+            if (doesAliasHaveType(alias, typeId, typeName)){
+                selectedAliases.add(alias);
+            }
+        }
+
+        return selectedAliases;
     }
 
     /**
@@ -52,27 +81,15 @@ public class AliasUtils {
      * @param typeName : the type name to look for
      * @return the first alias having this type name/id, null if no Alias with this type name/id
      */
-    public static Alias collectFirstAliasWithType(Collection<Alias> aliases, String typeId, String typeName){
+    public static Alias collectFirstAliasWithType(Collection<? extends Alias> aliases, String typeId, String typeName){
 
-        if (aliases == null || (typeName == null && typeId == null)){
+        if (aliases == null || aliases.isEmpty()){
             return null;
         }
 
         for (Alias alias : aliases){
-            CvTerm type = alias.getType();
-            // we can compare type ids
-            if (typeId != null && type.getMIIdentifier() != null){
-                // we have the same type id
-                if (type.getMIIdentifier().equals(typeId)){
-                    return alias;
-                }
-            }
-            // we need to compare alias type Name
-            else if (typeName != null && typeName.toLowerCase().equals(type.getShortName().toLowerCase())) {
-                // we have the same type name
-                if (type.getShortName().toLowerCase().trim().equals(typeName)){
-                    return alias;
-                }
+            if (doesAliasHaveType(alias, typeId, typeName)){
+                return alias;
             }
         }
 
