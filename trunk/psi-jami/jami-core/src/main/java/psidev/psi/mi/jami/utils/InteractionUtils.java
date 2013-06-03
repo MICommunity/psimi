@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
  * @since <pre>11/02/13</pre>
  */
 
-public class ExperimentalInteractionUtils {
+public class InteractionUtils {
     
     public static InteractionEvidence createEmptyBasicExperimentalInteraction(){
 
