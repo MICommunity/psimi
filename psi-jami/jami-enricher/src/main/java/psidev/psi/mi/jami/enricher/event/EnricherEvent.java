@@ -22,6 +22,7 @@ public class EnricherEvent {
     private List<MismatchReport> mismatches = new ArrayList<MismatchReport>();
     private List<AdditionReport> additions = new ArrayList<AdditionReport>();
     private List<OverwriteReport> overwrites = new ArrayList<OverwriteReport>();
+    private RemapReport remap = null;
 
 
     public EnricherEvent(String objectType){
@@ -66,6 +67,7 @@ public class EnricherEvent {
     public List<OverwriteReport> getOverwrites() {return overwrites;}
     public List<MismatchReport> getMismatches() {return mismatches;}
     public List<AdditionReport> getAdditions() {return additions;}
+    public RemapReport getRemap(){return remap;}
 
     public void clear(){
         queryID = null;
@@ -77,5 +79,10 @@ public class EnricherEvent {
         mismatches.clear();
         additions.clear();
         overwrites.clear();
+        remap = null;
+    }
+
+    public void addRemapReport(RemapReport r) {
+        this.remap = r;
     }
 }

@@ -51,5 +51,7 @@ public interface EnricherEventProcessor {
      * @param r A description of what mismatches
      */
     public void addMismatchReport(MismatchReport r);
+
+    public void addRemapReport(RemapReport r);
 }
 

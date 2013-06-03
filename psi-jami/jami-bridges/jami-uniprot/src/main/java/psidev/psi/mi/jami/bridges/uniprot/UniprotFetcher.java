@@ -68,10 +68,10 @@ public class UniprotFetcher
         }
 
         if(proteins == null || proteins.size() == 0){
-            throw new EntryNotFoundException("Identifier "+identifier+" returned no UniprotKB protein entry.");
+            throw new EntryNotFoundException("Identifier ["+identifier+"] returned no UniprotKB protein entry.");
         }
 
-        log.debug("Found "+proteins.size()+" entries");
+        //log.debug("Found "+proteins.size()+" entries");
 
         return proteins;
     }

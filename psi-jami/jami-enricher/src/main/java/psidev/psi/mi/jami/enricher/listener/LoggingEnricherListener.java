@@ -36,6 +36,8 @@ public class LoggingEnricherListener implements EnricherListener {
                 "(a query on ["+e.getQueryIDType()+"] "+
                 "to the ["+e.getFetcherType()+"] fetcher");
 
+        if(e.getRemap() != null) log.info("Remap has the message: "+e.getRemap().getMsg());
+
         for(OverwriteReport r :e.getOverwrites()) {
             log.info("Overwrite on ["+r.getField()+"] " +
                     "had the old value ["+r.getOldValue()+"] " +

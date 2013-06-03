@@ -31,10 +31,9 @@ public class MaximumProteinUpdater
             throws EnrichmentException {
 
         Collection<Protein> proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
-        Protein proteinEnriched = chooseProteinEnriched(proteinsEnriched);
+        Protein proteinEnriched = chooseProteinEnriched(proteinToEnrich, proteinsEnriched);
 
         super.setOrganismEnricher(new MaximumOrganismUpdater());
-
 
         runProteinAdditionEnrichment(proteinToEnrich, proteinEnriched);
         runProteinOverwriteUpdate(proteinToEnrich, proteinEnriched);

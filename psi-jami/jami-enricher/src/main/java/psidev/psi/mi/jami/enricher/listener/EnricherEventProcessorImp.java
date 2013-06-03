@@ -2,10 +2,7 @@ package psidev.psi.mi.jami.enricher.listener;
 
 
 
-import psidev.psi.mi.jami.enricher.event.AdditionReport;
-import psidev.psi.mi.jami.enricher.event.EnricherEvent;
-import psidev.psi.mi.jami.enricher.event.MismatchReport;
-import psidev.psi.mi.jami.enricher.event.OverwriteReport;
+import psidev.psi.mi.jami.enricher.event.*;
 
 import java.util.ArrayList;
 
@@ -52,6 +49,7 @@ public abstract class EnricherEventProcessorImp implements EnricherEventProcesso
         }
     }
 
+
     public void addSubEnricherEvent(EnricherEvent e){
         enricherEvent.addSubEnricherEvent(e);
     }
@@ -78,5 +76,9 @@ public abstract class EnricherEventProcessorImp implements EnricherEventProcesso
      */
     public void addMismatchReport(MismatchReport r) {
         enricherEvent.addMismatchReport(r);
+    }
+
+    public void addRemapReport(RemapReport r) {
+        enricherEvent.addRemapReport(r);
     }
 }
