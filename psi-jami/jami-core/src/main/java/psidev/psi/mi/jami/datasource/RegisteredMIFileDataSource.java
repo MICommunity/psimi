@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * A RegisteredMIFileDataSource contains all the necessary information about a datasource
- * that can be used for the MolecularInteractionDataSourceFactory.
+ * that can be used for the MIDataSourceFactory.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

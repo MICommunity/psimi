@@ -61,5 +61,6 @@
         <module>bridges-core</module>
         <module>jami-uniprot</module>
         <module>jami-ols</module>
+        <module>uniprot-remapping</module>
     </modules>
 </project>
