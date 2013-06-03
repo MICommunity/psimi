@@ -79,6 +79,6 @@ public class ParameterValue extends Number{
     }
 
     public String toString(){
-        return factor.toString()+"x"+base+"^"+exponent;
+        return (base != 0 && factor.doubleValue() != 0 ? factor.toString()+(exponent != 0 ? "x"+base+"^("+exponent+")" : "") : "0");
     }
 }

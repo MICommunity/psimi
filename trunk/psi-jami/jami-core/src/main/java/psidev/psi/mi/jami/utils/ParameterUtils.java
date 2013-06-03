@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 
 public class ParameterUtils {
-    private static Pattern PARAMETER_PATTERN = Pattern.compile("([-+]?[0-9]+\\.?[0-9]*)+x?([-+]?[0-9]*\\.?[0-9]*)?\\^?([-+]?[0-9]*\\.?[0-9]*)?~?([-+]?[0-9]*\\.?[0-9]*)?");
+    private static Pattern PARAMETER_PATTERN = Pattern.compile("([-+]?[0-9]+\\.?[0-9]*)+x?([-+]?[0-9]*\\.?[0-9]*)?\\^?(\\(?[-+]?[0-9]*\\.?[0-9]*\\)?)?~?([-+]?[0-9]*\\.?[0-9]*)?");
 
     public static String getParameterValueAsString(Parameter param){
         if (param == null){
@@ -31,139 +31,17 @@ public class ParameterUtils {
 
     public static Parameter createParameterFromString(String type, String value) throws IllegalParameterException {
 
-        if (value == null){
-            throw new IllegalParameterException("The parameter value cannot be null");
-        }
-        String newValue = value.replaceAll(" ", "");
-
-        Matcher matcher = PARAMETER_PATTERN.matcher(newValue);
-        try {
-            BigDecimal uncertainty = null;
-            short exponent = 0;
-            short base = 10;
-            BigDecimal factor = null;
-            if (matcher.matches()) {
-                switch (matcher.groupCount()) {
-                    case 4:
-                        if (!matcher.group(4).isEmpty()) {
-                            uncertainty = new BigDecimal(matcher.group(4));
-                        }
-                    case 3:
-                        if (!matcher.group(3).isEmpty()) {
-                            exponent = Short.parseShort(matcher.group(3));
-                        }
-                    case 2:
-                        if (!matcher.group(2).isEmpty()) {
-                            base = Short.parseShort(matcher.group(2));
-                        }
-                    case 1:
-                        if (!matcher.group(1).isEmpty()) {
-                            factor = new BigDecimal(matcher.group(1));
-                        }
-                    default:
-                        break;
-                }
-            }
-
-            ParameterValue parameterValue = new ParameterValue(factor, base, exponent);
-
-            return new DefaultParameter(new DefaultCvTerm(type), parameterValue, uncertainty);
-        } catch (Exception e) {
-            throw new IllegalParameterException("The value of the parameter is bad formatted: " + value + " Exception: " + e);
-        }
+        return createParameterFromString(new DefaultCvTerm(type), value, null);
     }
 
     public static Parameter createParameterFromString(CvTerm type, String value) throws IllegalParameterException {
 
-        if (value == null){
-            throw new IllegalParameterException("The parameter value cannot be null");
-        }
-        String newValue = value.replaceAll(" ", "");
-
-        Matcher matcher = PARAMETER_PATTERN.matcher(newValue);
-        try {
-            BigDecimal uncertainty = null;
-            short exponent = 0;
-            short base = 10;
-            BigDecimal factor = null;
-            if (matcher.matches()) {
-                switch (matcher.groupCount()) {
-                    case 4:
-                        if (!matcher.group(4).isEmpty()) {
-                            uncertainty = new BigDecimal(matcher.group(4));
-                        }
-                    case 3:
-                        if (!matcher.group(3).isEmpty()) {
-                            exponent = Short.parseShort(matcher.group(3));
-                        }
-                    case 2:
-                        if (!matcher.group(2).isEmpty()) {
-                            base = Short.parseShort(matcher.group(2));
-                        }
-                    case 1:
-                        if (!matcher.group(1).isEmpty()) {
-                            factor = new BigDecimal(matcher.group(1));
-                        }
-                    default:
-                        break;
-                }
-            }
-
-            ParameterValue parameterValue = new ParameterValue(factor, base, exponent);
-
-            return new DefaultParameter(type, parameterValue, uncertainty);
-        } catch (Exception e) {
-            throw new IllegalParameterException("The value of the parameter is bad formatted: " + value + " Exception: " + e);
-        }
+        return createParameterFromString(type, value, null);
     }
 
     public static Parameter createParameterFromString(String type, String value, String unit) throws IllegalParameterException {
 
-        if (value == null){
-            throw new IllegalParameterException("The parameter value cannot be null");
-        }
-        String newValue = value.replaceAll(" ", "");
-
-        Matcher matcher = PARAMETER_PATTERN.matcher(newValue);
-        try {
-            BigDecimal uncertainty = null;
-            short exponent = 0;
-            short base = 10;
-            BigDecimal factor = null;
-            if (matcher.matches()) {
-                switch (matcher.groupCount()) {
-                    case 4:
-                        if (!matcher.group(4).isEmpty()) {
-                            uncertainty = new BigDecimal(matcher.group(4));
-                        }
-                    case 3:
-                        if (!matcher.group(3).isEmpty()) {
-                            exponent = Short.parseShort(matcher.group(3));
-                        }
-                    case 2:
-                        if (!matcher.group(2).isEmpty()) {
-                            base = Short.parseShort(matcher.group(2));
-                        }
-                    case 1:
-                        if (!matcher.group(1).isEmpty()) {
-                            factor = new BigDecimal(matcher.group(1));
-                        }
-                    default:
-                        break;
-                }
-            }
-
-            ParameterValue parameterValue = new ParameterValue(factor, base, exponent);
-
-            if (unit != null){
-                return new DefaultParameter(new DefaultCvTerm(type), parameterValue, new DefaultCvTerm(unit), uncertainty);
-            }
-            else {
-                return new DefaultParameter(new DefaultCvTerm(type), parameterValue, uncertainty);
-            }
-        } catch (Exception e) {
-            throw new IllegalParameterException("The value of the parameter is bad formatted: " + value + " Exception: " + e);
-        }
+        return createParameterFromString(new DefaultCvTerm(type), value, new DefaultCvTerm(unit));
     }
 
     public static Parameter createParameterFromString(CvTerm type, String value, CvTerm unit) throws IllegalParameterException {
@@ -187,7 +65,8 @@ public class ParameterUtils {
                         }
                     case 3:
                         if (!matcher.group(3).isEmpty()) {
-                            exponent = Short.parseShort(matcher.group(3));
+                            String match = matcher.group(3).replace("(","").replace(")","");
+                            exponent = Short.parseShort(match);
                         }
                     case 2:
                         if (!matcher.group(2).isEmpty()) {
@@ -205,9 +84,8 @@ public class ParameterUtils {
             ParameterValue parameterValue = new ParameterValue(factor, base, exponent);
 
             return new DefaultParameter(type, parameterValue, unit, uncertainty);
-
         } catch (Exception e) {
-            throw new IllegalParameterException("The value of the parameter is bad formatted: " + value + " Exception: " + e);
+            throw new IllegalParameterException("The value of the parameter is bad formatted: " + value, e);
         }
     }
 }
