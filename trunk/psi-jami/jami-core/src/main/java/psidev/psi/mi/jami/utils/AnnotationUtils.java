@@ -40,7 +40,7 @@ public class AnnotationUtils {
         }
         // we need to compare topic names
         else if (topicName != null) {
-            return topicName.toLowerCase().equals(topic.getShortName().toLowerCase());
+            return topicName.toLowerCase().trim().equals(topic.getShortName().toLowerCase().trim());
         }
 
         return false;
