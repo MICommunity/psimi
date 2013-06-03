@@ -19,6 +19,13 @@ import java.util.Iterator;
 
 public class AnnotationUtils {
 
+    /**
+     * To know if the annotation does have a specific topic
+     * @param annotation
+     * @param topicId
+     * @param topicName
+     * @return true if the annotation has the topic with given name/identifier
+     */
     public static boolean doesAnnotationHaveTopic(Annotation annotation, String topicId, String topicName){
 
         if (annotation == null || (topicName == null && topicId == null)){
@@ -40,22 +47,26 @@ public class AnnotationUtils {
     }
 
     /**
-     * Remove all annotations having this topic name/database id from the collection of annotations
-     * @param annotations : the collection of annotations
-     * @param topicId : the topic id to look for
-     * @param topicName : the topic name to look for
+     * Collect all annotations having a specific topic
+     * @param annots
+     * @param topicId
+     * @param topicName
+     * @return
      */
-    public static void removeAllAnnotationsWithTopic(Collection<? extends Annotation> annotations, String topicId, String topicName){
+    public static Collection<Annotation> collectAllAnnotationsHavingTopic(Collection<? extends Annotation> annots, String topicId, String topicName){
 
-        if (annotations != null){
-            Iterator<? extends Annotation> annotIterator = annotations.iterator();
+        if (annots == null || annots.isEmpty()){
+            return Collections.EMPTY_LIST;
+        }
+        Collection<Annotation> annotations = new ArrayList<Annotation>(annots.size());
 
-            while (annotIterator.hasNext()){
-                if (doesAnnotationHaveTopic(annotIterator.next(), topicId, topicName)){
-                    annotIterator.remove();
-                }
+        for (Annotation annot : annots){
+            if (doesAnnotationHaveTopic(annot, topicId, topicName)){
+                annotations.add(annot);
             }
         }
+
+        return annotations;
     }
 
     /**
@@ -68,7 +79,7 @@ public class AnnotationUtils {
      */
     public static Annotation collectFirstAnnotationWithTopic(Collection<? extends Annotation> annotations, String topicId, String topicName){
 
-        if (annotations == null || (topicName == null && topicId == null)){
+        if (annotations == null || annotations.isEmpty()){
             return null;
         }
 
@@ -94,26 +105,22 @@ public class AnnotationUtils {
     }
 
     /**
-     * Collect all annotations having a specific topic
-     * @param annots
-     * @param topicId
-     * @param topicName
-     * @return
+     * Remove all annotations having this topic name/database id from the collection of annotations
+     * @param annotations : the collection of annotations
+     * @param topicId : the topic id to look for
+     * @param topicName : the topic name to look for
      */
-    public static Collection<Annotation> collectAllAnnotationsHavingTopic(Collection<? extends Annotation> annots, String topicId, String topicName){
+    public static void removeAllAnnotationsWithTopic(Collection<? extends Annotation> annotations, String topicId, String topicName){
 
-        if (annots == null || annots.isEmpty()){
-            return Collections.EMPTY_LIST;
-        }
-        Collection<Annotation> annotations = new ArrayList<Annotation>(annots.size());
+        if (annotations != null){
+            Iterator<? extends Annotation> annotIterator = annotations.iterator();
 
-        for (Annotation annot : annots){
-            if (doesAnnotationHaveTopic(annot, topicId, topicName)){
-                annotations.add(annot);
+            while (annotIterator.hasNext()){
+                if (doesAnnotationHaveTopic(annotIterator.next(), topicId, topicName)){
+                    annotIterator.remove();
+                }
             }
         }
-
-        return annotations;
     }
 
     public static Annotation createAnnotation(String topicName, String topicMi, String name){
