@@ -71,7 +71,6 @@ public abstract class AbstractOrganismEnricher
     protected void runOrganismAdditionEnrichment(Organism organismToEnrich, Organism organismEnriched)
             throws EnrichmentException {
 
-        //if(organismToEnrich == null && organismEnriched == null) return; //Todo
         //if(organismToEnrich == null && organismEnriched != null) organismToEnrich = new DefaultOrganism(-3);
 
         if(organismEnriched.getTaxId() < -4){//TODO check this  is a valid assertion
