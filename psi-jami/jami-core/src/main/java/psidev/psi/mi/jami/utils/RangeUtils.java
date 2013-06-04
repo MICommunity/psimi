@@ -17,7 +17,16 @@ import java.util.List;
  */
 
 public class RangeUtils {
-    
+
+    /**
+     * Converts a range in a String.
+     * Undetermined position is represented with ?
+     * N-terminal range is represented with n
+     * C-terminal range is represented with c
+     * fuzzy ranges are represented with x1..x2
+     * @param range
+     * @return
+     */
     public static String convertRangeToString(Range range){
         if (range == null){
             return null;
@@ -27,6 +36,99 @@ public class RangeUtils {
         String pos2 = PositionUtils.convertPositionToString(range.getEnd());
 
         return pos1+Range.POSITION_SEPARATOR+pos2;
+    }
+
+    /**
+     * Create a Range from a String
+     * @param rangeString
+     * @return
+     * @throws IllegalRangeException
+     */
+    public static Range createRangeFromString(String rangeString) throws IllegalRangeException {
+
+        return createRangeFromString(rangeString, false);
+    }
+
+    /**
+     * Create a range with a given linked property from a String
+     * @param rangeString
+     * @param linked
+     * @return
+     * @throws IllegalRangeException
+     */
+    public static Range createRangeFromString(String rangeString, boolean linked) throws IllegalRangeException {
+
+        if (rangeString == null){
+            Range r = createUndeterminedRange();
+            r.setLink(linked);
+            return r;
+        }
+        // we have two positions
+        else if (rangeString.contains(Range.POSITION_SEPARATOR)){
+            String[] rangePositions = rangeString.split(Range.POSITION_SEPARATOR);
+            if (rangePositions.length != 2){
+                throw new IllegalRangeException("The range positions " + rangeString + " are not valid and cannot be converted into a range.");
+            }
+            else {
+                Position pos1 = PositionUtils.createPositionFromString(rangePositions[0]);
+                Position pos2 = PositionUtils.createPositionFromString(rangePositions[1]);
+                return new DefaultRange(pos1, pos2, linked);
+            }
+        }
+        // we have one position
+        else {
+            // shortcut for n-terminal range
+            if (Range.N_TERMINAL_POSITION_SYMBOL.equals(rangeString)){
+                Range r = createNTerminalRange();
+                r.setLink(linked);
+                return r;
+            }
+            // shortcut for c-terminal range
+            else if (Range.C_TERMINAL_POSITION_SYMBOL.equals(rangeString)){
+                Range r = createCTerminalRange();
+                r.setLink(linked);
+                return r;
+            }
+            // shortcut for undetermined range
+            else if (Range.UNDETERMINED_POSITION_SYMBOL.equals(rangeString)){
+                Range r = createUndeterminedRange();
+                r.setLink(linked);
+                return r;
+            }
+            // shortcut for greater than range
+            else if (rangeString.contains(Range.GREATER_THAN_POSITION_SYMBOL)){
+                String rangePosition = rangeString.replace(Range.GREATER_THAN_POSITION_SYMBOL, "");
+                Range r =  createGreaterThanRange(PositionUtils.convertStringToPositionValue(rangePosition));
+                r.setLink(linked);
+                return r;
+            }
+            // shortcut for less than range
+            else if (rangeString.contains(Range.LESS_THAN_POSITION_SYMBOL)){
+                String rangePosition = rangeString.replace(Range.LESS_THAN_POSITION_SYMBOL, "");
+                Range r = createLessThanRange(PositionUtils.convertStringToPositionValue(rangePosition));
+                r.setLink(linked);
+                return r;
+            }
+            // shortcut for fuzzy range
+            else if (rangeString.contains(Range.FUZZY_POSITION_SYMBOL)){
+                String[] positionString = rangeString.split(Range.FUZZY_POSITION_SYMBOL);
+                if (positionString.length != 2){
+                    throw new IllegalRangeException("The fuzzy range " + rangeString + " is not valid and cannot be converted into a range.");
+                }
+                else {
+                    Range r = createFuzzyRange(PositionUtils.convertStringToPositionValue(positionString[0]), PositionUtils.convertStringToPositionValue(positionString[1]));
+                    r.setLink(linked);
+                    return r;
+                }
+            }
+            // shortcut for certain
+            else {
+                int pos = PositionUtils.convertStringToPositionValue(rangeString);
+                Range r = createCertainRange(pos);
+                r.setLink(linked);
+                return r;
+            }
+        }
     }
 
     /**
@@ -46,11 +148,11 @@ public class RangeUtils {
 
             messages.addAll(PositionUtils.validateRangePosition(end, sequence));
 
-            if (areRangeStatusInconsistent(start, end)){
+            if (areRangeStatusInconsistent(range)){
                 messages.add("The start status "+start.getStatus().getShortName()  +" and end status "+end.getStatus().getShortName()+" are inconsistent");
             }
 
-            if (!(start.isPositionUndetermined()) && !(end.isPositionUndetermined()) && areRangePositionsOverlapping(range, start.getStart(), start.getEnd(), end.getStart(), end.getEnd())){
+            if (areRangePositionsOverlapping(range)){
                 messages.add("The range positions overlap : ("+start.getStart()+"-"+start.getEnd()+") - ("+end.getStart()+"-"+end.getEnd()+")");
             }
 
@@ -65,15 +167,19 @@ public class RangeUtils {
      * @param range
      * @return true if the range intervals are overlapping
      */
-    private static boolean areRangePositionsOverlapping(Range range, long fromStart, long fromEnd, long toStart, long toEnd){
+    public static boolean areRangePositionsOverlapping(Range range){
         // get the range status
         Position start = range.getStart();
         Position end = range.getEnd();
+        long fromStart = start.getStart();
+        long fromEnd = start.getEnd();
+        long toStart = end.getStart();
+        long toEnd = end.getEnd();
 
         // both the end and the start have a specific status
         // in the specific case where the start is superior to a position and the end is inferior to another position, we need to check that the
         // range is not invalid because 'greater than' and 'less than' are both exclusive
-        if (PositionUtils.isGreaterThan(start) && PositionUtils.isLessThan(end) && toEnd - fromStart < 2){
+        if (PositionUtils.isGreaterThan(start) && PositionUtils.isLessThan(end) && toStart - fromEnd < 2){
             return true;
         }
         // we have a greater than start position and the end position is equal to the start position
@@ -85,7 +191,7 @@ public class RangeUtils {
             return true;
         }
         // As the range positions are 0 when the status is undetermined, we can only check if the ranges are not overlapping when both start and end are not undetermined
-        else if (!(PositionUtils.isUndetermined(start) || PositionUtils.isCTerminalRange(start) || PositionUtils.isNTerminalRange(start)) && !(PositionUtils.isUndetermined(end) || PositionUtils.isCTerminalRange(end) || PositionUtils.isNTerminalRange(end))){
+        else if (!start.isPositionUndetermined() && !end.isPositionUndetermined()){
             return PositionUtils.arePositionsOverlapping(fromStart, fromEnd, toStart, toEnd);
         }
 
@@ -94,11 +200,12 @@ public class RangeUtils {
 
     /**
      *
-     * @param start : the start position
-     * @param end : the end position
+     * @param range : the range to check
      * @return  true if the range status are inconsistent (n-terminal is the end, c-terminal is the beginning)
      */
-    private static boolean areRangeStatusInconsistent(Position start, Position end){
+    public static boolean areRangeStatusInconsistent(Range range){
+        Position start = range.getStart();
+        Position end = range.getEnd();
 
         // the start position is C-terminal but the end position is different from C-terminal
         if (PositionUtils.isCTerminal(start) && !PositionUtils.isCTerminal(end)){
@@ -224,123 +331,5 @@ public class RangeUtils {
 
     public static Range createLinkedRange(String statusName, String statusMi, int start, int end){
         return new DefaultRange(PositionUtils.createPosition(statusName, statusMi, start), PositionUtils.createPosition(statusName, statusMi, end), true);
-    }
-
-    public static Range createRangeFromString(String rangeString) throws IllegalRangeException {
-
-        if (rangeString == null){
-            return createUndeterminedRange();
-        }
-        // we have two positions
-        else if (rangeString.contains(Range.POSITION_SEPARATOR)){
-            String[] rangePositions = rangeString.split(Range.POSITION_SEPARATOR);
-            if (rangePositions.length != 2){
-                throw new IllegalRangeException("The range positions " + rangeString + " are not valid and cannot be converted into a range.");
-            }
-            else {
-                Position pos1 = PositionUtils.createPositionFromString(rangePositions[0]);
-                Position pos2 = PositionUtils.createPositionFromString(rangePositions[1]);
-                return new DefaultRange(pos1, pos2);
-            }
-        }
-        // we have one position
-        else {
-            // shortcut for n-terminal range
-            if (Range.N_TERMINAL_POSITION_SYMBOL.equals(rangeString)){
-                return createNTerminalRange();
-            }
-            // shortcut for c-terminal range
-            else if (Range.C_TERMINAL_POSITION_SYMBOL.equals(rangeString)){
-                return createCTerminalRange();
-            }
-            // shortcut for undetermined range
-            else if (Range.UNDETERMINED_POSITION_SYMBOL.equals(rangeString)){
-                return createUndeterminedRange();
-            }
-            // shortcut for greater than range
-            else if (rangeString.contains(Range.GREATER_THAN_POSITION_SYMBOL)){
-                String rangePosition = rangeString.replace(Range.GREATER_THAN_POSITION_SYMBOL, "");
-                return createGreaterThanRange(PositionUtils.convertStringToPositionValue(rangePosition));
-            }
-            // shortcut for less than range
-            else if (rangeString.contains(Range.LESS_THAN_POSITION_SYMBOL)){
-                String rangePosition = rangeString.replace(Range.LESS_THAN_POSITION_SYMBOL, "");
-                return createLessThanRange(PositionUtils.convertStringToPositionValue(rangePosition));
-            }
-            // shortcut for fuzzy range
-            else if (rangeString.contains(Range.FUZZY_POSITION_SYMBOL)){
-                String[] positionString = rangeString.split(Range.FUZZY_POSITION_SYMBOL);
-                if (positionString.length != 2){
-                    throw new IllegalRangeException("The fuzzy range " + rangeString + " is not valid and cannot be converted into a range.");
-                }
-                else {
-                    return createFuzzyRange(PositionUtils.convertStringToPositionValue(positionString[0]), PositionUtils.convertStringToPositionValue(positionString[1]));
-                }
-            }
-            // shortcut for certain
-            else {
-                int pos = PositionUtils.convertStringToPositionValue(rangeString);
-                return createCertainRange(pos);
-            }
-        }
-    }
-
-    public static Range createLinkedRangeFromString(String rangeString) throws IllegalRangeException {
-
-        if (rangeString == null){
-            return createUndeterminedRange();
-        }
-        // we have two positions
-        else if (rangeString.contains(Range.POSITION_SEPARATOR)){
-            String[] rangePositions = rangeString.split(Range.POSITION_SEPARATOR);
-            if (rangePositions.length != 2){
-                throw new IllegalRangeException("The range positions " + rangeString + " are not valid and cannot be converted into a range.");
-            }
-            else {
-                Position pos1 = PositionUtils.createPositionFromString(rangePositions[0]);
-                Position pos2 = PositionUtils.createPositionFromString(rangePositions[1]);
-                return new DefaultRange(pos1, pos2, true);
-            }
-        }
-        // we have one position
-        else {
-            // shortcut for n-terminal range
-            if (Range.N_TERMINAL_POSITION_SYMBOL.equals(rangeString)){
-                return createNTerminalRange();
-            }
-            // shortcut for c-terminal range
-            else if (Range.C_TERMINAL_POSITION_SYMBOL.equals(rangeString)){
-                return createCTerminalRange();
-            }
-            // shortcut for undetermined range
-            else if (Range.UNDETERMINED_POSITION_SYMBOL.equals(rangeString)){
-                return createUndeterminedRange();
-            }
-            // shortcut for greater than range
-            else if (rangeString.contains(Range.GREATER_THAN_POSITION_SYMBOL)){
-                String rangePosition = rangeString.replace(Range.GREATER_THAN_POSITION_SYMBOL, "");
-                return createGreaterThanRange(PositionUtils.convertStringToPositionValue(rangePosition));
-            }
-            // shortcut for less than range
-            else if (rangeString.contains(Range.LESS_THAN_POSITION_SYMBOL)){
-                String rangePosition = rangeString.replace(Range.LESS_THAN_POSITION_SYMBOL, "");
-                return createLessThanRange(PositionUtils.convertStringToPositionValue(rangePosition));
-            }
-            // shortcut for fuzzy range
-            else if (rangeString.contains(Range.FUZZY_POSITION_SYMBOL)){
-                String[] positionString = rangeString.split(Range.FUZZY_POSITION_SYMBOL);
-                if (positionString.length != 2){
-                    throw new IllegalRangeException("The fuzzy range " + rangeString + " is not valid and cannot be converted into a range.");
-                }
-                else {
-                    return createLinkedFuzzyRange(PositionUtils.convertStringToPositionValue(positionString[0]), PositionUtils.convertStringToPositionValue(positionString[1]));
-                }
-            }
-            // shortcut for certain
-            else {
-                int pos = PositionUtils.convertStringToPositionValue(rangeString);
-                return createLinkedCertainRange(pos);
-            }
-        }
     }
 }
