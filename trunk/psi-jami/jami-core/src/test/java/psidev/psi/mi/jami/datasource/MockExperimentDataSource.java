@@ -15,7 +15,12 @@ import java.util.Map;
 public class MockExperimentDataSource implements MIFileDataSource {
 
     public void initialiseContext(Map<String, Object> options) {
-        // do nothing
+        if (!options.containsKey(MIDataSourceFactory.SOURCE_OPTION_KEY)){
+            throw new IllegalArgumentException("no source option");
+        }
+        else if (options.get(MIDataSourceFactory.SOURCE_OPTION_KEY) == null){
+            throw new IllegalArgumentException("no source option");
+        }
     }
 
     public Collection<FileSourceError> getDataSourceErrors() {
