@@ -8,7 +8,7 @@
         <artifactId>psi-jami</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <groupId>psidev.psi.mi</groupId>
+
     <artifactId>jami-html</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>PSI :: PSI-JAMI html parser and writer</name>
