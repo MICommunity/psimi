@@ -36,15 +36,15 @@ public class DefaultFeatureEvidenceTest {
         feature.setParticipantEvidence(p);
 
         Assert.assertTrue(DefaultParticipantEvidenceComparator.areEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipantEvidence()));
-        Assert.assertEquals(0, p.getFeatureEvidences().size());
+        Assert.assertEquals(0, p.getFeatures().size());
 
         feature.setParticipantEvidenceAndAddFeature(p);
         Assert.assertNotNull(feature.getParticipantEvidence());
-        Assert.assertEquals(1, p.getFeatureEvidences().size());
-        Assert.assertEquals(feature, p.getFeatureEvidences().iterator().next());
+        Assert.assertEquals(1, p.getFeatures().size());
+        Assert.assertEquals(feature, p.getFeatures().iterator().next());
 
         feature.setParticipantEvidenceAndAddFeature(null);
         Assert.assertNull(feature.getParticipantEvidence());
-        Assert.assertEquals(0, p.getFeatureEvidences().size());
+        Assert.assertEquals(0, p.getFeatures().size());
     }
 }

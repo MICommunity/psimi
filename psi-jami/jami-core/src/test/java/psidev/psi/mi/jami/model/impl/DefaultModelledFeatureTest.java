@@ -36,15 +36,15 @@ public class DefaultModelledFeatureTest {
         feature.setModelledParticipant(p);
 
         Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), feature.getModelledParticipant()));
-        Assert.assertEquals(0, p.getModelledFeatures().size());
+        Assert.assertEquals(0, p.getFeatures().size());
 
         feature.setModelledParticipantAndAddFeature(p);
         Assert.assertNotNull(feature.getModelledParticipant());
-        Assert.assertEquals(1, p.getModelledFeatures().size());
-        Assert.assertEquals(feature, p.getModelledFeatures().iterator().next());
+        Assert.assertEquals(1, p.getFeatures().size());
+        Assert.assertEquals(feature, p.getFeatures().iterator().next());
 
         feature.setModelledParticipantAndAddFeature(null);
         Assert.assertNull(feature.getModelledParticipant());
-        Assert.assertEquals(0, p.getModelledFeatures().size());
+        Assert.assertEquals(0, p.getFeatures().size());
     }
 }

@@ -114,4 +114,11 @@ public interface Interaction {
      * @param term : interaction type
      */
     public void setInteractionType(CvTerm term);
+
+    /**
+     * The collection of participants involved in this interaction.
+     * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
+     * @return the particiants
+     */
+    public Collection<? extends Participant> getParticipants();
 }

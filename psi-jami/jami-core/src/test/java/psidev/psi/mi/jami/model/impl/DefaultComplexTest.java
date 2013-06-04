@@ -27,7 +27,7 @@ public class DefaultComplexTest {
 
         Assert.assertEquals("test complex", interaction.getShortName());
         Assert.assertNull(interaction.getSource());
-        Assert.assertNotNull(interaction.getModelledParticipants());
+        Assert.assertNotNull(interaction.getParticipants());
         Assert.assertNotNull(interaction.getCooperativeEffects());
         Assert.assertNotNull(interaction.getInteractionEvidences());
         Assert.assertNotNull(interaction.getModelledConfidences());
@@ -61,22 +61,22 @@ public class DefaultComplexTest {
         // add participant and set modelledInteraction
         interaction.addModelledParticipant(participant);
         Assert.assertEquals(interaction, participant.getModelledInteraction());
-        Assert.assertEquals(1, interaction.getModelledParticipants().size());
+        Assert.assertEquals(1, interaction.getParticipants().size());
 
         // remove modelled participant and set interaction to null
         interaction.removeModelledParticipant(participant);
         Assert.assertNull(participant.getModelledInteraction());
-        Assert.assertEquals(0, interaction.getModelledParticipants().size());
+        Assert.assertEquals(0, interaction.getParticipants().size());
 
         // simply add modelled participant
-        interaction.getModelledParticipants().add(participant);
+        interaction.getParticipants().add(participant);
         Assert.assertNull(participant.getModelledInteraction());
-        Assert.assertEquals(1, interaction.getModelledParticipants().size());
+        Assert.assertEquals(1, interaction.getParticipants().size());
 
         // simply remove modelled participant
-        interaction.getModelledParticipants().remove(participant);
+        interaction.getParticipants().remove(participant);
         Assert.assertNull(participant.getModelledInteraction());
-        Assert.assertEquals(0, interaction.getModelledParticipants().size());
+        Assert.assertEquals(0, interaction.getParticipants().size());
     }
 
     @Test

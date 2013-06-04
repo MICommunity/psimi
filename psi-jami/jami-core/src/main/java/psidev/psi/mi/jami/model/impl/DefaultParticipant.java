@@ -38,6 +38,7 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
     private Collection<Alias> aliases;
     private Stoichiometry stoichiometry;
     private CausalRelationship causalRelationship;
+    private Collection<Feature> features;
 
     public DefaultParticipant(T interactor){
         if (interactor == null){
@@ -75,6 +76,19 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
 
     protected void initialiseAliases(){
         this.aliases = new ArrayList<Alias>();
+    }
+
+    protected void initialiseFeatures(){
+        this.features = new ArrayList<Feature>();
+    }
+
+    protected void initialiseFeaturesWith(Collection<Feature> features) {
+        if (features == null){
+            this.features = Collections.EMPTY_LIST;
+        }
+        else {
+            this.features = features;
+        }
     }
 
     protected void initialiseXrefsWith(Collection<Xref> xrefs) {
@@ -172,6 +186,13 @@ public class DefaultParticipant<T extends Interactor> implements Participant<T>,
 
     public void setStoichiometry(Stoichiometry stoichiometry) {
         this.stoichiometry = stoichiometry;
+    }
+
+    public Collection<? extends Feature> getFeatures() {
+        if (features == null){
+            initialiseFeatures();
+        }
+        return this.features;
     }
 
     @Override

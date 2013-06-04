@@ -23,7 +23,7 @@ public class DefaultModelledParticipantTest {
 
         ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
 
-        Assert.assertNotNull(participant.getModelledFeatures());
+        Assert.assertNotNull(participant.getFeatures());
         Assert.assertNull(participant.getModelledInteraction());
     }
 
@@ -35,16 +35,16 @@ public class DefaultModelledParticipantTest {
         participant.setModelledInteraction(i);
 
         Assert.assertTrue(DefaultModelledInteractionComparator.areEquals(new DefaultModelledInteraction("test interaction"), participant.getModelledInteraction()));
-        Assert.assertEquals(0, i.getModelledParticipants().size());
+        Assert.assertEquals(0, i.getParticipants().size());
 
         participant.setModelledInteractionAndAddModelledParticipant(i);
         Assert.assertNotNull(participant.getModelledInteraction());
-        Assert.assertEquals(1, i.getModelledParticipants().size());
-        Assert.assertEquals(participant, i.getModelledParticipants().iterator().next());
+        Assert.assertEquals(1, i.getParticipants().size());
+        Assert.assertEquals(participant, i.getParticipants().iterator().next());
 
         participant.setModelledInteractionAndAddModelledParticipant(null);
         Assert.assertNull(participant.getModelledInteraction());
-        Assert.assertEquals(0, i.getModelledParticipants().size());
+        Assert.assertEquals(0, i.getParticipants().size());
     }
 
     @Test
@@ -57,21 +57,21 @@ public class DefaultModelledParticipantTest {
         // add feature and set modelledParticipant
         participant.addModelledFeature(f);
         Assert.assertEquals(participant, f.getModelledParticipant());
-        Assert.assertEquals(1, participant.getModelledFeatures().size());
+        Assert.assertEquals(1, participant.getFeatures().size());
 
         // remove modelled feature and set participant to null
         participant.removeModelledFeature(f);
         Assert.assertNull(f.getModelledParticipant());
-        Assert.assertEquals(0, participant.getModelledFeatures().size());
+        Assert.assertEquals(0, participant.getFeatures().size());
 
         // simply add modelled feature
-        participant.getModelledFeatures().add(f);
+        participant.getFeatures().add(f);
         Assert.assertNull(f.getModelledParticipant());
-        Assert.assertEquals(1, participant.getModelledFeatures().size());
+        Assert.assertEquals(1, participant.getFeatures().size());
 
         // simply remove modelled feature
-        participant.getModelledFeatures().remove(f);
+        participant.getFeatures().remove(f);
         Assert.assertNull(f.getModelledParticipant());
-        Assert.assertEquals(0, participant.getModelledFeatures().size());
+        Assert.assertEquals(0, participant.getFeatures().size());
     }
 }

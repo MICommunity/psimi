@@ -159,8 +159,8 @@ public class ParticipantEvidenceComparator implements Comparator<ParticipantEvid
             }
 
             // then compares the features
-            Collection<? extends FeatureEvidence> features1 = experimentalParticipant1.getFeatureEvidences();
-            Collection<? extends FeatureEvidence> features2 = experimentalParticipant2.getFeatureEvidences();
+            Collection<? extends FeatureEvidence> features1 = experimentalParticipant1.getFeatures();
+            Collection<? extends FeatureEvidence> features2 = experimentalParticipant2.getFeatures();
 
             return featureCollectionComparator.compare(features1, features2);
         }

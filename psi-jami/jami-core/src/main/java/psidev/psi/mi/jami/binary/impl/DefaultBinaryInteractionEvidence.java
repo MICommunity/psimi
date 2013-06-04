@@ -1,122 +1,57 @@
-package psidev.psi.mi.jami.model.impl;
+package psidev.psi.mi.jami.binary.impl;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingPoperties;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Default implementation for InteractionEvidence
- *
- * Notes: The equals and hashcode methods have NOT been overridden because the InteractionEvidence object is a complex object.
- * To compare InteractionEvidence objects, you can use some comparators provided by default:
- * - DefaultInteractionEvidenceComparator
- * - UnambiguousInteractionEvidenceComparator
- * - DefaultCuratedInteractionEvidenceComparator
- * - UnambiguousCuratedInteractionEvidenceComparator
- * - DefaultExactInteractionEvidenceComparator
- * - UnambiguousExactInteractionEvidenceComparator
- * - DefaultCuratedExactInteractionEvidenceComparator
- * - UnambiguousCuratedExactInteractionEvidenceComparator
- * - AbstractInteractionBaseComparator
+ * Default implementation for BinaryInteractionEvidence
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>05/02/13</pre>
+ * @since <pre>04/06/13</pre>
  */
 
-public class DefaultInteractionEvidence extends DefaultInteraction implements InteractionEvidence {
+public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<ParticipantEvidence> implements InteractionEvidence{
 
     private Xref imexId;
     private Experiment experiment;
     private String availability;
     private Collection<Parameter> parameters;
     private boolean isInferred = false;
-    private Collection<ParticipantEvidence> participantEvidences;
     private Collection<Confidence> confidences;
     private boolean isNegative;
-
     private Collection<VariableParameterValueSet> variableParameterValueSets;
 
-    public DefaultInteractionEvidence(Experiment experiment) {
-        super();
-
-        this.experiment = experiment;
-    }
-
-    public DefaultInteractionEvidence(Experiment experiment, String shortName) {
-        super(shortName);
-        this.experiment = experiment;
-    }
-
-    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source) {
-        super(shortName, source);
-        this.experiment = experiment;
-    }
-
-    public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type) {
-        super(shortName, type);
-        this.experiment = experiment;
-    }
-
-    public DefaultInteractionEvidence(Experiment experiment, Xref imexId) {
-        super();
-        this.experiment = experiment;
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence(Experiment experiment, String shortName, Xref imexId) {
-        super(shortName);
-        this.experiment = experiment;
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence(Experiment experiment, String shortName, Source source, Xref imexId) {
-        super(shortName, source);
-        this.experiment = experiment;
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence(Experiment experiment, String shortName, CvTerm type, Xref imexId) {
-        super(shortName, type);
-        this.experiment = experiment;
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence(Xref imexId) {
-        super();
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, Xref imexId) {
-        super(shortName);
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, Source source, Xref imexId) {
-        super(shortName, source);
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence(String shortName, CvTerm type, Xref imexId) {
-        super(shortName, type);
-        getXrefs().add(imexId);
-    }
-
-    public DefaultInteractionEvidence() {
+    public DefaultBinaryInteractionEvidence() {
         super();
     }
 
-    public DefaultInteractionEvidence(String shortName) {
+    public DefaultBinaryInteractionEvidence(String shortName) {
         super(shortName);
     }
 
-    public DefaultInteractionEvidence(String shortName, CvTerm type) {
+    public DefaultBinaryInteractionEvidence(String shortName, CvTerm type) {
         super(shortName, type);
+    }
+
+    public DefaultBinaryInteractionEvidence(ParticipantEvidence participantA, ParticipantEvidence participantB) {
+        super(participantA, participantB);
+    }
+
+    public DefaultBinaryInteractionEvidence(String shortName, ParticipantEvidence participantA, ParticipantEvidence participantB) {
+        super(shortName, participantA, participantB);
+    }
+
+    public DefaultBinaryInteractionEvidence(String shortName, CvTerm type, ParticipantEvidence participantA, ParticipantEvidence participantB) {
+        super(shortName, type, participantA, participantB);
     }
 
     protected void initialiseExperimentalConfidences(){
@@ -145,10 +80,6 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         }
     }
 
-    protected void initialiseParticipantEvidences(){
-        this.participantEvidences = new ArrayList<ParticipantEvidence>();
-    }
-
     protected void initialiseExperimentalParameters(){
         this.parameters = new ArrayList<Parameter>();
     }
@@ -162,18 +93,9 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         }
     }
 
-    protected void initialiseParticipantEvidencesWith(Collection<ParticipantEvidence> participants){
-        if (participants == null){
-            this.participantEvidences = Collections.EMPTY_LIST;
-        }
-        else {
-            this.participantEvidences = participants;
-        }
-    }
-
     @Override
     protected void initialiseXrefs() {
-        initialiseXrefsWith(new ExperimentalInteractionXrefList());
+        initialiseXrefsWith(new ExperimentalBinaryInteractionXrefList());
     }
 
     public String getImexId() {
@@ -183,7 +105,7 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     public void assignImexId(String identifier) {
         // add new imex if not null
         if (identifier != null){
-            ExperimentalInteractionXrefList interactionXrefs = (ExperimentalInteractionXrefList) getXrefs();
+            ExperimentalBinaryInteractionXrefList interactionXrefs = (ExperimentalBinaryInteractionXrefList) getXrefs();
             CvTerm imexDatabase = CvTermUtils.createImexDatabase();
             CvTerm imexPrimaryQualifier = CvTermUtils.createImexPrimaryQualifier();
             // first remove old doi if not null
@@ -262,38 +184,88 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
         this.isInferred = inferred;
     }
 
+    /**
+     * The collection of participants for this binary interaction.
+     * It cannot be changed.
+     * @return
+     */
     public Collection<ParticipantEvidence> getParticipants() {
-        if (participantEvidences == null){
-            initialiseParticipantEvidences();
+        if (getParticipantA() == null && getParticipantB() == null){
+            return Collections.EMPTY_LIST;
         }
-        return this.participantEvidences;
+        else if (getParticipantB() == null){
+            return Arrays.asList(getParticipantA());
+        }
+        else if (getParticipantA() == null){
+            return Arrays.asList(getParticipantB());
+        }
+        else{
+            return Arrays.asList(getParticipantA(), getParticipantB());
+        }
     }
 
+    /**
+     * Adds a new ParticipantEvidence and set the interactionEvidence of this participant if added.
+     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
+     * @param part
+     * @return
+     * @throws IllegalArgumentException if this Binary interaction already contains two participants
+     */
     public boolean addParticipantEvidence(ParticipantEvidence part) {
         if (part == null){
             return false;
         }
-        if (getParticipants().add(part)){
+        if (getParticipantB() != null && getParticipantA() != null){
+            throw new IllegalArgumentException("A BinaryInteractionEvidence cannot have more than two participants.");
+        }
+        else if (getParticipantB() != null){
             part.setInteractionEvidence(this);
+            setParticipantA(part);
             return true;
         }
-        return false;
+        else{
+            part.setInteractionEvidence(this);
+            setParticipantA(part);
+            return true;
+        }
     }
 
+    /**
+     * Removes the participantEvidence from this binary interaction
+     * @param part
+     * @return
+     */
     public boolean removeParticipantEvidence(ParticipantEvidence part) {
         if (part == null){
             return false;
         }
-        if (getParticipants().remove(part)){
+
+        if (getParticipantA() != null && getParticipantA().equals(part)){
             part.setInteractionEvidence(null);
+            setParticipantA(null);
+            return true;
+        }
+        else if (getParticipantB() != null && getParticipantB().equals(part)){
+            part.setInteractionEvidence(null);
+            setParticipantB(null);
             return true;
         }
         return false;
     }
 
+    /**
+     * Adds the participants and set the interactionEvidence of this participant if added.
+     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
+     * @param participants
+     * @return
+     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
+     */
     public boolean addAllParticipantEvidences(Collection<? extends ParticipantEvidence> participants) {
         if (participants == null){
             return false;
+        }
+        if (participants.size() > 2){
+            throw new IllegalArgumentException("A BinaryInteractionEvidence cannot have more than two participants and we try to add " + participants.size() + " participants");
         }
 
         boolean added = false;
@@ -349,8 +321,8 @@ public class DefaultInteractionEvidence extends DefaultInteraction implements In
     /**
      * Experimental interaction Xref list
      */
-    private class ExperimentalInteractionXrefList extends AbstractListHavingPoperties<Xref> {
-        public ExperimentalInteractionXrefList(){
+    private class ExperimentalBinaryInteractionXrefList extends AbstractListHavingPoperties<Xref> {
+        public ExperimentalBinaryInteractionXrefList(){
             super();
         }
 

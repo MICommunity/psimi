@@ -22,7 +22,7 @@ public class DefaultInteractionEvidenceTest {
         InteractionEvidence interaction = new DefaultInteractionEvidence();
 
         Assert.assertNull(interaction.getExperiment());
-        Assert.assertNotNull(interaction.getParticipantEvidences());
+        Assert.assertNotNull(interaction.getParticipants());
         Assert.assertNotNull(interaction.getVariableParameterValues());
         Assert.assertNotNull(interaction.getConfidences());
         Assert.assertNotNull(interaction.getParameters());
@@ -39,22 +39,22 @@ public class DefaultInteractionEvidenceTest {
         // add participant and set modelledInteraction
         interaction.addParticipantEvidence(participant);
         Assert.assertEquals(interaction, participant.getInteractionEvidence());
-        Assert.assertEquals(1, interaction.getParticipantEvidences().size());
+        Assert.assertEquals(1, interaction.getParticipants().size());
 
         // remove modelled participant and set interaction to null
         interaction.removeParticipantEvidence(participant);
         Assert.assertNull(participant.getInteractionEvidence());
-        Assert.assertEquals(0, interaction.getParticipantEvidences().size());
+        Assert.assertEquals(0, interaction.getParticipants().size());
 
         // simply add modelled participant
-        interaction.getParticipantEvidences().add(participant);
+        interaction.getParticipants().add(participant);
         Assert.assertNull(participant.getInteractionEvidence());
-        Assert.assertEquals(1, interaction.getParticipantEvidences().size());
+        Assert.assertEquals(1, interaction.getParticipants().size());
 
         // simply remove modelled participant
-        interaction.getParticipantEvidences().remove(participant);
+        interaction.getParticipants().remove(participant);
         Assert.assertNull(participant.getInteractionEvidence());
-        Assert.assertEquals(0, interaction.getParticipantEvidences().size());
+        Assert.assertEquals(0, interaction.getParticipants().size());
     }
 
     @Test

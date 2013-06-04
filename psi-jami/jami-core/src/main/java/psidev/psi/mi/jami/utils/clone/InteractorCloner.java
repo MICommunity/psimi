@@ -55,8 +55,8 @@ public class InteractorCloner {
             // copy collections
             target.getInteractionEvidences().clear();
             target.getInteractionEvidences().addAll(source.getInteractionEvidences());
-            target.getModelledParticipants().clear();
-            target.addAllModelledParticipants(source.getModelledParticipants());
+            target.getParticipants().clear();
+            target.addAllModelledParticipants(source.getParticipants());
             target.getModelledParameters().clear();
             target.getModelledParameters().addAll(source.getModelledParameters());
             target.getModelledConfidences().clear();

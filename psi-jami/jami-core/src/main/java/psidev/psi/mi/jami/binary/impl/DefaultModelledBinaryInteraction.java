@@ -1,65 +1,51 @@
-package psidev.psi.mi.jami.model.impl;
+package psidev.psi.mi.jami.binary.impl;
 
+import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Default implemntation for ModelledInteraction
- *
- * Notes: The equals and hashcode methods have NOT been overridden because the ModelledInteraction object is a complex object.
- * To compare ModelledInteraction objects, you can use some comparators provided by default:
- * - DefaultModelledInteractionComparator
- * - UnambiguousModelledInteractionComparator
- * - DefaultCuratedModelledInteractionComparator
- * - UnambiguousCuratedModelledInteractionComparator
- * - DefaultCuratedExactModelledInteractionComparator
- * - UnambiguousCuratedExactModelledInteractionComparator
- * - DefaultExactModelledInteractionComparator
- * - UnambiguousExactModelledInteractionComparator
- * - ModelledInteractionComparator
- * - CuratedModelledInteractionComparator
+ * Default implementation for ModelledBinaryInteraction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>05/02/13</pre>
+ * @since <pre>04/06/13</pre>
  */
 
-public class DefaultModelledInteraction extends DefaultInteraction implements ModelledInteraction{
+public class DefaultModelledBinaryInteraction extends DefaultBinaryInteraction<ModelledParticipant> implements ModelledBinaryInteraction{
 
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
-    private Collection<ModelledParticipant> modelledParticipants;
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
 
-    public DefaultModelledInteraction() {
+    public DefaultModelledBinaryInteraction() {
         super();
     }
 
-    public DefaultModelledInteraction(String shortName) {
+    public DefaultModelledBinaryInteraction(String shortName) {
         super(shortName);
     }
 
-    public DefaultModelledInteraction(String shortName, Source source) {
-        super(shortName);
-        this.source = source;
-    }
-
-    public DefaultModelledInteraction(String shortName, CvTerm type) {
+    public DefaultModelledBinaryInteraction(String shortName, CvTerm type) {
         super(shortName, type);
     }
 
-    public DefaultModelledInteraction(String shortName, Source source, CvTerm type) {
-        this(shortName, type);
-        this.source = source;
+    public DefaultModelledBinaryInteraction(ModelledParticipant participantA, ModelledParticipant participantB) {
+        super(participantA, participantB);
     }
 
-    protected void initialiseModelledParticipants(){
-        this.modelledParticipants = new ArrayList<ModelledParticipant>();
+    public DefaultModelledBinaryInteraction(String shortName, ModelledParticipant participantA, ModelledParticipant participantB) {
+        super(shortName, participantA, participantB);
+    }
+
+    public DefaultModelledBinaryInteraction(String shortName, CvTerm type, ModelledParticipant participantA, ModelledParticipant participantB) {
+        super(shortName, type, participantA, participantB);
     }
 
     protected void initialiseInteractionEvidences(){
@@ -114,15 +100,6 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         }
     }
 
-    protected void initialiseModelledParticipantsWith(Collection<ModelledParticipant> participants){
-        if (participants == null){
-            this.modelledParticipants = Collections.EMPTY_LIST;
-        }
-        else {
-            this.modelledParticipants = participants;
-        }
-    }
-
     public Collection<InteractionEvidence> getInteractionEvidences() {
         if (interactionEvidences == null){
             initialiseInteractionEvidences();
@@ -130,11 +107,24 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         return this.interactionEvidences;
     }
 
+    /**
+     * The collection of participants for this binary interaction.
+     * It cannot be changed.
+     * @return
+     */
     public Collection<ModelledParticipant> getParticipants() {
-        if (modelledParticipants == null){
-            initialiseModelledParticipants();
+        if (getParticipantA() == null && getParticipantB() == null){
+            return Collections.EMPTY_LIST;
         }
-        return this.modelledParticipants;
+        else if (getParticipantB() == null){
+            return Arrays.asList(getParticipantA());
+        }
+        else if (getParticipantA() == null){
+            return Arrays.asList(getParticipantB());
+        }
+        else{
+            return Arrays.asList(getParticipantA(), getParticipantB());
+        }
     }
 
     public Source getSource() {
@@ -145,32 +135,68 @@ public class DefaultModelledInteraction extends DefaultInteraction implements Mo
         this.source = source;
     }
 
+    /**
+     * Adds a new ModelledParticipant and set the modelledInteraction of this participant if added.
+     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
+     * @param part
+     * @return
+     * @throws IllegalArgumentException if this Binary interaction already contains two participants
+     */
     public boolean addModelledParticipant(ModelledParticipant part) {
         if (part == null){
             return false;
         }
-        if (getParticipants().add(part)){
+        if (getParticipantB() != null && getParticipantA() != null){
+            throw new IllegalArgumentException("A ModelledBinaryInteraction cannot have more than two participants.");
+        }
+        else if (getParticipantB() != null){
             part.setModelledInteraction(this);
+            setParticipantA(part);
             return true;
         }
-        return false;
+        else{
+            part.setModelledInteraction(this);
+            setParticipantA(part);
+            return true;
+        }
     }
 
+    /**
+     * Removes the modelledParticipant from this binary interaction
+     * @param part
+     * @return
+     */
     public boolean removeModelledParticipant(ModelledParticipant part) {
         if (part == null){
             return false;
         }
 
-        if (getParticipants().remove(part)){
+        if (getParticipantA() != null && getParticipantA().equals(part)){
             part.setModelledInteraction(null);
+            setParticipantA(null);
+            return true;
+        }
+        else if (getParticipantB() != null && getParticipantB().equals(part)){
+            part.setModelledInteraction(null);
+            setParticipantB(null);
             return true;
         }
         return false;
     }
 
+    /**
+     * Adds the participants and set the modelledInteraction of this participant if added.
+     * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
+     * @param participants
+     * @return
+     * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contain more than two participants
+     */
     public boolean addAllModelledParticipants(Collection<? extends ModelledParticipant> participants) {
         if (participants == null){
             return false;
+        }
+        if (participants.size() > 2){
+            throw new IllegalArgumentException("A ModelledBinaryInteraction cannot have more than two participants and we try to add " + participants.size() + " participants");
         }
 
         boolean added = false;

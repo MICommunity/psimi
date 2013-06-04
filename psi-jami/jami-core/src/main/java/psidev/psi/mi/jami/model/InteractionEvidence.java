@@ -98,7 +98,7 @@ public interface InteractionEvidence extends Interaction{
      * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
      * @return the particiants
      */
-    public Collection<ParticipantEvidence> getParticipantEvidences();
+    public Collection<ParticipantEvidence> getParticipants();
 
     /**
      * This method will add the participant evidence and set the interaction evidence of the new participant evidence to this current interaction

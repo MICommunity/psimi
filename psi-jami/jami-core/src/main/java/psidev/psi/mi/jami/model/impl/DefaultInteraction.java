@@ -42,6 +42,7 @@ public class DefaultInteraction implements Interaction, Serializable {
     private Date updatedDate;
     private Date createdDate;
     private CvTerm interactionType;
+    private Collection<Participant> participants;
 
     public DefaultInteraction(){
     }
@@ -65,6 +66,19 @@ public class DefaultInteraction implements Interaction, Serializable {
 
     protected void initialiseIdentifiers(){
         this.identifiers = new ArrayList<Xref>();
+    }
+
+    protected void initialiseParticipants(){
+        this.participants = new ArrayList<Participant>();
+    }
+
+    protected void initialiseParticipantsWith(Collection<Participant> participants){
+        if (participants == null){
+            this.participants = Collections.EMPTY_LIST;
+        }
+        else {
+            this.participants = participants;
+        }
     }
 
     protected void initialiseChecksums(){
@@ -187,6 +201,13 @@ public class DefaultInteraction implements Interaction, Serializable {
 
     public void setInteractionType(CvTerm term) {
        this.interactionType = term;
+    }
+
+    public Collection<? extends Participant> getParticipants() {
+        if (participants == null){
+            initialiseParticipants();
+        }
+        return participants;
     }
 
     protected void processAddedChecksumEvent(Checksum added) {

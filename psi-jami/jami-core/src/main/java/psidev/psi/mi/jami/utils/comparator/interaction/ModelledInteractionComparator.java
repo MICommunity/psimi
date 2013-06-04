@@ -79,8 +79,8 @@ public class ModelledInteractionComparator implements Comparator<ModelledInterac
             }
 
             // first compares participants of an interaction
-            Collection<? extends ModelledParticipant> participants1 = modelledInteraction1.getModelledParticipants();
-            Collection<? extends ModelledParticipant> participants2 = modelledInteraction2.getModelledParticipants();
+            Collection<? extends ModelledParticipant> participants1 = modelledInteraction1.getParticipants();
+            Collection<? extends ModelledParticipant> participants2 = modelledInteraction2.getParticipants();
 
             return participantCollectionComparator.compare(participants1, participants2);
         }

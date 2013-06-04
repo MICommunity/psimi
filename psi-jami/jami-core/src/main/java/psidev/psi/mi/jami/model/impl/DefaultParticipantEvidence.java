@@ -343,7 +343,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
         this.interactionEvidence = interaction;
     }
 
-    public Collection<FeatureEvidence> getFeatureEvidences() {
+    public Collection<FeatureEvidence> getFeatures() {
         if (featureEvidences == null){
             initialiseFeatureEvidences();
         }
@@ -356,7 +356,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
             return false;
         }
 
-        if (getFeatureEvidences().add(feature)){
+        if (getFeatures().add(feature)){
             feature.setParticipantEvidence(this);
             return true;
         }
@@ -369,7 +369,7 @@ public class DefaultParticipantEvidence extends DefaultParticipant<Interactor> i
             return false;
         }
 
-        if (getFeatureEvidences().remove(feature)){
+        if (getFeatures().remove(feature)){
             feature.setParticipantEvidence(null);
             return true;
         }

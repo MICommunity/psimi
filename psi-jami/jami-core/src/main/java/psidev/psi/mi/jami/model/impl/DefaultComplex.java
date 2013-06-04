@@ -196,7 +196,7 @@ public class DefaultComplex extends DefaultInteractor implements Complex {
         this.source = source;
     }
 
-    public Collection<ModelledParticipant> getModelledParticipants() {
+    public Collection<ModelledParticipant> getParticipants() {
         if (components == null){
             initialiseComponents();
         }
