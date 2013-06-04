@@ -356,7 +356,7 @@ public class PositionUtils {
             }
 
             // The sequence is not null, we expect to have positions superior to 0 and STRICTLY inferior to the sequence length
-            if (areRangePositionsOutOfBounds(start, end, sequenceLength)){
+            if (sequenceLength != 0 ? start > sequenceLength-1 || end > sequenceLength-1 : false){
                 messages.add( "A range position 'greater-than' must be strictly inferior to the interactor sequence length. Actual position : (" + start + "-"+end+"), sequence length: " +sequenceLength);
             }
         }
@@ -367,7 +367,7 @@ public class PositionUtils {
                         " to a range position which is an interval ("+start+"-"+end+")");            }
             // The sequence is not null, we expect to have positions inferior or equal to the sequence length
             if (areRangePositionsOutOfBounds(start, end, sequenceLength)) {
-                messages.add( "A range position 'less-than' must be strictly inferior or equal to the interactor sequence length. Actual position : (" + start + "-"+end+"), sequence length: "+sequenceLength);
+                messages.add( "A range position 'less-than' must be inferior or equal to the interactor sequence length. Actual position : (" + start + "-"+end+"), sequence length: "+sequenceLength);
             }
         }
         // if the range position is certain or ragged-n-terminus, we expect to have the positions superior to 0 and inferior or

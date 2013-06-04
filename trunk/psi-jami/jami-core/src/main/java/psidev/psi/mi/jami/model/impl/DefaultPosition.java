@@ -63,19 +63,8 @@ public class DefaultPosition implements Position, Serializable {
         this.status = status;
 
         isPositionUndetermined = (PositionUtils.isUndetermined(this) || PositionUtils.isCTerminalRange(this) || PositionUtils.isNTerminalRange(this));
-        if (isPositionUndetermined){
-            this.start = 0;
-            this.end = 0;
-            if (position != 0){
-                log.warning("The exact position is undetermined so start and end should be 0. Will ignore given position " + position);
-            }
-
-        }
-        else {
-
-            this.start = position;
-            this.end = position;
-        }
+        this.start = position;
+        this.end = position;
     }
 
     /**
