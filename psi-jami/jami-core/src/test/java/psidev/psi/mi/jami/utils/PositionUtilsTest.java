@@ -83,4 +83,133 @@ public class PositionUtilsTest {
         Assert.assertFalse(PositionUtils.arePositionsOverlapping(2,2 , 4, 4));
         Assert.assertFalse(PositionUtils.arePositionsOverlapping(2,7 , 8, 9));
     }
+
+    @Test
+    public void test_invalid_undetermined_ranges_with_positions_different_from_0() throws IllegalRangeException {
+
+        // valid undetermined position
+        Position pos1 = new DefaultPosition(0);
+        // valid N-terminal range
+        Position pos2 = new DefaultPosition(CvTermUtils.createNTerminalRangeStatus(), 0);
+        // valid C-terminal range
+        Position pos3 = new DefaultPosition(CvTermUtils.createCTerminalRangeStatus(), 0);
+        // invalid undetermined position
+        Position pos4 = new DefaultPosition(CvTermUtils.createUndeterminedStatus(), 4);
+        // invalid N terminal range
+        Position pos5 = new DefaultPosition(CvTermUtils.createNTerminalRangeStatus(), 1);
+        // invalid C terminal range
+        Position pos6 = new DefaultPosition(CvTermUtils.createCTerminalRangeStatus(), 20);
+
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos1, null).isEmpty());
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos2, null).isEmpty());
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos3, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos4, null).size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos5, null).size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos6, null).size());
+    }
+
+    @Test
+    public void test_invalid_N_terminal(){
+
+        // valid N-terminal position
+        Position pos1 = new DefaultPosition(CvTermUtils.createNTerminalStatus(), 1);
+        // invalid N-terminal position (pos > 1)
+        Position pos2 = new DefaultPosition(CvTermUtils.createNTerminalStatus(), 2);
+        // invalid N-terminal position (end > 1)
+        Position pos3 = new DefaultPosition(CvTermUtils.createNTerminalStatus(), 1, 4);
+
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos1, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos2, null).size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos3, null).size());
+    }
+
+    @Test
+    public void test_invalid_C_terminal(){
+
+        // valid C-terminal position if sequence null
+        Position pos1 = new DefaultPosition(CvTermUtils.createCTerminalStatus(), 0);
+        // valid C terminal position
+        Position pos2 = new DefaultPosition(CvTermUtils.createCTerminalStatus(), 5);
+        // invalid C-terminal position (pos < sequence length)
+        Position pos3 = new DefaultPosition(CvTermUtils.createCTerminalStatus(), 3);
+        // invalid C-terminal position (start != end)
+        Position pos4 = new DefaultPosition(CvTermUtils.createCTerminalStatus(), 3, 5);
+
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos1, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos1, "AAGTT").size());
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos2, "AAGTT").isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos3, "AAGTT").size());
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos3, "AAG").isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos4, null).size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos4, "AAGTT").size());
+    }
+
+    @Test
+    public void test_invalid_greater_than_position(){
+
+        // valid greater-than position
+        Position pos1 = new DefaultPosition(CvTermUtils.createGreaterThanRangeStatus(), 3);
+        // invalid greater-than position position (pos > 1)
+        Position pos2 = new DefaultPosition(CvTermUtils.createGreaterThanRangeStatus(), 5);
+        // invalid greater-than position position (start!=end)
+        Position pos3 = new DefaultPosition(CvTermUtils.createGreaterThanRangeStatus(), 1, 4);
+
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos1, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos2, "AAGTT").size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos3, "AAGTT").size());
+    }
+
+    @Test
+    public void test_invalid_less_than_position(){
+
+        // valid less-than position
+        Position pos1 = new DefaultPosition(CvTermUtils.createLessThanRangeStatus(), 3);
+        // invalid less-than position position (pos > sequence length)
+        Position pos2 = new DefaultPosition(CvTermUtils.createLessThanRangeStatus(), 7);
+        // invalid less-than position position (start!=end)
+        Position pos3 = new DefaultPosition(CvTermUtils.createLessThanRangeStatus(), 1, 4);
+
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos1, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos2, "AAGTT").size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos3, "AAGTT").size());
+    }
+
+    @Test
+    public void test_invalid_certain_or_ragged_n_terminal_position(){
+
+        // valid certain position
+        Position pos1 = new DefaultPosition(CvTermUtils.createCertainStatus(), 3);
+        // invalid certain position position (pos > sequence length)
+        Position pos2 = new DefaultPosition(CvTermUtils.createCertainStatus(), 7);
+        // invalid certain position position (start!=end)
+        Position pos3 = new DefaultPosition(CvTermUtils.createCertainStatus(), 1, 4);
+        // valid ragged position
+        Position pos4 = new DefaultPosition(CvTermUtils.createRaggedNTerminalStatus(), 3);
+        // invalid ragged position position (pos > sequence length)
+        Position pos5 = new DefaultPosition(CvTermUtils.createRaggedNTerminalStatus(), 7);
+        // invalid ragged position position (start!=end)
+        Position pos6 = new DefaultPosition(CvTermUtils.createRaggedNTerminalStatus(), 1, 4);
+
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos1, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos2, "AAGTT").size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos3, "AAGTT").size());
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos4, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos5, "AAGTT").size());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos6, "AAGTT").size());
+    }
+
+    @Test
+    public void test_invalid_fuzzy_ranges(){
+
+        // valid fuzzy position
+        Position pos1 = new DefaultPosition(CvTermUtils.createRangeStatus(), 3);
+        // valid fuzzy position2
+        Position pos2 = new DefaultPosition(CvTermUtils.createRangeStatus(), 3,4);
+        // invalid fuzzy position position (pos > sequence length)
+        Position pos3 = new DefaultPosition(CvTermUtils.createRangeStatus(), 7);
+
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos1, null).isEmpty());
+        Assert.assertTrue(PositionUtils.validateRangePosition(pos2, null).isEmpty());
+        Assert.assertEquals(1, PositionUtils.validateRangePosition(pos3, "AAGTT").size());
+    }
 }

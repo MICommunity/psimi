@@ -21,7 +21,7 @@ public class DefaultPositionTest {
 
         Assert.assertEquals(CvTermUtils.createUndeterminedStatus(), pos.getStatus());
         Assert.assertTrue(pos.getStart() == pos.getEnd());
-        Assert.assertTrue(pos.getStart() == 0);
+        Assert.assertTrue(pos.getStart() == 3);
         Assert.assertTrue(pos.isPositionUndetermined());
     }
 
@@ -41,7 +41,7 @@ public class DefaultPositionTest {
 
         Assert.assertEquals(CvTermUtils.createNTerminalRangeStatus(), pos.getStatus());
         Assert.assertTrue(pos.getStart() == pos.getEnd());
-        Assert.assertTrue(pos.getStart() == 0);
+        Assert.assertTrue(pos.getStart() == 3);
         Assert.assertTrue(pos.isPositionUndetermined());
     }
 
@@ -51,7 +51,7 @@ public class DefaultPositionTest {
 
         Assert.assertEquals(CvTermUtils.createCTerminalRangeStatus(), pos.getStatus());
         Assert.assertTrue(pos.getStart() == pos.getEnd());
-        Assert.assertTrue(pos.getStart() == 0);
+        Assert.assertTrue(pos.getStart() == 3);
         Assert.assertTrue(pos.isPositionUndetermined());
     }
 
