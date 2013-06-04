@@ -110,8 +110,8 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
             }
 
             // then compares the features
-            Collection<ModelledFeature> features1 = bioParticipant1.getModelledFeatures();
-            Collection<ModelledFeature> features2 = bioParticipant2.getModelledFeatures();
+            Collection<ModelledFeature> features1 = bioParticipant1.getFeatures();
+            Collection<ModelledFeature> features2 = bioParticipant2.getFeatures();
 
             return featureCollectionComparator.compare(features1, features2);
         }

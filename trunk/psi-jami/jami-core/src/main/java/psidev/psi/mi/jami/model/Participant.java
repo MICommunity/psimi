@@ -14,6 +14,10 @@ public interface Participant<T extends Interactor> {
 
     public static String UNSPECIFIED_ROLE = "unspecified role";
     public static String UNSPECIFIED_ROLE_MI = "MI:0499";
+    public static String PUTATIVE_SELF_ROLE = "putative self";
+    public static String PUTATIVE_SELF_ROLE_MI = "MI:0898";
+    public static String SELF_ROLE = "self";
+    public static String SELF_ROLE_MI = "MI:0503";
 
     /**
      * The molecule/complex of molecules which interacts.
@@ -101,4 +105,11 @@ public interface Participant<T extends Interactor> {
      * @param stoichiometry : the stoichiometry
      */
     public void setStoichiometry(Stoichiometry stoichiometry);
+
+    /**
+     * Properties for this participant.
+     * The collection cannot be null. If the participant does not have any features, the method should return an empty collection.
+     * @return the features
+     */
+    public Collection<? extends Feature> getFeatures();
 }

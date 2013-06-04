@@ -95,7 +95,7 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         this.modelledInteraction = interaction;
     }
 
-    public Collection<ModelledFeature> getModelledFeatures() {
+    public Collection<ModelledFeature> getFeatures() {
         if (modelledFeatures == null){
             initialiseModelledFeatures();
         }
@@ -108,7 +108,7 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
             return false;
         }
 
-        if (getModelledFeatures().add(feature)){
+        if (getFeatures().add(feature)){
             feature.setModelledParticipant(this);
             return true;
         }
@@ -121,7 +121,7 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
             return false;
         }
 
-        if (getModelledFeatures().remove(feature)){
+        if (getFeatures().remove(feature)){
             feature.setModelledParticipant(null);
             return true;
         }

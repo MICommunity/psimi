@@ -45,7 +45,7 @@ public class UnambiguousExactParticipantInteractorComparatorTest {
     @Test
     public void test_same_interactors_ignore_different_features(){
         ParticipantEvidence participant1 = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
-        participant1.getFeatureEvidences().add(new DefaultFeatureEvidence("test", "test feature"));
+        participant1.getFeatures().add(new DefaultFeatureEvidence("test", "test feature"));
         ParticipantEvidence participant2 = new DefaultParticipantEvidence(new DefaultProtein("test protein"));
 
         Assert.assertTrue(comparator.compare(participant1, participant2) == 0);

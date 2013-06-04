@@ -45,7 +45,7 @@ public class UnambiguousExactModelledParticipantInteractorComparatorTest {
     @Test
     public void test_same_interactors_ignore_different_features(){
         ModelledParticipant participant1 = new DefaultModelledParticipant(new DefaultProtein("test protein"));
-        participant1.getModelledFeatures().add(new DefaultModelledFeature("test", "test feature"));
+        participant1.getFeatures().add(new DefaultModelledFeature("test", "test feature"));
         ModelledParticipant participant2 = new DefaultModelledParticipant(new DefaultProtein("test protein"));
 
         Assert.assertTrue(comparator.compare(participant1, participant2) == 0);

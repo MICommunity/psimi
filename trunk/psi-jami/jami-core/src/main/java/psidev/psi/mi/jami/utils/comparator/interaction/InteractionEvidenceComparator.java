@@ -140,8 +140,8 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
             }
 
             // first compares participants of an interaction
-            Collection<ParticipantEvidence> participants1 = experimentalInteraction1.getParticipantEvidences();
-            Collection<ParticipantEvidence> participants2 = experimentalInteraction2.getParticipantEvidences();
+            Collection<ParticipantEvidence> participants1 = experimentalInteraction1.getParticipants();
+            Collection<ParticipantEvidence> participants2 = experimentalInteraction2.getParticipants();
 
             comp = participantCollectionComparator.compare(participants1, participants2);
             if (comp != 0){

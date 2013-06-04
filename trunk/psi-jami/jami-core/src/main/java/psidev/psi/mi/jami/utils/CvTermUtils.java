@@ -30,6 +30,8 @@ public class CvTermUtils {
     private static CvTerm lessThan;
     private static CvTerm certain;
     private static CvTerm range;
+    private static CvTerm putative_self;
+    private static CvTerm self;
 
     public static CvTerm getGene() {
         if (gene == null){
@@ -141,6 +143,20 @@ public class CvTermUtils {
             certain = createCertainStatus();
         }
         return certain;
+    }
+
+    public static CvTerm getPutativeSelf() {
+        if (putative_self == null){
+            putative_self = createPutativeSelf();
+        }
+        return putative_self;
+    }
+
+    public static CvTerm getSelf() {
+        if (self == null){
+            self = createSelf();
+        }
+        return self;
     }
 
     public static CvTerm createPsiMiDatabaseNameOnly(){
@@ -260,6 +276,14 @@ public class CvTermUtils {
 
     public static CvTerm createCertainStatus(){
         return createMICvTerm(Position.CERTAIN, Position.CERTAIN_MI);
+    }
+
+    public static CvTerm createPutativeSelf(){
+        return createMICvTerm(Participant.PUTATIVE_SELF_ROLE, Participant.PUTATIVE_SELF_ROLE_MI);
+    }
+
+    public static CvTerm createSelf(){
+        return createMICvTerm(Participant.SELF_ROLE, Participant.SELF_ROLE_MI);
     }
 
     public static CvTerm createRangeStatus(){

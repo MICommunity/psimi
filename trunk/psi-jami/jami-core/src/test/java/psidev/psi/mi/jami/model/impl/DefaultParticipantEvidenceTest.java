@@ -26,7 +26,7 @@ public class DefaultParticipantEvidenceTest {
         Assert.assertTrue(DefaultInteractorComparator.areEquals(InteractorUtils.createUnknownBasicInteractor(), participant.getInteractor()));
         Assert.assertNotNull(participant.getExperimentalPreparations());
         Assert.assertNotNull(participant.getIdentificationMethods());
-        Assert.assertNotNull(participant.getFeatureEvidences());
+        Assert.assertNotNull(participant.getFeatures());
         Assert.assertNotNull(participant.getParameters());
         Assert.assertNotNull(participant.getConfidences());
         Assert.assertNull(participant.getExpressedInOrganism());
@@ -55,16 +55,16 @@ public class DefaultParticipantEvidenceTest {
         participant.setInteractionEvidence(i);
 
         Assert.assertTrue(DefaultInteractionEvidenceComparator.areEquals(new DefaultInteractionEvidence("test interaction"), participant.getInteractionEvidence()));
-        Assert.assertEquals(0, i.getParticipantEvidences().size());
+        Assert.assertEquals(0, i.getParticipants().size());
 
         participant.setInteractionEvidenceAndAddParticipantEvidence(i);
         Assert.assertNotNull(participant.getInteractionEvidence());
-        Assert.assertEquals(1, i.getParticipantEvidences().size());
-        Assert.assertEquals(participant, i.getParticipantEvidences().iterator().next());
+        Assert.assertEquals(1, i.getParticipants().size());
+        Assert.assertEquals(participant, i.getParticipants().iterator().next());
 
         participant.setInteractionEvidenceAndAddParticipantEvidence(null);
         Assert.assertNull(participant.getInteractionEvidence());
-        Assert.assertEquals(0, i.getParticipantEvidences().size());
+        Assert.assertEquals(0, i.getParticipants().size());
     }
 
     @Test
@@ -77,21 +77,21 @@ public class DefaultParticipantEvidenceTest {
         // add feature and set participantEvidence
         participant.addFeatureEvidence(f);
         Assert.assertEquals(participant, f.getParticipantEvidence());
-        Assert.assertEquals(1, participant.getFeatureEvidences().size());
+        Assert.assertEquals(1, participant.getFeatures().size());
 
         // remove feature evidence and set participant to null
         participant.removeFeatureEvidence(f);
         Assert.assertNull(f.getParticipantEvidence());
-        Assert.assertEquals(0, participant.getFeatureEvidences().size());
+        Assert.assertEquals(0, participant.getFeatures().size());
 
         // simply add feature evidence
-        participant.getFeatureEvidences().add(f);
+        participant.getFeatures().add(f);
         Assert.assertNull(f.getParticipantEvidence());
-        Assert.assertEquals(1, participant.getFeatureEvidences().size());
+        Assert.assertEquals(1, participant.getFeatures().size());
 
         // simply remove feature evidence
-        participant.getFeatureEvidences().remove(f);
+        participant.getFeatures().remove(f);
         Assert.assertNull(f.getParticipantEvidence());
-        Assert.assertEquals(0, participant.getFeatureEvidences().size());
+        Assert.assertEquals(0, participant.getFeatures().size());
     }
 }

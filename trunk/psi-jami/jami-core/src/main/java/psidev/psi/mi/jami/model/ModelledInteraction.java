@@ -38,7 +38,7 @@ public interface ModelledInteraction extends Interaction{
      * The collection cannot be null. If the interaction does not involve any participants, the method should return an empty set.
      * @return the particiants
      */
-    public Collection<ModelledParticipant> getModelledParticipants();
+    public Collection<ModelledParticipant> getParticipants();
 
     /**
      * This method will add the participant and set the interaction of the new participant to this current interaction
