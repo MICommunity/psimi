@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.binary.impl;
 
+import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -19,7 +20,7 @@ import java.util.Collections;
  * @since <pre>04/06/13</pre>
  */
 
-public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<ParticipantEvidence> implements InteractionEvidence{
+public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence{
 
     private Xref imexId;
     private Experiment experiment;
@@ -52,6 +53,26 @@ public class DefaultBinaryInteractionEvidence extends DefaultBinaryInteraction<P
 
     public DefaultBinaryInteractionEvidence(String shortName, CvTerm type, ParticipantEvidence participantA, ParticipantEvidence participantB) {
         super(shortName, type, participantA, participantB);
+    }
+
+    public DefaultBinaryInteractionEvidence(CvTerm complexExpansion) {
+        super(complexExpansion);
+    }
+
+    public DefaultBinaryInteractionEvidence(String shortName, CvTerm type, CvTerm complexExpansion) {
+        super(shortName, type, complexExpansion);
+    }
+
+    public DefaultBinaryInteractionEvidence(ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion) {
+        super(participantA, participantB, complexExpansion);
+    }
+
+    public DefaultBinaryInteractionEvidence(String shortName, ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion) {
+        super(shortName, participantA, participantB, complexExpansion);
+    }
+
+    public DefaultBinaryInteractionEvidence(String shortName, CvTerm type, ParticipantEvidence participantA, ParticipantEvidence participantB, CvTerm complexExpansion) {
+        super(shortName, type, participantA, participantB, complexExpansion);
     }
 
     protected void initialiseExperimentalConfidences(){
