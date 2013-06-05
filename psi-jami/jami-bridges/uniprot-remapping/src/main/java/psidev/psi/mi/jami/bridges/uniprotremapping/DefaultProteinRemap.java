@@ -21,7 +21,7 @@ import java.util.Collection;
 public class DefaultProteinRemap {
 
     public static final Log log = LogFactory.getLog(DefaultProteinRemap.class);
-    private ProteinRemapFetcher remapFetcher = new ProteinRemapFetcher();
+    private ProteinRemapFetcher remapFetcher;
 
 
 
@@ -35,7 +35,11 @@ public class DefaultProteinRemap {
     private Protein p;
 
     public DefaultProteinRemap(){
+        remapFetcher = new ProteinRemapFetcher();
+    }
 
+    public DefaultProteinRemap(RemapperBridge bridge){
+        remapFetcher = new ProteinRemapFetcher(bridge);
     }
 
     public void addRemapListener(RemapListener listener){
@@ -90,7 +94,6 @@ public class DefaultProteinRemap {
 
             if(checkingEnabled) identifier = noneConflictingUniprotFromIdentifiers();
             else identifier = getFirstMappableIdentifier();
-            //log.info("uniprot from identifiers is "+identifier);
 
             if(identifier != null
                     && identifier.equalsIgnoreCase(getSequenceMapping())){
@@ -155,15 +158,13 @@ public class DefaultProteinRemap {
         remapReport = new RemapReport(checkingEnabled);
         remapFetcher.clean();
         this.p = p;
-        if(p == null) return; //todo
-        //if(p.getUniprotkb() != null) return false; //todo
-        //if(p.getXrefs() != null || p.getXrefs().size() <= 0) return false; //todo
+        if(p == null) return;
 
         if(p.getSequence() != null) remapFetcher.setSequence(p.getSequence());
         if(p.getOrganism() != null) remapFetcher.setOrganism(p.getOrganism());
         if(p.getXrefs() != null || p.getXrefs().size() < 0){
             for(Xref x :p.getXrefs()){
-                remapFetcher.setIdentifierList(x);
+                remapFetcher.addToIdentifierList(x);
             }
         }
     }
@@ -246,8 +247,5 @@ public class DefaultProteinRemap {
 
     public void clean(){
         setProtein(p);
-        //Following done by setting p
-        //remapReport = new RemapReport(checkingEnabled);
-        //remapFetcher.clean();
     }
 }

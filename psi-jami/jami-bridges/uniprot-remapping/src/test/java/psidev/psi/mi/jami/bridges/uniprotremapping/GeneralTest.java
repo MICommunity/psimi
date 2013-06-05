@@ -109,7 +109,7 @@ public  class GeneralTest {
     }
 
     public static void runTest(){
-        int i = 0;
+        int i = 1;
         for(Protein p: tests){
             log.info("---- Doing a test "+i+"---");
             i++;
