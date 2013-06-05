@@ -22,15 +22,20 @@ public class ProteinRemapFetcher {
 
     public static final Log log = LogFactory.getLog(ProteinRemapFetcher.class);
 
-    private IntActRemapperBridge bridge = new IntActRemapperBridge();
-    private IdentificationResults sequenceMapping;
+    private RemapperBridge bridge;
     private TreeMap<Xref, IdentificationResults> identifierList;
+    private IdentificationResults sequenceMapping = null;
 
     public ProteinRemapFetcher() {
+        this(new IntActRemapperBridge());
+    }
+
+    public ProteinRemapFetcher(RemapperBridge bridge) {
+        this.bridge = bridge;
         identifierList = new TreeMap<Xref, IdentificationResults>(new DefaultExternalIdentifierComparator());
     }
 
-    public void setIdentifierList(Xref identifier){
+    public void addToIdentifierList(Xref identifier){
         identifierList.put(identifier,null);
     }
 
@@ -41,8 +46,6 @@ public class ProteinRemapFetcher {
     public void setSequence(String sequence){
         if(sequence != null) bridge.setSequence(sequence);
     }
-
-
 
     public IdentificationResults getIdentifierListEntry(Xref identifier){
         if(identifierList.containsKey(identifier)){

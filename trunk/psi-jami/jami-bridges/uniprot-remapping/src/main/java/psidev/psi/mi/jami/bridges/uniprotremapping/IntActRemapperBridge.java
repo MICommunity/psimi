@@ -20,14 +20,14 @@ import uk.ac.ebi.intact.protein.mapping.strategies.exceptions.StrategyException;
  * Date: 05/06/13
  * Time: 09:53
  */
-public class IntActRemapperBridge {
+public class IntActRemapperBridge implements RemapperBridge {
 
 
     public static final Log log = LogFactory.getLog(IntActRemapperBridge.class);
 
-    StrategyWithSequence sequenceStrategy;
-    StrategyWithIdentifier identifierStrategy;
-    UpdateContext context;
+    private StrategyWithSequence sequenceStrategy;
+    private StrategyWithIdentifier identifierStrategy;
+    private UpdateContext context;
 
     public IntActRemapperBridge( ){
 
@@ -45,7 +45,7 @@ public class IntActRemapperBridge {
     public void setSequence(String sequence){
         if(sequence != null && sequence.length() > 0) context.setSequence(sequence);
     }
-    public void setOrganism(String taxId){
+    private void setOrganism(String taxId){
         //The biosource short label is never used in the remapping.
         context.setOrganism(new BioSource("shortLabel", taxId));
     }
@@ -67,7 +67,7 @@ public class IntActRemapperBridge {
     }
 
 
-    public IdentificationResults getIdentifierResult(String database, String identifier){
+    private IdentificationResults getIdentifierResult(String database, String identifier){
         context.setDatabaseForIdentifier(database);
         context.setIdentifier(identifier);
 
