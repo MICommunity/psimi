@@ -48,6 +48,26 @@ public class DefaultModelledBinaryInteraction extends DefaultBinaryInteraction<M
         super(shortName, type, participantA, participantB);
     }
 
+    public DefaultModelledBinaryInteraction(CvTerm complexExpansion) {
+        super(complexExpansion);
+    }
+
+    public DefaultModelledBinaryInteraction(String shortName, CvTerm type, CvTerm complexExpansion) {
+        super(shortName, type, complexExpansion);
+    }
+
+    public DefaultModelledBinaryInteraction(ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion) {
+        super(participantA, participantB, complexExpansion);
+    }
+
+    public DefaultModelledBinaryInteraction(String shortName, ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion) {
+        super(shortName, participantA, participantB, complexExpansion);
+    }
+
+    public DefaultModelledBinaryInteraction(String shortName, CvTerm type, ModelledParticipant participantA, ModelledParticipant participantB, CvTerm complexExpansion) {
+        super(shortName, type, participantA, participantB, complexExpansion);
+    }
+
     protected void initialiseInteractionEvidences(){
         this.interactionEvidences = new ArrayList<InteractionEvidence>();
     }

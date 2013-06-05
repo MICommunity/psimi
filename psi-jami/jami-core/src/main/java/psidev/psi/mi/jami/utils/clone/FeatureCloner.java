@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.clone;
 
+import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ModelledFeature;
 
@@ -58,6 +59,26 @@ public class FeatureCloner {
             target.getIdentifiers().addAll(source.getIdentifiers());
             target.getLinkedModelledFeatures().clear();
             target.getLinkedModelledFeatures().addAll(source.getLinkedModelledFeatures());
+            target.getXrefs().clear();
+            target.getXrefs().addAll(source.getXrefs());
+            target.getRanges().clear();
+            target.getRanges().addAll(source.getRanges());
+        }
+    }
+
+    public static void copyAndOverrideFeaturesProperties(Feature source, Feature target){
+        if (source != null && target != null){
+            target.setShortName(source.getShortName());
+            target.setFullName(source.getFullName());
+            target.setType(source.getType());
+            target.setInteractionDependency(source.getInteractionDependency());
+            target.setInteractionEffect(source.getInteractionEffect());
+
+            // copy collections
+            target.getAnnotations().clear();
+            target.getAnnotations().addAll(source.getAnnotations());
+            target.getIdentifiers().clear();
+            target.getIdentifiers().addAll(source.getIdentifiers());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
             target.getRanges().clear();

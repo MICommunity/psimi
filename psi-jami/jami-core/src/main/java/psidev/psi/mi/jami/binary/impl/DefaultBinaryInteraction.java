@@ -23,6 +23,7 @@ public class DefaultBinaryInteraction<T extends Participant> extends DefaultInte
 
     private T participantA;
     private T participantB;
+    private CvTerm complexExpansion;
 
     public DefaultBinaryInteraction(){
         super();
@@ -52,6 +53,35 @@ public class DefaultBinaryInteraction<T extends Participant> extends DefaultInte
         this.participantB = participantB;
     }
 
+    public DefaultBinaryInteraction(CvTerm complexExpansion){
+        super();
+        this.complexExpansion = complexExpansion;
+    }
+
+    public DefaultBinaryInteraction(String shortName, CvTerm type, CvTerm complexExpansion){
+        super(shortName, type);
+        this.complexExpansion = complexExpansion;
+    }
+
+    public DefaultBinaryInteraction(T participantA, T participantB, CvTerm complexExpansion){
+        super();
+        this.participantA = participantA;
+        this.participantB = participantB;
+        this.complexExpansion = complexExpansion;
+    }
+
+    public DefaultBinaryInteraction(String shortName, T participantA, T participantB, CvTerm complexExpansion){
+        super(shortName);
+        this.complexExpansion = complexExpansion;
+    }
+
+    public DefaultBinaryInteraction(String shortName, CvTerm type, T participantA, T participantB, CvTerm complexExpansion){
+        super(shortName, type);
+        this.participantA = participantA;
+        this.participantB = participantB;
+        this.complexExpansion = complexExpansion;
+    }
+
     public T getParticipantA() {
         return participantA;
     }
@@ -66,6 +96,14 @@ public class DefaultBinaryInteraction<T extends Participant> extends DefaultInte
 
     public void setParticipantB(T participantB) {
         this.participantB = participantB;
+    }
+
+    public CvTerm getComplexExpansion() {
+        return this.complexExpansion;
+    }
+
+    public void setComplexExpansion(CvTerm expansion) {
+        this.complexExpansion = expansion;
     }
 
     /**
