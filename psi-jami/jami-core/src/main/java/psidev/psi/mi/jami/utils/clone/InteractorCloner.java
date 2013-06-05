@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.utils.clone;
 
 import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 
 /**
  * Cloner for interactors
@@ -56,7 +58,62 @@ public class InteractorCloner {
             target.getInteractionEvidences().clear();
             target.getInteractionEvidences().addAll(source.getInteractionEvidences());
             target.getParticipants().clear();
-            target.addAllModelledParticipants(source.getParticipants());
+            target.getParticipants().addAll(source.getParticipants());
+            target.getModelledParameters().clear();
+            target.getModelledParameters().addAll(source.getModelledParameters());
+            target.getModelledConfidences().clear();
+            target.getModelledConfidences().addAll(source.getModelledConfidences());
+            target.getCooperativeEffects().clear();
+            target.getCooperativeEffects().addAll(source.getCooperativeEffects());
+        }
+    }
+
+    /**
+     * This method will copy basic properties from the Interaction source in the complex target.
+     * This method does not copy the participants of the source
+     * @param source
+     * @param target
+     */
+    public static void copyAndOverrideBasicComplexPropertiesWithInteractionProperties(Interaction source, Complex target){
+        if (source != null && target != null){
+            target.setInteractionType(source.getInteractionType());
+            target.setCreatedDate(source.getCreatedDate());
+            target.setUpdatedDate(source.getUpdatedDate());
+            target.setShortName(source.getShortName());
+
+            // copy collections
+            target.getAnnotations().clear();
+            target.getAnnotations().addAll(source.getAnnotations());
+            target.getXrefs().clear();
+            target.getXrefs().addAll(source.getXrefs());
+            target.getAliases().clear();
+            target.getIdentifiers().clear();
+            target.getIdentifiers().addAll(source.getIdentifiers());
+        }
+    }
+
+    /**
+     * This method will copy basic properties from the Interaction source in the complex target.
+     * This method does not copy the participants of the source
+     * @param source
+     * @param target
+     */
+    public static void copyAndOverrideBasicComplexPropertiesWithModelledInteractionProperties(ModelledInteraction source, Complex target){
+        if (source != null && target != null){
+            target.setInteractionType(source.getInteractionType());
+            target.setCreatedDate(source.getCreatedDate());
+            target.setUpdatedDate(source.getUpdatedDate());
+            target.setShortName(source.getShortName());
+
+            // copy collections
+            target.getAnnotations().clear();
+            target.getAnnotations().addAll(source.getAnnotations());
+            target.getXrefs().clear();
+            target.getXrefs().addAll(source.getXrefs());
+            target.getIdentifiers().clear();
+            target.getIdentifiers().addAll(source.getIdentifiers());
+            target.getInteractionEvidences().clear();
+            target.getInteractionEvidences().addAll(source.getInteractionEvidences());
             target.getModelledParameters().clear();
             target.getModelledParameters().addAll(source.getModelledParameters());
             target.getModelledConfidences().clear();
