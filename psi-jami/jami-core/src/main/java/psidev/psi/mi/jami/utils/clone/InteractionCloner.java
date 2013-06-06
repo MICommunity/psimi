@@ -60,89 +60,16 @@ public class InteractionCloner {
 
             // copy or create participants if not ignored
             if (!ignoreParticipants){
+                target.getParticipants().clear();
+
                 if (!createNewParticipant){
-                    target.getParticipants().clear();
                     target.getParticipants().addAll(source.getParticipants());
                 }
                 else{
-                    target.getParticipants().clear();
                     for (ParticipantEvidence p : source.getParticipants()){
                         ParticipantEvidence clone = new DefaultParticipantEvidence(p.getInteractor());
                         ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(p, clone, true);
                         target.addParticipantEvidence(clone);
-                    }
-                }
-            }
-        }
-    }
-
-    /***
-     * This method will copy participants of interaction evidence source in binary target.
-     * @param source
-     * @param target
-     * @param createNewParticipant If true, this method will clone each participant from source instead of reusing the participant instances from source.
-     *                         It will then set the interactionEvidence of the cloned participants to target
-     * @param self If true, it will only look at the first participant and duplicate this participant with stoichiometry 0
-     * @throws IllegalArgumentException if the number of participants in source is superior to 2 or superior to 1 with self = true
-     */
-    public static void copyAndOverrideBinaryInteractionEvidenceParticipants(InteractionEvidence source, BinaryInteractionEvidence target, boolean createNewParticipant, boolean self){
-        if (source != null && target != null){
-            if (source.getParticipants().size() >= 2){
-                 throw new IllegalArgumentException("We cannot copy the participants from the source because it contains more than 2 participants : " +source.getParticipants().size());
-            }
-            else if (source.getParticipants().size() != 1 && self){
-                throw new IllegalArgumentException("We cannot copy the participants from the source because it is a self interaction containing more than one participant");
-            }
-
-            if (source.getParticipants().isEmpty()){
-                target.setParticipantA(null);
-                target.setParticipantB(null);
-            }
-            else {
-                Iterator<ParticipantEvidence> iterator = source.getParticipants().iterator();
-
-                if (!createNewParticipant){
-                    ParticipantEvidence first = iterator.next();
-                    target.setParticipantA(first);
-                    if (self){
-                        ParticipantEvidence clone = new DefaultParticipantEvidence(first.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone, true);
-                        clone.setInteractionEvidence(target);
-                        // second self interactor has stoichiometry 0
-                        clone.setStoichiometry(0);
-                        target.setParticipantB(clone);
-                    }
-                    else if (iterator.hasNext()){
-                        target.setParticipantB(iterator.next());
-                    }
-                    else {
-                        target.setParticipantB(null);
-                    }
-                }
-                else {
-                    ParticipantEvidence first = iterator.next();
-                    ParticipantEvidence clone = new DefaultParticipantEvidence(first.getInteractor());
-                    ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone, true);
-                    target.setParticipantA(clone);
-                    clone.setInteractionEvidence(target);
-
-                    if (self){
-                        ParticipantEvidence clone2 = new DefaultParticipantEvidence(first.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone2, true);
-                        clone2.setInteractionEvidence(target);
-                        // second self interactor has stoichiometry 0
-                        clone2.setStoichiometry(0);
-                        target.setParticipantB(clone2);
-                    }
-                    else if (iterator.hasNext()){
-                        ParticipantEvidence second = iterator.next();
-                        ParticipantEvidence clone2 = new DefaultParticipantEvidence(second.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(second, clone2, true);
-                        target.setParticipantB(clone2);
-                        clone2.setInteractionEvidence(target);
-                    }
-                    else {
-                        target.setParticipantB(null);
                     }
                 }
             }
@@ -181,19 +108,139 @@ public class InteractionCloner {
             target.getModelledParameters().addAll(source.getModelledParameters());
             target.getInteractionEvidences().clear();
             target.getInteractionEvidences().addAll(source.getInteractionEvidences());
+            target.getCooperativeEffects().clear();
+            target.getCooperativeEffects().addAll(source.getCooperativeEffects());
 
             // copy or create participants if not ignored
             if (!ignoreParticipants){
+                target.getParticipants().clear();
+
                 if (!createNewParticipant){
-                    target.getParticipants().clear();
                     target.getParticipants().addAll(source.getParticipants());
                 }
                 else{
-                    target.getParticipants().clear();
                     for (ModelledParticipant p : source.getParticipants()){
                         ModelledParticipant clone = new DefaultModelledParticipant(p.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(p, clone, true);
                         target.addModelledParticipant(clone);
+                    }
+                }
+            }
+        }
+    }
+
+    /***
+     * This method will copy basic properties of interaction source in interaction target and will override all the other properties of Target interaction.
+     * @param source
+     * @param target
+     * @param createNewParticipant If true, this method will clone each participant from source instead of reusing the participant instances from source.
+     * @param ignoreParticipants If true, this method will clone the interaction properties and ignore the participants of the source
+     */
+    public static void copyAndOverrideBasicInteractionProperties(Interaction source, Interaction target, boolean createNewParticipant, boolean ignoreParticipants){
+        if (source != null && target != null){
+            target.setCreatedDate(source.getCreatedDate());
+            target.setShortName(source.getShortName());
+            target.setInteractionType(source.getInteractionType());
+            target.setUpdatedDate(source.getUpdatedDate());
+
+            // copy collections
+            target.getAnnotations().clear();
+            target.getAnnotations().addAll(source.getAnnotations());
+            target.getChecksums().clear();
+            target.getChecksums().addAll(source.getChecksums());
+            target.getXrefs().clear();
+            target.getXrefs().addAll(source.getXrefs());
+            target.getIdentifiers().clear();
+            target.getIdentifiers().addAll(source.getIdentifiers());
+
+            // copy or create participants if not ignored
+            if (!ignoreParticipants){
+                target.getParticipants().clear();
+                if (!createNewParticipant){
+                    ((Collection<Participant>)target.getParticipants()).addAll(source.getParticipants());
+                }
+                else{
+                    for (Participant p : source.getParticipants()){
+                        Participant clone = new DefaultParticipant(p.getInteractor());
+                        ParticipantCloner.copyAndOverrideParticipantProperties(p, clone, true);
+                        ((Collection<Participant>)target.getParticipants()).add(clone);
+                    }
+                }
+            }
+        }
+    }
+
+    /***
+     * This method will copy participants of interaction evidence source in binary target.
+     * @param source
+     * @param target
+     * @param createNewParticipant If true, this method will clone each participant from source instead of reusing the participant instances from source.
+     *                         It will then set the interactionEvidence of the cloned participants to target
+     * @param self If true, it will only look at the first participant and duplicate this participant with stoichiometry 0
+     * @throws IllegalArgumentException if the number of participants in source is superior to 2 or superior to 1 with self = true
+     */
+    public static void copyAndOverrideParticipantsEvidences(InteractionEvidence source, BinaryInteractionEvidence target, boolean createNewParticipant, boolean self){
+        if (source != null && target != null){
+            if (source.getParticipants().size() > 2){
+                 throw new IllegalArgumentException("We cannot copy the participants from the source because it contains more than 2 participants : " +source.getParticipants().size());
+            }
+            else if (source.getParticipants().size() != 1 && self){
+                throw new IllegalArgumentException("We cannot copy the participants from the source because it is a self interaction containing more than one participant");
+            }
+
+            if (source.getParticipants().isEmpty()){
+                target.setParticipantA(null);
+                target.setParticipantB(null);
+            }
+            else {
+                Iterator<ParticipantEvidence> iterator = source.getParticipants().iterator();
+
+                if (!createNewParticipant){
+                    ParticipantEvidence first = iterator.next();
+                    target.setParticipantA(first);
+                    if (self){
+                        ParticipantEvidence clone = new DefaultParticipantEvidence(first.getInteractor());
+                        ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone, true);
+                        clone.setInteractionEvidence(target);
+                        // second self interactor has stoichiometry 0 if necessary
+                        if (first.getStoichiometry() != null){
+                            clone.setStoichiometry(0);
+                        }
+                        target.setParticipantB(clone);
+                    }
+                    else if (iterator.hasNext()){
+                        target.setParticipantB(iterator.next());
+                    }
+                    else {
+                        target.setParticipantB(null);
+                    }
+                }
+                else {
+                    ParticipantEvidence first = iterator.next();
+                    ParticipantEvidence clone = new DefaultParticipantEvidence(first.getInteractor());
+                    ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone, true);
+                    target.setParticipantA(clone);
+                    clone.setInteractionEvidence(target);
+
+                    if (self){
+                        ParticipantEvidence clone2 = new DefaultParticipantEvidence(first.getInteractor());
+                        ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(first, clone2, true);
+                        clone2.setInteractionEvidence(target);
+                        // second self interactor has stoichiometry 0 if necessary
+                        if (first.getStoichiometry() != null){
+                            clone2.setStoichiometry(0);
+                        }
+                        target.setParticipantB(clone2);
+                    }
+                    else if (iterator.hasNext()){
+                        ParticipantEvidence second = iterator.next();
+                        ParticipantEvidence clone2 = new DefaultParticipantEvidence(second.getInteractor());
+                        ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(second, clone2, true);
+                        target.setParticipantB(clone2);
+                        clone2.setInteractionEvidence(target);
+                    }
+                    else {
+                        target.setParticipantB(null);
                     }
                 }
             }
@@ -209,9 +256,9 @@ public class InteractionCloner {
      * @param self if true, we only take the first participant and duplicate it in the Binary interaction. We then set the stoichiometry to 0 for the second interactor
      * @throws IllegalArgumentException if the source has more than two participants or more than one participant when self is true
      */
-    public static void copyAndOverrideModelledBinaryInteractionParticipants(ModelledInteraction source, ModelledBinaryInteraction target, boolean createNewParticipant, boolean self){
+    public static void copyAndOverrideModelledParticipants(ModelledInteraction source, ModelledBinaryInteraction target, boolean createNewParticipant, boolean self){
         if (source != null && target != null){
-            if (source.getParticipants().size() >= 2){
+            if (source.getParticipants().size() > 2){
                 throw new IllegalArgumentException("We cannot copy the participants from the source because it contains more than 2 participants : " +source.getParticipants().size());
             }
             else if (source.getParticipants().size() != 1 && self){
@@ -233,8 +280,10 @@ public class InteractionCloner {
                         ModelledParticipant clone = new DefaultModelledParticipant(first.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(first, clone, true);
                         clone.setModelledInteraction(target);
-                        // second self interactor has stoichiometry 0
-                        clone.setStoichiometry(0);
+                        // second self interactor has stoichiometry 0 if necessary
+                        if (first.getStoichiometry() != null){
+                            clone.setStoichiometry(0);
+                        }
                         target.setParticipantB(clone);
                     }
                     else if (iterator.hasNext()){
@@ -255,8 +304,10 @@ public class InteractionCloner {
                         ModelledParticipant clone2 = new DefaultModelledParticipant(first.getInteractor());
                         ParticipantCloner.copyAndOverrideModelledParticipantProperties(first, clone2, true);
                         clone2.setModelledInteraction(target);
-                        // second self interactor has stoichiometry 0
-                        clone2.setStoichiometry(0);
+                        // second self interactor has stoichiometry 0 if necessary
+                        if (first.getStoichiometry() != null){
+                            clone2.setStoichiometry(0);
+                        }
                         target.setParticipantB(clone2);
                     }
                     else if (iterator.hasNext()){
@@ -275,48 +326,6 @@ public class InteractionCloner {
     }
 
     /***
-     * This method will copy properties of interaction source in interaction target and will override all the other properties of Target interaction.
-     * @param source
-     * @param target
-     * @param createNewParticipant If true, this method will clone each participant from source instead of reusing the participant instances from source.
-     * @param ignoreParticipants If true, this method will clone the interaction properties and ignore the participants of the source
-     */
-    public static void copyAndOverrideInteractionProperties(Interaction source, Interaction target, boolean createNewParticipant, boolean ignoreParticipants){
-        if (source != null && target != null){
-            target.setCreatedDate(source.getCreatedDate());
-            target.setShortName(source.getShortName());
-            target.setInteractionType(source.getInteractionType());
-            target.setUpdatedDate(source.getUpdatedDate());
-
-            // copy collections
-            target.getAnnotations().clear();
-            target.getAnnotations().addAll(source.getAnnotations());
-            target.getChecksums().clear();
-            target.getChecksums().addAll(source.getChecksums());
-            target.getXrefs().clear();
-            target.getXrefs().addAll(source.getXrefs());
-            target.getIdentifiers().clear();
-            target.getIdentifiers().addAll(source.getIdentifiers());
-
-            // copy or create participants if not ignored
-            if (!ignoreParticipants){
-                if (!createNewParticipant){
-                    target.getParticipants().clear();
-                    ((Collection<Participant>)target.getParticipants()).addAll(source.getParticipants());
-                }
-                else{
-                    target.getParticipants().clear();
-                    for (Participant p : source.getParticipants()){
-                        Participant clone = new DefaultParticipant(p.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantProperties(p, clone, true);
-                        ((Collection<Participant>)target.getParticipants()).add(clone);
-                    }
-                }
-            }
-        }
-    }
-
-    /***
      * This method will copy participants of interaction source in binary target.
      * @param source
      * @param target
@@ -324,9 +333,9 @@ public class InteractionCloner {
      * @param self if true, we only take the first participant and duplicate it in the Binary interaction. We then set the stoichiometry to 0 for the second interactor
      * @throws IllegalArgumentException if the source has more than two participants or more than one participant when self is true
      */
-    public static void copyAndOverrideBinaryInteractionParticipants(Interaction source, BinaryInteraction target, boolean createNewParticipant, boolean self){
+    public static void copyAndOverrideBasicParticipants(Interaction source, BinaryInteraction target, boolean createNewParticipant, boolean self){
         if (source != null && target != null){
-            if (source.getParticipants().size() >= 2){
+            if (source.getParticipants().size() > 2){
                 throw new IllegalArgumentException("We cannot copy the participants from the source because it contains more than 2 participants : " +source.getParticipants().size());
             }
             else if (source.getParticipants().size() != 1 && self){
@@ -346,8 +355,10 @@ public class InteractionCloner {
                     if (self){
                         Participant clone = new DefaultParticipant(first.getInteractor());
                         ParticipantCloner.copyAndOverrideParticipantProperties(first, clone, true);
-                        // second self interactor has stoichiometry 0
-                        clone.setStoichiometry(0);
+                        // second self interactor has stoichiometry 0 if necessary
+                        if (first.getStoichiometry() != null){
+                            clone.setStoichiometry(0);
+                        }
                         target.setParticipantB(clone);
                     }
                     else if (iterator.hasNext()){
@@ -366,8 +377,10 @@ public class InteractionCloner {
                     if (self){
                         Participant clone2 = new DefaultParticipant(first.getInteractor());
                         ParticipantCloner.copyAndOverrideParticipantProperties(first, clone2, true);
-                        // second self interactor has stoichiometry 0
-                        clone2.setStoichiometry(0);
+                        // second self interactor has stoichiometry 0 if necessary
+                        if (first.getStoichiometry() != null){
+                            clone2.setStoichiometry(0);
+                        }
                         target.setParticipantB(clone2);
                     }
                     else if (iterator.hasNext()){

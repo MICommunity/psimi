@@ -89,7 +89,7 @@ public class MatrixExpansion extends AbstractComplexExpansionMethod {
                 Participant c2 = participants[j];
                 // build a new interaction
                 BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-                InteractionCloner.copyAndOverrideInteractionProperties(interaction, binary, false, true);
+                InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
 
                 // set participants
                 initialiseBinaryInteractionParticipantsWith(c1, c2, binary);
