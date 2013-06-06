@@ -27,6 +27,8 @@ public class CvTermCloner {
             target.getAnnotations().addAll(source.getAnnotations());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
+            target.getIdentifiers().clear();
+            target.getIdentifiers().addAll(source.getIdentifiers());
             target.getSynonyms().clear();
             target.getSynonyms().addAll(source.getSynonyms());
         }
