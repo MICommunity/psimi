@@ -90,7 +90,7 @@ public class BipartiteExpansion extends AbstractComplexExpansionMethod {
 
             // build a new interaction
             BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-            InteractionCloner.copyAndOverrideInteractionProperties(interaction, binary, false, true);
+            InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
 
             // set participants
             initialiseBinaryInteractionParticipantsWith(externalEntity, p, binary);

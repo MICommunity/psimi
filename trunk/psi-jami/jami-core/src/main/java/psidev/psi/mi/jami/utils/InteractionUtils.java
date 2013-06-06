@@ -203,7 +203,7 @@ public class InteractionUtils {
             ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
             ModelledInteraction modelledInteraction = (ModelledInteraction)interaction;
             InteractionCloner.copyAndOverrideModelledInteractionProperties(modelledInteraction, binary, true, true);
-            InteractionCloner.copyAndOverrideModelledBinaryInteractionParticipants(modelledInteraction, binary, true, true);
+            InteractionCloner.copyAndOverrideModelledParticipants(modelledInteraction, binary, true, true);
 
             return binary;
         }
@@ -211,14 +211,14 @@ public class InteractionUtils {
             BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
             BinaryInteractionEvidence interactionEvidence = (BinaryInteractionEvidence)interaction;
             InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interactionEvidence, binary, true, true);
-            InteractionCloner.copyAndOverrideBinaryInteractionEvidenceParticipants(interactionEvidence, binary, true, true);
+            InteractionCloner.copyAndOverrideParticipantsEvidences(interactionEvidence, binary, true, true);
 
             return binary;
         }
         else{
             BinaryInteraction<Participant> binary = new DefaultBinaryInteraction<Participant>();
-            InteractionCloner.copyAndOverrideInteractionProperties(interaction, binary, true, true);
-            InteractionCloner.copyAndOverrideBinaryInteractionParticipants(interaction, binary, true, true);
+            InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, true, true);
+            InteractionCloner.copyAndOverrideBasicParticipants(interaction, binary, true, true);
             return binary;
         }
     }
@@ -231,7 +231,7 @@ public class InteractionUtils {
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
         BinaryInteractionEvidence interactionEvidence = (BinaryInteractionEvidence)interaction;
         InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interactionEvidence, binary, true, true);
-        InteractionCloner.copyAndOverrideBinaryInteractionEvidenceParticipants(interactionEvidence, binary, true, true);
+        InteractionCloner.copyAndOverrideParticipantsEvidences(interactionEvidence, binary, true, true);
 
         return binary;
     }
@@ -244,7 +244,7 @@ public class InteractionUtils {
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
         ModelledInteraction modelledInteraction = (ModelledInteraction)interaction;
         InteractionCloner.copyAndOverrideModelledInteractionProperties(modelledInteraction, binary, true, true);
-        InteractionCloner.copyAndOverrideModelledBinaryInteractionParticipants(modelledInteraction, binary, true, true);
+        InteractionCloner.copyAndOverrideModelledParticipants(modelledInteraction, binary, true, true);
 
         return binary;
     }
