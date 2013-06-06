@@ -44,6 +44,12 @@ public class FeatureCloner {
         }
     }
 
+    /***
+     * This method will copy properties of modelled Feature source in modelled Feature target and will override all the other properties of modelled Target feature.
+     * Only the participant is not copied
+     * @param source
+     * @param target
+     */
     public static void copyAndOverrideModelledFeaturesProperties(ModelledFeature source, ModelledFeature target){
         if (source != null && target != null){
             target.setShortName(source.getShortName());
@@ -66,6 +72,12 @@ public class FeatureCloner {
         }
     }
 
+    /***
+     * This method will copy properties of Feature source in Feature target and will override all the other properties of Target feature.
+     * Only the participant is not copied
+     * @param source
+     * @param target
+     */
     public static void copyAndOverrideFeaturesProperties(Feature source, Feature target){
         if (source != null && target != null){
             target.setShortName(source.getShortName());
