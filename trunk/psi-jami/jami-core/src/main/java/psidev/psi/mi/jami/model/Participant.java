@@ -12,12 +12,28 @@ import java.util.Collection;
 
 public interface Participant<T extends Interactor> {
 
-    public static String UNSPECIFIED_ROLE = "unspecified role";
-    public static String UNSPECIFIED_ROLE_MI = "MI:0499";
-    public static String PUTATIVE_SELF_ROLE = "putative self";
-    public static String PUTATIVE_SELF_ROLE_MI = "MI:0898";
-    public static String SELF_ROLE = "self";
-    public static String SELF_ROLE_MI = "MI:0503";
+    public static final String UNSPECIFIED_ROLE = "unspecified role";
+    public static final String UNSPECIFIED_ROLE_MI = "MI:0499";
+    public static final String PUTATIVE_SELF_ROLE = "putative self";
+    public static final String PUTATIVE_SELF_ROLE_MI = "MI:0898";
+    public static final String SELF_ROLE = "self";
+    public static final String SELF_ROLE_MI = "MI:0503";
+    public static final String BAIT_ROLE = "bait";
+    public static final String BAIT_ROLE_MI = "MI:0496";
+    public static final String FLUORESCENCE_DONOR_ROLE = "fluorescence donor";
+    public static final String FLUORESCENCE_DONOR_ROLE_MI = "MI:0583";
+    public static final String SUPPRESSOR_GENE_ROLE = "suppressor gene";
+    public static final String SUPPRESSOR_GENE_ROLE_MI = "MI:0581";
+    public static final String ENZYME_ROLE_MI = "MI:0501";
+    public static final String ENZYME_ROLE = "enzyme";
+    public static final String DONOR_ROLE_MI = "MI:0918";
+    public static final String DONOR_ROLE = "donor";
+    public static final String ELECTRON_DONOR_ROLE_MI = "MI:0579";
+    public static final String ELECTRON_DONOR_ROLE = "electron donor";
+    public static final String PHOSPHATE_DONOR_ROLE_MI = "MI:0842";
+    public static final String PHOSPHATE_DONOR_ROLE = "phosphate donor";
+    public static final String PHOTON_DONOR_ROLE_MI = "MI:1084";
+    public static final String PHOTON_DONOR_ROLE = "photon donor";
 
     /**
      * The molecule/complex of molecules which interacts.
