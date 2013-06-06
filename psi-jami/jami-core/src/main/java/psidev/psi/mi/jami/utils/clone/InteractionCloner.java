@@ -179,7 +179,7 @@ public class InteractionCloner {
      * @param self If true, it will only look at the first participant and duplicate this participant with stoichiometry 0
      * @throws IllegalArgumentException if the number of participants in source is superior to 2 or superior to 1 with self = true
      */
-    public static void copyAndOverrideParticipantsEvidences(InteractionEvidence source, BinaryInteractionEvidence target, boolean createNewParticipant, boolean self){
+    public static void copyAndOverrideParticipantsEvidencesToBinary(InteractionEvidence source, BinaryInteractionEvidence target, boolean createNewParticipant, boolean self){
         if (source != null && target != null){
             if (source.getParticipants().size() > 2){
                  throw new IllegalArgumentException("We cannot copy the participants from the source because it contains more than 2 participants : " +source.getParticipants().size());
@@ -256,7 +256,7 @@ public class InteractionCloner {
      * @param self if true, we only take the first participant and duplicate it in the Binary interaction. We then set the stoichiometry to 0 for the second interactor
      * @throws IllegalArgumentException if the source has more than two participants or more than one participant when self is true
      */
-    public static void copyAndOverrideModelledParticipants(ModelledInteraction source, ModelledBinaryInteraction target, boolean createNewParticipant, boolean self){
+    public static void copyAndOverrideModelledParticipantsToBinary(ModelledInteraction source, ModelledBinaryInteraction target, boolean createNewParticipant, boolean self){
         if (source != null && target != null){
             if (source.getParticipants().size() > 2){
                 throw new IllegalArgumentException("We cannot copy the participants from the source because it contains more than 2 participants : " +source.getParticipants().size());
@@ -333,7 +333,7 @@ public class InteractionCloner {
      * @param self if true, we only take the first participant and duplicate it in the Binary interaction. We then set the stoichiometry to 0 for the second interactor
      * @throws IllegalArgumentException if the source has more than two participants or more than one participant when self is true
      */
-    public static void copyAndOverrideBasicParticipants(Interaction source, BinaryInteraction target, boolean createNewParticipant, boolean self){
+    public static void copyAndOverrideBasicParticipantsToBinary(Interaction source, BinaryInteraction target, boolean createNewParticipant, boolean self){
         if (source != null && target != null){
             if (source.getParticipants().size() > 2){
                 throw new IllegalArgumentException("We cannot copy the participants from the source because it contains more than 2 participants : " +source.getParticipants().size());

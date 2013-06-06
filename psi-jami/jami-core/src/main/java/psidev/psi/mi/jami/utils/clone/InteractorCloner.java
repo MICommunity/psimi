@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.utils.clone;
 
-import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.impl.DefaultModelledParticipant;
 
 /**
  * Cloner for interactors
@@ -20,7 +18,7 @@ public class InteractorCloner {
      * @param source
      * @param target
      */
-    public static void copyAndOverrideInteractorProperties(Interactor source, Interactor target){
+    public static void copyAndOverrideBasicInteractorProperties(Interactor source, Interactor target){
         if (source != null && target != null){
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());
@@ -43,12 +41,16 @@ public class InteractorCloner {
 
     /***
      * This method will copy properties of complex source in complex target and will override all the other properties of Target complex.
+     * This method does not copy the
      * @param source
      * @param target
+     * @param createNewParticipant If true, this method will clone each participant from source instead of reusing the participant instances from source.
+     *                         It will then set the interactionEvidence of the cloned participants to target
+     * @param ignoreParticipants If true, this method will clone the interaction properties and ignore the participants of the source
      */
-    public static void copyAndOverrideComplexProperties(Complex source, Complex target){
+    public static void copyAndOverrideComplexProperties(Complex source, Complex target, boolean createNewParticipant, boolean ignoreParticipants){
         if (source != null && target != null){
-            copyAndOverrideInteractorProperties(source, target);
+            copyAndOverrideBasicInteractorProperties(source, target);
             target.setSource(source.getSource());
             target.setCreatedDate(source.getCreatedDate());
             target.setUpdatedDate(source.getUpdatedDate());
@@ -57,19 +59,34 @@ public class InteractorCloner {
             // copy collections
             target.getInteractionEvidences().clear();
             target.getInteractionEvidences().addAll(source.getInteractionEvidences());
-            target.getParticipants().clear();
-            target.getParticipants().addAll(source.getParticipants());
             target.getModelledParameters().clear();
             target.getModelledParameters().addAll(source.getModelledParameters());
             target.getModelledConfidences().clear();
             target.getModelledConfidences().addAll(source.getModelledConfidences());
             target.getCooperativeEffects().clear();
             target.getCooperativeEffects().addAll(source.getCooperativeEffects());
+
+            // copy or create participants if not ignored
+            if (!ignoreParticipants){
+                target.getParticipants().clear();
+
+                if (!createNewParticipant){
+                    target.getParticipants().addAll(source.getParticipants());
+                }
+                else{
+                    for (ModelledParticipant p : source.getParticipants()){
+                        ModelledParticipant clone = new DefaultModelledParticipant(p.getInteractor());
+                        ParticipantCloner.copyAndOverrideModelledParticipantProperties(p, clone, true);
+                        target.addModelledParticipant(clone);
+                    }
+                }
+            }
         }
     }
 
     /**
      * This method will copy basic properties from the Interaction source in the complex target.
+     * It will erase existing annotations, xrefs, checksums and identifiers
      * This method does not copy the participants of the source
      * @param source
      * @param target
@@ -86,9 +103,10 @@ public class InteractorCloner {
             target.getAnnotations().addAll(source.getAnnotations());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
-            target.getAliases().clear();
             target.getIdentifiers().clear();
             target.getIdentifiers().addAll(source.getIdentifiers());
+            target.getChecksums().clear();
+            target.getChecksums().addAll(source.getChecksums());
         }
     }
 
@@ -120,6 +138,8 @@ public class InteractorCloner {
             target.getModelledConfidences().addAll(source.getModelledConfidences());
             target.getCooperativeEffects().clear();
             target.getCooperativeEffects().addAll(source.getCooperativeEffects());
+            target.getChecksums().clear();
+            target.getChecksums().addAll(source.getChecksums());
         }
     }
 }
