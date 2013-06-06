@@ -111,7 +111,7 @@ public class ParticipantCloner {
      * @param target
      * @param createNewFeature If true, this method will clone each feature from source instead of reusing the feature instances from source.
      */
-    public static void copyAndOverrideParticipantProperties(Participant<Interactor> source, Participant<Interactor> target, boolean createNewFeature){
+    public static void copyAndOverrideBasicParticipantProperties(Participant<Interactor> source, Participant<Interactor> target, boolean createNewFeature){
         if (source != null && target != null){
             target.setBiologicalRole(source.getBiologicalRole());
             target.setInteractor(source.getInteractor());
@@ -135,7 +135,7 @@ public class ParticipantCloner {
                 target.getFeatures().clear();
                 for (Feature f : source.getFeatures()){
                     Feature clone = new DefaultFeature();
-                    FeatureCloner.copyAndOverrideFeaturesProperties(f, clone);
+                    FeatureCloner.copyAndOverrideBasicFeaturesProperties(f, clone);
                     ((Collection<Feature>)target.getFeatures()).add(clone);
                 }
             }

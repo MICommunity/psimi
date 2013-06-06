@@ -162,7 +162,7 @@ public class InteractionCloner {
                 else{
                     for (Participant p : source.getParticipants()){
                         Participant clone = new DefaultParticipant(p.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantProperties(p, clone, true);
+                        ParticipantCloner.copyAndOverrideBasicParticipantProperties(p, clone, true);
                         ((Collection<Participant>)target.getParticipants()).add(clone);
                     }
                 }
@@ -354,7 +354,7 @@ public class InteractionCloner {
                     target.setParticipantA(first);
                     if (self){
                         Participant clone = new DefaultParticipant(first.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantProperties(first, clone, true);
+                        ParticipantCloner.copyAndOverrideBasicParticipantProperties(first, clone, true);
                         // second self interactor has stoichiometry 0 if necessary
                         if (first.getStoichiometry() != null){
                             clone.setStoichiometry(0);
@@ -371,12 +371,12 @@ public class InteractionCloner {
                 else {
                     Participant first = iterator.next();
                     Participant clone = new DefaultParticipant(first.getInteractor());
-                    ParticipantCloner.copyAndOverrideParticipantProperties(first, clone, true);
+                    ParticipantCloner.copyAndOverrideBasicParticipantProperties(first, clone, true);
                     target.setParticipantA(clone);
 
                     if (self){
                         Participant clone2 = new DefaultParticipant(first.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantProperties(first, clone2, true);
+                        ParticipantCloner.copyAndOverrideBasicParticipantProperties(first, clone2, true);
                         // second self interactor has stoichiometry 0 if necessary
                         if (first.getStoichiometry() != null){
                             clone2.setStoichiometry(0);
@@ -386,7 +386,7 @@ public class InteractionCloner {
                     else if (iterator.hasNext()){
                         Participant second = iterator.next();
                         Participant clone2 = new DefaultParticipant(second.getInteractor());
-                        ParticipantCloner.copyAndOverrideParticipantProperties(second, clone2, true);
+                        ParticipantCloner.copyAndOverrideBasicParticipantProperties(second, clone2, true);
                         target.setParticipantB(clone2);
                     }
                     else {
