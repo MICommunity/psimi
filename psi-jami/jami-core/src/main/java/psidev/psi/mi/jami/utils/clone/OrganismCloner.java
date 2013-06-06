@@ -24,6 +24,7 @@ public class OrganismCloner {
             target.setCellType(source.getCellType());
             target.setTissue(source.getTissue());
             target.setCompartment(source.getCompartment());
+            target.setTaxId(source.getTaxId());
 
             // copy collections
             target.getAliases().clear();
