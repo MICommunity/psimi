@@ -35,6 +35,8 @@ public class ExperimentCloner {
             target.getAnnotations().addAll(source.getAnnotations());
             target.getXrefs().clear();
             target.getXrefs().addAll(source.getXrefs());
+            target.getConfidences().clear();
+            target.getConfidences().addAll(source.getConfidences());
             target.getVariableParameters().clear();
 
             // for variableParameters, need to create new ones
@@ -43,6 +45,7 @@ public class ExperimentCloner {
                 for (VariableParameterValue v : p.getVariableValues()){
                     newParam.getVariableValues().add(new DefaultVariableParameterValue(v.getValue(), newParam, v.getOrder()));
                 }
+                target.getVariableParameters().add(newParam);
             }
         }
     }

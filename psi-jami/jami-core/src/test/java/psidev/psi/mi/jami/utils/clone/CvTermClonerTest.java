@@ -44,5 +44,8 @@ public class CvTermClonerTest {
         Assert.assertEquals(1, targetCvTerm.getXrefs().size());
         Assert.assertEquals(1, targetCvTerm.getSynonyms().size());
         Assert.assertEquals(1, targetCvTerm.getAnnotations().size());
+        Assert.assertTrue(sourceCvTerm.getXrefs().iterator().next() == targetCvTerm.getXrefs().iterator().next());
+        Assert.assertTrue(sourceCvTerm.getSynonyms().iterator().next() == targetCvTerm.getSynonyms().iterator().next());
+        Assert.assertTrue(sourceCvTerm.getAnnotations().iterator().next() == targetCvTerm.getAnnotations().iterator().next());
     }
 }
