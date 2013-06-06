@@ -78,7 +78,7 @@ public class FeatureCloner {
      * @param source
      * @param target
      */
-    public static void copyAndOverrideFeaturesProperties(Feature source, Feature target){
+    public static void copyAndOverrideBasicFeaturesProperties(Feature source, Feature target){
         if (source != null && target != null){
             target.setShortName(source.getShortName());
             target.setFullName(source.getFullName());

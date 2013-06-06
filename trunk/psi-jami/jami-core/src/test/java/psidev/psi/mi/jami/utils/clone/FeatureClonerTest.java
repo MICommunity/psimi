@@ -34,7 +34,7 @@ public class FeatureClonerTest {
         ModelledFeature targetFeature = new DefaultModelledFeature("target feature", null);
         targetFeature.setInterpro("INTERPRO-xxx2");
 
-        FeatureCloner.copyAndOverrideFeaturesProperties(sourceFeature, targetFeature);
+        FeatureCloner.copyAndOverrideBasicFeaturesProperties(sourceFeature, targetFeature);
         Assert.assertEquals("source feature", targetFeature.getShortName());
         Assert.assertEquals("test full name", targetFeature.getFullName());
         Assert.assertEquals("INTERPRO-xxx", targetFeature.getInterpro());
