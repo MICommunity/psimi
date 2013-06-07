@@ -99,7 +99,7 @@ public class ModelledBinaryInteractionWrapper extends AbstractBinaryInteractionW
     }
 
     /**
-     * Adds a new ModelledParticipant and set the modelledInteraction of this participant if added.
+     * Adds a new ModelledParticipant and set the modelledInteraction of this participant if added (use the wrapped interaction, not the binary).
      * If the participant B and A are null, it will first set the participantA. If the participantA is set, it will set the ParticipantB
      * @param part
      * @return
@@ -113,12 +113,12 @@ public class ModelledBinaryInteractionWrapper extends AbstractBinaryInteractionW
             throw new IllegalArgumentException("A ModelledBinaryInteraction cannot have more than two participants.");
         }
         else if (getParticipantB() != null){
-            part.setModelledInteraction(this);
+            part.setModelledInteraction(modelledInteraction);
             setParticipantA(part);
             return true;
         }
         else{
-            part.setModelledInteraction(this);
+            part.setModelledInteraction(modelledInteraction);
             setParticipantA(part);
             return true;
         }

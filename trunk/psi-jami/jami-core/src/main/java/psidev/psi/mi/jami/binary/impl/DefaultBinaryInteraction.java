@@ -45,6 +45,8 @@ public class DefaultBinaryInteraction<T extends Participant> extends DefaultInte
 
     public DefaultBinaryInteraction(String shortName, T participantA, T participantB){
         super(shortName);
+        this.participantA = participantA;
+        this.participantB = participantB;
     }
 
     public DefaultBinaryInteraction(String shortName, CvTerm type, T participantA, T participantB){
@@ -73,6 +75,8 @@ public class DefaultBinaryInteraction<T extends Participant> extends DefaultInte
     public DefaultBinaryInteraction(String shortName, T participantA, T participantB, CvTerm complexExpansion){
         super(shortName);
         this.complexExpansion = complexExpansion;
+        this.participantA = participantA;
+        this.participantB = participantB;
     }
 
     public DefaultBinaryInteraction(String shortName, CvTerm type, T participantA, T participantB, CvTerm complexExpansion){
