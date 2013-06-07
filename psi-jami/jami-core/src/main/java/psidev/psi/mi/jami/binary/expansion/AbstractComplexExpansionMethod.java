@@ -64,7 +64,7 @@ public abstract class AbstractComplexExpansionMethod implements ComplexExpansion
             binaryInteractions.add((BinaryInteraction) interaction);
         }
         else{
-            InteractionCategory category = InteractionUtils.findInteractionCategoryOf(interaction);
+            InteractionCategory category = InteractionUtils.findInteractionCategoryOf(interaction, true);
 
             switch (category){
                 case binary:

@@ -32,7 +32,7 @@ public class SpokeExpansion extends AbstractComplexExpansionMethod {
     protected Collection<BinaryInteractionEvidence> expandInteractionEvidence(InteractionEvidence interaction) {
         Collection<BinaryInteractionEvidence> binaryInteractions = new ArrayList<BinaryInteractionEvidence>(interaction.getParticipants().size()-1);
 
-        ParticipantEvidence bait = ParticipantUtils.collectParticipantEvidenceToBeUsedAsABaitForSpokeExpansion(interaction.getParticipants());
+        ParticipantEvidence bait = ParticipantUtils.collectBestParticipantEvidenceAsBaitForSpokeExpansion(interaction.getParticipants());
 
         for ( ParticipantEvidence p : interaction.getParticipants() ) {
             if (p != bait){
@@ -54,7 +54,7 @@ public class SpokeExpansion extends AbstractComplexExpansionMethod {
     protected Collection<ModelledBinaryInteraction> expandModelledInteraction(ModelledInteraction interaction) {
         Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>(interaction.getParticipants().size()-1);
 
-        Participant bait = ParticipantUtils.collectParticipantToBeUsedAsABaitForSpokeExpansion(interaction.getParticipants());
+        Participant bait = ParticipantUtils.collectBestBaitParticipantForSpokeExpansion(interaction.getParticipants());
 
         for ( Participant p : interaction.getParticipants() ) {
             if (p != bait){
@@ -76,7 +76,7 @@ public class SpokeExpansion extends AbstractComplexExpansionMethod {
     protected Collection<BinaryInteraction> expandDefaultInteraction(Interaction interaction) {
         Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(interaction.getParticipants().size()-1);
 
-        Participant bait = ParticipantUtils.collectParticipantToBeUsedAsABaitForSpokeExpansion(interaction.getParticipants());
+        Participant bait = ParticipantUtils.collectBestBaitParticipantForSpokeExpansion(interaction.getParticipants());
 
         for ( Participant p : interaction.getParticipants() ) {
             if (p != bait){

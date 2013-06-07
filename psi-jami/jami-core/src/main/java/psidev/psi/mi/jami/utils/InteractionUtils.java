@@ -5,10 +5,7 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.InteractionCategory;
 import psidev.psi.mi.jami.binary.impl.*;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
@@ -32,7 +29,7 @@ public class InteractionUtils {
      * @param interaction
      * @return the InteractionCategory, null if the given interaction is null
      */
-    public static InteractionCategory findInteractionCategoryOf(Interaction interaction){
+    public static InteractionCategory findInteractionCategoryOf(Interaction interaction, boolean checkExperimentalRoleIfInteractionEvidence){
         if (interaction == null){
             return null;
         }
@@ -44,7 +41,7 @@ public class InteractionUtils {
             // the stoichiometry is not specified
             if (p.getStoichiometry() == null || p.getStoichiometry().getMaxValue() == 0){
                 // if we have self participants, then it is self_intra_molecular
-                if (ParticipantUtils.isSelfParticipant(p) || ParticipantUtils.isPutativeSelfParticipant(p)){
+                if (ParticipantUtils.isSelfParticipant(p, checkExperimentalRoleIfInteractionEvidence) || ParticipantUtils.isPutativeSelfParticipant(p, checkExperimentalRoleIfInteractionEvidence)){
                     return InteractionCategory.self_intra_molecular;
                 }
                 // we can consider that we have self inter molecular
@@ -82,12 +79,12 @@ public class InteractionUtils {
 
         // only one participant, check stoichiometry
         if (interaction.getParticipants().size() == 1) {
-            Participant p = interaction.getParticipants().iterator().next();
+            ParticipantEvidence p = interaction.getParticipants().iterator().next();
 
             // the stoichiometry is not specified
             if (p.getStoichiometry() == null || p.getStoichiometry().getMaxValue() == 0){
                 // if we have self participants, then it is self_intra_molecular
-                if (ParticipantUtils.isSelfParticipant(p) || ParticipantUtils.isPutativeSelfParticipant(p)){
+                if (ParticipantUtils.isSelfParticipantEvidence(p) || ParticipantUtils.isPutativeSelfParticipantEvidence(p)){
                     return InteractionCategory.self_intra_molecular;
                 }
                 // we can consider that we have self inter molecular
@@ -130,7 +127,7 @@ public class InteractionUtils {
             // the stoichiometry is not specified
             if (p.getStoichiometry() == null || p.getStoichiometry().getMaxValue() == 0){
                 // if we have self participants, then it is self_intra_molecular
-                if (ParticipantUtils.isSelfParticipant(p) || ParticipantUtils.isPutativeSelfParticipant(p)){
+                if (ParticipantUtils.isSelfParticipant(p, false) || ParticipantUtils.isPutativeSelfParticipant(p, false)){
                     return InteractionCategory.self_intra_molecular;
                 }
                 // we can consider that we have self inter molecular
