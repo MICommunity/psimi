@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.binary.expansion.InteractionCategory;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;

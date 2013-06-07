@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.binary.expansion;
+package psidev.psi.mi.jami.model;
 
 /**
  * The category of interaction

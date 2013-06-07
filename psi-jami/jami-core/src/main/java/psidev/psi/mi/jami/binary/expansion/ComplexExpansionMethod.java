@@ -35,34 +35,36 @@ public interface ComplexExpansionMethod {
     public CvTerm getMethod();
 
     /**
-     * Method to know if this ComplexExpansionMethod can expand the given Interaction
+     * Method to know if this ComplexExpansionMethod can expandInteraction the given Interaction
      * @param interaction
      * @return true if this interaction can be expanded with this ComplexExpansionMethod
      */
-    public boolean isExpandable(Interaction interaction);
+    public boolean isInteractionExpandable(Interaction interaction);
 
     /**
-     * Method to know if this ComplexExpansionMethod can expand the given InteractionEvidence
+     * Method to know if this ComplexExpansionMethod can expandInteraction the given InteractionEvidence
      * @param interaction
      * @return true if this interactionEvidence can be expanded with this ComplexExpansionMethod
      */
-    public boolean isExpandable(InteractionEvidence interaction);
+    public boolean isInteractionEvidenceExpandable(InteractionEvidence interaction);
 
     /**
-     * Method to know if this ComplexExpansionMethod can expand the given ModelledInteraction
+     * Method to know if this ComplexExpansionMethod can expandInteraction the given ModelledInteraction
      * @param interaction
      * @return true if this modelledInteraction can be expanded with this ComplexExpansionMethod
      */
-    public boolean isExpandable(ModelledInteraction interaction);
+    public boolean isModelledInteractionExpandable(ModelledInteraction interaction);
 
     /**
-     * Expand the interaction in a collection of BinaryInteraction.
+     * Expand the interaction in a collection of BinaryInteraction<Participant>.
+     * It will ignore if the interaction is interactionEvidence/modelledInteraction.
+     * It will create new DefaultBinaryInteractions
      * The collection cannot be null.
      * @param interaction
      * @return
      * @throws IllegalArgumentException if the interaction cannot be expanded with this method
      */
-    public Collection<BinaryInteraction> expand(Interaction interaction);
+    public Collection<BinaryInteraction> expandInteraction(Interaction interaction);
 
     /**
      * Expand the interactionEvidence in a collection of BinaryInteractionEvidence.
@@ -71,7 +73,7 @@ public interface ComplexExpansionMethod {
      * @return
      * @throws IllegalArgumentException if the interaction cannot be expanded with this method
      */
-    public Collection<BinaryInteractionEvidence> expand(InteractionEvidence interaction);
+    public Collection<BinaryInteractionEvidence> expandInteractionEvidence(InteractionEvidence interaction);
 
     /**
      * Expand the modelledInteraction in a collection of ModelledBinaryInteraction.
@@ -80,5 +82,5 @@ public interface ComplexExpansionMethod {
      * @return
      * @throws IllegalArgumentException if the interaction cannot be expanded with this method
      */
-    public Collection<ModelledBinaryInteraction> expand(ModelledInteraction interaction);
+    public Collection<ModelledBinaryInteraction> expandModelledInteraction(ModelledInteraction interaction);
 }

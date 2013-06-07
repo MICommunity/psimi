@@ -33,7 +33,7 @@ public class MatrixExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<BinaryInteractionEvidence> expandInteractionEvidence(InteractionEvidence interaction){
+    protected Collection<BinaryInteractionEvidence> collectBinaryInteractionEvidencesFrom(InteractionEvidence interaction){
         ParticipantEvidence[] participants = interaction.getParticipants().toArray(new DefaultParticipantEvidence[]{});
 
         Collection<BinaryInteractionEvidence> binaryInteractions = new ArrayList<BinaryInteractionEvidence>(interaction.getParticipants().size() - 1);
@@ -56,7 +56,7 @@ public class MatrixExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<ModelledBinaryInteraction> expandModelledInteraction(ModelledInteraction interaction){
+    protected Collection<ModelledBinaryInteraction> collectModelledBinaryInteractionsFrom(ModelledInteraction interaction){
         ModelledParticipant[] participants = interaction.getParticipants().toArray(new DefaultModelledParticipant[]{});
 
         Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
@@ -79,7 +79,7 @@ public class MatrixExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<BinaryInteraction> expandDefaultInteraction(Interaction interaction){
+    protected Collection<BinaryInteraction> collectDefaultBinaryInteractionsFrom(Interaction interaction){
         Participant[] participants = interaction.getParticipants().toArray(new DefaultParticipant[]{});
 
         Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
