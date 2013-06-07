@@ -1,10 +1,10 @@
-package psidev.psi.mi.jami.bridges.uniprotremapping;
+package psidev.psi.mi.jami.bridges.uniprot.remapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.uniprotremapping.listener.RemapListener;
+import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -23,13 +23,11 @@ import static junit.framework.Assert.*;
  * Date: 06/06/13
  * Time: 13:56
  */
-public class DefaultProteinRemapTest {
+public class DumbProteinRemapperTest {
 
-    public static final Log log = LogFactory.getLog(DefaultProteinRemapTest.class);
+    public static final Log log = LogFactory.getLog(DumbProteinRemapperTest.class);
 
-    public DefaultProteinRemap remap;
-    public DumbRemapperBridge bridge;
-    public HashMap<String, Xref> xrefMap = new HashMap<String, Xref>();
+    public DumbProteinRemapper remap;
 
     public Protein protein;
 
@@ -69,17 +67,12 @@ public class DefaultProteinRemapTest {
 
     @Before
     public void build_bridge(){
-        bridge = new DumbRemapperBridge();
-        remap = new DefaultProteinRemap(bridge);
+        remap = new DumbProteinRemapper();
         remap.addRemapListener(new RemapListener() {
             public void fireRemapReport(RemapReport report) {
                 remapReport = report;
             }
         });
-
-        bridge.setTestXrefs();
-        bridge.setSequenceIdentifier();
-
 
         MAPPABLE_A = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSP00000351524"); //P42694
         MAPPABLE_B = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000198265"); //P42694
@@ -93,14 +86,14 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflict_xref_returns_conflicting_identifier(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(CONFLICT);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
         assertNotNull(protein.getUniprotkb());
         assertFalse(protein.getUniprotkb().equalsIgnoreCase(TESTID));
@@ -124,14 +117,14 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_no_sequence_UseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(true);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());
@@ -146,17 +139,17 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_no_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -171,18 +164,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_and_unmappable_xref_with_no_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(UNMAPPABLE);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -197,18 +190,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_none_conflicting_mappable_xrefs_with_no_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(MAPPABLE_B);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -223,15 +216,15 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflicting_mappable_xrefs_with_no_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(CONFLICT);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());
@@ -246,17 +239,17 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_no_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -271,18 +264,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_and_unmappable_xref_with_no_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
 
         protein.getXrefs().add(UNMAPPABLE);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -297,18 +290,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_none_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
 
         protein.getXrefs().add(MAPPABLE_B);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -323,15 +316,15 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
 
         protein.getXrefs().add(CONFLICT);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());
@@ -346,17 +339,17 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -371,18 +364,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_and_unmappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(UNMAPPABLE);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -397,18 +390,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_none_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(MAPPABLE_B);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -423,15 +416,15 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
 
         protein.getXrefs().add(CONFLICT);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());
@@ -454,18 +447,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_sequence_UseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -480,19 +473,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(UNMAPPABLE);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -507,19 +500,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_B);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -534,16 +527,16 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflicting_mappable_xrefs_with_sequence_UseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(CONFLICT);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());
@@ -562,18 +555,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -588,19 +581,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(UNMAPPABLE);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -615,19 +608,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_B);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -642,16 +635,16 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(true);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(true);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(CONFLICT);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());
@@ -666,18 +659,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertFalse(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertFalse(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -692,19 +685,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(UNMAPPABLE);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertFalse(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertFalse(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -719,19 +712,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_B);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertFalse(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertFalse(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -746,19 +739,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(true);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(true);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(CONFLICT);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromSequence());
-        assertFalse(remapReport.isIdentifierFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
+        assertFalse(remapReport.isMappingFromIdentifiers());
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
         assertNull(remapReport.getConflictMessage());
@@ -773,18 +766,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_with_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -799,19 +792,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(UNMAPPABLE);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -826,19 +819,19 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(MAPPABLE_B);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertTrue(remapReport.isRemapped());
-        assertTrue(remapReport.isIdentifierFromIdentifiers());
-        assertTrue(remapReport.isIdentifierFromSequence());
+        assertTrue(remapReport.isMappingFromIdentifiers());
+        assertTrue(remapReport.isMappingFromSequence());
 
         assertNotNull(protein.getUniprotkb());
         assertEquals(TESTID, protein.getUniprotkb());
@@ -853,18 +846,18 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_mappable_xref_which_conflicts_with_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(CONFLICT);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
-        assertFalse(remapReport.isIdentifierFromIdentifiers());
-        assertFalse(remapReport.isIdentifierFromSequence());
+        assertFalse(remapReport.isMappingFromIdentifiers());
+        assertFalse(remapReport.isMappingFromSequence());
 
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());
@@ -877,16 +870,16 @@ public class DefaultProteinRemapTest {
     @Test
     public void test_conflicting_mappable_xrefs_with_sequence_NOTUseIds_NOTUseSeq(){
         remap.setCheckingEnabled(true);
-        remap.setUseIdentifiers(false);
-        remap.setUseSequence(false);
+        remap.setPriorityIdentifiers(false);
+        remap.setPrioritySequence(false);
         protein.setSequence(test_sequence);
 
         protein.getXrefs().add(CONFLICT);
         protein.getXrefs().add(MAPPABLE_A);
         assertNull(protein.getUniprotkb());
-        remap.setProtein(protein);
+        
 
-        remap.remapProtein();
+        remap.remapProtein(protein);
         assertFalse(remapReport.isRemapped());
         assertNull(protein.getUniprotkb());
         assertNotNull(remapReport.getConflictMessage());

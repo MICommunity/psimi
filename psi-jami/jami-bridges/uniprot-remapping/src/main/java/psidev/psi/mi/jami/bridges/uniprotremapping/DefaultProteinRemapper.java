@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.bridges.uniprotremapping.exception.ResultConflictExcep
 import psidev.psi.mi.jami.bridges.uniprotremapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
-import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,10 +17,10 @@ import java.util.Collection;
  * Date: 03/06/13
  * Time: 13:50
  */
-public class DefaultProteinRemap
-        implements  ProteinRemap{
+public class DefaultProteinRemapper
+        implements ProteinRemapper {
 
-    public static final Log log = LogFactory.getLog(DefaultProteinRemap.class);
+    public static final Log log = LogFactory.getLog(DefaultProteinRemapper.class);
     private ProteinRemapFetcher remapFetcher;
 
     private Collection<RemapListener> listeners = new ArrayList<RemapListener>();
@@ -33,11 +32,11 @@ public class DefaultProteinRemap
 
     private Protein p;
 
-    public DefaultProteinRemap(){
+    public DefaultProteinRemapper(){
         remapFetcher = new ProteinRemapFetcher();
     }
 
-    public DefaultProteinRemap(RemapperBridge bridge){
+    public DefaultProteinRemapper(RemapperBridge bridge){
         remapFetcher = new ProteinRemapFetcher(bridge);
     }
 
