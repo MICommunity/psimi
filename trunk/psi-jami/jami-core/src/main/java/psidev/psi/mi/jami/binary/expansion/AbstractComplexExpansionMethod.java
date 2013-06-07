@@ -32,146 +32,110 @@ public abstract class AbstractComplexExpansionMethod implements ComplexExpansion
         return this.method;
     }
 
-    public boolean isExpandable(Interaction interaction) {
+    public boolean isInteractionExpandable(Interaction interaction) {
         if (interaction == null || interaction.getParticipants().isEmpty()){
             return false;
         }
         return true;
     }
 
-    public boolean isExpandable(InteractionEvidence interaction) {
+    public boolean isInteractionEvidenceExpandable(InteractionEvidence interaction) {
         if (interaction == null || interaction.getParticipants().isEmpty()){
             return false;
         }
         return true;
     }
 
-    public boolean isExpandable(ModelledInteraction interaction) {
+    public boolean isModelledInteractionExpandable(ModelledInteraction interaction) {
         if (interaction == null || interaction.getParticipants().isEmpty()){
             return false;
         }
         return true;
     }
 
-    public Collection<BinaryInteraction> expand(Interaction interaction) {
-        if (!isExpandable(interaction)){
-            throw new IllegalArgumentException("The interaction cannot be expanded with this method ");
-        }
+    public Collection<BinaryInteraction> expandInteraction(Interaction interaction) {
 
         Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>();
 
-        if (interaction instanceof BinaryInteraction){
-            binaryInteractions.add((BinaryInteraction) interaction);
-        }
-        else{
-            InteractionCategory category = InteractionUtils.findInteractionCategoryOf(interaction, true);
+        InteractionCategory category = InteractionUtils.findInteractionCategoryOf(interaction, true);
 
-            switch (category){
-                case binary:
-                    binaryInteractions.add(InteractionUtils.createBinaryInteractionFrom(interaction));
-                    break;
-                case self_intra_molecular:
-                    binaryInteractions.add(InteractionUtils.createBinaryInteractionFrom(interaction));
-                    break;
-                case self_inter_molecular:
-                    binaryInteractions.add(InteractionUtils.createNewSelfBinaryInteractionFrom(interaction));
-                    break;
-                case n_ary:
-                    binaryInteractions.addAll(expandInteraction(interaction));
-                    break;
-                default:
-                    break;
-            }
+        switch (category){
+            case binary:
+                binaryInteractions.add(InteractionUtils.createBinaryInteractionFrom(interaction));
+                break;
+            case self_intra_molecular:
+                binaryInteractions.add(InteractionUtils.createBinaryInteractionFrom(interaction));
+                break;
+            case self_inter_molecular:
+                binaryInteractions.add(InteractionUtils.createNewSelfBinaryInteractionFrom(interaction));
+                break;
+            case n_ary:
+                binaryInteractions.addAll(collectDefaultBinaryInteractionsFrom(interaction));
+                break;
+            default:
+                break;
         }
 
         return binaryInteractions;
     }
 
-    public Collection<BinaryInteractionEvidence> expand(InteractionEvidence interaction) {
-        if (!isExpandable(interaction)){
-            throw new IllegalArgumentException("The interaction evidence cannot be expanded with this method ");
-        }
+    public Collection<BinaryInteractionEvidence> expandInteractionEvidence(InteractionEvidence interaction) {
 
         Collection<BinaryInteractionEvidence> binaryInteractions = new ArrayList<BinaryInteractionEvidence>();
 
-        if (interaction instanceof BinaryInteractionEvidence){
-            binaryInteractions.add((BinaryInteractionEvidence) interaction);
-        }
-        else{
-            InteractionCategory category = InteractionUtils.findInteractionEvidenceCategoryOf(interaction);
+        InteractionCategory category = InteractionUtils.findInteractionEvidenceCategoryOf(interaction);
 
-            switch (category){
-                case binary:
-                    binaryInteractions.add(InteractionUtils.createBinaryInteractionEvidenceFrom(interaction));
-                    break;
-                case self_intra_molecular:
-                    binaryInteractions.add(InteractionUtils.createBinaryInteractionEvidenceFrom(interaction));
-                    break;
-                case self_inter_molecular:
-                    binaryInteractions.add(InteractionUtils.createAndAddNewSelfBinaryInteractionEvidence(interaction));
-                    break;
-                case n_ary:
-                    binaryInteractions.addAll(expandInteractionEvidence(interaction));
-                    break;
-                default:
-                    break;
-            }
+        switch (category){
+            case binary:
+                binaryInteractions.add(InteractionUtils.createBinaryInteractionEvidenceFrom(interaction));
+                break;
+            case self_intra_molecular:
+                binaryInteractions.add(InteractionUtils.createBinaryInteractionEvidenceFrom(interaction));
+                break;
+            case self_inter_molecular:
+                binaryInteractions.add(InteractionUtils.createAndAddNewSelfBinaryInteractionEvidence(interaction));
+                break;
+            case n_ary:
+                binaryInteractions.addAll(collectBinaryInteractionEvidencesFrom(interaction));
+                break;
+            default:
+                break;
         }
 
         return binaryInteractions;
     }
 
-    public Collection<ModelledBinaryInteraction> expand(ModelledInteraction interaction) {
-        if (!isExpandable(interaction)){
-            throw new IllegalArgumentException("The modelled interaction cannot be expanded with this method ");
-        }
+    public Collection<ModelledBinaryInteraction> expandModelledInteraction(ModelledInteraction interaction) {
 
         Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>();
 
-        if (interaction instanceof ModelledBinaryInteraction){
-            binaryInteractions.add((ModelledBinaryInteraction) interaction);
-        }
-        else{
-            InteractionCategory category = InteractionUtils.findModelledInteractionCategoryOf(interaction);
+        InteractionCategory category = InteractionUtils.findModelledInteractionCategoryOf(interaction);
 
-            switch (category){
-                case binary:
-                    binaryInteractions.add(InteractionUtils.createModelledBinaryInteractionFrom(interaction));
-                    break;
-                case self_intra_molecular:
-                    binaryInteractions.add(InteractionUtils.createModelledBinaryInteractionFrom(interaction));
-                    break;
-                case self_inter_molecular:
-                    binaryInteractions.add(InteractionUtils.createAndAddNewSelfModelledBinaryInteraction(interaction));
-                    break;
-                case n_ary:
-                    binaryInteractions.addAll(expandModelledInteraction(interaction));
-                    break;
-                default:
-                    break;
-            }
+        switch (category){
+            case binary:
+                binaryInteractions.add(InteractionUtils.createModelledBinaryInteractionFrom(interaction));
+                break;
+            case self_intra_molecular:
+                binaryInteractions.add(InteractionUtils.createModelledBinaryInteractionFrom(interaction));
+                break;
+            case self_inter_molecular:
+                binaryInteractions.add(InteractionUtils.createAndAddNewSelfModelledBinaryInteraction(interaction));
+                break;
+            case n_ary:
+                binaryInteractions.addAll(collectModelledBinaryInteractionsFrom(interaction));
+                break;
+            default:
+                break;
         }
 
         return binaryInteractions;
     }
 
-    protected abstract Collection<BinaryInteractionEvidence> expandInteractionEvidence(InteractionEvidence interaction);
+    protected abstract Collection<BinaryInteractionEvidence> collectBinaryInteractionEvidencesFrom(InteractionEvidence interaction);
 
-    protected abstract Collection<ModelledBinaryInteraction> expandModelledInteraction(ModelledInteraction interaction);
+    protected abstract Collection<ModelledBinaryInteraction> collectModelledBinaryInteractionsFrom(ModelledInteraction interaction);
 
-    protected abstract Collection<BinaryInteraction> expandDefaultInteraction(Interaction interaction);
-
-    protected Collection<? extends BinaryInteraction> expandInteraction(Interaction interaction){
-        if (interaction instanceof InteractionEvidence){
-            return expandInteractionEvidence((InteractionEvidence) interaction);
-        }
-        else if (interaction instanceof ModelledInteraction){
-            return expandModelledInteraction((ModelledInteraction) interaction);
-        }
-        else {
-            return expandDefaultInteraction(interaction);
-        }
-    }
+    protected abstract Collection<BinaryInteraction> collectDefaultBinaryInteractionsFrom(Interaction interaction);
 
     protected void initialiseBinaryInteractionParticipantsWith(Participant c1, Participant c2, BinaryInteraction binary) {
         binary.setParticipantA(c1);

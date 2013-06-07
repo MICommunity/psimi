@@ -29,7 +29,7 @@ public class SpokeExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<BinaryInteractionEvidence> expandInteractionEvidence(InteractionEvidence interaction) {
+    protected Collection<BinaryInteractionEvidence> collectBinaryInteractionEvidencesFrom(InteractionEvidence interaction) {
         Collection<BinaryInteractionEvidence> binaryInteractions = new ArrayList<BinaryInteractionEvidence>(interaction.getParticipants().size()-1);
 
         ParticipantEvidence bait = ParticipantUtils.collectBestParticipantEvidenceAsBaitForSpokeExpansion(interaction.getParticipants());
@@ -51,7 +51,7 @@ public class SpokeExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<ModelledBinaryInteraction> expandModelledInteraction(ModelledInteraction interaction) {
+    protected Collection<ModelledBinaryInteraction> collectModelledBinaryInteractionsFrom(ModelledInteraction interaction) {
         Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>(interaction.getParticipants().size()-1);
 
         Participant bait = ParticipantUtils.collectBestBaitParticipantForSpokeExpansion(interaction.getParticipants());
@@ -73,7 +73,7 @@ public class SpokeExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<BinaryInteraction> expandDefaultInteraction(Interaction interaction) {
+    protected Collection<BinaryInteraction> collectDefaultBinaryInteractionsFrom(Interaction interaction) {
         Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(interaction.getParticipants().size()-1);
 
         Participant bait = ParticipantUtils.collectBestBaitParticipantForSpokeExpansion(interaction.getParticipants());

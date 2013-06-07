@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.utils;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.binary.expansion.InteractionCategory;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.binary.impl.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
@@ -171,9 +171,8 @@ public class InteractionUtils {
      */
     public static BinaryInteractionEvidence createAndAddNewSelfBinaryInteractionEvidence(InteractionEvidence interaction) {
         BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
-        BinaryInteractionEvidence interactionEvidence = (BinaryInteractionEvidence)interaction;
-        InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interactionEvidence, binary, true, true);
-        InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(interactionEvidence, binary, true, true);
+        InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, binary, false, true);
+        InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(interaction, binary, false, true);
 
         return binary;
     }

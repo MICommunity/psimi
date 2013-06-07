@@ -36,10 +36,10 @@ public class BipartiteExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<BinaryInteractionEvidence> expandInteractionEvidence(InteractionEvidence interaction){
-        Complex interactionAsComplex = new DefaultComplex(interaction.getShortName() != null ? interaction.getShortName() : interaction.toString());
-        InteractorCloner.copyAndOverrideBasicComplexPropertiesWithInteractionProperties(interaction, interactionAsComplex);
-        ParticipantEvidence externalEntity = new DefaultParticipantEvidence(interactionAsComplex);
+    protected Collection<BinaryInteractionEvidence> collectBinaryInteractionEvidencesFrom(InteractionEvidence interaction){
+        Complex complexEntity = createComplexEntity(interaction);
+        InteractorCloner.copyAndOverrideBasicComplexPropertiesWithInteractionProperties(interaction, complexEntity);
+        ParticipantEvidence externalEntity =  new DefaultParticipantEvidence(complexEntity);
 
         Collection<BinaryInteractionEvidence> binaryInteractions = new ArrayList<BinaryInteractionEvidence>(interaction.getParticipants().size());
         for ( Participant p : interaction.getParticipants() ) {
@@ -58,10 +58,10 @@ public class BipartiteExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<ModelledBinaryInteraction> expandModelledInteraction(ModelledInteraction interaction){
-        Complex interactionAsComplex = new DefaultComplex(interaction.getShortName() != null ? interaction.getShortName() : interaction.toString());
-        InteractorCloner.copyAndOverrideBasicComplexPropertiesWithModelledInteractionProperties(interaction, interactionAsComplex);
-        ModelledParticipant externalEntity = new DefaultModelledParticipant(interactionAsComplex);
+    protected Collection<ModelledBinaryInteraction> collectModelledBinaryInteractionsFrom(ModelledInteraction interaction){
+        Complex complexEntity = createComplexEntity(interaction);
+        InteractorCloner.copyAndOverrideBasicComplexPropertiesWithModelledInteractionProperties(interaction, complexEntity);
+        ModelledParticipant externalEntity =  new DefaultModelledParticipant(complexEntity);
 
         Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>(interaction.getParticipants().size());
         for ( Participant p : interaction.getParticipants() ) {
@@ -80,10 +80,10 @@ public class BipartiteExpansion extends AbstractComplexExpansionMethod {
     }
 
     @Override
-    protected Collection<BinaryInteraction> expandDefaultInteraction(Interaction interaction){
-        Complex interactionAsComplex = new DefaultComplex(interaction.getShortName() != null ? interaction.getShortName() : interaction.toString());
-        InteractorCloner.copyAndOverrideBasicComplexPropertiesWithInteractionProperties(interaction, interactionAsComplex);
-        Participant externalEntity = new DefaultParticipant(interactionAsComplex);
+    protected Collection<BinaryInteraction> collectDefaultBinaryInteractionsFrom(Interaction interaction){
+        Complex complexEntity = createComplexEntity(interaction);
+        InteractorCloner.copyAndOverrideBasicComplexPropertiesWithInteractionProperties(interaction, complexEntity);
+        Participant externalEntity =  new DefaultParticipant(complexEntity);
 
         Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(interaction.getParticipants().size());
         for ( Participant p : interaction.getParticipants() ) {
@@ -99,5 +99,19 @@ public class BipartiteExpansion extends AbstractComplexExpansionMethod {
         }
 
         return binaryInteractions;
+    }
+
+    private Complex createComplexEntity(Interaction interaction) {
+        String complexName = generateComplexName(interaction);
+        Complex interactionAsComplex = new DefaultComplex(complexName);
+        return interactionAsComplex;
+    }
+
+    protected String generateComplexName(Interaction interaction) {
+        String complexName = interaction.getShortName() != null ? interaction.getShortName() : interaction.toString();
+        if (complexName == null || complexName.length() == 0){
+            complexName = Integer.toString(interaction.hashCode());
+        }
+        return complexName;
     }
 }

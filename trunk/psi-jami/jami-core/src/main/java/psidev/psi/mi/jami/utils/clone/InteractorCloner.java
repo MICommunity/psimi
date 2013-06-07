@@ -96,7 +96,9 @@ public class InteractorCloner {
             target.setInteractionType(source.getInteractionType());
             target.setCreatedDate(source.getCreatedDate());
             target.setUpdatedDate(source.getUpdatedDate());
-            target.setShortName(source.getShortName());
+            if (source.getShortName() != null){
+                target.setShortName(source.getShortName());
+            }
 
             // copy collections
             target.getAnnotations().clear();
@@ -121,7 +123,9 @@ public class InteractorCloner {
             target.setInteractionType(source.getInteractionType());
             target.setCreatedDate(source.getCreatedDate());
             target.setUpdatedDate(source.getUpdatedDate());
-            target.setShortName(source.getShortName());
+            if (source.getShortName() != null){
+                target.setShortName(source.getShortName());
+            }
 
             // copy collections
             target.getAnnotations().clear();
