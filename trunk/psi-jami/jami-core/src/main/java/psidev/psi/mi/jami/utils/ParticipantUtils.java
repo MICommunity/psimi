@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils;
 
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -29,7 +28,7 @@ public class ParticipantUtils {
      * @param p
      * @return
      */
-    public static boolean isPutativeSelfParticipant(ParticipantEvidence p){
+    public static boolean isPutativeSelfParticipantEvidence(ParticipantEvidence p){
         if (p == null){
             return false;
         }
@@ -46,7 +45,7 @@ public class ParticipantUtils {
      * @param p
      * @return
      */
-    public static boolean isSelfParticipant(ParticipantEvidence p){
+    public static boolean isSelfParticipantEvidence(ParticipantEvidence p){
         if (p == null){
             return false;
         }
@@ -59,42 +58,13 @@ public class ParticipantUtils {
     }
 
     /**
-     * Method to know if a modelled participant has a putative self biological role
-     * @param p
-     * @return
-     */
-    public static boolean isPutativeSelfParticipant(ModelledParticipant p){
-        if (p == null){
-            return false;
-        }
-
-        CvTerm biologicalRole = p.getBiologicalRole();
-
-        return DefaultCvTermComparator.areEquals(CvTermUtils.getPutativeSelf(), biologicalRole) ;
-    }
-
-    /**
-     * Method to know if a modelled participant has a self biological role
-     * @param p
-     * @return
-     */
-    public static boolean isSelfParticipant(ModelledParticipant p){
-        if (p == null){
-            return false;
-        }
-
-        CvTerm biologicalRole = p.getBiologicalRole();
-
-        return DefaultCvTermComparator.areEquals(CvTermUtils.getSelf(), biologicalRole) ;
-    }
-
-    /**
      * Method to know if a participant has a putative self biological role.
-     * If it is a ParticipantEvidence, also look at the experimental role
+     * If checkParticipantEvidence is set to true, it will check if the given p is a ParticipantEvidence and look at the experimental role
      * @param p
+     * @param checkParticipantEvidence
      * @return
      */
-    public static boolean isPutativeSelfParticipant(Participant p){
+    public static boolean isPutativeSelfParticipant(Participant p, boolean checkParticipantEvidence){
         if (p == null){
             return false;
         }
@@ -105,9 +75,11 @@ public class ParticipantUtils {
             return true;
         }
 
-        if (p instanceof ParticipantEvidence){
-            CvTerm expRole = ((ParticipantEvidence)p).getExperimentalRole();
-            return DefaultCvTermComparator.areEquals(CvTermUtils.getPutativeSelf(), expRole) ;
+        if (checkParticipantEvidence){
+            if (p instanceof ParticipantEvidence){
+                CvTerm expRole = ((ParticipantEvidence)p).getExperimentalRole();
+                return DefaultCvTermComparator.areEquals(CvTermUtils.getPutativeSelf(), expRole) ;
+            }
         }
 
         return false;
@@ -115,11 +87,12 @@ public class ParticipantUtils {
 
     /**
      * Method to know if a participant has a self biological role
-     * If it is a ParticipantEvidence, also look at the experimental role
+     * If checkParticipantEvidence is set to true, it will check if the given p is a ParticipantEvidence and look at the experimental role
      * @param p
+     * @param checkParticipantEvidence
      * @return
      */
-    public static boolean isSelfParticipant(Participant p){
+    public static boolean isSelfParticipant(Participant p, boolean checkParticipantEvidence){
         if (p == null){
             return false;
         }
@@ -130,9 +103,11 @@ public class ParticipantUtils {
             return true;
         }
 
-        if (p instanceof ParticipantEvidence){
-            CvTerm expRole = ((ParticipantEvidence)p).getExperimentalRole();
-            return DefaultCvTermComparator.areEquals(CvTermUtils.getSelf(), expRole) ;
+        if (checkParticipantEvidence){
+            if (p instanceof ParticipantEvidence){
+                CvTerm expRole = ((ParticipantEvidence)p).getExperimentalRole();
+                return DefaultCvTermComparator.areEquals(CvTermUtils.getSelf(), expRole) ;
+            }
         }
 
         return false;
@@ -236,7 +211,7 @@ public class ParticipantUtils {
      * @param participantEvidences
      * @return the best participantEvidence to use a s a bait in spoke expansion
      */
-    public static ParticipantEvidence collectParticipantEvidenceToBeUsedAsABaitForSpokeExpansion(Collection<? extends ParticipantEvidence> participantEvidences){
+    public static ParticipantEvidence collectBestParticipantEvidenceAsBaitForSpokeExpansion(Collection<? extends ParticipantEvidence> participantEvidences){
         if (participantEvidences == null || participantEvidences.isEmpty()){
             return null;
         }
@@ -297,12 +272,11 @@ public class ParticipantUtils {
      * @param participants
      * @return the best participant to use a s a bait in spoke expansion
      */
-    public static Participant collectParticipantToBeUsedAsABaitForSpokeExpansion(Collection<? extends Participant> participants){
+    public static Participant collectBestBaitParticipantForSpokeExpansion(Collection<? extends Participant> participants){
         if (participants == null || participants.isEmpty()){
             return null;
         }
 
-        Participant firstBait=null;
         Participant alternativeBiologicalBait=null;
         Participant firstShortNameAlphabeticalOrder=null;
 
