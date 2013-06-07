@@ -72,7 +72,7 @@ public class InteractionUtils {
      * @param interaction
      * @return the InteractionCategory, null if the given interaction is null
      */
-    public static InteractionCategory findInteractionCategoryOf(InteractionEvidence interaction){
+    public static InteractionCategory findInteractionEvidenceCategoryOf(InteractionEvidence interaction){
         if (interaction == null){
             return null;
         }
@@ -115,113 +115,58 @@ public class InteractionUtils {
      * @param interaction
      * @return the InteractionCategory, null if the given interaction is null
      */
-    public static InteractionCategory findInteractionCategoryOf(ModelledInteraction interaction){
-        if (interaction == null){
-            return null;
-        }
+    public static InteractionCategory findModelledInteractionCategoryOf(ModelledInteraction interaction){
 
-        // only one participant, check stoichiometry
-        if (interaction.getParticipants().size() == 1) {
-            Participant p = interaction.getParticipants().iterator().next();
-
-            // the stoichiometry is not specified
-            if (p.getStoichiometry() == null || p.getStoichiometry().getMaxValue() == 0){
-                // if we have self participants, then it is self_intra_molecular
-                if (ParticipantUtils.isSelfParticipant(p, false) || ParticipantUtils.isPutativeSelfParticipant(p, false)){
-                    return InteractionCategory.self_intra_molecular;
-                }
-                // we can consider that we have self inter molecular
-                else {
-                    return InteractionCategory.self_inter_molecular;
-                }
-            }
-            // intra molecular
-            else if (p.getStoichiometry().getMaxValue() == 1){
-                return InteractionCategory.self_intra_molecular;
-            }
-            else{
-                return InteractionCategory.self_inter_molecular;
-            }
-        }
-        else if (interaction.getParticipants().size() == 2){
-            return InteractionCategory.binary;
-        }
-        else if (interaction.getParticipants().size() > 2){
-            return InteractionCategory.n_ary;
-        }
-
-        return null;
+        return InteractionUtils.findInteractionCategoryOf(interaction, false);
     }
 
     /**
-     * Create a BinaryInteractionWrapper from the given interaction which should contain not more than two participants
+     * Create a BinaryInteractionWrapper from the given interaction which should contain not more than two participants.
      * @param interaction
      * @return the new BinaryInteractionWrapper for this interaction
-     * @throws IllegalArgumentException if the interaction contains more than two participants
+     * @throws IllegalArgumentException if the interaction contains more than two participants or interaction is null
      */
-    public static BinaryInteraction createAndAddBinaryWrapperFor(Interaction interaction) {
-        if (interaction instanceof ModelledInteraction){
-            return new ModelledBinaryInteractionWrapper((ModelledInteraction)interaction);
-        }
-        else if (interaction instanceof InteractionEvidence){
-            return new BinaryInteractionEvidenceWrapper((InteractionEvidence)interaction);
-        }
-        else{
-            return new BinaryInteractionWrapper(interaction);
-        }
+    public static BinaryInteraction createBinaryInteractionFrom(Interaction interaction) {
+        return new BinaryInteractionWrapper(interaction);
     }
 
     /**
-     * Create a BinaryInteractionWrapper from the given interaction which should contain not more than two participants
+     * Create a BinaryInteractionEvidenceWrapper from the given interaction evidence which should contain not more than two participants
      * @param interaction
      * @return the new BinaryInteractionWrapper for this interaction
-     * @throws IllegalArgumentException if the interaction contains more than two participants
+     * @throws IllegalArgumentException if the interaction contains more than two participants or interaction is null
      */
-    public static BinaryInteractionEvidence createAndAddBinaryEvidenceWrapperFor(InteractionEvidence interaction) {
+    public static BinaryInteractionEvidence createBinaryInteractionEvidenceFrom(InteractionEvidence interaction) {
         return new BinaryInteractionEvidenceWrapper(interaction);
     }
 
     /**
-     * Create a BinaryInteractionWrapper from the given interaction which should contain not more than two participants
+     * Create a ModelledBinaryInteractionWrapper from the given modelled interaction which should contain not more than two participants
      * @param interaction
      * @return the new BinaryInteractionWrapper for this interaction
      * @throws IllegalArgumentException if the interaction contains more than two participants
      */
-    public static ModelledBinaryInteraction createAndAddModelledBinaryeWrapperFor(ModelledInteraction interaction) {
+    public static ModelledBinaryInteraction createModelledBinaryInteractionFrom(ModelledInteraction interaction) {
         return new ModelledBinaryInteractionWrapper(interaction);
     }
 
     /**
      * Creates a new BinaryInteraction from the given interaction which should only contain one participant with a stoichiometry >= 2
+     * or participant stoichiometry null and participant is not self/putative self.
+     * The new Binary interaction will have a participantB which is a copy of participantA with stoichiometry 0
      * @param interaction
      */
-    public static BinaryInteraction createAndAddNewSelfBinaryInteraction(Interaction interaction) {
-        if (interaction instanceof ModelledInteraction){
-            ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
-            ModelledInteraction modelledInteraction = (ModelledInteraction)interaction;
-            InteractionCloner.copyAndOverrideModelledInteractionProperties(modelledInteraction, binary, true, true);
-            InteractionCloner.copyAndOverrideModelledParticipantsToBinary(modelledInteraction, binary, true, true);
-
-            return binary;
-        }
-        else if (interaction instanceof InteractionEvidence){
-            BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence();
-            BinaryInteractionEvidence interactionEvidence = (BinaryInteractionEvidence)interaction;
-            InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interactionEvidence, binary, true, true);
-            InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(interactionEvidence, binary, true, true);
-
-            return binary;
-        }
-        else{
-            BinaryInteraction<Participant> binary = new DefaultBinaryInteraction<Participant>();
-            InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, true, true);
-            InteractionCloner.copyAndOverrideBasicParticipantsToBinary(interaction, binary, true, true);
-            return binary;
-        }
+    public static BinaryInteraction createNewSelfBinaryInteractionFrom(Interaction interaction) {
+        BinaryInteraction<Participant> binary = new DefaultBinaryInteraction<Participant>();
+        InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
+        InteractionCloner.copyAndOverrideBasicParticipantsToBinary(interaction, binary, false, true);
+        return binary;
     }
 
     /**
-     * Creates a new BinaryInteraction from the given interaction which should only contain one participant with a stoichiometry >= 2
+     * Creates a new BinaryInteractionEvidence from the given interactionEvidence which should only contain one participant with a stoichiometry >= 2
+     * or participant stoichiometry null and participant is not self/putative self.
+     * The new Binary interaction evidence will have a participantB which is a copy of participantA with stoichiometry 0
      * @param interaction
      */
     public static BinaryInteractionEvidence createAndAddNewSelfBinaryInteractionEvidence(InteractionEvidence interaction) {
@@ -234,14 +179,15 @@ public class InteractionUtils {
     }
 
     /**
-     * Creates a new BinaryInteraction from the given interaction which should only contain one participant with a stoichiometry >= 2
+     * Creates a new ModelledBinaryInteraction from the given interaction which should only contain one participant with a stoichiometry >= 2
+     * or participant stoichiometry null and participant is not self/putative self.
+     * The new Binary interaction evidence will have a participantB which is a copy of participantA with stoichiometry 0
      * @param interaction
      */
     public static ModelledBinaryInteraction createAndAddNewSelfModelledBinaryInteraction(ModelledInteraction interaction) {
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction();
-        ModelledInteraction modelledInteraction = (ModelledInteraction)interaction;
-        InteractionCloner.copyAndOverrideModelledInteractionProperties(modelledInteraction, binary, true, true);
-        InteractionCloner.copyAndOverrideModelledParticipantsToBinary(modelledInteraction, binary, true, true);
+        InteractionCloner.copyAndOverrideModelledInteractionProperties(interaction, binary, false, true);
+        InteractionCloner.copyAndOverrideModelledParticipantsToBinary(interaction, binary, false, true);
 
         return binary;
     }

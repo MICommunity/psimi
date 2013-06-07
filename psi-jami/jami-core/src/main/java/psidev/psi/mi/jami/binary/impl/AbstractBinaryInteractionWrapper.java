@@ -27,6 +27,9 @@ public class AbstractBinaryInteractionWrapper<T extends Participant> implements 
         if (interaction == null){
             throw new IllegalArgumentException("The interaction of a AbstractBinaryInteractionWrapper cannot be null");
         }
+        if (interaction.getParticipants().size() > 2){
+            throw new IllegalArgumentException("The interaction of a AbstractBinaryInteractionWrapper cannot have more than two participants");
+        }
         this.interaction = interaction;
     }
 
