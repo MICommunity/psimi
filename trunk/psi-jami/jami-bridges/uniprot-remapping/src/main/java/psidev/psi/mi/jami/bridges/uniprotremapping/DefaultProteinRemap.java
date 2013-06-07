@@ -18,12 +18,11 @@ import java.util.Collection;
  * Date: 03/06/13
  * Time: 13:50
  */
-public class DefaultProteinRemap {
+public class DefaultProteinRemap
+        implements  ProteinRemap{
 
     public static final Log log = LogFactory.getLog(DefaultProteinRemap.class);
     private ProteinRemapFetcher remapFetcher;
-
-
 
     private Collection<RemapListener> listeners = new ArrayList<RemapListener>();
 
@@ -48,7 +47,7 @@ public class DefaultProteinRemap {
     public void removeRemapListener(RemapListener listener){
         listeners.remove(listener);
     }
-    public void fireRemapReport(){
+    private void fireRemapReport(){
         for(RemapListener r: listeners){
             r.fireRemapReport(remapReport);
         }
@@ -57,12 +56,19 @@ public class DefaultProteinRemap {
     public void remapProtein(){
         try {
             String identifier  = getIdentifier();
-            p.setUniprotkb(identifier);
-            remapReport.setRemapped(true);
+            if(identifier == null){
+                remapReport.setRemapped(false);
+            }else{
+                p.setUniprotkb(identifier);
+                remapReport.setRemapped(true);
+            }
         } catch (ResultConflictException e) {
             remapReport.setRemapped(false);
+            remapReport.setIdentifierFromIdentifiers(false);
+            remapReport.setIdentifierFromSequence(false);
             remapReport.setConflictMessage(e.getMessage());
         }
+        fireRemapReport();
     }
 
 
@@ -128,10 +134,8 @@ public class DefaultProteinRemap {
                 return getSequenceMapping();
             }
             return identifier;
-
         }
         else if(!useIdentifiers && !useSequence){
-
             if(checkingEnabled) identifier = noneConflictingUniprotFromIdentifiers();
             else identifier = getFirstMappableIdentifier();
 
@@ -141,14 +145,23 @@ public class DefaultProteinRemap {
                 remapReport.setIdentifierFromSequence(true);
                 remapReport.setIdentifierFromIdentifiers(false);
                 return getSequenceMapping();
-            }else if (getSequenceMapping() != null &&
-                    identifier.equalsIgnoreCase(getSequenceMapping())){
-                remapReport.setIdentifierFromSequence(true);
-                remapReport.setIdentifierFromIdentifiers(true);
-                return identifier;
-            } else {
-                throw new ResultConflictException("The identifier result "+identifier+
-                        " does not match the sequence result "+getSequenceMapping());
+
+            }else{
+                if (getSequenceMapping() != null){
+                    if (identifier.equalsIgnoreCase(getSequenceMapping())){
+                        remapReport.setIdentifierFromSequence(true);
+                        remapReport.setIdentifierFromIdentifiers(true);
+                        return identifier;
+                    } else {
+                        throw new ResultConflictException("The identifier result "+identifier+
+                                " does not match the sequence result "+getSequenceMapping());
+                    }
+                }
+                else{
+                    remapReport.setIdentifierFromSequence(false);
+                    remapReport.setIdentifierFromIdentifiers(true);
+                    return identifier;
+                }
             }
         }
         return null;
@@ -215,16 +228,13 @@ public class DefaultProteinRemap {
         return null;
     }
 
-
-
-
     public boolean isCheckingEnabled() {
         return checkingEnabled;
     }
 
     public void setCheckingEnabled(boolean checkingEnabled) {
         this.checkingEnabled = checkingEnabled;
-        clean();
+        remapReport = new RemapReport(checkingEnabled);
     }
 
     public boolean isUseIdentifiers() {
@@ -233,7 +243,7 @@ public class DefaultProteinRemap {
 
     public void setUseIdentifiers(boolean useIdentifiers) {
         this.useIdentifiers = useIdentifiers;
-        clean();
+        remapReport = new RemapReport(checkingEnabled);
     }
 
     public boolean isUseSequence() {
@@ -242,10 +252,10 @@ public class DefaultProteinRemap {
 
     public void setUseSequence(boolean useSequence) {
         this.useSequence = useSequence;
-        clean();
+        remapReport = new RemapReport(checkingEnabled);
     }
 
     public void clean(){
-        setProtein(p);
+        setProtein(null);
     }
 }

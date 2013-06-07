@@ -96,6 +96,11 @@ public  class GeneralTest {
     }
 
     private void onRemapReport(RemapReport report){
+        log.info("Remapped?: "+report.isRemapped());
+        //if(report.isRemapped())log.info("remapped to: "+report.);
+
+        log.info("Used Ids? "+report.isIdentifierFromIdentifiers()+
+                ", Used Seq? "+report.isIdentifierFromSequence());
 
 
     }
@@ -113,25 +118,14 @@ public  class GeneralTest {
         for(Protein p: tests){
             log.info("---- Doing a test "+i+"---");
             i++;
-            remap.setProtein(p);
+
             remap.setCheckingEnabled(true);
 
             while(true){
-                remap.setUseIdentifiers(true);
-                remap.setUseSequence(true);
-                remap.remapProtein();
-
-                remap.setUseIdentifiers(true);
-                remap.setUseSequence(false);
-                remap.remapProtein();
-
-                remap.setUseIdentifiers(false);
-                remap.setUseSequence(true);
-                remap.remapProtein();
-
-                remap.setUseIdentifiers(false);
-                remap.setUseSequence(false);
-                remap.remapProtein();
+                runTest(true,true,p);
+                runTest(true,false,p);
+                runTest(false,true,p);
+                runTest(false,false,p);
 
                 if(remap.isCheckingEnabled()) remap.setCheckingEnabled(false);
                 else break;
@@ -147,7 +141,21 @@ public  class GeneralTest {
     }
 
 
+    public static void runTest(boolean ids, boolean seq, Protein p){
+        ArrayList<Xref> uniprots = new ArrayList<Xref>();
+        for(Xref x : p.getIdentifiers()){
+            if(x.getDatabase().getMIIdentifier() == "MI:0486"){
+                uniprots.add(x);
+            }
+        }
+        p.getIdentifiers().removeAll(uniprots);
 
+        remap.setProtein(p);
+        remap.setUseIdentifiers(ids);
+        remap.setUseSequence(seq);
+        remap.remapProtein();
+        log.info("The ac for p is "+p.getUniprotkb());
+    }
 
 
 

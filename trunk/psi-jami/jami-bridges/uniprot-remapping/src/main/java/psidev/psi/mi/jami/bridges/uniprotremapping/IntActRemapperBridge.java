@@ -53,17 +53,25 @@ public class IntActRemapperBridge implements RemapperBridge {
         if(organism.getTaxId() > 0) setOrganism(""+organism.getTaxId());
     }
 
+    /**
+     *
+     * @param identifier
+     * @return
+     */
     public IdentificationResults getIdentifierResult(Xref identifier){
         String value =  identifier.getId();
         String database = null;
 
+        //Find a way to identify the database
         if(identifier.getDatabase() != null){
             database = identifier.getDatabase().getMIIdentifier();
             if( database == null) database = identifier.getDatabase().getFullName();
             if( database == null) database = identifier.getDatabase().getShortName();
         }
+
+        //If there's an identity, search else return an empty result.
         if(database != null && value != null) return getIdentifierResult(database, value);
-        else return null;
+        else return new DefaultIdentificationResults();
     }
 
 
