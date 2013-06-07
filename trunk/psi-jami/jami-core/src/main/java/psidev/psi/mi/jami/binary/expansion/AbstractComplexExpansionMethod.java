@@ -68,13 +68,13 @@ public abstract class AbstractComplexExpansionMethod implements ComplexExpansion
 
             switch (category){
                 case binary:
-                    binaryInteractions.add(InteractionUtils.createAndAddBinaryWrapperFor(interaction));
+                    binaryInteractions.add(InteractionUtils.createBinaryInteractionFrom(interaction));
                     break;
                 case self_intra_molecular:
-                    binaryInteractions.add(InteractionUtils.createAndAddBinaryWrapperFor(interaction));
+                    binaryInteractions.add(InteractionUtils.createBinaryInteractionFrom(interaction));
                     break;
                 case self_inter_molecular:
-                    binaryInteractions.add(InteractionUtils.createAndAddNewSelfBinaryInteraction(interaction));
+                    binaryInteractions.add(InteractionUtils.createNewSelfBinaryInteractionFrom(interaction));
                     break;
                 case n_ary:
                     binaryInteractions.addAll(expandInteraction(interaction));
@@ -98,14 +98,14 @@ public abstract class AbstractComplexExpansionMethod implements ComplexExpansion
             binaryInteractions.add((BinaryInteractionEvidence) interaction);
         }
         else{
-            InteractionCategory category = InteractionUtils.findInteractionCategoryOf(interaction);
+            InteractionCategory category = InteractionUtils.findInteractionEvidenceCategoryOf(interaction);
 
             switch (category){
                 case binary:
-                    binaryInteractions.add(InteractionUtils.createAndAddBinaryEvidenceWrapperFor(interaction));
+                    binaryInteractions.add(InteractionUtils.createBinaryInteractionEvidenceFrom(interaction));
                     break;
                 case self_intra_molecular:
-                    binaryInteractions.add(InteractionUtils.createAndAddBinaryEvidenceWrapperFor(interaction));
+                    binaryInteractions.add(InteractionUtils.createBinaryInteractionEvidenceFrom(interaction));
                     break;
                 case self_inter_molecular:
                     binaryInteractions.add(InteractionUtils.createAndAddNewSelfBinaryInteractionEvidence(interaction));
@@ -132,14 +132,14 @@ public abstract class AbstractComplexExpansionMethod implements ComplexExpansion
             binaryInteractions.add((ModelledBinaryInteraction) interaction);
         }
         else{
-            InteractionCategory category = InteractionUtils.findInteractionCategoryOf(interaction);
+            InteractionCategory category = InteractionUtils.findModelledInteractionCategoryOf(interaction);
 
             switch (category){
                 case binary:
-                    binaryInteractions.add(InteractionUtils.createAndAddModelledBinaryeWrapperFor(interaction));
+                    binaryInteractions.add(InteractionUtils.createModelledBinaryInteractionFrom(interaction));
                     break;
                 case self_intra_molecular:
-                    binaryInteractions.add(InteractionUtils.createAndAddModelledBinaryeWrapperFor(interaction));
+                    binaryInteractions.add(InteractionUtils.createModelledBinaryInteractionFrom(interaction));
                     break;
                 case self_inter_molecular:
                     binaryInteractions.add(InteractionUtils.createAndAddNewSelfModelledBinaryInteraction(interaction));
