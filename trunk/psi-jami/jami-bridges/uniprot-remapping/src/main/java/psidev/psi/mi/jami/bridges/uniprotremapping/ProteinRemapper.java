@@ -10,9 +10,9 @@ import psidev.psi.mi.jami.model.Protein;
  * Date: 07/06/13
  * Time: 10:08
  */
-public interface ProteinRemap {
+public interface ProteinRemapper {
 
-    //public ProteinRemap(RemapperBridge bridge);
+    //public ProteinRemapper(RemapperBridge bridge);
 
     public void addRemapListener(RemapListener listener);
     public void removeRemapListener(RemapListener listener);

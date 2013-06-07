@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 import uk.ac.ebi.intact.model.BioSource;
+import uk.ac.ebi.intact.protein.mapping.model.contexts.IdentificationContext;
 import uk.ac.ebi.intact.protein.mapping.model.contexts.UpdateContext;
 import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
 import uk.ac.ebi.intact.protein.mapping.results.impl.DefaultIdentificationResults;
@@ -27,7 +28,7 @@ public class IntActRemapperBridge implements RemapperBridge {
 
     private StrategyWithSequence sequenceStrategy;
     private StrategyWithIdentifier identifierStrategy;
-    private UpdateContext context;
+    private IdentificationContext context;
 
     public IntActRemapperBridge( ){
 
@@ -39,7 +40,7 @@ public class IntActRemapperBridge implements RemapperBridge {
         identifierStrategy = new StrategyWithIdentifier();
         identifierStrategy.enableIsoforms(true);
 
-        context = new UpdateContext();
+        context = new IdentificationContext();
     }
 
     public void setSequence(String sequence){

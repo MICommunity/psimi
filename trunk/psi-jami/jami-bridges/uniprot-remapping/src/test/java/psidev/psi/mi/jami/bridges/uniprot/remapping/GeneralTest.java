@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.bridges.uniprotremapping;
+package psidev.psi.mi.jami.bridges.uniprot.remapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.bridges.uniprotremapping.listener.RemapListener;
+import psidev.psi.mi.jami.bridges.uniprot.remapping.*;
+import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 public  class GeneralTest {
 
     public static final Log log = LogFactory.getLog(GeneralTest.class);
-    static DefaultProteinRemapper remap;
+    static IntactProteinRemapper remap;
     static ArrayList<Protein> tests;
     static HashMap<String, Xref> xrefs = new HashMap<String, Xref>();
     static String[][] xrefsraw;
@@ -86,7 +87,7 @@ public  class GeneralTest {
         pdns.setSequence("") ;
         tests.add(pdns);
 
-        remap = new DefaultProteinRemapper();
+        remap = new IntactProteinRemapper();
         remap.addRemapListener(new RemapListener() {
             public void fireRemapReport(RemapReport report) {
                 onRemapReport(report);
@@ -98,8 +99,8 @@ public  class GeneralTest {
         log.info("Remapped?: "+report.isRemapped());
         //if(report.isRemapped())log.info("remapped to: "+report.);
 
-        log.info("Used Ids? "+report.isIdentifierFromIdentifiers()+
-                ", Used Seq? "+report.isIdentifierFromSequence());
+        log.info("Used Ids? "+report.isMappingFromIdentifiers()+
+                ", Used Seq? "+report.isMappingFromSequence());
 
 
     }
@@ -141,6 +142,7 @@ public  class GeneralTest {
 
 
     public static void runTest(boolean ids, boolean seq, Protein p){
+
         ArrayList<Xref> uniprots = new ArrayList<Xref>();
         for(Xref x : p.getIdentifiers()){
             if(x.getDatabase().getMIIdentifier() == "MI:0486"){
@@ -149,25 +151,11 @@ public  class GeneralTest {
         }
         p.getIdentifiers().removeAll(uniprots);
 
-        remap.setProtein(p);
-        remap.setUseIdentifiers(ids);
-        remap.setUseSequence(seq);
-        remap.remapProtein();
+        remap.setPriorityIdentifiers(ids);
+        remap.setPrioritySequence(seq);
+        remap.remapProtein(p);
         log.info("The ac for p is "+p.getUniprotkb());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
