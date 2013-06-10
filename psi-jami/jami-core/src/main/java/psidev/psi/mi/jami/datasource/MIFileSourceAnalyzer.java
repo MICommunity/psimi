@@ -23,12 +23,12 @@ public class MIFileSourceAnalyzer {
 
     /**
      * Recognize the MIFileDataSource from the file signature and first line.
-     * It will recognize psi25-xml and mitab files. If it is neither of them, it will return  MIFileSource.other
+     * It will recognize psi25-xml and mitab files. If it is neither of them, it will return  MIFileSourceType.other
      * @param file : the file to analyze
-     * @return the MIFileSource that matches the file
+     * @return the MIFileSourceType that matches the file
      * @throws IOException
      */
-    public MIFileSource getMolecularInteractionSourceFor(File file) throws IOException {
+    public MIFileSourceType getMolecularInteractionSourceFor(File file) throws IOException {
 
         if (file == null){
             throw new FileNotFoundException("The file cannot be null.");
@@ -41,7 +41,7 @@ public class MIFileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
 
                 // skip empty lines or break lines or xml encode line
@@ -50,13 +50,13 @@ public class MIFileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
                 else if (line.startsWith("<entrySet")){
-                    return MIFileSource.psi25_xml;
+                    return MIFileSourceType.psi25_xml;
                 }
                 else{
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
             }
             finally {
@@ -71,7 +71,7 @@ public class MIFileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
 
                 // skip empty lines or break lines
@@ -80,16 +80,16 @@ public class MIFileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
                 else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
-                    return MIFileSource.mitab;
+                    return MIFileSourceType.mitab;
                 }
                 else if (line.contains("\t")){
-                    return MIFileSource.mitab;
+                    return MIFileSourceType.mitab;
                 }
                 else{
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
             }
             finally {
@@ -104,7 +104,7 @@ public class MIFileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
 
                 // skip empty lines or break lines or xml encode line
@@ -113,29 +113,29 @@ public class MIFileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
                 // we have xml
                 else if (line.trim().startsWith("<?xml")){
                     line = reader.readLine();
                     if (line.startsWith("<entrySet")){
-                        return MIFileSource.psi25_xml;
+                        return MIFileSourceType.psi25_xml;
                     }
                     else {
-                        return MIFileSource.other;
+                        return MIFileSourceType.other;
                     }
                 }
                 else if (line.startsWith("<entrySet")){
-                    return MIFileSource.psi25_xml;
+                    return MIFileSourceType.psi25_xml;
                 }
                 else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
-                    return MIFileSource.mitab;
+                    return MIFileSourceType.mitab;
                 }
                 else if (line.contains("\t")){
-                    return MIFileSource.mitab;
+                    return MIFileSourceType.mitab;
                 }
                 else{
-                    return MIFileSource.other;
+                    return MIFileSourceType.other;
                 }
             }
             finally {
@@ -146,9 +146,9 @@ public class MIFileSourceAnalyzer {
 
     /**
      * Recognize the MIFileDataSource from the inputStream.
-     * Because it needs to open the inputStream to analyze its content, it will return an OpenedInputStream which contains the MIFileSource and
+     * Because it needs to open the inputStream to analyze its content, it will return an OpenedInputStream which contains the MIFileSourceType and
      * a copy of the inputStream it opened which should be used instead of the given 'stream' which have been opened and closed. As for a normal InputStream, it needs to be closed after being used.
-     * It will recognize psi25-xml and mitab files. If it is neither of them, it will return an OpenedInputStream MIFileSource.other
+     * It will recognize psi25-xml and mitab files. If it is neither of them, it will return an OpenedInputStream MIFileSourceType.other
      *
      * @param stream : the stream to recognize
      * @return
@@ -170,7 +170,7 @@ public class MIFileSourceAnalyzer {
                 String line = reader.readLine();
 
                 if (line == null){
-                    return new OpenedInputStream(temp, MIFileSource.other);
+                    return new OpenedInputStream(temp, MIFileSourceType.other);
                 }
 
                 // skip empty lines or break lines or xml encode line
@@ -179,29 +179,29 @@ public class MIFileSourceAnalyzer {
                 }
 
                 if (line == null){
-                    return new OpenedInputStream(temp, MIFileSource.other);
+                    return new OpenedInputStream(temp, MIFileSourceType.other);
                 }
                 // we have xml
                 else if (line.trim().startsWith("<?xml")){
                     line = reader.readLine();
                     if (line.startsWith("<entrySet")){
-                        return new OpenedInputStream(temp, MIFileSource.psi25_xml);
+                        return new OpenedInputStream(temp, MIFileSourceType.psi25_xml);
                     }
                     else {
-                        return new OpenedInputStream(temp, MIFileSource.other);
+                        return new OpenedInputStream(temp, MIFileSourceType.other);
                     }
                 }
                 else if (line.startsWith("<entrySet")){
-                    return new OpenedInputStream(temp,  MIFileSource.psi25_xml);
+                    return new OpenedInputStream(temp,  MIFileSourceType.psi25_xml);
                 }
                 else if (line.toLowerCase().trim().startsWith(MITAB_25_TITLE.toLowerCase())){
-                    return new OpenedInputStream(temp,  MIFileSource.mitab);
+                    return new OpenedInputStream(temp,  MIFileSourceType.mitab);
                 }
                 else if (line.contains("\t")){
-                    return new OpenedInputStream(temp,  MIFileSource.mitab);
+                    return new OpenedInputStream(temp,  MIFileSourceType.mitab);
                 }
                 else{
-                    return new OpenedInputStream(temp, MIFileSource.other);
+                    return new OpenedInputStream(temp, MIFileSourceType.other);
                 }
             }
             finally {
