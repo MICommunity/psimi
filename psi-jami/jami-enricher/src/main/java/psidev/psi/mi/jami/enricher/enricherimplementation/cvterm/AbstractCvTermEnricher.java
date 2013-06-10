@@ -37,7 +37,13 @@ public abstract class AbstractCvTermEnricher
 
     private final Logger log = LoggerFactory.getLogger(AbstractCvTermEnricher.class.getName());
     private CvTermFetcher fetcher = null;
-    private static final String TYPE =  "CvTerm";
+
+    public static final String TYPE =  "CvTerm";
+
+    public final static String FIELD_FULLNAME = "FullName";
+    public final static String FIELD_SHORTNAME = "ShortName";
+    public final static String FIELD_IDENTIFIER = "Identifier";
+    public final static String FIELD_SYNONYM = "Synonym";
 
     public AbstractCvTermEnricher(){
         enricherEvent = new EnricherEvent(TYPE);
@@ -184,11 +190,13 @@ public abstract class AbstractCvTermEnricher
 
         //ShortName not checked - never null
 
+
+
         //FullName
         if(cvTermToEnrich.getFullName() == null
                 && cvTermEnriched.getFullName() != null){
             cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
-            addAdditionReport(new AdditionReport("FullName", cvTermToEnrich.getFullName()));
+            addAdditionReport(new AdditionReport(FIELD_FULLNAME, cvTermToEnrich.getFullName()));
         }
 
         //Add identifiers
@@ -199,7 +207,7 @@ public abstract class AbstractCvTermEnricher
 
         for(Xref x: subtractedIdentifiers){
             cvTermToEnrich.getIdentifiers().add(x);
-            addAdditionReport(new AdditionReport("Identifier", x.getId()));
+            addAdditionReport(new AdditionReport(FIELD_IDENTIFIER, x.getId()));
         }
 
         //Add synonyms
@@ -210,7 +218,7 @@ public abstract class AbstractCvTermEnricher
 
         for(Alias x: subtractedSynonyms){
             cvTermToEnrich.getSynonyms().add(x);
-            addAdditionReport(new AdditionReport("Synonym", "Name: " + x.getName() + ", Type: " + x.getType()));
+            addAdditionReport(new AdditionReport(FIELD_SYNONYM, "Name: " + x.getName() + ", Type: " + x.getType()));
         }
     }
 
@@ -224,14 +232,14 @@ public abstract class AbstractCvTermEnricher
         //ShortName - can never be null
         if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
             addMismatchReport(new MismatchReport(
-                    "ShortName", cvTermToEnrich.getShortName(), cvTermEnriched.getShortName()));
+                    FIELD_SHORTNAME, cvTermToEnrich.getShortName(), cvTermEnriched.getShortName()));
         }
 
         //FullName
         if(cvTermEnriched.getFullName() != null){
             if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
                 addMismatchReport(new MismatchReport(
-                        "FullName", cvTermToEnrich.getFullName(), cvTermEnriched.getFullName()));
+                        FIELD_FULLNAME, cvTermToEnrich.getFullName(), cvTermEnriched.getFullName()));
             }
         }
     }
@@ -252,7 +260,7 @@ public abstract class AbstractCvTermEnricher
             String oldname =  cvTermToEnrich.getShortName();
             cvTermToEnrich.setShortName(cvTermEnriched.getShortName());
             addOverwriteReport(new OverwriteReport(
-                    "ShortName", cvTermToEnrich.getShortName(), oldname));
+                    FIELD_SHORTNAME, cvTermToEnrich.getShortName(), oldname));
         }
 
         //Check full name
@@ -261,7 +269,7 @@ public abstract class AbstractCvTermEnricher
                 String oldname =  cvTermToEnrich.getFullName();
                 cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
                 addOverwriteReport(new OverwriteReport(
-                        "FullName", cvTermToEnrich.getFullName(), oldname));
+                        FIELD_FULLNAME, cvTermToEnrich.getFullName(), oldname));
             }
         }
     }

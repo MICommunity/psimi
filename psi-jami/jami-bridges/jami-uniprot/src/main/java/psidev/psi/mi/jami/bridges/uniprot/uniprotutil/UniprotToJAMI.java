@@ -54,9 +54,7 @@ public class UniprotToJAMI {
     public static Protein getProteinMasterFromEntry(UniProtEntry e)
             throws FetcherException {
 
-        if(e == null){
-            throw new EntryNotFoundException("Uniprot entry was null.");
-        }
+        if(e == null) return null;
 
         Protein p;
         String shortName = null;
@@ -536,7 +534,7 @@ public class UniprotToJAMI {
     public static Organism getOrganismFromEntry(UniProtEntry e)
             throws FetcherException{
 
-        Organism o;
+        Organism o = null;
 
         if(e.getNcbiTaxonomyIds() == null
                 || e.getNcbiTaxonomyIds().isEmpty()){
@@ -549,14 +547,14 @@ public class UniprotToJAMI {
             String id = e.getNcbiTaxonomyIds().get(0).getValue();
             try{
                 o = new DefaultOrganism( Integer.parseInt( id ) );
+                o.setCommonName(e.getOrganism().getCommonName().getValue());
+                o.setScientificName(e.getOrganism().getScientificName().getValue());
             }catch(NumberFormatException n){
                 throw new BadResultException("NbiTaxonomyID could not be cast to an integer",n);
             }
         }
 
-        //Todo catch null pointer exception
-        o.setCommonName(e.getOrganism().getCommonName().getValue());
-        o.setScientificName(e.getOrganism().getScientificName().getValue());
+
 
         return o;
     }
