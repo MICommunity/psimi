@@ -24,9 +24,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675.xml").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileSourceType.psi25_xml, sourceType);
     }
 
     @Test
@@ -34,9 +34,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_xml_no_extension").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileSourceType.psi25_xml, sourceType);
     }
 
     @Test
@@ -44,9 +44,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_blank_lines.xml").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileSourceType.psi25_xml, sourceType);
     }
 
     @Test
@@ -54,9 +54,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_no_encoding.xml").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileSourceType.psi25_xml, sourceType);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.getMolecularInteractionSourceFor(stream);
 
-        Assert.assertEquals(MIFileSource.psi25_xml, openedStream.getSource());
+        Assert.assertEquals(MIFileSourceType.psi25_xml, openedStream.getSource());
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();
@@ -79,7 +79,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.getMolecularInteractionSourceFor(stream);
 
-        Assert.assertEquals(MIFileSource.psi25_xml, openedStream.getSource());
+        Assert.assertEquals(MIFileSourceType.psi25_xml, openedStream.getSource());
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();
@@ -92,7 +92,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.getMolecularInteractionSourceFor(stream);
 
-        Assert.assertEquals(MIFileSource.psi25_xml, openedStream.getSource());
+        Assert.assertEquals(MIFileSourceType.psi25_xml, openedStream.getSource());
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();
@@ -103,9 +103,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675.txt").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.mitab, sourceType);
+        Assert.assertEquals(MIFileSourceType.mitab, sourceType);
     }
 
     @Test
@@ -113,9 +113,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_mitab_no_extension").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.mitab, sourceType);
+        Assert.assertEquals(MIFileSourceType.mitab, sourceType);
     }
 
     @Test
@@ -123,9 +123,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_content_with_blank_line.txt").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.mitab, sourceType);
+        Assert.assertEquals(MIFileSourceType.mitab, sourceType);
     }
 
     @Test
@@ -133,9 +133,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_no_title.txt").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.mitab, sourceType);
+        Assert.assertEquals(MIFileSourceType.mitab, sourceType);
     }
 
     @Test
@@ -143,9 +143,9 @@ public class MIFileSourceAnalyzerTest {
 
         File file = new File(MIFileSourceAnalyzerTest.class.getResource("/samples/10075675_empty.txt").getFile());
 
-        MIFileSource sourceType = analyzer.getMolecularInteractionSourceFor(file);
+        MIFileSourceType sourceType = analyzer.getMolecularInteractionSourceFor(file);
 
-        Assert.assertEquals(MIFileSource.other, sourceType);
+        Assert.assertEquals(MIFileSourceType.other, sourceType);
     }
 
     @Test
@@ -155,7 +155,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.getMolecularInteractionSourceFor(stream);
 
-        Assert.assertEquals(MIFileSource.mitab, openedStream.getSource());
+        Assert.assertEquals(MIFileSourceType.mitab, openedStream.getSource());
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();
@@ -168,7 +168,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.getMolecularInteractionSourceFor(stream);
 
-        Assert.assertEquals(MIFileSource.mitab, openedStream.getSource());
+        Assert.assertEquals(MIFileSourceType.mitab, openedStream.getSource());
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();
@@ -181,7 +181,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.getMolecularInteractionSourceFor(stream);
 
-        Assert.assertEquals(MIFileSource.mitab, openedStream.getSource());
+        Assert.assertEquals(MIFileSourceType.mitab, openedStream.getSource());
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();
@@ -194,7 +194,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.getMolecularInteractionSourceFor(stream);
 
-        Assert.assertEquals(MIFileSource.other, openedStream.getSource());
+        Assert.assertEquals(MIFileSourceType.other, openedStream.getSource());
         Assert.assertNotNull(openedStream.getCopiedStream());
 
         openedStream.close();

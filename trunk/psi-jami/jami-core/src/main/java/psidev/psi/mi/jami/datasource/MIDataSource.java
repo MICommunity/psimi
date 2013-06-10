@@ -25,4 +25,14 @@ public interface MIDataSource {
      * @return the collection of DataSourceErrors
      */
     public Collection<? extends DataSourceError> getDataSourceErrors();
+
+    /**
+     * This method opens the file data source (or inputStream)
+     */
+    public void open();
+
+    /**
+     * This method close the file data source (or inputStream)
+     */
+    public void close();
 }

@@ -20,16 +20,6 @@ public interface MIFileDataSource extends MIDataSource{
     public Collection<FileSourceError> getDataSourceErrors();
 
     /**
-     * This method opens the file data source (or inputStream)
-     */
-    public void open();
-
-    /**
-     * This method close the file data source (or inputStream)
-     */
-    public void close();
-
-    /**
      * Validate the syntax of this MIFileDataSource.
      * It returns true if the file syntax is valid, false otherwise.
      * When the file syntax is invalid, the syntax errors are stored in the dataSourceErrors of this MIDataSource

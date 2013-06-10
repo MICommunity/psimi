@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.datasource;
  * @since <pre>01/03/13</pre>
  */
 
-public enum MIFileSource {
+public enum MIFileSourceType {
 
     psi25_xml, mitab, other
 }

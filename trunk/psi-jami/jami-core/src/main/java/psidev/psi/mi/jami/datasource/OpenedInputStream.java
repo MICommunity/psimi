@@ -17,9 +17,9 @@ public class OpenedInputStream {
     private InputStream stream;
     private File file;
 
-    private MIFileSource source;
+    private MIFileSourceType source;
 
-    public OpenedInputStream(File file, MIFileSource source) throws FileNotFoundException {
+    public OpenedInputStream(File file, MIFileSourceType source) throws FileNotFoundException {
         this.file = file;
         stream = new FileInputStream(file);
         this.source = source;
@@ -29,7 +29,7 @@ public class OpenedInputStream {
         return stream;
     }
 
-    public MIFileSource getSource() {
+    public MIFileSourceType getSource() {
         return source;
     }
 
