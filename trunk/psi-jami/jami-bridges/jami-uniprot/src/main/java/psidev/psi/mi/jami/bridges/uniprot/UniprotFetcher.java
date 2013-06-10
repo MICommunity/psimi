@@ -42,7 +42,7 @@ public class UniprotFetcher
             throws FetcherException {
 
         if(identifier == null){
-            throw new NullSearchException("The provided searchName was null.");
+            return null;
         }
 
         Collection<Protein> proteins = null;
@@ -68,8 +68,7 @@ public class UniprotFetcher
         }
 
         if(proteins == null || proteins.size() == 0){
-
-            throw new EntryNotFoundException("Identifier ["+identifier+"] returned no UniprotKB protein entry.");
+            return null;
         }
 
         //log.debug("Found "+proteins.size()+" entries");

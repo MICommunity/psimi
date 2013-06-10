@@ -153,7 +153,6 @@ public class UniprotBridge {
         Collection<ChainFeature> chainFeatures = entry.getFeatures( FeatureType.CHAIN );
         for(ChainFeature f : chainFeatures){
             if(f.getFeatureId().getValue().equals(identifier)) return f;
-
         }
 
         Collection<PeptideFeature> peptideFeatures = entry.getFeatures( FeatureType.PEPTIDE );

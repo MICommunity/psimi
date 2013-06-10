@@ -31,6 +31,9 @@ public abstract class AbstractOrganismEnricher
     protected final Logger log = LoggerFactory.getLogger(AbstractOrganismEnricher.class.getName());
     private OrganismFetcher fetcher=null;
     private static final String TYPE = "Organism";
+    private static final String FIELD_TAXID = "TaxID";
+    private static final String FIELD_COMMONNAME = "CommonName";
+    private static final String FIELD_SCIENTIFICNAME = "ScientificName";
 
     public AbstractOrganismEnricher(){
         enricherEvent = new EnricherEvent(TYPE);
@@ -58,7 +61,7 @@ public abstract class AbstractOrganismEnricher
         try{
             enriched = fetcher.getOrganismByTaxID(organismToEnrich.getTaxId());
             enricherEvent.clear();
-            enricherEvent.setQueryDetails(""+organismToEnrich.getTaxId(),"TaxID",fetcher.getService());
+            enricherEvent.setQueryDetails(""+organismToEnrich.getTaxId(),FIELD_TAXID,fetcher.getService());
         }catch(FetcherException e){
             throw new FetchingException(e);
         }
@@ -86,7 +89,7 @@ public abstract class AbstractOrganismEnricher
                 }
             }else if(organismToEnrich.getTaxId() == -3){
                 organismToEnrich.setTaxId(organismEnriched.getTaxId());
-                addAdditionReport(new AdditionReport("TaxId",""+organismToEnrich.getTaxId()));
+                addAdditionReport(new AdditionReport(FIELD_TAXID,""+organismToEnrich.getTaxId()));
             }
             //negative taxids will continue through at this point
 
@@ -95,7 +98,7 @@ public abstract class AbstractOrganismEnricher
                     && organismEnriched.getScientificName() != null){
                 organismToEnrich.setScientificName(organismEnriched.getScientificName());
                 addAdditionReport(new AdditionReport(
-                        "Scientific name",organismEnriched.getScientificName()));
+                        FIELD_SCIENTIFICNAME,organismEnriched.getScientificName()));
             }
 
             //Commonname
@@ -103,7 +106,7 @@ public abstract class AbstractOrganismEnricher
                     &&organismEnriched.getCommonName() != null){
                 organismToEnrich.setCommonName(organismEnriched.getCommonName());
                 addAdditionReport(new AdditionReport(
-                        "Common name", organismToEnrich.getCommonName()));
+                        FIELD_COMMONNAME, organismToEnrich.getCommonName()));
             }
         }
     }
@@ -114,7 +117,7 @@ public abstract class AbstractOrganismEnricher
         // Essentially only compares -2,or -1
         if(organismEnriched.getTaxId() != organismToEnrich.getTaxId()){
             addMismatchReport(new MismatchReport(
-                    "TaxID",
+                    FIELD_TAXID,
                     ""+organismToEnrich.getTaxId(),
                     ""+organismEnriched.getTaxId()));
         }
@@ -124,7 +127,7 @@ public abstract class AbstractOrganismEnricher
             if (!organismEnriched.getScientificName().equalsIgnoreCase(
                     organismToEnrich.getScientificName())){
                 addMismatchReport(new MismatchReport(
-                        "Scientific name",
+                        FIELD_SCIENTIFICNAME,
                         organismToEnrich.getScientificName(),
                         organismEnriched.getScientificName()));
             }
@@ -135,7 +138,7 @@ public abstract class AbstractOrganismEnricher
             if (!organismEnriched.getCommonName().equalsIgnoreCase(
                     organismToEnrich.getCommonName())){
                 addMismatchReport(new MismatchReport(
-                        "Common name",
+                        FIELD_COMMONNAME,
                         organismToEnrich.getCommonName(),
                         organismEnriched.getCommonName()));
             }
@@ -152,7 +155,7 @@ public abstract class AbstractOrganismEnricher
             String oldValue = ""+organismToEnrich.getTaxId();
             organismToEnrich.setTaxId(organismEnriched.getTaxId());
             addOverwriteReport(new OverwriteReport(
-                    "TaxID",
+                    FIELD_TAXID,
                     oldValue,
                     ""+organismToEnrich.getTaxId()));
         }
@@ -164,7 +167,7 @@ public abstract class AbstractOrganismEnricher
                 String oldValue = organismToEnrich.getScientificName();
                 organismToEnrich.setScientificName(organismEnriched.getScientificName());
                 addOverwriteReport(new OverwriteReport(
-                        "Scientific name",
+                        FIELD_SCIENTIFICNAME,
                         oldValue,
                         organismToEnrich.getScientificName()));
             }
@@ -177,7 +180,7 @@ public abstract class AbstractOrganismEnricher
                 String oldValue = organismToEnrich.getCommonName();
                 organismToEnrich.setCommonName(organismEnriched.getCommonName());
                 addOverwriteReport(new OverwriteReport(
-                        "Common name",
+                        FIELD_COMMONNAME,
                         oldValue,
                         organismToEnrich.getCommonName()));
             }
