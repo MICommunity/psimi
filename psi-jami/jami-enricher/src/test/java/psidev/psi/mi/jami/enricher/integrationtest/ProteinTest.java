@@ -47,7 +47,7 @@ public class ProteinTest {
     public void max(){
         proteinEnricher = new MaximumProteinUpdater(fetcher);
         LoggingEnricherListener loglist = new LoggingEnricherListener();
-        loglist.showXrefs(false);
+        //loglist.showXrefs(false);
         proteinEnricher.addEnricherListener(loglist);
     }
 

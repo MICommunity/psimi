@@ -6,19 +6,15 @@ import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.event.ConflictEvent;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.event.ErrorEvent;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.event.QueryDetails;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.eventprocessor.ProteinEventProcessor;
-import psidev.psi.mi.jami.enricher.exception.DemergeException;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.enricher.exception.FetchingException;
+import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.exception.*;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.enricher.util.CollectionUtilsExtra;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
+import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
@@ -34,26 +30,20 @@ import java.util.Collection;
  * Time: 14:27
  */
 public abstract class AbstractProteinEnricher
-        //extends EnricherEventProcessorImp
-        extends ProteinEventProcessor
         implements ProteinEnricher {
 
     protected final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
+
+    //TODO will throw null pointer if there is no listener applied
+    private ProteinEnricherListener proteinEnricherListener;
     private ProteinFetcher fetcher = null;
+
+
+    private MockOrganismFetcher mockOrganismFetcher = new MockOrganismFetcher();
     private OrganismEnricher organismEnricher;
     public static final String TYPE = "Protein";
 
-    public static final String FIELD_INTERACTORTYPE = "InteractorType";
-    public static final String FIELD_FULLNAME = "FullName";
-    public static final String FIELD_SHORTNAME = "ShortName";
-    public static final String FIELD_UNIPROTKBID = "UniportKbID";
-    public static final String FIELD_SEQUENCE = "Sequence";
-    public static final String FIELD_IDENTIFIER = "Identifier";
-    public static final String FIELD_ALIAS = "Alias";
-    public static final String FIELD_XREF = "Xref";
-    public static final String FIELD_CHECKSUM = "Checksum";
 
-    private MockOrganismFetcher mockOrganismFetcher = new MockOrganismFetcher();
 
     public AbstractProteinEnricher(){
     }
@@ -62,6 +52,25 @@ public abstract class AbstractProteinEnricher
         this();
         setFetcher(fetcher);
     }
+
+
+    /**
+     * Returns the listener which hears events from the protein as it is enriched and the status of the enrichment.
+     * @return
+     */
+    public ProteinEnricherListener getProteinEnricherListener(){
+        return proteinEnricherListener;
+    }
+
+    /**
+     * Sets the listener which hears events from the protein as it is enriched and the status of the enrichment.
+     * Only one listener can be set.
+     * @param proteinEnricherListener
+     */
+    public void setProteinEnricherListener(ProteinEnricherListener proteinEnricherListener){
+        this.proteinEnricherListener = proteinEnricherListener;
+    }
+
 
     public void setFetcher(ProteinFetcher fetcher){
         this.fetcher = fetcher;
@@ -90,114 +99,157 @@ public abstract class AbstractProteinEnricher
     /**
      * The first step in all enrichment is to find appropriate proteins to enrich from.
      *
-     * @param ProteinToEnrich
+     * @param ProteinToEnrich   The protein which is being enriched.
      * @return
      * @throws EnrichmentException
      */
     protected Collection<Protein> getFullyEnrichedForms(Protein ProteinToEnrich)
-            throws EnrichmentException, FetcherException {
+            throws FetcherException, BadToEnrichFormException, FetchingException {
 
-        if(fetcher == null) throw new FetchingException("ProteinFetcher is null.");
         //TODO - is this an exception?
-        if(ProteinToEnrich == null) throw new FetchingException("Attempted to enrich a null protein.");
-        //if(ProteinToEnrich == null) return null;
+        if(fetcher == null) throw new FetchingException("ProteinFetcher is null.");
+        if(ProteinToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null protein.");
 
-        Collection<Protein> enriched = null;
+        Collection<Protein> enriched;
         enriched = fetcher.getProteinsByID(ProteinToEnrich.getUniprotkb());
-        queryDetails = new QueryDetails(
-                TYPE, ProteinToEnrich.getUniprotkb(),
-                FIELD_UNIPROTKBID, fetcher.getService(), ProteinToEnrich);
+        //queryDetails = new QueryDetails(TYPE, ProteinToEnrich.getUniprotkb(),FIELD_UNIPROTKBID, fetcher.getService(), ProteinToEnrich);
 
         return enriched;
     }
 
-    protected Protein chooseProteinEnriched(Protein proteinToEnrich, Collection<Protein> proteinsEnriched)
-            throws EnrichmentException {
-        //TODO implement a real choice!
+    /**
+     * Takes results from a query and chooses the best match for enrichment (if there is one.
+     * Will return null if no proteins are available or there is no clear match.
+     * Will also fire onProteinEnriched if the returned protein is null
+     * to give further information about why no protein was chosen.
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinsEnriched  Collection of fully enriched proteins to choose the best match from
+     * @return  A fully enriched protein to compare and extract fields from.
+     */
+    protected Protein chooseProteinEnriched(Protein proteinToEnrich, Collection<Protein> proteinsEnriched){
 
-       // log.debug("There are "+proteinsEnriched.size()+" proteins for consideration of enrichment.");
-        //Only 1 entry, return it
+        // No proteins, fail
+        if(proteinsEnriched == null
+                || proteinsEnriched.isEmpty()){
+            proteinEnricherListener.onProteinEnriched(proteinToEnrich,
+                    "Failed. Protein is dead. " +
+                            "Found no entries.");
+            return null;
+        }
+
+        // 1 protein, use it
         if(proteinsEnriched.size() == 1) {
-            for(Protein protein : proteinsEnriched){return protein;}
+            return proteinsEnriched.iterator().next();
         }
 
-        Collection<Protein> choice = new ArrayList<Protein>();
-
-        //log.debug("The original is "+proteinToEnrich.getFullName()+" "+proteinToEnrich.getUniprotkb());
-
-        if(proteinToEnrich.getOrganism() == null){
-           // log.debug("Protein to enrich has no organism");
+        // Many proteins, try and choose
+        if(proteinToEnrich.getOrganism() == null
+                || proteinToEnrich.getOrganism().getTaxId() == -3){
+            proteinEnricherListener.onProteinEnriched(proteinToEnrich,
+                    "Failed. Protein is demerged. " +
+                            "Found "+proteinsEnriched.size()+" entries. "+
+                            "Cannot choose as no organism in proteinToEnrich.");
+            return null;
         }
 
-        if(proteinsEnriched.size() > 1) {
-            for(Protein protein : proteinsEnriched){
-                if(protein.getOrganism() != null){
-                   // log.debug("Protein "+protein.getFullName()+" "+protein.getUniprotkb()+" has an organism "+protein.getOrganism().getTaxId());
-
-                    if(proteinToEnrich.getOrganism() != null
-                            && protein.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()){
-
-                        choice.add(protein);
-                       // log.debug("Could use use "+protein.getFullName()+" "+protein.getUniprotkb());
+        Protein proteinEnriched = null;
+        for(Protein protein : proteinsEnriched){
+            if(protein.getOrganism() != null
+                    && protein.getOrganism().getTaxId() != -3){
+                if(protein.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()){
+                    if(proteinEnriched == null) proteinEnriched = protein;
+                    else{
+                        proteinEnricherListener.onProteinEnriched(proteinToEnrich,
+                                "Failed. Protein is demerged. " +
+                                        "Found "+proteinsEnriched.size()+" entries. "+
+                                        "Cannot choose as multiple entries match organism in proteinToEnrich.");
+                        return null;
                     }
-                    else {
-                       // log.debug("Did not use "+protein.getFullName()+" "+protein.getUniprotkb());
-                    }
-                }
-                else {
-                   // log.debug("Protein "+protein.getFullName()+" "+protein.getUniprotkb()+" does not have an organism.");
                 }
             }
         }
 
-       // log.debug("There are "+choice.size()+" proteins which match the organism of the proteinToEnrich.");
-
-        int organism = -3;
-        if(proteinToEnrich.getOrganism() != null) organism = proteinToEnrich.getOrganism().getTaxId();
-
-        if(choice.size() == 1) {
-            for(Protein protein : choice){
-                /*enricherEvent.addRemapReport(new RemapReport("There are "+proteinsEnriched.size()+
-                        " proteins returned by "+proteinToEnrich.getUniprotkb()+
-                        " of which only "+protein.getUniprotkb()+" matches the organism "+organism+"."));
-                return protein;   */
-            }
+        if(proteinEnriched == null){
+            proteinEnricherListener.onProteinEnriched(proteinToEnrich,
+                    "Failed. Protein is demerged. " +
+                            "Found "+proteinsEnriched.size()+" entries. " +
+                            "Cannot choose as no entries match organism in proteinToEnrich.");
+            return null;
         }
 
-        throw new DemergeException("There are "+proteinsEnriched.size()+
-                " proteins returned by "+proteinToEnrich.getUniprotkb()+
-                " of which "+choice.size()+" match the organism "+organism+".");
+        if(log.isInfoEnabled()) log.info("Chose demerged protein from a choice of "+proteinsEnriched.size());
+        return proteinEnriched;
     }
 
+
     /**
-     * Adds all single-entry fields which are empty and appends values for any multi-entry fields.
+     * Checks for fatal conflicts between the proteinToEnrich and the enriched form.
+     * The interactor type is the first comparison.
+     * It may either be the psi-mi term for 'protein' or 'unknown interactor'.
+     * If anything other than these terms are found, the enrichment stops and returns false.
+     * <p>
+     * The organisms are then compared. If the Enriched organism is null, an exception is fired.
+     * If the proteinToEnrich has a null organism, a new, 'unknown' organism is added.
+     * Otherwise the organisms taxids' are compared, returning false if they do not match.
+     * <p>
+     * In both cases, if false is returned, an onProteinEnriched event is fired and 'failed' status returned.
      *
-     * The following are added if empty: InteractorType, FullName, UniprotID, Sequence.
-     * The following are appended to: Identifiers, Aliases, Xrefs.
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
+     * @return  Whether there were any fatal conflicts which
+     * @throws  BadEnrichedFormException
+     */
+    protected boolean areNoConflicts(Protein proteinToEnrich, Protein proteinEnriched)
+            throws BadEnrichedFormException {
+
+        //InteractorType
+        if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
+                Protein.PROTEIN_MI)
+                && !proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
+                Interactor.UNKNOWN_INTERACTOR_MI)){
+
+            proteinEnricherListener.onProteinEnriched(proteinToEnrich, "Failed. Conflict in interactorType. "+
+                    "Found "+proteinToEnrich.getInteractorType().getShortName() + " " +
+                    "with the psi-mi id " + proteinToEnrich.getInteractorType().getMIIdentifier() + ".");
+            return false;
+        }
+
+        //Organism
+        if(proteinEnriched.getOrganism() == null) throw new BadEnrichedFormException(
+                "The enriched protein has a null organism.");
+        else if(proteinToEnrich.getOrganism() == null){
+            proteinToEnrich.setOrganism(new DefaultOrganism(-3));
+        }else if(proteinToEnrich.getOrganism().getTaxId() != -3
+                && ! OrganismTaxIdComparator.areEquals( proteinToEnrich.getOrganism(), proteinToEnrich.getOrganism())){
+
+            proteinEnricherListener.onProteinEnriched(proteinToEnrich, "Failed. Conflict in organism. " +
+                    "Found taxid "+proteinToEnrich.getOrganism().getTaxId()+" "+
+                    "but was enriching taxid "+proteinEnriched.getOrganism().getTaxId()+".");
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+    /**
+     * Does a minimum enrichment of all empty or appendable fields up to the level of mi-tab 2.5
      *
-     * In both cases, the addition is added to the addedEvent which is then fired at the end of the method.
      *
-     * The organismEnricher is also called in this method.
-     *
-     * The interactorType will fire a Conflict event if it is an unexpected type.
-     *
-     * @param proteinToEnrich
-     * @param proteinEnriched
-     * @throws EnrichmentException
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
     protected void runProteinAddition(Protein proteinToEnrich, Protein proteinEnriched)
-            throws EnrichmentException, SeguidException {
+            throws SeguidException {
 
         //InteractorType
         if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
             if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR_MI)){
+                //todo proteinEnricherListener.onInteractorUpdate();
                 proteinToEnrich.setInteractorType(CvTermUtils.createProteinInteractorType());
-                addedEvent.addElement(FIELD_INTERACTORTYPE, Protein.PROTEIN);
             }
-            else fireConflictEvent(new ConflictEvent(FIELD_INTERACTORTYPE, Protein.PROTEIN, proteinToEnrich, "Expected InteractorType [Protein] " +
-                    "but found [" + proteinToEnrich.getInteractorType().getShortName() + "] " +
-                    "with the psi-mi id [" + proteinToEnrich.getInteractorType().getMIIdentifier() + "]"));
         }
 
         //ShortName - is never null
@@ -205,45 +257,44 @@ public abstract class AbstractProteinEnricher
         //FullName
         if(proteinToEnrich.getFullName() == null
                 && proteinEnriched.getFullName() != null){
+            proteinEnricherListener.onFullNameUpdate(proteinEnriched, null);
             proteinToEnrich.setFullName( proteinEnriched.getFullName() );
-            addedEvent.addElement(FIELD_FULLNAME, proteinEnriched.getFullName());
         }
-
 
         //PRIMARY Uniprot AC
         if(proteinToEnrich.getUniprotkb() == null
                 && proteinEnriched.getUniprotkb() != null) {
+            proteinEnricherListener.onUniprotKbUpdate(proteinEnriched, null);
             proteinToEnrich.setUniprotkb(proteinEnriched.getUniprotkb());
-            addedEvent.addElement(FIELD_UNIPROTKBID, proteinEnriched.getUniprotkb());
         }
-
 
         //Sequence
         if(proteinToEnrich.getSequence() == null
                 && proteinEnriched.getSequence() != null){
+            proteinEnricherListener.onSequenceUpdate(proteinEnriched, null);
             proteinToEnrich.setSequence(proteinEnriched.getSequence());
-            addedEvent.addElement(FIELD_SEQUENCE, proteinToEnrich.getSequence());
         }
 
-        //TODO - is this correct? Is there a scenario where 2 primary ACs are created
+        //TODO - is this correct? Is there a scenario where 2 primary ACs are created?
         //Add identifiers
         Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
                 proteinEnriched.getIdentifiers(),
                 proteinToEnrich.getIdentifiers(),
                 new DefaultXrefComparator());
         for(Xref xref: subtractedIdentifiers){
+            proteinEnricherListener.onAddedIdentifier(proteinEnriched, xref);
             proteinToEnrich.getIdentifiers().add(xref);
-            addedEvent.addElement(FIELD_IDENTIFIER, xref);
         }
 
+        //TODO some introduced aliases may enter a form of conflict - need to do a further comparison.
         //Aliases
         Collection<Alias> subtractedAliases = CollectionUtilsExtra.comparatorSubtract(
                 proteinEnriched.getAliases(),
                 proteinToEnrich.getAliases(),
                 new DefaultAliasComparator());
         for(Alias alias: subtractedAliases){
+            proteinEnricherListener.onAddedAlias(proteinEnriched, alias);
             proteinToEnrich.getAliases().add(alias);
-            addedEvent.addElement(FIELD_ALIAS, alias);
         }
 
         //Xref
@@ -252,12 +303,12 @@ public abstract class AbstractProteinEnricher
                 proteinToEnrich.getXrefs(),
                 new DefaultXrefComparator());
         for(Xref xref: subtractedXrefs){
+            proteinEnricherListener.onAddedXref(proteinEnriched, xref);
             proteinToEnrich.getXrefs().add(xref);
-            addedEvent.addElement(FIELD_XREF, xref);
         }
 
         //Organism -
-        if(proteinEnriched.getOrganism() != null){
+        /*if(proteinEnriched.getOrganism() != null){
             if(organismEnricher == null) throw new EnrichmentException(
                     "OrganismEnricher was not provided for proteinEnricher");
 
@@ -269,7 +320,7 @@ public abstract class AbstractProteinEnricher
             mockOrganismFetcher.addNewOrganism(
                     ""+proteinToEnrich.getOrganism().getTaxId(), proteinEnriched.getOrganism());
             organismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
-        }
+        }*/
     }
 
 
@@ -281,24 +332,22 @@ public abstract class AbstractProteinEnricher
      * and that the values are different.
      *
      * For each conflict found, a conflictEvent object will be fired immediately.
-     * @param proteinToEnrich
-     * @param proteinEnriched
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      */
-    protected void runProteinMismatchOnCore(Protein proteinToEnrich, Protein proteinEnriched){
+    /*protected void runProteinMismatchOnCore(Protein proteinToEnrich, Protein proteinEnriched){
 
         //Short name
         if (!proteinToEnrich.getShortName().equalsIgnoreCase(
                 proteinEnriched.getShortName() )) {
-            fireConflictEvent( new ConflictEvent(
-                    FIELD_SHORTNAME, proteinEnriched.getShortName(), proteinToEnrich));
+            //fireConflictEvent( new ConflictEvent(FIELD_SHORTNAME, proteinEnriched.getShortName(), proteinToEnrich));
         }
 
         //Full name
         if(proteinEnriched.getFullName() != null){
             if (!proteinToEnrich.getFullName().equalsIgnoreCase(
                     proteinEnriched.getFullName() )) {
-                fireConflictEvent(new ConflictEvent(
-                        FIELD_FULLNAME, proteinEnriched.getFullName(), proteinToEnrich));
+                //fireConflictEvent(new ConflictEvent(FIELD_FULLNAME, proteinEnriched.getFullName(), proteinToEnrich));
             }
         }
 
@@ -306,19 +355,17 @@ public abstract class AbstractProteinEnricher
         if(proteinEnriched.getUniprotkb() != null){
             if(! proteinToEnrich.getUniprotkb().equalsIgnoreCase(
                     proteinEnriched.getUniprotkb() )){
-                fireConflictEvent(new ConflictEvent(
-                        FIELD_UNIPROTKBID, proteinEnriched.getUniprotkb(), proteinToEnrich));
+                //fireConflictEvent(new ConflictEvent(FIELD_UNIPROTKBID, proteinEnriched.getUniprotkb(), proteinToEnrich));
             }
         }
 
         //Sequence
         if(proteinEnriched.getSequence() != null){
             if(! proteinToEnrich.getSequence().equalsIgnoreCase(proteinEnriched.getSequence())){
-                fireConflictEvent(new ConflictEvent(
-                        FIELD_SEQUENCE, proteinToEnrich.getSequence(), proteinEnriched));
+                //fireConflictEvent(new ConflictEvent(FIELD_SEQUENCE, proteinToEnrich.getSequence(), proteinEnriched));
             }
         }
-    }
+    }*/
 
     /**
      * Checks the Checksums (CRC64 and ROGID) and fires a conflict if one is present, otherwise the checksum is added.
@@ -328,11 +375,11 @@ public abstract class AbstractProteinEnricher
      * If there is already a checksum of a different value, a conflict is fired.
      * Else, the checksum will be added and the details added to the additionEvent.
      *
-     * @param proteinToEnrich
-     * @param proteinEnriched
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
-    protected void runProteinMismatchOnChecksum(Protein proteinToEnrich, Protein proteinEnriched) throws SeguidException {
+    /*protected void runProteinMismatchOnChecksum(Protein proteinToEnrich, Protein proteinEnriched) throws SeguidException {
 
         //CHECKSUM - CRC64
         Checksum crc64checksum = null;
@@ -399,54 +446,44 @@ public abstract class AbstractProteinEnricher
             //TODO - should any kind of warning be raised if the ROGID cannot be calculated?
             //Does the enricher provide any degree of error catching?
         }
-    }
+    } */
 
 
 
     /**
-     * Update all fields which take a single entry with the 'Enriched' value.
+     * Update and overwrites any of the central fields which differ from the enriched form.
      *
-     * This method will update: shortName, fullName, UniprotKbId and sequence.
-     * In each case a check will be made to ensure that there is a value to update too,
-     * and that the values are different.
-     *
-     * If an update is done, it will be recorded in an updateEvent object.
-     * This method does not fire any UpdateEvents.
-     *
-     * This method assumes that the proteinToEnrich has no null fields
-     * (as they should have been filled by addition)
-     * @param proteinToEnrich
-     * @param proteinEnriched
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      */
     protected void runProteinUpdateOnCore(Protein proteinToEnrich, Protein proteinEnriched){
         //ShortName - is never null
-        if (! proteinToEnrich.getShortName().equalsIgnoreCase(
-                proteinEnriched.getShortName() )) {
-            updatedEvent.addElement(FIELD_SHORTNAME,proteinToEnrich.getShortName());
+        if (! proteinToEnrich.getShortName().equalsIgnoreCase(proteinEnriched.getShortName() )) {
+            proteinEnricherListener.onShortNameUpdate(proteinToEnrich, proteinToEnrich.getShortName());
             proteinToEnrich.setShortName(proteinEnriched.getShortName());
         }
 
         //Full name
         if(proteinEnriched.getFullName() != null
-                && ! proteinToEnrich.getFullName().equalsIgnoreCase(
-                proteinEnriched.getFullName() )) {
-            updatedEvent.addElement(FIELD_FULLNAME, proteinToEnrich.getFullName());
+                && (proteinToEnrich.getFullName() == null
+                || ! proteinToEnrich.getFullName().equalsIgnoreCase(proteinEnriched.getFullName() ))) {
+            proteinEnricherListener.onFullNameUpdate(proteinToEnrich,proteinToEnrich.getFullName());
             proteinToEnrich.setFullName(proteinEnriched.getFullName());
         }
 
         //PRIMARY Uniprot AC
         if(proteinEnriched.getUniprotkb() != null
-                && ! proteinToEnrich.getUniprotkb().equalsIgnoreCase(
-                proteinEnriched.getUniprotkb() )){
-            updatedEvent.addElement(FIELD_UNIPROTKBID, proteinToEnrich.getUniprotkb());
+                && ( proteinToEnrich.getUniprotkb() == null
+                || ! proteinToEnrich.getUniprotkb().equalsIgnoreCase(proteinEnriched.getUniprotkb() ))){
+            proteinEnricherListener.onUniprotKbUpdate(proteinToEnrich,proteinToEnrich.getUniprotkb());
             proteinToEnrich.setUniprotkb(proteinEnriched.getUniprotkb());
         }
 
         //Sequence
         if(proteinEnriched.getSequence() != null
-                && ! proteinToEnrich.getSequence().equalsIgnoreCase(
-                proteinEnriched.getSequence())){
-            updatedEvent.addElement(FIELD_SEQUENCE, proteinToEnrich.getSequence());
+                && ( proteinToEnrich.getSequence() == null
+                || ! proteinToEnrich.getSequence().equalsIgnoreCase(proteinEnriched.getSequence() ))){
+            proteinEnricherListener.onSequenceUpdate(proteinToEnrich,proteinToEnrich.getSequence());
             proteinToEnrich.setSequence(proteinEnriched.getSequence());
         }
     }
@@ -459,8 +496,8 @@ public abstract class AbstractProteinEnricher
      * If there is already a checksum of a different value, an update event is fired and the old value removed.
      * The checksum will be added and the details added to the additionEvent.
      *
-     * @param proteinToEnrich
-     * @param proteinEnriched
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
      protected void runProteinUpdateOnChecksums(Protein proteinToEnrich, Protein proteinEnriched)
@@ -476,15 +513,14 @@ public abstract class AbstractProteinEnricher
                         // If multiple, non identical CRC64 checksums have been found,
                         // Fire an event, tell the logger if it's debugging
                         // then clear the place holder and break as the enricher cannot choose.
-                        fireErrorEvent(new ErrorEvent(ErrorEvent.ERROR_CONFLICT, FIELD_CHECKSUM,
-                                "Multiple CRC64 checksums found in the fetched protein."));
+                        //fireErrorEvent(new ErrorEvent(ErrorEvent.ERROR_CONFLICT, FIELD_CHECKSUM,
+                        //        "Multiple CRC64 checksums found in the fetched protein."));
                         if(log.isDebugEnabled()) log.debug(
                                 "Multiple different CRC64 checksums were found in fetched protein, please check code.");
                         crc64checksum = null;
                         break;
                     }else if(log.isDebugEnabled()) log.debug(
-                            "Multiple identical CRC64 checksums were found fetched protein, " +
-                                    "please check code.");
+                            "Multiple identical CRC64 checksums were found fetched protein, please check code.");
                 } else {
                     crc64checksum = c;
                 }
@@ -496,15 +532,12 @@ public abstract class AbstractProteinEnricher
             for(Checksum c :proteinToEnrich.getChecksums()){
                 if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
                     if(!c.getValue().equals(crc64checksum.getValue())){
-                        updatedEvent.addElement(FIELD_CHECKSUM, c);
                         oldChecksums.add(c);
                     }
                 }
             }
             proteinToEnrich.getChecksums().removeAll(oldChecksums);
-
             proteinToEnrich.getChecksums().add(crc64checksum);
-            addedEvent.addElement(FIELD_CHECKSUM, crc64checksum);
         }
 
         //Checksum -RogID
@@ -515,33 +548,11 @@ public abstract class AbstractProteinEnricher
             RogidGenerator rogidGenerator = new RogidGenerator();
             String rogid = rogidGenerator.calculateRogid(
                     proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
-            if(proteinToEnrich.getRogid() == null){
+            if(proteinToEnrich.getRogid() == null
+                    || !proteinToEnrich.getRogid().equals(rogid)){
+                //todo check there can only be one
                 proteinToEnrich.setRogid(rogid);
-                addedEvent.addElement(FIELD_CHECKSUM,proteinToEnrich.getRogid());
             }
-            else if(!proteinToEnrich.getRogid().equals(rogid)){
-                updatedEvent.addElement(FIELD_CHECKSUM, rogid);
-            }
-            //TODO - should any kind of warning be raised if the ROGID cannot be calculated?
-            //Does the enricher provide any degree of error catching?
         }
-
-        /*
-        else if(proteinToEnrich.getRogid() != null){
-            if(proteinToEnrich.getOrganism() == null) throw new ConflictException(
-                    "ROGID checksum in the protein being enriched " +
-                            "but unable to confirm as organism is null.");
-
-            else if(proteinToEnrich.getOrganism().getTaxId() == -3) throw new ConflictException(
-                    "ROGID checksum in the protein being enriched " +
-                            "but unable to confirm as organism taxid is not legal "+
-                            "(value is ["+proteinToEnrich.getOrganism().getTaxId()+"]).");
-
-            else if(proteinToEnrich.getSequence() == null) throw new ConflictException(
-                    "ROGID checksum in the protein being enriched " +
-                            "but unable to confirm it as no sequence is provided.");
-        }
-         */
     }
-
 }

@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener;
 
 
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.event.*;
+import psidev.psi.mi.jami.listener.ProteinChangeListener;
+import psidev.psi.mi.jami.model.Protein;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,11 +11,8 @@ import psidev.psi.mi.jami.enricher.enricherimplementation.protein.event.*;
  * Date: 10/06/13
  * Time: 10:56
  */
-public interface ProteinEnricherListener {
+public interface ProteinEnricherListener extends ProteinChangeListener{
 
-    public void onAdditionReportEvent(AddedEvent e);
-    public void onErrorEvent(ErrorEvent e);
-    public void onConflictEvent(ConflictEvent e);
-    public void onUpdateEventReport(UpdatedEvent e);
-    public void onDeadProteinEvent(DeadProteinEvent e);
+    public void onProteinEnriched(Protein protein, String status);
+
 }

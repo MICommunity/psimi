@@ -8,10 +8,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -235,6 +232,15 @@ public abstract class AbstractProteinRemapper
 
         //check the list
         final Iterator<Xref> outerIterator = identifierMappingResults.keySet().iterator();
+        /*String remappedUniprot = null;
+        for (Map.Entry<Xref, IdentificationResults> entrye = identifierMappingResults.entrySet()){
+            if (remappedUniprot != null){
+
+            }
+            else{
+                remappedUniprot = entrye.getValue().getFinalUniprotId();
+            }
+        } */
         out:
         while (outerIterator.hasNext()) {
             final Xref outerKey = outerIterator.next();

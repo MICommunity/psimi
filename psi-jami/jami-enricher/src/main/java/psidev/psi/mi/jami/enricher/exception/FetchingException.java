@@ -7,6 +7,7 @@ package psidev.psi.mi.jami.enricher.exception;
  * Date: 13/05/13
  * Time: 14:05
  */
+@Deprecated
 public class FetchingException extends EnrichmentException{
     public FetchingException() {
         super();
