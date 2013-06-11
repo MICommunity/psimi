@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -17,7 +18,9 @@ import java.util.Collections;
 
 public class MitabFeatureEvidence extends MitabFeature implements FeatureEvidence {
 
+    private Collection<CvTerm> detectionMethods;
     private ParticipantEvidence participantEvidence;
+    private Collection<FeatureEvidence> bindingSiteEvidences;
 
     public MitabFeatureEvidence() {
         super();
@@ -31,8 +34,44 @@ public class MitabFeatureEvidence extends MitabFeature implements FeatureEvidenc
         super(type, interpro);
     }
 
+    protected void initialiseBindingSiteEvidences(){
+        this.bindingSiteEvidences = new ArrayList<FeatureEvidence>();
+    }
+
+    protected void initialiseDetectionMethods(){
+        this.detectionMethods = new ArrayList<CvTerm>();
+    }
+
+    protected void initialiseBindingSiteEvidencesWith(Collection<FeatureEvidence> features){
+        if (features == null){
+            this.bindingSiteEvidences = Collections.EMPTY_LIST;
+        }
+        else {
+            this.bindingSiteEvidences = features;
+        }
+    }
+
+    protected void initialiseDetectionMethodsWith(Collection<CvTerm> methods){
+        if (methods == null){
+            this.detectionMethods = Collections.EMPTY_LIST;
+        }
+        else {
+            this.detectionMethods = methods;
+        }
+    }
+
+    public Collection<FeatureEvidence> getLinkedFeatureEvidences() {
+        if(bindingSiteEvidences == null){
+            initialiseBindingSiteEvidences();
+        }
+        return this.bindingSiteEvidences;
+    }
+
     public Collection<CvTerm> getDetectionMethods() {
-        return Collections.EMPTY_LIST;
+        if (detectionMethods == null){
+            initialiseDetectionMethods();
+        }
+        return this.detectionMethods;
     }
 
     public ParticipantEvidence getParticipantEvidence() {
@@ -50,9 +89,5 @@ public class MitabFeatureEvidence extends MitabFeature implements FeatureEvidenc
         if (participant != null){
             participant.addFeatureEvidence(this);
         }
-    }
-
-    public Collection<FeatureEvidence> getLinkedFeatureEvidences() {
-        return Collections.EMPTY_LIST;
     }
 }

@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -18,6 +19,7 @@ import java.util.Collections;
 public class MitabModelledFeature extends MitabFeature implements ModelledFeature{
 
     private ModelledParticipant modelledParticipant;
+    private Collection<ModelledFeature> bindingFeatures;
 
     public MitabModelledFeature() {
         super();
@@ -29,6 +31,19 @@ public class MitabModelledFeature extends MitabFeature implements ModelledFeatur
 
     public MitabModelledFeature(CvTerm type, String interpro) {
         super(type, interpro);
+    }
+
+    protected void initialiseBindingFeatures(){
+        this.bindingFeatures = new ArrayList<ModelledFeature>();
+    }
+
+    protected void initialiseBindingFeaturesWith(Collection<ModelledFeature> features){
+        if (features == null){
+            this.bindingFeatures = Collections.EMPTY_LIST;
+        }
+        else {
+            this.bindingFeatures = features;
+        }
     }
 
     public ModelledParticipant getModelledParticipant() {
@@ -43,12 +58,16 @@ public class MitabModelledFeature extends MitabFeature implements ModelledFeatur
         if (this.modelledParticipant != null){
             this.modelledParticipant.removeModelledFeature(this);
         }
+
         if (participant != null){
             participant.addModelledFeature(this);
         }
     }
 
     public Collection<ModelledFeature> getLinkedModelledFeatures() {
-        return Collections.EMPTY_LIST;
+        if(bindingFeatures == null){
+            initialiseBindingFeatures();
+        }
+        return this.bindingFeatures;
     }
 }

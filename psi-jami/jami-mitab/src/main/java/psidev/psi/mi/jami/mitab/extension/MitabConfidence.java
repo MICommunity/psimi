@@ -1,12 +1,8 @@
 package psidev.psi.mi.jami.mitab.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledConfidence;
-import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.impl.DefaultConfidence;
-
-import java.util.Collection;
-import java.util.Collections;
+import psidev.psi.mi.jami.model.impl.DefaultModelledConfidence;
 
 /**
  * A MitabConfidence is a confidence with some text
@@ -16,9 +12,10 @@ import java.util.Collections;
  * @since <pre>10/06/13</pre>
  */
 
-public class MitabConfidence extends DefaultConfidence implements ModelledConfidence{
+public class MitabConfidence extends DefaultModelledConfidence implements FileSourceContext{
 
     private String text;
+    private MitabSourceLocator sourceLocator;
 
     public MitabConfidence(CvTerm type, String value) {
         super(type, value);
@@ -33,7 +30,7 @@ public class MitabConfidence extends DefaultConfidence implements ModelledConfid
         return text;
     }
 
-    public Collection<Publication> getPublications() {
-        return Collections.EMPTY_LIST;
+    public MitabSourceLocator getSourceLocator() {
+        return sourceLocator;
     }
 }

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.mitab.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultFeature;
 
@@ -11,9 +12,10 @@ import psidev.psi.mi.jami.model.impl.DefaultFeature;
  * @since <pre>07/06/13</pre>
  */
 
-public class MitabFeature extends DefaultFeature{
+public class MitabFeature extends DefaultFeature implements FileSourceContext{
 
     private String text;
+    private MitabSourceLocator sourceLocator;
 
     public MitabFeature() {
         super();
@@ -33,5 +35,13 @@ public class MitabFeature extends DefaultFeature{
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }
