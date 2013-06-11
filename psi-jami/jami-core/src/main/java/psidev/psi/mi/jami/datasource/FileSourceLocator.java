@@ -34,7 +34,7 @@ public class FileSourceLocator {
         return charNumber;
     }
 
-    public String getLocationDescription() {
+    public String toString() {
         return "Line: " + lineNumber + ", Character: " + charNumber;
     }
 }
