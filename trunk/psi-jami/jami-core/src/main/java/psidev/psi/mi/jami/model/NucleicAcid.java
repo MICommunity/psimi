@@ -46,16 +46,4 @@ public interface NucleicAcid extends Polymer {
      * @param id : Refseq identifier
      */
     public void setRefseq(String id);
-
-    /**
-     * The sequence of nucleotides for this nucleic acid
-     * @return the sequence
-     */
-    public String getSequence();
-
-    /**
-     * Sets the sequence
-     * @param sequence : the sequence
-     */
-    public void setSequence(String sequence);
 }
