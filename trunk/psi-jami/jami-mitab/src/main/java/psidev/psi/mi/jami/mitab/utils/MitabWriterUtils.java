@@ -5,15 +5,16 @@ import psidev.psi.mi.jami.mitab.MitabColumnName;
 import psidev.psi.mi.jami.mitab.MitabVersion;
 import psidev.psi.mi.jami.mitab.extension.MitabAlias;
 import psidev.psi.mi.jami.mitab.extension.MitabConfidence;
+import psidev.psi.mi.jami.mitab.extension.MitabFeature;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.AliasUtils;
-import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.*;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -36,6 +37,7 @@ public class MitabWriterUtils {
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
     public static final DateFormat PUBLICATION_YEAR_FORMAT = new SimpleDateFormat("yyyy");
     public static final String UNKNOWN_DATABASE = "unknown";
+    public static final String UNKNOWN_TYPE= "unknown";
     public static final String AUTHOR_SUFFIX = " et al.";
     public static final String TAXID = "taxid";
 
@@ -448,7 +450,40 @@ public class MitabWriterUtils {
                 }
 
                 if (confIterator.hasNext()){
-                     writer.write(FIELD_SEPARATOR);
+                    writer.write(FIELD_SEPARATOR);
+                }
+            }
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes the confidences of an interaction evidence
+     * @param interaction
+     * @param writer
+     * @param isMitabExtendedConfidence : true if the confidences attached to this interaction are extended MITAB confidences with a text
+     *                                  to write
+     */
+    public static void writeInteractionConfidences(ModelledInteraction interaction, Writer writer, boolean isMitabExtendedConfidence) throws IOException {
+
+        if (!interaction.getModelledConfidences().isEmpty()){
+
+            Iterator<ModelledConfidence> confIterator = interaction.getModelledConfidences().iterator();
+            while (confIterator.hasNext()) {
+                Confidence conf = confIterator.next();
+                // write confidence
+                if (isMitabExtendedConfidence){
+                    MitabConfidence mitabConf = (MitabConfidence) conf;
+                    writeConfidence(mitabConf, mitabConf.getText(), writer);
+                }
+                else{
+                    writeConfidence(conf, null, writer);
+                }
+
+                if (confIterator.hasNext()){
+                    writer.write(FIELD_SEPARATOR);
                 }
             }
         }
@@ -635,7 +670,7 @@ public class MitabWriterUtils {
                     writeAnnotation(annot, writer);
 
                     if(interactorAnnotationIterator.hasNext()){
-                       writer.write(FIELD_SEPARATOR);
+                        writer.write(FIELD_SEPARATOR);
                     }
                 }
 
@@ -701,6 +736,324 @@ public class MitabWriterUtils {
     }
 
     /**
+     * Writes experiment host organism
+     * @param experiment
+     * @param writer
+     */
+    public static void writeHostOrganism(Experiment experiment, Writer writer) throws IOException {
+
+        // writes interaction annotations first
+        if (experiment != null){
+            writeOrganism(writer, experiment.getHostOrganism());
+        }
+        else{
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes interaction evidence parameters
+     * @param interaction
+     * @param writer
+     */
+    public static void writeInteractionParameters(InteractionEvidence interaction, Writer writer) throws IOException {
+
+        if (!interaction.getParameters().isEmpty()){
+
+            Iterator<Parameter> parameterIterator = interaction.getParameters().iterator();
+            while(parameterIterator.hasNext()){
+                writeParameter(parameterIterator.next(), writer);
+                if (parameterIterator.hasNext()){
+                    writer.write(FIELD_SEPARATOR);
+                }
+            }
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes modelled interaction parameters
+     * @param interaction
+     * @param writer
+     */
+    public static void writeInteractionParameters(ModelledInteraction interaction, Writer writer) throws IOException {
+
+        if (!interaction.getModelledParameters().isEmpty()){
+
+            Iterator<ModelledParameter> parameterIterator = interaction.getModelledParameters().iterator();
+            while(parameterIterator.hasNext()){
+                writeParameter(parameterIterator.next(), writer);
+                if (parameterIterator.hasNext()){
+                    writer.write(FIELD_SEPARATOR);
+                }
+            }
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes created date of an interaction
+     * @param date
+     * @param writer
+     */
+    public static void writeDate(Date date, Writer writer) throws IOException {
+
+        if (date != null){
+            writer.write(DATE_FORMAT.format(date));
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes participant checksum
+     * @param participant
+     * @param writer
+     */
+    public static void writeParticipantChecksums(Participant participant, Writer writer) throws IOException {
+
+        if (participant != null){
+
+            if (!participant.getInteractor().getChecksums().isEmpty()){
+
+                Iterator<Checksum> checksumIterator = participant.getInteractor().getChecksums().iterator();
+                while(checksumIterator.hasNext()){
+                    writeChecksum(checksumIterator.next(), writer);
+                    if (checksumIterator.hasNext()){
+                        writer.write(FIELD_SEPARATOR);
+                    }
+                }
+            }
+            else{
+                writer.write(EMPTY_COLUMN);
+            }
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes interaction checksum
+     * @param interaction
+     * @param writer
+     */
+    public static void writeInteractionChecksums(Interaction interaction, Writer writer) throws IOException {
+
+        if (!interaction.getChecksums().isEmpty()){
+
+            Iterator<Checksum> checksumIterator = interaction.getChecksums().iterator();
+            while(checksumIterator.hasNext()){
+                writeChecksum(checksumIterator.next(), writer);
+                if (checksumIterator.hasNext()){
+                    writer.write(FIELD_SEPARATOR);
+                }
+            }
+        }
+        else{
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes interaction negative property if true
+     * @param interaction
+     * @param writer
+     */
+    public static void writeNegativeProperty(InteractionEvidence interaction, Writer writer) throws IOException {
+
+        if (interaction.isNegative()){
+            writer.write("true");
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes participant features
+     * @param participant
+     * @param writer
+     * @param isMitabExtended : to know if we expect MITAB extended features with a text property
+     */
+    public static void writeParticipantFeatures(Participant participant, Writer writer, boolean isMitabExtended) throws IOException {
+
+        if (participant != null){
+
+            if (!participant.getFeatures().isEmpty()){
+
+                Iterator<? extends Feature> featureIterator = participant.getFeatures().iterator();
+                while(featureIterator.hasNext()){
+                    Feature feature = featureIterator.next();
+                    if (isMitabExtended){
+                        MitabFeature mitabFeature = (MitabFeature) feature;
+                        writeFeature(mitabFeature, mitabFeature.getText(), writer);
+                    }
+                    // write default feature with interpro as text if exists
+                    else{
+                        writeFeature(feature, feature.getInterpro(), writer);
+                    }
+                    if (featureIterator.hasNext()){
+                        writer.write(FIELD_SEPARATOR);
+                    }
+                }
+            }
+            else{
+                writer.write(EMPTY_COLUMN);
+            }
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes participant stoichiometry
+     * @param participant
+     * @param writer
+     */
+    public static void writeParticipantStoichiometry(Participant participant, Writer writer) throws IOException {
+
+        if (participant != null){
+
+            if (participant.getStoichiometry() != null){
+                Stoichiometry stc = participant.getStoichiometry();
+                // same stoichiometry max/end
+                if (stc.getMaxValue() == stc.getMinValue()){
+                    writer.write(Integer.toString(stc.getMinValue()));
+                }
+                else{
+                    writer.write(Integer.toString(stc.getMinValue()));
+                    writer.write("-");
+                    writer.write(Integer.toString(stc.getMaxValue()));
+                }
+            }
+            else{
+                writer.write(EMPTY_COLUMN);
+            }
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes participant identification method(s)
+     * @param participant
+     * @param writer
+     */
+    public static void writeParticipantIdentificationMethod(ParticipantEvidence participant, Writer writer) throws IOException {
+
+        if (participant != null){
+
+            if (!participant.getIdentificationMethods().isEmpty()){
+                Iterator<CvTerm> methodIterator = participant.getIdentificationMethods().iterator();
+                while(methodIterator.hasNext()){
+                    writeCvTerm(methodIterator.next(), writer);
+                    if (methodIterator.hasNext()){
+                        writer.write(FIELD_SEPARATOR);
+                    }
+                }
+            }
+            else{
+                writer.write(EMPTY_COLUMN);
+            }
+        }
+        else {
+            writer.write(EMPTY_COLUMN);
+        }
+    }
+
+    /**
+     * Writes a feature
+     * @param feature
+     * @param writer
+     */
+    public static void writeFeature(Feature feature, String text, Writer writer) throws IOException {
+       if (feature != null){
+           // first write interactor type
+           if (feature.getType() != null){
+               CvTerm type = feature.getType();
+               if (type.getFullName() != null){
+                   escapeAndWriteString(type.getFullName(), writer);
+               }
+               else {
+                   escapeAndWriteString(type.getShortName(), writer);
+               }
+           }
+           else {
+               writer.write(UNKNOWN_TYPE);
+           }
+           writer.write(XREF_SEPARATOR);
+           // then write ranges
+           if (feature.getRanges().isEmpty()){
+               writer.write(Range.UNDETERMINED_POSITION_SYMBOL);
+               writer.write(Range.POSITION_SEPARATOR);
+               writer.write(Range.UNDETERMINED_POSITION_SYMBOL);
+           }
+           else{
+               Iterator<Range> rangeIterator = feature.getRanges().iterator();
+               while(rangeIterator.hasNext()){
+                   writer.write(RangeUtils.convertRangeToString(rangeIterator.next()));
+                   if (rangeIterator.hasNext()){
+                       writer.write(FIELD_SEPARATOR);
+                   }
+               }
+           }
+           // then write text
+           if (text != null){
+               writer.write("(");
+               escapeAndWriteString(text, writer);
+               writer.write(")");
+           }
+       }
+    }
+
+    /**
+     * Writes the checksum
+     * @param checksum
+     * @param writer
+     */
+    public static void writeChecksum(Checksum checksum, Writer writer) throws IOException {
+
+        if (checksum != null){
+            // first method
+            escapeAndWriteString(checksum.getMethod().getShortName(), writer);
+            writer.write(XREF_SEPARATOR);
+            // then value
+            escapeAndWriteString(checksum.getValue(), writer);
+        }
+    }
+
+    /**
+     * Writes the parameter
+     * @param parameter
+     * @param writer
+     * @throws IOException
+     */
+    public static void writeParameter(Parameter parameter, Writer writer) throws IOException {
+
+        if (parameter != null){
+            // first parameter type
+            escapeAndWriteString(parameter.getType().getShortName(), writer);
+            writer.write(XREF_SEPARATOR);
+            // then parameter value
+            writer.write(ParameterUtils.getParameterValueAsString(parameter));
+            // then write unit
+            if (parameter.getUnit() != null){
+                writer.write("(");
+                escapeAndWriteString(parameter.getUnit().getShortName(), writer);
+                writer.write(")");
+            }
+        }
+    }
+
+    /**
      * Writes interaction evidence annotations .
      *
      * It will also add annotation from the publication that are used as a tag
@@ -724,16 +1077,12 @@ public class MitabWriterUtils {
 
             if (interaction.getExperiment() != null){
                 Publication pub = interaction.getExperiment().getPublication();
-                writer.write(FIELD_SEPARATOR);
-                Iterator<Annotation> participantAnnotationIterator = interaction.getAnnotations().iterator();
 
-                while (participantAnnotationIterator.hasNext()){
-                    Annotation annot = participantAnnotationIterator.next();
-                    writeAnnotation(annot, writer);
+                if (pub != null){
+                    writer.write(FIELD_SEPARATOR);
+                    writeInteractionAnnotationTagsFrom(writer, pub);
 
-                    if(participantAnnotationIterator.hasNext()){
-                        writer.write(FIELD_SEPARATOR);
-                    }
+
                 }
             }
         }
@@ -742,11 +1091,32 @@ public class MitabWriterUtils {
 
             if (pub != null){
 
+                // writes curation depth first
+                writeInteractionAnnotationTagsFrom(writer, pub);
             }
         }
         else{
             writer.write(EMPTY_COLUMN);
         }
+    }
+
+    /**
+     * To know if a publication annotation is an interactionTag
+     * @param annot
+     * @return
+     */
+    public static boolean isAnnotationAnInteractionTag(Annotation annot){
+        return AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.FULL_COVERAGE_MI, Annotation.FULL_COVERAGE)
+                || AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PARTIAL_COVERAGE_MI, Annotation.PARTIAL_COVERAGE) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.EXPERIMENTALLY_OBSERVED_MI, Annotation.EXPERIMENTALLY_OBSERVED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMPORTED_MI, Annotation.IMPORTED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.INTERNALLY_CURATED_MI, Annotation.INTERNALLY_CURATED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PREDICTED_MI, Annotation.PREDICTED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.TEXT_MINING_MI, Annotation.TEXT_MINING) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.NUCLEIC_ACID_PROTEIN_MI, Annotation.NUCLEIC_ACID_PROTEIN) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.SMALL_MOLECULE_PROTEIN_MI, Annotation.SMALL_MOLECULE_PROTEIN) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.CLUSTERED_MI, Annotation.CLUSTERED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.EVIDENCE_MI, Annotation.EVIDENCE);
     }
 
     /**
@@ -805,7 +1175,7 @@ public class MitabWriterUtils {
         if (conf != null){
             // write confidence type first
             if (conf.getType().getFullName() != null){
-                 escapeAndWriteString(conf.getType().getFullName(), writer);
+                escapeAndWriteString(conf.getType().getFullName(), writer);
             }
             else{
                 escapeAndWriteString(conf.getType().getShortName(), writer);
@@ -1117,5 +1487,51 @@ public class MitabWriterUtils {
             writer.write(XREF_SEPARATOR);
             escapeAndWriteString(pub.getImexId(), writer);
         }
+    }
+
+    private static void writeInteractionAnnotationTagsFrom(Writer writer, Publication pub) throws IOException {
+        // writes curation depth first
+        switch (pub.getCurationDepth()){
+            case IMEx:
+                writer.write(Annotation.IMEX_CURATION);
+                writer.write(FIELD_SEPARATOR);
+                break;
+            case MIMIx:
+                writer.write(Annotation.MIMIX_CURATION);
+                writer.write(FIELD_SEPARATOR);
+                break;
+            case rapid_curation:
+                writer.write(Annotation.RAPID_CURATION);
+                writer.write(FIELD_SEPARATOR);
+                break;
+            default:
+                break;
+        }
+
+        // writes special annotations
+        Iterator<Annotation> publicationAnnotationIterator = pub.getAnnotations().iterator();
+
+        Annotation next = null;
+        boolean isFirst = true;
+        do {
+            next = publicationAnnotationIterator.next();
+            while (publicationAnnotationIterator.hasNext() &&
+                    !isAnnotationAnInteractionTag(next)){
+                next = publicationAnnotationIterator.next();
+            }
+
+            if (next != null && isAnnotationAnInteractionTag(next)){
+                if (!isFirst){
+                    writer.write(FIELD_SEPARATOR);
+                }
+                // write annotation if interaction tag
+                writeAnnotation(next, writer);
+                isFirst = false;
+            }
+            else {
+                next = null;
+            }
+        }
+        while (next != null) ;
     }
 }
