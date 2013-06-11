@@ -23,6 +23,7 @@ public class InteractionWriterFactory {
     public static final String OUTPUT_STREAM_OPTION_KEY = "output_stream_key";
     public static final String WRITER_OPTION_KEY = "ouput_writer_key";
     public static final String COMPLEX_EXPANSION_OPTION_KEY = "complex_expansion_key";
+    public static final String OUTPUT_FORMAT_OPTION_KEY = "output_format_key";
 
     private InteractionWriterFactory(){
         registeredDataSourceWriters = new ConcurrentHashMap<Class<? extends InteractionDataSourceWriter>, Map<String, Object>>();
