@@ -33,18 +33,18 @@ public class MinimumProteinEnricher
     public void enrichProtein(Protein proteinToEnrich)
             throws EnrichmentException {
         try {
-            Collection<Protein> proteinsEnriched = null;
+            Collection<Protein> proteinsEnriched;
             proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
             Protein proteinEnriched = chooseProteinEnriched(proteinToEnrich, proteinsEnriched);
+            if(proteinEnriched != null){
+                super.setOrganismEnricher(new MinimumOrganismEnricher());
 
-
-            super.setOrganismEnricher(new MinimumOrganismEnricher());
-
-            runProteinAddition(proteinToEnrich, proteinEnriched);
-            runProteinMismatchOnCore(proteinToEnrich, proteinEnriched);
-            runProteinMismatchOnChecksum(proteinToEnrich, proteinEnriched);
-            fireAllReportEvents();
-        } catch (FetcherException e) {
+                runProteinAddition(proteinToEnrich, proteinEnriched);
+                //runProteinMismatchOnCore(proteinToEnrich, proteinEnriched);
+                //runProteinMismatchOnChecksum(proteinToEnrich, proteinEnriched);
+                //fireAllReportEvents();
+            }
+        }catch (FetcherException e) {
             e.printStackTrace();
         } catch (SeguidException e) {
             e.printStackTrace();

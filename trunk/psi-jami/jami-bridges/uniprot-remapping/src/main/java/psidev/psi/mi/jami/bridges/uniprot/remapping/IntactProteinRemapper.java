@@ -88,7 +88,6 @@ public class IntactProteinRemapper
         //Find a way to identify the database
         if(identifier.getDatabase() != null){
             database = identifier.getDatabase().getMIIdentifier();
-            if( database == null) database = identifier.getDatabase().getFullName();
             if( database == null) database = identifier.getDatabase().getShortName();
         }
         //If there's an identity, search else return an empty result.
