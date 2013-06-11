@@ -25,6 +25,13 @@ public interface InteractionDataSourceWriter {
     public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException;
 
     /**
+     *
+     * @param options
+     * @return true if the given options are supported by this interaction datasource writer
+     */
+    public boolean areSupportedOptions(Map<String, Object> options);
+
+    /**
      * Writes an interaction
      * @param interaction
      */
