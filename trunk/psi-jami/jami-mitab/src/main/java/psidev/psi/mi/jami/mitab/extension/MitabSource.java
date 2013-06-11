@@ -1,0 +1,68 @@
+package psidev.psi.mi.jami.mitab.extension;
+
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultSource;
+
+/**
+ * Mitab extension of MitabSource
+ * It contains a FileSourceLocator
+ *
+ * @author Marine Dumousseau (marine@ebi.ac.uk)
+ * @version $Id$
+ * @since <pre>11/06/13</pre>
+ */
+
+public class MitabSource extends DefaultSource implements FileSourceContext{
+
+    private MitabSourceLocator sourceLocator;
+
+    public MitabSource(String shortName) {
+        super(shortName);
+    }
+
+    public MitabSource(String shortName, Xref ontologyId) {
+        super(shortName, ontologyId);
+    }
+
+    public MitabSource(String shortName, String fullName, Xref ontologyId) {
+        super(shortName, fullName, ontologyId);
+    }
+
+    public MitabSource(String shortName, String url, String address, Publication bibRef) {
+        super(shortName, url, address, bibRef);
+    }
+
+    public MitabSource(String shortName, Xref ontologyId, String url, String address, Publication bibRef) {
+        super(shortName, ontologyId, url, address, bibRef);
+    }
+
+    public MitabSource(String shortName, String fullName, Xref ontologyId, String url, String address, Publication bibRef) {
+        super(shortName, fullName, ontologyId, url, address, bibRef);
+    }
+
+    public MitabSource(String shortName, String miId) {
+        super(shortName, miId);
+    }
+
+    public MitabSource(String shortName, String fullName, String miId) {
+        super(shortName, fullName, miId);
+    }
+
+    public MitabSource(String shortName, String miId, String url, String address, Publication bibRef) {
+        super(shortName, miId, url, address, bibRef);
+    }
+
+    public MitabSource(String shortName, String fullName, String miId, String url, String address, Publication bibRef) {
+        super(shortName, fullName, miId, url, address, bibRef);
+    }
+
+    public MitabSourceLocator getSourceLocator() {
+        return sourceLocator;
+    }
+
+    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
+    }
+}
