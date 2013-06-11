@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.enricher.event.EnricherEvent;
  * Date: 13/05/13
  * Time: 11:11
  */
+@Deprecated
 public interface EnricherListener {
 
     /**
