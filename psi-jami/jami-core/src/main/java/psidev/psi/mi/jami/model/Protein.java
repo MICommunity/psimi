@@ -85,17 +85,4 @@ public interface Protein extends Polymer {
      * @param rogid : rogid
      */
     public void setRogid(String rogid);
-
-    /**
-     * The sequence of amino acids
-     * Ex: MGDVEKGKKI
-     * @return the sequence
-     */
-    public String getSequence();
-
-    /**
-     * Sets the sequence.
-     * @param sequence : sequence of amino acids
-     */
-    public void setSequence(String sequence);
 }
