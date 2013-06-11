@@ -69,4 +69,32 @@ public class InteractionWriterFactory {
 
         return dataSource;
     }
+
+    /**
+     * By default, all the options in the given options should be in the supportedOptions of this
+     * registeredDataSourceWriter.
+     * @param supportedOptions options supported
+     * @param options that are required
+     * @return
+     */
+    private boolean areSupportedOptions(Map<String, Object> supportedOptions, Map<String, Object> options) {
+        // no required options
+        if (options == null || options.isEmpty()){
+            return true;
+        }
+
+        // check if required options are supported
+        for (Map.Entry<String, Object> entry : options.entrySet()){
+            if (supportedOptions.containsKey(entry.getKey())){
+                if (!supportedOptions.get(entry.getKey()).equals(entry.getValue())){
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
