@@ -38,7 +38,7 @@ public class UniprotFetcher
             "[A-NR-Z][0-9][A-Z][A-Z0-9][A-Z0-9][0-9]|"+
             "[OPQ][0-9][A-Z0-9][A-Z0-9][A-Z0-9][0-9]");
 
-    public Collection<Protein> getProteinsByID(String identifier)
+    public Collection<Protein> getProteinsByIdentifier(String identifier)
             throws FetcherException {
 
         if(identifier == null){

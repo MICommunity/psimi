@@ -21,32 +21,30 @@ import java.util.Collection;
  */
 public class OlsBridge{
 
-    Query qs;
-
+    private Query queryService;
 
     public OlsBridge()
             throws BridgeFailedException {
 
         try{
-            qs = new QueryServiceLocator().getOntologyQuery();
+            queryService = new QueryServiceLocator().getOntologyQuery();
         }catch (ServiceException e) {
-            qs = null;
+            queryService = null;
             throw new BridgeFailedException(e);
         }
     }
 
     /**
-     * Uses ID to fetch the full name.
-     * If the identifier could not be found, returns null.
+     * Uses the identifier to fetch the full name.
      *
-     * @return The full name of the CvTerm
+     * @return The full name of the CvTerm or null if it cannot be found
      * @throws BridgeFailedException
      */
     public String fetchFullNameByIdentifier(String identifier, String ontology)
             throws BridgeFailedException{
 
         try {
-            String fullName = qs.getTermById(identifier,ontology);
+            String fullName = queryService.getTermById(identifier,ontology);
             if(fullName.equals(identifier)){
                 //The identifier could not be found.
                 return null;
@@ -68,7 +66,7 @@ public class OlsBridge{
      * Use @getMetaData to find and set the ShortName
      *
      * @param name      The phrase to search for.
-     * @param ontology  Can be null. Use to limit ontologies that are searched.
+     * @param ontology  Can be null. Use to search only one ontology.
      * @return          Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
      */
@@ -92,7 +90,7 @@ public class OlsBridge{
      * Will attempt to find ID's by querying for an exact name.
      *
      * @param name          The phrase to search for.
-     * @param ontology      Can be null. Use to limit ontologies that are searched.
+     * @param ontology      Can be null. Use to search only one ontology.
      * @return              Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
      */
@@ -102,7 +100,7 @@ public class OlsBridge{
         HashMap<String,String> termNamesMap;
 
         try{
-            termNamesMap = qs.getTermsByExactName(name, ontology);
+            termNamesMap = queryService.getTermsByExactName(name, ontology);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
         }
@@ -116,9 +114,9 @@ public class OlsBridge{
 
     /**
      *
-     * @param name
-     * @param ontology
-     * @return
+     * @param name      The phrase to search for.
+     * @param ontology  Can be null. Use to search only one ontology.
+     * @return          Null if no entries found, otherwise a list of one or more will be returned.
      * @throws BridgeFailedException
      */
     public HashMap<String,String> fetchIDByFuzzyTerm(String name, String ontology)
@@ -126,13 +124,13 @@ public class OlsBridge{
         HashMap termNamesMap;
 
         try{
-            termNamesMap = qs.getTermsByName(name, ontology , false);
+            termNamesMap = queryService.getTermsByName(name, ontology , false);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
         }
 
         //Exact matches were found
-        if (termNamesMap != null) {
+        if (termNamesMap != null && !termNamesMap.isEmpty()) {
             return termNamesMap;
         }
         return null;
@@ -155,7 +153,7 @@ public class OlsBridge{
             throws BridgeFailedException{
 
         try{
-            return qs.getTermMetadata(identifier, null);
+            return queryService.getTermMetadata(identifier, null);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
         }
@@ -164,7 +162,7 @@ public class OlsBridge{
     public boolean isIdentifierObsolete(String identifier, String databaseIdentifier)
             throws BridgeFailedException{
         try{
-            return qs.isObsolete(identifier, databaseIdentifier);
+            return queryService.isObsolete(identifier, databaseIdentifier);
         }catch(RemoteException e){
             throw new BridgeFailedException();
         }

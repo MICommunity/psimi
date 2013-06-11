@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.enricher.event.*;
  * Date: 13/05/13
  * Time: 11:12
  */
+@Deprecated
 public interface EnricherEventProcessor {
     /**
      * Adds a new EnricherListener to report to.

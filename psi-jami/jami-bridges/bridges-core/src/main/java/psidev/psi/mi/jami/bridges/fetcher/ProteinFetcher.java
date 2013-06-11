@@ -13,8 +13,11 @@ import java.util.Collection;
  * Date: 14/05/13
  * Time: 13:50
  */
-public interface ProteinFetcher extends Fetcher{
-    public Collection<Protein> getProteinsByID(String identifier)
+public interface ProteinFetcher {
+
+    public Collection<Protein> getProteinsByIdentifier(String identifier)
             throws FetcherException;
+
+    public String getService();
 
 }

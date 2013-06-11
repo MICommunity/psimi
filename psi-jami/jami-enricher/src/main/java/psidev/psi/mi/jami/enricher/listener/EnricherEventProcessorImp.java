@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * Date: 13/05/13
  * Time: 11:12
  */
+@Deprecated
 public abstract class EnricherEventProcessorImp implements EnricherEventProcessor{
 
     //List of all listeners to report to

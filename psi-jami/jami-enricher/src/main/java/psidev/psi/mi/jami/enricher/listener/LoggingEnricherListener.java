@@ -16,6 +16,7 @@ import psidev.psi.mi.jami.enricher.event.OverwriteReport;
  * Date: 16/05/13
  * Time: 13:09
  */
+@Deprecated
 public class LoggingEnricherListener implements EnricherListener {
 
     private final Logger log = LoggerFactory.getLogger(LoggingEnricherListener.class.getName());

@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.CvTerm;
  * Date: 08/05/13
  * Time: 16:34
  */
-public interface CvTermFetcher extends Fetcher{
+public interface CvTermFetcher{
 
     public CvTerm getCvTermByID(String identifier, String databaseName)
             throws FetcherException;
@@ -59,4 +59,6 @@ public interface CvTermFetcher extends Fetcher{
 
     public CvTerm getCvTermByTerm(String searchName, CvTerm database, boolean useFuzzySearch)
             throws FetcherException;
+
+    public String getService();
 }
