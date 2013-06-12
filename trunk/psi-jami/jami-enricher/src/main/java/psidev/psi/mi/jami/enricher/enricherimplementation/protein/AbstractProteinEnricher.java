@@ -36,7 +36,7 @@ public abstract class AbstractProteinEnricher
 
     protected final Logger log = LoggerFactory.getLogger(AbstractProteinEnricher.class.getName());
 
-    //TODO will throw null pointer if there is no listener applied
+    //TODO will throw currently throw null pointer if there is no listener applied
     protected ProteinEnricherListener proteinEnricherListener;
 
     private ProteinFetcher fetcher = null;
@@ -56,7 +56,6 @@ public abstract class AbstractProteinEnricher
         setFetcher(fetcher);
     }
 
-
     /**
      * Returns the listener which hears events from the protein as it is enriched and the status of the enrichment.
      * @return
@@ -74,10 +73,10 @@ public abstract class AbstractProteinEnricher
         this.proteinEnricherListener = proteinEnricherListener;
     }
 
-
     public void setFetcher(ProteinFetcher fetcher){
         this.fetcher = fetcher;
     }
+
     public ProteinFetcher getFetcher(){
         return this.fetcher;
     }
@@ -107,10 +106,8 @@ public abstract class AbstractProteinEnricher
      * @throws
      */
     protected Collection<Protein> getFullyEnrichedForms(Protein ProteinToEnrich)
-            throws BadToEnrichFormException,
-            MissingServiceException,
-            BadSearchTermException,
-            BadResultException,
+            throws BadToEnrichFormException, MissingServiceException,
+            BadSearchTermException, BadResultException,
             BridgeFailedException {
 
         if(fetcher == null) throw new MissingServiceException("ProteinFetcher has not been provided.");
@@ -196,7 +193,6 @@ public abstract class AbstractProteinEnricher
         return proteinEnriched;
     }
 
-
     /**
      * Checks for fatal conflicts between the proteinToEnrich and the enriched form.
      * The interactor type is the first comparison.
@@ -246,8 +242,6 @@ public abstract class AbstractProteinEnricher
         return true;
     }
 
-
-
     /**
      * Does a minimum enrichment of all empty or appendable fields up to the level of mi-tab 2.5
      *
@@ -256,7 +250,7 @@ public abstract class AbstractProteinEnricher
      * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
-    protected void runProteinAddition(Protein proteinToEnrich, Protein proteinEnriched)
+    protected void runAdditionOnCore(Protein proteinToEnrich, Protein proteinEnriched)
             throws SeguidException {
 
         //InteractorType
@@ -291,7 +285,6 @@ public abstract class AbstractProteinEnricher
         }
 
         //TODO - is this correct? Is there a scenario where 2 primary ACs are created?
-        //Add identifiers
         Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
                 proteinEnriched.getIdentifiers(),
                 proteinToEnrich.getIdentifiers(),
@@ -338,17 +331,13 @@ public abstract class AbstractProteinEnricher
         }*/
     }
 
-
-
-
-
     /**
      * Update and overwrites any of the central fields which differ from the enriched form.
      *
      * @param proteinToEnrich   The protein which is being enriched.
      * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      */
-    protected void runProteinUpdateOnCore(Protein proteinToEnrich, Protein proteinEnriched){
+    protected void runUpdateOnCore(Protein proteinToEnrich, Protein proteinEnriched){
         //ShortName - is never null
         if (! proteinToEnrich.getShortName().equalsIgnoreCase(proteinEnriched.getShortName() )) {
             proteinEnricherListener.onShortNameUpdate(proteinToEnrich, proteinToEnrich.getShortName());
@@ -358,7 +347,7 @@ public abstract class AbstractProteinEnricher
         //Full name
         if(proteinEnriched.getFullName() != null
                 && (proteinToEnrich.getFullName() == null
-                || ! proteinToEnrich.getFullName().equalsIgnoreCase(proteinEnriched.getFullName() ))) {
+                    || ! proteinToEnrich.getFullName().equalsIgnoreCase(proteinEnriched.getFullName()) )) {
             proteinEnricherListener.onFullNameUpdate(proteinToEnrich,proteinToEnrich.getFullName());
             proteinToEnrich.setFullName(proteinEnriched.getFullName());
         }
@@ -366,7 +355,7 @@ public abstract class AbstractProteinEnricher
         //PRIMARY Uniprot AC
         if(proteinEnriched.getUniprotkb() != null
                 && ( proteinToEnrich.getUniprotkb() == null
-                || ! proteinToEnrich.getUniprotkb().equalsIgnoreCase(proteinEnriched.getUniprotkb() ))){
+                    || ! proteinToEnrich.getUniprotkb().equalsIgnoreCase(proteinEnriched.getUniprotkb()) )){
             proteinEnricherListener.onUniprotKbUpdate(proteinToEnrich,proteinToEnrich.getUniprotkb());
             proteinToEnrich.setUniprotkb(proteinEnriched.getUniprotkb());
         }
@@ -374,11 +363,92 @@ public abstract class AbstractProteinEnricher
         //Sequence
         if(proteinEnriched.getSequence() != null
                 && ( proteinToEnrich.getSequence() == null
-                || ! proteinToEnrich.getSequence().equalsIgnoreCase(proteinEnriched.getSequence() ))){
+                    || ! proteinToEnrich.getSequence().equalsIgnoreCase(proteinEnriched.getSequence()) )){
             proteinEnricherListener.onSequenceUpdate(proteinToEnrich,proteinToEnrich.getSequence());
             proteinToEnrich.setSequence(proteinEnriched.getSequence());
         }
     }
+
+
+    /**
+     * Checks the Checksums (CRC64 and ROGID) and fires a conflict if one is present, otherwise the checksum is added.
+     *
+     * For each checksum type, it is confirmed that only one is present in the Enriched form,
+     * if this is so, the checksum is compared to the proteinToEnrich.
+     * If there is already a checksum of a different value, a conflict is fired.
+     * Else, the checksum will be added and the details added to the additionEvent.
+     *
+     * @param proteinToEnrich   The protein which is being enriched.
+     * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
+     * @throws SeguidException
+     */
+    protected void runAdditionOnChecksum(Protein proteinToEnrich, Protein proteinEnriched) throws SeguidException {
+
+        //CHECKSUM - CRC64
+        Checksum crc64checksum = null;
+        //Is there a checksum in the fetched protein
+        for(Checksum c :proteinEnriched.getChecksums()){
+            if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                if(crc64checksum != null){
+                    if(! crc64checksum.getValue().equals(c.getValue())){
+                        // If multiple, non identical CRC64 checksums have been found,
+                        // Fire an event, tell the logger if it's debugging
+                        // then clear the place holder and break.
+                        //fireErrorEvent(new ErrorEvent(
+                        //        ErrorEvent.ERROR_CONFLICT, FIELD_CHECKSUM,
+                        //        "Multiple CRC64 checksums found in the fetched protein."));
+                        if(log.isDebugEnabled()) log.debug(
+                                "Multiple different CRC64 checksums were found in fetched protein, " +
+                                        "please check code.");
+                        crc64checksum = null;
+                        break;
+                    }else if(log.isDebugEnabled()) log.debug(
+                            "Multiple identical CRC64 checksums were found fetched protein, " +
+                                    "please check code.");
+                } else {
+                    crc64checksum = c;
+                }
+            }
+        }
+        if( crc64checksum != null){
+            boolean exists = false;
+            for(Checksum c :proteinToEnrich.getChecksums()){
+                if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                    // If there is already a CRC64 in a conflict check,
+                    // there is either a conflict or it is already there,
+                    // so exists is true and no addition will be performed.
+                    exists = true;
+                    if(!c.getValue().equals(crc64checksum.getValue())){
+                        //fireConflictEvent(new ConflictEvent(
+                        //    FIELD_CHECKSUM, crc64checksum, proteinToEnrich));
+                    }
+                }
+            }
+            if(!exists){
+                proteinToEnrich.getChecksums().add(crc64checksum);
+                proteinEnricherListener.onAddedChecksum(proteinToEnrich, crc64checksum);
+            }
+        }
+
+        //Checksum -RogID
+        if(proteinToEnrich.getOrganism() != null
+                && proteinToEnrich.getOrganism().getTaxId() != -3
+                && proteinToEnrich.getSequence() != null){
+
+            RogidGenerator rogidGenerator = new RogidGenerator();
+            String rogid = rogidGenerator.calculateRogid(
+                    proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
+            if(proteinToEnrich.getRogid() == null){
+                proteinToEnrich.setRogid(rogid);
+                //todo proteinEnricherListener.onAddedChecksum(proteinToEnrich, rogid);
+            }
+            else if(!proteinToEnrich.getRogid().equals(rogid)){
+                //fireConflictEvent(new ConflictEvent(
+                //    FIELD_CHECKSUM, rogid, proteinToEnrich));
+            }
+        }
+    }
+
 
     /**
      * Checks the Checksums (CRC64 and ROGID), fires an update if required,ands adds the checksum.
@@ -392,7 +462,7 @@ public abstract class AbstractProteinEnricher
      * @param proteinEnriched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
-     protected void runProteinUpdateOnChecksums(Protein proteinToEnrich, Protein proteinEnriched)
+     protected void runUpdateOnChecksums(Protein proteinToEnrich, Protein proteinEnriched)
             throws SeguidException {
 
         //CHECKSUM - CRC64
@@ -421,18 +491,20 @@ public abstract class AbstractProteinEnricher
         if( crc64checksum != null){
             // Remove all old CRC64 checksums
             Collection<Checksum> oldChecksums = new ArrayList<Checksum>();
-            for(Checksum c :proteinToEnrich.getChecksums()){
-                if(c.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                    if(!c.getValue().equals(crc64checksum.getValue())){
-                        oldChecksums.add(c);
+            for(Checksum checksum :proteinToEnrich.getChecksums()){
+                if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                    if(!checksum.getValue().equals(crc64checksum.getValue())){
+                        oldChecksums.add(checksum);
+                        proteinEnricherListener.onRemovedChecksum(proteinToEnrich, checksum);
                     }
                 }
             }
             proteinToEnrich.getChecksums().removeAll(oldChecksums);
             proteinToEnrich.getChecksums().add(crc64checksum);
+            proteinEnricherListener.onAddedChecksum(proteinToEnrich,crc64checksum);
         }
 
-        //Checksum -RogID
+        // Checksum -RogID
         if(proteinToEnrich.getOrganism() != null
                 && proteinToEnrich.getOrganism().getTaxId() != -3
                 && proteinToEnrich.getSequence() != null){
@@ -440,10 +512,11 @@ public abstract class AbstractProteinEnricher
             RogidGenerator rogidGenerator = new RogidGenerator();
             String rogid = rogidGenerator.calculateRogid(
                     proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
+
             if(proteinToEnrich.getRogid() == null
                     || !proteinToEnrich.getRogid().equals(rogid)){
-                //todo check there can only be one
                 proteinToEnrich.setRogid(rogid);
+                //todo proteinEnricherListener.onAddedChecksum(proteinToEnrich, );
             }
         }
     }

@@ -46,7 +46,8 @@ public class MinimumProteinEnricher
 
         if(proteinEnriched != null){
             super.setOrganismEnricher(new MinimumOrganismEnricher());
-            runProteinAddition(proteinToEnrich, proteinEnriched);
+            runAdditionOnCore(proteinToEnrich, proteinEnriched);
+            runAdditionOnChecksum(proteinToEnrich, proteinEnriched);
             proteinEnricherListener.onProteinEnriched(proteinToEnrich, "Success");
         }
     }
