@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.enricherimplementation.protein.event;
 
-import uk.ac.ebi.intact.model.Protein;
+
+import psidev.psi.mi.jami.model.Protein;
 
 /**
  * Created with IntelliJ IDEA.

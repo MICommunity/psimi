@@ -29,7 +29,7 @@ public class OlsFetcher
 
     private OlsBridge bridge;
 
-    public OlsFetcher() throws FetcherException {
+    public OlsFetcher() throws BridgeFailedException {
         bridge = new OlsBridge();
     }
 
@@ -56,30 +56,34 @@ public class OlsFetcher
     }
 
     public CvTerm getCvTermByID(String identifier, String databaseName)
-            throws FetcherException{
+            throws BadSearchTermException, BridgeFailedException {
 
-        if(databaseName == null) throw new NullSearchException("The provided database was null.");
+        if(identifier == null){
+            throw new BadSearchTermException("The provided identifier was null.");
+        } else if (databaseName == null) {
+            throw new BadSearchTermException("The provided database was null. " +
+                    "Identifier was ["+identifier+"].");
+        }
+
         CvTerm database = new DefaultCvTerm(databaseName);
         return getCvTermByID(identifier, database);
     }
 
     public CvTerm getCvTermByID(String identifier, CvTerm database)
-            throws FetcherException{
+            throws BridgeFailedException, BadSearchTermException {
 
         if(identifier == null){
-            throw new NullSearchException("The provided identifier was null.");
+            throw new BadSearchTermException("The provided identifier was null.");
         } else if (database == null) {
-            throw new NullSearchException("The provided database was null. " +
+            throw new BadSearchTermException("The provided database was null. " +
                     "Identifier was ["+identifier+"].");
         }
 
         String databaseIdentifier = databaseIdentifierGetter(database.getShortName());
 
         String termName = bridge.fetchFullNameByIdentifier(identifier, databaseIdentifier);
-        if(termName == null){
-            throw new EntryNotFoundException("Identifier "+identifier+" returned no termName " +
-                    "in database ["+databaseIdentifier+"].");
-        }
+
+        if(termName == null) return null;
 
         //Todo Check these fields are used correctly
         Xref dbxref = new DefaultXref(database,identifier, CvTermUtils.getIdentity());
@@ -90,31 +94,37 @@ public class OlsFetcher
 
 
     public CvTerm getCvTermByTerm(String searchName, String databaseName)
-            throws FetcherException {
+            throws BadResultException, BadSearchTermException, BridgeFailedException {
         return getCvTermByTerm(searchName, databaseName, false);
     }
 
     public CvTerm getCvTermByTerm(String searchName, CvTerm database)
-            throws FetcherException {
+            throws BadResultException, BadSearchTermException, BridgeFailedException {
         return getCvTermByTerm(searchName, database, false);
     }
 
     public CvTerm getCvTermByTerm(String searchName, String databaseName, boolean useFuzzySearch)
-            throws FetcherException {
-        if(databaseName == null) throw new NullSearchException("The provided database was null.");
+            throws BadSearchTermException, BridgeFailedException, BadResultException {
+
+        if(searchName == null){
+            throw new BadSearchTermException("The provided search term was null.");
+        } else if (databaseName == null) {
+            throw new BadSearchTermException("The provided database was null. " +
+                    "Search term was ["+searchName+"].");
+        }
+
         CvTerm database = new DefaultCvTerm(databaseName);
         return getCvTermByTerm(searchName, database, useFuzzySearch);
     }
 
 
-    public CvTerm getCvTermByTerm(String searchName, CvTerm database, boolean useFuzzySearch)
-            throws FetcherException{
+    public CvTerm getCvTermByTerm(String searchName, CvTerm database, boolean useFuzzySearch) throws BadSearchTermException, BridgeFailedException, BadResultException {
 
         if(searchName == null){
-            throw new NullSearchException("The provided searchName was null.");
+            throw new BadSearchTermException("The provided search term was null.");
         } else if (database == null) {
-            throw new NullSearchException("The provided database was null. " +
-                    "SearchName was ["+searchName+"].");
+            throw new BadSearchTermException("The provided database was null. " +
+                    "Search term was ["+searchName+"].");
         }
 
         HashMap<String,String> identifierMap = null;
@@ -125,11 +135,9 @@ public class OlsFetcher
             identifierMap = bridge.fetchIDByExactTerm(searchName, databaseIdentifier);
         }
 
-        if(identifierMap == null || identifierMap.size() < 1) {
-            throw new EntryNotFoundException(
-                    "The searchName ["+searchName+"] gave 0 IDs. Search was fuzzy: "+useFuzzySearch);
+        if(identifierMap == null || identifierMap.size() < 1) return null;
 
-        }else if(identifierMap.size() > 1){
+        else if(identifierMap.size() > 1){
             if(log.isDebugEnabled()){
                 log.debug("The searchName ["+searchName+"] gave "+identifierMap.size()+" IDs. " +
                         "Search was fuzzy: "+useFuzzySearch);
@@ -137,10 +145,7 @@ public class OlsFetcher
                     log.debug("Term ["+searchName+"] got the ID: "+key.toString()+" with name "+identifierMap.get(key));
                 }
             }
-
-            throw new EntryNotFoundException(
-                    "The searchName ["+searchName+"] gave "+identifierMap.size()+" IDs. " +
-                            "Search was fuzzy: "+useFuzzySearch);
+            return null;
         }
 
         String resultIdentifier = null;
@@ -175,7 +180,7 @@ public class OlsFetcher
      * @throws BridgeFailedException
      */
     private CvTerm completeIdentifiedCvTerm(CvTerm cvTermEnriched, String identifier, String databaseName)
-            throws FetcherException{
+            throws BridgeFailedException {
 
         HashMap metaDataMap = bridge.fetchMetaDataByID(identifier);
         String shortName = bridge.extractShortNameFromMetaData(metaDataMap, databaseName);

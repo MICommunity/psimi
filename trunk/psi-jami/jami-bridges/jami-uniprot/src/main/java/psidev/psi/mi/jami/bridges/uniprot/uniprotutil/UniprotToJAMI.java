@@ -3,8 +3,6 @@ package psidev.psi.mi.jami.bridges.uniprot.uniprotutil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.EntryNotFoundException;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Protein;
@@ -51,10 +49,9 @@ public class UniprotToJAMI {
 
     private final static Logger log = LoggerFactory.getLogger(UniprotToJAMI.class.getName());
 
-    public static Protein getProteinMasterFromEntry(UniProtEntry e)
-            throws FetcherException {
+    public static Protein getProteinFromEntry(UniProtEntry e) throws BadResultException {
 
-        if(e == null) return null;
+        if(e == null) throw new BadResultException("The Uniprot entry was null");
 
         Protein p;
         String shortName = null;
@@ -174,7 +171,7 @@ public class UniprotToJAMI {
         p.getChecksums().add(
                 ChecksumUtils.createChecksum("CRC64", null, e.getSequence().getCRC64()));
 
-        //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
+        //Rogid is not stored in the entry
 
         p.setOrganism(getOrganismFromEntry(e));
 
@@ -204,16 +201,16 @@ public class UniprotToJAMI {
      * @param isoform
      * @param identifier
      * @return
-     * @throws FetcherException
+     * @throws BadResultException
      */
     public static Protein getProteinIsoformFromEntry(
             UniProtEntry entry,
             AlternativeProductsIsoform isoform,
             String identifier)
-            throws FetcherException {
+            throws BadResultException {
 
-        if(entry == null) throw new EntryNotFoundException("Uniprot entry was null.");
-        if(isoform == null) throw new EntryNotFoundException("Isoform entry was null.");
+        if(entry == null) throw new BadResultException("Uniprot entry was null.");
+        if(isoform == null) throw new BadResultException("Isoform entry was null.");
 
         // SHORT NAME - identifier
         Protein p = new DefaultProtein(identifier);
@@ -238,7 +235,7 @@ public class UniprotToJAMI {
         // SEQUENCE
         switch (isoform.getIsoformSequenceStatus()) {
             case NOT_DESCRIBED:
-                //log.error("According to uniprot the splice variant " + spliceVarId + " has no sequence (status = NOT_DESCRIBED)");
+                log.error("According to uniprot the splice variant has no sequence (status = NOT_DESCRIBED)");
                 break;
             case DESCRIBED:
                 p.setSequence(entry.getSplicedSequence(isoform.getName().getValue()));
@@ -257,11 +254,9 @@ public class UniprotToJAMI {
                 break;
         }
 
-        //log.trace("Sequence reads : "+p.getSequence());
-
         //CHECKSUMS
-        //p.getChecksums().add(ChecksumUtils.createChecksum("CRC64", null, e.getSequence().getCRC64()));
-        //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
+        //CRC64 checksum will be recalculated
+        //Rogid checksum will be recalculated
 
 
         // ALIASES - gene name, gene name synonyms, orf, locus
@@ -304,42 +299,6 @@ public class UniprotToJAMI {
     }
 
 
-
-    public static String getExternalSequence(AlternativeProductsIsoform isoform){
-           /* //sequence = uniProtEntry.getSplicedSequence(isoform.getName().getValue());
-            Iterator<UniProtEntry> iterator = getUniProtEntry(parentProtein);
-            int numberOfEntryInIterator = 0;
-            while (iterator.hasNext()) {
-                UniProtEntry uniprotEntryParentProtein = iterator.next();
-                //sequence = uniprotEntryParentProtein.getSplicedSequence(isoform.getName().getValue());
-                if (numberOfEntryInIterator >= 1) {
-                    // we were expecting to find only one protein - hopefully that should not happen !
-                    log.error("We were expecting to find only one protein while loading external sequence from: " + parentProtein);
-                    log.error("Found " + uniprotEntryParentProtein.getUniProtId());
-                    while (iterator.hasNext()) {
-                        UniProtEntry p = iterator.next();
-                        log.error("Found " + p.getUniProtId());
-                        sequence = null;
-                    }
-                } else {
-                    numberOfEntryInIterator++;
-                    sequence = uniprotEntryParentProtein.getSplicedSequence(isoform.getName().getValue());
-
-                    if (sequence == null || sequence.length() == 0 ) {
-                        for (UniprotSpliceVariant uniprotSpliceVariant : findSpliceVariants(uniprotEntryParentProtein, organism, seqMap)) {
-                            if (uniprotSpliceVariant.getPrimaryAc().equals(spliceVarId)) {
-                                sequence = uniprotSpliceVariant.getSequence();
-                                break;
-                            }
-                        }
-                    }
-                }
-                numberOfEntryInIterator++;
-            }  */
-        return "String";
-    }
-
-
     /**
      *
      * The mapping of fields for features is as follows:
@@ -359,16 +318,16 @@ public class UniprotToJAMI {
      * @param feature
      * @param identifier
      * @return
-     * @throws FetcherException
+     * @throws BadResultException
      */
     public static Protein getProteinFeatureFromEntry(
             UniProtEntry entry,
             Feature feature,
-            String identifier) throws FetcherException {
+            String identifier) throws BadResultException {
 
 
-        if(entry == null) throw new EntryNotFoundException("Uniprot entry was null.");
-        if(feature == null) throw new EntryNotFoundException("Feature entry was null.");
+        if(entry == null) throw new BadResultException("Uniprot entry was null.");
+        if(feature == null) throw new BadResultException("Feature entry was null.");
 
         // SHORT NAME - identifier
         Protein p = new DefaultProtein(identifier);
@@ -401,9 +360,11 @@ public class UniprotToJAMI {
 
             if(begin > end) throw new BadResultException(
                     "Sequence has beginning ("+begin+") larger than end ("+end+").");
-            if(end>entry.getSequence().getValue().length()) throw new BadResultException(
+
+            if(end > entry.getSequence().getValue().length()) throw new BadResultException(
                     "Sequence has end ("+end+") larger than " +
                     "length ("+entry.getSequence().getValue().length()+").");
+
             if(begin < 0 || end < 0) throw new BadResultException(
                     "Sequence a beginning ("+begin+") or end ("+end+") lower than 0.");
 
@@ -426,8 +387,8 @@ public class UniprotToJAMI {
         p.setOrganism(getOrganismFromEntry(entry));
 
         //CHECKSUMS
-        //p.getChecksums().add(ChecksumUtils.createChecksum("CRC64", null, e.getSequence().getCRC64()));
-        //Rogid will be calculated at enrichment - the equation need not be applied in an organism conflict
+        //CRC64 checksum will be recalculated
+        //Rogid checksum will be recalculated
 
         // ALIASES - gene name, gene name synonyms, orf, locus
         if(entry.getGenes() != null && entry.getGenes().size() > 0){
@@ -465,19 +426,30 @@ public class UniprotToJAMI {
 
 
     private static Map<DatabaseType,CvTerm> databaseMap = null;
-    protected static void initiateDatabaseMap(){
+    private static void initiateDatabaseMap(){
         databaseMap = new HashMap<DatabaseType, CvTerm>();
-        databaseMap.put(DatabaseType.GO,        new DefaultCvTerm("go" , "MI:0448"));
-        databaseMap.put(DatabaseType.INTERPRO,  new DefaultCvTerm("interpro" , "MI:0449"));
-        databaseMap.put(DatabaseType.PDB,       new DefaultCvTerm("pdb" , "MI:0460"));
-        databaseMap.put(DatabaseType.REACTOME,  new DefaultCvTerm("reactome" , "MI:0467"));
-        databaseMap.put(DatabaseType.ENSEMBL,   new DefaultCvTerm("ensembl" , "MI:0476"));
-        databaseMap.put(DatabaseType.WORMBASE,  new DefaultCvTerm("wormbase" , "MI:0487" ));
-        databaseMap.put(DatabaseType.FLYBASE,   new DefaultCvTerm("flybase" , "MI:0478" ));
-        databaseMap.put(DatabaseType.REFSEQ,    new DefaultCvTerm("refseq" , "MI:0481" ));
-        databaseMap.put(DatabaseType.IPI,       new DefaultCvTerm("ipi" , "MI:0675" ));
+        databaseMap.put( DatabaseType.GO,       new DefaultCvTerm("go" , "MI:0448"));
+        databaseMap.put( DatabaseType.INTERPRO, new DefaultCvTerm("interpro" , "MI:0449"));
+        databaseMap.put( DatabaseType.PDB,      new DefaultCvTerm("pdb" , "MI:0460"));
+        databaseMap.put( DatabaseType.REACTOME, new DefaultCvTerm("reactome" , "MI:0467"));
+        databaseMap.put( DatabaseType.ENSEMBL,  new DefaultCvTerm("ensembl" , "MI:0476"));
+        databaseMap.put( DatabaseType.WORMBASE, new DefaultCvTerm("wormbase" , "MI:0487" ));
+        databaseMap.put( DatabaseType.FLYBASE,  new DefaultCvTerm("flybase" , "MI:0478" ));
+        databaseMap.put( DatabaseType.REFSEQ,   new DefaultCvTerm("refseq" , "MI:0481" ));
+        databaseMap.put( DatabaseType.IPI,      new DefaultCvTerm("ipi" , "MI:0675" ));
     }
 
+
+    /**
+     * For each UniprotEntry DatabaseCrossReference,
+     * find the matching CvTerm and return it in an Xref with the identifier.
+     *
+     * For each type of DatabaseCrossReference in Uniprot there is a different method of access.
+     * Each of these which are considered relevant have been implemented here.
+     *
+     * @param dbxref
+     * @return
+     */
     protected static Xref getDatabaseXref(DatabaseCrossReference dbxref){
         if(databaseMap == null) initiateDatabaseMap();
 
@@ -532,7 +504,7 @@ public class UniprotToJAMI {
 
 
     public static Organism getOrganismFromEntry(UniProtEntry e)
-            throws FetcherException{
+            throws BadResultException{
 
         Organism o = null;
 
@@ -550,12 +522,10 @@ public class UniprotToJAMI {
                 o.setCommonName(e.getOrganism().getCommonName().getValue());
                 o.setScientificName(e.getOrganism().getScientificName().getValue());
             }catch(NumberFormatException n){
-                throw new BadResultException("NbiTaxonomyID could not be cast to an integer",n);
+                throw new BadResultException("Uniprot entry ["+e.getPrimaryUniProtAccession().getValue()+"] " +
+                        "has a TaxonomyID which could not be cast to an integer: ("+id+").",n);
             }
         }
-
-
-
         return o;
     }
 }

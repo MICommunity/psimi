@@ -1,11 +1,14 @@
 package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
 
-//import psidev.psi.mi.jami.bridges.fetcher.echoservice.EchoOrganism;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
+
+import psidev.psi.mi.jami.bridges.exception.BadResultException;
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.enricherimplementation.organism.MinimumOrganismEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.Protein;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
@@ -31,23 +34,20 @@ public class MinimumProteinEnricher
     }
 
     public void enrichProtein(Protein proteinToEnrich)
-            throws EnrichmentException {
-        try {
-            Collection<Protein> proteinsEnriched;
-            proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
-            Protein proteinEnriched = chooseProteinEnriched(proteinToEnrich, proteinsEnriched);
-            if(proteinEnriched != null){
-                super.setOrganismEnricher(new MinimumOrganismEnricher());
+            throws BridgeFailedException,
+            MissingServiceException,
+            BadToEnrichFormException,
+            BadSearchTermException,
+            BadResultException,
+            SeguidException {
 
-                runProteinAddition(proteinToEnrich, proteinEnriched);
-                //runProteinMismatchOnCore(proteinToEnrich, proteinEnriched);
-                //runProteinMismatchOnChecksum(proteinToEnrich, proteinEnriched);
-                //fireAllReportEvents();
-            }
-        }catch (FetcherException e) {
-            e.printStackTrace();
-        } catch (SeguidException e) {
-            e.printStackTrace();
+        Collection<Protein> proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
+        Protein proteinEnriched = chooseProteinEnriched(proteinToEnrich, proteinsEnriched);
+
+        if(proteinEnriched != null){
+            super.setOrganismEnricher(new MinimumOrganismEnricher());
+            runProteinAddition(proteinToEnrich, proteinEnriched);
+            proteinEnricherListener.onProteinEnriched(proteinToEnrich, "Success");
         }
     }
 }

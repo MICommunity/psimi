@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.bridges.uniprot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.EntryNotFoundException;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
-import psidev.psi.mi.jami.bridges.exception.NullSearchException;
+import psidev.psi.mi.jami.bridges.exception.BadResultException;
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
@@ -25,7 +25,7 @@ public class UniprotFetcher
 
     private UniprotBridge bridge;
 
-    public UniprotFetcher() throws FetcherException {
+    public UniprotFetcher() {
         log.debug("Starting uniprot bridge");
         bridge = new UniprotBridge();
     }
@@ -38,12 +38,18 @@ public class UniprotFetcher
             "[A-NR-Z][0-9][A-Z][A-Z0-9][A-Z0-9][0-9]|"+
             "[OPQ][0-9][A-Z0-9][A-Z0-9][A-Z0-9][0-9]");
 
+    /**
+     *
+     * @param identifier
+     * @return
+     * @throws BridgeFailedException
+     * @throws BadResultException
+     * @throws BadSearchTermException
+     */
     public Collection<Protein> getProteinsByIdentifier(String identifier)
-            throws FetcherException {
+            throws BridgeFailedException, BadResultException, BadSearchTermException {
 
-        if(identifier == null){
-            return null;
-        }
+        if(identifier == null) throw new BadSearchTermException("Could not perform search on null identifier.");
 
         Collection<Protein> proteins = null;
 
@@ -70,8 +76,6 @@ public class UniprotFetcher
         if(proteins == null || proteins.size() == 0){
             return null;
         }
-
-        //log.debug("Found "+proteins.size()+" entries");
 
         return proteins;
     }

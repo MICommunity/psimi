@@ -1,8 +1,11 @@
 package psidev.psi.mi.jami.enricher.enricherimplementation.organism;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
+import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -16,22 +19,19 @@ public class MaximumOrganismUpdater
         extends AbstractOrganismEnricher
         implements OrganismEnricher {
 
-    public MaximumOrganismUpdater()
-            throws EnrichmentException {
+    public MaximumOrganismUpdater(){
         super();
     }
 
-    public MaximumOrganismUpdater(OrganismFetcher fetcher)
-            throws EnrichmentException{
+    public MaximumOrganismUpdater(OrganismFetcher fetcher){
         super(fetcher);
     }
 
-    public void enrichOrganism(Organism organismToEnrich)
-            throws EnrichmentException {
+    public void enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException {
 
         Organism organismEnriched = getFullyEnrichedForm(organismToEnrich);
         runOrganismAdditionEnrichment(organismToEnrich, organismEnriched);
         runOrganismOverwriteUpdate(organismToEnrich, organismEnriched);
-        fireEnricherEvent(enricherEvent);
+       // fireEnricherEvent(enricherEvent);
     }
 }

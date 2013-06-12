@@ -1,11 +1,15 @@
 package psidev.psi.mi.jami.enricher;
 
 
+import psidev.psi.mi.jami.bridges.exception.BadResultException;
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessor;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.Protein;
+import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +21,8 @@ import psidev.psi.mi.jami.model.Protein;
 public interface ProteinEnricher {
 
     public void enrichProtein(Protein proteinToEnrich)
-            throws EnrichmentException;
+            throws BridgeFailedException, MissingServiceException, BadToEnrichFormException,
+            BadSearchTermException, BadResultException, SeguidException;
 
     public void setFetcher(ProteinFetcher fetcher);
     public ProteinFetcher getFetcher();

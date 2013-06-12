@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
+import psidev.psi.mi.jami.bridges.exception.BadResultException;
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.model.CvTerm;
 
 /**
@@ -14,7 +15,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 public interface CvTermFetcher{
 
     public CvTerm getCvTermByID(String identifier, String databaseName)
-            throws FetcherException;
+            throws BridgeFailedException, BadSearchTermException;
 
     /**
      * Identifies and initiates the CvTerm using its identifier.
@@ -26,7 +27,7 @@ public interface CvTermFetcher{
      * @throws BridgeFailedException    Thrown if there are problems with the connection
      */
     public CvTerm getCvTermByID(String identifier, CvTerm database)
-            throws FetcherException;
+            throws BridgeFailedException, BadSearchTermException;
 
     /**
      * Identifies and initiates a CvTerm using its name.
@@ -36,13 +37,13 @@ public interface CvTermFetcher{
      * @param searchName
      * @param databaseName
      * @return
-     * @throws FetcherException
+     * @throws BridgeFailedException
      */
     public CvTerm getCvTermByTerm(String searchName, String databaseName)
-            throws FetcherException;
+            throws BridgeFailedException, BadResultException, BadSearchTermException;
 
     public CvTerm getCvTermByTerm(String searchName, CvTerm database)
-            throws FetcherException;
+            throws BridgeFailedException, BadResultException, BadSearchTermException;
 
     /**
      * Identifies and initiates a CvTerm using its name.
@@ -52,13 +53,13 @@ public interface CvTermFetcher{
      * @param databaseName
      * @param useFuzzySearch
      * @return
-     * @throws FetcherException
+     * @throws BridgeFailedException
      */
     public CvTerm getCvTermByTerm(String searchName, String databaseName, boolean useFuzzySearch)
-            throws FetcherException;
+            throws BridgeFailedException, BadSearchTermException, BadResultException;
 
     public CvTerm getCvTermByTerm(String searchName, CvTerm database, boolean useFuzzySearch)
-            throws FetcherException;
+            throws BridgeFailedException, BadSearchTermException, BadResultException;
 
     public String getService();
 }

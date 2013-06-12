@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.mockfetcher.organism;
 
-import psidev.psi.mi.jami.bridges.exception.EntryNotFoundException;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
+
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.model.Organism;
 
@@ -24,12 +23,10 @@ public class MockOrganismFetcher
         localOrganisms = new HashMap<String,Organism>();
     }
 
-    public Organism getOrganismByTaxID(int identifier)
-            throws FetcherException {
+    public Organism getOrganismByTaxID(int identifier){
 
         if(! localOrganisms.containsKey(""+identifier)) {
-            throw new EntryNotFoundException(
-                    "No Organism to repeat with ID ["+identifier+"]");
+            return null;
         }
 
         else return localOrganisms.get(""+identifier);

@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.enricher.mockfetcher.protein;
 
-import psidev.psi.mi.jami.bridges.exception.EntryNotFoundException;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
+import psidev.psi.mi.jami.bridges.exception.BadResultException;
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
@@ -33,12 +34,10 @@ public class MockProteinFetcher
      * If no proteins can be found, it will throw a fetcherException (as a true fetcher would).
      * @param identifier
      * @return
-     * @throws FetcherException
      */
-    public Collection<Protein> getProteinsByID(String identifier) throws FetcherException {
+    public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException, BadResultException, BadSearchTermException {
         if(! localProteins.containsKey(identifier)) {
-            throw new EntryNotFoundException(
-                    "No protein to repeat with ID ["+identifier+"]");
+            return null;
         }
 
         else {

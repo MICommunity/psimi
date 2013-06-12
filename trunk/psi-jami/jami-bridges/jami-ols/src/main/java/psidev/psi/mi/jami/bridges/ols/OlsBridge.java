@@ -185,7 +185,6 @@ public class OlsBridge{
         else return null;
 
         if (metaDataMap != null) {
-            Collection<Alias> synonyms = new ArrayList<Alias>();
             for (Object key : metaDataMap.keySet()){
                 String keyName = (String)key;
                 if (keyName.startsWith(SHORTLABEL_IDENTIFIER + META_DATA_SEPARATOR)){
@@ -200,7 +199,6 @@ public class OlsBridge{
             HashMap metaDataMap){
         String DEFINITION_KEY = "definition";
         if (metaDataMap != null) {
-            Collection<Alias> synonyms = new ArrayList<Alias>();
             for (Object key : metaDataMap.keySet()){
                 String keyName = (String)key;
                 if (DEFINITION_KEY.equalsIgnoreCase(keyName)){
