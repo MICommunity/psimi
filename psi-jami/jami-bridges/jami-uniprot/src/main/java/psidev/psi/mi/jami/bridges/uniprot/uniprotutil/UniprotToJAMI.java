@@ -204,9 +204,7 @@ public class UniprotToJAMI {
      * @throws BadResultException
      */
     public static Protein getProteinIsoformFromEntry(
-            UniProtEntry entry,
-            AlternativeProductsIsoform isoform,
-            String identifier)
+            UniProtEntry entry, AlternativeProductsIsoform isoform, String identifier)
             throws BadResultException {
 
         if(entry == null) throw new BadResultException("Uniprot entry was null.");
@@ -257,7 +255,6 @@ public class UniprotToJAMI {
         //CHECKSUMS
         //CRC64 checksum will be recalculated
         //Rogid checksum will be recalculated
-
 
         // ALIASES - gene name, gene name synonyms, orf, locus
         if(entry.getGenes() != null && entry.getGenes().size() > 0){
@@ -321,9 +318,8 @@ public class UniprotToJAMI {
      * @throws BadResultException
      */
     public static Protein getProteinFeatureFromEntry(
-            UniProtEntry entry,
-            Feature feature,
-            String identifier) throws BadResultException {
+            UniProtEntry entry, Feature feature, String identifier)
+            throws BadResultException {
 
 
         if(entry == null) throw new BadResultException("Uniprot entry was null.");
@@ -351,6 +347,7 @@ public class UniprotToJAMI {
             //FULL NAME
             p.setFullName(proPepFeature.getFeatureDescription().getValue());
         }
+
         if (location != null){
             int begin = location.getStart()-1;
             int end = location.getEnd();

@@ -44,9 +44,9 @@ public class MaximumProteinUpdater
 
         if(proteinEnriched != null){
             super.setOrganismEnricher(new MaximumOrganismUpdater());
-            runProteinAddition(proteinToEnrich, proteinEnriched);
-            runProteinUpdateOnCore(proteinToEnrich, proteinEnriched);
-            runProteinUpdateOnChecksums(proteinToEnrich, proteinEnriched);
+            runAdditionOnCore(proteinToEnrich, proteinEnriched);
+            runUpdateOnCore(proteinToEnrich, proteinEnriched);
+            runUpdateOnChecksums(proteinToEnrich, proteinEnriched);
             proteinEnricherListener.onProteinEnriched(proteinToEnrich, "Success");
         }
     }
