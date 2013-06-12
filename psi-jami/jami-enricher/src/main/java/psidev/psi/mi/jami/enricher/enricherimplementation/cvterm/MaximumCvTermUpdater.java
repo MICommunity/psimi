@@ -1,8 +1,11 @@
 package psidev.psi.mi.jami.enricher.enricherimplementation.cvterm;
 
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.Collection;
@@ -30,15 +33,15 @@ public class MaximumCvTermUpdater
      * If update takes place, the ToEnrich will be edited.
      *
      * @param cvTermToEnrich  a CvTerm to update
-     * @throws EnrichmentException
      */
     public void enrichCvTerm(CvTerm cvTermToEnrich)
-            throws EnrichmentException {
+            throws BridgeFailedException, MissingServiceException,
+            BadToEnrichFormException, BadSearchTermException {
 
         CvTerm cvTermEnriched = getFullyEnrichedForm(cvTermToEnrich);
         runCvTermAdditionEnrichment(cvTermToEnrich, cvTermEnriched);
         runCvTermOverwriteUpdate(cvTermToEnrich, cvTermEnriched);
-        fireEnricherEvent(enricherEvent);
+        //fireEnricherEvent(enricherEvent);
     }
 
 

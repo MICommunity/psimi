@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.enricher;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessor;
+import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -12,11 +14,9 @@ import psidev.psi.mi.jami.model.Organism;
  * Date: 22/05/13
  * Time: 10:06
  */
-public interface OrganismEnricher
-        extends EnricherEventProcessor {
+public interface OrganismEnricher{
 
-    public void enrichOrganism(Organism organismToEnrich)
-            throws EnrichmentException;
+    public void enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException;
 
     public void setFetcher(OrganismFetcher fetcher);
     public OrganismFetcher getFetcher();

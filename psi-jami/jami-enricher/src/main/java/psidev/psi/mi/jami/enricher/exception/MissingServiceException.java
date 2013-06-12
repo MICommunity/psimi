@@ -7,21 +7,20 @@ package psidev.psi.mi.jami.enricher.exception;
  * Date: 13/05/13
  * Time: 14:05
  */
-@Deprecated
-public class DemergeException extends EnrichmentException{
-    public DemergeException() {
+public class MissingServiceException extends Exception{
+    public MissingServiceException() {
         super();
     }
 
-    public DemergeException(String s) {
+    public MissingServiceException(String s) {
         super(s);
     }
 
-    public DemergeException(String s, Throwable throwable) {
+    public MissingServiceException(String s, Throwable throwable) {
         super(s, throwable);
     }
 
-    public DemergeException(Throwable throwable) {
+    public MissingServiceException(Throwable throwable) {
         super(throwable);
     }
 }

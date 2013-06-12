@@ -2,16 +2,15 @@ package psidev.psi.mi.jami.enricher.enricherimplementation.cvterm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
-import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.event.MismatchReport;
 import psidev.psi.mi.jami.enricher.event.OverwriteReport;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.enricher.exception.FetchingException;
-import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.util.CollectionUtilsExtra;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -32,7 +31,6 @@ import java.util.Collection;
  * Time: 14:21
  */
 public abstract class AbstractCvTermEnricher
-        extends EnricherEventProcessorImp
         implements CvTermEnricher {
 
     private final Logger log = LoggerFactory.getLogger(AbstractCvTermEnricher.class.getName());
@@ -46,7 +44,7 @@ public abstract class AbstractCvTermEnricher
     public final static String FIELD_SYNONYM = "Synonym";
 
     public AbstractCvTermEnricher(){
-        enricherEvent = new EnricherEvent(TYPE);
+
     }
 
     public AbstractCvTermEnricher(CvTermFetcher fetcher){
@@ -71,15 +69,14 @@ public abstract class AbstractCvTermEnricher
      *
      * @param cvTermToEnrich  The CvTerm to be enriched
      * @return              A new, ideal CvTerm inferred from an identifying feature of the CvTermToEnrich.
-     * @throws EnrichmentException  Thrown when a bridge has failed or in the case of bad identifiers.
      */
     protected CvTerm getFullyEnrichedForm(CvTerm cvTermToEnrich)
-            throws EnrichmentException {
-        if(fetcher == null) throw new FetchingException("CvTermFetcher is null.");
-        if(cvTermToEnrich == null)throw new EnrichmentException("Attempted to enrich null CvTerm");
+            throws BadToEnrichFormException, MissingServiceException, BridgeFailedException, BadSearchTermException {
+
+        if(fetcher == null) throw new MissingServiceException("CvTermFetcher is null.");
+        if(cvTermToEnrich == null)throw new BadToEnrichFormException("Attempted to enrich null CvTerm");
 
         CvTerm enriched = null;
-        enricherEvent.clear();
 
         Collection<Xref> identifiersList = new ArrayList<Xref>();
         identifiersList.addAll(cvTermToEnrich.getIdentifiers());
@@ -88,12 +85,9 @@ public abstract class AbstractCvTermEnricher
             for(Xref id : identifiersList){
                 if( enriched != null ) break;
                 else if( id.getDatabase().getShortName().equals(CvTerm.PSI_MI_MI)){
-                    try{
-                        enriched = getFullyEnrichedFormByIdentifier(id);
-                        enricherEvent.clear();
-                        enricherEvent.setQueryDetails(
-                                id.getId(), "MI Identifier", fetcher.getService());
-                    }catch(FetchingException e){enriched = null;} //Ignore this exception, try the next identifier
+                    enriched = getFullyEnrichedFormByIdentifier(id);
+                    //enricherEvent.clear();
+                    //enricherEvent.setQueryDetails(id.getId(), "MI Identifier", fetcher.getService());
                 }
             }
             //Try with MOD
@@ -101,12 +95,9 @@ public abstract class AbstractCvTermEnricher
                 for(Xref id : identifiersList){
                     if( enriched != null ) break;
                     else if( id.getDatabase().getShortName().equals(CvTerm.PSI_MOD_MI)){
-                        try{
-                            enriched = getFullyEnrichedFormByIdentifier(id);
-                            enricherEvent.clear();
-                            enricherEvent.setQueryDetails(
-                                    id.getId(), "MOD Identifier", fetcher.getService());
-                        }catch(FetchingException e){enriched = null;} //Ignore this exception, try the next identifier
+                        enriched = getFullyEnrichedFormByIdentifier(id);
+                        //enricherEvent.clear();
+                        //enricherEvent.setQueryDetails(id.getId(), "MOD Identifier", fetcher.getService());
                     }
                 }
             }
@@ -115,12 +106,9 @@ public abstract class AbstractCvTermEnricher
                 for(Xref id : identifiersList){
                     if( enriched != null ) break;
                     else if( id.getId() != null){
-                        try{
-                            enriched = getFullyEnrichedFormByIdentifier(id);
-                            enricherEvent.clear();
-                            enricherEvent.setQueryDetails(
-                                    id.getId(), id.getDatabase().getShortName()+" Identifier", fetcher.getService());
-                        }catch(FetchingException e){enriched = null;} //Ignore this exception, try the next identifier
+                        enriched = getFullyEnrichedFormByIdentifier(id);
+                        //enricherEvent.clear();
+                        //enricherEvent.setQueryDetails(id.getId(), id.getDatabase().getShortName()+" Identifier", fetcher.getService());
                     }
                 }
             }
@@ -159,21 +147,13 @@ public abstract class AbstractCvTermEnricher
             else{ if(log.isTraceEnabled()) log.trace("No short name to search on."); }
         }*/
 
-        if(enriched == null)throw new FetchingException("Null CvTerm");
-
         return enriched;
     }
 
     private CvTerm getFullyEnrichedFormByIdentifier(Xref identifier)
-            throws EnrichmentException{
-
+            throws BridgeFailedException, BadSearchTermException {
         if(log.isTraceEnabled()) log.trace("Searching on identifier "+identifier.getId());
-
-        try{
-            return fetcher.getCvTermByID(identifier.getId(), identifier.getDatabase());
-        }catch(FetcherException e){
-            throw new FetchingException("Identifier ["+identifier+"] could not return a CvTerm.",e);
-        }
+        return fetcher.getCvTermByID(identifier.getId(), identifier.getDatabase());
     }
 
     /**
@@ -181,10 +161,8 @@ public abstract class AbstractCvTermEnricher
      * Only full name and synonyms are considered.
      * @param cvTermToEnrich      The cvTerm to be updated
      * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
-     * @throws EnrichmentException
      */
-    protected void runCvTermAdditionEnrichment(CvTerm cvTermToEnrich, CvTerm cvTermEnriched)
-            throws EnrichmentException{
+    protected void runCvTermAdditionEnrichment(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
 
         //Todo report obsolete
 
@@ -196,7 +174,7 @@ public abstract class AbstractCvTermEnricher
         if(cvTermToEnrich.getFullName() == null
                 && cvTermEnriched.getFullName() != null){
             cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
-            addAdditionReport(new AdditionReport(FIELD_FULLNAME, cvTermToEnrich.getFullName()));
+            //addAdditionReport(new AdditionReport(FIELD_FULLNAME, cvTermToEnrich.getFullName()));
         }
 
         //Add identifiers
@@ -207,7 +185,7 @@ public abstract class AbstractCvTermEnricher
 
         for(Xref x: subtractedIdentifiers){
             cvTermToEnrich.getIdentifiers().add(x);
-            addAdditionReport(new AdditionReport(FIELD_IDENTIFIER, x.getId()));
+            //addAdditionReport(new AdditionReport(FIELD_IDENTIFIER, x.getId()));
         }
 
         //Add synonyms
@@ -218,7 +196,7 @@ public abstract class AbstractCvTermEnricher
 
         for(Alias x: subtractedSynonyms){
             cvTermToEnrich.getSynonyms().add(x);
-            addAdditionReport(new AdditionReport(FIELD_SYNONYM, "Name: " + x.getName() + ", Type: " + x.getType()));
+            //addAdditionReport(new AdditionReport(FIELD_SYNONYM, "Name: " + x.getName() + ", Type: " + x.getType()));
         }
     }
 
@@ -231,15 +209,15 @@ public abstract class AbstractCvTermEnricher
     public void runCvTermMismatchComparison(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
         //ShortName - can never be null
         if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
-            addMismatchReport(new MismatchReport(
-                    FIELD_SHORTNAME, cvTermToEnrich.getShortName(), cvTermEnriched.getShortName()));
+            //addMismatchReport(new MismatchReport(
+            //        FIELD_SHORTNAME, cvTermToEnrich.getShortName(), cvTermEnriched.getShortName()));
         }
 
         //FullName
         if(cvTermEnriched.getFullName() != null){
             if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
-                addMismatchReport(new MismatchReport(
-                        FIELD_FULLNAME, cvTermToEnrich.getFullName(), cvTermEnriched.getFullName()));
+               // addMismatchReport(new MismatchReport(
+               //         FIELD_FULLNAME, cvTermToEnrich.getFullName(), cvTermEnriched.getFullName()));
             }
         }
     }
@@ -250,17 +228,15 @@ public abstract class AbstractCvTermEnricher
      * then, the full name and short name are overwritten.
      * @param cvTermToEnrich      The cvTerm to be updated
      * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
-     * @throws EnrichmentException
      */
-    public void runCvTermOverwriteUpdate(CvTerm cvTermToEnrich, CvTerm cvTermEnriched)
-            throws EnrichmentException{
+    public void runCvTermOverwriteUpdate(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
 
         //Overwrite shortname - is never null
         if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
             String oldname =  cvTermToEnrich.getShortName();
             cvTermToEnrich.setShortName(cvTermEnriched.getShortName());
-            addOverwriteReport(new OverwriteReport(
-                    FIELD_SHORTNAME, cvTermToEnrich.getShortName(), oldname));
+           // addOverwriteReport(new OverwriteReport(
+          //          FIELD_SHORTNAME, cvTermToEnrich.getShortName(), oldname));
         }
 
         //Check full name
@@ -268,8 +244,8 @@ public abstract class AbstractCvTermEnricher
             if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
                 String oldname =  cvTermToEnrich.getFullName();
                 cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
-                addOverwriteReport(new OverwriteReport(
-                        FIELD_FULLNAME, cvTermToEnrich.getFullName(), oldname));
+             //   addOverwriteReport(new OverwriteReport(
+                //        FIELD_FULLNAME, cvTermToEnrich.getFullName(), oldname));
             }
         }
     }

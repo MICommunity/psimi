@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.bridges.exception;
  * Date: 15/04/13
  * Time: 13:21
  */
-public class BadResultException extends FetcherException{
+public class BadResultException extends Exception{
 
     public BadResultException() {
         super();

@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Organism;
  */
 public interface OrganismFetcher{
     public Organism getOrganismByTaxID(int taxID)
-            throws FetcherException;
+            throws BridgeFailedException;
 
     public String getService();
 }

@@ -1,9 +1,11 @@
 package psidev.psi.mi.jami.enricher;
 
 
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
-import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessor;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.Collection;
@@ -17,15 +19,14 @@ import java.util.Collection;
  * Date: 13/05/13
  * Time: 13:13
  */
-public interface CvTermEnricher extends EnricherEventProcessor {
+public interface CvTermEnricher{
 
     /**
      * Enrichment of a single CvTerm.
      * If enrichment takes place, the ToEnrich will be edited.
      * @param cvTermToEnrich  a CvTerm to enrich
-     * @throws EnrichmentException  Thrown if the bridge fails or other problems halt the enrichment.
      */
-    public void enrichCvTerm(CvTerm cvTermToEnrich)  throws EnrichmentException;
+    public void enrichCvTerm(CvTerm cvTermToEnrich) throws BridgeFailedException, MissingServiceException, BadToEnrichFormException, BadSearchTermException;
 
 
     public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich);

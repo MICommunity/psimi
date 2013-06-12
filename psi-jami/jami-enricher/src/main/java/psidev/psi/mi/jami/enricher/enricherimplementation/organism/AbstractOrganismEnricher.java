@@ -2,18 +2,16 @@ package psidev.psi.mi.jami.enricher.enricherimplementation.organism;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.event.MismatchReport;
 import psidev.psi.mi.jami.enricher.event.OverwriteReport;
-import psidev.psi.mi.jami.enricher.exception.ConflictException;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.enricher.exception.FetchingException;
-import psidev.psi.mi.jami.enricher.listener.EnricherEventProcessorImp;
-import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -24,7 +22,6 @@ import psidev.psi.mi.jami.model.Organism;
  * Time: 10:05
  */
 public abstract class AbstractOrganismEnricher
-        extends EnricherEventProcessorImp
         implements OrganismEnricher {
 
 
@@ -36,7 +33,7 @@ public abstract class AbstractOrganismEnricher
     private static final String FIELD_SCIENTIFICNAME = "ScientificName";
 
     public AbstractOrganismEnricher(){
-        enricherEvent = new EnricherEvent(TYPE);
+        //enricherEvent = new EnricherEvent(TYPE);
     }
 
     public AbstractOrganismEnricher(OrganismFetcher fetcher){
@@ -52,44 +49,39 @@ public abstract class AbstractOrganismEnricher
     }
 
     protected Organism getFullyEnrichedForm(Organism organismToEnrich)
-            throws EnrichmentException {
+            throws BridgeFailedException, MissingServiceException, BadToEnrichFormException {
 
-        if(fetcher == null) throw new FetchingException("OrganismFetcher is null.");
-        if(organismToEnrich == null) throw new FetchingException("Attempted to enrich a null organism.");
+        if(fetcher == null) throw new MissingServiceException("OrganismFetcher is null.");
+        if(organismToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null organism.");
 
         Organism enriched = null;
-        try{
-            enriched = fetcher.getOrganismByTaxID(organismToEnrich.getTaxId());
-            enricherEvent.clear();
-            enricherEvent.setQueryDetails(""+organismToEnrich.getTaxId(),FIELD_TAXID,fetcher.getService());
-        }catch(FetcherException e){
-            throw new FetchingException(e);
-        }
 
-        if(enriched==null) throw new FetchingException("Null organism");
+            enriched = fetcher.getOrganismByTaxID(organismToEnrich.getTaxId());
+            //enricherEvent.clear();
+            //enricherEvent.setQueryDetails(""+organismToEnrich.getTaxId(),FIELD_TAXID,fetcher.getService());
+
 
         return enriched;
     }
 
     protected void runOrganismAdditionEnrichment(Organism organismToEnrich, Organism organismEnriched)
-            throws EnrichmentException {
+            throws BadEnrichedFormException {
 
         //if(organismToEnrich == null && organismEnriched != null) organismToEnrich = new DefaultOrganism(-3);
 
         if(organismEnriched.getTaxId() < -4){//TODO check this  is a valid assertion
-            throw new FetchingException(
-                    "The organism had an invalid taxID of "+organismEnriched.getTaxId());
+            throw new BadEnrichedFormException( "The organism had an invalid taxID of "+organismEnriched.getTaxId());
         }else{
             //TaxID
             if(organismToEnrich.getTaxId() > 0){
-                if(organismToEnrich.getTaxId() != organismEnriched.getTaxId()) {
+                /*if(organismToEnrich.getTaxId() != organismEnriched.getTaxId()) {
                     throw new ConflictException("Organism Conflict on TaxId. " +
                             "ToEnrich had ["+organismToEnrich.getTaxId()+"] " +
                             "but fetcher found ["+organismEnriched.getTaxId()+"]");
-                }
+                }*/
             }else if(organismToEnrich.getTaxId() == -3){
                 organismToEnrich.setTaxId(organismEnriched.getTaxId());
-                addAdditionReport(new AdditionReport(FIELD_TAXID,""+organismToEnrich.getTaxId()));
+                //addAdditionReport(new AdditionReport(FIELD_TAXID,""+organismToEnrich.getTaxId()));
             }
             //negative taxids will continue through at this point
 
@@ -97,16 +89,16 @@ public abstract class AbstractOrganismEnricher
             if(organismToEnrich.getScientificName() == null
                     && organismEnriched.getScientificName() != null){
                 organismToEnrich.setScientificName(organismEnriched.getScientificName());
-                addAdditionReport(new AdditionReport(
-                        FIELD_SCIENTIFICNAME,organismEnriched.getScientificName()));
+               // addAdditionReport(new AdditionReport(
+                       // FIELD_SCIENTIFICNAME,organismEnriched.getScientificName()));
             }
 
             //Commonname
             if(organismToEnrich.getCommonName() == null
                     &&organismEnriched.getCommonName() != null){
                 organismToEnrich.setCommonName(organismEnriched.getCommonName());
-                addAdditionReport(new AdditionReport(
-                        FIELD_COMMONNAME, organismToEnrich.getCommonName()));
+                //addAdditionReport(new AdditionReport(
+                       // FIELD_COMMONNAME, organismToEnrich.getCommonName()));
             }
         }
     }
@@ -116,20 +108,20 @@ public abstract class AbstractOrganismEnricher
         // Should not be reachable for positive taxids, a conflict should have been thrown by this point
         // Essentially only compares -2,or -1
         if(organismEnriched.getTaxId() != organismToEnrich.getTaxId()){
-            addMismatchReport(new MismatchReport(
-                    FIELD_TAXID,
-                    ""+organismToEnrich.getTaxId(),
-                    ""+organismEnriched.getTaxId()));
+            //addMismatchReport(new MismatchReport(
+                   // FIELD_TAXID,
+                   // ""+organismToEnrich.getTaxId(),
+                   // ""+organismEnriched.getTaxId()));
         }
 
         //Scientific Name
         if (organismEnriched.getScientificName() != null){
             if (!organismEnriched.getScientificName().equalsIgnoreCase(
                     organismToEnrich.getScientificName())){
-                addMismatchReport(new MismatchReport(
-                        FIELD_SCIENTIFICNAME,
-                        organismToEnrich.getScientificName(),
-                        organismEnriched.getScientificName()));
+                //addMismatchReport(new MismatchReport(
+                     //   FIELD_SCIENTIFICNAME,
+                     //   organismToEnrich.getScientificName(),
+                      //  organismEnriched.getScientificName()));
             }
         }
 
@@ -137,16 +129,15 @@ public abstract class AbstractOrganismEnricher
         if (organismEnriched.getCommonName() != null){
             if (!organismEnriched.getCommonName().equalsIgnoreCase(
                     organismToEnrich.getCommonName())){
-                addMismatchReport(new MismatchReport(
-                        FIELD_COMMONNAME,
-                        organismToEnrich.getCommonName(),
-                        organismEnriched.getCommonName()));
+               // addMismatchReport(new MismatchReport(
+               //         FIELD_COMMONNAME,
+               //         organismToEnrich.getCommonName(),
+               //         organismEnriched.getCommonName()));
             }
         }
     }
 
-    protected void runOrganismOverwriteUpdate(Organism organismToEnrich, Organism organismEnriched)
-            throws EnrichmentException{
+    protected void runOrganismOverwriteUpdate(Organism organismToEnrich, Organism organismEnriched){
 
         // Should not be reachable for positive taxids, a conflict should have been thrown by this point
         // Essentially only compares -2,or -1
@@ -154,10 +145,10 @@ public abstract class AbstractOrganismEnricher
 
             String oldValue = ""+organismToEnrich.getTaxId();
             organismToEnrich.setTaxId(organismEnriched.getTaxId());
-            addOverwriteReport(new OverwriteReport(
-                    FIELD_TAXID,
-                    oldValue,
-                    ""+organismToEnrich.getTaxId()));
+           // addOverwriteReport(new OverwriteReport(
+           //         FIELD_TAXID,
+           //         oldValue,
+           //         ""+organismToEnrich.getTaxId()));
         }
 
         //Scientific Name
@@ -166,10 +157,10 @@ public abstract class AbstractOrganismEnricher
                     organismToEnrich.getScientificName())){
                 String oldValue = organismToEnrich.getScientificName();
                 organismToEnrich.setScientificName(organismEnriched.getScientificName());
-                addOverwriteReport(new OverwriteReport(
-                        FIELD_SCIENTIFICNAME,
-                        oldValue,
-                        organismToEnrich.getScientificName()));
+               // addOverwriteReport(new OverwriteReport(
+               //         FIELD_SCIENTIFICNAME,
+               //         oldValue,
+               //         organismToEnrich.getScientificName()));
             }
         }
 
@@ -179,10 +170,10 @@ public abstract class AbstractOrganismEnricher
                     organismToEnrich.getCommonName())){
                 String oldValue = organismToEnrich.getCommonName();
                 organismToEnrich.setCommonName(organismEnriched.getCommonName());
-                addOverwriteReport(new OverwriteReport(
-                        FIELD_COMMONNAME,
-                        oldValue,
-                        organismToEnrich.getCommonName()));
+                //addOverwriteReport(new OverwriteReport(
+                //        FIELD_COMMONNAME,
+                //        oldValue,
+                 //       organismToEnrich.getCommonName()));
             }
         }
     }

@@ -8,7 +8,7 @@ package psidev.psi.mi.jami.bridges.exception;
  * Date: 15/04/13
  * Time: 13:21
  */
-public class BridgeFailedException extends FetcherException{
+public class BridgeFailedException extends Exception{
 
     public BridgeFailedException() {
         super();

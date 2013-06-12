@@ -2,16 +2,14 @@ package psidev.psi.mi.jami.enricher.integrationtest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.FetcherException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.exception.EnrichmentException;
-import psidev.psi.mi.jami.enricher.listener.LoggingEnricherListener;
 import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MaximumProteinUpdater;
 import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MinimumProteinEnricher;
+import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.model.Protein;
-import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 
 /**
@@ -28,27 +26,22 @@ public class ProteinTest {
     ProteinEnricher proteinEnricher;
     ProteinFetcher fetcher;
 
+    ProteinEnricherListener listener = new ProteinEnricherLogger();
+
 
     public ProteinTest(){
-        try {
-            fetcher = new UniprotFetcher();
-        } catch (FetcherException e) {
-            log.debug("the protein fetcher did not initialise");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        fetcher = new UniprotFetcher();
     }
 
 
     public void min(){
         proteinEnricher = new MinimumProteinEnricher(fetcher);
-        proteinEnricher.addEnricherListener(new LoggingEnricherListener());
+        proteinEnricher.setProteinEnricherListener(listener);
     }
 
     public void max(){
         proteinEnricher = new MaximumProteinUpdater(fetcher);
-        LoggingEnricherListener loglist = new LoggingEnricherListener();
-        //loglist.showXrefs(false);
-        proteinEnricher.addEnricherListener(loglist);
+        proteinEnricher.setProteinEnricherListener(listener);
     }
 
     //String[] tests = {"P77681"};
@@ -65,7 +58,7 @@ public class ProteinTest {
 
             try{
                 proteinEnricher.enrichProtein(a);
-            } catch (EnrichmentException e){
+            } catch (Exception e){
                 log.debug("The protein enricher did not return a protein");
                 log.debug("msg reads: "+e.getMessage());
                 //log.debug("log reads: "); e.printStackTrace();

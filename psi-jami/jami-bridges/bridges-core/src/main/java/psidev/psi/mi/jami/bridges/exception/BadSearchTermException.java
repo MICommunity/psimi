@@ -1,28 +1,28 @@
 package psidev.psi.mi.jami.bridges.exception;
 
 /**
- * An error object to signify that a DEPRECATEDquery to a database has failed.
+ * An error object to signify that a query to a database has failed.
  * This Exception MUST also pass the original Exception that caused the problem.
  *
  * @author: Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 15/04/13
  * Time: 13:21
  */
-public class FetcherException extends Exception{
+public class BadSearchTermException extends Exception{
 
-    public FetcherException() {
+    public BadSearchTermException() {
         super();
     }
 
-    public FetcherException(String s) {
+    public BadSearchTermException(String s) {
         super(s);
     }
 
-    public FetcherException(String s, Throwable throwable) {
+    public BadSearchTermException(String s, Throwable throwable) {
         super(s, throwable);
     }
 
-    public FetcherException(Throwable throwable) {
+    public BadSearchTermException(Throwable throwable) {
         super(throwable);
     }
 }
