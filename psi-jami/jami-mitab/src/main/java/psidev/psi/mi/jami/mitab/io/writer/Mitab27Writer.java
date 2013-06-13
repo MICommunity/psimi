@@ -1,19 +1,18 @@
-package psidev.psi.mi.jami.mitab.io;
+package psidev.psi.mi.jami.mitab.io.writer;
 
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.mitab.utils.MitabWriterUtils;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Confidence;
-import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.RangeUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Iterator;
 
 /**
- * The simple MITAB 2.6 writer will write interactions using the JAMI interfaces.
+ * The simple MITAB 2.7 writer will write interactions using the JAMI interfaces.
  *
  * It will not check for MITAB extended objects (such as MitabAlias and MitabFeature).
  *
@@ -24,33 +23,32 @@ import java.io.Writer;
  * @since <pre>13/06/13</pre>
  */
 
-public class Mitab26Writer extends AbstractMitab26Writer{
-
-    public Mitab26Writer() {
+public class Mitab27Writer extends AbstractMitab27Writer{
+    public Mitab27Writer() {
         super();
     }
 
-    public Mitab26Writer(File file) throws IOException {
+    public Mitab27Writer(File file) throws IOException {
         super(file);
     }
 
-    public Mitab26Writer(OutputStream output) throws IOException {
+    public Mitab27Writer(OutputStream output) throws IOException {
         super(output);
     }
 
-    public Mitab26Writer(Writer writer) throws IOException {
+    public Mitab27Writer(Writer writer) throws IOException {
         super(writer);
     }
 
-    public Mitab26Writer(File file, ComplexExpansionMethod expansionMethod) throws IOException {
+    public Mitab27Writer(File file, ComplexExpansionMethod expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab26Writer(OutputStream output, ComplexExpansionMethod expansionMethod) throws IOException {
+    public Mitab27Writer(OutputStream output, ComplexExpansionMethod expansionMethod) throws IOException {
         super(output, expansionMethod);
     }
 
-    public Mitab26Writer(Writer writer, ComplexExpansionMethod expansionMethod) throws IOException {
+    public Mitab27Writer(Writer writer, ComplexExpansionMethod expansionMethod) throws IOException {
         super(writer, expansionMethod);
     }
 
@@ -115,6 +113,47 @@ public class Mitab26Writer extends AbstractMitab26Writer{
             // write type
             if (alias.getType() != null){
                 escapeAndWriteString(alias.getType().getShortName());
+            }
+        }
+    }
+
+    @Override
+    protected void writeFeature(Feature feature) throws IOException {
+        if (feature != null){
+            // first write interactor type
+            if (feature.getType() != null){
+                CvTerm type = feature.getType();
+                if (type.getFullName() != null){
+                    escapeAndWriteString(type.getFullName());
+                }
+                else {
+                    escapeAndWriteString(type.getShortName());
+                }
+            }
+            else {
+                getWriter().write(MitabWriterUtils.UNKNOWN_TYPE);
+            }
+            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            // then write ranges
+            if (feature.getRanges().isEmpty()){
+                getWriter().write(Range.UNDETERMINED_POSITION_SYMBOL);
+                getWriter().write(Range.POSITION_SEPARATOR);
+                getWriter().write(Range.UNDETERMINED_POSITION_SYMBOL);
+            }
+            else{
+                Iterator<Range> rangeIterator = feature.getRanges().iterator();
+                while(rangeIterator.hasNext()){
+                    getWriter().write(RangeUtils.convertRangeToString(rangeIterator.next()));
+                    if (rangeIterator.hasNext()){
+                        getWriter().write(MitabWriterUtils.FIELD_SEPARATOR);
+                    }
+                }
+            }
+            // then write text
+            if (feature.getInterpro() != null){
+                getWriter().write("(");
+                escapeAndWriteString(feature.getInterpro());
+                getWriter().write(")");
             }
         }
     }
