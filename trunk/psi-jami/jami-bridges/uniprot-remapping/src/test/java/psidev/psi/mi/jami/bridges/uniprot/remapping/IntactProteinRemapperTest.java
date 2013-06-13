@@ -100,11 +100,7 @@ public class IntactProteinRemapperTest {
     @Before
     public void build_bridge(){
         remap = new IntactProteinRemapper();
-        remap.addRemapListener(new RemapListener() {
-            public void fireRemapReport(RemapReport report) {
-                remapReport = report;
-            }
-        });
+
         remap.addRemapListener(new LoggingRemapListener());
 
         MAPPABLE_A = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSP00000351524"); //P42694

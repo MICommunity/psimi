@@ -113,6 +113,12 @@ public abstract class AbstractProteinEnricher
         if(fetcher == null) throw new MissingServiceException("ProteinFetcher has not been provided.");
         if(ProteinToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null protein.");
 
+        if(ProteinToEnrich.getUniprotkb() == null) {
+            proteinEnricherListener.onProteinEnriched(ProteinToEnrich,
+                    "Failed. No Uniprot AC was found to search upon.");
+            return null;
+        }
+
         Collection<Protein> enriched;
         enriched = fetcher.getProteinsByIdentifier(ProteinToEnrich.getUniprotkb());
         //queryDetails = new QueryDetails(TYPE, ProteinToEnrich.getUniprotkb(),FIELD_UNIPROTKBID, fetcher.getService(), ProteinToEnrich);

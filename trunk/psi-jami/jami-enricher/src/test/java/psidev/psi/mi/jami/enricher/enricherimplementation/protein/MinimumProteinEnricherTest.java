@@ -9,6 +9,8 @@ import psidev.psi.mi.jami.bridges.exception.BadResultException;
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherCounter;
+import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
@@ -33,6 +35,8 @@ public class MinimumProteinEnricherTest {
     private MinimumProteinEnricher minimumProteinEnricher;
     private MockProteinFetcher fetcher;
 
+    private ProteinEnricherListenerManager manager;
+    private ProteinEnricherLogger logger;
     private ProteinEnricherCounter counter;
 
 
@@ -56,8 +60,13 @@ public class MinimumProteinEnricherTest {
         halfProtein.setUniprotkb(TEST_AC_HALF_PROT);
         fetcher.addNewProtein(TEST_AC_HALF_PROT, halfProtein);
 
+        manager = new ProteinEnricherListenerManager();
+        logger = new ProteinEnricherLogger();
         counter = new ProteinEnricherCounter();
-        minimumProteinEnricher.setProteinEnricherListener(counter);
+
+        manager.addProteinEnricherListener(logger);
+        manager.addProteinEnricherListener(counter);
+        minimumProteinEnricher.setProteinEnricherListener(manager);
     }
 
     @Test(expected = BadToEnrichFormException.class)
@@ -73,7 +82,7 @@ public class MinimumProteinEnricherTest {
         this.minimumProteinEnricher.enrichProtein(null_protein);
     }
 
-    @Test(expected = BadToEnrichFormException.class)
+    @Test
     public void test_no_fetching_on_null_protein_identifier()
             throws MissingServiceException,
             BadResultException,
@@ -84,6 +93,7 @@ public class MinimumProteinEnricherTest {
 
         Protein null_identifier_protein = new DefaultProtein("Identifier free protein");
         this.minimumProteinEnricher.enrichProtein(null_identifier_protein);
+        assertTrue(counter.getStatus().contains("Failed"));
     }
 
 

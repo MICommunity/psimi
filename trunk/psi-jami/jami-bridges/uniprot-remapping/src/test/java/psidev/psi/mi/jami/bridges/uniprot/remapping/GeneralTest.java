@@ -88,11 +88,7 @@ public  class GeneralTest {
         tests.add(pdns);
 
         remap = new IntactProteinRemapper();
-        remap.addRemapListener(new RemapListener() {
-            public void fireRemapReport(RemapReport report) {
-                onRemapReport(report);
-            }
-        });
+
     }
 
     private void onRemapReport(RemapReport report){
