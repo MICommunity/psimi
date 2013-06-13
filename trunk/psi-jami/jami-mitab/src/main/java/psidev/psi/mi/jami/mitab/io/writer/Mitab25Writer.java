@@ -1,54 +1,57 @@
-package psidev.psi.mi.jami.mitab.io;
+package psidev.psi.mi.jami.mitab.io.writer;
 
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.mitab.utils.MitabWriterUtils;
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.RangeUtils;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Confidence;
+import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Iterator;
 
 /**
- * The simple MITAB 2.7 writer will write interactions using the JAMI interfaces.
+ * The simple MITAB 2.5 writer will write interactions using the JAMI interfaces.
  *
  * It will not check for MITAB extended objects (such as MitabAlias and MitabFeature).
  *
  * The default Complex expansion method is spoke expansion.
  *
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>13/06/13</pre>
+ * @since <pre>10/06/13</pre>
  */
 
-public class Mitab27Writer extends AbstractMitab27Writer{
-    public Mitab27Writer() {
+public class Mitab25Writer extends AbstractMitab25Writer {
+
+    public Mitab25Writer() {
         super();
     }
 
-    public Mitab27Writer(File file) throws IOException {
+    public Mitab25Writer(File file) throws IOException {
         super(file);
     }
 
-    public Mitab27Writer(OutputStream output) throws IOException {
+    public Mitab25Writer(OutputStream output) throws IOException {
         super(output);
     }
 
-    public Mitab27Writer(Writer writer) throws IOException {
+    public Mitab25Writer(Writer writer) throws IOException {
         super(writer);
     }
 
-    public Mitab27Writer(File file, ComplexExpansionMethod expansionMethod) throws IOException {
+    public Mitab25Writer(File file, ComplexExpansionMethod expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab27Writer(OutputStream output, ComplexExpansionMethod expansionMethod) throws IOException {
+    public Mitab25Writer(OutputStream output, ComplexExpansionMethod expansionMethod) throws IOException {
         super(output, expansionMethod);
     }
 
-    public Mitab27Writer(Writer writer, ComplexExpansionMethod expansionMethod) throws IOException {
+    public Mitab25Writer(Writer writer, ComplexExpansionMethod expansionMethod) throws IOException {
         super(writer, expansionMethod);
     }
 
@@ -113,47 +116,6 @@ public class Mitab27Writer extends AbstractMitab27Writer{
             // write type
             if (alias.getType() != null){
                 escapeAndWriteString(alias.getType().getShortName());
-            }
-        }
-    }
-
-    @Override
-    protected void writeFeature(Feature feature) throws IOException {
-        if (feature != null){
-            // first write interactor type
-            if (feature.getType() != null){
-                CvTerm type = feature.getType();
-                if (type.getFullName() != null){
-                    escapeAndWriteString(type.getFullName());
-                }
-                else {
-                    escapeAndWriteString(type.getShortName());
-                }
-            }
-            else {
-                getWriter().write(MitabWriterUtils.UNKNOWN_TYPE);
-            }
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
-            // then write ranges
-            if (feature.getRanges().isEmpty()){
-                getWriter().write(Range.UNDETERMINED_POSITION_SYMBOL);
-                getWriter().write(Range.POSITION_SEPARATOR);
-                getWriter().write(Range.UNDETERMINED_POSITION_SYMBOL);
-            }
-            else{
-                Iterator<Range> rangeIterator = feature.getRanges().iterator();
-                while(rangeIterator.hasNext()){
-                    getWriter().write(RangeUtils.convertRangeToString(rangeIterator.next()));
-                    if (rangeIterator.hasNext()){
-                        getWriter().write(MitabWriterUtils.FIELD_SEPARATOR);
-                    }
-                }
-            }
-            // then write text
-            if (feature.getInterpro() != null){
-                getWriter().write("(");
-                escapeAndWriteString(feature.getInterpro());
-                getWriter().write(")");
             }
         }
     }

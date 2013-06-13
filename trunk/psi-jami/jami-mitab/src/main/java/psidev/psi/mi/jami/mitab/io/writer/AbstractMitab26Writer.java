@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.mitab.io;
+package psidev.psi.mi.jami.mitab.io.writer;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;

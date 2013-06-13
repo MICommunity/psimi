@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.mitab.io;
+package psidev.psi.mi.jami.mitab.io.writer;
 
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.mitab.extension.MitabAlias;
