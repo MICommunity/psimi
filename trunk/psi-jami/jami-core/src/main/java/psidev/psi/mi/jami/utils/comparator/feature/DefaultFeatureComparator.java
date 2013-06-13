@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * Generic default feature comparator.
@@ -23,7 +23,7 @@ public class DefaultFeatureComparator extends FeatureComparator {
      * Creates a DefaultFeatureComparator. It will use a DefaultFeatureBaseComparator to compare basic feature properties
      */
     public DefaultFeatureComparator() {
-        super(new DefaultFeatureBaseComparator());
+        super(new DefaultFeatureBaseComparator(), new DefaultCvTermComparator());
     }
 
     @Override

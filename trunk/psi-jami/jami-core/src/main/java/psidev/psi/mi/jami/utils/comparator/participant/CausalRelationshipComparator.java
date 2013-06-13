@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 
@@ -20,10 +19,10 @@ import java.util.Comparator;
 
 public class CausalRelationshipComparator implements Comparator<CausalRelationship>{
 
-    private AbstractCvTermComparator cvTermComparator;
+    private Comparator<CvTerm> cvTermComparator;
     private ParticipantComparator participantComparator;
 
-    public CausalRelationshipComparator(AbstractCvTermComparator cvTermComparator, ParticipantComparator participantComparator){
+    public CausalRelationshipComparator(Comparator<CvTerm> cvTermComparator, ParticipantComparator participantComparator){
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator cannot be null in a CausalRelationshipComparator");
         }
@@ -35,7 +34,7 @@ public class CausalRelationshipComparator implements Comparator<CausalRelationsh
         this.participantComparator = participantComparator;
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 

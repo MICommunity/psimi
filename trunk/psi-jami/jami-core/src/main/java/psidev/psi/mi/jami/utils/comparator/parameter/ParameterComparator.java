@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.utils.comparator.parameter;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -22,14 +21,14 @@ import java.util.Comparator;
 
 public abstract class ParameterComparator implements Comparator<Parameter> {
 
-    protected AbstractCvTermComparator cvTermComparator;
+    protected Comparator<CvTerm> cvTermComparator;
     protected ParameterValueComparator valueComparator;
 
     /**
      * Creates a new ParameterComparator
      * @param cvTermComparator : cv term comparator to compare parameter types and units. It is required
      */
-    public ParameterComparator(AbstractCvTermComparator cvTermComparator){
+    public ParameterComparator(Comparator<CvTerm> cvTermComparator){
         if(cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required for comparing parameter types and units. It cannot be null");
         }
@@ -42,7 +41,7 @@ public abstract class ParameterComparator implements Comparator<Parameter> {
      * @param cvTermComparator : cv term comparator to compare parameter types and units. It is required
      * @param valueComparator : parameter value comparator. If null, it will create a new ParameterValueComparator
      */
-    public ParameterComparator(AbstractCvTermComparator cvTermComparator, ParameterValueComparator valueComparator){
+    public ParameterComparator(Comparator<CvTerm> cvTermComparator, ParameterValueComparator valueComparator){
         if(cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required for comparing parameter types and units. It cannot be null");
         }
@@ -50,7 +49,7 @@ public abstract class ParameterComparator implements Comparator<Parameter> {
         this.valueComparator = valueComparator != null ? valueComparator : new ParameterValueComparator();
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 

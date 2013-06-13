@@ -25,23 +25,23 @@ import java.util.Comparator;
 
 public class InteractorComparator implements Comparator<Interactor> {
 
-    protected AbstractBioactiveEntityComparator bioactiveEntityComparator;
-    protected AbstractGeneComparator geneComparator;
-    protected AbstractProteinComparator proteinComparator;
-    protected AbstractNucleicAcidComparator nucleicAcidComparator;
+    protected Comparator<BioactiveEntity> bioactiveEntityComparator;
+    protected Comparator<Gene> geneComparator;
+    protected Comparator<Protein> proteinComparator;
+    protected Comparator<NucleicAcid> nucleicAcidComparator;
     protected Comparator<Interactor> interactorBaseComparator;
-    protected ComplexComparator complexComparator;
-    protected InteractorSetComparator interactorCandidatesComparator;
-    protected AbstractPolymerComparator polymerComparator;
+    protected Comparator<Complex> complexComparator;
+    protected Comparator<InteractorSet> interactorCandidatesComparator;
+    protected Comparator<Polymer> polymerComparator;
 
     /**
      * Creates a new InteractorComparator.
      * @param interactorBaseComparator : required to create more specific comparators and to compare basic interactor objects
      * @param complexComparator : required to compare complex objects
      */
-    public InteractorComparator(Comparator<Interactor> interactorBaseComparator, ComplexComparator complexComparator, AbstractPolymerComparator polymerComparator,
-                                AbstractBioactiveEntityComparator bioactiveEntityComparator, AbstractGeneComparator geneComparator,
-                                AbstractNucleicAcidComparator nucleicAcidComparator, AbstractProteinComparator proteinComparator){
+    public InteractorComparator(Comparator<Interactor> interactorBaseComparator, Comparator<Complex> complexComparator, Comparator<Polymer> polymerComparator,
+                                Comparator<BioactiveEntity> bioactiveEntityComparator, Comparator<Gene> geneComparator,
+                                Comparator<NucleicAcid> nucleicAcidComparator, Comparator<Protein> proteinComparator){
         if (interactorBaseComparator == null){
             throw new IllegalArgumentException("The interactorBaseComparator is required to create more specific interactor comparators and compares basic interactor properties. It cannot be null");
         }
@@ -74,19 +74,19 @@ public class InteractorComparator implements Comparator<Interactor> {
         this.interactorCandidatesComparator = new InteractorSetComparator(this);
     }
 
-    public AbstractBioactiveEntityComparator getBioactiveEntityComparator() {
+    public Comparator<BioactiveEntity> getBioactiveEntityComparator() {
         return bioactiveEntityComparator;
     }
 
-    public AbstractGeneComparator getGeneComparator() {
+    public Comparator<Gene> getGeneComparator() {
         return geneComparator;
     }
 
-    public AbstractProteinComparator getProteinComparator() {
+    public Comparator<Protein> getProteinComparator() {
         return proteinComparator;
     }
 
-    public AbstractNucleicAcidComparator getNucleicAcidComparator() {
+    public Comparator<NucleicAcid> getNucleicAcidComparator() {
         return nucleicAcidComparator;
     }
 
@@ -94,15 +94,15 @@ public class InteractorComparator implements Comparator<Interactor> {
         return interactorBaseComparator;
     }
 
-    public ComplexComparator getComplexComparator() {
+    public Comparator<Complex> getComplexComparator() {
         return complexComparator;
     }
 
-    public AbstractPolymerComparator getPolymerComparator() {
+    public Comparator<Polymer> getPolymerComparator() {
         return polymerComparator;
     }
 
-    public InteractorSetComparator getInteractorCandidatesComparator() {
+    public Comparator<InteractorSet> getInteractorCandidatesComparator() {
         return interactorCandidatesComparator;
     }
 

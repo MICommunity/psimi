@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
 
@@ -21,22 +22,22 @@ import java.util.Comparator;
 
 public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
 
-    protected AbstractFeatureBaseComparator featureComparator;
+    protected Comparator<Feature> featureComparator;
     protected CvTermsCollectionComparator cvTermCollectionComparators;
 
     /**
      * Creates a new FeatureEvidenceComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public FeatureEvidenceComparator(AbstractFeatureBaseComparator featureComparator){
+    public FeatureEvidenceComparator(Comparator<Feature> featureComparator, Comparator<CvTerm> cvTermComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
         this.featureComparator = featureComparator;
-        this.cvTermCollectionComparators = new CvTermsCollectionComparator(featureComparator.getCvTermComparator());
+        this.cvTermCollectionComparators = new CvTermsCollectionComparator(cvTermComparator);
     }
 
-    public AbstractFeatureBaseComparator getFeatureComparator() {
+    public Comparator<Feature> getFeatureComparator() {
         return featureComparator;
     }
 

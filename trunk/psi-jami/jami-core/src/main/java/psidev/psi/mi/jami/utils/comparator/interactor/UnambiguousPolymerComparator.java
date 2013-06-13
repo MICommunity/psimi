@@ -16,23 +16,30 @@ import java.util.Comparator;
  * @since <pre>21/05/13</pre>
  */
 
-public class UnambiguousPolymerComparator extends AbstractPolymerComparator {
+public class UnambiguousPolymerComparator implements Comparator<Polymer> {
 
     private static UnambiguousPolymerComparator unambiguousPolymerComparator;
+    protected Comparator<Interactor> interactorComparator;
+    protected OrganismTaxIdComparator organismComparator;
 
     /**
      * Creates a new UnambiguousPolymerComparator. It will uses a UnambiguousInteractorBaseComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public UnambiguousPolymerComparator(){
-        super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator());
+        this.interactorComparator = new UnambiguousInteractorBaseComparator();
+        this.organismComparator = new OrganismTaxIdComparator();
     }
 
     protected UnambiguousPolymerComparator(Comparator<Interactor> interactorBaseComparator){
-        super(interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator());
+        this.interactorComparator = interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator();
+        this.organismComparator = new OrganismTaxIdComparator();
     }
 
-    @Override
+    public Comparator<Interactor> getInteractorComparator() {
+        return interactorComparator;
+    }
+
     /**
      * It will first use DefaultExactInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, it will look at sequence/organism.

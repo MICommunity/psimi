@@ -15,23 +15,30 @@ import java.util.Comparator;
  * @since <pre>21/05/13</pre>
  */
 
-public class DefaultPolymerComparator extends AbstractPolymerComparator {
+public class DefaultPolymerComparator implements Comparator<Polymer>  {
 
     private static DefaultPolymerComparator defaultPolymerComparator;
+    protected Comparator<Interactor> interactorComparator;
+    protected OrganismTaxIdComparator organismComparator;
 
     /**
      * Creates a new DefaultPolymerComparator. It will uses a DefaultInteractorBaseComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public DefaultPolymerComparator(){
-        super(new DefaultInteractorBaseComparator(), new OrganismTaxIdComparator());
+        this.interactorComparator = new DefaultInteractorBaseComparator();
+        this.organismComparator = new OrganismTaxIdComparator();
     }
 
     protected DefaultPolymerComparator(Comparator<Interactor> interactorBaseComparator){
-        super(interactorBaseComparator != null ? interactorBaseComparator : new DefaultInteractorBaseComparator(), new OrganismTaxIdComparator());
+        this.interactorComparator = interactorBaseComparator != null ? interactorBaseComparator : new DefaultInteractorBaseComparator();
+        this.organismComparator = new OrganismTaxIdComparator();
     }
 
-    @Override
+    public Comparator<Interactor> getInteractorComparator() {
+        return interactorComparator;
+    }
+
     /**
      * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, it will only look at sequence/organism (case insensitive) if both interactors have sequence.

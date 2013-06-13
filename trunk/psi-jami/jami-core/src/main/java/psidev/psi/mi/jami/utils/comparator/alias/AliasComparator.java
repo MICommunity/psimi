@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.alias;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 
@@ -22,20 +21,20 @@ import java.util.Comparator;
 
 public class AliasComparator implements Comparator<Alias>{
 
-    protected AbstractCvTermComparator typeComparator;
+    protected Comparator<CvTerm> typeComparator;
 
     /**
      * Creates a new AliasComparator.
      * @param typeComparator : CvTerm comparator for alias types. It is required
      */
-    public AliasComparator(AbstractCvTermComparator typeComparator){
+    public AliasComparator(Comparator<CvTerm> typeComparator){
        if (typeComparator == null){
            throw new IllegalArgumentException("The CvTerm comparator is required for comparing alias types. It cannot be null");
        }
         this.typeComparator = typeComparator;
     }
 
-    public AbstractCvTermComparator getTypeComparator() {
+    public Comparator<CvTerm> getTypeComparator() {
         return typeComparator;
     }
 

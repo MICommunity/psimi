@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.experiment;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismComparator;
 
 import java.util.Collection;
@@ -25,7 +24,7 @@ public class ExperimentComparator implements Comparator<Experiment>{
 
     protected Comparator<Publication> publicationComparator;
     protected OrganismComparator organismComparator;
-    protected AbstractCvTermComparator cvTermComparator;
+    protected Comparator<CvTerm> cvTermComparator;
     protected VariableParameterCollectionComparator variableParameterCollectionComparator;
 
     /**

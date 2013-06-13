@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.CustomizableModelledParticipantComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ModelledParticipantCollectionComparator;
 
@@ -27,13 +26,13 @@ public class ComplexComparator implements Comparator<Complex> {
 
     protected Comparator<Interactor> interactorBaseComparator;
     protected ModelledParticipantCollectionComparator componentCollectionComparator;
-    private AbstractCvTermComparator cvTermComparator;
+    private Comparator<CvTerm> cvTermComparator;
 
     /**
      * Creates a bew ComplexComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties
      *
      */
-    public ComplexComparator(Comparator<Interactor> interactorBaseComparator, CustomizableModelledParticipantComparator componentComparator, AbstractCvTermComparator cvTermComparator){
+    public ComplexComparator(Comparator<Interactor> interactorBaseComparator, CustomizableModelledParticipantComparator componentComparator, Comparator<CvTerm> cvTermComparator){
 
         if (componentComparator == null){
             throw new IllegalArgumentException("The ModelledParticipant comparator is required to compare participants composing the complexes. It cannot be null");
@@ -109,7 +108,7 @@ public class ComplexComparator implements Comparator<Complex> {
         return componentCollectionComparator;
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 }

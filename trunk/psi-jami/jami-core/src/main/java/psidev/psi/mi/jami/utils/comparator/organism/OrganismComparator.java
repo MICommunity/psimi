@@ -2,7 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.organism;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
+
+import java.util.Comparator;
 
 /**
  * Basic organism comparator.
@@ -17,20 +18,20 @@ import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 public class OrganismComparator extends OrganismTaxIdComparator {
 
-    protected AbstractCvTermComparator cvTermComparator;
+    protected Comparator<CvTerm> cvTermComparator;
 
     /**
      * Creates a new OrganismComparator. It needs a cvtermComparator for comparing the cell types, tissues and compartments
      * @param cvTermComparator : cv term comparator is required for comparing cell types, tissues and compartments
      */
-    public OrganismComparator(AbstractCvTermComparator cvTermComparator){
+    public OrganismComparator(Comparator<CvTerm> cvTermComparator){
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare the cell type, tissue and compartment. It cannot be null");
         }
         this.cvTermComparator = cvTermComparator;
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 

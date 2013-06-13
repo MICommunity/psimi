@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.range;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 
@@ -22,20 +21,20 @@ import java.util.Comparator;
 
 public class PositionComparator implements Comparator<Position>{
 
-    protected AbstractCvTermComparator statusComparator;
+    protected Comparator<CvTerm> statusComparator;
 
     /**
      * Creates a new positionComparator
      * @param statusComparator : the status comparator is required for comparing the position status
      */
-    public PositionComparator(AbstractCvTermComparator statusComparator){
+    public PositionComparator(Comparator<CvTerm> statusComparator){
         if (statusComparator == null){
             throw new IllegalArgumentException("The status comparator is required for comparing the position status. It cannot be null");
         }
         this.statusComparator = statusComparator;
     }
 
-    public AbstractCvTermComparator getStatusComparator() {
+    public Comparator<CvTerm> getStatusComparator() {
         return statusComparator;
     }
 

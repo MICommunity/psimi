@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Protein;
 
+import java.util.Comparator;
+
 /**
  * Unambiguous proteins comparator.
  * It will first use UnambiguousPolymerComparator to compare the basic interactor properties
@@ -15,23 +17,23 @@ import psidev.psi.mi.jami.model.Protein;
  * @since <pre>15/01/13</pre>
  */
 
-public class UnambiguousProteinComparator extends AbstractProteinComparator {
+public class UnambiguousProteinComparator implements Comparator<Protein> {
 
     private static UnambiguousProteinComparator unambiguousProteinComparator;
+    protected UnambiguousPolymerComparator interactorComparator;
 
     /**
      * Creates a new UnambiguousProteinComparator. It will uses a UnambiguousPolymerComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public UnambiguousProteinComparator(){
-        super(new UnambiguousPolymerComparator());
+        this.interactorComparator = new UnambiguousPolymerComparator();
     }
 
-    protected UnambiguousProteinComparator(AbstractPolymerComparator polymerBaseComparator){
-        super(polymerBaseComparator != null ? polymerBaseComparator : new UnambiguousPolymerComparator());
+    protected UnambiguousProteinComparator(UnambiguousPolymerComparator polymerBaseComparator){
+        this.interactorComparator = polymerBaseComparator != null ? polymerBaseComparator : new UnambiguousPolymerComparator();
     }
 
-    @Override
     /**
      * It will first use UnambiguousPolymerComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look for uniprotkb identifier (The interactor with non null uniprot id will always come first).
@@ -131,9 +133,8 @@ public class UnambiguousProteinComparator extends AbstractProteinComparator {
         }
     }
 
-    @Override
     public UnambiguousPolymerComparator getInteractorComparator() {
-        return (UnambiguousPolymerComparator) this.interactorComparator;
+        return this.interactorComparator;
     }
 
     /**

@@ -20,23 +20,22 @@ import java.util.*;
  * @since <pre>21/12/12</pre>
  */
 
-public class DefaultPublicationComparator extends AbstractPublicationComparator {
+public class DefaultPublicationComparator implements Comparator<Publication> {
 
     private static DefaultPublicationComparator defaultPublicationComparator;
+    private DefaultExternalIdentifierComparator identifierComparator;
 
     /**
      * Creates a new DefaultPublicationComparator based on DefaultExternalIdentifierComparator
      */
     public DefaultPublicationComparator() {
-        super(new DefaultExternalIdentifierComparator());
+        this.identifierComparator = new DefaultExternalIdentifierComparator();
     }
 
-    @Override
     public DefaultExternalIdentifierComparator getIdentifierComparator() {
-        return (DefaultExternalIdentifierComparator) identifierComparator;
+        return identifierComparator;
     }
 
-    @Override
     /**
      * It will only look at IMEx identifiers if both are set.
      * If one IMEx identifier is not set and both identifiers are set, it will only look at the identifiers using DefaultExternalIdentifierComparator.

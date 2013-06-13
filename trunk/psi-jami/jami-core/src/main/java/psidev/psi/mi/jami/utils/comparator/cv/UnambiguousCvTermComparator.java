@@ -3,6 +3,8 @@ package psidev.psi.mi.jami.utils.comparator.cv;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 
+import java.util.Comparator;
+
 /**
  * Unambiguous comparator for CvTerms :
  * If one CvTerm does not have any identifiers, it will only compare the short names (case insensitive).
@@ -18,21 +20,21 @@ import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierCom
  * @since <pre>18/12/12</pre>
  */
 
-public class UnambiguousCvTermComparator extends AbstractCvTermComparator {
+public class UnambiguousCvTermComparator implements Comparator<CvTerm> {
 
     private static UnambiguousCvTermComparator unambiguousCvTermComparator;
+    protected UnambiguousExternalIdentifierComparator identifierComparator;
 
     /**
      * Creates a new CvTermComparator with UnambiguousExternalIdentifierComparator
      *
      */
     public UnambiguousCvTermComparator() {
-        super(new UnambiguousExternalIdentifierComparator());
+        this.identifierComparator = new UnambiguousExternalIdentifierComparator();
     }
 
-    @Override
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
-        return (UnambiguousExternalIdentifierComparator) identifierComparator;
+        return identifierComparator;
     }
 
     /**

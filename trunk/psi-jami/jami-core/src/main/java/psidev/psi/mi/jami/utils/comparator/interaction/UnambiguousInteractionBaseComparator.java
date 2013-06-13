@@ -23,36 +23,36 @@ import java.util.*;
  * @since <pre>18/01/13</pre>
  */
 
-public class UnambiguousInteractionBaseComparator extends AbstractInteractionBaseComparator {
+public class UnambiguousInteractionBaseComparator implements Comparator<Interaction> {
 
     private static UnambiguousInteractionBaseComparator unambiguousInteractionComparator;
 
     private XrefsCollectionComparator identifierCollectionComparator;
+    private UnambiguousCvTermComparator cvTermComparator;
+    private UnambiguousExternalIdentifierComparator identifierComparator;
 
     /**
      * Creates a new UnambiguousInteractionBaseComparator. It will use a UnambiguousParticipantBaseComparator to
      * compare participants and UnambiguousCvTermcomparator to compare interaction types
      */
     public UnambiguousInteractionBaseComparator() {
-        super(new UnambiguousExternalIdentifierComparator(), new UnambiguousCvTermComparator());
+        this.identifierComparator = new UnambiguousExternalIdentifierComparator();
+        this.cvTermComparator = new UnambiguousCvTermComparator();
         this.identifierCollectionComparator = new XrefsCollectionComparator(getIdentifierComparator());
     }
 
-    @Override
     public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) cvTermComparator;
+        return cvTermComparator;
     }
 
     public XrefsCollectionComparator getIdentifierCollectionComparator() {
         return identifierCollectionComparator;
     }
 
-    @Override
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
-        return (UnambiguousExternalIdentifierComparator) super.getIdentifierComparator();
+        return this.identifierComparator;
     }
 
-    @Override
     /**
      * It will first compare the interaction types using UnambiguousCvTermComparator.
      * Then it will compare the rigids (case sensitive, null rigids always come after).

@@ -20,15 +20,15 @@ public class FeatureComparator implements Comparator<Feature> {
 
     protected ModelledFeatureComparator biologicalFeatureComparator;
     protected FeatureEvidenceComparator experimentalFeatureComparator;
-    protected AbstractFeatureBaseComparator featureBaseComparator;
+    protected Comparator<Feature> featureBaseComparator;
 
-    public FeatureComparator(AbstractFeatureBaseComparator featureBaseComparator){
+    public FeatureComparator(Comparator<Feature> featureBaseComparator, Comparator<CvTerm> cvTermComparator){
         if (featureBaseComparator == null){
             throw new IllegalArgumentException("The featureBaseComparator is required to create more specific feature comparators and compares basic feature properties. It cannot be null");
         }
         this.featureBaseComparator = featureBaseComparator;
         this.biologicalFeatureComparator = new ModelledFeatureComparator(this.featureBaseComparator);
-        this.experimentalFeatureComparator = new FeatureEvidenceComparator(this.featureBaseComparator);
+        this.experimentalFeatureComparator = new FeatureEvidenceComparator(this.featureBaseComparator, cvTermComparator);
 
     }
 
@@ -40,7 +40,7 @@ public class FeatureComparator implements Comparator<Feature> {
         return experimentalFeatureComparator;
     }
 
-    public AbstractFeatureBaseComparator getFeatureBaseComparator() {
+    public Comparator<Feature> getFeatureBaseComparator() {
         return featureBaseComparator;
     }
 

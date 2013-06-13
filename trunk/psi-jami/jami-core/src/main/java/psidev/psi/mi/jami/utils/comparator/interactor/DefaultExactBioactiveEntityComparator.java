@@ -44,7 +44,7 @@ public class DefaultExactBioactiveEntityComparator extends DefaultBioactiveEntit
 
     @Override
     public DefaultExactInteractorBaseComparator getInteractorComparator() {
-        return (DefaultExactInteractorBaseComparator) this.interactorComparator;
+        return (DefaultExactInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     /**
