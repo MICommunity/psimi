@@ -79,6 +79,13 @@ public interface ProteinChangeListener extends EventListener{
     public void onFullNameUpdate(Protein protein, String oldFullName);
 
     /**
+     * Listen to the event where the interactor type of a protein has been initialised.
+     * This event happens when a protein does not have any interactor types
+     * @param protein : updated protein
+     */
+    public void onAddedInteractorType(Protein protein);
+
+    /**
      * Listen to the event where the organism of a protein has been initialised.
      * This event happens when a protein does not have any organisms
      * @param protein : updated protein
