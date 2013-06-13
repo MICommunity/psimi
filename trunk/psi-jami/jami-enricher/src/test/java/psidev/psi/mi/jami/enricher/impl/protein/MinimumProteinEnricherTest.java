@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
+package psidev.psi.mi.jami.enricher.impl.protein;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;
@@ -8,9 +8,9 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BadResultException;
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherCounter;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherListenerManager;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherLogger;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherCounter;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;

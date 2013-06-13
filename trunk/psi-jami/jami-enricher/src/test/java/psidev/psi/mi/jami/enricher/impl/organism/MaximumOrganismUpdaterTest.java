@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.organism;
+package psidev.psi.mi.jami.enricher.impl.organism;
 
 import org.junit.Before;
 import org.junit.Test;

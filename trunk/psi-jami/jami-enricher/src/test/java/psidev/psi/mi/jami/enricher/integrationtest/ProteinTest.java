@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MaximumProteinUpdater;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.MinimumProteinEnricher;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener.ProteinEnricherLogger;
+import psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinUpdater;
+import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 

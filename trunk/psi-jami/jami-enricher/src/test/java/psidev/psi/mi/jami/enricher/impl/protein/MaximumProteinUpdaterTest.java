@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
+package psidev.psi.mi.jami.enricher.impl.protein;
 
 import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertEquals;

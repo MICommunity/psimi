@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 
 import java.util.Collection;
@@ -26,16 +27,22 @@ public interface CvTermEnricher{
      * If enrichment takes place, the ToEnrich will be edited.
      * @param cvTermToEnrich  a CvTerm to enrich
      */
-    public void enrichCvTerm(CvTerm cvTermToEnrich) throws BridgeFailedException, MissingServiceException, BadToEnrichFormException, BadSearchTermException;
+    public void enrichCvTerm(CvTerm cvTermToEnrich)
+            throws BridgeFailedException, MissingServiceException,
+            BadToEnrichFormException, BadSearchTermException;
+
+    //public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich);
 
 
-    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich);
 
     /**
      *
      * @param fetcher
      */
-    public void setFetcher(CvTermFetcher fetcher);
+    public void setCvTermFetcher(CvTermFetcher fetcher);
+    public CvTermFetcher getCvTermFetcher();
 
-    public CvTermFetcher getFetcher();
+
+    public void setCvTermEnricherListener(CvTermEnricherListener cvTermEnricherListener);
+    public CvTermEnricherListener getCvTermEnricherListener();
 }
