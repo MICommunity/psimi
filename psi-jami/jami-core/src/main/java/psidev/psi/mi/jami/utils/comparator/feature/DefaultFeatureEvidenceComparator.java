@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
  * Default FeatureEvidence comparator.
@@ -23,7 +24,7 @@ public class DefaultFeatureEvidenceComparator extends FeatureEvidenceComparator 
      * compare feature detection methods and a DefaultFeatureBaseComparator to compare basic feature properties
      */
     public DefaultFeatureEvidenceComparator() {
-        super(new DefaultFeatureBaseComparator());
+        super(new DefaultFeatureBaseComparator(), new DefaultCvTermComparator());
     }
 
     @Override

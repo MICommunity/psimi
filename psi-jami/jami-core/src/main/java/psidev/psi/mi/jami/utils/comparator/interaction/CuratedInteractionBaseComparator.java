@@ -19,19 +19,19 @@ import java.util.Date;
 
 public class CuratedInteractionBaseComparator implements Comparator<Interaction>{
 
-    protected AbstractInteractionBaseComparator interactionBaseComparator;
+    protected Comparator<Interaction> interactionBaseComparator;
 
     /**
      * @param interactionBaseComparator : required to compare basic properties of an interaction
      */
-    public CuratedInteractionBaseComparator(AbstractInteractionBaseComparator interactionBaseComparator){
+    public CuratedInteractionBaseComparator(Comparator<Interaction> interactionBaseComparator){
         if (interactionBaseComparator == null){
             throw new IllegalArgumentException("The interactionBaseComparator comparator is required to compares basic properties of an interaction. It cannot be null");
         }
         this.interactionBaseComparator = interactionBaseComparator;
     }
 
-    public AbstractInteractionBaseComparator getInteractionBaseComparator() {
+    public Comparator<Interaction> getInteractionBaseComparator() {
         return interactionBaseComparator;
     }
 

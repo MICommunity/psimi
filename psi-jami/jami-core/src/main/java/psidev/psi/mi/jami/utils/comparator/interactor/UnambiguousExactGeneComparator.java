@@ -25,7 +25,6 @@ public class UnambiguousExactGeneComparator extends UnambiguousGeneComparator {
         super(new UnambiguousExactInteractorBaseComparator());
     }
 
-    @Override
     /**
      * It will first use UnambiguousExactInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set, it will look at the
@@ -36,9 +35,8 @@ public class UnambiguousExactGeneComparator extends UnambiguousGeneComparator {
         return super.compare(gene1, gene2);
     }
 
-    @Override
     public UnambiguousExactInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorComparator;
+        return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     /**

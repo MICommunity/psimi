@@ -16,22 +16,26 @@ import java.util.Comparator;
  * @since <pre>15/01/13</pre>
  */
 
-public class DefaultGeneComparator extends AbstractGeneComparator {
+public class DefaultGeneComparator implements Comparator<Gene> {
 
     private static DefaultGeneComparator defaultGeneComparator;
+    protected Comparator<Interactor> interactorBaseComparator;
 
     /**
      * Creates a new DefaultGeneComparator. It will uses a DefaultInteractorBaseComparator to compare interactor properties
      */
     public DefaultGeneComparator(){
-        super(new DefaultInteractorBaseComparator());
+        this.interactorBaseComparator = new DefaultInteractorBaseComparator();
     }
 
     protected DefaultGeneComparator(Comparator<Interactor> interactorBaseComparator){
-        super(interactorBaseComparator != null ? interactorBaseComparator : new DefaultInteractorBaseComparator());
+        this.interactorBaseComparator = interactorBaseComparator != null ? interactorBaseComparator : new DefaultInteractorBaseComparator();
     }
 
-    @Override
+    public Comparator<Interactor> getInteractorComparator() {
+        return interactorBaseComparator;
+    }
+
     /**
      * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look at ensembl identifier if both are set. If the ensembl identifiers are not both set or are identical, it will look at the
@@ -54,7 +58,7 @@ public class DefaultGeneComparator extends AbstractGeneComparator {
         }
         else {
             // First compares the interactor properties
-            int comp = interactorComparator.compare(gene1, gene2);
+            int comp = interactorBaseComparator.compare(gene1, gene2);
             if (comp != 0){
                 return comp;
             }

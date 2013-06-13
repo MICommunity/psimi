@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Stoichiometry;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 
 import java.util.Comparator;
@@ -25,7 +24,7 @@ import java.util.Comparator;
 
 public class ParticipantBaseComparator implements Comparator<Participant> {
 
-    protected AbstractCvTermComparator cvTermComparator;
+    protected Comparator<CvTerm> cvTermComparator;
     protected StoichiometryComparator stoichiometryComparator;
     protected InteractorComparator interactorComparator;
 
@@ -36,7 +35,7 @@ public class ParticipantBaseComparator implements Comparator<Participant> {
      * @param interactorComparator : interactor comparator required for comparing the molecules
      * @param cvTermComparator : CvTerm comparator required for comparing biological roles
      */
-    public ParticipantBaseComparator(InteractorComparator interactorComparator, AbstractCvTermComparator cvTermComparator){
+    public ParticipantBaseComparator(InteractorComparator interactorComparator, Comparator<CvTerm> cvTermComparator){
 
         if (interactorComparator == null){
             throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
@@ -51,7 +50,7 @@ public class ParticipantBaseComparator implements Comparator<Participant> {
         this.stoichiometryComparator = new StoichiometryComparator();
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 

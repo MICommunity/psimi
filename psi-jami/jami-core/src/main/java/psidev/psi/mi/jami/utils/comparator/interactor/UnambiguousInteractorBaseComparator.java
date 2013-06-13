@@ -8,10 +8,7 @@ import psidev.psi.mi.jami.utils.comparator.alias.UnambiguousAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.XrefsCollectionComparator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Unambiguous interactor comparator
@@ -24,25 +21,26 @@ import java.util.List;
  * @since <pre>21/12/12</pre>
  */
 
-public class UnambiguousInteractorBaseComparator extends AbstractInteractorBaseComparator {
+public class UnambiguousInteractorBaseComparator implements Comparator<Interactor> {
     private static UnambiguousInteractorBaseComparator unambiguousInteractorComparator;
     private XrefsCollectionComparator identifierCollectionComparator;
     private AliasesCollectionComparator aliasCollectionComparator;
+    private UnambiguousExternalIdentifierComparator identifierComparator;
+    private UnambiguousAliasComparator aliasComparator;
 
     public UnambiguousInteractorBaseComparator() {
-        super(new UnambiguousExternalIdentifierComparator(), new UnambiguousAliasComparator());
+        this.identifierComparator = new UnambiguousExternalIdentifierComparator();
+        this.aliasComparator = new UnambiguousAliasComparator();
         this.identifierCollectionComparator = new XrefsCollectionComparator(getIdentifierComparator());
         this.aliasCollectionComparator = new AliasesCollectionComparator(getAliasComparator());
     }
 
-    @Override
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
-        return (UnambiguousExternalIdentifierComparator) this.identifierComparator;
+        return this.identifierComparator;
     }
 
-    @Override
     public UnambiguousAliasComparator getAliasComparator() {
-        return (UnambiguousAliasComparator) this.aliasComparator;
+        return this.aliasComparator;
     }
 
     public XrefsCollectionComparator getIdentifierCollectionComparator() {
@@ -53,7 +51,6 @@ public class UnambiguousInteractorBaseComparator extends AbstractInteractorBaseC
         return aliasCollectionComparator;
     }
 
-    @Override
     /**
      * It will only compare identifiers if one interactor does have identifiers using UnambiguousIdentifierComparator. Otherwise, it will first compare shortNames (case sensitive)
      * fullnames(case sensitive) and if the shortNames and fullnames are the same, it will compare the aliases using UnambiguousAliasComparator.

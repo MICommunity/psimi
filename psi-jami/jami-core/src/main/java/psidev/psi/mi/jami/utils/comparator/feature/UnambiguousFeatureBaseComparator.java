@@ -5,14 +5,13 @@ import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.range.RangeCollectionComparator;
+import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.UnambiguousExternalIdentifierComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.XrefsCollectionComparator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Unambiguous feature comparator.
@@ -25,25 +24,29 @@ import java.util.List;
  * @since <pre>16/01/13</pre>
  */
 
-public class UnambiguousFeatureBaseComparator extends AbstractFeatureBaseComparator {
+public class UnambiguousFeatureBaseComparator implements Comparator<Feature> {
 
     private static UnambiguousFeatureBaseComparator unambiguousFeatureComparator;
     private XrefsCollectionComparator externalIdentifierCollectionComparator;
+    private UnambiguousCvTermComparator cvTermComparator;
+    private UnambiguousExternalIdentifierComparator identifierComparator;
+    private RangeCollectionComparator rangeCollectionComparator;
 
     /**
      * Creates a new UnambiguousFeatureBaseComparator. It will use a UnambiguousCvTermComparator to compare feature types and range status,
      * a UnambiguousExternalIdentifierComparator to compare identifiers and a UnambiguousRangeComparator to compare ranges
      */
     public UnambiguousFeatureBaseComparator() {
-        super(new UnambiguousCvTermComparator(), new UnambiguousExternalIdentifierComparator());
+        this.cvTermComparator = new UnambiguousCvTermComparator();
+        this.identifierComparator = new UnambiguousExternalIdentifierComparator();
         this.externalIdentifierCollectionComparator = new XrefsCollectionComparator(getIdentifierComparator());
+        this.rangeCollectionComparator = new RangeCollectionComparator(new UnambiguousRangeAndResultingSequenceComparator());
     }
 
     public XrefsCollectionComparator getExternalIdentifierCollectionComparator() {
         return externalIdentifierCollectionComparator;
     }
 
-    @Override
     /**
      * It will look first at the feature shortnames (case insensitive). Then, it will compare the feature types using a UnambiguousCvTermComparator. If the feature types are the same,
      * it will compare interactionEffect and then interactionDependency using UnambiguousCvTermComparator. Then it will compare interpro identifier and if the features do not have an interpro identifier,
@@ -142,14 +145,16 @@ public class UnambiguousFeatureBaseComparator extends AbstractFeatureBaseCompara
         }
     }
 
-    @Override
     public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) this.cvTermComparator;
+        return this.cvTermComparator;
     }
 
-    @Override
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
-        return (UnambiguousExternalIdentifierComparator) this.identifierComparator;
+        return this.identifierComparator;
+    }
+
+    public RangeCollectionComparator getRangeCollectionComparator() {
+        return rangeCollectionComparator;
     }
 
     /**

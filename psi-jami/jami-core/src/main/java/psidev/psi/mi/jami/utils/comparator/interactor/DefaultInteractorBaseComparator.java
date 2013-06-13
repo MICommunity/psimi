@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Default interactor comparator.
@@ -25,25 +22,25 @@ import java.util.List;
  * @since <pre>21/12/12</pre>
  */
 
-public class DefaultInteractorBaseComparator extends AbstractInteractorBaseComparator {
+public class DefaultInteractorBaseComparator implements Comparator<Interactor> {
 
     private static DefaultInteractorBaseComparator defaultInteractorComparator;
+    private DefaultExternalIdentifierComparator identifierComparator;
+    private DefaultAliasComparator aliasComparator;
 
     public DefaultInteractorBaseComparator() {
-        super(new DefaultExternalIdentifierComparator(), new DefaultAliasComparator());
+        this.identifierComparator = new DefaultExternalIdentifierComparator();
+        this.aliasComparator = new DefaultAliasComparator();
     }
 
-    @Override
     public DefaultExternalIdentifierComparator getIdentifierComparator() {
-        return (DefaultExternalIdentifierComparator) this.identifierComparator;
+        return this.identifierComparator;
     }
 
-    @Override
     public DefaultAliasComparator getAliasComparator() {
-        return (DefaultAliasComparator) this.aliasComparator;
+        return this.aliasComparator;
     }
 
-    @Override
     /**
      * If both interactors have identifier(s), it will look for at least one identical identifier using DefaultIdentifierComparator. If at least one interactor does not have any identifiers, it will look at
      * the short names (case sensitive).

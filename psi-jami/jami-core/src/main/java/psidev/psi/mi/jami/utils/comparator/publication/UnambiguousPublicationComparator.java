@@ -21,30 +21,29 @@ import java.util.*;
  * @since <pre>21/12/12</pre>
  */
 
-public class UnambiguousPublicationComparator extends AbstractPublicationComparator {
+public class UnambiguousPublicationComparator implements Comparator<Publication>{
 
     private static UnambiguousPublicationComparator unambiguousPublicationComparator;
 
     private XrefsCollectionComparator identifierCollectionComparator;
+    private UnambiguousExternalIdentifierComparator identifierComparator;
 
     /**
      * Creates a new UnambiguousPublicationComparator based on UnambiguousExternalIdentifierComparator
      */
     public UnambiguousPublicationComparator() {
-        super(new UnambiguousExternalIdentifierComparator());
+        this.identifierComparator = new UnambiguousExternalIdentifierComparator();
         this.identifierCollectionComparator = new XrefsCollectionComparator(getIdentifierComparator());
     }
 
-    @Override
     public UnambiguousExternalIdentifierComparator getIdentifierComparator() {
-        return (UnambiguousExternalIdentifierComparator) identifierComparator;
+        return identifierComparator;
     }
 
     public XrefsCollectionComparator getIdentifierCollectionComparator() {
         return identifierCollectionComparator;
     }
 
-    @Override
     /**
      * It will first compare IMEx identifiers (publication with IMEx will always come first).
      * If both IMEx identifiers are not, it will only compare the identifiers (pubmed, then doi, then all identifiers) using UnambiguousExternalIdentifierComparator (publications with identifiers will always come first).

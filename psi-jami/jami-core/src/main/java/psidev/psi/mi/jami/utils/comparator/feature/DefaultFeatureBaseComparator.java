@@ -5,6 +5,8 @@ import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.range.DefaultRangeAndResultingSequenceComparator;
+import psidev.psi.mi.jami.utils.comparator.range.RangeCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 
 import java.util.*;
@@ -21,19 +23,23 @@ import java.util.*;
  * @since <pre>16/01/13</pre>
  */
 
-public class DefaultFeatureBaseComparator extends AbstractFeatureBaseComparator {
+public class DefaultFeatureBaseComparator implements Comparator<Feature> {
 
     private static DefaultFeatureBaseComparator defaultFeatureComparator;
+    private DefaultCvTermComparator cvTermComparator;
+    private DefaultExternalIdentifierComparator identifierComparator;
+    private RangeCollectionComparator rangeCollectionComparator;
 
     /**
      * Creates a new DefaultFeatureBaseComparator. It will use a DefaultCvTermComparator to compare feature types and range status,
      * a DefaultExternalIdentifierComparator to compare identifiers and a DefaultRangeComparator to compare ranges
      */
     public DefaultFeatureBaseComparator() {
-        super(new DefaultCvTermComparator(), new DefaultExternalIdentifierComparator());
+        this.cvTermComparator = new DefaultCvTermComparator();
+        this.identifierComparator = new DefaultExternalIdentifierComparator();
+        this.rangeCollectionComparator = new RangeCollectionComparator(new DefaultRangeAndResultingSequenceComparator());
     }
 
-    @Override
     /**
      * It will look first at the feature shortnames if both shortnames are set (case insensitive). Then, it will compare the feature types using a DefaultCvTermComparator. If the feature types are the same,
      * it will compare interactionEffect and then interactionDependency using DefaultCvTermComparator. Then it will look for at least one same identifier in the
@@ -156,14 +162,16 @@ public class DefaultFeatureBaseComparator extends AbstractFeatureBaseComparator 
         }
     }
 
-    @Override
     public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) this.cvTermComparator;
+        return this.cvTermComparator;
     }
 
-    @Override
     public DefaultExternalIdentifierComparator getIdentifierComparator() {
-        return (DefaultExternalIdentifierComparator) this.identifierComparator;
+        return this.identifierComparator;
+    }
+
+    public RangeCollectionComparator getRangeCollectionComparator() {
+        return rangeCollectionComparator;
     }
 
     /**

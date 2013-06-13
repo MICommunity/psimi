@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.NucleicAcid;
 
+import java.util.Comparator;
+
 /**
  * Unambiguous nucleic acids comparator.
  * It will first use UnambiguousPolymerComparator to compare the basic interactor properties.
@@ -12,23 +14,23 @@ import psidev.psi.mi.jami.model.NucleicAcid;
  * @since <pre>15/01/13</pre>
  */
 
-public class UnambiguousNucleicAcidComparator extends AbstractNucleicAcidComparator {
+public class UnambiguousNucleicAcidComparator implements Comparator<NucleicAcid> {
 
     private static UnambiguousNucleicAcidComparator unambiguousNucleicAcidComparator;
+    protected UnambiguousPolymerComparator interactorComparator;
 
     /**
      * Creates a new UnambiguousNucleicAcidComparator. It will uses a UnambiguousInteractorBaseComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public UnambiguousNucleicAcidComparator() {
-        super(new UnambiguousPolymerComparator());
+        this.interactorComparator = new UnambiguousPolymerComparator();
     }
 
-    protected UnambiguousNucleicAcidComparator(AbstractPolymerComparator polymerBaseComparator) {
-        super(polymerBaseComparator != null ? polymerBaseComparator : new UnambiguousPolymerComparator());
+    protected UnambiguousNucleicAcidComparator(UnambiguousPolymerComparator polymerBaseComparator) {
+        this.interactorComparator = polymerBaseComparator != null ? polymerBaseComparator : new UnambiguousPolymerComparator();
     }
 
-    @Override
     /**
      * It will first use UnambiguousPolymerComparator to compare the basic interactor properties.
      * If the basic polymer properties are the same, It will look for DDBJ/EMBL/Genbank identifier. If the DDBJ/EMBL/Genbank identifiers are identical, it will look at the
@@ -91,9 +93,8 @@ public class UnambiguousNucleicAcidComparator extends AbstractNucleicAcidCompara
         }
     }
 
-    @Override
     public UnambiguousPolymerComparator getInteractorComparator() {
-        return (UnambiguousPolymerComparator) this.interactorComparator;
+        return this.interactorComparator;
     }
 
     /**

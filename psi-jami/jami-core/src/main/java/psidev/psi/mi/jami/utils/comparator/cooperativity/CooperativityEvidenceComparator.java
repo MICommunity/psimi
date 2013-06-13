@@ -3,9 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.cooperativity;
 import psidev.psi.mi.jami.model.CooperativityEvidence;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.publication.AbstractPublicationComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -23,9 +21,9 @@ import java.util.Comparator;
 public class CooperativityEvidenceComparator implements Comparator<CooperativityEvidence> {
 
     private CvTermsCollectionComparator cvTermsCollectionComparator;
-    private AbstractPublicationComparator publicationComparator;
+    private Comparator<Publication> publicationComparator;
 
-    public CooperativityEvidenceComparator(AbstractCvTermComparator cvTermComparator, AbstractPublicationComparator publicationComparator){
+    public CooperativityEvidenceComparator(Comparator<CvTerm> cvTermComparator, Comparator<Publication> publicationComparator){
 
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator cannot be null as we need one to compare evidenceMethods of a cooperativityEvidence");
@@ -41,7 +39,7 @@ public class CooperativityEvidenceComparator implements Comparator<Cooperativity
         return cvTermsCollectionComparator;
     }
 
-    public AbstractPublicationComparator getPublicationComparator() {
+    public Comparator<Publication> getPublicationComparator() {
         return publicationComparator;
     }
 

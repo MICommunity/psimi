@@ -40,7 +40,7 @@ public class UnambiguousExactBioactiveEntityComparator extends UnambiguousBioact
 
     @Override
     public UnambiguousExactInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorComparator;
+        return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     /**

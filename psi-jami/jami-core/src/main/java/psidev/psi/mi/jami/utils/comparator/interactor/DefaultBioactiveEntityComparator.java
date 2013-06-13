@@ -17,22 +17,26 @@ import java.util.Comparator;
  * @since <pre>14/01/13</pre>
  */
 
-public class DefaultBioactiveEntityComparator extends AbstractBioactiveEntityComparator {
+public class DefaultBioactiveEntityComparator implements Comparator<BioactiveEntity> {
 
     private static DefaultBioactiveEntityComparator defaultBioactiveEntityComparator;
+    protected Comparator<Interactor> interactorBaseComparator;
 
     /**
      * Creates a new DefaultBioactiveComparator. It will use a DefaultInteractorBaseComparator.
      */
     public DefaultBioactiveEntityComparator() {
-        super(new DefaultInteractorBaseComparator());
+        this.interactorBaseComparator = new DefaultInteractorBaseComparator();
     }
 
     public DefaultBioactiveEntityComparator(Comparator<Interactor> interactorBaseComparator) {
-        super(interactorBaseComparator != null ? interactorBaseComparator : new DefaultInteractorBaseComparator());
+        this.interactorBaseComparator = interactorBaseComparator != null ? interactorBaseComparator : new DefaultInteractorBaseComparator();
     }
 
-    @Override
+    public Comparator<Interactor> getInteractorComparator() {
+        return interactorBaseComparator;
+    }
+
     /**
      * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties.
      * If the basic interactor properties are the same, It will look first for CHEBI identifier if both are set. If the CHEBI identifiers are not both set, it will look at the
@@ -56,7 +60,7 @@ public class DefaultBioactiveEntityComparator extends AbstractBioactiveEntityCom
         else {
 
             // First compares the basic interactor properties
-            int comp = interactorComparator.compare(bioactiveEntity1, bioactiveEntity2);
+            int comp = interactorBaseComparator.compare(bioactiveEntity1, bioactiveEntity2);
             if (comp != 0){
                 return comp;
             }

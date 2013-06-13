@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
+import java.util.Comparator;
+
 /**
  * Unambiguous Interactor base comparator.
  * It will first compare the interactor types using UnambiguousCvTermComparator. If both types are equal,
@@ -17,9 +19,12 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactInteractorBaseComparator extends AbstractExactInteractorBaseComparator {
+public class UnambiguousExactInteractorBaseComparator implements Comparator<Interactor> {
 
     private static UnambiguousExactInteractorBaseComparator unambiguousExactInteractorComparator;
+    private OrganismTaxIdComparator organismComparator;
+    private UnambiguousCvTermComparator typeComparator;
+    private UnambiguousInteractorBaseComparator interactorBaseComparator;
 
     /**
      * Creates a new UnambiguousExactInteractorBaseComparator.
@@ -27,20 +32,23 @@ public class UnambiguousExactInteractorBaseComparator extends AbstractExactInter
      * organisms and a UnambiguousCvTermComparator to compare checksum types and interactor types
      */
     public UnambiguousExactInteractorBaseComparator() {
-        super(new UnambiguousInteractorBaseComparator(), new OrganismTaxIdComparator(), new UnambiguousCvTermComparator());
+        this.interactorBaseComparator = new UnambiguousInteractorBaseComparator();
+        this.organismComparator = new OrganismTaxIdComparator();
+        this.typeComparator = new UnambiguousCvTermComparator();
     }
 
-    @Override
     public UnambiguousInteractorBaseComparator getInteractorBaseComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorBaseComparator;
+        return this.interactorBaseComparator;
     }
 
-    @Override
     public UnambiguousCvTermComparator getTypeComparator() {
-        return (UnambiguousCvTermComparator) this.typeComparator;
+        return this.typeComparator;
     }
 
-    @Override
+    public OrganismTaxIdComparator getOrganismComparator() {
+        return organismComparator;
+    }
+
     /**
      * It will first compare the interactor types using UnambiguousCvTermComparator. If both types are equal,
      * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal,

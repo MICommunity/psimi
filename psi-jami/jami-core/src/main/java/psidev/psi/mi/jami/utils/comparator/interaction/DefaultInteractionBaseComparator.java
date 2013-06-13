@@ -22,29 +22,28 @@ import java.util.*;
  * @since <pre>18/01/13</pre>
  */
 
-public class DefaultInteractionBaseComparator extends AbstractInteractionBaseComparator {
+public class DefaultInteractionBaseComparator implements Comparator<Interaction> {
 
     private static DefaultInteractionBaseComparator defaultInteractionComparator;
-
+    private DefaultCvTermComparator cvTermComparator;
+    private DefaultExternalIdentifierComparator identifierComparator;
     /**
      * Creates a new DefaultInteractionBaseComparator. It will use a DefaultParticipantBaseComparator to
      * compare participants and DefaultCvTermcomparator to compare interaction types
      */
     public DefaultInteractionBaseComparator() {
-        super(new DefaultExternalIdentifierComparator(), new DefaultCvTermComparator());
+        this.identifierComparator = new DefaultExternalIdentifierComparator();
+        this.cvTermComparator = new DefaultCvTermComparator();
     }
 
-    @Override
     public DefaultExternalIdentifierComparator getIdentifierComparator() {
-        return (DefaultExternalIdentifierComparator) super.getIdentifierComparator();
+        return this.identifierComparator;
     }
 
-    @Override
     public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) cvTermComparator;
+        return cvTermComparator;
     }
 
-    @Override
     /**
      * It will first compare the interaction types using DefaultCvTermComparator.
      * Then it will compare the rigids if both are set (case sensitive).

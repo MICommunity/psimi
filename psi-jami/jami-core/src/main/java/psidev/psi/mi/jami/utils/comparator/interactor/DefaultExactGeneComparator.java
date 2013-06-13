@@ -38,7 +38,7 @@ public class DefaultExactGeneComparator extends DefaultGeneComparator {
 
     @Override
     public DefaultExactInteractorBaseComparator getInteractorComparator() {
-        return (DefaultExactInteractorBaseComparator) this.interactorComparator;
+        return (DefaultExactInteractorBaseComparator) this.interactorBaseComparator;
     }
 
     /**

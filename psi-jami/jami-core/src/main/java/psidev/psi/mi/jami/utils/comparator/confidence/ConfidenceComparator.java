@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.confidence;
 
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 
@@ -20,13 +19,13 @@ import java.util.Comparator;
 
 public class ConfidenceComparator implements Comparator<Confidence>{
 
-    protected AbstractCvTermComparator cvTermComparator;
+    protected Comparator<CvTerm> cvTermComparator;
 
     /**
      * Creates a new ConfidenceComparator.
      * @param termComparator: CvTerm comparator for the types and units. It is required
      */
-    public ConfidenceComparator(AbstractCvTermComparator termComparator){
+    public ConfidenceComparator(Comparator<CvTerm> termComparator){
 
         if (termComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required for comparing confidence types and units. It cannot be null");
@@ -35,7 +34,7 @@ public class ConfidenceComparator implements Comparator<Confidence>{
         this.cvTermComparator = termComparator;
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 

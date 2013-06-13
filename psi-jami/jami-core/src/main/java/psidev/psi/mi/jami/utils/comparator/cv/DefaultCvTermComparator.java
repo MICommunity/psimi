@@ -4,10 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Default comparator for CvTerms.
@@ -24,17 +21,17 @@ import java.util.List;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultCvTermComparator extends AbstractCvTermComparator {
+public class DefaultCvTermComparator implements Comparator<CvTerm> {
 
     private static DefaultCvTermComparator defaultCvTermComparator;
+    private DefaultExternalIdentifierComparator identifierComparator;
 
     public DefaultCvTermComparator() {
-        super(new DefaultExternalIdentifierComparator());
+        this.identifierComparator = new DefaultExternalIdentifierComparator();
     }
 
-    @Override
     public DefaultExternalIdentifierComparator getIdentifierComparator(){
-        return (DefaultExternalIdentifierComparator) identifierComparator;
+        return identifierComparator;
     }
 
     /**

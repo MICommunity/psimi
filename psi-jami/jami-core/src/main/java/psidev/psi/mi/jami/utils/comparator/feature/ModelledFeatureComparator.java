@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
+import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.ModelledFeature;
 
 import java.util.Comparator;
@@ -17,20 +18,20 @@ import java.util.Comparator;
 
 public class ModelledFeatureComparator implements Comparator<ModelledFeature> {
 
-    protected AbstractFeatureBaseComparator featureComparator;
+    protected Comparator<Feature> featureComparator;
 
     /**
      * Creates a new ModelledFeatureComparator.
      * @param featureComparator : feature comparator required for comparing basic feature properties
      */
-    public ModelledFeatureComparator(AbstractFeatureBaseComparator featureComparator){
+    public ModelledFeatureComparator(Comparator<Feature> featureComparator){
         if (featureComparator == null){
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
         this.featureComparator = featureComparator;
     }
 
-    public AbstractFeatureBaseComparator getFeatureComparator() {
+    public Comparator<Feature> getFeatureComparator() {
         return featureComparator;
     }
 

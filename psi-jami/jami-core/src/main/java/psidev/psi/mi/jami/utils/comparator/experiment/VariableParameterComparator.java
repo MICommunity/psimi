@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.utils.comparator.experiment;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.VariableParameter;
 import psidev.psi.mi.jami.model.VariableParameterValue;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -21,10 +20,10 @@ import java.util.Comparator;
 
 public class VariableParameterComparator implements Comparator<VariableParameter> {
 
-    private AbstractCvTermComparator cvTermComparator;
+    private Comparator<CvTerm> cvTermComparator;
     private VariableParameterValueCollectionComparator variableParameterValueCollectionComparator;
 
-    public VariableParameterComparator(AbstractCvTermComparator cvTermComparator){
+    public VariableParameterComparator(Comparator<CvTerm> cvTermComparator){
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator should not be null and is needed to compare units.");
         }
@@ -33,7 +32,7 @@ public class VariableParameterComparator implements Comparator<VariableParameter
     }
 
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 

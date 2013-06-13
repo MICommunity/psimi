@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.NucleicAcid;
 
+import java.util.Comparator;
+
 /**
  * Default nucleic acids comparator.
  * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties.
@@ -13,23 +15,23 @@ import psidev.psi.mi.jami.model.NucleicAcid;
  * @since <pre>15/01/13</pre>
  */
 
-public class DefaultNucleicAcidComparator extends AbstractNucleicAcidComparator {
+public class DefaultNucleicAcidComparator implements Comparator<NucleicAcid> {
 
     private static DefaultNucleicAcidComparator defaultNucleicAcidComparator;
+    protected DefaultPolymerComparator interactorComparator;
 
     /**
      * Creates a new DefaultNucleicAcidComparator. It will uses a DefaultInteractorBaseComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public DefaultNucleicAcidComparator() {
-        super(new DefaultPolymerComparator());
+        this.interactorComparator = new DefaultPolymerComparator();
     }
 
-    protected DefaultNucleicAcidComparator(AbstractPolymerComparator polymerBaseComparator) {
-        super(polymerBaseComparator != null ? polymerBaseComparator : new DefaultPolymerComparator());
+    protected DefaultNucleicAcidComparator(DefaultPolymerComparator polymerBaseComparator) {
+        this.interactorComparator = polymerBaseComparator != null ? polymerBaseComparator : new DefaultPolymerComparator();
     }
 
-    @Override
     /**
      * It will first use DefaultInteractorBaseComparator to compare the basic interactor properties.
      * If the basic polymer properties are the same, It will look for DDBJ/EMBL/Genbank identifier if both are set. If the DDBJ/EMBL/Genbank identifiers are not both set or are identical, it will look at the
@@ -81,7 +83,6 @@ public class DefaultNucleicAcidComparator extends AbstractNucleicAcidComparator 
         }
     }
 
-    @Override
     public DefaultPolymerComparator getInteractorComparator() {
         return (DefaultPolymerComparator) this.interactorComparator;
     }

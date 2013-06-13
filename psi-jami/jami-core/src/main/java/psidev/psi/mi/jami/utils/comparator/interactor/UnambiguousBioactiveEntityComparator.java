@@ -18,22 +18,26 @@ import java.util.Comparator;
  * @since <pre>15/01/13</pre>
  */
 
-public class UnambiguousBioactiveEntityComparator extends AbstractBioactiveEntityComparator {
+public class UnambiguousBioactiveEntityComparator implements Comparator<BioactiveEntity> {
 
     private static UnambiguousBioactiveEntityComparator unambiguousBioactiveEntityComparator;
+    protected Comparator<Interactor> interactorBaseComparator;
 
     /**
      * Creates a new UnambiguousBioactiveEntityComparator. It will use an UnambiguousInteractorBaseComparator
      */
     public UnambiguousBioactiveEntityComparator() {
-        super(new UnambiguousInteractorBaseComparator());
+        this.interactorBaseComparator = new UnambiguousInteractorBaseComparator();
     }
 
     protected UnambiguousBioactiveEntityComparator(Comparator<Interactor> interactorBaseComparator) {
-        super(interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator());
+        this.interactorBaseComparator = interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator();
     }
 
-    @Override
+    public Comparator<Interactor> getInteractorComparator() {
+        return interactorBaseComparator;
+    }
+
     /**
      * It will first use UnambiguousInteractorBaseComparator to compare the basic interactor properties.
      * If the basic interactor properties are the same, It will look first for CHEBI identifier (the interactor with a non null CHEBI identifier will always come first). If the CHEBI identifiers are not set, it will look at the
@@ -58,7 +62,7 @@ public class UnambiguousBioactiveEntityComparator extends AbstractBioactiveEntit
         else {
 
             // First compares the basic interactor properties
-            int comp = interactorComparator.compare(bioactiveEntity1, bioactiveEntity2);
+            int comp = interactorBaseComparator.compare(bioactiveEntity1, bioactiveEntity2);
             if (comp != 0){
                 return comp;
             }

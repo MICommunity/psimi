@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
+import java.util.Comparator;
+
 /**
  * Default Interactor base comparator.
  * It will first compare the interactor types using DefaultCvTermComparator. If both types are equal,
@@ -16,9 +18,12 @@ import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExactInteractorBaseComparator extends AbstractExactInteractorBaseComparator {
+public class DefaultExactInteractorBaseComparator implements Comparator<Interactor> {
 
     private static DefaultExactInteractorBaseComparator defaultExactInteractorComparator;
+    private OrganismTaxIdComparator organismComparator;
+    private DefaultCvTermComparator typeComparator;
+    private DefaultInteractorBaseComparator interactorBaseComparator;
 
     /**
      * Creates a new DefaultExactInteractorBaseComparator.
@@ -26,20 +31,23 @@ public class DefaultExactInteractorBaseComparator extends AbstractExactInteracto
      * organisms and a DefaultCvTermComparator to compare checksum types and interactor types
      */
     public DefaultExactInteractorBaseComparator() {
-        super(new DefaultInteractorBaseComparator(), new OrganismTaxIdComparator(), new DefaultCvTermComparator());
+        this.interactorBaseComparator = new DefaultInteractorBaseComparator();
+        this.organismComparator = new OrganismTaxIdComparator();
+        this.typeComparator = new DefaultCvTermComparator();
     }
 
-    @Override
     public DefaultInteractorBaseComparator getInteractorBaseComparator() {
-        return (DefaultInteractorBaseComparator) this.interactorBaseComparator;
+        return this.interactorBaseComparator;
     }
 
-    @Override
     public DefaultCvTermComparator getTypeComparator() {
-        return (DefaultCvTermComparator) this.typeComparator;
+        return this.typeComparator;
     }
 
-    @Override
+    public OrganismTaxIdComparator getOrganismComparator() {
+        return organismComparator;
+    }
+
     /**
      * It will first compare the interactor types using DefaultCvTermComparator. If both types are equal,
      * it will compare organisms using OrganismTaxIdComparator. If both organisms are equal or not set, it will use a DefaultInteractorBaseComparator to compare basic Interactor properties.

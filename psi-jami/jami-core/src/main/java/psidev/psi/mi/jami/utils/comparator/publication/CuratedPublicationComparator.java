@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.utils.comparator.publication;
 
 import psidev.psi.mi.jami.model.CurationDepth;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -19,17 +19,17 @@ import java.util.Date;
 
 public class CuratedPublicationComparator implements Comparator<Publication> {
 
-    protected AbstractPublicationComparator publicationComparator;
-    protected AbstractCvTermComparator sourceComparator;
+    protected Comparator<Publication> publicationComparator;
+    protected Comparator<CvTerm> sourceComparator;
 
     /**
      * Creates a new CuratedPublicationComparator.
      * @param pubComparator : the comparator for the publication (not curation information). It is required
      * @param sourceComparator : the source comparator
      */
-    public CuratedPublicationComparator(AbstractPublicationComparator pubComparator, AbstractCvTermComparator sourceComparator){
+    public CuratedPublicationComparator(Comparator<Publication> pubComparator, Comparator<CvTerm> sourceComparator){
         if (pubComparator == null){
-            throw new IllegalArgumentException("The publication comparator is required to compare publication bibliographic properties. It cannot be null");
+            throw new IllegalArgumentException("The publication comparator is required to compare basic publication bibliographic properties. It cannot be null");
         }
         this.publicationComparator = pubComparator;
         if (sourceComparator == null){
@@ -38,11 +38,11 @@ public class CuratedPublicationComparator implements Comparator<Publication> {
         this.sourceComparator = sourceComparator;
     }
 
-    public AbstractPublicationComparator getPublicationComparator() {
+    public Comparator<Publication> getPublicationComparator() {
         return publicationComparator;
     }
 
-    public AbstractCvTermComparator getSourceComparator() {
+    public Comparator<CvTerm> getSourceComparator() {
         return sourceComparator;
     }
 

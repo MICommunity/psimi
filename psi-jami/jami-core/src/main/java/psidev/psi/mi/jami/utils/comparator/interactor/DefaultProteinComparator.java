@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Protein;
 
+import java.util.Comparator;
+
 /**
  * Default proteins comparator.
  * It will first use DefaultPolymerComparator to compare the basic interactor properties
@@ -13,23 +15,23 @@ import psidev.psi.mi.jami.model.Protein;
  * @since <pre>15/01/13</pre>
  */
 
-public class DefaultProteinComparator extends AbstractProteinComparator {
+public class DefaultProteinComparator implements Comparator<Protein> {
 
     private static DefaultProteinComparator defaultProteinComparator;
+    protected DefaultPolymerComparator interactorComparator;
 
     /**
      * Creates a new DefaultProteinComparator. It will uses a DefaultPolymerComparator to compare interactor properties and a
      * OrganismTaxIdComparator to compares organism.
      */
     public DefaultProteinComparator(){
-        super(new DefaultPolymerComparator());
+        this.interactorComparator = new DefaultPolymerComparator();
     }
 
-    protected DefaultProteinComparator(AbstractPolymerComparator polymerBaseComparator){
-        super(polymerBaseComparator != null ? polymerBaseComparator : new DefaultPolymerComparator());
+    protected DefaultProteinComparator(DefaultPolymerComparator polymerBaseComparator){
+        this.interactorComparator = polymerBaseComparator != null ? polymerBaseComparator : new DefaultPolymerComparator();
     }
 
-    @Override
     /**
      * It will first use DefaultPolymerComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look for uniprotkb identifier if both are set. If the uniprotkb identifiers are not both set or are identical, it will look at the
@@ -103,7 +105,6 @@ public class DefaultProteinComparator extends AbstractProteinComparator {
         }
     }
 
-    @Override
     public DefaultPolymerComparator getInteractorComparator() {
         return (DefaultPolymerComparator) this.interactorComparator;
     }

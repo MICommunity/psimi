@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
  * Unambiguous FeatureEvidence comparator.
@@ -23,7 +24,7 @@ public class UnambiguousFeatureEvidenceComparator extends FeatureEvidenceCompara
      * compare feature detection methods and a UnambiguousFeatureBaseComparator to compare basic feature properties
      */
     public UnambiguousFeatureEvidenceComparator() {
-        super(new UnambiguousFeatureBaseComparator());
+        super(new UnambiguousFeatureBaseComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override

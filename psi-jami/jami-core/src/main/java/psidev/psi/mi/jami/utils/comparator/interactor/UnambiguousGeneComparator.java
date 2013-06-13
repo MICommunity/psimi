@@ -18,22 +18,26 @@ import java.util.Comparator;
  * @since <pre>15/01/13</pre>
  */
 
-public class UnambiguousGeneComparator extends AbstractGeneComparator {
+public class UnambiguousGeneComparator implements Comparator<Gene> {
 
     private static UnambiguousGeneComparator unambiguousGeneComparator;
+    protected Comparator<Interactor> interactorBaseComparator;
 
     /**
      * Creates a new UnambiguousGeneComparator. It will uses a UnambiguousInteractorBaseComparator to compare interactor properties
      */
     public UnambiguousGeneComparator(){
-        super(new UnambiguousInteractorBaseComparator());
+        this.interactorBaseComparator = new UnambiguousInteractorBaseComparator();
     }
 
     protected UnambiguousGeneComparator(Comparator<Interactor> interactorBaseComparator){
-        super(interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator());
+        this.interactorBaseComparator = interactorBaseComparator != null ? interactorBaseComparator : new UnambiguousInteractorBaseComparator();
     }
 
-    @Override
+    public Comparator<Interactor> getInteractorComparator() {
+        return interactorBaseComparator;
+    }
+
     /**
      * It will first use UnambiguousInteractorBaseComparator to compare the basic interactor properties
      * If the basic interactor properties are the same, It will look at ensembl identifier (the interactor with non null ensembl identifier will always come first). If the ensembl identifiers are not set, it will look at the
@@ -58,7 +62,7 @@ public class UnambiguousGeneComparator extends AbstractGeneComparator {
         }
         else {
             // First compares the interactor properties
-            int comp = interactorComparator.compare(gene1, gene2);
+            int comp = interactorBaseComparator.compare(gene1, gene2);
             if (comp != 0){
                 return comp;
             }

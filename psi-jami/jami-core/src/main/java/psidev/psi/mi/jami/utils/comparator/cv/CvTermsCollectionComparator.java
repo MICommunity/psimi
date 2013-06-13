@@ -2,7 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.cv;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
+
+import java.util.Comparator;
 
 /**
  * Comparator for a collection of CvTerms
@@ -18,12 +19,7 @@ public class CvTermsCollectionComparator extends CollectionComparator<CvTerm> {
      *
      * @param cvTermComparator
      */
-    public CvTermsCollectionComparator(AbstractCvTermComparator cvTermComparator) {
+    public CvTermsCollectionComparator(Comparator<CvTerm> cvTermComparator) {
         super(cvTermComparator);
-    }
-
-    @Override
-    public AbstractCvTermComparator getObjectComparator() {
-        return (AbstractCvTermComparator) objectComparator;
     }
 }

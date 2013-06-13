@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.annotation;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 
@@ -21,20 +20,20 @@ import java.util.Comparator;
 
 public class AnnotationComparator implements Comparator<Annotation> {
 
-    protected AbstractCvTermComparator topicComparator;
+    protected Comparator<CvTerm> topicComparator;
 
     /**
      * Creates a new AnnotationComparator.
      * @param topicComparator : the CvTerm comparator to compare the topics. It is required
      */
-    public AnnotationComparator(AbstractCvTermComparator topicComparator){
+    public AnnotationComparator(Comparator<CvTerm> topicComparator){
         if (topicComparator == null){
            throw new IllegalArgumentException("The CvTerm comparator is required to compare topics. It cannot be null");
         }
         this.topicComparator = topicComparator;
     }
 
-    public AbstractCvTermComparator getTopicComparator() {
+    public Comparator<CvTerm> getTopicComparator() {
         return topicComparator;
     }
 

@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.checksum;
 
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 
 import java.util.Comparator;
 
@@ -22,20 +21,20 @@ import java.util.Comparator;
 
 public class ChecksumComparator implements Comparator<Checksum>{
 
-    protected AbstractCvTermComparator methodComparator;
+    protected Comparator<CvTerm> methodComparator;
 
     /**
      * Creates a new ChecksumComparator.
      * @param termComparator : comparator for the method which is required
      */
-    public ChecksumComparator(AbstractCvTermComparator termComparator){
+    public ChecksumComparator(Comparator<CvTerm> termComparator){
         if (termComparator == null){
             throw new IllegalArgumentException("The method comparator is required and cannot be null");
         }
         this.methodComparator = termComparator;
     }
 
-    public AbstractCvTermComparator getMethodComparator() {
+    public Comparator<CvTerm> getMethodComparator() {
         return methodComparator;
     }
 

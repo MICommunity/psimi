@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.cv.AbstractCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionComparator;
 
@@ -23,11 +22,11 @@ import java.util.Comparator;
 
 public class CooperativeEffectBaseComparator implements Comparator<CooperativeEffect>{
 
-    private AbstractCvTermComparator cvTermComparator;
+    private Comparator<CvTerm> cvTermComparator;
     private CooperativityEvidenceCollectionComparator cooperativityEvidenceCollectionComparator;
     private ModelledInteractionCollectionComparator modelledInteractionCollectionComparator;
 
-    public CooperativeEffectBaseComparator(AbstractCvTermComparator cvTermComparator, CooperativityEvidenceComparator cooperativityEvidenceComparator, ModelledInteractionComparator modelledInteractionComparator){
+    public CooperativeEffectBaseComparator(Comparator<CvTerm> cvTermComparator, CooperativityEvidenceComparator cooperativityEvidenceComparator, ModelledInteractionComparator modelledInteractionComparator){
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator cannot be null and is required for comparing outcome and response.");
         }
@@ -44,7 +43,7 @@ public class CooperativeEffectBaseComparator implements Comparator<CooperativeEf
         this.modelledInteractionCollectionComparator = new ModelledInteractionCollectionComparator(modelledInteractionComparator);
     }
 
-    public AbstractCvTermComparator getCvTermComparator() {
+    public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 
