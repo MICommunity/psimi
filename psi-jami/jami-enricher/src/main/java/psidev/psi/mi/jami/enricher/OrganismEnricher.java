@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherListener;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -20,4 +21,7 @@ public interface OrganismEnricher{
 
     public void setFetcher(OrganismFetcher fetcher);
     public OrganismFetcher getFetcher();
+
+    public void setOrganismEnricherListener(OrganismEnricherListener organismEnricherListener);
+    public OrganismEnricherListener getOrganismEnricherListener();
 }
