@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.cvterm;
+package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -10,28 +11,28 @@ import psidev.psi.mi.jami.model.CvTerm;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 08/05/13
- * Time: 14:19
+ * Date: 13/05/13
+ * Time: 14:16
  */
-public class MinimumCvTermEnricher
-        extends AbstractCvTermEnricher{
+public class MaximumCvTermUpdater
+        extends AbstractCvTermEnricher
+        implements CvTermEnricher {
 
-    public MinimumCvTermEnricher() {
+
+    public MaximumCvTermUpdater()  {
         super();
     }
 
-    public MinimumCvTermEnricher(CvTermFetcher fetcher) {
+    public MaximumCvTermUpdater(CvTermFetcher fetcher){
         super(fetcher);
     }
 
     /**
-     * Enrichment of a single CvTerm.
-     * If enrichment takes place, the ToEnrich will be edited.
+     * Enrichment and update of a single CvTerm.
+     * If update takes place, the ToEnrich will be edited.
      *
-     * @param cvTermToEnrich  a CvTerm to enrich
+     * @param cvTermToEnrich  a CvTerm to update
      */
     public void enrichCvTerm(CvTerm cvTermToEnrich)
             throws BridgeFailedException, MissingServiceException,
@@ -39,11 +40,9 @@ public class MinimumCvTermEnricher
 
         CvTerm cvTermEnriched = getFullyEnrichedForm(cvTermToEnrich);
         runCvTermAdditionEnrichment(cvTermToEnrich, cvTermEnriched);
-        runCvTermMismatchComparison(cvTermToEnrich, cvTermEnriched);
+        runCvTermOverwriteUpdate(cvTermToEnrich, cvTermEnriched);
         //fireEnricherEvent(enricherEvent);
     }
-
-
 
 
     public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) {

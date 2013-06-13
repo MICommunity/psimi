@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.protein.listener;
+package psidev.psi.mi.jami.enricher.impl.protein.listener;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Checksum;

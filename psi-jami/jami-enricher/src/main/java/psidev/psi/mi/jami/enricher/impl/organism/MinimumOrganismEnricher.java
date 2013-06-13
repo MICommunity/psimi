@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.organism;
+package psidev.psi.mi.jami.enricher.impl.organism;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;

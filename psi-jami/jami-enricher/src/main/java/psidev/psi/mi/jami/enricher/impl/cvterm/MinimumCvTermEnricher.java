@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.cvterm;
+package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
@@ -11,28 +11,29 @@ import psidev.psi.mi.jami.model.CvTerm;
 import java.util.Collection;
 
 /**
+ * Created with IntelliJ IDEA.
  *
- * Date: 13/05/13
- * Time: 14:16
+ * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * Date: 08/05/13
+ * Time: 14:19
  */
-public class MaximumCvTermUpdater
+public class MinimumCvTermEnricher
         extends AbstractCvTermEnricher
         implements CvTermEnricher {
 
-
-    public MaximumCvTermUpdater()  {
+    public MinimumCvTermEnricher() {
         super();
     }
 
-    public MaximumCvTermUpdater(CvTermFetcher fetcher){
+    public MinimumCvTermEnricher(CvTermFetcher fetcher) {
         super(fetcher);
     }
 
     /**
-     * Enrichment and update of a single CvTerm.
-     * If update takes place, the ToEnrich will be edited.
+     * Enrichment of a single CvTerm.
+     * If enrichment takes place, the ToEnrich will be edited.
      *
-     * @param cvTermToEnrich  a CvTerm to update
+     * @param cvTermToEnrich  a CvTerm to enrich
      */
     public void enrichCvTerm(CvTerm cvTermToEnrich)
             throws BridgeFailedException, MissingServiceException,
@@ -40,9 +41,11 @@ public class MaximumCvTermUpdater
 
         CvTerm cvTermEnriched = getFullyEnrichedForm(cvTermToEnrich);
         runCvTermAdditionEnrichment(cvTermToEnrich, cvTermEnriched);
-        runCvTermOverwriteUpdate(cvTermToEnrich, cvTermEnriched);
+        runCvTermMismatchComparison(cvTermToEnrich, cvTermEnriched);
         //fireEnricherEvent(enricherEvent);
     }
+
+
 
 
     public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) {

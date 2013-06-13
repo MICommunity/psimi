@@ -1,11 +1,11 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
+package psidev.psi.mi.jami.enricher.impl.protein;
 
 import psidev.psi.mi.jami.bridges.exception.BadResultException;
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.enricherimplementation.organism.MaximumOrganismUpdater;
+import psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismUpdater;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.model.Protein;
@@ -21,14 +21,14 @@ import java.util.Collection;
  * Time: 09:42
  */
 public class MaximumProteinUpdater
-        extends AbstractProteinEnricher
+        extends MinimumProteinUpdater
         implements ProteinEnricher {
 
     public MaximumProteinUpdater(){
         super();
     }
 
-    public MaximumProteinUpdater(ProteinFetcher fetcher){
+    /*public MaximumProteinUpdater(ProteinFetcher fetcher){
         super(fetcher);
     }
 
@@ -47,7 +47,7 @@ public class MaximumProteinUpdater
             runAdditionOnCore(proteinToEnrich, proteinEnriched);
             runUpdateOnCore(proteinToEnrich, proteinEnriched);
             runUpdateOnChecksums(proteinToEnrich, proteinEnriched);
-            proteinEnricherListener.onProteinEnriched(proteinToEnrich, "Success");
+            listener.onProteinEnriched(proteinToEnrich, "Success");
         }
-    }
+    } */
 }

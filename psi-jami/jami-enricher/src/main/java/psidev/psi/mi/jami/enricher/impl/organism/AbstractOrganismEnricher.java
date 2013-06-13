@@ -1,14 +1,10 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.organism;
+package psidev.psi.mi.jami.enricher.impl.organism;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
-import psidev.psi.mi.jami.enricher.event.AdditionReport;
-import psidev.psi.mi.jami.enricher.event.EnricherEvent;
-import psidev.psi.mi.jami.enricher.event.MismatchReport;
-import psidev.psi.mi.jami.enricher.event.OverwriteReport;
 import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
@@ -64,87 +60,87 @@ public abstract class AbstractOrganismEnricher
         return enriched;
     }
 
-    protected void runOrganismAdditionEnrichment(Organism organismToEnrich, Organism organismEnriched)
+    protected void runOrganismAdditionEnrichment(Organism organismToEnrich, Organism OrganismFetched)
             throws BadEnrichedFormException {
 
-        //if(organismToEnrich == null && organismEnriched != null) organismToEnrich = new DefaultOrganism(-3);
+        //if(organismToEnrich == null && OrganismFetched != null) organismToEnrich = new DefaultOrganism(-3);
 
-        if(organismEnriched.getTaxId() < -4){//TODO check this  is a valid assertion
-            throw new BadEnrichedFormException( "The organism had an invalid taxID of "+organismEnriched.getTaxId());
+        if(OrganismFetched.getTaxId() < -4){//TODO check this  is a valid assertion
+            throw new BadEnrichedFormException( "The organism had an invalid taxID of "+OrganismFetched.getTaxId());
         }else{
             //TaxID
             if(organismToEnrich.getTaxId() > 0){
-                /*if(organismToEnrich.getTaxId() != organismEnriched.getTaxId()) {
+                /*if(organismToEnrich.getTaxId() != OrganismFetched.getTaxId()) {
                     throw new ConflictException("Organism Conflict on TaxId. " +
                             "ToEnrich had ["+organismToEnrich.getTaxId()+"] " +
-                            "but fetcher found ["+organismEnriched.getTaxId()+"]");
+                            "but fetcher found ["+OrganismFetched.getTaxId()+"]");
                 }*/
             }else if(organismToEnrich.getTaxId() == -3){
-                organismToEnrich.setTaxId(organismEnriched.getTaxId());
+                organismToEnrich.setTaxId(OrganismFetched.getTaxId());
                 //addAdditionReport(new AdditionReport(FIELD_TAXID,""+organismToEnrich.getTaxId()));
             }
             //negative taxids will continue through at this point
 
             //Scientific name
             if(organismToEnrich.getScientificName() == null
-                    && organismEnriched.getScientificName() != null){
-                organismToEnrich.setScientificName(organismEnriched.getScientificName());
+                    && OrganismFetched.getScientificName() != null){
+                organismToEnrich.setScientificName(OrganismFetched.getScientificName());
                // addAdditionReport(new AdditionReport(
-                       // FIELD_SCIENTIFICNAME,organismEnriched.getScientificName()));
+                       // FIELD_SCIENTIFICNAME,OrganismFetched.getScientificName()));
             }
 
             //Commonname
             if(organismToEnrich.getCommonName() == null
-                    &&organismEnriched.getCommonName() != null){
-                organismToEnrich.setCommonName(organismEnriched.getCommonName());
+                    &&OrganismFetched.getCommonName() != null){
+                organismToEnrich.setCommonName(OrganismFetched.getCommonName());
                 //addAdditionReport(new AdditionReport(
                        // FIELD_COMMONNAME, organismToEnrich.getCommonName()));
             }
         }
     }
 
-    protected void runOrganismMismatchComparison(Organism organismToEnrich, Organism organismEnriched){
+    protected void runOrganismMismatchComparison(Organism organismToEnrich, Organism OrganismFetched){
 
         // Should not be reachable for positive taxids, a conflict should have been thrown by this point
         // Essentially only compares -2,or -1
-        if(organismEnriched.getTaxId() != organismToEnrich.getTaxId()){
+        if(OrganismFetched.getTaxId() != organismToEnrich.getTaxId()){
             //addMismatchReport(new MismatchReport(
                    // FIELD_TAXID,
                    // ""+organismToEnrich.getTaxId(),
-                   // ""+organismEnriched.getTaxId()));
+                   // ""+OrganismFetched.getTaxId()));
         }
 
         //Scientific Name
-        if (organismEnriched.getScientificName() != null){
-            if (!organismEnriched.getScientificName().equalsIgnoreCase(
+        if (OrganismFetched.getScientificName() != null){
+            if (!OrganismFetched.getScientificName().equalsIgnoreCase(
                     organismToEnrich.getScientificName())){
                 //addMismatchReport(new MismatchReport(
                      //   FIELD_SCIENTIFICNAME,
                      //   organismToEnrich.getScientificName(),
-                      //  organismEnriched.getScientificName()));
+                      //  OrganismFetched.getScientificName()));
             }
         }
 
         //Common Name
-        if (organismEnriched.getCommonName() != null){
-            if (!organismEnriched.getCommonName().equalsIgnoreCase(
+        if (OrganismFetched.getCommonName() != null){
+            if (!OrganismFetched.getCommonName().equalsIgnoreCase(
                     organismToEnrich.getCommonName())){
                // addMismatchReport(new MismatchReport(
                //         FIELD_COMMONNAME,
                //         organismToEnrich.getCommonName(),
-               //         organismEnriched.getCommonName()));
+               //         OrganismFetched.getCommonName()));
             }
         }
     }
 
-    protected void runOrganismOverwriteUpdate(Organism organismToEnrich, Organism organismEnriched){
+    protected void runOrganismOverwriteUpdate(Organism organismToEnrich, Organism OrganismFetched){
 
         // Should not be reachable for positive taxids, a conflict should have been thrown by this point
         // Essentially only compares -2,or -1
-        if(organismEnriched.getTaxId() != organismToEnrich.getTaxId()){
+        if(OrganismFetched.getTaxId() != organismToEnrich.getTaxId()){
 
             String oldValue = ""+organismToEnrich.getTaxId();
-            organismToEnrich.setTaxId(organismEnriched.getTaxId());
+            organismToEnrich.setTaxId(OrganismFetched.getTaxId());
            // addOverwriteReport(new OverwriteReport(
            //         FIELD_TAXID,
            //         oldValue,
@@ -152,11 +148,11 @@ public abstract class AbstractOrganismEnricher
         }
 
         //Scientific Name
-        if (organismEnriched.getScientificName() != null){
-            if (!organismEnriched.getScientificName().equalsIgnoreCase(
+        if (OrganismFetched.getScientificName() != null){
+            if (!OrganismFetched.getScientificName().equalsIgnoreCase(
                     organismToEnrich.getScientificName())){
                 String oldValue = organismToEnrich.getScientificName();
-                organismToEnrich.setScientificName(organismEnriched.getScientificName());
+                organismToEnrich.setScientificName(OrganismFetched.getScientificName());
                // addOverwriteReport(new OverwriteReport(
                //         FIELD_SCIENTIFICNAME,
                //         oldValue,
@@ -165,11 +161,11 @@ public abstract class AbstractOrganismEnricher
         }
 
         //Common Name
-        if (organismEnriched.getCommonName() != null){
-            if (!organismEnriched.getCommonName().equalsIgnoreCase(
+        if (OrganismFetched.getCommonName() != null){
+            if (!OrganismFetched.getCommonName().equalsIgnoreCase(
                     organismToEnrich.getCommonName())){
                 String oldValue = organismToEnrich.getCommonName();
-                organismToEnrich.setCommonName(organismEnriched.getCommonName());
+                organismToEnrich.setCommonName(OrganismFetched.getCommonName());
                 //addOverwriteReport(new OverwriteReport(
                 //        FIELD_COMMONNAME,
                 //        oldValue,

@@ -1,14 +1,16 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.protein;
+package psidev.psi.mi.jami.enricher.impl.protein;
 
 
 import psidev.psi.mi.jami.bridges.exception.BadResultException;
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
-import psidev.psi.mi.jami.enricher.enricherimplementation.organism.MinimumOrganismEnricher;
+import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
@@ -24,6 +26,10 @@ import java.util.Collection;
 public class MinimumProteinEnricher
         extends AbstractProteinEnricher
         implements ProteinEnricher {
+
+    protected ProteinEnricherListener listener = null;
+    protected OrganismEnricher organismEnricher;
+
 
     public MinimumProteinEnricher(){
         super();
@@ -48,7 +54,11 @@ public class MinimumProteinEnricher
             super.setOrganismEnricher(new MinimumOrganismEnricher());
             runAdditionOnCore(proteinToEnrich, proteinEnriched);
             runAdditionOnChecksum(proteinToEnrich, proteinEnriched);
-            proteinEnricherListener.onProteinEnriched(proteinToEnrich, "Success");
+            this.listener.onProteinEnriched(proteinToEnrich, "Success");
         }
+    }
+
+    public OrganismEnricher getOrganismEnricher() {
+        return organismEnricher;
     }
 }
