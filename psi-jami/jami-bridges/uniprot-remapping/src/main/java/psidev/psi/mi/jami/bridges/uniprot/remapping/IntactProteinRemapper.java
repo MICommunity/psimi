@@ -55,59 +55,51 @@ public class IntactProteinRemapper
 
     @Override
     protected IdentificationResults getMappingForXref(Protein p, Xref x){
-        if(!identifierMappingResults.containsKey(x)){
-            identifierMappingResults.put(x,getIdentifierResult(x));
+        String value =  x.getId();
+        String database = null;
+
+        //Find a way to identify the database
+        if(x.getDatabase() != null){
+            database = x.getDatabase().getMIIdentifier();
+            if(database == null) database = x.getDatabase().getShortName();
         }
-        return identifierMappingResults.get(x);
+        //If there's an identity, search else return an empty result.
+        if(database != null && value != null){
+            context.setDatabaseForIdentifier(database);
+            context.setIdentifier(value);
+            IdentificationResults temp;
+            try{
+                temp = identifierStrategy.identifyProtein(context);
+            }catch(StrategyException e){
+                log.info("Encountered a StrategyException " +
+                        "when searching for the AC ["+value+"] " +
+                        "in the database ["+database+"]");
+                temp = null;
+            }
+            return temp;
+        }
+        else return null;
     }
 
     @Override
     protected IdentificationResults getMappingForSequence(Protein p){
-        if(sequenceMappingResult == null){
+        if(isSequenceMappingResultChecked == false){
             if (context.getSequence() != null) {
                 try{
                     sequenceMappingResult = sequenceStrategy.identifyProtein(context);
                 }catch(StrategyException e){
                     log.warn("Encountered a StrategyException " +
                             "when searching for sequence");
-                    sequenceMappingResult = new DefaultIdentificationResults();
+                    sequenceMappingResult = null;
                 }
             }
             else {
                 log.warn("Sequence is not set in context.");
-                sequenceMappingResult = new DefaultIdentificationResults();
+                sequenceMappingResult = null;
             }
         }
+        isSequenceMappingResultChecked = true;
         return sequenceMappingResult;
-    }
-
-    private IdentificationResults getIdentifierResult(Xref identifier){
-        String value =  identifier.getId();
-        String database = null;
-
-        //Find a way to identify the database
-        if(identifier.getDatabase() != null){
-            database = identifier.getDatabase().getMIIdentifier();
-            if( database == null) database = identifier.getDatabase().getShortName();
-        }
-        //If there's an identity, search else return an empty result.
-        if(database != null && value != null) return getIdentifierResult(database, value);
-        else return new DefaultIdentificationResults();
-    }
-
-    private IdentificationResults getIdentifierResult(String database, String identifier){
-        context.setDatabaseForIdentifier(database);
-        context.setIdentifier(identifier);
-        IdentificationResults temp;
-        try{
-            temp = identifierStrategy.identifyProtein(context);
-        }catch(StrategyException e){
-            log.info("Encountered a StrategyException " +
-                    "when searching for the AC ["+identifier+"] " +
-                    "in the database ["+database+"]");
-            temp = new DefaultIdentificationResults();
-        }
-        return temp;
     }
 
     private void setSequence(String sequence){

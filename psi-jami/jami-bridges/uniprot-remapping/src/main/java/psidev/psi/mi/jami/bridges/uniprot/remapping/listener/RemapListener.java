@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.bridges.uniprot.remapping.listener;
 
 
 import psidev.psi.mi.jami.bridges.uniprot.remapping.RemapReport;
+import psidev.psi.mi.jami.model.Protein;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,5 +12,14 @@ import psidev.psi.mi.jami.bridges.uniprot.remapping.RemapReport;
  * Time: 15:47
  */
 public interface RemapListener {
-    public void fireRemapReport(RemapReport report);
+
+    void onIdentifierConflict(String remappedIdentifierOne, String remappedIdentifierTwo);
+    public void onSequenceToIdentifierConflict(String remappedSequence , String remappedIdentifier);
+
+    void onGettingRemappingFromIdentifiers(Protein p);
+    void onGettingRemappingFromSequence(Protein p);
+    
+    void onRemappingComplete(Protein p, String s);
+
+
 }

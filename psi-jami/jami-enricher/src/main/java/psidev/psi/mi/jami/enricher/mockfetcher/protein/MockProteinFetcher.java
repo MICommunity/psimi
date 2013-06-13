@@ -36,6 +36,8 @@ public class MockProteinFetcher
      * @return
      */
     public Collection<Protein> getProteinsByIdentifier(String identifier) throws BridgeFailedException, BadResultException, BadSearchTermException {
+        if(identifier == null) throw new BadSearchTermException("Mock fetcher will not search on null.");
+
         if(! localProteins.containsKey(identifier)) {
             return null;
         }

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.bridges.uniprot.remapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.LoggingRemapListener;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
@@ -21,18 +22,19 @@ public abstract class AbstractProteinRemapper
         implements ProteinRemapper{
 
     public static final Log log = LogFactory.getLog(AbstractProteinRemapper.class);
-    private Collection<RemapListener> listeners = new ArrayList<RemapListener>();
+
+    private RemapListener listener = new LoggingRemapListener();
 
     private boolean checkingEnabled = true;
     private boolean priorityIdentifiers = true;
     private boolean prioritySequence = true;
 
-    protected RemapReport remapReport;
-
+    //protected RemapReport remapReport;
 
     protected TreeMap<Xref, IdentificationResults> identifierMappingResults;
     protected boolean identifierMappingResultsHasNoConflict = true;
     protected IdentificationResults sequenceMappingResult = null;
+    protected boolean isSequenceMappingResultChecked = false;
 
 
     public AbstractProteinRemapper(){
@@ -42,67 +44,34 @@ public abstract class AbstractProteinRemapper
     public void remapProtein(Protein p) {
         clean();
 
-        String mapping = chooseMapping(p);
-
-        if(mapping != null){
-            p.setUniprotkb(mapping);
-            remapReport.setRemapped(true);
-        }else{
-            remapReport.setRemapped(false);
-        }
-        fireRemapReport();
-    }
-
-
-    private String chooseMapping(Protein p){
         String mapping;
 
         if(priorityIdentifiers && prioritySequence){
             mapping = findIdentifierMapping(p);
             if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                remapReport.setMappingFromIdentifiers(false);
-                remapReport.setMappingFromSequence(false);
-                mapping = null;
-            } else if (mapping != null) {
-                if(getMappingForSequence(p).hasUniqueUniprotId()){
-                    if(mapping.equalsIgnoreCase(
-                            getMappingForSequence(p).getFinalUniprotId())){
-                        remapReport.setMappingFromIdentifiers(true);
-                        remapReport.setMappingFromSequence(true);
+                listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
+                return;
+            }
+            if(mapping == null){
+                listener.onRemappingComplete(p,"Failed. Identifier mapping cannot be found.");
+                return;
+            }
+            else { //mapping != null
+                if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
+                    if(mapping.equalsIgnoreCase( getMappingForSequence(p).getFinalUniprotId())){
+                        p.setUniprotkb(mapping);
+                        listener.onGettingRemappingFromIdentifiers(p);
+                        listener.onGettingRemappingFromSequence(p);
+                        listener.onRemappingComplete(p,"Success. Identifier mappings match the sequence mapping.");
+                        return;
                     } else {
-                        remapReport.setMappingFromIdentifiers(false);
-                        remapReport.setMappingFromSequence(false);
-                        remapReport.setConflictMessage("Conflict between identifiers and sequence: "+
-                                "identifiers remapped to "+
-                                "["+mapping+"], "+
-                                "sequence remapped to "+
-                                "["+getMappingForSequence(p).getFinalUniprotId()+"].");
-                        mapping = null;
+                        listener.onSequenceToIdentifierConflict(getMappingForSequence(p).getFinalUniprotId() , mapping);
+                        listener.onRemappingComplete(p,"Failed. Conflict between sequence and identifiers.");
+                        return;
                     }
                 }else {  // sequenceMapping == null // identifierMappping != null
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(false);
-                    remapReport.setConflictMessage("Conflict between identifiers and sequence: "+
-                            "identifiers remapped to "+
-                            "["+mapping+"], "+
-                            "sequence remapped to "+
-                            "[null].");
-                    mapping = null;
-                }
-            } else {// (identifierMapping == null)
-                if(getMappingForSequence(p).hasUniqueUniprotId()){
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(false);
-                    remapReport.setConflictMessage("Conflict between identifiers and sequence: "+
-                            "identifiers remapped to "+
-                            "[null], "+
-                            "sequence remapped to "+
-                            "["+getMappingForSequence(p).getFinalUniprotId()+"].");
-                    mapping = null;
-                }else {  // sequenceMapping == null
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(false);
-                    mapping = null;
+                    listener.onRemappingComplete(p,"Failed. Sequence mapping cannot be resolved.");
+                    return;
                 }
             }
         }
@@ -110,88 +79,93 @@ public abstract class AbstractProteinRemapper
         else if(priorityIdentifiers && !prioritySequence){
             mapping = findIdentifierMapping(p);
             if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                remapReport.setMappingFromIdentifiers(false);
-                remapReport.setMappingFromSequence(false);
-                mapping = null;
+                listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
+                return ;
             }else if (mapping != null){
-                remapReport.setMappingFromIdentifiers(true);
-                remapReport.setMappingFromSequence(false);
+                p.setUniprotkb(mapping);
+                listener.onGettingRemappingFromIdentifiers(p);
+                listener.onRemappingComplete(p,"Success. Identifiers have mapping.");
+                return;
             }else { // (identifierMapping == null)
-                if(getMappingForSequence(p).hasUniqueUniprotId()){
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(true);
-                    mapping = getMappingForSequence(p).getFinalUniprotId();
+                if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
+                    p.setUniprotkb(getMappingForSequence(p).getFinalUniprotId());
+                    listener.onGettingRemappingFromSequence(p);
+                    listener.onRemappingComplete(p,"Success. Sequence has mapping.");
+                    return;
                 }else { // sequenceMapping == null
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(false);
-                    mapping = null;
+                    listener.onRemappingComplete(p,"Failed. Neither identifier nor sequence have mappings.");
+                    return;
                 }
             }
         }
 
         else if(!priorityIdentifiers && prioritySequence){
-            if(getMappingForSequence(p).hasUniqueUniprotId()){
-                remapReport.setMappingFromIdentifiers(false);
-                remapReport.setMappingFromSequence(true);
-                mapping = getMappingForSequence(p).getFinalUniprotId();
+            if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
+                p.setUniprotkb(getMappingForSequence(p).getFinalUniprotId());
+                listener.onGettingRemappingFromSequence(p);
+                listener.onRemappingComplete(p,"Success. Sequence has mapping.");
+                return ;
             } else { //sequenceMapping == null
                 mapping = findIdentifierMapping(p);
                 if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(false);
-                    mapping = null;
-                }else if (mapping != null){
-                    remapReport.setMappingFromIdentifiers(true);
-                    remapReport.setMappingFromSequence(false);
+                    listener.onRemappingComplete(p,"Failed. No sequence remapping and identifier mappings have conflicts.");
+                    return;
+                }
+                if (mapping != null){
+                    p.setUniprotkb(mapping);
+                    listener.onGettingRemappingFromIdentifiers(p);
+                    listener.onRemappingComplete(p,"Success. Identifiers have mapping.");
+                    return;
                 } else {
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(false);
-                    mapping = null;
+                    listener.onRemappingComplete(p,"Failed. No sequence nor identifier mappings.");
+                    return;
                 }
             }
         }
 
-        else { //!priorityIdentifiers && !prioritySequence){
-
+        else if(!priorityIdentifiers && !prioritySequence){
             mapping = findIdentifierMapping(p);
 
             if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                remapReport.setMappingFromIdentifiers(false);
-                remapReport.setMappingFromSequence(false);
-                mapping = null;
-            } else if (mapping != null) {
-                if(getMappingForSequence(p).hasUniqueUniprotId()){
-                    if(mapping.equalsIgnoreCase(
-                            getMappingForSequence(p).getFinalUniprotId())){
-                        remapReport.setMappingFromIdentifiers(true);
-                        remapReport.setMappingFromSequence(true);
+                listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
+                return;
+            }
+            if (mapping == null) {
+                if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
+                    p.setUniprotkb(getMappingForSequence(p).getFinalUniprotId());
+                    listener.onGettingRemappingFromSequence(p);
+                    listener.onRemappingComplete(p,"Success. Sequence has mapping.");
+                    return ;
+                }else {  // sequenceMapping == null
+                    listener.onRemappingComplete(p,"Failed. No sequence nor identifier mappings.");
+                    return;
+                }
+            }
+            else if (mapping != null) {
+                if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
+                    if(mapping.equalsIgnoreCase(getMappingForSequence(p).getFinalUniprotId())){
+                        p.setUniprotkb(mapping);
+                        listener.onGettingRemappingFromIdentifiers(p);
+                        listener.onGettingRemappingFromSequence(p);
+                        listener.onRemappingComplete(p,"Success.");
+                        return;
                     } else {
-                        remapReport.setMappingFromIdentifiers(false);
-                        remapReport.setMappingFromSequence(false);
-                        remapReport.setConflictMessage("Conflict between identifiers and sequence: "+
-                                "identifiers remapped to "+
-                                "["+mapping+"], "+
-                                "sequence remapped to "+
-                                "["+getMappingForSequence(p).getFinalUniprotId()+"].");
-                        mapping = null;
+                        listener.onSequenceToIdentifierConflict(getMappingForSequence(p).getFinalUniprotId() , mapping);
+                        listener.onRemappingComplete(p,"Failed. Conflict between sequence and identifier mappings.");
+                        return ;
                     }
                 }else {  // sequenceMapping == null // identifierMappping != null
-                    remapReport.setMappingFromIdentifiers(true);
-                    remapReport.setMappingFromSequence(false);
-                }
-            } else {// (identifierMapping == null)
-                if(getMappingForSequence(p).hasUniqueUniprotId()){
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(true);
-                    mapping = getMappingForSequence(p).getFinalUniprotId();
-                }else {  // sequenceMapping == null
-                    remapReport.setMappingFromIdentifiers(false);
-                    remapReport.setMappingFromSequence(false);
-                    mapping = null;
+                    p.setUniprotkb(mapping);
+                    listener.onGettingRemappingFromIdentifiers(p);
+                    listener.onRemappingComplete(p,"Success.");
+                    return ;
                 }
             }
         }
-        return mapping;
+
+        listener.onRemappingComplete(p,"Failed. Impossible exit case");
+        log.warn("Impossible exit case from the remapping.");
+        return ;
     }
 
 
@@ -219,52 +193,18 @@ public abstract class AbstractProteinRemapper
      * @param p
      */
     private void checkIdentifiersMappingConsistency(Protein p){
-        // Theoretically, these two loops could be merged into one.
-        // If all gets on the TreeMap were run through wrapper
-        // which chooses either to 'get' or 'query, put and get'
-
-        //Populate the list
+        String remappedUniprot = null;
+        //Populate the list using 'getEntry'
         for(Xref x : p.getXrefs()){
-            if(!identifierMappingResults.containsKey(x)){
-                identifierMappingResults.put(x,getMappingForXref(p, x));
-            }
-        }
-
-        //check the list
-        final Iterator<Xref> outerIterator = identifierMappingResults.keySet().iterator();
-        /*String remappedUniprot = null;
-        for (Map.Entry<Xref, IdentificationResults> entrye = identifierMappingResults.entrySet()){
-            if (remappedUniprot != null){
-
-            }
-            else{
-                remappedUniprot = entrye.getValue().getFinalUniprotId();
-            }
-        } */
-        out:
-        while (outerIterator.hasNext()) {
-            final Xref outerKey = outerIterator.next();
-            final Iterator<Xref> innerIterator = identifierMappingResults.keySet().iterator();
-            while (innerIterator.hasNext()) {
-                final Xref innerKey = innerIterator.next();
-                in:
-                if (DefaultExternalIdentifierComparator.areEquals(innerKey,outerKey)) {
-                    break in;
-                    // The iterators have met, further comparisons become redundant
-                }else{
-                    if (identifierMappingResults.get(innerKey).hasUniqueUniprotId() &&
-                            identifierMappingResults.get(outerKey).hasUniqueUniprotId() &&
-                            !identifierMappingResults.get(innerKey).getFinalUniprotId().equalsIgnoreCase(
-                                    identifierMappingResults.get(outerKey).getFinalUniprotId())){
+            if(getEntry(p,x) != null && getEntry(p,x).hasUniqueUniprotId()){
+                if (remappedUniprot != null){
+                    if(! remappedUniprot.equalsIgnoreCase(getEntry(p,x).getFinalUniprotId())){
                         identifierMappingResultsHasNoConflict = false;
-                        remapReport.setConflictMessage("Conflict in remapped identifiers: "+
-                                "["+outerKey.getId()+"] was remapped to "+
-                                "["+identifierMappingResults.get(outerKey).getFinalUniprotId()+"], "+
-                                "["+innerKey.getId()+"] was remapped to "+
-                                "["+identifierMappingResults.get(innerKey).getFinalUniprotId()+"].");
-                        break out;
-                        //All comparisons can now stop
+                        listener.onIdentifierConflict(remappedUniprot, getEntry(p,x).getFinalUniprotId());
                     }
+                }
+                else{
+                    remappedUniprot = getEntry(p,x).getFinalUniprotId();
                 }
             }
         }
@@ -280,21 +220,30 @@ public abstract class AbstractProteinRemapper
      */
     private IdentificationResults getFirstMappedIdentifierMappingResult(Protein p){
         for(Xref x : p.getXrefs()){
-            if(!identifierMappingResults.containsKey(x)){
-                identifierMappingResults.put(x,getMappingForXref(p, x));
-            }
-            if(identifierMappingResults.get(x).hasUniqueUniprotId()){
-                return identifierMappingResults.get(x);
+            if(getEntry(p,x) != null
+                    && getEntry(p,x).hasUniqueUniprotId()){
+                return getEntry(p,x);
             }
         }
         return null;
     }
 
-    protected abstract IdentificationResults getMappingForXref(Protein p, Xref x);
-        //return new DefaultIdentificationResults();
+    /**
+     * A wrapper for the identifierMappingResults map to ensure that before get is applied, the entry has been put.
+     * @param p
+     * @param xref
+     * @return
+     */
+    public IdentificationResults getEntry(Protein p, Xref xref){
+        if(!identifierMappingResults.containsKey(xref)){
+            identifierMappingResults.put(xref,getMappingForXref(p, xref));
+        }
+        return identifierMappingResults.get(xref);
+    }
 
+
+    protected abstract IdentificationResults getMappingForXref(Protein p, Xref x);
     protected abstract IdentificationResults getMappingForSequence(Protein p);
-        //return new DefaultIdentificationResults();
 
     public boolean isCheckingEnabled() {
         return checkingEnabled;
@@ -317,22 +266,17 @@ public abstract class AbstractProteinRemapper
     }
 
     public void addRemapListener(RemapListener listener){
-        listeners.add(listener);
+        this.listener = listener;
     }
     public void removeRemapListener(RemapListener listener){
-        listeners.remove(listener);
-    }
-    private void fireRemapReport(){
-        for(RemapListener r: listeners){
-            r.fireRemapReport(remapReport);
-        }
+        listener = null;
     }
 
     private void clean(){
-        remapReport = new RemapReport(checkingEnabled);
+       // remapReport = new RemapReport(checkingEnabled);
         identifierMappingResults.clear();
         identifierMappingResultsHasNoConflict = true;
         sequenceMappingResult = null;
-
+        isSequenceMappingResultChecked = false;
     }
 }
