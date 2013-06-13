@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.enricher.enricherimplementation.cvterm;
+package psidev.psi.mi.jami.enricher.impl.cvterm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,9 +6,6 @@ import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
-import psidev.psi.mi.jami.enricher.event.AdditionReport;
-import psidev.psi.mi.jami.enricher.event.MismatchReport;
-import psidev.psi.mi.jami.enricher.event.OverwriteReport;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.util.CollectionUtilsExtra;
@@ -160,9 +157,9 @@ public abstract class AbstractCvTermEnricher
      * Compares two CvTerms and updates the ToEnrich with any fields that it is missing.
      * Only full name and synonyms are considered.
      * @param cvTermToEnrich      The cvTerm to be updated
-     * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
+     * @param CvTermFetched    The cvTerm containing the data to update the ToEnrich with.
      */
-    protected void runCvTermAdditionEnrichment(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
+    protected void runCvTermAdditionEnrichment(CvTerm cvTermToEnrich, CvTerm CvTermFetched){
 
         //Todo report obsolete
 
@@ -172,14 +169,14 @@ public abstract class AbstractCvTermEnricher
 
         //FullName
         if(cvTermToEnrich.getFullName() == null
-                && cvTermEnriched.getFullName() != null){
-            cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
+                && CvTermFetched.getFullName() != null){
+            cvTermToEnrich.setFullName(CvTermFetched.getFullName());
             //addAdditionReport(new AdditionReport(FIELD_FULLNAME, cvTermToEnrich.getFullName()));
         }
 
         //Add identifiers
         Collection<Xref> subtractedIdentifiers = CollectionUtilsExtra.comparatorSubtract(
-                cvTermEnriched.getIdentifiers(),
+                CvTermFetched.getIdentifiers(),
                 cvTermToEnrich.getIdentifiers(),
                 new DefaultXrefComparator());
 
@@ -190,7 +187,7 @@ public abstract class AbstractCvTermEnricher
 
         //Add synonyms
         Collection<Alias> subtractedSynonyms = CollectionUtilsExtra.comparatorSubtract(
-                cvTermEnriched.getSynonyms(),
+                CvTermFetched.getSynonyms(),
                 cvTermToEnrich.getSynonyms(),
                 new DefaultAliasComparator());
 
@@ -204,20 +201,20 @@ public abstract class AbstractCvTermEnricher
      * Compares the ToEnrich and enriched form for mismatches.
      * The full name and the short name are compared between the ToEnrich and enriched forms.
      * @param cvTermToEnrich
-     * @param cvTermEnriched
+     * @param CvTermFetched
      */
-    public void runCvTermMismatchComparison(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
+    public void runCvTermMismatchComparison(CvTerm cvTermToEnrich, CvTerm CvTermFetched){
         //ShortName - can never be null
-        if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
+        if(!cvTermToEnrich.getShortName().equals(CvTermFetched.getShortName())){
             //addMismatchReport(new MismatchReport(
-            //        FIELD_SHORTNAME, cvTermToEnrich.getShortName(), cvTermEnriched.getShortName()));
+            //        FIELD_SHORTNAME, cvTermToEnrich.getShortName(), CvTermFetched.getShortName()));
         }
 
         //FullName
-        if(cvTermEnriched.getFullName() != null){
-            if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
+        if(CvTermFetched.getFullName() != null){
+            if(!cvTermToEnrich.getFullName().equals(CvTermFetched.getFullName())){
                // addMismatchReport(new MismatchReport(
-               //         FIELD_FULLNAME, cvTermToEnrich.getFullName(), cvTermEnriched.getFullName()));
+               //         FIELD_FULLNAME, cvTermToEnrich.getFullName(), CvTermFetched.getFullName()));
             }
         }
     }
@@ -227,23 +224,23 @@ public abstract class AbstractCvTermEnricher
      * The minimum enricher is run first to add any missing fields,
      * then, the full name and short name are overwritten.
      * @param cvTermToEnrich      The cvTerm to be updated
-     * @param cvTermEnriched    The cvTerm containing the data to update the ToEnrich with.
+     * @param CvTermFetched    The cvTerm containing the data to update the ToEnrich with.
      */
-    public void runCvTermOverwriteUpdate(CvTerm cvTermToEnrich, CvTerm cvTermEnriched){
+    public void runCvTermOverwriteUpdate(CvTerm cvTermToEnrich, CvTerm CvTermFetched){
 
         //Overwrite shortname - is never null
-        if(!cvTermToEnrich.getShortName().equals(cvTermEnriched.getShortName())){
+        if(!cvTermToEnrich.getShortName().equals(CvTermFetched.getShortName())){
             String oldname =  cvTermToEnrich.getShortName();
-            cvTermToEnrich.setShortName(cvTermEnriched.getShortName());
+            cvTermToEnrich.setShortName(CvTermFetched.getShortName());
            // addOverwriteReport(new OverwriteReport(
           //          FIELD_SHORTNAME, cvTermToEnrich.getShortName(), oldname));
         }
 
         //Check full name
-        if(cvTermEnriched.getFullName() != null){
-            if(!cvTermToEnrich.getFullName().equals(cvTermEnriched.getFullName())){
+        if(CvTermFetched.getFullName() != null){
+            if(!cvTermToEnrich.getFullName().equals(CvTermFetched.getFullName())){
                 String oldname =  cvTermToEnrich.getFullName();
-                cvTermToEnrich.setFullName(cvTermEnriched.getFullName());
+                cvTermToEnrich.setFullName(CvTermFetched.getFullName());
              //   addOverwriteReport(new OverwriteReport(
                 //        FIELD_FULLNAME, cvTermToEnrich.getFullName(), oldname));
             }
