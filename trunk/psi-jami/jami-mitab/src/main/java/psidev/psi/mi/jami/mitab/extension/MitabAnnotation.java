@@ -24,6 +24,10 @@ public class MitabAnnotation extends DefaultAnnotation implements FileSourceCont
         super(topic, value);
     }
 
+    public MitabAnnotation(String topic, String value) {
+        super(new MitabCvTerm(topic), value);
+    }
+
     public MitabAnnotation(CvTerm topic, MitabSourceLocator sourceLocator) {
         super(topic);
         this.sourceLocator = sourceLocator;

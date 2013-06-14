@@ -21,4 +21,6 @@ public interface MitabParserListener {
     public void onSeveralFirstAuthorFound(int line, int column, int mitabColumn);
 
     public void onTextFoundInConfidence(int line, int column, int mitabColumn);
+
+    public void onMissingExpansionId(int line, int column, int mitabColumn);
 }
