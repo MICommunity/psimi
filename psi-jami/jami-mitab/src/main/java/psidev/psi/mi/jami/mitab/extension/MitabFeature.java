@@ -25,6 +25,10 @@ public class MitabFeature extends DefaultFeature implements FileSourceContext{
         super(type);
     }
 
+    public MitabFeature(String type) {
+        super(new MitabCvTerm(type));
+    }
+
     public MitabFeature(CvTerm type, String interpro) {
         super(type, interpro);
     }
