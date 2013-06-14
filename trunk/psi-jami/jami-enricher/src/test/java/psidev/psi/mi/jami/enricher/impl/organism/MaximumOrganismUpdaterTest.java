@@ -25,7 +25,7 @@ import static junit.framework.Assert.assertTrue;
 public class MaximumOrganismUpdaterTest {
 
 
-    private MaximumOrganismUpdater maximumOrganismUpdater;
+    private MaximumOrganismUpdaterOLD maximumOrganismUpdater;
     private MockOrganismFetcher fetcher;
     private EnricherEvent event;
 
@@ -37,7 +37,7 @@ public class MaximumOrganismUpdaterTest {
     @Before
     public void initialiseFetcherAndEnricher() {
         this.fetcher = new MockOrganismFetcher();
-        this.maximumOrganismUpdater = new MaximumOrganismUpdater(fetcher);
+        this.maximumOrganismUpdater = new MaximumOrganismUpdaterOLD(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism("" + TEST_AC_FULL_ORG, fullOrganism);

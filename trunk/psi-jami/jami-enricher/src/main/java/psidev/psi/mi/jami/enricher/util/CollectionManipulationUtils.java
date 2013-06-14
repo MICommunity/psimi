@@ -1,5 +1,10 @@
 package psidev.psi.mi.jami.enricher.util;
 
+import psidev.psi.mi.jami.bridges.uniprot.uniprotutil.UniprotToJAMI;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
+
 import java.util.*;
 
 /**
@@ -9,7 +14,7 @@ import java.util.*;
  * Date: 14/05/13
  * Time: 11:17
  */
-public class CollectionUtilsExtra {
+public class CollectionManipulationUtils {
 
 
     /**
@@ -28,5 +33,20 @@ public class CollectionUtilsExtra {
             if (!subtracted.contains(item)) result.add(item);
         }
         return result;
+    }
+
+    private UniprotToJAMI data = new UniprotToJAMI();
+
+    public Collection<Xref> findUniprotManagedXrefs(Collection<Xref> xrefs){
+        Collection<Xref> uniprotManaged = new ArrayList<Xref>();
+        for(Xref xref : xrefs){
+            //Ignore if it hsa a qualifier
+            if(xref.getQualifier() == null){
+                if(data.getUniprotDatabases().containsValue(xref.getDatabase())){
+                    uniprotManaged.add(xref);
+                }
+            }
+        }
+        return uniprotManaged;
     }
 }

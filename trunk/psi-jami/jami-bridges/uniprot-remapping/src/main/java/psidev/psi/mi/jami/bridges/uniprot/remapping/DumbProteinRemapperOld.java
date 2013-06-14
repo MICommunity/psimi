@@ -18,7 +18,7 @@ import java.util.TreeMap;
  * Date: 07/06/13
  * Time: 15:40
  */
-public class DumbProteinRemapper extends AbstractProteinRemapper {
+public class DumbProteinRemapperOld extends AbstractProteinRemapper {
 
     private TreeMap<Xref, IdentificationResults> xrefList;
 
@@ -26,7 +26,7 @@ public class DumbProteinRemapper extends AbstractProteinRemapper {
     IdentificationResults empty = new DefaultIdentificationResults();
 
 
-    public DumbProteinRemapper(){
+    public DumbProteinRemapperOld(){
         super();
         setTestXrefs();
     }

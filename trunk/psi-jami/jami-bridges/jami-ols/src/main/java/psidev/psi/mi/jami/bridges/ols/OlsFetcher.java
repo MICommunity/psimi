@@ -49,8 +49,8 @@ public class OlsFetcher
      * @return
      */
     protected String databaseIdentifierGetter(String database){
-        if(dbMap == null) initialiseDbMap();
         if(database == null)return null;
+        if(dbMap == null) initialiseDbMap();
         if(dbMap.containsKey(database)) return dbMap.get(database);
         return null;
     }

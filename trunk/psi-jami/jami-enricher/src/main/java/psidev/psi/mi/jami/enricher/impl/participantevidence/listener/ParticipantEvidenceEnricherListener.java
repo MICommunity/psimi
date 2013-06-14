@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.participantevidence.listener;
 
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -8,4 +11,7 @@ package psidev.psi.mi.jami.enricher.impl.participantevidence.listener;
  * Time: 16:58
  */
 public interface ParticipantEvidenceEnricherListener {
+
+    public void onParticipantEvidenceEnriched(ParticipantEvidence participantEvidence, String status);
+
 }

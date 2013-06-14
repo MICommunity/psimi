@@ -22,7 +22,7 @@ import static junit.framework.Assert.*;
  */
 public class MinimumOrganismEnricherTest {
 
-    private MinimumOrganismEnricher minimumOrganismEnricher;
+    private MinimumOrganismEnricherOLD minimumOrganismEnricher;
     private MockOrganismFetcher fetcher;
     private EnricherEvent event;
 
@@ -34,7 +34,7 @@ public class MinimumOrganismEnricherTest {
     @Before
     public void initialiseFetcherAndEnricher() {
         this.fetcher = new MockOrganismFetcher();
-        this.minimumOrganismEnricher = new MinimumOrganismEnricher(fetcher);
+        this.minimumOrganismEnricher = new MinimumOrganismEnricherOLD(fetcher);
 
         Organism fullOrganism = new DefaultOrganism(TEST_AC_FULL_ORG, TEST_COMMONNAME, TEST_SCIENTIFICNAME);
         fetcher.addNewOrganism("" + TEST_AC_FULL_ORG, fullOrganism);

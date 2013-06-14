@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.feature.listener;
 
+import psidev.psi.mi.jami.model.Feature;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -8,4 +10,6 @@ package psidev.psi.mi.jami.enricher.impl.feature.listener;
  * Time: 16:55
  */
 public interface FeatureEnricherListener {
+
+    public void onFeatureEnriched(Feature feature , String status);
 }

@@ -31,8 +31,8 @@ public class UniprotFetcher
     }
 
 
-    private static final String PRO_SIGNAL = "PRO_";
-    public static final Pattern UNIPROT_PRO_REGEX = Pattern.compile("PRO_[0-9]{10}");
+
+    public static final Pattern UNIPROT_PRO_REGEX = Pattern.compile("PRO[_|-][0-9]{10}");
     public static final Pattern UNIPROT_ISOFORM_REGEX = Pattern.compile("-[0-9]");
     public static final Pattern UNIPROT_MASTER_REGEX = Pattern.compile(
             "[A-NR-Z][0-9][A-Z][A-Z0-9][A-Z0-9][0-9]|"+
@@ -54,15 +54,8 @@ public class UniprotFetcher
         Collection<Protein> proteins = null;
 
         if(UNIPROT_PRO_REGEX.matcher(identifier).find()){
-            int indexOfPro = identifier.lastIndexOf(PRO_SIGNAL);
-            String proIdentifier;
-            if(indexOfPro != 0){
-                proIdentifier = identifier.substring(indexOfPro);
-            } else {
-                proIdentifier = identifier;
-            }
             //log.debug("Searching for the pro identifier ["+proIdentifier+"] (from identifier ["+identifier+"])");
-            proteins = bridge.fetchFeatureBySearch(proIdentifier);
+            proteins = bridge.fetchFeatureBySearch(identifier.substring(4,-1));
         } else if (UNIPROT_MASTER_REGEX.matcher(identifier).find()){
             if(UNIPROT_ISOFORM_REGEX.matcher(identifier).find()){
                 //log.debug("Searching for the isoform identifier ["+identifier+"]");

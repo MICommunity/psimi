@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.model.Organism;
  */
 public interface OrganismEnricher{
 
-    public void enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException;
+    public boolean enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException;
 
     public void setFetcher(OrganismFetcher fetcher);
     public OrganismFetcher getFetcher();

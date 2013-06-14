@@ -16,22 +16,23 @@ import psidev.psi.mi.jami.model.Organism;
  * Time: 13:35
  */
 public class MaximumOrganismUpdater
-        extends AbstractOrganismEnricher
+        extends MinimumOrganismUpdater
         implements OrganismEnricher {
 
-    public MaximumOrganismUpdater(){
-        super();
+
+    @Override
+    protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
+        super.processOrganism(organismToEnrich);
+
+        //Synonyms.
     }
 
-    public MaximumOrganismUpdater(OrganismFetcher fetcher){
-        super(fetcher);
-    }
 
-    public void enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException {
+    /*public void enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException {
 
         Organism organismEnriched = getFullyEnrichedForm(organismToEnrich);
         runOrganismAdditionEnrichment(organismToEnrich, organismEnriched);
         runOrganismOverwriteUpdate(organismToEnrich, organismEnriched);
        // fireEnricherEvent(enricherEvent);
-    }
+    }   */
 }

@@ -19,22 +19,35 @@ public class MinimumOrganismEnricher
         extends AbstractOrganismEnricher
         implements OrganismEnricher {
 
-    public MinimumOrganismEnricher(){
-        super();
-    }
 
-    public MinimumOrganismEnricher(OrganismFetcher fetcher){
-        super(fetcher);
-    }
+    @Override
+    protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
+        if(organismFetched.getTaxId() < -4){//TODO check this  is a valid assertion
+            throw new BadEnrichedFormException( "The organism had an invalid taxID of "+organismFetched.getTaxId());
+        }
 
-    public void enrichOrganism(Organism organismToEnrich)
-            throws BadEnrichedFormException, MissingServiceException,
-            BadToEnrichFormException, BridgeFailedException {
+        //TaxID
+        if(organismToEnrich.getTaxId() == -3){
+            if (listener != null) listener.onTaxidUpdate(organismToEnrich, "-3");
+            organismToEnrich.setTaxId(organismFetched.getTaxId());
+        }
 
-        Organism organismEnriched = getFullyEnrichedForm(organismToEnrich);
-        runOrganismAdditionEnrichment(organismToEnrich, organismEnriched);
-        runOrganismMismatchComparison(organismToEnrich, organismEnriched);
-       // fireEnricherEvent(enricherEvent);
+        //TODO - check that the organism details don't enrich if there is no match on taxid
+        if(organismToEnrich.getTaxId() == organismFetched.getTaxId()){
+            //Scientific name
+            if(organismToEnrich.getScientificName() == null
+                    && organismFetched.getScientificName() != null){
+                if (listener != null) listener.onScientificNameUpdate(organismToEnrich , organismToEnrich.getScientificName());
+                organismToEnrich.setScientificName(organismFetched.getScientificName());
+            }
+
+            //Commonname
+            if(organismToEnrich.getCommonName() == null
+                    &&organismFetched.getCommonName() != null){
+                if (listener != null) listener.onCommonNameUpdate(organismToEnrich , organismToEnrich.getCommonName());
+                organismToEnrich.setCommonName(organismFetched.getCommonName());
+            }
+        }
     }
 }
 

@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.bridges.exception.BadResultException;
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
@@ -22,6 +23,7 @@ public interface ProteinEnricher {
 
     /**
      *
+     *
      * @param proteinToEnrich
      * @throws BridgeFailedException
      * @throws MissingServiceException
@@ -30,9 +32,9 @@ public interface ProteinEnricher {
      * @throws BadResultException
      * @throws SeguidException
      */
-    public void enrichProtein(Protein proteinToEnrich)
+    public boolean enrichProtein(Protein proteinToEnrich)
             throws BridgeFailedException, MissingServiceException, BadToEnrichFormException,
-            BadSearchTermException, BadResultException, SeguidException;
+            BadSearchTermException, BadResultException, SeguidException, BadEnrichedFormException;
 
 
     /**
