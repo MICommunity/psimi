@@ -13,12 +13,16 @@ import psidev.psi.mi.jami.mitab.extension.*;
 import java.util.Collection;
 import java.util.Collections;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.PositionUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.mitab.listener.MitabParserListener;
 import java.util.ArrayList;
 import java.lang.NumberFormatException;
 import java.util.Date;
 import java.text.ParseException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
+import psidev.psi.mi.jami.exception.IllegalRangeException
 
 public class MitabLineParser {
 
@@ -81,6 +85,16 @@ TOKEN [IGNORE_CASE]:
  <NEGATIVE : (" ")* ("true" | "false" | ("\"" "true" | "false" "\"")) (" ")* >
 }
 
+TOKEN [IGNORE_CASE]:
+{
+ <POSITION : (" ")* ("n" | "c" | "<" | ">" | "?" |  ["-"] (["0"-"9"])+ (" ")* >
+}
+
+TOKEN :
+{
+  < STOICHIOMETRY: (["0"-"9"])+ ["." (["0"-"9"])+ ] >
+}
+
 TOKEN :
 {
   < COMMENT: "#" (~["\n"])*>
@@ -125,6 +139,10 @@ boolean MitabLine():
   Collection<MitabAnnotation> checksumB;
   Collection<MitabAnnotation> checksumI;
   boolean isNegative = false;
+  Collection<MitabFeature> featureA;
+  Collection<MitabFeature> featureB;
+  Collection<MitabCvTerm> pmethodA;
+  Collection<MitabCvTerm> pmethodB;
 }
 {
 (
@@ -175,12 +193,12 @@ boolean MitabLine():
       
       [ //starting MITAB 2.7
       "\t" //end of negative() delimiter
-      (<EMPTY_COLUMN> | features()) "\t"
-      (<EMPTY_COLUMN> | features()) "\t"
+      (<EMPTY_COLUMN> {featureA = Collections.EMPTY_LIST;} | featureA = features(37)) "\t"
+      (<EMPTY_COLUMN> {featureB = Collections.EMPTY_LIST;} | featureB = features(38)) "\t"
       (<EMPTY_COLUMN> | stoichiometry()) "\t"
       (<EMPTY_COLUMN> | stoichiometry()) "\t"
-      (<EMPTY_COLUMN> | participantIdentificationMethod()) "\t"
-      (<EMPTY_COLUMN> | participantIdentificationMethod()) "\t"
+      (<EMPTY_COLUMN> {pmethodA = Collections.EMPTY_LIST;} | pmethodA = cvTermsv(41)) "\t"
+      (<EMPTY_COLUMN> {pmethodB = Collections.EMPTY_LIST;} | pmethodB = cvTermsv(42)) "\t"
       ] // end MITAB 2.7
       
       ] //end MITAB 2.6
@@ -410,16 +428,93 @@ Collection<MitabChecksum> checksums(int column):
   {return checksums;}
 }
 
+Collection<MitabFeature> features(int column):
+{
+  Collection<MitabFeature> features;
+  MitabFeature var;
+}
+{
+  var = feature(column)
+  {features = new ArrayList<MitabFeature>(); features.add(var);}
+
+  ("|" var = feature(column) {features.add(var);})*
+  {return features;}
+}
+
+Stoichiometry stoichiometry():
+{
+  java.lang.String min;
+  java.lang.String max = null;
+}
+{
+  //float
+  <STOICHIOMETRY>
+  {
+      return Boolean.parseBoolean(token.image.trim());
+    }
+}
+
+MitabFeature feature(int columnNumber):
+{
+  java.lang.String type;
+  Collection<Range> ranges;
+  Range var;
+  java.lang.String text;
+  MitabFeature feature;
+}
+{
+  //type:range1,range2(text)
+  type = safeString() ":" var = range(columnNumber) {ranges = new ArrayList<Range>(); ranges.add(var);}
+  ("," var = range(columnNumber) {ranges.add(var);})* [ text = safeString() ]
+  {
+      feature = new MitabFeature(type);
+      feature.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+      feature.addAll(ranges);
+
+      return feature;
+    }
+}
+
+MitabRange range(int columnNumber) throws ParseException:
+{
+  Position start;
+  Position end;
+  MitabRange range;
+}
+{
+  //x-x
+  <POSITION>
+  {try{
+      start = PositionUtils.createPositionFromString(token.image.trim());
+      start.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+      } catch(IllegalRangeException e){
+          throws new ParseException("The start " + token + " is not a valid start position.");
+      }
+  }
+  "-" <POSITION>
+  {
+  try{
+        end = PositionUtils.createPositionFromString(token.image.trim());
+        start.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+        } catch(IllegalRangeException e){
+            throws new ParseException("The end " + token + " is not a valid end position.");
+        }
+
+      range = new MitabRange(start, end);
+      range.setSourceLocator(start.getSourceLocator());
+      return range;
+    }
+}
+
 boolean negative():
 {
-  String value;
   boolean isNegative;
 }
 {
   //method:value
-  value = <NEGATIVE>
+  <NEGATIVE>
   {
-      return Boolean.parseBoolean(value);
+      return Boolean.parseBoolean(token.image.trim());
     }
 }
 
@@ -435,7 +530,7 @@ MitabChecksum checksum(int columnNumber):
   {
       method = new MitabChecksum(method, value);
       method.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
-      return param;
+      return checksum;
     }
 }
 
