@@ -21,6 +21,10 @@ public class MitabChecksum extends DefaultChecksum implements FileSourceContext{
         super(method, value);
     }
 
+    public MitabChecksum(String method, String value) {
+        super(new MitabCvTerm(method), value);
+    }
+
     public MitabChecksum(CvTerm method, String value, MitabSourceLocator locator) {
         super(method, value);
         this.sourceLocator = locator;
@@ -28,5 +32,9 @@ public class MitabChecksum extends DefaultChecksum implements FileSourceContext{
 
     public MitabSourceLocator getSourceLocator() {
         return this.sourceLocator;
+    }
+
+    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
     }
 }

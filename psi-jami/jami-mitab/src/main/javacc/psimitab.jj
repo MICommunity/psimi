@@ -16,6 +16,9 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.mitab.listener.MitabParserListener;
 import java.util.ArrayList;
 import java.lang.NumberFormatException;
+import java.util.Date;
+import java.text.ParseException;
+import psidev.psi.mi.jami.exception.IllegalParameterException;
 
 public class MitabLineParser {
 
@@ -73,6 +76,11 @@ TOKEN [IGNORE_CASE]:
  <TAXID : "taxid">
 }
 
+TOKEN [IGNORE_CASE]:
+{
+ <NEGATIVE : (" ")* ("true" | "false" | ("\"" "true" | "false" "\"")) (" ")* >
+}
+
 TOKEN :
 {
   < COMMENT: "#" (~["\n"])*>
@@ -111,6 +119,12 @@ boolean MitabLine():
   Collection<MitabAnnotation> annotI;
   Collection<MitabOrganism> host;
   Collection<MitabParameter> params;
+  Collection<MitabDate> created;
+  Collection<MitabDate> update;
+  Collection<MitabAnnotation> checksumA;
+  Collection<MitabAnnotation> checksumB;
+  Collection<MitabAnnotation> checksumI;
+  boolean isNegative = false;
 }
 {
 (
@@ -152,12 +166,12 @@ boolean MitabLine():
       (<EMPTY_COLUMN> {annotI = Collections.EMPTY_LIST;} | annotI = annotations(28)) "\t"
       (<EMPTY_COLUMN> {host = Collections.EMPTY_LIST;} | host = taxId(29)) "\t"
       (<EMPTY_COLUMN> {params = Collections.EMPTY_LIST;} | params = parameters()) "\t"
-      (<EMPTY_COLUMN> | creationDate()) "\t"
-      (<EMPTY_COLUMN> | updateDate()) "\t"
-      (<EMPTY_COLUMN> | checksum()) "\t"
-      (<EMPTY_COLUMN> | checksum()) "\t"
-      (<EMPTY_COLUMN> | checksum()) "\t"
-      (<EMPTY_COLUMN> | negative()) 
+      (<EMPTY_COLUMN> {created = Collections.EMPTY_LIST;} | created = dates(31)) "\t"
+      (<EMPTY_COLUMN> {update = Collections.EMPTY_LIST;} | update = dates(32)) "\t"
+      (<EMPTY_COLUMN> {checksumA = Collections.EMPTY_LIST;} | checksumA = checksums(33)) "\t"
+      (<EMPTY_COLUMN> {checksumB = Collections.EMPTY_LIST;} | checksumB = checksums(34)) "\t"
+      (<EMPTY_COLUMN> {checksumI = Collections.EMPTY_LIST;} | checksumI = checksums(35)) "\t"
+      (<EMPTY_COLUMN> | negative = negative())
       
       [ //starting MITAB 2.7
       "\t" //end of negative() delimiter
@@ -357,7 +371,7 @@ Collection<MitabAnnotation> annotations(int column):
   {return annots;}
 }
 
-Collection<MitabParameter> parameters():
+Collection<MitabParameter> parameters() throws ParseException:
 {
   Collection<MitabParameter> params;
   MitabParameter var;
@@ -370,7 +384,79 @@ Collection<MitabParameter> parameters():
   {return params;}
 }
 
-MitabAnnotation parameter():
+Collection<MitabDate> dates(int column) throws ParseException:
+{
+  Collection<MitabDate> dates;
+  MitabDate var;
+}
+{
+  var = date(column)
+  {dates = new ArrayList<MitabDate>(); dates.add(var);}
+
+  ("|" var = date(column) {dates.add(var);})*
+  {return dates;}
+}
+
+Collection<MitabChecksum> checksums(int column):
+{
+  Collection<MitabChecksum> checksums;
+  MitabChecksum var;
+}
+{
+  var = checksum(column)
+  {checksums = new ArrayList<MitabChecksum>(); checksums.add(var);}
+
+  ("|" var = checksum(column) {checksums.add(var);})*
+  {return checksums;}
+}
+
+boolean negative():
+{
+  String value;
+  boolean isNegative;
+}
+{
+  //method:value
+  value = <NEGATIVE>
+  {
+      return Boolean.parseBoolean(value);
+    }
+}
+
+MitabChecksum checksum(int columnNumber):
+{
+  java.lang.String method;
+  java.lang.String value;
+  MitabChecksum checksum;
+}
+{
+  //method:value
+  method = safeString() ":" value = safeString()
+  {
+      method = new MitabChecksum(method, value);
+      method.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+      return param;
+    }
+}
+
+MitabDate date(int columnNumber) throws ParseException:
+{
+  java.lang.String date;
+  MitabDate mitabDate;
+}
+{
+  //yyyy/mm/dd
+  date = safeString()
+  { try{
+      mitabDate = new MitabDate(date);
+      mitabDate.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+      return mitabDate;}
+  } catch (java.text.ParseException e){
+      throws new ParseException("The date " + date + " is not well formated. We expect yyyy/mm/dd",e);
+  }
+}
+
+MitabAnnotation parameter() throws ParseException:
 {
   java.lang.String type;
   java.lang.String value;
@@ -380,9 +466,14 @@ MitabAnnotation parameter():
 {
   //type:value(unit)
   type = safeString() ":" value = safeString() [ "(" unit = safeString() ")" ]
-  { param = new MitabParameter(type, value, unit);
-    param.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 30));
-    return param;}
+  { try{
+      param = new MitabParameter(type, value, unit);
+      param.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 30));
+      return param;
+  } catch (IllegalParameterException e){
+     throws new ParseException("The parameter " + value + " is not well formated.",e);
+  }
+    }
 }
 
 MitabAnnotation annotation(int columnNumber):
@@ -463,7 +554,7 @@ MitabSource source():
     return s;}
 }
 
-MitabOrganism organism(int columnNumber) throws NumberFormatException:
+MitabOrganism organism(int columnNumber) throws ParseException:
 {
   java.lang.String id;
   java.lang.String name = null;
@@ -472,9 +563,16 @@ MitabOrganism organism(int columnNumber) throws NumberFormatException:
 {
   //taxid:id(name)
   [(" ")*] <TAXID> ":" id = safeString() [ "(" name = safeString() ")" ]
-  { organism = new MitabOrganism(Integer.parseInt(id), name);
-    organism.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
-    return organism;}
+  {
+    try {
+        organism = new MitabOrganism(Integer.parseInt(id), name);
+        organism.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+        return organism;
+    }
+    catch (NumberFormatException e){
+       throws new ParseException("The taxid id is not a valid integer.", e);
+    }
+    }
 }
 
 MitabXref idWithImex(int columnNumber):

@@ -38,4 +38,8 @@ public class MitabConfidence extends DefaultModelledConfidence implements FileSo
     public MitabSourceLocator getSourceLocator() {
         return sourceLocator;
     }
+
+    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
+    }
 }
