@@ -30,7 +30,7 @@ import java.util.List;
 public class UniprotBridge {
 
     private static final Logger log = LoggerFactory.getLogger(UniprotBridge.class.getName());
-
+    private UniprotToJAMI uniprotToJAMI = new UniprotToJAMI();
     UniProtQueryService uniProtQueryService = UniProtJAPI.factory.getUniProtQueryService();
 
     /**
@@ -52,7 +52,7 @@ public class UniprotBridge {
             EntryIterator<UniProtEntry> entries = uniProtQueryService.getEntryIterator(query);
 
             while(entries.hasNext()){
-                proteins.add(UniprotToJAMI.getProteinFromEntry(entries.next()));
+                proteins.add(uniprotToJAMI.getProteinFromEntry(entries.next()));
             }
         }catch (RemoteDataAccessException e){
             throw new BridgeFailedException("Problem with Uniprot Service.",e);

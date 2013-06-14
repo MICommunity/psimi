@@ -1,5 +1,8 @@
 package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
 
+import psidev.psi.mi.jami.listener.CvTermChangeListener;
+import psidev.psi.mi.jami.model.CvTerm;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -7,5 +10,8 @@ package psidev.psi.mi.jami.enricher.impl.cvterm.listener;
  * Date: 13/06/13
  * Time: 16:54
  */
-public interface CvTermEnricherListener {
+public interface CvTermEnricherListener extends CvTermChangeListener{
+
+    public void onCvTermEnriched(CvTerm cvTerm, String status);
+
 }

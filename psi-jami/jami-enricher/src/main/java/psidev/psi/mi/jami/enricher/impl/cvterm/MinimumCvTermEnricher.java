@@ -6,8 +6,13 @@ import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.impl.cvterm.listener.CvTermEnricherListener;
+import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -21,35 +26,29 @@ public class MinimumCvTermEnricher
         extends AbstractCvTermEnricher
         implements CvTermEnricher {
 
-    public MinimumCvTermEnricher() {
-        super();
-    }
-
-    public MinimumCvTermEnricher(CvTermFetcher fetcher) {
-        super(fetcher);
-    }
-
-    /**
-     * Enrichment of a single CvTerm.
-     * If enrichment takes place, the ToEnrich will be edited.
-     *
-     * @param cvTermToEnrich  a CvTerm to enrich
-     */
-    public void enrichCvTerm(CvTerm cvTermToEnrich)
-            throws BridgeFailedException, MissingServiceException,
-            BadToEnrichFormException, BadSearchTermException {
-
-        CvTerm cvTermEnriched = getFullyEnrichedForm(cvTermToEnrich);
-        runCvTermAdditionEnrichment(cvTermToEnrich, cvTermEnriched);
-        runCvTermMismatchComparison(cvTermToEnrich, cvTermEnriched);
-        //fireEnricherEvent(enricherEvent);
-    }
 
 
+    protected void processCvTerm(CvTerm cvTermToEnrich){
 
+        //ShortName not checked - never null
 
-    public void enrichCvTerms(Collection<CvTerm> cvTermsToEnrich) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        //FullName
+        if(cvTermToEnrich.getFullName() == null
+                && cvTermFetched.getFullName() != null){
+            cvTermToEnrich.setFullName(cvTermFetched.getFullName());
+            if (listener != null) listener.onFullNameUpdate(cvTermToEnrich, null);
+        }
+
+        //Identifiers
+        Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
+                cvTermFetched.getIdentifiers(),
+                cvTermToEnrich.getIdentifiers(),
+                new DefaultXrefComparator());
+
+        for(Xref xrefIdentifier: subtractedIdentifiers){
+            cvTermToEnrich.getIdentifiers().add(xrefIdentifier);
+            if (listener != null) listener.onAddedIdentifier(cvTermToEnrich, xrefIdentifier);
+        }
     }
 
 }

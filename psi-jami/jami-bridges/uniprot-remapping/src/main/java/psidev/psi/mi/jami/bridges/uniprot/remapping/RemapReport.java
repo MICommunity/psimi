@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * Date: 05/06/13
  * Time: 15:55
  */
+@Deprecated
 public class RemapReport {
 
     private boolean remapped = false;

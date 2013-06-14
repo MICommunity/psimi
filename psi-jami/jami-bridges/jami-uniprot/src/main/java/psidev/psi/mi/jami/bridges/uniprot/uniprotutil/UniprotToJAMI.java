@@ -49,7 +49,7 @@ public class UniprotToJAMI {
 
     private final static Logger log = LoggerFactory.getLogger(UniprotToJAMI.class.getName());
 
-    public static Protein getProteinFromEntry(UniProtEntry e) throws BadResultException {
+    public Protein getProteinFromEntry(UniProtEntry e) throws BadResultException {
 
         if(e == null) throw new BadResultException("The Uniprot entry was null");
 
@@ -422,18 +422,26 @@ public class UniprotToJAMI {
     }
 
 
-    private static Map<DatabaseType,CvTerm> databaseMap = null;
-    private static void initiateDatabaseMap(){
-        databaseMap = new HashMap<DatabaseType, CvTerm>();
-        databaseMap.put( DatabaseType.GO,       new DefaultCvTerm("go" , "MI:0448"));
-        databaseMap.put( DatabaseType.INTERPRO, new DefaultCvTerm("interpro" , "MI:0449"));
-        databaseMap.put( DatabaseType.PDB,      new DefaultCvTerm("pdb" , "MI:0460"));
-        databaseMap.put( DatabaseType.REACTOME, new DefaultCvTerm("reactome" , "MI:0467"));
-        databaseMap.put( DatabaseType.ENSEMBL,  new DefaultCvTerm("ensembl" , "MI:0476"));
-        databaseMap.put( DatabaseType.WORMBASE, new DefaultCvTerm("wormbase" , "MI:0487" ));
-        databaseMap.put( DatabaseType.FLYBASE,  new DefaultCvTerm("flybase" , "MI:0478" ));
-        databaseMap.put( DatabaseType.REFSEQ,   new DefaultCvTerm("refseq" , "MI:0481" ));
-        databaseMap.put( DatabaseType.IPI,      new DefaultCvTerm("ipi" , "MI:0675" ));
+
+    private Map<DatabaseType,CvTerm> uniprotDatabases = null;
+
+
+    private void initiateDatabaseMap(){
+        uniprotDatabases = new HashMap<DatabaseType, CvTerm>();
+        uniprotDatabases.put( DatabaseType.GO,       new DefaultCvTerm("go" , "MI:0448"));
+        uniprotDatabases.put( DatabaseType.INTERPRO, new DefaultCvTerm("interpro" , "MI:0449"));
+        uniprotDatabases.put( DatabaseType.PDB,      new DefaultCvTerm("pdb" , "MI:0460"));
+        uniprotDatabases.put( DatabaseType.REACTOME, new DefaultCvTerm("reactome" , "MI:0467"));
+        uniprotDatabases.put( DatabaseType.ENSEMBL,  new DefaultCvTerm("ensembl" , "MI:0476"));
+        uniprotDatabases.put( DatabaseType.WORMBASE, new DefaultCvTerm("wormbase" , "MI:0487" ));
+        uniprotDatabases.put( DatabaseType.FLYBASE,  new DefaultCvTerm("flybase" , "MI:0478" ));
+        uniprotDatabases.put( DatabaseType.REFSEQ,   new DefaultCvTerm("refseq" , "MI:0481" ));
+        uniprotDatabases.put( DatabaseType.IPI,      new DefaultCvTerm("ipi" , "MI:0675" ));
+    }
+
+    public Map<DatabaseType,CvTerm> getUniprotDatabases(){
+        if (uniprotDatabases == null) initiateDatabaseMap();
+        return uniprotDatabases;
     }
 
 
@@ -447,11 +455,11 @@ public class UniprotToJAMI {
      * @param dbxref
      * @return
      */
-    protected static Xref getDatabaseXref(DatabaseCrossReference dbxref){
-        if(databaseMap == null) initiateDatabaseMap();
+    protected Xref getDatabaseXref(DatabaseCrossReference dbxref){
+        if(uniprotDatabases == null) initiateDatabaseMap();
 
-        if (databaseMap.containsKey(dbxref.getDatabase())){
-            CvTerm database = databaseMap.get(dbxref.getDatabase());
+        if (uniprotDatabases.containsKey(dbxref.getDatabase())){
+            CvTerm database = uniprotDatabases.get(dbxref.getDatabase());
             String id = null;
 
             if(dbxref.getDatabase() == DatabaseType.GO){
@@ -516,8 +524,12 @@ public class UniprotToJAMI {
             String id = e.getNcbiTaxonomyIds().get(0).getValue();
             try{
                 o = new DefaultOrganism( Integer.parseInt( id ) );
-                o.setCommonName(e.getOrganism().getCommonName().getValue());
-                o.setScientificName(e.getOrganism().getScientificName().getValue());
+                if(e.getOrganism().hasCommonName())
+                    o.setCommonName(e.getOrganism().getCommonName().getValue());
+                if(e.getOrganism().getScientificName() != null)
+                    o.setScientificName(e.getOrganism().getScientificName().getValue());
+                if(e.getOrganism().hasSynonym())    //TODO check the type on an organism alias
+                    o.getAliases().add(AliasUtils.createAlias(null, e.getOrganism().getSynonym().getValue()));
             }catch(NumberFormatException n){
                 throw new BadResultException("Uniprot entry ["+e.getPrimaryUniProtAccession().getValue()+"] " +
                         "has a TaxonomyID which could not be cast to an integer: ("+id+").",n);
