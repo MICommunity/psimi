@@ -1052,20 +1052,21 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
      */
     protected void escapeAndWriteString(String stringToEscape) throws IOException {
 
-        // replace first tabs and break line with a space
-        stringToEscape.replaceAll(MitabWriterUtils.LINE_BREAK+"|"+MitabWriterUtils.COLUMN_SEPARATOR, " ");
+        // replace first tabs and break line with a space and escape double quote
+        String replaced = stringToEscape.replaceAll(MitabWriterUtils.LINE_BREAK+"|"+MitabWriterUtils.COLUMN_SEPARATOR, " ");
+        replaced = replaced.replaceAll("\"", "\\\"");
 
         for (String special : MitabWriterUtils.SPECIAL_CHARACTERS){
 
-            if (stringToEscape.contains(special)){
+            if (replaced.contains(special)){
                 writer.write("\"");
-                writer.write(stringToEscape);
+                writer.write(replaced);
                 writer.write("\"");
                 return;
             }
         }
 
-        writer.write(stringToEscape);
+        writer.write(replaced);
     }
 
     /**
@@ -1118,7 +1119,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             throw new IllegalArgumentException("The output stream cannot be null.");
         }
 
-        this.writer = new BufferedWriter(new OutputStreamWriter(output));
+        this.writer = new OutputStreamWriter(output);
     }
 
     private void initialiseFile(File file) throws IOException {
