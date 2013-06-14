@@ -66,4 +66,8 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
     public MitabSourceLocator getSourceLocator() {
         return this.sourceLocator;
     }
+
+    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
+    }
 }
