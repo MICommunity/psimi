@@ -1,0 +1,350 @@
+
+options {
+  LOOKAHEAD = 1;
+  FORCE_LA_CHECK = true;
+  JAVA_UNICODE_ESCAPE = true;
+  STATIC = false;
+}
+
+PARSER_BEGIN(MitabLineParser)
+
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.mitab.extension.*;
+import java.util.Collection;
+import java.util.Collections;
+import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.mitab.listener.MitabParserListener;
+import java.util.ArrayList;
+
+public class MitabLineParser {
+
+	void skipTo(int tokenKind) {
+		Token t;
+		do {
+			t = getNextToken();
+		} while (t.kind != tokenKind);
+	}
+	
+	void logSyntaxError(ParseException e) {
+	}
+
+	abstract Participant finishParticipant(UniqueId, );
+
+	MitabParserListener getParserListener();
+
+	void setParserListener(MitabParserListener listener);
+}
+
+PARSER_END(MitabLineParser)
+
+/* WHITE SPACE */
+
+SKIP :
+{
+  "\r" | "\f"
+}
+
+TOKEN :
+{
+  < UNRESERVED_STRING:
+    //don't match single dash, that's an empty column
+      "-" (~["\"", "|", "(", ")", ":", "\t", "\n", "-"])+
+    |
+      ~["\"", "|", "(", ")", ":", "\t", "\n", "-"] (~["\"", "|", "(", ")", ":", "\t", "\n"])*
+    >
+ |
+  < QUOTED_STRING:
+    "\"" 
+      ( ~["\""] | ("\\" "\"") )* 
+    "\""
+    >
+ |
+  < EMPTY_COLUMN: "-" >
+}
+
+TOKEN :
+{
+  < PUB_DATE: (["0"-"9"]){4} >
+}
+
+TOKEN :
+{
+  < COMMENT: "#" (~["\n"])*>
+}
+
+boolean MitabLine():
+{
+  boolean isFinished = false;
+  Collection<MitabXref> uniqueIdA;
+  Collection<MitabXref> uniqueIdB;
+  Collection<MitabXref> altIdA;
+  Collection<MitabXref> altIdB;
+  Collection<MitabAlias> aliasA;
+  Collection<MitabAlias> aliasB;
+  Collection<MitabCvTerm> detMethod;
+  Collection<MitabAuthor> firstAuthor;
+  Collection<MitabXref> pubId;
+}
+{
+(
+  //allow empty lines
+  [
+    ( <COMMENT> )
+  |
+    (
+      (<EMPTY_COLUMN> {uniqueIdA = Collections.EMPTY_LIST;} | uniqueIdA = uniqueId(1)) "\t"
+      (<EMPTY_COLUMN> {uniqueIdB = Collections.EMPTY_LIST;} | uniqueIdB = uniqueId(2)) "\t"
+      (<EMPTY_COLUMN> {altidA = Collections.EMPTY_LIST;} | altIdA = altIds(3)) "\t"
+      (<EMPTY_COLUMN> {altidB = Collections.EMPTY_LIST;} | altIdB = altIds(4)) "\t"
+      (<EMPTY_COLUMN> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) "\t"
+      (<EMPTY_COLUMN> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) "\t"
+      (<EMPTY_COLUMN> {detMethod = Collections.EMPTY_LIST;} | detMethod = interactionDetectionMethods()) "\t"
+      (<EMPTY_COLUMN> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) "\t"
+      (<EMPTY_COLUMN> {pubId = Collections.EMPTY_LIST;} | pubId = publicationId()) "\t"
+      (<EMPTY_COLUMN> | taxId()) "\t"
+      (<EMPTY_COLUMN> | taxId()) "\t"
+      (<EMPTY_COLUMN> | interactionTypes()) "\t"
+      (<EMPTY_COLUMN> | sourceDbs()) "\t"
+      (<EMPTY_COLUMN> | interactionIds()) "\t"
+      (<EMPTY_COLUMN> | confidences())
+      
+      [ //starting MITAB 2.6
+      "\t" //end of confidences delimiter
+      (<EMPTY_COLUMN> | complexExpansion()) "\t"
+      (<EMPTY_COLUMN> | biologicalRoles()) "\t"
+      (<EMPTY_COLUMN> | biologicalRoles()) "\t"
+      (<EMPTY_COLUMN> | experimentalRoles()) "\t"
+      (<EMPTY_COLUMN> | experimentalRoles()) "\t"
+      (<EMPTY_COLUMN> | interactorTypes()) "\t"
+      (<EMPTY_COLUMN> | interactorTypes()) "\t"
+      (<EMPTY_COLUMN> | interactorXRefs()) "\t"
+      (<EMPTY_COLUMN> | interactorXRefs()) "\t"
+      (<EMPTY_COLUMN> | interactionXRefs()) "\t"
+      (<EMPTY_COLUMN> | annotations()) "\t"
+      (<EMPTY_COLUMN> | annotations()) "\t"
+      (<EMPTY_COLUMN> | annotations()) "\t"
+      (<EMPTY_COLUMN> | taxID()) "\t"
+      (<EMPTY_COLUMN> | interactionParameters()) "\t"
+      (<EMPTY_COLUMN> | creationDate()) "\t"
+      (<EMPTY_COLUMN> | updateDate()) "\t"
+      (<EMPTY_COLUMN> | checksum()) "\t"
+      (<EMPTY_COLUMN> | checksum()) "\t"
+      (<EMPTY_COLUMN> | checksum()) "\t"
+      (<EMPTY_COLUMN> | negative()) 
+      
+      [ //starting MITAB 2.7
+      "\t" //end of negative() delimiter
+      (<EMPTY_COLUMN> | features()) "\t"
+      (<EMPTY_COLUMN> | features()) "\t"
+      (<EMPTY_COLUMN> | stoichiometry()) "\t"
+      (<EMPTY_COLUMN> | stoichiometry()) "\t"
+      (<EMPTY_COLUMN> | participantIdentificationMethod()) "\t"
+      (<EMPTY_COLUMN> | participantIdentificationMethod()) "\t"
+      ] // end MITAB 2.7
+      
+      ] //end MITAB 2.6
+    )
+    {
+      participantA = finishParticipant(idA, altIdA, ...);
+      participantB = finishParticipant(idB, altIdB, ...);
+      return finishInteraction(participantA, partcipantB, etc); 
+    }
+  ]
+    
+  //line/file termination
+  ( 
+      "\n" 
+    | 
+      (<EOF> {isFinished = true;})
+  )
+)
+  { return isFinished; }
+}
+
+Collection<MitabXref> uniqueId(int column):
+{
+  Collection<MitabXref> xrefs;
+  MitabXref var;
+}
+{
+  var = id(CvTermUtils.createIdentityXrefQualifier(), column)
+  {xrefs = new ArrayList<MitabXref>(); xrefs.add(var);}
+
+  ("|" var = id(CvTermUtils.createIdentityXrefQualifier(), column) {xrefs.add(var);})*
+  {return xrefs;}
+}
+
+Collection<MitabXref> altIds(int column):
+{
+  Collection<MitabXref> xrefs;
+  MitabXref var;
+}
+{
+  var = id(CvTermUtils.createSecondaryXrefQualifier(), column)
+  {xrefs = new ArrayList<MitabXref>(); xrefs.add(var);}
+
+  ("|" var = id(CvTermUtils.createSecondaryXrefQualifier(), column) {xrefs.add(var);})*
+  {return xrefs;}
+}
+
+Collection<MitabAlias> aliases(int column):
+{
+  Collection<MitabAlias> aliases;
+  MitabAlias var;
+}
+{
+  var = alias(column)
+  {aliases = new ArrayList<MitabAlias>(); aliases.add(var);}
+
+  ("|" var = alias(column) {aliases.add(var);})*
+  {return aliases;}
+}
+
+Collection<MitabCvterm> interactionDetectionMethods():
+{
+  Collection<MitabCvterm> methods;
+  MitabCvTerm var;
+}
+{
+  var = cvTerm(7)
+  {methods = new ArrayList<MitabCvterm>(); methods.add(var);}
+
+  ("|" var = cvTerm(7) {methods.add(var); getParserListener.onSeveralCvTermFound(token.beginLine, token.beginColumn, 7);})*
+  {return methods;}
+}
+
+Collection<MitabAuthor> firstAuthors():
+{
+  Collection<MitabAuthor> authors;
+  MitabAuthor var;
+}
+{
+  var = author()
+  {authors = new ArrayList<MitabAuthor>(); methods.add(var);}
+
+  ("|" var = author() {authors.add(var); getParserListener.onSeveralFirstAuthorFound(token.beginLine, token.beginColumn, 8);})*
+  {return authors;}
+}
+
+Collection<Xref> publicationId():
+{}
+{
+  id() ("|" id())*
+}
+
+void taxId():
+{}
+{
+  cvTerm() ("|" cvTerm())*
+}
+
+void interactionTypes():
+{}
+{
+  cvTerm() ("|" cvTerm())*
+}
+
+void sourceDbs():
+{}
+{
+  cvTerm() ("|" cvTerm())*
+}
+
+void interactionIds():
+{}
+{
+  id() ("|" id())*
+}
+
+void confidences():
+{}
+{
+  confidence() ( "|" confidence())*
+}
+
+void confidence():
+{}
+{
+  safeString() ":" safeString()
+}
+
+/*void cvTerm():
+{}
+{
+  safeString() 
+  	[ ":" safeString() 
+  		[ "(" safeString() ")" ] ]
+}*/
+
+MitabAuthor author():
+{
+ MitabAuthor auth;
+ java.lang.String first;
+ java.lang.String date;
+ java.lang.String second;
+}
+{
+  ( <PUB_DATE> {date = token.image;} [ first = safeString() ])
+   | ( first = safeString() [ ( <PUB_DATE> {date = token.image;} [ second = safeString() {first = first + " " +second} ]) ])
+   | ( first = safeString() [ ( (" ")* "(" (" ")* <PUB_DATE> {date = token.image;} (" ")* ")" (" ")* [ second = safeString() {first = first + " " +second} ]) ])
+   | first = safeString()
+   { if (date == null){auth = new MitabAuthor(first);}
+     else{ auth = new MitabAuthor(first, date);}
+     auth.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 8));
+     return auth;
+    }
+}
+
+MitabCvTerm cvTerm(int column):
+{
+  java.lang.String db;
+  java.lang.String id;
+  java.lang.String name = null;
+  MitabCvTerm cv;
+}
+{
+  //db:id(name)
+  db = safeString() ":" id = safeString() [ "(" name = safeString() ")" ]
+  { if (name == null){cv = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, column);}
+    else {cv = MitabCvTerm(name, null, db, id);}
+    cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+    return cv;}
+}
+
+MitabAlias alias(int columnNumber):
+{
+  java.lang.String db;
+  java.lang.String name;
+  java.lang.String type = null;
+  MitabAlias alias;
+}
+{
+  //db:name(type)
+  db = safeString() ":" name = safeString() [ "(" type = safeString() ")" ]
+  { alias = new MitabAlias(db, name, type);
+    alias.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+    return alias;}
+}
+
+MitabXref id(CvTerm qualifier, int columnNumber):
+{
+  java.lang.String db;
+  java.lang.String id;
+  java.lang.String text = null;
+  MitabXref ref;
+}
+{
+  //db:id(qualifier)
+  db = safeString() ":" id = safeString() [ "(" text = safeString() ")" ]
+  { if (text == null){ref = new MitabXref(db, id, qualifier);}
+    else {ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(token.beginLine, token.beginColumn, columnNumber);}
+    ref.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+    return ref;}
+}
+
+java.lang.String safeString():
+{java.lang.String text;}
+{
+  <QUOTED_STRING> {text = token.image.substring(1, token.image.length()).replaceAll("\\\"", "\"").trim();} | <UNRESERVED_STRING> {text = token.image.trim();}
+  {return text;}
+}
