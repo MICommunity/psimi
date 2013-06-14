@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.mitab.extension;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 
 /**
  * Extended alias in MITAB
@@ -35,7 +34,7 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
     }
 
     public MitabAlias(String dbSource, String name, String type) {
-        super(type != null ? new DefaultCvTerm(type) : null, name);
+        super(type != null ? new MitabCvTerm(type) : null, name);
         if (dbSource == null){
             throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
         }

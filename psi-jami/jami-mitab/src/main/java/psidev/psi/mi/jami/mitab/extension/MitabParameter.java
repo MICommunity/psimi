@@ -45,6 +45,10 @@ public class MitabParameter extends DefaultModelledParameter implements FileSour
         super(type, value, unit);
     }
 
+    public MitabParameter(String type, String value, String unit) throws IllegalParameterException {
+        super(new MitabCvTerm(type), value, unit != null ? new MitabCvTerm(unit) : null);
+    }
+
     public MitabSourceLocator getSourceLocator() {
         return this.sourceLocator;
     }

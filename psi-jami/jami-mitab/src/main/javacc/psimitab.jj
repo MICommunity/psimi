@@ -68,6 +68,11 @@ TOKEN :
   < PUB_DATE: (["0"-"9"]){4} >
 }
 
+TOKEN [IGNORE_CASE]:
+{
+ <TAXID : "taxid">
+}
+
 TOKEN :
 {
   < COMMENT: "#" (~["\n"])*>
@@ -91,6 +96,21 @@ boolean MitabLine():
   Collection<MitabSource> source;
   Collection<MitabXref> interactionId;
   Collection<MitabConfidence> conf;
+  Collection<MitabCvTerm> expansion;
+  Collection<MitabCvTerm> bioRoleA;
+  Collection<MitabCvTerm> bioRoleB;
+  Collection<MitabCvTerm> expRoleA;
+  Collection<MitabCvTerm> expRoleB;
+  Collection<MitabCvTerm> typeA;
+  Collection<MitabCvTerm> typeB;
+  Collection<MitabXref> xrefA;
+  Collection<MitabXref> xrefB;
+  Collection<MitabXref> xrefI;
+  Collection<MitabAnnotation> annotA;
+  Collection<MitabAnnotation> annotB;
+  Collection<MitabAnnotation> annotI;
+  Collection<MitabOrganism> host;
+  Collection<MitabParameter> params;
 }
 {
 (
@@ -105,33 +125,33 @@ boolean MitabLine():
       (<EMPTY_COLUMN> {altidB = Collections.EMPTY_LIST;} | altIdB = altIds(4)) "\t"
       (<EMPTY_COLUMN> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) "\t"
       (<EMPTY_COLUMN> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) "\t"
-      (<EMPTY_COLUMN> {detMethod = Collections.EMPTY_LIST;} | detMethod = interactionDetectionMethods()) "\t"
+      (<EMPTY_COLUMN> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) "\t"
       (<EMPTY_COLUMN> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) "\t"
       (<EMPTY_COLUMN> {pubId = Collections.EMPTY_LIST;} | pubId = publicationId()) "\t"
       (<EMPTY_COLUMN> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) "\t"
       (<EMPTY_COLUMN> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) "\t"
-      (<EMPTY_COLUMN> {interactionType = Collections.EMPTY_LIST;} | interactionType = interactionTypes()) "\t"
+      (<EMPTY_COLUMN> {interactionType = Collections.EMPTY_LIST;} | interactionType = cvTerms(12)) "\t"
       (<EMPTY_COLUMN> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) "\t"
       (<EMPTY_COLUMN> {interactionId = Collections.EMPTY_LIST;} | interactionId = interactionIds()) "\t"
       (<EMPTY_COLUMN> {conf = Collections.EMPTY_LIST;} | conf = confidences())
       
       [ //starting MITAB 2.6
       "\t" //end of confidences delimiter
-      (<EMPTY_COLUMN> | complexExpansion()) "\t"
-      (<EMPTY_COLUMN> | biologicalRoles()) "\t"
-      (<EMPTY_COLUMN> | biologicalRoles()) "\t"
-      (<EMPTY_COLUMN> | experimentalRoles()) "\t"
-      (<EMPTY_COLUMN> | experimentalRoles()) "\t"
-      (<EMPTY_COLUMN> | interactorTypes()) "\t"
-      (<EMPTY_COLUMN> | interactorTypes()) "\t"
-      (<EMPTY_COLUMN> | interactorXRefs()) "\t"
-      (<EMPTY_COLUMN> | interactorXRefs()) "\t"
-      (<EMPTY_COLUMN> | interactionXRefs()) "\t"
-      (<EMPTY_COLUMN> | annotations()) "\t"
-      (<EMPTY_COLUMN> | annotations()) "\t"
-      (<EMPTY_COLUMN> | annotations()) "\t"
-      (<EMPTY_COLUMN> | taxID()) "\t"
-      (<EMPTY_COLUMN> | interactionParameters()) "\t"
+      (<EMPTY_COLUMN> {expansion = Collections.EMPTY_LIST;} | expansion = complexExpansion()) "\t"
+      (<EMPTY_COLUMN> {bioRoleA = Collections.EMPTY_LIST;} | bioRoleA = cvTerms(17)) "\t"
+      (<EMPTY_COLUMN> {bioRoleB = Collections.EMPTY_LIST;} | bioRoleB = cvTerms(18)) "\t"
+      (<EMPTY_COLUMN> {expRoleA = Collections.EMPTY_LIST;} | expRoleA = cvTermsv(19)) "\t"
+      (<EMPTY_COLUMN> {expRoleB = Collections.EMPTY_LIST;} | expRoleB = cvTerms(20)) "\t"
+      (<EMPTY_COLUMN> {typeA = Collections.EMPTY_LIST;} | typeA = cvTerms(21)) "\t"
+      (<EMPTY_COLUMN> {typeB = Collections.EMPTY_LIST;} | typeB = cvTerms(22)) "\t"
+      (<EMPTY_COLUMN> {xrefA = Collections.EMPTY_LIST;} | xrefA = xrefs(23)) "\t"
+      (<EMPTY_COLUMN> {xrefB = Collections.EMPTY_LIST;} | xrefB = xrefs(24)) "\t"
+      (<EMPTY_COLUMN> {xrefI = Collections.EMPTY_LIST;} | xrefI = xrefs(25)) "\t"
+      (<EMPTY_COLUMN> {annotA = Collections.EMPTY_LIST;} | annotA = annotations(26)) "\t"
+      (<EMPTY_COLUMN> {annotB = Collections.EMPTY_LIST;} | annotB = annotations(27)) "\t"
+      (<EMPTY_COLUMN> {annotI = Collections.EMPTY_LIST;} | annotI = annotations(28)) "\t"
+      (<EMPTY_COLUMN> {host = Collections.EMPTY_LIST;} | host = taxId(29)) "\t"
+      (<EMPTY_COLUMN> {params = Collections.EMPTY_LIST;} | params = parameters()) "\t"
       (<EMPTY_COLUMN> | creationDate()) "\t"
       (<EMPTY_COLUMN> | updateDate()) "\t"
       (<EMPTY_COLUMN> | checksum()) "\t"
@@ -207,16 +227,16 @@ Collection<MitabAlias> aliases(int column):
   {return aliases;}
 }
 
-Collection<MitabCvterm> interactionDetectionMethods():
+Collection<MitabCvterm> cvTerms(int columnNumber):
 {
   Collection<MitabCvterm> methods;
   MitabCvTerm var;
 }
 {
-  var = cvTerm(7)
+  var = cvTerm(columnNumber)
   {methods = new ArrayList<MitabCvterm>(); methods.add(var);}
 
-  ("|" var = cvTerm(7) {methods.add(var);})*
+  ("|" var = cvTerm(columnNumber) {methods.add(var);})*
   {return methods;}
 }
 
@@ -259,19 +279,6 @@ Collection<MitabOrganism> taxId(int column):
   {return organisms;}
 }
 
-Collection<MitabCvterm> interactionTypes():
-{
-  Collection<MitabCvterm> types;
-  MitabCvTerm var;
-}
-{
-  var = cvTerm(12)
-  {types = new ArrayList<MitabCvterm>(); types.add(var);}
-
-  ("|" var = cvTerm(12) {types.add(var);})*
-  {return types;}
-}
-
 Collection<MitabSource> sourceDbs():
 {
   Collection<MitabSource> sources;
@@ -311,6 +318,120 @@ Collection<MitabConfidence> confidences():
   {return confs;}
 }
 
+Collection<MitabCvTerm> complexExpansion():
+{
+  Collection<MitabCvterm> expansions;
+  MitabCvTerm var;
+}
+{
+  var = expansion()
+  {expansions = new ArrayList<MitabCvterm>(); expansions.add(var);}
+
+  ("|" var = expansion() {expansions.add(var);})*
+  {return expansions;}
+}
+
+Collection<MitabXref> xrefs(int column):
+{
+  Collection<MitabXref> refs;
+  MitabXref var;
+}
+{
+  var = xref(column)
+  {refs = new ArrayList<MitabXref>(); refs.add(var);}
+
+  ("|" var = xref(column) {refs.add(var);})*
+  {return refs;}
+}
+
+Collection<MitabAnnotation> annotations(int column):
+{
+  Collection<MitabAnnotation> annots;
+  MitabAnnotation var;
+}
+{
+  var = annotation(column)
+  {annots = new ArrayList<MitabAnnotation>(); annots.add(var);}
+
+  ("|" var = annotation(column) {annots.add(var);})*
+  {return annots;}
+}
+
+Collection<MitabParameter> parameters():
+{
+  Collection<MitabParameter> params;
+  MitabParameter var;
+}
+{
+  var = parameter(column)
+  {params = new ArrayList<MitabParameter>(); params.add(var);}
+
+  ("|" var = parameter(column) {params.add(var);})*
+  {return params;}
+}
+
+MitabAnnotation parameter():
+{
+  java.lang.String type;
+  java.lang.String value;
+  java.lang.String unit = null;
+  MitabParameter param;
+}
+{
+  //type:value(unit)
+  type = safeString() ":" value = safeString() [ "(" unit = safeString() ")" ]
+  { param = new MitabParameter(type, value, unit);
+    param.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 30));
+    return param;}
+}
+
+MitabAnnotation annotation(int columnNumber):
+{
+  java.lang.String topic;
+  java.lang.String value = null;
+  MitabAnnotation annot;
+}
+{
+  //topic:value
+  topic = safeString() [ ":" value = safeString() ]
+  { annot = new MitabAnnotation(topic, value);
+    annot.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+    return annot;}
+}
+
+MitabXref xref(int columnNumber):
+{
+  java.lang.String db;
+  java.lang.String id;
+  java.lang.String text = null;
+  MitabXref ref;
+}
+{
+  //db:id(qualifier)
+  db = safeString() ":" id = safeString() [ "(" text = safeString() ")" ]
+  { ref = new MitabXref(db, id, text);
+    ref.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+    return ref;}
+}
+
+MitabCvTerm expansion():
+{
+  java.lang.String db = null;
+  java.lang.String id = null;
+  java.lang.String name = null;
+  MitabCvTerm cv;
+}
+{
+  //db:id(name)
+  db = safeString() ":" id = safeString() [ "(" name = safeString() ")" ]
+  | name = safeString()
+  { if (name == null){cv = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, 16);}
+    else if (id == null) {cv = new MitabCvTerm(name); getParserListener().onMissingExpansionId(token.beginLine, token.beginColumn, 16);}
+    else {cv = new MitabCvTerm(name, null, db, id);}
+    cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 16));
+    return cv;}
+}
+
 MitabConfidence confidence():
 {
  java.lang.String type;
@@ -337,7 +458,7 @@ MitabSource source():
   //db:id(name)
   db = safeString() ":" id = safeString() [ "(" name = safeString() ")" ]
   { if (name == null){s = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, 13);}
-    else {s = MitabSource(name, null, db, id);}
+    else {s = new MitabSource(name, null, db, id);}
     s.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 13));
     return s;}
 }
@@ -350,8 +471,8 @@ MitabOrganism organism(int columnNumber) throws NumberFormatException:
 }
 {
   //taxid:id(name)
-  ("t" | "T") ("a" | "A") ("x" | "X") ("i" | "I") ("d" | "D") ":" id = safeString() [ "(" name = safeString() ")" ]
-  { organism = MitabOrganism(Integer.parseInt(id), name);
+  [(" ")*] <TAXID> ":" id = safeString() [ "(" name = safeString() ")" ]
+  { organism = new MitabOrganism(Integer.parseInt(id), name);
     organism.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
     return organism;}
 }
@@ -408,7 +529,7 @@ MitabCvTerm cvTerm(int column):
   //db:id(name)
   db = safeString() ":" id = safeString() [ "(" name = safeString() ")" ]
   { if (name == null){cv = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, column);}
-    else {cv = MitabCvTerm(name, null, db, id);}
+    else {cv = new MitabCvTerm(name, null, db, id);}
     cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
     return cv;}
 }
