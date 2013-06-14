@@ -19,4 +19,6 @@ public interface MitabParserListener {
     public void onSeveralCvTermFound(int line, int column, int mitabColumn);
 
     public void onSeveralFirstAuthorFound(int line, int column, int mitabColumn);
+
+    public void onTextFoundInConfidence(int line, int column, int mitabColumn);
 }

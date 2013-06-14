@@ -13,31 +13,31 @@ import psidev.psi.mi.jami.model.impl.DefaultOrganism;
  * @since <pre>11/06/13</pre>
  */
 
-public class DefaultMitabOrganism extends DefaultOrganism implements FileSourceContext{
+public class MitabOrganism extends DefaultOrganism implements FileSourceContext{
 
     private MitabSourceLocator sourceLocator;
 
-    public DefaultMitabOrganism(int taxId) {
+    public MitabOrganism(int taxId) {
         super(taxId);
     }
 
-    public DefaultMitabOrganism(int taxId, String commonName) {
+    public MitabOrganism(int taxId, String commonName) {
         super(taxId, commonName);
     }
 
-    public DefaultMitabOrganism(int taxId, String commonName, String scientificName) {
+    public MitabOrganism(int taxId, String commonName, String scientificName) {
         super(taxId, commonName, scientificName);
     }
 
-    public DefaultMitabOrganism(int taxId, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
+    public MitabOrganism(int taxId, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
         super(taxId, cellType, tissue, compartment);
     }
 
-    public DefaultMitabOrganism(int taxId, String commonName, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
+    public MitabOrganism(int taxId, String commonName, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
         super(taxId, commonName, cellType, tissue, compartment);
     }
 
-    public DefaultMitabOrganism(int taxId, String commonName, String scientificName, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
+    public MitabOrganism(int taxId, String commonName, String scientificName, CvTerm cellType, CvTerm tissue, CvTerm compartment) {
         super(taxId, commonName, scientificName, cellType, tissue, compartment);
     }
 

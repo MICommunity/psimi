@@ -15,6 +15,7 @@ import java.util.Collections;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.mitab.listener.MitabParserListener;
 import java.util.ArrayList;
+import java.lang.NumberFormatException;
 
 public class MitabLineParser {
 
@@ -84,6 +85,12 @@ boolean MitabLine():
   Collection<MitabCvTerm> detMethod;
   Collection<MitabAuthor> firstAuthor;
   Collection<MitabXref> pubId;
+  Collection<MitabOrganism> taxidA;
+  Collection<MitabOrganism> taxidB;
+  Collection<MitabCvTerm> interactionType;
+  Collection<MitabSource> source;
+  Collection<MitabXref> interactionId;
+  Collection<MitabConfidence> conf;
 }
 {
 (
@@ -101,12 +108,12 @@ boolean MitabLine():
       (<EMPTY_COLUMN> {detMethod = Collections.EMPTY_LIST;} | detMethod = interactionDetectionMethods()) "\t"
       (<EMPTY_COLUMN> {firstAuthor = Collections.EMPTY_LIST;} | firstAuthor = firstAuthors()) "\t"
       (<EMPTY_COLUMN> {pubId = Collections.EMPTY_LIST;} | pubId = publicationId()) "\t"
-      (<EMPTY_COLUMN> | taxId()) "\t"
-      (<EMPTY_COLUMN> | taxId()) "\t"
-      (<EMPTY_COLUMN> | interactionTypes()) "\t"
-      (<EMPTY_COLUMN> | sourceDbs()) "\t"
-      (<EMPTY_COLUMN> | interactionIds()) "\t"
-      (<EMPTY_COLUMN> | confidences())
+      (<EMPTY_COLUMN> {taxidA = Collections.EMPTY_LIST;} | taxidA = taxId(10)) "\t"
+      (<EMPTY_COLUMN> {taxidB = Collections.EMPTY_LIST;} | taxidB = taxId(11)) "\t"
+      (<EMPTY_COLUMN> {interactionType = Collections.EMPTY_LIST;} | interactionType = interactionTypes()) "\t"
+      (<EMPTY_COLUMN> {source = Collections.EMPTY_LIST;} | source = sourceDbs()) "\t"
+      (<EMPTY_COLUMN> {interactionId = Collections.EMPTY_LIST;} | interactionId = interactionIds()) "\t"
+      (<EMPTY_COLUMN> {conf = Collections.EMPTY_LIST;} | conf = confidences())
       
       [ //starting MITAB 2.6
       "\t" //end of confidences delimiter
@@ -209,7 +216,7 @@ Collection<MitabCvterm> interactionDetectionMethods():
   var = cvTerm(7)
   {methods = new ArrayList<MitabCvterm>(); methods.add(var);}
 
-  ("|" var = cvTerm(7) {methods.add(var); getParserListener.onSeveralCvTermFound(token.beginLine, token.beginColumn, 7);})*
+  ("|" var = cvTerm(7) {methods.add(var);})*
   {return methods;}
 }
 
@@ -220,61 +227,156 @@ Collection<MitabAuthor> firstAuthors():
 }
 {
   var = author()
-  {authors = new ArrayList<MitabAuthor>(); methods.add(var);}
+  {authors = new ArrayList<MitabAuthor>(); authors.add(var);}
 
-  ("|" var = author() {authors.add(var); getParserListener.onSeveralFirstAuthorFound(token.beginLine, token.beginColumn, 8);})*
+  ("|" var = author() {authors.add(var);})*
   {return authors;}
 }
 
-Collection<Xref> publicationId():
-{}
+Collection<MitabXref> publicationId():
 {
-  id() ("|" id())*
+  Collection<MitabXref> refs;
+  MitabXref var;
+}
+{
+  var = idWithImex(9)
+  {refs = new ArrayList<MitabXref>(); refs.add(var);}
+
+  ("|" var = idWithImex(9) {refs.add(var);})*
+  {return refs;}
 }
 
-void taxId():
-{}
+Collection<MitabOrganism> taxId(int column):
 {
-  cvTerm() ("|" cvTerm())*
+  Collection<MitabOrganism> organisms;
+  MitabOrganism var;
+}
+{
+  var = organism(column)
+  {organisms = new ArrayList<MitabOrganism>(); organisms.add(var);}
+
+  ("|" var = organism(column) {organisms.add(var);})*
+  {return organisms;}
 }
 
-void interactionTypes():
-{}
+Collection<MitabCvterm> interactionTypes():
 {
-  cvTerm() ("|" cvTerm())*
+  Collection<MitabCvterm> types;
+  MitabCvTerm var;
+}
+{
+  var = cvTerm(12)
+  {types = new ArrayList<MitabCvterm>(); types.add(var);}
+
+  ("|" var = cvTerm(12) {types.add(var);})*
+  {return types;}
 }
 
-void sourceDbs():
-{}
+Collection<MitabSource> sourceDbs():
 {
-  cvTerm() ("|" cvTerm())*
+  Collection<MitabSource> sources;
+  MitabSource var;
+}
+{
+  var = source()
+  {sources = new ArrayList<MitabSource>(); sources.add(var);}
+
+  ("|" var = source() {sources.add(var);})*
+  {return sources;}
 }
 
-void interactionIds():
-{}
+Collection<MitabXref> interactionIds():
 {
-  id() ("|" id())*
+  Collection<MitabXref> refs;
+  MitabXref var;
+}
+{
+  var = idWithImex(14)
+  {refs = new ArrayList<MitabXref>(); refs.add(var);}
+
+  ("|" var = idWithImex(14) {refs.add(var);})*
+  {return refs;}
 }
 
-void confidences():
-{}
+Collection<MitabConfidence> confidences():
 {
-  confidence() ( "|" confidence())*
+  Collection<MitabConfidence> confs;
+  MitabConfidence var;
+}
+{
+  var = confidence()
+  {confs = new ArrayList<MitabConfidence>(); confs.add(var);}
+
+  ("|" var = confidence() {confs.add(var);})*
+  {return confs;}
 }
 
-void confidence():
-{}
+MitabConfidence confidence():
 {
-  safeString() ":" safeString()
+ java.lang.String type;
+ java.lang.String value;
+ java.lang.String test = null;
+  MitabConfidence conf;
+}
+{
+  type = safeString() ":" value = safeString() [ "(" text = safeString() ")" ]
+  { if (text == null){conf = new MitabConfidence(type, value, null);}
+    else {conf = new MitabConfidence(type, value, text); getParserListener().onTextFoundInConfidence(token.beginLine, token.beginColumn, 15);}
+    conf.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 15));
+    return conf;}
 }
 
-/*void cvTerm():
-{}
+MitabSource source():
 {
-  safeString() 
-  	[ ":" safeString() 
-  		[ "(" safeString() ")" ] ]
-}*/
+  java.lang.String db;
+  java.lang.String id;
+  java.lang.String name = null;
+  MitabSource s;
+}
+{
+  //db:id(name)
+  db = safeString() ":" id = safeString() [ "(" name = safeString() ")" ]
+  { if (name == null){s = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, 13);}
+    else {s = MitabSource(name, null, db, id);}
+    s.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, 13));
+    return s;}
+}
+
+MitabOrganism organism(int columnNumber) throws NumberFormatException:
+{
+  java.lang.String id;
+  java.lang.String name = null;
+  MitabOrganism organism;
+}
+{
+  //taxid:id(name)
+  ("t" | "T") ("a" | "A") ("x" | "X") ("i" | "I") ("d" | "D") ":" id = safeString() [ "(" name = safeString() ")" ]
+  { organism = MitabOrganism(Integer.parseInt(id), name);
+    organism.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+    return organism;}
+}
+
+MitabXref idWithImex(int columnNumber):
+{
+  java.lang.String db;
+  java.lang.String id;
+  java.lang.String text = null;
+  MitabXref ref;
+}
+{
+  //db:id(qualifier)
+  db = safeString() ":" id = safeString() [ "(" text = safeString() ")" ]
+  { if (Xref.IMEX.equalsIgnoreCase(db.trim())){
+        if (text == null){ref = new MitabXref(db, id, CvTermUtils.createImexPrimaryQualifier());}
+        else {ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(token.beginLine, token.beginColumn, columnNumber);}
+    }
+    else{
+        if (text == null){ref = new MitabXref(db, id, CvTermUtils.createIdentityXrefQualifier());}
+        else {ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(token.beginLine, token.beginColumn, columnNumber);}
+    }
+    ref.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+    return ref;}
+}
 
 MitabAuthor author():
 {
@@ -286,7 +388,7 @@ MitabAuthor author():
 {
   ( <PUB_DATE> {date = token.image;} [ first = safeString() ])
    | ( first = safeString() [ ( <PUB_DATE> {date = token.image;} [ second = safeString() {first = first + " " +second} ]) ])
-   | ( first = safeString() [ ( (" ")* "(" (" ")* <PUB_DATE> {date = token.image;} (" ")* ")" (" ")* [ second = safeString() {first = first + " " +second} ]) ])
+   | ( first = safeString() [ ( "(" (" ")* <PUB_DATE> {date = token.image;} (" ")* ")" [ second = safeString() {first = first + " " +second} ]) ])
    | first = safeString()
    { if (date == null){auth = new MitabAuthor(first);}
      else{ auth = new MitabAuthor(first, date);}
