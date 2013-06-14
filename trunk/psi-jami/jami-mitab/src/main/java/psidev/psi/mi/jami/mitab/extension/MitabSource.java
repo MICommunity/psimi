@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
+import psidev.psi.mi.jami.utils.XrefUtils;
 
 /**
  * Mitab extension of MitabSource
@@ -57,6 +58,12 @@ public class MitabSource extends DefaultSource implements FileSourceContext{
     public MitabSource(String shortName, String fullName, String miId, String url, String address, Publication bibRef) {
         super(shortName, fullName, miId, url, address, bibRef);
     }
+
+    public MitabSource(String shortName, String fullName, String db, String id) {
+        super(shortName, XrefUtils.createIdentityXref(db, id));
+        setFullName(fullName != null? fullName : shortName);
+    }
+
 
     public MitabSourceLocator getSourceLocator() {
         return sourceLocator;

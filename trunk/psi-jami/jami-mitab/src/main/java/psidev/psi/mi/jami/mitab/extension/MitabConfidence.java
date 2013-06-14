@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.mitab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultModelledConfidence;
 
 /**
@@ -23,6 +24,11 @@ public class MitabConfidence extends DefaultModelledConfidence implements FileSo
 
     public MitabConfidence(CvTerm type, String value, String text) {
         super(type, value);
+        this.text = text;
+    }
+
+    public MitabConfidence(String type, String value, String text) {
+        super(new DefaultCvTerm(type), value);
         this.text = text;
     }
 
