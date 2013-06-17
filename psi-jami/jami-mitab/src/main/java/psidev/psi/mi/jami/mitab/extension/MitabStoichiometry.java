@@ -15,11 +15,11 @@ public class MitabStoichiometry extends DefaultStoichiometry {
 
     private MitabSourceLocator sourceLocator;
 
-    public MitabStoichiometry(int value) {
+    public MitabStoichiometry(long value) {
         super(value);
     }
 
-    public MitabStoichiometry(int minValue, int maxValue) {
+    public MitabStoichiometry(long minValue, long maxValue) {
         super(minValue, maxValue);
     }
 
