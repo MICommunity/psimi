@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.mitab.utils;
 
-import psidev.psi.mi.jami.mitab.MitabColumnName;
-import psidev.psi.mi.jami.mitab.MitabVersion;
+import psidev.psi.mi.jami.tab.MitabColumnName;
+import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AliasUtils;
 
