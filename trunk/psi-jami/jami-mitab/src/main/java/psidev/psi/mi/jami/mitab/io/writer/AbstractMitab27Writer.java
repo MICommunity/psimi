@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.mitab.MitabVersion;
+import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.mitab.utils.MitabWriterUtils;
 import psidev.psi.mi.jami.model.*;
 

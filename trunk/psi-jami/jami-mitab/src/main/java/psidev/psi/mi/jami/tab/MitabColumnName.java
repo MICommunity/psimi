@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.mitab;
+package psidev.psi.mi.jami.tab;
 
 /**
  * Mitab column names
