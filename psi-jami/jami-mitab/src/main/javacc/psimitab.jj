@@ -342,7 +342,7 @@ Collection<MitabAuthor> firstAuthors():
     var = author()
     {authors = new ArrayList<MitabAuthor>(); if (var != null) {authors.add(var);}}
 
-    ("|" var = author() {if (var != null) {authors.add(var);})*
+    ("|" var = author() {if (var != null) {authors.add(var);}})*
     {return authors;}
   }
   catch (ParseException e){
