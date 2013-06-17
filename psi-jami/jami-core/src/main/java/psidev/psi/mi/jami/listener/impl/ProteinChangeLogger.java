@@ -99,7 +99,7 @@ public class ProteinChangeLogger implements ProteinChangeListener {
     }
 
     public void onAddedInteractorType(Protein protein) {
-        proteinChangeLogger.log(Level.INFO, "The interactor type " + protein.getInteractorType().getShortName() + " has been added to the protein " + protein.toString());
+        proteinChangeLogger.log(Level.INFO, "The interactor type " + protein.getInteractorType().toString() + " has been added to the protein " + protein.toString());
     }
 
     public void onAddedOrganism(Protein protein) {

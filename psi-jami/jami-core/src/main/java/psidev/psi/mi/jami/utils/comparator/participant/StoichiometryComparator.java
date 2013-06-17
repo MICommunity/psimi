@@ -96,8 +96,8 @@ public class StoichiometryComparator implements Comparator<Stoichiometry> {
         }
 
         int hashcode = 31;
-        hashcode = 31 * hashcode + stc.getMinValue();
-        hashcode = 31*hashcode + stc.getMaxValue();
+        hashcode = 31 * hashcode + (int)(stc.getMinValue() ^ (stc.getMinValue() >>> 32));
+        hashcode = 31*hashcode + (int)(stc.getMaxValue() ^ (stc.getMaxValue() >>> 32));
 
         return hashcode;
     }
