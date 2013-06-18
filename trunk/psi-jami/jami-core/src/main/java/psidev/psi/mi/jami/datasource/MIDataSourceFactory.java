@@ -26,6 +26,8 @@ public class MIDataSourceFactory {
     public static final String INPUT_FILE_OPTION_KEY = "input_file_key";
     public static final String INPUT_STREAM_OPTION_KEY = "input_stream_key";
     public static final String READER_OPTION_KEY = "input_reader_key";
+    public static final String STREAMING_OPTION_KEY = "streaming_key";
+    public static final String OBJECT_OPTION_KEY = "object_key";
 
     private MIDataSourceFactory(){
         registeredDataSources = new ConcurrentHashMap<Class<? extends MIDataSource>, Map<String, Object>>();
