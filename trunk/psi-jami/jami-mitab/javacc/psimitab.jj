@@ -238,7 +238,7 @@ Interaction MitabLine():
 
       }
       catch (ParseException e){
-        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+        processSyntaxError(token.beginLine, token.beginColumn, 0, e, false);
         error_skipToNext(enumSet);
         return Collections.EMPTY_LIST;
       }
@@ -268,7 +268,7 @@ Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):
     {return xrefs;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -289,7 +289,7 @@ Collection<MitabAlias> aliases(int column):
     {return aliases;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -352,7 +352,7 @@ Collection<MitabOrganism> taxId(int column):
     {return organisms;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+         processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
@@ -436,7 +436,7 @@ Collection<MitabAnnotation> annotations(int column):
       {return annots;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+      processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
       error_skipToNext(enumSet);
       return Collections.EMPTY_LIST;
   }
@@ -478,7 +478,7 @@ Collection<MitabDate> dates(int column):
       {return dates;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -499,7 +499,7 @@ Collection<MitabChecksum> checksums(int column):
       {return checksums;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -520,7 +520,7 @@ Collection<MitabFeature> features(int column):
        {return features;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -541,7 +541,7 @@ Collection<MitabStoichiometry> stoichiometryList(int column):
     {return stc;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
