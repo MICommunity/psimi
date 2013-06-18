@@ -41,4 +41,8 @@ public class MitabAnnotation extends DefaultAnnotation implements FileSourceCont
     public MitabSourceLocator getSourceLocator() {
         return this.sourceLocator;
     }
+
+    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+        this.sourceLocator = sourceLocator;
+    }
 }

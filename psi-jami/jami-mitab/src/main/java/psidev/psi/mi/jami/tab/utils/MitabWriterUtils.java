@@ -151,4 +151,8 @@ public class MitabWriterUtils {
 
         return UNKNOWN_DATABASE;
     }
+
+    public static String unescapeDoubleQuote(String stringToReplace){
+        return stringToReplace.replaceAll("\\\"", "\"");
+    }
 }
