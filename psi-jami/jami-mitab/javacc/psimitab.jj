@@ -238,7 +238,7 @@ Interaction MitabLine():
 
       }
       catch (ParseException e){
-        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
         error_skipToNext(enumSet);
         return Collections.EMPTY_LIST;
       }
@@ -268,7 +268,7 @@ Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):
     {return xrefs;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -289,7 +289,7 @@ Collection<MitabAlias> aliases(int column):
     {return aliases;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -310,7 +310,7 @@ Collection<MitabCvterm> cvTerms(int columnNumber):
     {return methods;}
   }
   catch (ParseException e){
-    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
     error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -331,7 +331,7 @@ Collection<MitabAuthor> firstAuthors():
     {return authors;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
         error_skipToNext(enumSet);
         return Collections.EMPTY_LIST;
      }
@@ -352,7 +352,7 @@ Collection<MitabOrganism> taxId(int column):
     {return organisms;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
@@ -373,7 +373,7 @@ Collection<MitabSource> sourceDbs():
     {return sources;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -394,7 +394,7 @@ Collection<MitabConfidence> confidences():
     {return confs;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -415,7 +415,7 @@ Collection<MitabCvTerm> complexExpansion():
     {return expansions;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -436,7 +436,7 @@ Collection<MitabAnnotation> annotations(int column):
       {return annots;}
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
       error_skipToNext(enumSet);
       return Collections.EMPTY_LIST;
   }
@@ -457,7 +457,7 @@ Collection<MitabParameter> parameters():
     {return params;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
@@ -478,7 +478,7 @@ Collection<MitabDate> dates(int column):
       {return dates;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -499,7 +499,7 @@ Collection<MitabChecksum> checksums(int column):
       {return checksums;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -520,7 +520,7 @@ Collection<MitabFeature> features(int column):
        {return features;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -541,7 +541,7 @@ Collection<MitabStoichiometry> stoichiometryList(int column):
     {return stc;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -582,12 +582,12 @@ MitabStoichiometry stoichiometry():
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
         error_skipToNext(enumSet);
         return null;
    }
    catch(NumberFormatException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
        return null;
    }
@@ -619,7 +619,7 @@ MitabFeature feature(int columnNumber):
       }
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
       error_skipToNext(enumSet);
       return null;
   }
@@ -654,12 +654,12 @@ MitabRange range(int columnNumber):
      }
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, true);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, true);
       error_skipToNext(enumSet);
       return null;
     }
    catch(IllegalRangeException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, true);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, true);
        error_skipToNext(enumSet);
        start = null;
    }
@@ -678,7 +678,7 @@ boolean negative():
       }
   }
   catch (ParseException e){
-    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -704,7 +704,7 @@ MitabChecksum checksum(int columnNumber):
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
         return null;
     }
@@ -726,12 +726,12 @@ MitabDate date(int columnNumber):
      }
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
      error_skipToNext(enumSet);
       return null;
   }
   catch (java.text.ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -757,12 +757,12 @@ MitabAnnotation parameter() :
      }
   }
   catch (ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, 30, false);
+      processSyntaxError(token.beginLine, token.beginColumn, 30, e, false);
        error_skipToNextField();
        return null;
    }
    catch (IllegalParameterException e){
-      processSyntaxError(token.beginLine, token.beginColumn, 30, false);
+      processSyntaxError(token.beginLine, token.beginColumn, 30, e, false);
       error_skipToNext(enumSet);
       return null;
     }
@@ -786,7 +786,7 @@ MitabAnnotation annotation(int columnNumber):
       return annot;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
          error_skipToNext(enumSet);
          return null;
       }
@@ -811,7 +811,7 @@ MitabXref xref(int columnNumber):
       return ref;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
        return null;
     }
@@ -838,7 +838,7 @@ MitabCvTerm expansion():
       return cv;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 16, false);
+     processSyntaxError(token.beginLine, token.beginColumn, 16, e, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -863,7 +863,7 @@ MitabConfidence confidence():
       return conf;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, 15, false);
+     processSyntaxError(token.beginLine, token.beginColumn, 15, e, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -889,7 +889,7 @@ MitabSource source():
          return s;}
   }
   catch (ParseException e){
-        processSyntaxError(token.beginLine, token.beginColumn, 13, false);
+        processSyntaxError(token.beginLine, token.beginColumn, 13, e, false);
         error_skipToNext(enumSet);
         return null;
   }
@@ -915,12 +915,12 @@ MitabOrganism organism(int columnNumber):
      }
   }
   catch (ParseException e){
-           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
            error_skipToNext(enumSet);
            return null;
   }
   catch (NumberFormatException e){
-           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
            error_skipToNext(enumSet);
            return null;
   }
@@ -948,7 +948,7 @@ MitabAuthor author():
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
        error_skipToNext(enumSet);
        return null;
   }
@@ -974,7 +974,7 @@ MitabCvTerm cvTerm(int column):
       return cv;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, column, false);
+     processSyntaxError(token.beginLine, token.beginColumn, column, e, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -1000,7 +1000,7 @@ MitabAlias alias(int columnNumber):
         return alias;}
   }
   catch(ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
       error_skipToNext(enumSet);
       return null;
   }
@@ -1038,7 +1038,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
        return ref;}
    }
    catch(ParseException e){
-      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
       error_skipToNext(enumSet);
       return null;
    }
