@@ -11,7 +11,7 @@ import java.util.EnumSet;
 import java.lang.NumberFormatException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 /** Token Manager. */
 public class MitabLineParserTokenManager implements MitabLineParserConstants

@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.tab.extension.MitabAlias;
 import psidev.psi.mi.jami.tab.extension.MitabConfidence;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.ModelledParticipant;
@@ -68,7 +68,7 @@ public class ExtendedMitab25Writer extends AbstractMitab25Writer {
             }
 
             // write confidence value
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(conf.getValue());
 
             // write text
@@ -89,7 +89,7 @@ public class ExtendedMitab25Writer extends AbstractMitab25Writer {
             // write db first
             escapeAndWriteString(mitabAlias.getDbSource());
             // write xref separator
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             // write name
             escapeAndWriteString(alias.getName());
             // write type

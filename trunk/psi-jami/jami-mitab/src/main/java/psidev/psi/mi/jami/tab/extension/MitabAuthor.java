@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -28,7 +28,7 @@ public class MitabAuthor implements FileSourceContext{
     public MitabAuthor(String firstAuthor, String publicationDate){
         this.firstAuthor = firstAuthor;
         try {
-            this.publicationDate = MitabWriterUtils.PUBLICATION_YEAR_FORMAT.parse(publicationDate);
+            this.publicationDate = MitabUtils.PUBLICATION_YEAR_FORMAT.parse(publicationDate);
         } catch (ParseException e) {
             e.printStackTrace();
             this.firstAuthor = firstAuthor + " " + publicationDate;
