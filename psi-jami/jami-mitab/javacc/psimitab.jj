@@ -6,7 +6,7 @@ options {
   STATIC = false;
 }
 
-PARSER_BEGIN(MitabLineParser)
+PARSER_BEGIN(AbstractMitabLineParser)
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.model.*;
@@ -22,11 +22,13 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
-public abstract class MitabLineParser extends AbstractMitabLineParser{
+public abstract class AbstractMitabLineParser {
 	
 	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
 	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);
 	}
+
+    abstract void fireOnInvalidSyntax(int lineNumber, int columnNumber, int mitabColumn, boolean isRange);
 
 	abstract Participant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid , Collection<MitabAlias> aliases,
 	                                       Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
@@ -41,7 +43,7 @@ public abstract class MitabLineParser extends AbstractMitabLineParser{
 	                                       Collection<MitabChecksum> checksumI, boolean isNegative);
 }
 
-PARSER_END(MitabLineParser)
+PARSER_END(AbstractMitabLineParser)
 
 /* WHITE SPACE */
 
