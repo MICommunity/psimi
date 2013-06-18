@@ -1,4 +1,7 @@
-package psidev.psi.mi.jami.datasource;
+package psidev.psi.mi.jami.factory;
+
+import psidev.psi.mi.jami.datasource.MIDataSource;
+import psidev.psi.mi.jami.datasource.MIFileDataSource;
 
 import java.io.File;
 import java.io.InputStream;
