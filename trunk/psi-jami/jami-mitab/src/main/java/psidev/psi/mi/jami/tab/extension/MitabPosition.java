@@ -37,7 +37,7 @@ public class MitabPosition extends DefaultPosition implements FileSourceContext{
         return spurceLocator;
     }
 
-    public void setSpurceLocator(MitabSourceLocator spurceLocator) {
+    public void setSourceLocator(MitabSourceLocator spurceLocator) {
         this.spurceLocator = spurceLocator;
     }
 }
