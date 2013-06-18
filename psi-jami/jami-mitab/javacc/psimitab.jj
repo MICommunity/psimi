@@ -163,6 +163,8 @@ Interaction MitabLine():
   Collection<MitabCvTerm> pmethodA;
   Collection<MitabCvTerm> pmethodB;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
+  Participant participantA;
+  Participant participantB;
 }
 {
 (
@@ -210,7 +212,7 @@ Interaction MitabLine():
         (<EMPTY_COLUMN> {checksumA = Collections.EMPTY_LIST;} | checksumA = checksums(33)) "\t"
         (<EMPTY_COLUMN> {checksumB = Collections.EMPTY_LIST;} | checksumB = checksums(34)) "\t"
         (<EMPTY_COLUMN> {checksumI = Collections.EMPTY_LIST;} | checksumI = checksums(35)) "\t"
-        (<EMPTY_COLUMN> | negative = negative())
+        (<EMPTY_COLUMN> | isNegative = negative())
 
         [ //starting MITAB 2.7
         "\t" //end of negative() delimiter
@@ -398,14 +400,14 @@ Collection<MitabConfidence> confidences():
 
 Collection<MitabCvTerm> complexExpansion():
 {
-  Collection<MitabCvterm> expansions;
+  Collection<MitabCvTerm> expansions;
   MitabCvTerm var;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
     var = expansion()
-    {expansions = new ArrayList<MitabCvterm>(); if (var != null) {expansions.add(var);}}
+    {expansions = new ArrayList<MitabCvTerm>(); if (var != null) {expansions.add(var);}}
 
     ("|" var = expansion() {if (var != null) {expansions.add(var);}})*
     {return expansions;}
