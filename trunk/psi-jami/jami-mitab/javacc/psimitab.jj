@@ -21,21 +21,14 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.lang.NumberFormatException;
 import java.util.Date;
-import java.text.ParseException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
 
 public class MitabLineParser {
-
-	void skipTo(int tokenKind) {
-		Token t;
-		do {
-			t = getNextToken();
-		} while (t.kind != tokenKind);
-	}
 	
-	void logSyntaxError(ParseException e) {
+	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
+	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);
 	}
 
 	MitabParserListener getParserListener();
@@ -247,7 +240,7 @@ Interaction MitabLine():
 
       }
       catch (ParseException e){
-        getParserListener().onInvalidLine(token.beginLine, token.beginColumn, columnNumber);
+        processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
         error_skipToNext(enumSet);
         return Collections.EMPTY_LIST;
       }
@@ -277,7 +270,7 @@ Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):
     {return xrefs;}
   }
   catch (ParseException e){
-      getParserListener().onInvalidXref(token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -298,7 +291,7 @@ Collection<MitabAlias> aliases(int column):
     {return aliases;}
   }
   catch (ParseException e){
-      getParserListener().onInvalidAlias(token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
       error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -319,7 +312,7 @@ Collection<MitabCvterm> cvTerms(int columnNumber):
     {return methods;}
   }
   catch (ParseException e){
-    getParserListener().onInvalidCvTerm(token.beginLine, token.beginColumn, columnNumber);
+    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
     error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -340,7 +333,7 @@ Collection<MitabAuthor> firstAuthors():
     {return authors;}
   }
   catch (ParseException e){
-       getParserListener().onInvalidFirstAuthor(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
         error_skipToNext(enumSet);
         return Collections.EMPTY_LIST;
      }
@@ -361,7 +354,7 @@ Collection<MitabOrganism> taxId(int column):
     {return organisms;}
   }
   catch (ParseException e){
-         getParserListener().onInvalidOrganismSyntax(token.beginLine, token.beginColumn, columnNumber);
+         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
@@ -382,7 +375,7 @@ Collection<MitabSource> sourceDbs():
     {return sources;}
   }
   catch (ParseException e){
-       getParserListener().onInvalidSource(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -403,7 +396,7 @@ Collection<MitabConfidence> confidences():
     {return confs;}
   }
   catch (ParseException e){
-       getParserListener().onInvalidConfidence(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -424,7 +417,7 @@ Collection<MitabCvTerm> complexExpansion():
     {return expansions;}
   }
   catch (ParseException e){
-     getParserListener().onInvalidCvTerm(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -445,7 +438,7 @@ Collection<MitabAnnotation> annotations(int column):
       {return annots;}
   }
   catch (ParseException e){
-      getParserListener().onInvalidAnnotation(token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
       error_skipToNext(enumSet);
       return Collections.EMPTY_LIST;
   }
@@ -466,7 +459,7 @@ Collection<MitabParameter> parameters():
     {return params;}
   }
   catch (ParseException e){
-         getParserListener().onInvalidParameter(token.beginLine, token.beginColumn, columnNumber);
+         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
@@ -487,7 +480,7 @@ Collection<MitabDate> dates(int column):
       {return dates;}
   }
   catch (ParseException e){
-       getParserListener().onInvalidDate(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -508,7 +501,7 @@ Collection<MitabChecksum> checksums(int column):
       {return checksums;}
   }
   catch (ParseException e){
-     getParserListener().onInvalidChecksum(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -529,7 +522,7 @@ Collection<MitabFeature> features(int column):
        {return features;}
   }
   catch (ParseException e){
-       getParserListener().onInvalidFeature(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -550,7 +543,7 @@ Collection<MitabStoichiometry> stoichiometryList(int column):
     {return stc;}
   }
   catch (ParseException e){
-     getParserListener().onInvalidStoichiometry(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -591,12 +584,12 @@ MitabStoichiometry stoichiometry():
       }
   }
   catch (ParseException e){
-       getParserListener().onInvalidStoichiometry(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
         error_skipToNext(enumSet);
         return null;
    }
    catch(NumberFormatException e){
-       getParserListener().onInvalidStoichiometry(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
        return null;
    }
@@ -628,7 +621,7 @@ MitabFeature feature(int columnNumber):
       }
   }
   catch (ParseException e){
-     getParserListener().onInvalidFeature(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
       error_skipToNext(enumSet);
       return null;
   }
@@ -663,12 +656,12 @@ MitabRange range(int columnNumber):
      }
   }
   catch (ParseException e){
-      getParserListener().onInvalidRange(token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, true);
       error_skipToNext(enumSet);
       return null;
     }
    catch(IllegalRangeException e){
-       getParserListener().onInvalidRange(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, true);
        error_skipToNext(enumSet);
        start = null;
    }
@@ -687,7 +680,7 @@ boolean negative():
       }
   }
   catch (ParseException e){
-    getParserListener().onInvalidNegative(token.beginLine, token.beginColumn, columnNumber);
+    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -713,7 +706,7 @@ MitabChecksum checksum(int columnNumber):
       }
   }
   catch (ParseException e){
-       getParserListener().onInvalidChecksum(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
         return null;
     }
@@ -735,12 +728,12 @@ MitabDate date(int columnNumber):
      }
   }
   catch (ParseException e){
-     getParserListener().onInvalidDate(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
      error_skipToNext(enumSet);
       return null;
   }
   catch (java.text.ParseException e){
-     getParserListener().onInvalidDateSyntax(token.image, token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -766,12 +759,12 @@ MitabAnnotation parameter() :
      }
   }
   catch (ParseException e){
-      getParserListener().onInvalidParameter(token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, 30, false);
        error_skipToNextField();
        return null;
    }
    catch (IllegalParameterException e){
-      getParserListener().onInvalidParameterValueSyntax(value, token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, 30, false);
       error_skipToNext(enumSet);
       return null;
     }
@@ -795,7 +788,7 @@ MitabAnnotation annotation(int columnNumber):
       return annot;}
   }
   catch (ParseException e){
-         getParserListener().onInvalidAnnotation(token.beginLine, token.beginColumn, columnNumber);
+         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
          error_skipToNext(enumSet);
          return null;
       }
@@ -820,7 +813,7 @@ MitabXref xref(int columnNumber):
       return ref;}
   }
   catch (ParseException e){
-       getParserListener().onInvalidXref(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
        return null;
     }
@@ -847,7 +840,7 @@ MitabCvTerm expansion():
       return cv;}
   }
   catch (ParseException e){
-     getParserListener().onInvalidCvTerm(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, 16, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -872,7 +865,7 @@ MitabConfidence confidence():
       return conf;}
   }
   catch (ParseException e){
-     getParserListener().onInvalidConfidence(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, 15, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -898,7 +891,7 @@ MitabSource source():
          return s;}
   }
   catch (ParseException e){
-        getParserListener().onInvalidSource(token.beginLine, token.beginColumn, columnNumber);
+        processSyntaxError(token.beginLine, token.beginColumn, 13, false);
         error_skipToNext(enumSet);
         return null;
   }
@@ -924,12 +917,12 @@ MitabOrganism organism(int columnNumber):
      }
   }
   catch (ParseException e){
-           getParserListener().onInvalidOrganismSyntax(token.beginLine, token.beginColumn, columnNumber);
+           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
            error_skipToNext(enumSet);
            return null;
   }
   catch (NumberFormatException e){
-           getParserListener().onInvalidOrganismTaxid(id, token.beginLine, token.beginColumn, columnNumber);
+           processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
            error_skipToNext(enumSet);
            return null;
   }
@@ -939,7 +932,7 @@ MitabAuthor author():
 {
  MitabAuthor auth;
  java.lang.String first;
- java.lang.String date;
+ java.lang.String date = null;
  java.lang.String second;
  int beginLine;
  int beginColumn;
@@ -957,7 +950,7 @@ MitabAuthor author():
       }
   }
   catch (ParseException e){
-       getParserListener().onInvalidFirstAuthor(token.beginLine, token.beginColumn, columnNumber);
+       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
        error_skipToNext(enumSet);
        return null;
   }
@@ -966,7 +959,7 @@ MitabAuthor author():
 MitabCvTerm cvTerm(int column):
 {
   java.lang.String db;
-  java.lang.String id;
+  java.lang.String id = null;
   java.lang.String name = null;
   int beginLine;
   int beginColumn;
@@ -979,11 +972,11 @@ MitabCvTerm cvTerm(int column):
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" name = safeString() ")" ]
     { if (name == null){cv = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, column);}
       else {cv = new MitabCvTerm(name, null, db, id);}
-      cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
+      cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
       return cv;}
   }
   catch (ParseException e){
-     getParserListener().onInvalidCvTerm(token.beginLine, token.beginColumn, columnNumber);
+     processSyntaxError(token.beginLine, token.beginColumn, column, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -1009,7 +1002,7 @@ MitabAlias alias(int columnNumber):
         return alias;}
   }
   catch(ParseException e){
-      getParserListener().onInvalidAlias(token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
       error_skipToNext(enumSet);
       return null;
   }
@@ -1047,7 +1040,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
        return ref;}
    }
    catch(ParseException e){
-      getParserListener().onInvalidXref(token.beginLine, token.beginColumn, columnNumber);
+      processSyntaxError(token.beginLine, token.beginColumn, columnNumber, false);
       error_skipToNext(enumSet);
       return null;
    }
