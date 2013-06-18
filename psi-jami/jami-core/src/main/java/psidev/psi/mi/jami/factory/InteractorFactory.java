@@ -6,9 +6,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * This factory allows to create a proper interactor depending on the type
@@ -30,7 +28,7 @@ public class InteractorFactory {
     }
 
     /**
-     * Return the proper instance of the interactor if the type is recognized. It returns null otherwise.
+     * Return the proper instance of the interactor if the type is recognized and not null. It returns null otherwise.
      * @param type
      * @param name
      * @return the proper instance of the interactor if the type is recognized. It returns null otherwise.
@@ -42,6 +40,10 @@ public class InteractorFactory {
 
             return createInteractorFromRecognizedCategory(recognizedType, name, type);
         }
+        // we have a valid type that is not unknown or null
+        else if (DefaultCvTermComparator.areEquals(CvTermUtils.getUnknownInteractorType(), type)){
+            return createInteractor(name, type);
+        }
 
         return null;
     }
@@ -52,7 +54,7 @@ public class InteractorFactory {
      * @param name
      * @return the proper instance of the interactor if the database is recognized. It returns null otherwise.
      */
-    public Interactor createInteractorFromOnDatabase(CvTerm database, String name){
+    public Interactor createInteractorFromDatabase(CvTerm database, String name){
 
         if (this.deterministicInteractorMap.containsKey(database)){
             String recognizedType = this.deterministicInteractorMap.get(database);
@@ -61,6 +63,24 @@ public class InteractorFactory {
         }
 
         return null;
+    }
+
+    /**
+     * Return the proper instance of the interactor if the database is recognized (the interactor will be returned on the first database which is recognized). It returns null otherwise.
+     * @param databases
+     * @param name
+     * @return the proper instance of the interactor if the database is recognized (the interactor will be returned on the first database which is recognized). It returns null otherwise.
+     */
+    public Interactor createInteractorFromIdentityXrefs(Collection<Xref> databases, String name){
+
+        Interactor interactor = null;
+        Iterator<Xref> xrefsIterator = databases.iterator();
+        while (interactor == null && xrefsIterator.hasNext()){
+
+            interactor = createInteractorFromDatabase(xrefsIterator.next().getDatabase(), name);
+        }
+
+        return interactor;
     }
 
     public Protein createProtein(String name, CvTerm type){
