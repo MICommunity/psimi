@@ -166,4 +166,8 @@ public class InteractorFactory {
 
         return createInteractor(name, type);
     }
+
+    protected Map<CvTerm, String> getDeterministicInteractorMap() {
+        return deterministicInteractorMap;
+    }
 }
