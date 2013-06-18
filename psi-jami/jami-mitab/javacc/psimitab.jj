@@ -238,7 +238,7 @@ Interaction MitabLine():
       catch (ParseException e){
         processSyntaxError(token.beginLine, token.beginColumn, 0, e, false);
         error_skipToNext(enumSet);
-        return Collections.EMPTY_LIST;
+        return null;
       }
 
     //line/file termination
