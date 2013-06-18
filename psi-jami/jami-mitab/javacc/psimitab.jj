@@ -24,6 +24,7 @@ import java.util.Date;
 import java.text.ParseException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
+import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
 
 public class MitabLineParser {
 
@@ -1055,7 +1056,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
 java.lang.String safeString():
 {java.lang.String text;}
 {
-  <QUOTED_STRING> {text = token.image.substring(1, token.image.length()).replaceAll("\\\"", "\"").trim();} | <UNRESERVED_STRING> {text = token.image.trim();}
+  <QUOTED_STRING> {text = MitabWriterUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());} | <UNRESERVED_STRING> {text = token.image.trim();}
   {return text;}
 }
 
