@@ -178,8 +178,8 @@ Interaction MitabLine():
       (
         (<EMPTY_COLUMN> {uniqueIdA = Collections.EMPTY_LIST;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) "\t"
         (<EMPTY_COLUMN> {uniqueIdB = Collections.EMPTY_LIST;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) "\t"
-        (<EMPTY_COLUMN> {altidA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) "\t"
-        (<EMPTY_COLUMN> {altidB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) "\t"
+        (<EMPTY_COLUMN> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) "\t"
+        (<EMPTY_COLUMN> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) "\t"
         (<EMPTY_COLUMN> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) "\t"
         (<EMPTY_COLUMN> {aliasB = Collections.EMPTY_LIST;} | aliasB = aliases(6)) "\t"
         (<EMPTY_COLUMN> {detMethod = Collections.EMPTY_LIST;} | detMethod = cvTerms(7)) "\t"
