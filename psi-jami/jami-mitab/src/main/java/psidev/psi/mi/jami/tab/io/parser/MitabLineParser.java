@@ -12,7 +12,7 @@ import java.util.EnumSet;
 import java.lang.NumberFormatException;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 public abstract class MitabLineParser extends AbstractMitabDataSource implements MitabLineParserConstants {
 
@@ -1500,7 +1500,7 @@ public abstract class MitabLineParser extends AbstractMitabDataSource implements
         jj_la1[67] = jj_gen;
         ;
       }
-      if (name == null){cv = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(beginLine, beginColumn, 16);}
+      if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(beginLine, beginColumn, 16);}
       else if (id == null) {cv = new MitabCvTerm(name); getParserListener().onMissingExpansionId(beginLine, beginColumn, 16);}
       else {cv = new MitabCvTerm(name, null, db, id);}
       cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
@@ -1572,7 +1572,7 @@ public abstract class MitabLineParser extends AbstractMitabDataSource implements
         jj_la1[69] = jj_gen;
         ;
       }
-         if (name == null){s = new MitabSource(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(beginLine, beginColumn, 13);}
+         if (name == null){s = new MitabSource(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(beginLine, beginColumn, 13);}
          else {s = new MitabSource(name, null, db, id);}
          s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
          {if (true) return s;}
@@ -1767,7 +1767,7 @@ public abstract class MitabLineParser extends AbstractMitabDataSource implements
         jj_la1[80] = jj_gen;
         ;
       }
-      if (name == null){cv = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, column);}
+      if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(token.beginLine, token.beginColumn, column);}
       else {cv = new MitabCvTerm(name, null, db, id);}
       cv.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, column));
       {if (true) return cv;}
@@ -1867,11 +1867,11 @@ public abstract class MitabLineParser extends AbstractMitabDataSource implements
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUOTED_STRING:
       jj_consume_token(QUOTED_STRING);
-                   text = MitabWriterUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
+                   text = MitabUtils.unescapeDoubleQuote(token.image.substring(1, token.image.length()).trim());
       break;
     case UNRESERVED_STRING:
       jj_consume_token(UNRESERVED_STRING);
-                                                                                                                                               text = token.image.trim();
+                                                                                                                                         text = token.image.trim();
    {if (true) return text;}
       break;
     default:

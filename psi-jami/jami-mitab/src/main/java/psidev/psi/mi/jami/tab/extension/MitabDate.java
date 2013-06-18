@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class MitabDate implements FileSourceContext{
     private Date date;
 
     public MitabDate(String date) throws ParseException {
-        this.date = MitabWriterUtils.DATE_FORMAT.parse(date);
+        this.date = MitabUtils.DATE_FORMAT.parse(date);
     }
 
     public MitabSourceLocator getSourceLocator() {

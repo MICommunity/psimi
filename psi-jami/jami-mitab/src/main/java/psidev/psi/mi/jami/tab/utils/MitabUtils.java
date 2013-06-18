@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
  * @since <pre>10/06/13</pre>
  */
 
-public class MitabWriterUtils {
+public class MitabUtils {
 
     public static final String LINE_BREAK = System.getProperty("line.separator");
     public static final String COLUMN_SEPARATOR = "\t";

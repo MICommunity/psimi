@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.datasource.InteractionWriterFactory;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.tab.MitabColumnName;
 import psidev.psi.mi.jami.tab.MitabVersion;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
@@ -355,50 +355,50 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void writeBinary(BinaryInteraction interaction, Participant a, Participant b) throws IOException {
         // id A
         writeUniqueIdentifier(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // id B
         writeUniqueIdentifier(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // altid A
         writeAlternativeIdentifiers(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // altid B
         writeAlternativeIdentifiers(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // aliases
         // alias A
         writeAliases(a);
-        getWriter().write(MitabWriterUtils.COLUMN_SEPARATOR);
+        getWriter().write(MitabUtils.COLUMN_SEPARATOR);
         // alias B
         writeAliases(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
 
         // skip detection method
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // skip pub author
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // skip publication identifier
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // taxid A
         writeInteractorOrganism(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // taxid B
         writeInteractorOrganism(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // interaction type
         writeInteractionType(interaction);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // skip source identifier
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // interaction identifiers
         writeInteractionIdentifiers(interaction);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // skip interaction confidence
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.EMPTY_COLUMN);
     }
 
     /**
@@ -411,47 +411,47 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void writeBinaryEvidence(BinaryInteractionEvidence interaction, ParticipantEvidence a, ParticipantEvidence b) throws IOException {
         // id A
         writeUniqueIdentifier(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // id B
         writeUniqueIdentifier(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // altid A
         writeAlternativeIdentifiers(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // altid B
         writeAlternativeIdentifiers(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // aliases
         // alias A
         writeAliases(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // alias B
         writeAliases(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // write detection method
         writeInteractionDetectionMethod(interaction.getExperiment());
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // write pub author
         writeFirstAuthor(interaction.getExperiment());
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // write publication identifier
         writePublicationIdentifiers(interaction.getExperiment());
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // taxid A
         writeInteractorOrganism(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // taxid B
         writeInteractorOrganism(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // interaction type
         writeInteractionType(interaction);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // write source identifier
         writeSource(interaction.getExperiment());
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // interaction identifiers
         writeInteractionIdentifiers(interaction);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // confidences
         // write interaction confidence
         writeInteractionConfidences(interaction);
@@ -467,48 +467,48 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void writeModelledBinary(ModelledBinaryInteraction interaction, ModelledParticipant a, ModelledParticipant b) throws IOException {
         // id A
         writeUniqueIdentifier(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // id B
         writeUniqueIdentifier(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // altid A
         writeAlternativeIdentifiers(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // altid B
         writeAlternativeIdentifiers(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // aliases
         // alias A
         writeAliases(a);
-        getWriter().write(MitabWriterUtils.COLUMN_SEPARATOR);
+        getWriter().write(MitabUtils.COLUMN_SEPARATOR);
         // alias B
         writeAliases(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
 
         // skip detection method
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // skip pub author
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // skip publication identifier
-        writer.write(MitabWriterUtils.EMPTY_COLUMN);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.EMPTY_COLUMN);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // taxid A
         writeInteractorOrganism(a);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // taxid B
         writeInteractorOrganism(b);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // interaction type
         writeInteractionType(interaction);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // write source identifier
         writeSource(interaction);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // interaction identifiers
         writeInteractionIdentifiers(interaction);
-        writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+        writer.write(MitabUtils.COLUMN_SEPARATOR);
         // confidences
         // write interaction confidence
         writeInteractionConfidences(interaction);
@@ -519,14 +519,14 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
      * @throws IOException
      */
     protected void writeHeader() throws IOException{
-        writer.write(MitabWriterUtils.COMMENT_PREFIX);
+        writer.write(MitabUtils.COMMENT_PREFIX);
         writer.write(" ");
 
         for (MitabColumnName colName : MitabColumnName.values()) {
             writer.write(colName.toString());
             // starts with 0
             if (colName.ordinal() < version.getNumberOfColumns() - 1){
-                writer.write(MitabWriterUtils.COLUMN_SEPARATOR);
+                writer.write(MitabUtils.COLUMN_SEPARATOR);
             }
             else {
                 break;
@@ -542,7 +542,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void writeUniqueIdentifier(Participant participant) throws IOException {
 
         if (participant == null){
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
         else {
             Interactor interactor = participant.getInteractor();
@@ -551,7 +551,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                 writeIdentifier(interactor.getIdentifiers().iterator().next());
             }
             else{
-                writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
     }
@@ -564,7 +564,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void writeAlternativeIdentifiers(Participant participant) throws IOException {
 
         if (participant == null){
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
         else {
             Interactor interactor = participant.getInteractor();
@@ -579,12 +579,12 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                     writeIdentifier(identifierIterator.next());
                     // write field separator
                     if (identifierIterator.hasNext()){
-                        writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                        writer.write(MitabUtils.FIELD_SEPARATOR);
                     }
                 }
             }
             else{
-                writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
     }
@@ -597,7 +597,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void writeAliases(Participant participant) throws IOException {
 
         if (participant == null){
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
         else {
             Interactor interactor = participant.getInteractor();
@@ -609,12 +609,12 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                     writeAlias(aliasIterator.next());
                     // write field separator
                     if (aliasIterator.hasNext()){
-                        writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                        writer.write(MitabUtils.FIELD_SEPARATOR);
                     }
                 }
             }
             else{
-                writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
     }
@@ -628,7 +628,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             writeCvTerm(experiment.getInteractionDetectionMethod());
         }
         else{
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -643,29 +643,29 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             if (pub != null){
                 // authors and maybe publication date
                 if (!pub.getAuthors().isEmpty()){
-                    escapeAndWriteString(pub.getAuthors().iterator().next() + MitabWriterUtils.AUTHOR_SUFFIX);
+                    escapeAndWriteString(pub.getAuthors().iterator().next() + MitabUtils.AUTHOR_SUFFIX);
                     if (pub.getPublicationDate() != null){
                         writer.write(" (");
-                        writer.write(MitabWriterUtils.PUBLICATION_YEAR_FORMAT.format(pub.getPublicationDate()));
+                        writer.write(MitabUtils.PUBLICATION_YEAR_FORMAT.format(pub.getPublicationDate()));
                         writer.write(")");
                     }
                 }
                 // publication date only
                 else if (pub.getPublicationDate() != null){
                     writer.write("unknown (");
-                    writer.write(MitabWriterUtils.PUBLICATION_YEAR_FORMAT.format(pub.getPublicationDate()));
+                    writer.write(MitabUtils.PUBLICATION_YEAR_FORMAT.format(pub.getPublicationDate()));
                     writer.write(")");
                 }
                 else {
-                    writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                    writer.write(MitabUtils.EMPTY_COLUMN);
                 }
             }
             else{
-                writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
         else{
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -682,21 +682,21 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                 // identifiers
                 if (pub.getPubmedId() != null){
                     writer.write(Xref.PUBMED);
-                    writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                    writer.write(MitabUtils.XREF_SEPARATOR);
                     escapeAndWriteString(pub.getPubmedId());
 
                     // IMEx as well
-                    writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
                     writePublicationImexId(pub);
                 }
                 // doi only
                 else if (pub.getDoi() != null){
                     writer.write(Xref.DOI);
-                    writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                    writer.write(MitabUtils.XREF_SEPARATOR);
                     escapeAndWriteString(pub.getDoi());
 
                     // IMEx as well
-                    writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
                     writePublicationImexId(pub);
                 }
                 // other identfiers
@@ -704,7 +704,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                     writeIdentifier(pub.getIdentifiers().iterator().next());
 
                     // IMEx as well
-                    writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
                     writePublicationImexId(pub);
                 }
                 // IMEx only
@@ -713,15 +713,15 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                 }
                 // nothing
                 else{
-                    writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                    writer.write(MitabUtils.EMPTY_COLUMN);
                 }
             }
             else{
-                writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
         else{
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -737,7 +737,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             writeOrganism(interactor.getOrganism());
         }
         else{
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -762,11 +762,11 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                 writeCvTerm(pub.getSource());
             }
             else {
-                writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
         else{
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -794,22 +794,22 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
 
             // IMEx as well
             if (!imexId.isEmpty()){
-                writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                writer.write(MitabUtils.FIELD_SEPARATOR);
                 writer.write(Xref.IMEX);
-                writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                writer.write(MitabUtils.XREF_SEPARATOR);
                 escapeAndWriteString(imexId.iterator().next().getId());
             }
         }
         // IMEx only
         else if (!imexId.isEmpty()) {
-            writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+            writer.write(MitabUtils.FIELD_SEPARATOR);
             writer.write(Xref.IMEX);
-            writer.write(MitabWriterUtils.XREF_SEPARATOR);
+            writer.write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(imexId.iterator().next().getId());
         }
         // nothing
         else{
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -826,22 +826,22 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
 
             // IMEx as well
             if (interaction.getImexId() != null){
-                writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                writer.write(MitabUtils.FIELD_SEPARATOR);
                 writer.write(Xref.IMEX);
-                writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                writer.write(MitabUtils.XREF_SEPARATOR);
                 escapeAndWriteString(interaction.getImexId());
             }
         }
         // IMEx only
         else if (interaction.getImexId() != null) {
-            writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+            writer.write(MitabUtils.FIELD_SEPARATOR);
             writer.write(Xref.IMEX);
-            writer.write(MitabWriterUtils.XREF_SEPARATOR);
+            writer.write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(interaction.getImexId());
         }
         // nothing
         else{
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -858,12 +858,12 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                 writeConfidence(confIterator.next());
 
                 if (confIterator.hasNext()){
-                    writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
                 }
             }
         }
         else {
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -881,12 +881,12 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
                 writeConfidence(confIterator.next());
 
                 if (confIterator.hasNext()){
-                    writer.write(MitabWriterUtils.FIELD_SEPARATOR);
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
                 }
             }
         }
         else {
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -905,8 +905,8 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void writeOrganism(Organism organism) throws IOException {
         if (organism != null){
 
-            writer.write(MitabWriterUtils.TAXID);
-            writer.write(MitabWriterUtils.XREF_SEPARATOR);
+            writer.write(MitabUtils.TAXID);
+            writer.write(MitabUtils.XREF_SEPARATOR);
             writer.write(Integer.toString(organism.getTaxId()));
 
             // write common name if provided
@@ -917,9 +917,9 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
 
                 // write scientific name if provided
                 if (organism.getScientificName() != null){
-                    writer.write(MitabWriterUtils.FIELD_SEPARATOR);
-                    writer.write(MitabWriterUtils.TAXID);
-                    writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
+                    writer.write(MitabUtils.TAXID);
+                    writer.write(MitabUtils.XREF_SEPARATOR);
                     writer.write(Integer.toString(organism.getTaxId()));
                     writer.write("(");
                     escapeAndWriteString(organism.getScientificName());
@@ -934,7 +934,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             }
         }
         else {
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -947,7 +947,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             // write MI xref first
             if (cv.getMIIdentifier() != null){
                 writer.write(CvTerm.PSI_MI);
-                writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                writer.write(MitabUtils.XREF_SEPARATOR);
                 writer.write("\"");
                 writer.write(cv.getMIIdentifier());
                 writer.write("\"");
@@ -960,7 +960,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             // write MOD xref
             else if (cv.getMODIdentifier() != null){
                 writer.write(CvTerm.PSI_MOD);
-                writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                writer.write(MitabUtils.XREF_SEPARATOR);
                 writer.write("\"");
                 writer.write(cv.getMODIdentifier());
                 writer.write("\"");
@@ -973,7 +973,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             // write PAR xref
             else if (cv.getPARIdentifier() != null){
                 writer.write(CvTerm.PSI_PAR);
-                writer.write(MitabWriterUtils.XREF_SEPARATOR);
+                writer.write(MitabUtils.XREF_SEPARATOR);
                 writer.write("\"");
                 writer.write(cv.getPARIdentifier());
                 writer.write("\"");
@@ -994,11 +994,11 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             }
             // write empty column
             else{
-                writer.write(MitabWriterUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
         else {
-            writer.write(MitabWriterUtils.EMPTY_COLUMN);
+            writer.write(MitabUtils.EMPTY_COLUMN);
         }
     }
 
@@ -1033,7 +1033,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             // write db first
             escapeAndWriteString(identifier.getDatabase().getShortName());
             // write xref separator
-            writer.write(MitabWriterUtils.XREF_SEPARATOR);
+            writer.write(MitabUtils.XREF_SEPARATOR);
             // write id
             escapeAndWriteString(identifier.getId());
             // write version
@@ -1053,10 +1053,10 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
     protected void escapeAndWriteString(String stringToEscape) throws IOException {
 
         // replace first tabs and break line with a space and escape double quote
-        String replaced = stringToEscape.replaceAll(MitabWriterUtils.LINE_BREAK+"|"+MitabWriterUtils.COLUMN_SEPARATOR, " ");
+        String replaced = stringToEscape.replaceAll(MitabUtils.LINE_BREAK+"|"+ MitabUtils.COLUMN_SEPARATOR, " ");
         replaced = replaced.replaceAll("\"", "\\\"");
 
-        for (String special : MitabWriterUtils.SPECIAL_CHARACTERS){
+        for (String special : MitabUtils.SPECIAL_CHARACTERS){
 
             if (replaced.contains(special)){
                 writer.write("\"");
@@ -1087,7 +1087,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
         // IMEx as well
         if (pub.getImexId() != null) {
             writer.write(Xref.IMEX);
-            writer.write(MitabWriterUtils.XREF_SEPARATOR);
+            writer.write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(pub.getImexId());
         }
     }
@@ -1098,7 +1098,7 @@ public abstract class AbstractMitab25Writer implements InteractionDataSourceWrit
             hasWrittenHeader = true;
         }
         else{
-            writer.write(MitabWriterUtils.LINE_BREAK);
+            writer.write(MitabUtils.LINE_BREAK);
         }
     }
 

@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.tab.io.writer;
 
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.ModelledParticipant;
@@ -66,7 +66,7 @@ public class Mitab26Writer extends AbstractMitab26Writer{
             }
 
             // write confidence value
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(conf.getValue());
         }
     }
@@ -75,9 +75,9 @@ public class Mitab26Writer extends AbstractMitab26Writer{
     protected void writeAlias(Alias alias) throws IOException {
         if (alias != null){
             // write db first
-            escapeAndWriteString(MitabWriterUtils.findDbSourceForAlias(alias));
+            escapeAndWriteString(MitabUtils.findDbSourceForAlias(alias));
             // write xref separator
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             // write name
             escapeAndWriteString(alias.getName());
             // write type
@@ -91,9 +91,9 @@ public class Mitab26Writer extends AbstractMitab26Writer{
     protected void writeAlias(ParticipantEvidence participant, Alias alias) throws IOException {
         if (alias != null){
             // write db first
-            escapeAndWriteString(MitabWriterUtils.findDbSourceForAlias(participant, alias));
+            escapeAndWriteString(MitabUtils.findDbSourceForAlias(participant, alias));
             // write xref separator
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             // write name
             escapeAndWriteString(alias.getName());
             // write type
@@ -107,9 +107,9 @@ public class Mitab26Writer extends AbstractMitab26Writer{
     protected void writeAlias(ModelledParticipant participant, Alias alias) throws IOException {
         if (alias != null){
             // write db first
-            escapeAndWriteString(MitabWriterUtils.findDbSourceForAlias(participant, alias));
+            escapeAndWriteString(MitabUtils.findDbSourceForAlias(participant, alias));
             // write xref separator
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             // write name
             escapeAndWriteString(alias.getName());
             // write type

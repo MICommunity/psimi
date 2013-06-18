@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.tab.extension.MitabAlias;
 import psidev.psi.mi.jami.tab.extension.MitabConfidence;
 import psidev.psi.mi.jami.tab.extension.MitabFeature;
-import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 
@@ -69,9 +69,9 @@ public class ExtendedMitab27Writer extends AbstractMitab27Writer {
                 }
             }
             else {
-                getWriter().write(MitabWriterUtils.UNKNOWN_TYPE);
+                getWriter().write(MitabUtils.UNKNOWN_TYPE);
             }
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             // then write ranges
             if (feature.getRanges().isEmpty()){
                 getWriter().write(Range.UNDETERMINED_POSITION_SYMBOL);
@@ -83,7 +83,7 @@ public class ExtendedMitab27Writer extends AbstractMitab27Writer {
                 while(rangeIterator.hasNext()){
                     getWriter().write(RangeUtils.convertRangeToString(rangeIterator.next()));
                     if (rangeIterator.hasNext()){
-                        getWriter().write(MitabWriterUtils.FIELD_SEPARATOR);
+                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
                     }
                 }
             }
@@ -109,7 +109,7 @@ public class ExtendedMitab27Writer extends AbstractMitab27Writer {
             }
 
             // write confidence value
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(conf.getValue());
 
             // write text
@@ -130,7 +130,7 @@ public class ExtendedMitab27Writer extends AbstractMitab27Writer {
             // write db first
             escapeAndWriteString(mitabAlias.getDbSource());
             // write xref separator
-            getWriter().write(MitabWriterUtils.XREF_SEPARATOR);
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
             // write name
             escapeAndWriteString(alias.getName());
             // write type
