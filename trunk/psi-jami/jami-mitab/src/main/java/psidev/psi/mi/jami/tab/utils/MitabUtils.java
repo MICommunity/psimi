@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.tab.MitabColumnName;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AliasUtils;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -154,5 +155,24 @@ public class MitabUtils {
 
     public static String unescapeDoubleQuote(String stringToReplace){
         return stringToReplace.replaceAll("\\\"", "\"");
+    }
+
+    /**
+     * To know if a publication annotation is an interactionTag
+     * @param annot
+     * @return
+     */
+    public static boolean isAnnotationAnInteractionTag(Annotation annot){
+        return AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.FULL_COVERAGE_MI, Annotation.FULL_COVERAGE)
+                || AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PARTIAL_COVERAGE_MI, Annotation.PARTIAL_COVERAGE) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.EXPERIMENTALLY_OBSERVED_MI, Annotation.EXPERIMENTALLY_OBSERVED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMPORTED_MI, Annotation.IMPORTED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.INTERNALLY_CURATED_MI, Annotation.INTERNALLY_CURATED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PREDICTED_MI, Annotation.PREDICTED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.TEXT_MINING_MI, Annotation.TEXT_MINING) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.NUCLEIC_ACID_PROTEIN_MI, Annotation.NUCLEIC_ACID_PROTEIN) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.SMALL_MOLECULE_PROTEIN_MI, Annotation.SMALL_MOLECULE_PROTEIN) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.CLUSTERED_MI, Annotation.CLUSTERED) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.EVIDENCE_MI, Annotation.EVIDENCE);
     }
 }
