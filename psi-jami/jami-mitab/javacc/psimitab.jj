@@ -11,6 +11,7 @@ package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
+import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import java.util.Collection;
 import java.util.Collections;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -27,6 +28,10 @@ public abstract class AbstractMitabLineParser {
 	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
 	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);
 	}
+
+	abstract MitabParserListener getParserListener();
+
+	abstract void setParserListener(MitabParserListener listener);
 
     abstract void fireOnInvalidSyntax(int lineNumber, int columnNumber, int mitabColumn, boolean isRange);
 
