@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.mitab.listener.MitabParserListener;
+import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.lang.NumberFormatException;
@@ -26,7 +26,7 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
 
-public class MitabLineParser {
+public abstract class MitabLineParser extends AbstractMitabDataSource{
 	
 	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
 	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);
