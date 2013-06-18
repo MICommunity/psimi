@@ -53,4 +53,6 @@ public interface MitabParserListener {
     public void onInvalidFeature(int line, int column, int mitabColumn);
 
     public void onInvalidStoichiometry(int line, int column, int mitabColumn);
+
+    public void onInvalidLine(int line, int column, int mitabColumn);
 }
