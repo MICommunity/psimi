@@ -1064,7 +1064,7 @@ void error_skipToNext(EnumSet<TokenKind> skipToTokens) {
     // check next token
     i++;
     t = getToken(i);
-  } while (t != null && !skipToTokens.contains(TokenKind.getFromTokenKind(t)));
+  } while (t != null && !skipToTokens.contains(TokenKind.getFromTokenKind(t.kind)));
     // The above loop consumes tokens all the way up to a token of
     // "kind".  We use a do-while loop rather than a while because the
     // current token is the one immediately before the erroneous token
