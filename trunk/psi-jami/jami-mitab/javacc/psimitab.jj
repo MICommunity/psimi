@@ -15,13 +15,9 @@ import java.util.Collection;
 import java.util.Collections;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
-import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.RangeUtils;
-import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.lang.NumberFormatException;
-import java.util.Date;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabWriterUtils;
@@ -295,16 +291,16 @@ Collection<MitabAlias> aliases(int column):
     }
 }
 
-Collection<MitabCvterm> cvTerms(int columnNumber):
+Collection<MitabCvTerm> cvTerms(int columnNumber):
 {
-  Collection<MitabCvterm> methods;
+  Collection<MitabCvTerm> methods;
   MitabCvTerm var;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
   var = cvTerm(columnNumber)
-    {methods = new ArrayList<MitabCvterm>(); if (var != null) {methods.add(var);}}
+    {methods = new ArrayList<MitabCvTerm>(); if (var != null) {methods.add(var);}}
 
     ("|" var = cvTerm(columnNumber) {if (var != null) {methods.add(var);}})*
     {return methods;}
