@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.datasource;
 
+import psidev.psi.mi.jami.factory.MIDataSourceFactory;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;

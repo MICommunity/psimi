@@ -1,5 +1,6 @@
-package psidev.psi.mi.jami.datasource;
+package psidev.psi.mi.jami.factory;
 
+import psidev.psi.mi.jami.datasource.InteractionDataSourceWriter;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 
 import java.util.Map;

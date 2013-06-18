@@ -1,7 +1,10 @@
-package psidev.psi.mi.jami.datasource;
+package psidev.psi.mi.jami.factory;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.datasource.MockExperimentDataSource;
+import psidev.psi.mi.jami.datasource.MockInteractionDataSource;
+import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
