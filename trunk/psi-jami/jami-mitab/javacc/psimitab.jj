@@ -450,10 +450,10 @@ Collection<MitabParameter> parameters():
 }
 {
   try{
-    var = parameter(column)
+    var = parameter()
     {params = new ArrayList<MitabParameter>(); if (var != null) {params.add(var);}}
 
-    ("|" var = parameter(column) {if (var != null) {params.add(var);}})*
+    ("|" var = parameter() {if (var != null) {params.add(var);}})*
     {return params;}
   }
   catch (ParseException e){
