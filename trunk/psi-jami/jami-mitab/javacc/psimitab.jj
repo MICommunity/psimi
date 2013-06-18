@@ -948,7 +948,7 @@ MitabAuthor author():
       }
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 8, e, false);
        error_skipToNext(enumSet);
        return null;
   }
