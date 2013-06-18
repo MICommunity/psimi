@@ -32,9 +32,6 @@ public abstract class MitabLineParser extends AbstractMitabDataSource{
 	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);
 	}
 
-	MitabParserListener getParserListener();
-	void setParserListener(MitabParserListener listener);
-
 	abstract Participant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid , Collection<MitabAlias> aliases,
 	                                       Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
 	                                       Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot,
