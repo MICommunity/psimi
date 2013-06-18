@@ -547,10 +547,10 @@ Collection<MitabStoichiometry> stoichiometryList(int column):
   }
 }
 
-MitabStoichiometry stoichiometry():
+MitabStoichiometry stoichiometry(int columnNumber):
 {
   long min;
-  java.lang.Long max = 0;
+  java.lang.Long max = null;
   int beginLine;
   int beginColumn;
   MitabStoichiometry stc;
@@ -613,7 +613,7 @@ MitabFeature feature(int columnNumber):
     {
         feature = new MitabFeature(type);
         feature.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
-        feature.addAll(ranges);
+        feature.getRanges().addAll(ranges);
 
         return feature;
       }
@@ -678,7 +678,7 @@ boolean negative():
   catch (ParseException e){
     processSyntaxError(token.beginLine, token.beginColumn, 16, e, false);
      error_skipToNext(enumSet);
-     return null;
+     return false;
   }
 }
 
@@ -735,7 +735,7 @@ MitabDate date(int columnNumber):
   }
 }
 
-MitabAnnotation parameter() :
+MitabParameter parameter() :
 {
   java.lang.String type;
   java.lang.String value;
