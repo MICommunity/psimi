@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.datasource;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,7 +23,9 @@ public class MIDataSourceFactory {
 
     private Map<Class<? extends MIDataSource>, Map<String, Object>> registeredDataSources;
 
-    public static final String SOURCE_OPTION_KEY = "file_data_source_key";
+    public static final String INPUT_FILE_OPTION_KEY = "input_file_key";
+    public static final String INPUT_STREAM_OPTION_KEY = "input_stream_key";
+    public static final String READER_OPTION_KEY = "input_reader_key";
 
     private MIDataSourceFactory(){
         registeredDataSources = new ConcurrentHashMap<Class<? extends MIDataSource>, Map<String, Object>>();
@@ -48,7 +51,7 @@ public class MIDataSourceFactory {
 
         if (requiredOptions == null){
             requiredOptions = new HashMap<String, Object>();
-            requiredOptions.put(SOURCE_OPTION_KEY, file);
+            requiredOptions.put(INPUT_FILE_OPTION_KEY, file);
         }
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
@@ -66,7 +69,25 @@ public class MIDataSourceFactory {
 
         if (requiredOptions == null){
             requiredOptions = new HashMap<String, Object>();
-            requiredOptions.put(SOURCE_OPTION_KEY, stream);
+            requiredOptions.put(INPUT_STREAM_OPTION_KEY, stream);
+        }
+
+        for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
+            // we check for a DataSource that can be used with the given options
+            if (entry.getKey().isAssignableFrom(MIFileDataSource.class) &&
+                    areSupportedOptions(entry.getValue(), requiredOptions)){
+                return (MIFileDataSource) instantiateNewDataSource(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return null;
+    }
+
+    public MIFileDataSource getMIFileDataSourceFrom(Reader reader, Map<String,Object> requiredOptions) throws InstantiationException, IllegalAccessException {
+
+        if (requiredOptions == null){
+            requiredOptions = new HashMap<String, Object>();
+            requiredOptions.put(READER_OPTION_KEY, reader);
         }
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
