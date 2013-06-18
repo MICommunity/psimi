@@ -939,7 +939,7 @@ MitabAuthor author():
 {
   try{
      ( <PUB_DATE> {date = token.image.trim(); beginLine = token.beginLine; beginColumn = token.beginColumn;} [ first = safeString() ])
-     | ( first = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ ( (<PUB_DATE> {date = token.image.trim();}) | ("(" (" ")* <PUB_DATE> {date = token.trim().image;} (" ")* ")") [ second = safeString() {first = first + " " +second; } ]) ])
+     | ( first = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} [ ( (<PUB_DATE> {date = token.image.trim();}) | ("(" (" ")* <PUB_DATE> {date = token.image.trim();} (" ")* ")") [ second = safeString() {first = first + " " +second; } ]) ])
      { beginLine = token.beginLine; beginColumn = token.beginColumn;
        if (date == null){auth = new MitabAuthor(first);}
        else{ auth = new MitabAuthor(first, date);}
