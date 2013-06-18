@@ -174,7 +174,7 @@ Interaction MitabLine():
   Collection<MitabStoichiometry> stcB;
   Collection<MitabCvTerm> pmethodA;
   Collection<MitabCvTerm> pmethodB;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
 }
 {
 (
@@ -265,7 +265,7 @@ Collection<MitabXref> ids(CvTerm qualifier, boolean recognizeImex, int column):
 {
   Collection<MitabXref> xrefs;
   MitabXref var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -286,7 +286,7 @@ Collection<MitabAlias> aliases(int column):
 {
   Collection<MitabAlias> aliases;
   MitabAlias var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -307,7 +307,7 @@ Collection<MitabCvterm> cvTerms(int columnNumber):
 {
   Collection<MitabCvterm> methods;
   MitabCvTerm var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -328,7 +328,7 @@ Collection<MitabAuthor> firstAuthors():
 {
   Collection<MitabAuthor> authors;
   MitabAuthor var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -349,7 +349,7 @@ Collection<MitabOrganism> taxId(int column):
 {
   Collection<MitabOrganism> organisms;
   MitabOrganism var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -370,7 +370,7 @@ Collection<MitabSource> sourceDbs():
 {
   Collection<MitabSource> sources;
   MitabSource var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -391,7 +391,7 @@ Collection<MitabConfidence> confidences():
 {
   Collection<MitabConfidence> confs;
   MitabConfidence var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -412,7 +412,7 @@ Collection<MitabCvTerm> complexExpansion():
 {
   Collection<MitabCvterm> expansions;
   MitabCvTerm var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -433,7 +433,7 @@ Collection<MitabAnnotation> annotations(int column):
 {
   Collection<MitabAnnotation> annots;
   MitabAnnotation var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -454,7 +454,7 @@ Collection<MitabParameter> parameters():
 {
   Collection<MitabParameter> params;
   MitabParameter var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -475,7 +475,7 @@ Collection<MitabDate> dates(int column):
 {
   Collection<MitabDate> dates;
   MitabDate var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -496,7 +496,7 @@ Collection<MitabChecksum> checksums(int column):
 {
   Collection<MitabChecksum> checksums;
   MitabChecksum var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -517,7 +517,7 @@ Collection<MitabFeature> features(int column):
 {
   Collection<MitabFeature> features;
   MitabFeature var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -538,7 +538,7 @@ Collection<MitabStoichiometry> stoichiometryList(int column):
 {
   Collection<MitabStoichiometry> stc;
   MitabStoichiometry var;
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -562,7 +562,7 @@ MitabStoichiometry stoichiometry():
   int beginLine;
   int beginColumn;
   MitabStoichiometry stc;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -610,7 +610,7 @@ MitabFeature feature(int columnNumber):
   MitabFeature feature;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -640,7 +640,7 @@ MitabRange range(int columnNumber):
   MitabRange range;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(RANGE_SEPARATOR, FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.RANGE_SEPARATOR, TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -675,7 +675,7 @@ MitabRange range(int columnNumber):
 
 boolean negative():
 {
-  EnumSet<Token> enumSet = EnumSet.of(LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -699,7 +699,7 @@ MitabChecksum checksum(int columnNumber):
   MitabChecksum checksum;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -722,7 +722,7 @@ MitabDate date(int columnNumber):
 {
   java.lang.String date;
   MitabDate mitabDate;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -753,7 +753,7 @@ MitabAnnotation parameter() :
   MitabParameter param;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -783,7 +783,7 @@ MitabAnnotation annotation(int columnNumber):
   MitabAnnotation annot;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -808,7 +808,7 @@ MitabXref xref(int columnNumber):
   MitabXref ref;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -833,7 +833,7 @@ MitabCvTerm expansion():
   MitabCvTerm cv;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -860,7 +860,7 @@ MitabConfidence confidence():
   MitabConfidence conf;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -885,7 +885,7 @@ MitabSource source():
   MitabSource s;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try {
@@ -910,7 +910,7 @@ MitabOrganism organism(int columnNumber):
   MitabOrganism organism;
   int beginLine;
   int beginColumn;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try {
@@ -942,7 +942,7 @@ MitabAuthor author():
  java.lang.String second;
  int beginLine;
  int beginColumn;
- EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+ EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -970,7 +970,7 @@ MitabCvTerm cvTerm(int column):
   int beginLine;
   int beginColumn;
   MitabCvTerm cv;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   //db:id(name)
@@ -996,7 +996,7 @@ MitabAlias alias(int columnNumber):
   int beginLine;
   int beginColumn;
   MitabAlias alias;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   //db:name(type)
@@ -1022,7 +1022,7 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
   int beginLine;
   int beginColumn;
   MitabXref ref;
-  EnumSet<Token> enumSet = EnumSet.of(FIELD_SEPARATOR, LINE_SEPARATOR, COLUMN_SEPARATOR);
+  EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.FIELD_SEPARATOR, TokenKind.LINE_SEPARATOR, TokenKind.COLUMN_SEPARATOR);
 }
 {
   try{
@@ -1060,7 +1060,7 @@ java.lang.String safeString():
 }
 
 JAVACODE
-void error_skipToNext(EnumSet<Token> skipToTokens) {
+void error_skipToNext(EnumSet<TokenKind> skipToTokens) {
   ParseException e = generateParseException();  // generate the exception object.
   System.out.println(e.toString());  // print the error message
 
@@ -1072,7 +1072,7 @@ void error_skipToNext(EnumSet<Token> skipToTokens) {
     // check next token
     i++;
     t = getToken(i);
-  } while (t != null && !skipToTokens.contains(t));
+  } while (t != null && !skipToTokens.contains(TokenKind.getFromTokenKind(t)));
     // The above loop consumes tokens all the way up to a token of
     // "kind".  We use a do-while loop rather than a while because the
     // current token is the one immediately before the erroneous token
