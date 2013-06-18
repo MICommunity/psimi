@@ -883,7 +883,7 @@ MitabSource source():
   try {
      //db:id(name)
        db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" name = safeString() ")" ]
-       { if (name == null){s = new MitabCvTerm(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(beginLine, beginColumn, 13);}
+       { if (name == null){s = new MitabSource(MitabWriterUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(beginLine, beginColumn, 13);}
          else {s = new MitabSource(name, null, db, id);}
          s.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 13));
          return s;}
