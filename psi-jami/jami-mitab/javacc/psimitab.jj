@@ -229,8 +229,8 @@ Interaction MitabLine():
         ] //end MITAB 2.6
       )
       {
-        participantA = finishParticipant(idA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA);
-        participantB = finishParticipant(idA, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB);
+        participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA);
+        participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB);
         return finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
                                  conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative);
       }
