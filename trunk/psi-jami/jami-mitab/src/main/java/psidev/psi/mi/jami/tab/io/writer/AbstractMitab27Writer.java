@@ -205,12 +205,12 @@ public abstract class AbstractMitab27Writer extends AbstractMitab26Writer {
                 Stoichiometry stc = participant.getStoichiometry();
                 // same stoichiometry max/end
                 if (stc.getMaxValue() == stc.getMinValue()){
-                    getWriter().write(Integer.toString(stc.getMinValue()));
+                    getWriter().write(Long.toString(stc.getMinValue()));
                 }
                 else{
-                    getWriter().write(Integer.toString(stc.getMinValue()));
+                    getWriter().write(Long.toString(stc.getMinValue()));
                     getWriter().write("-");
-                    getWriter().write(Integer.toString(stc.getMaxValue()));
+                    getWriter().write(Long.toString(stc.getMaxValue()));
                 }
             }
             else{
