@@ -32,6 +32,7 @@ public class CvTermUtils {
     private static CvTerm range;
     private static CvTerm putative_self;
     private static CvTerm self;
+    private static CvTerm unknownInteractorType;
 
     public static CvTerm getGene() {
         if (gene == null){
@@ -157,6 +158,13 @@ public class CvTermUtils {
             self = createSelf();
         }
         return self;
+    }
+
+    public static CvTerm getUnknownInteractorType() {
+        if (unknownInteractorType == null){
+            unknownInteractorType = createUnknownInteractorType();
+        }
+        return unknownInteractorType;
     }
 
     public static CvTerm createPsiMiDatabaseNameOnly(){
