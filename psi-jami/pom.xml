@@ -24,6 +24,7 @@
     <module>jami-bridges</module>
     <module>jami-enricher</module>
     <module>jami-mitab</module>
+    <module>jami-commons</module>
   </modules>
 
   <dependencies>
