@@ -641,15 +641,13 @@ MitabRange range(int columnNumber):
     <POSITION>
     { beginLine = token.beginLine; beginColumn = token.beginColumn;
       start = PositionUtils.createPositionFromString(token.image.trim());
-      start.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
     }
     "-" <POSITION>
     {
     end = PositionUtils.createPositionFromString(token.image.trim());
-    end.setSourceLocator(new MitabSourceLocator(token.beginLine, token.beginColumn, columnNumber));
 
      range = new MitabRange(start, end);
-     range.setSourceLocator(start.getSourceLocator());
+     range.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
      return range;
      }
   }
@@ -678,7 +676,7 @@ boolean negative():
       }
   }
   catch (ParseException e){
-    processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+    processSyntaxError(token.beginLine, token.beginColumn, 16, e, false);
      error_skipToNext(enumSet);
      return null;
   }
@@ -698,8 +696,8 @@ MitabChecksum checksum(int columnNumber):
     //method:value
     method = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" value = safeString()
     {
-        method = new MitabChecksum(method, value);
-        method.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
+        checksum = new MitabChecksum(method, value);
+        checksum.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, columnNumber));
         return checksum;
       }
   }
@@ -758,7 +756,7 @@ MitabAnnotation parameter() :
   }
   catch (ParseException e){
       processSyntaxError(token.beginLine, token.beginColumn, 30, e, false);
-       error_skipToNextField();
+       error_skipToNext(enumSet);
        return null;
    }
    catch (IllegalParameterException e){
