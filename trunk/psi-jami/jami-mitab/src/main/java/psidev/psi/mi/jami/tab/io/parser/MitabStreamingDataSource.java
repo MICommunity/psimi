@@ -1,13 +1,12 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.datasource.*;
-import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.datasource.FileSourceError;
+import psidev.psi.mi.jami.datasource.MIFileDataSource;
+import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 
-import java.io.*;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class MitabStreamingDataSource implements MIFileDataSource, StreamingInte
     private boolean isInitialised = false;
 
     public void initialiseContext(Map<String, Object> options) {
-        if (options == null && !isInitialised){
+        /*if (options == null && !isInitialised){
             throw new IllegalArgumentException("The options for the MitabStreamingDataSource should contain at least "+ MIDataSourceFactory.INPUT_FILE_OPTION_KEY
                     + " or " + MIDataSourceFactory.INPUT_STREAM_OPTION_KEY + " or " + MIDataSourceFactory.READER_OPTION_KEY + " to know where to write the interactions.");
         }
@@ -60,7 +59,7 @@ public class MitabStreamingDataSource implements MIFileDataSource, StreamingInte
             } catch (IllegalAccessException e) {
                 throw new DataSourceWriterException("Impossible to initialise the complex expansion method ", e);
             }
-        }
+        } */
 
         isInitialised = true;
     }
@@ -93,7 +92,7 @@ public class MitabStreamingDataSource implements MIFileDataSource, StreamingInte
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    private void initialiseReader(Reader reader) {
+    /*private void initialiseReader(Reader reader) {
         if (writer == null){
             throw new IllegalArgumentException("The writer cannot be null.");
         }
@@ -118,5 +117,5 @@ public class MitabStreamingDataSource implements MIFileDataSource, StreamingInte
         }
 
         this.mitabLineParser = new MitabL;
-    }
+    }*/
 }
