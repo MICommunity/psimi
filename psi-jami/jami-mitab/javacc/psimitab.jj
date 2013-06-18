@@ -848,7 +848,7 @@ MitabConfidence confidence():
 {
  java.lang.String type;
  java.lang.String value;
- java.lang.String test = null;
+ java.lang.String text = null;
   MitabConfidence conf;
   int beginLine;
   int beginColumn;
