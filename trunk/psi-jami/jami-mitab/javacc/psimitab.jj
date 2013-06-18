@@ -22,7 +22,7 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
-public abstract class MitabLineParser extends AbstractMitabDataSource{
+public abstract class MitabLineParser extends AbstractMitabLineParser{
 	
 	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
 	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);

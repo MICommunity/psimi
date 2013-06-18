@@ -1,27 +1,17 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.datasource.FileSourceError;
-import psidev.psi.mi.jami.datasource.MIFileDataSource;
-import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.tab.MitabColumnName;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-
 /**
- * The abstract Mitab data source
+ * The abstract Mitab line parser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/06/13</pre>
  */
 
-public abstract class AbstractMitabDataSource implements MIFileDataSource, StreamingInteractionSource {
+public abstract class AbstractMitabLineParser {
 
     private MitabParserListener listener;
 
@@ -115,37 +105,5 @@ public abstract class AbstractMitabDataSource implements MIFileDataSource, Strea
                 this.listener.onInvalidLine(numberLine, numberColumn, mitabColumn);
             }
         }
-    }
-
-    public void initialiseContext(Map<String, Object> options) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Collection<FileSourceError> getDataSourceErrors() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void open() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void close() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public boolean validateFileSyntax() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Iterator<? extends ModelledInteraction> getModelledInteractionsIterator() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Iterator<? extends Interaction> getInteractionsIterator() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
