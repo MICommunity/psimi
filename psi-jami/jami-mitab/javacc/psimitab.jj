@@ -331,7 +331,7 @@ Collection<MitabAuthor> firstAuthors():
     {return authors;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 8, e, false);
         error_skipToNext(enumSet);
         return Collections.EMPTY_LIST;
      }
@@ -373,7 +373,7 @@ Collection<MitabSource> sourceDbs():
     {return sources;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 13, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -394,7 +394,7 @@ Collection<MitabConfidence> confidences():
     {return confs;}
   }
   catch (ParseException e){
-       processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+       processSyntaxError(token.beginLine, token.beginColumn, 15, e, false);
        error_skipToNext(enumSet);
        return Collections.EMPTY_LIST;
     }
@@ -415,7 +415,7 @@ Collection<MitabCvTerm> complexExpansion():
     {return expansions;}
   }
   catch (ParseException e){
-     processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+     processSyntaxError(token.beginLine, token.beginColumn, 16, e, false);
      error_skipToNext(enumSet);
      return Collections.EMPTY_LIST;
   }
@@ -457,7 +457,7 @@ Collection<MitabParameter> parameters():
     {return params;}
   }
   catch (ParseException e){
-         processSyntaxError(token.beginLine, token.beginColumn, columnNumber, e, false);
+         processSyntaxError(token.beginLine, token.beginColumn, 30, e, false);
          error_skipToNext(enumSet);
          return Collections.EMPTY_LIST;
       }
