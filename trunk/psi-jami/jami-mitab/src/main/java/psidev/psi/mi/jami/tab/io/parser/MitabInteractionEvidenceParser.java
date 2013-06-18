@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.tab.listener.MitabParserListener;
  * @since <pre>18/06/13</pre>
  */
 
-public abstract class AbstractMitabLineParser {
+public abstract class MitabInteractionEvidenceParser {
 
     private MitabParserListener listener;
 

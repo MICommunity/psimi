@@ -14,20 +14,20 @@ public enum TokenKind {
 
     static TokenKind getFromTokenKind(int kind) {
         switch (kind) {
-            case MitabLineParserConstants.EOF: return EOF;
-            case MitabLineParserConstants.UNRESERVED_STRING: return UNRESERVED_STRING;
-            case MitabLineParserConstants.QUOTED_STRING: return QUOTED_STRING;
-            case MitabLineParserConstants.EMPTY_COLUMN: return EMPTY_COLUMN;
-            case MitabLineParserConstants.PUB_DATE: return PUB_DATE;
-            case MitabLineParserConstants.TAXID: return TAXID;
-            case MitabLineParserConstants.NEGATIVE: return NEGATIVE;
-            case MitabLineParserConstants.POSITION: return POSITION;
-            case MitabLineParserConstants.STOICHIOMETRY: return STOICHIOMETRY;
-            case MitabLineParserConstants.FIELD_SEPARATOR: return FIELD_SEPARATOR;
-            case MitabLineParserConstants.COLUMN_SEPARATOR: return COLUMN_SEPARATOR;
-            case MitabLineParserConstants.LINE_SEPARATOR: return LINE_SEPARATOR;
-            case MitabLineParserConstants.RANGE_SEPARATOR: return RANGE_SEPARATOR;
-            case MitabLineParserConstants.COMMENT: return COMMENT;
+            case AbstractMitabLineParserConstants.EOF: return EOF;
+            case AbstractMitabLineParserConstants.UNRESERVED_STRING: return UNRESERVED_STRING;
+            case AbstractMitabLineParserConstants.QUOTED_STRING: return QUOTED_STRING;
+            case AbstractMitabLineParserConstants.EMPTY_COLUMN: return EMPTY_COLUMN;
+            case AbstractMitabLineParserConstants.PUB_DATE: return PUB_DATE;
+            case AbstractMitabLineParserConstants.TAXID: return TAXID;
+            case AbstractMitabLineParserConstants.NEGATIVE: return NEGATIVE;
+            case AbstractMitabLineParserConstants.POSITION: return POSITION;
+            case AbstractMitabLineParserConstants.STOICHIOMETRY: return STOICHIOMETRY;
+            case AbstractMitabLineParserConstants.FIELD_SEPARATOR: return FIELD_SEPARATOR;
+            case AbstractMitabLineParserConstants.COLUMN_SEPARATOR: return COLUMN_SEPARATOR;
+            case AbstractMitabLineParserConstants.LINE_SEPARATOR: return LINE_SEPARATOR;
+            case AbstractMitabLineParserConstants.RANGE_SEPARATOR: return RANGE_SEPARATOR;
+            case AbstractMitabLineParserConstants.COMMENT: return COMMENT;
             default: return null;
         }
     }
