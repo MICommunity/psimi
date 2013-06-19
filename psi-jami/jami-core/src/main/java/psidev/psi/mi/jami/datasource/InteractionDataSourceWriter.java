@@ -14,7 +14,7 @@ import java.util.Map;
  * @since <pre>07/06/13</pre>
  */
 
-public interface InteractionDataSourceWriter {
+public interface InteractionDataSourceWriter<T extends Interaction> {
 
     /**
      * Initialise the context of the InteractionDataSourceWriter given a map of options
@@ -26,13 +26,13 @@ public interface InteractionDataSourceWriter {
      * Writes an interaction
      * @param interaction
      */
-    public void write(Interaction interaction) throws DataSourceWriterException;
+    public void write(T interaction) throws DataSourceWriterException;
 
     /**
      * Writes a collection of Interaction objects
      * @param interactions
      */
-    public void writeInteractions(Collection<? extends Interaction> interactions) throws DataSourceWriterException;
+    public void writeInteractions(Collection<T> interactions) throws DataSourceWriterException;
 
     /**
      * Flushes the writer (commit or write on disk)
