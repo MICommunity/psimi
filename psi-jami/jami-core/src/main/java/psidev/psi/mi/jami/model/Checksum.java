@@ -21,6 +21,8 @@ public interface Checksum {
     public static String ROGID_MI = "MI:xxxx1";
     public static String RIGID = "rigid";
     public static String RIGID_MI = "MI:xxxx2";
+    public static String IRIGID = "irigid";
+    public static String IROGID = "irogid";
 
     /**
      * The method is a controlled vocabulary term and cannot be null
