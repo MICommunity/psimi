@@ -71,10 +71,10 @@ public class InteractorFactory {
      * @param name
      * @return the proper instance of the interactor if the database is recognized (the interactor will be returned on the first database which is recognized). It returns null otherwise.
      */
-    public Interactor createInteractorFromIdentityXrefs(Collection<Xref> databases, String name){
+    public Interactor createInteractorFromIdentityXrefs(Collection<? extends Xref> databases, String name){
 
         Interactor interactor = null;
-        Iterator<Xref> xrefsIterator = databases.iterator();
+        Iterator<? extends Xref> xrefsIterator = databases.iterator();
         while (interactor == null && xrefsIterator.hasNext()){
 
             interactor = createInteractorFromDatabase(xrefsIterator.next().getDatabase(), name);
