@@ -6,15 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.CountingRemapListener;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.LoggingRemapListener;
-import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-
-import java.util.HashMap;
 
 import static junit.framework.Assert.*;
 

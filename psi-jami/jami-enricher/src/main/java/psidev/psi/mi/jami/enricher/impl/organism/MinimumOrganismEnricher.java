@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.model.Organism;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 22/05/13
  * Time: 10:16
  */
@@ -43,7 +43,7 @@ public class MinimumOrganismEnricher
 
             //Commonname
             if(organismToEnrich.getCommonName() == null
-                    &&organismFetched.getCommonName() != null){
+                    && organismFetched.getCommonName() != null){
                 if (listener != null) listener.onCommonNameUpdate(organismToEnrich , organismToEnrich.getCommonName());
                 organismToEnrich.setCommonName(organismFetched.getCommonName());
             }

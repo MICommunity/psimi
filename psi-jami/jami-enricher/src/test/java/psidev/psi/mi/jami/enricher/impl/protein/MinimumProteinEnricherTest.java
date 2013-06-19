@@ -8,6 +8,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BadResultException;
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherCounter;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListenerManager;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
@@ -49,7 +50,8 @@ public class MinimumProteinEnricherTest {
     @Before
     public void initialiseFetcherAndEnricher(){
         this.fetcher = new MockProteinFetcher();
-        this.minimumProteinEnricher = new MinimumProteinEnricher(fetcher);
+        this.minimumProteinEnricher = new MinimumProteinEnricher();
+        minimumProteinEnricher.setFetcher(fetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
@@ -76,7 +78,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein null_protein = null;
         this.minimumProteinEnricher.enrichProtein(null_protein);
@@ -89,7 +91,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein null_identifier_protein = new DefaultProtein("Identifier free protein");
         this.minimumProteinEnricher.enrichProtein(null_identifier_protein);
@@ -104,7 +106,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
@@ -128,7 +130,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_no_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_no_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
@@ -159,7 +161,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_bad_interactor_type = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_bad_interactor_type.setUniprotkb(TEST_AC_HALF_PROT);
@@ -184,7 +186,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_without_fullName = new DefaultProtein("test2 shortName");
         protein_without_fullName.setUniprotkb(TEST_AC_FULL_PROT);
@@ -219,7 +221,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_without_sequence = new DefaultProtein("test2 shortName");
         protein_without_sequence.setUniprotkb(TEST_AC_FULL_PROT);
@@ -237,7 +239,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_without_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_without_organism.setUniprotkb(TEST_AC_FULL_PROT);
@@ -265,7 +267,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_wrong_organism = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_wrong_organism.setUniprotkb(TEST_AC_FULL_PROT);
@@ -297,7 +299,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_FULL_PROT);
@@ -326,7 +328,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_HALF_PROT);
@@ -353,7 +355,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_no_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_no_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -386,7 +388,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -421,7 +423,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -450,7 +452,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -472,7 +474,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -500,7 +502,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_a_rogid = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         protein_with_a_rogid.setUniprotkb(TEST_AC_FULL_PROT);
@@ -529,7 +531,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
@@ -555,7 +557,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
@@ -588,7 +590,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
@@ -617,7 +619,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         for(Protein protein: fetcher.getProteinsByIdentifier(TEST_AC_FULL_PROT)){
             protein.getChecksums().add(
@@ -697,7 +699,7 @@ public class MinimumProteinEnricherTest {
             SeguidException,
             BadToEnrichFormException,
             BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
 
         Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");

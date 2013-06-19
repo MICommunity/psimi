@@ -10,9 +10,8 @@ import java.util.Map;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 24/05/13
- * Time: 11:15
  */
 public class MockOrganismFetcher
         implements OrganismFetcher {

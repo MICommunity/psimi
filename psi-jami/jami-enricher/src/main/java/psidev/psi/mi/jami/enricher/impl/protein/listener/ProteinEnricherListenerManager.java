@@ -75,6 +75,12 @@ public class ProteinEnricherListenerManager implements ProteinEnricherListener {
         }
     }
 
+    public void onAddedInteractorType(Protein protein) {
+        for(ProteinEnricherListener l : proteinEnricherListeners){
+            l.onAddedInteractorType(protein);
+        }
+    }
+
     public void onAddedOrganism(Protein protein) {
         for(ProteinEnricherListener l : proteinEnricherListeners){
             l.onAddedOrganism(protein);

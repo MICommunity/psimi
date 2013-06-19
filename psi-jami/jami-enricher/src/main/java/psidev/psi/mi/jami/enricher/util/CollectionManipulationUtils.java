@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.enricher.util;
 
 import psidev.psi.mi.jami.bridges.uniprot.uniprotutil.UniprotToJAMI;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
@@ -10,9 +12,8 @@ import java.util.*;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 14/05/13
- * Time: 11:17
  */
 public class CollectionManipulationUtils {
 
@@ -35,18 +36,25 @@ public class CollectionManipulationUtils {
         return result;
     }
 
-    private UniprotToJAMI data = new UniprotToJAMI();
 
-    public Collection<Xref> findUniprotManagedXrefs(Collection<Xref> xrefs){
-        Collection<Xref> uniprotManaged = new ArrayList<Xref>();
-        for(Xref xref : xrefs){
-            //Ignore if it hsa a qualifier
-            if(xref.getQualifier() == null){
-                if(data.getUniprotDatabases().containsValue(xref.getDatabase())){
-                    uniprotManaged.add(xref);
-                }
-            }
+
+    public static <Type> void addAndRemove(Collection<Type> newList, Collection<Type> oldList, Comparator<Type> c){
+        Collection<Type> itemsToChange = new TreeSet<Type>(c);
+        itemsToChange.addAll(oldList);
+        itemsToChange.removeAll(newList);
+
+        for(Type item : itemsToChange){
+            //if(listener != null) listener.onRemovedAlias(organismToEnrich , item);
+            oldList.remove(item);
         }
-        return uniprotManaged;
+
+        itemsToChange.clear();
+        itemsToChange.addAll(newList);
+        itemsToChange.removeAll(oldList);
+
+        for(Type item : itemsToChange){
+            //if(listener != null) listener.onAddedAlias(organismToEnrich , item);
+            oldList.add(item);
+        }
     }
 }

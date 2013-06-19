@@ -6,12 +6,18 @@ import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
+import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
+
+import java.util.Collection;
+import java.util.TreeSet;
 
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 24/05/13
  * Time: 13:35
  */
@@ -24,15 +30,31 @@ public class MaximumOrganismUpdater
     protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
         super.processOrganism(organismToEnrich);
 
-        //Synonyms.
+        // Override TaxID but obviously not possible if organism is unknown
+        if(organismFetched.getTaxId() != -3){
+
+            // ALIASES
+            if( ! organismFetched.getAliases().isEmpty()){
+                // Remove old aliases
+                Collection<Alias> aliasesToChange = new TreeSet<Alias>(new DefaultAliasComparator());
+                aliasesToChange.addAll(organismToEnrich.getAliases());
+                aliasesToChange.removeAll(organismFetched.getAliases());
+
+                for(Alias alias : aliasesToChange){
+                    if(listener != null) listener.onRemovedAlias(organismToEnrich , alias);
+                    organismToEnrich.getAliases().remove(alias);
+                }
+
+                // Add new aliases
+                aliasesToChange.clear();
+                aliasesToChange.addAll(organismFetched.getAliases());
+                aliasesToChange.removeAll(organismToEnrich.getAliases());
+
+                for(Alias alias : aliasesToChange){
+                    if(listener != null) listener.onAddedAlias(organismToEnrich , alias);
+                    organismToEnrich.getAliases().add(alias);
+                }
+            }
+        }
     }
-
-
-    /*public void enrichOrganism(Organism organismToEnrich) throws BadEnrichedFormException, MissingServiceException, BadToEnrichFormException, BridgeFailedException {
-
-        Organism organismEnriched = getFullyEnrichedForm(organismToEnrich);
-        runOrganismAdditionEnrichment(organismToEnrich, organismEnriched);
-        runOrganismOverwriteUpdate(organismToEnrich, organismEnriched);
-       // fireEnricherEvent(enricherEvent);
-    }   */
 }

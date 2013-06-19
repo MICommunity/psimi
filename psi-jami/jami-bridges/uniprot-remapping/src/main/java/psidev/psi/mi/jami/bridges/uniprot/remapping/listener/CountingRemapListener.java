@@ -1,15 +1,16 @@
 package psidev.psi.mi.jami.bridges.uniprot.remapping.listener;
 
+import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  * Time: 12:56
  */
-public class CountingRemapListener implements RemapListener{
+public class CountingRemapListener implements ProteinRemapperListener {
 
     private int conflictCount = 0;
     private boolean fromIdentifiers = false;

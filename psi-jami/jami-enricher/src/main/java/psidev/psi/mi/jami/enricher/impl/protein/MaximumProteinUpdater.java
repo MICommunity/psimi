@@ -1,11 +1,21 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
+import psidev.psi.mi.jami.bridges.uniprot.uniprotutil.UniprotToJAMI;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismUpdater;
-import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismUpdater;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
+import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,11 +31,38 @@ public class MaximumProteinUpdater
 
 
     @Override
-    protected void processProtein(Protein proteinToEnrich) {
+    protected void processProtein(Protein proteinToEnrich) throws SeguidException {
         super.processProtein(proteinToEnrich);
 
+        Set<Xref> fetchedXrefsToAdd = new TreeSet<Xref>(new DefaultXrefComparator());
+        fetchedXrefsToAdd.addAll(proteinFetched.getXrefs());
 
+        Set<CvTerm> xrefCvTerms = new TreeSet<CvTerm>(new DefaultCvTermComparator());
+        xrefCvTerms.addAll(new UniprotToJAMI().getUniprotDatabases().values());
+        //for(Xref xref : fetchedXrefsToAdd){
+        //    if(! xrefCvTerms.contains(xref.getDatabase())) xrefCvTerms.add(xref.getDatabase());
+        //}
 
+        Collection<Xref> toRemoveXrefs = new ArrayList<Xref>();
+        for(Xref xref : proteinToEnrich.getXrefs()){
+            if(xref.getQualifier() == null
+                    && ! fetchedXrefsToAdd.contains(xref)
+                    && xrefCvTerms.contains(xref.getDatabase())){
+                toRemoveXrefs.add(xref);
+            }
+            else if( fetchedXrefsToAdd.contains(xref)){
+                fetchedXrefsToAdd.remove(xref);
+            }
+        }
+        for(Xref xref: toRemoveXrefs){
+            proteinToEnrich.getXrefs().remove(xref);
+            if(listener != null) listener.onRemovedXref(proteinToEnrich , xref);
+        }
+
+        for(Xref xref: fetchedXrefsToAdd){
+            proteinToEnrich.getXrefs().add(xref);
+            if(listener != null) listener.onAddedXref(proteinToEnrich, xref);
+        }
 
     }
 
@@ -39,27 +76,4 @@ public class MaximumProteinUpdater
 
         return organismEnricher;
     }
-
-    /*public MaximumProteinUpdater(ProteinFetcher fetcher){
-        super(fetcher);
-    }
-
-    public void enrichProtein(Protein proteinToEnrich)throws BridgeFailedException,
-            MissingServiceException,
-            BadToEnrichFormException,
-            BadSearchTermException,
-            BadResultException,
-            SeguidException {
-
-        Collection<Protein> proteinsEnriched = getFullyEnrichedForms(proteinToEnrich);
-        Protein proteinEnriched = chooseProteinEnriched(proteinToEnrich, proteinsEnriched);
-
-        if(proteinEnriched != null){
-            super.setOrganismEnricher(new MaximumOrganismUpdaterOLD());
-            runAdditionOnCore(proteinToEnrich, proteinEnriched);
-            runUpdateOnCore(proteinToEnrich, proteinEnriched);
-            runUpdateOnChecksums(proteinToEnrich, proteinEnriched);
-            listener.onProteinEnriched(proteinToEnrich, "Success");
-        }
-    } */
 }

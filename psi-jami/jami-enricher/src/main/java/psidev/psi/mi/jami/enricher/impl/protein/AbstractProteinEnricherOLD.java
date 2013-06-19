@@ -2,27 +2,13 @@ package psidev.psi.mi.jami.enricher.impl.protein;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
-import psidev.psi.mi.jami.enricher.exception.*;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.util.CollectionUtilsExtra;
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultOrganism;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
-import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +17,7 @@ import java.util.Collection;
  * Date: 14/05/13
  * Time: 14:27
  */
+@Deprecated
 public abstract class AbstractProteinEnricherOLD
         implements ProteinEnricher {
 
@@ -105,7 +92,7 @@ public abstract class AbstractProteinEnricherOLD
      * @return
      * @throws
      */
-    protected Collection<Protein> getFullyEnrichedForms(Protein ProteinToEnrich)
+    /*protected Collection<Protein> getFullyEnrichedForms(Protein ProteinToEnrich)
             throws BadToEnrichFormException, MissingServiceException,
             BadSearchTermException, BadResultException,
             BridgeFailedException {
@@ -124,7 +111,7 @@ public abstract class AbstractProteinEnricherOLD
         //queryDetails = new QueryDetails(TYPE, ProteinToEnrich.getUniprotkb(),FIELD_UNIPROTKBID, fetcher.getService(), ProteinToEnrich);
 
         return enriched;
-    }
+    }*/
 
     /**
      * Takes results from a query and chooses the best match for enrichment (if there is one.
@@ -135,7 +122,7 @@ public abstract class AbstractProteinEnricherOLD
      * @param proteinsEnriched  Collection of fully enriched proteins to choose the best match from
      * @return  A fully enriched protein to compare and extract fields from.
      */
-    protected Protein chooseProteinEnriched(Protein proteinToEnrich, Collection<Protein> proteinsEnriched){
+    /*protected Protein chooseProteinEnriched(Protein proteinToEnrich, Collection<Protein> proteinsEnriched){
 
         // No proteins, fail
         if(proteinsEnriched == null
@@ -197,7 +184,7 @@ public abstract class AbstractProteinEnricherOLD
 
         if(log.isInfoEnabled()) log.info("Chose a demerged protein from a choice of "+proteinsEnriched.size());
         return proteinFetched;
-    }
+    }  */
 
 
 
@@ -209,10 +196,10 @@ public abstract class AbstractProteinEnricherOLD
      * @param proteinFetched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
-    protected void runAdditionOnCore(Protein proteinToEnrich, Protein proteinFetched)
+    /*protected void runAdditionOnCore(Protein proteinToEnrich, Protein proteinFetched)
             throws SeguidException {
 
-        /*
+
         //InteractorType
         if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
             if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR_MI)){
@@ -289,8 +276,8 @@ public abstract class AbstractProteinEnricherOLD
             mockOrganismFetcher.addNewOrganism(
                     ""+proteinToEnrich.getOrganism().getTaxId(), proteinEnriched.getOrganism());
             organismEnricher.enrichOrganism(proteinToEnrich.getOrganism());
-        }*/
-    }
+        }
+    }*/
 
     /**
      * Update and overwrites any of the central fields which differ from the enriched form.
@@ -298,7 +285,7 @@ public abstract class AbstractProteinEnricherOLD
      * @param proteinToEnrich   The protein which is being enriched.
      * @param proteinFetched   A fully enriched interpretation to compare and extract fields from.
      */
-    protected void runUpdateOnCore(Protein proteinToEnrich, Protein proteinFetched){
+    /*protected void runUpdateOnCore(Protein proteinToEnrich, Protein proteinFetched){
         //ShortName - is never null
         if (! proteinToEnrich.getShortName().equalsIgnoreCase(proteinFetched.getShortName() )) {
             if(listener != null) listener.onShortNameUpdate(proteinToEnrich, proteinToEnrich.getShortName());
@@ -328,7 +315,7 @@ public abstract class AbstractProteinEnricherOLD
             if(listener != null) listener.onSequenceUpdate(proteinToEnrich, proteinToEnrich.getSequence());
             proteinToEnrich.setSequence(proteinFetched.getSequence());
         }
-    }
+    }*/
 
 
     /**
@@ -343,7 +330,7 @@ public abstract class AbstractProteinEnricherOLD
      * @param proteinFetched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
-    protected void runAdditionOnChecksum(Protein proteinToEnrich, Protein proteinFetched) throws SeguidException {
+   /* protected void runAdditionOnChecksum(Protein proteinToEnrich, Protein proteinFetched) throws SeguidException {
 
         //CHECKSUM - CRC64
         Checksum crc64checksum = null;
@@ -408,7 +395,7 @@ public abstract class AbstractProteinEnricherOLD
                 //    FIELD_CHECKSUM, rogid, proteinToEnrich));
             }
         }
-    }
+    }  */
 
 
     /**
@@ -423,7 +410,7 @@ public abstract class AbstractProteinEnricherOLD
      * @param proteinFetched   A fully enriched interpretation to compare and extract fields from.
      * @throws SeguidException
      */
-     protected void runUpdateOnChecksums(Protein proteinToEnrich, Protein proteinFetched)
+     /*protected void runUpdateOnChecksums(Protein proteinToEnrich, Protein proteinFetched)
             throws SeguidException {
 
         //CHECKSUM - CRC64
@@ -480,5 +467,5 @@ public abstract class AbstractProteinEnricherOLD
                 //todo if(listener != null) listener.onAddedChecksum(proteinToEnrich, );
             }
         }
-    }
+    }*/
 }

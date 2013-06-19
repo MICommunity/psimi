@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
+import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 import java.util.Collection;
 
@@ -26,7 +27,7 @@ public class MaximumProteinEnricher
 
 
     @Override
-    protected void processProtein(Protein proteinToEnrich) {
+    protected void processProtein(Protein proteinToEnrich) throws SeguidException {
         super.processProtein(proteinToEnrich);
 
         //Xref

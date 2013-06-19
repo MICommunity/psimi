@@ -15,9 +15,8 @@ import java.util.Collection;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 08/05/13
- * Time: 11:12
  */
 public class OlsBridge{
 

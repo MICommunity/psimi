@@ -14,9 +14,8 @@ import java.util.regex.Pattern;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 14/05/13
- * Time: 13:09
  */
 public class UniprotFetcher
         implements ProteinFetcher {
@@ -54,8 +53,9 @@ public class UniprotFetcher
         Collection<Protein> proteins = null;
 
         if(UNIPROT_PRO_REGEX.matcher(identifier).find()){
+           // log.warn("doing identifier "+identifier);
             //log.debug("Searching for the pro identifier ["+proIdentifier+"] (from identifier ["+identifier+"])");
-            proteins = bridge.fetchFeatureBySearch(identifier.substring(4,-1));
+            proteins = bridge.fetchFeatureBySearch(identifier.substring(4,identifier.length()-1));
         } else if (UNIPROT_MASTER_REGEX.matcher(identifier).find()){
             if(UNIPROT_ISOFORM_REGEX.matcher(identifier).find()){
                 //log.debug("Searching for the isoform identifier ["+identifier+"]");

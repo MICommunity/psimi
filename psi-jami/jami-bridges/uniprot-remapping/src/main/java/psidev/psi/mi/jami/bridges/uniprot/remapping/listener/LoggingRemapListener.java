@@ -2,17 +2,17 @@ package psidev.psi.mi.jami.bridges.uniprot.remapping.listener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.bridges.uniprot.remapping.RemapReport;
+import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 07/06/13
  * Time: 16:04
  */
-public class LoggingRemapListener implements RemapListener {
+public class LoggingRemapListener implements ProteinRemapperListener {
 
     public static final Log log = LogFactory.getLog(LoggingRemapListener.class);
 

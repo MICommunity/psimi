@@ -26,6 +26,7 @@ import java.util.Collection;
  * Date: 13/05/13
  * Time: 14:21
  */
+@Deprecated
 public abstract class AbstractCvTermEnricherOLD
         implements CvTermEnricher {
 

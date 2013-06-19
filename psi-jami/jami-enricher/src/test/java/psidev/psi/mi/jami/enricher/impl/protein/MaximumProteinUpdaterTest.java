@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.bridges.exception.BadResultException;
 import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.event.EnricherEvent;
+import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.mockfetcher.protein.MockProteinFetcher;
@@ -38,7 +39,8 @@ public class MaximumProteinUpdaterTest {
     @Before
     public void initialiseFetcherAndEnricher(){
         this.fetcher = new MockProteinFetcher();
-        this.maximumProteinUpdater = new MaximumProteinUpdater(fetcher);
+        this.maximumProteinUpdater = new MaximumProteinUpdater();
+        maximumProteinUpdater.setFetcher(fetcher);
 
         Protein fullProtein = new DefaultProtein(TEST_SHORTNAME, TEST_FULLNAME );
         fullProtein.setUniprotkb(TEST_AC_FULL_PROT);
@@ -55,7 +57,7 @@ public class MaximumProteinUpdaterTest {
     public void test_full_overwrite()
             throws MissingServiceException, BadResultException,
             SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_FULL_PROT);
@@ -82,7 +84,7 @@ public class MaximumProteinUpdaterTest {
     public void test_overwrite_does_not_change_fields_to_null_from_proteinEnriched()
             throws MissingServiceException, BadResultException,
             SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_with_all_fields = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_with_all_fields.setUniprotkb(TEST_AC_HALF_PROT);
@@ -109,7 +111,7 @@ public class MaximumProteinUpdaterTest {
     public void test_enricher_event_is_cleared()
             throws MissingServiceException, BadResultException,
             SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_test_one = new DefaultProtein("testpart1 shortName", "testpart1 fullName");
         protein_test_one.setUniprotkb(TEST_AC_HALF_PROT);
@@ -140,7 +142,7 @@ public class MaximumProteinUpdaterTest {
     public void test_enricher_event_is_fired_and_has_correct_content()
             throws MissingServiceException, BadResultException,
             SeguidException, BadToEnrichFormException, BadSearchTermException,
-            BridgeFailedException {
+            BridgeFailedException, BadEnrichedFormException {
 
         Protein protein_to_enrich = new DefaultProtein("test2 shortName", "test2 fullName");
         protein_to_enrich.setUniprotkb(TEST_AC_FULL_PROT);
