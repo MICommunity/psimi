@@ -14,7 +14,5 @@ import java.util.Iterator;
 
 public interface StreamingInteractionSource extends MIDataSource {
 
-    public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator();
-    public Iterator<? extends ModelledInteraction> getModelledInteractionsIterator();
     public Iterator<? extends Interaction> getInteractionsIterator();
 }
