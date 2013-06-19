@@ -215,7 +215,7 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
         }
         // remove all standard inchi keys if the collection is not empty
         else if (!bioactiveEntityChecksums.isEmpty()) {
-            ChecksumUtils.removeAllChecksumWithMethod(bioactiveEntityChecksums, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
+            ChecksumUtils.removeAllChecksumWithMethod(bioactiveEntityChecksums, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY);
             this.standardInchiKey = null;
         }
     }
@@ -245,7 +245,7 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
 
     protected void processAddedChecksumEvent(Checksum added) {
         // the added checksum is standard inchi key and it is not the current standard inchi key
-        if (standardInchiKey == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY)){
+        if (standardInchiKey == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY)){
             // the standard inchi key is not set, we can set the standard inchi key
             standardInchiKey = added;
         }
@@ -262,7 +262,7 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
     protected void processRemovedChecksumEvent(Checksum removed) {
         // the removed identifier is standard inchi key
         if (standardInchiKey != null && standardInchiKey.equals(removed)){
-            standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.INCHI_KEY_MI, Checksum.INCHI_KEY);
+            standardInchiKey = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.STANDARD_INCHI_KEY_MI, Checksum.STANDARD_INCHI_KEY);
         }
         else if (smile != null && smile.equals(removed)){
             smile = ChecksumUtils.collectFirstChecksumWithMethod(getChecksums(), Checksum.SMILE_MI, Checksum.SMILE);

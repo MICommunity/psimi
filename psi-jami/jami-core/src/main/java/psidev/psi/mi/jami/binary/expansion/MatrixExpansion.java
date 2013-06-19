@@ -1,19 +1,10 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.impl.DefaultModelledBinaryInteraction;
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultModelledParticipant;
-import psidev.psi.mi.jami.model.impl.DefaultParticipant;
-import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -26,78 +17,28 @@ import java.util.Collection;
  * @since <pre>04/06/13</pre>
  */
 
-public class MatrixExpansion extends AbstractComplexExpansionMethod {
+public class MatrixExpansion extends AbstractMatrixExpansion<Interaction> {
+
+    private InteractionEvidenceMatrixExpansion interactionEvidenceExpansion;
+    private ModelledInteractionMatrixExpansion modelledInteractionExpansion;
 
     public MatrixExpansion(){
-        super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.MATRIX_EXPANSION, ComplexExpansionMethod.MATRIX_EXPANSION_MI));
+        super();
+        this.interactionEvidenceExpansion = new InteractionEvidenceMatrixExpansion();
+        this.modelledInteractionExpansion = new ModelledInteractionMatrixExpansion();
     }
 
     @Override
-    protected Collection<BinaryInteractionEvidence> collectBinaryInteractionEvidencesFrom(InteractionEvidence interaction){
-        ParticipantEvidence[] participants = interaction.getParticipants().toArray(new DefaultParticipantEvidence[]{});
+    public Collection<? extends BinaryInteraction> expand(Interaction interaction) {
 
-        Collection<BinaryInteractionEvidence> binaryInteractions = new ArrayList<BinaryInteractionEvidence>(interaction.getParticipants().size() - 1);
-        for ( int i = 0; i < interaction.getParticipants().size(); i++ ) {
-            ParticipantEvidence c1 = participants[i];
-            for ( int j = ( i + 1 ); j < participants.length; j++ ) {
-                ParticipantEvidence c2 = participants[j];
-                // build a new interaction
-                BinaryInteractionEvidence binary = new DefaultBinaryInteractionEvidence(getMethod());
-                InteractionCloner.copyAndOverrideInteractionEvidenceProperties(interaction, binary, false, true);
-
-                // set participants
-                initialiseBinaryInteractionParticipantsWith(c1, c2, binary);
-
-                binaryInteractions.add(binary);
-            }
+        if (interaction instanceof InteractionEvidence){
+            return interactionEvidenceExpansion.expand((InteractionEvidence) interaction);
         }
-
-        return binaryInteractions;
-    }
-
-    @Override
-    protected Collection<ModelledBinaryInteraction> collectModelledBinaryInteractionsFrom(ModelledInteraction interaction){
-        ModelledParticipant[] participants = interaction.getParticipants().toArray(new DefaultModelledParticipant[]{});
-
-        Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
-        for ( int i = 0; i < interaction.getParticipants().size(); i++ ) {
-            ModelledParticipant c1 = participants[i];
-            for ( int j = ( i + 1 ); j < participants.length; j++ ) {
-                ModelledParticipant c2 = participants[j];
-                // build a new interaction
-                ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction(getMethod());
-                InteractionCloner.copyAndOverrideModelledInteractionProperties(interaction, binary, false, true);
-
-                // set participants
-                initialiseBinaryInteractionParticipantsWith(c1, c2, binary);
-
-                binaryInteractions.add(binary);
-            }
+        else if (interaction instanceof ModelledInteraction){
+            return modelledInteractionExpansion.expand((ModelledInteraction) interaction);
         }
-
-        return binaryInteractions;
-    }
-
-    @Override
-    protected Collection<BinaryInteraction> collectDefaultBinaryInteractionsFrom(Interaction interaction){
-        Participant[] participants = interaction.getParticipants().toArray(new DefaultParticipant[]{});
-
-        Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
-        for ( int i = 0; i < interaction.getParticipants().size(); i++ ) {
-            Participant c1 = participants[i];
-            for ( int j = ( i + 1 ); j < participants.length; j++ ) {
-                Participant c2 = participants[j];
-                // build a new interaction
-                BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-                InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
-
-                // set participants
-                initialiseBinaryInteractionParticipantsWith(c1, c2, binary);
-
-                binaryInteractions.add(binary);
-            }
+        else {
+            return super.expand(interaction);
         }
-
-        return binaryInteractions;
     }
 }

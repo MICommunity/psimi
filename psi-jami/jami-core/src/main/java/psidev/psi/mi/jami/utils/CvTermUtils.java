@@ -271,7 +271,7 @@ public class CvTermUtils {
     }
 
     public static CvTerm createStandardInchiKey(){
-        return createMICvTerm(Checksum.INCHI_KEY, Checksum.INCHI_KEY_MI);
+        return createMICvTerm(Checksum.STANDARD_INCHI_KEY, Checksum.STANDARD_INCHI_KEY_MI);
     }
 
     public static CvTerm createRogid(){
