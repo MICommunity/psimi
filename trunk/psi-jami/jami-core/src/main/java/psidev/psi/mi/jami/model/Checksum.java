@@ -12,17 +12,21 @@ package psidev.psi.mi.jami.model;
 public interface Checksum {
 
     public static String SMILE = "smiles string";
+    public static String SMILE_SHORT = "smile";
     public static String SMILE_MI = "MI:2039";
     public static String INCHI = "stamdard inchi";
+    public static String INCHI_SHORT = "inchi id";
     public static String INCHI_MI = "MI:2010";
-    public static String INCHI_KEY = "standard inchi key";
-    public static String INCHI_KEY_MI = "MI:1101";
+    public static String STANDARD_INCHI_KEY = "standard inchi key";
+    public static String STANDARD_INCHI_KEY_MI = "MI:1101";
     public static String ROGID = "rogid";
     public static String ROGID_MI = "MI:xxxx1";
     public static String RIGID = "rigid";
     public static String RIGID_MI = "MI:xxxx2";
     public static String IRIGID = "irigid";
     public static String IROGID = "irogid";
+    public static String INCHI_KEY = "inchi key";
+    public static String INCHI_KEY_MI = "MI:0970";
 
     /**
      * The method is a controlled vocabulary term and cannot be null

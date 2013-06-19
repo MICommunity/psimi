@@ -3,8 +3,6 @@ package psidev.psi.mi.jami.binary.expansion;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.impl.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
@@ -34,10 +32,10 @@ public class SpokeExpansionTest {
     @Test
     public void test_is_expandable(){
 
-        Assert.assertFalse(expansion.isModelledInteractionExpandable(null));
-        Assert.assertFalse(expansion.isModelledInteractionExpandable(new DefaultModelledInteraction()));
-        Assert.assertFalse(expansion.isInteractionEvidenceExpandable(null));
-        Assert.assertFalse(expansion.isInteractionEvidenceExpandable(new DefaultInteractionEvidence()));
+        Assert.assertFalse(expansion.isInteractionExpandable(null));
+        Assert.assertFalse(expansion.isInteractionExpandable(new DefaultModelledInteraction()));
+        Assert.assertFalse(expansion.isInteractionExpandable(null));
+        Assert.assertFalse(expansion.isInteractionExpandable(new DefaultInteractionEvidence()));
         Assert.assertFalse(expansion.isInteractionExpandable(null));
         Assert.assertFalse(expansion.isInteractionExpandable(new DefaultInteraction()));
 
@@ -47,8 +45,8 @@ public class SpokeExpansionTest {
         modelledInteraction.addModelledParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));
         InteractionEvidence interaction = new DefaultInteractionEvidence();
         interaction.addParticipantEvidence(new DefaultParticipantEvidence(new DefaultProtein("p1")));
-        Assert.assertTrue(expansion.isInteractionEvidenceExpandable(interactionEvidence));
-        Assert.assertTrue(expansion.isModelledInteractionExpandable(modelledInteraction));
+        Assert.assertTrue(expansion.isInteractionExpandable(interactionEvidence));
+        Assert.assertTrue(expansion.isInteractionExpandable(modelledInteraction));
         Assert.assertTrue(expansion.isInteractionExpandable(interaction));
     }
 
@@ -74,21 +72,21 @@ public class SpokeExpansionTest {
         nary.addParticipantEvidence(p2);
         nary.addParticipantEvidence(p3);
 
-        Collection<BinaryInteraction> binaryExpanded = expansion.expandInteraction(binary);
+        Collection<? extends BinaryInteraction> binaryExpanded = expansion.expand(binary);
         Assert.assertEquals(1, binaryExpanded.size());
-        Assert.assertTrue(binaryExpanded.iterator().next() instanceof BinaryInteractionWrapper);
+        Assert.assertTrue(binaryExpanded.iterator().next() instanceof BinaryInteractionEvidenceWrapper);
         Iterator<? extends Participant> iterator = binary.getParticipants().iterator();
         Assert.assertTrue(binaryExpanded.iterator().next().getParticipantA() == iterator.next());
         Assert.assertTrue(binaryExpanded.iterator().next().getParticipantB() == iterator.next());
 
-        Collection<BinaryInteraction> self_intra_expanded = expansion.expandInteraction(self_intra);
+        Collection<? extends BinaryInteraction> self_intra_expanded = expansion.expand(self_intra);
         Assert.assertEquals(1, self_intra_expanded.size());
-        Assert.assertTrue(self_intra_expanded.iterator().next() instanceof BinaryInteractionWrapper);
+        Assert.assertTrue(self_intra_expanded.iterator().next() instanceof BinaryInteractionEvidenceWrapper);
         Iterator<? extends Participant> iterator2 = self_intra.getParticipants().iterator();
         Assert.assertTrue(self_intra_expanded.iterator().next().getParticipantA() == iterator2.next());
         Assert.assertNull(self_intra_expanded.iterator().next().getParticipantB());
 
-        Collection<BinaryInteraction> self_inter_expanded = expansion.expandInteraction(self_inter);
+        Collection<? extends BinaryInteraction> self_inter_expanded = expansion.expand(self_inter);
         Assert.assertEquals(1, self_inter_expanded.size());
         Assert.assertTrue(self_inter_expanded.iterator().next() instanceof DefaultBinaryInteraction);
         Iterator<? extends Participant> iterator3 = self_inter.getParticipants().iterator();
@@ -96,7 +94,7 @@ public class SpokeExpansionTest {
         Assert.assertNotNull(self_inter_expanded.iterator().next().getParticipantB());
         Assert.assertEquals(new DefaultStoichiometry(0), self_inter_expanded.iterator().next().getParticipantB().getStoichiometry());
 
-        Collection<BinaryInteraction> nary_expanded = expansion.expandInteraction(nary);
+        Collection<? extends BinaryInteraction> nary_expanded = expansion.expand(nary);
         Assert.assertEquals(2, nary_expanded.size());
         for (BinaryInteraction binaryInteraction : nary_expanded){
             Assert.assertTrue(binaryInteraction instanceof DefaultBinaryInteraction);
@@ -126,21 +124,21 @@ public class SpokeExpansionTest {
         nary.addParticipantEvidence(p2);
         nary.addParticipantEvidence(p3);
 
-        Collection<BinaryInteractionEvidence> binaryExpanded = expansion.expandInteractionEvidence(binary);
+        Collection<? extends BinaryInteraction> binaryExpanded = expansion.expand(binary);
         Assert.assertEquals(1, binaryExpanded.size());
         Assert.assertTrue(binaryExpanded.iterator().next() instanceof BinaryInteractionEvidenceWrapper);
         Iterator<? extends Participant> iterator = binary.getParticipants().iterator();
         Assert.assertTrue(binaryExpanded.iterator().next().getParticipantA() == iterator.next());
         Assert.assertTrue(binaryExpanded.iterator().next().getParticipantB() == iterator.next());
 
-        Collection<BinaryInteractionEvidence> self_intra_expanded = expansion.expandInteractionEvidence(self_intra);
+        Collection<? extends BinaryInteraction> self_intra_expanded = expansion.expand(self_intra);
         Assert.assertEquals(1, self_intra_expanded.size());
         Assert.assertTrue(self_intra_expanded.iterator().next() instanceof BinaryInteractionEvidenceWrapper);
         Iterator<? extends Participant> iterator2 = self_intra.getParticipants().iterator();
         Assert.assertTrue(self_intra_expanded.iterator().next().getParticipantA() == iterator2.next());
         Assert.assertNull(self_intra_expanded.iterator().next().getParticipantB());
 
-        Collection<BinaryInteractionEvidence> self_inter_expanded = expansion.expandInteractionEvidence(self_inter);
+        Collection<? extends BinaryInteraction> self_inter_expanded = expansion.expand(self_inter);
         Assert.assertEquals(1, self_inter_expanded.size());
         Assert.assertTrue(self_inter_expanded.iterator().next() instanceof DefaultBinaryInteractionEvidence);
         Iterator<? extends Participant> iterator3 = self_inter.getParticipants().iterator();
@@ -148,7 +146,7 @@ public class SpokeExpansionTest {
         Assert.assertNotNull(self_inter_expanded.iterator().next().getParticipantB());
         Assert.assertEquals(new DefaultStoichiometry(0), self_inter_expanded.iterator().next().getParticipantB().getStoichiometry());
 
-        Collection<BinaryInteractionEvidence> nary_expanded = expansion.expandInteractionEvidence(nary);
+        Collection<? extends BinaryInteraction> nary_expanded = expansion.expand(nary);
         Assert.assertEquals(2, nary_expanded.size());
         for (BinaryInteraction binaryInteraction : nary_expanded){
             Assert.assertTrue(binaryInteraction instanceof DefaultBinaryInteractionEvidence);
@@ -178,21 +176,21 @@ public class SpokeExpansionTest {
         nary.addModelledParticipant(p2);
         nary.addModelledParticipant(p3);
 
-        Collection<ModelledBinaryInteraction> binaryExpanded = expansion.expandModelledInteraction(binary);
+        Collection<? extends BinaryInteraction> binaryExpanded = expansion.expand(binary);
         Assert.assertEquals(1, binaryExpanded.size());
         Assert.assertTrue(binaryExpanded.iterator().next() instanceof ModelledBinaryInteractionWrapper);
         Iterator<? extends Participant> iterator = binary.getParticipants().iterator();
         Assert.assertTrue(binaryExpanded.iterator().next().getParticipantA() == iterator.next());
         Assert.assertTrue(binaryExpanded.iterator().next().getParticipantB() == iterator.next());
 
-        Collection<ModelledBinaryInteraction> self_intra_expanded = expansion.expandModelledInteraction(self_intra);
+        Collection<? extends BinaryInteraction> self_intra_expanded = expansion.expand(self_intra);
         Assert.assertEquals(1, self_intra_expanded.size());
         Assert.assertTrue(self_intra_expanded.iterator().next() instanceof ModelledBinaryInteractionWrapper);
         Iterator<? extends Participant> iterator2 = self_intra.getParticipants().iterator();
         Assert.assertTrue(self_intra_expanded.iterator().next().getParticipantA() == iterator2.next());
         Assert.assertNull(self_intra_expanded.iterator().next().getParticipantB());
 
-        Collection<ModelledBinaryInteraction> self_inter_expanded = expansion.expandModelledInteraction(self_inter);
+        Collection<? extends BinaryInteraction> self_inter_expanded = expansion.expand(self_inter);
         Assert.assertEquals(1, self_inter_expanded.size());
         Assert.assertTrue(self_inter_expanded.iterator().next() instanceof DefaultModelledBinaryInteraction);
         Iterator<? extends Participant> iterator3 = self_inter.getParticipants().iterator();
@@ -200,7 +198,7 @@ public class SpokeExpansionTest {
         Assert.assertNotNull(self_inter_expanded.iterator().next().getParticipantB());
         Assert.assertEquals(new DefaultStoichiometry(0), self_inter_expanded.iterator().next().getParticipantB().getStoichiometry());
 
-        Collection<ModelledBinaryInteraction> nary_expanded = expansion.expandModelledInteraction(nary);
+        Collection<? extends BinaryInteraction> nary_expanded = expansion.expand(nary);
         Assert.assertEquals(2, nary_expanded.size());
         for (BinaryInteraction binaryInteraction : nary_expanded){
             Assert.assertTrue(binaryInteraction instanceof DefaultModelledBinaryInteraction);
