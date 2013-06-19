@@ -12,9 +12,8 @@ import java.util.Collection;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
- * Time: 17:02
  */
 public class MaximumCvTermEnricher
         extends MinimumCvTermEnricher
@@ -35,8 +34,6 @@ public class MaximumCvTermEnricher
             cvTermToEnrich.getSynonyms().add(aliasSynonym);
             if (listener != null) listener.onAddedSynonym(cvTermToEnrich , aliasSynonym);
         }
-
-
     }
 
 

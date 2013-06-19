@@ -58,6 +58,10 @@ public class ProteinEnricherCounter implements ProteinEnricherListener {
         update_count++;
     }
 
+    public void onAddedInteractorType(Protein protein) {
+        added_count++;
+    }
+
     public void onAddedOrganism(Protein protein) {
         added_count++;
     }

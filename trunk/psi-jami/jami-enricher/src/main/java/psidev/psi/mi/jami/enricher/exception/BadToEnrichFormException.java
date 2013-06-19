@@ -3,9 +3,8 @@ package psidev.psi.mi.jami.enricher.exception;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 11/06/13
- * Time: 14:19
  */
 public class BadToEnrichFormException extends Exception {
     public BadToEnrichFormException() {

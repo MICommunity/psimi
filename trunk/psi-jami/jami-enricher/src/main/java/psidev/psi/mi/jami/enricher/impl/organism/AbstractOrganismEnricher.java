@@ -12,9 +12,8 @@ import psidev.psi.mi.jami.model.Organism;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 14/06/13
- * Time: 14:40
  */
 public abstract class AbstractOrganismEnricher
         implements OrganismEnricher {
@@ -42,9 +41,7 @@ public abstract class AbstractOrganismEnricher
 
 
     private Organism fetchOrganism(Organism organismToEnrich){
-
         return null;
-
     }
 
 

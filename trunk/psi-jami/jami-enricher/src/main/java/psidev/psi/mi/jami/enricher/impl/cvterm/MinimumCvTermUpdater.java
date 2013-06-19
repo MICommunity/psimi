@@ -15,9 +15,8 @@ import java.util.Collection;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
- * Time: 17:02
  */
 public class MinimumCvTermUpdater
         extends AbstractCvTermEnricher
@@ -25,16 +24,7 @@ public class MinimumCvTermUpdater
 
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){
-        //Identifiers
-        /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
-                cvTermFetched.getIdentifiers(),
-                cvTermToEnrich.getIdentifiers(),
-                new DefaultXrefComparator());
 
-        for(Xref xrefIdentifier: subtractedIdentifiers){
-            cvTermToEnrich.getIdentifiers().add(xrefIdentifier);
-            if (listener != null) listener.onAddedIdentifier(cvTermToEnrich, xrefIdentifier);
-        }  */
 
         //ShortName not checked
         if(cvTermFetched.getShortName() != null
@@ -50,6 +40,17 @@ public class MinimumCvTermUpdater
             if (listener != null) listener.onFullNameUpdate(cvTermToEnrich, cvTermToEnrich.getFullName());
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
         }
+
+        //Identifiers
+        /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
+                cvTermFetched.getIdentifiers(),
+                cvTermToEnrich.getIdentifiers(),
+                new DefaultXrefComparator());
+
+        for(Xref xrefIdentifier: subtractedIdentifiers){
+            cvTermToEnrich.getIdentifiers().add(xrefIdentifier);
+            if (listener != null) listener.onAddedIdentifier(cvTermToEnrich, xrefIdentifier);
+        }  */
     }
 
 }

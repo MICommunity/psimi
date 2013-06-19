@@ -4,9 +4,8 @@ package psidev.psi.mi.jami.enricher.exception;
  * This exception is thrown when an object being used to enrich has a field which is unexpected.
  * Examples may include: empty fields which should contain data, data in an unexpected format.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 11/06/13
- * Time: 14:00
  */
 public class BadEnrichedFormException extends Exception {
     public BadEnrichedFormException() {

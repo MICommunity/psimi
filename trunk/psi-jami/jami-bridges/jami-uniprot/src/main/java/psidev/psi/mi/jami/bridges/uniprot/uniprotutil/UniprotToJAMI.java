@@ -41,9 +41,8 @@ import java.util.Map;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 14/05/13
- * Time: 13:41
  */
 public class UniprotToJAMI {
 

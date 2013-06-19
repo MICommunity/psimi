@@ -14,9 +14,8 @@ import java.util.TreeMap;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 07/06/13
- * Time: 15:40
  */
 public class DumbProteinRemapperOld extends AbstractProteinRemapper {
 

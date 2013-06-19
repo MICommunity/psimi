@@ -16,9 +16,8 @@ import uk.ac.ebi.intact.protein.mapping.strategies.exceptions.StrategyException;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 07/06/13
- * Time: 12:27
  */
 public class IntactProteinRemapper
         extends AbstractProteinRemapper {

@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.bridges.uniprot.remapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.bridges.uniprot.remapping.*;
-import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -90,7 +88,7 @@ public  class GeneralTest {
         remap = new IntactProteinRemapper();
 
     }
-
+     /*
     private void onRemapReport(RemapReport report){
         log.info("Remapped?: "+report.isRemapped());
         //if(report.isRemapped())log.info("remapped to: "+report.);
@@ -99,7 +97,7 @@ public  class GeneralTest {
                 ", Used Seq? "+report.isMappingFromSequence());
 
 
-    }
+    } */
 
     public Protein makeP(){
         Protein p = new DefaultProtein("test");

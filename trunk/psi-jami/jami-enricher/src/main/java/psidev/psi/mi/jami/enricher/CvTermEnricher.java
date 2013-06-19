@@ -16,7 +16,7 @@ import java.util.Collection;
  * This interface can accept EnricherListeners
  * and will report an EnricherEvent after each enrichment.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/05/13
  * Time: 13:13
  */
@@ -43,6 +43,6 @@ public interface CvTermEnricher{
     public CvTermFetcher getCvTermFetcher();
 
 
-    public void setCvTermEnricherListener(CvTermEnricherListener cvTermEnricherListener);
+    public void setCvTermEnricherListener(CvTermEnricherListener listener);
     public CvTermEnricherListener getCvTermEnricherListener();
 }

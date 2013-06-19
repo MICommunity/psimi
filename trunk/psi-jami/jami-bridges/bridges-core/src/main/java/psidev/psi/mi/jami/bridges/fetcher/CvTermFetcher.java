@@ -8,9 +8,8 @@ import psidev.psi.mi.jami.model.CvTerm;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 08/05/13
- * Time: 16:34
  */
 public interface CvTermFetcher{
 

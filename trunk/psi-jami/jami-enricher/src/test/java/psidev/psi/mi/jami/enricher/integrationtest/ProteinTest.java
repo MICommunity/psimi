@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.enricher.integrationtest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
+import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
+import psidev.psi.mi.jami.bridges.uniprot.remapping.IntactProteinRemapper;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinUpdater;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
@@ -25,6 +27,7 @@ public class ProteinTest {
 
     ProteinEnricher proteinEnricher;
     ProteinFetcher fetcher;
+    ProteinRemapper remapper = new IntactProteinRemapper();
 
     ProteinEnricherListener listener = new ProteinEnricherLogger();
 
@@ -35,12 +38,17 @@ public class ProteinTest {
 
 
     public void min(){
-        proteinEnricher = new MinimumProteinEnricher(fetcher);
+        proteinEnricher = new MinimumProteinEnricher();
+        proteinEnricher.setFetcher(fetcher);
         proteinEnricher.setProteinEnricherListener(listener);
     }
 
     public void max(){
-        proteinEnricher = new MaximumProteinUpdater(fetcher);
+
+
+        proteinEnricher = new MaximumProteinUpdater();
+        proteinEnricher.setFetcher(fetcher);
+        proteinEnricher.setProteinRemapper(remapper);
         proteinEnricher.setProteinEnricherListener(listener);
     }
 
@@ -52,6 +60,7 @@ public class ProteinTest {
 
     public void testProteins(){
         for(String s : tests){
+            log.info("---begin---");
             Protein a = new DefaultProtein(s);
             a.setUniprotkb(s);
             //a.setOrganism(new DefaultOrganism(168927));
@@ -59,10 +68,18 @@ public class ProteinTest {
             try{
                 proteinEnricher.enrichProtein(a);
             } catch (Exception e){
-                log.debug("The protein enricher did not return a protein");
+                log.debug("The protein enricher threw an exception.");
                 log.debug("msg reads: "+e.getMessage());
+                e.printStackTrace();
                 //log.debug("log reads: "); e.printStackTrace();
             }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            log.info("---END---");
+
         }
     }
 

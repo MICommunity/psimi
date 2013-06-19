@@ -23,9 +23,8 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 14/05/13
- * Time: 13:09
  */
 public class UniprotBridge {
 

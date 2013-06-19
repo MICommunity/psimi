@@ -8,11 +8,11 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  * Time: 16:55
  */
-public class DefaultFeatureEvidenceEnricher
+public abstract  class AbstractFeatureEvidenceEnricher
         implements FeatureEvidenceEnricher{
 
     private FeatureEvidenceFetcher featureEvidenceFetcher;
@@ -21,6 +21,8 @@ public class DefaultFeatureEvidenceEnricher
     public void enrichFeatureEvidence(FeatureEvidence featureEvidence) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    protected abstract boolean processFeatureEvidence(FeatureEvidence featureEvidenceToEnrich);
 
     public void setFeatureEvidenceFetcher(FeatureEvidenceFetcher featureEvidenceFetcher) {
         this.featureEvidenceFetcher = featureEvidenceFetcher;

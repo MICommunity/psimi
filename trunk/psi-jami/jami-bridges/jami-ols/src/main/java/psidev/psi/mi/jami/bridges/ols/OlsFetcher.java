@@ -18,9 +18,8 @@ import java.util.Map;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 08/05/13
- * Time: 11:25
  */
 public class OlsFetcher
         implements CvTermFetcher {

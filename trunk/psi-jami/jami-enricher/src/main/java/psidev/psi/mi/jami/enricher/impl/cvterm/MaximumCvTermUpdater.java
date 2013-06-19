@@ -12,11 +12,11 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 
 import java.util.Collection;
+import java.util.TreeSet;
 
 /**
- *
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/05/13
- * Time: 14:16
  */
 public class MaximumCvTermUpdater
         extends MinimumCvTermUpdater
@@ -28,6 +28,16 @@ public class MaximumCvTermUpdater
         super.processCvTerm(cvTermToEnrich);
 
 
+        //Add synonyms
+        Collection<Alias> subtractedSynonyms = CollectionManipulationUtils.comparatorSubtract(
+                cvTermFetched.getSynonyms(),
+                cvTermToEnrich.getSynonyms(),
+                new DefaultAliasComparator());
+
+        for(Alias aliasSynonym: subtractedSynonyms){
+            cvTermToEnrich.getSynonyms().add(aliasSynonym);
+            if (listener != null) listener.onAddedSynonym(cvTermToEnrich , aliasSynonym);
+        }
 
     }
 

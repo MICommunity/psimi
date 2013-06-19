@@ -1,21 +1,19 @@
-package psidev.psi.mi.jami.bridges.uniprot.remapping;
+package psidev.psi.mi.jami.bridges.remapper;
 
-import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 07/06/13
- * Time: 10:08
  */
 public interface ProteinRemapper {
 
     //public ProteinRemapper(RemapperBridge bridge);
 
-    public void addRemapListener(RemapListener listener);
-    public void removeRemapListener(RemapListener listener);
+    public void addRemapListener(ProteinRemapperListener listener);
+    public void removeRemapListener(ProteinRemapperListener listener);
 
     /**
      * Will remap the protein using the settings provided.

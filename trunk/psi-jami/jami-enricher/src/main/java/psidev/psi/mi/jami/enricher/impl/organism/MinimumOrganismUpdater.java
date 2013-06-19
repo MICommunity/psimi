@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.Organism;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
  * Time: 17:05
  */
@@ -19,32 +19,39 @@ public class MinimumOrganismUpdater
     @Override
     protected void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException {
         if(organismFetched.getTaxId() < -4){//TODO check this  is a valid assertion
-            throw new BadEnrichedFormException( "The organism had an invalid taxID of "+organismFetched.getTaxId());
+            throw new BadEnrichedFormException( "The organism had an invalid TaxID of "+organismFetched.getTaxId());
         }
 
-        /*
-        //TaxID
-        if(organismToEnrich.getTaxId() == -3){
-            if (listener != null) listener.onTaxidUpdate(organismToEnrich, "-3");
-            organismToEnrich.setTaxId(organismFetched.getTaxId());
-        }
+        // Override TaxID but obviously not possible if organism is unknown
+        if(organismFetched.getTaxId() != -3){
 
-        //TODO - check that the organism details dont enrich if there is no match on taxid
-        if(organismToEnrich.getTaxId() == organismFetched.getTaxId()){
-            //Scientific name
-            if(organismToEnrich.getScientificName() == null
-                    && organismFetched.getScientificName() != null){
-                if (listener != null) listener.onScientificNameUpdate(organismToEnrich , organismToEnrich.getScientificName());
+            // TaxID
+            if(organismToEnrich.getTaxId() != organismFetched.getTaxId() ){
+                if (listener != null) listener.onTaxidUpdate(
+                        organismToEnrich, ""+organismToEnrich.getTaxId() );
+                organismToEnrich.setTaxId(organismFetched.getTaxId());
+            }
+
+            // Scientific name
+            if(organismFetched.getScientificName() != null
+                    && ! organismFetched.getScientificName().equalsIgnoreCase(
+                    organismToEnrich.getScientificName())){
+
+                if (listener != null) listener.onScientificNameUpdate(
+                        organismToEnrich , organismToEnrich.getScientificName());
                 organismToEnrich.setScientificName(organismFetched.getScientificName());
             }
 
-            //Commonname
-            if(organismToEnrich.getCommonName() == null
-                    &&organismFetched.getCommonName() != null){
-                if (listener != null) listener.onCommonNameUpdate(organismToEnrich , organismToEnrich.getCommonName());
+            // Common name
+            if(organismFetched.getCommonName() != null
+                    && ! organismFetched.getCommonName().equalsIgnoreCase(
+                    organismToEnrich.getCommonName())){
+
+                if (listener != null) listener.onCommonNameUpdate(
+                        organismToEnrich , organismToEnrich.getCommonName());
                 organismToEnrich.setCommonName(organismFetched.getCommonName());
             }
-        }  */
+        }
 
     }
 

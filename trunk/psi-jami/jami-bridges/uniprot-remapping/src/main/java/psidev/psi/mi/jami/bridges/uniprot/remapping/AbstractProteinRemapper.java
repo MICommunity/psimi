@@ -2,8 +2,9 @@ package psidev.psi.mi.jami.bridges.uniprot.remapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.bridges.remapper.ProteinRemapperListener;
+import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.LoggingRemapListener;
-import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.RemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
@@ -14,16 +15,15 @@ import java.util.*;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 07/06/13
- * Time: 11:11
  */
 public abstract class AbstractProteinRemapper
-        implements ProteinRemapper{
+        implements ProteinRemapper {
 
     public static final Log log = LogFactory.getLog(AbstractProteinRemapper.class);
 
-    private RemapListener listener = new LoggingRemapListener();
+    private ProteinRemapperListener listener = new LoggingRemapListener();
 
     private boolean checkingEnabled = true;
     private boolean priorityIdentifiers = true;
@@ -265,10 +265,10 @@ public abstract class AbstractProteinRemapper
         this.prioritySequence = prioritySequence;
     }
 
-    public void addRemapListener(RemapListener listener){
+    public void addRemapListener(ProteinRemapperListener listener){
         this.listener = listener;
     }
-    public void removeRemapListener(RemapListener listener){
+    public void removeRemapListener(ProteinRemapperListener listener){
         listener = null;
     }
 
