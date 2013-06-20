@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.tab.listener;
 
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
 
@@ -18,51 +18,35 @@ public interface MitabParserListener {
 
     public void onMissingCvTermName(int line, int column, int mitabColumn);
 
-    public void onSeveralCvTermFound(int line, int column, int mitabColumn);
-
-    public void onSeveralFirstAuthorFound(int line, int column, int mitabColumn);
-
     public void onTextFoundInConfidence(int line, int column, int mitabColumn);
 
     public void onMissingExpansionId(int line, int column, int mitabColumn);
 
-    public void onInvalidXref(int line, int column, int mitabColumn);
+    public void onInvalidSyntax(int line, int column, int mitabColumn);
 
-    public void onInvalidAlias(int line, int column, int mitabColumn);
-
-    public void onInvalidCvTerm(int line, int column, int mitabColumn);
-
-    public void onInvalidFirstAuthor(int line, int column, int mitabColumn);
-
-    public void onInvalidOrganismSyntax(int line, int column, int mitabColumn);
-
-    public void onInvalidSource(int line, int column, int mitabColumn);
-
-    public void onInvalidConfidence(int line, int column, int mitabColumn);
-
-    public void onInvalidAnnotation(int line, int column, int mitabColumn);
-
-    public void onInvalidParameter(int line, int column, int mitabColumn);
-
-    public void onInvalidDate(int line, int column, int mitabColumn);
-
-    public void onInvalidChecksum(int line, int column, int mitabColumn);
-
-    public void onInvalidNegative(int line, int column, int mitabColumn);
-
-    public void onInvalidRange(int line, int column, int mitabColumn);
-
-    public void onInvalidFeature(int line, int column, int mitabColumn);
-
-    public void onInvalidStoichiometry(int line, int column, int mitabColumn);
-
-    public void onInvalidLine(int line, int column, int mitabColumn);
-
-    public void onSeveralUniqueIdentifiers(Collection<Xref> ids, int line, int column, int mitabColumn);
+    public void onSeveralUniqueIdentifiers(Collection<? extends Xref> ids);
 
     public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn);
 
     public void onEmptyAliases(int line, int column, int mitabColumn);
 
     public void onMissingInteractorIdentifierColumns(int line, int column, int mitabColumn);
+
+    public void onAliasFoundInAlternativeIds(Xref ref, int line, int column, int mitabColumn);
+
+    public void onChecksumFoundInAlternativeIds(Xref ref, int line, int column, int mitabColumn);
+
+    public void onChecksumFoundInAliases(Alias alias, int line, int column, int mitabColumn);
+
+    public void onSeveralCvTermFound(Collection<? extends CvTerm> terms);
+
+    public void onSeveralFirstAuthorFound(int line, int column, int mitabColumn);
+
+    public void onSeveralOrganismFound(Collection<? extends Organism> organisms);
+
+    public void onParticipantWithoutInteractorDetails(int line, int column, int mitabColumn);
+
+    public void onSeveralStoichiometryFound(Collection<? extends Stoichiometry> stoichiometry);
+
+    public void onInteractionWithoutParticipants(int line);
 }

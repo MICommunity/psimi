@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
@@ -16,7 +17,7 @@ import psidev.psi.mi.jami.model.impl.DefaultInteractorSet;
 
 public class MitabInteractorSet extends DefaultInteractorSet implements FileSourceContext{
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabInteractorSet(String name, CvTerm type) {
         super(name, type);
@@ -82,11 +83,11 @@ public class MitabInteractorSet extends DefaultInteractorSet implements FileSour
         super(name, fullName, organism, uniqueId);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

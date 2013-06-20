@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.ResultingSequence;
@@ -17,7 +18,7 @@ import psidev.psi.mi.jami.model.impl.DefaultRange;
 
 public class MitabRange extends DefaultRange implements FileSourceContext{
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabRange(Position start, Position end) {
         super(start, end);
@@ -43,11 +44,11 @@ public class MitabRange extends DefaultRange implements FileSourceContext{
         super(start, end, isLink, participant);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

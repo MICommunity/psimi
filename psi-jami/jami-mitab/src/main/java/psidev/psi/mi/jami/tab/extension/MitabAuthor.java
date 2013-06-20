@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.text.ParseException;
@@ -18,7 +19,7 @@ public class MitabAuthor implements FileSourceContext{
 
     private String firstAuthor;
     private Date publicationDate;
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabAuthor(String firstAuthor){
         this.firstAuthor = firstAuthor;
@@ -43,11 +44,11 @@ public class MitabAuthor implements FileSourceContext{
         return publicationDate;
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

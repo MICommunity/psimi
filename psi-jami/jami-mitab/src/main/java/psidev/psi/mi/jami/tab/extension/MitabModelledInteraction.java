@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.impl.DefaultModelledInteraction;
@@ -16,7 +17,7 @@ import psidev.psi.mi.jami.model.impl.DefaultModelledInteraction;
 
 public class MitabModelledInteraction extends DefaultModelledInteraction implements FileSourceContext{
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabModelledInteraction() {
         super();
@@ -38,11 +39,11 @@ public class MitabModelledInteraction extends DefaultModelledInteraction impleme
         super(shortName, source, type);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

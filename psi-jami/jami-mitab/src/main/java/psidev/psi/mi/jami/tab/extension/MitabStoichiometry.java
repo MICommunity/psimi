@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 
 /**
@@ -13,7 +14,7 @@ import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 
 public class MitabStoichiometry extends DefaultStoichiometry {
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabStoichiometry(long value) {
         super(value);
@@ -23,11 +24,11 @@ public class MitabStoichiometry extends DefaultStoichiometry {
         super(minValue, maxValue);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

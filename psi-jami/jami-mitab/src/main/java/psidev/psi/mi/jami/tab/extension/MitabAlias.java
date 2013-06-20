@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultAlias;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.impl.DefaultAlias;
 public class MitabAlias extends DefaultAlias implements FileSourceContext{
 
     private String dbSource;
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabAlias(String dbSource, CvTerm type, String name) {
         super(type, name);
@@ -41,7 +42,7 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
         this.dbSource = dbSource;
     }
 
-    public MitabAlias(String dbSource, CvTerm type, String name, MitabSourceLocator locator) {
+    public MitabAlias(String dbSource, CvTerm type, String name, FileSourceLocator locator) {
         super(type, name);
         if (dbSource == null){
             throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
@@ -50,7 +51,7 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
         this.sourceLocator = locator;
     }
 
-    public MitabAlias(String dbSource, String name, MitabSourceLocator locator) {
+    public MitabAlias(String dbSource, String name, FileSourceLocator locator) {
         super(name);
         if (dbSource == null){
             throw new IllegalArgumentException("The dbsource of a MITAB alias is required");
@@ -63,11 +64,11 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
         return dbSource;
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return this.sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

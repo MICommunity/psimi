@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 
 public class MitabParticipantEvidence extends DefaultParticipantEvidence implements FileSourceContext{
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabParticipantEvidence(InteractionEvidence interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
         super(interaction, interactor, participantIdentificationMethod);
@@ -85,11 +86,11 @@ public class MitabParticipantEvidence extends DefaultParticipantEvidence impleme
         super(interactor, stoichiometry);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }
