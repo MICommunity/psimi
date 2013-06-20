@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.tab.listener;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.tab.extension.MitabAuthor;
+import psidev.psi.mi.jami.tab.extension.MitabDate;
 
 import java.util.Collection;
 
@@ -40,8 +42,6 @@ public interface MitabParserListener {
 
     public void onSeveralCvTermFound(Collection<? extends CvTerm> terms);
 
-    public void onSeveralFirstAuthorFound(int line, int column, int mitabColumn);
-
     public void onSeveralOrganismFound(Collection<? extends Organism> organisms);
 
     public void onParticipantWithoutInteractorDetails(int line, int column, int mitabColumn);
@@ -49,4 +49,14 @@ public interface MitabParserListener {
     public void onSeveralStoichiometryFound(Collection<? extends Stoichiometry> stoichiometry);
 
     public void onInteractionWithoutParticipants(int line);
+
+    public void onSeveralFirstAuthorFound(Collection<MitabAuthor> authors);
+
+    public void onSeveralSourceFound(Collection<? extends Source> sources);
+
+    public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms);
+
+    public void onSeveralCreatedDateFound(Collection<MitabDate> dates);
+
+    public void onSeveralUpdatedDateFound(Collection<MitabDate> dates);
 }
