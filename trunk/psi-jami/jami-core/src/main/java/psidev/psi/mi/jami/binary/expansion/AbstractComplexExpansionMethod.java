@@ -17,7 +17,7 @@ import java.util.Collections;
  * @since <pre>05/06/13</pre>
  */
 
-public abstract class AbstractComplexExpansionMethod<T extends Interaction> implements ComplexExpansionMethod<T> {
+public abstract class AbstractComplexExpansionMethod<T extends Interaction, B extends BinaryInteraction> implements ComplexExpansionMethod<T,B> {
 
     private CvTerm method;
 
@@ -39,7 +39,7 @@ public abstract class AbstractComplexExpansionMethod<T extends Interaction> impl
         return true;
     }
 
-    public Collection<? extends BinaryInteraction> expand(T interaction) {
+    public Collection<B> expand(T interaction) {
 
         InteractionCategory category = findInteractionCategory(interaction);
 
@@ -59,17 +59,17 @@ public abstract class AbstractComplexExpansionMethod<T extends Interaction> impl
         return Collections.EMPTY_LIST;
     }
 
-    protected Collection<? extends BinaryInteraction> createNewSelfBinaryInteractionsFrom(T interaction) {
-        return Collections.singletonList(InteractionUtils.createNewSelfBinaryInteractionFrom(interaction));
+    protected Collection<B> createNewSelfBinaryInteractionsFrom(T interaction) {
+        return Collections.singletonList((B) InteractionUtils.createNewSelfBinaryInteractionFrom(interaction));
     }
 
-    protected Collection<? extends BinaryInteraction> createBinaryInteractionsFrom(T interaction) {
-        return Collections.singletonList(InteractionUtils.createBinaryInteractionFrom(interaction));
+    protected Collection<B> createBinaryInteractionsFrom(T interaction) {
+        return Collections.singletonList((B) InteractionUtils.createBinaryInteractionFrom(interaction));
     }
 
     protected InteractionCategory findInteractionCategory(T interaction) {
         return InteractionUtils.findInteractionCategoryOf(interaction, true);
     }
 
-    protected abstract Collection<? extends BinaryInteraction> collectBinaryInteractionsFrom(T interaction);
+    protected abstract Collection<B> collectBinaryInteractionsFrom(T interaction);
 }

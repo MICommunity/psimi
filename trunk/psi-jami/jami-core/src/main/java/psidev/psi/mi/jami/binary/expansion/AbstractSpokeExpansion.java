@@ -1,12 +1,9 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.ParticipantUtils;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,22 +16,22 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public class AbstractSpokeExpansion<T extends Interaction> extends AbstractComplexExpansionMethod<T> {
+public abstract class AbstractSpokeExpansion<T extends Interaction, B extends BinaryInteraction, P extends Participant> extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractSpokeExpansion() {
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.SPOKE_EXPANSION, ComplexExpansionMethod.SPOKE_EXPANSION_MI));
     }
 
     @Override
-    protected Collection<? extends BinaryInteraction> collectBinaryInteractionsFrom(T interaction) {
-        Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(interaction.getParticipants().size()-1);
+    protected Collection<B> collectBinaryInteractionsFrom(T interaction) {
+        Collection<B> binaryInteractions = new ArrayList<B>(interaction.getParticipants().size()-1);
 
-        Participant bait = collectBestBaitForSpokeExpansion(interaction);
+        P bait = collectBestBaitForSpokeExpansion(interaction);
 
         for ( Participant p : interaction.getParticipants() ) {
             if (p != bait){
                 // build a new interaction
-                BinaryInteraction binary = createBinaryInteraction(interaction, bait, p);
+                B binary = createBinaryInteraction(interaction, bait, (P)p);
 
                 binaryInteractions.add(binary);
             }
@@ -43,15 +40,7 @@ public class AbstractSpokeExpansion<T extends Interaction> extends AbstractCompl
         return binaryInteractions;
     }
 
-    protected BinaryInteraction createBinaryInteraction(T interaction, Participant c1, Participant c2) {
-        BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
-        binary.setParticipantA(c1);
-        binary.setParticipantB(c2);
-        return binary;
-    }
+    protected abstract B createBinaryInteraction(T interaction, P c1, P c2);
 
-    protected Participant collectBestBaitForSpokeExpansion(T interaction) {
-        return ParticipantUtils.collectBestBaitParticipantForSpokeExpansion(interaction.getParticipants());
-    }
+    protected abstract P collectBestBaitForSpokeExpansion(T interaction);
 }

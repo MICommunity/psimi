@@ -1,14 +1,11 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultComplex;
-import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 
 import java.util.ArrayList;
@@ -22,21 +19,21 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public class AbstractBipartiteExpansion<T extends Interaction> extends AbstractComplexExpansionMethod<T> {
+public abstract class AbstractBipartiteExpansion<T extends Interaction, B extends BinaryInteraction, P extends Participant> extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractBipartiteExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.BIPARTITE_EXPANSION, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI));
     }
 
     @Override
-    protected Collection<? extends BinaryInteraction> collectBinaryInteractionsFrom(T interaction){
-        Participant externalEntity =  createParticipantForComplexEntity(createComplexEntity(interaction));
+    protected Collection<B> collectBinaryInteractionsFrom(T interaction){
+        P externalEntity =  createParticipantForComplexEntity(createComplexEntity(interaction));
 
-        Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(interaction.getParticipants().size());
+        Collection<B> binaryInteractions = new ArrayList<B>(interaction.getParticipants().size());
         for ( Participant p : interaction.getParticipants() ) {
 
             // build a new interaction
-            BinaryInteraction binary = createBinaryInteraction(interaction, externalEntity, p);
+            B binary = createBinaryInteraction(interaction, externalEntity, (P)p);
 
             binaryInteractions.add(binary);
         }
@@ -44,17 +41,9 @@ public class AbstractBipartiteExpansion<T extends Interaction> extends AbstractC
         return binaryInteractions;
     }
 
-    protected BinaryInteraction createBinaryInteraction(T interaction, Participant c1, Participant c2){
-        BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
-        binary.setParticipantA(c1);
-        binary.setParticipantB(c2);
-        return binary;
-    }
+    protected abstract B createBinaryInteraction(T interaction, P c1, P c2);
 
-    protected Participant createParticipantForComplexEntity(Complex complexEntity){
-        return new DefaultParticipant(complexEntity);
-    }
+    protected abstract P createParticipantForComplexEntity(Complex complexEntity);
 
     protected Complex createComplexEntity(T interaction) {
         String complexName = generateComplexName(interaction);

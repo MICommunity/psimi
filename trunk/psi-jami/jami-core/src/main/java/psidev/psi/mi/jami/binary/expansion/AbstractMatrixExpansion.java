@@ -1,12 +1,9 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,23 +16,23 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public class AbstractMatrixExpansion<T extends Interaction> extends AbstractComplexExpansionMethod<T> {
+public abstract class AbstractMatrixExpansion<T extends Interaction, B extends BinaryInteraction, P extends Participant> extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractMatrixExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.MATRIX_EXPANSION, ComplexExpansionMethod.MATRIX_EXPANSION_MI));
     }
 
     @Override
-    protected Collection<? extends BinaryInteraction> collectBinaryInteractionsFrom(T interaction){
-        Participant[] participants = createParticipantsArray(interaction);
+    protected Collection<B> collectBinaryInteractionsFrom(T interaction){
+        P[] participants = createParticipantsArray(interaction);
 
-        Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
+        Collection<B> binaryInteractions = new ArrayList<B>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
         for ( int i = 0; i < interaction.getParticipants().size(); i++ ) {
-            Participant c1 = participants[i];
+            P c1 = participants[i];
             for ( int j = ( i + 1 ); j < participants.length; j++ ) {
-                Participant c2 = participants[j];
+                P c2 = participants[j];
                 // build a new interaction
-                BinaryInteraction binary = createBinaryInteraction(interaction, c1, c2);
+                B binary = createBinaryInteraction(interaction, c1, c2);
 
                 binaryInteractions.add(binary);
             }
@@ -44,15 +41,7 @@ public class AbstractMatrixExpansion<T extends Interaction> extends AbstractComp
         return binaryInteractions;
     }
 
-    protected BinaryInteraction createBinaryInteraction(T interaction, Participant c1, Participant c2) {
-        BinaryInteraction binary = new DefaultBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideBasicInteractionProperties(interaction, binary, false, true);
-        binary.setParticipantA(c1);
-        binary.setParticipantB(c2);
-        return binary;
-    }
+    protected abstract B createBinaryInteraction(T interaction, P c1, P c2);
 
-    protected Participant[] createParticipantsArray(T interaction) {
-        return interaction.getParticipants().toArray(new DefaultParticipant[]{});
-    }
+    protected abstract P[] createParticipantsArray(T interaction);
 }

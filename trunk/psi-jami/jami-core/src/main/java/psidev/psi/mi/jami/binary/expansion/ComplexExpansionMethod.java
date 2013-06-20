@@ -14,7 +14,7 @@ import java.util.Collection;
  * @since <pre>04/06/13</pre>
  */
 
-public interface ComplexExpansionMethod<T extends Interaction> {
+public interface ComplexExpansionMethod<T extends Interaction, B extends BinaryInteraction> {
 
     public static final String BIPARTITE_EXPANSION_MI = "MI:1062";
     public static final String BIPARTITE_EXPANSION = "bipartite expansion";
@@ -44,5 +44,5 @@ public interface ComplexExpansionMethod<T extends Interaction> {
      * @return
      * @throws IllegalArgumentException if the interaction cannot be expanded with this method
      */
-    public Collection<? extends BinaryInteraction> expand(T interaction);
+    public Collection<B> expand(T interaction);
 }

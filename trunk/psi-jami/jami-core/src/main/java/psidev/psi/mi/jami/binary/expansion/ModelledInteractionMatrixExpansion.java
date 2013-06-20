@@ -5,12 +5,10 @@ import psidev.psi.mi.jami.binary.impl.DefaultModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultModelledParticipant;
 import psidev.psi.mi.jami.utils.InteractionUtils;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -22,7 +20,7 @@ import java.util.Collections;
  * @since <pre>19/06/13</pre>
  */
 
-public class ModelledInteractionMatrixExpansion extends AbstractMatrixExpansion<ModelledInteraction>{
+public class ModelledInteractionMatrixExpansion extends AbstractMatrixExpansion<ModelledInteraction, ModelledBinaryInteraction, ModelledParticipant>{
 
     @Override
     protected Collection<ModelledBinaryInteraction> createNewSelfBinaryInteractionsFrom(ModelledInteraction interaction) {
@@ -40,30 +38,11 @@ public class ModelledInteractionMatrixExpansion extends AbstractMatrixExpansion<
     }
 
     @Override
-    protected Collection<ModelledBinaryInteraction> collectBinaryInteractionsFrom(ModelledInteraction interaction){
-        ModelledParticipant[] participants = createParticipantsArray(interaction);
-
-        Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
-        for ( int i = 0; i < interaction.getParticipants().size(); i++ ) {
-            ModelledParticipant c1 = participants[i];
-            for ( int j = ( i + 1 ); j < participants.length; j++ ) {
-                ModelledParticipant c2 = participants[j];
-                // build a new interaction
-                ModelledBinaryInteraction binary = createBinaryInteraction(interaction, c1, c2);
-
-                binaryInteractions.add(binary);
-            }
-        }
-
-        return binaryInteractions;
-    }
-
-    @Override
-    protected ModelledBinaryInteraction createBinaryInteraction(ModelledInteraction interaction, Participant p1, Participant p2) {
+    protected ModelledBinaryInteraction createBinaryInteraction(ModelledInteraction interaction, ModelledParticipant p1, ModelledParticipant p2) {
         ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction(getMethod());
         InteractionCloner.copyAndOverrideModelledInteractionProperties(interaction, binary, false, true);
-        binary.setParticipantA((ModelledParticipant)p1);
-        binary.setParticipantB((ModelledParticipant)p2);
+        binary.setParticipantA(p1);
+        binary.setParticipantB(p2);
         return binary;
     }
 
