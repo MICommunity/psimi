@@ -7,11 +7,10 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  * Created with IntelliJ IDEA.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 19/06/13
- * Time: 13:24
+ * @since 20/06/13
  */
-public class MaximumFeatureEvidenceEnricher
-        extends MinimumFeatureEvidenceEnricher
+public class MaximumFeatureEvidenceUpdater
+        extends MinimumFeatureEvidenceUpdater
         implements FeatureEvidenceEnricher {
 
 
@@ -19,6 +18,4 @@ public class MaximumFeatureEvidenceEnricher
     protected boolean processFeatureEvidence(FeatureEvidence featureEvidenceToEnrich) {
         return false;
     }
-
-
 }
