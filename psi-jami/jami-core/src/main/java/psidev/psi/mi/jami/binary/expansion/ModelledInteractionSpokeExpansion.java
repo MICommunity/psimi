@@ -5,11 +5,10 @@ import psidev.psi.mi.jami.binary.impl.DefaultModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.InteractionUtils;
+import psidev.psi.mi.jami.utils.ParticipantUtils;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -21,7 +20,7 @@ import java.util.Collections;
  * @since <pre>19/06/13</pre>
  */
 
-public class ModelledInteractionSpokeExpansion extends AbstractSpokeExpansion<ModelledInteraction>{
+public class ModelledInteractionSpokeExpansion extends AbstractSpokeExpansion<ModelledInteraction, ModelledBinaryInteraction, ModelledParticipant>{
 
     @Override
     protected Collection<ModelledBinaryInteraction> createNewSelfBinaryInteractionsFrom(ModelledInteraction interaction) {
@@ -39,29 +38,16 @@ public class ModelledInteractionSpokeExpansion extends AbstractSpokeExpansion<Mo
     }
 
     @Override
-    protected Collection<ModelledBinaryInteraction> collectBinaryInteractionsFrom(ModelledInteraction interaction) {
-        Collection<ModelledBinaryInteraction> binaryInteractions = new ArrayList<ModelledBinaryInteraction>(interaction.getParticipants().size()-1);
-
-        ModelledParticipant bait = (ModelledParticipant) collectBestBaitForSpokeExpansion(interaction);
-
-        for ( ModelledParticipant p : interaction.getParticipants() ) {
-            if (p != bait){
-                // build a new interaction
-                ModelledBinaryInteraction binary = createBinaryInteraction(interaction, bait, p);
-
-                binaryInteractions.add(binary);
-            }
-        }
-
-        return binaryInteractions;
+    protected ModelledBinaryInteraction createBinaryInteraction(ModelledInteraction interaction, ModelledParticipant p1, ModelledParticipant p2) {
+        ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction(getMethod());
+        InteractionCloner.copyAndOverrideModelledInteractionProperties(interaction, binary, false, true);
+        binary.setParticipantA(p1);
+        binary.setParticipantB(p2);
+        return binary;
     }
 
     @Override
-    protected ModelledBinaryInteraction createBinaryInteraction(ModelledInteraction interaction, Participant p1, Participant p2) {
-        ModelledBinaryInteraction binary = new DefaultModelledBinaryInteraction(getMethod());
-        InteractionCloner.copyAndOverrideModelledInteractionProperties(interaction, binary, false, true);
-        binary.setParticipantA((ModelledParticipant)p1);
-        binary.setParticipantB((ModelledParticipant)p2);
-        return binary;
+    protected ModelledParticipant collectBestBaitForSpokeExpansion(ModelledInteraction interaction) {
+        return (ModelledParticipant) ParticipantUtils.collectBestBaitParticipantForSpokeExpansion(interaction.getParticipants());
     }
 }
