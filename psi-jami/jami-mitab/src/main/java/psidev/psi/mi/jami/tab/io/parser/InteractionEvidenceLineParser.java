@@ -51,14 +51,18 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         }
         else if (interactor == null){
             interactor = InteractorUtils.createUnknownBasicInteractor();
-            getParserListener().onParticipantWithoutInteractorDetails(line, column, mitabColumn);
+            if (getParserListener() != null){
+                getParserListener().onParticipantWithoutInteractorDetails(line, column, mitabColumn);
+            }
         }
 
         if (hasParticipantFields){
             MitabCvTerm bioRoleTerm = null;
             // set biorole
             if (bioRole.size() > 1){
-                getParserListener().onSeveralCvTermFound(bioRole);
+                if (getParserListener() != null){
+                    getParserListener().onSeveralCvTermFound(bioRole);
+                }
                 bioRoleTerm = bioRole.iterator().next();
             }
             else if (bioRole.isEmpty()){
@@ -68,7 +72,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             MitabCvTerm expRoleTerm = null;
             // set expRole
             if (expRole.size() > 1){
-                getParserListener().onSeveralCvTermFound(expRole);
+                if (getParserListener() != null){
+                    getParserListener().onSeveralCvTermFound(expRole);
+                }
                 expRoleTerm = expRole.iterator().next();
             }
             else if (bioRole.isEmpty()){
@@ -83,7 +89,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
             participant.getFeatures().addAll(feature);
             // add stc
             if (stc.size() > 1){
-                getParserListener().onSeveralStoichiometryFound(stc);
+                if (getParserListener() != null){
+                    getParserListener().onSeveralStoichiometryFound(stc);
+                }
                 participant.setStoichiometry(stc.iterator().next());
             }
             else if (bioRole.isEmpty()){
@@ -123,7 +131,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         interaction.setExperimentAndAddInteractionEvidence(createExperimentFrom(publication, detMethod, host));
         // set interaction type
         if (interactionType.size() > 1){
-            getParserListener().onSeveralCvTermFound(interactionType);
+            if (getParserListener() != null){
+                getParserListener().onSeveralCvTermFound(interactionType);
+            }
             interaction.setInteractionType(interactionType.iterator().next());
         }
         else if (interactionType.isEmpty()){
@@ -135,7 +145,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         interaction.getConfidences().addAll(conf);
         // set expansion method
         if (expansion.size() > 1){
-            getParserListener().onSeveralCvTermFound(expansion);
+            if (getParserListener() != null){
+                getParserListener().onSeveralCvTermFound(expansion);
+            }
             interaction.setComplexExpansion(expansion.iterator().next());
         }
         else if (expansion.isEmpty()){
@@ -149,7 +161,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         interaction.getParameters().addAll(params);
         // created
         if (created.size() > 1){
-            getParserListener().onSeveralCreatedDateFound(created);
+            if (getParserListener() != null){
+                getParserListener().onSeveralCreatedDateFound(created);
+            }
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
         else if (created.isEmpty()){
@@ -157,7 +171,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         }
         // update
         if (update.size() > 1){
-            getParserListener().onSeveralUpdatedDateFound(update);
+            if (getParserListener() != null){
+                getParserListener().onSeveralUpdatedDateFound(update);
+            }
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
         else if (update.isEmpty()){
@@ -198,7 +214,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         // first get the interaction detection method
         MitabCvTerm detectionMethod = null;
         if (detMethod.size() > 1){
-            getParserListener().onSeveralCvTermFound(detMethod);
+            if (getParserListener() != null){
+                getParserListener().onSeveralCvTermFound(detMethod);
+            }
             detectionMethod = detMethod.iterator().next();
         }
         else if (detMethod.isEmpty()){
@@ -210,7 +228,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
 
         // then get the host organism
         if (host.size() > 1){
-            getParserListener().onSeveralHostOrganismFound(host);
+            if (getParserListener() != null){
+                getParserListener().onSeveralHostOrganismFound(host);
+            }
             experiment.setHostOrganism(host.iterator().next());
         }
         else if (detMethod.isEmpty()){
@@ -226,7 +246,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
 
         // first initialise authors
         if (firstAuthor.size() > 1){
-            getParserListener().onSeveralFirstAuthorFound(firstAuthor);
+            if (getParserListener() != null){
+                getParserListener().onSeveralFirstAuthorFound(firstAuthor);
+            }
             MitabAuthor author = firstAuthor.iterator().next();
             initialiseAuthorAndPublicationDate(publication, author);
             publication.setSourceLocator(author.getSourceLocator());
@@ -244,7 +266,9 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
 
         // then initialise source
         if (source.size() > 1){
-            getParserListener().onSeveralSourceFound(source);
+            if (getParserListener() != null){
+                getParserListener().onSeveralSourceFound(source);
+            }
             MitabSource firstSource = source.iterator().next();
             publication.setSource(firstSource);
             if (!hasSetLocator){
@@ -282,5 +306,14 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         }
 
         return hasInitialisedLocator;
+    }
+
+    protected void initialiseAuthorAndPublicationDate(MitabPublication publication, MitabAuthor author) {
+        if (author.getFirstAuthor() != null){
+            publication.getAuthors().add(author.getFirstAuthor());
+        }
+        if (author.getPublicationDate() != null){
+            publication.setPublicationDate(author.getPublicationDate());
+        }
     }
 }

@@ -103,7 +103,9 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
         }
         // the interactor name will be unknown but needs to be created
         else if (!hasId && !hasAlias){
-            listener.onMissingInteractorIdentifierColumns(line, column, mitabColumn);
+            if (this.listener != null){
+                listener.onMissingInteractorIdentifierColumns(line, column, mitabColumn);
+            }
             shortName = "unknown name";
         }
         else{
@@ -112,7 +114,7 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
         }
 
         // fire event if several uniqueIds
-        if (uniqueId.size() > 1){
+        if (uniqueId.size() > 1 && listener != null){
             listener.onSeveralUniqueIdentifiers(uniqueId);
         }
 
@@ -150,7 +152,7 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
         // set organism
         initialiseOrganism(taxid, interactor);
         // if several types fire event
-        if (type.size() > 1){
+        if (type.size() > 1 && listener != null){
             listener.onSeveralCvTermFound(type);
         }
 
@@ -166,7 +168,7 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
         if (shortName != null){
             return shortName.getName();
         }
-        else{
+        else if (listener != null){
             listener.onEmptyAliases(line, column, mitabColumn);
         }
 
@@ -178,7 +180,9 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
             return uniqueId.iterator().next().getId();
         }
         else if (!altid.isEmpty()){
-            listener.onEmptyUniqueIdentifiers(line, column, mitabColumn);
+            if (this.listener != null){
+                listener.onEmptyUniqueIdentifiers(line, column, mitabColumn);
+            }
 
             return altid.iterator().next().getId();
         }
@@ -268,7 +272,10 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
     protected void initialiseOrganism(Collection<MitabOrganism> organisms, Interactor interactor){
 
         if (organisms.size() > 1){
-            listener.onSeveralOrganismFound(organisms);
+            if (listener != null){
+                listener.onSeveralOrganismFound(organisms);
+            }
+            interactor.setOrganism(organisms.iterator().next());
         }
         else if (!organisms.isEmpty()){
             interactor.setOrganism(organisms.iterator().next());
@@ -279,29 +286,26 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
         // create checksum from xref
         MitabChecksum checksum = new MitabChecksum(ref.getDatabase(), ref.getId(), ref.getSourceLocator());
         interactor.getChecksums().add(checksum);
-        listener.onChecksumFoundInAlternativeIds(ref, ref.getSourceLocator().getLineNumber(), ref.getSourceLocator().getCharNumber(), ((MitabSourceLocator)ref.getSourceLocator()).getColumnNumber());
+        if (listener != null){
+            listener.onChecksumFoundInAlternativeIds(ref, ref.getSourceLocator().getLineNumber(), ref.getSourceLocator().getCharNumber(), ((MitabSourceLocator)ref.getSourceLocator()).getColumnNumber());
+        }
     }
 
     protected void createAliasFromAltId(Interactor interactor, MitabXref ref) {
         // create alias from xref
         MitabAlias alias = new MitabAlias(ref.getDatabase().getShortName(), ref.getQualifier(), ref.getId(), ref.getSourceLocator());
         interactor.getAliases().add(alias);
-        listener.onAliasFoundInAlternativeIds(ref, ref.getSourceLocator().getLineNumber(), ref.getSourceLocator().getCharNumber(), ((MitabSourceLocator)ref.getSourceLocator()).getColumnNumber());
+        if (listener != null){
+            listener.onAliasFoundInAlternativeIds(ref, ref.getSourceLocator().getLineNumber(), ref.getSourceLocator().getCharNumber(), ((MitabSourceLocator)ref.getSourceLocator()).getColumnNumber());
+        }
     }
 
     protected void createChecksumFromAlias(Interactor interactor, MitabAlias alias) {
         // create checksum from alias
         MitabChecksum checksum = new MitabChecksum(alias.getType(), alias.getName(), alias.getSourceLocator());
         interactor.getChecksums().add(checksum);
-        listener.onChecksumFoundInAliases(alias, alias.getSourceLocator().getLineNumber(), alias.getSourceLocator().getCharNumber(), ((MitabSourceLocator)alias.getSourceLocator()).getColumnNumber());
-    }
-
-    protected void initialiseAuthorAndPublicationDate(MitabPublication publication, MitabAuthor author) {
-        if (author.getFirstAuthor() != null){
-            publication.getAuthors().add(author.getFirstAuthor());
-        }
-        if (author.getPublicationDate() != null){
-            publication.setPublicationDate(author.getPublicationDate());
+        if (listener != null){
+            listener.onChecksumFoundInAliases(alias, alias.getSourceLocator().getLineNumber(), alias.getSourceLocator().getCharNumber(), ((MitabSourceLocator)alias.getSourceLocator()).getColumnNumber());
         }
     }
 }
