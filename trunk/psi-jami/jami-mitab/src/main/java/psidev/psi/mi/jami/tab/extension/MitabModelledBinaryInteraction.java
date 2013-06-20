@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.binary.impl.DefaultModelledBinaryInteraction;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
 
 public class MitabModelledBinaryInteraction extends DefaultModelledBinaryInteraction implements FileSourceContext {
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabModelledBinaryInteraction() {
         super();
@@ -61,11 +62,11 @@ public class MitabModelledBinaryInteraction extends DefaultModelledBinaryInterac
         super(shortName, type, participantA, participantB, complexExpansion);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

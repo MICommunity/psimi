@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Source;
@@ -17,7 +18,7 @@ import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 
 public class MitabInteractionEvidence extends DefaultInteractionEvidence implements FileSourceContext {
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabInteractionEvidence(Experiment experiment) {
         super(experiment);
@@ -79,11 +80,11 @@ public class MitabInteractionEvidence extends DefaultInteractionEvidence impleme
         super(shortName, type);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

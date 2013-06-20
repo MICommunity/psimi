@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 
 public class MitabOrganism extends DefaultOrganism implements FileSourceContext{
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabOrganism(int taxId) {
         super(taxId);
@@ -41,11 +42,11 @@ public class MitabOrganism extends DefaultOrganism implements FileSourceContext{
         super(taxId, commonName, scientificName, cellType, tissue, compartment);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

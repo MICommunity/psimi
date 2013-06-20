@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
@@ -17,7 +18,7 @@ import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 
 public class MitabBioactiveEntity extends DefaultBioactiveEntity implements FileSourceContext{
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabBioactiveEntity(String name, CvTerm type) {
         super(name, type);
@@ -107,11 +108,11 @@ public class MitabBioactiveEntity extends DefaultBioactiveEntity implements File
         super(name, fullName, organism, uniqueChebi);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return this.sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParameterValue;
@@ -19,7 +20,7 @@ import java.math.BigDecimal;
 public class MitabParameter extends DefaultModelledParameter implements FileSourceContext {
 
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabParameter(CvTerm type, ParameterValue value) {
         super(type, value);
@@ -49,11 +50,11 @@ public class MitabParameter extends DefaultModelledParameter implements FileSour
         super(new MitabCvTerm(type), value, unit != null ? new MitabCvTerm(unit) : null);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return this.sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

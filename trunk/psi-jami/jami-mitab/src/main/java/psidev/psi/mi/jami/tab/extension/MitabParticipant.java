@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Stoichiometry;
@@ -17,7 +18,7 @@ import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 
 public class MitabParticipant<T extends Interactor> extends DefaultParticipant<T> implements FileSourceContext{
 
-    private MitabSourceLocator sourceLocator;
+    private FileSourceLocator sourceLocator;
 
     public MitabParticipant(T interactor) {
         super(interactor);
@@ -35,11 +36,11 @@ public class MitabParticipant<T extends Interactor> extends DefaultParticipant<T
         super(interactor, bioRole, stoichiometry);
     }
 
-    public MitabSourceLocator getSourceLocator() {
+    public FileSourceLocator getSourceLocator() {
         return sourceLocator;
     }
 
-    public void setSourceLocator(MitabSourceLocator sourceLocator) {
+    public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }
