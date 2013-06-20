@@ -25,24 +25,24 @@ import java.util.Iterator;
  * @since <pre>18/06/13</pre>
  */
 
-public class MitabInteractionLineParser extends MitabLineParser {
+public class InteractionLineParser extends MitabLineParser {
 
     private MitabParserListener listener;
     private MitabInteractorFactory interactorFactory;
 
-    public MitabInteractionLineParser(InputStream stream) {
+    public InteractionLineParser(InputStream stream) {
         super(stream);
     }
 
-    public MitabInteractionLineParser(InputStream stream, String encoding) {
+    public InteractionLineParser(InputStream stream, String encoding) {
         super(stream, encoding);
     }
 
-    public MitabInteractionLineParser(Reader stream) {
+    public InteractionLineParser(Reader stream) {
         super(stream);
     }
 
-    public MitabInteractionLineParser(MitabLineParserTokenManager tm) {
+    public InteractionLineParser(MitabLineParserTokenManager tm) {
         super(tm);
     }
 
