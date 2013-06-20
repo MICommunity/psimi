@@ -49,14 +49,18 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
         }
         else if (interactor == null){
             interactor = InteractorUtils.createUnknownBasicInteractor();
-            getParserListener().onParticipantWithoutInteractorDetails(line, column, mitabColumn);
+            if (getParserListener() != null){
+                getParserListener().onParticipantWithoutInteractorDetails(line, column, mitabColumn);
+            }
         }
 
         if (hasParticipantFields){
             MitabCvTerm bioRoleTerm = null;
             // set biorole
             if (bioRole.size() > 1){
-                getParserListener().onSeveralCvTermFound(bioRole);
+                if (getParserListener() != null){
+                    getParserListener().onSeveralCvTermFound(bioRole);
+                }
                 bioRoleTerm = bioRole.iterator().next();
             }
             else if (bioRole.isEmpty()){
@@ -71,7 +75,9 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
             participant.getFeatures().addAll(feature);
             // add stc
             if (stc.size() > 1){
-                getParserListener().onSeveralStoichiometryFound(stc);
+                if (getParserListener() != null){
+                    getParserListener().onSeveralStoichiometryFound(stc);
+                }
                 participant.setStoichiometry(stc.iterator().next());
             }
             else if (bioRole.isEmpty()){
@@ -96,7 +102,9 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
         if (A == null && B == null && !hasInteractionFields){
-            getParserListener().onInteractionWithoutParticipants(line);
+            if (getParserListener() != null){
+                getParserListener().onInteractionWithoutParticipants(line);
+            }
             return interaction;
         }
 
@@ -105,7 +113,9 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
 
         // set interaction type
         if (interactionType.size() > 1){
-            getParserListener().onSeveralCvTermFound(interactionType);
+            if (getParserListener() != null){
+                getParserListener().onSeveralCvTermFound(interactionType);
+            }
             interaction.setInteractionType(interactionType.iterator().next());
         }
         else if (interactionType.isEmpty()){
@@ -115,7 +125,9 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
         initialiseInteractionIdentifiers(interactionId, interaction);
         // set expansion method
         if (expansion.size() > 1){
-            getParserListener().onSeveralCvTermFound(expansion);
+            if (getParserListener() != null){
+                getParserListener().onSeveralCvTermFound(expansion);
+            }
             interaction.setComplexExpansion(expansion.iterator().next());
         }
         else if (expansion.isEmpty()){
@@ -127,7 +139,9 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
         interaction.getAnnotations().addAll(annotI);
         // created
         if (created.size() > 1){
-            getParserListener().onSeveralCreatedDateFound(created);
+            if (getParserListener() != null){
+                getParserListener().onSeveralCreatedDateFound(created);
+            }
             interaction.setCreatedDate(created.iterator().next().getDate());
         }
         else if (created.isEmpty()){
@@ -135,7 +149,9 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
         }
         // update
         if (update.size() > 1){
-            getParserListener().onSeveralUpdatedDateFound(update);
+            if (getParserListener() != null){
+                getParserListener().onSeveralUpdatedDateFound(update);
+            }
             interaction.setUpdatedDate(update.iterator().next().getDate());
         }
         else if (update.isEmpty()){
