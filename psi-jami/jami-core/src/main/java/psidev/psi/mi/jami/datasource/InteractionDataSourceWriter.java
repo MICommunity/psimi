@@ -33,13 +33,13 @@ public interface InteractionDataSourceWriter<T extends Interaction> {
      * Writes a collection of Interaction objects
      * @param interactions
      */
-    public void writeInteractions(Collection<T> interactions) throws DataSourceWriterException;
+    public void write(Collection<T> interactions) throws DataSourceWriterException;
 
     /**
      * Writes Interaction objects using iterator
      * @param interactions
      */
-    public void writeInteractions(Iterator<T> interactions) throws DataSourceWriterException;
+    public void write(Iterator<T> interactions) throws DataSourceWriterException;
 
     /**
      * Flushes the writer (commit or write on disk)
