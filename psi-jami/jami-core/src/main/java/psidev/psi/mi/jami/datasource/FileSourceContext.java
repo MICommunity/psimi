@@ -16,4 +16,10 @@ public interface FileSourceContext {
      * @return
      */
     public FileSourceLocator getSourceLocator();
+
+    /**
+     * Sets the source locator
+     * @param locator
+     */
+    public void setSourceLocator(FileSourceLocator locator);
 }
