@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.tab.io.writer;
+package psidev.psi.mi.jami.tab.io.writer.extended;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
