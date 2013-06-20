@@ -114,7 +114,7 @@ implements ProteinEnricher {
 
             if(listener != null) listener.onProteinEnriched(proteinToEnrich, "Failed. Conflict in interactorType. " +
                     "Found " + proteinToEnrich.getInteractorType().getShortName() + " " +
-                    "with the psi-mi id " + proteinToEnrich.getInteractorType().getMIIdentifier() + ".");
+                    "(psi-mi id:" + proteinToEnrich.getInteractorType().getMIIdentifier() + ").");
             return false;
         }
 

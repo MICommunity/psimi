@@ -120,12 +120,21 @@ public class OlsBridge{
      */
     public HashMap<String,String> fetchIDByFuzzyTerm(String name, String ontology)
             throws BridgeFailedException{
-        HashMap termNamesMap;
+
+        /**
+         * Although the assignment is unchecked,
+         * it must be taken on faith that the queryService WILL return String,String
+         * Any case where this is not the case would be considered a failure of the bridge.
+         */
+        HashMap<String,String> termNamesMap;
 
         try{
             termNamesMap = queryService.getTermsByName(name, ontology , false);
         }catch (RemoteException e) {
             throw new BridgeFailedException(e);
+        }//TODO confirm this should be caught
+        catch (ClassCastException e){
+            throw new BridgeFailedException("Unable to receive results from the OLS bridge",e);
         }
 
         //Exact matches were found

@@ -49,28 +49,28 @@ public abstract class AbstractProteinRemapper
         if(priorityIdentifiers && prioritySequence){
             mapping = findIdentifierMapping(p);
             if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
+                if(listener != null) listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
                 return;
             }
             if(mapping == null){
-                listener.onRemappingComplete(p,"Failed. Identifier mapping cannot be found.");
+                if(listener != null) listener.onRemappingComplete(p,"Failed. Identifier mapping cannot be found.");
                 return;
             }
             else { //mapping != null
                 if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
                     if(mapping.equalsIgnoreCase( getMappingForSequence(p).getFinalUniprotId())){
                         p.setUniprotkb(mapping);
-                        listener.onGettingRemappingFromIdentifiers(p);
-                        listener.onGettingRemappingFromSequence(p);
-                        listener.onRemappingComplete(p,"Success. Identifier mappings match the sequence mapping.");
+                        if(listener != null) listener.onGettingRemappingFromIdentifiers(p);
+                        if(listener != null) listener.onGettingRemappingFromSequence(p);
+                        if(listener != null) listener.onRemappingComplete(p,"Success. Identifier mappings match the sequence mapping.");
                         return;
                     } else {
-                        listener.onSequenceToIdentifierConflict(getMappingForSequence(p).getFinalUniprotId() , mapping);
-                        listener.onRemappingComplete(p,"Failed. Conflict between sequence and identifiers.");
+                        if(listener != null) listener.onSequenceToIdentifierConflict(getMappingForSequence(p).getFinalUniprotId() , mapping);
+                        if(listener != null) listener.onRemappingComplete(p,"Failed. Conflict between sequence and identifiers.");
                         return;
                     }
                 }else {  // sequenceMapping == null // identifierMappping != null
-                    listener.onRemappingComplete(p,"Failed. Sequence mapping cannot be resolved.");
+                    if(listener != null) listener.onRemappingComplete(p,"Failed. Sequence mapping cannot be resolved.");
                     return;
                 }
             }
@@ -79,21 +79,21 @@ public abstract class AbstractProteinRemapper
         else if(priorityIdentifiers && !prioritySequence){
             mapping = findIdentifierMapping(p);
             if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
+                if(listener != null) listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
                 return ;
             }else if (mapping != null){
                 p.setUniprotkb(mapping);
-                listener.onGettingRemappingFromIdentifiers(p);
-                listener.onRemappingComplete(p,"Success. Identifiers have mapping.");
+                if(listener != null) listener.onGettingRemappingFromIdentifiers(p);
+                if(listener != null) listener.onRemappingComplete(p,"Success. Identifiers have mapping.");
                 return;
             }else { // (identifierMapping == null)
                 if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
                     p.setUniprotkb(getMappingForSequence(p).getFinalUniprotId());
-                    listener.onGettingRemappingFromSequence(p);
-                    listener.onRemappingComplete(p,"Success. Sequence has mapping.");
+                    if(listener != null) listener.onGettingRemappingFromSequence(p);
+                    if(listener != null) listener.onRemappingComplete(p,"Success. Sequence has mapping.");
                     return;
                 }else { // sequenceMapping == null
-                    listener.onRemappingComplete(p,"Failed. Neither identifier nor sequence have mappings.");
+                    if(listener != null) listener.onRemappingComplete(p,"Failed. Neither identifier nor sequence have mappings.");
                     return;
                 }
             }
@@ -102,19 +102,19 @@ public abstract class AbstractProteinRemapper
         else if(!priorityIdentifiers && prioritySequence){
             if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
                 p.setUniprotkb(getMappingForSequence(p).getFinalUniprotId());
-                listener.onGettingRemappingFromSequence(p);
-                listener.onRemappingComplete(p,"Success. Sequence has mapping.");
+                if(listener != null) listener.onGettingRemappingFromSequence(p);
+                if(listener != null) listener.onRemappingComplete(p,"Success. Sequence has mapping.");
                 return ;
             } else { //sequenceMapping == null
                 mapping = findIdentifierMapping(p);
                 if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                    listener.onRemappingComplete(p,"Failed. No sequence remapping and identifier mappings have conflicts.");
+                    if(listener != null) listener.onRemappingComplete(p,"Failed. No sequence remapping and identifier mappings have conflicts.");
                     return;
                 }
                 if (mapping != null){
                     p.setUniprotkb(mapping);
-                    listener.onGettingRemappingFromIdentifiers(p);
-                    listener.onRemappingComplete(p,"Success. Identifiers have mapping.");
+                    if(listener != null) listener.onGettingRemappingFromIdentifiers(p);
+                    if(listener != null) listener.onRemappingComplete(p,"Success. Identifiers have mapping.");
                     return;
                 } else {
                     listener.onRemappingComplete(p,"Failed. No sequence nor identifier mappings.");
@@ -127,17 +127,17 @@ public abstract class AbstractProteinRemapper
             mapping = findIdentifierMapping(p);
 
             if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
-                listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
+                if(listener != null) listener.onRemappingComplete(p,"Failed. Identifier mappings have conflicts.");
                 return;
             }
             if (mapping == null) {
                 if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
                     p.setUniprotkb(getMappingForSequence(p).getFinalUniprotId());
-                    listener.onGettingRemappingFromSequence(p);
-                    listener.onRemappingComplete(p,"Success. Sequence has mapping.");
+                    if(listener != null) listener.onGettingRemappingFromSequence(p);
+                    if(listener != null) listener.onRemappingComplete(p,"Success. Sequence has mapping.");
                     return ;
                 }else {  // sequenceMapping == null
-                    listener.onRemappingComplete(p,"Failed. No sequence nor identifier mappings.");
+                    if(listener != null) listener.onRemappingComplete(p,"Failed. No sequence nor identifier mappings.");
                     return;
                 }
             }
@@ -145,25 +145,25 @@ public abstract class AbstractProteinRemapper
                 if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
                     if(mapping.equalsIgnoreCase(getMappingForSequence(p).getFinalUniprotId())){
                         p.setUniprotkb(mapping);
-                        listener.onGettingRemappingFromIdentifiers(p);
-                        listener.onGettingRemappingFromSequence(p);
-                        listener.onRemappingComplete(p,"Success.");
+                        if(listener != null) listener.onGettingRemappingFromIdentifiers(p);
+                        if(listener != null) listener.onGettingRemappingFromSequence(p);
+                        if(listener != null) listener.onRemappingComplete(p,"Success.");
                         return;
                     } else {
-                        listener.onSequenceToIdentifierConflict(getMappingForSequence(p).getFinalUniprotId() , mapping);
-                        listener.onRemappingComplete(p,"Failed. Conflict between sequence and identifier mappings.");
+                        if(listener != null) listener.onSequenceToIdentifierConflict(getMappingForSequence(p).getFinalUniprotId() , mapping);
+                        if(listener != null) listener.onRemappingComplete(p,"Failed. Conflict between sequence and identifier mappings.");
                         return ;
                     }
                 }else {  // sequenceMapping == null // identifierMappping != null
                     p.setUniprotkb(mapping);
-                    listener.onGettingRemappingFromIdentifiers(p);
-                    listener.onRemappingComplete(p,"Success.");
+                    if(listener != null) listener.onGettingRemappingFromIdentifiers(p);
+                    if(listener != null) listener.onRemappingComplete(p,"Success.");
                     return ;
                 }
             }
         }
 
-        listener.onRemappingComplete(p,"Failed. Impossible exit case");
+        if(listener != null) listener.onRemappingComplete(p,"Failed. Impossible exit case");
         log.warn("Impossible exit case from the remapping.");
         return ;
     }
@@ -200,7 +200,7 @@ public abstract class AbstractProteinRemapper
                 if (remappedUniprot != null){
                     if(! remappedUniprot.equalsIgnoreCase(getEntry(p,x).getFinalUniprotId())){
                         identifierMappingResultsHasNoConflict = false;
-                        listener.onIdentifierConflict(remappedUniprot, getEntry(p,x).getFinalUniprotId());
+                        if(listener != null) listener.onIdentifierConflict(remappedUniprot, getEntry(p,x).getFinalUniprotId());
                     }
                 }
                 else{
@@ -265,11 +265,11 @@ public abstract class AbstractProteinRemapper
         this.prioritySequence = prioritySequence;
     }
 
-    public void addRemapListener(ProteinRemapperListener listener){
+    public void setRemapListener(ProteinRemapperListener listener){
         this.listener = listener;
     }
-    public void removeRemapListener(ProteinRemapperListener listener){
-        listener = null;
+    public ProteinRemapperListener getRemapListener( ){
+        return listener;
     }
 
     private void clean(){

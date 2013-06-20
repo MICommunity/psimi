@@ -73,7 +73,7 @@ public class DumbProteinRemapperTest {
 
         //logger = new LoggingRemapListener();
         counter = new CountingRemapListener();
-        remap.addRemapListener(counter);
+        remap.setRemapListener(counter);
 
         MAPPABLE_A = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSP00000351524"); //P42694
         MAPPABLE_B = new DefaultXref(new DefaultCvTerm("ensembl"), "ENSG00000198265"); //P42694

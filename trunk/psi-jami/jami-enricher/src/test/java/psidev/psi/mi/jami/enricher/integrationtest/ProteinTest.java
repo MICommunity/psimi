@@ -6,12 +6,22 @@ import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
 import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.IntactProteinRemapper;
+import psidev.psi.mi.jami.enricher.ParticipantEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.impl.participant.MaximumParticipantEnricher;
+import psidev.psi.mi.jami.enricher.impl.participant.MinimumParticipantEnricher;
+import psidev.psi.mi.jami.enricher.impl.participantevidence.MaximumParticipantEvidenceEnricher;
+import psidev.psi.mi.jami.enricher.impl.participantevidence.MinimumParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.MaximumProteinUpdater;
 import psidev.psi.mi.jami.enricher.impl.protein.MinimumProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherLogger;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.Protein;
+import psidev.psi.mi.jami.model.impl.DefaultParticipant;
+import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
 
 /**
@@ -25,7 +35,7 @@ public class ProteinTest {
 
     private final Logger log = LoggerFactory.getLogger(ProteinTest.class.getName());
 
-    ProteinEnricher proteinEnricher;
+    ParticipantEvidenceEnricher participantEnricher;
     ProteinFetcher fetcher;
     ProteinRemapper remapper = new IntactProteinRemapper();
 
@@ -38,18 +48,17 @@ public class ProteinTest {
 
 
     public void min(){
-        proteinEnricher = new MinimumProteinEnricher();
-        proteinEnricher.setFetcher(fetcher);
-        proteinEnricher.setProteinEnricherListener(listener);
+        participantEnricher = new MinimumParticipantEvidenceEnricher();
+        participantEnricher.getProteinEnricher().setFetcher(fetcher);
+        participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
+        participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
     }
 
     public void max(){
-
-
-        proteinEnricher = new MaximumProteinUpdater();
-        proteinEnricher.setFetcher(fetcher);
-        proteinEnricher.setProteinRemapper(remapper);
-        proteinEnricher.setProteinEnricherListener(listener);
+        participantEnricher = new MaximumParticipantEvidenceEnricher();
+        participantEnricher.getProteinEnricher().setFetcher(fetcher);
+        participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
+        participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
     }
 
     //String[] tests = {"P77681"};
@@ -61,12 +70,16 @@ public class ProteinTest {
     public void testProteins(){
         for(String s : tests){
             log.info("---begin---");
-            Protein a = new DefaultProtein(s);
-            a.setUniprotkb(s);
+            Protein protein = new DefaultProtein(s);
+            protein.setUniprotkb(s);
+            ParticipantEvidence participant = new DefaultParticipantEvidence(protein);
+
+
             //a.setOrganism(new DefaultOrganism(168927));
 
+
             try{
-                proteinEnricher.enrichProtein(a);
+                participantEnricher.enrichParticipantEvidence(participant);
             } catch (Exception e){
                 log.debug("The protein enricher threw an exception.");
                 log.debug("msg reads: "+e.getMessage());
@@ -76,7 +89,7 @@ public class ProteinTest {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
             log.info("---END---");
 
