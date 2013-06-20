@@ -1,13 +1,12 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.utils.AliasUtils;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
@@ -17,32 +16,33 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * An extension of MitabLineParser that returns binary interactions evidences only.
+ * An extension of MitabLineParser that returns simple binary interactions only.
  *
+ * It ignore properties of InteractionEvidence and ModelledInteraction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>18/06/13</pre>
+ * @since <pre>20/06/13</pre>
  */
 
-public class InteractionEvidenceLineParser extends MitabLineParser {
+public class InteractionLineParser extends MitabLineParser {
 
     private MitabParserListener listener;
     private MitabInteractorFactory interactorFactory;
 
-    public InteractionEvidenceLineParser(InputStream stream) {
+    public InteractionLineParser(InputStream stream) {
         super(stream);
     }
 
-    public InteractionEvidenceLineParser(InputStream stream, String encoding) {
+    public InteractionLineParser(InputStream stream, String encoding) {
         super(stream, encoding);
     }
 
-    public InteractionEvidenceLineParser(Reader stream) {
+    public InteractionLineParser(Reader stream) {
         super(stream);
     }
 
-    public InteractionEvidenceLineParser(MitabLineParserTokenManager tm) {
+    public InteractionLineParser(MitabLineParserTokenManager tm) {
         super(tm);
     }
 
@@ -75,11 +75,11 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
     }
 
     @Override
-    MitabParticipantEvidence finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole, Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot, Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc, Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn) {
-        boolean hasParticipantFields = !bioRole.isEmpty() || !expRole.isEmpty() || !annot.isEmpty() || !feature.isEmpty() || !stc.isEmpty() || !detMethod.isEmpty();
+    MitabParticipant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole, Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot, Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc, Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn) {
+        boolean hasParticipantFields = !bioRole.isEmpty() || !annot.isEmpty() || !feature.isEmpty() || !stc.isEmpty();
         // first identify interactor
         Interactor interactor = createInteractorFrom(uniqueId, altid, aliases, taxid, type, xref, checksum, line, column, mitabColumn);
-        MitabParticipantEvidence participant = null;
+        MitabParticipant participant = null;
 
         if (interactor == null && !hasParticipantFields){
             return participant;
@@ -100,17 +100,7 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
                 bioRoleTerm = bioRole.iterator().next();
             }
 
-            MitabCvTerm expRoleTerm = null;
-            // set expRole
-            if (expRole.size() > 1){
-                listener.onSeveralCvTermFound(expRole);
-                expRoleTerm = expRole.iterator().next();
-            }
-            else if (bioRole.isEmpty()){
-                expRoleTerm = expRole.iterator().next();
-            }
-
-            participant = new MitabParticipantEvidence(interactor, bioRoleTerm, expRoleTerm, null);
+            participant = new MitabParticipant(interactor, bioRoleTerm);
 
             // add annotations
             participant.getAnnotations().addAll(annot);
@@ -124,13 +114,11 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
             else if (bioRole.isEmpty()){
                 participant.setStoichiometry(stc.iterator().next());
             }
-            // add detection methods
-            participant.getIdentificationMethods().addAll(detMethod);
             // add source locator
             participant.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
         }
         else {
-            participant = new MitabParticipantEvidence(interactor);
+            participant = new MitabParticipant(interactor);
             // add source locator
             participant.setSourceLocator(new MitabSourceLocator(line, column, mitabColumn));
         }
@@ -139,10 +127,10 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
     }
 
     @Override
-    MitabBinaryInteractionEvidence finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
-        MitabBinaryInteractionEvidence interaction = null;
-        boolean hasInteractionFields = !detMethod.isEmpty() || !firstAuthor.isEmpty() || !pubId.isEmpty() || !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
-                || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !host.isEmpty() || !created.isEmpty() || !update.isEmpty() || isNegative;
+    MitabBinaryInteraction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+        MitabBinaryInteraction interaction = null;
+        boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !expansion.isEmpty()
+                || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
         if (A == null && B == null && !hasInteractionFields){
             listener.onInteractionWithoutParticipants(line);
@@ -150,12 +138,8 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
         }
 
         // create interaction with participants
-        interaction = new MitabBinaryInteractionEvidence((MitabParticipantEvidence) A, (MitabParticipantEvidence)B);
+        interaction = new MitabBinaryInteraction(A, B);
 
-        // create publication
-        MitabPublication publication = createPublicationFrom(firstAuthor, pubId, source);
-        // create experiment
-        interaction.setExperimentAndAddInteractionEvidence(createExperimentFrom(publication, detMethod, host));
         // set interaction type
         if (interactionType.size() > 1){
             listener.onSeveralCvTermFound(interactionType);
@@ -166,8 +150,6 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
         }
         // set identifiers
         initialiseInteractionIdentifiers(interactionId, interaction);
-        // add confidences
-        interaction.getConfidences().addAll(conf);
         // set expansion method
         if (expansion.size() > 1){
             listener.onSeveralCvTermFound(expansion);
@@ -179,9 +161,7 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
         // add xrefs
         interaction.getXrefs().addAll(xrefI);
         // initialise annotations
-        initialiseInteractionAnnotations(annotI, interaction);
-        // add params
-        interaction.getParameters().addAll(params);
+        interaction.getAnnotations().addAll(annotI);
         // created
         if (created.size() > 1){
             listener.onSeveralCreatedDateFound(created);
@@ -200,35 +180,11 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
         }
         // checksum
         interaction.getChecksums().addAll(checksumI);
-        // negative
-        interaction.setNegative(isNegative);
 
         return interaction;
     }
 
-    protected void initialiseInteractionAnnotations(Collection<MitabAnnotation> annots, BinaryInteractionEvidence interaction){
-
-        Iterator<MitabAnnotation> annotsIterator = annots.iterator();
-        while (annotsIterator.hasNext()){
-            MitabAnnotation annot = annotsIterator.next();
-
-            // add curation depth
-            if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.IMEX_CURATION_MI, Annotation.IMEX_CURATION)){
-                interaction.getExperiment().getPublication().setCurationDepth(CurationDepth.IMEx);
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.MIMIX_CURATION_MI, Annotation.MIMIX_CURATION)){
-                interaction.getExperiment().getPublication().setCurationDepth(CurationDepth.MIMIx);
-            }
-            else if (AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.RAPID_CURATION_MI, Annotation.RAPID_CURATION)){
-                interaction.getExperiment().getPublication().setCurationDepth(CurationDepth.rapid_curation);
-            }
-            else{
-                interaction.getAnnotations().add(annot);
-            }
-        }
-    }
-
-    protected void initialiseInteractionIdentifiers(Collection<MitabXref> interactionIds, BinaryInteractionEvidence interaction){
+    protected void initialiseInteractionIdentifiers(Collection<MitabXref> interactionIds, BinaryInteraction interaction){
 
         Iterator<MitabXref> refsIterator = interactionIds.iterator();
         while (refsIterator.hasNext()){
@@ -241,97 +197,6 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
                 interaction.getIdentifiers().add(ref);
             }
         }
-    }
-
-    protected MitabExperiment createExperimentFrom(MitabPublication publication, Collection<MitabCvTerm> detMethod, Collection<MitabOrganism> host){
-
-        // first get the interaction detection method
-        MitabCvTerm detectionMethod = null;
-        if (detMethod.size() > 1){
-            listener.onSeveralCvTermFound(detMethod);
-            detectionMethod = detMethod.iterator().next();
-        }
-        else if (detMethod.isEmpty()){
-            detectionMethod = detMethod.iterator().next();
-        }
-
-        MitabExperiment experiment = new MitabExperiment(publication, detectionMethod);
-        publication.getExperiments().add(experiment);
-
-        // then get the host organism
-        if (host.size() > 1){
-            listener.onSeveralHostOrganismFound(host);
-            experiment.setHostOrganism(host.iterator().next());
-        }
-        else if (detMethod.isEmpty()){
-            experiment.setHostOrganism(host.iterator().next());
-        }
-
-        return experiment;
-    }
-
-    protected MitabPublication createPublicationFrom(Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabSource> source){
-        MitabPublication publication = new MitabPublication();
-        boolean hasSetLocator = false;
-
-        // first initialise authors
-        if (firstAuthor.size() > 1){
-            listener.onSeveralFirstAuthorFound(firstAuthor);
-            MitabAuthor author = firstAuthor.iterator().next();
-            initialiseAuthorAndPublicationDate(publication, author);
-            publication.setSourceLocator(author.getSourceLocator());
-            hasSetLocator = true;
-        }
-        else if (!firstAuthor.isEmpty()){
-            MitabAuthor author = firstAuthor.iterator().next();
-            initialiseAuthorAndPublicationDate(publication, author);
-            publication.setSourceLocator(author.getSourceLocator());
-            hasSetLocator = true;
-        }
-
-        // then initialise pubids
-        hasSetLocator = initialisePublicationIdentifiers(pubId, publication, hasSetLocator);
-
-        // then initialise source
-        if (source.size() > 1){
-            listener.onSeveralSourceFound(source);
-            MitabSource firstSource = source.iterator().next();
-            publication.setSource(firstSource);
-            if (!hasSetLocator){
-                publication.setSourceLocator(firstSource.getSourceLocator());
-            }
-        }
-        else if (!source.isEmpty()){
-            MitabSource firstSource = source.iterator().next();
-            publication.setSource(firstSource);
-            if (!hasSetLocator){
-                publication.setSourceLocator(firstSource.getSourceLocator());
-            }
-        }
-
-        return publication;
-    }
-
-    protected boolean initialisePublicationIdentifiers(Collection<MitabXref> pubId, MitabPublication publication, boolean hasInitialisedLocator){
-
-        Iterator<MitabXref> refsIterator = pubId.iterator();
-        while (refsIterator.hasNext()){
-            MitabXref ref = refsIterator.next();
-
-            if (!hasInitialisedLocator){
-                publication.setSourceLocator(ref.getSourceLocator());
-                hasInitialisedLocator = true;
-            }
-
-            if (XrefUtils.isXrefFromDatabase(ref, Xref.IMEX_MI, Xref.IMEX) && XrefUtils.doesXrefHaveQualifier(ref, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
-                 publication.getXrefs().add(ref);
-            }
-            else{
-                publication.getIdentifiers().add(ref);
-            }
-        }
-
-        return hasInitialisedLocator;
     }
 
     protected Interactor createInteractorFrom(Collection<MitabXref> uniqueId, Collection<MitabXref> altid, Collection<MitabAlias> aliases, Collection<MitabOrganism> taxid, Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabChecksum> checksum, int line, int column, int mitabColumn){
@@ -539,14 +404,5 @@ public class InteractionEvidenceLineParser extends MitabLineParser {
         MitabChecksum checksum = new MitabChecksum(alias.getType(), alias.getName(), alias.getSourceLocator());
         interactor.getChecksums().add(checksum);
         listener.onChecksumFoundInAliases(alias, alias.getSourceLocator().getLineNumber(), alias.getSourceLocator().getCharNumber(), ((MitabSourceLocator)alias.getSourceLocator()).getColumnNumber());
-    }
-
-    protected void initialiseAuthorAndPublicationDate(MitabPublication publication, MitabAuthor author) {
-        if (author.getFirstAuthor() != null){
-            publication.getAuthors().add(author.getFirstAuthor());
-        }
-        if (author.getPublicationDate() != null){
-            publication.setPublicationDate(author.getPublicationDate());
-        }
     }
 }
