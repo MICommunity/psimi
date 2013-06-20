@@ -12,7 +12,8 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
  */
 public interface FeatureEvidenceEnricher {
 
-    public void enrichFeatureEvidence(FeatureEvidence featureEvidence);
+    public boolean enrichFeatureEvidence(
+            FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew);
 
     public void setFeatureEvidenceFetcher(FeatureEvidenceFetcher fetcher);
     public FeatureEvidenceFetcher getFeatureEvidenceFetcher();
