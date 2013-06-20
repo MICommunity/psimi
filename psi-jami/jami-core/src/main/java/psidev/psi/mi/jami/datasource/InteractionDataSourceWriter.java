@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.model.Interaction;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -33,6 +34,12 @@ public interface InteractionDataSourceWriter<T extends Interaction> {
      * @param interactions
      */
     public void writeInteractions(Collection<T> interactions) throws DataSourceWriterException;
+
+    /**
+     * Writes Interaction objects using iterator
+     * @param interactions
+     */
+    public void writeInteractions(Iterator<T> interactions) throws DataSourceWriterException;
 
     /**
      * Flushes the writer (commit or write on disk)
