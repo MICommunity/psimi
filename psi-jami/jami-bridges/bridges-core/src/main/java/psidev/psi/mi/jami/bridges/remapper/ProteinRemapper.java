@@ -12,8 +12,8 @@ public interface ProteinRemapper {
 
     //public ProteinRemapper(RemapperBridge bridge);
 
-    public void addRemapListener(ProteinRemapperListener listener);
-    public void removeRemapListener(ProteinRemapperListener listener);
+    public void setRemapListener(ProteinRemapperListener listener);
+    public ProteinRemapperListener getRemapListener();
 
     /**
      * Will remap the protein using the settings provided.

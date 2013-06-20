@@ -24,7 +24,8 @@ public abstract class AbstractFeatureEnricher
     protected Feature featureFetched;
 
 
-    public boolean enrichFeature(Feature featureToEnrich) throws MissingServiceException, BadToEnrichFormException {
+    public boolean enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew)
+            throws MissingServiceException, BadToEnrichFormException {
 
         featureFetched = fetchFeature(featureToEnrich);
         if(featureFetched == null){

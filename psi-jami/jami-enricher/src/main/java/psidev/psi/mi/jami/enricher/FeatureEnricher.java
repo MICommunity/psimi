@@ -14,7 +14,9 @@ import psidev.psi.mi.jami.model.Feature;
  * Date: 13/06/13
  */
 public interface FeatureEnricher {
-    public boolean enrichFeature(Feature featureToEnrich) throws MissingServiceException, BadToEnrichFormException;
+
+    public boolean enrichFeature(Feature featureToEnrich, String sequenceOld, String sequenceNew)
+            throws MissingServiceException, BadToEnrichFormException;
 
 
     public void setFetcher(FeatureFetcher fetcher);

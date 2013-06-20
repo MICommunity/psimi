@@ -32,8 +32,6 @@ public class AbstractParticipantEnricher
     protected ProteinEnricher proteinEnricher;
 
 
-
-
     public void enrichParticipant(Participant participantToEnrich)
             throws BadToEnrichFormException, MissingServiceException, BridgeFailedException,
             SeguidException, BadSearchTermException, BadResultException,
@@ -41,10 +39,6 @@ public class AbstractParticipantEnricher
 
 
         if(participantToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null participant.");
-
-        if(participantToEnrich.getInteractor() == null){
-            return;
-        }
 
         CvTerm interactorType = participantToEnrich.getInteractor().getInteractorType();
         if(interactorType.getMIIdentifier().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR_MI)
@@ -69,6 +63,7 @@ public class AbstractParticipantEnricher
 
             }
         }
+        if(listener != null) listener.onParticipantEnriched(participantToEnrich , "Success.");
 
     }
 
