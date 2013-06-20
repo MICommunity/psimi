@@ -1,5 +1,9 @@
 package psidev.psi.mi.jami.tab.listener;
 
+import psidev.psi.mi.jami.model.Xref;
+
+import java.util.Collection;
+
 /**
  * A listener listening to events when parsing a mitab file
  *
@@ -9,8 +13,6 @@ package psidev.psi.mi.jami.tab.listener;
  */
 
 public interface MitabParserListener {
-
-    public void onSeveralUniqueIdentifiers(int line, int column, int mitabColumn);
 
     public void onTextFoundInIdentifier(int line, int column, int mitabColumn);
 
@@ -55,4 +57,12 @@ public interface MitabParserListener {
     public void onInvalidStoichiometry(int line, int column, int mitabColumn);
 
     public void onInvalidLine(int line, int column, int mitabColumn);
+
+    public void onSeveralUniqueIdentifiers(Collection<Xref> ids, int line, int column, int mitabColumn);
+
+    public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn);
+
+    public void onEmptyAliases(int line, int column, int mitabColumn);
+
+    public void onMissingInteractorIdentifierColumns(int line, int column, int mitabColumn);
 }

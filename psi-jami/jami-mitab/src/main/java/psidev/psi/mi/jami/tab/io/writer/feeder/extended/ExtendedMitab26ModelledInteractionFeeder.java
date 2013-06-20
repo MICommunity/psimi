@@ -1,63 +1,34 @@
-package psidev.psi.mi.jami.tab.io.writer;
+package psidev.psi.mi.jami.tab.io.writer.feeder.extended;
 
-import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.tab.extension.MitabAlias;
-import psidev.psi.mi.jami.tab.extension.MitabConfidence;
-import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.tab.extension.MitabAlias;
+import psidev.psi.mi.jami.tab.extension.MitabConfidence;
+import psidev.psi.mi.jami.tab.io.writer.feeder.Mitab26ModelledInteractionFeeder;
+import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * The MITAB 2.5 extended writer will write interactions and make the assumptions that all objects are MITAB extended objects.
+ * Mitab 2.6 extended feeder for Modelled interaction.
  *
  * It will cast Alias with MitabAlias to write a specified dbsource, it will cast Feature with MitabFeature to write a specific feature text and
  * it will cast Confidence with MitabConfidence to write a specific text
  *
- * The default Complex expansion method is spoke expansion.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>11/06/13</pre>
+ * @since <pre>20/06/13</pre>
  */
 
-public class ExtendedMitab25Writer extends AbstractMitab25Writer {
-
-    public ExtendedMitab25Writer() {
-        super();
-    }
-
-    public ExtendedMitab25Writer(File file) throws IOException {
-        super(file);
-    }
-
-    public ExtendedMitab25Writer(OutputStream output) throws IOException {
-        super(output);
-    }
-
-    public ExtendedMitab25Writer(Writer writer) throws IOException {
+public class ExtendedMitab26ModelledInteractionFeeder extends Mitab26ModelledInteractionFeeder {
+    public ExtendedMitab26ModelledInteractionFeeder(Writer writer) {
         super(writer);
     }
 
-    public ExtendedMitab25Writer(File file, ComplexExpansionMethod expansionMethod) throws IOException {
-        super(file, expansionMethod);
-    }
-
-    public ExtendedMitab25Writer(OutputStream output, ComplexExpansionMethod expansionMethod) throws IOException {
-        super(output, expansionMethod);
-    }
-
-    public ExtendedMitab25Writer(Writer writer, ComplexExpansionMethod expansionMethod) throws IOException {
-        super(writer, expansionMethod);
-    }
-
     @Override
-    protected void writeConfidence(Confidence conf) throws IOException {
+    public void writeConfidence(Confidence conf) throws IOException {
         if (conf != null){
             // write confidence type first
             if (conf.getType().getFullName() != null){
@@ -82,7 +53,7 @@ public class ExtendedMitab25Writer extends AbstractMitab25Writer {
     }
 
     @Override
-    protected void writeAlias(Alias alias) throws IOException {
+    public void writeAlias(Alias alias) throws IOException {
         if (alias != null){
             MitabAlias mitabAlias = (MitabAlias) alias;
 
@@ -100,13 +71,8 @@ public class ExtendedMitab25Writer extends AbstractMitab25Writer {
     }
 
     @Override
-    protected void writeAlias(ParticipantEvidence participant, Alias alias) throws IOException {
+    public void writeAlias(ModelledParticipant participant, Alias alias) throws IOException {
         this.writeAlias(alias);
     }
-
-    @Override
-    protected void writeAlias(ModelledParticipant participant, Alias alias) throws IOException {
-        this.writeAlias(alias);
-    }
-
 }
+

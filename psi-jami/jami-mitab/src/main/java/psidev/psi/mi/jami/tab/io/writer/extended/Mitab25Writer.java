@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.tab.io.writer;
+package psidev.psi.mi.jami.tab.io.writer.extended;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.tab.io.writer.AbstractMitab25Writer;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,12 +74,12 @@ public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInte
 
     @Override
     protected void initialiseWriter(Writer writer) {
-        setBinaryWriter(new Mitab25BinaryWriter(writer));
+        setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(writer));
     }
 
     @Override
     protected void initialiseOutputStream(OutputStream output) {
-        setBinaryWriter(new Mitab25BinaryWriter(output));
+        setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(output));
     }
 
     @Override

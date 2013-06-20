@@ -3,11 +3,15 @@ package psidev.psi.mi.jami.tab.utils;
 import psidev.psi.mi.jami.tab.MitabColumnName;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.tab.extension.MitabAlias;
+import psidev.psi.mi.jami.tab.extension.MitabXref;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 
 /**
  * Utilisty class for MitabWriter
@@ -32,6 +36,9 @@ public class MitabUtils {
     public static final String UNKNOWN_TYPE= "unknown";
     public static final String AUTHOR_SUFFIX = " et al.";
     public static final String TAXID = "taxid";
+    public static final String SHORTLABEL = "shortlabel";
+    public static final String DISPLAY_SHORT = "display_short";
+    public static final String DISPLAY_LONG = "display_long";
 
     public static final String [] SPECIAL_CHARACTERS = new String[]{FIELD_SEPARATOR,
             XREF_SEPARATOR, "(", ")"};
@@ -174,5 +181,133 @@ public class MitabUtils {
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.SMALL_MOLECULE_PROTEIN_MI, Annotation.SMALL_MOLECULE_PROTEIN) ||
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.CLUSTERED_MI, Annotation.CLUSTERED) ||
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.EVIDENCE_MI, Annotation.EVIDENCE);
+    }
+
+    /**
+     * Find the best alias to use as a shortname.
+     * It will first collect the alias with display_short if it exists, otherwise display_long if it exists, otherwise gene name if it exists
+     * , otherwise shortlabel if it exists
+     * otherwise the alias with the shortest alias name.
+     * @param aliases
+     * @return the best alias to use as a shortname
+     */
+    public static MitabAlias findBestShortNameFromAliases(Collection<MitabAlias> aliases){
+
+        MitabAlias shortLabel = null;
+        MitabAlias displayShort = null;
+        MitabAlias displayLong = null;
+        MitabAlias geneName = null;
+        MitabAlias shortName = null;
+
+        for (MitabAlias alias : aliases){
+            // display_short is a priority
+            if (AliasUtils.doesAliasHaveType(alias, null, DISPLAY_SHORT)){
+                displayShort = alias;
+                break;
+            }
+            // then display_long
+            else if (AliasUtils.doesAliasHaveType(alias, null, DISPLAY_LONG)){
+                if (displayLong != null){
+                    displayLong = alias;
+                }
+            }
+            // then gene name
+            else if (AliasUtils.doesAliasHaveType(alias, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
+                if (geneName != null){
+                    geneName = alias;
+                }
+            }
+            // then shortlabel
+            else if (AliasUtils.doesAliasHaveType(alias, null, SHORTLABEL)){
+                if (shortLabel != null){
+                    shortLabel = alias;
+                }
+            }
+            // then shortname if not set
+            else if (shortName == null){
+                shortName = alias;
+            }
+            // then shortest
+            else{
+                // only replace if shorter
+                if (shortName.getName().length() > alias.getName().length()){
+                    shortName = alias;
+                }
+            }
+        }
+
+        if (displayShort != null){
+            return displayShort;
+        }
+        else if (displayLong != null){
+            return displayLong;
+        }
+        else if (geneName != null){
+            return geneName;
+        }
+        else if (shortLabel != null){
+            return displayShort;
+        }
+        else {
+            return shortName;
+        }
+    }
+
+    /**
+     * Find the best id to use as a shortname.
+     * It will first collect the id with qualifier = display_short if it exists, otherwise qualifier =  display_long if it exists, otherwise qualifier = gene name if it exists
+     * , otherwise qualifier = shortlabel if it exists
+     * otherwise null.
+     * @param altids
+     * @return the best id to use as a shortname
+     */
+    public static MitabXref findBestShortNameFromAlternativeIdentifiers(Collection<MitabXref> altids){
+
+        MitabXref shortLabel = null;
+        MitabXref displayShort = null;
+        MitabXref displayLong = null;
+        MitabXref geneName = null;
+
+        for (MitabXref xref : altids){
+            // display_short is a priority
+            if (XrefUtils.doesXrefHaveQualifier(xref, null, DISPLAY_SHORT)){
+                displayShort = xref;
+                break;
+            }
+            // then display_long
+            else if (XrefUtils.doesXrefHaveQualifier(xref, null, DISPLAY_LONG)){
+                if (displayLong != null){
+                    displayLong = xref;
+                }
+            }
+            // then gene name
+            else if (XrefUtils.doesXrefHaveQualifier(xref, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
+                if (geneName != null){
+                    geneName = xref;
+                }
+            }
+            // then shortlabel
+            else if (XrefUtils.doesXrefHaveQualifier(xref, null, SHORTLABEL)){
+                if (shortLabel != null){
+                    shortLabel = xref;
+                }
+            }
+        }
+
+        if (displayShort != null){
+            return displayShort;
+        }
+        else if (displayLong != null){
+            return displayLong;
+        }
+        else if (geneName != null){
+            return geneName;
+        }
+        else if (shortLabel != null){
+            return displayShort;
+        }
+        else {
+            return null;
+        }
     }
 }
