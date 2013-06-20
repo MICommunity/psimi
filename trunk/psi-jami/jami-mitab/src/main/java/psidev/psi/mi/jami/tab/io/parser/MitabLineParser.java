@@ -31,13 +31,13 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
                                                Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
                                                Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot,
                                                Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc,
-                                               Collection<MitabCvTerm> detMethod);
+                                               Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn);
         abstract Interaction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor,
                                                Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source,
                                                Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion,
                                                Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host,
                                                Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update,
-                                               Collection<MitabChecksum> checksumI, boolean isNegative);
+                                               Collection<MitabChecksum> checksumI, boolean isNegative, int line);
 
   final public Interaction MitabLine() throws ParseException {
   Collection<MitabXref> uniqueIdA;
@@ -85,6 +85,9 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
   Participant participantA;
   Participant participantB;
+  int line;
+  int columnA;
+  int columnB;
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case UNRESERVED_STRING:
@@ -101,7 +104,7 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case EMPTY_COLUMN:
             jj_consume_token(EMPTY_COLUMN);
-                         uniqueIdA = Collections.EMPTY_LIST;
+                         uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;
             break;
           case UNRESERVED_STRING:
           case QUOTED_STRING:
@@ -112,11 +115,12 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
             jj_consume_token(-1);
             throw new ParseException();
           }
+                                                                                                                                                                                            line = token.beginLine; columnA = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case EMPTY_COLUMN:
             jj_consume_token(EMPTY_COLUMN);
-                         uniqueIdB = Collections.EMPTY_LIST;
+                         uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;
             break;
           case UNRESERVED_STRING:
           case QUOTED_STRING:
@@ -127,6 +131,7 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
             jj_consume_token(-1);
             throw new ParseException();
           }
+                                                                                                                                                                    columnB = token.beginColumn;
           jj_consume_token(COLUMN_SEPARATOR);
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case EMPTY_COLUMN:
@@ -739,10 +744,10 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
             jj_la1[43] = jj_gen;
             ;
           }
-        participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA);
-        participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB);
+        participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
+        participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
         {if (true) return finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
-                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative);}
+                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);}
           break;
         default:
           jj_la1[44] = jj_gen;

@@ -39,13 +39,13 @@ public abstract class MitabLineParser {
 	                                       Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
 	                                       Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot,
 	                                       Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc,
-	                                       Collection<MitabCvTerm> detMethod);
+	                                       Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn);
 	abstract Interaction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor,
 	                                       Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source,
 	                                       Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion,
 	                                       Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host,
 	                                       Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update,
-	                                       Collection<MitabChecksum> checksumI, boolean isNegative);
+	                                       Collection<MitabChecksum> checksumI, boolean isNegative, int line);
 }
 
 PARSER_END(MitabLineParser)
@@ -172,6 +172,9 @@ Interaction MitabLine():
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
   Participant participantA;
   Participant participantB;
+  int line;
+  int columnA;
+  int columnB;
 }
 {
 (
@@ -181,8 +184,8 @@ Interaction MitabLine():
       ( <COMMENT> )
     |
       (
-        (<EMPTY_COLUMN> {uniqueIdA = Collections.EMPTY_LIST;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) "\t"
-        (<EMPTY_COLUMN> {uniqueIdB = Collections.EMPTY_LIST;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) "\t"
+        (<EMPTY_COLUMN> {uniqueIdA = Collections.EMPTY_LIST; line = token.beginLine; columnA = token.beginColumn;} | uniqueIdA = ids(CvTermUtils.createIdentityXrefQualifier(), false, 1)) {line = token.beginLine; columnA = token.beginColumn;} "\t"
+        (<EMPTY_COLUMN> {uniqueIdB = Collections.EMPTY_LIST; columnB = token.beginColumn;} | uniqueIdB = ids(CvTermUtils.createIdentityXrefQualifier(), false, 2)) {columnB = token.beginColumn;} "\t"
         (<EMPTY_COLUMN> {altIdA = Collections.EMPTY_LIST;} | altIdA = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 3)) "\t"
         (<EMPTY_COLUMN> {altIdB = Collections.EMPTY_LIST;} | altIdB = ids(CvTermUtils.createSecondaryXrefQualifier(), false, 4)) "\t"
         (<EMPTY_COLUMN> {aliasA = Collections.EMPTY_LIST;} | aliasA = aliases(5)) "\t"
@@ -234,10 +237,10 @@ Interaction MitabLine():
         ] //end MITAB 2.6
       )
       {
-        participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA);
-        participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB);
+        participantA = finishParticipant(uniqueIdA, altIdA, aliasA, taxidA, bioRoleA, expRoleA, typeA, xrefA, annotA, checksumA, featureA, stcA, pmethodA, line, columnA, 1);
+        participantB = finishParticipant(uniqueIdB, altIdB, aliasB, taxidB, bioRoleB, expRoleB, typeB, xrefB, annotB, checksumB, featureB, stcB, pmethodB, line, columnB, 2);
         return finishInteraction(participantA, participantB, detMethod, firstAuthor, pubId, interactionType, source, interactionId,
-                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative);
+                                 conf, expansion, xrefI, annotI, host, params, created, update, checksumI, isNegative, line);
       }
     ]
 
