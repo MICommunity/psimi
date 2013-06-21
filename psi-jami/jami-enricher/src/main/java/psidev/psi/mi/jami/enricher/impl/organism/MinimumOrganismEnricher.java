@@ -28,8 +28,9 @@ public class MinimumOrganismEnricher
 
         //TaxID
         if(organismToEnrich.getTaxId() == -3){
-            if (listener != null) listener.onTaxidUpdate(organismToEnrich, "-3");
             organismToEnrich.setTaxId(organismFetched.getTaxId());
+            if (listener != null) listener.onTaxidUpdate(organismToEnrich, "-3");
+
         }
 
         //TODO - check that the organism details don't enrich if there is no match on taxid
@@ -37,15 +38,15 @@ public class MinimumOrganismEnricher
             //Scientific name
             if(organismToEnrich.getScientificName() == null
                     && organismFetched.getScientificName() != null){
-                if (listener != null) listener.onScientificNameUpdate(organismToEnrich , organismToEnrich.getScientificName());
                 organismToEnrich.setScientificName(organismFetched.getScientificName());
+                if (listener != null) listener.onScientificNameUpdate(organismToEnrich , organismToEnrich.getScientificName());
             }
 
             //Commonname
             if(organismToEnrich.getCommonName() == null
                     && organismFetched.getCommonName() != null){
-                if (listener != null) listener.onCommonNameUpdate(organismToEnrich , organismToEnrich.getCommonName());
                 organismToEnrich.setCommonName(organismFetched.getCommonName());
+                if (listener != null) listener.onCommonNameUpdate(organismToEnrich , organismToEnrich.getCommonName());
             }
         }
     }

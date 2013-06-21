@@ -55,13 +55,13 @@ public class MaximumProteinUpdater
             }
         }
         for(Xref xref: toRemoveXrefs){
-            proteinToEnrich.getXrefs().remove(xref);
             if(listener != null) listener.onRemovedXref(proteinToEnrich , xref);
+            proteinToEnrich.getXrefs().remove(xref);
         }
 
         for(Xref xref: fetchedXrefsToAdd){
-            proteinToEnrich.getXrefs().add(xref);
             if(listener != null) listener.onAddedXref(proteinToEnrich, xref);
+            proteinToEnrich.getXrefs().add(xref);
         }
 
     }

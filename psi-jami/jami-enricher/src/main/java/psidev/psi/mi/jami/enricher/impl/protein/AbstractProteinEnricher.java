@@ -63,9 +63,6 @@ implements ProteinEnricher {
 
         proteinFetched = fetchProtein(proteinToEnrich);
         if(proteinFetched == null){
-            // Message should be sent by the fetchProtein method
-            // while it is known whether the protein was dead, demerged or remapped.
-            // if(listener != null) listener.onProteinEnriched(proteinToEnrich, "Failed. No protein could be found.");
             return false;
         }
 
@@ -121,10 +118,10 @@ implements ProteinEnricher {
         //Organism
         if(proteinFetched.getOrganism() == null) throw new BadEnrichedFormException(
                 "The enriched protein has a null organism.");
-        else if(proteinToEnrich.getOrganism() == null){
-            proteinToEnrich.setOrganism(new DefaultOrganism(-3));
-        }else if(proteinToEnrich.getOrganism().getTaxId() != -3
-                && ! OrganismTaxIdComparator.areEquals(proteinToEnrich.getOrganism(), proteinToEnrich.getOrganism())){
+        if(proteinToEnrich.getOrganism() == null) proteinToEnrich.setOrganism(new DefaultOrganism(-3));
+
+        if(proteinToEnrich.getOrganism().getTaxId() != -3
+                && ! OrganismTaxIdComparator.areEquals(proteinToEnrich.getOrganism(), proteinFetched.getOrganism())){
 
             if(listener != null) listener.onProteinEnriched(proteinToEnrich, "Failed. Conflict in organism. " +
                     "Found taxid " + proteinToEnrich.getOrganism().getTaxId() + " " +
@@ -165,16 +162,20 @@ implements ProteinEnricher {
         Collection<Protein> proteinsEnriched;
         proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
 
+        // If the Protein is dead
         if(proteinsEnriched == null
                 || proteinsEnriched.isEmpty()){
+            // If the protein cannot be remapped - exit
             if( ! remapDeadProtein(proteinToEnrich)){
                 return null;
             }else{
                 proteinsEnriched = fetcher.getProteinsByIdentifier(proteinToEnrich.getUniprotkb());
+                // If the remapping can not be fetched
                 if(proteinsEnriched == null
                         || proteinsEnriched.isEmpty()){
                     if(listener != null) listener.onProteinEnriched(proteinToEnrich,
-                            "Failed. Protein is dead. Was able to remap but found dead entry.");
+                            "Failed. Protein is dead. " +
+                            "Was able to remap but the remapped entry also appears to be dead.");
                     return null;
                 }
             }
@@ -253,17 +254,21 @@ implements ProteinEnricher {
                     "Was unable to find a mapping.");
             return false;
         } else {
-            if(listener != null) listener.onUniprotKbUpdate(proteinToEnrich , null);
+            if(listener != null) {
+                listener.onProteinRemapped(proteinToEnrich , null);
+                listener.onUniprotKbUpdate(proteinToEnrich , null);
+            }
             return true;
         }
     }
 
     /**
-     * When implemented this method should prepare a protein for being remapped.
-     * It should also apply the remapping.
+     * Attempts to remap a dead protein and prepare it for enrichment.
+     * This may include marking the previous AC as being dead and archiving the old AC.
+     * The actual remapping can be handled by the method 'remapProtein'
      *
      * @param proteinToEnrich
-     * @return  Signifies whether the entry was remapped.
+     * @return  True if a remapping was found, and false if it could not be found.
      */
     protected abstract boolean remapDeadProtein(Protein proteinToEnrich);
 

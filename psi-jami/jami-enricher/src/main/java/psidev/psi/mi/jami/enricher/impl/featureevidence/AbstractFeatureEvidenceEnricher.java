@@ -2,9 +2,15 @@ package psidev.psi.mi.jami.enricher.impl.featureevidence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.FeatureEvidenceFetcher;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEvidenceEnricher;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.impl.featureevidence.listener.FeatureEvidenceEnricherListener;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -30,12 +36,21 @@ public abstract  class AbstractFeatureEvidenceEnricher
     private FeatureEvidenceFetcher featureEvidenceFetcher;
     protected FeatureEvidenceEnricherListener listener;
 
-    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew) {
+    protected CvTermEnricher cvTermEnricher;
+
+    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew) throws BridgeFailedException, MissingServiceException, BadToEnrichFormException, BadSearchTermException {
 
         if(featureEvidenceToEnrich ==  null) {
             if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
                     "Failed. Attempted to enrich null featureEvidence");
             return false;
+        }
+
+        if(cvTermEnricher != null){
+            cvTermEnricher.enrichCvTerm(featureEvidenceToEnrich.getType());
+            for(CvTerm cvTerm : featureEvidenceToEnrich.getDetectionMethods()){
+                cvTermEnricher.enrichCvTerm(cvTerm);
+            }
         }
 
         if(sequenceOld == null){
@@ -64,7 +79,7 @@ public abstract  class AbstractFeatureEvidenceEnricher
                         AnnotationUtils.createCaution(
                                 "Invalid range: "+
                                 range.getStart().getStart() + "," +
-                                range.getEnd().getEnd()));
+                                range.getEnd().getEnd()));  //todo
                 //range.getStart().PositionUtils.createUndeterminedPosition());
                 //allValid = false;
             }
@@ -97,8 +112,8 @@ public abstract  class AbstractFeatureEvidenceEnricher
                     String newValue = sequenceNew.substring(
                             (int) range.getStart().getStart(), (int) range.getEnd().getEnd());
 
-                    if( ! oldValue.equalsIgnoreCase(newValue)){
-                        log.warn("Bizzare. Sub sequence: " + oldValue +
+                    if( ! oldValue.equalsIgnoreCase(newValue)){ //TODO
+                        log.warn("Sub sequence: " + oldValue +
                         " is not equal to new sub sequence: " + newValue);
                     }
                 }
@@ -127,5 +142,13 @@ public abstract  class AbstractFeatureEvidenceEnricher
 
     public FeatureEvidenceEnricherListener getFeatureEvidenceEnricherListener() {
         return listener;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setCvTermEnricher(CvTermEnricher cvTermEnricher){
+        this.cvTermEnricher = cvTermEnricher;
+    }
+
+    public CvTermEnricher getCvTermEnricher(){
+        return cvTermEnricher;
     }
 }

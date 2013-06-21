@@ -30,6 +30,10 @@ public class ProteinEnricherCounter implements ProteinEnricherListener {
         exit_status = status;
     }
 
+    public void onProteinRemapped(Protein protein, String oldUniprot) {
+        //todo
+    }
+
     public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
         update_count++;
     }

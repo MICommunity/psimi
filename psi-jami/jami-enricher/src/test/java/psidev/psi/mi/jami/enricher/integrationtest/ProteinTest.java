@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.bridges.uniprot.remapping.IntactProteinRemapper;
 import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.ParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
+import psidev.psi.mi.jami.enricher.impl.organism.listener.OrganismEnricherLogger;
 import psidev.psi.mi.jami.enricher.impl.participant.MaximumParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.participant.MinimumParticipantEnricher;
 import psidev.psi.mi.jami.enricher.impl.participantevidence.MaximumParticipantEvidenceEnricher;
@@ -52,6 +53,7 @@ public class ProteinTest {
         participantEnricher.getProteinEnricher().setFetcher(fetcher);
         participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
+        participantEnricher.getProteinEnricher().getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
     }
 
     public void max(){
@@ -59,6 +61,8 @@ public class ProteinTest {
         participantEnricher.getProteinEnricher().setFetcher(fetcher);
         participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
+        participantEnricher.getProteinEnricher().getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
+
     }
 
     //String[] tests = {"P77681"};

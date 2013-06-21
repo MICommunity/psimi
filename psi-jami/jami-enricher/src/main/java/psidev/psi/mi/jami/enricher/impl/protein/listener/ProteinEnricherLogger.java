@@ -22,4 +22,9 @@ public class ProteinEnricherLogger
     public void onProteinEnriched(Protein protein, String status) {
         proteinChangeLogger.log(Level.INFO, "Protein enriching complete. The status was: "+status);
     }
+
+    public void onProteinRemapped(Protein protein, String oldUniprot) {
+        proteinChangeLogger.log(Level.INFO, "Protein is remapped. Old value was: "+oldUniprot+". " +
+                "New value is: "+protein.getUniprotkb()+".");
+    }
 }

@@ -50,9 +50,11 @@ public class MinimumProteinEnricher
     protected void processProtein(Protein proteinToEnrich) throws SeguidException {
         //InteractorType
         if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
-            if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Interactor.UNKNOWN_INTERACTOR_MI)){
-                if(listener != null) listener.onAddedInteractorType(proteinToEnrich);
+            if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
+                    Interactor.UNKNOWN_INTERACTOR_MI)){
+
                 proteinToEnrich.setInteractorType(CvTermUtils.createProteinInteractorType());
+                if(listener != null) listener.onAddedInteractorType(proteinToEnrich);
             }
         }
 
@@ -61,23 +63,24 @@ public class MinimumProteinEnricher
         //FullName
         if(proteinToEnrich.getFullName() == null
                 && proteinFetched.getFullName() != null){
-            if(listener != null) listener.onFullNameUpdate(proteinFetched, null);
             proteinToEnrich.setFullName( proteinFetched.getFullName() );
+            if(listener != null) listener.onFullNameUpdate(proteinFetched, null);
         }
 
         //TODO
         //PRIMARY Uniprot AC
         if(proteinToEnrich.getUniprotkb() == null
                 && proteinFetched.getUniprotkb() != null) {
-            if(listener != null) listener.onUniprotKbUpdate(proteinFetched, null);
             proteinToEnrich.setUniprotkb(proteinFetched.getUniprotkb());
+            if(listener != null) listener.onUniprotKbUpdate(proteinFetched, null);
         }
 
         //Sequence
         if(proteinToEnrich.getSequence() == null
                 && proteinFetched.getSequence() != null){
-            if(listener != null) listener.onSequenceUpdate(proteinFetched, null);
             proteinToEnrich.setSequence(proteinFetched.getSequence());
+            if(listener != null) listener.onSequenceUpdate(proteinFetched, null);
+
         }
 
         //Checksums
@@ -85,7 +88,9 @@ public class MinimumProteinEnricher
         boolean hasRogidChecksum = false;
         for(Checksum checksum : proteinToEnrich.getChecksums()){
             if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                    || checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI)){
+                    || (checksum.getMethod() != null
+                            && checksum.getMethod().getMIIdentifier() != null
+                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
                 hasRogidChecksum = true;
             }
 
@@ -110,8 +115,8 @@ public class MinimumProteinEnricher
                 if(listener != null) listener.onAddedChecksum(proteinToEnrich, rogidChecksum);
             }
 
-            if(!hasCrc64Checksum) {
-                String crc64Value = null;
+            if(!hasCrc64Checksum) {  //TODO implement the creation of a real CRC64 checksum
+                String crc64Value = "MAKE A CRC64CHECKSUM";
                 Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", crc64Value);
                 proteinToEnrich.getChecksums().add(crc64Checksum);
                 if(listener != null) listener.onAddedChecksum(proteinToEnrich, crc64Checksum);
@@ -127,8 +132,9 @@ public class MinimumProteinEnricher
                 proteinToEnrich.getIdentifiers(),
                 new DefaultXrefComparator());
         for(Xref xref: subtractedIdentifiers){
-            if(listener != null) listener.onAddedIdentifier(proteinFetched, xref);
+
             proteinToEnrich.getIdentifiers().add(xref);
+            if(listener != null) listener.onAddedIdentifier(proteinFetched, xref);
         }
 
         //TODO some introduced aliases may enter a form of conflict - need to do a further comparison.
@@ -138,8 +144,9 @@ public class MinimumProteinEnricher
                 proteinToEnrich.getAliases(),
                 new DefaultAliasComparator());
         for(Alias alias: subtractedAliases){
-            if(listener != null) listener.onAddedAlias(proteinFetched, alias);
+
             proteinToEnrich.getAliases().add(alias);
+            if(listener != null) listener.onAddedAlias(proteinFetched, alias);
         }
 
 

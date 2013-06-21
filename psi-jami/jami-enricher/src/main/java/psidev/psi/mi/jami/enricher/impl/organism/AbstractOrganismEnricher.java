@@ -40,8 +40,10 @@ public abstract class AbstractOrganismEnricher
     protected abstract void processOrganism(Organism organismToEnrich) throws BadEnrichedFormException;
 
 
-    private Organism fetchOrganism(Organism organismToEnrich){
-        return null;
+    private Organism fetchOrganism(Organism organismToEnrich) throws BridgeFailedException {
+        if(organismToEnrich == null) return null;
+
+        return fetcher.getOrganismByTaxID(organismToEnrich.getTaxId());
     }
 
 
