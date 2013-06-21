@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
+import psidev.psi.mi.jami.tab.io.parser.ParseException;
 
 import java.util.Iterator;
 
@@ -24,20 +25,30 @@ public abstract class AbstractMitabIterator<T extends Interaction, B extends Bin
         if (lineParser == null){
             throw new IllegalArgumentException("The Mitab iterator needs a non null lineParser.");
         }
+        this.lineParser = lineParser;
+        processNextBinary();
     }
 
     private void processNextBinary(){
-        if (this.lineParser.hasFinished()){
+        this.nextBinary = null;
 
+        while (!this.lineParser.hasFinished() && this.nextBinary == null){
+            try {
+                this.nextBinary = this.lineParser.MitabLine();
+            } catch (ParseException e) {
+                this.lineParser.getParserListener().onInvalidSyntax(lineParser.getToken(0).beginLine, lineParser.getToken(0).beginColumn, 0);
+            }
         }
     }
 
     public boolean hasNext() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.nextBinary != null;
     }
 
     public T next() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        B currentBinary = this.nextBinary;
+        processNextBinary();
+        return (T)currentBinary;
     }
 
     public void remove() {
