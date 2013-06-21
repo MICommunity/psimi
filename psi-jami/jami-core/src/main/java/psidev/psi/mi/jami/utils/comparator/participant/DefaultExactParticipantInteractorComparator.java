@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
 
 /**
@@ -14,32 +14,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComp
  * @since <pre>30/05/13</pre>
  */
 
-public class DefaultExactParticipantInteractorComparator extends ParticipantInteractorComparator<Participant> {
-
-    private static DefaultExactParticipantInteractorComparator defaultInteractorParticipantComparator;
-
-    /**
-     * Creates a new DefaultExactParticipantInteractorComparator. It will use a DefaultExactInteractorComparator to compare
-     * interactors.
-     */
-    public DefaultExactParticipantInteractorComparator() {
-        super(new DefaultExactInteractorComparator(new DefaultExactComplexComparator(new DefaultExactModelledParticipantInteractorComparator())));
-    }
-
-    @Override
-    public DefaultExactInteractorComparator getInteractorComparator() {
-        return (DefaultExactInteractorComparator) this.interactorComparator;
-    }
-
-    @Override
-    /**
-     * It will compare the interactors using DefaultExactInteractorComparator.
-     *
-     * This comparator will ignore all the other properties of a participant.
-     */
-    public int compare(Participant participant1, Participant participant2) {
-        return super.compare(participant1, participant2);
-    }
+public class DefaultExactParticipantInteractorComparator {
 
     /**
      * Use DefaultExactParticipantInteractorComparator to know if two participants are equals.
@@ -48,10 +23,19 @@ public class DefaultExactParticipantInteractorComparator extends ParticipantInte
      * @return true if the two participants are equal
      */
     public static boolean areEquals(Participant participant1, Participant participant2){
-        if (defaultInteractorParticipantComparator == null){
-            defaultInteractorParticipantComparator = new DefaultExactParticipantInteractorComparator();
-        }
 
-        return defaultInteractorParticipantComparator.compare(participant1, participant2) == 0;
+        if (participant1 == null && participant2 == null){
+            return true;
+        }
+        else if (participant1 == null || participant2 == null){
+            return false;
+        }
+        else {
+            // first compares interactors
+            Interactor interactor1 = participant1.getInteractor();
+            Interactor interactor2 = participant2.getInteractor();
+
+            return DefaultExactInteractorComparator.areEquals(interactor1, interactor2);
+        }
     }
 }

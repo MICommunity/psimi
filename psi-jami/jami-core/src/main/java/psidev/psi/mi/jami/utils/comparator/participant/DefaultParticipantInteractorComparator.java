@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -14,32 +14,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparato
  * @since <pre>16/01/13</pre>
  */
 
-public class DefaultParticipantInteractorComparator extends ParticipantInteractorComparator<Participant> {
-
-    private static DefaultParticipantInteractorComparator defaultInteractorParticipantComparator;
-
-    /**
-     * Creates a new DefaultParticipantInteractorComparator. It will use a DefaultInteractorBaseComparator to compare
-     * interactors.
-     */
-    public DefaultParticipantInteractorComparator() {
-        super(new DefaultInteractorComparator(new DefaultComplexComparator(new DefaultModelledParticipantInteractorComparator())));
-    }
-
-    @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorComparator;
-    }
-
-    @Override
-    /**
-     * It will compare the interactors using DefaultInteractorComparator.
-     *
-     * This comparator will ignore all the other properties of a participant.
-     */
-    public int compare(Participant participant1, Participant participant2) {
-        return super.compare(participant1, participant2);
-    }
+public class DefaultParticipantInteractorComparator {
 
     /**
      * Use DefaultParticipantInteractorComparator to know if two participants are equals.
@@ -48,10 +23,18 @@ public class DefaultParticipantInteractorComparator extends ParticipantInteracto
      * @return true if the two participants are equal
      */
     public static boolean areEquals(Participant participant1, Participant participant2){
-        if (defaultInteractorParticipantComparator == null){
-            defaultInteractorParticipantComparator = new DefaultParticipantInteractorComparator();
+        if (participant1 == null && participant2 == null){
+            return true;
         }
+        else if (participant1 == null || participant2 == null){
+            return false;
+        }
+        else {
+            // first compares interactors
+            Interactor interactor1 = participant1.getInteractor();
+            Interactor interactor2 = participant2.getInteractor();
 
-        return defaultInteractorParticipantComparator.compare(participant1, participant2) == 0;
+            return DefaultInteractorComparator.areEquals(interactor1, interactor2);
+        }
     }
 }

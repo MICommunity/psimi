@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -15,45 +15,27 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparato
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultParticipantEvidenceInteractorComparator extends ParticipantInteractorComparator<ParticipantEvidence> {
-
-    private static DefaultParticipantEvidenceInteractorComparator defaultExperimentalParticipantInteractorComparator;
-
-    /**
-     * Creates a new DefaultParticipantEvidenceInteractorComparator. It will use a DefaultInteractorComparator to compare
-     * the basic properties of a interactor.
-     */
-    public DefaultParticipantEvidenceInteractorComparator() {
-        super(null);
-        setInteractorComparator(new DefaultInteractorComparator(new DefaultComplexComparator(new DefaultModelledParticipantInteractorComparator())));
-    }
-
-    @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorComparator;
-    }
-
-    @Override
-    /**
-     * It will compare the basic properties of aninteractor using DefaultInteractorComparator.
-     *
-     * This comparator will ignore all the other properties of an experimental participant.
-     */
-    public int compare(ParticipantEvidence experimentalParticipant1, ParticipantEvidence experimentalParticipant2) {
-        return super.compare(experimentalParticipant1, experimentalParticipant2);
-    }
+public class DefaultParticipantEvidenceInteractorComparator {
 
     /**
      * Use DefaultParticipantEvidenceInteractorComparator to know if two experimental participants are equals.
-     * @param experimentalParticipant1
-     * @param component2
+     * @param participant1
+     * @param participant2
      * @return true if the two experimental participants are equal
      */
-    public static boolean areEquals(ParticipantEvidence experimentalParticipant1, ParticipantEvidence component2){
-        if (defaultExperimentalParticipantInteractorComparator == null){
-            defaultExperimentalParticipantInteractorComparator = new DefaultParticipantEvidenceInteractorComparator();
+    public static boolean areEquals(ParticipantEvidence participant1, ParticipantEvidence participant2){
+        if (participant1 == null && participant2 == null){
+            return true;
         }
+        else if (participant1 == null || participant2 == null){
+            return false;
+        }
+        else {
+            // first compares interactors
+            Interactor interactor1 = participant1.getInteractor();
+            Interactor interactor2 = participant2.getInteractor();
 
-        return defaultExperimentalParticipantInteractorComparator.compare(experimentalParticipant1, component2) == 0;
+            return DefaultInteractorComparator.areEquals(interactor1, interactor2);
+        }
     }
 }
