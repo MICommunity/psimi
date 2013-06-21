@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.datasource.FileSourceError;
-import psidev.psi.mi.jami.datasource.MIFileDataSource;
-import psidev.psi.mi.jami.datasource.StreamingInteractionSource;
+import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -37,7 +35,6 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
     private Reader originalReader;
 
     private boolean isConsumed = false;
-    private boolean hasValidated = false;
 
     /**
      * Empty constructor for the factory
@@ -117,16 +114,14 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
             this.errors.clear();
             isConsumed = false;
             isInitialised = false;
-            hasValidated = false;
         }
     }
 
-    public boolean validateFileSyntax() {
-        if (hasValidated || isConsumed){
+    public boolean validateSyntax() {
+        if (isConsumed){
             return errors.isEmpty();
         }
         else{
-            hasValidated = true;
             // read the datasource
             Iterator<T> interactionIterator = getInteractionsIterator();
             while(interactionIterator.hasNext()){
@@ -138,91 +133,139 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
     }
 
     public void onTextFoundInIdentifier(MitabXref xref, int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for Unique identifiers and alternative identifiers should be db:id and not db:id(text).", xref));
+        }
     }
 
     public void onMissingCvTermName(CvTerm term, int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for the cv term column "+mitabColumn+" should be db:id(name) and not db:id.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
+        }
     }
 
     public void onTextFoundInConfidence(MitabConfidence conf, int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for the interaction confidences column should be confidence_type:value and not confidence_type:value(text).", conf));
+        }
     }
 
     public void onMissingExpansionId(MitabCvTerm expansion, int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The syntax for the complex expansion column should be db:id(name) and not just a name", expansion));
+        }
     }
 
-    public void onInvalidSyntax(int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void onInvalidSyntax(int line, int column, int mitabColumn, Exception e) {
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: We have an invalid syntax in mitab column "+mitabColumn+"("+e.getClass().toString()+"). The invalid element will be ignored.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
+        }
     }
 
     public void onSeveralUniqueIdentifiers(Collection<MitabXref> ids) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one unique identifiers and we found " +ids.size(), ids.iterator().next()));
+        }
     }
 
     public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: The unique identifier column should not be empty when describing an interactor.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
+        }
     }
 
     public void onEmptyAliases(int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: The alias column should not be empty when describing an interactor.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
+        }
     }
 
     public void onMissingInteractorIdentifierColumns(int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: The unique identifier, alternative identifiers and aliases columns were empty. We expect at least one identifiers and recommend at least one alias.", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
+        }
     }
 
     public void onAliasFoundInAlternativeIds(MitabXref ref, int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: the alternative identifier ("+ref.toString()+") should be moved to the aliases column and will be loaded as an alias.", ref));
+        }
     }
 
     public void onChecksumFoundInAlternativeIds(MitabXref ref, int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: the alternative identifier ("+ref.toString()+") should be moved to the checksum column and will be loaded as a checksum.", ref));
+        }
     }
 
     public void onChecksumFoundInAliases(MitabAlias alias, int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: the alias ("+alias.toString()+") should be moved to the checksum column and will be loaded as a checksum.", alias));
+        }
     }
 
     public void onSeveralCvTermFound(Collection<MitabCvTerm> terms) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one cv term and we found " +terms.size()+". Only the first term will be taken into account", terms.iterator().next()));
+        }
     }
 
     public void onSeveralOrganismFound(Collection<MitabOrganism> organisms) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one organism for each interactor and we found " +organisms.size()+". Only the first organism will be taken into account", organisms.iterator().next()));
+        }
     }
 
     public void onParticipantWithoutInteractorDetails(int line, int column, int mitabColumn) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: the participant does not have any interactor details and is loaded with an unknown interactor", new DefaultFileSourceContext(new MitabSourceLocator(line, column, mitabColumn))));
+        }
     }
 
     public void onSeveralStoichiometryFound(Collection<MitabStoichiometry> stoichiometry) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one stoichiometry for each participant and we found " +stoichiometry.size()+". Only the first stoichiometry will be taken into account", stoichiometry.iterator().next()));
+        }
     }
 
     public void onInteractionWithoutParticipants(int line) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.invalid_syntax.toString(), "ERROR: the interaction does not have any participants. We expect at least one participant.", new DefaultFileSourceContext(new MitabSourceLocator(line, 0, 0))));
+        }
     }
 
     public void onSeveralFirstAuthorFound(Collection<MitabAuthor> authors) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one author and we found " +authors.size()+". Only the first author will be taken into account", authors.iterator().next()));
+        }
     }
 
     public void onSeveralSourceFound(Collection<MitabSource> sources) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one source and we found " +sources.size()+". Only the first source will be taken into account", sources.iterator().next()));
+        }
     }
 
     public void onSeveralHostOrganismFound(Collection<MitabOrganism> organisms) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one host organism and we found " +organisms.size()+". Only the first host organism will be taken into account", organisms.iterator().next()));
+        }
     }
 
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one created date and we found " +dates.size()+". Only the first created date will be taken into account", dates.iterator().next()));
+        }
     }
 
     public void onSeveralUpdatedDateFound(Collection<MitabDate> dates) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if (!isConsumed){
+            this.errors.add(new FileSourceError(FileParsingErrorType.syntax_warning.toString(), "WARN: We expect only one update date and we found " +dates.size()+". Only the first update date will be taken into account", dates.iterator().next()));
+        }
+    }
+
+    public void onEndOfFile() {
+        isConsumed = true;
     }
 
     public Iterator<T> getInteractionsIterator() {

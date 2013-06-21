@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 
@@ -12,7 +13,7 @@ import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
  * @since <pre>11/06/13</pre>
  */
 
-public class MitabStoichiometry extends DefaultStoichiometry {
+public class MitabStoichiometry extends DefaultStoichiometry implements FileSourceContext{
 
     private FileSourceLocator sourceLocator;
 
