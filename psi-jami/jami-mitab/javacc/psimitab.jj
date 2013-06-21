@@ -838,8 +838,8 @@ MitabCvTerm expansion():
   try{
   //db:id(name) or just name for backward compatibility
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" name = safeString() ")" ]
-    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(beginLine, beginColumn, 16);}
-      else if (id == null) {cv = new MitabCvTerm(name); getParserListener().onMissingExpansionId(beginLine, beginColumn, 16);}
+    { if (name == null){cv = new MitabCvTerm(MitabUtils.UNKNOWN_DATABASE, null, db, id); getParserListener().onMissingCvTermName(cv, beginLine, beginColumn, 16);}
+      else if (id == null) {cv = new MitabCvTerm(name); getParserListener().onMissingExpansionId(cv, beginLine, beginColumn, 16);}
       else {cv = new MitabCvTerm(name, null, db, id);}
       cv.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 16));
       return cv;}
@@ -865,7 +865,7 @@ MitabConfidence confidence():
   try{
     type = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" value = safeString() [ "(" text = safeString() ")" ]
     { if (text == null){conf = new MitabConfidence(type, value, null);}
-      else {conf = new MitabConfidence(type, value, text); getParserListener().onTextFoundInConfidence(beginLine, beginColumn, 15);}
+      else {conf = new MitabConfidence(type, value, text); getParserListener().onTextFoundInConfidence(conf, beginLine, beginColumn, 15);}
       conf.setSourceLocator(new MitabSourceLocator(beginLine, beginColumn, 15));
       return conf;}
   }
@@ -1029,14 +1029,14 @@ MitabXref id(CvTerm qualifier, boolean recognizeImexPrimary, int columnNumber):
     db = safeString() {beginLine = token.beginLine; beginColumn = token.beginColumn;} ":" id = safeString() [ "(" text = safeString() ")" ]
     { if (recognizeImexPrimary && Xref.IMEX.equalsIgnoreCase(db.trim())){
          if (text == null){ref = new MitabXref(db, id, CvTermUtils.createImexPrimaryQualifier());}
-         else if (qualifier != null) {ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(beginLine, beginColumn, columnNumber);}
+         else if (qualifier != null) {ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(ref, beginLine, beginColumn, columnNumber);}
          else {ref = new MitabXref(db, id, text);}
        }
        else if (text == null) {
          ref = new MitabXref(db, id, qualifier);
        }
        else if (qualifier != null) {
-          ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(beginLine, beginColumn, columnNumber);
+          ref = new MitabXref(db, id, text); getParserListener().onTextFoundInIdentifier(ref, beginLine, beginColumn, columnNumber);
        }
        else{
           ref = new MitabXref(db, id, text);

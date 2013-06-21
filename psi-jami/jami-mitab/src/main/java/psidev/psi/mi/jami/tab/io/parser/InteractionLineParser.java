@@ -101,11 +101,13 @@ public class InteractionLineParser extends AbstractInteractionLineParser {
         boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !created.isEmpty() || !update.isEmpty();
 
-        if (A == null && B == null && !hasInteractionFields){
+        if (A == null && B == null){
             if (getParserListener() != null){
                 getParserListener().onInteractionWithoutParticipants(line);
             }
-            return interaction;
+            if (!hasInteractionFields){
+                return interaction;
+            }
         }
 
         // create interaction with participants
