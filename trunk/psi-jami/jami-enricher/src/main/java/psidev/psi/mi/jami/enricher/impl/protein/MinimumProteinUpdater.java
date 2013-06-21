@@ -74,30 +74,34 @@ public class MinimumProteinUpdater
     protected void processProtein(Protein proteinToEnrich) throws SeguidException {
         //ShortName - is never null
         if (! proteinToEnrich.getShortName().equalsIgnoreCase(proteinFetched.getShortName() )) {
-            if(listener != null) listener.onShortNameUpdate(proteinToEnrich, proteinToEnrich.getShortName());
+            String oldValue = proteinToEnrich.getShortName();
             proteinToEnrich.setShortName(proteinFetched.getShortName());
+            if(listener != null) listener.onShortNameUpdate(proteinToEnrich, oldValue);
         }
 
         //Full name
         if(proteinFetched.getFullName() != null
                 && ! proteinFetched.getFullName().equalsIgnoreCase(proteinToEnrich.getFullName()) ) {
-            if(listener != null) listener.onFullNameUpdate(proteinToEnrich, proteinToEnrich.getFullName());
-            proteinToEnrich.setFullName(proteinFetched.getFullName());
+            String oldValue = proteinToEnrich.getFullName();
+                    proteinToEnrich.setFullName(proteinFetched.getFullName());
+            if(listener != null) listener.onFullNameUpdate(proteinToEnrich, oldValue);
         }
 
         //PRIMARY Uniprot AC
         if(proteinFetched.getUniprotkb() != null
                 && ! proteinFetched.getUniprotkb().equalsIgnoreCase(proteinToEnrich.getUniprotkb()) ) {
-            if(listener != null) listener.onUniprotKbUpdate(proteinToEnrich, proteinToEnrich.getUniprotkb());
+            String oldValue = proteinToEnrich.getUniprotkb();
             proteinToEnrich.setUniprotkb(proteinFetched.getUniprotkb());
+            if(listener != null) listener.onUniprotKbUpdate(proteinToEnrich, oldValue);
         }
 
         //Sequence
         if(proteinFetched.getSequence() != null
                 && ! isRemapped
                 && ! proteinFetched.getSequence().equalsIgnoreCase(proteinToEnrich.getSequence()) ) {
-            if(listener != null) listener.onSequenceUpdate(proteinToEnrich, proteinToEnrich.getSequence());
+            String oldValue = proteinToEnrich.getSequence();
             proteinToEnrich.setSequence(proteinFetched.getSequence());
+            if(listener != null) listener.onSequenceUpdate(proteinToEnrich, oldValue);
         }
 
         //Checksums

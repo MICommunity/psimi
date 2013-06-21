@@ -15,4 +15,6 @@ public interface ProteinEnricherListener extends ProteinChangeListener{
 
     public void onProteinEnriched(Protein protein, String status);
 
+    public void onProteinRemapped(Protein protein, String oldUniprot);
+
 }

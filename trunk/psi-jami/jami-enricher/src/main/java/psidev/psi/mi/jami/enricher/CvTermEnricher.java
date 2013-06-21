@@ -45,4 +45,7 @@ public interface CvTermEnricher{
 
     public void setCvTermEnricherListener(CvTermEnricherListener listener);
     public CvTermEnricherListener getCvTermEnricherListener();
+
+
+
 }

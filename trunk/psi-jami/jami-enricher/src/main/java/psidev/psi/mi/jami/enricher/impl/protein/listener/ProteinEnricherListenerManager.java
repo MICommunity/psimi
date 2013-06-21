@@ -33,6 +33,12 @@ public class ProteinEnricherListenerManager implements ProteinEnricherListener {
         }
     }
 
+    public void onProteinRemapped(Protein protein, String oldUniprot) {
+        for(ProteinEnricherListener l : proteinEnricherListeners){
+            l.onProteinRemapped(protein, oldUniprot);
+        }
+    }
+
     public void onUniprotKbUpdate(Protein protein, String oldUniprot) {
         for(ProteinEnricherListener l : proteinEnricherListeners){
             l.onUniprotKbUpdate(protein, oldUniprot);
