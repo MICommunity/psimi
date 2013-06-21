@@ -117,9 +117,13 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         boolean hasInteractionFields = !detMethod.isEmpty() || !firstAuthor.isEmpty() || !pubId.isEmpty() || !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !host.isEmpty() || !created.isEmpty() || !update.isEmpty() || isNegative;
 
-        if (A == null && B == null && !hasInteractionFields){
-            getParserListener().onInteractionWithoutParticipants(line);
-            return interaction;
+        if (A == null && B == null){
+            if (getParserListener() != null){
+                getParserListener().onInteractionWithoutParticipants(line);
+            }
+            if (!hasInteractionFields){
+                return interaction;
+            }
         }
 
         // create interaction with participants

@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.tab.listener;
 
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.tab.extension.MitabAuthor;
-import psidev.psi.mi.jami.tab.extension.MitabDate;
+import psidev.psi.mi.jami.tab.extension.*;
 
 import java.util.Collection;
 
@@ -16,17 +14,17 @@ import java.util.Collection;
 
 public interface MitabParserListener {
 
-    public void onTextFoundInIdentifier(int line, int column, int mitabColumn);
+    public void onTextFoundInIdentifier(MitabXref xref, int line, int column, int mitabColumn);
 
-    public void onMissingCvTermName(int line, int column, int mitabColumn);
+    public void onMissingCvTermName(MitabCvTerm term, int line, int column, int mitabColumn);
 
-    public void onTextFoundInConfidence(int line, int column, int mitabColumn);
+    public void onTextFoundInConfidence(MitabConfidence conf, int line, int column, int mitabColumn);
 
-    public void onMissingExpansionId(int line, int column, int mitabColumn);
+    public void onMissingExpansionId(MitabCvTerm expansion, int line, int column, int mitabColumn);
 
     public void onInvalidSyntax(int line, int column, int mitabColumn);
 
-    public void onSeveralUniqueIdentifiers(Collection<? extends Xref> ids);
+    public void onSeveralUniqueIdentifiers(Collection<MitabXref> ids);
 
     public void onEmptyUniqueIdentifiers(int line, int column, int mitabColumn);
 
@@ -34,27 +32,27 @@ public interface MitabParserListener {
 
     public void onMissingInteractorIdentifierColumns(int line, int column, int mitabColumn);
 
-    public void onAliasFoundInAlternativeIds(Xref ref, int line, int column, int mitabColumn);
+    public void onAliasFoundInAlternativeIds(MitabXref ref, int line, int column, int mitabColumn);
 
-    public void onChecksumFoundInAlternativeIds(Xref ref, int line, int column, int mitabColumn);
+    public void onChecksumFoundInAlternativeIds(MitabXref ref, int line, int column, int mitabColumn);
 
-    public void onChecksumFoundInAliases(Alias alias, int line, int column, int mitabColumn);
+    public void onChecksumFoundInAliases(MitabAlias alias, int line, int column, int mitabColumn);
 
-    public void onSeveralCvTermFound(Collection<? extends CvTerm> terms);
+    public void onSeveralCvTermFound(Collection<MitabCvTerm> terms);
 
-    public void onSeveralOrganismFound(Collection<? extends Organism> organisms);
+    public void onSeveralOrganismFound(Collection<MitabOrganism> organisms);
 
     public void onParticipantWithoutInteractorDetails(int line, int column, int mitabColumn);
 
-    public void onSeveralStoichiometryFound(Collection<? extends Stoichiometry> stoichiometry);
+    public void onSeveralStoichiometryFound(Collection<MitabStoichiometry> stoichiometry);
 
     public void onInteractionWithoutParticipants(int line);
 
     public void onSeveralFirstAuthorFound(Collection<MitabAuthor> authors);
 
-    public void onSeveralSourceFound(Collection<? extends Source> sources);
+    public void onSeveralSourceFound(Collection<MitabSource> sources);
 
-    public void onSeveralHostOrganismFound(Collection<? extends Organism> organisms);
+    public void onSeveralHostOrganismFound(Collection<MitabOrganism> organisms);
 
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates);
 
