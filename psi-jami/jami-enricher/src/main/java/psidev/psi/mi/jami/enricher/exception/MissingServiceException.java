@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.enricher.exception;
 
 /**
- * Thrown if the fetcher can not be found
+ * Thrown when a required service is missing.
+ * Examples of services which may be missing include fetcher, enricher or remapper.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/05/13

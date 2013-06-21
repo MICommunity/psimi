@@ -62,7 +62,6 @@ public class ProteinTest {
         participantEnricher.getProteinEnricher().setProteinRemapper(remapper);
         participantEnricher.getProteinEnricher().setProteinEnricherListener(listener);
         participantEnricher.getProteinEnricher().getOrganismEnricher().setOrganismEnricherListener(new OrganismEnricherLogger());
-
     }
 
     //String[] tests = {"P77681"};

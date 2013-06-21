@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.enricher.exception;
 
 /**
- * Created with IntelliJ IDEA.
+ * This exception is thrown when an object being enriched has a value which is unexpected.
+ * Examples may include: empty fields which should contain data, data in an unexpected format.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 11/06/13

@@ -22,6 +22,8 @@ import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 public interface ProteinEnricher {
 
     /**
+     * Takes the provided protein, finds additional information and includes it in the object.
+     *
      *
      *
      * @param proteinToEnrich

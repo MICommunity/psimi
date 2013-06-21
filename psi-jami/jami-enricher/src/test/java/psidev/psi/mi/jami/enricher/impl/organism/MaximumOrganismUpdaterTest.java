@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.enricher.impl.organism;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.enricher.event.EnricherEvent;
 import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
 import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
@@ -27,7 +26,7 @@ public class MaximumOrganismUpdaterTest {
 
     private MaximumOrganismUpdater maximumOrganismUpdater;
     private MockOrganismFetcher fetcher;
-    private EnricherEvent event;
+    //private EnricherEvent event;
 
     private static final String TEST_SCIENTIFICNAME = "test scientificName";
     private static final String TEST_COMMONNAME = "test commonName";
@@ -46,7 +45,7 @@ public class MaximumOrganismUpdaterTest {
         Organism halfOrganism = new DefaultOrganism(TEST_AC_HALF_ORG);
         fetcher.addNewOrganism("" + TEST_AC_HALF_ORG, halfOrganism);
 
-        event = null;
+        //event = null;
     }
 
     /**

@@ -38,6 +38,8 @@ public class CollectionManipulationUtils {
 
 
 
+
+    /*
     public static <Type> void addAndRemove(Collection<Type> newList, Collection<Type> oldList, Comparator<Type> c){
         Collection<Type> itemsToChange = new TreeSet<Type>(c);
         itemsToChange.addAll(oldList);
@@ -56,5 +58,5 @@ public class CollectionManipulationUtils {
             //if(listener != null) listener.onAddedAlias(organismToEnrich , item);
             oldList.add(item);
         }
-    }
+    } */
 }

@@ -123,7 +123,7 @@ public abstract class AbstractProteinRemapper
             }
         }
 
-        else if(!priorityIdentifiers && !prioritySequence){
+        else{// if(!priorityIdentifiers && !prioritySequence){
             mapping = findIdentifierMapping(p);
 
             if (checkingEnabled && !identifierMappingResultsHasNoConflict) {
@@ -141,7 +141,7 @@ public abstract class AbstractProteinRemapper
                     return;
                 }
             }
-            else if (mapping != null) {
+            else{// if (mapping != null) {
                 if(getMappingForSequence(p) != null && getMappingForSequence(p).hasUniqueUniprotId()){
                     if(mapping.equalsIgnoreCase(getMappingForSequence(p).getFinalUniprotId())){
                         p.setUniprotkb(mapping);
@@ -163,9 +163,8 @@ public abstract class AbstractProteinRemapper
             }
         }
 
-        if(listener != null) listener.onRemappingComplete(p,"Failed. Impossible exit case");
-        log.warn("Impossible exit case from the remapping.");
-        return ;
+        //if(listener != null) listener.onRemappingComplete(p,"Failed. Impossible exit case.");
+        //log.warn("Impossible exit case from the remapping.");
     }
 
 

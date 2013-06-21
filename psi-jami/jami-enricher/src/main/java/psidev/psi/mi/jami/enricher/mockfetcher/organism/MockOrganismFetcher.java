@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
+ * An organism fetcher which has no external service.
+ *
+ * Instead, organisms can be loaded into it with a key for retrieval.
+ * The normal fetch methods then retrieve the loaded organism as if it had been an external service.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 24/05/13
