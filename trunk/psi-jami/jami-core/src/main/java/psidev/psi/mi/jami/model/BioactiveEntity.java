@@ -12,6 +12,10 @@ public interface BioactiveEntity extends Molecule {
 
     public static final String BIOACTIVE_ENTITY="bioactive entity";
     public static final String BIOACTIVE_ENTITY_MI="MI:1100";
+    public static final String SMALL_MOLECULE="small molecule";
+    public static final String SMALL_MOLECULE_MI="MI:0328";
+    public static final String POLYSACCHARIDE="polysaccharide";
+    public static final String POLYSACCHARIDE_MI="MI:0904";
 
     /**
      * The CHEBI accession which identifies the bioactive entity.

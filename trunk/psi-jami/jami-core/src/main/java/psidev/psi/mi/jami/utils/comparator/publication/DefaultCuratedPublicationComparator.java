@@ -1,7 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.publication;
 
+import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+
+import java.util.Date;
 
 /**
  * Default curated AbstractPublicationComparator
@@ -12,46 +16,60 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
  * @since <pre>21/12/12</pre>
  */
 
-public class DefaultCuratedPublicationComparator extends CuratedPublicationComparator {
-
-    private static DefaultCuratedPublicationComparator defaultCuratedPublicationComparator;
-
-    /**
-     * Creates a new DefaultCuratedPublicationComparator based on DefaultPublicationComparator
-     */
-    public DefaultCuratedPublicationComparator() {
-        super(new DefaultPublicationComparator(), new DefaultCvTermComparator());
-    }
-
-    @Override
-    public DefaultPublicationComparator getPublicationComparator() {
-        return (DefaultPublicationComparator) publicationComparator;
-    }
-
-    @Override
-    public DefaultCvTermComparator getSourceComparator() {
-        return (DefaultCvTermComparator) sourceComparator;
-    }
-
-    @Override
-    /**
-     * It uses a DefaultPublicationComparator to compares the bibliographic details and then will compare first the curation depth, then the source using DefaultCvTermComparator and then the released date.
-     */
-    public int compare(Publication publication1, Publication publication2) {
-        return super.compare(publication1, publication2);
-    }
+public class DefaultCuratedPublicationComparator {
 
     /**
      * Use DefaultCuratedPublicationComparator to know if two publications are equals.
-     * @param pub1
-     * @param pub2
+     * @param publication1
+     * @param publication2
      * @return true if the two publications are equal
      */
-    public static boolean areEquals(Publication pub1, Publication pub2){
-        if (defaultCuratedPublicationComparator == null){
-            defaultCuratedPublicationComparator = new DefaultCuratedPublicationComparator();
-        }
+    public static boolean areEquals(Publication publication1, Publication publication2){
+        int EQUAL = 0;
+        int BEFORE = -1;
+        int AFTER = 1;
 
-        return defaultCuratedPublicationComparator.compare(pub1, pub2) == 0;
+        if (publication1 == null && publication2 == null){
+            return true;
+        }
+        else if (publication1 == null || publication2 == null){
+            return false;
+        }
+        else {
+
+            if (!DefaultPublicationComparator.areEquals(publication1, publication2)){
+                return false;
+            }
+
+            // compares curation depth
+            CurationDepth depth1 = publication1.getCurationDepth();
+            CurationDepth depth2 = publication2.getCurationDepth();
+
+            if (!depth1.equals(depth2)){
+                return false;
+            }
+
+            // compares sources
+            Source source1 = publication1.getSource();
+            Source source2 = publication2.getSource();
+
+            if (!DefaultCvTermComparator.areEquals(source1, source2)){
+                return false;
+            }
+
+            // compares release dates
+            Date date1 = publication1.getReleasedDate();
+            Date date2 = publication2.getReleasedDate();
+
+            if (date1 == null && date2 == null){
+                return true;
+            }
+            else if (date1 == null || date2 == null){
+                return false;
+            }
+            else {
+                return date1.equals(date2);
+            }
+        }
     }
 }

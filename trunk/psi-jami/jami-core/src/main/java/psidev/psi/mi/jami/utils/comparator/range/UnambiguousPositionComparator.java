@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.utils.comparator.range;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
@@ -28,7 +27,7 @@ public class UnambiguousPositionComparator extends PositionComparator {
      *
      */
     public UnambiguousPositionComparator() {
-        super(new DefaultCvTermComparator());
+        super(new UnambiguousCvTermComparator());
     }
 
     @Override

@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.CausalRelationship;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
@@ -14,48 +16,34 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
  * @since <pre>22/05/13</pre>
  */
 
-public class DefaultCausalRelationshipComparator extends CausalRelationshipComparator {
-
-    private static DefaultCausalRelationshipComparator defaultCausalRelationshipComparator;
-
-    /**
-     * Creates a new causalRelationshipComparator with DefaultCvTermComparator and DefaultParticipantBaseComparator
-     *
-     */
-    public DefaultCausalRelationshipComparator() {
-        super(new DefaultCvTermComparator(), new DefaultParticipantComparator());
-    }
-
-    @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) super.getCvTermComparator();
-    }
-
-    @Override
-    public DefaultParticipantComparator getParticipantComparator() {
-        return (DefaultParticipantComparator) super.getParticipantComparator();
-    }
-
-    @Override
-    /**
-     * It will first compare the relationType using DefaultCvTermComparator. If both relationTypes are identical, it will compare the
-     * target using DefaultParticipantBaseComparator
-     */
-    public int compare(CausalRelationship rel1, CausalRelationship rel2) {
-        return super.compare(rel1, rel2);
-    }
+public class DefaultCausalRelationshipComparator {
 
     /**
      * Use DefaultCausalRelationshipComparator to know if two causalRelationShip are equals.
-     * @param rel1
-     * @param rel2
+     * @param causalRelationship1
+     * @param causalRelationship2
      * @return true if the two causalRelationShip are equal
      */
-    public static boolean areEquals(CausalRelationship rel1, CausalRelationship rel2){
-        if (defaultCausalRelationshipComparator == null){
-            defaultCausalRelationshipComparator = new DefaultCausalRelationshipComparator();
-        }
+    public static boolean areEquals(CausalRelationship causalRelationship1, CausalRelationship causalRelationship2){
 
-        return defaultCausalRelationshipComparator.compare(rel1, rel2) == 0;
+        if (causalRelationship1 == null && causalRelationship2 == null){
+            return true;
+        }
+        else if (causalRelationship1 == null || causalRelationship2 == null){
+            return false;
+        }
+        else {
+            CvTerm relationType1 = causalRelationship1.getRelationType();
+            CvTerm relationType2 = causalRelationship2.getRelationType();
+
+            if (!DefaultCvTermComparator.areEquals(relationType1, relationType2)){
+                return false;
+            }
+
+            Participant p1 = causalRelationship1.getTarget();
+            Participant p2 = causalRelationship2.getTarget();
+
+            return DefaultParticipantComparator.areEquals(p1, p2);
+        }
     }
 }

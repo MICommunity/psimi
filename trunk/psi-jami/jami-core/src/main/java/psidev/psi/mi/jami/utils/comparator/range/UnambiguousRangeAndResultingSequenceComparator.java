@@ -25,12 +25,12 @@ public class UnambiguousRangeAndResultingSequenceComparator extends RangeAndResu
      * Creates a new UnambiguousRangeAndResultingSequenceComparator with UnambiguousPositionComparator
      */
     public UnambiguousRangeAndResultingSequenceComparator() {
-        super(new DefaultPositionComparator());
+        super(new UnambiguousPositionComparator());
     }
 
     @Override
-    public DefaultPositionComparator getPositionComparator() {
-        return (DefaultPositionComparator) this.positionComparator;
+    public UnambiguousPositionComparator getPositionComparator() {
+        return (UnambiguousPositionComparator) this.positionComparator;
     }
 
     @Override
