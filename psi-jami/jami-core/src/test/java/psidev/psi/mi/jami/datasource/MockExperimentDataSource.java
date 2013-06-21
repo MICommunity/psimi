@@ -37,7 +37,7 @@ public class MockExperimentDataSource implements MIFileDataSource {
         // do nothing
     }
 
-    public boolean validateFileSyntax() {
+    public boolean validateSyntax() {
         return true;
     }
 }

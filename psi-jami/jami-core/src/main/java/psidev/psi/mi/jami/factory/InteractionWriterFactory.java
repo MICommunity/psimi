@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.factory;
 
-import psidev.psi.mi.jami.datasource.InteractionDataSourceWriter;
+import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A factory for InteractionDataSourceWriter
+ * A factory for InteractionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -18,7 +18,7 @@ public class InteractionWriterFactory {
 
     private static final InteractionWriterFactory instance = new InteractionWriterFactory();
 
-    private Map<Class<? extends InteractionDataSourceWriter>, Map<String, Object>> registeredDataSourceWriters;
+    private Map<Class<? extends InteractionWriter>, Map<String, Object>> registeredDataSourceWriters;
 
     public static final String OUTPUT_FILE_OPTION_KEY = "output_file_key";
     public static final String OUTPUT_STREAM_OPTION_KEY = "output_stream_key";
@@ -27,7 +27,7 @@ public class InteractionWriterFactory {
     public static final String OUTPUT_FORMAT_OPTION_KEY = "output_format_key";
 
     private InteractionWriterFactory(){
-        registeredDataSourceWriters = new ConcurrentHashMap<Class<? extends InteractionDataSourceWriter>, Map<String, Object>>();
+        registeredDataSourceWriters = new ConcurrentHashMap<Class<? extends InteractionWriter>, Map<String, Object>>();
     }
 
     public static InteractionWriterFactory getInstance() {
@@ -40,9 +40,9 @@ public class InteractionWriterFactory {
      * @param supportedOptions
      * @return
      */
-    public void registerDataSourceWriter(Class<? extends InteractionDataSourceWriter> dataSourceClass, Map<String,Object> supportedOptions){
+    public void registerDataSourceWriter(Class<? extends InteractionWriter> dataSourceClass, Map<String,Object> supportedOptions){
         if (dataSourceClass == null){
-            throw new IllegalArgumentException("Cannot register a InteractionDataSourceWriter without a interactionDataSourceWriterClass");
+            throw new IllegalArgumentException("Cannot register a InteractionWriter without a interactionDataSourceWriterClass");
         }
 
         registeredDataSourceWriters.put(dataSourceClass, supportedOptions != null ? supportedOptions : new ConcurrentHashMap<String, Object>());
@@ -52,7 +52,7 @@ public class InteractionWriterFactory {
      * Remove the interactionDataSourceWriter from this factory
      * @param dataSourceClass
      */
-    public void removeDataSourceWriter(Class<? extends InteractionDataSourceWriter> dataSourceClass){
+    public void removeDataSourceWriter(Class<? extends InteractionWriter> dataSourceClass){
         registeredDataSourceWriters.remove(dataSourceClass);
     }
 
@@ -63,9 +63,9 @@ public class InteractionWriterFactory {
         registeredDataSourceWriters.clear();
     }
 
-    private InteractionDataSourceWriter instantiateNewDataSource(Class<? extends InteractionDataSourceWriter> dataSourceClass, Map<String, Object> options) throws IllegalAccessException, InstantiationException, DataSourceWriterException {
+    private InteractionWriter instantiateNewDataSource(Class<? extends InteractionWriter> dataSourceClass, Map<String, Object> options) throws IllegalAccessException, InstantiationException, DataSourceWriterException {
 
-        InteractionDataSourceWriter dataSource = dataSourceClass.newInstance();
+        InteractionWriter dataSource = dataSourceClass.newInstance();
         dataSource.initialiseContext(options);
 
         return dataSource;
