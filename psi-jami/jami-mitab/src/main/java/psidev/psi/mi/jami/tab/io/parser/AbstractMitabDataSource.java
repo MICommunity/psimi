@@ -122,11 +122,17 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
     }
 
     public boolean validateFileSyntax() {
-        if (hasValidated){
+        if (hasValidated || isConsumed){
             return errors.isEmpty();
         }
         else{
             hasValidated = true;
+            // read the datasource
+            Iterator<T> interactionIterator = getInteractionsIterator();
+            while(interactionIterator.hasNext()){
+                interactionIterator.next();
+            }
+            isConsumed = true;
             return errors.isEmpty();
         }
     }
@@ -219,8 +225,12 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public Iterator<? extends Interaction> getInteractionsIterator() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Iterator<T> getInteractionsIterator() {
+        // reset parser if possible
+        if (isConsumed){
+           reInit();
+        }
+        return createMitabIterator();
     }
 
     protected MitabLineParser<B,P> getLineParser() {
@@ -236,6 +246,8 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
     protected abstract void initialiseMitabLineParser(File file);
 
     protected abstract void initialiseMitabLineParser(InputStream input);
+
+    protected abstract Iterator<T> createMitabIterator();
 
     protected void reInit(){
         if (isInitialised){
