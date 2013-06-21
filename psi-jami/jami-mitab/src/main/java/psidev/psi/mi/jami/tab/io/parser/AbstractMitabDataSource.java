@@ -379,4 +379,16 @@ public abstract class AbstractMitabDataSource<T extends Interaction, B extends B
 
         initialiseMitabLineParser(file);
     }
+
+    protected void setOriginalFile(File originalFile) {
+        this.originalFile = originalFile;
+    }
+
+    protected void setOriginalStream(InputStream originalStream) {
+        this.originalStream = originalStream;
+    }
+
+    protected void setOriginalReader(Reader originalReader) {
+        this.originalReader = originalReader;
+    }
 }
