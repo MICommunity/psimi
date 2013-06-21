@@ -23,7 +23,7 @@ public interface MitabParserListener {
 
     public void onMissingExpansionId(MitabCvTerm expansion, int line, int column, int mitabColumn);
 
-    public void onInvalidSyntax(int line, int column, int mitabColumn);
+    public void onInvalidSyntax(int line, int column, int mitabColumn, Exception e);
 
     public void onSeveralUniqueIdentifiers(Collection<MitabXref> ids);
 
@@ -58,4 +58,6 @@ public interface MitabParserListener {
     public void onSeveralCreatedDateFound(Collection<MitabDate> dates);
 
     public void onSeveralUpdatedDateFound(Collection<MitabDate> dates);
+
+    public void onEndOfFile();
 }

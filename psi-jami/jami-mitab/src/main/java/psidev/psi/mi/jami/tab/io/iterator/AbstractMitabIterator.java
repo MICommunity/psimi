@@ -36,7 +36,7 @@ public abstract class AbstractMitabIterator<T extends Interaction, B extends Bin
             try {
                 this.nextBinary = this.lineParser.MitabLine();
             } catch (ParseException e) {
-                this.lineParser.getParserListener().onInvalidSyntax(lineParser.getToken(0).beginLine, lineParser.getToken(0).beginColumn, 0);
+                this.lineParser.getParserListener().onInvalidSyntax(lineParser.getToken(0).beginLine, lineParser.getToken(0).beginColumn, 0, e);
             }
         }
     }

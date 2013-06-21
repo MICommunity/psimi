@@ -66,9 +66,9 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
     }
 
     @Override
-    void fireOnInvalidSyntax(int numberLine, int numberColumn, int mitabColumn, boolean isRange) {
+    void fireOnInvalidSyntax(int numberLine, int numberColumn, int mitabColumn, boolean isRange, Exception e) {
         if (this.listener != null){
-            this.listener.onInvalidSyntax(numberLine, numberColumn, mitabColumn);
+            this.listener.onInvalidSyntax(numberLine, numberColumn, mitabColumn, e);
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
         super.ReInit(tm);
     }
 
-    public boolean isHasFinished() {
+    public boolean hasFinished() {
         return hasFinished;
     }
 

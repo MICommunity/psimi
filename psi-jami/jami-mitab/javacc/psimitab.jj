@@ -27,14 +27,14 @@ import psidev.psi.mi.jami.tab.utils.MitabUtils;
 public abstract class MitabLineParser<T extends BinaryInteraction, P extends Participant> {
 	
 	void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
-	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);
+	    fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange, e);
 	}
 
 	public abstract MitabParserListener getParserListener();
 
 	public abstract void setParserListener(MitabParserListener listener);
 
-    abstract void fireOnInvalidSyntax(int lineNumber, int columnNumber, int mitabColumn, boolean isRange);
+    abstract void fireOnInvalidSyntax(int lineNumber, int columnNumber, int mitabColumn, boolean isRange, Exception e);
 
     abstract void reachEndOfFile();
 
@@ -260,7 +260,7 @@ T MitabLine():
     (
         "\n"
       |
-        (<EOF> {reachEndOfFile();})
+        (<EOF> {reachEndOfFile(); getParserListener().onEndOfFile();})
     )
 )
   { return null; }
