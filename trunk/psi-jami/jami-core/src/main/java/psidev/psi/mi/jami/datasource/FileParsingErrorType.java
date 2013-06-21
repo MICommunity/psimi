@@ -15,6 +15,6 @@ public enum FileParsingErrorType {
     missing_database, missing_database_accession, invalid_feature_range, missing_publication, missing_interaction_detection_method,
     missing_interactor_type, missing_alias_name, missing_annotation_topic,
     missing_confidence_type, missing_confidence_value, interaction_evidence_without_experiment, missing_parameter_type, missing_parameter_factor,
-    participant_without_interactor, missing_range_status, missing_range_position
+    participant_without_interactor, missing_range_status, missing_range_position, fatal
 
 }
