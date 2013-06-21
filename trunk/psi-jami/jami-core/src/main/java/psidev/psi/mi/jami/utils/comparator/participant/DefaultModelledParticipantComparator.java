@@ -1,9 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultComplexComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Default biological participant comparator.
@@ -16,45 +19,82 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparato
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultModelledParticipantComparator extends ModelledParticipantComparator {
-
-    private static DefaultModelledParticipantComparator defaultBiologicalParticipantComparator;
-
-    /**
-     * Creates a new DefaultModelledParticipantComparator. It will use a DefaultParticipantBaseComparator to compare
-     * the basic properties of a participant.
-     */
-    public DefaultModelledParticipantComparator() {
-        super(new DefaultModelledFeatureComparator());
-        setParticipantBaseComparator(new DefaultParticipantBaseComparator(new DefaultInteractorComparator(new DefaultComplexComparator(this))));
-    }
-
-    @Override
-    public DefaultParticipantBaseComparator getParticipantBaseComparator() {
-        return (DefaultParticipantBaseComparator) this.participantBaseComparator;
-    }
-
-    @Override
-    /**
-     * It will compare the basic properties of a biological participant using DefaultParticipantBaseComparator.
-     *
-     * This comparator will ignore all the other properties of a biological participant.
-     */
-    public int compare(ModelledParticipant participant1, ModelledParticipant participant2) {
-        return super.compare(participant1, participant2);
-    }
+public class DefaultModelledParticipantComparator {
 
     /**
      * Use DefaultModelledParticipantComparator to know if two components are equals.
-     * @param participant1
-     * @param participant2
+     * @param bioParticipant1
+     * @param bioParticipant2
      * @return true if the two components are equal
      */
-    public static boolean areEquals(ModelledParticipant participant1, ModelledParticipant participant2){
-        if (defaultBiologicalParticipantComparator == null){
-            defaultBiologicalParticipantComparator = new DefaultModelledParticipantComparator();
-        }
+    public static boolean areEquals(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2, boolean checkComplexesAsInteractors){
 
-        return defaultBiologicalParticipantComparator.compare(participant1, participant2) == 0;
+        if (bioParticipant1 == null && bioParticipant2 == null){
+            return true;
+        }
+        else if (bioParticipant1 == null || bioParticipant2 == null){
+            return false;
+        }
+        else {
+            boolean ignoreInteractors = false;
+            if (!checkComplexesAsInteractors){
+                // the bioparticipant 1 contains a complex that self interacts
+                if (bioParticipant1.getInteractor() == bioParticipant1.getModelledInteraction()){
+                    // the bioparticipant 2 contains a complex that self interacts
+                    if (bioParticipant2.getInteractor() == bioParticipant2.getModelledInteraction()){
+                        ignoreInteractors = true;
+                    }
+                    // the bioparticipant 2 is not self, it comes after the self participant
+                    else {
+                        return false;
+                    }
+                }
+                // the bioparticipant 2 contains a complex that self interacts, comes before
+                else if (bioParticipant2.getInteractor() == bioParticipant2.getModelledInteraction()){
+                    return false;
+                }
+            }
+
+            if (!DefaultParticipantBaseComparator.areEquals(bioParticipant1, bioParticipant2, ignoreInteractors)){
+                return false;
+            }
+
+            // then compares the features
+            Collection<ModelledFeature> features1 = bioParticipant1.getFeatures();
+            Collection<ModelledFeature> features2 = bioParticipant2.getFeatures();
+
+            if (features1.size() != features2.size()){
+                return false;
+            }
+            else {
+                Iterator<ModelledFeature> f1Iterator = new ArrayList<ModelledFeature>(features1).iterator();
+                Collection<ModelledFeature> f2List = new ArrayList<ModelledFeature>(features2);
+
+                while (f1Iterator.hasNext()){
+                    ModelledFeature f1 = f1Iterator.next();
+                    ModelledFeature f2ToRemove = null;
+                    for (ModelledFeature f2 : f2List){
+                        if (DefaultModelledFeatureComparator.areEquals(f1, f2)){
+                            f2ToRemove = f2;
+                            break;
+                        }
+                    }
+                    if (f2ToRemove != null){
+                        f2List.remove(f2ToRemove);
+                        f1Iterator.remove();
+                    }
+                    else {
+                        return false;
+                    }
+                }
+
+                if (f1Iterator.hasNext() || !f2List.isEmpty()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+        }
     }
 }

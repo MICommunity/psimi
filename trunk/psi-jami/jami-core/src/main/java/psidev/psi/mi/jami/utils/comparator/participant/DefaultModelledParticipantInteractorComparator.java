@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
@@ -15,55 +15,28 @@ import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparato
  * @since <pre>13/02/13</pre>
  */
 
-public class DefaultModelledParticipantInteractorComparator extends ParticipantInteractorComparator<ModelledParticipant> implements CustomizableModelledParticipantComparator {
-
-    private static DefaultModelledParticipantInteractorComparator defaultBiologicalParticipantInteractorComparator;
-
-    private boolean checkComplexesAsInteractor = true;
-
-    /**
-     * Creates a new DefaultComponentInteractorComparator. It will use a DefaultParticipantInteractorComparator to compare
-     * the basic properties of a participant.
-     */
-    public DefaultModelledParticipantInteractorComparator() {
-        super(null);
-        setInteractorComparator(new DefaultInteractorComparator(new DefaultComplexComparator(this)));
-    }
-
-    @Override
-    public DefaultInteractorComparator getInteractorComparator() {
-        return (DefaultInteractorComparator) this.interactorComparator;
-    }
-
-    @Override
-    /**
-     * It will compare the basic properties of a biological participant using DefaultParticipantInteractorComparator.
-     *
-     * This comparator will ignore all the other properties of a biological participant.
-     */
-    public int compare(ModelledParticipant component1, ModelledParticipant component2) {
-        return checkComplexesAsInteractor ? super.compare(component1, component2) : 0;
-    }
+public class DefaultModelledParticipantInteractorComparator {
 
     /**
      * Use DefaultModelledParticipantInteractorComparator to know if two biological participants are equals.
-     * @param component1
-     * @param component2
+     * @param participant1
+     * @param participant2
      * @return true if the two biological participants are equal
      */
-    public static boolean areEquals(ModelledParticipant component1, ModelledParticipant component2){
-        if (defaultBiologicalParticipantInteractorComparator == null){
-            defaultBiologicalParticipantInteractorComparator = new DefaultModelledParticipantInteractorComparator();
+    public static boolean areEquals(ModelledParticipant participant1, ModelledParticipant participant2){
+
+        if (participant1 == null && participant2 == null){
+            return true;
         }
+        else if (participant1 == null || participant2 == null){
+            return false;
+        }
+        else {
+            // first compares interactors
+            Interactor interactor1 = participant1.getInteractor();
+            Interactor interactor2 = participant2.getInteractor();
 
-        return defaultBiologicalParticipantInteractorComparator.compare(component1, component2) == 0;
-    }
-
-    public boolean isCheckComplexesAsInteractors() {
-        return checkComplexesAsInteractor;
-    }
-
-    public void setCheckComplexesAsInteractors(boolean checkComplexesAsInteractors) {
-        this.checkComplexesAsInteractor = checkComplexesAsInteractors;
+            return DefaultInteractorComparator.areEquals(interactor1, interactor2);
+        }
     }
 }

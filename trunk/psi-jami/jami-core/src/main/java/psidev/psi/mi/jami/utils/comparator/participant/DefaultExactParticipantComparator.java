@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 
 /**
  * Generic default exact participant comparator.
@@ -14,44 +16,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultExactParticipantComparator extends ParticipantComparator {
-
-    private static DefaultExactParticipantComparator defaultExactParticipantComparator;
-
-    /**
-     * Creates a DefaultExactParticipantComparator. It will use a DefaultExactParticipantBaseComparator to compare basic feature properties
-     */
-    public DefaultExactParticipantComparator() {
-        super(new DefaultExactParticipantBaseComparator(), new DefaultExactParticipantEvidenceComparator(),
-                new DefaultExactModelledParticipantComparator());
-    }
-
-    @Override
-    public DefaultExactParticipantBaseComparator getParticipantBaseComparator() {
-        return (DefaultExactParticipantBaseComparator) this.participantBaseComparator;
-    }
-
-    @Override
-    public DefaultExactParticipantEvidenceComparator getExperimentalParticipantComparator() {
-        return (DefaultExactParticipantEvidenceComparator) this.experimentalParticipantComparator;
-    }
-
-    @Override
-    public DefaultExactModelledParticipantComparator getBiologicalParticipantComparator() {
-        return (DefaultExactModelledParticipantComparator) super.getBiologicalParticipantComparator();
-    }
-
-    @Override
-    /**
-     * Modelled participants and then experimental participants.
-     * - It uses DefaultExactComponentComparator to compare components
-     * - It uses DefaultExactParticipantEvidenceComparator to compare experimental participants
-     * - It uses DefaultExactParticipantBaseComparator to compare basic participant properties
-     *
-     */
-    public int compare(Participant participant1, Participant participant2) {
-        return super.compare(participant1, participant2);
-    }
+public class DefaultExactParticipantComparator {
 
     /**
      * Use DefaultExactParticipantComparator to know if two participants are equals.
@@ -60,10 +25,39 @@ public class DefaultExactParticipantComparator extends ParticipantComparator {
      * @return true if the two participants are equal
      */
     public static boolean areEquals(Participant participant1, Participant participant2){
-        if (defaultExactParticipantComparator == null){
-            defaultExactParticipantComparator = new DefaultExactParticipantComparator();
-        }
 
-        return defaultExactParticipantComparator.compare(participant1, participant2) == 0;
+        if (participant1 == null && participant2 == null){
+            return true;
+        }
+        else if (participant1 == null || participant2 == null){
+            return false;
+        }
+        else {
+            // first check if both participants are from the same interface
+
+            // both are biological participants
+            boolean isBiologicalParticipant1 = participant1 instanceof ModelledParticipant;
+            boolean isBiologicalParticipant2 = participant2 instanceof ModelledParticipant;
+            if (isBiologicalParticipant1 && isBiologicalParticipant2){
+                return DefaultExactModelledParticipantComparator.areEquals((ModelledParticipant) participant1, (ModelledParticipant) participant2, true);
+            }
+            else if (isBiologicalParticipant1 || isBiologicalParticipant2){
+                return false;
+            }
+            else {
+                // both are experimental participants
+                boolean isExperimentalParticipant1 = participant1 instanceof ParticipantEvidence;
+                boolean isExperimentalParticipant2 = participant2 instanceof ParticipantEvidence;
+                if (isExperimentalParticipant1 && isExperimentalParticipant2){
+                    return DefaultExactParticipantEvidenceComparator.areEquals((ParticipantEvidence) participant1, (ParticipantEvidence) participant2);
+                }
+                else if (isExperimentalParticipant1 || isExperimentalParticipant2){
+                    return false;
+                }
+                else {
+                    return DefaultExactParticipantBaseComparator.areEquals(participant1, participant2, false);
+                }
+            }
+        }
     }
 }
