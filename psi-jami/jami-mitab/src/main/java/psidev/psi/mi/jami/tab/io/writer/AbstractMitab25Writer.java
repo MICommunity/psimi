@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.datasource.InteractionDataSourceWriter;
+import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Interaction;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @since <pre>11/06/13</pre>
  */
 
-public abstract class AbstractMitab25Writer<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements InteractionDataSourceWriter<T>{
+public abstract class AbstractMitab25Writer<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements InteractionWriter<T>{
 
     private ComplexExpansionMethod<T, B> expansionMethod;
     private AbstractMitab25BinaryWriter<B, P> binaryWriter;
@@ -87,9 +87,6 @@ public abstract class AbstractMitab25Writer<T extends Interaction, B extends Bin
         if (options == null && this.binaryWriter == null){
             throw new IllegalArgumentException("The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
                     + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
-        }
-        else if (options == null){
-             return;
         }
         else if (options.containsKey(InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY)){
             try {

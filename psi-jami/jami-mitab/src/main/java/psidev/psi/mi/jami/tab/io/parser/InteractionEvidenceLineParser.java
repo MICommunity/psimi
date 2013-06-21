@@ -21,7 +21,7 @@ import java.util.Iterator;
  * @since <pre>18/06/13</pre>
  */
 
-public class InteractionEvidenceLineParser extends AbstractInteractionLineParser {
+public class InteractionEvidenceLineParser extends AbstractInteractionLineParser<BinaryInteractionEvidence, ParticipantEvidence> {
 
     public InteractionEvidenceLineParser(InputStream stream) {
         super(stream);
@@ -112,7 +112,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
     }
 
     @Override
-    MitabBinaryInteractionEvidence finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+    MitabBinaryInteractionEvidence finishInteraction(ParticipantEvidence A, ParticipantEvidence B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
         MitabBinaryInteractionEvidence interaction = null;
         boolean hasInteractionFields = !detMethod.isEmpty() || !firstAuthor.isEmpty() || !pubId.isEmpty() || !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !host.isEmpty() || !created.isEmpty() || !update.isEmpty() || isNegative;
@@ -127,7 +127,7 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
         }
 
         // create interaction with participants
-        interaction = new MitabBinaryInteractionEvidence((MitabParticipantEvidence) A, (MitabParticipantEvidence)B);
+        interaction = new MitabBinaryInteractionEvidence(A, B);
 
         // create publication
         MitabPublication publication = createPublicationFrom(firstAuthor, pubId, source);

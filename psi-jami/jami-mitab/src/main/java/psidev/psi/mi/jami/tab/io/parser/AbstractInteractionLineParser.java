@@ -2,10 +2,7 @@ package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Checksum;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
@@ -25,10 +22,11 @@ import java.util.Iterator;
  * @since <pre>20/06/13</pre>
  */
 
-public abstract class AbstractInteractionLineParser extends MitabLineParser {
+public abstract class AbstractInteractionLineParser<T extends BinaryInteraction, P extends Participant> extends MitabLineParser<T,P> {
 
     private MitabParserListener listener;
     private MitabInteractorFactory interactorFactory;
+    private boolean hasFinished = false;
 
     public AbstractInteractionLineParser(InputStream stream) {
         super(stream);
@@ -72,6 +70,39 @@ public abstract class AbstractInteractionLineParser extends MitabLineParser {
         if (this.listener != null){
             this.listener.onInvalidSyntax(numberLine, numberColumn, mitabColumn);
         }
+    }
+
+    @Override
+    void reachEndOfFile() {
+        this.hasFinished = true;
+    }
+
+    @Override
+    public void ReInit(InputStream stream) {
+        hasFinished = false;
+        super.ReInit(stream);
+    }
+
+    @Override
+    public void ReInit(InputStream stream, String encoding) {
+        hasFinished = false;
+        super.ReInit(stream, encoding);
+    }
+
+    @Override
+    public void ReInit(Reader stream) {
+        hasFinished = false;
+        super.ReInit(stream);
+    }
+
+    @Override
+    public void ReInit(MitabLineParserTokenManager tm) {
+        hasFinished = false;
+        super.ReInit(tm);
+    }
+
+    public boolean isHasFinished() {
+        return hasFinished;
     }
 
     protected void initialiseInteractionIdentifiers(Collection<MitabXref> interactionIds, BinaryInteraction interaction){

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
+import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.extension.*;
@@ -19,7 +20,7 @@ import java.util.Collection;
  * @since <pre>20/06/13</pre>
  */
 
-public class InteractionLineParser extends AbstractInteractionLineParser {
+public class InteractionLineParser extends AbstractInteractionLineParser<BinaryInteraction, Participant> {
 
     public InteractionLineParser(InputStream stream) {
         super(stream);

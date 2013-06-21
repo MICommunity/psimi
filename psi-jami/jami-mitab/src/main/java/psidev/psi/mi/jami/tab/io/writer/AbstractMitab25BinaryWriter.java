@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.tab.io.writer;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.datasource.InteractionDataSourceWriter;
+import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Participant;
@@ -23,7 +23,7 @@ import java.util.Map;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P extends Participant> implements InteractionDataSourceWriter<T> {
+public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P extends Participant> implements InteractionWriter<T> {
 
     private Writer writer;
     private boolean isInitialised = false;

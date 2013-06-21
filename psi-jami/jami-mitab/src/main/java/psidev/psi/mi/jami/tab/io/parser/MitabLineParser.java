@@ -16,31 +16,35 @@ import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
-public abstract class MitabLineParser implements MitabLineParserConstants {
+public abstract class MitabLineParser<T extends BinaryInteraction, P extends Participant> implements MitabLineParserConstants {
 
         void processSyntaxError(int lineNumber, int columnNumber, int mitabColumn, Exception e, boolean isRange) {
             fireOnInvalidSyntax(lineNumber, columnNumber, mitabColumn, isRange);
         }
 
-        abstract MitabParserListener getParserListener();
+        public abstract MitabParserListener getParserListener();
 
-        abstract void setParserListener(MitabParserListener listener);
+        public abstract void setParserListener(MitabParserListener listener);
 
     abstract void fireOnInvalidSyntax(int lineNumber, int columnNumber, int mitabColumn, boolean isRange);
 
-        abstract Participant finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid , Collection<MitabAlias> aliases,
+    abstract void reachEndOfFile();
+
+    public abstract boolean hasFinished();
+
+        abstract P finishParticipant(Collection<MitabXref> uniqueId, Collection<MitabXref> altid , Collection<MitabAlias> aliases,
                                                Collection<MitabOrganism> taxid, Collection<MitabCvTerm> bioRole, Collection<MitabCvTerm> expRole,
                                                Collection<MitabCvTerm> type, Collection<MitabXref> xref, Collection<MitabAnnotation> annot,
                                                Collection<MitabChecksum> checksum, Collection<MitabFeature> feature, Collection<MitabStoichiometry> stc,
                                                Collection<MitabCvTerm> detMethod, int line, int column, int mitabColumn);
-        abstract BinaryInteraction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor,
+        abstract T finishInteraction(P A, P B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor,
                                                Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source,
                                                Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion,
                                                Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host,
                                                Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update,
                                                Collection<MitabChecksum> checksumI, boolean isNegative, int line);
 
-  final public Interaction MitabLine() throws ParseException {
+  final public T MitabLine() throws ParseException {
   Collection<MitabXref> uniqueIdA;
   Collection<MitabXref> uniqueIdB;
   Collection<MitabXref> altIdA;
@@ -84,8 +88,8 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
   Collection<MitabCvTerm> pmethodA = Collections.EMPTY_LIST;
   Collection<MitabCvTerm> pmethodB = Collections.EMPTY_LIST;
   EnumSet<TokenKind> enumSet = EnumSet.of(TokenKind.LINE_SEPARATOR);
-  Participant participantA;
-  Participant participantB;
+  P participantA;
+  P participantB;
   int line;
   int columnA;
   int columnB;
@@ -771,6 +775,7 @@ public abstract class MitabLineParser implements MitabLineParserConstants {
       break;
     case 0:
       jj_consume_token(0);
+                reachEndOfFile();
       break;
     default:
       jj_la1[46] = jj_gen;

@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.tab.io.parser;
 
+import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.utils.InteractorUtils;
 
@@ -18,7 +18,7 @@ import java.util.Collection;
  * @since <pre>20/06/13</pre>
  */
 
-public class ModelledInteractionLineParser extends AbstractInteractionLineParser {
+public class ModelledInteractionLineParser extends AbstractInteractionLineParser<ModelledBinaryInteraction, ModelledParticipant> {
 
     public ModelledInteractionLineParser(InputStream stream) {
         super(stream);
@@ -95,7 +95,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
     }
 
     @Override
-    MitabModelledBinaryInteraction finishInteraction(Participant A, Participant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
+    MitabModelledBinaryInteraction finishInteraction(ModelledParticipant A, ModelledParticipant B, Collection<MitabCvTerm> detMethod, Collection<MitabAuthor> firstAuthor, Collection<MitabXref> pubId, Collection<MitabCvTerm> interactionType, Collection<MitabSource> source, Collection<MitabXref> interactionId, Collection<MitabConfidence> conf, Collection<MitabCvTerm> expansion, Collection<MitabXref> xrefI, Collection<MitabAnnotation> annotI, Collection<MitabOrganism> host, Collection<MitabParameter> params, Collection<MitabDate> created, Collection<MitabDate> update, Collection<MitabChecksum> checksumI, boolean isNegative, int line) {
         MitabModelledBinaryInteraction interaction = null;
         boolean hasInteractionFields = !interactionType.isEmpty() || !source.isEmpty() || !interactionId.isEmpty() || !conf.isEmpty() || !expansion.isEmpty()
                 || !xrefI.isEmpty() || !annotI.isEmpty() || !checksumI.isEmpty() || !params.isEmpty() || !created.isEmpty() || !update.isEmpty();
@@ -110,7 +110,7 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
         }
 
         // create interaction with participants
-        interaction = new MitabModelledBinaryInteraction((ModelledParticipant) A, (ModelledParticipant)B);
+        interaction = new MitabModelledBinaryInteraction(A, B);
 
         // set interaction type
         if (interactionType.size() > 1){
