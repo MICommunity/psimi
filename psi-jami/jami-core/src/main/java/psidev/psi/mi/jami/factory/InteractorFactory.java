@@ -2,8 +2,6 @@ package psidev.psi.mi.jami.factory;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.io.IOException;
 import java.util.*;
@@ -19,12 +17,12 @@ import java.util.*;
 
 public class InteractorFactory {
 
-    private Map<CvTerm, String> deterministicInteractorMap;
+    private Map<String, String> deterministicInteractorNameMap;
+    private Map<String, String> deterministicInteractorIdMap;
 
     public InteractorFactory(){
-        // the map will check id and name with default cv term comparator
-        deterministicInteractorMap = new TreeMap<CvTerm, String>(new DefaultCvTermComparator());
-        initialiseDeterministicInteractorMap();
+
+        initialiseDeterministicInteractorMaps();
     }
 
     /**
@@ -34,18 +32,27 @@ public class InteractorFactory {
      * @return the proper instance of the interactor if the type is recognized. It returns null otherwise.
      */
     public Interactor createInteractorFromInteractorType(CvTerm type, String name){
+        if (type == null){
+            return null;
+        }
 
-        if (this.deterministicInteractorMap.containsKey(type)){
-            String recognizedType = this.deterministicInteractorMap.get(type);
+        String typeName = type.getShortName().toLowerCase().trim();
+        String typeMI = type.getMIIdentifier();
+
+        if (typeMI != null && this.deterministicInteractorIdMap.containsKey(typeMI)){
+            String recognizedType = this.deterministicInteractorIdMap.get(typeMI);
+
+            return createInteractorFromRecognizedCategory(recognizedType, name, type);
+        }
+        else if (typeMI == null && this.deterministicInteractorNameMap.containsKey(typeName)){
+            String recognizedType = this.deterministicInteractorNameMap.get(typeName);
 
             return createInteractorFromRecognizedCategory(recognizedType, name, type);
         }
         // we have a valid type that is not unknown or null
-        else if (DefaultCvTermComparator.areEquals(CvTermUtils.getUnknownInteractorType(), type)){
+        else {
             return createInteractor(name, type);
         }
-
-        return null;
     }
 
     /**
@@ -55,11 +62,21 @@ public class InteractorFactory {
      * @return the proper instance of the interactor if the database is recognized. It returns null otherwise.
      */
     public Interactor createInteractorFromDatabase(CvTerm database, String name){
+        if (database == null){
+            return null;
+        }
+        String databaseName = database.getShortName().toLowerCase().trim();
+        String databaseMI = database.getMIIdentifier();
 
-        if (this.deterministicInteractorMap.containsKey(database)){
-            String recognizedType = this.deterministicInteractorMap.get(database);
+        if (databaseMI != null && this.deterministicInteractorIdMap.containsKey(databaseMI)){
+            String recognizedType = this.deterministicInteractorIdMap.get(databaseMI);
 
-            return createInteractorFromRecognizedCategory(recognizedType, name, database);
+            return createInteractorFromRecognizedCategory(recognizedType, name, null);
+        }
+        else if (databaseMI == null && this.deterministicInteractorNameMap.containsKey(databaseName)){
+            String recognizedType = this.deterministicInteractorNameMap.get(databaseName);
+
+            return createInteractorFromRecognizedCategory(recognizedType, name, null);
         }
 
         return null;
@@ -67,14 +84,14 @@ public class InteractorFactory {
 
     /**
      * Return the proper instance of the interactor if the database is recognized (the interactor will be returned on the first database which is recognized). It returns null otherwise.
-     * @param databases
+     * @param xrefs
      * @param name
      * @return the proper instance of the interactor if the database is recognized (the interactor will be returned on the first database which is recognized). It returns null otherwise.
      */
-    public Interactor createInteractorFromIdentityXrefs(Collection<? extends Xref> databases, String name){
+    public Interactor createInteractorFromIdentityXrefs(Collection<? extends Xref> xrefs, String name){
 
         Interactor interactor = null;
-        Iterator<? extends Xref> xrefsIterator = databases.iterator();
+        Iterator<? extends Xref> xrefsIterator = xrefs.iterator();
         while (interactor == null && xrefsIterator.hasNext()){
 
             interactor = createInteractorFromDatabase(xrefsIterator.next().getDatabase(), name);
@@ -83,39 +100,91 @@ public class InteractorFactory {
         return interactor;
     }
 
+    /**
+     * Creates a new Protein with the name and interactor type
+     * @param name
+     * @param type
+     * @return
+     */
     public Protein createProtein(String name, CvTerm type){
         return new DefaultProtein(name, type);
     }
 
+    /**
+     * Creates a new NucleicAcid with the name and interactor type
+     * @param name
+     * @param type
+     * @return
+     */
     public NucleicAcid createNucleicAcid(String name, CvTerm type){
         return new DefaultNucleicAcid(name, type);
     }
 
+    /**
+     * Creates a new Gene with the name
+     * @param name
+     * @return
+     */
     public Gene createGene(String name){
         return new DefaultGene(name);
     }
 
+    /**
+     * Creates a new Complex with the name and interactor type
+     * @param name
+     * @param type
+     * @return
+     */
     public Complex createComplex(String name, CvTerm type){
         return new DefaultComplex(name, type);
     }
 
+    /**
+     * Creates a new BioactiveEntity with the name and interactor type
+     * @param name
+     * @param type
+     * @return
+     */
     public BioactiveEntity createBioactiveEntity(String name, CvTerm type){
         return new DefaultBioactiveEntity(name, type);
     }
 
+    /**
+     * Creates a new Polymer with the name and interactor type
+     * @param name
+     * @param type
+     * @return
+     */
     public Polymer createPolymer(String name, CvTerm type){
         return new DefaultPolymer(name, type);
     }
 
+    /**
+     * Creates a new InteractorSet with name and interactor type
+     * @param name
+     * @param type
+     * @return
+     */
     public InteractorSet createInteractorSet(String name, CvTerm type){
         return new DefaultInteractorSet(name, type);
     }
 
+    /**
+     * Creates a default interactor from the name and interactor type
+     * @param name
+     * @param type
+     * @return
+     */
     public Interactor createInteractor(String name, CvTerm type){
         return new DefaultInteractor(name, type);
     }
 
-    protected void initialiseDeterministicInteractorMap(){
+    /**
+     * Loads some properties to recognize interactor type from different MI terms
+     */
+    protected void initialiseDeterministicInteractorMaps(){
+        deterministicInteractorNameMap = new HashMap<String, String>();
+        deterministicInteractorIdMap = new HashMap<String, String>();
         Properties prop = new Properties();
 
         try {
@@ -133,28 +202,45 @@ public class InteractorFactory {
         }
     }
 
+    /**
+     * Loads the properties in the deterministicInteractorMap
+     * @param prop
+     */
     protected void loadProperties(Properties prop) {
         for (Map.Entry<Object, Object> entry : prop.entrySet()){
-            CvTerm keyTerm = extractCvTermFromKey((String)entry.getKey());
-            deterministicInteractorMap.put(keyTerm, (String)entry.getValue());
-        }
-    }
-
-    protected CvTerm extractCvTermFromKey(String key){
-        if (key.contains("(") && key.contains(")")){
-            String[] values = key.split("\\(");
+            String[] values = extractCvTermFromKey((String)entry.getKey());
             if (values.length != 2){
-                return new DefaultCvTerm(key);
+                this.deterministicInteractorNameMap.put(values[0], (String)entry.getValue());
             }
             else {
-                return CvTermUtils.createMICvTerm(values[1].replaceAll("\\)", ""), values[0]);
+                this.deterministicInteractorNameMap.put(values[1].replaceAll("\\)", ""), (String)entry.getValue());
+                this.deterministicInteractorIdMap.put(values[0], (String)entry.getValue());
             }
-        }
-        else{
-            return new DefaultCvTerm(key);
         }
     }
 
+    /**
+     * Reads the cv term from the properties file
+     * @param key
+     * @return
+     */
+    protected String[] extractCvTermFromKey(String key){
+        if (key.contains("(") && key.contains(")")){
+            String[] values = key.split("\\(");
+            return values;
+        }
+        else{
+            return new String[]{key};
+        }
+    }
+
+    /**
+     * Creates an interactor from a given category (should be the canonical name of an Interactor interface)
+     * @param category
+     * @param name
+     * @param type
+     * @return
+     */
     protected Interactor createInteractorFromRecognizedCategory(String category, String name, CvTerm type){
 
         if (category != null){
@@ -185,9 +271,5 @@ public class InteractorFactory {
         }
 
         return createInteractor(name, type);
-    }
-
-    protected Map<CvTerm, String> getDeterministicInteractorMap() {
-        return deterministicInteractorMap;
     }
 }

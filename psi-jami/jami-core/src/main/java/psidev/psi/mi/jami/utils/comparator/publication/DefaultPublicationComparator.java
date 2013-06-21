@@ -13,50 +13,27 @@ import java.util.*;
  * If one publication identifier is not set, it will look at first publication title (case insensitive),
  * then the authors (order is taken into account), then the journal (case insensitive) and finally the publication date.
  * - Two publications which are null are equals
- * - The publication which is not null is before null.
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/12/12</pre>
  */
 
-public class DefaultPublicationComparator implements Comparator<Publication> {
-
-    private static DefaultPublicationComparator defaultPublicationComparator;
-    private DefaultExternalIdentifierComparator identifierComparator;
+public class DefaultPublicationComparator {
 
     /**
-     * Creates a new DefaultPublicationComparator based on DefaultExternalIdentifierComparator
+     * Use DefaultPublicationComparator to know if two publications are equals.
+     * @param publication1
+     * @param publication2
+     * @return true if the two publications are equal
      */
-    public DefaultPublicationComparator() {
-        this.identifierComparator = new DefaultExternalIdentifierComparator();
-    }
-
-    public DefaultExternalIdentifierComparator getIdentifierComparator() {
-        return identifierComparator;
-    }
-
-    /**
-     * It will only look at IMEx identifiers if both are set.
-     * If one IMEx identifier is not set and both identifiers are set, it will only look at the identifiers using DefaultExternalIdentifierComparator.
-     * If one publication identifier is not set, it will look at first publication title (case insensitive),
-     * then the authors (order is taken into account, case insensitive), then the journal (case insensitive) and finally the publication date.
-     * - Two publications which are null are equals
-     * - The publication which is not null is before null.
-     */
-    public int compare(Publication publication1, Publication publication2) {
-        int EQUAL = 0;
-        int BEFORE = -1;
-        int AFTER = 1;
+    public static boolean areEquals(Publication publication1, Publication publication2){
 
         if (publication1 == null && publication2 == null){
-            return EQUAL;
+            return true;
         }
-        else if (publication1 == null){
-            return AFTER;
-        }
-        else if (publication2 == null){
-            return BEFORE;
+        else if (publication1 == null || publication2 == null){
+            return false;
         }
         else {
 
@@ -68,7 +45,7 @@ public class DefaultPublicationComparator implements Comparator<Publication> {
 
             // when both imex ids are not null, can compare only the imex ids
             if (hasImexId1 && hasImexId2){
-                return imexId1.compareTo(imexId2);
+                return imexId1.equals(imexId2);
             }
             // if one of the imex ids is null (or both), we need to compare the publication identifier.
             else {
@@ -80,7 +57,7 @@ public class DefaultPublicationComparator implements Comparator<Publication> {
 
                 // both pubmeds are set, we should only compare pubmeds
                 if (hasPubmedId1 && hasPubmedId2){
-                    return pubmed1.compareTo(pubmed2);
+                    return pubmed1.equals(pubmed2);
                 }
                 // compare doi
                 else {
@@ -91,51 +68,26 @@ public class DefaultPublicationComparator implements Comparator<Publication> {
 
                     // both doi are set, we should only compare dois
                     if (hasDoiId1 && hasDoiId2){
-                        return doi1.compareTo(doi2);
+                        return doi1.equals(doi2);
                     }
                     // compare other identifier
                     else if (!publication1.getIdentifiers().isEmpty() && !publication2.getIdentifiers().isEmpty()){
-                        List<Xref> ids1 = new ArrayList<Xref>(publication1.getIdentifiers());
-                        List<Xref> ids2 = new ArrayList<Xref>(publication2.getIdentifiers());
-                        // sort the collections first
-                        Collections.sort(ids1, identifierComparator);
-                        Collections.sort(ids2, identifierComparator);
                         // get an iterator
-                        Iterator<Xref> iterator1 = ids1.iterator();
-                        Iterator<Xref> iterator2 = ids2.iterator();
+                        Iterator<Xref> iterator1 = publication1.getIdentifiers().iterator();
 
                         // at least one external identifier must match
-                        Xref altid1 = iterator1.next();
-                        Xref altid2 = iterator2.next();
-                        int comp = identifierComparator.compare(altid1, altid2);
-                        while (comp != 0 && altid1 != null && altid2 != null){
-                            // altid1 is before altid2
-                            if (comp < 0){
-                                // we need to get the next element from ids1
-                                if (iterator1.hasNext()){
-                                    altid1 = iterator1.next();
-                                    comp = identifierComparator.compare(altid1, altid2);
-                                }
-                                // ids 1 is empty, we can stop here
-                                else {
-                                    altid1 = null;
-                                }
-                            }
-                            // altid2 is before altid1
-                            else {
-                                // we need to get the next element from ids2
-                                if (iterator2.hasNext()){
-                                    altid2 = iterator2.next();
-                                    comp = identifierComparator.compare(altid1, altid2);
-                                }
-                                // ids 2 is empty, we can stop here
-                                else {
-                                    altid2 = null;
+                        boolean comp = false;
+                        while (!comp && iterator1.hasNext()){
+                            Xref altid1 = iterator1.next();
+
+                            for (Xref altid2 : publication2.getIdentifiers()){
+                                if (DefaultExternalIdentifierComparator.areEquals(altid1, altid2)){
+                                    return true;
                                 }
                             }
                         }
 
-                        return comp;
+                        return false;
                     }
                     // use journal, publication date, publication authors and publication title to compare publications
                     else {
@@ -143,22 +95,22 @@ public class DefaultPublicationComparator implements Comparator<Publication> {
                         String title1 = publication1.getTitle();
                         String title2 = publication2.getTitle();
 
-                        int comp;
+                        boolean comp;
                         if (title1 == null && title2 != null){
-                            return AFTER;
+                            return false;
                         }
                         else if (title1 != null && title2 == null){
-                            return BEFORE;
+                            return false;
                         }
                         else if (title1 != null && title2 != null){
-                            comp = title1.toLowerCase().trim().compareTo(title2.toLowerCase().trim());
+                            comp = title1.toLowerCase().trim().equals(title2.toLowerCase().trim());
                         }
                         // if both titles are null, compares the authors
                         else {
-                            comp = EQUAL;
+                            comp = true;
                         }
 
-                        if (comp != 0){
+                        if (!comp){
                             return comp;
                         }
 
@@ -166,50 +118,44 @@ public class DefaultPublicationComparator implements Comparator<Publication> {
                         List<String> authors1 = publication1.getAuthors();
                         List<String> authors2 = publication2.getAuthors();
 
-                        if (authors1.size() > authors2.size()){
-                            return AFTER;
-                        }
-                        else if (authors2.size() > authors1.size()){
-                            return BEFORE;
+                        if (authors1.size() != authors2.size()){
+                            return false;
                         }
                         else {
                             Iterator<String> iterator1 = authors1.iterator();
                             Iterator<String> iterator2 = authors2.iterator();
-                            int comp2=0;
-                            while (comp2 == 0 && iterator1.hasNext() && iterator2.hasNext()){
-                                comp2 = iterator1.next().toLowerCase().trim().compareTo(iterator2.next().toLowerCase().trim());
+                            boolean comp2 = true;
+                            while (comp2 && iterator1.hasNext() && iterator2.hasNext()){
+                                comp2 = iterator1.next().toLowerCase().trim().equals(iterator2.next().toLowerCase().trim());
                             }
 
-                            if (comp2 != 0){
+                            if (!comp2){
                                 return comp2;
                             }
-                            else if (iterator1.hasNext()){
-                                return AFTER;
-                            }
-                            else if (iterator2.hasNext()){
-                                return BEFORE;
+                            else if (iterator1.hasNext() || iterator2.hasNext()){
+                                return false;
                             }
                             else {
                                 // compares journal
                                 String journal1 = publication1.getJournal();
                                 String journal2 = publication2.getJournal();
 
-                                int comp3;
+                                boolean comp3;
                                 if (journal1 == null && journal2 != null){
-                                    return AFTER;
+                                    return false;
                                 }
                                 else if (journal1 != null && journal2 == null){
-                                    return BEFORE;
+                                    return false;
                                 }
                                 else if (journal2 != null && journal1 != null){
-                                    comp3 = journal1.toLowerCase().trim().compareTo(journal2.toLowerCase().trim());
+                                    comp3 = journal1.toLowerCase().trim().equals(journal2.toLowerCase().trim());
                                 }
                                 // if both journals are null, compares the publication dates
                                 else {
-                                    comp3 = EQUAL;
+                                    comp3 = true;
                                 }
 
-                                if (comp3 != 0){
+                                if (!comp3){
                                     return comp3;
                                 }
                                 // compares publication dates
@@ -218,50 +164,32 @@ public class DefaultPublicationComparator implements Comparator<Publication> {
 
                                 if (date1 == null && date2 == null){
                                 }
-                                else if (date1 == null){
-                                    return AFTER;
+                                else if (date1 == null || date2 == null){
+                                    return false;
                                 }
-                                else if (date2 == null){
-                                    return BEFORE;
-                                }
-                                else if (date1.before(date2)){
-                                    return BEFORE;
-                                }
-                                else if (date2.before(date1)){
-                                    return AFTER;
+                                else if (date1.equals(date2)){
+                                    return true;
                                 }
 
                                 // if we had one imex id
-                                if (hasImexId1){
-                                    return BEFORE;
-                                }
-                                else if (hasImexId2){
-                                    return AFTER;
+                                if (hasImexId1 || hasImexId2){
+                                    return false;
                                 }
                                 // we had one pubmed id
-                                else if (hasPubmedId1){
-                                    return BEFORE;
-                                }
-                                else if (hasImexId2){
-                                    return AFTER;
+                                else if (hasPubmedId1 || hasPubmedId2){
+                                    return false;
                                 }
                                 // we had one doi id
-                                else if (hasDoiId1){
-                                    return BEFORE;
-                                }
-                                else if (hasDoiId2){
-                                    return AFTER;
+                                else if (hasDoiId1 || hasDoiId2){
+                                    return false;
                                 }
                                 // we had publication with identifiers
-                                else if (!publication1.getIdentifiers().isEmpty()){
-                                    return BEFORE;
-                                }
-                                else if (!publication2.getIdentifiers().isEmpty()){
-                                    return AFTER;
+                                else if (!publication1.getIdentifiers().isEmpty() || !publication2.getIdentifiers().isEmpty()){
+                                    return false;
                                 }
                                 // the publications are the same
                                 else{
-                                    return EQUAL;
+                                    return true;
                                 }
                             }
                         }
@@ -269,19 +197,5 @@ public class DefaultPublicationComparator implements Comparator<Publication> {
                 }
             }
         }
-    }
-
-    /**
-     * Use DefaultPublicationComparator to know if two publications are equals.
-     * @param pub1
-     * @param pub2
-     * @return true if the two publications are equal
-     */
-    public static boolean areEquals(Publication pub1, Publication pub2){
-        if (defaultPublicationComparator == null){
-            defaultPublicationComparator = new DefaultPublicationComparator();
-        }
-
-        return defaultPublicationComparator.compare(pub1, pub2) == 0;
     }
 }
