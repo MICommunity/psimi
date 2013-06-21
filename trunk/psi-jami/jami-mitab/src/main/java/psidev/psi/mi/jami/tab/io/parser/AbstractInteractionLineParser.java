@@ -45,12 +45,12 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
     }
 
     @Override
-    MitabParserListener getParserListener() {
+    public MitabParserListener getParserListener() {
         return listener;
     }
 
     @Override
-    void setParserListener(MitabParserListener listener) {
+    public void setParserListener(MitabParserListener listener) {
         this.listener = listener;
     }
 
