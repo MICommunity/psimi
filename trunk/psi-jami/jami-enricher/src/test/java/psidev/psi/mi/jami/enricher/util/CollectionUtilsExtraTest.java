@@ -1,16 +1,12 @@
 package psidev.psi.mi.jami.enricher.util;
 
 import org.junit.Test;
-import psidev.psi.mi.jami.enricher.event.AdditionReport;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-import uk.ac.ebi.kraken.interfaces.factories.XRefFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import static junit.framework.Assert.*;
 
 /**

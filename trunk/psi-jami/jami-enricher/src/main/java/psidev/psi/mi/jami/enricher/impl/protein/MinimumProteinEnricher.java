@@ -125,7 +125,7 @@ public class MinimumProteinEnricher
 
 
 
-        //TODO - is this correct? Is there a scenario where 2 primary ACs are created?
+        //TODO - remove comparator
         // IDENTIFIERS
         Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
                 proteinFetched.getIdentifiers(),

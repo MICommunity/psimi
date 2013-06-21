@@ -29,6 +29,10 @@ public interface ParticipantEvidenceEnricher {
     public void setParticipantEvidenceEnricherListener(ParticipantEvidenceEnricherListener listener);
     public ParticipantEvidenceEnricherListener getParticipantEvidenceEnricherListener();
 
+    /**
+     * Sets the protein enricher which will be used to enrich any proteins in this participant.
+     * @param proteinEnricher
+     */
     public void setProteinEnricher(ProteinEnricher proteinEnricher);
     public ProteinEnricher getProteinEnricher();
 }

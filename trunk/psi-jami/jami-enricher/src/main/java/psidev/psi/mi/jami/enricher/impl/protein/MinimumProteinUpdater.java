@@ -167,24 +167,44 @@ public class MinimumProteinUpdater
         //      and any entries which do not need to be added.
         // 3 - Add/remove those entries on the appropriate lists.
 
-
         //Identifiers
-        Set<Xref> fetchedIdentifiersToAdd = new TreeSet<Xref>(new DefaultXrefComparator());
-        fetchedIdentifiersToAdd.addAll(proteinFetched.getIdentifiers());
+        Collection<Xref> fetchedIdentifiersToAdd = new ArrayList<Xref>();
+        fetchedIdentifiersToAdd.addAll(proteinFetched.getIdentifiers()); // All the identifiers which were fetched
 
-        Set<CvTerm> identifierCvTerms = new TreeSet<CvTerm>(new DefaultCvTermComparator());
+        Collection<CvTerm> identifierCvTerms = new ArrayList<CvTerm>(); // The list of all the represented databases
+        // For each entry, add its CvTerm to the representatives list, if it hasn't been so already.
         for(Xref xref : fetchedIdentifiersToAdd){
             if(! identifierCvTerms.contains(xref.getDatabase())) identifierCvTerms.add(xref.getDatabase());
         }
 
         Collection<Xref> toRemoveIdentifiers = new ArrayList<Xref>();
+        // Check all of the identifiers which are to be enriched
         for(Xref xrefIdentifier : proteinToEnrich.getIdentifiers()){
-            if(xrefIdentifier.getQualifier() == null
-                    && ! fetchedIdentifiersToAdd.contains(xrefIdentifier)
-                    && identifierCvTerms.contains(xrefIdentifier.getDatabase())){
-                toRemoveIdentifiers.add(xrefIdentifier);
+            // Ignore if there's a qualifier
+            if(xrefIdentifier.getQualifier() == null){
+                boolean isToAdd = false;
+                for(Xref xref : fetchedIdentifiersToAdd){
+                    if(DefaultXrefComparator.areEquals(xref , xrefIdentifier)){
+                        isToAdd = true;
+                        break;
+                    }
+                }
+
+                if(! isToAdd){
+                    boolean present = false;
+                    for(CvTerm cvTerm : identifierCvTerms){
+                        if(DefaultCvTermComparator.areEquals(cvTerm , xrefIdentifier.getDatabase())){
+                            present = true;
+                            break;
+                        }
+                    }
+                    if(present) toRemoveIdentifiers.add(xrefIdentifier);
+                }
             }
-            else if( fetchedIdentifiersToAdd.contains(xrefIdentifier)){
+
+            if( ! toRemoveIdentifiers.contains(xrefIdentifier)
+                    && fetchedIdentifiersToAdd.contains(xrefIdentifier)){
+
                 fetchedIdentifiersToAdd.remove(xrefIdentifier);
             }
         }
