@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.tab.listener;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.extension.*;
 
 import java.util.Collection;
@@ -16,7 +17,7 @@ public interface MitabParserListener {
 
     public void onTextFoundInIdentifier(MitabXref xref, int line, int column, int mitabColumn);
 
-    public void onMissingCvTermName(MitabCvTerm term, int line, int column, int mitabColumn);
+    public void onMissingCvTermName(CvTerm term, int line, int column, int mitabColumn);
 
     public void onTextFoundInConfidence(MitabConfidence conf, int line, int column, int mitabColumn);
 
