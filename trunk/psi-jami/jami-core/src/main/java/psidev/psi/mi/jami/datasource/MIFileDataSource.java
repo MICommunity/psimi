@@ -24,5 +24,5 @@ public interface MIFileDataSource extends MIDataSource{
      * It returns true if the file syntax is valid, false otherwise.
      * When the file syntax is invalid, the syntax errors are stored in the dataSourceErrors of this MIDataSource
      */
-    public boolean validateFileSyntax();
+    public boolean validateSyntax();
 }
