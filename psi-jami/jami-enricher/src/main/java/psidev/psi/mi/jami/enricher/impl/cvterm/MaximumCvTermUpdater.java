@@ -15,6 +15,10 @@ import java.util.Collection;
 import java.util.TreeSet;
 
 /**
+ * Provides maximum updating of the CvTerm.
+ * Will update all aspects covered by the minimum updater as well as updating the Aliases.
+ * As an updater, values from the provided CvTerm to enrich may be overwritten.
+ *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/05/13
  */

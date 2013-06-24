@@ -10,10 +10,12 @@ import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides maximum enrichment of the CvTerm.
+ * Will enrich all aspects covered by the minimum enricher as well as enriching the Aliases.
+ * As an enricher, no values from the provided CvTerm to enrich will be changed.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 13/06/13
+ * @since 13/06/13
  */
 public class MaximumCvTermEnricher
         extends MinimumCvTermEnricher

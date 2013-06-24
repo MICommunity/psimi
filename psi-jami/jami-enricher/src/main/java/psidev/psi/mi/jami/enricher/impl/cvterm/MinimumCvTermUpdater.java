@@ -13,7 +13,9 @@ import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides minimum updating of the CvTerm.
+ * Will update the short name and full name of CvTerm to enrich.
+ * As an updater, values from the provided CvTerm to enrich may be overwritten.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 13/06/13
@@ -25,8 +27,6 @@ public class MinimumCvTermUpdater
     @Override
     protected void processCvTerm(CvTerm cvTermToEnrich){
 
-
-        //ShortName not checked
         if(cvTermFetched.getShortName() != null
                 && ! cvTermFetched.getShortName().equalsIgnoreCase(cvTermToEnrich.getShortName())){
             if (listener != null) listener.onShortNameUpdate(cvTermToEnrich, cvTermToEnrich.getShortName());
@@ -41,6 +41,7 @@ public class MinimumCvTermUpdater
             cvTermToEnrich.setFullName(cvTermFetched.getFullName());
         }
 
+        //TOdo - why is this commented
         //Identifiers
         /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
                 cvTermFetched.getIdentifiers(),

@@ -84,26 +84,26 @@ public class MinimumProteinEnricher
         }
 
         //Checksums
-        boolean hasCrc64Checksum = false;
-        boolean hasRogidChecksum = false;
-        for(Checksum checksum : proteinToEnrich.getChecksums()){
-            if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                    || (checksum.getMethod() != null
-                            && checksum.getMethod().getMIIdentifier() != null
-                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
-                hasRogidChecksum = true;
-            }
-
-            if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                hasCrc64Checksum = true;
-            }
-            if(hasCrc64Checksum && hasRogidChecksum) break;
-        }
-
-        // Can only add a CRC64 if there is a sequence which matches the protein fetched and an organism
+        // Can only add a checksum if there is a sequence which matches the protein fetched and an organism
         if(proteinToEnrich.getSequence() != null
                 && proteinToEnrich.getSequence().equals(proteinFetched.getSequence())
                 && proteinToEnrich.getOrganism().getTaxId() != -3){
+
+            boolean hasCrc64Checksum = false;
+            boolean hasRogidChecksum = false;
+            for(Checksum checksum : proteinToEnrich.getChecksums()){
+                if(checksum.getMethod() != null){
+                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
+                            || (checksum.getMethod().getMIIdentifier() != null
+                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
+                        hasRogidChecksum = true;
+                    }
+                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                        hasCrc64Checksum = true;
+                    }
+                }
+                if(hasCrc64Checksum && hasRogidChecksum) break;
+            }
 
             if(!hasRogidChecksum){
                 RogidGenerator rogidGenerator = new RogidGenerator();
@@ -148,9 +148,6 @@ public class MinimumProteinEnricher
             proteinToEnrich.getAliases().add(alias);
             if(listener != null) listener.onAddedAlias(proteinFetched, alias);
         }
-
-
-
 
     }
 

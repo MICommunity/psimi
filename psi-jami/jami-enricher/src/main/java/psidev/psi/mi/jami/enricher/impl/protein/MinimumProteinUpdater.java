@@ -104,20 +104,29 @@ public class MinimumProteinUpdater
             if(listener != null) listener.onSequenceUpdate(proteinToEnrich, oldValue);
         }
 
+
+
+
+
+
+
         //Checksums
         Checksum currentCrc64Checksum = null;
         Checksum currentRogidChecksum = null;
         for(Checksum checksum : proteinToEnrich.getChecksums()){
-            if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                    || checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI)){
-                currentRogidChecksum = checksum;
-            }
-
-            if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                currentCrc64Checksum = checksum;
+            if(checksum.getMethod() != null){
+                if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
+                        || (checksum.getMethod().getMIIdentifier() != null
+                        && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
+                    currentRogidChecksum = checksum;
+                }
+                else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                    currentCrc64Checksum = checksum;
+                }
             }
             if(currentCrc64Checksum != null && currentRogidChecksum != null) break;
-        }
+        }   //tODO remove if the sequence or organism are not known?
+
 
         if(proteinToEnrich.getSequence() != null
                 && proteinFetched.getSequence() != null
@@ -134,8 +143,6 @@ public class MinimumProteinUpdater
                 if(listener != null) listener.onRemovedChecksum(proteinToEnrich, currentRogidChecksum);
                 currentRogidChecksum = null;
             }
-            // Add the new checksum if there is no current checksum
-            // (or if it has been removed because it was out of date)
             if(currentRogidChecksum == null){
                 Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
                 proteinToEnrich.getChecksums().add(rogidChecksum);
@@ -167,52 +174,52 @@ public class MinimumProteinUpdater
         //      and any entries which do not need to be added.
         // 3 - Add/remove those entries on the appropriate lists.
 
-        //Identifiers
+        // == Identifiers ==
         Collection<Xref> fetchedIdentifiersToAdd = new ArrayList<Xref>();
         fetchedIdentifiersToAdd.addAll(proteinFetched.getIdentifiers()); // All the identifiers which were fetched
 
         Collection<CvTerm> identifierCvTerms = new ArrayList<CvTerm>(); // The list of all the represented databases
+
         // For each entry, add its CvTerm to the representatives list, if it hasn't been so already.
         for(Xref xref : fetchedIdentifiersToAdd){
             if(! identifierCvTerms.contains(xref.getDatabase())) identifierCvTerms.add(xref.getDatabase());
         }
 
         Collection<Xref> toRemoveIdentifiers = new ArrayList<Xref>();
+
         // Check all of the identifiers which are to be enriched
         for(Xref xrefIdentifier : proteinToEnrich.getIdentifiers()){
             // Ignore if there's a qualifier
             if(xrefIdentifier.getQualifier() == null){
-                boolean isToAdd = false;
-                for(Xref xref : fetchedIdentifiersToAdd){
-                    if(DefaultXrefComparator.areEquals(xref , xrefIdentifier)){
-                        isToAdd = true;
+                boolean isInFetchedList = false;
+                 //If it's in the list to add, mark that it's to add already
+                for(Xref xrefToAdd : fetchedIdentifiersToAdd){
+                    if(DefaultXrefComparator.areEquals(xrefToAdd , xrefIdentifier)){
+                        isInFetchedList = true;
+                        //No need to add it as it is already there
+                        fetchedIdentifiersToAdd.remove(xrefToAdd);
                         break;
                     }
                 }
-
-                if(! isToAdd){
-                    boolean present = false;
+                // If it's not in the fetched ones to add,
+                // check if it's CvTerm is managed and add to removals if it is
+                if(! isInFetchedList){
+                    boolean managedCvTerm = false;
                     for(CvTerm cvTerm : identifierCvTerms){
                         if(DefaultCvTermComparator.areEquals(cvTerm , xrefIdentifier.getDatabase())){
-                            present = true;
+                            managedCvTerm = true;
                             break;
                         }
                     }
-                    if(present) toRemoveIdentifiers.add(xrefIdentifier);
+                    if(managedCvTerm) toRemoveIdentifiers.add(xrefIdentifier);
                 }
             }
 
-            if( ! toRemoveIdentifiers.contains(xrefIdentifier)
-                    && fetchedIdentifiersToAdd.contains(xrefIdentifier)){
-
-                fetchedIdentifiersToAdd.remove(xrefIdentifier);
-            }
         }
         for(Xref xref: toRemoveIdentifiers){
             proteinToEnrich.getIdentifiers().remove(xref);
             if(listener != null) listener.onRemovedIdentifier(proteinToEnrich , xref);
         }
-
         for(Xref xref: fetchedIdentifiersToAdd){
             proteinToEnrich.getIdentifiers().add(xref);
             if(listener != null) listener.onAddedIdentifier(proteinToEnrich, xref);
@@ -220,7 +227,7 @@ public class MinimumProteinUpdater
 
 
         //Aliases
-        Set<Alias> fetchedAliasesToAdd = new TreeSet<Alias>(new DefaultAliasComparator());
+        /*Set<Alias> fetchedAliasesToAdd = new TreeSet<Alias>(new DefaultAliasComparator());
         fetchedAliasesToAdd.addAll(proteinFetched.getAliases());
 
         Set<CvTerm> aliasCvTerms = new TreeSet<CvTerm>(new DefaultCvTermComparator());
@@ -246,7 +253,7 @@ public class MinimumProteinUpdater
         for(Alias alias: fetchedAliasesToAdd){
             proteinToEnrich.getAliases().add(alias);
             if(listener != null) listener.onAddedAlias(proteinToEnrich , alias);
-        }
+        } */
     }
 
     @Override
