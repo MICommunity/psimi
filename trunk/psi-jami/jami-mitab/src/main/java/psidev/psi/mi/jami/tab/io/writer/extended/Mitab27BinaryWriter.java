@@ -41,11 +41,7 @@ public class Mitab27BinaryWriter extends psidev.psi.mi.jami.tab.io.writer.Mitab2
     @Override
     public void initialiseContext(Map<String, Object> options) throws DataSourceWriterException {
         super.initialiseContext(options);
-        try {
-            initialiseSubWritersWith(getWriter());
-        } catch (IOException e) {
-            throw new DataSourceWriterException("Impossible to initialise writers", e);
-        }
+        initialiseSubWritersWith(getWriter());
     }
 
     @Override

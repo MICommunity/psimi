@@ -217,6 +217,9 @@ public abstract class AbstractInteractionLineParser<T extends BinaryInteraction,
 
             return altid.iterator().next().getId();
         }
+        else if (this.listener != null){
+            listener.onEmptyUniqueIdentifiers(line, column, mitabColumn);
+        }
 
         return null;
     }
