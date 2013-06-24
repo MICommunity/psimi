@@ -2,10 +2,8 @@ package psidev.psi.mi.jami.bridges.uniprot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.uniprot.uniprotutil.UniprotToJAMI;
+import psidev.psi.mi.jami.bridges.uniprot.util.UniprotToJAMI;
 import psidev.psi.mi.jami.model.Protein;
 import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.AlternativeProductsComment;
@@ -39,9 +37,9 @@ public class UniprotBridge {
      * @throws BridgeFailedException
      */
     public Collection<Protein> fetchMastersByIdentifier(String identifier)
-            throws BadResultException, BadSearchTermException, BridgeFailedException {
+            throws BridgeFailedException {
 
-        if(identifier == null) throw new BadSearchTermException(
+        if(identifier == null) throw new IllegalArgumentException(
                 "Tried to search for protein on a null identifier.");
 
         Collection<Protein> proteins = new ArrayList<Protein>();
@@ -73,13 +71,12 @@ public class UniprotBridge {
      *
      * @param identifier
      * @return
-     * @throws BadSearchTermException
-     * @throws BadResultException
      * @throws BridgeFailedException
      */
-    public Collection<Protein> fetchIsoformsByIdentifier(String identifier) throws BadSearchTermException, BadResultException, BridgeFailedException {
+    public Collection<Protein> fetchIsoformsByIdentifier(String identifier)
+            throws BridgeFailedException {
 
-        if(identifier == null) throw new BadSearchTermException(
+        if(identifier == null) throw new IllegalArgumentException(
                 "Tried to search for protein isoform on a null identifier.");
 
         Collection<Protein> proteins = new ArrayList<Protein>();
@@ -134,14 +131,12 @@ public class UniprotBridge {
      *
      * @param identifier
      * @return
-     * @throws BadResultException
      * @throws BridgeFailedException
-     * @throws BadSearchTermException
      */
     public Collection<Protein> fetchFeatureBySearch(String identifier)
-            throws BadResultException, BridgeFailedException, BadSearchTermException {
+            throws  BridgeFailedException {
 
-        if(identifier == null) throw new BadSearchTermException(
+        if(identifier == null) throw new IllegalArgumentException(
                 "Tried to search for protein feature on a null identifier.");
 
         Collection<Protein> proteins = new ArrayList<Protein>();

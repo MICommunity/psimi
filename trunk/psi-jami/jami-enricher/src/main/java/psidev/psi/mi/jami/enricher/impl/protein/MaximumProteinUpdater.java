@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
-import psidev.psi.mi.jami.bridges.uniprot.uniprotutil.UniprotToJAMI;
+import psidev.psi.mi.jami.bridges.uniprot.util.UniprotToJAMI;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismUpdater;

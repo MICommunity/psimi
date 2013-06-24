@@ -2,13 +2,12 @@ package psidev.psi.mi.jami.bridges.uniprot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.model.Protein;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 /**
@@ -42,13 +41,11 @@ public class UniprotFetcher
      * @param identifier
      * @return
      * @throws BridgeFailedException
-     * @throws BadResultException
-     * @throws BadSearchTermException
      */
     public Collection<Protein> getProteinsByIdentifier(String identifier)
-            throws BridgeFailedException, BadResultException, BadSearchTermException {
+            throws BridgeFailedException {
 
-        if(identifier == null) throw new BadSearchTermException("Could not perform search on null identifier.");
+        if(identifier == null) throw new IllegalArgumentException("Could not perform search on null identifier.");
 
         Collection<Protein> proteins = null;
 
@@ -66,14 +63,15 @@ public class UniprotFetcher
             }
         }
 
-        if(proteins == null || proteins.size() == 0){
-            return null;
+        if(proteins == null || proteins.isEmpty()){
+            return Collections.EMPTY_LIST;
         }
 
         return proteins;
     }
 
-    public String getService() {
-        return "UniprotKB";
+    public Collection<Protein> getProteinsByIdentifiers(Collection<String> identifiers) throws BridgeFailedException {
+        return Collections.EMPTY_LIST;
     }
+
 }

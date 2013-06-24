@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
+
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,8 +13,8 @@ import psidev.psi.mi.jami.model.CvTerm;
  */
 public interface CvTermFetcher{
 
-    public CvTerm getCvTermByID(String identifier, String databaseName)
-            throws BridgeFailedException, BadSearchTermException;
+    public CvTerm getCvTermByIdentifier(String identifier, String ontologyName)
+            throws BridgeFailedException;
 
     /**
      * Identifies and initiates the CvTerm using its identifier.
@@ -25,8 +25,8 @@ public interface CvTermFetcher{
      * @return A fully enriched CvTerm
      * @throws BridgeFailedException    Thrown if there are problems with the connection
      */
-    public CvTerm getCvTermByID(String identifier, CvTerm database)
-            throws BridgeFailedException, BadSearchTermException;
+    public CvTerm getCvTermByIdentifier(String identifier, CvTerm database)
+            throws BridgeFailedException;
 
     /**
      * Identifies and initiates a CvTerm using its name.
@@ -34,15 +34,15 @@ public interface CvTermFetcher{
      * If the identifier is null, or multiple identifiers are found, throws exceptions.
      *
      * @param searchName
-     * @param databaseName
+     * @param ontologyName
      * @return
      * @throws BridgeFailedException
      */
-    public CvTerm getCvTermByTerm(String searchName, String databaseName)
-            throws BridgeFailedException, BadResultException, BadSearchTermException;
+    public CvTerm getCvTermByExactName(String searchName, String ontologyName)
+            throws BridgeFailedException;
 
-    public CvTerm getCvTermByTerm(String searchName, CvTerm database)
-            throws BridgeFailedException, BadResultException, BadSearchTermException;
+    public CvTerm getCvTermByExactName(String searchName)
+            throws BridgeFailedException;
 
     /**
      * Identifies and initiates a CvTerm using its name.
@@ -50,15 +50,13 @@ public interface CvTermFetcher{
      * This will extend to search possibilities to partial matches if no exact matches can be found.
      * @param searchName
      * @param databaseName
-     * @param useFuzzySearch
      * @return
      * @throws BridgeFailedException
      */
-    public CvTerm getCvTermByTerm(String searchName, String databaseName, boolean useFuzzySearch)
-            throws BridgeFailedException, BadSearchTermException, BadResultException;
+    public Collection<CvTerm> getCvTermByInexactName(String searchName, String databaseName)
+            throws BridgeFailedException;
 
-    public CvTerm getCvTermByTerm(String searchName, CvTerm database, boolean useFuzzySearch)
-            throws BridgeFailedException, BadSearchTermException, BadResultException;
+    public Collection<CvTerm> getCvTermByInexactName(String searchName, CvTerm database)
+            throws BridgeFailedException;
 
-    public String getService();
 }

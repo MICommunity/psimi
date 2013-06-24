@@ -1,12 +1,5 @@
 package psidev.psi.mi.jami.enricher.util;
 
-import psidev.psi.mi.jami.bridges.uniprot.uniprotutil.UniprotToJAMI;
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-
 import java.util.*;
 
 /**

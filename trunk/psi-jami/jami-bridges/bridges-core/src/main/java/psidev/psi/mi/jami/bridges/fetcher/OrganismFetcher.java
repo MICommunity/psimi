@@ -13,5 +13,4 @@ public interface OrganismFetcher{
     public Organism getOrganismByTaxID(int taxID)
             throws BridgeFailedException;
 
-    public String getService();
 }

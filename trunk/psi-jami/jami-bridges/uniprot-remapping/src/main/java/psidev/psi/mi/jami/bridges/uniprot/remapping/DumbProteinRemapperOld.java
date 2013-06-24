@@ -1,15 +1,14 @@
 package psidev.psi.mi.jami.bridges.uniprot.remapping;
 
-import psidev.psi.mi.jami.model.Organism;
+
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 import uk.ac.ebi.intact.protein.mapping.results.IdentificationResults;
 import uk.ac.ebi.intact.protein.mapping.results.impl.DefaultIdentificationResults;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +18,7 @@ import java.util.TreeMap;
  */
 public class DumbProteinRemapperOld extends AbstractProteinRemapper {
 
-    private TreeMap<Xref, IdentificationResults> xrefList;
+    private HashMap<Xref, IdentificationResults> xrefList;
 
     String IDENTIFIER = "P42694";
     IdentificationResults empty = new DefaultIdentificationResults();
@@ -50,7 +49,7 @@ public class DumbProteinRemapperOld extends AbstractProteinRemapper {
     }
 
     private void setTestXrefs(){
-        xrefList = new TreeMap<Xref, IdentificationResults>(new DefaultExternalIdentifierComparator());
+        xrefList = new HashMap<Xref, IdentificationResults>();
         String [][] xrefsraw = {
                 {"ensembl", "ENSP00000351524", "P42694"},
                 {"ensembl", "ENSG00000198265", "P42694"},
