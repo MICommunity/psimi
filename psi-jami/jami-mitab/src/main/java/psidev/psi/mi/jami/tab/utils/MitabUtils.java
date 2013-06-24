@@ -161,7 +161,7 @@ public class MitabUtils {
     }
 
     public static String unescapeDoubleQuote(String stringToReplace){
-        return stringToReplace.replaceAll("\\\"", "\"");
+        return stringToReplace.replaceAll("\\\\\"", "\"");
     }
 
     /**
@@ -179,6 +179,7 @@ public class MitabUtils {
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.TEXT_MINING_MI, Annotation.TEXT_MINING) ||
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.NUCLEIC_ACID_PROTEIN_MI, Annotation.NUCLEIC_ACID_PROTEIN) ||
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.SMALL_MOLECULE_PROTEIN_MI, Annotation.SMALL_MOLECULE_PROTEIN) ||
+                AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.PROTEIN_PROTEIN_MI, Annotation.PROTEIN_PROTEIN) ||
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.CLUSTERED_MI, Annotation.CLUSTERED) ||
                 AnnotationUtils.doesAnnotationHaveTopic(annot, Annotation.EVIDENCE_MI, Annotation.EVIDENCE);
     }
@@ -207,19 +208,19 @@ public class MitabUtils {
             }
             // then display_long
             else if (AliasUtils.doesAliasHaveType(alias, null, DISPLAY_LONG)){
-                if (displayLong != null){
+                if (displayLong == null){
                     displayLong = alias;
                 }
             }
             // then gene name
             else if (AliasUtils.doesAliasHaveType(alias, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
-                if (geneName != null){
+                if (geneName == null){
                     geneName = alias;
                 }
             }
             // then shortlabel
             else if (AliasUtils.doesAliasHaveType(alias, null, SHORTLABEL)){
-                if (shortLabel != null){
+                if (shortLabel == null){
                     shortLabel = alias;
                 }
             }
@@ -246,7 +247,7 @@ public class MitabUtils {
             return geneName;
         }
         else if (shortLabel != null){
-            return displayShort;
+            return shortLabel;
         }
         else {
             return shortName;
@@ -276,19 +277,19 @@ public class MitabUtils {
             }
             // then display_long
             else if (XrefUtils.doesXrefHaveQualifier(xref, null, DISPLAY_LONG)){
-                if (displayLong != null){
+                if (displayLong == null){
                     displayLong = xref;
                 }
             }
             // then gene name
             else if (XrefUtils.doesXrefHaveQualifier(xref, Alias.GENE_NAME_MI, Alias.GENE_NAME)){
-                if (geneName != null){
+                if (geneName == null){
                     geneName = xref;
                 }
             }
             // then shortlabel
             else if (XrefUtils.doesXrefHaveQualifier(xref, null, SHORTLABEL)){
-                if (shortLabel != null){
+                if (shortLabel == null){
                     shortLabel = xref;
                 }
             }
@@ -304,7 +305,7 @@ public class MitabUtils {
             return geneName;
         }
         else if (shortLabel != null){
-            return displayShort;
+            return shortLabel;
         }
         else {
             return null;

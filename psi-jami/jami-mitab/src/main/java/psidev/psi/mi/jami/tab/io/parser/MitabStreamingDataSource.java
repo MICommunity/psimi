@@ -68,16 +68,16 @@ public class MitabStreamingDataSource implements MIFileDataSource, StreamingInte
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public boolean validateSyntax() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public void open() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void close() {
         //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public boolean validateFileSyntax() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Iterator<? extends InteractionEvidence> getInteractionEvidencesIterator() {
