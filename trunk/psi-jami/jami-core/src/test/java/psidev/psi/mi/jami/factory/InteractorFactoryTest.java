@@ -5,6 +5,9 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.BioactiveEntity;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
+
+import java.util.Arrays;
 
 /**
  * Unit tester for InteractorFactory
@@ -99,5 +102,17 @@ public class InteractorFactoryTest {
     public void test_recognize_protein_from_database(){
         Assert.assertTrue(interactorFactory.createInteractorFromInteractorType(new DefaultCvTerm("genbank_protein_gi"), "test interactor")
                 instanceof DefaultProtein);
+    }
+
+    @Test
+    public void test_recognize_small_molecule_from_xref(){
+        Assert.assertTrue(interactorFactory.createInteractorFromIdentityXrefs(Arrays.asList(XrefUtils.createChebiIdentity("CHEBI:xxxx"), XrefUtils.createEnsemblIdentity("ENSEMBL-xxxx")), "test interactor")
+                instanceof DefaultBioactiveEntity);
+    }
+
+    @Test
+    public void test_recognize_gene_from_xref(){
+        Assert.assertTrue(interactorFactory.createInteractorFromIdentityXrefs(Arrays.asList(XrefUtils.createEnsemblIdentity("ENSEMBL-xxxx")), "test interactor")
+                instanceof DefaultGene);
     }
 }
