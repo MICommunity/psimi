@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.bridges.uniprot.uniprotutil;
+package psidev.psi.mi.jami.bridges.uniprot.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
