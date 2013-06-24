@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.MoleculeEffector;
 import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantComparator;
 
@@ -13,40 +14,27 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParti
  * @since <pre>30/05/13</pre>
  */
 
-public class DefaultExactMoleculeEffectorComparator extends MoleculeEffectorComparator{
-
-    private static DefaultExactMoleculeEffectorComparator defaultExactMoleculeEffectorComparator;
-
-    public DefaultExactMoleculeEffectorComparator() {
-        super(new DefaultExactModelledParticipantComparator());
-    }
-
-    @Override
-    public DefaultExactModelledParticipantComparator getParticipantComparator() {
-        return (DefaultExactModelledParticipantComparator) super.getParticipantComparator();
-    }
-
-    /**
-     * It is using a DefaultExactModelledParticipantComparator to compare the molecule
-     * @param molecule1
-     * @param molecule2
-     * @return
-     */
-    public int compare(MoleculeEffector molecule1, MoleculeEffector molecule2) {
-        return super.compare(molecule1, molecule2);
-    }
+public class DefaultExactMoleculeEffectorComparator {
 
     /**
      * Use DefaultExactMoleculeEffectorComparator to know if two moleculeEffectors are equals.
-     * @param molecule1
-     * @param molecule2
+     * @param moleculeEffector1
+     * @param moleculeEffector2
      * @return true if the two moleculeEffectors are equal
      */
-    public static boolean areEquals(MoleculeEffector molecule1, MoleculeEffector molecule2){
-        if (defaultExactMoleculeEffectorComparator == null){
-            defaultExactMoleculeEffectorComparator = new DefaultExactMoleculeEffectorComparator();
+    public static boolean areEquals(MoleculeEffector moleculeEffector1, MoleculeEffector moleculeEffector2){
+        if (moleculeEffector1 == null && moleculeEffector2 == null){
+            return true;
         }
+        else if (moleculeEffector1 == null || moleculeEffector2 == null){
+            return false;
+        }
+        else {
 
-        return defaultExactMoleculeEffectorComparator.compare(molecule1, molecule2) == 0;
+            ModelledParticipant molecule1 = moleculeEffector1.getMolecule();
+            ModelledParticipant molecule2 = moleculeEffector2.getMolecule();
+
+            return DefaultExactModelledParticipantComparator.areEquals(molecule1, molecule2, true);
+        }
     }
 }

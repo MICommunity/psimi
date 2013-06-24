@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.annotation;
 
 import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
@@ -16,35 +17,7 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultAnnotationComparator extends AnnotationComparator {
-
-    private static DefaultAnnotationComparator defaultAnnotationComparator;
-    /**
-     * Creates a new AnnotationComparator with DefaultCvTermComparator
-     *
-     */
-    public DefaultAnnotationComparator() {
-        super(new DefaultCvTermComparator());
-    }
-
-    @Override
-    public DefaultCvTermComparator getTopicComparator() {
-        return (DefaultCvTermComparator) topicComparator;
-    }
-
-    /**
-     * It compares first the topics and then the value (case insensitive)
-     * - Two annotations which are null are equals
-     * - The annotation which is not null is before null.
-     * - use DefaultCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
-     * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
-     * @param annotation1
-     * @param annotation2
-     * @return
-     */
-    public int compare(Annotation annotation1, Annotation annotation2) {
-        return super.compare(annotation1, annotation2);
-    }
+public class DefaultAnnotationComparator {
 
     /**
      * Use DefaultAnnotationComparator to know if two annotations are equals.
@@ -53,10 +26,33 @@ public class DefaultAnnotationComparator extends AnnotationComparator {
      * @return true if the two annotations are equal
      */
     public static boolean areEquals(Annotation annotation1, Annotation annotation2){
-        if (defaultAnnotationComparator == null){
-            defaultAnnotationComparator = new DefaultAnnotationComparator();
+        if (annotation1 == null && annotation2 == null){
+            return true;
         }
+        else if (annotation1 == null || annotation2 == null){
+            return false;
+        }
+        else {
+            CvTerm topic1 = annotation1.getTopic();
+            CvTerm topic2 = annotation2.getTopic();
 
-        return defaultAnnotationComparator.compare(annotation1, annotation2) == 0;
+            if (!DefaultCvTermComparator.areEquals(topic1, topic2)){
+                return false;
+            }
+            // check annotation text
+            String text1 = annotation1.getValue();
+            String text2 = annotation2.getValue();
+
+            if (text1 == null && text2 == null){
+                return true;
+            }
+            else if (text1 == null || text2 == null){
+                return false;
+            }
+            else {
+
+                return text1.toLowerCase().trim().equals(text2.toLowerCase().trim());
+            }
+        }
     }
 }

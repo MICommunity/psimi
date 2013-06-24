@@ -1,8 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
 import psidev.psi.mi.jami.model.CooperativityEvidence;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationComparator;
+
+import java.util.Collection;
 
 /**
  * Default comparator for cooperativityEvidence
@@ -15,40 +19,34 @@ import psidev.psi.mi.jami.utils.comparator.publication.DefaultPublicationCompara
  * @since <pre>22/05/13</pre>
  */
 
-public class DefaultCooperativityEvidenceComparator extends CooperativityEvidenceComparator {
-
-    private static DefaultCooperativityEvidenceComparator defaultCooperativityEvidenceComparator;
-
-    public DefaultCooperativityEvidenceComparator() {
-        super(new DefaultCvTermComparator(), new DefaultPublicationComparator());
-    }
-
-    @Override
-    public DefaultPublicationComparator getPublicationComparator() {
-        return (DefaultPublicationComparator) super.getPublicationComparator();
-    }
-
-    /**
-     * It will first compare the publications using DefaultPublicationComparator and then the evidenceMethods using DefaultCvTermComparator
-     * @param evidence1
-     * @param evidence2
-     * @return
-     */
-    public int compare(CooperativityEvidence evidence1, CooperativityEvidence evidence2) {
-        return super.compare(evidence1, evidence2);
-    }
+public class DefaultCooperativityEvidenceComparator {
 
     /**
      * Use DefaultCooperativityEvidenceComparator to know if two cooperativityEvidences are equals.
-     * @param evidence1
-     * @param evidence2
+     * @param cooperativityEvidence1
+     * @param cooperativityEvidence2
      * @return true if the two cooperativityEvidences are equal
      */
-    public static boolean areEquals(CooperativityEvidence evidence1, CooperativityEvidence evidence2){
-        if (defaultCooperativityEvidenceComparator == null){
-            defaultCooperativityEvidenceComparator = new DefaultCooperativityEvidenceComparator();
+    public static boolean areEquals(CooperativityEvidence cooperativityEvidence1, CooperativityEvidence cooperativityEvidence2){
+        if (cooperativityEvidence1 == null && cooperativityEvidence2 == null){
+            return true;
         }
+        else if (cooperativityEvidence1 == null || cooperativityEvidence2 == null){
+            return false;
+        }
+        else {
 
-        return defaultCooperativityEvidenceComparator.compare(evidence1, evidence2) == 0;
+            Publication pub1 = cooperativityEvidence1.getPublication();
+            Publication pub2 = cooperativityEvidence2.getPublication();
+
+            if (!DefaultPublicationComparator.areEquals(pub1, pub2)){
+               return false;
+            }
+
+            Collection<CvTerm> evidenceMethods1 = cooperativityEvidence1.getEvidenceMethods();
+            Collection<CvTerm> evidenceMethods2 = cooperativityEvidence2.getEvidenceMethods();
+
+            return ComparatorUtils.areCvTermsEqual(evidenceMethods1, evidenceMethods2);
+        }
     }
 }

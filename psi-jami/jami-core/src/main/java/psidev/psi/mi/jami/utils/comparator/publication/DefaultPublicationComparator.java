@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.utils.comparator.publication;
 
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
+import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Default publication comparator
@@ -72,22 +73,7 @@ public class DefaultPublicationComparator {
                     }
                     // compare other identifier
                     else if (!publication1.getIdentifiers().isEmpty() && !publication2.getIdentifiers().isEmpty()){
-                        // get an iterator
-                        Iterator<Xref> iterator1 = publication1.getIdentifiers().iterator();
-
-                        // at least one external identifier must match
-                        boolean comp = false;
-                        while (!comp && iterator1.hasNext()){
-                            Xref altid1 = iterator1.next();
-
-                            for (Xref altid2 : publication2.getIdentifiers()){
-                                if (DefaultExternalIdentifierComparator.areEquals(altid1, altid2)){
-                                    return true;
-                                }
-                            }
-                        }
-
-                        return false;
+                        return ComparatorUtils.findAtLeastOneMatchingIdentifier(publication1.getIdentifiers(), publication2.getIdentifiers());
                     }
                     // use journal, publication date, publication authors and publication title to compare publications
                     else {

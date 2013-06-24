@@ -1,9 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantInteractorComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Default exact Complex comparator
@@ -18,47 +23,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParti
  * @since <pre>17/01/13</pre>
  */
 
-public class DefaultExactComplexComparator extends ComplexComparator{
-
-    private static DefaultExactComplexComparator defaultExactComplexComparator;
-
-    /**
-     * Creates a new DefaultExactComplexComparator. It will use a DefaultExactInteractorBaseComparator, DefaultExactModelledParticipantComparator to
-     * compares components.
-     */
-    public DefaultExactComplexComparator() {
-        super(new DefaultExactInteractorBaseComparator(), new DefaultExactModelledParticipantComparator(), new DefaultCvTermComparator());
-    }
-
-    public DefaultExactComplexComparator(DefaultExactModelledParticipantComparator comparator) {
-        super(new DefaultExactInteractorBaseComparator(), comparator != null ? comparator : new DefaultExactModelledParticipantComparator(), new DefaultCvTermComparator());
-    }
-
-    public DefaultExactComplexComparator(DefaultExactModelledParticipantInteractorComparator comparator) {
-        super(new DefaultExactInteractorBaseComparator(), comparator != null ? comparator : new DefaultExactModelledParticipantInteractorComparator(), new DefaultCvTermComparator());
-    }
-
-    @Override
-    /**
-     *
-     * It will first look at the default properties of an interactor using DefaultExactInteractorBaseComparator.
-     * It will then compare interaction types using DefaultCvTermComparator.
-     * If the basic interactor properties are the same, It will first compare the collection of components using DefaultExactModelledParticipantComparator.
-     *
-     */
-    public int compare(Complex complex1, Complex complex2) {
-        return super.compare(complex1, complex2);
-    }
-
-    @Override
-    public DefaultExactInteractorBaseComparator getInteractorBaseComparator() {
-        return (DefaultExactInteractorBaseComparator) this.interactorBaseComparator;
-    }
-
-    @Override
-    public DefaultCvTermComparator getCvTermComparator() {
-        return (DefaultCvTermComparator) super.getCvTermComparator();
-    }
+public class DefaultExactComplexComparator {
 
     /**
      * Use DefaultExactComplexComparator to know if two complexes are equals.
@@ -67,10 +32,63 @@ public class DefaultExactComplexComparator extends ComplexComparator{
      * @return true if the two complexes are equal
      */
     public static boolean areEquals(Complex complex1, Complex complex2){
-        if (defaultExactComplexComparator == null){
-            defaultExactComplexComparator = new DefaultExactComplexComparator();
+        if (complex1 == null && complex2 == null){
+            return true;
         }
+        else if (complex1 == null || complex2 == null){
+            return false;
+        }
+        else {
 
-        return defaultExactComplexComparator.compare(complex1, complex2) == 0;
+            // compares the basic interactor properties first
+            if (!DefaultExactInteractorBaseComparator.areEquals(complex1, complex2)){
+                return false;
+            }
+
+            // compares the interaction type
+            CvTerm type1 = complex1.getInteractionType();
+            CvTerm type2 = complex2.getInteractionType();
+
+            if (!DefaultCvTermComparator.areEquals(type1, type2)){
+                return false;
+            }
+
+            // then compares collection of components
+            Collection<ModelledParticipant> components1 = complex1.getParticipants();
+            Collection<ModelledParticipant> components2 = complex2.getParticipants();
+
+            if (components1.size() != components2.size()){
+                return false;
+            }
+            else {
+                Iterator<ModelledParticipant> f1Iterator = new ArrayList<ModelledParticipant>(components1).iterator();
+                Collection<ModelledParticipant> f2List = new ArrayList<ModelledParticipant>(components2);
+
+                while (f1Iterator.hasNext()){
+                    ModelledParticipant f1 = f1Iterator.next();
+                    ModelledParticipant f2ToRemove = null;
+                    for (ModelledParticipant f2 : f2List){
+                        if (DefaultModelledParticipantComparator.areEquals(f1, f2, false)){
+                            f2ToRemove = f2;
+                            break;
+                        }
+                    }
+                    if (f2ToRemove != null){
+                        f2List.remove(f2ToRemove);
+                        f1Iterator.remove();
+                    }
+                    else {
+                        return false;
+                    }
+                }
+
+                if (f1Iterator.hasNext() || !f2List.isEmpty()){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+        }
     }
 }

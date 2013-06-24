@@ -1,8 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
+import psidev.psi.mi.jami.model.Allostery;
 import psidev.psi.mi.jami.model.CooperativeEffect;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interaction.DefaultModelledInteractionComparator;
 
 /**
  * Default cooperative effect comparator
@@ -17,40 +16,38 @@ import psidev.psi.mi.jami.utils.comparator.interaction.DefaultModelledInteractio
  * @since <pre>31/05/13</pre>
  */
 
-public class DefaultCooperativeEffectComparator extends CooperativeEffectComparator{
-
-    private static DefaultCooperativeEffectComparator defaultCooperativeEffectComparator;
-
-    public DefaultCooperativeEffectComparator() {
-        super(new DefaultAllosteryComparator());
-    }
-
-    @Override
-    public DefaultAllosteryComparator getAllosteryComparator() {
-        return (DefaultAllosteryComparator) super.getAllosteryComparator();
-    }
-
-    /**
-     * Allostery effects will always come before basic cooperative effects (preassembly)
-     *
-     * - It will use DefaultAllosteryComparator to compare allostery
-     * - It will use DefaultCooperativeEffectBaseComparator to compare basic cooperative effects
-     */
-    public int compare(CooperativeEffect effect1, CooperativeEffect effect2) {
-        return super.compare(effect1, effect2);
-    }
+public class DefaultCooperativeEffectComparator {
 
     /**
      * Use DefaultCooperativeEffectComparator to know if two CooperativeEffects are equals.
-     * @param effect1
-     * @param effect2
+     * @param cooperativeEffect1
+     * @param cooperativeEffect2
      * @return true if the two CooperativeEffects are equal
      */
-    public static boolean areEquals(CooperativeEffect effect1, CooperativeEffect effect2){
-        if (defaultCooperativeEffectComparator == null){
-            defaultCooperativeEffectComparator = new DefaultCooperativeEffectComparator();
+    public static boolean areEquals(CooperativeEffect cooperativeEffect1, CooperativeEffect cooperativeEffect2){
+        if (cooperativeEffect1 == null && cooperativeEffect2 == null){
+            return true;
         }
+        else if (cooperativeEffect1 == null || cooperativeEffect2 == null){
+            return false;
+        }
+        else {
+            // first check if both cooperative effects are from the same interface
 
-        return defaultCooperativeEffectComparator.compare(effect1, effect2) == 0;
+            // both are allostery
+            boolean isAllostery1 = cooperativeEffect1 instanceof Allostery;
+            boolean isAllostery2 = cooperativeEffect2 instanceof Allostery;
+            if (isAllostery1 && isAllostery2){
+                return DefaultAllosteryComparator.areEquals((Allostery) cooperativeEffect1, (Allostery) cooperativeEffect2);
+            }
+            // the allostery is before
+            else if (isAllostery1 || isAllostery2){
+                return false;
+            }
+            else {
+                // both are simple preassembly effects
+                return DefaultCooperativeEffectBaseComparator.areEquals(cooperativeEffect1, cooperativeEffect2);
+            }
+        }
     }
 }

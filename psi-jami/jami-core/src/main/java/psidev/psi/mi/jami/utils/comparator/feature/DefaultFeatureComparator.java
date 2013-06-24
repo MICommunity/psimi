@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ModelledFeature;
 
 /**
  * Generic default feature comparator.
@@ -15,33 +16,7 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
  * @since <pre>04/02/13</pre>
  */
 
-public class DefaultFeatureComparator extends FeatureComparator {
-
-    private static DefaultFeatureComparator defaultFeatureComparator;
-
-    /**
-     * Creates a DefaultFeatureComparator. It will use a DefaultFeatureBaseComparator to compare basic feature properties
-     */
-    public DefaultFeatureComparator() {
-        super(new DefaultFeatureBaseComparator(), new DefaultCvTermComparator());
-    }
-
-    @Override
-    public DefaultFeatureBaseComparator getFeatureBaseComparator() {
-        return (DefaultFeatureBaseComparator) this.featureBaseComparator;
-    }
-
-    @Override
-    /**
-     * Biological features come first and then experimental features.
-     * - It uses DefaultModelledFeatureComparator to compare biological features
-     * - It uses DefaultFeatureEvidenceComparator to compare experimental features
-     * - It uses DefaultFeatureBaseComparator to compare basic feature properties
-     *
-     */
-    public int compare(Feature feature1, Feature feature2) {
-        return super.compare(feature1, feature2);
-    }
+public class DefaultFeatureComparator {
 
     /**
      * Use DefaultFeatureComparator to know if two features are equals.
@@ -50,10 +25,40 @@ public class DefaultFeatureComparator extends FeatureComparator {
      * @return true if the two features are equal
      */
     public static boolean areEquals(Feature feature1, Feature feature2){
-        if (defaultFeatureComparator == null){
-            defaultFeatureComparator = new DefaultFeatureComparator();
+        if (feature1 == null && feature2 == null){
+            return true;
         }
+        else if (feature1 == null || feature2 == null){
+            return false;
+        }
+        else {
+            // first check if both features are from the same interface
 
-        return defaultFeatureComparator.compare(feature1, feature2) == 0;
+            // both are biological features
+            boolean isBiologicalFeature1 = feature1 instanceof ModelledFeature;
+            boolean isBiologicalFeature2 = feature2 instanceof ModelledFeature;
+            if (isBiologicalFeature1 && isBiologicalFeature2){
+                return DefaultModelledFeatureComparator.areEquals((ModelledFeature) feature1, (ModelledFeature) feature2);
+            }
+            // the biological feature is before
+            else if (isBiologicalFeature1 || isBiologicalFeature2){
+                return false;
+            }
+            else {
+                // both are experimental features
+                boolean isExperimentalFeature1 = feature1 instanceof FeatureEvidence;
+                boolean isExperimentalFeature2 = feature2 instanceof FeatureEvidence;
+                if (isExperimentalFeature1 && isExperimentalFeature2){
+                    return DefaultFeatureEvidenceComparator.areEquals((FeatureEvidence) feature1, (FeatureEvidence) feature2);
+                }
+                // the experimental feature is before
+                else if (isExperimentalFeature1 || isExperimentalFeature2){
+                    return false;
+                }
+                else {
+                    return DefaultFeatureBaseComparator.areEquals(feature1, feature2);
+                }
+            }
+        }
     }
 }

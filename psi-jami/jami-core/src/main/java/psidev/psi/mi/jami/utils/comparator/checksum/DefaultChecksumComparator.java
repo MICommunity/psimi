@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.checksum;
 
 import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 /**
@@ -15,33 +16,7 @@ import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
  * @since <pre>18/12/12</pre>
  */
 
-public class DefaultChecksumComparator extends ChecksumComparator {
-
-    private static DefaultChecksumComparator defaultChecksumComparator;
-
-    public DefaultChecksumComparator() {
-        super(new DefaultCvTermComparator());
-    }
-
-    @Override
-    public DefaultCvTermComparator getMethodComparator() {
-        return (DefaultCvTermComparator) methodComparator;
-    }
-
-    /**
-     * It will first compares the method using a DefaultCvTermComparator and then it will compare the checksum values
-     *
-     * - Two annotations which are null are equals
-     * - The annotation which is not null is before null.
-     * - use DefaultCvTermComparator to compare the topics. If they are equals, compares the values (case insensitive)
-     * - If both annotations have same topic, the one with a null value is always after the one with a non null value.
-     * @param checksum1
-     * @param checksum2
-     * @return
-     */
-    public int compare(Checksum checksum1, Checksum checksum2){
-        return super.compare(checksum1, checksum2);
-    }
+public class DefaultChecksumComparator {
 
     /**
      * Use DefaultChecksumComparator to know if two checksum are equals.
@@ -50,10 +25,33 @@ public class DefaultChecksumComparator extends ChecksumComparator {
      * @return true if the two checksum are equal
      */
     public static boolean areEquals(Checksum checksum1, Checksum checksum2){
-        if (defaultChecksumComparator == null){
-            defaultChecksumComparator = new DefaultChecksumComparator();
+        if (checksum1 == null && checksum2 == null){
+            return true;
         }
+        else if (checksum1 == null || checksum2 == null){
+            return false;
+        }
+        else {
+            CvTerm method1 = checksum1.getMethod();
+            CvTerm method2 = checksum2.getMethod();
 
-        return defaultChecksumComparator.compare(checksum1, checksum2) == 0;
+            if (!DefaultCvTermComparator.areEquals(method1, method2)){
+                return false;
+            }
+            // check checksum
+            String checksum1Value = checksum1.getValue();
+            String checksum2Value = checksum2.getValue();
+
+            if (checksum1Value == null && checksum2Value == null){
+                return true;
+            }
+            else if (checksum1Value == null || checksum2 == null){
+                return false;
+            }
+            else {
+
+                return checksum1Value.equals(checksum2Value);
+            }
+        }
     }
 }

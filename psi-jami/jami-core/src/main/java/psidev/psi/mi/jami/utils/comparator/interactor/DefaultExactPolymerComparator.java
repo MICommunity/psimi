@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interactor;
 
 import psidev.psi.mi.jami.model.Polymer;
+import psidev.psi.mi.jami.utils.comparator.organism.OrganismTaxIdComparator;
 
 /**
  * Default exact polymer comparator.
@@ -12,31 +13,7 @@ import psidev.psi.mi.jami.model.Polymer;
  * @since <pre>21/05/13</pre>
  */
 
-public class DefaultExactPolymerComparator extends DefaultPolymerComparator {
-
-    private static DefaultExactPolymerComparator defaultExactPolymerComparator;
-
-    /**
-     * Creates a new DefaultExactPolymerComparator. It will uses a DefaultExactInteractorBaseComparator to compare interactor properties and a
-     * OrganismTaxIdComparator to compares organism.
-     */
-    public DefaultExactPolymerComparator(){
-        super(new DefaultExactInteractorBaseComparator());
-    }
-
-    @Override
-    /**
-     * It will first use DefaultExactInteractorBaseComparator to compare the basic interactor properties
-     * If the basic interactor properties are the same, it will look at sequence/organism.
-     */
-    public int compare(Polymer polymer1, Polymer polymer2) {
-        return super.compare(polymer1, polymer2);
-    }
-
-    @Override
-    public DefaultExactInteractorBaseComparator getInteractorComparator() {
-        return (DefaultExactInteractorBaseComparator) this.interactorComparator;
-    }
+public class DefaultExactPolymerComparator {
 
     /**
      * Use DefaultExactPolymerComparator to know if two polymers are equals.
@@ -45,10 +22,32 @@ public class DefaultExactPolymerComparator extends DefaultPolymerComparator {
      * @return true if the two polymers are equal
      */
     public static boolean areEquals(Polymer polymer1, Polymer polymer2){
-        if (defaultExactPolymerComparator == null){
-            defaultExactPolymerComparator = new DefaultExactPolymerComparator();
+        if (polymer1 == null && polymer2 == null){
+            return true;
         }
+        else if (polymer1 == null || polymer2 == null){
+            return false;
+        }
+        else {
 
-        return defaultExactPolymerComparator.compare(polymer1, polymer2) == 0;
+            // First compares the basic interactor properties
+            if (!DefaultExactInteractorBaseComparator.areEquals(polymer1, polymer2)){
+                return false;
+            }
+
+            // compares sequences
+            String seq1 = polymer1.getSequence();
+            String seq2 = polymer2.getSequence();
+
+            if (seq1 != null && seq2 != null){
+                if (seq1.equals(seq2)){
+                    return OrganismTaxIdComparator.areEquals(polymer1.getOrganism(), polymer2.getOrganism());
+                }
+                else {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

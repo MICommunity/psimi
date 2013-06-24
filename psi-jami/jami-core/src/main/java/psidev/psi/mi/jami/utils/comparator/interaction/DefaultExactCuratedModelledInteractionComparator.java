@@ -1,8 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParticipantComparator;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Default exact curated ModelledInteraction comparator.
@@ -16,36 +22,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.DefaultExactModelledParti
  * @since <pre>21/01/13</pre>
  */
 
-public class DefaultExactCuratedModelledInteractionComparator extends CuratedModelledInteractionComparator {
-
-    private static DefaultExactCuratedModelledInteractionComparator defaultExactCuratedModelledInteractionComparator;
-
-    /**
-     * Creates a new DefaultExactCuratedModelledInteractionComparator. It will use a DefaultCuratedInteractionBaseComparator<Component> to
-     * compare basic interaction properties
-     */
-    public DefaultExactCuratedModelledInteractionComparator() {
-        super(new DefaultExactModelledParticipantComparator(), new DefaultCuratedInteractionBaseComparator(), new DefaultCvTermComparator());
-    }
-
-    @Override
-    public DefaultCuratedInteractionBaseComparator getInteractionBaseComparator() {
-        return (DefaultCuratedInteractionBaseComparator) this.interactionBaseComparator;
-    }
-
-    public DefaultCvTermComparator getSourceComparator() {
-        return (DefaultCvTermComparator) sourceComparator;
-    }
-
-    @Override
-    /**
-     * It will use a DefaultCuratedInteractionBaseComparator to compare basic interaction properties.
-     * Then it will compare the modelledParticipants using DefaultExactModelledParticipantComparator.
-     * Finally, it will compare the source of the modelledInteraction using DefaultCvTermComparator
-     */
-    public int compare(ModelledInteraction interaction1, ModelledInteraction interaction2) {
-        return super.compare(interaction1, interaction2);
-    }
+public class DefaultExactCuratedModelledInteractionComparator {
 
     /**
      * Use DefaultExactCuratedModelledInteractionComparator to know if two modelled interactions are equals.
@@ -54,10 +31,58 @@ public class DefaultExactCuratedModelledInteractionComparator extends CuratedMod
      * @return true if the two modelled interactions are equal
      */
     public static boolean areEquals(ModelledInteraction interaction1, ModelledInteraction interaction2){
-        if (defaultExactCuratedModelledInteractionComparator == null){
-            defaultExactCuratedModelledInteractionComparator = new DefaultExactCuratedModelledInteractionComparator();
+        if (interaction1 == null && interaction2 == null){
+            return true;
+        }
+        else if (interaction1 == null || interaction2 == null){
+            return false;
+        }
+        else {
+            if (!DefaultCuratedInteractionBaseComparator.areEquals(interaction1, interaction2)){
+                return false;
+            }
+
+            // first compares participants of an interaction
+            if (!compareParticipants(interaction1.getParticipants(), interaction2.getParticipants())){
+                return false;
+            }
+
+            // then compares source
+            Source s1 = interaction1.getSource();
+            Source s2 = interaction2.getSource();
+
+            return DefaultCvTermComparator.areEquals(s1, s2);
+        }
+    }
+
+    private static boolean compareParticipants(Collection<ModelledParticipant> participants1, Collection<ModelledParticipant> participants2) {
+        // compare collections
+        Iterator<ModelledParticipant> f1Iterator = new ArrayList<ModelledParticipant>(participants1).iterator();
+        Collection<ModelledParticipant> f2List = new ArrayList<ModelledParticipant>(participants2);
+
+        while (f1Iterator.hasNext()){
+            ModelledParticipant f1 = f1Iterator.next();
+            ModelledParticipant f2ToRemove = null;
+            for (ModelledParticipant f2 : f2List){
+                if (DefaultExactModelledParticipantComparator.areEquals(f1, f2, true)){
+                    f2ToRemove = f2;
+                    break;
+                }
+            }
+            if (f2ToRemove != null){
+                f2List.remove(f2ToRemove);
+                f1Iterator.remove();
+            }
+            else {
+                return false;
+            }
         }
 
-        return defaultExactCuratedModelledInteractionComparator.compare(interaction1, interaction2) == 0;
+        if (f1Iterator.hasNext() || !f2List.isEmpty()){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }

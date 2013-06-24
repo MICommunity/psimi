@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureEvidenceComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
@@ -57,7 +58,7 @@ public class DefaultParticipantEvidenceComparator {
             Collection<CvTerm> method1 = experimentalParticipant1.getIdentificationMethods();
             Collection<CvTerm> method2 = experimentalParticipant2.getIdentificationMethods();
 
-            if (!compareCollectionOfTerms(method1, method2)){
+            if (!ComparatorUtils.areCvTermsEqual(method1, method2)){
                 return false;
             }
 
@@ -65,7 +66,7 @@ public class DefaultParticipantEvidenceComparator {
             Collection<CvTerm> prep1 = experimentalParticipant1.getExperimentalPreparations();
             Collection<CvTerm> prep2 = experimentalParticipant2.getExperimentalPreparations();
 
-            if (!compareCollectionOfTerms(prep1, prep2)){
+            if (!ComparatorUtils.areCvTermsEqual(prep1, prep2)){
                 return false;
             }
 
@@ -81,7 +82,7 @@ public class DefaultParticipantEvidenceComparator {
             Collection<Parameter> param1 = experimentalParticipant1.getParameters();
             Collection<Parameter> param2 = experimentalParticipant2.getParameters();
 
-            if (!compareCollectionOfParameters(param1, param2)){
+            if (!ComparatorUtils.areParametersEqual(param1, param2)){
                 return false;
             }
 
