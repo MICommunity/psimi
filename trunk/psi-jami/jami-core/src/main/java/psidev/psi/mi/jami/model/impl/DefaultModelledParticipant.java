@@ -83,7 +83,7 @@ public class DefaultModelledParticipant extends DefaultParticipant<Interactor> i
         }
 
         if (interaction != null){
-            modelledInteraction.addModelledParticipant(this);
+            interaction.addModelledParticipant(this);
         }
     }
 
