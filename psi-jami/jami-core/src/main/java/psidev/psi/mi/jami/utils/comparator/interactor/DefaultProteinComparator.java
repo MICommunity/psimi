@@ -40,7 +40,9 @@ public class DefaultProteinComparator {
             String uniprot2 = protein2.getUniprotkb();
 
             if (uniprot1 != null && uniprot2 != null){
-                return uniprot1.equals(uniprot2);
+                if (!uniprot1.equals(uniprot2)){
+                    return false;
+                }
             }
 
             // compares Refseq
@@ -48,7 +50,9 @@ public class DefaultProteinComparator {
             String refseq2 = protein2.getRefseq();
 
             if (refseq1 != null && refseq2 != null){
-                return refseq1.equals(refseq2);
+                if (!refseq1.equals(refseq2)){
+                    return false;
+                }
             }
 
             // compares rogids if at least one refseq identifier is not set
@@ -56,7 +60,9 @@ public class DefaultProteinComparator {
             String rogid2 = protein2.getRogid();
 
             if (rogid1 != null && rogid2 != null){
-                return rogid1.equals(rogid2);
+                if (!rogid1.equals(rogid2)){
+                    return false;
+                }
             }
 
             // compares gene names if at least one rogid identifier is not set

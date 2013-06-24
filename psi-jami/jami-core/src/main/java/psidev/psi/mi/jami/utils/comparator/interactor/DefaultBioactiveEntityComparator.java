@@ -68,7 +68,11 @@ public class DefaultBioactiveEntityComparator {
             String inchi1 = bioactiveEntity1.getStandardInchi();
             String inchi2 = bioactiveEntity2.getStandardInchi();
 
-            return inchi1.equals(inchi2);
+            if (inchi1 != null && inchi2 != null){
+                return inchi1.equals(inchi2);
+            }
+
+            return true;
         }
     }
 }

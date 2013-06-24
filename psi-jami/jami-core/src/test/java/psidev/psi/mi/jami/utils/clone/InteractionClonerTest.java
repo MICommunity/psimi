@@ -122,7 +122,7 @@ public class InteractionClonerTest {
         Assert.assertEquals("source interaction", targetInteraction.getShortName());
         Assert.assertEquals(1, targetInteraction.getParticipants().size());
         Assert.assertFalse(sourceInteraction.getParticipants().iterator().next() == targetInteraction.getParticipants().iterator().next());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next(), true));
     }
 
     @Test
@@ -224,7 +224,7 @@ public class InteractionClonerTest {
         Assert.assertEquals("source interaction", targetInteraction.getShortName());
         Assert.assertEquals(1, targetInteraction.getParticipants().size());
         Assert.assertFalse(sourceInteraction.getParticipants().iterator().next() == targetInteraction.getParticipants().iterator().next());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next(), true));
         Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getModelledInteraction() == targetInteraction);
     }
 
@@ -336,7 +336,7 @@ public class InteractionClonerTest {
         Assert.assertEquals("source interaction", targetInteraction.getShortName());
         Assert.assertEquals(1, targetInteraction.getParticipants().size());
         Assert.assertFalse(sourceInteraction.getParticipants().iterator().next() == targetInteraction.getParticipants().iterator().next());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteraction.getParticipants().iterator().next(), targetInteraction.getParticipants().iterator().next(), true));
         Assert.assertTrue(targetInteraction.getParticipants().iterator().next().getInteractionEvidence() == targetInteraction);
     }
 
@@ -414,7 +414,7 @@ public class InteractionClonerTest {
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
 
@@ -423,7 +423,7 @@ public class InteractionClonerTest {
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
         Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
@@ -445,8 +445,8 @@ public class InteractionClonerTest {
 
         Assert.assertFalse(p1 == binary.getParticipantA());
         Assert.assertFalse(p2 == binary.getParticipantB());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB(), true));
         Assert.assertTrue(binary.getParticipantA().getInteractionEvidence() == binary);
         Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
 
@@ -462,7 +462,7 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(sourceInteraction, binary, true, false);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertNull(binary.getParticipantB());
         Assert.assertTrue(binary.getParticipantA().getInteractionEvidence() == binary);
     }
@@ -480,9 +480,9 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(sourceInteraction, binary, true, true);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
 
@@ -490,9 +490,9 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideParticipantsEvidencesToBinary(sourceInteraction, binary, true, true);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
         Assert.assertTrue(p1.getInteractionEvidence() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getInteractionEvidence() == binary);
@@ -572,7 +572,7 @@ public class InteractionClonerTest {
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
 
@@ -581,7 +581,7 @@ public class InteractionClonerTest {
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
         Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
@@ -603,8 +603,8 @@ public class InteractionClonerTest {
 
         Assert.assertFalse(p1 == binary.getParticipantA());
         Assert.assertFalse(p2 == binary.getParticipantB());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB(), true));
         Assert.assertTrue(binary.getParticipantA().getModelledInteraction() == binary);
         Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
 
@@ -620,7 +620,7 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(sourceInteraction, binary, true, false);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertNull(binary.getParticipantB());
         Assert.assertTrue(binary.getParticipantA().getModelledInteraction() == binary);
     }
@@ -638,9 +638,9 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(sourceInteraction, binary, true, true);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
 
@@ -648,9 +648,9 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideModelledParticipantsToBinary(sourceInteraction, binary, true, true);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
         Assert.assertTrue(p1.getModelledInteraction() == sourceInteraction);
         Assert.assertTrue(binary.getParticipantB().getModelledInteraction() == binary);
@@ -727,14 +727,14 @@ public class InteractionClonerTest {
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
 
         p1.setStoichiometry(3);
         InteractionCloner.copyAndOverrideBasicParticipantsToBinary(sourceInteraction, binary, false, true);
 
         Assert.assertTrue(p1 == binary.getParticipantA());
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
     }
 
@@ -754,8 +754,8 @@ public class InteractionClonerTest {
 
         Assert.assertFalse(p1 == binary.getParticipantA());
         Assert.assertFalse(p2 == binary.getParticipantB());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p2, binary.getParticipantB(), true));
 
         // no participants
         sourceInteraction.getParticipants().clear();
@@ -769,7 +769,7 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideBasicParticipantsToBinary(sourceInteraction, binary, true, false);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertNull(binary.getParticipantB());
     }
 
@@ -786,17 +786,17 @@ public class InteractionClonerTest {
         InteractionCloner.copyAndOverrideBasicParticipantsToBinary(sourceInteraction, binary, true, true);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
 
         p1.setStoichiometry(3);
         InteractionCloner.copyAndOverrideBasicParticipantsToBinary(sourceInteraction, binary, true, true);
 
         Assert.assertFalse(p1 == binary.getParticipantA());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(p1, binary.getParticipantA(), true));
         Assert.assertFalse(binary.getParticipantB() == p1);
-        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB()));
+        Assert.assertFalse(DefaultParticipantBaseComparator.areEquals(binary.getParticipantA(), binary.getParticipantB(), true));
         Assert.assertEquals(new DefaultStoichiometry(0), binary.getParticipantB().getStoichiometry());
     }
 }

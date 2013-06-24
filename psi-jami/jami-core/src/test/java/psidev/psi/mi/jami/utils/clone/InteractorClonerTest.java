@@ -162,7 +162,7 @@ public class InteractorClonerTest {
         Assert.assertEquals("source interactor", targetInteractor.getShortName());
         Assert.assertEquals(1, targetInteractor.getParticipants().size());
         Assert.assertFalse(sourceInteractor.getParticipants().iterator().next() == targetInteractor.getParticipants().iterator().next());
-        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteractor.getParticipants().iterator().next(), targetInteractor.getParticipants().iterator().next()));
+        Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(sourceInteractor.getParticipants().iterator().next(), targetInteractor.getParticipants().iterator().next(), false));
         Assert.assertTrue(targetInteractor.getParticipants().iterator().next().getModelledInteraction() == targetInteractor);
     }
 

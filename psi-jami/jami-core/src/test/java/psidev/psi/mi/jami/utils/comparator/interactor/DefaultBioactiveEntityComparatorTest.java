@@ -24,9 +24,6 @@ public class DefaultBioactiveEntityComparatorTest {
         BioactiveEntity interactor1 = null;
         BioactiveEntity interactor2 = new DefaultBioactiveEntity("test");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
-
         Assert.assertFalse(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
@@ -41,9 +38,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor2.setStandardInchi("xxx");
         interactor2.setSmile("yyy");
         interactor2.setStandardInchiKey("zzz");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
         Assert.assertFalse(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
@@ -64,10 +58,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor1.setChebi("CHEBI:xxxx2");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.CHEBI, Xref.CHEBI_MI, "CHEBI:xxxx1"));
 
-        // interactor 1 and 2 have same identifiers but the unique chebi which have been set is different
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
-
         Assert.assertFalse(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
@@ -86,9 +76,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor2.setChebi("CHEBI:xxxx2");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.CHEBI, Xref.CHEBI_MI, "CHEBI:xxxx1"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
@@ -103,9 +90,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor2.setStandardInchi("xxx");
         interactor2.setSmile("yyy");
         interactor2.setStandardInchiKey("zzz2");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
         Assert.assertFalse(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
@@ -122,9 +106,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor2.setSmile("yyy");
         interactor2.setStandardInchiKey("zzz1");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
@@ -140,9 +121,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor2.setSmile("yyy");
         interactor2.setStandardInchiKey("zzz");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
@@ -156,9 +134,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor2.setStandardInchi("xxx1");
         interactor2.setSmile("yyy");
         interactor2.setStandardInchiKey("zzz1");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
@@ -176,9 +151,6 @@ public class DefaultBioactiveEntityComparatorTest {
         interactor2.setSmile("yyy2");
         interactor2.setStandardInchiKey("zzz");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }
 
@@ -192,9 +164,6 @@ public class DefaultBioactiveEntityComparatorTest {
         BioactiveEntity interactor2 = new DefaultBioactiveEntity("test");
         interactor2.setSmile("yyy1");
         interactor2.setStandardInchiKey("zzz");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultBioactiveEntityComparator.areEquals(interactor1, interactor2));
     }

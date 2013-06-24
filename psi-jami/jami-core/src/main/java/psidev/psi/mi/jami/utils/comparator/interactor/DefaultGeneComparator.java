@@ -39,7 +39,9 @@ public class DefaultGeneComparator {
             String ensembl2 = gene2.getEnsembl();
 
             if (ensembl1 != null && ensembl2 != null){
-                return ensembl1.equals(ensembl2);
+                if (!ensembl1.equals(ensembl2)){
+                    return false;
+                }
             }
 
             // compares ensemblGenomes identifier if at least one ensembl identifier is not set
@@ -47,7 +49,9 @@ public class DefaultGeneComparator {
             String ensemblGenome2 = gene2.getEnsembleGenome();
 
             if (ensemblGenome1 != null && ensemblGenome2 != null){
-                return ensemblGenome1.equals(ensemblGenome2);
+                if (!ensemblGenome1.equals(ensemblGenome2)){
+                    return false;
+                }
             }
 
             // compares entrez/gene Id if at least one ensemblGenomes identifier is not set
@@ -55,7 +59,9 @@ public class DefaultGeneComparator {
             String geneId2 = gene2.getEntrezGeneId();
 
             if (geneId1 != null && geneId2 != null){
-                return geneId1.equals(geneId2);
+                if (!geneId1.equals(geneId2)){
+                    return false;
+                }
             }
 
             // compares refseq identifier if at least one reseq identifier is not set

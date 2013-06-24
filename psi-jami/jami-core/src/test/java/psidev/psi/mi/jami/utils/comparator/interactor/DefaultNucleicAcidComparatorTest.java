@@ -17,15 +17,10 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 public class DefaultNucleicAcidComparatorTest {
 
-    private DefaultNucleicAcidComparator comparator = new DefaultNucleicAcidComparator();
-
     @Test
     public void test_nucleic_acid_null_after(){
         NucleicAcid interactor1 = null;
         NucleicAcid interactor2 = new DefaultNucleicAcid("test");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
         Assert.assertFalse(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
@@ -39,9 +34,6 @@ public class DefaultNucleicAcidComparatorTest {
         interactor2.setSequence("APPAA");
         interactor2.setDdbjEmblGenbank("xxxx");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
@@ -52,9 +44,6 @@ public class DefaultNucleicAcidComparatorTest {
         NucleicAcid interactor2 = new DefaultNucleicAcid("test");
         interactor2.setSequence("APPAA");
         interactor2.setDdbjEmblGenbank("xxxx");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
@@ -68,9 +57,6 @@ public class DefaultNucleicAcidComparatorTest {
         interactor2.setDdbjEmblGenbank("xxxx1");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.DDBJ_EMBL_GENBANK, "xxxx2"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
-
         Assert.assertFalse(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
@@ -81,9 +67,6 @@ public class DefaultNucleicAcidComparatorTest {
         NucleicAcid interactor2 = new DefaultNucleicAcid("test");
         interactor2.setDdbjEmblGenbank("xxxx2");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
@@ -97,9 +80,6 @@ public class DefaultNucleicAcidComparatorTest {
         interactor2.setSequence("APPAA");
         interactor2.setDdbjEmblGenbank("xxxx");
         interactor2.setRefseq("xxxx1");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
@@ -115,9 +95,6 @@ public class DefaultNucleicAcidComparatorTest {
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.DDBJ_EMBL_GENBANK, "xxxx2"));
         interactor2.setRefseq("xxxx1");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
-
         Assert.assertFalse(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }
 
@@ -130,9 +107,6 @@ public class DefaultNucleicAcidComparatorTest {
         NucleicAcid interactor2 = new DefaultNucleicAcid("test");
         interactor2.setDdbjEmblGenbank("xxxx2");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultNucleicAcidComparator.areEquals(interactor1, interactor2));
     }

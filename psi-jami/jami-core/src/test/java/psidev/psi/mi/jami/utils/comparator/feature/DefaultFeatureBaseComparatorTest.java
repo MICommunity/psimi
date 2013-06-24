@@ -18,15 +18,11 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 public class DefaultFeatureBaseComparatorTest {
 
-    private DefaultFeatureBaseComparator comparator = new DefaultFeatureBaseComparator();
 
     @Test
     public void test_feature_null_after(){
         Feature feature1 = null;
         Feature feature2 = new DefaultFeature("test", null);
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) > 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) < 0);
 
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
@@ -36,9 +32,6 @@ public class DefaultFeatureBaseComparatorTest {
         Feature feature1 = new DefaultFeature("test", null);
         Feature feature2 = new DefaultFeature("test2", null);
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
-
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -46,9 +39,6 @@ public class DefaultFeatureBaseComparatorTest {
     public void test_feature_identical_names(){
         Feature feature1 = new DefaultFeature("test", null);
         Feature feature2 = new DefaultFeature("test", null);
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
 
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
@@ -58,9 +48,6 @@ public class DefaultFeatureBaseComparatorTest {
         Feature feature1 = new DefaultFeature("test ", null);
         Feature feature2 = new DefaultFeature("tEST", null);
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
-
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -69,9 +56,6 @@ public class DefaultFeatureBaseComparatorTest {
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("sufficient to bind", "MI:xxx2"));
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) > 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) < 0);
-
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -79,9 +63,6 @@ public class DefaultFeatureBaseComparatorTest {
     public void test_feature_identical_types(){
         Feature feature1 = new DefaultFeature("test", null, CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
 
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
@@ -93,9 +74,6 @@ public class DefaultFeatureBaseComparatorTest {
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
         feature2.setInteractionEffect(CvTermUtils.createMICvTerm("decreasing interaction", "MI:xxx4"));
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
-
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -105,9 +83,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature1.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
         feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
 
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
@@ -121,9 +96,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.setInteractionDependency(CvTermUtils.createMICvTerm("test", "MI:xxx6"));
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
-
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -135,9 +107,6 @@ public class DefaultFeatureBaseComparatorTest {
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
         feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
 
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
@@ -153,9 +122,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
         feature2.setInterpro("INTERPRO-TEST2");
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
-
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -170,9 +136,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
         feature2.setInterpro("INTERPRO-TEST");
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
-
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -186,9 +149,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.setInteractionEffect(CvTermUtils.createMICvTerm("increasing interaction", "MI:xxx3"));
         feature2.setInteractionDependency(CvTermUtils.createMICvTerm("resulting-ptm", "MI:xxx5"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx2"));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
 
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
@@ -205,9 +165,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database2", "xxx2"));
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
-
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -222,9 +179,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database", "xxx1"));
         feature2.getIdentifiers().add(XrefUtils.createIdentityXref("test-database2", "xxx2"));
 
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
-
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -236,10 +190,6 @@ public class DefaultFeatureBaseComparatorTest {
         Feature feature2 = new DefaultFeature("test", " test feature", CvTermUtils.createMICvTerm("binding site", "MI:xxxx"));
         feature2.setInterpro("INTERPRO-TEST");
         feature2.getRanges().add(RangeUtils.createCertainRange(3));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
-
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -252,10 +202,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.setInterpro("INTERPRO-TEST");
         feature2.getRanges().add(RangeUtils.createCertainRange(1));
         feature2.getRanges().add(RangeUtils.createCertainRange(6));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) < 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) > 0);
-
         Assert.assertFalse(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }
 
@@ -269,9 +215,6 @@ public class DefaultFeatureBaseComparatorTest {
         feature2.setInterpro("INTERPRO-TEST");
         feature2.getRanges().add(RangeUtils.createCertainRange(1));
         feature2.getRanges().add(RangeUtils.createCertainRange(6));
-
-        Assert.assertTrue(comparator.compare(feature1, feature2) == 0);
-        Assert.assertTrue(comparator.compare(feature2, feature1) == 0);
 
         Assert.assertTrue(DefaultFeatureBaseComparator.areEquals(feature1, feature2));
     }

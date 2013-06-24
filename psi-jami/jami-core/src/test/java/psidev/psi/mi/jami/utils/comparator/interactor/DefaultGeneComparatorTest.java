@@ -17,15 +17,10 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 public class DefaultGeneComparatorTest {
 
-    private DefaultGeneComparator comparator = new DefaultGeneComparator();
-
     @Test
     public void test_gene_null_after(){
         Gene interactor1 = null;
         Gene interactor2 = new DefaultGene("test");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
@@ -39,9 +34,6 @@ public class DefaultGeneComparatorTest {
         Gene interactor2 = new DefaultGene("test1");
         interactor2.setEnsembl("ENSEMBL-xxx2");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "ENSEMBL-xxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
@@ -58,9 +50,6 @@ public class DefaultGeneComparatorTest {
         interactor2.setRefseq("xxx1");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "ENSEMBL-xxx1"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
 
@@ -73,9 +62,6 @@ public class DefaultGeneComparatorTest {
         Gene interactor2 = new DefaultGene("test1");
         interactor2.setEnsembl("ENSEMBL-xxx1");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "ENSEMBL-xxx2"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
@@ -91,8 +77,6 @@ public class DefaultGeneComparatorTest {
         interactor2.setEnsembl("ENSEMBL-xxx");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL_GENOMES, "ENSEMBL-xxx1"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
@@ -109,9 +93,6 @@ public class DefaultGeneComparatorTest {
         interactor2.setEnsemblGenome("ENSEMBL-xxx2");
         interactor2.setRefseq("xxx1");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
 
@@ -124,9 +105,6 @@ public class DefaultGeneComparatorTest {
         Gene interactor2 = new DefaultGene("test1");
         interactor2.setEnsemblGenome("ENSEMBL-xxx1");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
 
@@ -138,9 +116,6 @@ public class DefaultGeneComparatorTest {
         interactor1.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENTREZ_GENE, "xxx2"));
         Gene interactor2 = new DefaultGene("test1");
         interactor2.setEntrezGeneId("xxx1");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
@@ -155,9 +130,6 @@ public class DefaultGeneComparatorTest {
         interactor2.setEntrezGeneId("xxx2");
         interactor2.setEnsembl("ENSEMBL-xxx");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENTREZ_GENE, "xxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
@@ -174,9 +146,6 @@ public class DefaultGeneComparatorTest {
         interactor2.setEntrezGeneId("xxx2");
         interactor2.setRefseq("xxx1");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
 
@@ -188,9 +157,6 @@ public class DefaultGeneComparatorTest {
         interactor1.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.REFSEQ, "xxx2"));
         Gene interactor2 = new DefaultGene("test1");
         interactor2.setRefseq("xxx1");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
@@ -206,9 +172,6 @@ public class DefaultGeneComparatorTest {
         interactor2.setEnsembl("ENSEMBL-xxx");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.REFSEQ, "xxx1"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
 
@@ -223,9 +186,6 @@ public class DefaultGeneComparatorTest {
         Gene interactor2 = new DefaultGene("test1");
         interactor2.setEntrezGeneId("xxx1");
         interactor2.setRefseq("xxx2");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
         Assert.assertFalse(DefaultGeneComparator.areEquals(interactor1, interactor2));
     }
