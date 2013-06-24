@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
 import psidev.psi.mi.jami.model.FeatureModificationEffector;
+import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureComparator;
 
 /**
@@ -13,40 +14,27 @@ import psidev.psi.mi.jami.utils.comparator.feature.DefaultModelledFeatureCompara
  * @since <pre>30/05/13</pre>
  */
 
-public class DefaultFeatureModificationEffectorComparator extends FeatureModificationEffectorComparator{
-
-    private static DefaultFeatureModificationEffectorComparator defaultFeatureModificationEffectorComparator;
-
-    public DefaultFeatureModificationEffectorComparator() {
-        super(new DefaultModelledFeatureComparator());
-    }
-
-    @Override
-    public DefaultModelledFeatureComparator getFeatureComparator() {
-        return (DefaultModelledFeatureComparator) super.getFeatureComparator();
-    }
-
-    /**
-     * It will use a DefaultModelledFeatureComparator to compare the feature.
-     * @param effector1
-     * @param effector2
-     * @return
-     */
-    public int compare(FeatureModificationEffector effector1, FeatureModificationEffector effector2) {
-        return super.compare(effector1, effector2);
-    }
+public class DefaultFeatureModificationEffectorComparator {
 
     /**
      * Use DefaultFeatureModificationEffectorComparator to know if two FeatureModificationEffector are equals.
-     * @param effector1
-     * @param effector2
+     * @param featureModificationEffector1
+     * @param featureModificationEffector2
      * @return true if the two FeatureModificationEffector are equal
      */
-    public static boolean areEquals(FeatureModificationEffector effector1, FeatureModificationEffector effector2){
-        if (defaultFeatureModificationEffectorComparator == null){
-            defaultFeatureModificationEffectorComparator = new DefaultFeatureModificationEffectorComparator();
+    public static boolean areEquals(FeatureModificationEffector featureModificationEffector1, FeatureModificationEffector featureModificationEffector2){
+        if (featureModificationEffector1 == null && featureModificationEffector2 == null){
+            return true;
         }
+        else if (featureModificationEffector1 == null || featureModificationEffector2 == null){
+            return false;
+        }
+        else {
 
-        return defaultFeatureModificationEffectorComparator.compare(effector1, effector2) == 0;
+            ModelledFeature feature1 = featureModificationEffector1.getFeatureModification();
+            ModelledFeature feature2 = featureModificationEffector2.getFeatureModification();
+
+            return DefaultModelledFeatureComparator.areEquals(feature1, feature2);
+        }
     }
 }

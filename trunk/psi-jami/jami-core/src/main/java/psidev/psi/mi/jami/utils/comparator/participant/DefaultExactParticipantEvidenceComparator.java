@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.ComparatorUtils;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.DefaultFeatureEvidenceComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.DefaultOrganismComparator;
-import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,7 +57,7 @@ public class DefaultExactParticipantEvidenceComparator {
             Collection<CvTerm> method1 = experimentalParticipant1.getIdentificationMethods();
             Collection<CvTerm> method2 = experimentalParticipant2.getIdentificationMethods();
 
-            if (!compareCollectionOfTerms(method1, method2)){
+            if (!ComparatorUtils.areCvTermsEqual(method1, method2)){
                 return false;
             }
 
@@ -65,7 +65,7 @@ public class DefaultExactParticipantEvidenceComparator {
             Collection<CvTerm> prep1 = experimentalParticipant1.getExperimentalPreparations();
             Collection<CvTerm> prep2 = experimentalParticipant2.getExperimentalPreparations();
 
-            if (!compareCollectionOfTerms(prep1, prep2)){
+            if (!ComparatorUtils.areCvTermsEqual(prep1, prep2)){
                 return false;
             }
 
@@ -81,7 +81,7 @@ public class DefaultExactParticipantEvidenceComparator {
             Collection<Parameter> param1 = experimentalParticipant1.getParameters();
             Collection<Parameter> param2 = experimentalParticipant2.getParameters();
 
-            if (!compareCollectionOfParameters(param1, param2)){
+            if (!ComparatorUtils.areParametersEqual(param1, param2)){
                 return false;
             }
 
@@ -90,76 +90,6 @@ public class DefaultExactParticipantEvidenceComparator {
             Collection<FeatureEvidence> features2 = experimentalParticipant2.getFeatures();
 
             return compareCollectionOfFeatures(features1, features2);
-        }
-    }
-
-    private static boolean compareCollectionOfTerms(Collection<CvTerm> method1, Collection<CvTerm> method2) {
-        if (method1.size() != method2.size()){
-            return false;
-        }
-        else {
-            Iterator<CvTerm> f1Iterator = new ArrayList<CvTerm>(method1).iterator();
-            Collection<CvTerm> f2List = new ArrayList<CvTerm>(method2);
-
-            while (f1Iterator.hasNext()){
-                CvTerm f1 = f1Iterator.next();
-                CvTerm f2ToRemove = null;
-                for (CvTerm f2 : f2List){
-                    if (DefaultCvTermComparator.areEquals(f1, f2)){
-                        f2ToRemove = f2;
-                        break;
-                    }
-                }
-                if (f2ToRemove != null){
-                    f2List.remove(f2ToRemove);
-                    f1Iterator.remove();
-                }
-                else {
-                    return false;
-                }
-            }
-
-            if (f1Iterator.hasNext() || !f2List.isEmpty()){
-                return false;
-            }
-            else{
-                return true;
-            }
-        }
-    }
-
-    private static boolean compareCollectionOfParameters(Collection<Parameter> method1, Collection<Parameter> method2) {
-        if (method1.size() != method2.size()){
-            return false;
-        }
-        else {
-            Iterator<Parameter> f1Iterator = new ArrayList<Parameter>(method1).iterator();
-            Collection<Parameter> f2List = new ArrayList<Parameter>(method2);
-
-            while (f1Iterator.hasNext()){
-                Parameter f1 = f1Iterator.next();
-                Parameter f2ToRemove = null;
-                for (Parameter f2 : f2List){
-                    if (DefaultParameterComparator.areEquals(f1, f2)){
-                        f2ToRemove = f2;
-                        break;
-                    }
-                }
-                if (f2ToRemove != null){
-                    f2List.remove(f2ToRemove);
-                    f1Iterator.remove();
-                }
-                else {
-                    return false;
-                }
-            }
-
-            if (f1Iterator.hasNext() || !f2List.isEmpty()){
-                return false;
-            }
-            else{
-                return true;
-            }
         }
     }
 

@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.Interaction;
 
+import java.util.Date;
+
 /**
  * Default comparator for curated interactions.
  *
@@ -14,28 +16,7 @@ import psidev.psi.mi.jami.model.Interaction;
  * @since <pre>31/05/13</pre>
  */
 
-public class DefaultCuratedInteractionBaseComparator extends CuratedInteractionBaseComparator {
-
-    private static DefaultCuratedInteractionBaseComparator defaultCuratedInteractionBaseComparator;
-
-    public DefaultCuratedInteractionBaseComparator() {
-        super(new DefaultInteractionBaseComparator());
-    }
-
-    @Override
-    public DefaultInteractionBaseComparator getInteractionBaseComparator() {
-        return (DefaultInteractionBaseComparator) super.getInteractionBaseComparator();
-    }
-
-    @Override
-    /**
-     * It will first compare the basic properties of an interaction using DefaultInteractionBaseComparator.
-     * Then it will compare the created dates (null created dates always come after)
-     * Finally it will compare the updated date (null updated date always come after)
-     */
-    public int compare(Interaction interaction1, Interaction interaction2) {
-        return super.compare(interaction1, interaction2);
-    }
+public class DefaultCuratedInteractionBaseComparator {
 
     /**
      * Use DefaultCuratedInteractionBaseComparator to know if two interactions are equals.
@@ -44,10 +25,45 @@ public class DefaultCuratedInteractionBaseComparator extends CuratedInteractionB
      * @return true if the two interactions are equal
      */
     public static boolean areEquals(Interaction interaction1, Interaction interaction2){
-        if (defaultCuratedInteractionBaseComparator == null){
-            defaultCuratedInteractionBaseComparator = new DefaultCuratedInteractionBaseComparator();
+        if (interaction1 == null && interaction2 == null){
+            return true;
         }
+        else if (interaction1 == null || interaction2 == null){
+            return false;
+        }
+        else {
+            // first compare basic properties
+            if (!DefaultInteractionBaseComparator.areEquals(interaction1, interaction2)){
+                return false;
+            }
 
-        return defaultCuratedInteractionBaseComparator.compare(interaction1, interaction2) == 0;
+            // then compares created date of interaction
+            Date createdDate1 = interaction1.getCreatedDate();
+            Date createdDate2 = interaction2.getCreatedDate();
+
+            if (createdDate1 == null && createdDate2 == null){
+                return true;
+            }
+            else if (createdDate1 == null || createdDate2 == null){
+                return false;
+            }
+            else if (!createdDate1.equals(createdDate2)){
+                return false;
+            }
+
+            // then compares updated date of interaction
+            Date updatedDate1 = interaction1.getUpdatedDate();
+            Date updatedDate2 = interaction2.getUpdatedDate();
+
+            if (updatedDate1 == null && updatedDate2 == null){
+                return true;
+            }
+            else if (updatedDate1 == null || updatedDate2 == null){
+                return false;
+            }
+            else{
+                return updatedDate1.equals(updatedDate2);
+            }
+        }
     }
 }
