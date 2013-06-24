@@ -40,7 +40,9 @@ public class DefaultExactNucleicAcidComparator {
             String ddbjEmblGenbank2 = nucleicAcid2.getDdbjEmblGenbank();
 
             if (ddbjEmblGenbank1 != null && ddbjEmblGenbank2 != null){
-                return ddbjEmblGenbank1.equals(ddbjEmblGenbank2);
+                if (!ddbjEmblGenbank1.equals(ddbjEmblGenbank2)){
+                    return false;
+                }
             }
 
             // compares Refseq

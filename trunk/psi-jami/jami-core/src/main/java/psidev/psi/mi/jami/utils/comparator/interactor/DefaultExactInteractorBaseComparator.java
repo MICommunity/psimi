@@ -44,7 +44,7 @@ public class DefaultExactInteractorBaseComparator {
             Organism organism1 = interactor1.getOrganism();
             Organism organism2 = interactor2.getOrganism();
 
-            if (!OrganismTaxIdComparator.areEquals(organism1, organism2)){
+            if (organism1 != null && organism2 != null && !OrganismTaxIdComparator.areEquals(organism1, organism2)){
                 return false;
             }
 

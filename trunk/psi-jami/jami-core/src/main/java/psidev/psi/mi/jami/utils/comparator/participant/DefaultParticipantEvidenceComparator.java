@@ -50,7 +50,7 @@ public class DefaultParticipantEvidenceComparator {
             CvTerm expRoles1 = experimentalParticipant1.getExperimentalRole();
             CvTerm expRoles2 = experimentalParticipant2.getExperimentalRole();
 
-            if (DefaultCvTermComparator.areEquals(expRoles1, expRoles2)){
+            if (!DefaultCvTermComparator.areEquals(expRoles1, expRoles2)){
                 return false;
             }
 

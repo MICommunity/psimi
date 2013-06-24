@@ -35,7 +35,7 @@ public class DefaultModelledFeatureTest {
         ModelledParticipant p = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         feature.setModelledParticipant(p);
 
-        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), feature.getModelledParticipant()));
+        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), feature.getModelledParticipant(), true));
         Assert.assertEquals(0, p.getFeatures().size());
 
         feature.setModelledParticipantAndAddFeature(p);

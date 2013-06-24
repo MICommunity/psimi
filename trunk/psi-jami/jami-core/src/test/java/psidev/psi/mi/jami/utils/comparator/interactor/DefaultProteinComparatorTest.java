@@ -17,15 +17,10 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 public class DefaultProteinComparatorTest {
 
-    private DefaultProteinComparator comparator = new DefaultProteinComparator();
-
     @Test
     public void test_nucleic_acid_null_after(){
         Protein interactor1 = null;
         Protein interactor2 = new DefaultProtein("test");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
         Assert.assertFalse(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
@@ -39,9 +34,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setSequence("APPAA");
         interactor2.setUniprotkb("P12345");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
 
@@ -52,9 +44,6 @@ public class DefaultProteinComparatorTest {
         Protein interactor2 = new DefaultProtein("test");
         interactor2.setSequence("APPAA");
         interactor2.setUniprotkb("P12345");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
@@ -68,9 +57,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setUniprotkb("P12345");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.UNIPROTKB, "P12346"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
-
         Assert.assertFalse(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
 
@@ -81,9 +67,6 @@ public class DefaultProteinComparatorTest {
         Protein interactor2 = new DefaultProtein("test");
         interactor2.setUniprotkb("P12346");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
@@ -98,9 +81,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setUniprotkb("P12345");
         interactor2.setRefseq("xxxx1");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
 
@@ -112,9 +92,6 @@ public class DefaultProteinComparatorTest {
         Protein interactor2 = new DefaultProtein("test");
         interactor2.setUniprotkb("P12345");
         interactor2.setRefseq("xxx1");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
         Assert.assertFalse(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
@@ -128,10 +105,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setUniprotkb("P12346");
         interactor2.setRefseq("xxxx");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
 
@@ -145,9 +118,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setUniprotkb("P12346");
         interactor2.setGeneName("name2");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
         Assert.assertFalse(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
@@ -163,9 +133,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setGeneName("name1");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
 
@@ -178,9 +145,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setUniprotkb("P12346");
         interactor2.setGeneName("name1");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
@@ -198,9 +162,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setRogid("xxx2");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
 
@@ -217,9 +178,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setRogid("xxx1");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }
 
@@ -233,9 +191,6 @@ public class DefaultProteinComparatorTest {
         interactor2.setUniprotkb("P12346");
         interactor2.setGeneName("name1");
         interactor2.getIdentifiers().add(XrefUtils.createIdentityXref(Xref.ENSEMBL, "xxxx1"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultProteinComparator.areEquals(interactor1, interactor2));
     }

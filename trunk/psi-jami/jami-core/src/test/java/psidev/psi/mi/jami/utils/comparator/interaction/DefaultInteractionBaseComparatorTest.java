@@ -17,15 +17,10 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 public class DefaultInteractionBaseComparatorTest {
 
-    private DefaultInteractionBaseComparator comparator = new DefaultInteractionBaseComparator();
-
     @Test
     public void test_interaction_null_after(){
         Interaction interaction1 = null;
         Interaction interaction2 = new DefaultInteraction("test");
-
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) > 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) < 0);
 
         Assert.assertFalse(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
@@ -35,9 +30,6 @@ public class DefaultInteractionBaseComparatorTest {
         Interaction interaction1 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("direct interaction"));
 
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) < 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) > 0);
-
         Assert.assertFalse(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
 
@@ -45,9 +37,6 @@ public class DefaultInteractionBaseComparatorTest {
     public void test_same_interaction_types(){
         Interaction interaction1 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("association"));
-
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) == 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) == 0);
 
         Assert.assertTrue(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
@@ -58,10 +47,6 @@ public class DefaultInteractionBaseComparatorTest {
         interaction1.setRigid("xxxxx2");
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         interaction2.setRigid("xxxxx1");
-
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) > 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) < 0);
-
         Assert.assertFalse(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
 
@@ -70,9 +55,6 @@ public class DefaultInteractionBaseComparatorTest {
         Interaction interaction1 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         interaction2.setRigid("xxxxx1");
-
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) == 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) == 0);
 
         Assert.assertTrue(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
@@ -84,9 +66,6 @@ public class DefaultInteractionBaseComparatorTest {
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         interaction2.setRigid("xxxxx1");
 
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) == 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) == 0);
-
         Assert.assertTrue(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
 
@@ -97,9 +76,6 @@ public class DefaultInteractionBaseComparatorTest {
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("mint", "MINT-xxx"));
 
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) < 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) > 0);
-
         Assert.assertFalse(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
 
@@ -108,9 +84,6 @@ public class DefaultInteractionBaseComparatorTest {
         Interaction interaction1 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("mint", "MINT-xxx"));
-
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) == 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) == 0);
 
         Assert.assertTrue(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
@@ -123,9 +96,6 @@ public class DefaultInteractionBaseComparatorTest {
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("mint", "MINT-xxx"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("intact", "EBI-xxx"));
 
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) == 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) == 0);
-
         Assert.assertTrue(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
 
@@ -135,9 +105,6 @@ public class DefaultInteractionBaseComparatorTest {
         Interaction interaction2 = new DefaultInteraction("test", new DefaultCvTerm("association"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("mint", "MINT-xxx"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("intact", "EBI-xxx"));
-
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) > 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) < 0);
 
         Assert.assertFalse(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
@@ -149,9 +116,6 @@ public class DefaultInteractionBaseComparatorTest {
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("mint", "MINT-xxx"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("intact", "EBI-xxx"));
 
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) > 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) < 0);
-
         Assert.assertFalse(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }
 
@@ -161,9 +125,6 @@ public class DefaultInteractionBaseComparatorTest {
         Interaction interaction2 = new DefaultInteraction("TEST 2", new DefaultCvTerm("association"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("mint", "MINT-xxx"));
         interaction2.getIdentifiers().add(XrefUtils.createIdentityXref("intact", "EBI-xxx"));
-
-        Assert.assertTrue(comparator.compare(interaction1, interaction2) > 0);
-        Assert.assertTrue(comparator.compare(interaction2, interaction1) < 0);
 
         Assert.assertFalse(DefaultInteractionBaseComparator.areEquals(interaction1, interaction2));
     }

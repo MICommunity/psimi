@@ -18,15 +18,10 @@ import java.util.Date;
 
 public class DefaultPublicationComparatorTest {
 
-    private DefaultPublicationComparator comparator = new DefaultPublicationComparator();
-
     @Test
     public void test_publication_null_after() throws Exception {
         Publication pub1 = null;
         Publication pub2 = new DefaultPublication();
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -36,9 +31,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub1 = new DefaultPublication();
         Publication pub2 = new DefaultPublication();
         pub2.assignImexId("IM-1");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -50,9 +42,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.assignImexId("IM-1");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
-
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -62,9 +51,6 @@ public class DefaultPublicationComparatorTest {
         pub1.assignImexId("IM-1");
         Publication pub2 = new DefaultPublication();
         pub2.assignImexId("IM-1");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -78,9 +64,6 @@ public class DefaultPublicationComparatorTest {
         pub2.assignImexId("IM-1");
         pub2.setPubmedId("123457");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
-
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -89,9 +72,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub1 = new DefaultPublication();
         Publication pub2 = new DefaultPublication();
         pub2.setPubmedId("12345");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -104,9 +84,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.setPubmedId("12345");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
-
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -117,9 +94,6 @@ public class DefaultPublicationComparatorTest {
         pub1.setPubmedId("12346");
         Publication pub2 = new DefaultPublication();
         pub2.setPubmedId("12346");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -133,9 +107,6 @@ public class DefaultPublicationComparatorTest {
         pub2.setPubmedId("123456");
         pub2.setDoi("11aa2");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
-
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -144,9 +115,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub1 = new DefaultPublication();
         Publication pub2 = new DefaultPublication();
         pub2.setDoi("11aa12");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -159,9 +127,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.setDoi("11a111");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
-
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -172,9 +137,6 @@ public class DefaultPublicationComparatorTest {
         pub1.setDoi("11a112");
         Publication pub2 = new DefaultPublication();
         pub2.setDoi("11a112");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -188,10 +150,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.setDoi("11aa2");
         pub2.getIdentifiers().add(XrefUtils.createXref("test", "TEST-1"));
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
-
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -200,9 +158,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub1 = new DefaultPublication();
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("title test");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -215,9 +170,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("title test");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) < 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) > 0);
-
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -227,9 +179,6 @@ public class DefaultPublicationComparatorTest {
         pub1.setTitle("title TEst ");
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("Title test");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -243,9 +192,6 @@ public class DefaultPublicationComparatorTest {
         pub2.setDoi("11a112");
         pub2.getIdentifiers().add(XrefUtils.createXref("test", "TEST-1"));
         pub2.getIdentifiers().add(XrefUtils.createXref("test", "TEST-2"));
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
 
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -263,9 +209,6 @@ public class DefaultPublicationComparatorTest {
         pub2.getIdentifiers().add(XrefUtils.createXref("test", "TEST-2"));
         pub2.setTitle("Test title");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
-
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -274,9 +217,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub1 = new DefaultPublication();
         Publication pub2 = new DefaultPublication();
         pub2.getIdentifiers().add(XrefUtils.createXref("test", "TEST-1"));
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -290,9 +230,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.getIdentifiers().add(XrefUtils.createXref("test", "TEST-1"));
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
-
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -305,9 +242,6 @@ public class DefaultPublicationComparatorTest {
         pub2.setTitle("Title test");
         pub2.setJournal(" proteomics ");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
-
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -319,9 +253,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.setTitle("Title test");
         pub2.setJournal(" cell ");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -339,9 +270,6 @@ public class DefaultPublicationComparatorTest {
         pub1.setPublicationDate(date);
         pub2.setPublicationDate(date);
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
-
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -357,9 +285,6 @@ public class DefaultPublicationComparatorTest {
         pub2.setJournal(" PROTEOMICS ");
         pub2.setPublicationDate(new Date(System.currentTimeMillis()));
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) < 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) > 0);
-
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -372,9 +297,6 @@ public class DefaultPublicationComparatorTest {
         pub2.getAuthors().add("author1");
         pub2.getAuthors().add("author2");
 
-        Assert.assertTrue(comparator.compare(pub1, pub2) == 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) == 0);
-
         Assert.assertTrue(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
 
@@ -385,9 +307,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.getAuthors().add("author1");
         pub2.getAuthors().add("author2");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) < 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) > 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }
@@ -400,9 +319,6 @@ public class DefaultPublicationComparatorTest {
         Publication pub2 = new DefaultPublication();
         pub2.getAuthors().add("author1");
         pub2.getAuthors().add("author2");
-
-        Assert.assertTrue(comparator.compare(pub1, pub2) > 0);
-        Assert.assertTrue(comparator.compare(pub2, pub1) < 0);
 
         Assert.assertFalse(DefaultPublicationComparator.areEquals(pub1, pub2));
     }

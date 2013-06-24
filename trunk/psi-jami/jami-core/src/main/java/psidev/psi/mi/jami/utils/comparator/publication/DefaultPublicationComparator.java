@@ -153,8 +153,8 @@ public class DefaultPublicationComparator {
                                 else if (date1 == null || date2 == null){
                                     return false;
                                 }
-                                else if (date1.equals(date2)){
-                                    return true;
+                                else if (!date1.equals(date2)){
+                                    return false;
                                 }
 
                                 // if we had one imex id

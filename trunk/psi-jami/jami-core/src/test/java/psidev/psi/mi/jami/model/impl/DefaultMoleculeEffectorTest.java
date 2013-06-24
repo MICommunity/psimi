@@ -23,7 +23,7 @@ public class DefaultMoleculeEffectorTest {
         MoleculeEffector effector = new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
 
         Assert.assertEquals(AllostericEffectorType.molecule, effector.getEffectorType());
-        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), effector.getMolecule()));
+        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), effector.getMolecule(), true));
     }
 
     @Test(expected=IllegalArgumentException.class)

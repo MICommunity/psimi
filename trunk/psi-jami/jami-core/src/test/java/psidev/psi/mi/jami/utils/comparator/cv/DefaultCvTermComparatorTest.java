@@ -18,15 +18,10 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 
 public class DefaultCvTermComparatorTest {
 
-    private DefaultCvTermComparator comparator = new DefaultCvTermComparator();
-
     @Test
     public void test_cv_null_after() throws Exception {
         CvTerm term1 = null;
         CvTerm term2 = CvTermUtils.createChebiDatabase();
-
-        Assert.assertTrue(comparator.compare(term1, term2) > 0);
-        Assert.assertTrue(comparator.compare(term2, term1) < 0);
 
         Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
     }
@@ -38,9 +33,6 @@ public class DefaultCvTermComparatorTest {
         // chebi identifier
         CvTerm term2 = CvTermUtils.createChebiDatabase();
 
-        Assert.assertTrue(comparator.compare(term1, term2) == 0);
-        Assert.assertTrue(comparator.compare(term2, term1) == 0);
-
         Assert.assertTrue(DefaultCvTermComparator.areEquals(term1, term2));
     }
 
@@ -50,9 +42,6 @@ public class DefaultCvTermComparatorTest {
         CvTerm term1 = CvTermUtils.createMICvTerm("chebi", Xref.UNIPROTKB_MI);
         // chebi identifier
         CvTerm term2 = CvTermUtils.createMICvTerm("chebi", Xref.CHEBI_MI);
-
-        Assert.assertTrue(comparator.compare(term1, term2) != 0);
-        Assert.assertTrue(comparator.compare(term2, term1) != 0);
 
         Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
     }
@@ -66,9 +55,6 @@ public class DefaultCvTermComparatorTest {
         term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("cabri"), "TEST1"));
         term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("databaseTest"), "TEST2"));
 
-        Assert.assertTrue(comparator.compare(term1, term2) == 0);
-        Assert.assertTrue(comparator.compare(term2, term1) == 0);
-
         Assert.assertTrue(DefaultCvTermComparator.areEquals(term1, term2));
     }
 
@@ -80,9 +66,6 @@ public class DefaultCvTermComparatorTest {
         CvTerm term2 = new DefaultCvTerm("cell1");
         term2.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("databaseTest"), "TEST2"));
 
-        Assert.assertTrue(comparator.compare(term1, term2) != 0);
-        Assert.assertTrue(comparator.compare(term2, term1) != 0);
-
         Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
     }
 
@@ -91,9 +74,6 @@ public class DefaultCvTermComparatorTest {
         CvTerm term1 = CvTermUtils.createMICvTerm("chebi", null);
         CvTerm term2 = CvTermUtils.createMICvTerm("CHeBi", null);
         term2.setFullName("chebi database");
-
-        Assert.assertTrue(comparator.compare(term1, term2) == 0);
-        Assert.assertTrue(comparator.compare(term2, term1) == 0);
 
         Assert.assertTrue(DefaultCvTermComparator.areEquals(term1, term2));
     }
@@ -105,9 +85,6 @@ public class DefaultCvTermComparatorTest {
         // chebi
         CvTerm term2 = CvTermUtils.createMICvTerm("chebi", null);
         term2.setFullName("chebi database");
-
-        Assert.assertTrue(comparator.compare(term1, term2) != 0);
-        Assert.assertTrue(comparator.compare(term2, term1) != 0);
 
         Assert.assertFalse(DefaultCvTermComparator.areEquals(term1, term2));
     }

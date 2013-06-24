@@ -25,7 +25,7 @@ public class DefaultAllosteryTest {
                 new DefaultFeatureModificationEffector(new DefaultModelledFeature("test", "test effector")));
 
         Assert.assertEquals(new DefaultCvTerm("test outcome"), allostery.getOutCome());
-        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), allostery.getAllostericMolecule()));
+        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), allostery.getAllostericMolecule(), true));
         Assert.assertTrue(DefaultFeatureModificationEffectorComparator.areEquals(new DefaultFeatureModificationEffector(new DefaultModelledFeature("test", "test effector")), allostery.getAllostericEffector()));
         Assert.assertNull(allostery.getAllostericMechanism());
         Assert.assertNull(allostery.getAllosteryType());

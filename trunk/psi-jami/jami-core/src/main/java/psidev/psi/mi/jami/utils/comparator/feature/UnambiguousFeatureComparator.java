@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.feature;
 
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
 
 /**
  * Generic unambiguous feature comparator.
@@ -23,7 +23,7 @@ public class UnambiguousFeatureComparator extends FeatureComparator {
      * Creates a UnambiguousFeatureComparator. It will use a UnambiguousFeatureBaseComparator to compare basic feature properties
      */
     public UnambiguousFeatureComparator() {
-        super(new UnambiguousFeatureBaseComparator(), new DefaultCvTermComparator());
+        super(new UnambiguousFeatureBaseComparator(), new UnambiguousCvTermComparator());
     }
 
     @Override

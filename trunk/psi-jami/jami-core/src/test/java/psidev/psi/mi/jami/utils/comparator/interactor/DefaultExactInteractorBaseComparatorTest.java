@@ -19,15 +19,10 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 
 public class DefaultExactInteractorBaseComparatorTest {
 
-    private DefaultExactInteractorBaseComparator comparator = new DefaultExactInteractorBaseComparator();
-
     @Test
     public void test_interactor_null_after(){
         Interactor interactor1 = null;
         Interactor interactor2 = new DefaultInteractor("test");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
         Assert.assertFalse(DefaultExactInteractorBaseComparator.areEquals(interactor1, interactor2));
     }
@@ -39,9 +34,6 @@ public class DefaultExactInteractorBaseComparatorTest {
         // gene interactor type
         Interactor interactor2 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType());
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
-
         Assert.assertFalse(DefaultExactInteractorBaseComparator.areEquals(interactor1, interactor2));
     }
 
@@ -51,9 +43,6 @@ public class DefaultExactInteractorBaseComparatorTest {
         Interactor interactor1 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType());
         // gene interactor type
         Interactor interactor2 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType());
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultExactInteractorBaseComparator.areEquals(interactor1, interactor2));
     }
@@ -65,9 +54,6 @@ public class DefaultExactInteractorBaseComparatorTest {
         // gene interactor type
         Interactor interactor2 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType(), new DefaultOrganism(9606));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultExactInteractorBaseComparator.areEquals(interactor1, interactor2));
     }
 
@@ -77,9 +63,6 @@ public class DefaultExactInteractorBaseComparatorTest {
         Interactor interactor1 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType());
         // gene interactor type
         Interactor interactor2 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType(), new DefaultOrganism(9606));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultExactInteractorBaseComparator.areEquals(interactor1, interactor2));
     }
@@ -91,9 +74,6 @@ public class DefaultExactInteractorBaseComparatorTest {
         // unknown interactor type
         Interactor interactor2 = new DefaultInteractor("test", new DefaultOrganism(9606));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultExactInteractorBaseComparator.areEquals(interactor1, interactor2));
     }
 
@@ -103,9 +83,6 @@ public class DefaultExactInteractorBaseComparatorTest {
         Interactor interactor1 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType(), new DefaultOrganism(9606), XrefUtils.createIdentityXref(Xref.UNIPROTKB, "P12345"));
         // gene interactor type
         Interactor interactor2 = new DefaultInteractor("test", CvTermUtils.createGeneInteractorType(), new DefaultOrganism(9606), XrefUtils.createIdentityXref(Xref.UNIPROTKB, "P12346"));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
 
         Assert.assertFalse(DefaultExactInteractorBaseComparator.areEquals(interactor1, interactor2));
     }

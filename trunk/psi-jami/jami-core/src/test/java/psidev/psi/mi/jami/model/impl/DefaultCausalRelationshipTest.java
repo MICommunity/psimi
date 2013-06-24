@@ -25,7 +25,7 @@ public class DefaultCausalRelationshipTest {
         CausalRelationship rel = new DefaultCausalRelationship(CvTermUtils.createMICvTerm("decreases", "MI:xxxx"), new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));
 
         Assert.assertEquals(CvTermUtils.createMICvTerm("decreases", "MI:xxxx"), rel.getRelationType());
-        org.junit.Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), rel.getTarget()));
+        org.junit.Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), rel.getTarget(), true));
     }
 
     @Test(expected=IllegalArgumentException.class)

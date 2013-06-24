@@ -16,15 +16,10 @@ import psidev.psi.mi.jami.model.impl.DefaultPolymer;
 
 public class DefaultPolymerComparatorTest {
 
-    private DefaultPolymerComparator comparator = new DefaultPolymerComparator();
-
     @Test
     public void test_polymer_null_after(){
         Polymer interactor1 = null;
         Polymer interactor2 = new DefaultPolymer("test");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) > 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) < 0);
 
         Assert.assertFalse(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
@@ -38,9 +33,6 @@ public class DefaultPolymerComparatorTest {
         interactor2.setSequence("AAGTA");
         interactor2.setOrganism(new DefaultOrganism(9606));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
 
@@ -49,9 +41,6 @@ public class DefaultPolymerComparatorTest {
         Polymer interactor1 = new DefaultPolymer("test");
         Polymer interactor2 = new DefaultPolymer("test");
         interactor2.setSequence("AAGTA");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
@@ -64,9 +53,6 @@ public class DefaultPolymerComparatorTest {
         Polymer interactor2 = new DefaultPolymer("test");
         interactor2.setSequence("AAGTA");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
 
@@ -77,9 +63,6 @@ public class DefaultPolymerComparatorTest {
         Polymer interactor2 = new DefaultPolymer("test");
         interactor2.setSequence("AAGAA");
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
-
         Assert.assertTrue(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
 
@@ -89,9 +72,6 @@ public class DefaultPolymerComparatorTest {
         interactor1.setSequence("aagaa");
         Polymer interactor2 = new DefaultPolymer("test");
         interactor2.setSequence("AAGAA");
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
@@ -105,9 +85,6 @@ public class DefaultPolymerComparatorTest {
         interactor2.setSequence("AAGTA");
         interactor2.setOrganism(new DefaultOrganism(9606));
 
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) < 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) > 0);
-
         Assert.assertFalse(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
 
@@ -119,9 +96,6 @@ public class DefaultPolymerComparatorTest {
         Polymer interactor2 = new DefaultPolymer("test");
         interactor2.setSequence("AAGTA");
         interactor2.setOrganism(new DefaultOrganism(9606));
-
-        Assert.assertTrue(comparator.compare(interactor1, interactor2) == 0);
-        Assert.assertTrue(comparator.compare(interactor2, interactor1) == 0);
 
         Assert.assertTrue(DefaultPolymerComparator.areEquals(interactor1, interactor2));
     }
