@@ -70,4 +70,34 @@ public class InteractorFactoryTest {
         Assert.assertTrue(interactorFactory.createInteractorFromInteractorType(new DefaultCvTerm("molecule set"), "test interactor")
                 instanceof DefaultInteractorSet);
     }
+
+    @Test
+    public void test_recognize_small_molecule_from_database(){
+        Assert.assertTrue(interactorFactory.createInteractorFromDatabase(CvTermUtils.createMICvTerm("beilstein", "MI:1075"), "test interactor")
+                instanceof DefaultBioactiveEntity);
+    }
+
+    @Test
+    public void test_recognize_gene_from_database(){
+        Assert.assertTrue(interactorFactory.createInteractorFromDatabase(CvTermUtils.createMICvTerm("test", "MI:1095"), "test interactor")
+                instanceof DefaultGene);
+    }
+
+    @Test
+    public void test_recognize_polymer_from_database(){
+        Assert.assertTrue(interactorFactory.createInteractorFromInteractorType(CvTermUtils.createMICvTerm("huge","MI:0249"), "test interactor")
+                instanceof DefaultPolymer);
+    }
+
+    @Test
+    public void test_recognize_nucleic_acid_from_database(){
+        Assert.assertTrue(interactorFactory.createInteractorFromInteractorType(new DefaultCvTerm("genbank_nucl_gi"), "test interactor")
+                instanceof DefaultNucleicAcid);
+    }
+
+    @Test
+    public void test_recognize_protein_from_database(){
+        Assert.assertTrue(interactorFactory.createInteractorFromInteractorType(new DefaultCvTerm("genbank_protein_gi"), "test interactor")
+                instanceof DefaultProtein);
+    }
 }
