@@ -46,8 +46,8 @@ implements ProteinEnricher {
     /**
      * Takes a protein, gathers information about it and will try to return a more complete form.
      *
-     * @param proteinToEnrich
-     * @return
+     * @param proteinToEnrich   the Protein which is being enriched
+     * @return  a boolean denoting whether the enrichment was successful
      * @throws BridgeFailedException
      * @throws MissingServiceException
      * @throws BadToEnrichFormException

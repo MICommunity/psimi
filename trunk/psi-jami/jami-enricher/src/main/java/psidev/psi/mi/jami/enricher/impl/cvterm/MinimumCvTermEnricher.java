@@ -16,15 +16,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * Provides maximum enrichment of the CvTerm.
+ * Will enrich the full name if it is null and the identifiers.
+ * As an enricher, no values from the provided CvTerm to enrich will be changed.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 08/05/13
+ * @since 08/05/13
  */
 public class MinimumCvTermEnricher
         extends AbstractCvTermEnricher
         implements CvTermEnricher {
-
 
 
     protected void processCvTerm(CvTerm cvTermToEnrich){

@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
+ * The general architecture for a CvTerm enricher with methods to fetch a CvTerm and coordinate the enriching.
+ * Has an abstract method 'processCvTerm' which can be overridden to determine which parts should be enriched and how.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * Date: 08/05/13
@@ -48,8 +49,18 @@ public abstract class AbstractCvTermEnricher
         return listener;
     }
 
+    /**
+     * Uses the CvTermToEnrich to fetch a more complete term
+     * and then processes the CvTerm to modify it to a more enriched or updated form.
+     * @param cvTermToEnrich  a CvTerm to enrich
+     * @throws BridgeFailedException
+     * @throws MissingServiceException
+     * @throws BadToEnrichFormException
+     * @throws BadSearchTermException
+     */
+    public void enrichCvTerm(CvTerm cvTermToEnrich)
+            throws BridgeFailedException, MissingServiceException, BadToEnrichFormException, BadSearchTermException {
 
-    public void enrichCvTerm(CvTerm cvTermToEnrich) throws BridgeFailedException, MissingServiceException, BadToEnrichFormException, BadSearchTermException {
         cvTermFetched = fetchCvTerm(cvTermToEnrich);
         if(cvTermFetched == null){
             if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, "Failed. No CvTerm could be found.");
@@ -61,12 +72,23 @@ public abstract class AbstractCvTermEnricher
         if(listener != null) listener.onCvTermEnriched(cvTermToEnrich, "Success. CvTerm minimum enriched.");
     }
 
-
+    /**
+     * Uses the fetched CvTerm to enrich or update the CvTermToEnrich
+     * @param cvTermToEnrich the CvTerm to enrich
+     */
     protected abstract void processCvTerm(CvTerm cvTermToEnrich);
 
 
-
-    protected CvTerm fetchCvTerm(CvTerm cvTermToEnrich)
+    /**
+     * Uses the CvTermToEnrich to fetch a more complete CvTerm
+     * @param cvTermToEnrich the CvTerm that is being enriched and will be used to fetch.
+     * @return  a CvTerm fetched from the fetching service.
+     * @throws BadToEnrichFormException
+     * @throws MissingServiceException
+     * @throws BridgeFailedException
+     * @throws BadSearchTermException
+     */
+    private CvTerm fetchCvTerm(CvTerm cvTermToEnrich)
             throws BadToEnrichFormException, MissingServiceException,
             BridgeFailedException, BadSearchTermException {
 

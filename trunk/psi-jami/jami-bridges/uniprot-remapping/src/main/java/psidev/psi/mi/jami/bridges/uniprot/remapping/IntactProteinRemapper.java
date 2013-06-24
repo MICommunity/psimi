@@ -82,23 +82,20 @@ public class IntactProteinRemapper
 
     @Override
     protected IdentificationResults getMappingForSequence(Protein p){
-        if(isSequenceMappingResultChecked == false){
-            if (context.getSequence() != null) {
-                try{
-                    sequenceMappingResult = sequenceStrategy.identifyProtein(context);
-                }catch(StrategyException e){
-                    log.warn("Encountered a StrategyException " +
-                            "when searching for sequence");
-                    sequenceMappingResult = null;
-                }
-            }
-            else {
-                log.warn("Sequence is not set in context.");
-                sequenceMappingResult = null;
+
+        if (context.getSequence() != null) {
+            try{
+                return sequenceStrategy.identifyProtein(context);
+            }catch(StrategyException e){
+                log.warn("Encountered a StrategyException " +
+                        "when searching for sequence");
+                return null;
             }
         }
-        isSequenceMappingResultChecked = true;
-        return sequenceMappingResult;
+        else {
+            log.warn("Sequence is not set in context.");
+            return null;
+        }
     }
 
     private void setSequence(String sequence){
