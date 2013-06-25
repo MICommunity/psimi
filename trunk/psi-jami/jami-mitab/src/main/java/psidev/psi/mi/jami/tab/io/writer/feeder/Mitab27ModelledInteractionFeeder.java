@@ -78,13 +78,7 @@ public class Mitab27ModelledInteractionFeeder extends Mitab26ModelledInteraction
         if (feature != null){
             // first write interactor type
             if (feature.getType() != null){
-                CvTerm type = feature.getType();
-                if (type.getFullName() != null){
-                    escapeAndWriteString(type.getFullName());
-                }
-                else {
-                    escapeAndWriteString(type.getShortName());
-                }
+                writeCvTermName(feature.getType());
             }
             else {
                 getWriter().write(MitabUtils.UNKNOWN_TYPE);
@@ -101,7 +95,7 @@ public class Mitab27ModelledInteractionFeeder extends Mitab26ModelledInteraction
                 while(rangeIterator.hasNext()){
                     getWriter().write(RangeUtils.convertRangeToString(rangeIterator.next()));
                     if (rangeIterator.hasNext()){
-                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                        getWriter().write(MitabUtils.RANGE_SEPARATOR);
                     }
                 }
             }
