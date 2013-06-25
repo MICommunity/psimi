@@ -40,7 +40,9 @@ public class ExtendedMitab27InteractionEvidenceFeeder extends Mitab27Interaction
             escapeAndWriteString(alias.getName());
             // write type
             if (alias.getType() != null){
+                getWriter().write("(");
                 escapeAndWriteString(alias.getType().getShortName());
+                getWriter().write(")");
             }
         }
     }

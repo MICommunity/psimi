@@ -107,12 +107,6 @@ public interface Mitab25ColumnFeeder<T extends BinaryInteraction, P extends Part
      */
     public void writeCvTerm(CvTerm cv) throws IOException;
 
-    /**
-     * Write full name if not null, otherwise write shortname
-     * @param cv
-     * @throws IOException
-     */
-    public void writeCvTermName(CvTerm cv) throws IOException;
 
     /**
      * This methods write the dbsource, alias name and alias type of an alias

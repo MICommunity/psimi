@@ -76,20 +76,35 @@ public abstract class AbstractMitab25ColumnFeeder<T extends BinaryInteraction, P
         }
         else {
             Interactor interactor = participant.getInteractor();
+
+            // write shortlabel first
+            writer.write(CvTerm.PSI_MI);
+            writer.write(":");
+            escapeAndWriteString(interactor.getShortName());
+            writer.write("(");
+            writer.write(MitabUtils.DISPLAY_SHORT);
+            writer.write(")");
+
+            // write fullName then
+            if (interactor.getFullName() != null){
+                writer.write("|");
+                writer.write(CvTerm.PSI_MI);
+                writer.write(":");
+                escapeAndWriteString(interactor.getFullName());
+                writer.write("(");
+                writer.write(MitabUtils.DISPLAY_LONG);
+                writer.write(")");
+            }
+
             // write aliases
             if (!interactor.getAliases().isEmpty()){
                 Iterator<Alias> aliasIterator = interactor.getAliases().iterator();
 
                 while (aliasIterator.hasNext()){
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
+
                     writeAlias(participant, aliasIterator.next());
-                    // write field separator
-                    if (aliasIterator.hasNext()){
-                        writer.write(MitabUtils.FIELD_SEPARATOR);
-                    }
                 }
-            }
-            else{
-                writer.write(MitabUtils.EMPTY_COLUMN);
             }
         }
     }
@@ -213,20 +228,18 @@ public abstract class AbstractMitab25ColumnFeeder<T extends BinaryInteraction, P
             }
             // write empty column
             else{
-                writer.write(MitabUtils.EMPTY_COLUMN);
+                writer.write(MitabUtils.UNKNOWN_DATABASE);
+                writer.write(MitabUtils.XREF_SEPARATOR);
+                writer.write(MitabUtils.UNKNOWN_ID);
+
+                // write cv name
+                writer.write("(");
+                writeCvTermName(cv);
+                writer.write(")");
             }
         }
         else {
             writer.write(MitabUtils.EMPTY_COLUMN);
-        }
-    }
-
-    public void writeCvTermName(CvTerm cv) throws IOException {
-        if (cv.getFullName() != null){
-            escapeAndWriteString(cv.getFullName());
-        }
-        else{
-            escapeAndWriteString(cv.getShortName());
         }
     }
 
@@ -240,7 +253,9 @@ public abstract class AbstractMitab25ColumnFeeder<T extends BinaryInteraction, P
             escapeAndWriteString(alias.getName());
             // write type
             if (alias.getType() != null){
+                writer.write("(");
                 escapeAndWriteString(alias.getType().getShortName());
+                writer.write(")");
             }
         }
     }
@@ -263,7 +278,7 @@ public abstract class AbstractMitab25ColumnFeeder<T extends BinaryInteraction, P
     public void escapeAndWriteString(String stringToEscape) throws IOException {
         // replace first tabs and break line with a space and escape double quote
         String replaced = stringToEscape.replaceAll(MitabUtils.LINE_BREAK+"|"+ MitabUtils.COLUMN_SEPARATOR, " ");
-        replaced = replaced.replaceAll("\"", "\\\"");
+        replaced = replaced.replaceAll("\"", "\\\\\"");
 
         for (String special : MitabUtils.SPECIAL_CHARACTERS){
 
@@ -280,5 +295,21 @@ public abstract class AbstractMitab25ColumnFeeder<T extends BinaryInteraction, P
 
     protected Writer getWriter() {
         return writer;
+    }
+
+    /**
+     * Write full name if not null, otherwise write shortname
+     * @param cv
+     * @throws IOException
+     */
+    protected void writeCvTermName(CvTerm cv) throws IOException {
+        if (cv != null){
+            if (cv.getFullName() != null){
+                escapeAndWriteString(cv.getFullName());
+            }
+            else{
+                escapeAndWriteString(cv.getShortName());
+            }
+        }
     }
 }

@@ -64,7 +64,9 @@ public class ExtendedMitab26InteractionEvidenceFeeder extends Mitab26Interaction
             escapeAndWriteString(alias.getName());
             // write type
             if (alias.getType() != null){
+                getWriter().write("(");
                 escapeAndWriteString(alias.getType().getShortName());
+                getWriter().write(")");
             }
         }
     }
