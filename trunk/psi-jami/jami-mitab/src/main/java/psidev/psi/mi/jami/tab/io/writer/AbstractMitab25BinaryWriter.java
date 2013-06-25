@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabColumnName;
 import psidev.psi.mi.jami.tab.MitabVersion;
-import psidev.psi.mi.jami.tab.io.writer.feeder.Mitab25ColumnFeeder;
+import psidev.psi.mi.jami.tab.io.writer.feeder.MitabColumnFeeder;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.io.*;
@@ -30,7 +30,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
     private MitabVersion version = MitabVersion.v2_5;
     private boolean writeHeader = true;
     private boolean hasWrittenHeader = false;
-    private Mitab25ColumnFeeder<T, P> columnFeeder;
+    private MitabColumnFeeder<T, P> columnFeeder;
 
     public AbstractMitab25BinaryWriter(){
 
@@ -180,11 +180,11 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         }
     }
 
-    protected Mitab25ColumnFeeder<T, P> getColumnFeeder() {
+    protected MitabColumnFeeder<T, P> getColumnFeeder() {
         return columnFeeder;
     }
 
-    protected void setColumnFeeder(Mitab25ColumnFeeder<T, P> columnFeeder) {
+    protected void setColumnFeeder(MitabColumnFeeder<T, P> columnFeeder) {
         this.columnFeeder = columnFeeder;
     }
 

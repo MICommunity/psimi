@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer.extended;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.tab.io.writer.AbstractMitab26BinaryWriter;
-import psidev.psi.mi.jami.tab.io.writer.feeder.extended.ExtendedMitab26ModelledInteractionFeeder;
+import psidev.psi.mi.jami.tab.io.writer.feeder.extended.ExtendedMitabModelledInteractionFeeder;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +38,6 @@ public class Mitab26ModelledBinaryWriter extends AbstractMitab26BinaryWriter<Mod
 
     @Override
     protected void initialiseColumnFeeder() {
-        setColumnFeeder(new ExtendedMitab26ModelledInteractionFeeder(getWriter()));
+        setColumnFeeder(new ExtendedMitabModelledInteractionFeeder(getWriter()));
     }
 }

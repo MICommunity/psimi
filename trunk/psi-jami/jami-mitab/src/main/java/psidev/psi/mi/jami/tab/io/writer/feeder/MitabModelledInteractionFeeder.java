@@ -18,9 +18,9 @@ import java.util.Iterator;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab25ModelledInteractionFeeder extends AbstractMitab25ColumnFeeder<ModelledBinaryInteraction, ModelledParticipant> {
+public class MitabModelledInteractionFeeder extends AbstractMitabColumnFeeder<ModelledBinaryInteraction, ModelledParticipant> {
 
-    public Mitab25ModelledInteractionFeeder(Writer writer) {
+    public MitabModelledInteractionFeeder(Writer writer) {
         super(writer);
     }
 
@@ -109,5 +109,90 @@ public class Mitab25ModelledInteractionFeeder extends AbstractMitab25ColumnFeede
                 getWriter().write(")");
             }
         }
+    }
+
+    public void writeExperimentalRole(ModelledParticipant participant) throws IOException {
+        getWriter().write(MitabUtils.EMPTY_COLUMN);
+    }
+
+    public void writeInteractionXrefs(ModelledBinaryInteraction interaction) throws IOException {
+        // write interaction ref
+        if (!interaction.getXrefs().isEmpty()){
+            Iterator<Xref> interactionXrefIterator = interaction.getXrefs().iterator();
+
+            Xref next = null;
+            boolean isFirst = true;
+            do {
+                next = interactionXrefIterator.next();
+                while (interactionXrefIterator.hasNext() && (XrefUtils.doesXrefHaveQualifier(next, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)
+                        && XrefUtils.isXrefFromDatabase(next, Xref.IMEX_MI, Xref.IMEX))){
+                    next = interactionXrefIterator.next();
+                }
+
+                if (next != null && !(XrefUtils.doesXrefHaveQualifier(next, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)
+                        && XrefUtils.isXrefFromDatabase(next, Xref.IMEX_MI, Xref.IMEX))){
+                    if (!isFirst){
+                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                    }
+                    // write xref ony if it is not an imex id
+                    writeXref(next);
+                    isFirst = false;
+                }
+                else {
+                    next = null;
+                }
+            }
+            while (next != null) ;
+        }
+        else{
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeInteractionAnnotations(ModelledBinaryInteraction interaction) throws IOException {
+        // writes interaction annotations first
+        if (!interaction.getAnnotations().isEmpty()){
+            Iterator<Annotation> interactorAnnotationIterator = interaction.getAnnotations().iterator();
+
+            while (interactorAnnotationIterator.hasNext()){
+                Annotation annot = interactorAnnotationIterator.next();
+                writeAnnotation(annot);
+
+                if(interactorAnnotationIterator.hasNext()){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+            }
+        }
+        else{
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeHostOrganism(ModelledBinaryInteraction interaction) throws IOException {
+        getWriter().write(MitabUtils.EMPTY_COLUMN);
+    }
+
+    public void writeInteractionParameters(ModelledBinaryInteraction interaction) throws IOException {
+        if (!interaction.getModelledParameters().isEmpty()){
+
+            Iterator<ModelledParameter> parameterIterator = interaction.getModelledParameters().iterator();
+            while(parameterIterator.hasNext()){
+                writeParameter(parameterIterator.next());
+                if (parameterIterator.hasNext()){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+            }
+        }
+        else {
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeNegativeProperty(ModelledBinaryInteraction interaction) throws IOException {
+        getWriter().write(MitabUtils.EMPTY_COLUMN);
+    }
+
+    public void writeParticipantIdentificationMethod(ModelledParticipant participant) throws IOException {
+        getWriter().write(MitabUtils.EMPTY_COLUMN);
     }
 }

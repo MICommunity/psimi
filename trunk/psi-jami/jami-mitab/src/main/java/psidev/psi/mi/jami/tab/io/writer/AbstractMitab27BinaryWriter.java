@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabVersion;
-import psidev.psi.mi.jami.tab.io.writer.feeder.Mitab27ColumnFeeder;
+import psidev.psi.mi.jami.tab.io.writer.feeder.MitabColumnFeeder;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 
 import java.io.File;
@@ -54,7 +54,7 @@ public abstract class AbstractMitab27BinaryWriter<T extends BinaryInteraction, P
         super.writeBinary(interaction, a, b);
         getWriter().write(MitabUtils.COLUMN_SEPARATOR);
 
-        Mitab27ColumnFeeder<T, P> columnFeeder = getColumnFeeder();
+        MitabColumnFeeder<T, P> columnFeeder = getColumnFeeder();
 
         // write features
         // write features A
@@ -75,10 +75,5 @@ public abstract class AbstractMitab27BinaryWriter<T extends BinaryInteraction, P
         getWriter().write(MitabUtils.COLUMN_SEPARATOR);
         // skip identification B
         columnFeeder.writeParticipantIdentificationMethod(b);
-    }
-
-    @Override
-    protected Mitab27ColumnFeeder<T, P> getColumnFeeder() {
-        return (Mitab27ColumnFeeder<T, P>) super.getColumnFeeder();
     }
 }

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.tab.io.writer.feeder.DefaultMitab25ColumnFeeder;
+import psidev.psi.mi.jami.tab.io.writer.feeder.DefaultMitabColumnFeeder;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,6 +79,6 @@ public class Mitab25BinaryWriter extends AbstractMitab25BinaryWriter<BinaryInter
 
     @Override
     protected void initialiseColumnFeeder() {
-        setColumnFeeder(new DefaultMitab25ColumnFeeder(getWriter()));
+        setColumnFeeder(new DefaultMitabColumnFeeder(getWriter()));
     }
 }
