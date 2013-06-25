@@ -41,18 +41,20 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
             if (pub != null){
                 // authors and maybe publication date
                 if (!pub.getAuthors().isEmpty()){
-                    escapeAndWriteString(pub.getAuthors().iterator().next() + MitabUtils.AUTHOR_SUFFIX);
+                    String first = pub.getAuthors().iterator().next();
+                    escapeAndWriteString(first);
+                    if (!first.contains(MitabUtils.AUTHOR_SUFFIX)){
+                        getWriter().write(MitabUtils.AUTHOR_SUFFIX);
+                    }
                     if (pub.getPublicationDate() != null){
-                        getWriter().write(" (");
+                        getWriter().write("(");
                         getWriter().write(MitabUtils.PUBLICATION_YEAR_FORMAT.format(pub.getPublicationDate()));
                         getWriter().write(")");
                     }
                 }
                 // publication date only
                 else if (pub.getPublicationDate() != null){
-                    getWriter().write("unknown (");
                     getWriter().write(MitabUtils.PUBLICATION_YEAR_FORMAT.format(pub.getPublicationDate()));
-                    getWriter().write(")");
                 }
                 else {
                     getWriter().write(MitabUtils.EMPTY_COLUMN);
@@ -74,37 +76,25 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
             Publication pub = experiment.getPublication();
 
             if (pub != null){
-                // identifiers
-                if (pub.getPubmedId() != null){
-                    getWriter().write(Xref.PUBMED);
-                    getWriter().write(MitabUtils.XREF_SEPARATOR);
-                    escapeAndWriteString(pub.getPubmedId());
-
-                    // IMEx as well
-                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
-                    writePublicationImexId(pub);
-                }
-                // doi only
-                else if (pub.getDoi() != null){
-                    getWriter().write(Xref.DOI);
-                    getWriter().write(MitabUtils.XREF_SEPARATOR);
-                    escapeAndWriteString(pub.getDoi());
-
-                    // IMEx as well
-                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
-                    writePublicationImexId(pub);
-                }
                 // other identfiers
-                else if (!pub.getIdentifiers().isEmpty()){
-                    writeIdentifier(pub.getIdentifiers().iterator().next());
+                if (!pub.getIdentifiers().isEmpty()){
+                    Iterator<Xref> identifierIterator = pub.getIdentifiers().iterator();
+
+                    while (identifierIterator.hasNext()){
+                        // write alternative identifier
+                        writeIdentifier(identifierIterator.next());
+                        // write field separator
+                        if (identifierIterator.hasNext()){
+                            getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                        }
+                    }
 
                     // IMEx as well
-                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
-                    writePublicationImexId(pub);
+                    writePublicationImexId(pub, true);
                 }
                 // IMEx only
                 else if (pub.getImexId() != null) {
-                    writePublicationImexId(pub);
+                    writePublicationImexId(pub, false);
                 }
                 // nothing
                 else{
@@ -122,7 +112,7 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
 
     public void writeSource(BinaryInteractionEvidence interaction) throws IOException {
         Experiment experiment = interaction.getExperiment();
-        if (experiment == null){
+        if (experiment != null){
             Publication pub = experiment.getPublication();
 
             if (pub != null){
@@ -140,7 +130,16 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
     public void writeInteractionIdentifiers(BinaryInteractionEvidence interaction) throws IOException {
         // other identfiers
         if (!interaction.getIdentifiers().isEmpty()){
-            writeIdentifier(interaction.getIdentifiers().iterator().next());
+            Iterator<Xref> identifierIterator = interaction.getIdentifiers().iterator();
+
+            while (identifierIterator.hasNext()){
+                // write alternative identifier
+                writeIdentifier(identifierIterator.next());
+                // write field separator
+                if (identifierIterator.hasNext()){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+            }
 
             // IMEx as well
             if (interaction.getImexId() != null){
@@ -152,7 +151,6 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
         }
         // IMEx only
         else if (interaction.getImexId() != null) {
-            getWriter().write(MitabUtils.FIELD_SEPARATOR);
             getWriter().write(Xref.IMEX);
             getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(interaction.getImexId());
@@ -197,9 +195,12 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
         }
     }
 
-    protected void writePublicationImexId(Publication pub) throws IOException {
+    protected void writePublicationImexId(Publication pub, boolean writeFieldSeparator) throws IOException {
         // IMEx as well
         if (pub.getImexId() != null) {
+            if (writeFieldSeparator){
+                getWriter().write(MitabUtils.FIELD_SEPARATOR);
+            }
             getWriter().write(Xref.IMEX);
             getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(pub.getImexId());

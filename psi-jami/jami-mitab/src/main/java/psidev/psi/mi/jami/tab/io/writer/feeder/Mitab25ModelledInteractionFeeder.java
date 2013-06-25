@@ -46,7 +46,16 @@ public class Mitab25ModelledInteractionFeeder extends AbstractMitab25ColumnFeede
 
         // other identfiers
         if (!interaction.getIdentifiers().isEmpty()){
-            writeIdentifier(interaction.getIdentifiers().iterator().next());
+            Iterator<Xref> identifierIterator = interaction.getIdentifiers().iterator();
+
+            while (identifierIterator.hasNext()){
+                // write alternative identifier
+                writeIdentifier(identifierIterator.next());
+                // write field separator
+                if (identifierIterator.hasNext()){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+            }
 
             // IMEx as well
             if (!imexId.isEmpty()){
@@ -58,7 +67,6 @@ public class Mitab25ModelledInteractionFeeder extends AbstractMitab25ColumnFeede
         }
         // IMEx only
         else if (!imexId.isEmpty()) {
-            getWriter().write(MitabUtils.FIELD_SEPARATOR);
             getWriter().write(Xref.IMEX);
             getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(imexId.iterator().next().getId());
@@ -74,7 +82,6 @@ public class Mitab25ModelledInteractionFeeder extends AbstractMitab25ColumnFeede
 
             Iterator<ModelledConfidence> confIterator = interaction.getModelledConfidences().iterator();
             while (confIterator.hasNext()) {
-                Confidence conf = confIterator.next();
                 writeConfidence(confIterator.next());
 
                 if (confIterator.hasNext()){
