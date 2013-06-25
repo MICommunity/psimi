@@ -17,7 +17,7 @@ import java.io.Writer;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab27BinaryEvidenceWriter extends AbstractMitab26BinaryWriter<BinaryInteractionEvidence, ParticipantEvidence> {
+public class Mitab27BinaryEvidenceWriter extends AbstractMitab27BinaryWriter<BinaryInteractionEvidence, ParticipantEvidence> {
 
     public Mitab27BinaryEvidenceWriter() {
         super();

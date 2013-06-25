@@ -5,7 +5,9 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
+import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.io.writer.feeder.DefaultMitabColumnFeeder;
 
 import java.io.File;
@@ -24,8 +26,8 @@ import java.util.Map;
 
 public class Mitab26BinaryWriter extends AbstractMitab26BinaryWriter<BinaryInteraction, Participant>{
 
-    private Mitab26ModelledBinaryWriter modelledBinaryWriter;
-    private Mitab26BinaryEvidenceWriter binaryEvidenceWriter;
+    private AbstractMitab26BinaryWriter<ModelledBinaryInteraction, ModelledParticipant> modelledBinaryWriter;
+    private AbstractMitab26BinaryWriter<BinaryInteractionEvidence, ParticipantEvidence> binaryEvidenceWriter;
 
     public Mitab26BinaryWriter() {
         super();
@@ -121,5 +123,15 @@ public class Mitab26BinaryWriter extends AbstractMitab26BinaryWriter<BinaryInter
         if (this.binaryEvidenceWriter != null){
             this.binaryEvidenceWriter.setWriteHeader(false);
         }
+    }
+
+    protected void setModelledBinaryWriter(AbstractMitab26BinaryWriter<ModelledBinaryInteraction, ModelledParticipant> modelledBinaryWriter) {
+        this.modelledBinaryWriter = modelledBinaryWriter;
+        this.modelledBinaryWriter.setWriteHeader(false);
+    }
+
+    protected void setBinaryEvidenceWriter(AbstractMitab26BinaryWriter<BinaryInteractionEvidence, ParticipantEvidence> binaryEvidenceWriter) {
+        this.binaryEvidenceWriter = binaryEvidenceWriter;
+        this.binaryEvidenceWriter.setWriteHeader(false);
     }
 }

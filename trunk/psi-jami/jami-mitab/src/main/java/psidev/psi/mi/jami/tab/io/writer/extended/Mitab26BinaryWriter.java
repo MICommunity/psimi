@@ -26,12 +26,12 @@ public class Mitab26BinaryWriter extends psidev.psi.mi.jami.tab.io.writer.Mitab2
         initialiseSubWritersWith(getWriter());
     }
 
-    public Mitab26BinaryWriter(OutputStream output) throws IOException {
+    public Mitab26BinaryWriter(OutputStream output) {
         super(output);
         initialiseSubWritersWith(getWriter());
     }
 
-    public Mitab26BinaryWriter(Writer writer) throws IOException {
+    public Mitab26BinaryWriter(Writer writer){
         super(writer);
         initialiseSubWritersWith(writer);
     }
@@ -39,5 +39,12 @@ public class Mitab26BinaryWriter extends psidev.psi.mi.jami.tab.io.writer.Mitab2
     @Override
     protected void initialiseColumnFeeder() {
         setColumnFeeder(new DefaultExtendedMitabColumnFeeder(getWriter()));
+    }
+
+    @Override
+    protected void initialiseSubWritersWith(Writer writer) {
+
+        setModelledBinaryWriter(new Mitab26ModelledBinaryWriter(writer));
+        setBinaryEvidenceWriter(new Mitab26BinaryEvidenceWriter(writer));
     }
 }
