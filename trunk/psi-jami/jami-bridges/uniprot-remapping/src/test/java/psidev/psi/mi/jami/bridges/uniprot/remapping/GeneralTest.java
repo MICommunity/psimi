@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.bridges.uniprot.remapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -22,7 +23,7 @@ import java.util.HashMap;
 public  class GeneralTest {
 
     public static final Log log = LogFactory.getLog(GeneralTest.class);
-    static IntactProteinRemapper remap;
+    static UniprotProteinRemapper remap;
     static ArrayList<Protein> tests;
     static HashMap<String, Xref> xrefs = new HashMap<String, Xref>();
     static String[][] xrefsraw;
@@ -85,7 +86,7 @@ public  class GeneralTest {
         pdns.setSequence("") ;
         tests.add(pdns);
 
-        remap = new IntactProteinRemapper();
+        remap = new UniprotProteinRemapper();
 
     }
      /*
@@ -107,7 +108,7 @@ public  class GeneralTest {
         return p;
     }
 
-    public static void runTest(){
+    public static void runTest() throws BridgeFailedException {
         int i = 1;
         for(Protein p: tests){
             log.info("---- Doing a test "+i+"---");
@@ -129,17 +130,17 @@ public  class GeneralTest {
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws BridgeFailedException {
         GeneralTest test = new GeneralTest();
         runTest();
     }
 
 
-    public static void runTest(boolean ids, boolean seq, Protein p){
+    public static void runTest(boolean ids, boolean seq, Protein p) throws BridgeFailedException {
 
         ArrayList<Xref> uniprots = new ArrayList<Xref>();
         for(Xref x : p.getIdentifiers()){
-            if(x.getDatabase().getMIIdentifier() == "MI:0486"){
+            if(x.getDatabase().getMIIdentifier().equalsIgnoreCase("MI:0486")){
                 uniprots.add(x);
             }
         }
@@ -153,7 +154,8 @@ public  class GeneralTest {
 
 
 
-    static String sequence_a = "MEDRRAEKSCEQACESLKRQDYEMALKHCTEALLSLGQYSMADFTGPCPLEIERIKIESL" +
+    static String sequence_a =
+            "MEDRRAEKSCEQACESLKRQDYEMALKHCTEALLSLGQYSMADFTGPCPLEIERIKIESL" +
             "LYRIASFLQLKNYVQADEDCRHVLGEGLAKGEDAFRAVLCCMQLKGKLQPVSTILAKSLT" +
             "GESLNGMVTKDLTRLKTLLSETETATSNALSGYHVEDLDEGSCNGWHFRPPPRGITSSEE" +
             "YTLCKRFLEQGICRYGAQCTSAHSQEELAEWQKRYASRLIKLKQQNENKQLSGSYMETLI" +
@@ -186,5 +188,4 @@ public  class GeneralTest {
             "PESWVNTTSSTPYQNIPCNGSSRTAQPRELIAPPKTVKPPEDQLKSENLEVSSSFNYSVL" +
             "QHLGQFPPLMPNKQIAESANSSSPQSSAGGKPAMSYASALRAPPKPRPPPEQAKKSSDPL" +
             "SLFQELSLGSSSGSNGFYSYFK";
-
 }

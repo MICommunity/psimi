@@ -2,9 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.featureevidence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.bridges.fetcher.FeatureEvidenceFetcher;
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
@@ -15,7 +13,6 @@ import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.PositionUtils;
-import psidev.psi.mi.jami.utils.RangeUtils;
 import uk.ac.ebi.intact.commons.util.DiffUtils;
 import uk.ac.ebi.intact.commons.util.diff.Diff;
 
@@ -33,12 +30,13 @@ public abstract  class AbstractFeatureEvidenceEnricher
 
     protected static final Logger log = LoggerFactory.getLogger(AbstractFeatureEvidenceEnricher.class.getName());
 
-    private FeatureEvidenceFetcher featureEvidenceFetcher;
+
     protected FeatureEvidenceEnricherListener listener;
 
     protected CvTermEnricher cvTermEnricher;
 
-    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew) throws BridgeFailedException, MissingServiceException, BadToEnrichFormException, BadSearchTermException {
+    public boolean enrichFeatureEvidence(FeatureEvidence featureEvidenceToEnrich, String sequenceOld, String sequenceNew)
+            throws BridgeFailedException, MissingServiceException, BadToEnrichFormException{
 
         if(featureEvidenceToEnrich ==  null) {
             if(listener != null) listener.onFeatureEvidenceEnriched(featureEvidenceToEnrich,
@@ -126,15 +124,6 @@ public abstract  class AbstractFeatureEvidenceEnricher
     }
 
     protected abstract boolean processFeatureEvidence(FeatureEvidence featureEvidenceToEnrich);
-
-    public void setFeatureEvidenceFetcher(FeatureEvidenceFetcher featureEvidenceFetcher) {
-        this.featureEvidenceFetcher = featureEvidenceFetcher;
-    }
-
-    public FeatureEvidenceFetcher getFeatureEvidenceFetcher() {
-        //Todo lazy load
-        return featureEvidenceFetcher;
-    }
 
     public void setFeatureEvidenceEnricherListener(FeatureEvidenceEnricherListener featureEvidenceEnricherListener) {
         this.listener = featureEvidenceEnricherListener;

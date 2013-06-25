@@ -26,8 +26,12 @@ public class LoggingRemapListener implements ProteinRemapperListener {
         log.info("Remapping is supported by sequence.");
     }
 
-    public void onRemappingComplete(Protein protein, String msg) {
-        log.info("Remapping completed: "+msg);
+    public void onRemappingSuccessful(Protein p, String s) {
+        log.info("Remapping succeeded: "+s);
+    }
+
+    public void onRemappingFailed(Protein p, String s) {
+        log.info("Remapping failed: "+s);
     }
 
     public void onIdentifierConflict(String remappedIdentifierOne, String remappedIdentifierTwo) {

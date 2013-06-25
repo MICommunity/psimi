@@ -5,6 +5,9 @@ package psidev.psi.mi.jami.enricher;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
+import psidev.psi.mi.jami.enricher.exception.BadEnrichedFormException;
+import psidev.psi.mi.jami.enricher.exception.BadToEnrichFormException;
+import psidev.psi.mi.jami.enricher.exception.MissingServiceException;
 import psidev.psi.mi.jami.enricher.impl.protein.listener.ProteinEnricherListener;
 import psidev.psi.mi.jami.model.Protein;
 import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
@@ -27,7 +30,7 @@ public interface ProteinEnricher {
      * @throws SeguidException
      */
     public boolean enrichProtein(Protein proteinToEnrich)
-            throws BridgeFailedException, SeguidException;
+            throws BridgeFailedException, SeguidException, MissingServiceException, BadToEnrichFormException, BadEnrichedFormException;
 
 
     /**

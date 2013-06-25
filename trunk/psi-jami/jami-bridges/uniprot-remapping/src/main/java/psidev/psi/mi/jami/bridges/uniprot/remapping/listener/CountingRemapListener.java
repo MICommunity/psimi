@@ -51,6 +51,14 @@ public class CountingRemapListener implements ProteinRemapperListener {
         fromSequence = true;
     }
 
+    public void onRemappingSuccessful(Protein p, String s) {
+        status = s;
+    }
+
+    public void onRemappingFailed(Protein p, String s) {
+        status = s;
+    }
+
     public void onRemappingComplete(Protein p, String s) {
         status = s;
     }

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.bridges.remapper;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.Protein;
 
 /**
@@ -19,7 +20,7 @@ public interface ProteinRemapper {
      * Will remap the protein using the settings provided.
      * A remapReport will be fired to all RemapListeners at the end.
      */
-    public void remapProtein(Protein p);
+    public void remapProtein(Protein p) throws BridgeFailedException;
 
     /**
      * Informs whether identifier checking is enabled.
