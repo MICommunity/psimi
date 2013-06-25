@@ -70,7 +70,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         this.writeHeader = writeHeader;
     }
 
-    public Writer getWriter() {
+    protected Writer getWriter() {
         return writer;
     }
 

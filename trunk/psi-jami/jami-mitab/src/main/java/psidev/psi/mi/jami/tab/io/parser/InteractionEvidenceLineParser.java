@@ -128,6 +128,12 @@ public class InteractionEvidenceLineParser extends AbstractInteractionLineParser
 
         // create interaction with participants
         interaction = new MitabBinaryInteractionEvidence(A, B);
+        if (A != null){
+            A.setInteractionEvidence(interaction);
+        }
+        if (B != null){
+            B.setInteractionEvidence(interaction);
+        }
 
         // create publication
         MitabPublication publication = createPublicationFrom(firstAuthor, pubId, source);
