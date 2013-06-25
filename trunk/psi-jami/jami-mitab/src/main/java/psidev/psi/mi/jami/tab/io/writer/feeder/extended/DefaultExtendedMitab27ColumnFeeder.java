@@ -81,7 +81,7 @@ public class DefaultExtendedMitab27ColumnFeeder extends DefaultMitab27ColumnFeed
                 while(rangeIterator.hasNext()){
                     getWriter().write(RangeUtils.convertRangeToString(rangeIterator.next()));
                     if (rangeIterator.hasNext()){
-                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                        getWriter().write(MitabUtils.RANGE_SEPARATOR);
                     }
                 }
             }
