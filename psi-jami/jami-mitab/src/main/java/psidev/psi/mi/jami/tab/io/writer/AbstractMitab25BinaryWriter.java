@@ -101,6 +101,10 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
                     + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
         }
 
+        if (options.containsKey(MitabUtils.MITAB_HEADER_OPTION)){
+            setWriteHeader((Boolean)options.get(MitabUtils.MITAB_HEADER_OPTION));
+        }
+
         isInitialised = true;
     }
 
