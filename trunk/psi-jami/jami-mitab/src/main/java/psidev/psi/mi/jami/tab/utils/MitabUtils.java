@@ -34,6 +34,7 @@ public class MitabUtils {
     public static final DateFormat PUBLICATION_YEAR_FORMAT = new SimpleDateFormat("yyyy");
     public static final String UNKNOWN_DATABASE = "unknown";
     public static final String UNKNOWN_TYPE= "unknown";
+    public static final String UNKNOWN_ID = "unknown";
     public static final String AUTHOR_SUFFIX = " et al.";
     public static final String TAXID = "taxid";
     public static final String SHORTLABEL = "shortlabel";

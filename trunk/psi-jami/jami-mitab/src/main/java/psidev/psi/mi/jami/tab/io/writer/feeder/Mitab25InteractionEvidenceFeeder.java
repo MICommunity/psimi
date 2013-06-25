@@ -190,7 +190,9 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
             escapeAndWriteString(alias.getName());
             // write type
             if (alias.getType() != null){
+                getWriter().write("(");
                 escapeAndWriteString(alias.getType().getShortName());
+                getWriter().write(")");
             }
         }
     }

@@ -40,7 +40,9 @@ public class ExtendedMitab27ModelledInteractionFeeder extends Mitab27ModelledInt
             escapeAndWriteString(alias.getName());
             // write type
             if (alias.getType() != null){
+                getWriter().write("(");
                 escapeAndWriteString(alias.getType().getShortName());
+                getWriter().write(")");
             }
         }
     }

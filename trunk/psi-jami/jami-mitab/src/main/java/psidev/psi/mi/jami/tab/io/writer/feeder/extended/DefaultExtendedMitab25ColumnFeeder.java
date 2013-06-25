@@ -37,7 +37,9 @@ public class DefaultExtendedMitab25ColumnFeeder extends psidev.psi.mi.jami.tab.i
             escapeAndWriteString(alias.getName());
             // write type
             if (alias.getType() != null){
+                getWriter().write("(");
                 escapeAndWriteString(alias.getType().getShortName());
+                getWriter().write(")");
             }
         }
     }

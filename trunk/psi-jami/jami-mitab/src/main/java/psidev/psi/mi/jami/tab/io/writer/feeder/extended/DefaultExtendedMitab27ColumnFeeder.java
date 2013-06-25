@@ -41,7 +41,9 @@ public class DefaultExtendedMitab27ColumnFeeder extends DefaultMitab27ColumnFeed
             escapeAndWriteString(alias.getName());
             // write type
             if (alias.getType() != null){
+                getWriter().write("(");
                 escapeAndWriteString(alias.getType().getShortName());
+                getWriter().write(")");
             }
         }
     }

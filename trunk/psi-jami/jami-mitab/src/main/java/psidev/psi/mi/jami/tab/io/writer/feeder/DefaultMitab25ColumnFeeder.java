@@ -73,18 +73,7 @@ public class DefaultMitab25ColumnFeeder extends AbstractMitab25ColumnFeeder<Bina
     }
 
     public void writeAlias(Participant participant, Alias alias) throws IOException {
-        if (alias != null){
-            // write db first
-            escapeAndWriteString(MitabUtils.findDbSourceForAlias(alias));
-            // write xref separator
-            getWriter().write(MitabUtils.XREF_SEPARATOR);
-            // write name
-            escapeAndWriteString(alias.getName());
-            // write type
-            if (alias.getType() != null){
-                escapeAndWriteString(alias.getType().getShortName());
-            }
-        }
+        writeAlias(alias);
     }
 
     @Override
