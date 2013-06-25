@@ -194,13 +194,13 @@ public class DefaultMitab26ColumnFeeder extends DefaultMitab25ColumnFeeder imple
     public void writeInteractionAnnotations(BinaryInteraction interaction) throws IOException {
         // writes interaction annotations first
         if (!interaction.getAnnotations().isEmpty()){
-            Iterator<Annotation> interactorAnnotationIterator = interaction.getAnnotations().iterator();
+            Iterator<Annotation> interactionAnnotationIterator = interaction.getAnnotations().iterator();
 
-            while (interactorAnnotationIterator.hasNext()){
-                Annotation annot = interactorAnnotationIterator.next();
+            while (interactionAnnotationIterator.hasNext()){
+                Annotation annot = interactionAnnotationIterator.next();
                 writeAnnotation(annot);
 
-                if(interactorAnnotationIterator.hasNext()){
+                if(interactionAnnotationIterator.hasNext()){
                     getWriter().write(MitabUtils.FIELD_SEPARATOR);
                 }
             }
@@ -287,12 +287,7 @@ public class DefaultMitab26ColumnFeeder extends DefaultMitab25ColumnFeeder imple
         if (annotation != null){
 
             // write topic first
-            if (annotation.getTopic().getFullName() != null){
-                escapeAndWriteString(annotation.getTopic().getFullName());
-            }
-            else{
-                escapeAndWriteString(annotation.getTopic().getShortName());
-            }
+            writeCvTermName(annotation.getTopic());
 
             // write text after
             if (annotation.getValue() != null){
