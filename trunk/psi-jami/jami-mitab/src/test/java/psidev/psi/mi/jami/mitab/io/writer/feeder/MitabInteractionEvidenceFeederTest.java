@@ -591,4 +591,15 @@ public class MitabInteractionEvidenceFeederTest {
         feeder.writeParticipantFeatures(participant_no_features);
         Assert.assertEquals("-", writer.toString());
     }
+
+    @Test
+    public void write_negative() throws IOException, ParseException {
+        StringWriter writer = new StringWriter();
+        MitabInteractionEvidenceFeeder feeder = new MitabInteractionEvidenceFeeder(writer);
+
+        MitabBinaryInteractionEvidence evidence = new MitabBinaryInteractionEvidence();
+        evidence.setNegative(true);
+        feeder.writeNegativeProperty(evidence);
+        Assert.assertEquals("true", writer.toString());
+    }
 }
