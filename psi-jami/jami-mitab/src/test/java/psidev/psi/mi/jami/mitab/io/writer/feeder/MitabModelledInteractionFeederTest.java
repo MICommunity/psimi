@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
+import psidev.psi.mi.jami.binary.impl.DefaultModelledBinaryInteraction;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
@@ -550,6 +551,15 @@ public class MitabModelledInteractionFeederTest {
         writer = new StringWriter();
         feeder = new MitabModelledInteractionFeeder(writer);
         feeder.writeParticipantFeatures(participant_no_features);
+        Assert.assertEquals("-", writer.toString());
+    }
+
+    @Test
+    public void write_negative() throws IOException, ParseException {
+        StringWriter writer = new StringWriter();
+        MitabModelledInteractionFeeder feeder = new MitabModelledInteractionFeeder(writer);
+
+        feeder.writeNegativeProperty(new DefaultModelledBinaryInteraction());
         Assert.assertEquals("-", writer.toString());
     }
 }

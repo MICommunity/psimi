@@ -5,6 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
+import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteraction;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
@@ -595,6 +596,15 @@ public class DefaultMitabColumnFeederTest {
 
         feeder.writeDate(MitabUtils.DATE_FORMAT.parse("2013/06/28"));
         Assert.assertEquals("2013/06/28", writer.toString());
+    }
+
+    @Test
+    public void write_negative() throws IOException, ParseException {
+        StringWriter writer = new StringWriter();
+        DefaultMitabColumnFeeder feeder = new DefaultMitabColumnFeeder(writer);
+
+        feeder.writeNegativeProperty(new DefaultBinaryInteraction());
+        Assert.assertEquals("-", writer.toString());
     }
 
     @Test
