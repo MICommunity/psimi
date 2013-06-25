@@ -336,7 +336,7 @@ public class Mitab26InteractionEvidenceFeeder extends Mitab25InteractionEvidence
             escapeAndWriteString(parameter.getType().getShortName());
             getWriter().write(MitabUtils.XREF_SEPARATOR);
             // then parameter value
-            getWriter().write(ParameterUtils.getParameterValueAsString(parameter));
+            escapeAndWriteString(ParameterUtils.getParameterValueAsString(parameter));
             // then write unit
             if (parameter.getUnit() != null){
                 getWriter().write("(");
