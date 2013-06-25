@@ -299,7 +299,7 @@ public class Mitab26ModelledInteractionFeeder extends Mitab25ModelledInteraction
             escapeAndWriteString(parameter.getType().getShortName());
             getWriter().write(MitabUtils.XREF_SEPARATOR);
             // then parameter value
-            getWriter().write(ParameterUtils.getParameterValueAsString(parameter));
+            escapeAndWriteString(ParameterUtils.getParameterValueAsString(parameter));
             // then write unit
             if (parameter.getUnit() != null){
                 getWriter().write("(");
