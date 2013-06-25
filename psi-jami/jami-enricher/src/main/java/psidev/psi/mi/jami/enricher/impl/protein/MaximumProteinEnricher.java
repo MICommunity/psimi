@@ -27,7 +27,7 @@ public class MaximumProteinEnricher
 
 
     @Override
-    protected void processProtein(Protein proteinToEnrich) throws SeguidException {
+    protected void processProtein(Protein proteinToEnrich) {
         super.processProtein(proteinToEnrich);
 
         //Xref

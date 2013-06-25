@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.uniprot.remapping.listener.LoggingRemapListener;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
@@ -17,19 +18,19 @@ import static junit.framework.Assert.*;
 /**
  * Created with IntelliJ IDEA.
  *
- * @author: Gabriel Aldam (galdam@ebi.ac.uk)
- * Date: 06/06/13
- * Time: 13:56
+ * @author Gabriel Aldam (galdam@ebi.ac.uk)
+ * @since  06/06/13
  */
-public class IntactProteinRemapperTest {
+public class UniprotProteinRemapperTest {
 
-    public static final Log log = LogFactory.getLog(IntactProteinRemapperTest.class);
+    public static final Log log = LogFactory.getLog(UniprotProteinRemapperTest.class);
 
-    public IntactProteinRemapper remap;
+    public UniprotProteinRemapper remap;
 
     public Protein protein;
 
-    public final String test_sequence = "MEDRRAEKSCEQACESLKRQDYEMALKHCTEALLSLGQYSMADFTGPCPLEIERIKIESL" +
+    public final String test_sequence =
+            "MEDRRAEKSCEQACESLKRQDYEMALKHCTEALLSLGQYSMADFTGPCPLEIERIKIESL" +
             "LYRIASFLQLKNYVQADEDCRHVLGEGLAKGEDAFRAVLCCMQLKGKLQPVSTILAKSLT" +
             "GESLNGMVTKDLTRLKTLLSETETATSNALSGYHVEDLDEGSCNGWHFRPPPRGITSSEE" +
             "YTLCKRFLEQGICRYGAQCTSAHSQEELAEWQKRYASRLIKLKQQNENKQLSGSYMETLI" +
@@ -98,7 +99,7 @@ public class IntactProteinRemapperTest {
 
     @Before
     public void build_bridge(){
-        remap = new IntactProteinRemapper();
+        remap = new UniprotProteinRemapper();
 
         remap.setRemapListener(new LoggingRemapListener());
 
@@ -112,7 +113,7 @@ public class IntactProteinRemapperTest {
     }
 
     @Test
-    public void test_conflict_xref_returns_conflicting_identifier(){
+    public void test_conflict_xref_returns_conflicting_identifier() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -129,7 +130,7 @@ public class IntactProteinRemapperTest {
     }
 
     @Test
-    public void test_sequence_returns_correct_identifier(){
+    public void test_sequence_returns_correct_identifier() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -158,7 +159,7 @@ public class IntactProteinRemapperTest {
      * This should fail as identifiers and sequence are both required.
      */
     @Test
-    public void test_mappable_xref_with_no_sequence_UseIds_UseSeq(){
+    public void test_mappable_xref_with_no_sequence_UseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(true);
@@ -180,7 +181,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - no sequence
      */
     @Test
-    public void test_mappable_xref_with_no_sequence_UseIds_NOTUseSeq(){
+    public void test_mappable_xref_with_no_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -205,7 +206,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref, 1 unmappable
      */
     @Test
-    public void test_mappable_xref_and_unmappable_xref_with_no_sequence_UseIds_NOTUseSeq(){
+    public void test_mappable_xref_and_unmappable_xref_with_no_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -231,7 +232,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs (no conflict)
      */
     @Test
-    public void test_none_conflicting_mappable_xrefs_with_no_sequence_UseIds_NOTUseSeq(){
+    public void test_none_conflicting_mappable_xrefs_with_no_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -257,7 +258,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs, (with conflict)
      */
     @Test
-    public void test_conflicting_mappable_xrefs_with_no_sequence_UseIds_NOTUseSeq(){
+    public void test_conflicting_mappable_xrefs_with_no_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -280,7 +281,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - no sequence
      */
     @Test
-    public void test_mappable_xref_with_no_sequence_NOTUseIds_UseSeq(){
+    public void test_mappable_xref_with_no_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -305,7 +306,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref, 1 unmappable
      */
     @Test
-    public void test_mappable_xref_and_unmappable_xref_with_no_sequence_NOTUseIds_UseSeq(){
+    public void test_mappable_xref_and_unmappable_xref_with_no_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -331,7 +332,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs (no conflict)
      */
     @Test
-    public void test_none_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_UseSeq(){
+    public void test_none_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -357,7 +358,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs, (with conflict)
      */
     @Test
-    public void test_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_UseSeq(){
+    public void test_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -380,7 +381,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - no sequence
      */
     @Test
-    public void test_mappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_mappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -405,7 +406,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref, 1 unmappable
      */
     @Test
-    public void test_mappable_xref_and_unmappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_mappable_xref_and_unmappable_xref_with_no_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -431,7 +432,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs (no conflict)
      */
     @Test
-    public void test_none_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_none_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -457,7 +458,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs, (with conflict)
      */
     @Test
-    public void test_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_conflicting_mappable_xrefs_with_no_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -488,7 +489,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - no sequence
      */
     @Test
-    public void test_mappable_xref_with_sequence_UseIds_UseSeq(){
+    public void test_mappable_xref_with_sequence_UseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(true);
@@ -514,7 +515,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref, 1 unmappable
      */
     @Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_UseSeq(){
+    public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(true);
@@ -541,7 +542,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs (no conflict)
      */
     @Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_UseSeq(){
+    public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(true);
@@ -568,7 +569,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs, (with conflict)
      */
     @Test
-    public void test_conflicting_mappable_xrefs_with_sequence_UseIds_UseSeq(){
+    public void test_conflicting_mappable_xrefs_with_sequence_UseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(true);
@@ -596,7 +597,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - no sequence
      */
     @Test
-    public void test_mappable_xref_with_sequence_UseIds_NOTUseSeq(){
+    public void test_mappable_xref_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -622,7 +623,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref, 1 unmappable
      */
     @Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_NOTUseSeq(){
+    public void test_mappable_xref_and_unmappable_xref_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -649,7 +650,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs (no conflict)
      */
     @Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq(){
+    public void test_none_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -676,7 +677,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs, (with conflict)
      */
     @Test
-    public void test_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq(){
+    public void test_conflicting_mappable_xrefs_with_sequence_UseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(true);
         remap.setPrioritySequence(false);
@@ -700,7 +701,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - no sequence
      */
     @Test
-    public void test_mappable_xref_with_sequence_NOTUseIds_UseSeq(){
+    public void test_mappable_xref_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -726,7 +727,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref, 1 unmappable
      */
     @Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_UseSeq(){
+    public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -753,7 +754,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs (no conflict)
      */
     @Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq(){
+    public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -780,7 +781,7 @@ public class IntactProteinRemapperTest {
      * Sequence should dbe used over the identifiers.
      */
     @Test
-    public void test_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq(){
+    public void test_conflicting_mappable_xrefs_with_sequence_NOTUseIds_UseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(true);
@@ -807,7 +808,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - no sequence
      */
     @Test
-    public void test_mappable_xref_with_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_mappable_xref_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -833,7 +834,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref, 1 unmappable
      */
     @Test
-    public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_mappable_xref_and_unmappable_xref_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -860,7 +861,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs (no conflict)
      */
     @Test
-    public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_none_conflicting_mappable_xrefs_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -887,7 +888,7 @@ public class IntactProteinRemapperTest {
      * 1 mappable xref - conflicts with sequence
      */
     @Test
-    public void test_mappable_xref_which_conflicts_with_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_mappable_xref_which_conflicts_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);
@@ -911,7 +912,7 @@ public class IntactProteinRemapperTest {
      * 2 mappable xrefs, (with conflict)
      */
     @Test
-    public void test_conflicting_mappable_xrefs_with_sequence_NOTUseIds_NOTUseSeq(){
+    public void test_conflicting_mappable_xrefs_with_sequence_NOTUseIds_NOTUseSeq() throws BridgeFailedException {
         remap.setCheckingEnabled(true);
         remap.setPriorityIdentifiers(false);
         remap.setPrioritySequence(false);

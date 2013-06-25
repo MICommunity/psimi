@@ -1,20 +1,16 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.MinimumOrganismEnricher;
 import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
-import psidev.psi.mi.jami.enricher.util.CollectionManipulationUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
-import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
+
 
 import java.util.Collection;
 
@@ -31,7 +27,7 @@ public class MinimumProteinEnricher
 
 
     @Override
-    protected boolean remapDeadProtein(Protein proteinToEnrich) {
+    protected boolean remapDeadProtein(Protein proteinToEnrich) throws BridgeFailedException {
         proteinToEnrich.getXrefs().add(
                 new DefaultXref(
                         CvTermUtils.createUniprotkbDatabase(),
@@ -47,7 +43,7 @@ public class MinimumProteinEnricher
     }
 
     @Override
-    protected void processProtein(Protein proteinToEnrich) throws SeguidException {
+    protected void processProtein(Protein proteinToEnrich) {
         //InteractorType
         if(!proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(Protein.PROTEIN_MI)){
             if(proteinToEnrich.getInteractorType().getMIIdentifier().equalsIgnoreCase(
@@ -85,12 +81,14 @@ public class MinimumProteinEnricher
 
         //Checksums
         // Can only add a checksum if there is a sequence which matches the protein fetched and an organism
-        if(proteinToEnrich.getSequence() != null
-                && proteinToEnrich.getSequence().equals(proteinFetched.getSequence())
-                && proteinToEnrich.getOrganism().getTaxId() != -3){
+        if(proteinFetched.getSequence() != null
+                && proteinToEnrich.getSequence().equalsIgnoreCase(proteinFetched.getSequence())){
 
             boolean hasCrc64Checksum = false;
             boolean hasRogidChecksum = false;
+            Checksum crc64Checksum = null;
+            Checksum rogidChecksum = null;
+
             for(Checksum checksum : proteinToEnrich.getChecksums()){
                 if(checksum.getMethod() != null){
                     if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
@@ -105,21 +103,34 @@ public class MinimumProteinEnricher
                 if(hasCrc64Checksum && hasRogidChecksum) break;
             }
 
-            if(!hasRogidChecksum){
-                RogidGenerator rogidGenerator = new RogidGenerator();
-                String rogidValue = rogidGenerator.calculateRogid(
-                        proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
-
-                Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
-                proteinToEnrich.getChecksums().add(rogidChecksum);
-                if(listener != null) listener.onAddedChecksum(proteinToEnrich, rogidChecksum);
+            for(Checksum checksum : proteinFetched.getChecksums()){
+                if(checksum.getMethod() != null){
+                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
+                            || (checksum.getMethod().getMIIdentifier() != null
+                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
+                        rogidChecksum = checksum;
+                    }
+                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                        crc64Checksum = checksum;
+                    }
+                }
+                if(crc64Checksum != null && rogidChecksum != null) break;
             }
 
-            if(!hasCrc64Checksum) {  //TODO implement the creation of a real CRC64 checksum
-                String crc64Value = "MAKE A CRC64CHECKSUM";
-                Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", crc64Value);
-                proteinToEnrich.getChecksums().add(crc64Checksum);
-                if(listener != null) listener.onAddedChecksum(proteinToEnrich, crc64Checksum);
+            if(!hasCrc64Checksum) {
+                if(crc64Checksum != null) {
+                    proteinToEnrich.getChecksums().add(crc64Checksum);
+                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, crc64Checksum);
+                }
+            }
+
+            if(!hasRogidChecksum
+                    && proteinFetched.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()
+                    && proteinToEnrich.getOrganism().getTaxId() != -3){
+                if(rogidChecksum != null){
+                    proteinToEnrich.getChecksums().add(rogidChecksum);
+                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, rogidChecksum);
+                }
             }
         }
 
@@ -127,7 +138,7 @@ public class MinimumProteinEnricher
 
         //TODO - remove comparator
         // IDENTIFIERS
-        Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
+        /*Collection<Xref> subtractedIdentifiers = CollectionManipulationUtils.comparatorSubtract(
                 proteinFetched.getIdentifiers(),
                 proteinToEnrich.getIdentifiers(),
                 new DefaultXrefComparator());
@@ -135,11 +146,11 @@ public class MinimumProteinEnricher
 
             proteinToEnrich.getIdentifiers().add(xref);
             if(listener != null) listener.onAddedIdentifier(proteinFetched, xref);
-        }
+        } */
 
         //TODO some introduced aliases may enter a form of conflict - need to do a further comparison.
         // ALIASES
-        Collection<Alias> subtractedAliases = CollectionManipulationUtils.comparatorSubtract(
+        /*Collection<Alias> subtractedAliases = CollectionManipulationUtils.comparatorSubtract(
                 proteinFetched.getAliases(),
                 proteinToEnrich.getAliases(),
                 new DefaultAliasComparator());
@@ -147,7 +158,7 @@ public class MinimumProteinEnricher
 
             proteinToEnrich.getAliases().add(alias);
             if(listener != null) listener.onAddedAlias(proteinFetched, alias);
-        }
+        } */
 
     }
 

@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.bridges;
 
 import org.junit.Before;
 import org.junit.Test;
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.uniprot.UniprotFetcher;
 import psidev.psi.mi.jami.model.Protein;
@@ -21,11 +21,33 @@ import static org.junit.Assert.*;
  */
 public class UniprotFetcherTest {
 
+    private final Logger log = LoggerFactory.getLogger(UniprotFetcherTest.class.getName());
     private UniprotFetcher fetcher;
 
     @Before
     public void initialiseFetcher() {
         fetcher = new UniprotFetcher();
+    }
+
+
+    @Test
+    public void test_stuff(){
+        String[] identifiers = {
+                "PRO_0000030311",
+                "P19838-PRO_0000030311",
+                "PRO_0000021413",
+                "PRO_0000021416",
+                "PRO_0000021449"};
+
+        for(String identifier : identifiers){
+            String proIdentifier = identifier.substring(identifier.indexOf("PRO")+4,identifier.length()).trim();
+            log.warn("doing identifier "+identifier);
+            log.warn("Searching for the pro identifier ["+proIdentifier+"] (from identifier ["+identifier+"])");
+
+        }
+
+
+
     }
 
     //--------------MASTER
@@ -40,18 +62,16 @@ public class UniprotFetcherTest {
      * Check that they return a single protein.
      * Check that the protein has only expected fields.
      *
-     * @throws BadSearchTermException
-     * @throws BadResultException
      * @throws BridgeFailedException
      */
     @Test
     public void test_isoform_returned_identifier()
-            throws BadSearchTermException, BadResultException, BridgeFailedException {
+            throws BridgeFailedException {
 
         String[] identifiers = {"Q6ZRI6-3", "P13055-2"};
 
         for(String identifier : identifiers){
-            assertTrue(fetcher.UNIPROT_MASTER_REGEX.matcher(identifier).find());
+            //assertTrue(fetcher.UNIPROT_MASTER_REGEX.matcher(identifier).find());
             assertTrue(fetcher.UNIPROT_ISOFORM_REGEX.matcher(identifier).find());
 
             Collection<Protein> proteins = fetcher.getProteinsByIdentifier(identifier);
@@ -72,13 +92,12 @@ public class UniprotFetcherTest {
      * Check that the regular expression catches them,
      * check that they return a single protein.
      *
-     * @throws BadSearchTermException
-     * @throws BadResultException
+
      * @throws BridgeFailedException
      */
     @Test
     public void test_feature_chain_search_regular_expression()
-            throws BadSearchTermException, BadResultException, BridgeFailedException {
+            throws BridgeFailedException {
 
         String[] identifiers = {
                 "PRO_0000030311",
@@ -100,12 +119,11 @@ public class UniprotFetcherTest {
      * check that the sequence it returns is of the correct length
      * check that the sequence is returns is correct.
      *
-     * @throws BadSearchTermException
-     * @throws BadResultException
      * @throws BridgeFailedException
      */
     @Test
-    public void test_feature_chain_search_has_correct_sequence_for_truncation_to_end() throws BadSearchTermException, BadResultException, BridgeFailedException {
+    public void test_feature_chain_search_has_correct_sequence_for_truncation_to_end()
+            throws BridgeFailedException {
         Collection<Protein> proteins;
 
         //Sequence and length were independently verified at:
@@ -128,13 +146,11 @@ public class UniprotFetcherTest {
      * check that the sequence it returns is of the correct length
      * check that the sequence is returns is correct.
      *
-     * @throws BadSearchTermException
-     * @throws BadResultException
      * @throws BridgeFailedException
      */
     @Test
     public void test_feature_chain_search_has_correct_sequence_for_truncation_from_start()
-            throws BadSearchTermException, BadResultException, BridgeFailedException {
+            throws BridgeFailedException {
 
         Collection<Protein> proteins;
 

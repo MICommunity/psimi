@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.ProteinFetcher;
 import psidev.psi.mi.jami.bridges.remapper.ProteinRemapper;
@@ -52,14 +51,17 @@ implements ProteinEnricher {
      * @throws MissingServiceException
      * @throws BadToEnrichFormException
      * @throws BadEnrichedFormException
-     * @throws BadSearchTermException
-     * @throws BadResultException
      * @throws SeguidException
      */
     public boolean enrichProtein(Protein proteinToEnrich)
-            throws BridgeFailedException, MissingServiceException,BadToEnrichFormException,
-            BadEnrichedFormException, BadSearchTermException, BadResultException,
-            SeguidException {
+            throws BridgeFailedException,
+            MissingServiceException, BadToEnrichFormException, BadEnrichedFormException {
+
+
+        // In your enricher, if you have several entries,
+        // try to look for the one with the same organism as the protein you try to enrich.
+        // If you don't find one or several entries have the same organism,
+        // fire a specific event because we want to track these proteins.
 
         proteinFetched = fetchProtein(proteinToEnrich);
         if(proteinFetched == null){
@@ -141,12 +143,11 @@ implements ProteinEnricher {
      * @return
      * @throws MissingServiceException
      * @throws BadToEnrichFormException
-     * @throws BadSearchTermException
-     * @throws BadResultException
      * @throws BridgeFailedException
      */
-    protected Protein fetchProtein(Protein proteinToEnrich) throws MissingServiceException, BadToEnrichFormException,
-            BadSearchTermException, BadResultException, BridgeFailedException {
+    protected Protein fetchProtein(Protein proteinToEnrich)
+            throws MissingServiceException, BadToEnrichFormException,
+            BridgeFailedException {
 
         if(getFetcher() == null) throw new MissingServiceException("ProteinFetcher has not been provided.");
         if(proteinToEnrich == null) throw new BadToEnrichFormException("Attempted to enrich a null protein.");
@@ -238,7 +239,9 @@ implements ProteinEnricher {
      * @param remapCause
      * @return
      */
-    protected boolean remapProtein(Protein proteinToEnrich, String remapCause){
+    protected boolean remapProtein(Protein proteinToEnrich, String remapCause)
+            throws BridgeFailedException {
+
         if( getProteinRemapper() == null ){
             if(listener != null) listener.onProteinEnriched(proteinToEnrich , "Failed. " +
                     "Attempted to remap because "+remapCause+" "+
@@ -270,15 +273,14 @@ implements ProteinEnricher {
      * @param proteinToEnrich
      * @return  True if a remapping was found, and false if it could not be found.
      */
-    protected abstract boolean remapDeadProtein(Protein proteinToEnrich);
+    protected abstract boolean remapDeadProtein(Protein proteinToEnrich) throws BridgeFailedException;
 
     /**
      * How to process the protein if an enriched form can be found.
      *
      * @param proteinToEnrich
-     * @throws SeguidException
      */
-    protected abstract void processProtein(Protein proteinToEnrich) throws SeguidException;
+    protected abstract void processProtein(Protein proteinToEnrich) ;
 
     /**
      * Sets the protein fetching service which will be used to fetch the enriched form

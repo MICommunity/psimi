@@ -17,7 +17,8 @@ public interface ProteinRemapperListener {
     void onGettingRemappingFromIdentifiers(Protein p);
     void onGettingRemappingFromSequence(Protein p);
     
-    void onRemappingComplete(Protein p, String s);
+    void onRemappingSuccessful(Protein p, String s);
+    void onRemappingFailed(Protein p, String s);
 
 
 }

@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
-import psidev.psi.mi.jami.bridges.uniprot.util.UniprotToJAMI;
+import psidev.psi.mi.jami.bridges.uniprot.util.UniprotTranslationUtil;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
 import psidev.psi.mi.jami.enricher.impl.organism.MaximumOrganismUpdater;
@@ -38,7 +38,7 @@ public class MaximumProteinUpdater
         fetchedXrefsToAdd.addAll(proteinFetched.getXrefs());
 
         Set<CvTerm> xrefCvTerms = new TreeSet<CvTerm>(new DefaultCvTermComparator());
-        xrefCvTerms.addAll(new UniprotToJAMI().getUniprotDatabases().values());
+        xrefCvTerms.addAll(new UniprotTranslationUtil().getUniprotDatabases().values());
         //for(Xref xref : fetchedXrefsToAdd){
         //    if(! xrefCvTerms.contains(xref.getDatabase())) xrefCvTerms.add(xref.getDatabase());
         //}

@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.enricher.impl.protein;
 
-import psidev.psi.mi.jami.bridges.exception.BadResultException;
-import psidev.psi.mi.jami.bridges.exception.BadSearchTermException;
+
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.enricher.OrganismEnricher;
 import psidev.psi.mi.jami.enricher.ProteinEnricher;
@@ -13,18 +12,12 @@ import psidev.psi.mi.jami.enricher.mockfetcher.organism.MockOrganismFetcher;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
-import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
-import uk.ac.ebi.intact.irefindex.seguid.RogidGenerator;
-import uk.ac.ebi.intact.irefindex.seguid.SeguidException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,8 +33,8 @@ public class MinimumProteinUpdater
 
     @Override
     public boolean enrichProtein(Protein proteinToEnrich)
-            throws MissingServiceException, BadResultException, SeguidException,
-            BadToEnrichFormException, BadSearchTermException, BridgeFailedException,
+            throws MissingServiceException,
+            BadToEnrichFormException,  BridgeFailedException,
             BadEnrichedFormException {
 
         isRemapped = false;
@@ -49,7 +42,7 @@ public class MinimumProteinUpdater
     }
 
     @Override
-    protected boolean remapDeadProtein(Protein proteinToEnrich) {
+    protected boolean remapDeadProtein(Protein proteinToEnrich) throws BridgeFailedException {
         proteinToEnrich.getXrefs().add(
                 new DefaultXref(
                         CvTermUtils.createUniprotkbDatabase(),
@@ -71,7 +64,7 @@ public class MinimumProteinUpdater
 
 
     @Override
-    protected void processProtein(Protein proteinToEnrich) throws SeguidException {
+    protected void processProtein(Protein proteinToEnrich)  {
         //ShortName - is never null
         if (! proteinToEnrich.getShortName().equalsIgnoreCase(proteinFetched.getShortName() )) {
             String oldValue = proteinToEnrich.getShortName();
@@ -111,60 +104,74 @@ public class MinimumProteinUpdater
 
 
         //Checksums
-        Checksum currentCrc64Checksum = null;
-        Checksum currentRogidChecksum = null;
-        for(Checksum checksum : proteinToEnrich.getChecksums()){
-            if(checksum.getMethod() != null){
-                if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
-                        || (checksum.getMethod().getMIIdentifier() != null
-                        && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
-                    currentRogidChecksum = checksum;
+        //Checksums
+        // Can only add a checksum if there is a sequence which matches the protein fetched and an organism
+        if(proteinFetched.getSequence() != null
+                && proteinToEnrich.getSequence().equalsIgnoreCase(proteinFetched.getSequence())){
+
+            Checksum crc64ChecksumToEnrich = null;
+            Checksum rogidChecksumToEnrich = null;
+            Checksum fetchedCrc64Checksum = null;
+            Checksum fetchedRogidChecksum = null;
+
+            for(Checksum checksum : proteinToEnrich.getChecksums()){
+                if(checksum.getMethod() != null){
+                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
+                            || (checksum.getMethod().getMIIdentifier() != null
+                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
+                        rogidChecksumToEnrich = checksum;
+                    }
+                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                        crc64ChecksumToEnrich = checksum;
+                    }
                 }
-                else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
-                    currentCrc64Checksum = checksum;
+                if(crc64ChecksumToEnrich != null && rogidChecksumToEnrich != null) break;
+            }
+
+            for(Checksum checksum : proteinFetched.getChecksums()){
+                if(checksum.getMethod() != null){
+                    if(checksum.getMethod().getShortName().equalsIgnoreCase(Checksum.ROGID)
+                            || (checksum.getMethod().getMIIdentifier() != null
+                            && checksum.getMethod().getMIIdentifier().equalsIgnoreCase(Checksum.ROGID_MI))){
+                        fetchedRogidChecksum = checksum;
+                    }
+                    else if(checksum.getMethod().getShortName().equalsIgnoreCase("CRC64")){
+                        fetchedCrc64Checksum = checksum;
+                    }
+                }
+                if(fetchedCrc64Checksum != null && fetchedRogidChecksum != null) break;
+            }
+
+            if(fetchedCrc64Checksum != null) {
+                if( crc64ChecksumToEnrich != null
+                        && ! fetchedCrc64Checksum.getValue().equalsIgnoreCase(crc64ChecksumToEnrich.getValue())) {
+                    proteinToEnrich.getChecksums().remove(crc64ChecksumToEnrich);
+                    if(listener != null) listener.onRemovedChecksum(proteinToEnrich, crc64ChecksumToEnrich);
+                    crc64ChecksumToEnrich = null;
+                }
+                if(crc64ChecksumToEnrich == null){
+                    proteinToEnrich.getChecksums().add(fetchedCrc64Checksum);
+                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedCrc64Checksum);
                 }
             }
-            if(currentCrc64Checksum != null && currentRogidChecksum != null) break;
-        }   //tODO remove if the sequence or organism are not known?
+
+            if(fetchedRogidChecksum != null
+                    && proteinFetched.getOrganism().getTaxId() == proteinToEnrich.getOrganism().getTaxId()
+                    && proteinToEnrich.getOrganism().getTaxId() != -3){  //tODO remove if the sequence or organism are not known?
 
 
-        if(proteinToEnrich.getSequence() != null
-                && proteinFetched.getSequence() != null
-                && proteinToEnrich.getOrganism().getTaxId() != -3){
-
-            // ROGID
-            RogidGenerator rogidGenerator = new RogidGenerator();
-            String rogidValue = rogidGenerator.calculateRogid(
-                    proteinToEnrich.getSequence(),""+proteinToEnrich.getOrganism().getTaxId());
-
-            // Remove old checksum if it does not match the new value.
-            if(currentRogidChecksum != null && ! currentRogidChecksum.getValue().equals(rogidValue)){
-                proteinToEnrich.getChecksums().remove(currentRogidChecksum);
-                if(listener != null) listener.onRemovedChecksum(proteinToEnrich, currentRogidChecksum);
-                currentRogidChecksum = null;
-            }
-            if(currentRogidChecksum == null){
-                Checksum rogidChecksum = ChecksumUtils.createRogid(rogidValue);
-                proteinToEnrich.getChecksums().add(rogidChecksum);
-                if(listener != null) listener.onAddedChecksum(proteinToEnrich, rogidChecksum);
-            }
-
-            // CRC64
-            String crc64Value = null;
-
-            // Remove old checksum if it does not match the new value.
-            if(currentCrc64Checksum != null && ! currentCrc64Checksum.getValue().equals(crc64Value)){
-                proteinToEnrich.getChecksums().remove(currentCrc64Checksum);
-                if(listener != null) listener.onRemovedChecksum(proteinToEnrich, currentCrc64Checksum);
-                crc64Value = null;
-            }
-            if(currentCrc64Checksum == null){
-                Checksum crc64Checksum = ChecksumUtils.createChecksum("CRC64", crc64Value);
-                proteinToEnrich.getChecksums().add(crc64Checksum);
-                if(listener != null) listener.onAddedChecksum(proteinToEnrich, crc64Checksum);
+                if( rogidChecksumToEnrich != null
+                        && ! fetchedRogidChecksum.getValue().equalsIgnoreCase(rogidChecksumToEnrich.getValue())) {
+                    proteinToEnrich.getChecksums().remove(rogidChecksumToEnrich);
+                    if(listener != null) listener.onRemovedChecksum(proteinToEnrich, rogidChecksumToEnrich);
+                    rogidChecksumToEnrich = null;
+                }
+                if(rogidChecksumToEnrich == null){
+                    proteinToEnrich.getChecksums().add(fetchedRogidChecksum);
+                    if(listener != null) listener.onAddedChecksum(proteinToEnrich, fetchedRogidChecksum);
+                }
             }
         }
-
 
 
 
