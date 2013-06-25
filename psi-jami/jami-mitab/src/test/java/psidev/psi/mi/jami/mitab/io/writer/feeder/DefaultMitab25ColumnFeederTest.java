@@ -143,7 +143,7 @@ public class DefaultMitab25ColumnFeederTest {
     }
 
     @Test
-    public void write_confidences() throws IOException {
+    public void write_confidence() throws IOException {
         StringWriter writer = new StringWriter();
         DefaultMitab25ColumnFeeder feeder = new DefaultMitab25ColumnFeeder(writer);
 
@@ -348,5 +348,37 @@ public class DefaultMitab25ColumnFeederTest {
 
         feeder.writeSource(binary);
         Assert.assertEquals("-", writer.toString());
+    }
+
+    @Test
+    public void write_confidences() throws IOException {
+        StringWriter writer = new StringWriter();
+        DefaultMitab25ColumnFeeder feeder = new DefaultMitab25ColumnFeeder(writer);
+
+        MitabModelledBinaryInteraction binary = new MitabModelledBinaryInteraction();
+        binary.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("mi-score"), "0.5"));
+
+        feeder.writeInteractionConfidences(binary);
+        Assert.assertEquals("-", writer.toString());
+    }
+
+    @Test
+    public void write_interaction_identifiers() throws IOException {
+        StringWriter writer = new StringWriter();
+        DefaultMitab25ColumnFeeder feeder = new DefaultMitab25ColumnFeeder(writer);
+
+        MitabBinaryInteractionEvidence binary = new MitabBinaryInteractionEvidence();
+        binary.assignImexId("IM-1");
+        binary.getIdentifiers().add(new MitabXref("intact", "EBI-xxxxx"));
+        binary.getIdentifiers().add(new MitabXref("mint", "MINT-xxxxx"));
+
+        feeder.writeInteractionIdentifiers(binary);
+        Assert.assertEquals("intact:EBI-xxxxx|mint:MINT-xxxxx|imex:IM-1", writer.toString());
+
+        binary.getIdentifiers().clear();
+        writer = new StringWriter();
+        feeder = new DefaultMitab25ColumnFeeder(writer);
+        feeder.writeInteractionIdentifiers(binary);
+        Assert.assertEquals("imex:IM-1", writer.toString());
     }
 }
