@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * The default Mitab 2.5 column feeder for interactions
@@ -45,7 +46,16 @@ public class DefaultMitab25ColumnFeeder extends AbstractMitab25ColumnFeeder<Bina
 
         // other identfiers
         if (!interaction.getIdentifiers().isEmpty()){
-            writeIdentifier(interaction.getIdentifiers().iterator().next());
+            Iterator<Xref> identifierIterator = interaction.getIdentifiers().iterator();
+
+            while (identifierIterator.hasNext()){
+                // write alternative identifier
+                writeIdentifier(identifierIterator.next());
+                // write field separator
+                if (identifierIterator.hasNext()){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+            }
 
             // IMEx as well
             if (!imexId.isEmpty()){
@@ -57,7 +67,6 @@ public class DefaultMitab25ColumnFeeder extends AbstractMitab25ColumnFeeder<Bina
         }
         // IMEx only
         else if (!imexId.isEmpty()) {
-            getWriter().write(MitabUtils.FIELD_SEPARATOR);
             getWriter().write(Xref.IMEX);
             getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(imexId.iterator().next().getId());
