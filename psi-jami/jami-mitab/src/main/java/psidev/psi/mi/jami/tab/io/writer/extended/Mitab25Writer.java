@@ -10,10 +10,7 @@ import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.io.writer.AbstractMitab25Writer;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
+import java.io.*;
 
 /**
  * The simple MITAB 2.5 writer will write interactions using the JAMI interfaces.
@@ -32,6 +29,7 @@ public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInte
 
     private Mitab25ModelledInteractionWriter modelledInteractionWriter;
     private Mitab25InteractionEvidenceWriter interactionEvidenceWriter;
+    private Writer writer;
 
     public Mitab25Writer() {
         super();
@@ -39,32 +37,32 @@ public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInte
 
     public Mitab25Writer(File file) throws IOException {
         super(file);
-        initialiseSubWritersWith(getBinaryWriter().getWriter());
+        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(OutputStream output) {
         super(output);
-        initialiseSubWritersWith(getBinaryWriter().getWriter());
+        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(Writer writer) {
         super(writer);
-        initialiseSubWritersWith(getBinaryWriter().getWriter());
+        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(File file, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
-        initialiseSubWritersWith(getBinaryWriter().getWriter());
+        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(output, expansionMethod);
-        initialiseSubWritersWith(getBinaryWriter().getWriter());
+        initialiseSubWritersWith(writer);
     }
 
     public Mitab25Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
-        initialiseSubWritersWith(getBinaryWriter().getWriter());
+        initialiseSubWritersWith(writer);
     }
 
     @Override
@@ -74,17 +72,20 @@ public class Mitab25Writer extends AbstractMitab25Writer<Interaction, BinaryInte
 
     @Override
     protected void initialiseWriter(Writer writer) {
-        setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(writer));
+        this.writer = writer;
+        setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(this.writer));
     }
 
     @Override
     protected void initialiseOutputStream(OutputStream output) {
-        setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(output));
+        this.writer = new OutputStreamWriter(output);
+        setBinaryWriter(new psidev.psi.mi.jami.tab.io.writer.Mitab25BinaryWriter(this.writer));
     }
 
     @Override
     protected void initialiseFile(File file) throws IOException {
-        setBinaryWriter(new Mitab25BinaryWriter(file));
+        this.writer = new BufferedWriter(new FileWriter(file));
+        setBinaryWriter(new Mitab25BinaryWriter(this.writer));
     }
 
     @Override

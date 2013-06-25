@@ -111,6 +111,12 @@ public class ModelledInteractionLineParser extends AbstractInteractionLineParser
 
         // create interaction with participants
         interaction = new MitabModelledBinaryInteraction(A, B);
+        if (A != null){
+            A.setModelledInteraction(interaction);
+        }
+        if (B != null){
+            B.setModelledInteraction(interaction);
+        }
 
         // set interaction type
         if (interactionType.size() > 1){

@@ -109,6 +109,16 @@ public abstract class AbstractMitabColumnFeeder<T extends BinaryInteraction, P e
                     writeAlias(participant, aliasIterator.next());
                 }
             }
+            // write participant aliases
+            if (!participant.getAliases().isEmpty()){
+                Iterator<Alias> aliasIterator = participant.getAliases().iterator();
+
+                while (aliasIterator.hasNext()){
+                    writer.write(MitabUtils.FIELD_SEPARATOR);
+
+                    writeAlias(participant, aliasIterator.next());
+                }
+            }
         }
     }
 
