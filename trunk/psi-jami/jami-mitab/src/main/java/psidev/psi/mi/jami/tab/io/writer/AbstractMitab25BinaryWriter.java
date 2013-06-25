@@ -124,7 +124,7 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
                     + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
         }
         try{
-            writeHeaderAndLineBreakIfNotDone();
+            writeHeaderIfNotDone();
 
             P A = (P) interaction.getParticipantA();
             P B = (P) interaction.getParticipantB();
@@ -271,16 +271,24 @@ public abstract class AbstractMitab25BinaryWriter<T extends BinaryInteraction, P
         writer.write(MitabUtils.LINE_BREAK);
     }
 
-    private void writeHeaderAndLineBreakIfNotDone() throws IOException {
+    protected void writeHeaderIfNotDone() throws IOException {
         if (!hasWrittenHeader){
             if (writeHeader){
                 writeHeader();
             }
-            hasWrittenHeader = true;
+            setHasWrittenHeader(true);
         }
-        else{
+        else {
             writer.write(MitabUtils.LINE_BREAK);
         }
+    }
+
+    public boolean hasWrittenHeader() {
+        return hasWrittenHeader;
+    }
+
+    public void setHasWrittenHeader(boolean hasWrittenHeader) {
+        this.hasWrittenHeader = hasWrittenHeader;
     }
 
     private void initialiseWriter(Writer writer) {

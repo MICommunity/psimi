@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
+import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.io.writer.feeder.DefaultMitabColumnFeeder;
 
@@ -65,6 +66,28 @@ public class Mitab26BinaryWriter extends AbstractMitab26BinaryWriter<BinaryInter
 
     @Override
     public void write(BinaryInteraction interaction) throws DataSourceWriterException {
+        if (this.binaryEvidenceWriter == null || this.modelledBinaryWriter == null){
+            throw new IllegalStateException("The Mitab25Writer has not been initialised with a map of options." +
+                    "The options for the Mitab25Writer should contain at least "+ InteractionWriterFactory.OUTPUT_FILE_OPTION_KEY
+                    + " or " + InteractionWriterFactory.OUTPUT_STREAM_OPTION_KEY + " or " + InteractionWriterFactory.WRITER_OPTION_KEY + " to know where to write the interactions.");
+        }
+        // did not start yet so need to write the header if required
+        else if (!hasWrittenHeader()){
+            try{
+                writeHeaderIfNotDone();
+                this.binaryEvidenceWriter.setHasWrittenHeader(false);
+                this.modelledBinaryWriter.setHasWrittenHeader(false);
+            }
+            catch (IOException e) {
+                throw new DataSourceWriterException("Impossible to write MITAB header ", e);
+            }
+        }
+        // we already started to write binary
+        else{
+            this.binaryEvidenceWriter.setHasWrittenHeader(true);
+            this.modelledBinaryWriter.setHasWrittenHeader(true);
+        }
+
         if (interaction instanceof BinaryInteractionEvidence){
             this.binaryEvidenceWriter.write((BinaryInteractionEvidence) interaction);
         }
@@ -79,11 +102,24 @@ public class Mitab26BinaryWriter extends AbstractMitab26BinaryWriter<BinaryInter
     protected void initialiseSubWritersWith(Writer writer) {
 
         this.modelledBinaryWriter = new Mitab26ModelledBinaryWriter(writer);
+        this.modelledBinaryWriter.setWriteHeader(false);
         this.binaryEvidenceWriter = new Mitab26BinaryEvidenceWriter(writer);
+        this.binaryEvidenceWriter.setWriteHeader(false);
     }
 
     @Override
     protected void initialiseColumnFeeder() {
         setColumnFeeder(new DefaultMitabColumnFeeder(getWriter()));
+    }
+
+    @Override
+    public void setWriteHeader(boolean writeHeader) {
+        super.setWriteHeader(writeHeader);
+        if (this.modelledBinaryWriter != null){
+            this.modelledBinaryWriter.setWriteHeader(false);
+        }
+        if (this.binaryEvidenceWriter != null){
+            this.binaryEvidenceWriter.setWriteHeader(false);
+        }
     }
 }
