@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.tab.io.writer.feeder.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.MitabAlias;
+import psidev.psi.mi.jami.tab.extension.MitabConfidence;
 import psidev.psi.mi.jami.tab.extension.MitabFeature;
 import psidev.psi.mi.jami.tab.io.writer.feeder.Mitab27InteractionEvidenceFeeder;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
@@ -80,7 +81,7 @@ public class ExtendedMitab27InteractionEvidenceFeeder extends Mitab27Interaction
                 while(rangeIterator.hasNext()){
                     getWriter().write(RangeUtils.convertRangeToString(rangeIterator.next()));
                     if (rangeIterator.hasNext()){
-                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                        getWriter().write(MitabUtils.RANGE_SEPARATOR);
                     }
                 }
             }
@@ -89,6 +90,31 @@ public class ExtendedMitab27InteractionEvidenceFeeder extends Mitab27Interaction
             if (mitabFeature.getText() != null){
                 getWriter().write("(");
                 escapeAndWriteString(mitabFeature.getText());
+                getWriter().write(")");
+            }
+        }
+    }
+
+    @Override
+    public void writeConfidence(Confidence conf) throws IOException {
+        if (conf != null){
+            // write confidence type first
+            if (conf.getType().getFullName() != null){
+                escapeAndWriteString(conf.getType().getFullName());
+            }
+            else{
+                escapeAndWriteString(conf.getType().getShortName());
+            }
+
+            // write confidence value
+            getWriter().write(MitabUtils.XREF_SEPARATOR);
+            escapeAndWriteString(conf.getValue());
+
+            // write text
+            MitabConfidence mitabConf = (MitabConfidence) conf;
+            if (mitabConf.getText() != null){
+                getWriter().write("(");
+                getWriter().write(mitabConf.getText());
                 getWriter().write(")");
             }
         }
