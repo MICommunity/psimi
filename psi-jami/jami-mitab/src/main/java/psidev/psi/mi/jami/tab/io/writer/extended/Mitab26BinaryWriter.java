@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.tab.io.writer.extended;
 
-import psidev.psi.mi.jami.tab.io.writer.feeder.extended.DefaultExtendedMitab26ColumnFeeder;
+import psidev.psi.mi.jami.tab.io.writer.feeder.extended.DefaultExtendedMitabColumnFeeder;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +38,6 @@ public class Mitab26BinaryWriter extends psidev.psi.mi.jami.tab.io.writer.Mitab2
 
     @Override
     protected void initialiseColumnFeeder() {
-        setColumnFeeder(new DefaultExtendedMitab26ColumnFeeder(getWriter()));
+        setColumnFeeder(new DefaultExtendedMitabColumnFeeder(getWriter()));
     }
 }

@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.tab.io.writer.extended;
 
 import psidev.psi.mi.jami.exception.DataSourceWriterException;
-import psidev.psi.mi.jami.tab.io.writer.feeder.extended.DefaultExtendedMitab27ColumnFeeder;
+import psidev.psi.mi.jami.tab.io.writer.feeder.extended.DefaultExtendedMitabColumnFeeder;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +46,6 @@ public class Mitab27BinaryWriter extends psidev.psi.mi.jami.tab.io.writer.Mitab2
 
     @Override
     protected void initialiseColumnFeeder() {
-        setColumnFeeder(new DefaultExtendedMitab27ColumnFeeder(getWriter()));
+        setColumnFeeder(new DefaultExtendedMitabColumnFeeder(getWriter()));
     }
 }

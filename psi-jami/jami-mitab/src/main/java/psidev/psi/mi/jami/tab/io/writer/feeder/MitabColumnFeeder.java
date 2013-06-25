@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * A MITAB 2.5 column feeder will write the content of MITAB 2.5 columns
@@ -13,7 +14,7 @@ import java.io.IOException;
  * @since <pre>20/06/13</pre>
  */
 
-public interface Mitab25ColumnFeeder<T extends BinaryInteraction, P extends Participant> {
+public interface MitabColumnFeeder<T extends BinaryInteraction, P extends Participant> {
 
     /**
      * This method will write the unique identifier of a participant
@@ -137,4 +138,144 @@ public interface Mitab25ColumnFeeder<T extends BinaryInteraction, P extends Part
      * @throws IOException
      */
     public void escapeAndWriteString(String stringToEscape) throws IOException;
+
+    /**
+     * Writes the complex expansion of a binary interaction
+     * @param binary
+     */
+    public void writeComplexExpansion(T binary) throws IOException;
+
+    /**
+     * Writes the biological role of a participant
+     * @param participant
+     * @throws IOException
+     */
+    public void writeBiologicalRole(P participant) throws IOException;
+
+    /**
+     * Writes the experimentsl role of a participant evidence
+     * @param participant
+     * @throws IOException
+     */
+    public void writeExperimentalRole(P participant) throws IOException;
+
+    /**
+     * Writes the interactor type of a participant
+     * @param participant
+     * @throws IOException
+     */
+    public void writeInteractorType(P participant) throws IOException;
+
+    /**
+     * Write Xref of participant and interactor
+     * @param participant
+     * @throws IOException
+     */
+    public void writeParticipantXrefs(P participant) throws IOException;
+
+    /**
+     * Write interaction Xref r
+     * @param interaction
+     * @throws IOException
+     */
+    public void writeInteractionXrefs(T interaction) throws IOException;
+
+    /**
+     * Writes participant annotations
+     * @param participant
+     */
+    public void writeParticipantAnnotations(P participant) throws IOException;
+
+    /**
+     * Writes interaction annotations
+     * @param interaction
+     */
+    public void writeInteractionAnnotations(T interaction) throws IOException;
+
+    /**
+     * Writes experiment host organism
+     * @param interaction
+     */
+    public void writeHostOrganism(T interaction) throws IOException;
+
+    /**
+     * Writes interaction parameters
+     * @param interaction
+     */
+    public void writeInteractionParameters(T interaction) throws IOException;
+
+    /**
+     * Writes created date of an interaction
+     * @param date
+     */
+    public void writeDate(Date date) throws IOException;
+
+    /**
+     * Writes participant checksum
+     * @param participant
+     */
+    public void writeParticipantChecksums(P participant) throws IOException;
+
+    /**
+     * Writes interaction checksum
+     * @param interaction
+     */
+    public void writeInteractionChecksums(T interaction) throws IOException;
+
+    /**
+     * Writes interaction negative property if true
+     * @param interaction
+     */
+    public void writeNegativeProperty(T interaction) throws IOException;
+
+    /**
+     * Writes the checksum
+     * @param checksum
+     */
+    public void writeChecksum(Checksum checksum) throws IOException;
+
+    /**
+     * Writes the parameter
+     * @param parameter
+     * @throws IOException
+     */
+    public void writeParameter(Parameter parameter) throws IOException;
+
+    /**
+     * Writes an annotation
+     * @param annotation
+     * @throws IOException
+     */
+    public void writeAnnotation(Annotation annotation) throws IOException;
+
+    /**
+     * This methods write the database, id, version and qualifier of an xref
+     * @param xref
+     * @throws IOException
+     */
+    public void writeXref(Xref xref) throws IOException;
+
+    /**
+     * Writes participant features
+     * @param participant
+     */
+    public void writeParticipantFeatures(P participant) throws IOException;
+
+    /**
+     * Writes participant stoichiometry
+     * @param participant
+     */
+    public void writeParticipantStoichiometry(P participant) throws IOException;
+
+    /**
+     * Writes participant identification method(s)
+     * @param participant
+     */
+    public void writeParticipantIdentificationMethod(P participant) throws IOException ;
+
+    /**
+     * Writes a feature
+     * @param feature
+     */
+    public void writeFeature(Feature feature) throws IOException;
 }

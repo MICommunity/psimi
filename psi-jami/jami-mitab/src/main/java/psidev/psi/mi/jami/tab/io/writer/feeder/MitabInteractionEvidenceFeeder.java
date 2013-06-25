@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.tab.io.writer.feeder;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -16,9 +17,9 @@ import java.util.Iterator;
  * @since <pre>20/06/13</pre>
  */
 
-public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeeder<BinaryInteractionEvidence, ParticipantEvidence>{
+public class MitabInteractionEvidenceFeeder extends AbstractMitabColumnFeeder<BinaryInteractionEvidence, ParticipantEvidence> {
 
-    public Mitab25InteractionEvidenceFeeder(Writer writer) {
+    public MitabInteractionEvidenceFeeder(Writer writer) {
         super(writer);
     }
 
@@ -195,6 +196,145 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
         }
     }
 
+    public void writeExperimentalRole(ParticipantEvidence participant) throws IOException {
+        if (participant != null){
+            writeCvTerm(participant.getExperimentalRole());
+        }
+        else {
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeInteractionXrefs(BinaryInteractionEvidence interaction) throws IOException {
+        // write interaction ref
+        if (!interaction.getXrefs().isEmpty()){
+            Iterator<Xref> interactionXrefIterator = interaction.getXrefs().iterator();
+
+            Xref next = null;
+            boolean isFirst = true;
+            do {
+                next = interactionXrefIterator.next();
+                while (interactionXrefIterator.hasNext() && (XrefUtils.doesXrefHaveQualifier(next, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)
+                        && XrefUtils.isXrefFromDatabase(next, Xref.IMEX_MI, Xref.IMEX))){
+                    next = interactionXrefIterator.next();
+                }
+
+                if (next != null && !(XrefUtils.doesXrefHaveQualifier(next, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)
+                        && XrefUtils.isXrefFromDatabase(next, Xref.IMEX_MI, Xref.IMEX))){
+                    if (!isFirst){
+                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                    }
+                    // write xref ony if it is not an imex id
+                    writeXref(next);
+                    isFirst = false;
+                }
+                else {
+                    next = null;
+                }
+            }
+            while (next != null) ;
+        }
+        else{
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeInteractionAnnotations(BinaryInteractionEvidence interaction) throws IOException {
+        // writes interaction annotations first
+        if (!interaction.getAnnotations().isEmpty()){
+            Iterator<Annotation> interactorAnnotationIterator = interaction.getAnnotations().iterator();
+
+            while (interactorAnnotationIterator.hasNext()){
+                Annotation annot = interactorAnnotationIterator.next();
+                writeAnnotation(annot);
+
+                if(interactorAnnotationIterator.hasNext()){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+            }
+
+            if (interaction.getExperiment() != null){
+                Publication pub = interaction.getExperiment().getPublication();
+
+                if (pub != null){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                    writeInteractionAnnotationTagsFrom(pub);
+
+
+                }
+            }
+        }
+        else if (interaction.getExperiment() != null){
+            Publication pub = interaction.getExperiment().getPublication();
+
+            if (pub != null){
+
+                // writes curation depth first
+                writeInteractionAnnotationTagsFrom(pub);
+            }
+        }
+        else{
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeHostOrganism(BinaryInteractionEvidence interaction) throws IOException {
+        Experiment experiment = interaction.getExperiment();
+        // writes interaction annotations first
+        if (experiment != null){
+            writeOrganism(experiment.getHostOrganism());
+        }
+        else{
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeInteractionParameters(BinaryInteractionEvidence interaction) throws IOException {
+        if (!interaction.getParameters().isEmpty()){
+
+            Iterator<Parameter> parameterIterator = interaction.getParameters().iterator();
+            while(parameterIterator.hasNext()){
+                writeParameter(parameterIterator.next());
+                if (parameterIterator.hasNext()){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+            }
+        }
+        else {
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeNegativeProperty(BinaryInteractionEvidence interaction) throws IOException {
+        if (interaction.isNegative()){
+            getWriter().write("true");
+        }
+        else {
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
+    public void writeParticipantIdentificationMethod(ParticipantEvidence participant) throws IOException {
+        if (participant != null){
+
+            if (!participant.getIdentificationMethods().isEmpty()){
+                Iterator<CvTerm> methodIterator = participant.getIdentificationMethods().iterator();
+                while(methodIterator.hasNext()){
+                    writeCvTerm(methodIterator.next());
+                    if (methodIterator.hasNext()){
+                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                    }
+                }
+            }
+            else{
+                getWriter().write(MitabUtils.EMPTY_COLUMN);
+            }
+        }
+        else {
+            getWriter().write(MitabUtils.EMPTY_COLUMN);
+        }
+    }
+
     protected void writePublicationImexId(Publication pub, boolean writeFieldSeparator) throws IOException {
         // IMEx as well
         if (pub.getImexId() != null) {
@@ -205,5 +345,51 @@ public class Mitab25InteractionEvidenceFeeder extends AbstractMitab25ColumnFeede
             getWriter().write(MitabUtils.XREF_SEPARATOR);
             escapeAndWriteString(pub.getImexId());
         }
+    }
+
+    protected void writeInteractionAnnotationTagsFrom(Publication pub) throws IOException {
+        // writes curation depth first
+        switch (pub.getCurationDepth()){
+            case IMEx:
+                getWriter().write(Annotation.IMEX_CURATION);
+                getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                break;
+            case MIMIx:
+                getWriter().write(Annotation.MIMIX_CURATION);
+                getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                break;
+            case rapid_curation:
+                getWriter().write(Annotation.RAPID_CURATION);
+                getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                break;
+            default:
+                break;
+        }
+
+        // writes special annotations
+        Iterator<Annotation> publicationAnnotationIterator = pub.getAnnotations().iterator();
+
+        Annotation next = null;
+        boolean isFirst = true;
+        do {
+            next = publicationAnnotationIterator.next();
+            while (publicationAnnotationIterator.hasNext() &&
+                    !MitabUtils.isAnnotationAnInteractionTag(next)){
+                next = publicationAnnotationIterator.next();
+            }
+
+            if (next != null && MitabUtils.isAnnotationAnInteractionTag(next)){
+                if (!isFirst){
+                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                }
+                // write annotation if interaction tag
+                writeAnnotation(next);
+                isFirst = false;
+            }
+            else {
+                next = null;
+            }
+        }
+        while (next != null) ;
     }
 }
