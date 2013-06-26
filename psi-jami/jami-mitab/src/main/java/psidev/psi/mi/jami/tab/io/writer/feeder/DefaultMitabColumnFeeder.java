@@ -153,7 +153,7 @@ public class DefaultMitabColumnFeeder extends AbstractMitabColumnFeeder<BinaryIn
                     next = null;
                 }
             }
-            while (next != null) ;
+            while (next != null && interactionXrefIterator.hasNext()) ;
         }
         else{
             getWriter().write(MitabUtils.EMPTY_COLUMN);

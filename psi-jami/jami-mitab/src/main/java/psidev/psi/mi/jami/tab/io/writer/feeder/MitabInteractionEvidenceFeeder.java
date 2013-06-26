@@ -232,7 +232,7 @@ public class MitabInteractionEvidenceFeeder extends AbstractMitabColumnFeeder<Bi
                     next = null;
                 }
             }
-            while (next != null) ;
+            while (next != null && interactionXrefIterator.hasNext()) ;
         }
         else{
             getWriter().write(MitabUtils.EMPTY_COLUMN);
@@ -348,48 +348,50 @@ public class MitabInteractionEvidenceFeeder extends AbstractMitabColumnFeeder<Bi
     }
 
     protected void writeInteractionAnnotationTagsFrom(Publication pub) throws IOException {
+        boolean isFirst = true;
         // writes curation depth first
         switch (pub.getCurationDepth()){
             case IMEx:
+                isFirst = false;
                 getWriter().write(Annotation.IMEX_CURATION);
-                getWriter().write(MitabUtils.FIELD_SEPARATOR);
                 break;
             case MIMIx:
+                isFirst = false;
                 getWriter().write(Annotation.MIMIX_CURATION);
-                getWriter().write(MitabUtils.FIELD_SEPARATOR);
                 break;
             case rapid_curation:
+                isFirst = false;
                 getWriter().write(Annotation.RAPID_CURATION);
-                getWriter().write(MitabUtils.FIELD_SEPARATOR);
                 break;
             default:
                 break;
         }
 
         // writes special annotations
-        Iterator<Annotation> publicationAnnotationIterator = pub.getAnnotations().iterator();
+        if (!pub.getAnnotations().isEmpty()){
+            Iterator<Annotation> publicationAnnotationIterator = pub.getAnnotations().iterator();
 
-        Annotation next = null;
-        boolean isFirst = true;
-        do {
-            next = publicationAnnotationIterator.next();
-            while (publicationAnnotationIterator.hasNext() &&
-                    !MitabUtils.isAnnotationAnInteractionTag(next)){
+            Annotation next = null;
+            do {
                 next = publicationAnnotationIterator.next();
-            }
-
-            if (next != null && MitabUtils.isAnnotationAnInteractionTag(next)){
-                if (!isFirst){
-                    getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                while (publicationAnnotationIterator.hasNext() &&
+                        !MitabUtils.isAnnotationAnInteractionTag(next)){
+                    next = publicationAnnotationIterator.next();
                 }
-                // write annotation if interaction tag
-                writeAnnotation(next);
-                isFirst = false;
+
+                if (next != null && MitabUtils.isAnnotationAnInteractionTag(next)){
+                    if (!isFirst){
+                        getWriter().write(MitabUtils.FIELD_SEPARATOR);
+                    }
+                    // write annotation if interaction tag
+                    writeAnnotation(next);
+                    isFirst = false;
+                }
+                else {
+                    next = null;
+                }
             }
-            else {
-                next = null;
-            }
+            while (next != null && publicationAnnotationIterator.hasNext()) ;
         }
-        while (next != null) ;
     }
 }
