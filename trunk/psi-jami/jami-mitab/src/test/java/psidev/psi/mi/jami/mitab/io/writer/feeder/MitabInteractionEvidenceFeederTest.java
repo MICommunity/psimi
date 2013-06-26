@@ -521,9 +521,10 @@ public class MitabInteractionEvidenceFeederTest {
         MitabInteractionEvidenceFeeder feeder = new MitabInteractionEvidenceFeeder(writer);
 
         ParticipantEvidence participant = new MitabParticipantEvidence(new MitabProtein("p12345"));
+        participant.getIdentificationMethods().add(new MitabCvTerm("western blot", "MI:xxxx"));
 
         feeder.writeParticipantIdentificationMethod(participant);
-        Assert.assertEquals("-", writer.toString());
+        Assert.assertEquals("psi-mi:\"MI:xxxx\"(western blot)", writer.toString());
 
         writer = new StringWriter();
         feeder = new MitabInteractionEvidenceFeeder(writer);
